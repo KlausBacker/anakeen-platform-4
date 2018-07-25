@@ -90,7 +90,7 @@
         ) {
           this.options.attributeValue.icon = null;
         } else {
-          var reSize = /sizes([^/]+)/;
+          var reSize = /sizes\/([^/]+)/;
           this.options.attributeValue.icon = this.options.attributeValue.icon.replace(
             reSize,
             "sizes/" + this.options.renderOptions.mimeIconSize

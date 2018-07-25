@@ -4,7 +4,7 @@
            revision="0" modification-date="2017-11-09T09:42:42" version="" state="">
         <fr_basic>
             <ba_title>Rendus de relations</ba_title>
-            <cv_desc xsi:nil="true"/>
+            <ba_desc xsi:nil="true"/>
             <cv_famid name="TST_DDUI_DOCID">Test Docid</cv_famid>
             <cv_fam>Test Docid</cv_fam>
             <cv_t_views>

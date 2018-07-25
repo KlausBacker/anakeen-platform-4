@@ -9,6 +9,8 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
+use Dcp\Ui\RenderAttributeVisibilities;
+use Dcp\Ui\RenderOptions;
 use Dcp\Ui\UIGetAssetPath;
 use \SmartStructure\Fields\Iuser as myAttributes;
 
@@ -18,14 +20,9 @@ class IuserEditRender extends DefaultConfigEditRender
 
     protected $defaultGroup;
 
-    public function getOptions(SmartElement $document)
+    public function getOptions(SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $options->frame(myAttributes::us_fr_security)->setTemplate(
-            <<< 'HTML'
-            <span class="us_accexpiredate">{{{attributes.us_accexpiredate.label}}}</span> : {{{attributes.us_accexpiredate.htmlContent}}}
-HTML
-        );
 
         if (!$document->getRawValue(myAttributes::us_login)) {
             $options->text(myAttributes::us_login)->setInputTooltip(
@@ -45,9 +42,9 @@ HTML
      * @return \Dcp\Ui\RenderAttributeVisibilities
      * @throws \Dcp\Ui\Exception
      */
-    public function getVisibilities(SmartElement $smartElement)
+    public function getVisibilities(SmartElement $smartElement, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
-        $visibilities = parent::getVisibilities($smartElement);
+        $visibilities = parent::getVisibilities($smartElement, $mask);
 
         if ($smartElement->getRawValue("us_whatid") == \Anakeen\Core\Account::ANONYMOUS_ID) {
             // Anonymous has no password
@@ -103,6 +100,7 @@ HTML
 
     protected function deleteIndirectRoles(SmartElement $iuser)
     {
+        $iuser->disableAccessControl();
         $allRoles = $iuser->getArrayRawValues("us_t_roles");
         $iuser->clearArrayValues("us_t_roles");
         // get direct system role ids
@@ -113,6 +111,7 @@ HTML
             }
         }
         $iuser->setValue("us_roles", $roles);
+        $iuser->restoreAccessControl();
     }
 
     public function getJsReferences(SmartElement $smartElement = null)

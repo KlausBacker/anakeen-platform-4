@@ -7,11 +7,12 @@
 namespace Anakeen\SmartStructures\Mask\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
+use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Mask as myAttributes;
 
 class MaskEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         /*$options->arrayAttribute(myAttributes::msk_t_contain)->disableRowAdd(true);

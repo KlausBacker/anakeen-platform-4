@@ -29,7 +29,7 @@
         if (this.options.attributeValue.url) {
           if (!this.options.renderOptions.htmlLink.url) {
             if (this.options.renderOptions.thumbnailSize) {
-              var reSize = /sizes([^/]+)/;
+              var reSize = /sizes\/([^/]+)/;
               this.options.attributeValue.thumbnail =
                 this.options.attributeValue.thumbnail.replace(
                   reSize,

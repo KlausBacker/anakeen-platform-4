@@ -12,10 +12,5 @@ class AllRenderConfigView extends \Dcp\Ui\DefaultView
         return "All View";
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
-    {
-        $options = parent::getOptions($document);
 
-        return $options;
-    }
 }

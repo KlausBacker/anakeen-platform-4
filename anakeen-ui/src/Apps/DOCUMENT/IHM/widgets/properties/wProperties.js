@@ -31,6 +31,7 @@ define([
         lastAccessDate: "Last access date",
         profil: "Profil",
         profilReference: "Profil reference",
+        fieldAccess: "Field access",
         viewController: "View controller",
         propertiesTitle: "Properties of {{title}}",
         property: "Property",
@@ -78,6 +79,7 @@ define([
         '<tr><td class="properties-separator" colspan="2"></td></tr>' +
         '<tr><td class="properties-description">{{labels.profil}}</td><td class="properties-value"><a data-document-id="{{security.profil.id}}" href="api/v2/documents/{{security.profil.id}}.html">{{#security.profil.icon}}<img src="{{security.profil.icon}}"/>{{/security.profil.icon}}{{security.profil.title}}</a></td></tr>' +
         '<tr><td class="properties-description">{{labels.profilReference}}</td><td class="properties-value"><a data-document-id="{{security.profil.reference.id}}" href="api/v2/documents/{{security.profil.reference.id}}.html">{{#security.profil.reference.icon}}<img src="{{security.profil.reference.icon}}"/>{{/security.profil.reference.icon}}{{security.profil.reference.title}}</a></td></tr>' +
+        '<tr><td class="properties-description">{{labels.fieldAccess}}</td><td class="properties-value"><a data-document-id="{{security.fieldAccess.id}}" href="api/v2/documents/{{security.fieldAccess.id}}.html">{{#security.fieldAccess.icon}}<img src="{{security.fieldAccess.icon}}"/>{{/security.fieldAccess.icon}}{{security.fieldAccess.title}}</a></td></tr>' +
         '<tr><td class="properties-description">{{labels.viewController}}</td><td class="properties-value"><a data-document-id="{{viewController.id}}" href="api/v2/documents/{{viewController.id}}.html">{{#viewController.icon}}<img src="{{viewController.icon}}"/>{{/viewController.icon}}{{viewController.title}}</a></td></tr>' +
         "</tbody></table>"
       );

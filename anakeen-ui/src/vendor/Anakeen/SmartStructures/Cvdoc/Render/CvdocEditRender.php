@@ -7,11 +7,13 @@
 namespace Anakeen\SmartStructures\Cvdoc\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
+use Dcp\Ui\RenderAttributeVisibilities;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Cvdoc as myAttributes;
 
 class CvdocEditRender extends DefaultConfigEditRender
 {
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $options->arrayAttribute(myAttributes::cv_t_views)->setTemplate(file_get_contents(__DIR__."/CvdocTable.mustache"));
@@ -42,9 +44,9 @@ class CvdocEditRender extends DefaultConfigEditRender
      * @return \Dcp\Ui\RenderAttributeVisibilities new attribute visibilities
      * @throws \Dcp\Ui\Exception
      */
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
-        $visibilities = parent::getVisibilities($document);
+        $visibilities = parent::getVisibilities($document, $mask);
 
         if (!$document->getRawValue(myAttributes::cv_famid)) {
             $visibilities->setVisibility(myAttributes::cv_famid, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);

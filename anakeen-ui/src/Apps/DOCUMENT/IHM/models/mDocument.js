@@ -243,7 +243,7 @@ define([
      *
      * @returns {{}}
      */
-    getValues: function mDocumentdocumentGetValues() {
+    getValues: function mDocumentdocumentGetValues(onlyModified) {
       var values = {};
       if (!this.get("attributes")) {
         return values;
@@ -252,7 +252,16 @@ define([
         var currentValue = currentAttribute.get("attributeValue"),
           i,
           arrayValues = [];
-        if (!currentAttribute.get("isValueAttribute")) {
+        if (
+          currentValue === null ||
+          !currentAttribute.get("isValueAttribute")
+        ) {
+          return;
+        }
+        if (
+          onlyModified === true &&
+          currentAttribute.hasValueChanged() === false
+        ) {
           return;
         }
         if (currentAttribute.get("multiple")) {
@@ -405,7 +414,7 @@ define([
     getDocumentData: function mDocumentGetDocumentData() {
       var documentData = {
         properties: this.getModelProperties(),
-        attributeValues: this.getValues(),
+        attributeValues: this.getValues(false),
         attributeLabels: {},
         createAttributeView: function mDocumentGetDocumentDataCreate() {
           return this.id;
@@ -592,18 +601,15 @@ define([
               break;
 
             default:
-              if (message.type === "error" && message.contentText) {
+              if (message.exceptionMessage) {
                 currentModel.trigger("showError", {
                   title:
-                    message.contentText +
-                    " " +
-                    (message.code ? message.code : ""),
-                  htmlMessage: message.contentHtml,
+                    message.message + " " + (message.code ? message.code : ""),
                   errorCode: message.code
                 });
               } else {
-                if (message.type && message.contentText) {
-                  currentModel.trigger("showMessage", {
+                if (message.type === "error" && message.contentText) {
+                  currentModel.trigger("showError", {
                     title:
                       message.contentText +
                       " " +
@@ -614,7 +620,20 @@ define([
                     errorCode: message.code
                   });
                 } else {
-                  console.error("Error", message);
+                  if (message.type && message.contentText) {
+                    currentModel.trigger("showMessage", {
+                      title:
+                        message.contentText +
+                        " " +
+                        (message.code ? message.code : ""),
+                      type: message.type,
+                      message: message.contentText,
+                      htmlMessage: message.contentHtml,
+                      errorCode: message.code
+                    });
+                  } else {
+                    console.error("Error", message);
+                  }
                 }
               }
           }
@@ -1228,7 +1247,7 @@ define([
       return {
         document: {
           properties: this.getModelProperties(),
-          attributes: this.getValues()
+          attributes: this.getValues(true)
         },
         customClientData: this._customClientData
       };
@@ -1314,7 +1333,7 @@ define([
         currentModel._completeStructure().then(
           function onGetStructureDone() {
             currentModel.injectCurrentDocJS().then(
-              function mDocument_injectJSDone() {
+              function mDocument_injectJSDone(/*values*/) {
                 resolve({
                   documentProperties: properties,
                   successpromiseArguments: arguments
@@ -1595,8 +1614,8 @@ define([
           });
           currentModel.once(
             "uploadFileFinished",
-            function mDocumentsetValuesListenUploadUntilTheEnd() {
-              this.trigger("displayLoading", { isSaving: true });
+            function mDocumentsetValuesListenUploadUntilTheEnd(/*event*/) {
+              currentModel.trigger("displayLoading", { isSaving: true });
               currentModel.save(attributes, saveCallback);
             }
           );

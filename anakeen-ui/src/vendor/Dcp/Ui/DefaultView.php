@@ -82,7 +82,7 @@ class DefaultView extends RenderDefault
      *
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document) : BarMenu
     {
         $menu = new BarMenu();
 
@@ -344,7 +344,7 @@ class DefaultView extends RenderDefault
              * @var \SmartStructure\Cvdoc $cv
              */
             $cv->Set($doc);
-            $views = $cv->getDisplayableViews(true);
+            $views = $cv->getDisplayableViews();
             foreach ($views as $view) {
                 $vid = $view[CvAttributes::cv_idview];
 
@@ -435,7 +435,7 @@ class DefaultView extends RenderDefault
      *
      * @return DocumentTemplateContext get template controller
      */
-    public function getContextController(\Anakeen\Core\Internal\SmartElement $document)
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document) : DocumentTemplateContext
     {
         $controller = parent::getContextController($document);
         if ($document->locked == -1) {

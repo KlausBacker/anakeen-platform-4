@@ -7,6 +7,7 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
 use Anakeen\Core\ContextManager;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
@@ -16,7 +17,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
         return "Enum Edit Default";
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -261,7 +262,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
         return "Enum Edit Horizontal";
     }
     
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         
@@ -285,7 +286,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
         return "Enum Edit Vertical";
     }
     
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         
@@ -309,7 +310,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
         return "Enum Edit Other";
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -345,7 +346,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
         return "Enum View";
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options= parent::getOptions(
             $document

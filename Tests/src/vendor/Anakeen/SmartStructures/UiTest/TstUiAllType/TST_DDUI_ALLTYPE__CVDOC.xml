@@ -5,7 +5,7 @@
            revision="0" modification-date="2017-11-08T12:04:48" version="" state="">
         <fr_basic>
             <ba_title>Contrôle de vue pour la famille "Test tout type"</ba_title>
-            <cv_desc xsi:nil="true"/>
+            <ba_desc xsi:nil="true"/>
             <cv_famid name="TST_DDUI_ALLTYPE">Test tout type</cv_famid>
             <cv_fam>Test tout type</cv_fam>
             <cv_t_views>

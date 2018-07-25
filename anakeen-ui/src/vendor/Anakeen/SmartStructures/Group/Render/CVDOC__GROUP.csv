@@ -1,6 +1,6 @@
-//FAM;Contrôle de vues(CVDOC);<specid>;<fldid>;Titre;Description;Famille (id);Famille;Identifiant de la vue;Label;Type;Classe de configuration de rendu (HTML5);Masque;Ordre de sélection;Affichable;Menu;Id création vues par défaut;Création vue;Classe d'accès au rendu (HTML5);Famille pour le profil;Famille pour le profil (titre)
-ORDER;CVDOC;;;ba_title;cv_desc;cv_famid;cv_fam;cv_idview;cv_lview;cv_kview;cv_renderconfigclass;cv_mskid;cv_order;cv_displayed;cv_menu;cv_idcview;cv_lcview;cv_renderaccessclass;dpdoc_famid;dpdoc_fam
-DOC;CVDOC;CV_GROUP_ACCOUNT;;CV DOC IGROUP;CV DOC IGROUP;IGROUP;Groupe d'utilisateurs;"default_view
+//FAM;Contrôle de vues(CVDOC);<specid>;<fldid>;Titre;Description;Identifiant de la vue;Label;Type;Classe de configuration de rendu (HTML5);Masque;Ordre de sélection;Affichable;Menu;Id création vues par défaut;Création vue;Classe d'accès au rendu (HTML5)
+ORDER;CVDOC;;;ba_title;ba_desc;cv_idview;cv_lview;cv_kview;cv_renderconfigclass;cv_mskid;cv_order;cv_displayed;cv_menu;cv_idcview;cv_lcview;cv_renderaccessclass
+DOC;CVDOC;CV_GROUP_ACCOUNT;;CV DOC IGROUP;CV DOC IGROUP;"default_view
 default_edit
 changeGroup";"Consulter
 Modifier
@@ -16,9 +16,9 @@ VEDIT";"
 yes
 no";"
 
-";default_edit;Modifier (default_edit);;;
-;;;;;;;;;;;;;;;;;;;;
-//;;;;;;;;;;;;;;;;;;;;
-BEGIN;;;;;IGROUP;;;;;;;;;;;;;;;
-CVID;CV_GROUP_ACCOUNT;;;;;;;;;;;;;;;;;;;
-END;;;;;;;;;;;;;;;;;;;;
+";default_edit;Modifier (default_edit);
+;;;;;;;;;;;;;;;;
+//;;;;;;;;;;;;;;;;
+BEGIN;;;;;IGROUP;;;;;;;;;;;
+CVID;CV_GROUP_ACCOUNT;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;;

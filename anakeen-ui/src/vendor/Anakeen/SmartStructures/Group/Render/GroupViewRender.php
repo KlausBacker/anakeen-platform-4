@@ -3,11 +3,13 @@
 namespace Anakeen\SmartStructures\Group\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
+use Dcp\Ui\RenderAttributeVisibilities;
+use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Group as myAttributes;
 
 class GroupViewRender extends DefaultConfigViewRender
 {
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -19,4 +21,5 @@ class GroupViewRender extends DefaultConfigViewRender
         );
         return $options;
     }
+
 }

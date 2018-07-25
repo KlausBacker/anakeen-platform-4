@@ -1,14 +1,11 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Ui;
 
+use Anakeen\Ui\MaskManager;
+
 class RenderAttributeVisibilities implements \JsonSerializable
 {
-    const InvisibleVisibility = "I";
     const HiddenVisibility = "H";
     const ReadOnlyVisibility = "R";
     const ReadWriteVisibility = "W";
@@ -16,16 +13,23 @@ class RenderAttributeVisibilities implements \JsonSerializable
     const ArrayStaticVisibility = "U";
     const StaticWriteVisibility = "S";
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $document;
-    
+
     protected $visibilities = array();
     protected $finalVisibilities = array();
-    public function __construct(\Anakeen\Core\Internal\SmartElement $document)
+    /**
+     * @var \SmartStructure\Mask
+     */
+    protected $mask;
+
+    public function __construct(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
         $this->document = $document;
+        $this->mask = $mask;
     }
+
     /**
      * Return visibilities array, indexed by attribute identifier
      * @return array
@@ -33,21 +37,22 @@ class RenderAttributeVisibilities implements \JsonSerializable
     public function getVisibilities()
     {
         $this->refreshVisibility();
-        unset($this->finalVisibilities['FIELD_HIDDENS']);
+        unset($this->finalVisibilities[\Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD]);
+
         return $this->finalVisibilities;
     }
+
     /**
      * Affect new visibility to an attribute
      * This visibility is more prioritary than mask
      * @param string $attributeId attribute identifier
-     * @param string $visibility one of I,H,O,R,W,S
+     * @param string $visibility  one of I,H,O,R,W,S
      * @return $this
      * @throws Exception
      */
     public function setVisibility($attributeId, $visibility)
     {
         $allowVis = array(
-            self::InvisibleVisibility,
             self::HiddenVisibility,
             self::ReadOnlyVisibility,
             self::ReadWriteVisibility,
@@ -63,22 +68,31 @@ class RenderAttributeVisibilities implements \JsonSerializable
             throw new Exception("UI0102", $attributeId, $this->document->getTitle());
         }
         $this->visibilities[$oa->id] = $visibility;
-        $this->document->mid = - 1; // set mask id to -1 to signal that specific visibility is applied
+        $this->document->mid = -1; // set mask id to -1 to signal that specific visibility is applied
         return $this;
     }
+
     /**
      * Recompute all attributes visibility according to parent visibility
      */
     protected function refreshVisibility()
     {
         $oas = $this->document->getAttributes();
+        $mskMgt = new MaskManager($this->document);
+        if ($this->mask) {
+            $mskMgt->setUiMask($this->mask->id);
+        } else {
+            $mskMgt->setUiMask();
+        }
         foreach ($oas as $v) {
             if ($v->usefor === "Q") {
                 continue;
             }
-            $this->finalVisibilities[$v->id] = isset($this->visibilities[$v->id]) ? $this->visibilities[$v->id] : $v->mvisibility;
+
+            $this->finalVisibilities[$v->id] = isset($this->visibilities[$v->id]) ? $this->visibilities[$v->id] : $mskMgt->getVisibility($v->id);
         }
-        
+
+
         foreach ($oas as $v) {
             if ($v->usefor !== "Q" && $v->type == "frame") {
                 if (isset($v->fieldSet) && isset($this->visibilities[$v->fieldSet->id])) {
@@ -99,24 +113,30 @@ class RenderAttributeVisibilities implements \JsonSerializable
             }
         }
     }
+
+
     /**
      * Recompute attribute visibility according to parent visibility
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $oa attribute to recompute
      */
     protected function computeVisibility(\Anakeen\Core\SmartStructure\BasicAttribute $oa)
     {
-        $this->finalVisibilities[$oa->id] =  \Anakeen\Core\Utils\MiscDoc::ComputeVisibility($this->finalVisibilities[$oa->id], $this->finalVisibilities[$oa->fieldSet->id], isset($oa->fieldSet->fieldSet) ? $this->finalVisibilities[$oa->fieldSet->fieldSet->id] : '');
+
+        $this->finalVisibilities[$oa->id] = MaskManager::propagateVisibility(
+            $this->finalVisibilities[$oa->id],
+            $this->finalVisibilities[$oa->fieldSet->id],
+            isset($oa->fieldSet->fieldSet) ? $this->finalVisibilities[$oa->fieldSet->fieldSet->id] : ''
+        );
     }
+
     /**
-     * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
-        
         return $this->getVisibilities();
     }
 }

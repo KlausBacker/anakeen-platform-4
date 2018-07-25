@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\Cvdoc\Render;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Ui\DefaultConfigViewRender;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Cvdoc as myAttributes;
 
 class CvdocViewRender extends DefaultConfigViewRender
@@ -13,7 +14,7 @@ class CvdocViewRender extends DefaultConfigViewRender
      *
      * @return \Dcp\Ui\RenderOptions
      */
-    public function getOptions(SmartElement $document)
+    public function getOptions(SmartElement $document) : RenderOptions
     {
         $options = parent::getOptions($document);
         $options->arrayAttribute(myAttributes::cv_t_views)->setTemplate(file_get_contents(__DIR__."/CvdocTable.mustache"));

@@ -5,11 +5,10 @@
 
     <requires>
         <module name="user-interfaces"/>
+        <module name="smart-data-engine-test"/>
     </requires>
 
-    <replaces>
-        <module name="anakeen-ui-test"/>
-    </replaces>
+
 
     <post-install>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__STRUCT.csv"/>

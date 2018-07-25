@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TestRender\Renders;
 
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_render as myAttributes;
 
 class RenderConfigEdit extends \Dcp\Ui\DefaultEdit
@@ -11,7 +12,7 @@ class RenderConfigEdit extends \Dcp\Ui\DefaultEdit
         return __METHOD__;
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 

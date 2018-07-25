@@ -2,11 +2,11 @@
 
 namespace Anakeen\SmartStructures\Mask\Routes;
 
-use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Core\SEManager;
-use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Router\Exception;
 use Anakeen\SmartElementManager;
+use Anakeen\Ui\MaskManager;
 
 /**
  * Class MaskVisibilities
@@ -30,18 +30,11 @@ class MaskVisibilities
     {
 
         $this->initParameters($request, $args);
-
         $data = $this->doRequest($messages);
 
-
-        //print json_encode($data["visibilities"], 0);exit;
-        $out = sprintf("%s(%s)", $this->callback, json_encode($data["visibilities"]));
-        return $response->withJson($data["visibilities"]);
-        //   return $response->write($out);
-        //  return ApiV2Response::withData($response, $data, $messages);
+        return ApiV2Response::withData($response, $data["visibilities"]);
     }
-
-
+    
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->documentId = $args["mask"];
@@ -76,30 +69,27 @@ class MaskVisibilities
     {
 
         $tvisibilities = $this->_document->getVisibilities();
-        $tkey_visibilities = array_keys($tvisibilities);
 
         $tneedeeds = $this->_document->getNeedeeds();
 
 
-        $this->family->applyMask();
         $origattr = $this->family->attributes->attr;
 
         $tmpdoc = SEManager::createTemporaryDocument($this->family->id);
-        $tmpdoc->applyMask($this->_document->id);
-        // display current values
+
         $tmask = array();
 
         $labelvis = $this->getVisibilityLabels();
         $tmpdoc->attributes->orderAttributes();
         $hasMenu = false;
 
+        $mskMgt = new MaskManager($tmpdoc);
+        $mskMgt->setUiMask($this->_document->id);
         foreach ($tmpdoc->attributes->attr as $k => $attr) {
             /**
              * @var $attr \Anakeen\Core\SmartStructure\NormalAttribute
              */
-            if (!$attr->visibility) {
-                continue;
-            }
+
             if ($attr->usefor == 'Q') {
                 continue;
             }
@@ -113,10 +103,10 @@ class MaskVisibilities
             $tmask[$k]["label"] = $attr->getLabel();
             $tmask[$k]["type"] = $attr->type;
             $tmask[$k]["attrid"] = $attr->id;
-            $tmask[$k]["visibility"] = $attr->visibility;
-            $tmask[$k]["mVisibility"] = $attr->mvisibility;
-            $tmask[$k]["visibilityLabel"] = $labelvis[$attr->visibility];
-            $tmask[$k]["mVisibilityLabel"] = $labelvis[$attr->mvisibility];
+            $tmask[$k]["visibility"] = $mskMgt->getDefaultVisibility($attr);
+            $tmask[$k]["mVisibility"] = $mskMgt->getVisibility($attr->id);
+            $tmask[$k]["visibilityLabel"] = $labelvis[$tmask[$k]["visibility"]];
+            $tmask[$k]["mVisibilityLabel"] = $labelvis[$tmask[$k]["mVisibility"]];
 
 
             $tmask[$k]["needed"] = (!empty($origattr[$k]->needed));

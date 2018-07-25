@@ -2,6 +2,8 @@
 
 namespace Anakeen\SmartStructures\UiTest\TestRender\Renders;
 
+use Dcp\Ui\BarMenu;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_render as myAttributes;
 
 class RenderConfigView extends \Dcp\Ui\DefaultView
@@ -12,7 +14,7 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
     }
 
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $options->frame(myAttributes::tst_fr_desc)->setTemplate('{{{attributes.tst_desc.htmlContent}}}')->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
@@ -24,7 +26,7 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
         return $options;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document):BarMenu
     {
         $menu = parent::getMenu($document);
 

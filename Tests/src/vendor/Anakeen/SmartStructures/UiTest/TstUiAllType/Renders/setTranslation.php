@@ -2,6 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
 class setTranslation extends \Dcp\Ui\DefaultEdit
@@ -15,7 +16,7 @@ class setTranslation extends \Dcp\Ui\DefaultEdit
         return $js;
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $options->commonOption(myAttributes::test_ddui_all__integer)->setTranslations([

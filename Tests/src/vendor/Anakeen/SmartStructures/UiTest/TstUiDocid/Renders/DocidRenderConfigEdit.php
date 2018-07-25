@@ -6,6 +6,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiDocid\Renders;
 
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\TST_DDUI_DOCID as myAttributes;
 
 class DocidRenderConfigEdit extends \Dcp\Ui\DefaultEdit
@@ -15,7 +16,7 @@ class DocidRenderConfigEdit extends \Dcp\Ui\DefaultEdit
         return "Docid Edit";
     }
     
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 

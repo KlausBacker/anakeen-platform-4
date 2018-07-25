@@ -1,6 +1,9 @@
 <?php
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
+use Dcp\Ui\BarMenu;
+use Dcp\Ui\RenderAttributeVisibilities;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Dsearch as myAttr;
 use Dcp\Ui\DefaultEdit;
 use Dcp\Ui\ItemMenu as ItemMenu;
@@ -35,7 +38,7 @@ class SearchEditRender extends DefaultEdit
         return $js;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document):BarMenu
     {
         $myMenu = parent::getMenu($document);
         $myItem = new ItemMenu("view", "");
@@ -46,7 +49,7 @@ class SearchEditRender extends DefaultEdit
         return $myMenu;
     }
 
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -95,9 +98,9 @@ class SearchEditRender extends DefaultEdit
         return $options;
     }
 
-    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document)
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
-        $visibilities = parent::getVisibilities($document);
+        $visibilities = parent::getVisibilities($document, $mask);
 
         $visibilities->setVisibility(
             myAttr::se_key,

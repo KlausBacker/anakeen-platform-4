@@ -20,7 +20,7 @@ class DefaultEdit extends RenderDefault
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document):BarMenu
     {
         $menu = new BarMenu();
         $user = ContextManager::getCurrentUser();
@@ -127,7 +127,7 @@ class DefaultEdit extends RenderDefault
      *
      * @return RenderOptions
      */
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
         $this->addDocumentHelpLinks($options, $document);

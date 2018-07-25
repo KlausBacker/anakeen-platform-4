@@ -12,7 +12,9 @@ use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\ArrayRenderOptions;
+use Dcp\Ui\BarMenu;
 use Dcp\Ui\CallableMenu;
+use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Iuser as myAttributes;
 use SmartStructure\Iuser;
 
@@ -20,7 +22,7 @@ class IuserViewRender extends DefaultConfigViewRender
 {
     use IuserMessage;
 
-    public function getOptions(SmartElement $document)
+    public function getOptions(SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
 
@@ -30,6 +32,11 @@ class IuserViewRender extends DefaultConfigViewRender
             [
                 ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
                 ["number" => 3, "minWidth" => $break3, "grow" => false]
+            ]
+        );
+        $options->frame(myAttributes::us_fr_sysident)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => $break2]
             ]
         );
         $options->frame(myAttributes::us_fr_security)->setResponsiveColumns(
@@ -54,17 +61,26 @@ class IuserViewRender extends DefaultConfigViewRender
         return $options;
     }
 
-    public function getMenu(SmartElement $smartElement)
+    public function getMenu(SmartElement $smartElement): BarMenu
     {
         $menus = parent::getMenu($smartElement);
 
-        $listMenu = new \Dcp\UI\ListMenu("accountManagement", ___("Account management"));
 
         try {
-            $listMenu->appendElement($menus->getElement("vid-EGROUP"));
-            $menus->removeElement("vid-EGROUP");
-            $listMenu->appendElement($menus->getElement("vid-ESUBSTITUTE"));
-            $menus->removeElement("vid-ESUBSTITUTE");
+            $vidMenuEgroup = $menus->getElement("vid-EGROUP");
+            $vidMenuESubstitute = $menus->getElement("vid-ESUBSTITUTE");
+
+            $listMenu = new \Dcp\Ui\ListMenu("accountManagement", ___("Account management", "smart iuser"));
+
+
+            if ($vidMenuEgroup) {
+                $listMenu->appendElement($vidMenuEgroup);
+                $menus->removeElement("vid-EGROUP");
+            }
+            if ($vidMenuESubstitute) {
+                $listMenu->appendElement($vidMenuESubstitute);
+                $menus->removeElement("vid-ESUBSTITUTE");
+            }
 
             /* @var \SmartStructure\Iuser $smartElement */
             if ($this->checkMenuAccess($smartElement, "resetLoginFailure")) {
@@ -90,6 +106,7 @@ class IuserViewRender extends DefaultConfigViewRender
                 });
                 $listMenu->appendElement($menu);
             }
+
 
             if ($this->checkMenuAccess($smartElement, "activateAccount")) {
                 // $menu = new \Dcp\UI\ItemMenu("activateAccount", ___("Activate account", "smart iuser"));
@@ -138,7 +155,9 @@ class IuserViewRender extends DefaultConfigViewRender
                 $listMenu->appendElement($menu);
             }
 
-            $menus->insertAfter("modify", $listMenu);
+            if ($listMenu->length() > 0) {
+                $menus->insertAfter("modify", $listMenu);
+            }
         } catch (\Exception $e) {
         }
 

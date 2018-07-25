@@ -3,7 +3,6 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Routes\Core\DocumentUpdateData;
-use SmartStructure\Fields\Cvdoc as CvdocAttribute;
 use Anakeen\Router\Exception;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
@@ -11,7 +10,7 @@ use Anakeen\Router\ApiV2Response;
 /**
  * Class DocumentViewUpdate
  *
- * @note Used by route : PUT /api/v2/documents/{docid}/revisions/{revision}/views/{view}
+ * @note    Used by route : PUT /api/v2/documents/{docid}/revisions/{revision}/views/{view}
  * @package Anakeen\Routes\Ui
  */
 class DocumentViewUpdate extends DocumentView
@@ -23,7 +22,7 @@ class DocumentViewUpdate extends DocumentView
         $this->viewIdentifier = $args["view"];
         $this->revision = $args["revision"];
 
-        $messages=[];
+        $messages = [];
 
         $document = $this->getDocument($resourceId);
 
@@ -45,13 +44,6 @@ class DocumentViewUpdate extends DocumentView
                     $exception->setHttpStatus("403", "Access deny");
                     throw $exception;
                 }
-                $tview = $cvdoc->getView($this->viewIdentifier);
-                $mask = $tview[CvdocAttribute::cv_mskid];
-                if ($mask) {
-                    $document->setMask($mask); // apply mask to avoid modification of invisible attribute
-                }
-            } elseif ($document->cvid > 0) {
-                $document->setMask($document::USEMASKCVEDIT);
             }
         }
 
@@ -79,9 +71,9 @@ class DocumentViewUpdate extends DocumentView
             $args["view"] = self::defaultViewConsultationId;
         }
 
-        $response= parent::__invoke($request, $response, $args);
+        $response = parent::__invoke($request, $response, $args);
         if ($messages) {
-            $response=ApiV2Response::withMessages($response, $messages);
+            $response = ApiV2Response::withMessages($response, $messages);
         }
         return $response;
     }

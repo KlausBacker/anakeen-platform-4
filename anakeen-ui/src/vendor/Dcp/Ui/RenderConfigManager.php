@@ -15,9 +15,9 @@ class RenderConfigManager
     const CreateMode = "create";
 
     /**
-     * @param        $mode
-     * @param \Anakeen\Core\Internal\SmartElement   $document
-     * @param string $vId
+     * @param                                     $mode
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param string                              $vId
      * @throws Exception
      * @return IRenderConfig
      */
@@ -46,6 +46,8 @@ class RenderConfigManager
         if (!is_a($cvDoc, \Anakeen\Core\SEManager::getFamilyClassName("Cvdoc"))) {
             throw new Exception("UI0303", $cvDoc->getTitle());
         }
+
+        SEManager::cache()->addDocument($cvDoc);
         /**
          * @var \SmartStructure\CVDoc $cvDoc
          */
@@ -70,20 +72,11 @@ class RenderConfigManager
 
     protected static function getRenderFromVidinfo(array $vidInfo, \Anakeen\Core\Internal\SmartElement $document)
     {
-
-        $mskId = $vidInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
-        if ($mskId) {
-            $err = $document->setMask($mskId);
-            if ($err) {
-                addWarningMsg($err);
-            }
-        }
-
         $renderClass = isset($vidInfo[\SmartStructure\Fields\Cvdoc::cv_renderconfigclass]) ? $vidInfo[\SmartStructure\Fields\Cvdoc::cv_renderconfigclass] : null;
         if ($renderClass) {
             $rc = new $renderClass();
-            if (!is_a($rc, "Dcp\\Ui\\IRenderConfig")) {
-                throw new Exception("UI0306", $renderClass, "Dcp\\Ui\\IRenderConfig");
+            if (!is_a($rc, IRenderConfig::class)) {
+                throw new Exception("UI0306", $renderClass, IRenderConfig::class);
             }
             return $rc;
         } else {
@@ -97,9 +90,9 @@ class RenderConfigManager
     }
 
     /**
-     * @param string $mode (view, edit, create)
-     * @param \Anakeen\Core\Internal\SmartElement   $document
-     * @param string $vid  view identifier
+     * @param string                              $mode (view, edit, create)
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param string                              $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
@@ -111,6 +104,7 @@ class RenderConfigManager
              * @var \SmartStructure\CVDoc $cvDoc
              */
             $cvDoc = SEManager::getDocument($document->cvid);
+            SEManager::cache()->addDocument($cvDoc);
             return self::getRenderConfigCv($mode, $cvDoc, $document, $vid);
         }
 
@@ -186,7 +180,7 @@ class RenderConfigManager
     {
         static $renderParameters = null;
         if ($renderParameters === null) {
-            $renderParameters = ContextManager::getParameterValue("Ui",  "RENDER_PARAMETERS");
+            $renderParameters = ContextManager::getParameterValue("Ui", "RENDER_PARAMETERS");
             $renderParameters = json_decode($renderParameters, true);
         }
         if (isset($renderParameters["families"][$familyName][$key])) {
@@ -197,7 +191,7 @@ class RenderConfigManager
 
     /**
      * Get render designed by document class
-     * @param      $mode
+     * @param                                     $mode
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception
      * @return IRenderConfig
@@ -252,10 +246,10 @@ class RenderConfigManager
     }
 
     /**
-     * @param string                $mode view/edit/create
-     * @param \SmartStructure\CVDoc $cv
-     * @param \Anakeen\Core\Internal\SmartElement                  $document
-     * @param string                $vid  view identifier
+     * @param string                              $mode view/edit/create
+     * @param \SmartStructure\CVDoc               $cv
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param string                              $vid  view identifier
      *
      * @return IRenderConfig
      * @throws Exception
@@ -285,23 +279,6 @@ class RenderConfigManager
             $rc = self::getRenderFromVidinfo($vidInfo, $document);
             if ($rc) {
                 return $rc;
-            }
-        } else {
-            switch ($mode) {
-                case self::ViewMode:
-                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW);
-                    break;
-
-                case self::EditMode:
-                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
-                    break;
-
-                case self::CreateMode:
-                    $document->applyMask(\Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT);
-                    break;
-
-                default:
-                    throw new Exception("UI0300", $mode);
             }
         }
         return self::getDefaultFamilyRenderConfig($mode, $document);

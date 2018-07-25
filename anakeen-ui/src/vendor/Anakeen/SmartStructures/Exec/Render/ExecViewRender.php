@@ -9,17 +9,19 @@ namespace Anakeen\SmartStructures\Exec\Render;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\Ui\DefaultConfigViewRender;
+use Dcp\Ui\BarMenu;
 use Dcp\Ui\CallableMenu;
+use Dcp\Ui\RenderOptions;
 
 class ExecViewRender extends DefaultConfigViewRender
 {
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document) : RenderOptions
     {
         $options = parent::getOptions($document);
         return $options;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document)
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document) : BarMenu
     {
         $menu = parent::getMenu($document);
 

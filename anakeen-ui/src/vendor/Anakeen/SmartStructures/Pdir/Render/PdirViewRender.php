@@ -7,12 +7,9 @@
 namespace Anakeen\SmartStructures\Pdir\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
+use Dcp\Ui\RenderOptions;
 
 class PdirViewRender extends DefaultConfigViewRender
 {
-    public function getOptions(\Anakeen\Core\Internal\SmartElement $document)
-    {
-        $options = parent::getOptions($document);
-        return $options;
-    }
+
 }
