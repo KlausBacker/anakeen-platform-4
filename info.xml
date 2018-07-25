@@ -11,6 +11,14 @@
     </pre-install>
     <post-install>
 
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">
+            <label>Field Access Layer</label>
+        </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
+            <label>Field Access Layer List</label>
+        </process>
+
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/default-profil.xml">
             <label>Record default elements security</label>
         </process>
@@ -25,6 +33,9 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.profil.xml">
             <label>Profiling account structures</label>
         </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.profil.xml">
+            <label>Profiling account structures</label>
+        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/system-profil.xml">
             <label>Profiling system structures</label>
         </process>
@@ -32,17 +43,18 @@
             <label>Profiling authent mail</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">
-            <label>Field Access Layer</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.profil.xml">
             <label>Field Access Layer Security</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
-            <label>Field Access Layer List</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.profil.xml">
             <label>Field Access Layer List Security</label>
+        </process>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.profil.xml">
+            <label>Profiling File</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.profil.xml">
+            <label>Profiling Image</label>
         </process>
 
         <process command="./ank.php --script=refreshUserAccount">

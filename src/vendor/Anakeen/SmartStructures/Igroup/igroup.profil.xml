@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+    <smart:structure-configuration name="IGROUP">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_DIR"/>
+            <smart:field-access-configuration ref="FALL_IGROUP"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+    <smart:field-access-layer-list name="FALL_IGROUP" label="Group Field Access">
+        <smart:description>Admin settings.</smart:description>
+        <smart:field-access-layer name="FAL_IGROUP_ADMIN" label="Admin Group Access" access-name="Admin">
+            <smart:description>Technical information access</smart:description>
+            <smart:field-access field="grp_fr_intranet" access="ReadWrite"/>
+            <smart:field-access field="us_login" access="ReadWrite"/>
+            <smart:field-access field="grp_roles" access="ReadWrite"/>
+            <smart:field-access field="grp_fr" access="ReadWrite"/>
+            <smart:field-access field="grp_fr_ident" access="ReadWrite"/>
+            <smart:field-access field="grp_name" access="ReadWrite"/>
+            <smart:field-access field="grp_hasmail" access="ReadWrite"/>
+        </smart:field-access-layer>
+    </smart:field-access-layer-list>
+
+    <smart:access-configuration name="FALL_IGROUP" profil-type="FIELDACCESSLAYERLIST">
+        <smart:element-access access="Admin" account="gadmin"/>
+    </smart:access-configuration>
+
+
+
+    <!-- Render Access Configuration -->
+    <smart:access-configuration name="CV_GROUP_ACCOUNT" label="CV DOC IUSER" profil-type="CVDOC" access-structure="IUSER">
+        <smart:element-access access="view" account="gadmin"/>
+        <smart:element-access access="modifyacl" account="gadmin"/>
+        <smart:element-access access="viewacl" account="gadmin"/>
+        <smart:element-access access="default_edit" account="gadmin"/>
+        <smart:element-access access="changeGroup" account="gadmin"/>
+    </smart:access-configuration>
+</smart:config>

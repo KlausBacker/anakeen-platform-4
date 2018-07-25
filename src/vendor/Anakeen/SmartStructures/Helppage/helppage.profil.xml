@@ -2,8 +2,8 @@
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="HELPPAGE">
         <smart:accesses>
-            <smart:structure-access-configuration link="HELPPAGE"/>
-            <smart:element-access-configuration link="PRF_HELPPAGE"/>
+            <smart:structure-access-configuration ref="HELPPAGE"/>
+            <smart:element-access-configuration ref="PRF_HELPPAGE"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:access-configuration name="PRF_HELPPAGE" label="Profil des Aide en ligne">
@@ -19,6 +19,6 @@
         <smart:element-access access="modifyacl" account="gadmin"/>
         <smart:element-access access="icreate" account="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="HELP_REPORT" link="PRF_HELPPAGE"/>
-    <smart:access-configuration name="HELP_DSEARCH" link="PRF_HELPPAGE"/>
+    <smart:access-configuration name="HELP_REPORT" ref="PRF_HELPPAGE"/>
+    <smart:access-configuration name="HELP_DSEARCH" ref="PRF_HELPPAGE"/>
 </smart:config>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:access-configuration name="PRF_ADMIN_EDIT" label="Administration - Access all" profil-type="PDOC">
+    <smart:access-configuration name="PRF_ADMIN_EDIT" label="Administration - Access all">
         <smart:description>View for all. Modify only by administrators.</smart:description>
         <smart:element-access access="view" account="all"/>
         <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="PRF_ADMIN_ACCESS" label="Administration" profil-type="PDOC">
+    <smart:access-configuration name="PRF_ADMIN_ACCESS" label="Administration">
         <smart:description>View and modify only by administrators.</smart:description>
         <smart:element-access access="view" account="gadmin"/>
         <smart:element-access access="edit" account="gadmin"/>
@@ -19,7 +19,6 @@
     </smart:access-configuration>
 
 
-
     <smart:access-configuration name="PRF_ADMIN_DIR" label="Modification administrateur" profil-type="PDIR">
         <smart:description>Folder can be update by administrators.</smart:description>
         <smart:element-access access="view" account="all"/>
@@ -29,9 +28,9 @@
         <smart:element-access access="modify" account="gadmin"/>
     </smart:access-configuration>
 
-    <smart:access-configuration name="GDEFAULT" link="PRF_ADMIN_DIR"/>
-    <smart:access-configuration name="GADMIN" link="PRF_ADMIN_DIR"/>
-    <smart:access-configuration name="FLD_ACCOUNTS" link="PRF_ADMIN_DIR"/>
-    <smart:access-configuration name="USER_ADMIN" link="PRF_ADMIN_EDIT"/>
-    <smart:access-configuration name="USER_GUEST" link="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="GDEFAULT" ref="PRF_ADMIN_DIR"/>
+    <smart:access-configuration name="GADMIN" ref="PRF_ADMIN_DIR"/>
+    <smart:access-configuration name="FLD_ACCOUNTS" ref="PRF_ADMIN_DIR"/>
+    <smart:access-configuration name="USER_ADMIN" ref="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="USER_GUEST" ref="PRF_ADMIN_EDIT"/>
 </smart:config>

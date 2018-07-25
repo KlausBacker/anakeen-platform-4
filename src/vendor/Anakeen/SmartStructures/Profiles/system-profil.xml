@@ -2,110 +2,105 @@
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
     <smart:structure-configuration name="MAILTEMPLATE">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="MASK">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="CVDOC">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="EXEC">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
 
-    <smart:structure-configuration name="IGROUP">
-        <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_DIR"/>
-        </smart:accesses>
-    </smart:structure-configuration>
+
     <smart:structure-configuration name="ROLE">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_ADMIN_ACCESS"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="DIR">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="BASE">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="SEARCH">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_SEARCHES"/>
-            <smart:element-access-configuration link="PRF_DOC_SEARCHES"/>
+            <smart:structure-access-configuration ref="PRF_SEARCHES"/>
+            <smart:element-access-configuration ref="PRF_DOC_SEARCHES"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="MSEARCH">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_SEARCHES"/>
-            <smart:element-access-configuration link="PRF_DOC_SEARCHES"/>
+            <smart:structure-access-configuration ref="PRF_SEARCHES"/>
+            <smart:element-access-configuration ref="PRF_DOC_SEARCHES"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="DSEARCH">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_SEARCHES"/>
-            <smart:element-access-configuration link="PRF_DOC_SEARCHES"/>
+            <smart:structure-access-configuration ref="PRF_SEARCHES"/>
+            <smart:element-access-configuration ref="PRF_DOC_SEARCHES"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="SSEARCH">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration link="PRF_DOC_SEARCHES"/>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_DOC_SEARCHES"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="REPORT">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_SEARCHES"/>
-            <smart:element-access-configuration link="PRF_DOC_SEARCHES"/>
+            <smart:structure-access-configuration ref="PRF_SEARCHES"/>
+            <smart:element-access-configuration ref="PRF_DOC_SEARCHES"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="PDOC">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_PROFILE"/>
+            <smart:structure-access-configuration ref="PRF_PROFILE"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="PDIR">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_PROFILE"/>
+            <smart:structure-access-configuration ref="PRF_PROFILE"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="PSEARCH">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_PROFILE"/>
+            <smart:structure-access-configuration ref="PRF_PROFILE"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="PFAM">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_PROFILE"/>
+            <smart:structure-access-configuration ref="PRF_PROFILE"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="MAIL">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_MAIL"/>
-            <smart:element-access-configuration link="PRF_DOC_MAIL"/>
+            <smart:structure-access-configuration ref="PRF_MAIL"/>
+            <smart:element-access-configuration ref="PRF_DOC_MAIL"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:structure-configuration name="SENTMESSAGE">
         <smart:accesses>
-            <smart:structure-access-configuration link="PRF_SENTMESSAGE"/>
-            <smart:element-access-configuration link="PRF_DOC_SENTMESSAGE"/>
+            <smart:structure-access-configuration ref="PRF_SENTMESSAGE"/>
+            <smart:element-access-configuration ref="PRF_DOC_SENTMESSAGE"/>
         </smart:accesses>
     </smart:structure-configuration>
     <smart:access-configuration name="PRF_SEARCHES" label="Profil recherche" profil-type="PFAM">
@@ -157,7 +152,7 @@
         <smart:element-access access="icreate" account="gadmin"/>
         <smart:element-access access="edit" account="gadmin"/>
     </smart:access-configuration>
-    <smart:access-configuration name="mskfld" link="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="mskfld" ref="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="cvfld">
         <smart:element-access access="view" account="all"/>
         <smart:element-access access="RESTRICT" account="all"/>

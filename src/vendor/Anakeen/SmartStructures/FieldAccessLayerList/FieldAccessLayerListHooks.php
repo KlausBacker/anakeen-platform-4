@@ -2,9 +2,10 @@
 
 namespace Anakeen\SmartStructures\FieldAccessLayerList;
 
+use Anakeen\Core\AccountManager;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Core\SEManager;
-use Dcp\Exception;
 use \SmartStructure\Fields\Fieldaccesslayerlist as myAttributes;
 
 class FieldAccessLayerListHooks extends \Anakeen\SmartElement
@@ -20,14 +21,17 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
         "edit",
         "delete"
     );
+    protected $originalAcl;
 
     public $usefor = 'SW';
     public $defDoctype = 'P';
-    protected $doc;
     /**
-     * @var FieldAccessLayerListHooks
+     * @var SmartElement
      */
-    protected $pdoc;
+    protected $doc;
+
+    protected $docid;
+    protected $computedAcl = null;
 
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -41,13 +45,14 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
         $this->setAcls();
     }
 
-    public function set(SmartElement &$doc)
+    public function set(SmartElement $doc)
     {
-        if ($this->doc && $this->doc->id !== $doc->id) {
-            $this->pdoc = null;
+        if ($this->doc && $this->docid !== $doc->id) {
+            $this->computedAcl = null;
+            $this->docid = $this->doc->id;
         }
 
-        $this->doc = &$doc;
+        $this->doc = $doc;
     }
 
     /**
@@ -60,34 +65,61 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
      */
     public function control($aclname, $strict = false)
     {
-        $err = $this->docControl($aclname, $strict);
-        if ($err == "") {
-            return $err;
-        } // normal case
+        if (ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
+            return ""; // no profil or admin
+        }
+        if (in_array($aclname, $this->originalAcl)) {
+            // normal case
+            return $this->originalControl($aclname, $strict);
+        }
+
         if ($this->getRawValue(myAttributes::dpdoc_famid) > 0) {
             if ($this->doc) {
                 // special control for dynamic users
-                if ($this->pdoc === null) {
-                    $pdoc = SEManager::createTemporaryDocument($this->fromid);
-                    $err = $pdoc->add();
-                    if ($err != "") {
-                        // can't create profil
-                        throw new Exception("FieldAccessList::Control:" . $err);
-                    }
-                    $pdoc->acls = $this->acls;
-                    $pdoc->extendedAcls = $this->extendedAcls;
-                    $pdoc->accessControl()->setProfil($this->profid, $this->doc);
-
-                    $this->pdoc = &$pdoc;
+                $err = $this->extendedControl($aclname);
+                if ($err !== null) {
+                    return $err;
                 }
-
-                $err = $this->pdoc->docControl($aclname, $strict);
             }
         }
+        $err = $this->originalControl($aclname, $strict);
         return $err;
     }
 
-    public function docControl($aclname, $strict = false)
+    protected function extendedControl($extAclName)
+    {
+        if ($this->computedAcl === null) {
+            $sql = sprintf(
+                "select userid, acl, vgroup.id as attrid from docpermext left join vgroup on docpermext.userid = vgroup.num where docpermext.docid=%d",
+                $this->id
+            );
+            DbManager::query($sql, $extendedAcls);
+
+            $this->computedAcl = [];
+            foreach ($extendedAcls as $extendedAcl) {
+                if (!empty($extendedAcl["attrid"])) {
+                    $extuid = $this->doc->getRawValue($extendedAcl["attrid"]);
+                    if ($extuid) {
+                        $this->computedAcl[$extendedAcl["acl"]][] = AccountManager::getIdFromSEId($extuid);
+                    }
+                } else {
+                    $this->computedAcl[$extendedAcl["acl"]][] = $extendedAcl["userid"];
+                }
+            }
+        }
+        if (isset($this->computedAcl[$extAclName])) {
+            $memberOf = ContextManager::getCurrentUser()->getMemberOf();
+            $memberOf[] = ContextManager::getCurrentUser()->id;
+            if (array_intersect($memberOf, $this->computedAcl[$extAclName])) {
+                return "";
+            } else {
+                return sprintf(___("No privilege \"%s\" for %d", "sde"), $extAclName, $this->id);
+            }
+        }
+        return null;
+    }
+
+    protected function originalControl($aclname, $strict = false)
     {
         return SmartElement::control($aclname, $strict);
     }
@@ -98,6 +130,7 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
         $layerAcls = $this->getMultipleRawValues(myAttributes::fall_aclname);
         $tl = $this->getMultipleRawValues(myAttributes::fall_layer);
 
+        $this->originalAcl = $this->acls;
         foreach ($layerAcls as $k => $acl) {
             if (!$acl) {
                 continue;
@@ -105,7 +138,7 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
             $layerId = $tl[$k];
             $this->extendedAcls[$acl] = array(
                 "name" => $acl,
-                "description" => $layerId ? $this->getTitle($layerId) : "No$k"
+                "description" => $layerId ? "Layer $layerId" : "No$k"
             );
 
             $this->acls[$acl] = $acl;
