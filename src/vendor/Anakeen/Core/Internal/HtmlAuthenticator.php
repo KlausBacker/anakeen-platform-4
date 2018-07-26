@@ -8,6 +8,7 @@
 
 
 namespace Anakeen\Core\Internal;
+
 class HtmlAuthenticator extends Authenticator
 {
     public $auth_session = null;
@@ -200,8 +201,6 @@ class HtmlAuthenticator extends Authenticator
 
     public function logon()
     {
-
         throw new \Exception(__METHOD__);
-
     }
 }
