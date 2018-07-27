@@ -55,7 +55,7 @@
                 </smart:field-set>
 
                 <smart:field-set name="us_fr_security" type="frame" label="Sécurité" access="Read">
-                    <smart:field-enum name="us_status" label="état du compte" access="Read" relation="IUSER-us_status">
+                    <smart:field-enum name="us_status" label="état du compte" access="ReadWrite" relation="IUSER-us_status">
                     </smart:field-enum>
                     <smart:field-int name="us_loginfailure" label="échecs de connexion" access="ReadWrite"/>
                     <smart:field-date name="us_accexpiredate" label="Date d'expiration du compte" access="ReadWrite"/>

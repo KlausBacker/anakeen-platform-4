@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:structure-configuration name="MASK" label="Masque de saisie" extends="BASE">
+    <smart:structure-configuration name="MASK" label="Masque de saisie">
+        <smart:extends ref="BASE"/>
         <smart:icon file="se-mask.png"/>
         <smart:class>Anakeen\SmartStructures\Mask\Mask</smart:class>
         <smart:revisable>false</smart:revisable>
@@ -15,7 +16,6 @@
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
-
 
 
     </smart:structure-configuration>

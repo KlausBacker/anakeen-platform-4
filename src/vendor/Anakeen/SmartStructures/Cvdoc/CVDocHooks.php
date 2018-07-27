@@ -10,12 +10,13 @@ namespace Anakeen\SmartStructures\Cvdoc;
  * Control view Class
  */
 use Anakeen\Core\Internal\DocumentAccess;
-use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\ExtendedControl;
 use Anakeen\SmartHooks;
 use \SmartStructure\Fields\Cvdoc as MyAttributes;
 
 class CVDocHooks extends \SmartStructure\Base
 {
+    use ExtendedControl;
     /**
      * CVDoc has its own special access depend on special views
      * by default the three access are always set
@@ -33,14 +34,7 @@ class CVDocHooks extends \SmartStructure\Base
     public $usefor = 'SW';
     public $defDoctype = 'P';
 
-    /**
-     * @var \Anakeen\Core\Internal\SmartElement instance document
-     */
-    public $doc = null;
-    /**
-     * @var CVDocHooks profil document
-     */
-    private $pdoc = null;
+
 
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -257,53 +251,9 @@ class CVDocHooks extends \SmartStructure\Base
     }
 
 
-    public function docControl($aclname, $strict = false)
-    {
-        return \Anakeen\Core\Internal\SmartElement::control($aclname, $strict);
-    }
 
-    /**
-     * Special control in case of dynamic controlled profil
-     *
-     * @param string $aclname
-     * @param bool   $strict
-     *
-     * @return string
-     */
-    public function control($aclname, $strict = false)
-    {
-        $err = $this->docControl($aclname, $strict);
-        if ($err == "") {
-            return $err;
-        } // normal case
-        if ($this->getRawValue("DPDOC_FAMID") > 0) {
-            if ($this->doc) {
-                // special control for dynamic users
-                if ($this->pdoc === null) {
-                    $pdoc = SEManager::createTemporaryDocument($this->fromid);
-                    $err = $pdoc->add();
-                    if ($err != "") {
-                        return "CVDoc::Control:" . $err;
-                    } // can't create profil
-                    $pdoc->acls = $this->acls;
-                    $pdoc->extendedAcls = $this->extendedAcls;
-                    $pdoc->accessControl()->setProfil($this->profid, $this->doc);
 
-                    $this->pdoc = &$pdoc;
-                }
 
-                $err = $this->pdoc->docControl($aclname, $strict);
-            }
-        }
-        return $err;
-    }
-
-    public function set(\Anakeen\Core\Internal\SmartElement &$doc)
-    {
-        if (!isset($this->doc)) {
-            $this->doc = &$doc;
-        }
-    }
 
     /**
      * retrieve first compatible view

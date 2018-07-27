@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:structure-configuration name="SSEARCH" id="38" label="Recherche spécialisée" extends="SEARCH">
+    <smart:structure-configuration name="SSEARCH" id="38" label="Recherche spécialisée">
+        <smart:extends ref="SEARCH"/>
         <smart:icon file="se-ssearch.png"/>
         <smart:class>Anakeen\SmartStructures\Ssearch\SSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>

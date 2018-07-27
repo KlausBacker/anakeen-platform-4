@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:structure-configuration name="IGROUP" id="127" label="Groupe d'utilisateurs" extends="GROUP">
+    <smart:structure-configuration name="IGROUP" id="127" label="Groupe d'utilisateurs">
+        <smart:extends ref="GROUP"/>
         <smart:icon file="se-igroup.png"/>
         <smart:class>Anakeen\SmartStructures\Igroup\IGroupHooks</smart:class>
         <smart:revisable>false</smart:revisable>

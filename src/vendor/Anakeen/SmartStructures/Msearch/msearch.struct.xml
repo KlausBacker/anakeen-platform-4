@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:structure-configuration name="MSEARCH" id="31" label="Recherche groupée" extends="SEARCH">
+    <smart:structure-configuration name="MSEARCH" id="31" label="Recherche groupée">
+        <smart:extends ref="SEARCH"/>
         <smart:icon file="se-msearch.png"/>
         <smart:class>Anakeen\SmartStructures\Msearch\MSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
@@ -16,7 +17,7 @@
 
         <smart:autocompletion>
             <smart:field-autocomplete field="seg_idcond">
-                <smart:field-callable function="Anakeen\SmartStructures\Msearch\MSearchAutocomplete::getSmartSearches" />
+                <smart:field-callable function="Anakeen\SmartStructures\Msearch\MSearchAutocomplete::getSmartSearches"/>
                 <smart:field-returns>
                     <smart:field-return field="seg_idcond"/>
                 </smart:field-returns>

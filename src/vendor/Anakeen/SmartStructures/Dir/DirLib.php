@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\Dir;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\LogManager;
 
 include_once("FDL/LegacyDocManager.php");
 
@@ -455,7 +456,7 @@ class DirLib
                         if (preg_match('/from\s+docread/', $qsql) || $isgroup) {
                             $fdoc = new \DocRead($dbaccess);
                         } else {
-                            $fdoc = SEManager::createDocument(abs($fromid),  false);
+                            $fdoc = SEManager::createDocument(abs($fromid), false);
                             if ($fdoc === false) {
                                 throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                             }
@@ -567,7 +568,7 @@ class DirLib
                     if ($fromid == -1) {
                         $docClass = \Anakeen\Core\SmartStructure::class;
                     } else {
-                        if (! $fromid) {
+                        if (!$fromid) {
                             $docClass = \Anakeen\Core\Internal\SmartElement::class;
                         } else {
                             $docClass = "\\Doc$fromid";
@@ -604,11 +605,11 @@ class DirLib
                 }
 
                 if ($query->basic_elem->msg_err != "") {
-                    \Anakeen\Core\Utils\System::addLogMsg($query->basic_elem->msg_err);
-                    \Anakeen\Core\Utils\System::addLogMsg(array(
+                    LogManager::notice($query->basic_elem->msg_err);
+                    LogManager::notice(print_r(array(
                         "query" => $query->LastQuery,
                         "err" => $query->basic_elem->msg_err
-                    ));
+                    ), true));
                     // print_r2(array_pop(debug_backtrace()));
                 }
                 if ($debug !== null) {
@@ -617,13 +618,13 @@ class DirLib
                     $debug["error"] = $query->basic_elem->msg_err;
                     $debug["delay"] = sprintf("%.03fs", (microtime(true) - $mb));
                     if (!empty($debug["log"])) {
-                        \Anakeen\Core\Utils\System::addLogMsg($query->basic_elem->msg_err);
-                        \Anakeen\Core\Utils\System::addLogMsg($debug);
+                        LogManager::notice($query->basic_elem->msg_err);
+                        LogManager::notice(print_r($debug, true));
                     }
                 } elseif ($query->basic_elem->msg_err != "") {
                     $debug["query"] = $query->LastQuery;
                     $debug["error"] = $query->basic_elem->msg_err;
-                    \Anakeen\Core\Utils\System::addLogMsg($debug);
+                    LogManager::notice(print_r($debug, true));
                 }
             } else {
                 if ($returnSqlOnly) {

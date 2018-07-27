@@ -35,7 +35,6 @@ class ExportConfiguration
     /**
      * ExportConfiguration constructor.
      * @param SmartStructure $sst Smart Structure to export
-     * @throws Exception
      */
     public function __construct(SmartStructure $sst)
     {
@@ -53,6 +52,11 @@ class ExportConfiguration
         }
 
         $this->domConfig->appendChild($structConfig);
+        $this->extract($structConfig);
+    }
+
+    protected function extract($structConfig)
+    {
         $this->extractProps($structConfig);
         $this->extractAttr($structConfig);
         $this->extractModAttr($structConfig);
@@ -61,7 +65,6 @@ class ExportConfiguration
         $this->extractDefaults($structConfig);
         $this->extractEnums($structConfig);
         $this->extractProfil($structConfig);
-        $this->extractCv($structConfig);
     }
 
     /**
@@ -71,19 +74,6 @@ class ExportConfiguration
     public function toXml()
     {
         return $this->dom->saveXML();
-    }
-
-    protected function extractCv(\DOMElement $structConfig)
-    {
-        $access = $this->cel("render");
-        if ($this->sst->ccvid) {
-            $tag = $this->cel("view-control");
-            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->ccvid));
-            $access->appendChild($tag);
-            $accessControl = $this->setAccess($this->sst->ccvid);
-            $this->domConfig->appendChild($accessControl);
-            $structConfig->appendChild($access);
-        }
     }
 
     protected function extractProfil(\DOMElement $structConfig)
@@ -159,7 +149,7 @@ class ExportConfiguration
         if ($profil->getRawValue("ba_desc")) {
             $desc = $this->cel("description");
             $desc->appendChild($this->dom->createCDATASection($profil->getRawValue("ba_desc")));
-                $accessControl->appendChild($desc);
+            $accessControl->appendChild($desc);
         }
         $sql = sprintf(
             "select users.login, docperm.upacl from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0 order by users.login",
@@ -256,7 +246,9 @@ class ExportConfiguration
     {
         $structConfig->setAttribute("label", $this->sst->title);
         if ($this->sst->fromid) {
-            $structConfig->setAttribute("extends", SEManager::getNameFromId($this->sst->fromid));
+            $extendTag = $this->cel("extends");
+            $extendTag->setAttribute("ref", SEManager::getNameFromId($this->sst->fromid));
+            $structConfig->appendChild($extendTag);
         }
         if ($this->sst->dfldid) {
             $tag = $this->cel("default-folder");
@@ -806,7 +798,7 @@ class ExportConfiguration
         return $id !== false;
     }
 
-    private function cel($name)
+    protected function cel($name)
     {
         return $this->dom->createElementNS(self::NSURL, self::NS . ":" . $name);
     }

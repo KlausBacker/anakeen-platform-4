@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:structure-configuration name="CVDOC" id="28" label="Contrôle de vues" extends="BASE">
+    <smart:structure-configuration name="CVDOC" id="28" label="Contrôle de vues">
+        <smart:extends ref="BASE"/>
         <smart:class>Anakeen\SmartStructures\Cvdoc\CVDocHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>

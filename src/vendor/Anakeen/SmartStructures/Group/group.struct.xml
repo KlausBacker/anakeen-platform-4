@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:structure-configuration name="GROUP" id="129" label="Groupe de personnes" extends="DIR">
+    <smart:structure-configuration name="GROUP" id="129" label="Groupe de personnes">
+        <smart:extends ref="DIR"/>
         <smart:icon file="se-group.png"/>
         <smart:class>Anakeen\SmartStructures\Group\GroupHooks</smart:class>
         <smart:revisable>false</smart:revisable>

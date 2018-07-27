@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Anakeen\SmartStructures\Profiles;
 
 class PDocHooks extends \Anakeen\Core\Internal\SmartElement
-
 {
     //---------------------- OBJECT CONTROL PERMISSION --------------------
     public $acls = array(
@@ -19,6 +17,4 @@ class PDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     public $defDoctype = 'P';
     public $defProfFamId = FAM_ACCESSDOC;
-    
-
 }
