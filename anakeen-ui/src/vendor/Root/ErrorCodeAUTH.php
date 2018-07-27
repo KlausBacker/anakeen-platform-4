@@ -13,6 +13,11 @@ class ErrorCodeAUTH
      * @errorCode in case of POST
      */
     const AUTH0001 = 'Error, access forbidden';
+
+    /**
+     * @errorCode Session create in case of expired date of deactive account
+     */
+    const AUTH0002 = 'Account access not valid (%s)';
     /**
      * @errorCode when mail template for ask password not found
      */
