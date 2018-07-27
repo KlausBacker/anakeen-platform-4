@@ -79,6 +79,8 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
                 $err = $this->extendedControl($aclname);
                 if ($err !== null) {
                     return $err;
+                } else {
+                    return "";
                 }
             }
         }
@@ -96,6 +98,7 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
             DbManager::query($sql, $extendedAcls);
 
             $this->computedAcl = [];
+            $this->doc->disableAccessControl();
             foreach ($extendedAcls as $extendedAcl) {
                 if (!empty($extendedAcl["attrid"])) {
                     $extuid = $this->doc->getRawValue($extendedAcl["attrid"]);
@@ -106,6 +109,7 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
                     $this->computedAcl[$extendedAcl["acl"]][] = $extendedAcl["userid"];
                 }
             }
+            $this->doc->restoreAccessControl();
         }
         if (isset($this->computedAcl[$extAclName])) {
             $memberOf = ContextManager::getCurrentUser()->getMemberOf();
