@@ -144,7 +144,7 @@ class MaskManager
              */
             $mdoc = SEManager::getDocument($mid);
             if ($mdoc && $mdoc->isAlive()) {
-                if (is_a($mdoc, Mask::class)) {
+                if (is_a($mdoc, \SmartStructure\Mask::class)) {
                     $maskFam = $mdoc->getRawValue("msk_famid");
                     if (!in_array($maskFam, $this->smartElement->getFromDoc())) {
                         $err = \ErrorCode::getError(

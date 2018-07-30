@@ -1,0 +1,29 @@
+//FAM;profil de dossier(PDIR);<specid>;<fldid>;titre;description;family id;famille;;
+ORDER;PFAM;;;ba_title;;;;;
+DOC;PFAM;TSTFAM_ADMIN_1;;Administration dossier;;;;;
+DOC;PFAM;TSTFAM_ADMIN_2;;Administration dossier;;;;;
+//FAM;profil de document(PDOC);<specid>;<fldid>;titre;description;family id;famille;;
+ORDER;PDOC;;;ba_title;;;;;
+DOC;PDOC;TSTFAM_ADMIN_EDIT1;;Administration;lecture seule sauf pour groupe admin;;;;
+DOC;PDOC;TSTFAM_ADMIN_EDIT2;;Administration;lecture seule sauf pour groupe admin;;;;
+//FAM;contrôle de vues(CVDOC);<specid>;<fldid>;titre;family id;;;;
+ORDER;CVDOC;;;ba_title;cv_famid;;;;
+DOC;CVDOC;TSTFAM_CV_1;;Administration;IGROUP;;;;
+DOC;CVDOC;TSTFAM_CV_2;;Administration;IGROUP;;;;
+BEGIN;;;;;TST_SFAM1;;;;
+PROFID;TSTFAM_ADMIN_1;;;;;;;;
+CVID;TSTFAM_CV_1;;;;;;;;
+SCHAR;S;;;;;;;;
+CPROFID;TSTFAM_ADMIN_EDIT1;;;;;;;;
+ATTR;TST_FRAME;;Frame;N;N;frame;;W;N
+ATTR;TST_TITLE;TST_FRAME;Title;Y;N;text;10;W;Y
+END;;;;;;;;;
+;;;;;;;;;
+BEGIN;;;;;TST_SFAM2;;;;
+PROFID;TSTFAM_ADMIN_2;;;;;;;;
+CVID;TSTFAM_CV_2;;;;;;;;
+MAXREV;34;;;;;;;;
+CPROFID;TSTFAM_ADMIN_EDIT2;;;;;;;;
+ATTR;TST_FRAME;;Frame;N;N;frame;;W;N
+ATTR;TST_TITLE;TST_FRAME;Title;Y;N;text;10;W;Y
+END;;;;;;;;;
