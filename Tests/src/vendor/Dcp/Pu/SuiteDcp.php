@@ -25,7 +25,6 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestSearchByFolder');
         $suite->addTestSuite('Dcp\Pu\TestSearchHighlight');
         $suite->addTestSuite('Dcp\Pu\TestSearchJoin');
-        $suite->addTestSuite('Dcp\Pu\TestSearchFamilies');
         $suite->addTestSuite('Dcp\Pu\TestSimpleQuery');
         $suite->addTestSuite('Dcp\Pu\TestProfil');
         $suite->addTestSuite('Dcp\Pu\TestTag');
@@ -40,7 +39,6 @@ class SuiteDcp
         $suite->addTestSuite('Dcp\Pu\TestImportProfid');
         $suite->addTestSuite('Dcp\Pu\TestImportProfil');
         $suite->addTestSuite('Dcp\Pu\TestImportCsvDocuments');
-        $suite->addTestSuite('Dcp\Pu\TestImportCVDOC');
         $suite->addTestSuite('Dcp\Pu\TestExportXml');
         $suite->addTestSuite('Dcp\Pu\TestExportCollection');
         $suite->addTestSuite('Dcp\Pu\TestExportRevision');
