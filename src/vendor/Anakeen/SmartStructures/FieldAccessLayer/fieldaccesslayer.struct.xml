@@ -12,9 +12,7 @@
                 <smart:field-docid name="fal_famid" label="Structure" access="ReadWrite" relation="-1" needed="true"/>
                 <smart:field-set name="fal_t_fields" type="array" label="Fields" access="ReadWrite">
                     <smart:field-text name="fal_fieldid" label="Field id" access="ReadWrite" needed="true"/>
-                    <smart:field-text name="fal_fieldlabel" label="Field Label" access="Read"/>
-                    <smart:field-text name="fal_fieldoriginalaccess" label="Original access" access="Read"/>
-                    <smart:field-enum name="fal_fieldaccess" label="Access" access="ReadWrite" relation="FAL-Access" needed="true"/>
+                    <smart:field-enum name="fal_fieldaccess" label="New Access" access="ReadWrite" relation="FAL-Access" needed="true"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
