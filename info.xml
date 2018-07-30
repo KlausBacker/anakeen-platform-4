@@ -60,6 +60,9 @@
         <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account profile</label>
         </process>
+        <process command="programs/resetAccess">
+            <label>Reset Default Access</label>
+        </process>
     </post-install>
     <post-upgrade>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">
