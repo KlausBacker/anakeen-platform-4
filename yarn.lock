@@ -278,7 +278,7 @@ amdefine@>=0.0.4:
 
 "ank-components@git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#master":
   version "0.0.2"
-  resolved "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#931cbd3e9e38a2dd83c9c536940d7192d8063cfd"
+  resolved "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#ae525272bdb6506fe31c77617eb02c8e6e03ab6e"
 
 ansi-escapes@^3.0.0:
   version "3.1.0"
