@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-  <smart:structure-configuration name="TST_F2_2" label="Test F2 / 2" extends="TST_F2_1">
-    <smart:usefor>N</smart:usefor>
-    <smart:fields>
-      <smart:field-set name="tst_f2_f_title" extended="true">
-        <smart:field-text name="tst_f2_subtitle" label="Sous-titre" access="ReadWrite" is-title="true"/>
-      </smart:field-set>
-      <smart:field-set name="tst_f2_fr_date" extended="true">
-        <smart:field-timestamp name="tst_f2_timestamp" label="Une date avec  une heure" access="ReadWrite"/>
-      </smart:field-set>
-      <smart:field-set name="tst_f2_fr_number" extended="true">
-        <smart:field-money name="tst_f2_money" label="Un sous" access="ReadWrite"/>
-      </smart:field-set>
-    </smart:fields>
-    <smart:parameters/>
-    <smart:hooks/>
-    <smart:autocompletion/>
-    <smart:defaults/>
-    <smart:accesses/>
-  </smart:structure-configuration>
+    <smart:structure-configuration name="TST_F2_2" label="Test F2 / 2">
+        <smart:extends ref="TST_F2_1"/>
+        <smart:usefor>N</smart:usefor>
+        <smart:fields>
+            <smart:field-set name="tst_f2_f_title" extended="true">
+                <smart:field-text name="tst_f2_subtitle" label="Sous-titre" access="ReadWrite" is-title="true"/>
+            </smart:field-set>
+            <smart:field-set name="tst_f2_fr_date" extended="true">
+                <smart:field-timestamp name="tst_f2_timestamp" label="Une date avec  une heure" access="ReadWrite"/>
+            </smart:field-set>
+            <smart:field-set name="tst_f2_fr_number" extended="true">
+                <smart:field-money name="tst_f2_money" label="Un sous" access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:autocompletion/>
+        <smart:defaults/>
+        <smart:accesses/>
+    </smart:structure-configuration>
 </smart:config>

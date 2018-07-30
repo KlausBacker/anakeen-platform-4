@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
-    <smart:structure-configuration name="DIR" id="2" label="Dossier" extends="BASE">
+    <smart:structure-configuration name="DIR" id="2" label="Dossier">
+        <smart:extends ref="BASE"/>
         <smart:icon file="se-dir.png"/>
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Dir\DirHooks</smart:class>
         <smart:usefor>F</smart:usefor>

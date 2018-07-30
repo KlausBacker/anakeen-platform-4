@@ -140,7 +140,7 @@ class ImportSmartConfiguration
 
     protected function getDescription(\DOMElement $node)
     {
-        $desc="";
+        $desc = "";
         foreach ($node->childNodes as $attrNode) {
             if (!is_a($attrNode, \DOMElement::class)) {
                 continue;
@@ -157,7 +157,7 @@ class ImportSmartConfiguration
     {
 
         $prfType = "FIELDACCESSLAYER";
-        $prfDEsc  = $this->getDescription($config);
+        $prfDEsc = $this->getDescription($config);
 
         $prfName = $config->getAttribute("name");
         $prfLabel = $config->getAttribute("label");
@@ -202,7 +202,7 @@ class ImportSmartConfiguration
         $prfLink = $config->getAttribute("ref");
         $prfType = $config->getAttribute("profil-type");
 
-        $prfDEsc  = $this->getDescription($config);
+        $prfDEsc = $this->getDescription($config);
 
         if ($prfName && (($prfLabel && !$prfLink) || $prfDynamic)) {
             if (!$prfType) {
@@ -277,7 +277,12 @@ class ImportSmartConfiguration
     {
         $data[0] = "BEGIN";
         // Inherit
-        $data[1] = $config->getAttribute("extends");
+        $extends = $this->getNode($config, "extends");
+        if ($extends) {
+            $data[1] = $extends->getAttribute("ref");
+        } else {
+            $data[1] = "";
+        }
         // Label
         $data[2] = $config->getAttribute("label");
         // Id not used

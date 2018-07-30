@@ -35,6 +35,7 @@ use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
+use PHPUnit\Framework\Exception;
 
 class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
 {
@@ -644,6 +645,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      */
     private $withoutControlN = 0;
     private $withoutControl = false;
+    private $inHook = false;
     private $constraintbroken = false; // true if one constraint is not verified
     private $_oldvalue = array();
     private $fathers = null;
@@ -1253,6 +1255,11 @@ create unique index i_docir on doc(initid, revision);";
         }
     }
 
+    private function isUnderControl()
+    {
+        return $this->withoutControl === false && ContextManager::getCurrentUser()->id != \Anakeen\Core\Account::ADMIN_ID;
+    }
+
     /**
      * default edit control enable
      * restore control which are disabled by disableAccessControl
@@ -1474,13 +1481,13 @@ create unique index i_docir on doc(initid, revision);";
             return ($err);
         }
 
-        if ($this->withoutControl || ContextManager::getCurrentUser()->id == \Anakeen\Core\Account::ADMIN_ID) {
+        if (!$this->isUnderControl()) {
             return "";
         } // admin can do anything but not modify fixed doc
         if ($verifyDomain && ($this->lockdomainid > 0)) {
             $err = sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
         } else {
-            if ($this->withoutControl) {
+            if (!$this->isUnderControl()) {
                 return "";
             } // no more test if disableAccessControl activated
             if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
@@ -1878,7 +1885,9 @@ create unique index i_docir on doc(initid, revision);";
             }
 
             if (!$nopost) {
+                $this->inHook=true;
                 $err = $this->getHooks()->trigger(SmartHooks::PREDELETE);
+                $this->inHook=false;
                 if ($err != '') {
                     return $err;
                 }
@@ -1918,7 +1927,9 @@ create unique index i_docir on doc(initid, revision);";
                 ), true);
                 if ($err == "") {
                     if (!$nopost) {
+                        $this->inHook=true;
                         $msg = $this->getHooks()->trigger(SmartHooks::POSTDELETE);
+                        $this->inHook=false;
                         if ($msg != '') {
                             $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                         }
@@ -2027,6 +2038,7 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($array)) {
             $this->getHooks()->resetListeners();
 
+            $this->inHook=true;
             $this->getHooks()->trigger(SmartHooks::PREAFFECT, $array, $more, $reset);
 
             if ($more) {
@@ -2070,6 +2082,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             $this->isset = true;
             $this->getHooks()->trigger(SmartHooks::POSTAFFECT, $array, $more, $reset);
+            $this->inHook=false;
         }
     }
 
@@ -2976,7 +2989,7 @@ create unique index i_docir on doc(initid, revision);";
 
 
     /**
-     * return the raw value (database value) of an attribute document
+     * return the raw value (database value) of an field or properties document
      *
      * @api get the value of an attribute
      *
@@ -2998,6 +3011,10 @@ create unique index i_docir on doc(initid, revision);";
     {
         $lidAttr = strtolower($idAttr);
         if (isset($this->$lidAttr) && ($this->$lidAttr != "")) {
+            $oa = $this->getAttribute($idAttr);
+            if ($oa && $this->isUnderControl() && FieldAccessManager::hasReadAccess($this, $oa) === false) {
+                return $def;
+            }
             return $this->$lidAttr;
         }
 
@@ -3025,11 +3042,13 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
          */
-        $oa = $this->getAttribute($idAttr, $nothing);
+        $oa = $this->getAttribute($idAttr);
         if (!$oa) {
             throw new \Dcp\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
         }
-
+        if ($this->isUnderControl() && FieldAccessManager::hasReadAccess($this, $oa) === false) {
+            throw new \Dcp\Exception('DOC0133', $idAttr, $this->title, $this->fromname);
+        }
         if (empty($oa->isNormal)) {
             throw new \Dcp\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
         }
@@ -3412,7 +3431,7 @@ create unique index i_docir on doc(initid, revision);";
          */
         $oattr = $this->GetAttribute($attrid);
         // control edit before set values
-        if (!$this->withoutControl &&  ContextManager::getCurrentUser()->id != \Anakeen\Core\Account::ADMIN_ID) {
+        if ($this->isUnderControl()) {
             if ($this->id > 0) { // no control yet if no effective doc
                 $err = $this->controlAccess("edit");
                 if ($err != "") {
@@ -5429,7 +5448,7 @@ create unique index i_docir on doc(initid, revision);";
             throw new \Dcp\Exception(\ErrorCode::getError('DOC0203'));
         }
         try {
-            if ($this->withoutControl !== true) {
+            if ($this->isUnderControl()) {
                 $family = SEManager::getFamily($this->fromid);
 
                 $err = $family->controlAccess('create');
@@ -5467,7 +5486,9 @@ create unique index i_docir on doc(initid, revision);";
             $copy->accessControl()->setProfil($cdoc->cprofid);
         }
 
+        $this->inHook=true;
         $err = $copy->getHooks()->trigger(SmartHooks::PREDUPLICATE, $this);
+        $this->inHook=false;
         if ($err != "") {
             return $err;
         }
@@ -5482,7 +5503,9 @@ create unique index i_docir on doc(initid, revision);";
             $copy->duplicateFiles();
         }
 
+        $copy->inHook=true;
         $msg = $copy->getHooks()->trigger(SmartHooks::POSTDUPLICATE);
+        $copy->inHook=false;
         if ($msg != "") {
             $copy->addHistoryEntry($msg, \DocHisto::MESSAGE);
         }
@@ -5508,8 +5531,6 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
     }
-
-
 
 
     /**
@@ -5697,7 +5718,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $err = $this->canEdit();
         if ($err == "") {
-            if ((!$this->withoutControl) && (ContextManager::getCurrentUser()->id != $this->allocated)) {
+            if ($this->isUnderControl() && (ContextManager::getCurrentUser()->id != $this->allocated)) {
                 $err = $this->controlAccess("unlock");
             }
         }
@@ -6596,7 +6617,7 @@ create unique index i_docir on doc(initid, revision);";
 
     private function controlAccess($aclname, $strict = false)
     {
-        if ($this->withoutControl === true) {
+        if (!$this->isUnderControl()) {
             return ""; // uncontrolled mode
         }
         return $this->control($aclname, $strict);
