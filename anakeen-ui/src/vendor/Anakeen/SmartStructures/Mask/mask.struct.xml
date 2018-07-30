@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+    <smart:structure-configuration name="MASK" label="Masque de saisie">
+        <smart:extends ref="BASE"/>
+        <smart:icon file="se-mask.png"/>
+        <smart:class>Anakeen\SmartStructures\Mask\MaskHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:fields>
+            <smart:field-set name="msk_fr_rest" type="frame" label="Informtation" access="ReadWrite">
+                <smart:field-docid name="msk_famid" label="Structure" access="ReadWrite" needed="true" relation="-1"/>
+                <smart:field-set name="msk_t_contain" type="array" label="Fields" access="ReadWrite">
+                    <smart:field-text name="msk_attrids" label="Field" access="ReadWrite"/>
+                    <smart:field-text name="msk_visibilities" label="Visibilité" access="ReadWrite"/>
+                    <smart:field-enum name="msk_needeeds" label="Obligatoire" relation="MASK-needed" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="MASK-needed">
+            <smart:enum name="-" label=" "/>
+            <smart:enum name="Y" label="Yes"/>
+            <smart:enum name="N" label="No"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>
