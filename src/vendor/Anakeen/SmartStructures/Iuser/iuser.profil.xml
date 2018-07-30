@@ -54,7 +54,6 @@
         <smart:element-access access="delete" account="gadmin"/>
     </smart:access-configuration>
 
-    <!-- Render Access Configuration -->
     <smart:access-configuration name="CV_IUSER_ACCOUNT" label="CV DOC IUSER" profil-type="CVDOC" access-structure="IUSER">
         <smart:element-access access="view" account="all"/>
         <smart:element-access access="modifyacl" account="gadmin"/>
@@ -62,6 +61,7 @@
         <smart:element-access access="EGROUP" account="gadmin"/>
         <smart:element-access access="EUSER" account="gadmin"/>
     </smart:access-configuration>
+    <!-- Render Access Configuration -->
     <smart:access-configuration name="MSK_IUSERSUBSTITUTE" ref="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="MSK_IUSER_ADMIN" ref="PRF_ADMIN_EDIT"/>
 </smart:config>
