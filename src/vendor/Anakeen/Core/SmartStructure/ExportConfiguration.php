@@ -101,7 +101,7 @@ class ExportConfiguration
 
         if ($this->sst->cfallid) {
             $tag = $this->cel("field-access-configuration");
-            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->cfallid) ?: $this->sst->cfallid);
+            $tag->setAttribute("ref", static::getLogicalName($this->sst->cfallid) ?: $this->sst->cfallid);
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->cfallid);
             $this->domConfig->appendChild($accessControl);
@@ -109,6 +109,14 @@ class ExportConfiguration
         }
 
         $structConfig->appendChild($access);
+    }
+
+    protected static function getLogicalName($id) {
+        $name= SEManager::getNameFromId($id);
+        if ($name === null) {
+            $name= "NAME#$id";
+        }
+        return $name;
     }
 
     protected function setFieldAccess(\DOMElement $domNode, $fallid)
@@ -144,7 +152,7 @@ class ExportConfiguration
         $accessControl->setAttribute("label", $profil->title);
         $accessControl->setAttribute("profil-type", $profil->fromname);
         if ($profil->getRawValue("dpdoc_famid")) {
-            $accessControl->setAttribute("access-structure", SEManager::getNameFromId($profil->getRawValue("dpdoc_famid")));
+            $accessControl->setAttribute("access-structure", static::getLogicalName($profil->getRawValue("dpdoc_famid")));
         }
         if ($profil->getRawValue("ba_desc")) {
             $desc = $this->cel("description");
@@ -247,12 +255,12 @@ class ExportConfiguration
         $structConfig->setAttribute("label", $this->sst->title);
         if ($this->sst->fromid) {
             $extendTag = $this->cel("extends");
-            $extendTag->setAttribute("ref", SEManager::getNameFromId($this->sst->fromid));
+            $extendTag->setAttribute("ref", static::getLogicalName($this->sst->fromid));
             $structConfig->appendChild($extendTag);
         }
         if ($this->sst->dfldid) {
             $tag = $this->cel("default-folder");
-            $tag->nodeValue = SEManager::getNameFromId($this->sst->dfldid);
+            $tag->nodeValue = static::getLogicalName($this->sst->dfldid);
             $structConfig->appendChild($tag);
         }
         if ($this->sst->icon) {

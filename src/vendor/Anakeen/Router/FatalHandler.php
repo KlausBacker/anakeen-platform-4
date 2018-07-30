@@ -9,11 +9,9 @@ class FatalHandler
 
     public static function handleFatalShutdown()
     {
-        global $action;
-
         $error = error_get_last();
 
-        if ($error !== null && $action) {
+        if ($error !== null) {
             if (in_array($error["type"], array(
                 E_ERROR,
                 E_PARSE,
@@ -28,11 +26,9 @@ class FatalHandler
                 }
 
                 $displayMsg = \Anakeen\Core\LogException::logMessage($error, $errId);
-                if ($action) {
-                    ContextManager::exitError($displayMsg, false, $errId);
-                } else {
-                    print $displayMsg;
-                }
+
+                ContextManager::exitError($displayMsg, false, $errId);
+
                 // Fatal error are already logged by PHP
             }
         }

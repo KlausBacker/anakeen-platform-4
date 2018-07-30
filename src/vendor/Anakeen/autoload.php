@@ -21,12 +21,12 @@ spl_autoload_register(function ($classname) {
 
     $classFile = sprintf("%s/../Root/Class.%s.php", __DIR__, $classname);
     if (file_exists($classFile)) {
-        error_log("Legacy require $classFile");
+       // error_log("Legacy require $classFile");
         require_once($classFile);
     } else {
         $classFile = sprintf("%s/../Root/%s.php", __DIR__, $classname);
         if (file_exists($classFile)) {
-            error_log("Legacy require $classFile");
+           // error_log("Legacy require $classFile");
             require_once($classFile);
         } else {
             error_log("Legacy not found $classFile");

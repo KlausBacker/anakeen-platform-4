@@ -276,12 +276,6 @@
             <label>Config Helpage family</label>
         </process>
 
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
-            <label>MASK Family</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
-            <label>CVDOC Family</label>
-        </process>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search family</label>
@@ -558,7 +552,6 @@
             <label>Import DIR Family</label>
         </process>
 
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
             <label>Add Mail form family</label>
         </process>
@@ -576,13 +569,6 @@
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml">
             <label>Add Helpage family</label>
-        </process>
-
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
-            <label>MASK Family</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
-            <label>CVDOC Family</label>
         </process>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">

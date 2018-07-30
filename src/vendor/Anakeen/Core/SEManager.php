@@ -3,7 +3,6 @@
 namespace Anakeen\Core;
 
 use Anakeen\Core\DocManager\Exception;
-use Anakeen\Core\Internal\Debug;
 
 class SEManager
 {
