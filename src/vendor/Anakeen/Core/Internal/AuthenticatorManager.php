@@ -39,9 +39,11 @@ class AuthenticatorManager
         /*
          * Part 1: check authentication
         */
+
         $status = self::checkAuthentication($authtype, $noask);
         if ($status === \Anakeen\Core\Internal\Authenticator::AUTH_NOK) {
             $error = 1;
+
             $providerErrno = self::$auth->getProviderErrno();
             if ($providerErrno != 0) {
                 self::$provider_errno = $providerErrno;
@@ -55,9 +57,14 @@ class AuthenticatorManager
             $remote_addr = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : "";
             $auth_user = isset($_REQUEST["auth_user"]) ? $_REQUEST["auth_user"] : "";
             $http_user_agent = isset($_SERVER["HTTP_USER_AGENT"]) ? $_SERVER["HTTP_USER_AGENT"] : "";
-            self::secureLog("failure", "invalid credential",
-                self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['AuthentProvider'], $remote_addr,
-                $auth_user, $http_user_agent);
+            self::secureLog(
+                "failure",
+                "invalid credential",
+                self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['AuthentProvider'],
+                $remote_addr,
+                $auth_user,
+                $http_user_agent
+            );
             // count login failure
             if (\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_FAILURECOUNT") > 0) {
                 $wu = new \Anakeen\Core\Account();
@@ -77,13 +84,16 @@ class AuthenticatorManager
                 }
             }
             self::clearGDocs();
+
             return $error;
         }
+
         // Authentication success
         /*
          * Part 2: check authorization
         */
         $ret = self::checkAuthorization();
+
         if ($ret !== self::AccessOk) {
             return $ret;
         }
@@ -118,11 +128,17 @@ class AuthenticatorManager
     {
         self::$provider_errno = 0;
 
-        self::$auth = static::getAuthenticatorClass();
+        $currentSession = null;
+        if (!empty(self::$auth->auth_session)) {
+            $currentSession = self::$auth->auth_session;
+        }
         $authProviderList = static::getAuthProviderList();
         $status = false;
         foreach ($authProviderList as $authProvider) {
             self::$auth = static::getAuthenticatorClass($authtype, $authProvider);
+            if ($currentSession) {
+                self::$auth->auth_session = $currentSession;
+            }
             $status = self::$auth->checkAuthentication();
             if ($status === \Anakeen\Core\Internal\Authenticator::AUTH_ASK) {
                 if ($noask) {
@@ -150,7 +166,7 @@ class AuthenticatorManager
 
         $authClass = ucfirst(strtolower($authtype)) . "Authenticator";
         if (!\Anakeen\Core\Internal\Autoloader::classExists($authClass)) {
-            throw new \Dcp\Exception(sprintf("Cannot find authenticator '%s'", $authtype));
+            throw new \Dcp\Exception(sprintf("Cannot find authenticator '%s'", $authClass));
         }
         return new $authClass($authtype, $provider);
     }
@@ -276,10 +292,15 @@ class AuthenticatorManager
     /**
      * Send a 401 Unauthorized HTTP header
      */
-    public function authenticate(&$action)
+    public function authenticate()
     {
-        header('WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_REALM",
-                "Anakeen Platform connection") . '"');
+        header(
+            'WWW-Authenticate: Basic realm="' . \Anakeen\Core\ContextManager::getParameterValue(
+                \Anakeen\Core\Settings::NsSde,
+                "CORE_REALM",
+                "Anakeen Platform connection"
+            ) . '"'
+        );
         header('HTTP/1.0 401 Unauthorized');
         echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
         exit;
@@ -352,29 +373,40 @@ class AuthenticatorManager
         }
 
         if (!$existu) {
-            static::secureLog("failure", "login have no Dynacase account",
+            static::secureLog(
+                "failure",
+                "login have no Dynacase account",
                 static::$auth->provider->parms['type'] . "/"
-                . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
-                $_SERVER["HTTP_USER_AGENT"]);
+                . static::$auth->provider->parms['AuthentProvider'],
+                $_SERVER["REMOTE_ADDR"],
+                $login,
+                $_SERVER["HTTP_USER_AGENT"]
+            );
             return static::AccessHasNoLocalAccount;
         }
 
         $protoVersion = self::_getProviderProtocolVersion(self::$auth->provider);
         if (!is_integer($protoVersion)) {
-            throw new \Dcp\Exception(sprintf("Invalid provider protocol version '%s' for provider '%s'.", $protoVersion,
-                get_class(self::$auth->provider)));
+            throw new \Dcp\Exception(sprintf(
+                "Invalid provider protocol version '%s' for provider '%s'.",
+                $protoVersion,
+                get_class(self::$auth->provider)
+            ));
         }
 
         switch ($protoVersion) {
             case 0:
-                return self::protocol_0_authorization(array(
+                return self::protocol0Authorization(array(
                     'username' => $login,
                     'dcp_account' => $wu
                 ));
                 break;
         }
-        throw new \Dcp\Exception(sprintf("Unsupported provider protocol version '%s' for provider '%s'.", $protoVersion,
-            get_class(self::$auth->provider)));
+        throw new \Dcp\Exception(sprintf(
+            "Unsupported provider protocol version '%s' for provider '%s'.",
+            $protoVersion,
+            get_class(self::$auth->provider)
+        ));
     }
 
     /**
@@ -384,7 +416,7 @@ class AuthenticatorManager
      *
      * @return int
      */
-    private static function protocol_0_authorization($opt)
+    private static function protocol0Authorization($opt)
     {
         $authz = self::checkProviderAuthorization($opt);
         if ($authz !== self::AccessOk) {
@@ -427,20 +459,27 @@ class AuthenticatorManager
              */
             $du = SEManager::getDocument($wu->fid, false);
             if ($du === null) {
-                static::secureLog("failure", "no found account element data",
-                    static::$auth->provider->parms['type'] . "/"
-                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
-                    $_SERVER["HTTP_USER_AGENT"]);
+                static::secureLog(
+                    "failure",
+                    "no found account element data",
+                    static::$auth->provider->parms['type'] . "/" . static::$auth->provider->parms['AuthentProvider'],
+                    $_SERVER["REMOTE_ADDR"],
+                    $login,
+                    $_SERVER["HTTP_USER_AGENT"]
+                );
                 static::clearGDocs();
                 return static::AccessHasNoLocalAccount;
             }
-
             // First check if account is active
             if (!$du->isAccountActive()) {
-                static::secureLog("failure", "inactive account",
-                    static::$auth->provider->parms['type'] . "/"
-                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
-                    $_SERVER["HTTP_USER_AGENT"]);
+                static::secureLog(
+                    "failure",
+                    "inactive account",
+                    static::$auth->provider->parms['type'] . "/" . static::$auth->provider->parms['AuthentProvider'],
+                    $_SERVER["REMOTE_ADDR"],
+                    $login,
+                    $_SERVER["HTTP_USER_AGENT"]
+                );
                 static::clearGDocs();
                 return static::AccessAccountIsNotActive;
             }
@@ -460,10 +499,14 @@ class AuthenticatorManager
             // check count of login failure
             $maxfail = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_FAILURECOUNT");
             if ($maxfail > 0 && $du->getRawValue("us_loginfailure", 0) >= $maxfail) {
-                static::secureLog("failure", "max connection (" . $maxfail . ") attempts exceeded",
-                    static::$auth->provider->parms['type'] . "/"
-                    . static::$auth->provider->parms['AuthentProvider'], $_SERVER["REMOTE_ADDR"], $login,
-                    $_SERVER["HTTP_USER_AGENT"]);
+                static::secureLog(
+                    "failure",
+                    "max connection (" . $maxfail . ") attempts exceeded",
+                    static::$auth->provider->parms['type'] . "/" . static::$auth->provider->parms['AuthentProvider'],
+                    $_SERVER["REMOTE_ADDR"],
+                    $login,
+                    $_SERVER["HTTP_USER_AGENT"]
+                );
                 static::clearGDocs();
                 return static::AccessMaxLoginFailure;
             }

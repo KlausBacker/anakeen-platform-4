@@ -185,9 +185,6 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
             $filters[] = "locked = -1";
         }
 
-        if ($this->getRawValue("se_archive") > 0) {
-            $filters[] = sprintf("archiveid = %d", $this->getRawValue("se_archive"));
-        }
         if ($keyword) {
             if ($keyword[0] == '~') {
                 $full = false; // force REGEXP

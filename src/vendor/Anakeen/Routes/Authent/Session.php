@@ -8,6 +8,7 @@ namespace Anakeen\Routes\Authent;
 
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Settings;
+use Anakeen\Router\AuthenticatorManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\LogException;
 use Anakeen\Router\ApiV2Response;
@@ -75,15 +76,25 @@ class Session
             throw $e;
         }
         $_SERVER['PHP_AUTH_USER'] = $login;
+
+
         $session = new \Anakeen\Core\Internal\Session();
         $session->set();
         $session->register('username', $login);
         if ($language) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($login);
-
-            \Anakeen\Core\ContextManager::initContext($u, \Anakeen\Router\AuthenticatorManager::$session);
+            \Anakeen\Core\ContextManager::initContext($u, AuthenticatorManager::$session);
             ContextParameterManager::setUserValue(Settings::NsSde, "CORE_LANG", $language);
+        }
+        AuthenticatorManager::$auth->auth_session=$session;
+        $status = AuthenticatorManager::checkAccess(null, true);
+
+        if ($status !== AuthenticatorManager::AccessOk) {
+            $e = new Exception('AUTH0002', $status);
+            $e->setHttpStatus('403', 'Forbidden');
+            $e->setUserMessage(___("Account access not granted", "authent"));
+            throw $e;
         }
 
         return ApiV2Response::withData($response, ["login" => $login]);
