@@ -43,7 +43,7 @@ class Session
         $language = $request->getParam("language");
 
 
-        if (empty($password)) {
+        if (!isset($password) && ($password  === "0" || empty($password))) {
             sleep(self::FAILDELAY);
             $e = new Exception('AUTH0001', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
