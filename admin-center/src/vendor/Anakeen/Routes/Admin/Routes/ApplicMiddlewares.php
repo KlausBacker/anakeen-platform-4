@@ -43,6 +43,11 @@ class ApplicMiddlewares
         return ApiV2Response::withData($response, $result);
     }
 
+    /**
+     * @param $middleware
+     * @return string
+     * Retrieve regex from middleware pattern
+     */
     private function getMiddlewarePath($middleware)
     {
         $path = '';
@@ -80,8 +85,6 @@ class ApplicMiddlewares
         $formatedRoute['method'] = $route->methods[0];
         $formatedRoute['pattern'] = is_array($route->pattern) ? implode("\n", $route->pattern) : $route->pattern;
         $formatedRoute['priority'] = $route->priority;
-        $formatedRoute['override'] = $route->override;
-        $formatedRoute['active'] = $route->isActive();
 
         return $formatedRoute;
     }
