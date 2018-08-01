@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <ui:mask name="MSK_IUSER_ADMIN" label="Administration" structure="IUSER">
+        <ui:visibility-list>
+            <ui:visibility field="us_fr_substitute" value="H"/>
+        </ui:visibility-list>
+    </ui:mask>
+
+    <ui:mask name="MSK_IUSERSUBSTITUTE" label="Suppléant" structure="IUSER">
+        <ui:visibility-list>
+            <ui:visibility field="us_fr_ident" value="H"/>
+            <ui:visibility field="us_tab_sysinfo" value="H"/>
+            <ui:visibility field="us_fr_intranet" value="H"/>
+            <ui:visibility field="us_fr_security" value="H"/>
+        </ui:visibility-list>
+    </ui:mask>
+
+    <ui:view-control name="CV_IUSER_ACCOUNT" label="CV DOC IUSER" structure="IUSER">
+        <ui:description><![CDATA[Contrôle de vue pour la changement de groupe]]></ui:description>
+        <ui:creation-view ref="EUSER"/>
+        <ui:view-list>
+            <ui:view name="EUSER" label="Admin edit" order="2" menu-displayed="false">
+                <ui:mask ref="MSK_IUSER_ADMIN"/>
+                <ui:render-config class="\Anakeen\SmartStructures\Iuser\Render\IuserEditRender"/>
+            </ui:view>
+            <ui:view name="EGROUP" label="Modification des groupes parents" menu-displayed="true">
+                <ui:render-config class="\Anakeen\SmartStructures\Iuser\Render\IuserChangeGroup"/>
+            </ui:view>
+            <ui:view name="ESUBSTITUTE" label="Modifier le suppléant" menu-displayed="true">
+                <ui:mask ref="MSK_IUSERSUBSTITUTE"/>
+            </ui:view>
+        </ui:view-list>
+    </ui:view-control>
+
+    <ui:render ref="IUSER">
+        <ui:render-access class="Anakeen\SmartStructures\Iuser\Render\IuserAccess"/>
+        <ui:view-control ref="CV_IUSER_ACCOUNT"/>
+    </ui:render>
+</smart:config>

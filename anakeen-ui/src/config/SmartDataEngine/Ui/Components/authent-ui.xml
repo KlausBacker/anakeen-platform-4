@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
-    <sde:routes namespace="Ui:Authent">
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="Ui:Component:Authent">
         <sde:route name="Login">
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Components\Authent\Routes\LoginPage</sde:callable>

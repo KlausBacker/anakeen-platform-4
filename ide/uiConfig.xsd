@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/ui/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:uif="https://platform.anakeen.com/4/schemas/ui/1.0">
+
+    <xs:element name="mask" type="uif:maskType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Smart Field Visibilities</h1>
+                <p>To configure visibility in html form or in web view</p>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="view-control" type="uif:viewControlType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Smart Field Visibilities</h1>
+                <p>To configure visibility in html form or in web view</p>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="render" type="uif:renderType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Smart Element Render Configuration</h1>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="viewControlType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="uif:standardRefType" name="creation-view" minOccurs="0"/>
+            <xs:element type="uif:viewListType" name="view-list" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="uif:logicalNameType" name="name" use="required"/>
+        <xs:attribute type="uif:logicalNameType" name="structure"/>
+        <xs:attribute type="xs:string" name="label"/>
+    </xs:complexType>
+    <xs:complexType name="renderType">
+        <xs:sequence>
+            <xs:element type="uif:renderAccessType" name="render-access" minOccurs="0"/>
+            <xs:element type="uif:standardRefType" name="view-control" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="uif:logicalNameType" name="ref"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="renderAccessType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="class" use="required"/>
+                <xs:attribute type="xs:token" name="disable-etag" default="false"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="standardRefType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="uif:logicalNameType" name="ref" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="maskType">
+        <xs:sequence>
+            <xs:element type="uif:visibilityListType" name="visibility-list" minOccurs="0"/>
+            <xs:element type="uif:needListType" name="need-list" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="uif:logicalNameType" name="structure" use="required"/>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="label"/>
+    </xs:complexType>
+
+    <xs:complexType name="viewListType">
+        <xs:sequence>
+            <xs:element type="uif:viewType" name="view" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="visibilityListType">
+        <xs:sequence>
+            <xs:element type="uif:visibilityType" name="visibility" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="visibilityType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="field" use="required"/>
+                <xs:attribute type="xs:token" name="value" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="viewType">
+        <xs:sequence>
+            <xs:element type="uif:standardRefType" name="mask" minOccurs="0"/>
+            <xs:element type="uif:renderConfigType" name="render-config" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:token" name="name" use="required"/>
+        <xs:attribute type="xs:int" name="order"/>
+        <xs:attribute type="xs:string" name="label"/>
+        <xs:attribute type="xs:boolean" name="menu-displayed"/>
+    </xs:complexType>
+    <xs:complexType name="needListType">
+        <xs:sequence>
+            <xs:element type="uif:needType" name="need" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="needType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="field" use="required"/>
+                <xs:attribute type="xs:boolean" name="value" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="renderConfigType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="class" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="logicalNameType">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[A-Za-z][A-Za-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
