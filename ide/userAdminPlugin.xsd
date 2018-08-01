@@ -1,16 +1,16 @@
 <?xml version="1.1" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.anakeen.com/ns/admin/"
-           xmlns:adm="http://www.anakeen.com/ns/admin/"
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="https://platform.anakeen.com/4/schemas/admin/"
+           xmlns:adm="https://platform.anakeen.com/4/schemas/admin/"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="config" type="adm:configType" />
   <xs:complexType name="configType">
     <xs:sequence>
-      <xs:element type="adm:pluginsType" maxOccurs="1" name="plugins" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+      <xs:element type="adm:pluginsType" maxOccurs="1" name="plugins" xmlns:adm="https://platform.anakeen.com/4/schemas/admin/"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="pluginsType">
     <xs:sequence>
-      <xs:element type="adm:pluginType" name="plugin" maxOccurs="unbounded" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+      <xs:element type="adm:pluginType" name="plugin" maxOccurs="unbounded" xmlns:adm="https://platform.anakeen.com/4/schemas/admin/"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="basePluginType">
@@ -24,14 +24,14 @@
       <xs:element type="xs:integer" name="priority" minOccurs="0" maxOccurs="1" default="0"/>
     </xs:sequence>
     <xs:attribute type="xs:string" name="name" use="required"/>
-    <xs:attribute type="adm:overrideRestriction" name="override" use="optional" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+    <xs:attribute type="adm:overrideRestriction" name="override" use="optional" xmlns:adm="https://platform.anakeen.com/4/schemas/admin/"/>
   </xs:complexType>
   <xs:complexType name="pluginType" >
     <xs:complexContent>
       <xs:extension base="basePluginType">
         <xs:sequence>
-          <xs:element type="adm:sublevelType" name="sublevel" minOccurs="0" maxOccurs="1" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
-          <xs:element type="adm:orderType" name="order" minOccurs="0" maxOccurs="1" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+          <xs:element type="adm:sublevelType" name="sublevel" minOccurs="0" maxOccurs="1" xmlns:adm="https://platform.anakeen.com/4/schemas/admin/"/>
+          <xs:element type="adm:orderType" name="order" minOccurs="0" maxOccurs="1" xmlns:adm="https://platform.anakeen.com/4/schemas/admin/"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -59,7 +59,7 @@
   </xs:simpleType>
   <xs:complexType name="sublevelType">
     <xs:sequence>
-      <xs:element type="adm:sublevelPluginType" name="plugin" xmlns:adm="http://www.anakeen.com/ns/admin/"/>
+      <xs:element type="adm:sublevelPluginType" name="plugin" xmlns:adm="https://platform.anakeen.com/4/schemas/admin/"/>
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="overrideRestriction">
