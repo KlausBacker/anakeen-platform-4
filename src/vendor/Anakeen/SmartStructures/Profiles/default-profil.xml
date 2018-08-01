@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <smart:access-configuration name="PRF_ADMIN_EDIT" label="Administration - Access all">
         <smart:description>View for all. Modify only by administrators.</smart:description>
         <smart:element-access access="view" account="all"/>

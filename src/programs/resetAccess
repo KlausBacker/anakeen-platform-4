@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 pgservice_core=`"$WIFF_ROOT/wiff" --getValue=core_db`
 if [ -z "$pgservice_core" ]; then
@@ -6,7 +6,13 @@ if [ -z "$pgservice_core" ]; then
     exit 1
 fi
 
-PGSERVICE="$pgservice_core" psql -c "update doc set fallid = docfam.cfallid from docfam where docfam.id = doc.fromid and docfam.cfallid is not null and doc.fallid is null"
+
+PGSERVICE="$pgservice_core" psql -f - <<'EOF'
+  update doc set fallid = docfam.cfallid from docfam where docfam.id = doc.fromid and docfam.cfallid is not null and doc.fallid is null;
+  update doc set profid = docfam.cprofid from docfam, doc3  where docfam.id = doc.fromid and docfam.cprofid = doc3.id and docfam.cprofid is not null and (doc.profid = 0 or doc.profid is null) and doc3.dpdoc_famid is null;
+  update doc set dprofid = docfam.cprofid, profid = doc.id from docfam, doc3  where docfam.id = doc.fromid and docfam.cprofid = doc3.id and docfam.cprofid is not null and (doc.profid = 0 or doc.profid is null) and doc3.dpdoc_famid::int > 0;
+EOF
+
 RET=$?
 if [ $RET -ne 0 ]; then
     echo "Error: SQL error executing 'resetAccess': $RET"

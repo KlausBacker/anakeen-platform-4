@@ -70,6 +70,8 @@
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
             <label>Field Access Layer List</label>
-        </process>
+        </process> <process command="programs/resetAccess">
+        <label>Reset Default Access</label>
+    </process>
     </post-upgrade>
 </module>
