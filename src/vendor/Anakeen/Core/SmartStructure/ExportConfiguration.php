@@ -20,7 +20,8 @@ class ExportConfiguration
 {
     protected $data;
     const NS = "smart";
-    const NSURL = "http://www.anakeen.com/ns/smart/1.0";
+    const NSBASEURL = "https://platform.anakeen.com/4/schemas/";
+    const NSURL = self::NSBASEURL."smart/1.0";
     /**
      * @var SmartStructure|null
      */
@@ -51,7 +52,6 @@ class ExportConfiguration
             $structConfig->setAttribute("id", $this->sst->id);
         }
 
-        $this->domConfig->appendChild($structConfig);
         $this->extract($structConfig);
     }
 
@@ -65,6 +65,8 @@ class ExportConfiguration
         $this->extractDefaults($structConfig);
         $this->extractEnums($structConfig);
         $this->extractProfil($structConfig);
+
+        $this->domConfig->appendChild($structConfig);
     }
 
     /**

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema elementFormDefault="qualified"
-           targetNamespace="http://www.anakeen.com/ns/sde/1.0"
+           targetNamespace="https://platform.anakeen.com/4/schemas/sde/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:rout="http://www.anakeen.com/ns/sde/1.0">
+           xmlns:rout="https://platform.anakeen.com/4/schemas/sde/1.0">
     <xs:element name="config" type="rout:configType"/>
 
 

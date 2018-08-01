@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="http://www.anakeen.com/ns/smart/1.0">
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <smart:structure-configuration name="SENTMESSAGE" label="Message envoyé">
         <smart:icon file="sentmessage.png"/>
         <smart:class>Anakeen\SmartStructures\Sentmessage\SentMessageHooks</smart:class>

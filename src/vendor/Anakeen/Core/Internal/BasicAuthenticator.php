@@ -23,7 +23,7 @@ class BasicAuthenticator extends Authenticator
     /**
      * @var \Anakeen\Core\Internal\Session
      */
-    protected $auth_session = null;
+    public $auth_session = null;
 
     public function checkAuthentication()
     {
