@@ -9,6 +9,7 @@ namespace Anakeen\Components\Authent\Routes;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Core\Utils\Gettext;
 
 /**
  * Class MailPassword
@@ -58,7 +59,7 @@ class MailPassword
         }
         $output = [];
         if ($user->isAffected()) {
-            \Anakeen\Core\ContextManager::initContext($user, "CORE", "", \Anakeen\Core\Internal\AuthenticatorManager::$session);
+            \Anakeen\Core\ContextManager::initContext($user,\Anakeen\Core\Internal\AuthenticatorManager::$session);
 
             $userDocument = SEManager::getDocument($user->fid);
             $mailTemplateId = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "AUTHENT_MAILASKPWD");
@@ -95,12 +96,11 @@ class MailPassword
         } else {
             sleep(self::failDelay);
             $e = new Exception('AUTH0013', $login);
-            $e->setUserMessage(sprintf(___("Cannot find user \"%s\".", "authent"), $login));
+            $e->setUserMessage(sprintf(Gettext::___("Cannot find user \"%s\".", "authent"), $login));
             throw $e;
         }
-
         // $output["debugurlpass"]=$key["LINK_CHANGE_PASSWORD"];
-        $output["message"] = sprintf(___("An email has been sended to user \"%s\"", "authent"), $login);
+        $output["message"] = sprintf(Gettext::___("An email has been sent to user \"%s\"", "authent"), $login);
         return ApiV2Response::withData($response, $output);
     }
 }
