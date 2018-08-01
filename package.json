@@ -6,9 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "@anakeen/anakeen-cli": "^1.0.0",
     "anakeen-cli": "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/anakeen-cli.git#master"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.anakeen.com:Anakeen/Platform-4/smart-data-engine.git"
+  },
+  "keywords": [
+    "anakeen",
+    "platform",
+    "smart",
+    "data",
+    "engine"
+  ]
 }
