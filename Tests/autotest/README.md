@@ -24,6 +24,24 @@ bisection testing):
 
     $ ./Tests/autotest/local-run.sh php71pg96 HEAD^^
 
+## SSH access from within the docker container
+
+By default, if you use a `ssh-agent` (i.e. `SSH_AUTH_SOCK` env var is set and
+non-empty), then the `SSH_AUTH_SOCK` env var will be propagated in the docker
+container.
+
+If you don't use a `ssh-agent`, and want to use a specific private key for SSH
+connections, then you can export a `SSH_PRIVATE_KEY` env var containing the
+private key:
+
+    $ export SSH_PRIVATE_KEY=$(cat ~/.ssh/id_rsa)
+    $ ./Tests/autotest/local-run.sh php71pg96
+
+Note:
+- The `SSH_AUTH_SOCK` env var has precedence over the `SSH_PRIVATE_KEY`. If
+  both are set, then it's the `SSH_AUTH_SOCK` that will be used within the
+  docker container.
+
 ## Setup docker DNS
 
 The autotest requires access to hosts on the `corp.anakeen.com` domain.
