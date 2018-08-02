@@ -46,4 +46,8 @@ class ErrorCodeAUTH
      * @errorCode Error password not strong enough
      */
     const AUTH0022 = 'Password not changed : %s';
+    /**
+     * @errorCode Error when username and or password is incorrect
+     */
+    const AUTH0023 = 'Username and/or password is incorrect';
 }
