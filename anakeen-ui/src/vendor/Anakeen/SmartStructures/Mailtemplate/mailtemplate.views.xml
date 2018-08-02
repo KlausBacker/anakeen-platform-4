@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
     <ui:render ref="MAILTEMPLATE">
-        <ui:render-access class="Anakeen\SmartStructures\Mailtemplate\Render\MailtemplateAccess" disable-etag="false"/>
+        <ui:render-access class="Anakeen\SmartStructures\Mailtemplate\Render\MailtemplateAccess"/>
     </ui:render>
 </smart:config>

@@ -38,7 +38,7 @@
 
 
     <ui:render ref="IUSER">
-        <ui:render-access class="Anakeen\SmartStructures\Iuser\Render\IuserAccess"/>
+        <ui:render-access class="Anakeen\SmartStructures\Iuser\Render\IuserAccess" disable-etag="true"/>
         <ui:view-control ref="CV_IUSER_ACCOUNT"/>
     </ui:render>
 </smart:config>

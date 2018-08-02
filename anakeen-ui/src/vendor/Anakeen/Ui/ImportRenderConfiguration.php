@@ -6,6 +6,7 @@ use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 
+use Dcp\Ui\RenderConfigManager;
 use SmartStructure\Fields\Cvdoc as CvDocFields;
 use SmartStructure\Fields\Mask as MaskFields;
 
@@ -27,14 +28,24 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
         $data = [];
         /** @var \DOMElement $config */
         foreach ($configs as $config) {
-            $cvdocRef = $this->evaluate($config, "string(ui:view-control/@ref)");
-
             if ($ref = $config->getAttribute("ref")) {
+                $cvdocRef = $this->evaluate($config, "string(ui:view-control/@ref)");
+
                 $data[] = ["BEGIN", "", "", "", "", $ref];
                 $data[] = ["CVDOC", $cvdocRef];
                 $data[] = ["END"];
+
+                $renderAccess = $this->evaluate($config, "string(ui:render-access/@class)");
+                if ($renderAccess) {
+                    RenderConfigManager::setRenderParameter($ref, "renderAccessClass", $renderAccess);
+                }
+                $disableEtag = $this->evaluate($config, "string(ui:render-access/@disable-etag)");
+                if ($disableEtag) {
+                    RenderConfigManager::setRenderParameter($ref, "disableEtag", $disableEtag==="true");
+                }
             }
         }
+
         return $data;
     }
 
@@ -145,8 +156,8 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
              * @var \DOMElement $viewNode
              */
             foreach ($viewNodes as $viewNode) {
-                $mskid= $this->evaluate($viewNode, "string(ui:mask/@ref)");
-                $rcClass=$this->evaluate($viewNode, "string(ui:render-config/@class)");
+                $mskid = $this->evaluate($viewNode, "string(ui:mask/@ref)");
+                $rcClass = $this->evaluate($viewNode, "string(ui:render-config/@class)");
 
                 $cvdoc->addArrayRow(
                     CvDocFields::cv_t_views,
