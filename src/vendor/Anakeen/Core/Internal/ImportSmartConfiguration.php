@@ -40,10 +40,9 @@ class ImportSmartConfiguration
     {
 
         $this->dom = new \DOMDocument();
-
         $this->dom->load($xmlFile);
 
-        $this->importSmartStructureConfigurations();
+        $this->importConfigurations();
     }
 
     /**
@@ -57,7 +56,7 @@ class ImportSmartConfiguration
         return $this;
     }
 
-    protected function importSmartStructureConfigurations()
+    protected function importConfigurations()
     {
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
         $data = [];
@@ -75,9 +74,7 @@ class ImportSmartConfiguration
         $this->importFieldAccessElements(); // set data un profilElements attribute
 
         $data = array_merge($this->profilElements, $data);
-        if ($this->verbose) {
-            $this->print($data);
-        }
+
 
         $this->recordSmartData($data);
         return $data;
@@ -267,6 +264,9 @@ class ImportSmartConfiguration
 
     protected function recordSmartData(array $data)
     {
+        if ($this->verbose) {
+            $this->print($data);
+        }
         $import = new \ImportDocumentDescription();
         $import->analyzeOnly($this->onlyAnalyze);
 
@@ -746,7 +746,7 @@ class ImportSmartConfiguration
      *
      * @return \DOMNodeList
      */
-    private function getNodes(\DOMElement $e, $name)
+    protected function getNodes(\DOMElement $e, $name)
     {
         return $e->getElementsByTagNameNS(ExportConfiguration::NSURL, $name);
     }
@@ -757,7 +757,7 @@ class ImportSmartConfiguration
      *
      * @return \DOMElement
      */
-    private function getNode(\DOMElement $e, $name)
+    protected function getNode(\DOMElement $e, $name)
     {
         $nodes = $this->getNodes($e, $name);
         if ($nodes) {
@@ -765,6 +765,7 @@ class ImportSmartConfiguration
         }
         return null;
     }
+
 
     /**
      * @param \DOMElement $e
