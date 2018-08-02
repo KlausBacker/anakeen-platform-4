@@ -12,6 +12,7 @@ use Anakeen\Router\AuthenticatorManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\LogException;
 use Anakeen\Router\ApiV2Response;
+use Anakeen\Core\Utils\Gettext;
 
 /**
  * Class Session
@@ -42,7 +43,7 @@ class Session
         $language = $request->getParam("language");
 
 
-        if (empty($password)) {
+        if (!isset($password) || $password === "") {
             sleep(self::FAILDELAY);
             $e = new Exception('AUTH0001', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
@@ -64,15 +65,17 @@ class Session
         } else {
             if (!$user->isAffected()) {
                 sleep(self::FAILDELAY);
-                $e = new Exception('AUTH0001', __METHOD__);
+                $e = new Exception('AUTH0023', __METHOD__);
                 $e->setHttpStatus('403', 'Forbidden');
+                $e->setUserMessage(Gettext::___("Username and/or password is incorrect", "authent"));
                 throw $e;
             }
         }
         if (!$result) {
             sleep(self::FAILDELAY);
-            $e = new Exception('AUTH0001', __METHOD__);
+            $e = new Exception('AUTH0023', __METHOD__);
             $e->setHttpStatus('403', 'Forbidden');
+            $e->setUserMessage(Gettext::___("Username and/or password is incorrect", "authent"));
             throw $e;
         }
         $_SERVER['PHP_AUTH_USER'] = $login;
@@ -93,7 +96,7 @@ class Session
         if ($status !== AuthenticatorManager::AccessOk) {
             $e = new Exception('AUTH0002', $status);
             $e->setHttpStatus('403', 'Forbidden');
-            $e->setUserMessage(___("Account access not granted", "authent"));
+            $e->setUserMessage(___("Account access not granted, please contact your system administrator", "authent"));
             throw $e;
         }
 
