@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 /**
  * Mask document

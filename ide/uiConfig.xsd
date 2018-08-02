@@ -101,9 +101,19 @@
         </xs:sequence>
         <xs:attribute type="xs:token" name="name" use="required"/>
         <xs:attribute type="xs:int" name="order"/>
-        <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="xs:boolean" name="menu-displayed"/>
+        <xs:attribute type="xs:string" name="label" use="required"/>
+        <xs:attribute type="uif:displatModeType" name="display-mode" use="required"/>
+        <xs:attribute type="xs:string" name="submenu-label"/>
+        <xs:attribute type="xs:boolean" name="menu-displayed" default="true"/>
     </xs:complexType>
+
+    <xs:simpleType name="displatModeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="consultation"/>
+            <xs:enumeration value="edition"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:complexType name="needListType">
         <xs:sequence>
             <xs:element type="uif:needType" name="need" minOccurs="0" maxOccurs="unbounded"/>

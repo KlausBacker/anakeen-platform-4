@@ -93,6 +93,7 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             $viewtag = $this->celui("view");
             $viewtag->setAttribute("name", $view[CvDocFields::cv_idview]);
             $viewtag->setAttribute("label", $view[CvDocFields::cv_lview]);
+            $viewtag->setAttribute("display-mode", $view[CvDocFields::cv_kview]==="VEDIT"?"edition":"consultation");
             if ($view[CvDocFields::cv_mskid]) {
                 $msktag = $this->celui("mask");
                 $msktag->setAttribute("ref", static::getLogicalName($view[CvDocFields::cv_mskid]));
@@ -113,7 +114,7 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             }
             $viewtag->setAttribute("menu-displayed", ($view[CvDocFields::cv_displayed] === "yes") ? "true" : "false");
             if ($view[CvDocFields::cv_menu]) {
-                $viewtag->setAttribute("submenu-ref", $view[CvDocFields::cv_menu]);
+                $viewtag->setAttribute("submenu-label", $view[CvDocFields::cv_menu]);
             }
             $viewlist->appendChild($viewtag);
         }

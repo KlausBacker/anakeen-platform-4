@@ -9,7 +9,7 @@
     </ui:mask>
     <ui:view-control name="cvfld" label="Restrictions" structure="DIR">
         <ui:view-list>
-            <ui:view name="RESTRICT" label="Restriction" menu-displayed="false">
+            <ui:view name="RESTRICT" label="Restriction" display-mode="edition" menu-displayed="false">
                 <ui:mask ref="mskfld"/>
             </ui:view>
         </ui:view-list>
@@ -19,3 +19,4 @@
         <ui:view-control ref="cvfld"/>
     </ui:render>
 </smart:config>
+

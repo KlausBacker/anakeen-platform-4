@@ -46,8 +46,7 @@ class LoadParameters
                 $rules = array_replace_recursive($rules, $currentRule);
             }
 
-            ContextManager::setParameterValue("Ui", "RENDER_PARAMETERS", json_encode($rules)
-            );
+            ContextManager::setParameterValue("Ui", "RENDER_PARAMETERS", json_encode($rules));
         } else {
             throw new Exception(sprintf("No found directory : %s", $directory));
         }
