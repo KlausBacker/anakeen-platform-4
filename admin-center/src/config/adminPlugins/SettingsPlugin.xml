@@ -1,4 +1,4 @@
-<admin:config xmlns:admin="http://www.anakeen.com/ns/admin/">
+<admin:config xmlns:admin="https://platform.anakeen.com/4/schemas/admin/">
     <admin:plugins>
         <admin:plugin name="settingsManagement">
             <admin:title>Technical Settings</admin:title>

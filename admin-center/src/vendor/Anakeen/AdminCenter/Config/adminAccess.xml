@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes-accesses>
+        <!-- Admin group can use admin center routes -->
+        <sde:route-access namespace="AdminCenter" access="Admin" account="gadmin"/>
+    </sde:routes-accesses>
+</sde:config>

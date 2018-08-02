@@ -9,9 +9,10 @@
     </requires>
 
     <post-install>
-        <process command="programs/update_catalog"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/adminAccess.xml">
+        <label>DIR Structure view</label>
+    </process>
     </post-install>
     <post-upgrade>
-        <process command="programs/update_catalog"/>
     </post-upgrade>
 </module>
