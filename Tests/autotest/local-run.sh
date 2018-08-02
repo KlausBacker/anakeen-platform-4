@@ -71,16 +71,32 @@ function main {
 
 		echo "[+] Copying '${SOURCE}' to '${WORK_DIR}'... "
 		if [ -n "${REF}" ]; then
-			GIT_DIR="${SOURCE}/.git" git archive --format=tar "${REF}" | tar -C "${WORK_DIR}" -xf -
+			tar -C "${SOURCE}" -cf - . --exclude=./Tests/autotest/outputs | tar -C "${WORK_DIR}" -xf -
+			(
+				cd "${WORK_DIR}"
+				git checkout --force "${REF}"
+			)
 		else
-			tar -C "${SOURCE}" -cf - . --exclude-vcs | tar -C "${WORK_DIR}" -xf -
+			tar -C "${SOURCE}" -cf - . --exclude=./Tests/autotest/outputs | tar -C "${WORK_DIR}" -xf -
 		fi
 		echo "[+] Done."
+
+
+		local PROPAGATE_SSH_AUTH_SOCK=""
+		if [[ -v SSH_AUTH_SOCK && -n "${SSH_AUTH_SOCK}" ]]; then
+			PROPAGATE_SSH_AUTH_SOCK="--volume ${SSH_AUTH_SOCK}:/SSH_AUTH_SOCK --env=SSH_AUTH_SOCK=/SSH_AUTH_SOCK"
+		fi
+		local PROPAGATE_SSH_PRIVATE_KEY=""
+		if [[ -v SSH_PRIVATE_KEY && -n "${SSH_PRIVATE_KEY}" ]]; then
+			PROPAGATE_SSH_PRIVATE_KEY=$(printf -- "--env=SSH_PRIVATE_KEY=base64:%s" "$(echo "${SSH_PRIVATE_KEY}" | base64 -w0)")
+		fi
 
 		echo "[+] Running docker '${IMAGE}'... "
 		docker run -it --rm \
 			--env="SHARE_USER=$(id -u)" \
 			--env="SHARE_GROUP=$(id -g)" \
+			${PROPAGATE_SSH_AUTH_SOCK} \
+			${PROPAGATE_SSH_PRIVATE_KEY} \
 			--volume "${WORK_DIR}:/autotest/work" \
 			"${IMAGE}" \
 			/autotest/work/${AUTOTEST_SUBDIR}/autotest.sh /autotest/work
