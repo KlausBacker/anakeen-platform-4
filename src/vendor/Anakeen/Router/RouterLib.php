@@ -30,19 +30,16 @@ class RouterLib
 
         $dir = ContextManager::getRootDirectory() . "/" . \Anakeen\Core\Settings::RouterConfigDir;
 
-        $configFiles = scandir($dir);
+        $configFiles = self::getConfigFiles($dir);
         if (is_array($configFiles)) {
             $config = [];
             foreach ($configFiles as $configFile) {
-                if (preg_match("/\\.xml/", $configFile)) {
-                    $conf = self::xmlDecode($dir . "/" . $configFile);
-
-                    if ($conf === null) {
-                        throw new Exception("CORE0019", $dir . "/" . $configFile);
-                    }
-                    $conf = self::normalizeConfig($conf, $configFile);
-                    $config = array_merge_recursive($config, $conf);
+                $conf = self::xmlDecode($dir . "/" . $configFile);
+                if ($conf === null) {
+                    throw new Exception("CORE0019", $dir . "/" . $configFile);
                 }
+                $conf = self::normalizeConfig($conf, $configFile);
+                $config = array_merge_recursive($config, $conf);
             }
 
             $config = json_decode(json_encode($config));
@@ -54,6 +51,28 @@ class RouterLib
         }
     }
 
+    protected static function getConfigFiles($dir)
+    {
+        $result = array();
+
+        $cdir = scandir($dir);
+        foreach ($cdir as $key => $value) {
+            if (!in_array($value, array(".", ".."))) {
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
+                    $filenames = self::getConfigFiles($dir . DIRECTORY_SEPARATOR . $value);
+                    foreach ($filenames as $filename) {
+                        $result[] = sprintf("%s/%s", $value, $filename);
+                    }
+                } else {
+                    if (preg_match("/\\.xml/", $value)) {
+                        $result[] = $value;
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
 
     protected static function xmlDecode($configFile)
     {
@@ -117,8 +136,9 @@ class RouterLib
                             }
                             /** @noinspection PhpUndefinedFieldInspection */
                             foreach ($tagValue->access as $accessValue) {
-                                $nsa=(string)$accessValue->attributes()->ns;
-                                $aclValue=$nsa."::".(string)$accessValue;
+                                /** @noinspection PhpUndefinedFieldInspection */
+                                $nsa = (string)$accessValue->attributes()->ns;
+                                $aclValue = $nsa . "::" . (string)$accessValue;
                                 $rawData[$key][$tagName][$operator][] = $aclValue;
                             }
                         } else {
@@ -220,7 +240,6 @@ class RouterLib
      * @param string $name route name
      *
      * @return RouterInfo|null
-     * @throws Exception
      */
     public static function getRouteInfo($name)
     {

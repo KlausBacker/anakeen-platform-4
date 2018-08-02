@@ -856,6 +856,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->sendTextToEngine();
                 if ($this->dprofid > 0) {
                     $this->accessControl()->setProfil($this->dprofid); // recompute profil if needed
+                    $this->accessControl()->recomputeProfiledDocument();
                     $this->modify(true, array(
                         "profid"
                     ), true);

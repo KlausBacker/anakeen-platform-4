@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes namespace="CoreTest">
         <sde:route name="Routes">
             <sde:priority>0</sde:priority>

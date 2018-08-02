@@ -18,7 +18,10 @@ $loader->addPsr4('SmartStructure\\', __DIR__ . '/../../'.\Anakeen\Core\Settings:
 
 // Add Legacy Autoloader
 spl_autoload_register(function ($classname) {
-
+    if (strpos($classname, '\\') !== false) {
+        // Only legacy if no use namespace
+        return;
+    }
     $classFile = sprintf("%s/../Root/Class.%s.php", __DIR__, $classname);
     if (file_exists($classFile)) {
        // error_log("Legacy require $classFile");
