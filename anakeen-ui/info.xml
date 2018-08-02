@@ -2,51 +2,172 @@
 <module name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
-    <description>A4 : Document interfaces</description>
+    <description>Anakeen Platform : User interfaces</description>
     <requires>
         <module name="smart-data-engine"/>
     </requires>
     <replaces>
-        <module name="dynacase-document-uis-light"/>
-        <module name="dynacase-document-uis"/>
-        <module name="dynacase-less-installer"/>
-        <module name="dynacase-search-ui-html5"/>
-        <module name="anakeen-document-uis"/>
-        <module name="anakeen-ui"/>
     </replaces>
     <post-install>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
-            <label>MASK Family</label>
+            <label>MASK Structure</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
-            <label>CVDOC Family</label>
+            <label>CVDOC Structure</label>
         </process>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
         <process command="./ank.php --system --resetRouteConfig"/>
-        <process command="./ank.php --route=Ui::Admin:LoadParameters"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.constraint.xml">
             <label>CVDOC Add Render Constraint</label>
         </process>
+
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
+            <label>FIELDACCESSLAYER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.views.xml">
+            <label>FIELDACCESSLAYERLIST Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.views.xml">
+            <label>DSEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Pdoc/pdoc.views.xml">
+            <label>PDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.views.xml">
+            <label>REPORT Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.views.xml">
+            <label>HELPPAGE Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.views.xml">
+            <label>CVDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.views.xml">
+            <label>MAILTEMPLATE Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.views.xml">
+            <label>WDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.views.xml">
+            <label>TIMER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
+            <label>MASK Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml">
+            <label>IGROUP Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.views.xml">
+            <label>IUSER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.views.xml">
+            <label>GROUP Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.views.xml">
+            <label>SEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.views.xml">
+            <label>MSEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.views.xml">
+            <label>SSEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.views.xml">
+            <label>DIR Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.views.xml">
+            <label>EXEC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.views.xml">
+            <label>IMAGE Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.views.xml">
+            <label>ROLE Structure view</label>
+        </process>
     </post-install>
 
     <post-upgrade>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
-            <label>MASK Family</label>
+            <label>MASK Structure</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
-            <label>CVDOC Family</label>
+            <label>CVDOC Structure</label>
         </process>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --system --resetRouteConfig"/>
-        <process command="./ank.php --route=Ui::Admin:LoadParameters"/>
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
+            <label>FIELDACCESSLAYER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.views.xml">
+            <label>FIELDACCESSLAYERLIST Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.views.xml">
+            <label>DSEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Pdoc/pdoc.views.xml">
+            <label>PDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.views.xml">
+            <label>REPORT Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.views.xml">
+            <label>HELPPAGE Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.views.xml">
+            <label>CVDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.views.xml">
+            <label>MAILTEMPLATE Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.views.xml">
+            <label>WDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.views.xml">
+            <label>TIMER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
+            <label>MASK Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.views.xml">
+            <label>IGROUP Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.views.xml">
+            <label>IUSER Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Group/group.views.xml">
+            <label>GROUP Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.views.xml">
+            <label>SEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.views.xml">
+            <label>MSEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.views.xml">
+            <label>SSEARCH Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.views.xml">
+            <label>DIR Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.views.xml">
+            <label>EXEC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.views.xml">
+            <label>IMAGE Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.views.xml">
+            <label>ROLE Structure view</label>
+        </process>
     </post-upgrade>
 
 </module>

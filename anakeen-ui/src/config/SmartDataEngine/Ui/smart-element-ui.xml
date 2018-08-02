@@ -1,18 +1,6 @@
 <?xml version="1.0"?>
-<sde:config xmlns:sde="http://www.anakeen.com/ns/sde/1.0">
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes namespace="Ui">
-        <sde:route name="Admin:LoadParameters">
-            <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\LoadParameters</sde:callable>
-            <sde:method>POST</sde:method>
-            <sde:pattern>/api/v2/admin/ui/loadparameters/</sde:pattern>
-            <sde:description>Reload</sde:description>
-            <sde:requiredAccess operator="or">
-                <sde:access ns="Ui">Admin</sde:access>
-                <sde:access ns="Core">Admin</sde:access>
-            </sde:requiredAccess>
-            <sde:authenticated>true</sde:authenticated>
-        </sde:route>
         <sde:route name="i18n">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\Ui\I18nCatalog</sde:callable>

@@ -186,7 +186,18 @@ class RenderConfigManager
         if (isset($renderParameters["families"][$familyName][$key])) {
             return $renderParameters["families"][$familyName][$key];
         }
+
+
         return null;
+    }
+
+    public static function setRenderParameter($familyName, $key, $value)
+    {
+        $renderParameters = ContextManager::getParameterValue("Ui", "RENDER_PARAMETERS");
+        $renderParameters = json_decode($renderParameters, true);
+        $renderParameters["families"][$familyName][$key]=$value;
+
+        ContextManager::setParameterValue("Ui", "RENDER_PARAMETERS", json_encode($renderParameters));
     }
 
     /**
