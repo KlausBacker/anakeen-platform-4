@@ -2,24 +2,18 @@
 <module name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
-    <description>A4 : Document interfaces</description>
+    <description>Anakeen Platform : User interfaces</description>
     <requires>
         <module name="smart-data-engine"/>
     </requires>
     <replaces>
-        <module name="dynacase-document-uis-light"/>
-        <module name="dynacase-document-uis"/>
-        <module name="dynacase-less-installer"/>
-        <module name="dynacase-search-ui-html5"/>
-        <module name="anakeen-document-uis"/>
-        <module name="anakeen-ui"/>
     </replaces>
     <post-install>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.struct.xml">
-            <label>MASK Family</label>
+            <label>MASK Structure</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
-            <label>CVDOC Family</label>
+            <label>CVDOC Structure</label>
         </process>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
         <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
