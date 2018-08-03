@@ -12,11 +12,37 @@ namespace SmartStructure\Fields {
 
     class Ssearch
     {
-        /** [text] Fichier PHP */
+        /**
+        * Fonction
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const se_fr_function='se_fr_function';
+        /**
+        * Fichier PHP
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
         const se_phpfile='se_phpfile';
-        /** [text] Fonction PHP */
+        /**
+        * Fonction PHP
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
         const se_phpfunc='se_phpfunc';
-        /** [text] Argument PHP */
+        /**
+        * Argument PHP
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
         const se_phparg='se_phparg';
 
     }

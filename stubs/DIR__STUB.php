@@ -12,21 +12,105 @@ namespace SmartStructure\Fields {
 
     class Dir
     {
-        /** [longtext] Description */
+        /**
+        * <ul>
+        * <li> <i>extended</i> true </li>
+        * </ul>
+        */ 
+        const fr_basic='fr_basic';
+        /**
+        * Description
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>is-abstract</i> true </li>
+        * <li> <i>type</i> longtext </li>
+        * </ul>
+        */ 
         const ba_desc='ba_desc';
-        /** [array] Smart structure autorisées */
-        const fld_tfam='fld_tfam';
-        /** [text] Smart structure (titre) */
-        const fld_fam='fld_fam';
-        /** [docid("-1")] Smart structure */
-        const fld_famids='fld_famids';
-        /** [enum] Restriction sous Smart structure */
-        const fld_subfam='fld_subfam';
-        /** [enum] Tout ou rien */
+        /**
+        * Couleur intercalaire
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> color </li>
+        * </ul>
+        */ 
+        const gui_color='gui_color';
+        /**
+        * Restrictions
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> Read </li>
+        * </ul>
+        */ 
+        const fld_fr_rest='fld_fr_rest';
+        /**
+        * Tout ou rien
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> dir-fld_allbut </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
         const fld_allbut='fld_allbut';
-        /** [docid("PDOC")] Profil par défaut de document */
+        /**
+        * Smart structure autorisées
+        * <ul>
+        * <li> <i>type</i> array </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const fld_tfam='fld_tfam';
+        /**
+        * Smart structure (titre)
+        * <ul>
+        * <li> <i>access</i> Read </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const fld_fam='fld_fam';
+        /**
+        * Smart structure
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> -1 </li>
+        * <li> <i>type</i> docid </li>
+        * </ul>
+        */ 
+        const fld_famids='fld_famids';
+        /**
+        * Restriction sous Smart structure
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> dir-fld_subfam </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const fld_subfam='fld_subfam';
+        /**
+        * Profils par défaut
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> Read </li>
+        * </ul>
+        */ 
+        const fld_fr_prof='fld_fr_prof';
+        /**
+        * Profil par défaut de document
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> PDOC </li>
+        * <li> <i>type</i> docid </li>
+        * </ul>
+        */ 
         const fld_pdocid='fld_pdocid';
-        /** [docid("PDIR")] Profil par défaut de dossier */
+        /**
+        * Profil par défaut de dossier
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> PDIR </li>
+        * <li> <i>type</i> docid </li>
+        * </ul>
+        */ 
         const fld_pdirid='fld_pdirid';
 
     }
