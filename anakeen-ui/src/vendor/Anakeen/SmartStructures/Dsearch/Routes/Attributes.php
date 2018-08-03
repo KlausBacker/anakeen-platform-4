@@ -32,7 +32,7 @@ class Attributes
         //Propriétés
         $internals = array(
             "title" => ___("doctitle", "searchui"),
-            "revdate" => ___("revdate", "searchui"),
+            "mdate" => ___("mdate", "searchui"),
             "cdate" => ___("cdate", "searchui"),
             "revision" => ___("revision", "searchui"),
             "owner" => ___("id owner", "searchui"),
@@ -47,7 +47,7 @@ class Attributes
             $tmpDoc = SEManager::createTemporaryDocument(1);
         }
         foreach ($internals as $k => $v) {
-            if ($k == "revdate") {
+            if ($k == "mdate") {
                 $type = "date";
             } else {
                 if ($k == "owner") {

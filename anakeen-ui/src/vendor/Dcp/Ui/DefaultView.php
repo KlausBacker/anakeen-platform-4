@@ -25,8 +25,8 @@ class DefaultView extends RenderDefault
     }
 
     /**
-     * @param BarMenu $menu
-     * @param \Anakeen\Core\Internal\SmartElement    $document
+     * @param BarMenu                             $menu
+     * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return BarMenu
      */
@@ -82,7 +82,7 @@ class DefaultView extends RenderDefault
      *
      * @return BarMenu Menu configuration
      */
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document) : BarMenu
+    public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
     {
         $menu = new BarMenu();
 
@@ -130,8 +130,8 @@ class DefaultView extends RenderDefault
 
 
     /**
-     * @param \Anakeen\Core\Internal\SmartElement    $document
-     * @param BarMenu $menu
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param BarMenu                             $menu
      */
     public function appendWorkflowMenu($document, $menu)
     {
@@ -164,8 +164,8 @@ class DefaultView extends RenderDefault
     }
 
     /**
-     * @param \Anakeen\Core\Internal\SmartElement    $document
-     * @param Barmenu $menu
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param Barmenu                             $menu
      */
     public static function appendSystemMenu($document, $menu)
     {
@@ -220,8 +220,8 @@ class DefaultView extends RenderDefault
     /**
      * Get workflow submenu contents
      *
-     * @param \Anakeen\Core\Internal\SmartElement     $doc
-     * @param ListMenu $menu
+     * @param \Anakeen\Core\Internal\SmartElement $doc
+     * @param ListMenu                            $menu
      */
     protected function getWorkflowMenu(\Anakeen\Core\Internal\SmartElement $doc, ListMenu & $menu)
     {
@@ -311,8 +311,8 @@ class DefaultView extends RenderDefault
     /**
      * Add Menu item defined by attribute family
      *
-     * @param \Anakeen\Core\Internal\SmartElement    $doc
-     * @param BarMenu $menu target menu
+     * @param \Anakeen\Core\Internal\SmartElement $doc
+     * @param BarMenu                             $menu target menu
      */
     public function addFamilyMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
     {
@@ -328,8 +328,8 @@ class DefaultView extends RenderDefault
     /**
      * Add Menu item defined by attribute family
      *
-     * @param \Anakeen\Core\Internal\SmartElement    $doc
-     * @param BarMenu $menu target menu
+     * @param \Anakeen\Core\Internal\SmartElement $doc
+     * @param BarMenu                             $menu target menu
      *
      * @throws \Dcp\Ui\Exception
      */
@@ -435,12 +435,12 @@ class DefaultView extends RenderDefault
      *
      * @return DocumentTemplateContext get template controller
      */
-    public function getContextController(\Anakeen\Core\Internal\SmartElement $document) : DocumentTemplateContext
+    public function getContextController(\Anakeen\Core\Internal\SmartElement $document): DocumentTemplateContext
     {
         $controller = parent::getContextController($document);
         if ($document->locked == -1) {
             $controller->offsetSet("isdocumentdeleted", ($document->doctype == "Z"));
-            $controller->offsetSet("formattedRevdate", strftime("%A %d %B %Y %H:%M", $document->revdate));
+            $controller->offsetSet("formattedRevdate", substr($document->mdate, 0, 16));
         }
         return $controller;
     }

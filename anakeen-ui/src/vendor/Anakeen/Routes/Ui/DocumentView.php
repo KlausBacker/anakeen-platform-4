@@ -726,7 +726,7 @@ class DocumentView
     {
         $result = array(
             "id" => $document->id,
-            "revdate" => $document->revdate,
+            "mdate" => $document->mdate,
             "cvid" => $document->cvid,
             "views" => $document->views,
             "fromid" => $document->fromid,
@@ -737,17 +737,17 @@ class DocumentView
         $result[] = $user->id;
         $result[] = $user->memberof;
 
-        $sql = sprintf("select revdate from docfam where id = %d", $result["fromid"]);
+        $sql = sprintf("select mdate from docfam where id = %d", $result["fromid"]);
 
-        DbManager::query($sql, $familyRevdate, true, true);
-        $result[] = $familyRevdate;
+        DbManager::query($sql, $familyMdate, true, true);
+        $result[] = $familyMdate;
 
         $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $document->id);
         DbManager::query($sql, $lastTab, true, true);
         $result[] = $lastTab;
 
         if ($result["cvid"]) {
-            $sql = sprintf("select revdate from docread where id = %d", $result["cvid"]);
+            $sql = sprintf("select mdate from docread where id = %d", $result["cvid"]);
             DbManager::query($sql, $cvDate, true, true);
             $result[] = $cvDate;
         }
