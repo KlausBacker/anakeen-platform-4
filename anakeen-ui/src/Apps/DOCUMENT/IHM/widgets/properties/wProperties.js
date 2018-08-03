@@ -28,7 +28,6 @@ define([
         notConfidential: "Not confidential",
         creationDate: "Creation date",
         lastModificationDate: "Last modification date",
-        lastAccessDate: "Last access date",
         profil: "Profil",
         profilReference: "Profil reference",
         fieldAccess: "Field access",
@@ -75,7 +74,6 @@ define([
         '<tr><td class="properties-separator" colspan="2"></td></tr>' +
         '<tr><td class="properties-description">{{labels.creationDate}}</td><td class="properties-value">{{#formatDate}}{{creationDate}}{{/formatDate}}</td></tr>' +
         '<tr><td class="properties-description">{{labels.lastModificationDate}}</td><td class="properties-value">{{#formatDate}}{{lastModificationDate}}{{/formatDate}}</td></tr>' +
-        '<tr><td class="properties-description">{{labels.lastAccessDate}}</td><td class="properties-value">{{#formatDate}}{{lastAccessDate}}{{/formatDate}}</td></tr>' +
         '<tr><td class="properties-separator" colspan="2"></td></tr>' +
         '<tr><td class="properties-description">{{labels.profil}}</td><td class="properties-value"><a data-document-id="{{security.profil.id}}" href="api/v2/documents/{{security.profil.id}}.html">{{#security.profil.icon}}<img src="{{security.profil.icon}}"/>{{/security.profil.icon}}{{security.profil.title}}</a></td></tr>' +
         '<tr><td class="properties-description">{{labels.profilReference}}</td><td class="properties-value"><a data-document-id="{{security.profil.reference.id}}" href="api/v2/documents/{{security.profil.reference.id}}.html">{{#security.profil.reference.icon}}<img src="{{security.profil.reference.icon}}"/>{{/security.profil.reference.icon}}{{security.profil.reference.title}}</a></td></tr>' +
