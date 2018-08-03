@@ -105,8 +105,6 @@ if ($isSystem) {
         $system->clearFileCache();
     } elseif (Anakeen\Script\ShellManager::getArg("localeGen")) {
         $system->localeGen();
-    } elseif (Anakeen\Script\ShellManager::getArg("style")) {
-        $system->style();
     } else {
         print Anakeen\Script\ShellManager::getUsage();
         exit(1);

@@ -50,9 +50,6 @@ class TestHelpUsage extends TestCaseDcp
                 "importDocuments"
             ),
             array(
-                "setStyle"
-            ),
-            array(
                 "ods2csv"
             ),
             array(

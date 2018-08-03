@@ -31,7 +31,6 @@ class System
         $this->refreshJsVersion();
         $this->resetRouteConfig();
         $this->localeGen();
-        $this->style();
         $this->unStop();
     }
 
@@ -466,21 +465,6 @@ class System
         $this->verbose(1, sprintf("[+] Done.\n"));
     }
 
-
-    /**
-     * @throws Exception
-     */
-    public function style()
-    {
-        $this->verbose(1, sprintf("[+] Recomputing style assets.\n"));
-        $cmd = sprintf("%s/ank.php --script=setStyle 2>&1", escapeshellarg($this->contextRoot));
-        exec($cmd, $output, $ret);
-        if ($ret !== 0) {
-            $this->debug(join("\n", $output) . "\n");
-            throw new Exception(sprintf("Error executing '%s'.", $cmd));
-        }
-        $this->verbose(1, sprintf("[+] Done.\n"));
-    }
 
     /**
      * @throws Exception
