@@ -2,59 +2,75 @@ const xml2js = require("xml2js");
 const File = require("vinyl");
 const path = require("path");
 
+const attrType = {
+  fieldtext: "text",
+  fieldhtmltext: "htmltext",
+  fieldlongtext: "longtext",
+  fieldint: "int",
+  fieldmoney: "money",
+  fieldfloat: "float",
+  fieldcolor: "color",
+  fieldenum: "enum",
+  fielddate: "date",
+  fieldtime: "time",
+  fieldtimestamp: "timestamp",
+  fieldfile: "file",
+  fieldimage: "image",
+  fielddocid: "docid",
+  fieldaccount: "account"
+};
+
+const generateDescription = (attr, type = "") => {
+  if (!attr) {
+    return "";
+  }
+  let desc = "        /**\n";
+  if (type && !attr.type) {
+    attr.type = type;
+  }
+  if (attr.label) {
+    desc += `        * ${attr.label}\n`;
+  }
+  desc += `        * <ul>\n`;
+  Object.keys(attr).forEach(currentKey => {
+    if (currentKey !== "name" && currentKey !== "label") {
+      desc += `        * <li> <i>${currentKey}</i> ${attr[currentKey]} </li>\n`;
+    }
+  });
+  desc += `        * </ul>\n`;
+  desc += "        */ \n";
+  desc += `        const ${attr.name}='${attr.name}';\n`;
+  return desc;
+};
+
 const generateFields = field => {
-  var listFields = "";
-  if (field.fieldset) {
-    field.fieldset.forEach(fs => {
-      listFields += generateFields(fs);
-    });
-  }
-  // [frame] or [type]
-  var typeList = ["frame", "array"];
-  if (field.$ && typeList.indexOf(field.$.type) > 0) {
-    listFields += `        /** [${field.$.type}] ${field.$.label} */\r\n`;
-    listFields += `        const ${field.$.name}='${field.$.name}';\r\n`;
-  }
-  // [text]
-  if (field.fieldtext) {
-    field.fieldtext.forEach(text => {
-      listFields += `        /** [text] ${text.$.label} */\r\n`;
-      listFields += `        const ${text.$.name}='${text.$.name}';\r\n`;
-    });
-  }
-  // [longtext]
-  if (field.fieldlongtext) {
-    field.fieldlongtext.forEach(longtext => {
-      listFields += `        /** [longtext] ${longtext.$.label} */\r\n`;
-      listFields += `        const ${longtext.$.name}='${
-        longtext.$.name
-      }';\r\n`;
-    });
-  }
-  // [docid]
-  if (field.fielddocid) {
-    field.fielddocid.forEach(docid => {
-      listFields += `        /** [docid("${docid.$.relation}")] ${
-        docid.$.label
-      } */\r\n`;
-      listFields += `        const ${docid.$.name}='${docid.$.name}';\r\n`;
-    });
-  }
-  // [enum]
-  if (field.fieldenum) {
-    field.fieldenum.forEach(enuma => {
-      listFields += `        /** [enum] ${enuma.$.label} */\r\n`;
-      listFields += `        const ${enuma.$.name}='${enuma.$.name}';\r\n`;
-    });
-  }
-  // [int]
-  if (field.fieldint) {
-    field.fieldint.forEach(inta => {
-      listFields += `        /** [int] ${inta.$.label} */\r\n`;
-      listFields += `        const ${inta.$.name}='${inta.$.name}';\r\n`;
-    });
-  }
-  return listFields;
+  return Object.keys(field).reduce((accumulator, currentKey) => {
+    if (currentKey === "$") {
+      return accumulator + generateDescription(field[currentKey]);
+    }
+    if (currentKey === "fieldset") {
+      return (
+        accumulator +
+        field[currentKey].reduce((accumulator, subAttr) => {
+          return accumulator + generateFields(subAttr);
+        }, "")
+      );
+    }
+    if (!attrType[currentKey]) {
+      return accumulator;
+    }
+    return (
+      accumulator +
+      field[currentKey].reduce((accumulator, currentAttr) => {
+        if (!currentAttr.$) {
+          return accumulator;
+        }
+        return (
+          accumulator + generateDescription(currentAttr.$, attrType[currentKey])
+        );
+      }, "")
+    );
+  }, "");
 };
 
 const upperCaseFirstLetter = function(str) {
