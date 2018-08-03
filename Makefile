@@ -9,9 +9,15 @@ JS_BUILD_PATH=dist
 ##
 ########################################################################################################################
 
-nodePublish:
+ts_version = $(word 1, $(subst ., ,$1)).$(word 2, $(subst ., ,$1)).$(shell date +%s)
+
+autorelease:
+	@${PRINT_COLOR} "${DEBUG_COLOR}autorelease $@${RESET_COLOR}\n"
+	npm version $(call ts_version, $(shell npm view ./ version))
+
+nodePublish: autorelease
 	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
-	npm publish --force @anakeen/anakeen-cli
+	npm publish
 
 ########################################################################################################################
 ##
