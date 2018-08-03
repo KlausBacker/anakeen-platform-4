@@ -1,7 +1,7 @@
 <template>
     <div class="user-parameters">
         <div class="user-search">
-            <form class="user-search-form">
+            <form class="user-search-form" @submit.prevent>
                 <div class="form-group search-group">
                     <a class="switch-parameters" @click="switchParameters">System parameters</a>
                     <div class="input-group">

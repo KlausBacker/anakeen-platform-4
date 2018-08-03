@@ -12,12 +12,15 @@ export default {
       // Data source for system parameters
       allParametersDataSource: new kendo.data.TreeListDataSource({
         transport: {
-          read: {
-            url: "/api/v2/admin/parameters/"
+          read: options => {
+            this.$ankApi
+              .get("admin/parameters/")
+              .then(options.success)
+              .catch(options.error);
           }
         },
         schema: {
-          data: "data"
+          data: response => response.data.data
         }
       }),
 
@@ -137,23 +140,36 @@ export default {
             .read()
             .then(() => {
               kendo.ui.progress(this.$(".parameters-tree", this.$el), false);
-              this.$emit("ank-admin-notify", {
-                content: {
-                  title: "Parameters loaded",
-                  message: "Parameters successfully loaded from server"
-                },
-                type: "admin-success"
-              });
+              document.querySelector(".ank-notifier").dispatchEvent(
+                new CustomEvent("ankNotification", {
+                  detail: [
+                    {
+                      content: {
+                        title: "Parameters loaded",
+                        textContent:
+                          "Parameters successfully loaded from server"
+                      },
+                      type: "success"
+                    }
+                  ]
+                })
+              );
             })
             .catch(() => {
               kendo.ui.progress(this.$(".parameters-tree", this.$el), false);
-              this.$emit("ank-admin-notify", {
-                content: {
-                  title: "Parameters loading failed",
-                  message: "Loading of parameters from server failed"
-                },
-                type: "admin-error"
-              });
+              document.querySelector(".ank-notifier").dispatchEvent(
+                new CustomEvent("ankNotification", {
+                  detail: [
+                    {
+                      content: {
+                        title: "Parameters loading failed",
+                        textContent: "Loading of parameters from server failed"
+                      },
+                      type: "error"
+                    }
+                  ]
+                })
+              );
             });
         })
         .on("click", ".expand-btn", () => this.expand(true))

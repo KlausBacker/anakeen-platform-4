@@ -8,7 +8,7 @@ import store from "./store";
 import router from "./router";
 import AdminCenter from "./AdminCenter.vue";
 import AnkAxios from "./utils/axios";
-import { onAuthError, onNetworkError } from "./utils/xhrErrors";
+import { onAuthError, onNetworkError, notify } from "./utils/xhrErrors";
 import { PLUGIN_SCHEMA } from "./utils/plugins";
 
 Vue.use(AnkComponents, { webComponents: true });
@@ -16,6 +16,7 @@ Vue.use(DialogInstaller);
 Vue.use(LoadScript);
 Vue.use(AnkAxios, {
   onErrorResponse: error => {
+    notify(error);
     if (error.response === undefined) {
       onNetworkError(store);
     } else if (error.response.status === 403) {

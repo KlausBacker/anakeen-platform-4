@@ -51,13 +51,16 @@ export default {
           // Datasource set to display the users in a grid
           dataSource: {
             transport: {
-              read: {
-                url: "/api/v2/admin/parameters/users/"
+              read: options => {
+                this.$ankApi
+                  .get("admin/parameters/users/")
+                  .then(options.success)
+                  .catch(options.error);
               }
             },
             schema: {
-              data: "data.users",
-              total: "data.total"
+              data: response => response.data.data.users,
+              total: response => response.data.data.total
             },
             serverPaging: true,
             pageSize: 10
@@ -226,26 +229,39 @@ export default {
                 this.$(".user-parameters-tree", this.$el),
                 false
               );
-              this.$emit("ank-admin-notify", {
-                content: {
-                  title: "Parameters loaded",
-                  message: "Parameters successfully loaded from server"
-                },
-                type: "admin-success"
-              });
+              document.querySelector(".ank-notifier").dispatchEvent(
+                new CustomEvent("ankNotification", {
+                  detail: [
+                    {
+                      content: {
+                        title: "Parameters loaded",
+                        textContent:
+                          "Parameters successfully loaded from server"
+                      },
+                      type: "success"
+                    }
+                  ]
+                })
+              );
             })
             .catch(() => {
               kendo.ui.progress(
-                this.$("user-parameters-tree", this.$el),
+                this.$(".user-parameters-tree", this.$el),
                 false
               );
-              this.$emit("ank-admin-notify", {
-                content: {
-                  title: "Parameters loading failed",
-                  message: "Loading of parameters from server failed"
-                },
-                type: "admin-error"
-              });
+              document.querySelector(".ank-notifier").dispatchEvent(
+                new CustomEvent("ankNotification", {
+                  detail: [
+                    {
+                      content: {
+                        title: "Parameters loading failed",
+                        textContent: "Loading of parameters from server failed"
+                      },
+                      type: "error"
+                    }
+                  ]
+                })
+              );
             });
         })
         .on("click", ".expand-btn", () => this.expand(true))
@@ -287,12 +303,15 @@ export default {
       this.actualLogin = dataItem.login;
       this.userParametersDataSource = new kendo.data.TreeListDataSource({
         transport: {
-          read: {
-            url: "/api/v2/admin/parameters/users/" + this.actualLogin + "/"
+          read: options => {
+            this.$ankApi
+              .get("admin/parameters/users/" + this.actualLogin + "/")
+              .then(options.success)
+              .catch(options.error);
           }
         },
         schema: {
-          data: "data"
+          data: response => response.data.data
         }
       });
       this.parametersTree.setDataSource(this.userParametersDataSource);
@@ -397,13 +416,16 @@ export default {
       if (user.trim()) {
         let usersDataSource = new kendo.data.DataSource({
           transport: {
-            read: {
-              url: "/api/v2/admin/parameters/users/search/" + user + "/"
+            read: options => {
+              this.$ankApi
+                .get("admin/parameters/users/search/" + user + "/")
+                .then(options.success)
+                .catch(options.error);
             }
           },
           schema: {
-            data: "data.users",
-            total: "data.total"
+            data: response => response.data.data.users,
+            total: response => response.data.data.total
           },
           serverPaging: true,
           pageSize: 10

@@ -25,22 +25,32 @@ export default {
       }),
       allRoutesDataSource: new kendo.data.TreeListDataSource({
         transport: {
-          read: "/api/v2/admin/routes/"
+          read: options => {
+            this.$ankApi
+              .get("admin/routes/")
+              .then(options.success)
+              .catch(options.error);
+          }
         },
         schema: {
           data: function(response) {
-            return response.data;
+            return response.data.data;
           }
         },
         sort: { field: "rowLevel", dir: "asc" }
       }),
       allMiddlewareDataSource: new kendo.data.TreeListDataSource({
         transport: {
-          read: "/api/v2/admin/middlewares/"
+          read: options => {
+            this.$ankApi
+              .get("admin/middlewares/")
+              .then(options.success)
+              .catch(options.error);
+          }
         },
         schema: {
           data: function(response) {
-            return response.data;
+            return response.data.data;
           }
         }
       })
@@ -304,23 +314,35 @@ export default {
               .read()
               .then(() => {
                 kendo.ui.progress(this.$(".routes-tree"), false);
-                this.$emit("ank-admin-notify", {
-                  content: {
-                    title: "Routes loading",
-                    message: "Routes successfully loaded from server"
-                  },
-                  type: "admin-success"
-                });
+                document.querySelector(".ank-notifier").dispatchEvent(
+                  new CustomEvent("ankNotification", {
+                    detail: [
+                      {
+                        content: {
+                          title: "Routes loading",
+                          textContent: "Routes successfully loaded from server"
+                        },
+                        type: "success"
+                      }
+                    ]
+                  })
+                );
               })
               .catch(() => {
                 kendo.ui.progress(this.$(".routes-tree"), false);
-                this.$emit("ank-admin-notify", {
-                  content: {
-                    title: "Routes loading failed",
-                    message: "Routes failed to load from server"
-                  },
-                  type: "admin-error"
-                });
+                document.querySelector(".ank-notifier").dispatchEvent(
+                  new CustomEvent("ankNotification", {
+                    detail: [
+                      {
+                        content: {
+                          title: "Routes loading failed",
+                          textContent: "Routes failed to load from server"
+                        },
+                        type: "error"
+                      }
+                    ]
+                  })
+                );
               });
           })
           .on("click", ".routeExpand-btn", () =>
@@ -458,23 +480,36 @@ export default {
               .read()
               .then(() => {
                 kendo.ui.progress(this.$(".middlewares-tree"), false);
-                this.$emit("ank-admin-notify", {
-                  content: {
-                    title: "Middleware loading",
-                    message: "Middlewares successfully loaded from server"
-                  },
-                  type: "admin-success"
-                });
+                document.querySelector(".ank-notifier").dispatchEvent(
+                  new CustomEvent("ankNotification", {
+                    detail: [
+                      {
+                        content: {
+                          title: "Middleware loading",
+                          textContent:
+                            "Middlewares successfully loaded from server"
+                        },
+                        type: "success"
+                      }
+                    ]
+                  })
+                );
               })
               .catch(() => {
                 kendo.ui.progress(this.$(".middlewares-tree"), false);
-                this.$emit("ank-admin-notify", {
-                  content: {
-                    title: "Middlewares loading failed",
-                    message: "Middlewares failed to load from server"
-                  },
-                  type: "admin-error"
-                });
+                document.querySelector(".ank-notifier").dispatchEvent(
+                  new CustomEvent("ankNotification", {
+                    detail: [
+                      {
+                        content: {
+                          title: "Middlewares loading failed",
+                          textContent: "Middlewares failed to load from server"
+                        },
+                        type: "error"
+                      }
+                    ]
+                  })
+                );
               });
           })
           .on("click", ".routeExpand-btn", () =>
@@ -545,22 +580,36 @@ export default {
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
             elt.active = true;
-            this.$emit("ank-admin-notify", {
-              content: {
-                title: "Route Activation",
-                message: "The route " + elt.name + " has been activated\n"
-              },
-              type: "admin-success"
-            });
+            document.querySelector(".ank-notifier").dispatchEvent(
+              new CustomEvent("ankNotification", {
+                detail: [
+                  {
+                    content: {
+                      title: "Route Activation",
+                      textContent:
+                        "The route " + elt.name + " has been activated\n"
+                    },
+                    type: "success"
+                  }
+                ]
+              })
+            );
             kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
-            this.$emit("ank-admin-notify", {
-              content: {
-                title: "Route Activation",
-                message: "The route " + elt.name + " failed to be activated\n"
-              },
-              type: "admin-error"
-            });
+            document.querySelector(".ank-notifier").dispatchEvent(
+              new CustomEvent("ankNotification", {
+                detail: [
+                  {
+                    content: {
+                      title: "Route Activation",
+                      textContent:
+                        "The route " + elt.name + " failed to be activated\n"
+                    },
+                    type: "error"
+                  }
+                ]
+              })
+            );
             kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
           }
@@ -576,22 +625,36 @@ export default {
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
             elt.active = false;
-            this.$emit("ank-admin-notify", {
-              content: {
-                title: "Route Deactivation",
-                message: "The route " + elt.name + " has been deactivated\n"
-              },
-              type: "admin-success"
-            });
+            document.querySelector(".ank-notifier").dispatchEvent(
+              new CustomEvent("ankNotification", {
+                detail: [
+                  {
+                    content: {
+                      title: "Route Deactivation",
+                      textContent:
+                        "The route " + elt.name + " has been deactivated\n"
+                    },
+                    type: "success"
+                  }
+                ]
+              })
+            );
             kendo.ui.progress(this.$(".routes-tree"), false);
           } else {
-            this.$emit("ank-admin-notify", {
-              content: {
-                title: "Route Deactivation",
-                message: "The route " + elt.name + " failed to be deactivated\n"
-              },
-              type: "admin-error"
-            });
+            document.querySelector(".ank-notifier").dispatchEvent(
+              new CustomEvent("ankNotification", {
+                detail: [
+                  {
+                    content: {
+                      title: "Route Deactivation",
+                      textContent:
+                        "The route " + elt.name + " failed to be deactivated\n"
+                    },
+                    type: "error"
+                  }
+                ]
+              })
+            );
             kendo.ui.progress(this.$(".routes-tree"), false);
             throw new Error(response);
           }

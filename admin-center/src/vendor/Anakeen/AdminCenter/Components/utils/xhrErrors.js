@@ -43,3 +43,26 @@ export const onNetworkError = store => {
     ]
   });
 };
+
+export const notify = r => {
+  let message = "";
+  if (r && r.response && r.response.status) {
+    message = "Error " + r.response.status;
+  } else {
+    message = "no connection";
+  }
+  document.querySelector(".ank-notifier").dispatchEvent(
+    new CustomEvent("ankNotification", {
+      detail: [
+        {
+          content: {
+            title: "Network error",
+            textContent: message
+          },
+          type: "error"
+        }
+      ]
+    })
+  );
+  return r;
+};
