@@ -59,7 +59,6 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "profid",
             "usefor",
             "cdate",
-            "adate",
             "mdate",
             "comment",
             "classname",
@@ -195,13 +194,6 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "filterable" => true,
                 "label" => "prop_cdate"
             ), # N_("prop_cdate")
-            "adate" => array(
-                "type" => "timestamp",
-                "displayable" => true,
-                "sortable" => true,
-                "filterable" => true,
-                "label" => "prop_adate"
-            ), # N_("prop_adate"),
             "mdate" => array(
                 "type" => "timestamp",
                 "displayable" => true,
@@ -433,12 +425,6 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var string date 'YYYY-MM-DD'
      */
     public $cdate;
-    /**
-     * date of latest access
-     *
-     * @var string date 'YYYY-MM-DD'
-     */
-    public $adate;
     /**
      * @deprecated old history notation
      * @var string
@@ -709,7 +695,6 @@ create table doc ( id int not null,
                    mdate timestamp,
                    version text,
                    cdate timestamp,
-                   adate timestamp,
                    comment text,
                    classname text,
                    state text,
@@ -831,11 +816,9 @@ create unique index i_docir on doc(initid, revision);";
         $this->select($this->id);
         // set creation date
         $this->cdate = Date::getNow(true);
-        $this->adate = $this->cdate;
         $this->mdate = Date::getNow(true);
         $this->modify(true, array(
             "cdate",
-            "adate",
             "mdate"
         ), true); // to force also execute sql trigger
         if ($this->doctype !== 'C') {
@@ -1341,7 +1324,6 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->revision = 0;
         $cdoc->cdate = $this->cdate;
         $cdoc->mdate = $this->mdate;
-        $cdoc->adate = $this->adate;
         $cdoc->locked = $this->locked;
         $cdoc->profid = $this->profid;
         $cdoc->dprofid = $this->dprofid;
@@ -7419,7 +7401,6 @@ create unique index i_docir on doc(initid, revision);";
      * [mime_s] => application/pdf
      * [cdate] => 24/12/2010 11:44:36
      * [mdate] => 24/12/2010 11:44:41
-     * [adate] => 25/03/2011 08:13:34
      * [teng_state] => 1
      * [teng_lname] => pdf
      * [teng_vid] => 15
@@ -7457,7 +7438,7 @@ create unique index i_docir on doc(initid, revision);";
      * return a property of vault file value
      *
      * @param string $filesvalue the file value : like application/pdf|12345
-     * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, adate, teng_state, teng_lname, teng_vid, teng_comment, path
+     * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, teng_state, teng_lname, teng_vid, teng_comment, path
      * @param string $returnType if "array" return indexed array else return VaultFileInfo object
      *
      * @return array|string|\VaultFileInfo value of property or array of all properties if no key

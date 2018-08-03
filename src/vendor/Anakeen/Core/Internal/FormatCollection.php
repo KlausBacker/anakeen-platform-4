@@ -136,10 +136,7 @@ class FormatCollection
      * family information
      */
     const propFamily = "family";
-    /**
-     * Last access date
-     */
-    const propLastAccessDate = "lastAccessDate";
+
     /**
      * Last modification date
      */
@@ -205,10 +202,7 @@ class FormatCollection
      * revision date
      */
     const mdate = "mdate";
-    /**
-     * access date
-     */
-    const adate = "adate";
+
     /**
      * creation date
      */
@@ -229,7 +223,6 @@ class FormatCollection
     {
         $keys = array_keys(\Anakeen\Core\Internal\SmartElement::$infofields);
         $keys[] = self::propFamily;
-        $keys[] = self::propLastAccessDate;
         $keys[] = self::propLastModificationDate;
         $keys[] = self::propCreationDate;
         $keys[] = self::propCreatedBy;
@@ -557,14 +550,10 @@ class FormatCollection
             case self::propUrl:
                 return sprintf("/api/v2/documents/%s.html", $doc->id);
             case self::mdate:
-                return $this->getFormatDate(date("Y-m-d H:i:s", intval($doc->$propName)), $this->propDateStyle);
             case self::cdate:
-            case self::adate:
                 return $this->getFormatDate($doc->$propName, $this->propDateStyle);
             case self::propFamily:
                 return $this->getFamilyInfo($doc);
-            case self::propLastAccessDate:
-                return $this->getFormatDate($doc->adate, $this->propDateStyle);
             case self::propLastModificationDate:
                 return $this->getFormatDate($doc->mdate, $this->propDateStyle);
             case self::propCreationDate:

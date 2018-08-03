@@ -2888,9 +2888,6 @@ msgstr ""
 msgid "profil id unkonow %s"
 msgstr ""
 
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_adate"
-msgstr "access date"
 
 #. _COMMENT: Doc (Class.Doc.php)
 msgid "prop_allocated"
