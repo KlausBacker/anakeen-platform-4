@@ -936,7 +936,7 @@ function getReportColumns($dbaccess, $famid, $name = "")
     // Properties
     $propList = array(
         "title" => _("doctitle"),
-        "revdate" => _("revdate"),
+        "mdate" => _("mdate"),
         "revision" => _("revision"),
         "owner" => _("owner"),
         "state" => _("step"),

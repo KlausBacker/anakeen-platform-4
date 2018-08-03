@@ -227,7 +227,7 @@ class DocumentData
     protected static function getDocumentEtag($id)
     {
         $result = array();
-        $sql = sprintf("select id, revdate, views from docread where id = %d", $id);
+        $sql = sprintf("select id, mdate, views from docread where id = %d", $id);
 
         DbManager::query($sql, $result, false, true);
         $user = \Anakeen\Core\ContextManager::getCurrentUser();

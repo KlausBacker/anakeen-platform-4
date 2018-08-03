@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Core\Utils\Date;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
@@ -161,7 +162,7 @@ class DocumentHistory
                     ),
 
                     "version" => $revision->version,
-                    "revisionDate" => strftime("%Y-%m-%dT%T", $revision->revdate)
+                    "revisionDate" => Date::rawToIsoDate($revision->mdate)
                 ),
                 "messages" => $history
             );

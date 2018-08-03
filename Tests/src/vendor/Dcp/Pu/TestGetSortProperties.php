@@ -64,7 +64,7 @@ class TestGetSortProperties extends TestCaseDcpCommonFamily
                                 'sort' => 'desc'
                             ) ,
                             array(
-                                'id' => 'revdate',
+                                'id' => 'mdate',
                                 'sort' => 'desc'
                             ) ,
                             array(
@@ -90,7 +90,7 @@ class TestGetSortProperties extends TestCaseDcpCommonFamily
                                 'sort' => 'desc'
                             ) ,
                             array(
-                                'id' => 'revdate',
+                                'id' => 'mdate',
                                 'sort' => 'desc'
                             ) ,
                             array(

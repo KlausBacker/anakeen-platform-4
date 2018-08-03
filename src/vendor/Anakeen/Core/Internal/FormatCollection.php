@@ -204,7 +204,7 @@ class FormatCollection
     /**
      * revision date
      */
-    const revdate = "revdate";
+    const mdate = "mdate";
     /**
      * access date
      */
@@ -556,7 +556,7 @@ class FormatCollection
                 return $this->getState($doc);
             case self::propUrl:
                 return sprintf("/api/v2/documents/%s.html", $doc->id);
-            case self::revdate:
+            case self::mdate:
                 return $this->getFormatDate(date("Y-m-d H:i:s", intval($doc->$propName)), $this->propDateStyle);
             case self::cdate:
             case self::adate:
@@ -566,7 +566,7 @@ class FormatCollection
             case self::propLastAccessDate:
                 return $this->getFormatDate($doc->adate, $this->propDateStyle);
             case self::propLastModificationDate:
-                return $this->getFormatDate(date("Y-m-d H:i:s", $doc->revdate), $this->propDateStyle);
+                return $this->getFormatDate($doc->mdate, $this->propDateStyle);
             case self::propCreationDate:
                 if ($doc->revision == 0) {
                     return $this->getFormatDate($doc->cdate, $this->propDateStyle);

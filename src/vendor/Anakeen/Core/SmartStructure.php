@@ -86,7 +86,7 @@ create unique index idx_idfam on docfam(id);";
             'initid' => array(
                 'sort' => 'desc',
             ),
-            'revdate' => array(
+            'mdate' => array(
                 'sort' => 'desc',
             ),
             'state' => array(

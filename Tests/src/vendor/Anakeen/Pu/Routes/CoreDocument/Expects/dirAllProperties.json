@@ -43,7 +43,7 @@
                 "owner": "1",
                 "postitid": null,
                 "prelid": null,
-                "revdate": "%isoDate%",
+                "mdate": "%isoDate%",
                 "revision": 0,
                 "revisionData": {
                     "isModified": false,

@@ -32,6 +32,7 @@ use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Anakeen\Core\Utils\Date;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
@@ -59,7 +60,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "usefor",
             "cdate",
             "adate",
-            "revdate",
+            "mdate",
             "comment",
             "classname",
             "state",
@@ -201,13 +202,13 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "filterable" => true,
                 "label" => "prop_adate"
             ), # N_("prop_adate"),
-            "revdate" => array(
+            "mdate" => array(
                 "type" => "timestamp",
                 "displayable" => true,
                 "sortable" => true,
                 "filterable" => true,
-                "label" => "prop_revdate"
-            ), # N_("prop_revdate"),
+                "label" => "prop_mdate"
+            ), # N_("prop_mdate"),
             "comment" => array(
                 "type" => "text",
                 "displayable" => false,
@@ -425,7 +426,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      *
      * @var int
      */
-    public $revdate;
+    public $mdate;
     /**
      * date of creation
      *
@@ -705,7 +706,7 @@ create table doc ( id int not null,
                    lmodify char DEFAULT 'N',
                    profid int DEFAULT 0,
                    usefor text DEFAULT 'N',
-                   revdate int,
+                   mdate timestamp,
                    version text,
                    cdate timestamp,
                    adate timestamp,
@@ -829,14 +830,13 @@ create unique index i_docir on doc(initid, revision);";
         unset($this->fields["svalues"]);
         $this->select($this->id);
         // set creation date
-        $this->cdate = $this->getTimeDate(0, true);
+        $this->cdate = Date::getNow(true);
         $this->adate = $this->cdate;
-        $date = gettimeofday();
-        $this->revdate = $date['sec'];
+        $this->mdate = Date::getNow(true);
         $this->modify(true, array(
             "cdate",
             "adate",
-            "revdate"
+            "mdate"
         ), true); // to force also execute sql trigger
         if ($this->doctype !== 'C') {
             if ($this->doctype !== "T") {
@@ -1020,8 +1020,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->svalues = $this->getExtraSearchableDisplayValues();
                 $this->fields["svalues"] = "svalues";
             }
-            $date = gettimeofday();
-            $this->revdate = $date['sec'];
+            $this->mdate = Date::getNow(true);
             $this->version = $this->getVersion();
             $this->lmodify = 'Y';
         }
@@ -1341,7 +1340,7 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->initid = $this->id;
         $cdoc->revision = 0;
         $cdoc->cdate = $this->cdate;
-        $cdoc->revdate = $this->revdate;
+        $cdoc->mdate = $this->mdate;
         $cdoc->adate = $this->adate;
         $cdoc->locked = $this->locked;
         $cdoc->profid = $this->profid;
@@ -1905,8 +1904,8 @@ create unique index i_docir on doc(initid, revision);";
                 $this->doctype = 'Z'; // Zombie Doc
                 $this->locked = -1;
                 $this->lmodify = 'D'; // indicate last delete revision
-                $date = gettimeofday();
-                $this->revdate = $date['sec']; // Delete date
+
+                $this->mdate = Date::getNow(true);
 
                 global $_SERVER;
 
@@ -1921,7 +1920,7 @@ create unique index i_docir on doc(initid, revision);";
 
                 $err = $this->modify(true, array(
                     "doctype",
-                    "revdate",
+                    "mdate",
                     "locked",
                     "owner",
                     "lmodify"
@@ -4665,7 +4664,7 @@ create unique index i_docir on doc(initid, revision);";
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
-        $h->date = date("d-m-Y H:i:s") . substr(microtime(), 1, 8);
+        $h->date = Date::getNow(true);
         if ($uid > 0) {
             $u = new \Anakeen\Core\Account("", $uid);
         } else {
@@ -5099,8 +5098,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->allocated = 0; // cannot allocated fixed document
         $this->owner = ContextManager::getCurrentUser()->id; // rev user
         $this->postitid = 0;
-        $date = gettimeofday();
-        $this->revdate = $date['sec']; // change rev date
+        $this->mdate = Date::getNow(true); // change rev date
         $point = "dcp:revision" . $this->id;
         DbManager::savePoint($point);
         if ($comment != '') {

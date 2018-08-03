@@ -112,7 +112,7 @@ class ExportXmlDocument
         $lay->set("version", $this->document->getVersion());
         $lay->set("state", $this->document->getState());
         $lay->set("title", htmlspecialchars($this->document->getTitle(), ENT_QUOTES));
-        $lay->set("mdate", strftime("%FT%H:%M:%S", $this->document->revdate));
+        $lay->set("mdate", $this->document->mdate);
         $lay->set("flat", (!$this->includeSchemaReference || !$this->structureAttributes));
         $la = $this->document->GetFieldAttributes();
         $level1 = array();

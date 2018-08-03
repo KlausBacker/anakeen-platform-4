@@ -39,7 +39,7 @@ class ReportHooks extends \SmartStructure\Dsearch
     {
         return array(
             "title" => _("doctitle"),
-            "revdate" => _("revdate"),
+            "mdate" => _("mdate"),
             "id" => _("document id"),
             "revision" => _("revision"),
             "state" => _("step"),
@@ -382,8 +382,6 @@ class ReportHooks extends \SmartStructure\Dsearch
     protected function convertInternalElement($internalName, \Anakeen\Core\Internal\SmartElement $doc)
     {
         switch ($internalName) {
-            case "revdate":
-                return strftime("%x %T", $doc->getRawValue($internalName));
             case "state":
                 return $doc->getStatelabel();
             case "title":

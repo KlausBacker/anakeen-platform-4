@@ -670,8 +670,7 @@ class ImportDocumentDescription
             $this->doc->doctype = "S";
         }
         if ($ferr == "") {
-            $now = gettimeofday();
-            $this->doc->revdate = $now['sec'];
+            $this->doc->mdate = \Anakeen\Core\Utils\Date::getNow(true);
             $this->doc->modify();
 
 
