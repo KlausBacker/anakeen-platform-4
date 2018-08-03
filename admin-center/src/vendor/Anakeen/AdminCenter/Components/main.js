@@ -1,6 +1,6 @@
 import Vue from "vue";
 import LoadScript from "vue-plugin-load-script";
-import AnkComponents from "ank-components";
+import AnkComponents from "@anakeen/ank-components";
 import "@progress/kendo-ui/js/kendo.dialog";
 import "@progress/kendo-ui/js/kendo.notification";
 import { DialogInstaller } from "@progress/kendo-dialog-vue-wrapper";

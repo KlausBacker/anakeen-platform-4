@@ -97,7 +97,7 @@ const devComponentConfig = merge([
     },
     parts.setFreeVariable('process.env.NODE_ENV', 'debug'),
     parts.devServer({
-        contentBase: PATHS.build,
+        contentBase: false,
         publicPath: 'AdminCenter/debug/',
         host: process.env.HOST,
         port: process.env.PORT,

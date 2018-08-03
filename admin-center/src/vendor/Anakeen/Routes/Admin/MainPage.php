@@ -21,29 +21,23 @@ class MainPage
         $version = \Dcp\Ui\UIGetAssetPath::getWs();
 
         $data = [
-//            "JS" => [
-//                ["key" =>"jquery",
-//                "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()],
-//                [
-//                    "key" =>"kendo",
-//                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
-//                ],
-//                ["key" =>"ank-components",
-//                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()]
-//            ],
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => "/css/ank/document/bootstrap.css?ws=" . $version
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/bootstrap.min.css")
                 ],
                 [
                     "key" => "kendo",
-                    "path" => "/css/ank/document/kendo.css?ws=" . $version
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/kendo.min.css")
+                ],
+                [
+                    "key" => "components",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/components.min.css")
                 ],
                 [
                     "key" => "admin",
-                    "path" => '/css/ank/admin-center/admin-center.css?ws='.$version
-                ]
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/admin.min.css")
+                ],
             ]
         ];
 
