@@ -26,9 +26,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.profil.xml">
             <label>Profiling helppage structure</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.profil.csv">
-            <label>Profiling folders structure</label>
-        </process>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.profil.xml">
             <label>Profiling account structures</label>
@@ -39,7 +36,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/system-profil.xml">
             <label>Profiling system structures</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Profiles/AuthentMailProfil.csv">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Profiles/AuthentMailProfil.xml">
             <label>Profiling authent mail</label>
         </process>
 
@@ -70,6 +67,8 @@
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml">
             <label>Field Access Layer List</label>
-        </process>
+        </process> <process command="programs/resetAccess">
+        <label>Reset Default Access</label>
+    </process>
     </post-upgrade>
 </module>
