@@ -6,20 +6,25 @@
 
 namespace Dcp;
 
-if (! defined("ALTSEPCHAR")) {
+if (!defined("ALTSEPCHAR")) {
     define("ALTSEPCHAR", ' --- ');
 }
+
 class WriteCsv
 {
     public static $enclosure = '';
     public static $separator = ';';
     public static $encoding = "utf-8";
+
     /**
      * @param resource $handler
-     * @param array $data
+     * @param array    $data
      */
     public static function fput($handler, array $data)
     {
+        foreach ($data as $k => $datum) {
+            $data[$k] = self::flatValue($datum);
+        }
         if (empty(self::$enclosure)) {
             //str_replace(SEPCHAR, ALTSEPCHAR
             $cleanData = array_map(function ($item) {
@@ -46,5 +51,13 @@ class WriteCsv
             }
             fputcsv($handler, $data, self::$separator, self::$enclosure);
         }
+    }
+
+    public static function flatValue($v)
+    {
+        if (is_array($v)) {
+            $v = implode("\n", $v);
+        }
+        return $v;
     }
 }

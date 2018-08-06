@@ -33,6 +33,7 @@ use Anakeen\Core\Internal\Format\StandardAttributeValue;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\Utils\Date;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
@@ -1867,9 +1868,9 @@ create unique index i_docir on doc(initid, revision);";
             }
 
             if (!$nopost) {
-                $this->inHook=true;
+                $this->inHook = true;
                 $err = $this->getHooks()->trigger(SmartHooks::PREDELETE);
-                $this->inHook=false;
+                $this->inHook = false;
                 if ($err != '') {
                     return $err;
                 }
@@ -1909,9 +1910,9 @@ create unique index i_docir on doc(initid, revision);";
                 ), true);
                 if ($err == "") {
                     if (!$nopost) {
-                        $this->inHook=true;
+                        $this->inHook = true;
                         $msg = $this->getHooks()->trigger(SmartHooks::POSTDELETE);
-                        $this->inHook=false;
+                        $this->inHook = false;
                         if ($msg != '') {
                             $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                         }
@@ -2020,7 +2021,7 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($array)) {
             $this->getHooks()->resetListeners();
 
-            $this->inHook=true;
+            $this->inHook = true;
             $this->getHooks()->trigger(SmartHooks::PREAFFECT, $array, $more, $reset);
 
             if ($more) {
@@ -2064,7 +2065,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             $this->isset = true;
             $this->getHooks()->trigger(SmartHooks::POSTAFFECT, $array, $more, $reset);
-            $this->inHook=false;
+            $this->inHook = false;
         }
     }
 
@@ -3095,9 +3096,9 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return array|string the list of attribute values
      */
-    final public function getMultipleRawValues($idAttr, $def = "", $index = -1)
+    final public function getMultipleRawValues($idAttr, $def = [], $index = -1)
     {
-        $v = $this->getRawValue("$idAttr", null);
+        $v = $this->getRawValue($idAttr, null);
         if ($v === null) {
             if ($index == -1) {
                 return array();
@@ -3113,10 +3114,14 @@ create unique index i_docir on doc(initid, revision);";
                 return $def;
             }
         }
+        $oa = $this->getAttribute($idAttr);
+        if ($oa->isMultiple() === false) {
+            return [$v];
+        }
         $t = $this->rawValueToArray($v);
         if ($index == -1) {
             $oa = $this->getAttribute($idAttr, $nothing);
-            if ($oa && $oa->type == "xml") {
+            if ($oa && $oa->type === "xml") {
                 foreach ($t as $k => $v) {
                     $t[$k] = str_replace('<BR>', "\n", $v);
                 }
@@ -3125,7 +3130,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (isset($t[$index])) {
             $oa = $this->getAttribute($idAttr, $nothing);
-            if ($oa && $oa->type == "xml") {
+            if ($oa && $oa->type === "xml") {
                 $t[$index] = str_replace('<BR>', "\n", $t[$index]);
             }
             return $t[$index];
@@ -3507,7 +3512,6 @@ create unique index i_docir on doc(initid, revision);";
 
                 if (strcmp($this->$attrid, $value) != 0
                     && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0) {
-                    // print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
                     if ($oattr->repeat) {
                         $tvalues = $this->rawValueToArray($value);
                     } else {
@@ -3517,7 +3521,9 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($tvalues as $kvalue => $avalue) {
                         if (($avalue != "") && ($avalue != "\t")) {
                             if ($oattr) {
-                                $avalue = trim($avalue);
+                                if (is_string($avalue)) {
+                                    $avalue = trim($avalue);
+                                }
                                 $tvalues[$kvalue] = $avalue;
                                 switch ($oattr->type) {
                                     case 'account':
@@ -3720,7 +3726,11 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                     //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
-                    $rawValue = implode("\n", $tvalues);
+                    if ($oattr->isMultiple()) {
+                        $rawValue = $this->arrayToRawValue($tvalues);
+                    } else {
+                        $rawValue = implode("\n", $tvalues);
+                    }
                     if (!$this->_setValueCompleteArray && $this->$attrid != $rawValue) {
                         $this->_oldvalue[$attrid] = $this->$attrid;
                         $this->hasChanged = true;
@@ -5467,9 +5477,9 @@ create unique index i_docir on doc(initid, revision);";
             $copy->accessControl()->setProfil($cdoc->cprofid);
         }
 
-        $this->inHook=true;
+        $this->inHook = true;
         $err = $copy->getHooks()->trigger(SmartHooks::PREDUPLICATE, $this);
-        $this->inHook=false;
+        $this->inHook = false;
         if ($err != "") {
             return $err;
         }
@@ -5484,9 +5494,9 @@ create unique index i_docir on doc(initid, revision);";
             $copy->duplicateFiles();
         }
 
-        $copy->inHook=true;
+        $copy->inHook = true;
         $msg = $copy->getHooks()->trigger(SmartHooks::POSTDUPLICATE);
-        $copy->inHook=false;
+        $copy->inHook = false;
         if ($msg != "") {
             $copy->addHistoryEntry($msg, \DocHisto::MESSAGE);
         }
@@ -6181,7 +6191,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($v === "" || $v === null) {
             return array();
         }
-        return explode("\n", str_replace("\r", "", $v));
+        return Postgres::stringToArray($v);
     }
 
 
@@ -6197,11 +6207,10 @@ create unique index i_docir on doc(initid, revision);";
      */
     public static function arrayToRawValue($v, $br = '<BR>')
     {
-        $v = str_replace("\n", $br, $v);
         if (count($v) == 0) {
             return "";
         }
-        return implode("\n", $v);
+        return Postgres::arrayToString($v);
     }
 
 
@@ -6899,7 +6908,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($ok) {
                     if ($oattr->type == "array") {
                         if ($method) {
-                            $values = json_decode($dval, true);
+                            $values = $dval;
                             if ($values === null) {
                                 $values = $this->applyMethod($dval, null);
                                 if ($values === null) {
@@ -6929,8 +6938,15 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     } else {
                         if ($method) {
-                            $this->setValue($aid, $this->GetValueMethod($dval));
+                            $val = $this->GetValueMethod($dval);
+                            if ($oattr->isMultiple()) {
+                                $val = [$val];
+                            }
+                            $this->setValue($aid, $val);
                         } else {
+                            if ($oattr->isMultiple()) {
+                                $dval = [$dval];
+                            }
                             $this->setValue($aid, $dval); // raw data
                         }
                     }

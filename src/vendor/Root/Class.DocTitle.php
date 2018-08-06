@@ -23,11 +23,11 @@ class DocTitle
      * return false if access deny
      * return null if relation not found
      *
-     * @param int    $docid        relation documentg id
-     * @param bool   $latest       true if it is latest
-     * @param \Anakeen\Core\Internal\SmartElement    $doc          document where comes from relation
-     * @param string $docrevOption docrev attribute option
-     * @param array  $info         more information about document target (revision, initid)
+     * @param int                                 $docid        relation documentg id
+     * @param bool                                $latest       true if it is latest
+     * @param \Anakeen\Core\Internal\SmartElement $doc          document where comes from relation
+     * @param string                              $docrevOption docrev attribute option
+     * @param array                               $info         more information about document target (revision, initid)
      *
      * @return bool|null|string
      */
@@ -82,7 +82,7 @@ class DocTitle
      * @static
      *
      * @param \Anakeen\Core\Internal\SmartElement $doc
-     * @param int $uid user identifier
+     * @param int                                 $uid user identifier
      *
      * @return void
      */
@@ -99,7 +99,11 @@ class DocTitle
                 $revState = $matches[1];
             }
             if ($type == "docid" || $type == "account" || $type == "thesaurus") {
-                $ids = $doc->getMultipleRawValues($oa->id);
+                if ($oa->isMultiple()) {
+                    $ids = $doc->getMultipleRawValues($oa->id);
+                } else {
+                    $ids = [$doc->getRawValue($oa->id)];
+                }
                 $realId = array();
                 foreach ($ids as $rid) {
                     if (is_numeric($rid)) {

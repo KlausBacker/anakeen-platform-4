@@ -859,7 +859,7 @@ class ImportDocumentDescription
 
                 case 'default':
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset defaults values"));
-                    $this->doc->defval = '';
+                    $this->doc->defaultvalues = '{}';
                     break;
 
                 case 'parameters':

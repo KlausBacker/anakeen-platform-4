@@ -1030,12 +1030,12 @@ function createAutoFolder(&$doc)
     $dir->setValue("BA_TITLE", sprintf(_("root for %s"), $doc->title));
     $dir->setValue("BA_DESC", _("default folder"));
     $dir->setValue("FLD_ALLBUT", "1");
-    $dir->setValue("FLD_FAM", $doc->title . "\n" . _("folder") . "\n" . _("search"));
+    $dir->setValue("FLD_FAM", [$doc->title , _("folder") , _("search")]);
     $dir->setValue(
         "FLD_FAMIDS",
-        $doc->id . "\n" . SEManager::getFamilyIdFromName("DIR") . "\n" . SEManager::getFamilyIdFromName("SEARCH")
+        [$doc->id , SEManager::getFamilyIdFromName("DIR"), SEManager::getFamilyIdFromName("SEARCH")]
     );
-    $dir->setValue("FLD_SUBFAM", "yes\nyes\nyes");
+    $dir->setValue("FLD_SUBFAM", ["yes","yes","yes"]);
     $dir->Modify();
     $fldid = $dir->id;
     return $fldid;

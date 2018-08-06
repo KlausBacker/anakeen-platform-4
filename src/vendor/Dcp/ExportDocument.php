@@ -216,13 +216,6 @@ class ExportDocument
         }
     }
 
-    /**
-     * @deprecated rename to  csvExport
-     */
-    public function cvsExport(\Anakeen\Core\Internal\SmartElement & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
-    {
-        $this->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
-    }
 
     public function csvExport(\Anakeen\Core\Internal\SmartElement & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
     {
@@ -314,10 +307,14 @@ class ExportDocument
                 $data[] = $this->noAccessText;
                 continue;
             }
-
+            if ($attr->isMultiple()) {
+                $rawValue = $doc->getMultipleRawValues($attr->id);
+            } else {
+                $rawValue = $doc->getRawValue($attr->id);
+            }
             if ($eformat == 'F') {
                 if ($this->csvEnclosure) {
-                    $value = str_replace(array(
+                    $csvValue = str_replace(array(
                         '<BR>',
                         '<br/>'
                     ), array(
@@ -325,14 +322,16 @@ class ExportDocument
                         "\\n"
                     ), $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 } else {
-                    $value = str_replace(array(
+                    $csvValue = str_replace(array(
                         '<BR>',
                         '<br/>'
                     ), '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 }
             } else {
-                $value = $doc->getRawValue($attr->id);
+                $csvValue = $rawValue;
             }
+
+
             // invert HTML entities
             if (($attr->type == "image") || ($attr->type == "file")) {
                 $tfiles = $doc->vault_properties($attr);
@@ -347,49 +346,62 @@ class ExportDocument
                         "fname" => \Anakeen\Core\Utils\Strings::Unaccent($f["name"])
                     );
                 }
-                $value = implode("\n", $tf);
+                $csvValue = implode("\n", $tf);
             } elseif ($attr->type == "docid" || $attr->type == "account" || $attr->type == "thesaurus") {
                 $docrevOption = $attr->getOption("docrev", "latest");
-                if ($value != "") {
-                    if (strstr($value, "\n") || ($attr->getOption("multiple") == "yes")) {
-                        $tid = $doc->rawValueToArray($value);
-                        $tn = array();
-                        foreach ($tid as $did) {
-                            $brtid = explode("<BR>", $did);
+                if ($eformat !== 'F' && $rawValue != "") {
+                    if (is_array($rawValue)) {
+                        $csvValue = array();
+                        foreach ($rawValue as $did) {
                             $tnbr = array();
+                            if (!is_array($did)) {
+                                $brtid = [$did];
+                            } else {
+                                $brtid = $did;
+                            }
+
                             foreach ($brtid as $brid) {
                                 $n = \Anakeen\Core\SEManager::getNameFromId($brid);
                                 if ($n) {
                                     if ($docrevOption === "latest") {
                                         $tnbr[] = $n;
                                     } else {
-                                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"),
-                                            $doc->getTitle(), $attr->getLabel()));
+                                        \Anakeen\Core\Utils\System::addWarningMsg(
+                                            sprintf(
+                                                _("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"),
+                                                $doc->getTitle(),
+                                                $attr->getLabel()
+                                            )
+                                        );
                                         $tnbr[] = $brid;
                                     }
                                 } else {
                                     $tnbr[] = $brid;
                                 }
                             }
-                            $tn[] = implode('<BR>', $tnbr);
+                            $csvValue[] = implode('<BR>', $tnbr);
                         }
-                        $value = implode("\n", $tn);
                     } else {
-                        $n = \Anakeen\Core\SEManager::getNameFromId($value);
+                        $n = \Anakeen\Core\SEManager::getNameFromId($csvValue);
                         if ($n) {
                             if ($docrevOption === "latest") {
-                                $value = $n;
+                                $csvValue = $n;
                             } else {
-                                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"),
-                                    $doc->getTitle(), $attr->getLabel()));
+                                \Anakeen\Core\Utils\System::addWarningMsg(
+                                    sprintf(
+                                        _("Doc %s : Attribut \"%s\" reference revised identifier : cannot use logical name"),
+                                        $doc->getTitle(),
+                                        $attr->getLabel()
+                                    )
+                                );
                             }
                         }
                     }
                 }
             } elseif ($attr->type == "htmltext") {
-                $value = $attr->prepareHtmltextForExport($value);
+                $csvValue = $attr->prepareHtmltextForExport(WriteCsv::flatValue($csvValue));
                 if ($wfile) {
-                    $value = preg_replace_callback(
+                    $csvValue = preg_replace_callback(
                         '/(<img.*?src=")(((?=.*docid=(.*?)&)(?=.*attrid=(.*?)&)(?=.*index=(-?[0-9]+)))|(file\/(.*?)\/[0-9]+\/(.*?)\/(-?[0-9]+))).*?"/',
                         function ($matches) use (&$ef) {
                             if (isset($matches[7])) {
@@ -419,21 +431,23 @@ class ExportDocument
                             }
                             return "";
                         },
-                        $value
+                        $csvValue
                     );
                 }
             } else {
                 $trans = $this->getTrans();
-                $value = preg_replace_callback('/(\&[a-zA-Z0-9\#]+;)/s', function ($matches) use ($trans) {
+                $csvValue = preg_replace_callback('/(\&[a-zA-Z0-9\#]+;)/s', function ($matches) use ($trans) {
                     return strtr($matches[1], $trans);
-                }, $value);
+                }, $csvValue);
                 // invert HTML entities which ascii code like &#232;
-                $value = preg_replace_callback('/\&#([0-9]+);/s', function ($matches) {
+                $csvValue = preg_replace_callback('/\&#([0-9]+);/s', function ($matches) {
                     return chr($matches[1]);
-                }, $value);
+                }, $csvValue);
             }
-            $data[] = $value;
+
+            $data[] = $csvValue;
         }
+
         \Dcp\WriteCsv::fput($fout, $data);
         if ($wprof) {
             $profid = ($doc->dprofid) ? $doc->dprofid : $doc->profid;

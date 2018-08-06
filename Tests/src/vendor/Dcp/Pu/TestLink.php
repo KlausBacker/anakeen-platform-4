@@ -142,7 +142,7 @@ class TestLink extends TestCaseDcpDocument
             array(
                 "linkTwo",
                 "http://test.com/?date=%tst_coldate%",
-                'http://test.com/?date=2011-11-01%5Cn2011-11-02'
+                'http://test.com/?date=%7B2011-11-01%2C2011-11-02%7D'
             ),
             array(
                 "linkTwo",

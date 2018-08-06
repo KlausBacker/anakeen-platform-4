@@ -307,7 +307,7 @@ class TestOooLayout extends TestCaseDcpDocument
                 array(
                     "family" => "TST_OOOLAYOUT",
                     "setValue" => array(
-                        "TST_TITLE" => "(SOH: \x01)"
+                        "TST_TITLE" => "B(SOH: \x01)"
                     ),
                     "template" => "PU_dcp_data_simple1.odt"
                 )
@@ -316,7 +316,7 @@ class TestOooLayout extends TestCaseDcpDocument
                 array(
                     "family" => "TST_OOOLAYOUT",
                     "setValue" => array(
-                        "HTML_MULTI" => "(SOH: \x01)"
+                        "HTML_MULTI" => ["A(SOH: \x01)"]
                     ),
                     "template" => "PU_dcp_data_simple1.odt"
                 )
@@ -326,7 +326,7 @@ class TestOooLayout extends TestCaseDcpDocument
                 array(
                     "family" => "TST_OOOLAYOUT",
                     "setValue" => array(
-                        "TST_TITLE" => "(\xef\xbf\xbe)"
+                        "TST_TITLE" => "E(\xef\xbf\xbe)"
                     ),
                     "template" => "PU_dcp_data_simple1.odt"
                 )
@@ -335,7 +335,7 @@ class TestOooLayout extends TestCaseDcpDocument
                 array(
                     "family" => "TST_OOOLAYOUT",
                     "setValue" => array(
-                        "HTML_MULTI" => "(\xef\xbf\xbe)"
+                        "HTML_MULTI" => ["D(\xef\xbf\xbe)"]
                     ),
                     "template" => "PU_dcp_data_simple1.odt"
                 )

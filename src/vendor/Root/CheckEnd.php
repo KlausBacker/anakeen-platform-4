@@ -11,19 +11,21 @@ class CheckEnd extends CheckData
      */
     const maxSqlColumn = 1600;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $doc;
     /**
      * @var ImportDocumentDescription
      */
     protected $importer = null;
+
     public function __construct(ImportDocumentDescription & $importer = null)
     {
         $this->importer = $importer;
     }
+
     /**
-     * @param array $data
+     * @param array                               $data
      * @param \Anakeen\Core\Internal\SmartElement $doc
      * @return CheckEnd
      */
@@ -37,7 +39,7 @@ class CheckEnd extends CheckData
                 $this->addError(implode("\n", $checkCr));
             }
         }
-        
+
         $this->checkSetAttributes();
         $this->checkOrderAttributes();
         $this->checkComputedConstraintAttributes();
@@ -46,17 +48,20 @@ class CheckEnd extends CheckData
         $this->checkLinks();
         return $this;
     }
+
     private function getColumnCount()
     {
         $c = count($this->doc->fields) + count($this->doc->sup_fields);
         $ancestor = $this->doc->getFathersDoc();
         $ancestor[] = $this->doc->id;
 
-        $sql = sprintf("select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s",  \Anakeen\Core\DbManager::getSqlOrCond($ancestor, "docid", true));
+        $sql = sprintf("select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s",
+            \Anakeen\Core\DbManager::getSqlOrCond($ancestor, "docid", true));
         simpleQuery('', $sql, $r, true, true);
-        $c+= $r;
+        $c += $r;
         return $c;
     }
+
     /**
      * Verify if max sql column is reached
      * @param \Anakeen\Core\Internal\SmartElement $doc
@@ -69,6 +74,7 @@ class CheckEnd extends CheckData
             $this->addError(ErrorCode::getError('ATTR1701', $c, self::maxSqlColumn));
         }
     }
+
     protected function checkSetAttributes()
     {
         $this->doc->getAttributes(); // force reattach attributes
@@ -86,7 +92,7 @@ class CheckEnd extends CheckData
                 }
             }
         }
-        
+
         $la = $this->doc->GetFieldAttributes();
         foreach ($la as & $oa) {
             $foa = $oa->fieldSet;
@@ -99,7 +105,7 @@ class CheckEnd extends CheckData
             }
         }
     }
-    
+
     protected function checkOrderAttributes()
     {
         $la = $this->doc->getAttributes(); // force reattach attributes
@@ -114,7 +120,7 @@ class CheckEnd extends CheckData
             }
         }
     }
-    
+
     protected function checkComputedConstraintAttributes()
     {
         $this->doc->getAttributes(); // force reattach attributes
@@ -128,6 +134,7 @@ class CheckEnd extends CheckData
             }
         }
     }
+
     /**
      * check method validity for phpfunc property
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
@@ -147,6 +154,7 @@ class CheckEnd extends CheckData
             }
         }
     }
+
     /**
      * Verify all links which references document's method
      */
@@ -159,6 +167,7 @@ class CheckEnd extends CheckData
             }
         }
     }
+
     /**
      * check method validity for phpfunc property
      *
@@ -204,6 +213,7 @@ class CheckEnd extends CheckData
             }
         }
     }
+
     private function checkDefault()
     {
         $defaults = $this->doc->getOwnDefValues();
@@ -216,18 +226,19 @@ class CheckEnd extends CheckData
             if (!$oa) {
                 $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
             } else {
-                $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
-                $strucFunc = $oParse->parse($def);
-                $error = $oParse->getError();
-                if (!$error) {
-                    $err = $this->verifyMethod($strucFunc, $oa, "Default value");
-                    if ($err) {
-                        $this->addError(ErrorCode::getError('DFLT0004', $attrid, $this->doc->name, $err));
+                if (is_string($def)) {
+                    $oParse = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
+                    $strucFunc = $oParse->parse($def);
+                    $error = $oParse->getError();
+                    if (!$error) {
+                        $err = $this->verifyMethod($strucFunc, $oa, "Default value");
+                        if ($err) {
+                            $this->addError(ErrorCode::getError('DFLT0004', $attrid, $this->doc->name, $err));
+                        }
                     }
                 } else {
                     if ($oa->type == "array") {
-                        $value = json_decode($def);
-                        if ($value === null) {
+                        if (!is_array($def)) {
                             $this->addError(ErrorCode::getError('DFLT0006', $attrid, $def, $this->doc->name));
                         }
                     }
@@ -235,7 +246,7 @@ class CheckEnd extends CheckData
             }
         }
     }
-    
+
     private function checkParameters()
     {
         $parameters = $this->doc->getOwnParams();
@@ -278,6 +289,7 @@ class CheckEnd extends CheckData
         }
         $this->checkSetParameters();
     }
+
     protected function checkSetParameters()
     {
         $this->doc->getAttributes(); // force reattach attributes
@@ -300,6 +312,7 @@ class CheckEnd extends CheckData
             }
         }
     }
+
     private function verifyMethod($strucFunc, \Anakeen\Core\SmartStructure\BasicAttribute $oa, $ctx, &$refMeth = null)
     {
         $err = '';
@@ -329,6 +342,7 @@ class CheckEnd extends CheckData
         }
         return $err;
     }
+
     /**
      * check method validity for constraint property
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa

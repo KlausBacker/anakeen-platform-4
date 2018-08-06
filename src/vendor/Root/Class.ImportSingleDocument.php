@@ -351,7 +351,7 @@ class ImportSingleDocument
                                 }
                             }
                         }
-                        $errv = $this->doc->setValue($attr->id, $dv);
+                        $errv = $this->doc->setValue($attr->id, $this->normalizeData($attr, $dv));
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
                         }
@@ -648,6 +648,17 @@ class ImportSingleDocument
         return $dvCahnged;
     }
 
+    protected function normalizeData(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $rawValue)
+    {
+        if ($oa->isMultiple() && is_string($rawValue)) {
+            $normalizeValue = explode("\n", $rawValue);
+        } else {
+            $normalizeValue = $rawValue;
+        }
+
+        return $normalizeValue;
+    }
+
     /**
      * insert imported document into a folder
      *
@@ -695,14 +706,14 @@ class ImportSingleDocument
         if ($value === ' ') {
             return $res;
         }
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
         }
         if ($oattr->repeat) {
             if (is_array($value)) {
                 $tvalues = $value;
             } else {
-                $tvalues = $doc->rawValueToArray($value);
+                $tvalues = explode("\n", $value);
             }
         } else {
             $tvalues[] = $value;

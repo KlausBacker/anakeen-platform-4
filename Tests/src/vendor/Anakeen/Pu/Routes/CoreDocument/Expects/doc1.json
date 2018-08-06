@@ -33,7 +33,7 @@
                     "displayValue": "03:30:00"
                 },
                 "tst_api__timestamp": {
-                    "value": "2018-02-14 02:00:00",
+                    "value": "2018-02-14T02:00:00",
                     "displayValue": "14\/02\/2018 02:00"
                 },
                 "tst_api__integer": {
@@ -135,20 +135,20 @@
                 ],
                 "tst_api__time_array": [
                     {
-                        "value": "01:00",
-                        "displayValue": "01:00"
+                        "value": "01:00:00",
+                        "displayValue": "01:00:00"
                     },
                     {
-                        "value": "01:00",
-                        "displayValue": "01:00"
+                        "value": "01:00:00",
+                        "displayValue": "01:00:00"
                     },
                     {
-                        "value": "01:04",
-                        "displayValue": "01:04"
+                        "value": "01:04:00",
+                        "displayValue": "01:04:00"
                     },
                     {
-                        "value": "01:40",
-                        "displayValue": "01:40"
+                        "value": "01:40:00",
+                        "displayValue": "01:40:00"
                     }
                 ],
                 "tst_api__timestamp_array": [

@@ -243,7 +243,11 @@ class ErrorCodeDOC
      * @see       \Anakeen\Core\Internal\SmartElement::getAttributeValue
      */
     const DOC0133 = 'field "%s" read access deny in smart element "%s" ( smart structure  "%s")';
-
+    /**
+     * @errorCode Dynamic profil reference an field which no refers to any document
+     * @see       \Anakeen\Core\Internal\DocumentAccess::computeDProfil
+     */
+    const DOC0134 = 'Field "%s" use for profiled not exists for "%s"';
     /**
      * @errorCode
      * the smart element cannot be inserted in folder target

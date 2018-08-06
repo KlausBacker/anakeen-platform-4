@@ -269,7 +269,7 @@ class ImportXml
                             }
                         }
                         if ($v->getOption("multiple") == "yes") {
-                            $id = str_replace(',', '\n', $id);
+                            $id = str_replace(',', "\n", $id);
                             if ($v->inArray()) {
                                 $id = str_replace(array(
                                     '\\n',
@@ -335,7 +335,6 @@ class ImportXml
         } elseif (!empty($opt["dirid"])) {
             $o->setTargetDirectory($opt["dirid"]);
         }
-
         $o->import($tdoc);
         $log = $o->getImportResult();
 

@@ -93,7 +93,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         foreach ($expectedvalues as $attrid => $expectedValue) {
             
             $value = $d->getDefValue($attrid);
-            $this->assertEquals($expectedValue, $value, sprintf("not the expected default value attribute %s has %s", $attrid, $d->defval));
+            $this->assertEquals($expectedValue, $value, sprintf("not the expected default value attribute %s has %s", $attrid, $d->defaultvalues));
         }
         foreach ($expectedParams as $attrid => $expectedValue) {
             

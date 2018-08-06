@@ -8,6 +8,7 @@ use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\LogManager;
+use Dcp\Db\Exception;
 
 /**
  * Control Access Document Class
@@ -414,8 +415,32 @@ class DocumentAccess
                         $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                     }
                     if ($duid != "") {
-                        $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                        $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
+                        $oa = $fromdocidvalues->getAttribute($aid);
+                        if (!is_array($duid)) {
+                            if ($oa) {
+                                if ($oa && $oa->isMultiple() === false) {
+                                    $tduid = [$duid];
+                                } else {
+                                    $someids = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
+                                    $tduid = [];
+                                    foreach ($someids as $someid) {
+                                        if (is_array($someid)) {// docid multiple x2
+                                            $tduid = array_merge($tduid, $someids);
+                                        } else {
+                                            $tduid[] = $someid;
+                                        }
+                                    }
+                                }
+                            } else {
+                                $errorMessage = \ErrorCode::getError('DOC0134', $aid);
+                                LogManager::error($errorMessage);
+                                $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
+                            }
+                        } else {
+                            $tduid = $duid;
+                        }
+
+
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
                                 $docu = SEManager::getRawDocument(intval($duid), false);
@@ -544,8 +569,8 @@ class DocumentAccess
                     $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
-                            $sysId=AccountManager::getIdFromSEId(intval($duid));
-                            $greenUid[$sysId. $v["acl"]] = array(
+                            $sysId = AccountManager::getIdFromSEId(intval($duid));
+                            $greenUid[$sysId . $v["acl"]] = array(
                                 "uid" => $sysId,
                                 "acl" => $v["acl"]
                             );

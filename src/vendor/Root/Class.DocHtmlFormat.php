@@ -79,7 +79,7 @@ class DocHtmlFormat
         $showEmpty = $this->oattr->getOption('showempty');
 
         if (($this->oattr->repeat) && ($this->index < 0)) {
-            $tvalues = explode("\n", $value);
+            $tvalues = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
         } else {
             $tvalues[$this->index] = $value;
         }

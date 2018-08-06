@@ -21,7 +21,7 @@ create table docfam (cprofid int ,
                      cfallid int, 
                      ddocid int,
                      methods text,
-                     defval text,
+                     defaultvalues jsonb,
                      schar char,
                      param text,
                      genversion float,
@@ -47,7 +47,7 @@ create unique index idx_idfam on docfam(id);";
             "cprofid",
             "ddocid",
             "methods",
-            "defval",
+            "defaultvalues",
             "param",
             "genversion",
             "usedocread",
@@ -64,13 +64,13 @@ create unique index idx_idfam on docfam(id);";
     public $cprofid;
     public $ddocid;
     public $methods;
-    public $defval;
+    public $defaultvalues;
     public $param;
     public $schar;
     public $maxrev;
     public $configuration;
     public $tagable;
-    private $_xtdefval; // dynamic used by ::getParams()
+    private $_xtdefaultvalues; // dynamic used by ::getParams()
     private $_xtparam; // dynamic used by ::getDefValues()
     private $defaultSortProperties
         = array(
@@ -141,7 +141,7 @@ create unique index idx_idfam on docfam(id);";
         })->addListener(SmartHooks::PRECREATED, function () {
             return $this->resetProperties();
         })->addListener(SmartHooks::POSTAFFECT, function () {
-            $this->_xtdefval = null;
+            $this->_xtdefaultvalues = null;
             $this->_xtparam = null;
         });
     }
@@ -182,8 +182,8 @@ create unique index idx_idfam on docfam(id);";
             if (!$this->cprofid) {
                 $this->cprofid = $cdoc->cprofid;
             }
-            if (!$this->defval) {
-                $this->defval = $cdoc->defval;
+            if (!$this->defaultvalues) {
+                $this->defaultvalues = $cdoc->defaultvalues;
             }
             if (!$this->schar) {
                 $this->schar = $cdoc->schar;
@@ -465,7 +465,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getDefValue($idp, $def = "")
     {
-        $x = $this->getXValue("defval", $idp, $def);
+        $x = $this->getXValue("defaultvalues", $idp, $def);
 
         return $x;
     }
@@ -479,7 +479,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getDefValues()
     {
-        return $this->getXValues("defval");
+        return $this->getXValues("defaultvalues");
     }
 
     /**
@@ -489,7 +489,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getOwnDefValues()
     {
-        return $this->explodeX($this->defval);
+        return $this->explodeX($this->defaultvalues);
     }
 
     /**
@@ -515,7 +515,7 @@ create unique index idx_idfam on docfam(id);";
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
             $err = $this->convertDateToiso($oa, $val);
         }
-        $this->setXValue("defval", $idp, $val);
+        $this->setXValue("defaultvalues", $idp, $val);
         return $err;
     }
     //~~~~~~~~~~~~~~~~~~~~~~~~~ X VALUES  ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -549,7 +549,7 @@ create unique index idx_idfam on docfam(id);";
     }
 
     /**
-     * explode param or defval string
+     * explode param or defaultvalues string
      *
      * @param string $sx
      *
@@ -557,16 +557,8 @@ create unique index idx_idfam on docfam(id);";
      */
     private function explodeX($sx)
     {
-        $txval = array();
-        $tdefattr = explode("][", substr($sx, 1, strlen($sx) - 2));
-        foreach ($tdefattr as $k => $v) {
-            $aid = substr($v, 0, strpos($v, '|'));
-            $dval = substr(strstr($v, '|'), 1);
-            if ($aid) {
-                $txval[$aid] = $dval;
-            }
-        }
-        return $txval;
+        $x = json_decode($sx, true);
+        return empty($x) ? array() : $x;
     }
 
     /**
@@ -646,8 +638,8 @@ create unique index idx_idfam on docfam(id);";
     public function setXValue($X, $idp, $val)
     {
         $tval = "_xt$X";
-        if (is_array($val)) {
-            $val = $this->arrayToRawValue($val);
+        if (json_decode($val)) {
+            $val = json_decode($val);
         }
 
         $txval = $this->explodeX($this->$X);
@@ -658,11 +650,11 @@ create unique index idx_idfam on docfam(id);";
         $tdefattr = array();
         foreach ($txval as $k => $v) {
             if ($k && ($v !== '')) {
-                $tdefattr[] = "$k|$v";
+                $tdefattr[$k] = $v;
             }
         }
         $this->$tval = null;
-        $this->$X = "[" . implode("][", $tdefattr) . "]";
+        $this->$X = json_encode($tdefattr);
     }
 
     final public function updateVaultIndex()

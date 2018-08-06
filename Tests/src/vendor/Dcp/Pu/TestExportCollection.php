@@ -66,7 +66,6 @@ class TestExportCollection extends TestCaseDcpCommonFamily
         $ec->setOutputFormat($format);
         $ec->setDocumentlist($s->getDocumentList());
         $ec->export();
-
         $this->assertTrue(filesize($outFile) > 0, sprintf("\"%s\" file not produced", $outFile));
         $this->verifyCsvContains($outFile, $separator, $enclosure, $expectedData, 0);
     }
@@ -86,8 +85,11 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                 if (strpos($value, "*") === false) {
                     $this->assertEquals($value, $resultData[$docName][$index], sprintf("%s  (index %s) : %s \n %s", $docName, $index, print_r($resultData, true), $outFile));
                 } else {
-                    $this->assertEquals(preg_match('/' . $value . '/', $resultData[$docName][$index]), 1,
-                        sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $value, $docName, $index, print_r($resultData, true), $outFile));
+                    $this->assertEquals(
+                        preg_match('/' . $value . '/', $resultData[$docName][$index]),
+                        1,
+                        sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $value, $docName, $index, print_r($resultData, true), $outFile)
+                    );
                 }
             }
         }

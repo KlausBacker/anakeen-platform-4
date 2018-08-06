@@ -191,8 +191,8 @@ class DSearchHooks extends \SmartStructure\Search
                 $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid"), ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
 
                 $filterXml .= "</filter>";
-                $this->setValue("se_typefilter", "generated"); // only one
-                $this->setValue("se_filter", $filterXml);
+                $this->setValue("se_typefilter", ["generated"]); // only one
+                $this->setValue("se_filter", [$filterXml]);
             }
         }
         return $err;
