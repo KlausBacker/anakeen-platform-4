@@ -1,5 +1,5 @@
 {
-  "name": "admin-center",
+  "name": "@anakeen/admin-center",
   "version": "1.0.0",
   "description": "Web interfaces to admin applications and configure smart elements",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
@@ -12,13 +12,20 @@
     "watch": "webpack --config webpack/index.js --env debug --watch",
     "analyze": "webpack --config webpack/index.js --json > stats.json"
   },
+  "files": [
+    "admin-center/src/**/*.scss",
+    "admin-center/LICENSE",
+    "README.md",
+    "VERSION",
+    "RELEASE"
+  ],
   "devDependencies": {
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
     "@progress/kendo-dialog-vue-wrapper": "^2018.2.516",
     "@progress/kendo-grid-vue-wrapper": "^2018.2.516",
     "@progress/kendo-treeview-vue-wrapper": "^2018.2.516",
     "@progress/kendo-ui": "2018.1.226",
-    "ank-components": "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#master",
+    "@anakeen/ank-components": "^1.0.0",
     "assets-webpack-plugin": "^3.5.1",
     "axios": "^0.18.0",
     "babel-core": "^6.26.0",

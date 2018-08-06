@@ -6,8 +6,12 @@
         <admin-modal></admin-modal>
     </div>
 </template>
-<style>
-    body, html {
+<style lang="scss">
+    html, body {
+        font-size: 12px;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
         margin: 0;
     }
     .admin-center-main {
