@@ -12,6 +12,13 @@
     "watch": "webpack --config webpack/index.js --env debug --watch",
     "analyze": "webpack --config webpack/index.js --json > stats.json"
   },
+  "files": [
+    "admin-center/src/**/*.scss",
+    "admin-center/LICENSE",
+    "README.md",
+    "VERSION",
+    "RELEASE"
+  ],
   "devDependencies": {
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
     "@progress/kendo-dialog-vue-wrapper": "^2018.2.516",
