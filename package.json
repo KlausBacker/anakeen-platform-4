@@ -25,10 +25,7 @@
   "browserslist": "last 2 versions, ie 11",
   "author": "",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kartsims/vue-customelement-bundler.git"
-  },
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
     "@progress/kendo-theme-bootstrap": "^2.8.0",
     "@progress/kendo-ui": "^2018.0.0",
