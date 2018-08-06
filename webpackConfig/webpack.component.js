@@ -13,6 +13,7 @@ const parts = require('./webpack.parts');
 
 const PATHS = {
     components: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/Components/main.js'),
+    componentsDebug: path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/Components/main-debug.js'),
     build: path.resolve(__dirname, '../anakeen-ui/src/public/'),
 };
 
@@ -72,7 +73,7 @@ const productionComponentConfig = merge([
 const debugComponentConfig = merge([
     {
         entry: {
-            'ank-components': [PATHS.components],
+            'ank-components': [PATHS.componentsDebug],
             'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {
@@ -92,7 +93,7 @@ const debugComponentConfig = merge([
 const devComponentConfig = merge([
     {
         entry: {
-            'ank-components': [PATHS.components],
+            'ank-components': [PATHS.componentsDebug],
             'ank-components-ie11': ['babel-polyfill', '@webcomponents/webcomponentsjs/webcomponents-bundle.js', PATHS.components]
         },
         output: {

@@ -56,14 +56,9 @@ COMPOSER_BIN=composer
 
 $(JS_CONF_PATH)/node_modules:
 	$(YARN_BIN) install
-# Until private npm server is available, force the update of anakeen components
-	@${PRINT_COLOR} "${DEBUG_COLOR}Upgrade Anakeen Components ${RESET_COLOR}\n"
-	$(YARN_BIN) upgrade --force ank-components
 
 $(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
 	$(YARN_BIN) install
-	@${PRINT_COLOR} "${DEBUG_COLOR}Upgrade Anakeen Components ${RESET_COLOR}\n"
-	$(YARN_BIN) upgrade --force ank-components
 	touch "$@"
 
 $(PHP_LIB_PATH)/composer.lock: $(PHP_LIB_PATH)/composer.json
@@ -175,6 +170,20 @@ app-test: $(JS_CONF_PATH)/node_modules $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH) ##
 deploy-test: app-test ## Deploy the test package
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	$(DEVTOOL_BIN) deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-test*app -- --force
+
+########################################################################################################################
+##
+## Node
+##
+########################################################################################################################
+
+autorelease:
+	@${PRINT_COLOR} "${DEBUG_COLOR}autorelease $@${RESET_COLOR}\n"
+	npm version $(shell cat "VERSION")-$(shell date +%s)
+
+nodePublish:
+	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
+	npm publish
 
 ########################################################################################################################
 ##

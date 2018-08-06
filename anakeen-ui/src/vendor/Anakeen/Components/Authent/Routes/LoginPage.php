@@ -52,16 +52,20 @@ class LoginPage
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/bootstrap.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/bootstrap.min.css")
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/kendo.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/kendo.min.css")
+                ],
+                [
+                    "key" => "components",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/components.min.css")
                 ],
                 [
                     "key" => "login",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/document/login.css")
-                ]
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/login.min.css")
+                ],
             ]
         ];
         $mustache = new \Mustache_Engine();

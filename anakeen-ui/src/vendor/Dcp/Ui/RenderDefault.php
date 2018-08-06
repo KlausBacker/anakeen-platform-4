@@ -24,11 +24,10 @@ class RenderDefault implements IRenderConfig
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         return array(
-            "bootstrap" => "css/ank/document/bootstrap.css?ws=" . $version,
-            "kendo" => "css/ank/document/kendo.css?ws=" . $version,
-            "document" => "css/ank/document/document.css?ws=" . $version
+            "bootstrap" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("css/ank/theme/bootstrap.min.css"),
+            "kendo" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("css/ank/theme/kendo.min.css"),
+            "smartElement" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("css/ank/theme/smartElement.min.css")
         );
     }
 
