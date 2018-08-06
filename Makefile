@@ -179,7 +179,7 @@ deploy-test: app-test ## Deploy the test package
 
 autorelease:
 	@${PRINT_COLOR} "${DEBUG_COLOR}autorelease $@${RESET_COLOR}\n"
-	npm version $(shell node -p "require('./package.json').version")-$(shell date +%s)
+	npm version $(shell cat "VERSION")-$(shell date +%s)
 
 nodePublish:
 	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
