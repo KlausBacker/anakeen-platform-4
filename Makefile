@@ -185,6 +185,10 @@ nodePublish:
 	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
 	npm publish
 
+autoPublish:
+	@${PRINT_COLOR} "${DEBUG_COLOR}$@${RESET_COLOR}\n"
+	npm version $(VERSION)-$(shell find . -type f -print0 | xargs -0 stat --format '%Y' | sort -nr | cut -d: -f2- | head -1)
+	npm publish || echo "Already published"
 ########################################################################################################################
 ##
 ## MAKEFILE INTERNALS
