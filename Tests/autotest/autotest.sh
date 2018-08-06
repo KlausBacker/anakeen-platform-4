@@ -31,10 +31,16 @@ function main {
 
 	(
 		set -ex
+		# Install autotest npm requirements
 		(
 			cd "${AUTOTEST_HOME}"
 			npm --no-progress --no-color install
 		)
+		# Setup ssh-agent
+		if [ -z "${SSH_AUTH_SOCK}" ]; then
+			which ssh-agent && eval $(ssh-agent -s)
+		fi
+		# Run scripts.d
 		for SCRIPT in "${AUTOTEST_HOME}"/scripts.d/*; do
 			if [ ! -f "${SCRIPT}" ]; then
 				continue
