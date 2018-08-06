@@ -15,6 +15,13 @@
     "dev-components": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --mode development --env componentsDev --config ./webpackConfig/webpack.component.js ",
     "buildAsset": " ./node_modules/webpack/bin/webpack.js --mode development --env debug --config ./webpackConfig/webpack.deps.js &&  ./node_modules/webpack/bin/webpack.js --mode production --env production --config ./webpackConfig/webpack.deps.js"
   },
+  "files": [
+    "anakeen-ui/src/**/*.scss",
+    "anakeen-ui/LICENSE",
+    "README.md",
+    "RELEASE",
+    "VERSION"
+  ],
   "browserslist": "last 2 versions, ie 11",
   "author": "",
   "license": "MIT",
