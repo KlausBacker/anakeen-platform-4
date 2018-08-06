@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.0.0",
+  "version": "1.0.0-1533544440",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
   "bin": {
@@ -12,7 +12,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "easygettext": "^2.5.0",
+    "easygettext": "^2.6.3",
     "find-up": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-gzip": "^1.4.2",
@@ -20,19 +20,19 @@
     "gulp-tar": "^2.1.0",
     "inquirer": "^6.0.0",
     "mustache": "^2.3.0",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.2.0",
     "node-glob": "^1.2.0",
-    "saxophone": "^0.3.0",
+    "saxophone": "^0.4.0",
     "signale": "^1.2.1",
     "streamqueue": "^1.1.2",
     "through2": "^2.0.3",
     "treeify": "^1.1.0",
     "url-join": "^4.0.0",
     "xml2js": "^0.4.19",
-    "yargs": "^11.0.0"
+    "yargs": "^11.1.0"
   },
   "devDependencies": {
-    "eslint": "^5.1.0",
+    "eslint": "^5.3.0",
     "eslint-plugin-prettier": "^2.6.2"
   }
 }
