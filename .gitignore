@@ -20,3 +20,4 @@ smart-data-engine*app
 src/vendor/Anakeen/lib/vendor/
 Tests/src/vendor/Anakeen/TestUnits/lib/vendor/
 Makefile.local
+node_modules/
