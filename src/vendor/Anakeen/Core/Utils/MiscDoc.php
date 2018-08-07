@@ -4,6 +4,7 @@ namespace Anakeen\Core\Utils;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
+use Dcp\Exception;
 
 class MiscDoc
 {
@@ -80,8 +81,9 @@ class MiscDoc
         &$knownLogicalNames = array()
     ) {
         $res = $avalue;
+
         if (!is_numeric($avalue)) {
-            if (!$oattr->isMultiple()) {
+            if (is_string($avalue) && $avalue[0] !== '{') {
                 if ($oattr->getOption("docrev", "latest") == "latest") {
                     $res = \Anakeen\Core\SEManager::getInitidFromName($avalue);
                 } else {
@@ -121,15 +123,16 @@ class MiscDoc
                         }
                     }
                     if (is_array($lname)) {
-                        $tids[] = $lname;
+                        $tids[] = $tlids;
                     } else {
-                        $tids[] = $lname[0];
+                        $tids[] = $tlids[0];
                     }
                 }
 
                 $res = $tids;
             }
         }
+
         return $res;
     }
 }

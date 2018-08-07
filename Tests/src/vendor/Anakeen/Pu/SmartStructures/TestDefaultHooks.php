@@ -2,6 +2,8 @@
 
 namespace Anakeen\Pu\SmartStructures;
 
+use Anakeen\Core\Utils\Postgres;
+
 class TestDefaultHooks extends \Anakeen\SmartElement
 
 {
@@ -12,14 +14,18 @@ class TestDefaultHooks extends \Anakeen\SmartElement
     
     public function addAllPlusOne($ar1, $ar2, $val)
     {
-        return $ar1 + $ar2 + $val + 1;
+        return Postgres::arrayToString([$ar1 + $ar2 + $val + 1]);
     }
     
     public function oneMore($x)
     {
         return intval($x) + 1;
     }
-    
+
+    public function oneArrayMore($x)
+    {
+        return Postgres::arrayToString([intval($x) + 1]);
+    }
     public function itself($x)
     {
         return $x;
@@ -51,12 +57,12 @@ class TestDefaultHooks extends \Anakeen\SmartElement
         $t[] = array(
             "tst_text2" => "First",
             "tst_number2" => 10,
-            "tst_docm2" => "9\n11"
+            "tst_docm2" => [9,11]
         );
         $t[] = array(
             "tst_text2" => "Second",
             "tst_number2" => 20,
-            "tst_docm2" => "12\n13"
+            "tst_docm2" => [12,13]
         );
         return $t;
     }
@@ -70,12 +76,12 @@ class TestDefaultHooks extends \Anakeen\SmartElement
         $t[] = array(
             "tst_text2" => "First",
             "tst_number2" => "pi",
-            "tst_docm2" => "9\n11"
+            "tst_docm2" => [9,11]
         );
         $t[] = array(
             "tst_text2" => "Seven",
             "tst_number2" => 20,
-            "tst_docm2" => "12\n13"
+            "tst_docm2" => [12,13]
         );
         return $t;
     }

@@ -234,10 +234,12 @@ class Postgres
         foreach ($result as $value) {
             if (is_array($value)) {
                 $flat = array_merge($flat, $value);
-            } else {
+            } elseif ($value !== null) {
                 $flat[] = $value;
             }
         }
-        return $flat;
+        return array_filter($flat, function ($v) {
+            return $v !== null;
+        });
     }
 }

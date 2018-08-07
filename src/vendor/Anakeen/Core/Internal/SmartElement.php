@@ -2910,7 +2910,8 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
                 if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
-                    $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
+                    $titles=Postgres::stringToFlatArray($this->getRawValue($v->id));
+                    $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(implode(" ", $titles)) . " ";
                 } else {
                     $title1 .= $this->getRawValue($v->id) . " ";
                 }
@@ -3106,14 +3107,6 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 return $def;
             }
-        } elseif ($v == "\t") {
-            if ($index == -1) {
-                return array(
-                    ""
-                );
-            } else {
-                return $def;
-            }
         }
         $oa = $this->getAttribute($idAttr);
         if ($oa->isMultiple() === false) {
@@ -3121,19 +3114,9 @@ create unique index i_docir on doc(initid, revision);";
         }
         $t = $this->rawValueToArray($v);
         if ($index == -1) {
-            $oa = $this->getAttribute($idAttr, $nothing);
-            if ($oa && $oa->type === "xml") {
-                foreach ($t as $k => $v) {
-                    $t[$k] = str_replace('<BR>', "\n", $v);
-                }
-            }
             return $t;
         }
         if (isset($t[$index])) {
-            $oa = $this->getAttribute($idAttr, $nothing);
-            if ($oa && $oa->type === "xml") {
-                $t[$index] = str_replace('<BR>', "\n", $t[$index]);
-            }
             return $t[$index];
         } else {
             return $def;
@@ -3280,7 +3263,11 @@ create unique index i_docir on doc(initid, revision);";
                 foreach ($ta as $k => $v) { // fill uncompleted rows
                     $c = count($tValues[$k]);
                     if ($c < $max) {
-                        $nt = array_pad($tValues[$k], $max, "");
+                        if ($this->getAttribute($k)->isMultipleInArray()) {
+                            $nt = array_pad($tValues[$k], $max, []);
+                        } else {
+                            $nt = array_pad($tValues[$k], $max, "");
+                        }
                         $err .= $this->setValue($k, $nt);
                     } else {
                         $err .= $this->setValue($k, $tValues[$k]);
@@ -3413,6 +3400,7 @@ create unique index i_docir on doc(initid, revision);";
     final public function setValue($attrid, $value, $index = -1, &$kvalue = null)
     {
         $attrid = strtolower($attrid);
+       // var_dump([$attrid=>$value]);
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oattr
          */
@@ -3441,10 +3429,6 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($value)) {
             if (count($value) == 0) {
                 $value = DELVALUE;
-            } elseif ((count($value) == 1) && (first($value) === "" || first($value) === null)
-                && (substr(key($value), 0, 1) != "s")) {
-                // special tab for array of one empty cell
-                $value = "\t";
             } else {
                 if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value), 0, 1) == "s") {
                     $ov = $this->getMultipleRawValues($attrid);
@@ -3460,12 +3444,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $value = $ov;
                 }
-                /*
-                 * Switch the $br separator from "<BR>" to "\r" for HTML text
-                 * attributes in order to not induce a conflict with legitimate
-                 * "<BR>" tags that might appear in the attribute's HTML content.
-                */
-                $value = $this->arrayToRawValue($value, (($oattr && $oattr->type === 'htmltext') ? "\r" : "<BR>"));
+                $value = $this->arrayToRawValue($value);
             }
         }
         if (($value !== "") && ($value !== null)) {
@@ -4474,6 +4453,9 @@ create unique index i_docir on doc(initid, revision);";
                                 } else {
                                     if ($attr->inArray()) {
                                         $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
+                                        if ($index >= 0 && is_array($args[$ki])) {
+                                            $args[$ki] = Postgres::arrayToString($args[$ki]);
+                                        }
                                     } else {
                                         $args[$ki] = $this->getRawValue($input->name);
                                     }
@@ -4493,6 +4475,7 @@ create unique index i_docir on doc(initid, revision);";
                         $staticClass,
                         $methodName,
                     ), $args);
+
                 }
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);
@@ -6200,12 +6183,11 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @api convert array value to flat attribute value
      *
-     * @param array  $v
-     * @param string $br
+     * @param array $v
      *
      * @return string
      */
-    public static function arrayToRawValue($v, $br = '<BR>')
+    public static function arrayToRawValue($v)
     {
         if (count($v) == 0) {
             return "";
@@ -6909,7 +6891,7 @@ create unique index i_docir on doc(initid, revision);";
                     if ($oattr->type == "array") {
                         if ($method) {
                             $values = $dval;
-                            if ($values === null) {
+                            if (is_string($values) && $values[0]===':') {
                                 $values = $this->applyMethod($dval, null);
                                 if ($values === null) {
                                     throw new \Dcp\Exception("DFLT0007", $aid, $dval, $this->fromname);
@@ -7602,8 +7584,8 @@ create unique index i_docir on doc(initid, revision);";
                 $id = $this->getLatestId();
             }
         }
-        if ((strpos($id, "\n") !== false) || (strpos($id, "<BR>") !== false)) {
-            $tid = explode("\n", str_replace("<BR>", "\n", $id));
+        if ($id[0] === '{') {
+            $tid = Postgres::stringToFlatArray($id);
             $ttitle = array();
             foreach ($tid as $idone) {
                 $ttitle[] = $this->getTitle($idone, $def, $latest);
@@ -8309,7 +8291,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
 
-
     /**
      * get display values for general searches
      *
@@ -8390,7 +8371,6 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-
         $custom = $this->getCustomSearchValues();
         if ($custom) {
             if (!is_array($custom)) {

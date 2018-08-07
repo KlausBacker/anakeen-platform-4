@@ -80,6 +80,9 @@ class DocHtmlFormat
 
         if (($this->oattr->repeat) && ($this->index < 0)) {
             $tvalues = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
+            if (count($tvalues) === 0) {
+                return $showEmpty;
+            }
         } else {
             $tvalues[$this->index] = $value;
         }
@@ -95,31 +98,25 @@ class DocHtmlFormat
                         break;
 
                     case "file":
-
                         $htmlval = $this->formatFile($kvalue, $avalue);
                         break;
 
                     case "longtext":
                     case "xml":
-
                         $htmlval = $this->formatLongtext($kvalue, $avalue);
                         break;
 
                     case "password":
-
                         $htmlval = $this->formatPassword($kvalue, $avalue);
                         break;
 
                     case "enum":
-
                         $htmlval = $this->formatEnum($kvalue, $avalue);
                         break;
 
                     case "array":
-
                         $htmlval = $this->formatArray($kvalue, $avalue);
                         break;
-
 
                     case "account":
                         $htmlval = $this->formatAccount($kvalue, $avalue);
@@ -130,43 +127,35 @@ class DocHtmlFormat
                         break;
 
                     case "thesaurus":
-
                         $htmlval = $this->formatThesaurus($kvalue, $avalue);
                         break;
 
                     case "option":
-
                         $htmlval = $this->formatOption($kvalue, $avalue);
                         break;
 
                     case 'money':
-
                         $htmlval = $this->formatMoney($kvalue, $avalue);
                         break;
 
                     case 'htmltext':
-
                         $htmlval = $this->formatHtmltext($kvalue, $avalue);
                         break;
 
                     case 'date':
-
                         $htmlval = $this->formatDate($kvalue, $avalue);
                         break;
 
                     case 'time':
-
                         $htmlval = $this->formatTime($kvalue, $avalue);
                         break;
 
                     case 'timestamp':
-
                         $htmlval = $this->formatTimeStamp($kvalue, $avalue);
 
                         break;
 
                     case 'ifile':
-
                         $htmlval = $this->formatIfile($kvalue, $avalue);
                         break;
 
@@ -181,8 +170,7 @@ class DocHtmlFormat
                 }
 
                 $abegin = $aend = '';
-
-                if ($htmlval === '' && $showEmpty) {
+                if (($htmlval === '' || $htmlval === null) && $showEmpty) {
                     if ($abstractMode) {
                         // if we are not in abstract mode, the same heuristic is at array level,
                         // but arrays does not exists in abstract mode
@@ -276,7 +264,9 @@ class DocHtmlFormat
                     $abegin = "";
                     $aend = "";
                 }
-
+                if (is_array($htmlval)) {
+                    $htmlval = implode(', ', $htmlval);
+                }
                 $thtmlval[$kvalue] = $abegin . $htmlval . $aend;
             }
         }
@@ -1000,7 +990,7 @@ class DocHtmlFormat
      */
     public function formatHtmltext($kvalue, $avalue)
     {
-        $htmlValue=$avalue;
+        $htmlValue = $avalue;
         if ($avalue == '' && $this->oattr->getOption('showempty')) {
             $avalue = $this->oattr->getOption('showempty');
             $this->cancelFormat = true;
@@ -1052,7 +1042,7 @@ class DocHtmlFormat
                 "]"
             ), $avalue);
             if ($error != '') {
-                \Anakeen\Core\Utils\System::addWarningMsg(___("Malformed HTML:","sed") . "\n" . $error);
+                \Anakeen\Core\Utils\System::addWarningMsg(___("Malformed HTML:", "sed") . "\n" . $error);
             }
             if ($avalue === false) {
                 $avalue = '';

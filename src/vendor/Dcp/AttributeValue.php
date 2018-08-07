@@ -10,7 +10,7 @@ class AttributeValue
 {
     /**
      * return typed value for an document's attribute
-     * @param \Anakeen\Core\Internal\SmartElement $doc
+     * @param \Anakeen\Core\Internal\SmartElement          $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
      * @throws AttributeValue\Exception
      * @return array|float|int|null|string
@@ -29,7 +29,7 @@ class AttributeValue
         $rawValue = $doc->getRawValue($oAttr->id, null);
         return self::castValue($oAttr->type, $rawValue);
     }
-    
+
     private static function getMultipleValues(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         if ($oAttr->isMultipleInArray()) {
@@ -50,26 +50,36 @@ class AttributeValue
         }
         return $typedValues;
     }
-    
+
     private static function getMultiple2Values(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         $rawValues = $doc->getMultipleRawValues($oAttr->id);
         $type = $oAttr->type;
         $typedValues = array();
         foreach ($rawValues as $rawValue) {
-            $finalValues = ($rawValue !== '') ? explode('<BR>', $rawValue) : array();
             $finalTypedValues = array();
-            foreach ($finalValues as $finalValue) {
+            foreach ($rawValue as $finalValue) {
                 $finalTypedValues[] = self::castValue($type, $finalValue);
+            }
+
+            // Trim right null values
+            $last = null;
+            /** @noinspection PhpStatementHasEmptyBodyInspection */
+            while (count($finalTypedValues) > 0 && (($last = array_pop($finalTypedValues)) === null)) {
+                ;
+            }
+            if ($last !== null && $last !== false) {
+                $finalTypedValues[] = $last;
             }
             $typedValues[] = $finalTypedValues;
         }
-        
+
         return $typedValues;
     }
+
     /**
      * cast raw value to type value
-     * @param string $type like text, int, double
+     * @param string $type     like text, int, double
      * @param string $rawValue raw database value
      * @return float|int|null|string
      */
@@ -92,7 +102,7 @@ class AttributeValue
             case 'date':
                 $isoDate = stringDateToIso($rawValue, false, true);
                 if (strlen($rawValue) == 16) {
-                    $isoDate.= ':00';
+                    $isoDate .= ':00';
                 }
                 $typedValue = new \DateTime($isoDate);
                 break;
@@ -100,7 +110,7 @@ class AttributeValue
             case 'time':
                 $typedValue = $rawValue;
                 if (strlen($rawValue) == 5) {
-                    $typedValue.= ':00';
+                    $typedValue .= ':00';
                 }
                 break;
 
@@ -109,12 +119,13 @@ class AttributeValue
         }
         return $typedValue;
     }
+
     private static function typed2string($type, $typedValue)
     {
         if ($typedValue === null || $typedValue === '') {
             return null;
         }
-        
+
         if (is_array($typedValue)) {
             $arrayString = array();
             foreach ($typedValue as $k => $aSingleValue) {
@@ -125,12 +136,13 @@ class AttributeValue
             return self::singleTyped2string($type, $typedValue);
         }
     }
+
     private static function singleTyped2string($type, $typedValue)
     {
         if ($typedValue === null || $typedValue === '') {
             return null;
         }
-        
+
         switch ($type) {
             case 'int':
                 if (!is_string($typedValue) && !is_int($typedValue)) {
@@ -152,7 +164,7 @@ class AttributeValue
                      */
                     $typedValue = $typedValue->format('Y-m-d\TH:i:s');
                 }
-                
+
                 break;
 
             case 'date':
@@ -162,7 +174,15 @@ class AttributeValue
                      */
                     $typedValue = $typedValue->format('Y-m-d');
                 }
-                
+
+                break;
+
+            case "docid":
+            case "account":
+            case "enum":
+                if (is_array($typedValue)) {
+                    return $typedValue;
+                }
                 break;
 
             default: // text, htmltext, longtext, enum, file, image,thesaurus,docid,account
@@ -173,6 +193,7 @@ class AttributeValue
         }
         return $typedValue;
     }
+
     private static function getArrayValues(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         if ($oAttr->type == "array") {
@@ -189,7 +210,7 @@ class AttributeValue
             }
             foreach ($ta as $k => $v) {
                 for ($i = 0; $i < $ix; $i++) {
-                    $ti[$i]+= array(
+                    $ti[$i] += array(
                         $k => isset($tv[$k][$i]) ? $tv[$k][$i] : null
                     );
                 }
@@ -198,7 +219,7 @@ class AttributeValue
         }
         throw new \Dcp\AttributeValue\Exception('VALUE0100', $oAttr->id, $doc->title, $doc->fromname);
     }
-    
+
     private static function setTypedArrayValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, array $value)
     {
         $doc->clearArrayValues($oAttr->id);
@@ -219,11 +240,12 @@ class AttributeValue
             }
         }
     }
+
     /**
      * Set a new value to an attribute document
-     * @param \Anakeen\Core\Internal\SmartElement $doc
+     * @param \Anakeen\Core\Internal\SmartElement          $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
-     * @param mixed $value
+     * @param mixed                                        $value
      * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue()
      * @throws AttributeValue\Exception in case of incompatible value
      */
@@ -232,10 +254,10 @@ class AttributeValue
         if (!isset($doc->attributes->attr[$oAttr->id])) {
             throw new \Dcp\AttributeValue\Exception('VALUE0004', $oAttr->id, $doc->fromname, $doc->getTitle());
         }
-        $kindex = - 1;
+        $kindex = -1;
         $err = '';
         if ($value === null) {
-            if ($oAttr->type == "array") {
+            if ($oAttr->type === "array") {
                 self::setTypedArrayValue($doc, $oAttr, array());
             } else {
                 $err = $doc->clearValue($oAttr->id);
@@ -253,10 +275,10 @@ class AttributeValue
                     $rawValues = array();
                     foreach ($value as $k => $rowValues) {
                         if (is_array($rowValues)) {
-                            $rawValues[$k] = implode('<BR>', $rowValues);
+                            $rawValues[$k] = $rowValues;
                         } else {
                             if ($rowValues === null) {
-                                $rawValues[$k] = '';
+                                $rawValues[$k] = [];
                             } else {
                                 $e = new \Dcp\AttributeValue\Exception('VALUE0003', print_r($value, true), $oAttr->id, $doc->fromname, $doc->getTitle());
                                 $e->attributeId = $oAttr->id;

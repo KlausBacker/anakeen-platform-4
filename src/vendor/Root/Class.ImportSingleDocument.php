@@ -288,7 +288,7 @@ class ImportSingleDocument
 
                         if (!$this->analyze) {
                             if ($attr->inArray()) {
-                                $tabsfiles = $this->doc->rawValueToArray($dv);
+                                $tabsfiles = $this->normalizeData($attr, $dv);
                                 $tvfids = array();
                                 foreach ($tabsfiles as $fi) {
                                     if (preg_match(PREGEXPFILE, $fi, $reg)) {
@@ -658,7 +658,6 @@ class ImportSingleDocument
                     $normalizeValue[$k] = explode("<BR>", $value);
                 }
             }
-
         } else {
             $normalizeValue = $rawValue;
         }
@@ -715,11 +714,12 @@ class ImportSingleDocument
         if (!is_array($value)) {
             $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
         }
+
         if ($oattr->repeat) {
             if (is_array($value)) {
                 $tvalues = $value;
             } else {
-                $tvalues = explode("\n", $value);
+                $tvalues = explode("\n", str_replace('<BR>', "\n", $value));
             }
         } else {
             $tvalues[] = $value;

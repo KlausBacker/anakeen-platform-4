@@ -55,9 +55,11 @@ class CheckEnd extends CheckData
         $ancestor = $this->doc->getFathersDoc();
         $ancestor[] = $this->doc->id;
 
-        $sql = sprintf("select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s",
-            \Anakeen\Core\DbManager::getSqlOrCond($ancestor, "docid", true));
-        simpleQuery('', $sql, $r, true, true);
+        $sql = sprintf(
+            "select count(*) from docattr where type != 'frame' and type != 'tab' and type != 'array' and %s",
+            \Anakeen\Core\DbManager::getSqlOrCond($ancestor, "docid", true)
+        );
+        \Anakeen\Core\DbManager::query($sql, $r, true, true);
         $c += $r;
         return $c;
     }
@@ -235,6 +237,8 @@ class CheckEnd extends CheckData
                         if ($err) {
                             $this->addError(ErrorCode::getError('DFLT0004', $attrid, $this->doc->name, $err));
                         }
+                    } elseif ($oa->type == "array") {
+                        $this->addError(ErrorCode::getError('DFLT0006', $attrid, $def, $this->doc->name));
                     }
                 } else {
                     if ($oa->type == "array") {

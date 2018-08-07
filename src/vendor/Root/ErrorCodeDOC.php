@@ -249,6 +249,11 @@ class ErrorCodeDOC
      */
     const DOC0134 = 'Field "%s" use for profiled not exists for "%s"';
     /**
+     * @errorCode when update field  smart structure  default value
+     * @see       \Anakeen\Core\SmartStructure::setDefValue
+     */
+    const DOC0135 = 'cannot set default value for "%s". array not allowed for single field "%s" ("%s")  smart structure ';
+    /**
      * @errorCode
      * the smart element cannot be inserted in folder target
      * @note when DOC has defined a folder target

@@ -6,11 +6,13 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\DbManager;
+use Anakeen\Core\SEManager;
+
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package Dcp\Pu
  */
-
 //require_once 'PU_testcase_dcp_commonfamily.php';
 
 class TestDocVaultIndex extends TestCaseDcpCommonFamily
@@ -52,8 +54,8 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
             /**
              * @var \Anakeen\Core\SmartStructure $docFam
              */
-            $docFam = new_Doc(self::$dbaccess, $famName);
-            $this->assertTrue($docFam->isAlive(), sprintf("Could not find family with name '%s'.", $famName));
+            $docFam = SEManager::getFamily($famName);
+            $this->assertTrue($docFam && $docFam->isAlive(), sprintf("Could not find family with name '%s'.", $famName));
             /*
              * docfam.param
             */
@@ -64,9 +66,12 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                         $vid = $docFam->vaultRegisterFile($file, $name, $info);
                         $vids[] = $vid;
                     }
-                    $vids = join("\n", $vids);
+
+                    if ($docFam->getAttribute($attrName)->isMultiple() === false) {
+                        $vids = $vids[0];
+                    }
                     $err = $docFam->setParam($attrName, $vids);
-                    $this->assertEmpty($err, sprintf("Error setting param of '%s' with vids = {%s}: %s", $attrName, join(', ', explode("\n", $vids)), $err));
+                    $this->assertEmpty($err, sprintf("Error setting param of '%s' with vids = {%s}: %s", $attrName, print_r($vids, true), $err));
                 }
             }
             /*
@@ -79,9 +84,10 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                         $vid = $docFam->vaultRegisterFile($file, $name, $info);
                         $vids[] = $vid;
                     }
-                    $vids = join("\n", $vids);
+                    $vids = $vids[0];
+
                     $err = $docFam->setDefValue($attrName, $vids);
-                    $this->assertEmpty($err, sprintf("Error setting defval of '%s' with vids = {%s}: %s", $attrName, join(', ', explode("\n", $vids)), $err));
+                    $this->assertEmpty($err, sprintf("Error setting defval of '%s' with vids = {%s}: %s", $attrName, print_r($vids, true), $err));
                 }
             }
             /*
@@ -156,6 +162,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                 }
             }
         }
+
         /*
          * Check docvaultindex consistency
         */
@@ -197,7 +204,8 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
             }
             $where = sprintf("AND (%s)", join(' OR ', $where));
         }
-        $q = sprintf("SELECT dvi.docid, doc.name AS docname, dvi.vaultid, vds.name AS filename FROM docvaultindex AS dvi, doc, vaultdiskstorage AS vds WHERE dvi.docid = doc.id AND dvi.vaultid = vds.id_file %s ORDER BY dvi.docid, dvi.vaultid", $where);
+        $q = sprintf("SELECT dvi.docid, doc.name AS docname, dvi.vaultid, vds.name AS filename FROM docvaultindex AS dvi, doc, vaultdiskstorage AS vds WHERE dvi.docid = doc.id AND dvi.vaultid = vds.id_file %s ORDER BY dvi.docid, dvi.vaultid",
+            $where);
         simpleQuery(self::$dbaccess, $q, $res, false, false, true);
         return $res;
     }
@@ -266,11 +274,9 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                                     self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 1 of 3.png'
                                 ),
                                 'M_FILE' => array(
-                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 2 of 3.png',
-                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'file defval 3 of 3.png'
+                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'file defval 2 of 3.png'
                                 ),
                                 'M_IMAGE' => array(
-                                    self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_one.png' => 'image defval 2 of 3.png',
                                     self::$testDataDirectory . DIRECTORY_SEPARATOR . 'Images/img_two.png' => 'image defval 3 of 3.png'
                                 )
                             )
@@ -309,7 +315,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                     'import:documents' => self::$testDataDirectory . DIRECTORY_SEPARATOR . 'PU_data_dcp_docvaultindex_documents.zip',
                     'expect' => array(
                         'TST_DOCVAULTINDEX' => array(
-                            'count' => 13,
+                            'count' => 11,
                             'files' => array(
                                 'icône TST_DOCVAULTINDEX.png',
                                 'file param 1 of 3.png',
@@ -321,8 +327,6 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                                 'file defval 1 of 3.png',
                                 'image defval 1 of 3.png',
                                 'file defval 2 of 3.png',
-                                'file defval 3 of 3.png',
-                                'image defval 2 of 3.png',
                                 'image defval 3 of 3.png'
                             )
                         ),
@@ -356,14 +360,12 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
                             )
                         ),
                         'TST_DOCVAULTINDEX_02' => array(
-                            'count' => 7,
+                            'count' => 5,
                             'files' => array(
                                 'icône TST_DOCVAULTINDEX.png',
                                 'file defval 1 of 3.png',
                                 'image defval 1 of 3.png',
                                 'file defval 2 of 3.png',
-                                'image defval 2 of 3.png',
-                                'file defval 3 of 3.png',
                                 'image defval 3 of 3.png'
                             )
                         )

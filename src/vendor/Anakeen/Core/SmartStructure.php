@@ -335,13 +335,7 @@ create unique index idx_idfam on docfam(id);";
             }
         }
 
-        if (is_array($val)) {
-            if ($oa && $oa->type == 'htmltext') {
-                $val = $this->arrayToRawValue($val, "\r");
-            } else {
-                $val = $this->arrayToRawValue($val);
-            }
-        }
+
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
             $err = $this->convertDateToiso($oa, $val);
             if ($err) {
@@ -370,11 +364,19 @@ create unique index idx_idfam on docfam(id);";
                     $dateFormat = $localeconfig['dateTimeFormat'];
                 }
 
-                $tDates = explode("\n", $val);
+                if (is_array($val)) {
+                    $tDates = $val;
+                } else {
+                    $tDates=[$val];
+                }
                 foreach ($tDates as $k => $date) {
                     $tDates[$k] = stringDateToIso($date, $dateFormat);
                 }
-                $val = implode("\n", $tDates);
+                if (is_array($val)) {
+                    $val=$tDates;
+                }  else {
+                    $val=$tDates[0];
+                }
             } else {
                 return sprintf(_("local config for date not found"));
             }
@@ -409,9 +411,7 @@ create unique index idx_idfam on docfam(id);";
         } // cannot test in this case
         $err = '';
         $type = $oa->type;
-        if ($oa->isMultiple()) {
-            $val = explode("\n", $val);
-        }
+
 
         if (is_array($val)) {
             $vals = $val;
@@ -510,6 +510,9 @@ create unique index idx_idfam on docfam(id);";
             $oa = $this->getAttribute($idp);
             if (!$oa) {
                 return \ErrorCode::getError('DOC0123', $idp, $this->getTitle(), $this->name);
+            }
+            if (is_array($val) && $oa->type !== "array" && $oa->getOption("multiple") !== "yes") {
+                return \ErrorCode::getError('DOC0135', $idp, $this->getTitle(), $this->name);
             }
         }
         if (!empty($val) && $oa && ($oa->type == "date" || $oa->type == "timestamp")) {
@@ -638,7 +641,7 @@ create unique index idx_idfam on docfam(id);";
     public function setXValue($X, $idp, $val)
     {
         $tval = "_xt$X";
-        if (json_decode($val)) {
+        if (is_string($val) && json_decode($val)) {
             $val = json_decode($val);
         }
 

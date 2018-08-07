@@ -2,6 +2,8 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\SEManager;
+
 class TestExportCollection extends TestCaseDcpCommonFamily
 {
     public static function getCommonImportFile()
@@ -611,7 +613,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                     "TST_EXPCOLL_DOC4" => array(
                         4 => "Titre 4",
                         11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2\nTST_EXPCOLL_DOC3",
-                        13 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2"
+                        13 => "TST_EXPCOLL_DOC1<BR>TST_EXPCOLL_DOC2\n<BR>\n<BR>"
                     )
                 )
             ),
