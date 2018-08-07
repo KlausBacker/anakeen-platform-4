@@ -100,7 +100,7 @@ class DocTitle
             }
             if ($type == "docid" || $type == "account" || $type == "thesaurus") {
                 if ($oa->isMultiple()) {
-                    $ids = $doc->getMultipleRawValues($oa->id);
+                    $ids = \Anakeen\Core\Utils\Postgres::stringToFlatArray($doc->getRawValue($oa->id));
                 } else {
                     $ids = [$doc->getRawValue($oa->id)];
                 }
@@ -108,13 +108,6 @@ class DocTitle
                 foreach ($ids as $rid) {
                     if (is_numeric($rid)) {
                         $realId[] = intval($rid);
-                    } elseif (strpos($rid, '<BR>') !== false) {
-                        $tt = explode('<BR>', $rid);
-                        foreach ($tt as $brelid) {
-                            if (is_numeric($brelid)) {
-                                $realId[] = intval($brelid);
-                            }
-                        }
                     }
                 }
                 foreach ($realId as $did) {

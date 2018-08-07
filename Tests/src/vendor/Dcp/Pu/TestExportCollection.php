@@ -600,11 +600,18 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                         8 => "Deux",
                         9 => "2.2",
                         10 => "Deux long",
-                        11 => "TST_EXPCOLL_DOC1"
+                        11 => "TST_EXPCOLL_DOC1",
+                        13 => "TST_EXPCOLL_DOC1"
                     ),
                     "TST_EXPCOLL_DOC3" => array(
                         4 => "Titre 3",
-                        11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2"
+                        11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2",
+                        13 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2"
+                    ),
+                    "TST_EXPCOLL_DOC4" => array(
+                        4 => "Titre 4",
+                        11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2\nTST_EXPCOLL_DOC3",
+                        13 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2"
                     )
                 )
             ),

@@ -272,6 +272,7 @@ class ImportSingleDocument
         }
         $extra = array();
         $iattr = 4; // begin in 5th column
+
         foreach ($this->orders as $attrid) {
             if (isset($lattr[$attrid])) {
                 $attr = $lattr[$attrid];
@@ -650,12 +651,17 @@ class ImportSingleDocument
 
     protected function normalizeData(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $rawValue)
     {
-        if ($oa->isMultiple() && is_string($rawValue)) {
+        if ($oa->isMultiple() && is_string($rawValue) && $rawValue[0] !== '{') {
             $normalizeValue = explode("\n", $rawValue);
+            if ($oa->isMultipleInArray()) {
+                foreach ($normalizeValue as $k => $value) {
+                    $normalizeValue[$k] = explode("<BR>", $value);
+                }
+            }
+
         } else {
             $normalizeValue = $rawValue;
         }
-
         return $normalizeValue;
     }
 
@@ -719,9 +725,9 @@ class ImportSingleDocument
             $tvalues[] = $value;
         }
         foreach ($tvalues as $kvalue => $avalue) {
-            if (($avalue != "") && ($avalue != "\t")) {
+            if ($avalue != "") {
                 $unresolvedLogicalNames = array();
-                $tvalues[$kvalue] = $doc->resolveDocIdLogicalNames($oattr, $avalue, $unresolvedLogicalNames, $this->knownLogicalNames);
+                $tvalues[$kvalue] = \Anakeen\Core\Utils\MiscDoc::resolveDocIdLogicalNames($oattr, $avalue, $unresolvedLogicalNames, $this->knownLogicalNames);
                 if (count($unresolvedLogicalNames) > 0) {
                     $res = array_merge($res, $unresolvedLogicalNames);
                 }

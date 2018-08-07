@@ -1000,6 +1000,7 @@ class DocHtmlFormat
      */
     public function formatHtmltext($kvalue, $avalue)
     {
+        $htmlValue=$avalue;
         if ($avalue == '' && $this->oattr->getOption('showempty')) {
             $avalue = $this->oattr->getOption('showempty');
             $this->cancelFormat = true;
@@ -1051,7 +1052,7 @@ class DocHtmlFormat
                 "]"
             ), $avalue);
             if ($error != '') {
-                \Anakeen\Core\Utils\System::addWarningMsg(_("Malformed HTML:") . "\n" . $error);
+                \Anakeen\Core\Utils\System::addWarningMsg(___("Malformed HTML:","sed") . "\n" . $error);
             }
             if ($avalue === false) {
                 $avalue = '';

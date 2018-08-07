@@ -11,7 +11,7 @@ class Postgres
      * @throws \Dcp\Db\Exception
      * @return array
      */
-    public static function stringToArray(string $text):array
+    public static function stringToArray(string $text): array
     {
         $isspace = " \t\r\n\v\f";
         $text = trim($text, $isspace);
@@ -185,7 +185,7 @@ class Postgres
      * @param array $values
      * @return string
      */
-    public static function arrayToString(array $values):string
+    public static function arrayToString(array $values): string
     {
         if (empty($values)) {
             return "null";
@@ -214,5 +214,30 @@ class Postgres
         }
 
         return '{' . implode($values, ',') . '}';
+    }
+
+    /**
+     * Return only one dimension array for pg array
+     * {{12,134},{16,87}} => [12,134,16,87]
+     * {56,32,87} => [56,32,87]
+     * @param string $text
+     * @return array
+     * @throws \Dcp\Db\Exception
+     */
+    public static function stringToFlatArray(string $text): array
+    {
+        if (!$text) {
+            return [];
+        }
+        $result = self::stringToArray($text);
+        $flat = [];
+        foreach ($result as $value) {
+            if (is_array($value)) {
+                $flat = array_merge($flat, $value);
+            } else {
+                $flat[] = $value;
+            }
+        }
+        return $flat;
     }
 }

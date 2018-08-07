@@ -18,6 +18,7 @@ namespace Dcp\Core;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\SmartElement;
 
 include_once("FDL/import_tar.php");
 
@@ -269,13 +270,7 @@ class ImportXml
                             }
                         }
                         if ($v->getOption("multiple") == "yes") {
-                            $id = str_replace(',', "\n", $id);
-                            if ($v->inArray()) {
-                                $id = str_replace(array(
-                                    '\\n',
-                                    "\n",
-                                ), "<BR>", $id);
-                            }
+                                $id = explode(",", $id);
                         }
                         $val[] = $id;
                         break;
@@ -307,8 +302,17 @@ class ImportXml
                 //  print $v->id.":".$item->nodeValue."\n";
             }
             $tord[] = $v->id;
-            $tdoc[] = implode("\n", $val);
+            if (isset($val[0]) && !$v->inArray()) {
+                $rawval=$val[0];
+                if (is_array($rawval)) {
+                    $rawval=SmartElement::arrayToRawValue($rawval);
+                }
+            } else {
+                $rawval=SmartElement::arrayToRawValue($val);
+            }
+            $tdoc[] = $rawval;
         }
+
         //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
         $o = new \ImportSingleDocument();
         if ($tkey) {

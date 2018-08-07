@@ -7,6 +7,7 @@ use Anakeen\Core\AccountManager;
 use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
 use Dcp\Db\Exception;
 
@@ -414,6 +415,7 @@ class DocumentAccess
                     if ($duid == "") {
                         $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                     }
+                    $tduid=[];
                     if ($duid != "") {
                         $oa = $fromdocidvalues->getAttribute($aid);
                         if (!is_array($duid)) {
@@ -421,15 +423,7 @@ class DocumentAccess
                                 if ($oa && $oa->isMultiple() === false) {
                                     $tduid = [$duid];
                                 } else {
-                                    $someids = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
-                                    $tduid = [];
-                                    foreach ($someids as $someid) {
-                                        if (is_array($someid)) {// docid multiple x2
-                                            $tduid = array_merge($tduid, $someids);
-                                        } else {
-                                            $tduid[] = $someid;
-                                        }
-                                    }
+                                    $tduid =  Postgres::stringToFlatArray($duid);
                                 }
                             } else {
                                 $errorMessage = \ErrorCode::getError('DOC0134', $aid);
@@ -480,7 +474,7 @@ class DocumentAccess
                             $uid
                         ));
                         $perm->upacl = $vupacl[$uid];
-                        // print "<BR>\nset perm $uid : ".$this->document->id."/".$perm->upacl.'/'.$vupacl[$uid]."\n";
+
                         if ($perm->isAffected()) {
                             $err = $perm->modify();
                         } else {
@@ -565,8 +559,7 @@ class DocumentAccess
                     $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                 }
                 if ($duid != "") {
-                    $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                    $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
+                    $tduid = Postgres::stringToFlatArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
                             $sysId = AccountManager::getIdFromSEId(intval($duid));

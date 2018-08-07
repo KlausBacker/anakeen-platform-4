@@ -8,6 +8,7 @@ namespace Anakeen\Core\Internal;
 
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Dcp\Exception;
 
 /**
  * Format document list to be easily used in
@@ -909,11 +910,12 @@ class FormatCollection
                     $tv[0] = '';
                 }
                 foreach ($tv as $k => $av) {
-                    if ($av !== '') {
+                    if ($av !== '' && $av !== null) {
                         if (is_array($av)) {
                             $tvv = $this->rtrimNull($av);
                         } else {
-                            $tvv = explode('<BR>', $av); // second level multiple
+                            // Not possible
+                            throw new Exception(sprintf("Incorrect value for multiple x2 \"%s\" \"%s\"", $av, $value));
                         }
                         if (count($tvv) == 0) {
                             $info[$k] = array();

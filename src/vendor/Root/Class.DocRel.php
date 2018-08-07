@@ -10,10 +10,9 @@
  * @version $Id: Class.DocRel.php,v 1.13 2008/12/03 13:55:14 eric Exp $
  * @package FDL
  */
+
 /**
  */
-
-
 class DocRel extends DbObj
 {
     public $fields
@@ -140,8 +139,8 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
     /**
      * Update document relations
      *
-     * @param \Anakeen\Core\Internal\SmartElement  &$doc  document to initialize relations
-     * @param bool $force if force recomputing
+     * @param \Anakeen\Core\Internal\SmartElement &$doc  document to initialize relations
+     * @param bool                                $force if force recomputing
      *
      * @return void
      */
@@ -163,20 +162,13 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
                 // reset old relations
                 pg_query($this->dbid, sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
                 if ($v->inArray()) {
-                    $tv = array_unique($doc->getMultipleRawValues($v->id));
+                    $tv = array_unique(\Anakeen\Core\Utils\Postgres::stringToFlatArray($doc->$k));
                 } else {
                     $tv = array($doc->$k);
                 }
                 $tvrel = array();
                 foreach ($tv as $relid) {
-                    if (strpos($relid, '<BR>') !== false) {
-                        $tt = explode('<BR>', $relid);
-                        foreach ($tt as $brelid) {
-                            if (is_numeric($brelid)) {
-                                $tvrel[] = intval($brelid);
-                            }
-                        }
-                    } elseif (is_numeric($relid)) {
+                    if (is_numeric($relid)) {
                         $tvrel[] = intval($relid);
                     }
                 }
@@ -190,8 +182,8 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
     /**
      * copy in db document relations
      *
-     * @param array &$tv  array of docid
-     * @param \Anakeen\Core\Internal\SmartElement   &$doc document source
+     * @param array                               &$tv  array of docid
+     * @param \Anakeen\Core\Internal\SmartElement &$doc document source
      *
      * @return void
      */
@@ -207,7 +199,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
                 \Anakeen\Core\DbManager::getSqlOrCond($tv, 'id', true)
             );
 
-            $t = $this->query($sql);
+            $this->query($sql);
             if ($this->numrows() > 0) {
                 $c = 0;
                 $tin = array();

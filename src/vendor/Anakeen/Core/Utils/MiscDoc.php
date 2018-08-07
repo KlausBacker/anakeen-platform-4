@@ -3,6 +3,7 @@
 namespace Anakeen\Core\Utils;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\SmartElement;
 
 class MiscDoc
 {
@@ -60,42 +61,75 @@ class MiscDoc
     }
 
     /**
-     * @deprecated use MaskManager
+     * Parse a docid's single or multiple value and resolve logical name references
+     *
+     * The function can report unknown logical names and can take an additional list of
+     * known logical names to not report
+     *
+     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
+     * @param string                                       $avalue              docid's raw value
+     * @param array                                        $unknownLogicalNames Return list of unknown logical names
+     * @param array                                        $knownLogicalNames   List of known logical names that should not be reported as unknown in $unknownLogicalNames
+     *
+     * @return int|string The value with logical names replaced by their id
      */
-    public static function computeVisibility($vis, $fvis, $ffvis = '')
-    {
-        if ($vis == "I") {
-            return $vis;
-        }
-        if ($fvis == "H") {
-            return $fvis;
-        }
-        if (($fvis == "R") && (($vis == "W") || ($vis == "U") || ($vis == "S"))) {
-            return $fvis;
-        }
-        if (($fvis == "R") && ($vis == "O")) {
-            return "H";
-        }
-        if (($fvis == "O") && ($vis == "W")) {
-            return $fvis;
-        }
-        if (($fvis == "S") && (($vis == "W") || ($vis == "O"))) {
-            return $fvis;
-        }
-        if ($fvis == "I") {
-            return $fvis;
-        }
-        if ($fvis == 'U') {
-            if ($ffvis && ($vis == 'W' || $vis == 'O' || $vis == 'S')) {
-                if ($ffvis == 'S') {
-                    return 'S';
+    public static function resolveDocIdLogicalNames(
+        \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
+        $avalue,
+        &$unknownLogicalNames = array(),
+        &$knownLogicalNames = array()
+    ) {
+        $res = $avalue;
+        if (!is_numeric($avalue)) {
+            if (!$oattr->isMultiple()) {
+                if ($oattr->getOption("docrev", "latest") == "latest") {
+                    $res = \Anakeen\Core\SEManager::getInitidFromName($avalue);
+                } else {
+                    $res = \Anakeen\Core\SEManager::getIdFromName($avalue);
                 }
-                if ($ffvis == 'R') {
-                    return 'R';
+                if (!$res && !in_array($avalue, $knownLogicalNames)) {
+                    $unknownLogicalNames[] = $avalue;
                 }
+            } else {
+                if (is_array($avalue)) {
+                    $tnames=$avalue;
+                } else {
+                    $tnames = SmartElement::rawValueToArray($avalue);
+                }
+
+                $tids = array();
+                foreach ($tnames as $lname) {
+                    if (is_array($lname)) {
+                        $mids = $lname;
+                    } else {
+                        $mids = [$lname];
+                    }
+                    $tlids = array();
+                    foreach ($mids as $llname) {
+                        if (!is_numeric($llname)) {
+                            if ($oattr->getOption("docrev", "latest") == "latest") {
+                                $llid = \Anakeen\Core\SEManager::getInitidFromName($llname);
+                            } else {
+                                $llid = \Anakeen\Core\SEManager::getIdFromName($llname);
+                            }
+                            if (!$llid && !in_array($llname, $knownLogicalNames)) {
+                                $unknownLogicalNames[] = $llname;
+                            }
+                            $tlids[] = $llid ? $llid : $llname;
+                        } else {
+                            $tlids[] = $llname;
+                        }
+                    }
+                    if (is_array($lname)) {
+                        $tids[] = $lname;
+                    } else {
+                        $tids[] = $lname[0];
+                    }
+                }
+
+                $res = $tids;
             }
         }
-
-        return $vis;
+        return $res;
     }
 }
