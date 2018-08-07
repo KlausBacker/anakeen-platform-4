@@ -70,7 +70,7 @@ const createBuildXML = () => {
       },
       "acli:sources": {
         "acli:source": {
-          path: "src"
+          $: { path: "src" }
         }
       }
     }

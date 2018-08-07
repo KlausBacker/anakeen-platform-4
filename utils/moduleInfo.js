@@ -44,17 +44,15 @@ exports.getModuleInfo = async sourcePath => {
           path.join(sourcePath, appConst.buildPath),
           { encoding: "utf8" },
           (err, content) => {
-            if (err) reject(err);
+            if (err) return reject(err);
             xml2js.parseString(
               content,
               { tagNameProcessors: [xml2js.processors.stripPrefix] },
               (err, data) => {
-                if (err) reject(err);
-                const buildPath = data.config.sources[0].source.map(
-                  currentSource => {
-                    return path.join(sourcePath, currentSource.$.path);
-                  }
-                );
+                if (err) return reject(err);
+                const buildPath = [
+                  path.join(sourcePath, data.config.sources[0].source[0].$.path)
+                ];
                 resolve({ build: data, buildPath });
               }
             );
