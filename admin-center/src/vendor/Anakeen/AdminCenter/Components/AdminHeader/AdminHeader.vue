@@ -7,6 +7,9 @@
             <admin-breadcrumb :rootLabel="adminTitle" @itemClick="onItemClick" :path="currentRoutePath"></admin-breadcrumb>
         </div>
         <div class="header-content header-right-content">
+            <ank-notifier id="ank-notifier"
+                          position="top-right"
+                          default-type="notice"></ank-notifier>
             <ank-identity large="true" @userLoaded="onUserLoaded" email-alterable="true" password-alterable="true"></ank-identity>
             <ank-logout></ank-logout>
         </div>

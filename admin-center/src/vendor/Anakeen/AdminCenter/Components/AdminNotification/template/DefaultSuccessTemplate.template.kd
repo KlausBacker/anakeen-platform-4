@@ -1,9 +1,0 @@
-<div class="admin-center-notification-message notification-success">
-    <div class="admin-center-notification-message-icon">
-        <i class="material-icons">check_circle</i>
-    </div>
-    <div class="admin-center-notification-message-content">
-        #if (data.title) {#<h3>#= title #</h3> #}#
-        <p>#= message #</p>
-    </div>
-</div>
