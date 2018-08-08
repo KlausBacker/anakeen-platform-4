@@ -3,21 +3,8 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #path
 MODULE_NAME=anakeen-hub
-STUB_PATH=stubs/
-LOCALPUB_PATH=$(MK_DIR)/localpub
-LOCALPUB_SAMPLE_PATH=$(LOCALPUB_PATH)/anakeen-hub
-VERSION_PATH=$(MK_DIR)/VERSION
-RELEASE_PATH=$(MK_DIR)/RELEASE
 JS_CONF_PATH=$(MK_DIR)
 NODE_MODULE_PATH=node_modules
-WEBPACK_CONF_PATH=webpack
-SAMPLE_SRC_PATH=anakeen-hub
-JS_BUILD_PATH=$(SAMPLE_SRC_PATH)/src/public/anakeenHub
-JS_SRC_PATH=$(SAMPLE_SRC_PATH)/src/vendor/Anakeen/anakeenHub/Layout
-
-## Version and release
-VERSION = $(shell cat VERSION)
-RELEASE = $(shell cat RELEASE)
 
 ## control conf
 port=80
@@ -31,6 +18,7 @@ CONTROL_CONTEXT=$(ctx)
 ##bin
 YARN_BIN=yarn
 DEVTOOL_BIN=php ./anakeen-devtool.phar
+ANAKEEN_CLI=node ./node_modules/@anakeen/anakeen-cli
 COMPOSER_BIN=composer
 
 -include Makefile.local
@@ -48,7 +36,7 @@ $(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
 install: $(JS_CONF_PATH)/yarn.lock ## Install deps (js an php)
 
 stub: ## Generate stubs
-	$(DEVTOOL_BIN) generateStub -s $(SAMPLE_SRC_PATH) -o $(STUB_PATH)
+	$(ANAKEEN_CLI) generateStubs
 
 ########################################################################################################################
 ##
@@ -58,44 +46,13 @@ stub: ## Generate stubs
 $(NODE_MODULE_PATH):
 	$(YARN_BIN) install
 
-$(LOCALPUB_SAMPLE_PATH): $(NODE_MODULE_PATH) $(JS_CONF_PATH)/yarn.lock $(JS_BUILD_PATH) $(VERSION_PATH) $(RELEASE_PATH)
+app: $(NODE_MODULE_PATH) $(JS_CONF_PATH)/yarn.lock
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	-mkdir -p $(LOCALPUB_SAMPLE_PATH)
-	rsync --delete -azvr $(SAMPLE_SRC_PATH)/ $(LOCALPUB_SAMPLE_PATH)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_SAMPLE_PATH)/build.json
-	$(DEVTOOL_BIN) generateWebinst --force -s $(LOCALPUB_SAMPLE_PATH) -o .
-	touch "$@"
+	$(ANAKEEN_CLI) build
 
-$(JS_BUILD_PATH): $(NODE_MODULE_PATH) $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_SRC_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/webpack.config.js $(WEBPACK_CONF_PATH)/webpack.parts.js
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(YARN_BIN) build
-	touch "$@"
-
-
-app: $(LOCALPUB_SAMPLE_PATH) ## build sample
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-
-deploy: ## deploy sample
+deploy: app ## deploy sample
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w ${MODULE_NAME}*.app -- --force
 	make clean
-
-########################################################################################################################
-##
-## Node
-##
-########################################################################################################################
-autorelease:
-	@${PRINT_COLOR} "${DEBUG_COLOR}autorelease $@${RESET_COLOR}\n"
-	npm version $(VERSION)-$(shell date +%s)
-
-nodePublish:
-	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
-	npm publish
-
-autoPublish:
-	@${PRINT_COLOR} "${DEBUG_COLOR}$@${RESET_COLOR}\n"
-	npm version $(VERSION)-$(shell find . -type f -print0 | xargs -0 stat --format '%Y' | sort -nr | cut -d: -f2- | head -1)
-	npm publish || echo "Already published"
 
 ########################################################################################################################
 ##
@@ -105,13 +62,7 @@ autoPublish:
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -rf ${LOCALPUB_PATH}
 	rm -rf ${MODULE_NAME}*.app
-
-cleanAll: clean ## clean the local pub and the node_module
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -rf $(NODE_MODULE_PATH)
-	touch $(JS_CONF_PATH)/package.json
 
 ########################################################################################################################
 ##
