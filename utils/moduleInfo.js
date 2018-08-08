@@ -6,7 +6,7 @@ const glob = require("glob");
 const Saxophone = require("saxophone");
 const signale = require("signale");
 
-const REG_EXP_CHECK_NAMESPACE = /http:\/\/www.anakeen.com\/ns\/smart\/1.0/;
+const REG_EXP_CHECK_NAMESPACE = /https:\/\/platform.anakeen.com\/4\/schemas\/smart\/1.0/;
 const REG_EXP_STRUCTURE_CONF = /[\w]?:?structure-configuration/;
 const REG_EXP_CLASS_CONF = /[\w]?:?class/;
 
