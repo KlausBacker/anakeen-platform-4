@@ -4,7 +4,7 @@ namespace Anakeen\SmartStructures\HubConfiguration;
 
 use SmartStructure\Fields\HubConfiguration as HubConfigurationFields;
 
-class HubConfigurationSmartStructure extends \SmartStructure\HubConfiguration
+class HubConfigurationSmartStructure extends \Anakeen\SmartElement
 {
 
     public function registerHooks()

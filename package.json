@@ -4,7 +4,8 @@
   "description": "Hub station",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/@anakeen/anakeen-cli/index.js build"
   },
   "repository": {
     "type": "git",

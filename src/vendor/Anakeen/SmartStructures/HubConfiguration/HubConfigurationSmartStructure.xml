@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HubConfiguration">
         <smart:icon file="HubConfiguration.png"/>
 
-        <smart:class>\Anakeen\SmartStructures\HubConfiguration\HubConfigurationSmartStructure</smart:class>
+        <smart:class>Anakeen\SmartStructures\HubConfiguration\HubConfigurationSmartStructure</smart:class>
 
         <smart:fields>
             <smart:field-set name="hub_config" type="frame" label="Hub configuration" access="ReadWrite">
@@ -17,7 +17,7 @@
                 <smart:field-text name="hub_icon" label="Icon" access="ReadWrite"/>
                 <smart:field-text name="hub_font_name" access="ReadWrite"/>
                 <smart:field-text name="hub_icon_name" access="ReadWrite"/>
-                <smart:field-set name="hub_roles" label="Roles" access="ReadWrite">
+                <smart:field-set name="hub_roles" type="array" label="Roles" access="ReadWrite">
                     <smart:field-account name="hub_role" label="Role" access="ReadWrite">
                         <smart:field-option name="match">role</smart:field-option>
                     </smart:field-account>
@@ -38,7 +38,7 @@
                     <smart:field-text name="hub_jsasset" label="Javascript Url" access="ReadWrite"/>
                 </smart:field-set>
                 <smart:field-set name="hub_cssassets" type="array" label="CSS assets" access="ReadWrite">
-                    <smart:field-text name="hub_cssassets" label="Css Url" access="ReadWrite"/>
+                    <smart:field-text name="hub_cssasset" label="Css Url" access="ReadWrite"/>
                 </smart:field-set>
                 <smart:field-enum name="hub_slot" label="Element in slot" relation="slot_enum" access="ReadWrite"/>
             </smart:field-set>
