@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="Anakeen">
+    <sde:route name="hub">
+      <sde:callable>\Anakeen\Hub\IHM\Hub</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/hub/</sde:pattern>
+    </sde:route>
+    <sde:route name="hubAdmin">
+      <sde:callable>\Anakeen\Hub\IHM\HubAdmin</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/hub/admin/</sde:pattern>
+    </sde:route>
+  </sde:routes>
+  <sde:accesses namespace="Anakeen"/>
+  <sde:parameters namespace="Anakeen"/>
+</sde:config>

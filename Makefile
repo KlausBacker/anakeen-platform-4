@@ -48,7 +48,8 @@ $(NODE_MODULE_PATH):
 
 app: $(NODE_MODULE_PATH) $(JS_CONF_PATH)/yarn.lock
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(ANAKEEN_CLI) build
+	$(YARN_BIN) run buildJs
+	$(YARN_BIN) run build
 
 deploy: app ## deploy sample
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w ${MODULE_NAME}*.app -- --force
