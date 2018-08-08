@@ -19,6 +19,7 @@ CONTROL_CONTEXT=$(ctx)
 YARN_BIN=yarn
 DEVTOOL_BIN=php ./anakeen-devtool.phar
 ANAKEEN_CLI=node ./node_modules/@anakeen/anakeen-cli
+CBF_BIN=php ./ide/vendor/bin/phpcbf
 COMPOSER_BIN=composer
 
 -include Makefile.local
@@ -73,6 +74,17 @@ clean: ## clean the local pub
 
 po: ## extract the po
 	${DEVTOOL_BIN} extractPo -s $(SAMPLE_SRC_PATH)/ -o $(MK_DIR)/$(SAMPLE_SRC_PATH)/src/
+
+########################################################################################################################
+##
+## Beautify TARGET
+##
+########################################################################################################################
+
+beautify:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
+	$(YARN_BIN) run beautify
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
 ########################################################################################################################
 ##
