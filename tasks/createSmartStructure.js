@@ -21,7 +21,7 @@ const generateSmartStructureXML = ({
   const structureConf = {
     "smart:config": {
       $: {
-        "xmlns:smart": "http://www.anakeen.com/ns/smart/1.0"
+        "xmlns:smart": "https://platform.anakeen.com/4/schemas/smart/1.0"
       },
       "smart:structure-configuration": {
         $: {
@@ -43,7 +43,7 @@ const generateSmartStructureXML = ({
   if (withClass) {
     structureConf["smart:config"]["smart:structure-configuration"][
       "smart:class"
-    ] = `\\${namespace}\\${name}SmartStructure`;
+    ] = `${namespace}\\${name}SmartStructure`;
   }
   structureConf["smart:config"]["smart:structure-configuration"][
     "smart:fields"
@@ -57,14 +57,18 @@ const generateSmartStructureXML = ({
   return structureConf;
 };
 
-const generateStructurePhp = ({ name, namespace }) => {
+const generateStructurePhp = ({ name, namespace, parentName }) => {
+  let extend = "\\Anakeen\\SmartElement";
+  if (parentName !== false) {
+    extend = `\\SmartStructure\\${name}`;
+  }
   return `<?php
 
 namespace ${namespace};
 
 use SmartStructure\\Fields\\${name} as ${name}Fields;
 
-class ${name}SmartStructure extends \\SmartStructure\\${name}
+class ${name}SmartStructure extends ${extend}
 {
 
     public function registerHooks()
@@ -214,6 +218,7 @@ exports.createSmartStructure = ({
           return new Promise((resolve, reject) => {
             const structurePHP = generateStructurePhp({
               name,
+              parentName,
               namespace: convertPathInPhpNamespace({
                 vendorPath,
                 smartStructurePath: currentPath
@@ -333,7 +338,7 @@ exports.createSmartStructure = ({
                 const postUpgrade = data.module["post-upgrade"];
                 postInstall[0].process.push({
                   $: {
-                    command: `./ank.php --script=importDocuments --file=./${path.relative(
+                    command: `./ank.php --script=importConfiguration --file=./${path.relative(
                       srcPath,
                       xmlPath
                     )}`
@@ -341,7 +346,7 @@ exports.createSmartStructure = ({
                 });
                 postUpgrade[0].process.push({
                   $: {
-                    command: `./ank.php --script=importDocuments --file=./${path.relative(
+                    command: `./ank.php --script=importConfiguration --file=./${path.relative(
                       srcPath,
                       xmlPath
                     )}`
