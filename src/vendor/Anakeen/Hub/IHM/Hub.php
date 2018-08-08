@@ -4,7 +4,8 @@ namespace Anakeen\Hub\IHM;
 
 class Hub
 {
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args) {
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    {
         $page=__DIR__."/hub.html";
         $mustache = new \Mustache_Engine();
         $data = [

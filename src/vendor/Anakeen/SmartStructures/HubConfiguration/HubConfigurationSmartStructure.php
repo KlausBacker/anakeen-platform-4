@@ -14,6 +14,5 @@ class HubConfigurationSmartStructure extends \Anakeen\SmartElement
 
     public function getConfiguration()
     {
-
     }
 }
