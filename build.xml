@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<acli:config xmlns:acli="http://www.anakeen.com/ns/acli/1.0">
+  <acli:sources>
+    <acli:source path="src"/>
+  </acli:sources>
+</acli:config>

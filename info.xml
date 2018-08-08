@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<module xmlns="urn:dynacase:webinst:module/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.0" release="0">
+  <post-install>
+    <process command="programs/update_catalog"/>
+    <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
+  </post-install>
+  <post-upgrade>
+    <process command="programs/update_catalog"/>
+    <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
+  </post-upgrade>
+</module>
