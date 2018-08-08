@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/sde/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rout="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <xs:element name="config" type="rout:configType"/>
+
+
+    <xs:complexType name="accessType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="category" minOccurs="0"/>
+            <xs:element type="xs:string" name="description"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="middlewaresType">
+        <xs:sequence>
+            <xs:element type="rout:middlewareType" name="middleware" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="parameterType">
+        <xs:sequence maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="xs:string" name="category" minOccurs="0"/>
+            <xs:element type="xs:string" name="description"/>
+            <xs:element type="xs:string" name="value"/>
+            <xs:element type="xs:string" name="type" minOccurs="0" default="text"/>
+            <xs:element type="rout:paramAccessType" name="access" minOccurs="0" default="admin"/>
+            <xs:element type="xs:boolean" name="isUser" default="false" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="routesType2">
+        <xs:sequence>
+            <xs:element type="rout:routeCompleteType" name="route"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="routesType">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element name="route" type="rout:routeCompleteType">
+                <xs:alternative test="@override != 'partial'" type="rout:routePartialType"/>
+                <xs:alternative test="@override = 'complete'" type="rout:routeCompleteType"/>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="middlewareType">
+        <xs:sequence>
+            <xs:element type="xs:int" name="priority" default="0"/>
+            <xs:element type="xs:string" name="callable"/>
+            <xs:element type="xs:string" name="method"/>
+            <xs:element type="xs:string" name="pattern"/>
+            <xs:element type="xs:string" name="description"/>
+            <xs:element type="xs:string" name="requiredAccess"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name"/>
+    </xs:complexType>
+
+    <xs:complexType name="accessRefType" mixed="true">
+        <xs:attribute type="xs:token" name="ns" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="requiredAccessType" >
+        <xs:sequence>
+            <xs:element type="rout:accessRefType" name="access" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="operator" default="and"/>
+    </xs:complexType>
+
+    <xs:complexType name="parametersType">
+        <xs:sequence>
+            <xs:element type="rout:parameterType" name="parameter" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
+        <xs:attribute type="xs:token" name="label" />
+    </xs:complexType>
+    <xs:complexType name="configType">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="rout:routesType" name="routes"/>
+            <xs:element type="rout:middlewaresType" name="middlewares"/>
+            <xs:element type="rout:accessesType" name="accesses"/>
+            <xs:element type="rout:parametersType" name="parameters"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:simpleType name="paramAccessType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="admin"/>
+            <xs:enumeration value="static"/>
+            <xs:enumeration value="readonly"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="methodType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GET"/>
+            <xs:enumeration value="POST"/>
+            <xs:enumeration value="PUT"/>
+            <xs:enumeration value="PATCH"/>
+            <xs:enumeration value="OPTIONS"/>
+            <xs:enumeration value="DELETE"/>
+            <xs:enumeration value="ANY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="overrideType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="partial"/>
+            <xs:enumeration value="complete"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="routeCompleteType">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element type="xs:int" name="priority" minOccurs="0" default="0"/>
+            <xs:element type="xs:string" name="callable"/>
+            <xs:element type="rout:methodType" name="method" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>HTTP method</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="pattern" maxOccurs="unbounded"/>
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="rout:requiredAccessType" name="requiredAccess" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="authenticated" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="rout:overrideType" name="override"/>
+    </xs:complexType>
+    <xs:complexType name="routePartialType">
+        <xs:sequence maxOccurs="unbounded">
+            <xs:element type="xs:int" name="priority" minOccurs="0" default="0"/>
+            <xs:element type="xs:string" name="callable" minOccurs="0"/>
+            <xs:element type="rout:methodType" name="method" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>HTTP method</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:string" name="pattern" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="rout:requiredAccessType" name="requiredAccess" minOccurs="0"/>
+            <xs:element type="xs:boolean" name="authenticated" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="rout:overrideType" name="override"/>
+    </xs:complexType>
+    <xs:complexType name="accessesType">
+        <xs:sequence>
+            <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:token" name="namespace" use="required"/>
+    </xs:complexType>
+</xs:schema>
