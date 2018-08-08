@@ -1,0 +1,22 @@
+{
+  "name": "anakeen-hub",
+  "version": "1.0.0",
+  "description": "Hub station",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.anakeen.com:Anakeen/Users/aurelien.gaillard/anakeen-hub.git"
+  },
+  "keywords": [
+    "hub",
+    "station"
+  ],
+  "author": "Anakeen",
+  "license": "MIT",
+  "dependencies": {
+    "@anakeen/anakeen-cli": "^1.0.0-1533544440-1533544657"
+  }
+}
