@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/@anakeen/anakeen-cli/index.js build"
+    "build": "./node_modules/@anakeen/anakeen-cli/index.js build",
+    "beautify": "npx eslint ./ --fix",
+    "lint": "npx eslint ./"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.anakeen.com:Anakeen/Users/aurelien.gaillard/anakeen-hub.git"
+    "url": "git@gitlab.anakeen.com:Anakeen/Users/charles.bonnissent/anakeen-hub.git"
   },
   "keywords": [
     "hub",
@@ -18,6 +20,11 @@
   "author": "Anakeen",
   "license": "MIT",
   "dependencies": {
+
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-plugin-prettier": "^2.6.2",
     "@anakeen/anakeen-cli": "^1.0.0-1533544440-1533544657"
   }
 }

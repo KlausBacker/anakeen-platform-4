@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -o pipefail
+
+# LocalTunnel's ID must be lowercase and between 4 and 63 alphanumeric characters.
+echo -n "${HOSTNAME}" | tr "A-Z" "a-z" | sed 's/[^a-z0-9]//g'

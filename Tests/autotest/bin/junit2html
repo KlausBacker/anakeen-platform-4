@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ -z "${AUTOTEST_HOME}" ]; then
+	AUTOTEST_HOME=$(realpath "$(dirname "$(realpath "$0")")/..")
+fi
+
+function usage {
+	cat <<EOF
+
+Usage
+-----
+
+  $0 <junit-filename> <output-filename>
+
+EOF
+}
+
+function main {
+	local JUNIT=$1
+	if [ -z "${JUNIT}" ]; then
+		echo "Error: missing or empty junit-filename argument!" 1>&2
+		usage
+		return 1
+	fi
+	local OUTPUT=$2
+	if [ -z "${OUTPUT}" ]; then
+		echo "Error: missing or empty output-filename argument!" 1>&2
+		usage
+		return 1
+	fi
+
+	"${AUTOTEST_HOME}/node_modules/.bin/xunit-viewer" --results="${JUNIT}" --output="${OUTPUT}"
+}
+
+main "$@"
