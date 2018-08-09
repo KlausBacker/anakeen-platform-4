@@ -5,6 +5,7 @@
     <description>Anakeen Platform : User interfaces</description>
     <requires>
         <module name="smart-data-engine"/>
+        <module name="anakeen-theme"/>
     </requires>
     <replaces>
     </replaces>
