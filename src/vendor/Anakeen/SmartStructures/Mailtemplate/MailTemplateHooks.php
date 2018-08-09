@@ -307,12 +307,10 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $subject = $this->generateMailInstance($doc, $this->getRawValue("tmail_subject"));
         $subject = str_replace(array(
             "\n",
-            "\r",
-            "<BR>"
+            "\r"
         ), array(
             " ",
-            " ",
-            ", "
+            " "
         ), html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
         $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body"), $this->getAttribute("tmail_body"));
         // delete empty address

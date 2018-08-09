@@ -17,6 +17,7 @@ include_once("FDL/import_file.php");
 
 class ImportSingleDocument
 {
+    const CSVSECONDLEVELMULTIPLE='<BR>';
     private $currentAttrid = "";
     protected $dirid = 0;
     protected $analyze = false;
@@ -655,7 +656,7 @@ class ImportSingleDocument
             $normalizeValue = explode("\n", $rawValue);
             if ($oa->isMultipleInArray()) {
                 foreach ($normalizeValue as $k => $value) {
-                    $normalizeValue[$k] = explode("<BR>", $value);
+                    $normalizeValue[$k] = explode(self::CSVSECONDLEVELMULTIPLE, $value);
                 }
             }
         } else {
@@ -719,7 +720,7 @@ class ImportSingleDocument
             if (is_array($value)) {
                 $tvalues = $value;
             } else {
-                $tvalues = explode("\n", str_replace('<BR>', "\n", $value));
+                $tvalues = explode("\n", str_replace(self::CSVSECONDLEVELMULTIPLE, "\n", $value));
             }
         } else {
             $tvalues[] = $value;

@@ -4220,7 +4220,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return array|string
      */
-    final public function getRValue($RidAttr, $def = "", $latest = true, $html = false)
+    final public function getRValue($RidAttr, $def = "", $latest = true)
     {
         $tattrid = explode(":", $RidAttr);
         $lattrid = array_pop($tattrid); // last attribute
@@ -4236,11 +4236,9 @@ create unique index i_docir on doc(initid, revision);";
                 return $def;
             }
         }
-        if ($html) {
-            return $doc->getHtmlAttrValue($lattrid, $def);
-        } else {
-            return $doc->getRawValue($lattrid, $def);
-        }
+
+        return $doc->getRawValue($lattrid, $def);
+
     }
 
 

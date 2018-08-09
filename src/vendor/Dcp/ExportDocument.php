@@ -315,7 +315,7 @@ class ExportDocument
             if ($eformat == 'F') {
                 if ($this->csvEnclosure) {
                     $csvValue = str_replace(array(
-                        '<BR>',
+                        \ImportSingleDocument::CSVSECONDLEVELMULTIPLE,
                         '<br/>'
                     ), array(
                         "\n",
@@ -323,7 +323,7 @@ class ExportDocument
                     ), $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 } else {
                     $csvValue = str_replace(array(
-                        '<BR>',
+                        \ImportSingleDocument::CSVSECONDLEVELMULTIPLE,
                         '<br/>'
                     ), '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 }
@@ -379,7 +379,7 @@ class ExportDocument
                                     $tnbr[] = $brid;
                                 }
                             }
-                            $csvValue[] = implode('<BR>', $tnbr);
+                            $csvValue[] = implode(\ImportSingleDocument::CSVSECONDLEVELMULTIPLE, $tnbr);
                         }
                     } else {
                         $n = \Anakeen\Core\SEManager::getNameFromId($csvValue);
