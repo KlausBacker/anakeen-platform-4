@@ -2,8 +2,6 @@
 
 namespace Dcp\Pu;
 
-use Anakeen\Core\SEManager;
-
 class TestExportCollection extends TestCaseDcpCommonFamily
 {
     public static function getCommonImportFile()
@@ -99,6 +97,10 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     /**
      * @dataProvider dataExportXmlSingle
+     * @param array $expectedData
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\Exception
+     * @throws \Dcp\SearchDoc\Exception
      */
     public function testExportXmlSingle(array $expectedData)
     {
@@ -126,6 +128,11 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     /**
      * @dataProvider dataExportXmlArchive
+     * @param       $file
+     * @param array $xmlPathes
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\Exception
+     * @throws \Dcp\SearchDoc\Exception
      */
     public function testExportXmlArchive($file, array $xmlPathes)
     {
@@ -248,7 +255,11 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     /**
      * @param       $separator
      * @param       $enclosure
+     * @param       $file
      * @param array $expectedData
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\Exception
+     * @throws \Dcp\SearchDoc\Exception
      * @dataProvider dataExportFileCsv
      */
     public function testExportFileCsv($separator, $enclosure, $file, array $expectedData)
@@ -579,6 +590,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     public function dataExportCsv()
     {
+        $CSLM=\ImportSingleDocument::CSVSECONDLEVELMULTIPLE;
         return array(
             array(
                 ";",
@@ -613,7 +625,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                     "TST_EXPCOLL_DOC4" => array(
                         4 => "Titre 4",
                         11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2\nTST_EXPCOLL_DOC3",
-                        13 => "TST_EXPCOLL_DOC1<BR>TST_EXPCOLL_DOC2\n<BR>\n<BR>"
+                        13 => "TST_EXPCOLL_DOC1${CSLM}TST_EXPCOLL_DOC2\n${CSLM}\n${CSLM}"
                     )
                 )
             ),

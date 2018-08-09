@@ -636,7 +636,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
             ),
             array(
                 'TST_DOCTYPE1',
-                array( //TST_DOCTYPE0<BR><BR>TST_DOCTYPE0\n  <BR>TST_DOCTYPE0\n\nTST_DOCTYPE0
+                array(
                     "tst_rels2" => array(
                         array(
                             "TST_DOCTYPE0",
@@ -684,7 +684,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
             ),
             array(
                 'TST_DOCTYPE1',
-                array( //TST_DOCTYPE0<BR><BR>TST_DOCTYPE0\n  <BR>TST_DOCTYPE0\n\nTST_DOCTYPE0
+                array(
                     "tst_rels2" => array(
                         array(
                             "TST_DOCTYPE0",
@@ -1245,5 +1245,3 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         );
     }
 }
-
-?>

@@ -356,12 +356,16 @@ class ExportXmlDocument
                             }
                         } else {
 
-                                return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
+                            return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
 
                         }
                     }
                 }
             // no break
+
+            case 'longtext':
+                return sprintf("<%s><![CDATA[%s]]></%s>", $attribute->id, $v, $attribute->id);
+                break;
             default:
                 return sprintf("<%s>%s</%s>", $attribute->id, $attribute->encodeXml($v), $attribute->id);
         }

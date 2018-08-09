@@ -1101,6 +1101,9 @@ class FormatCollection
                     $rowList[] = $displayDocId ? $data->value : $data->displayValue;
                 }
             }
+            $rowList = array_map(function ($v) use ($sepRow) {
+                return str_replace($sepRow, \ImportSingleDocument::CSVLONGTEXTMULTIPLE, $v);
+            }, $rowList);
             $result = join($sepRow, $rowList);
         }
         return $result;

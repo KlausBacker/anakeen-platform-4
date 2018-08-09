@@ -10,8 +10,11 @@ class DocumentDataCSV extends DocumentData
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         parent::__invoke($request, $response, $args);
-        return $response->withHeader('Content-Type', 'text/csv')
-            ->write($this->getDocumentData());
+        $contentType = 'text/csv';
+        if ($request->getQueryParam("inline") !== null) {
+            $contentType = "text/plain";
+        }
+        return $response->withHeader('Content-Type', $contentType)->write($this->getDocumentData());
     }
 
     /**

@@ -17,7 +17,8 @@ include_once("FDL/import_file.php");
 
 class ImportSingleDocument
 {
-    const CSVSECONDLEVELMULTIPLE='<BR>';
+    const CSVSECONDLEVELMULTIPLE = '<BR>';
+    const CSVLONGTEXTMULTIPLE = '\\r';
     private $currentAttrid = "";
     protected $dirid = 0;
     protected $analyze = false;
@@ -658,6 +659,11 @@ class ImportSingleDocument
                 foreach ($normalizeValue as $k => $value) {
                     $normalizeValue[$k] = explode(self::CSVSECONDLEVELMULTIPLE, $value);
                 }
+            }
+            if ($oa->type === "longtext") {
+                $normalizeValue = array_map(function ($singleValue) {
+                    return str_replace(self::CSVLONGTEXTMULTIPLE, "\n", $singleValue);
+                }, $normalizeValue);
             }
         } else {
             $normalizeValue = $rawValue;

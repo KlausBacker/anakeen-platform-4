@@ -44,7 +44,7 @@ class AttributeValue
         switch ($type) {
             case 'longtext':
                 foreach ($typedValues as & $v) {
-                    $v = str_replace('<BR>', "\n", $v);
+                   // $v = str_replace('<BR>', "\n", $v);
                 }
                 break;
         }

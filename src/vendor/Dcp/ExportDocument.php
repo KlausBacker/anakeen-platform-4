@@ -330,7 +330,11 @@ class ExportDocument
             } else {
                 $csvValue = $rawValue;
             }
-
+            if ($attr->type === "longtext" && is_array($csvValue)) {
+                foreach ($csvValue as $ck => $singleValue) {
+                    $csvValue[$ck] = str_replace("\n", \ImportSingleDocument::CSVLONGTEXTMULTIPLE, $singleValue);
+                }
+            }
 
             // invert HTML entities
             if (($attr->type == "image") || ($attr->type == "file")) {
