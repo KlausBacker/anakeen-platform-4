@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@anakeen/ank-components@^1.0.0-0":
+  version "1.0.0-1533826827"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1533826827.tgz#c39694a23555cb468b95dbc099c558ac6319533c"
+
 "@progress/kendo-theme-bootstrap@^2.8.0":
   version "2.13.5"
   resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-2.13.5.tgz#0c28df3df0e77d1894652751fade27bcc27e14d8"
@@ -275,10 +279,6 @@ alphanum-sort@^1.0.1, alphanum-sort@^1.0.2:
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
-
-"ank-components@git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#master":
-  version "0.0.2"
-  resolved "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#ae525272bdb6506fe31c77617eb02c8e6e03ab6e"
 
 ansi-escapes@^3.0.0:
   version "3.1.0"
