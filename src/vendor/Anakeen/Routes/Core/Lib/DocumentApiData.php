@@ -50,12 +50,9 @@ class DocumentApiData
      */
     public function __construct(\Anakeen\Core\Internal\SmartElement $document)
     {
-            $this->_document = $document;
+        $this->_document = $document;
         $this->defaultFields = self::GET_PROPERTIES . "," . self::GET_ATTRIBUTES;
     }
-
-
-
 
 
     /**
@@ -279,7 +276,7 @@ class DocumentApiData
      * Get the attribute info
      *
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $attribute
-     * @param int             $order
+     * @param int                                         $order
      *
      * @return array
      */
@@ -345,8 +342,7 @@ class DocumentApiData
                 $defaultValue = $this->_document->applyMethod($defaultValue, $defaultValue);
             }
 
-            $formatDefaultValue = $this->documentFormater->getFormatCollection()
-                ->getInfo($attribute, $defaultValue, $this->_document);
+            $formatDefaultValue = $this->documentFormater->getFormatCollection()->getInfo($attribute, $defaultValue, $this->_document);
 
             if ($formatDefaultValue) {
                 if ($attribute->isMultipleInArray()) {

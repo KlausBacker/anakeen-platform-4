@@ -905,7 +905,11 @@ class FormatCollection
         if ($oa->isMultiple()) {
             if ($oa->isMultipleInArray()) {
                 // double level multiple
-                $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
+                if (! is_array($value)) {
+                    $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
+                } else {
+                    $tv = $value;
+                }
                 if (count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
@@ -930,7 +934,11 @@ class FormatCollection
                 }
             } else {
                 // single level multiple
-                $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
+                if (! is_array($value)) {
+                    $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
+                } else {
+                    $tv = $value;
+                }
                 if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
                     $tv[0] = '';
                 }
