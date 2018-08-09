@@ -13,4 +13,5 @@ class LongtextAttributeValue extends FormatAttributeValue
         }
         parent::__construct($oa, $v);
     }
+
 }

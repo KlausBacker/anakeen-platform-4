@@ -326,12 +326,24 @@ class ExportXmlDocument
                                 $info["name"] = htmlspecialchars($info["name"], ENT_QUOTES);
 
                                 if ($this->exportDocumentNumericIdentiers) {
-                                    return sprintf('<%s id="%s" name="%s"%s>%s</%s>', $attribute->id, $docid, $info["name"], $revAttr, $attribute->encodeXml($info["title"]),
-                                        $attribute->id);
+                                    return sprintf(
+                                        '<%s id="%s" name="%s"%s>%s</%s>',
+                                        $attribute->id,
+                                        $docid,
+                                        $info["name"],
+                                        $revAttr,
+                                        $attribute->encodeXml($info["title"]),
+                                        $attribute->id
+                                    );
                                 } else {
                                     if ($revAttr) {
-                                        \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"),
-                                            $doc->getTitle(), $attribute->getLabel()));
+                                        \Anakeen\Core\Utils\System::addWarningMsg(
+                                            sprintf(
+                                                _("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"),
+                                                $doc->getTitle(),
+                                                $attribute->getLabel()
+                                            )
+                                        );
                                     }
                                     return sprintf('<%s name="%s"%s>%s</%s>', $attribute->id, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
                                 }
@@ -343,11 +355,9 @@ class ExportXmlDocument
                                 }
                             }
                         } else {
-                            if ((strpos($v, '<BR>') === false) && (strpos($v, "\n") === false)) {
-                                return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
-                            } else {
 
-                            }
+                                return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
+
                         }
                     }
                 }

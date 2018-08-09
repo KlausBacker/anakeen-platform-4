@@ -3472,7 +3472,6 @@ create unique index i_docir on doc(initid, revision);";
             if ($value === " ") {
                 $value = ""; // erase value
                 if ((!empty($this->$attrid)) || (isset($this->$attrid) && $this->$attrid === "0")) {
-                    //print "change by delete $attrid  <BR>\n";
                     if ($this->_setValueCompleteArray === false) {
                         $this->hasChanged = true;
                         $this->_oldvalue[$attrid] = $this->$attrid;

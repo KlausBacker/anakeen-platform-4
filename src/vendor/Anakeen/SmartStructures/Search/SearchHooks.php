@@ -149,8 +149,6 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
             // print "<HR>getQuery1:[$query]";
         } else {
             $query[] = $this->getRawValue("SE_SQLSELECT");
-            // print "<BR><HR>".$this->getRawValue("se_latest")."/".$this->getRawValue("se_case")."/".$this->getRawValue("se_key");
-            //  print "getQuery2:[$query]";
         }
 
         return $query;

@@ -4,6 +4,7 @@ namespace Dcp;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Postgres;
 
 class ExportCollection
 {
@@ -462,7 +463,7 @@ class ExportCollection
                                         }
                                     }
                                     if (!empty($m["tm_tmail"])) {
-                                        $tmskid = $family->rawValueToArray(str_replace('<BR>', "\n", $m["tm_tmail"]));
+                                        $tmskid = Postgres::stringToFlatArray($m["tm_tmail"]);
                                         foreach ($tmskid as $kmsk => $imsk) {
                                             if ($imsk != "") {
                                                 $msk = SEManager::getRawDocument($imsk);
