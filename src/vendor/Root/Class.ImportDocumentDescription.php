@@ -670,8 +670,7 @@ class ImportDocumentDescription
             $this->doc->doctype = "S";
         }
         if ($ferr == "") {
-            $now = gettimeofday();
-            $this->doc->revdate = $now['sec'];
+            $this->doc->mdate = \Anakeen\Core\Utils\Date::getNow(true);
             $this->doc->modify();
 
 
@@ -860,7 +859,7 @@ class ImportDocumentDescription
 
                 case 'default':
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset defaults values"));
-                    $this->doc->defval = '';
+                    $this->doc->defaultvalues = '{}';
                     break;
 
                 case 'parameters':

@@ -15,6 +15,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\IMailRecipient;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
 
 class MailTemplateHooks extends \Anakeen\SmartElement
@@ -203,10 +204,13 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                             $vdocid = $udoc->getFamilyParameterValue($aid);
                         } else {
                             $vdocid = $udoc->getRawValue($aid); // for array of users
+                            if ($udoc->getAttribute($aid)->isMultiple()) {
+                                $vdocid = Postgres::stringToFlatArray($vdocid);
+                            }
                         }
-                        $vdocid = str_replace('<BR>', "\n", $vdocid);
-                        if (strpos($vdocid, "\n")) {
-                            $tvdoc = $this->rawValueToArray($vdocid);
+
+                        if (is_array($vdocid)) {
+                            $tvdoc = $vdocid;
                             $tmail = array();
                             $it = new \DocumentList();
                             $it->addDocumentIdentifiers($tvdoc);
@@ -303,12 +307,10 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $subject = $this->generateMailInstance($doc, $this->getRawValue("tmail_subject"));
         $subject = str_replace(array(
             "\n",
-            "\r",
-            "<BR>"
+            "\r"
         ), array(
             " ",
-            " ",
-            ", "
+            " "
         ), html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
         $pfout = $this->generateMailInstance($doc, $this->getRawValue("tmail_body"), $this->getAttribute("tmail_body"));
         // delete empty address
@@ -493,7 +495,6 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      */
     private function generateMailInstance(\Anakeen\Core\Internal\SmartElement & $doc, $tpl, $oattr = false)
     {
-        global $action;
         $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in \Anakeen\Core\Internal\SmartElement::setValue()
         $doc->lay = new \Layout("", $tpl);
 

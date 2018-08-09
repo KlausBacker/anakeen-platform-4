@@ -36,6 +36,7 @@ class TestAttributeDoctitle extends TestCaseDcpCommonFamily
         $oa = $d->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $d->fromname));
         $value = $d->getRawValue($oa->id);
+
         $this->assertEquals($expectedValue, $value, sprintf("not the expected value attribute %s", $attrid));
     }
 
@@ -87,7 +88,7 @@ class TestAttributeDoctitle extends TestCaseDcpCommonFamily
             array(
                 "TST_DT4",
                 "TST2_AS1_TITLE",
-                "Rôle n°1\nRôle n°2"
+                '{"Rôle n°1","Rôle n°2"}'
             ),
 
             array(

@@ -6,6 +6,7 @@
 
 namespace Dcp\Core\Utils;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Dcp\Core\Exception;
 
@@ -53,11 +54,17 @@ class VidExtractor
         }
         /* file attributes */
         foreach ($fileAttrIdList as $attr) {
-            if (!isset($raw[$attr])) {
+            if (empty($raw[$attr])) {
                 continue;
             }
             $values = $raw[$attr];
-            $values = preg_split('/\n/', str_replace('<BR>', "\n", $values));
+
+            if ($values[0] === '{') {
+                $values=SmartElement::rawValueToArray($values);
+            } else {
+                $values=[$values];
+            }
+
             foreach ($values as $value) {
                 if (($vid = self::parseVid($value)) !== false) {
                     $vidList[] = $vid;
@@ -89,8 +96,8 @@ class VidExtractor
                 if ($oattr->type !== 'file' && $oattr->type !== 'image') {
                     continue;
                 }
-                if ($oattr->inArray()) {
-                    $values = array_merge($values, $docfam->rawValueToArray($value));
+                if (is_array($value)) {
+                    $values = array_merge($values, $value);
                 } else {
                     $values[] = $value;
                 }

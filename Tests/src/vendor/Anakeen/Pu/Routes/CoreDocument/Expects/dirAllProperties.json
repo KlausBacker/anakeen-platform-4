@@ -5,7 +5,6 @@
             "properties": {
                 "id": 2,
                 "title": "Dossier",
-                "adate": "%isoDate%",
                 "affected": {
                     "id": 0,
                     "title": ""
@@ -31,7 +30,6 @@
                 "fromid": "1",
                 "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-dir.png",
                 "initid": 2,
-                "lastAccessDate": "%isoDate%",
                 "lastModificationDate": "%isoDate%",
                 "lmodify": "N",
                 "locked": 0,
@@ -43,7 +41,7 @@
                 "owner": "1",
                 "postitid": null,
                 "prelid": null,
-                "revdate": "%isoDate%",
+                "mdate": "%isoDate%",
                 "revision": 0,
                 "revisionData": {
                     "isModified": false,

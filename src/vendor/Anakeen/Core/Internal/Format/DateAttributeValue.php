@@ -2,8 +2,6 @@
 
 namespace Anakeen\Core\Internal\Format;
 
-use \Anakeen\Core\SEManager;
-
 class DateAttributeValue extends StandardAttributeValue
 {
     const defaultStyle = 'D';
@@ -39,6 +37,9 @@ class DateAttributeValue extends StandardAttributeValue
             } else {
                 $this->displayValue = stringDateToLocaleDate($v);
             }
+        }
+        if ($oa->type === "timestamp") {
+            $this->value[10]='T';
         }
     }
 }

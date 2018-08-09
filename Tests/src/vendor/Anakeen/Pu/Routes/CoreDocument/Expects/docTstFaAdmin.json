@@ -36,7 +36,7 @@
                     "displayValue": "13:17:00"
                 },
                 "tst_fa__timestamp": {
-                    "value": "1977-10-19 15:56:23",
+                    "value": "1977-10-19T15:56:23",
                     "displayValue": "19\/10\/1977 15:56"
                 },
                 "tst_fa__integer": {

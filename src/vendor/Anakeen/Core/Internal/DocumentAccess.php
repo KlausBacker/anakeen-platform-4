@@ -7,7 +7,9 @@ use Anakeen\Core\AccountManager;
 use Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
+use Dcp\Db\Exception;
 
 /**
  * Control Access Document Class
@@ -413,9 +415,26 @@ class DocumentAccess
                     if ($duid == "") {
                         $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                     }
+                    $tduid=[];
                     if ($duid != "") {
-                        $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                        $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
+                        $oa = $fromdocidvalues->getAttribute($aid);
+                        if (!is_array($duid)) {
+                            if ($oa) {
+                                if ($oa && $oa->isMultiple() === false) {
+                                    $tduid = [$duid];
+                                } else {
+                                    $tduid =  Postgres::stringToFlatArray($duid);
+                                }
+                            } else {
+                                $errorMessage = \ErrorCode::getError('DOC0134', $aid);
+                                LogManager::error($errorMessage);
+                                $this->document->addHistoryEntry($errorMessage, \DocHisto::ERROR);
+                            }
+                        } else {
+                            $tduid = $duid;
+                        }
+
+
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
                                 $docu = SEManager::getRawDocument(intval($duid), false);
@@ -455,7 +474,7 @@ class DocumentAccess
                             $uid
                         ));
                         $perm->upacl = $vupacl[$uid];
-                        // print "<BR>\nset perm $uid : ".$this->document->id."/".$perm->upacl.'/'.$vupacl[$uid]."\n";
+
                         if ($perm->isAffected()) {
                             $err = $perm->modify();
                         } else {
@@ -540,12 +559,11 @@ class DocumentAccess
                     $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                 }
                 if ($duid != "") {
-                    $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                    $tduid = \Anakeen\Core\Internal\SmartElement::rawValueToArray($duid);
+                    $tduid = Postgres::stringToFlatArray($duid);
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
-                            $sysId=AccountManager::getIdFromSEId(intval($duid));
-                            $greenUid[$sysId. $v["acl"]] = array(
+                            $sysId = AccountManager::getIdFromSEId(intval($duid));
+                            $greenUid[$sysId . $v["acl"]] = array(
                                 "uid" => $sysId,
                                 "acl" => $v["acl"]
                             );

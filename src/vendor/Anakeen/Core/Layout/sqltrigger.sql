@@ -4,7 +4,7 @@ begin
 
 [BLOCK ATTRFIELD]
 if NEW.[attrid] is not null then
-  NEW.values := NEW.values || '£' || NEW.[attrid];
+  NEW.values := NEW.values || '£' || NEW.[attrid]::text;
   NEW.attrids := NEW.attrids || '£' || '[attrid]';
 end if;
 [ENDBLOCK ATTRFIELD]
@@ -64,7 +64,7 @@ CREATE OR REPLACE FUNCTION searchvalues[docid]() RETURNS trigger AS $$
           -- Plain text Part
 
           NEW.svalues := NEW.svalues || ' ΞΞ ' ||
-          [BLOCK SEARCHFIELD] COALESCE(NEW.[attrid] || '£', '') ||
+          [BLOCK SEARCHFIELD] COALESCE(NEW.[attrid]::text || '£', '') ||
           [ENDBLOCK SEARCHFIELD]
           '£';
 

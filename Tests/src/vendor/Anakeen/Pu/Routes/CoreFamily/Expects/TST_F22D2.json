@@ -27,7 +27,7 @@
                     "displayValue": "11:30:05"
                 },
                 "tst_f2_timestamp": {
-                    "value": "2018-02-13 12:32:10",
+                    "value": "2018-02-13T12:32:10",
                     "displayValue": "13\/02\/2018 12:32"
                 },
                 "tst_f2_integer": {

@@ -230,7 +230,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
                         "expectedDocValue" => array(
                             "tst_phone" => "63.76.89.33",
                             "tst_mat" => "3323",
-                            "us_group" => "Sécurité des niveaux"
+                            "us_group" => '{"Sécurité des niveaux"}'
                         ),
                         "expectedRoles" => array(
                             "big capacity",
@@ -254,7 +254,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
                         "expectedDocValue" => array(
                             "tst_phone" => "63.76.89.34",
                             "tst_mat" => "3324",
-                            "us_group" => "Sécurité des niveaux"
+                            "us_group" => '{"Sécurité des niveaux"}'
                         ),
                         "expectedRoles" => array(
                             "big capacity",
@@ -278,7 +278,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
                         "expectedDocValue" => array(
                             "tst_phone" => "83.26.89.43",
                             "tst_mat" => "3524",
-                            "us_group" => "Sécurité des niveaux\nSécurité du toit"
+                            "us_group" => '{"Sécurité des niveaux","Sécurité du toit"}'
                         ),
                         "expectedRoles" => array(
                             "fat capacity",

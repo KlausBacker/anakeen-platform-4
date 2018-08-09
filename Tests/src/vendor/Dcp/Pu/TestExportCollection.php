@@ -66,7 +66,6 @@ class TestExportCollection extends TestCaseDcpCommonFamily
         $ec->setOutputFormat($format);
         $ec->setDocumentlist($s->getDocumentList());
         $ec->export();
-
         $this->assertTrue(filesize($outFile) > 0, sprintf("\"%s\" file not produced", $outFile));
         $this->verifyCsvContains($outFile, $separator, $enclosure, $expectedData, 0);
     }
@@ -86,8 +85,11 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                 if (strpos($value, "*") === false) {
                     $this->assertEquals($value, $resultData[$docName][$index], sprintf("%s  (index %s) : %s \n %s", $docName, $index, print_r($resultData, true), $outFile));
                 } else {
-                    $this->assertEquals(preg_match('/' . $value . '/', $resultData[$docName][$index]), 1,
-                        sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $value, $docName, $index, print_r($resultData, true), $outFile));
+                    $this->assertEquals(
+                        preg_match('/' . $value . '/', $resultData[$docName][$index]),
+                        1,
+                        sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $value, $docName, $index, print_r($resultData, true), $outFile)
+                    );
                 }
             }
         }
@@ -95,6 +97,10 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     /**
      * @dataProvider dataExportXmlSingle
+     * @param array $expectedData
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\Exception
+     * @throws \Dcp\SearchDoc\Exception
      */
     public function testExportXmlSingle(array $expectedData)
     {
@@ -122,6 +128,11 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     /**
      * @dataProvider dataExportXmlArchive
+     * @param       $file
+     * @param array $xmlPathes
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\Exception
+     * @throws \Dcp\SearchDoc\Exception
      */
     public function testExportXmlArchive($file, array $xmlPathes)
     {
@@ -244,7 +255,11 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     /**
      * @param       $separator
      * @param       $enclosure
+     * @param       $file
      * @param array $expectedData
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\Exception
+     * @throws \Dcp\SearchDoc\Exception
      * @dataProvider dataExportFileCsv
      */
     public function testExportFileCsv($separator, $enclosure, $file, array $expectedData)
@@ -575,6 +590,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     public function dataExportCsv()
     {
+        $CSLM=\ImportSingleDocument::CSVSECONDLEVELMULTIPLE;
         return array(
             array(
                 ";",
@@ -598,11 +614,18 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                         8 => "Deux",
                         9 => "2.2",
                         10 => "Deux long",
-                        11 => "TST_EXPCOLL_DOC1"
+                        11 => "TST_EXPCOLL_DOC1",
+                        13 => "TST_EXPCOLL_DOC1"
                     ),
                     "TST_EXPCOLL_DOC3" => array(
                         4 => "Titre 3",
-                        11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2"
+                        11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2",
+                        13 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2"
+                    ),
+                    "TST_EXPCOLL_DOC4" => array(
+                        4 => "Titre 4",
+                        11 => "TST_EXPCOLL_DOC1\nTST_EXPCOLL_DOC2\nTST_EXPCOLL_DOC3",
+                        13 => "TST_EXPCOLL_DOC1${CSLM}TST_EXPCOLL_DOC2\n${CSLM}\n${CSLM}"
                     )
                 )
             ),

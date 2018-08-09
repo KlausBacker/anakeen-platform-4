@@ -11,6 +11,7 @@ class SuiteDcp
     public static function suite()
     {
         $suite = new FrameworkDcp('Package');
+        $suite->addTestSuite('Dcp\Pu\TestPgArray');
         $suite->addTestSuite('Dcp\Pu\TestDocument');
         $suite->addTestSuite('Dcp\Pu\TestReviseDocument');
         $suite->addTestSuite('Dcp\Pu\TestNewDoc');

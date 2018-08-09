@@ -8,6 +8,7 @@ namespace Anakeen\Core\Internal;
 
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Dcp\Exception;
 
 /**
  * Format document list to be easily used in
@@ -136,10 +137,7 @@ class FormatCollection
      * family information
      */
     const propFamily = "family";
-    /**
-     * Last access date
-     */
-    const propLastAccessDate = "lastAccessDate";
+
     /**
      * Last modification date
      */
@@ -204,11 +202,8 @@ class FormatCollection
     /**
      * revision date
      */
-    const revdate = "revdate";
-    /**
-     * access date
-     */
-    const adate = "adate";
+    const mdate = "mdate";
+
     /**
      * creation date
      */
@@ -229,7 +224,6 @@ class FormatCollection
     {
         $keys = array_keys(\Anakeen\Core\Internal\SmartElement::$infofields);
         $keys[] = self::propFamily;
-        $keys[] = self::propLastAccessDate;
         $keys[] = self::propLastModificationDate;
         $keys[] = self::propCreationDate;
         $keys[] = self::propCreatedBy;
@@ -556,17 +550,13 @@ class FormatCollection
                 return $this->getState($doc);
             case self::propUrl:
                 return sprintf("/api/v2/documents/%s.html", $doc->id);
-            case self::revdate:
-                return $this->getFormatDate(date("Y-m-d H:i:s", intval($doc->$propName)), $this->propDateStyle);
+            case self::mdate:
             case self::cdate:
-            case self::adate:
                 return $this->getFormatDate($doc->$propName, $this->propDateStyle);
             case self::propFamily:
                 return $this->getFamilyInfo($doc);
-            case self::propLastAccessDate:
-                return $this->getFormatDate($doc->adate, $this->propDateStyle);
             case self::propLastModificationDate:
-                return $this->getFormatDate(date("Y-m-d H:i:s", $doc->revdate), $this->propDateStyle);
+                return $this->getFormatDate($doc->mdate, $this->propDateStyle);
             case self::propCreationDate:
                 if ($doc->revision == 0) {
                     return $this->getFormatDate($doc->cdate, $this->propDateStyle);
@@ -920,11 +910,12 @@ class FormatCollection
                     $tv[0] = '';
                 }
                 foreach ($tv as $k => $av) {
-                    if ($av !== '') {
+                    if ($av !== '' && $av !== null) {
                         if (is_array($av)) {
                             $tvv = $this->rtrimNull($av);
                         } else {
-                            $tvv = explode('<BR>', $av); // second level multiple
+                            // Not possible
+                            throw new Exception(sprintf("Incorrect value for multiple x2 \"%s\" \"%s\"", $av, $value));
                         }
                         if (count($tvv) == 0) {
                             $info[$k] = array();
@@ -1110,6 +1101,9 @@ class FormatCollection
                     $rowList[] = $displayDocId ? $data->value : $data->displayValue;
                 }
             }
+            $rowList = array_map(function ($v) use ($sepRow) {
+                return str_replace($sepRow, \ImportSingleDocument::CSVLONGTEXTMULTIPLE, $v);
+            }, $rowList);
             $result = join($sepRow, $rowList);
         }
         return $result;

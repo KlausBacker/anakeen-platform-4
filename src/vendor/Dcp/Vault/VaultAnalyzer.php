@@ -174,12 +174,14 @@ EOF;
         foreach ($families as $famid => & $fam) {
             $famIndex++;
             $this->verbose("[+] (%d/%d) %s family '%s'...\n", $famIndex, count($families), $mode, $fam['name']);
+
             foreach ($fam['vid'] as $vid) {
                 $this->sqlExec(self::STMT_INSERT_TMP, array(
                     $famid,
                     $vid
                 ));
             }
+
             $this->verbose("[+] Done.\n");
 
             $relname = sprintf("doc%d", $famid);
@@ -226,11 +228,14 @@ EOF;
         unset($fam);
 
         $this->verbose("\n");
+
         /* De-duplicate entries */
         $this->sqlQuery("INSERT INTO tmp2_docvaultindex (docid, vaultid) SELECT DISTINCT ON (docid, vaultid) docid, vaultid FROM tmp_docvaultindex");
         /* Copy de-duplicated entries to tmp_docvaultindex */
         $this->sqlQuery("DROP TABLE tmp_docvaultindex");
         $this->sqlQuery("ALTER TABLE tmp2_docvaultindex RENAME TO tmp_docvaultindex");
+
+
         /* New */
         $res
             = $this->sqlQuery("SELECT * FROM tmp_docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid");
@@ -239,8 +244,12 @@ EOF;
             'iterator' => new PgFetchArrayIterator($res)
         );
         /* Missing */
-        $res
-            = $this->sqlQuery("SELECT * FROM docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM tmp_docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid");
+        $res = $this->sqlQuery("SELECT * FROM docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM tmp_docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid");
+
+
+        //DbManager::query("select * from tmp_docvaultindex", $r);print_r($r);
+        ///DbManager::query("select * from docvaultindex", $r);print_r($r);
+        //DbManager::query("SELECT * FROM docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM tmp_docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid", $r); print_r($r);
         $missing = array(
             'count' => pg_num_rows($res),
             'iterator' => new PgFetchArrayIterator($res)

@@ -6,13 +6,14 @@
 
 namespace Dcp;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 
 class ExportXmlDocument
 {
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $document = null;
     protected $exportProfil = false;
@@ -112,7 +113,7 @@ class ExportXmlDocument
         $lay->set("version", $this->document->getVersion());
         $lay->set("state", $this->document->getState());
         $lay->set("title", htmlspecialchars($this->document->getTitle(), ENT_QUOTES));
-        $lay->set("mdate", strftime("%FT%H:%M:%S", $this->document->revdate));
+        $lay->set("mdate", $this->document->mdate);
         $lay->set("flat", (!$this->includeSchemaReference || !$this->structureAttributes));
         $la = $this->document->GetFieldAttributes();
         $level1 = array();
@@ -268,61 +269,15 @@ class ExportXmlDocument
                 if (!$v) {
                     return sprintf('<%s xsi:nil="true"/>', $attribute->id);
                 } else {
-                    $info = SEManager::getRawData($v, array(
-                        "title",
-                        "name",
-                        "id",
-                        "revision",
-                        "initid",
-                        "locked"
-                    ), false);
-
-                    if ($info) {
-                        $docid = $info["id"];
-                        $docRevOption = $attribute->getOption("docrev", "latest");
-                        $latestTitle = ($docRevOption === "latest");
-
-                        $revAttr = "";
-                        if ($latestTitle) {
-                            $docid = $info["initid"];
-                            if ($info["locked"] == -1) {
-                                $info["title"] = $doc->getLastTitle($docid);
-                            }
-                        } elseif ($docRevOption === "fixed") {
-                            $revAttr = sprintf(' revision="%d" ', $info["revision"]);
-                        } elseif (preg_match('/^state\(([^\)]+)\)/', $docRevOption, $matches)) {
-                            $revAttr = sprintf(' revision="state:%s" ', htmlspecialchars($matches[1], ENT_QUOTES));
-                        }
-
-                        if ($info["name"]) {
-                            $info["name"] = htmlspecialchars($info["name"], ENT_QUOTES);
-
-                            if ($this->exportDocumentNumericIdentiers) {
-                                return sprintf('<%s id="%s" name="%s"%s>%s</%s>', $attribute->id, $docid, $info["name"], $revAttr, $attribute->encodeXml($info["title"]),
-                                    $attribute->id);
-                            } else {
-                                if ($revAttr) {
-                                    \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"),
-                                        $doc->getTitle(), $attribute->getLabel()));
-                                }
-                                return sprintf('<%s name="%s"%s>%s</%s>', $attribute->id, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
-                            }
-                        } else {
-                            if ($this->exportDocumentNumericIdentiers) {
-                                return sprintf('<%s id="%s"%s>%s</%s>', $attribute->id, $docid, $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
-                            } else {
-                                return sprintf('<%s>%s</%s>', $attribute->id, $attribute->encodeXml($info["title"]), $attribute->id);
-                            }
-                        }
-                    } else {
-                        if ((strpos($v, '<BR>') === false) && (strpos($v, "\n") === false)) {
-                            return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
-                        } else {
-                            $tids = explode("\n", str_replace('<BR>', "\n", $v));
-                            $mName = array();
-                            $mId = array();
-                            $foundName = false;
-                            foreach ($tids as $id) {
+                    if ($attribute->isMultiple() && is_string($v) && $v[0] === '{') {
+                        $v = SmartElement::rawValueToArray($v);
+                    }
+                    if (is_array($v)) {
+                        $mName = array();
+                        $mId = array();
+                        $foundName = false;
+                        foreach ($v as $id) {
+                            if ($id) {
                                 $lName = \Anakeen\Core\SEManager::getNameFromId($id);
                                 $mName[] = $lName;
                                 $mId[] = $id;
@@ -330,19 +285,87 @@ class ExportXmlDocument
                                     $foundName = true;
                                 }
                             }
-                            $sIds = '';
-                            if ($this->exportDocumentNumericIdentiers) {
-                                $sIds = sprintf('id="%s"', implode(',', $mId));
+                        }
+                        $sIds = '';
+                        if ($this->exportDocumentNumericIdentiers) {
+                            $sIds = sprintf('id="%s"', implode(',', $mId));
+                        }
+                        $sName = '';
+                        if ($foundName) {
+                            $sName = sprintf('name="%s"', implode(',', $mName));
+                        }
+                        return sprintf('<%s %s %s>%s</%s>', $attribute->id, $sName, $sIds, _("multiple document"), $attribute->id);
+                    } else {
+                        $info = SEManager::getRawData($v, array(
+                            "title",
+                            "name",
+                            "id",
+                            "revision",
+                            "initid",
+                            "locked"
+                        ), false);
+
+                        if ($info) {
+                            $docid = $info["id"];
+                            $docRevOption = $attribute->getOption("docrev", "latest");
+                            $latestTitle = ($docRevOption === "latest");
+
+                            $revAttr = "";
+                            if ($latestTitle) {
+                                $docid = $info["initid"];
+                                if ($info["locked"] == -1) {
+                                    $info["title"] = $doc->getLastTitle($docid);
+                                }
+                            } elseif ($docRevOption === "fixed") {
+                                $revAttr = sprintf(' revision="%d" ', $info["revision"]);
+                            } elseif (preg_match('/^state\(([^\)]+)\)/', $docRevOption, $matches)) {
+                                $revAttr = sprintf(' revision="state:%s" ', htmlspecialchars($matches[1], ENT_QUOTES));
                             }
-                            $sName = '';
-                            if ($foundName) {
-                                $sName = sprintf('name="%s"', implode(',', $mName));
+
+                            if ($info["name"]) {
+                                $info["name"] = htmlspecialchars($info["name"], ENT_QUOTES);
+
+                                if ($this->exportDocumentNumericIdentiers) {
+                                    return sprintf(
+                                        '<%s id="%s" name="%s"%s>%s</%s>',
+                                        $attribute->id,
+                                        $docid,
+                                        $info["name"],
+                                        $revAttr,
+                                        $attribute->encodeXml($info["title"]),
+                                        $attribute->id
+                                    );
+                                } else {
+                                    if ($revAttr) {
+                                        \Anakeen\Core\Utils\System::addWarningMsg(
+                                            sprintf(
+                                                _("Doc %s : Attribut \"%s\" reference revised identifier : importation not support revision links without identifiers"),
+                                                $doc->getTitle(),
+                                                $attribute->getLabel()
+                                            )
+                                        );
+                                    }
+                                    return sprintf('<%s name="%s"%s>%s</%s>', $attribute->id, $info["name"], $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
+                                }
+                            } else {
+                                if ($this->exportDocumentNumericIdentiers) {
+                                    return sprintf('<%s id="%s"%s>%s</%s>', $attribute->id, $docid, $revAttr, $attribute->encodeXml($info["title"]), $attribute->id);
+                                } else {
+                                    return sprintf('<%s>%s</%s>', $attribute->id, $attribute->encodeXml($info["title"]), $attribute->id);
+                                }
                             }
-                            return sprintf('<%s %s %s>%s</%s>', $attribute->id, $sName, $sIds, _("multiple document"), $attribute->id);
+                        } else {
+
+                            return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
+
                         }
                     }
                 }
             // no break
+
+            case 'longtext':
+                return sprintf("<%s><![CDATA[%s]]></%s>", $attribute->id, $v, $attribute->id);
+                break;
             default:
                 return sprintf("<%s>%s</%s>", $attribute->id, $attribute->encodeXml($v), $attribute->id);
         }
@@ -406,7 +429,8 @@ class ExportXmlDocument
                                 $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
                                 if (is_file($f["path"])) {
                                     if ($this->writeToFile) {
-                                        return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]), $f["mime_s"], $f["path"]);
+                                        return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]),
+                                            $f["mime_s"], $f["path"]);
                                     } else {
                                         return sprintf(
                                             '%s title="%s" src="data:%s;base64,%s"',
@@ -417,7 +441,8 @@ class ExportXmlDocument
                                         );
                                     }
                                 } else {
-                                    return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]), $f["mime_s"]);
+                                    return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]),
+                                        $f["mime_s"]);
                                 }
                             },
                             $value

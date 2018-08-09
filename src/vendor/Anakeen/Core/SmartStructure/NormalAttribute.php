@@ -70,23 +70,23 @@ class NormalAttribute extends BasicAttribute
      * @param int                                            $id            id of the attribute
      * @param int                                            $docid         id of the family
      * @param string                                         $label         default translate key
-     * @param string                                         $type         kind of attribute
-     * @param string                                         $format       format option
-     * @param string                                         $repeat       is repeteable attr
-     * @param int                                            $order        display order
-     * @param string                                         $link         link option
-     * @param string                                         $access       visibility option
-     * @param bool                                           $needed       is mandotary attribute
-     * @param bool                                           $isInTitle    is used to compute title
-     * @param bool                                           $isInAbstract is used in abstract view
-     * @param \Anakeen\Core\SmartStructure\FieldSetAttribute &$fieldSet    parent attribute
-     * @param string                                         $phpfile      php file used with the phpfunc
+     * @param string                                         $type          kind of attribute
+     * @param string                                         $format        format option
+     * @param string                                         $repeat        is repeteable attr
+     * @param int                                            $order         display order
+     * @param string                                         $link          link option
+     * @param string                                         $access        visibility option
+     * @param bool                                           $needed        is mandotary attribute
+     * @param bool                                           $isInTitle     is used to compute title
+     * @param bool                                           $isInAbstract  is used in abstract view
+     * @param \Anakeen\Core\SmartStructure\FieldSetAttribute &$fieldSet     parent attribute
+     * @param string                                         $phpfile       php file used with the phpfunc
      * @param string                                         $phpfunc       helpers function
      * @param string                                         $elink         eling option
      * @param string                                         $phpconstraint class php function
-     * @param string                                         $usefor       Attribute or Parameter
-     * @param string                                         $eformat      eformat option
-     * @param string                                         $options      option string
+     * @param string                                         $usefor        Attribute or Parameter
+     * @param string                                         $eformat       eformat option
+     * @param string                                         $options       option string
      * @param string                                         $docname
      */
     public function __construct(
@@ -490,10 +490,12 @@ class NormalAttribute extends BasicAttribute
             if ($this->format) {
                 $numberValue = sprintf($this->format, $numberValue);
             }
-        } elseif ($this->isMultiple() && $this->format) {
+        } elseif ($this->isMultiple()) {
             $cellValues = $doc->getMultipleRawValues($this->id);
-            foreach ($cellValues as & $cell) {
-                $cell = sprintf($this->format, $cell);
+            if ($this->format) {
+                foreach ($cellValues as & $cell) {
+                    $cell = sprintf($this->format, $cell);
+                }
             }
             $numberValue = implode("\n", $cellValues);
         } else {

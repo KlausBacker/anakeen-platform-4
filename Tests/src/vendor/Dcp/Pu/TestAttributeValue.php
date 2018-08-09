@@ -183,9 +183,9 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 "cnanged" => array(
                     "tst_title" => null,
                     "tst_int" => 2,
-                    "tst_coltext" => "Un",
-                    "tst_colint" => 1,
-                    "tst_coldate" => "2014-05-07",
+                    "tst_coltext" => "{Un}",
+                    "tst_colint" => "{1}",
+                    "tst_coldate" => "{2014-05-07}",
                 )
             ),
             array(
@@ -214,7 +214,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 "cnanged" => array(
                     "tst_title" => null,
                     "tst_int" => 2,
-                    "tst_coltext" => "Un",
+                    "tst_coltext" => "{Un}",
                     "tst_colint" => null,
                     "tst_coldate" => null,
                 )
@@ -250,9 +250,9 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 "cnanged" => array(
                     "tst_title" => null,
                     "tst_int" => 2,
-                    "tst_coltext" => "Un\nDeux",
-                    "tst_colint" => "1\n2",
-                    "tst_coldate" => "2014-05-07\n2014-05-08",
+                    "tst_coltext" => "{Un,Deux}",
+                    "tst_colint" => "{1,2}",
+                    "tst_coldate" => "{2014-05-07,2014-05-08}",
                 )
             ),
             array(
@@ -318,10 +318,10 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                 "cnanged" => array(
                     "tst_title" => "T1",
                     "tst_int" => 31,
-                    "tst_coltext" => "Un\nDeux",
-                    "tst_colint" => "1\n2",
-                    "tst_coldate" => "2014-05-07\n2014-05-08",
-                    "tst_files" => "text/css|123|un.css\ntext/css|234|deux.css"
+                    "tst_coltext" => "{Un,Deux}",
+                    "tst_colint" => "{1,2}",
+                    "tst_coldate" => "{2014-05-07,2014-05-08}",
+                    "tst_files" => "{text/css|123|un.css,text/css|234|deux.css}"
                 )
             )
         ));
@@ -445,7 +445,7 @@ class TestAttributeValue extends TestCaseDcpCommonFamily
                     "tst_int" => 2,
                     "tst_date" => '2012-01-30',
                     "tst_docids" => null,
-                    "tst_coltext" => "Un\nDeux",
+                    "tst_coltext" => "{Un,Deux}",
                     "tst_coldate" => null,
                     "tst_colint" => null,
                 )

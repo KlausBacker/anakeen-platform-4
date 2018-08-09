@@ -33,15 +33,9 @@
             <smart:default field="fld_allbut">1</smart:default>
             <smart:default field="fld_tfam"><![CDATA[[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]
 ]]></smart:default>
-            <smart:default field="fld_famids"><![CDATA[[127
-                128]]>
-            </smart:default>
-            <smart:default field="fld_fam"><![CDATA[[groupe intranet
-                utilisateur]]>
-            </smart:default>
-            <smart:default field="fld_subfam"><![CDATA[[yes
-                yes]]>
-            </smart:default>
+            <smart:default field="fld_famids"><![CDATA[[127,128]]]></smart:default>
+            <smart:default field="fld_fam"><![CDATA[["groupe intranet","utilisateur"]]]></smart:default>
+            <smart:default field="fld_subfam"><![CDATA[["yes","yes"]]]></smart:default>
             <smart:default field="grp_hasmail">no</smart:default>
         </smart:defaults>
 

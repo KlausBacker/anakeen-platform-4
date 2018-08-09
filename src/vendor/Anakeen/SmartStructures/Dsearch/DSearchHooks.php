@@ -191,8 +191,8 @@ class DSearchHooks extends \SmartStructure\Search
                 $filterXml = sprintf("<filter><family>%s%s</family>", $this->getRawValue("se_famid"), ($this->getRawValue("se_famonly") == "yes" ? " strict" : ""));
 
                 $filterXml .= "</filter>";
-                $this->setValue("se_typefilter", "generated"); // only one
-                $this->setValue("se_filter", $filterXml);
+                $this->setValue("se_typefilter", ["generated"]); // only one
+                $this->setValue("se_filter", [$filterXml]);
             }
         }
         return $err;
@@ -436,10 +436,7 @@ class DSearchHooks extends \SmartStructure\Search
             $this->searchfam = SEManager::getFamily($this->getRawValue("se_famid"));
         }
         $col = trim(strtok($col, ' ')); // a col is one word only (prevent injection)
-        // because for historic reason revdate is not a date type
-        if (($col == "revdate") && ($val != '') && (!is_numeric($val))) {
-            $val = stringdatetounixts($val);
-        }
+
         $stateCol = '';
         if ($col == "activity" || $col == "fixstate") {
             $stateCol = $col;
@@ -459,62 +456,55 @@ class DSearchHooks extends \SmartStructure\Search
             $atype = \Anakeen\Core\Internal\SmartElement::$infofields[$col]["type"];
         }
         if (($atype == "date" || $atype == "timestamp")) {
-            if ($col == 'revdate') {
-                if ($op == "=") {
-                    $val2 = $val + 85399; // tonight
-                    $op = "><";
+            $hms = '';
+            if (($atype == "timestamp")) {
+                $pos = strpos($val, ' ');
+                if ($pos != false) {
+                    $hms = substr($val, $pos + 1);
                 }
-            } else {
-                $hms = '';
-                if (($atype == "timestamp")) {
-                    $pos = strpos($val, ' ');
-                    if ($pos != false) {
-                        $hms = substr($val, $pos + 1);
+            }
+
+            $cfgdate = ContextManager::getLocaleConfig();
+            if ($val) {
+                $val = stringDateToIso($val, $cfgdate['dateFormat']);
+            }
+            if ($val2) {
+                $val2 = stringDateToIso($val2, $cfgdate['dateFormat']);
+            }
+
+            if (($atype == "timestamp") && ($op == "=")) {
+                $val = trim($val);
+                if (strlen($val) == 10) {
+                    if ($hms == '') {
+                        $val2 = $val . " 23:59:59";
+                        $val .= " 00:00:00";
+                        $op = "><";
+                    } elseif (strlen($hms) == 2) {
+                        $val2 = $val . ' ' . $hms . ":59:59";
+                        $val .= ' ' . $hms . ":00:00";
+                        $op = "><";
+                    } elseif (strlen($hms) == 5) {
+                        $val2 = $val . ' ' . $hms . ":59";
+                        $val .= ' ' . $hms . ":00";
+                        $op = "><";
+                    } else {
+                        $val .= ' ' . $hms;
                     }
                 }
+            }
 
-                $cfgdate = ContextManager::getLocaleConfig();
-                if ($val) {
-                    $val = stringDateToIso($val, $cfgdate['dateFormat']);
-                }
-                if ($val2) {
-                    $val2 = stringDateToIso($val2, $cfgdate['dateFormat']);
-                }
-
-                if (($atype == "timestamp") && ($op == "=")) {
-                    $val = trim($val);
-                    if (strlen($val) == 10) {
-                        if ($hms == '') {
-                            $val2 = $val . " 23:59:59";
-                            $val .= " 00:00:00";
-                            $op = "><";
-                        } elseif (strlen($hms) == 2) {
-                            $val2 = $val . ' ' . $hms . ":59:59";
-                            $val .= ' ' . $hms . ":00:00";
-                            $op = "><";
-                        } elseif (strlen($hms) == 5) {
-                            $val2 = $val . ' ' . $hms . ":59";
-                            $val .= ' ' . $hms . ":00";
-                            $op = "><";
-                        } else {
-                            $val .= ' ' . $hms;
-                        }
-                    }
-                }
-
-                if ($validateCond
-                    && in_array($op, array(
-                        "=",
-                        "!=",
-                        ">",
-                        "<",
-                        ">=",
-                        "<=",
-                        "~y"
-                    ))) {
-                    if (($err = $this->isValidTimestamp($val)) != '') {
-                        return '';
-                    }
+            if ($validateCond
+                && in_array($op, array(
+                    "=",
+                    "!=",
+                    ">",
+                    "<",
+                    ">=",
+                    "<=",
+                    "~y"
+                ))) {
+                if (($err = $this->isValidTimestamp($val)) != '') {
+                    return '';
                 }
             }
         }

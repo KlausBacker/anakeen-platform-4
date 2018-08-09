@@ -11,6 +11,7 @@
 namespace Anakeen\SmartStructures\Timer;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Postgres;
 
 class TimerHooks extends \Anakeen\SmartElement
 
@@ -224,7 +225,7 @@ class TimerHooks extends \Anakeen\SmartElement
                         $err = "";
                         switch ($ka) {
                             case "tmail":
-                                $tva = $this->rawValueToArray(str_replace('<BR>', "\n", $va));
+                                $tva = Postgres::stringToFlatArray($va);
                                 foreach ($tva as $idmail) {
                                     /**
                                      * @var \SmartStructure\MAILTEMPLATE $tm

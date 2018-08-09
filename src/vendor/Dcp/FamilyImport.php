@@ -310,7 +310,6 @@ class FamilyImport
                         break;
 
 
-
                     default: // normal
                         if (preg_match('/^\[([a-z=0-9]+)\](.*)/', $v->phpfunc, $reg)) {
                             $v->phpfunc = $reg[2];
@@ -332,26 +331,29 @@ class FamilyImport
                             $aformat = "";
                         }
                         $repeat = "false";
-                        if (preg_match("/([a-z]+)list/i", $atype, $reg)) {
-                            $atype = $reg[1];
-                            $repeat = "true";
-                        } else {
-                            if (strpos($v->options, "multiple=yes") !== false) {
-                                $repeat = "true";
-                            } else {
-                                if (isset($tnormal[strtolower($v->frameid)])) {
-                                    if (self::getTypeMain($tnormal[strtolower($v->frameid)]["type"]) == "array") {
-                                        $repeat = "true";
-                                    }
-                                }
+                        $repeat2 = false;
 
-                                if (($repeat == "false") && isset($pa[strtolower($v->frameid)])) {
-                                    if (self::getTypeMain($pa[strtolower($v->frameid)]["type"]) == "array") {
-                                        $repeat = "true";
-                                    }
-                                }
+
+                        if (isset($tnormal[strtolower($v->frameid)])) {
+                            if (self::getTypeMain($tnormal[strtolower($v->frameid)]["type"]) == "array") {
+                                $repeat = "true";
                             }
                         }
+
+                        if (($repeat == "false") && isset($pa[strtolower($v->frameid)])) {
+                            if (self::getTypeMain($pa[strtolower($v->frameid)]["type"]) == "array") {
+                                $repeat = "true";
+                            }
+                        }
+
+                        if (strpos($v->options, "multiple=yes") !== false) {
+                            if ($repeat === "true") {
+                                $repeat2 = true;
+                            } else {
+                                $repeat = "true";
+                            }
+                        }
+
 
                         $atype = strtolower(trim($atype));
                         // create code for calculated attributes
@@ -412,35 +414,44 @@ class FamilyImport
                                     "attrid" => ($v->id)
                                 );
                             }
-                            if ($repeat == "true") {
-                                $attrids[$v->id] = ($v->id) . " text"; // for the moment all repeat are text
-                            } else {
-                                switch ($atype) {
-                                    case 'double':
-                                    case 'float':
-                                    case 'money':
-                                        $attrids[$v->id] = ($v->id) . " float8";
-                                        break;
 
-                                    case 'int':
-                                    case 'integer':
-                                        $attrids[$v->id] = ($v->id) . " int4";
-                                        break;
+                            switch ($atype) {
+                                case 'double':
+                                case 'float':
+                                case 'money':
+                                    $attrids[$v->id] = ($v->id) . " float8";
+                                    break;
 
-                                    case 'date':
-                                        $attrids[$v->id] = ($v->id) . " date";
-                                        break;
+                                case 'int':
+                                case 'integer':
+                                    $attrids[$v->id] = ($v->id) . " int4";
+                                    break;
 
-                                    case 'timestamp':
-                                        $attrids[$v->id] = ($v->id) . " timestamp without time zone";
-                                        break;
+                                case 'date':
+                                    $attrids[$v->id] = ($v->id) . " date";
+                                    break;
 
-                                    case 'time':
-                                        $attrids[$v->id] = ($v->id) . " time";
-                                        break;
+                                case 'timestamp':
+                                    $attrids[$v->id] = ($v->id) . " timestamp without time zone";
+                                    break;
 
-                                    default:
-                                        $attrids[$v->id] = ($v->id) . " text";
+                                case 'time':
+                                    $attrids[$v->id] = ($v->id) . " time";
+                                    break;
+                                case 'xml':
+                                    $attrids[$v->id] = ($v->id) . " xml";
+                                    break;
+                                case 'json':
+                                    $attrids[$v->id] = ($v->id) . " jsonb";
+                                    break;
+
+                                default:
+                                    $attrids[$v->id] = ($v->id) . " text";
+                            }
+                            if ($repeat === "true") {
+                                $attrids[$v->id] .= '[]';
+                                if ($repeat2) {
+                                    $attrids[$v->id] .= '[]';
                                 }
                             }
                         }
@@ -691,49 +702,50 @@ class FamilyImport
                         if (!$repeat) {
                             $repeat = (isset($tattr[$attr->frameid]) && $tattr[$attr->frameid]->type == "array");
                         }
-                        if (($repeat && ($attr->type != 'tsvector'))) {
-                            $sqltype = " text"; // for the moment all repeat are text
-                        } else {
-                            $rtype = strtok($attr->type, "(");
-                            switch ($rtype) {
-                                case 'double':
-                                case 'float':
-                                case 'money':
-                                    $sqltype = " float8";
-                                    break;
 
-                                case 'int':
-                                case 'integer':
-                                    $sqltype = " int4";
-                                    break;
+                        $rtype = strtok($attr->type, "(");
+                        switch ($rtype) {
+                            case 'double':
+                            case 'float':
+                            case 'money':
+                                $sqltype = " float8";
+                                break;
 
-                                case 'date':
-                                    $sqltype = " date";
-                                    break;
+                            case 'int':
+                            case 'integer':
+                                $sqltype = " int4";
+                                break;
 
-                                case 'timestamp':
-                                    $sqltype = " timestamp without time zone";
-                                    break;
+                            case 'date':
+                                $sqltype = " date";
+                                break;
 
-                                case 'time':
-                                    $sqltype = " time";
-                                    break;
+                            case 'timestamp':
+                                $sqltype = " timestamp without time zone";
+                                break;
 
-                                case 'tsvector':
-                                    $sqltype = " tsvector";
-                                    break;
+                            case 'time':
+                                $sqltype = " time";
+                                break;
 
-                                case 'xml':
-                                    $sqltype = "xml";
-                                    break;
+                            case 'tsvector':
+                                $sqltype = " tsvector";
+                                break;
 
-                                case 'json':
-                                    $sqltype = "jsonb";
-                                    break;
-                                default:
-                                    $sqltype = " text";
-                            }
+                            case 'xml':
+                                $sqltype = "xml";
+                                break;
+
+                            case 'json':
+                                $sqltype = "jsonb";
+                                break;
+                            default:
+                                $sqltype = " text";
                         }
+                        if ($repeat) {
+                            $sqltype .= '[]';
+                        }
+
                         self::alterTableAddColumn($dbaccess, "public", "doc$docid", $ka, $sqltype);
                         $updateView = true;
                     }
@@ -944,7 +956,7 @@ class FamilyImport
     /**
      * complete attribute properties from  parent attribute
      *
-     * @param string   $dbaccess
+     * @param string  $dbaccess
      * @param DocAttr $ta
      *
      * @return mixed

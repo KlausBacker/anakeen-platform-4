@@ -196,7 +196,6 @@ class QueryDb
         $query = $this->initQuery($start, $slice, $p_query);
         $this->res_type = $res_type;
         $err = $this->basic_elem->query($query, 0, true);
-        //	print "$query $res_type $p_query<BR>\n";
         if ($res_type == "ITER") {
             if ($err) {
                 throw new \Dcp\Db\Exception("query fail : " . $err);
@@ -247,7 +246,6 @@ class QueryDb
         $query = $this->initQuery($start, $slice, "", true);
         $this->res_type = "TABLE";
         $err = $this->basic_elem->query($query);
-        //	print "$query $res_type $p_query<BR>\n";
         if ($err != "") {
             return ($err);
         }

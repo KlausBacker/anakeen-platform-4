@@ -100,8 +100,44 @@ class ErrorCodeDB
      */
     const DB0104 = 'Cannot verify vault identifier : %s';
     /**
-     * @errorCode
-     * for beautifier
+     * @errorCode pg array syntax error
      */
+    const DB0200 = 'malformed postgresql array literal : must begins and ends by braces "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0201 = 'malformed postgresql array literal : extra characters after end quote "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0202 = 'malformed postgresql array literal : extra characters before begin quote "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0203 = 'malformed postgresql array literal : missing end quote "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0204 = 'malformed postgresql array literal : unbalanced braces "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0205 = 'malformed postgresql array literal : extra characters after brace "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0206 = 'malformed postgresql array literal : mismatch dimension "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0207 = 'malformed postgresql array literal : dimension limited to 2 "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0208 = 'malformed postgresql array literal : empty value "%s"';
+    /**
+     * @errorCode pg array syntax error
+     */
+    const DB0209 = 'malformed postgresql array literal : invalid null char in "%s"';
 
 }

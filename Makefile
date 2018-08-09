@@ -13,16 +13,23 @@ DEVTOOL_BIN=php ./anakeen-devtool.phar
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 -include Makefile.local
 
-install:
+node_modules:
+	npm install
+
+install: node_modules
 	cd src/vendor/Anakeen/lib; ${COMPOSER} install --ignore-platform-reqs
+	cd Tests/src/vendor/Anakeen/TestUnits/lib; ${COMPOSER} install --ignore-platform-reqs
 
 app: install
 	${ANAKEEN_CLI_BIN} build
 
 app-test:
-	cd Tests/src/vendor/Anakeen/TestUnits/lib; ${COMPOSER} install --ignore-platform-reqs
-	${DEVTOOL_BIN} generateWebinst -s Tests
-	mv Tests/*app .
+	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests
+
+autotest: install
+	rm -f *app
+	${ANAKEEN_CLI_BIN} build --auto-release
+	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
 
 deploy: app
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT} -a -s .

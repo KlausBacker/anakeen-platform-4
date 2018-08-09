@@ -385,7 +385,7 @@ class DocOooFormat
         }
         $html_body = \Dcp\Utils\htmlclean::normalizeHTMLFragment($html_body, $error);
         if ($error != '') {
-            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Malformed HTML in attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
+            \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Malformed HTML in field '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
         }
         if ($html_body === false) {
             return '';

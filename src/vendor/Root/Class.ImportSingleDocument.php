@@ -17,6 +17,8 @@ include_once("FDL/import_file.php");
 
 class ImportSingleDocument
 {
+    const CSVSECONDLEVELMULTIPLE = '<BR>';
+    const CSVLONGTEXTMULTIPLE = '\\r';
     private $currentAttrid = "";
     protected $dirid = 0;
     protected $analyze = false;
@@ -272,6 +274,7 @@ class ImportSingleDocument
         }
         $extra = array();
         $iattr = 4; // begin in 5th column
+
         foreach ($this->orders as $attrid) {
             if (isset($lattr[$attrid])) {
                 $attr = $lattr[$attrid];
@@ -287,7 +290,7 @@ class ImportSingleDocument
 
                         if (!$this->analyze) {
                             if ($attr->inArray()) {
-                                $tabsfiles = $this->doc->rawValueToArray($dv);
+                                $tabsfiles = $this->normalizeData($attr, $dv);
                                 $tvfids = array();
                                 foreach ($tabsfiles as $fi) {
                                     if (preg_match(PREGEXPFILE, $fi, $reg)) {
@@ -351,7 +354,7 @@ class ImportSingleDocument
                                 }
                             }
                         }
-                        $errv = $this->doc->setValue($attr->id, $dv);
+                        $errv = $this->doc->setValue($attr->id, $this->normalizeData($attr, $dv));
                         if ($errv) {
                             $this->setError("DOC0100", $attr->id, $errv);
                         }
@@ -648,6 +651,26 @@ class ImportSingleDocument
         return $dvCahnged;
     }
 
+    protected function normalizeData(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $rawValue)
+    {
+        if ($oa->isMultiple() && is_string($rawValue) && $rawValue[0] !== '{') {
+            $normalizeValue = explode("\n", $rawValue);
+            if ($oa->isMultipleInArray()) {
+                foreach ($normalizeValue as $k => $value) {
+                    $normalizeValue[$k] = explode(self::CSVSECONDLEVELMULTIPLE, $value);
+                }
+            }
+            if ($oa->type === "longtext") {
+                $normalizeValue = array_map(function ($singleValue) {
+                    return str_replace(self::CSVLONGTEXTMULTIPLE, "\n", $singleValue);
+                }, $normalizeValue);
+            }
+        } else {
+            $normalizeValue = $rawValue;
+        }
+        return $normalizeValue;
+    }
+
     /**
      * insert imported document into a folder
      *
@@ -695,22 +718,23 @@ class ImportSingleDocument
         if ($value === ' ') {
             return $res;
         }
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
         }
+
         if ($oattr->repeat) {
             if (is_array($value)) {
                 $tvalues = $value;
             } else {
-                $tvalues = $doc->rawValueToArray($value);
+                $tvalues = explode("\n", str_replace(self::CSVSECONDLEVELMULTIPLE, "\n", $value));
             }
         } else {
             $tvalues[] = $value;
         }
         foreach ($tvalues as $kvalue => $avalue) {
-            if (($avalue != "") && ($avalue != "\t")) {
+            if ($avalue != "") {
                 $unresolvedLogicalNames = array();
-                $tvalues[$kvalue] = $doc->resolveDocIdLogicalNames($oattr, $avalue, $unresolvedLogicalNames, $this->knownLogicalNames);
+                $tvalues[$kvalue] = \Anakeen\Core\Utils\MiscDoc::resolveDocIdLogicalNames($oattr, $avalue, $unresolvedLogicalNames, $this->knownLogicalNames);
                 if (count($unresolvedLogicalNames) > 0) {
                     $res = array_merge($res, $unresolvedLogicalNames);
                 }

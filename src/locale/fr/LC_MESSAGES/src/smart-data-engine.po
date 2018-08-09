@@ -2975,10 +2975,6 @@ msgid "profil id unkonow %s"
 msgstr "identificateur de profil inconnu '%s'"
 
 #. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_adate"
-msgstr "date d'accès"
-
-#. _COMMENT: Doc (Class.Doc.php)
 msgid "prop_allocated"
 msgstr "utilisateur alloué"
 

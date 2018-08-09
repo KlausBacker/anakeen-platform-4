@@ -32,6 +32,9 @@ use \Anakeen\Core\SEManager;
 use Anakeen\Core\Internal\Format\StandardAttributeValue;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Anakeen\Core\Utils\Date;
+use Anakeen\Core\Utils\MiscDoc;
+use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
@@ -58,8 +61,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "profid",
             "usefor",
             "cdate",
-            "adate",
-            "revdate",
+            "mdate",
             "comment",
             "classname",
             "state",
@@ -194,20 +196,13 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "filterable" => true,
                 "label" => "prop_cdate"
             ), # N_("prop_cdate")
-            "adate" => array(
+            "mdate" => array(
                 "type" => "timestamp",
                 "displayable" => true,
                 "sortable" => true,
                 "filterable" => true,
-                "label" => "prop_adate"
-            ), # N_("prop_adate"),
-            "revdate" => array(
-                "type" => "timestamp",
-                "displayable" => true,
-                "sortable" => true,
-                "filterable" => true,
-                "label" => "prop_revdate"
-            ), # N_("prop_revdate"),
+                "label" => "prop_mdate"
+            ), # N_("prop_mdate"),
             "comment" => array(
                 "type" => "text",
                 "displayable" => false,
@@ -425,19 +420,13 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      *
      * @var int
      */
-    public $revdate;
+    public $mdate;
     /**
      * date of creation
      *
      * @var string date 'YYYY-MM-DD'
      */
     public $cdate;
-    /**
-     * date of latest access
-     *
-     * @var string date 'YYYY-MM-DD'
-     */
-    public $adate;
     /**
      * @deprecated old history notation
      * @var string
@@ -705,10 +694,9 @@ create table doc ( id int not null,
                    lmodify char DEFAULT 'N',
                    profid int DEFAULT 0,
                    usefor text DEFAULT 'N',
-                   revdate int,
+                   mdate timestamp,
                    version text,
                    cdate timestamp,
-                   adate timestamp,
                    comment text,
                    classname text,
                    state text,
@@ -829,14 +817,11 @@ create unique index i_docir on doc(initid, revision);";
         unset($this->fields["svalues"]);
         $this->select($this->id);
         // set creation date
-        $this->cdate = $this->getTimeDate(0, true);
-        $this->adate = $this->cdate;
-        $date = gettimeofday();
-        $this->revdate = $date['sec'];
+        $this->cdate = Date::getNow(true);
+        $this->mdate = Date::getNow(true);
         $this->modify(true, array(
             "cdate",
-            "adate",
-            "revdate"
+            "mdate"
         ), true); // to force also execute sql trigger
         if ($this->doctype !== 'C') {
             if ($this->doctype !== "T") {
@@ -1020,8 +1005,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->svalues = $this->getExtraSearchableDisplayValues();
                 $this->fields["svalues"] = "svalues";
             }
-            $date = gettimeofday();
-            $this->revdate = $date['sec'];
+            $this->mdate = Date::getNow(true);
             $this->version = $this->getVersion();
             $this->lmodify = 'Y';
         }
@@ -1341,8 +1325,7 @@ create unique index i_docir on doc(initid, revision);";
         $cdoc->initid = $this->id;
         $cdoc->revision = 0;
         $cdoc->cdate = $this->cdate;
-        $cdoc->revdate = $this->revdate;
-        $cdoc->adate = $this->adate;
+        $cdoc->mdate = $this->mdate;
         $cdoc->locked = $this->locked;
         $cdoc->profid = $this->profid;
         $cdoc->dprofid = $this->dprofid;
@@ -1886,9 +1869,9 @@ create unique index i_docir on doc(initid, revision);";
             }
 
             if (!$nopost) {
-                $this->inHook=true;
+                $this->inHook = true;
                 $err = $this->getHooks()->trigger(SmartHooks::PREDELETE);
-                $this->inHook=false;
+                $this->inHook = false;
                 if ($err != '') {
                     return $err;
                 }
@@ -1905,8 +1888,8 @@ create unique index i_docir on doc(initid, revision);";
                 $this->doctype = 'Z'; // Zombie Doc
                 $this->locked = -1;
                 $this->lmodify = 'D'; // indicate last delete revision
-                $date = gettimeofday();
-                $this->revdate = $date['sec']; // Delete date
+
+                $this->mdate = Date::getNow(true);
 
                 global $_SERVER;
 
@@ -1921,16 +1904,16 @@ create unique index i_docir on doc(initid, revision);";
 
                 $err = $this->modify(true, array(
                     "doctype",
-                    "revdate",
+                    "mdate",
                     "locked",
                     "owner",
                     "lmodify"
                 ), true);
                 if ($err == "") {
                     if (!$nopost) {
-                        $this->inHook=true;
+                        $this->inHook = true;
                         $msg = $this->getHooks()->trigger(SmartHooks::POSTDELETE);
-                        $this->inHook=false;
+                        $this->inHook = false;
                         if ($msg != '') {
                             $this->addHistoryEntry($msg, \DocHisto::MESSAGE);
                         }
@@ -2039,7 +2022,7 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($array)) {
             $this->getHooks()->resetListeners();
 
-            $this->inHook=true;
+            $this->inHook = true;
             $this->getHooks()->trigger(SmartHooks::PREAFFECT, $array, $more, $reset);
 
             if ($more) {
@@ -2083,7 +2066,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             $this->isset = true;
             $this->getHooks()->trigger(SmartHooks::POSTAFFECT, $array, $more, $reset);
-            $this->inHook=false;
+            $this->inHook = false;
         }
     }
 
@@ -2927,7 +2910,8 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
                 if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
-                    $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(str_replace("<BR>", " ", $this->getRawValue($v->id))) . " ";
+                    $titles=Postgres::stringToFlatArray($this->getRawValue($v->id));
+                    $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(implode(" ", $titles)) . " ";
                 } else {
                     $title1 .= $this->getRawValue($v->id) . " ";
                 }
@@ -3114,39 +3098,25 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return array|string the list of attribute values
      */
-    final public function getMultipleRawValues($idAttr, $def = "", $index = -1)
+    final public function getMultipleRawValues($idAttr, $def = [], $index = -1)
     {
-        $v = $this->getRawValue("$idAttr", null);
+        $v = $this->getRawValue($idAttr, null);
         if ($v === null) {
             if ($index == -1) {
                 return array();
             } else {
                 return $def;
             }
-        } elseif ($v == "\t") {
-            if ($index == -1) {
-                return array(
-                    ""
-                );
-            } else {
-                return $def;
-            }
+        }
+        $oa = $this->getAttribute($idAttr);
+        if ($oa->isMultiple() === false) {
+            return [$v];
         }
         $t = $this->rawValueToArray($v);
         if ($index == -1) {
-            $oa = $this->getAttribute($idAttr, $nothing);
-            if ($oa && $oa->type == "xml") {
-                foreach ($t as $k => $v) {
-                    $t[$k] = str_replace('<BR>', "\n", $v);
-                }
-            }
             return $t;
         }
         if (isset($t[$index])) {
-            $oa = $this->getAttribute($idAttr, $nothing);
-            if ($oa && $oa->type == "xml") {
-                $t[$index] = str_replace('<BR>', "\n", $t[$index]);
-            }
             return $t[$index];
         } else {
             return $def;
@@ -3293,7 +3263,11 @@ create unique index i_docir on doc(initid, revision);";
                 foreach ($ta as $k => $v) { // fill uncompleted rows
                     $c = count($tValues[$k]);
                     if ($c < $max) {
-                        $nt = array_pad($tValues[$k], $max, "");
+                        if ($this->getAttribute($k)->isMultipleInArray()) {
+                            $nt = array_pad($tValues[$k], $max, []);
+                        } else {
+                            $nt = array_pad($tValues[$k], $max, "");
+                        }
                         $err .= $this->setValue($k, $nt);
                     } else {
                         $err .= $this->setValue($k, $tValues[$k]);
@@ -3425,8 +3399,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function setValue($attrid, $value, $index = -1, &$kvalue = null)
     {
-
         $attrid = strtolower($attrid);
+       // var_dump([$attrid=>$value]);
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oattr
          */
@@ -3455,10 +3429,6 @@ create unique index i_docir on doc(initid, revision);";
         if (is_array($value)) {
             if (count($value) == 0) {
                 $value = DELVALUE;
-            } elseif ((count($value) == 1) && (first($value) === "" || first($value) === null)
-                && (substr(key($value), 0, 1) != "s")) {
-                // special tab for array of one empty cell
-                $value = "\t";
             } else {
                 if ($oattr && $oattr->repeat && (count($value) == 1) && substr(key($value), 0, 1) == "s") {
                     $ov = $this->getMultipleRawValues($attrid);
@@ -3474,12 +3444,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $value = $ov;
                 }
-                /*
-                 * Switch the $br separator from "<BR>" to "\r" for HTML text
-                 * attributes in order to not induce a conflict with legitimate
-                 * "<BR>" tags that might appear in the attribute's HTML content.
-                */
-                $value = $this->arrayToRawValue($value, (($oattr && $oattr->type === 'htmltext') ? "\r" : "<BR>"));
+                $value = $this->arrayToRawValue($value);
             }
         }
         if (($value !== "") && ($value !== null)) {
@@ -3507,7 +3472,6 @@ create unique index i_docir on doc(initid, revision);";
             if ($value === " ") {
                 $value = ""; // erase value
                 if ((!empty($this->$attrid)) || (isset($this->$attrid) && $this->$attrid === "0")) {
-                    //print "change by delete $attrid  <BR>\n";
                     if ($this->_setValueCompleteArray === false) {
                         $this->hasChanged = true;
                         $this->_oldvalue[$attrid] = $this->$attrid;
@@ -3526,7 +3490,6 @@ create unique index i_docir on doc(initid, revision);";
 
                 if (strcmp($this->$attrid, $value) != 0
                     && strcmp($this->$attrid, str_replace("\n ", "\n", $value)) != 0) {
-                    // print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
                     if ($oattr->repeat) {
                         $tvalues = $this->rawValueToArray($value);
                     } else {
@@ -3536,12 +3499,14 @@ create unique index i_docir on doc(initid, revision);";
                     foreach ($tvalues as $kvalue => $avalue) {
                         if (($avalue != "") && ($avalue != "\t")) {
                             if ($oattr) {
-                                $avalue = trim($avalue);
+                                if (is_string($avalue)) {
+                                    $avalue = trim($avalue);
+                                }
                                 $tvalues[$kvalue] = $avalue;
                                 switch ($oattr->type) {
                                     case 'account':
                                     case 'docid':
-                                        $tvalues[$kvalue] = $this->resolveDocIdLogicalNames($oattr, $avalue);
+                                        $tvalues[$kvalue] = MiscDoc::resolveDocIdLogicalNames($oattr, $avalue);
                                         break;
 
                                     case 'enum':
@@ -3739,7 +3704,11 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                     //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
-                    $rawValue = implode("\n", $tvalues);
+                    if ($oattr->isMultiple()) {
+                        $rawValue = $this->arrayToRawValue($tvalues);
+                    } else {
+                        $rawValue = implode("\n", $tvalues);
+                    }
                     if (!$this->_setValueCompleteArray && $this->$attrid != $rawValue) {
                         $this->_oldvalue[$attrid] = $this->$attrid;
                         $this->hasChanged = true;
@@ -4251,7 +4220,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return array|string
      */
-    final public function getRValue($RidAttr, $def = "", $latest = true, $html = false)
+    final public function getRValue($RidAttr, $def = "", $latest = true)
     {
         $tattrid = explode(":", $RidAttr);
         $lattrid = array_pop($tattrid); // last attribute
@@ -4267,11 +4236,9 @@ create unique index i_docir on doc(initid, revision);";
                 return $def;
             }
         }
-        if ($html) {
-            return $doc->getHtmlAttrValue($lattrid, $def);
-        } else {
-            return $doc->getRawValue($lattrid, $def);
-        }
+
+        return $doc->getRawValue($lattrid, $def);
+
     }
 
 
@@ -4483,6 +4450,9 @@ create unique index i_docir on doc(initid, revision);";
                                 } else {
                                     if ($attr->inArray()) {
                                         $args[$ki] = $this->getMultipleRawValues($input->name, "", $index);
+                                        if ($index >= 0 && is_array($args[$ki])) {
+                                            $args[$ki] = Postgres::arrayToString($args[$ki]);
+                                        }
                                     } else {
                                         $args[$ki] = $this->getRawValue($input->name);
                                     }
@@ -4502,6 +4472,7 @@ create unique index i_docir on doc(initid, revision);";
                         $staticClass,
                         $methodName,
                     ), $args);
+
                 }
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);
@@ -4665,7 +4636,7 @@ create unique index i_docir on doc(initid, revision);";
             $comment = utf8_encode($comment);
         }
         $h->comment = $comment;
-        $h->date = date("d-m-Y H:i:s") . substr(microtime(), 1, 8);
+        $h->date = Date::getNow(true);
         if ($uid > 0) {
             $u = new \Anakeen\Core\Account("", $uid);
         } else {
@@ -5099,8 +5070,7 @@ create unique index i_docir on doc(initid, revision);";
         $this->allocated = 0; // cannot allocated fixed document
         $this->owner = ContextManager::getCurrentUser()->id; // rev user
         $this->postitid = 0;
-        $date = gettimeofday();
-        $this->revdate = $date['sec']; // change rev date
+        $this->mdate = Date::getNow(true); // change rev date
         $point = "dcp:revision" . $this->id;
         DbManager::savePoint($point);
         if ($comment != '') {
@@ -5487,9 +5457,9 @@ create unique index i_docir on doc(initid, revision);";
             $copy->accessControl()->setProfil($cdoc->cprofid);
         }
 
-        $this->inHook=true;
+        $this->inHook = true;
         $err = $copy->getHooks()->trigger(SmartHooks::PREDUPLICATE, $this);
-        $this->inHook=false;
+        $this->inHook = false;
         if ($err != "") {
             return $err;
         }
@@ -5504,9 +5474,9 @@ create unique index i_docir on doc(initid, revision);";
             $copy->duplicateFiles();
         }
 
-        $copy->inHook=true;
+        $copy->inHook = true;
         $msg = $copy->getHooks()->trigger(SmartHooks::POSTDUPLICATE);
-        $copy->inHook=false;
+        $copy->inHook = false;
         if ($msg != "") {
             $copy->addHistoryEntry($msg, \DocHisto::MESSAGE);
         }
@@ -6201,7 +6171,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($v === "" || $v === null) {
             return array();
         }
-        return explode("\n", str_replace("\r", "", $v));
+        return Postgres::stringToArray($v);
     }
 
 
@@ -6210,18 +6180,16 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @api convert array value to flat attribute value
      *
-     * @param array  $v
-     * @param string $br
+     * @param array $v
      *
      * @return string
      */
-    public static function arrayToRawValue($v, $br = '<BR>')
+    public static function arrayToRawValue($v)
     {
-        $v = str_replace("\n", $br, $v);
         if (count($v) == 0) {
             return "";
         }
-        return implode("\n", $v);
+        return Postgres::arrayToString($v);
     }
 
 
@@ -6919,8 +6887,8 @@ create unique index i_docir on doc(initid, revision);";
                 if ($ok) {
                     if ($oattr->type == "array") {
                         if ($method) {
-                            $values = json_decode($dval, true);
-                            if ($values === null) {
+                            $values = $dval;
+                            if (is_string($values) && $values[0]===':') {
                                 $values = $this->applyMethod($dval, null);
                                 if ($values === null) {
                                     throw new \Dcp\Exception("DFLT0007", $aid, $dval, $this->fromname);
@@ -6949,8 +6917,15 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     } else {
                         if ($method) {
-                            $this->setValue($aid, $this->GetValueMethod($dval));
+                            $val = $this->GetValueMethod($dval);
+                            if ($oattr->isMultiple()) {
+                                $val = [$val];
+                            }
+                            $this->setValue($aid, $val);
                         } else {
+                            if ($oattr->isMultiple()) {
+                                $dval = [$dval];
+                            }
                             $this->setValue($aid, $dval); // raw data
                         }
                     }
@@ -7201,7 +7176,7 @@ create unique index i_docir on doc(initid, revision);";
                                 if ($oa->getOption("multiple") == "yes") {
                                     // second level
                                     $oa->setOption("multiple", "no"); //  needto have values like first level
-                                    $values = explode("<BR>", $va);
+                                    $values = $va;
                                     $ovalues = array();
                                     foreach ($values as $ka => $vaa) {
                                         $ovalues[] = htmlspecialchars_decode($this->GetOOoValue($oa, $vaa), ENT_QUOTES);
@@ -7421,7 +7396,6 @@ create unique index i_docir on doc(initid, revision);";
      * [mime_s] => application/pdf
      * [cdate] => 24/12/2010 11:44:36
      * [mdate] => 24/12/2010 11:44:41
-     * [adate] => 25/03/2011 08:13:34
      * [teng_state] => 1
      * [teng_lname] => pdf
      * [teng_vid] => 15
@@ -7459,7 +7433,7 @@ create unique index i_docir on doc(initid, revision);";
      * return a property of vault file value
      *
      * @param string $filesvalue the file value : like application/pdf|12345
-     * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, adate, teng_state, teng_lname, teng_vid, teng_comment, path
+     * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, teng_state, teng_lname, teng_vid, teng_comment, path
      * @param string $returnType if "array" return indexed array else return VaultFileInfo object
      *
      * @return array|string|\VaultFileInfo value of property or array of all properties if no key
@@ -7607,8 +7581,8 @@ create unique index i_docir on doc(initid, revision);";
                 $id = $this->getLatestId();
             }
         }
-        if ((strpos($id, "\n") !== false) || (strpos($id, "<BR>") !== false)) {
-            $tid = explode("\n", str_replace("<BR>", "\n", $id));
+        if ($id[0] === '{') {
+            $tid = Postgres::stringToFlatArray($id);
             $ttitle = array();
             foreach ($tid as $idone) {
                 $ttitle[] = $this->getTitle($idone, $def, $latest);
@@ -8313,66 +8287,6 @@ create unique index i_docir on doc(initid, revision);";
         return $tags;
     }
 
-    /**
-     * Parse a docid's single or multiple value and resolve logical name references
-     *
-     * The function can report unknown logical names and can take an additional list of
-     * known logical names to not report
-     *
-     * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
-     * @param string                                       $avalue              docid's raw value
-     * @param array                                        $unknownLogicalNames Return list of unknown logical names
-     * @param array                                        $knownLogicalNames   List of known logical names that should not be reported as unknown in $unknownLogicalNames
-     *
-     * @return int|string The value with logical names replaced by their id
-     */
-    public function resolveDocIdLogicalNames(
-        \Anakeen\Core\SmartStructure\NormalAttribute & $oattr,
-        $avalue,
-        &$unknownLogicalNames = array(),
-        &$knownLogicalNames = array()
-    ) {
-        $res = $avalue;
-        if (!is_numeric($avalue)) {
-            if ((!strstr($avalue, "<BR>")) && (!strstr($avalue, "\n"))) {
-                if ($oattr->getOption("docrev", "latest") == "latest") {
-                    $res = SEManager::getInitidFromName($avalue);
-                } else {
-                    $res = SEManager::getIdFromName($avalue);
-                }
-                if (!$res && !in_array($avalue, $knownLogicalNames)) {
-                    $unknownLogicalNames[] = $avalue;
-                }
-            } else {
-                $tnames = explode("\n", $avalue);
-
-                $tids = array();
-                foreach ($tnames as $lname) {
-                    $mids = explode("<BR>", $lname);
-                    $tlids = array();
-                    foreach ($mids as $llname) {
-                        if (!is_numeric($llname)) {
-                            if ($oattr->getOption("docrev", "latest") == "latest") {
-                                $llid = SEManager::getInitidFromName($llname);
-                            } else {
-                                $llid = SEManager::getIdFromName($llname);
-                            }
-                            if (!$llid && !in_array($llname, $knownLogicalNames)) {
-                                $unknownLogicalNames[] = $llname;
-                            }
-                            $tlids[] = $llid ? $llid : $llname;
-                        } else {
-                            $tlids[] = $llname;
-                        }
-                    }
-                    $tids[] = implode('<BR>', $tlids);
-                }
-
-                $res = implode("\n", $tids);
-            }
-        }
-        return $res;
-    }
 
     /**
      * get display values for general searches
@@ -8454,7 +8368,6 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         }
-
         $custom = $this->getCustomSearchValues();
         if ($custom) {
             if (!is_array($custom)) {

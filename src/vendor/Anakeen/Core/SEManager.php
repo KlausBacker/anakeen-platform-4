@@ -121,6 +121,12 @@ class SEManager
         if ($id > 0) {
             return intval($id);
         }
+        // it is perhaps a temporary document
+        DbManager::query(sprintf("select id from doc where initid='%d' and doctype = 'T'", $initid), $id, true, true);
+        if ($id > 0) {
+            return intval($id);
+        }
+
         return null;
     }
 
@@ -195,6 +201,11 @@ class SEManager
             // it is not really on initid
             DbManager::query(sprintf("select id from docread where initid=(select initid from docread where id=%d) and revision = %d", $initid, $revision), $id, true, true);
 
+            if ($id > 0) {
+                return intval($id);
+            }
+            // it is perhaps a temporary document
+            DbManager::query(sprintf("select id from doc where initid='%d' and revision = %d and doctype = 'T'", $initid, $revision), $id, true, true);
             if ($id > 0) {
                 return intval($id);
             }
