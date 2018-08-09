@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@anakeen/ank-components@^1.0.0-0":
+  version "1.0.0-1533826827"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1533826827.tgz#c39694a23555cb468b95dbc099c558ac6319533c"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -297,10 +301,6 @@ alphanum-sort@^1.0.1, alphanum-sort@^1.0.2:
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
-
-"ank-components@git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#master":
-  version "0.0.2"
-  resolved "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/npm/anakeen-components.git#8b2bcc7ed1ab0c58b12aefa4362cb8af1026164e"
 
 ansi-escapes@^1.0.0:
   version "1.4.0"
