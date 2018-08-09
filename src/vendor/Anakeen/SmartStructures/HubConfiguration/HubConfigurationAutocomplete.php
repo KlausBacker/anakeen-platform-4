@@ -14,11 +14,12 @@ class HubConfigurationAutocomplete
         $locales = ContextManager::getLocales();
 
         foreach ($locales as $locale) {
-            if (($filter == "") || (preg_match("/$filter/i", $locale, $m))) {
+            if (($filter == "") || (preg_match("/$filter/i", $locale["label"], $m))) {
                 $response->appendEntry(
-                    $locale,
+                    $locale["label"],
                     [
-                        $locale
+                        $locale["label"],
+                        $locale["culture"]
                     ]
                 );
             }
@@ -29,7 +30,7 @@ class HubConfigurationAutocomplete
 
     public static function getIcons(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args) : SmartAutocompleteResponse
     {
-
+        // TODO
         return $response;
     }
 }

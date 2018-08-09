@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+  <smart:structure-configuration name="HubConfigurationIdentity">
+    <smart:extends ref="HubConfiguration"/>
+    <smart:icon file="HubConfigurationIdentity.png"/>
+    <smart:class>\Anakeen\SmartStructures\HubConfigurationIdentity\HubConfigurationIdentitySmartStructure</smart:class>
+    <smart:fields/>
+    <smart:hooks/>
+    <smart:defaults/>
+  </smart:structure-configuration>
+</smart:config>

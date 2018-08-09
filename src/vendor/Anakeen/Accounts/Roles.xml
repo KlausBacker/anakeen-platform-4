@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts>
+    <roles>
+        <role>
+            <reference>hub_user_role</reference>
+            <displayName>Hub users</displayName>
+            <document family="ROLE">
+                <role  name="hub-user-role"/>
+            </document>
+        </role>
+        <role>
+            <reference>hub_admin_role</reference>
+            <displayName>Hub admin</displayName>
+            <document family="ROLE">
+                <role  name="hub-admin-role"/>
+            </document>
+        </role>
+    </roles>
+</accounts>

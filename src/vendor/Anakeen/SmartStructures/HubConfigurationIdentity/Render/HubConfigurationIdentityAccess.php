@@ -1,12 +1,11 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfiguration\Render;
+namespace Anakeen\SmartStructures\HubConfigurationIdentity\Render;
 
-class HubConfigurationAccess implements \Dcp\Ui\IRenderConfigAccess
+class HubConfigurationIdentityAccess implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
-     * @param \Anakeen\Core\Internal\SmartElement $document
      * @return \Dcp\Ui\IRenderConfig
      */
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
@@ -14,9 +13,9 @@ class HubConfigurationAccess implements \Dcp\Ui\IRenderConfigAccess
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:
             case \Dcp\Ui\RenderConfigManager::EditMode:
-                return new HubConfigurationEditRender();
+                return new HubConfigurationIdentityEditRender();
             case \Dcp\Ui\RenderConfigManager::ViewMode:
-                return new HubConfigurationViewRender();
+                return new HubConfigurationIdentityViewRender();
         }
         return null;
     }

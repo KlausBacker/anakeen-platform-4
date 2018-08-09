@@ -50,10 +50,14 @@
 
         <smart:autocompletion>
             <smart:field-autocomplete field="hub_language">
-                <smart:field-callable function=""/> <!-- TODO Function -->
+                <smart:field-callable function="Anakeen\SmartStructures\HubConfiguration\HubConfigurationAutocomplete::getLanguages"/>
+                <smart:field-returns>
+                    <smart:field-return field="hub_language"/>
+                    <smart:field-return field="hub_language_code"/>
+                </smart:field-returns>
             </smart:field-autocomplete>
             <smart:field-autocomplete field="hub_icon">
-                <smart:field-callable function=""/> <!-- TODO Function -->
+                <smart:field-callable function="Anakeen\SmartStructures\HubConfiguration\HubConfigurationAutocomplete::getIcons"/>
             </smart:field-autocomplete>
         </smart:autocompletion>
 
