@@ -9,8 +9,7 @@
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/anakeen-cli": "^1.0.0",
-    "anakeen-cli": "git+ssh://git@gitlab.anakeen.com:Anakeen/Platform-4/anakeen-cli.git#master"
+    "@anakeen/anakeen-cli": "^1.0.0-1533732489"
   },
   "devDependencies": {},
   "repository": {
