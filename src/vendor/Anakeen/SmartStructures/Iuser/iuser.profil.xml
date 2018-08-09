@@ -16,13 +16,14 @@
         <smart:field-access field="us_passwd2" access="Write"/>
     </smart:field-access-layer>
 
-    <smart:field-access-layer-list name="FALL_IUSER" label="User Field Access">
+    <smart:field-access-layer-list name="FALL_IUSER" label="Admin User Field Access">
         <smart:description>Current user can modify identity information. Admin can modify technicals setting.</smart:description>
         <smart:field-access-layer ref="FAL_IUSER_PASSWORD" access-name="Password"/>
         <smart:field-access-layer name="FAL_IUSER_ADMIN" label="Admin User Access" access-name="Admin">
             <smart:description>Technical information access</smart:description>
             <smart:field-access field="us_fr_ident" access="ReadWrite"/>
             <smart:field-access field="us_tab_identity" access="ReadWrite"/>
+            <smart:field-access field="us_fr_intranet" access="ReadWrite"/>
             <smart:field-access field="us_tab_system" access="ReadWrite"/>
             <smart:field-access field="us_tab_sysinfo" access="ReadWrite"/>
             <smart:field-access field="us_fr_security" access="ReadWrite"/>
