@@ -53,7 +53,7 @@ class FamilyStructure extends \Anakeen\Routes\Core\DocumentData
     protected function extractEtagDataFromId($id)
     {
         $result = array();
-        $sql = sprintf("select revdate from docfam where id = %d", $id);
+        $sql = sprintf("select mdate from docfam where id = %d", $id);
 
         DbManager::query($sql, $result, false, true);
         // Necessary only when use family.structure

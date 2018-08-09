@@ -88,7 +88,7 @@ class DocumentTemplateContext extends \Anakeen\Core\Internal\I18nTemplateContext
     protected function _getProperties()
     {
         return $this->_getDocumentData("document.properties", array(
-            "revdate",
+            "mdate",
             "icon",
             "revision",
             "family",
@@ -158,5 +158,4 @@ class DocumentTemplateContext extends \Anakeen\Core\Internal\I18nTemplateContext
         }
         return $this->_getDocumentData("family.structure");
     }
-
 }

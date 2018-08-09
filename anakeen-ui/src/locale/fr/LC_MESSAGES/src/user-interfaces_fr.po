@@ -668,7 +668,7 @@ msgid "kB"
 msgstr "ko"
 
 msgctxt "searchui"
-msgid "revdate"
+msgid "mdate"
 msgstr "Date de modification"
 
 msgctxt "searchui"

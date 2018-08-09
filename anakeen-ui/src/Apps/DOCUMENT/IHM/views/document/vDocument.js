@@ -1213,7 +1213,6 @@ define([
               "Last modification date",
               "propertyUi"
             ),
-            lastAccessDate: i18n.___("Last access date", "propertyUi"),
             profil: i18n.___("Profil", "propertyUi"),
             profilReference: i18n.___("Profil reference", "propertyUi"),
             viewController: i18n.___("View controller", "propertyUi"),

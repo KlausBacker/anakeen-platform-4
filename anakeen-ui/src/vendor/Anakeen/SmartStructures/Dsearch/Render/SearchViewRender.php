@@ -103,9 +103,9 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
                 if ($attribute == "title") {
                     $attr = ___("doctitle", "searchui");
                 } else {
-                    if ($attribute == "revdate") {
+                    if ($attribute == "mdate") {
                         $type = "date";
-                        $attr = ___("revdate", "searchui");
+                        $attr = ___("mdate", "searchui");
                     } else {
                         if ($attribute == "cdate") {
                             $type = "date";

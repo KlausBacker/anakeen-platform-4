@@ -446,7 +446,6 @@ import "./docGrid.css";
       profid: true,
       usefor: true,
       cdate: true,
-      adate: true,
       revdate: true,
       comment: true,
       classname: true,
