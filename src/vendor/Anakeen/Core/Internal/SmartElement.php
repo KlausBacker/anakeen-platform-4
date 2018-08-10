@@ -38,7 +38,6 @@ use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
 use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
-use PHPUnit\Framework\Exception;
 
 class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
 {
@@ -86,8 +85,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     public $hooks = null;
     public $sup_fields
         = array(
-            "values",
-            "attrids"
+            "fieldvalues"
         ); // not be in fields else trigger error
     public static $infofields
         = array(
@@ -546,15 +544,10 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     /**
      * for system purpose only
      *
-     * @var string concatenation of all values
+     * @var string array of all values
      */
-    protected $values;
-    /**
-     * for system purpose only
-     *
-     * @var string concatenation of all attribute ids (use it with ::values)
-     */
-    protected $attrids;
+    protected $fieldvalues;
+
     /**
      * extend acl definition
      * used in WDoc and CVDoc
@@ -701,8 +694,7 @@ create table doc ( id int not null,
                    classname text,
                    state text,
                    wid int DEFAULT 0,
-                   values text DEFAULT '',
-                   attrids text DEFAULT '',
+                   fieldvalues jsonb,
                    fulltext tsvector,
                    postitid text,
                    domainid text,
@@ -2034,6 +2026,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             unset($this->uperm); // force recompute privileges
+
             foreach ($array as $k => $v) {
                 if (!is_integer($k)) {
                     $this->$k = $v;
@@ -2910,7 +2903,7 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($ltitle as $k => $v) {
             if ($this->getRawValue($v->id) != "") {
                 if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
-                    $titles=Postgres::stringToFlatArray($this->getRawValue($v->id));
+                    $titles = Postgres::stringToFlatArray($this->getRawValue($v->id));
                     $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(implode(" ", $titles)) . " ";
                 } else {
                     $title1 .= $this->getRawValue($v->id) . " ";
@@ -3400,7 +3393,6 @@ create unique index i_docir on doc(initid, revision);";
     final public function setValue($attrid, $value, $index = -1, &$kvalue = null)
     {
         $attrid = strtolower($attrid);
-       // var_dump([$attrid=>$value]);
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oattr
          */
@@ -3443,6 +3435,14 @@ create unique index i_docir on doc(initid, revision);";
                         $ov[substr($k, 1, 1)] = $v;
                     }
                     $value = $ov;
+                }
+                if ($oattr->isMultipleInArray()) {
+                    foreach ($value as $k => $v) {
+                        if ($v === "" || $v === null) {
+                            // Need to cast to respect pg array constraint
+                            $value[$k] = [];
+                        }
+                    }
                 }
                 $value = $this->arrayToRawValue($value);
             }
@@ -4308,30 +4308,16 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function getMoreValues()
     {
-        if (isset($this->values)) {
-            $tvalues = explode("£", $this->values);
-            $tattrids = explode("£", $this->attrids);
-            if (count($tvalues) === count($tattrids)) {
-                foreach ($tvalues as $k => $v) {
-                    $attrid = $tattrids[$k];
-                    if (($attrid != "") && empty($this->$attrid)) {
-                        $this->$attrid = $v;
-                        $this->mvalues[$attrid] = $v; // to be use in getValues()
+        if (isset($this->fieldvalues)) {
+            $moreValues=json_decode($this->fieldvalues, true);
+
+            foreach ($moreValues as $attrid => $v) {
+                if (empty($this->$attrid)) {
+                    if (is_array($v)) {
+                        $v=Postgres::arrayToString($v);
                     }
-                }
-            } else {
-                // Special case when £ characters is used in value
-                $missingAttrIds = array();
-                foreach ($tattrids as $k => $attrid) {
-                    if ($attrid && $this->$attrid === null) {
-                        $missingAttrIds[] = $attrid;
-                    }
-                }
-                if ($missingAttrIds) {
-                    $missingValues = SEManager::getRawData($this->id, $missingAttrIds, false);
-                    foreach ($missingValues as $attrid => $value) {
-                        $this->$attrid = $value;
-                    }
+                    $this->$attrid = $v;
+                    $this->mvalues[$attrid] = $v; // to be use in getValues()
                 }
             }
         }
@@ -4342,12 +4328,10 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function resetMoreValues()
     {
-        if (isset($this->values) && $this->id) {
-            $tattrids = explode("£", $this->attrids);
-            foreach ($tattrids as $k => $v) {
-                if ($v) {
-                    $this->$v = null;
-                }
+        if (isset($this->fieldvalues) && $this->id) {
+            $moreValues=json_decode($this->fieldvalues, true);
+            foreach ($moreValues as $k => $v) {
+                    $this->$k = null;
             }
         }
         $this->mvalues = array();
@@ -5288,8 +5272,8 @@ create unique index i_docir on doc(initid, revision);";
             return _("assigned workflow is not alive");
         }
         try {
-            $wdoc->Set($this);
-            $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
+            $wdoc->set($this);
+            $err = $wdoc->changeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
         } catch (\Dcp\Exception $e) {
             $err = sprintf(
                 _("Unexpected transition error on workflow %s [%d] : %s"),
@@ -5905,9 +5889,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string
      */
-    public function specRefreshGen(
-        $onlyspec = false
-    ) {
+    public function specRefreshGen($onlyspec = false) {
         return '';
     }
 
@@ -6658,13 +6640,12 @@ create unique index i_docir on doc(initid, revision);";
             $fulltext_c = array();
             foreach ($na as $k => $v) {
                 $opt_searchcriteria = $v->getOption("searchcriteria", "");
-                if (($v->type != "array") && ($v->type != "frame") && ($v->type != "tab")) {
+                if (($v->type !== "array") && ($v->type !== "frame") && ($v->type !== "tab")) {
                     // values += any attribute
-                    if ($v->structureId == $famId) {
                         $tvalues[] = array(
-                            "attrid" => $k
+                            "attrid" => $k,
+                            "casttype" => ($v->isMultiple()===true)?"text[]":"text"
                         );
-                    }
                     // svalues += attribute allowed to be indexed
                     if (($v->type != "file") && ($v->type != "image") && ($v->type != "password")
                         && ($opt_searchcriteria != "hidden")) {
@@ -6717,15 +6698,11 @@ create unique index i_docir on doc(initid, revision);";
             $lay->set("docid", $this->fromid);
             $sql = $lay->gen();
         } else {
-            if ($this->attributes !== null && isset($this->attributes->fromids) && is_array($this->attributes->fromids)) {
-                foreach ($this->attributes->fromids as $k => $v) {
-                    $sql .= "create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
-                }
-            }
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
-                $sql .= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
+                $sql .= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetlogicalname();";
                 $sql .= "create trigger VSEARCH{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE searchvalues$cid();";
+                 $sql.= "create trigger beforeiu{$cid} BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE doc{$cid}_fieldvalues();";
             } else {
                 $sql .= "create trigger UVdocfam before insert or update on docfam FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }
@@ -6888,7 +6865,7 @@ create unique index i_docir on doc(initid, revision);";
                     if ($oattr->type == "array") {
                         if ($method) {
                             $values = $dval;
-                            if (is_string($values) && $values[0]===':') {
+                            if (is_string($values) && $values[0] === ':') {
                                 $values = $this->applyMethod($dval, null);
                                 if ($values === null) {
                                     throw new \Dcp\Exception("DFLT0007", $aid, $dval, $this->fromname);

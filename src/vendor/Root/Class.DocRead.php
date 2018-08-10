@@ -48,8 +48,7 @@ create table docread ( id int not null,
                    classname text,
                    state text,
                    wid int ,  
-                   values text,  
-                   attrids text,
+                   fieldvalues jsonb,  
                    domainid text,
                    lockdomainid int,
                    postitid text,
@@ -105,8 +104,6 @@ create index full_docread on docread using gist(fulltext);";
     );
     
     public $sup_fields = array(
-        "values",
-        "svalues",
-        "attrids"
+        "fieldvalues"
     ); // not be in fields else trigger error
 }
