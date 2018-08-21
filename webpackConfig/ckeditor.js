@@ -1,9 +1,9 @@
 /* loader.js */
 
 if (process.env.NODE_ENV === "production") {
-    window.CKEDITOR_BASEPATH = ($("head base").attr("href") || "")+'uiAssets/anakeen/prod/node_modules/ckeditor/';
+    window.CKEDITOR_BASEPATH = ($("head base").attr("href") || "")+'Anakeen/smartElement/prod/node_modules/ckeditor/';
 } else {
-    window.CKEDITOR_BASEPATH = ($("head base").attr("href") || "")+'uiAssets/anakeen/debug/node_modules/ckeditor/';
+    window.CKEDITOR_BASEPATH = ($("head base").attr("href") || "")+'Anakeen/smartElement/dev/node_modules/ckeditor/';
 }
 
 // Load your custom config.js file for CKEditor.

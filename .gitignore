@@ -6,14 +6,10 @@ localpub/
 node_modules/
 tmpot/
 anakeen-ui/src/public/login/dist/
-anakeen-ui/src/public/components/debug/
-anakeen-ui/src/public/components/dist/
+anakeen-ui/src/public/Anakeen/
 anakeen-ui/src/vendor/Anakeen/Components/translation.json
-anakeen-ui/src/Apps/DOCUMENT/Layout/debug/
-anakeen-ui/src/Apps/DOCUMENT/Layout/prod/
-Tests/src/public/TEST_DOCUMENT_SELENIUM/dist/
+Tests/src/public/Anakeen/
 anakeen-ui/src/public/uiAssets/
-Tests/src/public/apps/uitest/dist/
 Makefile.local
 /.idea/deployment.xml
 /.idea/dictionaries/charles.xml

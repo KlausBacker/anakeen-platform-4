@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Charles
- * Date: 15/12/2017
- * Time: 10:27
- */
 
 namespace Dcp\Ui;
 
@@ -22,12 +16,9 @@ class UIGetAssetPath
 {
 
     protected static $assetPath = 'uiAssets/externals/';
-    protected static $widgetPath = 'uiAssets/widgets/';
-    protected static $componentsPath = 'components';
+    protected static $anakeenPublicPath = 'Anakeen/';
+    protected static $anakeenManifestPath = __DIR__.'/../../../public/Anakeen/manifest';
     protected static $inDebug = null;
-    protected static $assetPaths = null;
-    protected static $widgetPaths = null;
-    protected static $componentsPaths = null;
     protected static $ws = null;
 
     public static function isInDebug() {
@@ -38,30 +29,6 @@ class UIGetAssetPath
         return self::$inDebug;
     }
 
-    protected static function getAssetsPaths() {
-        if (self::$assetPaths === null) {
-            self::$assetPaths = json_decode(file_get_contents(self::$assetPath."/externalAssets.json"), true);
-        }
-        return self::$assetPaths;
-    }
-
-    protected static function getWidgetPath() {
-        if (self::$widgetPaths === null) {
-            $lastPart = self::isInDebug() ? "/debug/" : "/prod/";
-
-            self::$widgetPaths = json_decode(file_get_contents(self::$widgetPath."/".$lastPart."/smartElement.json"), true);
-        }
-        return self::$widgetPaths;
-    }
-
-    protected static function getSmartWebComponentsPaths() {
-        if (self::$componentsPaths === null) {
-            $lastPart = self::isInDebug() ? "/debug/" : "/dist/";
-            self::$componentsPaths = json_decode(file_get_contents(self::$componentsPath."/".$lastPart."/ank-components.json"), true);
-        }
-        return self::$componentsPaths;
-    }
-
     public static function getWs() {
         if (self::$ws === null) {
             self::$ws = $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
@@ -69,18 +36,35 @@ class UIGetAssetPath
         return self::$ws;
     }
 
+    /**
+     * Get the content of the manifest of a generated pack of asset
+     *
+     * @param $name
+     * @param string $mode
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getElementAssets($name, $mode = "prod") {
+        $manifestPath = self::$anakeenManifestPath.DIRECTORY_SEPARATOR.$name.DIRECTORY_SEPARATOR.$mode.".json";
+        if (!file_exists($manifestPath)) {
+            throw new Exception("UI0400", $name, $manifestPath);
+        }
+        $manifest = json_decode(file_get_contents($manifestPath), true);
+        return $manifest;
+    }
+
     public static function getJSJqueryPath() {
         $jqueryFileName = self::isInDebug() ? 'jquery.js' : 'jquery.min.js';
         return "/".self::$assetPath.'/jquery/'.$jqueryFileName.'?ws='.self::getWs();
     }
 
+    /**
+     * @return mixed
+     * @throws Exception
+     */
     public static function getJSKendoPath() {
-        if (self::isInDebug()) {
-            return "/".self::$assetPath.'/KendoUI/KendoUI.js?ws='.self::getWs();
-        } else {
-            $asset = self::getAssetsPaths();
-            return $asset["KendoUI"]["js"];
-        }
+        $assets = self::getElementAssets("assets", "deps");
+        return $assets["KendoUI"]["js"];
     }
 
     /**
@@ -101,56 +85,52 @@ class UIGetAssetPath
         return $baseUrl;
     }
 
-    /**
-     * Return the asset ank web components path. By default, the route path is returned.
-     * @param bool $filepath - if set to true require the real file path of the asset
-     * @param bool $ie11File - if set to true require the old browser version of the asset
-     * @return string - the asset path
-     */
-    public static function getSmartWebComponentsPath($filepath = false, $ie11File = false) {
-        if ($filepath) {
-            $ankComponentsPath = self::getSmartWebComponentsPaths();
-            if ($ie11File) {
-                return $ankComponentsPath["ank-components-ie11"]['js'];
-            }
-            return $ankComponentsPath["ank-components"]['js'];
-        } else {
-            return "/ui/components/ank-components";
-        }
+    public static function getPolyfill() {
+        $assets = self::getElementAssets("polyfill", "deps");
+        return $assets["polyfill"]["js"];
     }
 
-    public static function getJSSmartElementPath() {
-        $paths = self::getWidgetPath();
+    /**
+     * Return the asset ank web components path. By default, the route path is returned.
+     * @return string - the asset path
+     * @throws Exception
+     */
+    public static function getSmartWebComponentsPath($legacy = false) {
+        if (self::isInDebug()) {
+            $paths = self::getElementAssets("ank-components", "dev");
+        } else {
+            $paths = self::getElementAssets("ank-components", $legacy ? "legacy": "prod");
+        }
+        return $paths["ank-components"]["js"];
+    }
+
+    /**
+     * @param bool $legacy
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getJSSmartElementPath($legacy = false) {
+        if (self::isInDebug()) {
+            $paths = self::getElementAssets("smartElement", "dev");
+        } else {
+            $paths = self::getElementAssets("smartElement", $legacy ? "legacy": "prod");
+        }
         return $paths["smartElement"]["js"];
     }
 
-    public static function getJSSmartElementGridPath() {
-        $paths = self::getWidgetPath();
-        return $paths["smartElementGrid"]["js"];
+    /**
+     * @param bool $legacy
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getJSSmartElementWidgetPath($legacy = false) {
+        if (self::isInDebug()) {
+            $paths = self::getElementAssets("smartElement", "dev");
+        } else {
+            $paths = self::getElementAssets("smartElement", $legacy ? "legacy": "prod");
+        }
+        return $paths["smartElementWidget"]["js"];
     }
 
-    public static function getSmartElement() {
-        $elements = [
-            "js" => [
-                self::getJSJqueryPath(),
-                self::getJSSmartElementPath()
-                ],
-            "css" => []
-        ];
-
-        return $elements;
-    }
-
-    public static function getSmartElementGrid() {
-        $elements = [
-            "js" => [
-                self::getJSJqueryPath(),
-                self::getJSKendoPath(),
-                self::getJSSmartElementGridPath()
-            ],
-            "css" => []
-        ];
-        return $elements;
-    }
 
 }

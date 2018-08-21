@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\UiTest\TestRender\Renders;
 
 use Dcp\Ui\BarMenu;
 use Dcp\Ui\RenderOptions;
+use Dcp\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Tst_render as myAttributes;
 
 class RenderConfigView extends \Dcp\Ui\DefaultView
@@ -56,8 +57,9 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
-        $js["smartElement"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementPath();
-        $js["familyTestRender"] = "TEST_DOCUMENT_SELENIUM/dist/family/TestRender.js";
+        $js["smartElement"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementWidgetPath(true);
+        $path = UIGetAssetPath::getElementAssets("uiTest", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $js["familyTestRender"] = $path["familyTestRender"]["js"];
         return $js;
     }
 }

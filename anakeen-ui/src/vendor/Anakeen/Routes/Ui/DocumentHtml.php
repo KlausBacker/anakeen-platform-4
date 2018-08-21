@@ -68,12 +68,7 @@ class DocumentHtml
             }
         }
 
-        $modeDebug = ContextManager::getParameterValue("Ui", "MODE_DEBUG");
-        if ($modeDebug !== "FALSE") {
-            $templateFile = DEFAULT_PUBDIR . "/Apps/DOCUMENT/Layout/debug/document-view.mustache.html";
-        } else {
-            $templateFile = DEFAULT_PUBDIR . "/Apps/DOCUMENT/Layout/prod/document-view.mustache.html";
-        }
+        $templateFile = __DIR__ . "/Templates/document-view.html.mustache";
         $data = new I18nTemplateContext();
         $data["BASEURL"] = self::getBaseUrl();
         $data["NOTIFICATION_DELAY"] = ContextManager::getParameterValue("Ui", "NOTIFICATION_DELAY");
@@ -148,7 +143,7 @@ class DocumentHtml
             );
         }
         $data["CSS"] = $css;
-        $require = $render->getRequireReference();
+        $require = $render->getJsDeps();
         $js = array();
         foreach ($require as $key => $path) {
             $js[] = array(
@@ -156,7 +151,16 @@ class DocumentHtml
                 "path" => $path
             );
         }
-        $data["JS"] = $js;
+        $data["JS_DEPS"] = $js;
+
+        $data["JS"] = [
+            ["key" => "core", "path" => $render->getCoreJs()]
+        ];
+        $data["JS_LEGACY"] = [
+            ["key" => "polyfilles5", "path" => $render->getEs5Polyfill()],
+            ["key" => "core", "path" => $render->getCoreJs(true)]
+        ];
+
         $mustache = new \Mustache_Engine();
         return $mustache->render(file_get_contents($templateFile), $data);
     }

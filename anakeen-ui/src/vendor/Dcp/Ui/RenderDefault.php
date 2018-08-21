@@ -41,7 +41,7 @@ class RenderDefault implements IRenderConfig
         return [];
     }
 
-    public function getRequireReference()
+    public function getJsDeps()
     {
         $pubExternalPath = "uiAssets/externals";
         $pubInternalPath = "uiAssets/anakeen";
@@ -62,6 +62,14 @@ class RenderDefault implements IRenderConfig
             ]);
         }
         return $jsRef;
+    }
+
+    public function getCoreJs($legacy = false) {
+        return UIGetAssetPath::getJSSmartElementPath($legacy);
+    }
+
+    public function getEs5Polyfill() {
+        return UIGetAssetPath::getPolyfill();
     }
 
     public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)

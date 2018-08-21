@@ -10,6 +10,18 @@
     {{#CSS}}
     <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
     {{/CSS}}
+    {{#JS_DEPS}}
+    <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+
+    <script type="module">
+        {{#JS}}
+            var script{{key}} = document.createElement('script');
+            script{{key}}.type = 'text/javascript';
+            script{{key}}.src = '{{path}}';
+            document.body.appendChild(script{{key}});
+        {{/JS}}
+    </script>
 
 </head>
 <body class="login-page">
@@ -20,9 +32,15 @@
     <ank-authent default-language="auto" authent-languages="fr_FR, en_US"></ank-authent>
 </div>
 
-{{#JS}}
-<script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
-{{/JS}}
+
+<script nomodule>
+{{#JS_LEGACY}}
+var script{{key}} = document.createElement('script');
+script{{key}}.type = 'text/javascript';
+script{{key}}.src = '{{path}}';
+document.body.appendChild(script{{key}});
+{{/JS_LEGACY}}
+</script>
 
 </body>
 </html>

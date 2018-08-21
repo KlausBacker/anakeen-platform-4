@@ -9,11 +9,10 @@ class TestPage
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $page = __DIR__ . "/TestPage.html";
+        $page = __DIR__ . "/TestPage.html.mustache";
         $template = file_get_contents($page);
-        $version = \Dcp\Ui\UIGetAssetPath::getWs();
         $data = [
-            "JS" => [
+            "JS_DEPS" => [
                 [
                     "key" =>"jquery",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
@@ -21,14 +20,26 @@ class TestPage
                 [
                     "key" =>"kendo",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
-                ],
+                ]
+            ],
+            "JS" => [
                 [
-                    "key" =>"ank-components",
+                    "key" =>"ankcomponents",
                     "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()
                 ],
                 [
-                    "key" => "test-page",
-                    "path" =>  \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("apps/uitest/dist/TestPage.js")
+                    "key" => "testPage",
+                    "path" =>  \Dcp\Ui\UIGetAssetPath::getElementAssets("uiTest")["TestPage"]["js"]
+                ]
+            ],
+            "JS_LEGACY" => [
+                [
+                    "key" =>"ankcomponents",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
+                ],
+                [
+                    "key" => "testPage",
+                    "path" =>  \Dcp\Ui\UIGetAssetPath::getElementAssets("uiTest", "legacy")["TestPage"]["js"]
                 ]
             ],
             "CSS" => [
