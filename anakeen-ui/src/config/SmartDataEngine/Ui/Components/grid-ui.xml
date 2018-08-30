@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="Ui:Component">
+        <sde:route name="Grid:Config">
+            <sde:callable>\Anakeen\Components\Grid\Routes\Config</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/grid/config/{collectionId}[/]</sde:pattern>
+            <sde:description>Get grid component configuration</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
+        <sde:route name="Grid:Content">
+            <sde:callable>\Anakeen\Components\Grid\Routes\Content</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/grid/content/{collectionId}[/]</sde:pattern>
+            <sde:description>Get grid component content</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
+        <sde:route name="Grid:Operators">
+            <sde:callable>\Anakeen\Components\Grid\Routes\Operators</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/grid/operators[/]</sde:pattern>
+            <sde:description>Get grid component all operators or for a specific type</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
+    </sde:routes>
+</sde:config>
