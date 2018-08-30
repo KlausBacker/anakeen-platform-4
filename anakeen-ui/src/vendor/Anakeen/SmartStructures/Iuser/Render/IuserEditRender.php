@@ -118,10 +118,8 @@ class IuserEditRender extends DefaultConfigEditRender
     {
         $js = parent::getJsReferences();
 
-        $js["iuser"] = UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/prod/iuser.js');
-        if (UIGetAssetPath::isInDebug()) {
-            $js["iuser"] = UIGetAssetPath::getCustomAssetPath('/uiAssets/Families/iuser/debug/iuser.js');
-        }
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $js["iuser"] = $path["Iuser"]["js"];
 
         return $js;
     }

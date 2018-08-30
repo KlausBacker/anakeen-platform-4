@@ -33,9 +33,27 @@
 
 </div>
 
-{{#JS}}
-<script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
-{{/JS}}
+{{#JS_DEPS}}
+    <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+{{/JS_DEPS}}
+
+<script type="module">
+        {{#JS}}
+        var script{{key}} = document.createElement('script');
+        script{{key}}.type = 'text/javascript';
+        script{{key}}.src = '{{path}}';
+        document.body.appendChild(script{{key}});
+        {{/JS}}
+</script>
+
+<script nomodule>
+        {{#JS_LEGACY}}
+        var script{{key}} = document.createElement('script');
+        script{{key}}.type = 'text/javascript';
+        script{{key}}.src = '{{path}}';
+        document.body.appendChild(script{{key}});
+        {{/JS_LEGACY}}
+</script>
 
 </body>
 </html>

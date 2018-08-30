@@ -15,6 +15,7 @@ use Dcp\Ui\ArrayRenderOptions;
 use Dcp\Ui\BarMenu;
 use Dcp\Ui\CallableMenu;
 use Dcp\Ui\RenderOptions;
+use Dcp\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Iuser as myAttributes;
 use SmartStructure\Iuser;
 
@@ -169,10 +170,8 @@ class IuserViewRender extends DefaultConfigViewRender
         $js = parent::getJsReferences();
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
-        $js["dduiMenu"] = '/uiAssets/Families/iuser/prod/iuser.js?ws=' . $version;
-        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dduiMenu"] = '/uiAssets/Families/iuser/debug/iuser.js?ws=' . $version;
-        }
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $js["iuser"] = $path["Iuser"]["js"];
 
         return $js;
     }

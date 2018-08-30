@@ -204,6 +204,11 @@ class ErrorCodeUI
     const UI0308 = 'view "%s" is not valid in view control document "%s" . It use a ZONE layout';
 
     /**
+     * @errorCode The view identifier use core ZONE and not declare renderConfig class
+     */
+    const UI0400 = 'The manifest for the asset "%s" is not known (%s)';
+
+    /**
      * for beautifier
      */
     private function _bo()

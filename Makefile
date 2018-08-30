@@ -12,18 +12,17 @@ NODE_MODULE_PATH=node_modules
 JS_CONF_PATH=$(MK_DIR)
 WEBPACK_CONF_PATH=webpackConfig/
 PHP_LIB_PATH=anakeen-ui/src/vendor/Anakeen/Ui/PhpLib
-TEMPLATE_BUILD_PATH=anakeen-ui/src/Apps/DOCUMENT/Layout
-TEMPLATE_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Routes/Ui/Templates
 JS_ASSET_PATH=anakeen-ui/src/public/uiAssets/externals/
 JS_COMPONENT_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Components
-JS_COMPONENT_BUILD_PATH=anakeen-ui/src/public/components
-JS_DDUI_BUILD_PATH=anakeen-ui/src/public/uiAssets/anakeen/
+JS_COMPONENT_BUILD_PATH=anakeen-ui/src/public/Anakeen/ank-components/
+JS_DDUI_BUILD_PATH=anakeen-ui/src/public/Anakeen/smartElement/
 JS_DDUI_SOURCE_PATH=anakeen-ui/src/Apps/DOCUMENT/IHM/
 JS_ROUTE_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Routes/Ui
-JS_FAMILY_BUILD_PATH=anakeen-ui/src/public/uiAssets/Families/
+JS_FAMILY_BUILD_PATH=anakeen-ui/src/public/Anakeen/smartStructures/
 JS_FAMILY_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/SmartStructures/
 JS_TEST_BUILD_PATH=Tests/src/public/
 JS_TEST_SOURCE_PATH=Tests/src/vendor/Anakeen/
+JS_POLYFILL_BUILD_PATH=anakeen-ui/src/public/Anakeen/polyfill/
 ANAKEEN_UI_SRC_PATH=anakeen-ui/
 TEST_SRC_PATH=Tests/
 
@@ -76,31 +75,36 @@ stub: ## Generate stubs
 ##
 ########################################################################################################################
 
-$(JS_ASSET_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${WEBPACK_CONF_PATH} -type f -print | sed 's/ /\\ /g')
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+$(JS_ASSET_PATH): $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/assets.js
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildAsset
 	touch "$@"
 
-$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(shell find ${TEMPLATE_BUILD_PATH} -type f -print | sed 's/ /\\ /g')  $(shell find ${TEMPLATE_SOURCE_PATH} -type f -print | sed 's/ /\\ /g')  $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/webpack.config.js $(WEBPACK_CONF_PATH)/webpack.parts.js
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g')  $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/smartElement.js
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"
 	make -f pojs.make compile
-	$(YARN_BIN) build
+	$(YARN_BIN) buildSmartElement
 	touch "$@"
 
-$(JS_COMPONENT_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_COMPONENT_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/webpack.component.js $(WEBPACK_CONF_PATH)/webpack.parts.js
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+$(JS_COMPONENT_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_COMPONENT_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/components.js
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
 	make -f pojs.make compile
 	$(YARN_BIN) buildComponent
 	touch "$@"
 
-$(JS_FAMILY_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_FAMILY_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/webpack.family.js $(WEBPACK_CONF_PATH)/webpack.parts.js
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+$(JS_FAMILY_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_FAMILY_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/smartStructures.js
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
 	make -f pojs.make compile
-	$(YARN_BIN) buildFamily
+	$(YARN_BIN) buildSmartStructures
+	touch "$@"
+
+$(JS_POLYFILL_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/polyfill.js
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build polyfill $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildPolyfill
 	touch "$@"
 
 $(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH}/src -type f ! -path "*/public/components/dist/*" ! -path "*.map" -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build app $@${RESET_COLOR}\n"
 	rm -f user-interfaces-*.app
 	-mkdir -p $(LOCALPUB_ANAKEEN_UI_PATH)
 	rsync -q --delete -azvr $(ANAKEEN_UI_SRC_PATH) $(LOCALPUB_ANAKEEN_UI_PATH)
@@ -108,7 +112,7 @@ $(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI
 	$(DEVTOOL_BIN) generateWebinst -s $(LOCALPUB_ANAKEEN_UI_PATH) -o .
 	touch "$@"
 
-app: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
+app: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_POLYFILL_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
 deploy: app ## deploy the project
@@ -153,7 +157,7 @@ pojs:
 ##
 ########################################################################################################################
 
-$(JS_TEST_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_TEST_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/webpack.test.js $(WEBPACK_CONF_PATH)/webpack.parts.js
+$(JS_TEST_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_TEST_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/test.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	make -f pojs.make compile
 	$(YARN_BIN) buildTest

@@ -2,7 +2,6 @@
  * Main bootstraper
  */
 /*global require, console*/
-import "./loading/loading.css";
 import $ from "jquery";
 
 $.get("api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {

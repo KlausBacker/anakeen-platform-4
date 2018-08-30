@@ -1,1 +1,0 @@
-# The templates here are builded by webpack

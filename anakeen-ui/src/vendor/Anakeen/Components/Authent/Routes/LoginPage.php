@@ -31,11 +31,11 @@ class LoginPage
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $page = __DIR__ . "/LoginPage.html";
+        $page = __DIR__ . "/LoginPage.html.mustache";
         $template = file_get_contents($page);
         $data = [
             "title" => sprintf(Gettext::___("Connexion to %s", "login"), ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT")),
-            "JS" => [
+            "JS_DEPS" => [
                 [
                     "key" => "jquery",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
@@ -43,10 +43,22 @@ class LoginPage
                 [
                     "key" => "kendo",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+                ]
+            ],
+            "JS" => [
+                [
+                    "key" => "ankcomponents",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()
+                ]
+            ],
+            "JS_LEGACY" => [
+                [
+                    "key" => "polyfilles5",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
                 ],
                 [
-                    "key" => "ank-components",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()
+                    "key" => "ankcomponentses5",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
                 ]
             ],
             "CSS" => [
