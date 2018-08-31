@@ -16,4 +16,20 @@
             </document>
         </role>
     </roles>
+    <groups>
+        <group>
+            <reference>all</reference>
+            <displayName>Main Group</displayName>
+            <associatedRoles reset="false">
+                <associatedRole reference="hub_user_role"/>
+            </associatedRoles>
+        </group>
+        <group>
+            <reference>gadmin</reference>
+            <displayName>Administrators</displayName>
+            <associatedRoles reset="false">
+                <associatedRole reference="hub_admin_role"/>
+            </associatedRoles>
+        </group>
+    </groups>
 </accounts>

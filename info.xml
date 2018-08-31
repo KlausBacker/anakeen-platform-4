@@ -6,8 +6,12 @@
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Hub/Config/hubAccess.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.view.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.view.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.view.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.view.xml"/>
   </post-install>
   <post-upgrade>
     <process command="programs/update_catalog"/>
@@ -15,6 +19,11 @@
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Hub/Config/hubAccess.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.view.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.view.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.view.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.view.xml"/>
   </post-upgrade>
 </module>

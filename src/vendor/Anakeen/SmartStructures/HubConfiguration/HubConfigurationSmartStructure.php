@@ -3,11 +3,10 @@
 namespace Anakeen\SmartStructures\HubConfiguration;
 
 use Anakeen\Core\ContextManager;
-use SmartStructure\Fields\HubConfiguration as HubConfigurationFields;
+use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationSmartStructure extends \Anakeen\SmartElement
 {
-
     public function registerHooks()
     {
         parent::registerHooks();
@@ -18,30 +17,63 @@ class HubConfigurationSmartStructure extends \Anakeen\SmartElement
         // Config to return
         $configuration = [];
 
-        // Get current user language
-        ContextManager::getLanguage();
+        $configuration["tab"] = [];
+        $configuration["tab"]["expanded"] = "<span>".$this->getHubConfigurationTitle()."</span>";
+        $configuration["position"] = $this->getAttributeValue(HubConfigurationFields::hub_order);
 
-        // TODO Get title from language
+        // Default configuration : Elements are in the body, and selectable
+        $configuration["area"] = "body";
+        $configuration["tab"]["selectable"] = true;
+        $configuration["tab"]["selected"] = false;
 
-        // Get icon : Font and name of the icon
-        $configuration["icon_name"] = HubConfigurationFields::hub_icon_name;
-        $configuration["icon_font"] = HubConfigurationFields::hub_font_name;
-
-        // Get roles
-        $configuration["roles"] = HubConfigurationFields::hub_roles;
-
-        // Get mono element
-        $configuration["mono_element"] = HubConfigurationFields::hub_mono_element;
-
-        // Get activation
-        $configuration["activated"] = HubConfigurationFields::hub_activated;
-
-        // Get order
-        $configuration["order"] = HubConfigurationFields::hub_order;
-
-        // Get id of SSHC for router
-        $configuration["id"] = HubConfigurationFields::hub_id;
+        // Component is in the content of the dock element, and compact is the selected icon
+        $configuration["tab"]["compact"] = $this->getHubConfigurationIcon();
+        $configuration["tab"]["content"] = $this->getComponentConfiguration();
 
         return $configuration;
+    }
+
+    /**
+     * Get Hub configuration title corresponding to the user language
+     * @return string
+     */
+    protected function getHubConfigurationTitle()
+    {
+        $titles = $this->getArrayRawValues("hub_titles");
+        $language = ContextManager::getLanguage();
+        $defaultTitle = "";
+
+        foreach ($titles as $title) {
+            if ($title["hub_language_code"] == "en-US") {
+                $defaultTitle = $title["hub_title"];
+            }
+            if (strpos(str_replace("_","-",$language), $title["hub_language_code"]) === 0) {
+                return $title["hub_title"];
+            }
+        }
+
+        return $defaultTitle;
+    }
+
+    /**
+     * Get Hub configuration icon
+     * @return string
+     */
+    protected function getHubConfigurationIcon()
+    {
+        // TODO Get icon from configuration
+        return "<i class=\"material-icons\">favorite</i>";
+    }
+
+    /**
+     * Get component configuration
+     * @return array
+     */
+    protected function getComponentConfiguration()
+    {
+        return [
+            "componentName" => "",
+            "props" => []
+        ];
     }
 }

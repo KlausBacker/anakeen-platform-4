@@ -30,7 +30,7 @@ class HubConfigurationAutocomplete
 
     public static function getIcons(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args) : SmartAutocompleteResponse
     {
-        // TODO
+        // TODO Autocomplete to display icons to the user
         return $response;
     }
 }

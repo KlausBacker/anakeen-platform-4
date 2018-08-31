@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:structure-configuration name="HubConfiguration">
+    <smart:structure-configuration name="HUBCONFIGURATION">
         <smart:icon file="HubConfiguration.png"/>
 
         <smart:class>Anakeen\SmartStructures\HubConfiguration\HubConfigurationSmartStructure</smart:class>
 
         <smart:fields>
             <smart:field-set name="hub_config" type="frame" label="Hub configuration" access="ReadWrite">
+                <smart:field-text name="hub_title" label="title" is-title="true" access="ReadWrite"/>
                 <smart:field-set name="hub_titles" type="array" label="Titles"
                                  access="ReadWrite">
                     <smart:field-text name="hub_title" label="Title" access="ReadWrite"/>
@@ -40,7 +41,6 @@
                 <smart:field-set name="hub_cssassets" type="array" label="CSS assets" access="ReadWrite">
                     <smart:field-text name="hub_cssasset" label="Css Url" access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-enum name="hub_slot" label="Element in slot" relation="slot_enum" access="ReadWrite"/>
             </smart:field-set>
         </smart:parameters>
 
@@ -64,7 +64,6 @@
         <smart:defaults>
             <smart:default field="hub_mono_element">FALSE</smart:default>
             <smart:default field="hub_activated">TRUE</smart:default>
-            <smart:default field="hub_slot">FALSE</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>
@@ -73,11 +72,6 @@
         <smart:enum-configuration name="Yes_no_enum">
             <smart:enum name="TRUE" label="Yes"/>
             <smart:enum name="FALSE" label="No"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="slot_enum">
-            <smart:enum name="FALSE" label="No"/>
-            <smart:enum name="TOP" label="Top"/>
-            <smart:enum name="BOTTOM" label="Bottom"/>
         </smart:enum-configuration>
     </smart:enumerates>
 </smart:config>

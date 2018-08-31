@@ -7,6 +7,9 @@ class Hub
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $page=__DIR__."/hub.html";
+        if ($request->getQueryParam("debug") == true) {
+            $page = __DIR__."/hub-debug.html";
+        }
         $mustache = new \Mustache_Engine();
         $data = [
             "CSS" => [

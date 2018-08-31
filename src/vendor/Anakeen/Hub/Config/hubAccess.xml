@@ -2,9 +2,9 @@
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes-accesses>
         <!-- Hub user can access to the hub page -->
-        <sde:route-access namespace="AnakeenHub" access="HubUser" account="hub_user_role"/>
+        <sde:route-access namespace="Anakeen" access="HubUser" account="hub_user_role"/>
 
         <!-- Hub admin can access to the hub admin page -->
-        <sde:route-access namespace="AnekeenHub" access="HubAdmin" account="hub_admin_role"/>
+        <sde:route-access namespace="Anakeen" access="HubAdmin" account="hub_admin_role"/>
     </sde:routes-accesses>
 </sde:config>
