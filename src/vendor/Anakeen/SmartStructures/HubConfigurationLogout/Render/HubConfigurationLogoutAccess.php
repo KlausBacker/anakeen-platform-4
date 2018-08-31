@@ -6,6 +6,7 @@ class HubConfigurationLogoutAccess implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
+     * @param \Anakeen\Core\Internal\SmartElement $document
      * @return \Dcp\Ui\IRenderConfig
      */
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)

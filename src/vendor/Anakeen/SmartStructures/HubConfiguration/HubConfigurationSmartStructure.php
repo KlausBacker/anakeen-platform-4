@@ -47,7 +47,7 @@ class HubConfigurationSmartStructure extends \Anakeen\SmartElement
             if ($title["hub_language_code"] == "en-US") {
                 $defaultTitle = $title["hub_title"];
             }
-            if (strpos(str_replace("_","-",$language), $title["hub_language_code"]) === 0) {
+            if (strpos(str_replace("_", "-", $language), $title["hub_language_code"]) === 0) {
                 return $title["hub_title"];
             }
         }

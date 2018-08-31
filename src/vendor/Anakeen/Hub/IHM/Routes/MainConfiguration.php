@@ -14,7 +14,7 @@ class MainConfiguration
         $documentList = $search->getDocumentList();
         $return = [];
         foreach ($documentList as $document) {
-           $return[] = $document->getConfiguration();
+            $return[] = $document->getConfiguration();
         }
         return $response->withJson($return);
     }
