@@ -1,22 +1,29 @@
-CREATE OR REPLACE FUNCTION upval[docid]() RETURNS trigger AS $$
-declare	
+
+
+
+-- BEFORE INSERT OR UPDATE ON family.*
+CREATE OR REPLACE FUNCTION "doc[docid]_fieldvalues"() RETURNS trigger AS $$
+declare
+  av text;
 begin
 
+av:='{';
 [BLOCK ATTRFIELD]
-if NEW.[attrid] is not null then
-  NEW.values := NEW.values || '£' || NEW.[attrid]::text;
-  NEW.attrids := NEW.attrids || '£' || '[attrid]';
+if not NEW.[attrid] isnull then
+  av:= av || '"[attrid]":' || to_json(NEW.[attrid]::[casttype]) || ',';
+end if;[ENDBLOCK ATTRFIELD]
+if (char_length(av) > 1) then
+  av:= substring(av for char_length(av) - 1) || '}';
+else
+  av:=  '{}';
 end if;
-[ENDBLOCK ATTRFIELD]
-
-[IF hasattr]
-NEW.values := NEW.values || '£';
-NEW.attrids := NEW.attrids || '£';
-[ENDIF hasattr]
+--RAISE NOTICE 'avalues %',av;
+NEW.fieldvalues := av;
 
 return NEW;
 end;
 $$ LANGUAGE 'plpgsql';
+
 
 CREATE OR REPLACE FUNCTION searchvalues[docid]() RETURNS trigger AS $$
 		declare
@@ -26,7 +33,7 @@ CREATE OR REPLACE FUNCTION searchvalues[docid]() RETURNS trigger AS $$
 		begin
 
 		if NEW.doctype != 'T' then
-				reallyUpdated := (TG_OP = 'INSERT') OR (NEW.values != OLD.values) OR (COALESCE(NEW.svalues,'') != COALESCE(OLD.svalues,'')) OR (NEW.fulltext is null);
+				reallyUpdated := (TG_OP = 'INSERT') OR (NEW.fieldvalues != OLD.fieldvalues) OR (COALESCE(NEW.svalues,'') != COALESCE(OLD.svalues,'')) OR (NEW.fulltext is null);
 
 			if reallyUpdated then
 					-- Plain text Part

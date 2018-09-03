@@ -408,6 +408,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
             }
             if ($tgroup) {
                 $status = 'group';
+
                 $this->addArrayRow("us_t_roles", array(
                     "us_roles" => $role["fid"],
                     "us_rolesorigin" => $status,
