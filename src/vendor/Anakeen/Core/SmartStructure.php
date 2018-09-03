@@ -116,6 +116,7 @@ create unique index idx_idfam on docfam(id);";
                 // Workaround because autoload has eventually the class in its missing private key
                 $attFileClass = \Anakeen\Core\SEManager::getAttributesClassFilename($this->name);
                 if (file_exists($attFileClass)) {
+                    /** @noinspection PhpIncludeInspection */
                     require_once($attFileClass);
                 } else {
                     throw new \Dcp\Exception(sprintf("Cannot access fields definition for %s (#%s) structure", $this->name, $this->id));
