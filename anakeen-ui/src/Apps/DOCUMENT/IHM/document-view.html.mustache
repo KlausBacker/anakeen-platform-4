@@ -23,28 +23,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <style>
-        .black-logo .main-letter {
-            fill: #93C648;
-        }
-
-        .black-logo .letter {
-            fill: #263438;
-        }
-
-        .black-logo .st0 {
-            fill: #263438;
-            stroke: #263438;
-            stroke-width: 0.25;
-            stroke-miterlimit: 10;
-        }
-
-        .black-logo .moving-path {
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, white 20%, white 100%);
-        }
-
-        .black-logo.isotype path.line {
-            stroke: #000;
-        }
 
         .dcpLoading--logo {
             width: 20%;
@@ -225,7 +203,38 @@
     <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
     {{/CSS}}
     <link rel="shortcut icon" href="Images/doc.png">
-
+    <script>
+        if (!window.console) {
+            window.console = {};
+            window.console.log = function () {
+            };
+        }
+        if (!window.console.error) {
+            window.console.error = window.console.log;
+        }
+        if (!(window.console.time)) {
+            window.console.timeEnd = function () {
+            };
+            window.console.time = function () {
+            };
+        }
+        window.dcp = window.dcp || {};
+        console.time("main");
+        console.time("js loading");
+        window.dcp.viewData = {{{viewInformation}}};
+        window.dcp.messages = {{{messages}}};
+        window.dcp.ws = "{{ws}}";
+        window.dcp.notifications = {
+            autoHideAfter: "{{NOTIFICATION_DELAY}}",
+            labels: {moreButton: "{{notificationLabelMore}}", moreWindowTitle: "{{notificationTitleMore}}"}
+        };
+    </script>
+    {{#JS_DEPS}}
+        <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+        <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
 </head>
 <body>
 
@@ -258,53 +267,9 @@
     </div>
 </div>
 
-<script>
-    if (!window.console) {
-        window.console = {};
-        window.console.log = function () {
-        };
-    }
-    if (!window.console.error) {
-        window.console.error = window.console.log;
-    }
-    if (!(window.console.time)) {
-        window.console.timeEnd = function () {
-        };
-        window.console.time = function () {
-        };
-    }
-    window.dcp = window.dcp || {};
-    console.time("main");
-    console.time("js loading");
-    window.dcp.viewData = {{{viewInformation}}};
-    window.dcp.messages = {{{messages}}};
-    window.dcp.ws = "{{ws}}";
-    window.dcp.notifications = {
-        autoHideAfter: "{{NOTIFICATION_DELAY}}",
-        labels: {moreButton: "{{notificationLabelMore}}", moreWindowTitle: "{{notificationTitleMore}}"}
-    };
-</script>
-{{#JS_DEPS}}
-    <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
-{{/JS_DEPS}}
-
-<script type="module">
-        {{#JS}}
-        var script{{key}} = document.createElement('script');
-        script{{key}}.type = 'text/javascript';
-        script{{key}}.src = '{{path}}';
-        document.body.appendChild(script{{key}});
-        {{/JS}}
-</script>
-
-<script nomodule>
-        {{#JS_LEGACY}}
-        var script{{key}} = document.createElement('script');
-        script{{key}}.type = 'text/javascript';
-        script{{key}}.src = '{{path}}';
-        document.body.appendChild(script{{key}});
-        {{/JS_LEGACY}}
-</script>
+{{#JS_LEGACY}}
+    <script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
 
 </body>
 </html>

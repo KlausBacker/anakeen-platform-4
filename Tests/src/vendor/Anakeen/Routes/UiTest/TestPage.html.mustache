@@ -9,6 +9,12 @@
     {{#CSS}}
     <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
     {{/CSS}}
+    {{#JS_DEPS}}
+        <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+        <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
 
 </head>
 <body>
@@ -33,27 +39,9 @@
 
 </div>
 
-{{#JS_DEPS}}
-    <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
-{{/JS_DEPS}}
-
-<script type="module">
-        {{#JS}}
-        var script{{key}} = document.createElement('script');
-        script{{key}}.type = 'text/javascript';
-        script{{key}}.src = '{{path}}';
-        document.body.appendChild(script{{key}});
-        {{/JS}}
-</script>
-
-<script nomodule>
-        {{#JS_LEGACY}}
-        var script{{key}} = document.createElement('script');
-        script{{key}}.type = 'text/javascript';
-        script{{key}}.src = '{{path}}';
-        document.body.appendChild(script{{key}});
-        {{/JS_LEGACY}}
-</script>
+{{#JS_LEGACY}}
+    <script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
 
 </body>
 </html>
