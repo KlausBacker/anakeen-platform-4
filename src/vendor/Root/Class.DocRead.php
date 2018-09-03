@@ -1,16 +1,8 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
- * History log for document
+ * Flat table of all smart element. Used to perform quick searches
  *
  * @author Anakeen
- * @version $Id: Class.DocRead.php,v 1.6 2007/10/16 10:22:57 eric Exp $
- * @package FDL
- */
-/**
  */
 
 class DocRead extends DbObj
@@ -27,42 +19,8 @@ class DocRead extends DbObj
     
     public $dbtable = "docread";
     public $sqlcreate = "
-create table docread ( id int not null,
-                   primary key (id),
-                   owner int,
-                   title varchar(256),
-                   revision int ,
-                   initid int,
-                   fromid int,
-                   doctype char,
-                   locked int ,
-                   allocated int ,
-                   icon text,
-                   lmodify char,
-                   profid int ,
-                   usefor text,
-                   mdate timestamp, 
-                   version text,
-                   cdate timestamp,  
-                   comment text,
-                   classname text,
-                   state text,
-                   wid int ,  
-                   fieldvalues jsonb,  
-                   domainid text,
-                   lockdomainid int,
-                   postitid text,
-                   cvid int,
-                   name text,
-                   dprofid int,
-                   views int[],
-                   prelid int,
-                   atags text,
-                   confidential int,
-                   ldapdn text,
-                   fulltext tsvector,
-                   svalues text
-                   );
+create table docread as (select * from only doc) with no data;
+ALTER TABLE docread ADD CONSTRAINT docread_pkey PRIMARY KEY (id);
 create index fromid_docread on docread(fromid);
 create index initid_docread on docread(initid);
 create index title_docread on docread(title);
