@@ -25,6 +25,10 @@
     xml2js "^0.4.19"
     yargs "^11.1.0"
 
+"@anakeen/ank-components@^1.0.0-1533690137":
+  version "1.0.0-1533690137"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1533690137.tgz#c79d6d3c3f43096babed24f2008d9a8653ba3d6e"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -35,6 +39,12 @@
 "@nodelib/fs.stat@^1.0.1":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.0.tgz#50c1e2260ac0ed9439a181de3725a0168d59c48a"
+
+"@progress/kendo-ui@^2018.2.806":
+  version "2018.2.806"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.2.806.tgz#501071f02e93812b0400ba5103b91ddad65f03d2"
+  dependencies:
+    jquery "<=3"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
@@ -4634,6 +4644,10 @@ jest-docblock@^21.0.0:
 jmespath@0.15.0:
   version "0.15.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
+
+jquery@<=3:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.8"

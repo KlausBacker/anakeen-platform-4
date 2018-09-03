@@ -1,8 +1,8 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfiguration\Render;
+namespace Anakeen\SmartStructures\HubConfigurationSlot\Render;
 
-class HubConfigurationAccess implements \Dcp\Ui\IRenderConfigAccess
+class HubConfigurationSlotAccess implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
@@ -14,9 +14,9 @@ class HubConfigurationAccess implements \Dcp\Ui\IRenderConfigAccess
         switch ($mode) {
             case \Dcp\Ui\RenderConfigManager::CreateMode:
             case \Dcp\Ui\RenderConfigManager::EditMode:
-                return new HubConfigurationEditRender();
+                return new HubConfigurationSlotEditRender();
             case \Dcp\Ui\RenderConfigManager::ViewMode:
-                return new HubConfigurationViewRender();
+                return new HubConfigurationSlotViewRender();
         }
         return null;
     }

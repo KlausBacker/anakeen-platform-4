@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
-  <sde:routes namespace="Anakeen">
-    <sde:route name="hub">
-      <sde:callable>\Anakeen\Hub\IHM\Hub</sde:callable>
-      <sde:method>GET</sde:method>
-      <sde:pattern>/hub/</sde:pattern>
-    </sde:route>
-    <sde:route name="hubAdmin">
-      <sde:callable>\Anakeen\Hub\IHM\HubAdmin</sde:callable>
-      <sde:method>GET</sde:method>
-      <sde:pattern>/hub/admin/</sde:pattern>
-    </sde:route>
-  </sde:routes>
-  <sde:accesses namespace="Anakeen"/>
-  <sde:parameters namespace="Anakeen"/>
+    <sde:routes namespace="Anakeen">
+        <sde:route name="hub">
+            <sde:callable>\Anakeen\Hub\IHM\Hub</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/</sde:pattern>
+            <sde:description>Get Hub page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubUser</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="hubAdmin">
+            <sde:callable>\Anakeen\Hub\IHM\HubAdmin</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/admin/</sde:pattern>
+            <sde:description>Get Hub administration page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubAdmin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="hubConfig">
+            <sde:callable>\Anakeen\Hub\IHM\Routes\MainConfiguration</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/config/</sde:pattern>
+            <sde:description>Get initial config of the hub</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubUser</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="Anakeen">
+        <sde:access name="HubUser">
+            <sde:description>Hub user access</sde:description>
+        </sde:access>
+        <sde:access name="HubAdmin">
+            <sde:description>Hub administrator access</sde:description>
+        </sde:access>
+    </sde:accesses>
+    <sde:parameters namespace="Anakeen"/>
 </sde:config>

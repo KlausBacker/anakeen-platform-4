@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBCONFIGURATIONLOGOUT" label="Logout component configuration">
+        <smart:extends ref="HUBCONFIGURATIONSLOT"/>
+        <smart:icon file="HubConfigurationLogout.png"/>
+        <smart:class>Anakeen\SmartStructures\HubConfigurationLogout\HubConfigurationLogoutSmartStructure</smart:class>
+
+        <smart:fields>
+            <smart:field-set name="logout_parameters" type="frame" label="Logout component parameters" access="ReadWrite">
+                <smart:field-text name="logout_title" label="Title" access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:parameters>
+
+        </smart:parameters>
+
+        <smart:hooks/>
+
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config>

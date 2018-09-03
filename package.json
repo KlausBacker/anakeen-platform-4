@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/@anakeen/anakeen-cli/index.js build",
-    "beautify": "./node_modules/eslint/bin/eslint.js ./ --fix",
+    "beautify": "./node_modules/eslint/bin/eslint.js ./src --fix",
     "lint": "./node_modules/eslint/bin/eslint.js ./",
-    "buildJs": "webpack --config webpack/index.js --env debug && webpack --config webpack/index.js --env prod"
+    "buildJs": "webpack --config webpack/index.js --env debug && webpack --config webpack/index.js --env prod",
+    "dev": "webpack-dev-server --config webpack/index.js --env dev"
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,11 @@
   "author": "Anakeen",
   "license": "MIT",
   "dependencies": {
-
+    "@anakeen/ank-components": "^1.0.0-1533690137"
   },
   "devDependencies": {
-    "eslint": "^5.3.0",
-    "eslint-plugin-prettier": "^2.6.2",
     "@anakeen/anakeen-cli": "^1.0.0-1533544440-1533544657",
+    "@progress/kendo-ui": "^2018.2.806",
     "assets-webpack-plugin": "^3.5.1",
     "axios": "^0.18.0",
     "babel-core": "^6.26.0",
@@ -42,6 +42,8 @@
     "document-register-element": "^1.8.1",
     "easygettext": "^2.4.0",
     "es6-promise": "^4.2.4",
+    "eslint": "^5.3.0",
+    "eslint-plugin-prettier": "^2.6.2",
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
