@@ -13,15 +13,9 @@
     {{#JS_DEPS}}
     <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
     {{/JS_DEPS}}
-
-    <script type="module">
-        {{#JS}}
-            var script{{key}} = document.createElement('script');
-            script{{key}}.type = 'text/javascript';
-            script{{key}}.src = '{{path}}';
-            document.body.appendChild(script{{key}});
-        {{/JS}}
-    </script>
+    {{#JS}}
+    <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
 
 </head>
 <body class="login-page">
@@ -33,14 +27,9 @@
 </div>
 
 
-<script nomodule>
 {{#JS_LEGACY}}
-var script{{key}} = document.createElement('script');
-script{{key}}.type = 'text/javascript';
-script{{key}}.src = '{{path}}';
-document.body.appendChild(script{{key}});
+    <script nomodule data-id="{{key}}" src="{{path}}"></script>
 {{/JS_LEGACY}}
-</script>
 
 </body>
 </html>

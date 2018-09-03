@@ -34,6 +34,10 @@ class TestPage
             ],
             "JS_LEGACY" => [
                 [
+                    "key" => "polyfill",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
+                ],
+                [
                     "key" =>"ankcomponents",
                     "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
                 ],
