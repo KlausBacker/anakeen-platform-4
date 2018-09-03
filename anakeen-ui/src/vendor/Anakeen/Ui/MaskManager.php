@@ -6,7 +6,6 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
-use Anakeen\SmartStructures\Mask\Mask;
 use Dcp\Ui\Exception;
 
 class MaskManager
@@ -104,7 +103,7 @@ class MaskManager
                 if ($cvdoc && $cvdoc->isAlive()) {
                     $cvdoc = clone $cvdoc;
                     $cvdoc->Set($this->smartElement);
-                    $vid = $this->smartElement->getDefaultView(($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT), "id");
+                    $vid = self::getDefaultView($this->smartElement, ($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT), "id");
                     if ($vid != '') {
                         $tview = $cvdoc->getView($vid);
                         $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
@@ -297,5 +296,43 @@ class MaskManager
             $this->applyMask();
         }
         return $this->mVisibilities;
+    }
+
+    /**
+     * retrieve first compatible view from default view control of a smart element
+     *
+     * @param SmartElement $doc smart element
+     * @param bool         $edition if true edition view else consultation view
+     * @param string       $extract [id|mask|all]
+     *
+     * @return array|int view definition "cv_idview", "cv_mskid"
+     * @throws \Anakeen\Core\DocManager\Exception
+     */
+    public static function getDefaultView(SmartElement $doc, $edition = false, $extract = "all")
+    {
+        if ($doc->cvid > 0) {
+            // special controlled view
+
+            /**
+             * @var \SmartStructure\CVDoc $cvdoc
+             */
+            $cvdoc = SEManager::getDocument($doc->cvid);
+            $cvdoc = clone $cvdoc;
+            $cvdoc->set($doc);
+
+            $view = $cvdoc->getPrimaryView($edition);
+
+            if ($view) {
+                switch ($extract) {
+                    case 'id':
+                        return $view["cv_idview"];
+                    case 'mask':
+                        return $view["cv_mskid"];
+                    default:
+                        return $view;
+                }
+            }
+        }
+        return 0;
     }
 }

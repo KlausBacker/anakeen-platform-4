@@ -9,6 +9,7 @@ namespace Dcp\Ui;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Strings;
+use Anakeen\Ui\MaskManager;
 use \SmartStructure\Fields\Cvdoc as CvAttributes;
 
 class DefaultView extends RenderDefault
@@ -366,7 +367,7 @@ class DefaultView extends RenderDefault
                     $menu->insertBefore("delete", $menuItem);
                 }
             }
-            $defaultview = $doc->getDefaultView(true);
+            $defaultview = MaskManager::getDefaultView($doc, true);
             if ($defaultview !== 0) {
                 $modifyItem = $menu->getElement("modify");
                 $modifyItem->setTextLabel($cv->getLocaleViewLabel($defaultview['cv_idview']));
