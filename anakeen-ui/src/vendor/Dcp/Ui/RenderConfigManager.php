@@ -6,6 +6,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
+use Anakeen\Ui\MaskManager;
 
 class RenderConfigManager
 {
@@ -282,7 +283,7 @@ class RenderConfigManager
                 return $config;
             }
         }
-        $vidInfo = $document->getDefaultView(($mode === "edit" || $mode === "create"), "all");
+        $vidInfo = MaskManager::getDefaultView($document, ($mode === "edit" || $mode === "create"), "all");
 
         if ($vidInfo) {
             // vid already controlled by cv class
