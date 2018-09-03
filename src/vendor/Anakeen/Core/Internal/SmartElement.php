@@ -705,7 +705,7 @@ create table doc ( id int not null,
                    dprofid int DEFAULT 0,
                    views int[],
                    prelid int DEFAULT 0,
-                   atags text,
+                   atags jsonb,
                    confidential int DEFAULT 0,
                    ldapdn text,
                    svalues text DEFAULT ''
@@ -2361,43 +2361,6 @@ create unique index i_docir on doc(initid, revision);";
 
         return $this->attributes->attr;
     }
-
-    /**
-     * retrieve first compatible view from default view control
-     *
-     * @param bool   $edition if true edition view else consultation view
-     * @param string $extract [id|mask|all]
-     *
-     * @return array|int view definition "cv_idview", "cv_mskid"
-     */
-    final public function getDefaultView($edition = false, $extract = "all")
-    {
-        if ($this->cvid > 0) {
-            // special controlled view
-
-            /**
-             * @var \SmartStructure\CVDoc $cvdoc
-             */
-            $cvdoc = SEManager::getDocument($this->cvid);
-            $cvdoc = clone $cvdoc;
-            $cvdoc->set($this);
-
-            $view = $cvdoc->getPrimaryView($edition);
-
-            if ($view) {
-                switch ($extract) {
-                    case 'id':
-                        return $view["cv_idview"];
-                    case 'mask':
-                        return $view["cv_mskid"];
-                    default:
-                        return $view;
-                }
-            }
-        }
-        return 0;
-    }
-
 
     /**
      * return all the attributes except frame & menu & action
@@ -4719,9 +4682,10 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $tag the tag to add
      *
+     * @param mixed   $value value of tag (true by default)
      * @return string error message
      */
-    final public function addATag($tag)
+    final public function addATag($tag, $value=true)
     {
         $err = "";
         if (strpos($tag, "\n") !== false) {
@@ -4731,13 +4695,15 @@ create unique index i_docir on doc(initid, revision);";
             return \ErrorCode::getError('DOC0122', $this->id);
         }
         if ($this->atags == "") {
-            $this->atags = $tag;
+            $this->atags = json_encode([$tag => $value]);
             $err = $this->modify(true, array(
                 "atags"
             ), true);
         } else {
+            $tags=json_decode($this->atags, true);
             if (!$this->getATag($tag)) {
-                $this->atags .= "\n$tag";
+                $tags[$tag]=$value;
+                $this->atags = json_encode($tags);
                 $err = $this->modify(true, array(
                     "atags"
                 ), true);
@@ -4750,15 +4716,20 @@ create unique index i_docir on doc(initid, revision);";
      * Return true if application tag is present
      *
      * @param string $tag the tag to search
-     *
-     * @return bool
+     * @param string $value return tag value recorded
+     * @return bool return true if found
      */
-    final public function getATag($tag)
+    final public function getATag($tag, &$value=null)
     {
         if ($this->atags == "") {
             return false;
         }
-        return (preg_match(sprintf('/^(%s)$/m', preg_quote($tag, '/')), $this->atags) > 0);
+        $tags=json_decode($this->atags, true);
+        if (isset($tags[$tag])){
+            $value=$tags[$tag];
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -4774,16 +4745,15 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->atags == "") {
             return "";
         }
-        $atags = preg_replace(sprintf('/^%s$/m', preg_quote($tag, '/')), '', $this->atags);
-        $atags = str_replace("\n\n", "\n", $atags);
-        $atags = preg_replace("/\n$/m", '', $atags);
-        $atags = preg_replace("/^\n/", '', $atags);
-        if ($atags != $this->atags) {
-            $this->atags = $atags;
+        $tags=json_decode($this->atags, true);
+        if (isset($tags[$tag])){
+            unset($tags[$tag]);
+            $this->atags = json_encode($tags);
             $err = $this->modify(true, array(
                 "atags"
             ), true);
         }
+
         return $err;
     }
 

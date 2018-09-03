@@ -5,6 +5,7 @@
 namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\SEManager;
 
 class TestTag extends TestCaseDcpDocument
 {
@@ -182,6 +183,28 @@ class TestTag extends TestCaseDcpDocument
     }
 
     /**
+     * @dataProvider dataATagsValue
+     */
+    public function testAddATagValue($docName, array $tags)
+    {
+        $this->resetDocumentCache();
+
+
+        $df = SEManager::getDocument($docName);
+        $this->assertTrue($df && $df->isAlive(), "document $docName is not alive");
+        foreach ($tags as $tag=>$value) {
+            $err = $df->addATag($tag, $value);
+            $this->assertEmpty($err, sprintf("atag error: $err"));
+        }
+
+        foreach ($tags as $tag=>$value) {
+            $atag = $df->getATag($tag, $tagValue);
+
+            $this->assertTrue($atag, sprintf("atag %s not retrieved : \n found [%s]", $tag, $df->atags));
+            $this->assertEquals($value, $tagValue, sprintf("atag %s not retrieved : \n found [%s]", $tag, $df->atags));
+        }
+    }
+    /**
      * @dataProvider dataDeleteATag
      */
     public function testDeleteATag($docName, array $addTags, array $delTags, array $expectedTags)
@@ -209,7 +232,7 @@ class TestTag extends TestCaseDcpDocument
         $df = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive(), "document $docName is not alive");
 
-        $nbTags = (!$df->atags) ? 0 : count(explode("\n", $df->atags));
+        $nbTags = (!$df->atags) ? 0 : count(json_decode($df->atags, true));
         $this->assertEquals(count($expectedTags), $nbTags, sprintf(" found [%s]", $df->atags));
 
         foreach ($expectedTags as $tag) {
@@ -246,7 +269,7 @@ class TestTag extends TestCaseDcpDocument
         }
         $tags = [];
         if ($df->atags) {
-            $tags = explode("\n", $df->atags);
+            $tags = json_decode($df->atags,true);
         }
         $this->assertEquals(count($tags), count($expectedTags), sprintf("wrong count for [%s]", $df->atags));
     }
@@ -447,6 +470,32 @@ class TestTag extends TestCaseDcpDocument
         );
     }
 
+    public function dataATagsValue()
+    {
+        return array(
+            array(
+                "TST_BASETAG",
+                array(
+                    "MY_TAG" => 3
+                )
+            ),
+            array(
+                "TST_BASETAG",
+                array(
+                    "MY_TAG"=>true,
+                    "Hello World" => false,
+                    "MY_TAGTWO"=>"Camenbert"
+                )
+            ),
+            array(
+                "TST_BASETAG",
+                array(
+                    "MY_TAG" => "Rose écarlate",
+                    "MY_TAG:éö" => "Caméléon"
+                )
+            )
+        );
+    }
     public function dataTags()
     {
         return array(
