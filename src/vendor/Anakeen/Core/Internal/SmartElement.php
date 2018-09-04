@@ -6116,12 +6116,17 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $v value
      *
+     * @param bool   $force
      * @return array
+     * @throws \Dcp\Db\Exception
      */
-    public static function rawValueToArray($v)
+    public static function rawValueToArray($v, bool $force=false)
     {
         if ($v === "" || $v === null) {
             return array();
+        }
+        if ($force===true && $v[0] !== '{') {
+            return [$v];
         }
         return Postgres::stringToArray($v);
     }

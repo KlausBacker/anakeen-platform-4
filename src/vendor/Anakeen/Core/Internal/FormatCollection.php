@@ -935,12 +935,9 @@ class FormatCollection
             } else {
                 // single level multiple
                 if (! is_array($value)) {
-                    $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
+                    $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value, true);
                 } else {
                     $tv = $value;
-                }
-                if ($oa->inArray() && count($tv) == 1 && $tv[0] == "\t") {
-                    $tv[0] = '';
                 }
 
                 foreach ($tv as $k => $av) {
