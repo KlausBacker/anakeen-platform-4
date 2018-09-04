@@ -32,7 +32,7 @@ autotest: install
 	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
 
 deploy:
-	rm smart-data-engine-1*app
+	rm -f smart-data-engine-1*app
 	${ANAKEEN_CLI_BIN} build --auto-release
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w smart-data-engine-1*app
 

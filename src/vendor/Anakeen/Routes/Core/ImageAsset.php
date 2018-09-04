@@ -62,7 +62,10 @@ class ImageAsset
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->size = $args["size"];
-        $this->imageFileName = urldecode($args["image"]);
+        if (strpos($args["image"], '..') !== false) {
+            throw new Exception("ROUTES0115", $this->imageFileName);
+        }
+        $this->imageFileName = ($args["image"]);
     }
 
     protected function getDestinationCacheImage($localimage, $size)
