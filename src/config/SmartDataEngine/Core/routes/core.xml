@@ -199,7 +199,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>\Anakeen\Routes\Core\ImageAsset</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/images/assets/original/{image}</sde:pattern>
+      <sde:pattern>/api/v2/images/assets/original/{image:.+}</sde:pattern>
       <sde:description>Download file image</sde:description>
       <sde:requiredAccess/>
     </sde:route>
@@ -207,7 +207,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>\Anakeen\Routes\Core\ImageAsset</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/images/assets/sizes/{size:[0-9x]+[cfs]?}/{image}</sde:pattern>
+      <sde:pattern>/api/v2/images/assets/sizes/{size:[0-9x]+[cfs]?}/{image:.+}</sde:pattern>
       <sde:description>Download file image</sde:description>
       <sde:requiredAccess/>
     </sde:route>
