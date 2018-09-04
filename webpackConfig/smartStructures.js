@@ -29,8 +29,7 @@ module.exports = () => {
       },
       {
         externals: {
-          jquery: 'jQuery',
-          underscore: '_'
+          jquery: 'jQuery'
         }
       },
       cssLoader()

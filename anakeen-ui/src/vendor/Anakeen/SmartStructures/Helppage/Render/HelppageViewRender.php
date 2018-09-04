@@ -10,6 +10,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\Strings;
 use Dcp\Ui\BarMenu;
 use Dcp\Ui\RenderOptions;
+use Dcp\Ui\UIGetAssetPath;
 
 class HelppageViewRender extends \Dcp\Ui\DefaultView
 {
@@ -46,6 +47,9 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
             $js["dduiHelppage"] = 'uiAssets/Families/helppage/debug/helppage.js?ws='.$ws;
         }
 
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $js["dduiHelppage"] = $path["Helppage"]["js"];
+
         return $js;
     }
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -65,18 +69,18 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
         $menu = parent::getMenu($document);
         $langMenuList = new \Dcp\Ui\ListMenu("helppage-langMenu", ___("Lang", "ddui helppage"));
         
-        $all_lang_keys = $document->rawValueToArray($document->getFamilyParameterValue('help_p_lang_key'));
-        $all_lang_texts = $document->rawValueToArray($document->getFamilyParameterValue('help_p_lang_name'));
+        $all_lang_keys = $document->getFamilyParameterValue('help_p_lang_key');
+        $all_lang_texts = $document->getFamilyParameterValue('help_p_lang_name');
         
         $currentLocale = ContextManager::getLocaleConfig();
         foreach ($all_lang_keys as $i => $key) {
             $menuItem = new \Dcp\Ui\ItemMenu("helppage-lang-" . $key, Strings::mb_ucfirst($all_lang_texts[$i]));
             $lang = strtolower(substr($key, 3, 2));
-            $menuItem->setIcon(sprintf("FDL/Images/flags/%s.png", $lang));
+            $menuItem->setIcon(sprintf("flags/%s.png", $lang));
             $menuItem->setUrl("#action/helppage.lang:" . $key);
             
             if (substr($key, 0, 2) === $currentLocale["locale"]) {
-                $langMenuList->setIcon(sprintf("FDL/Images/flags/%s.png", $lang));
+                $langMenuList->setIcon(sprintf("flags/%s.png", $lang));
                 $langMenuList->setHtmlLabel(sprintf("(%s) ", substr($key, 0, 2)));
             }
             

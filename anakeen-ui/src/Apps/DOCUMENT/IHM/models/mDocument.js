@@ -466,8 +466,10 @@ define([
       var messages = [];
       var result;
       try {
-        if (!xhr && model.message) {
-          messages.push({ type: "error", contentText: model.message });
+        if (!xhr) {
+          if (model && model.message) {
+            messages.push({ type: "error", contentText: model.message });
+          }
           xhr = { status: 500, statusText: "Internal - No HTTP response" };
         } else {
           result = JSON.parse(xhr.responseText);

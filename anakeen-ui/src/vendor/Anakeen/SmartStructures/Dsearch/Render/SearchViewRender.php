@@ -7,6 +7,7 @@ use Anakeen\Core\SEManager;
 use Dcp\Ui\BarMenu;
 use Dcp\Ui\DocumentTemplateContext;
 use Dcp\Ui\ItemMenu as ItemMenu;
+use Dcp\Ui\UIGetAssetPath;
 
 class SearchViewRender extends \Dcp\Ui\DefaultView
 {
@@ -29,6 +30,9 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
             $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/debug/dsearch.js?');
         }
+
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $js["dSearch"] = $path["Dsearch"]["js"];
 
         return $js;
     }
