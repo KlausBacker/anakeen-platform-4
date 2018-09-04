@@ -29,7 +29,7 @@ import "@progress/kendo-ui/js/kendo.treelist";
           $(this).addClass(" attr-type--" + dataItem.type);
         }
       });
-    },1);
+    }, 1);
   };
 
   window.dcp.document.documentController(
@@ -106,7 +106,10 @@ import "@progress/kendo-ui/js/kendo.treelist";
 
         sortable: false,
         columns: [
-          { field: "label", title: "Label" },
+          {
+            field: "label",
+            title: "Label"
+          },
           {
             field: "mVisibilityLabel",
             width: "12rem",
