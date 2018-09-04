@@ -1,6 +1,5 @@
 import "./MaskView.css";
 import $ from "jquery";
-import _ from "underscore";
 import "@progress/kendo-ui/js/kendo.treelist";
 
 {
@@ -23,14 +22,14 @@ import "@progress/kendo-ui/js/kendo.treelist";
     let items = grid.items();
 
     // Need to defer because kendo treelist delete custom class after expand/collapse
-    _.defer(() => {
+    window.setTimeout(() => {
       items.each(function addTypeClass() {
         let dataItem = grid.dataItem(this);
         if (dataItem.type) {
           $(this).addClass(" attr-type--" + dataItem.type);
         }
       });
-    });
+    },1);
   };
 
   window.dcp.document.documentController(
