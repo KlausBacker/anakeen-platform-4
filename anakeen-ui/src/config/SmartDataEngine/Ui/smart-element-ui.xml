@@ -169,6 +169,7 @@
             <sde:description>Smart Element Render parameters</sde:description>
             <sde:value>{}</sde:value>
             <sde:type>json</sde:type>
+            <sde:access>readonly</sde:access>
         </sde:parameter>
         <sde:parameter name="NOTIFICATION_DELAY">
             <sde:description>Delay notifications display (in ms)</sde:description>
