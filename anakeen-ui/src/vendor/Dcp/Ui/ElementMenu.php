@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Ui;
 
@@ -62,12 +58,13 @@ class ElementMenu implements \JsonSerializable
      * @var int
      */
     protected $iconSize = 12;
-    
+
     public function __construct($identifier, $label = '')
     {
         $this->id = $identifier;
         $this->textLabel = $label;
     }
+
     /**
      * @return null
      */
@@ -75,6 +72,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->id;
     }
+
     /**
      * set raw text to the menu
      * @param string $label
@@ -85,6 +83,7 @@ class ElementMenu implements \JsonSerializable
         $this->textLabel = $label;
         return $this;
     }
+
     /**
      * set html fragment to the menu
      * @param string $label
@@ -95,6 +94,7 @@ class ElementMenu implements \JsonSerializable
         $this->htmlLabel = $label;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -102,11 +102,12 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->htmlLabel;
     }
+
     /**
      * Set tooltip for the menu
      * @param string $tooltipLabel
      * @param string $placement "top","right","left", "bottom"
-     * @param bool $html set to true if content is html fragment
+     * @param bool   $html      set to true if content is html fragment
      * @return $this
      */
     public function setTooltipLabel($tooltipLabel, $placement = "", $html = false)
@@ -116,10 +117,11 @@ class ElementMenu implements \JsonSerializable
         $this->tooltipHtml = $html;
         return $this;
     }
+
     /**
      * Set a custom html attribute to element menu
      * @param string $attrid Html attribute name
-     * @param string $value attribute value
+     * @param string $value  attribute value
      * @return $this
      */
     public function setHtmlAttribute($attrid, $value)
@@ -127,6 +129,7 @@ class ElementMenu implements \JsonSerializable
         $this->htmlAttributes[$attrid] = $value;
         return $this;
     }
+
     /**
      * Define visibility element : visible, hidden or disabled
      * @param string $visibility
@@ -137,9 +140,10 @@ class ElementMenu implements \JsonSerializable
         $this->visibility = $visibility;
         return $this;
     }
+
     /**
-     * @param string $imagePath local server relative path to image
-     * @param int $imageWidth image width in pixel
+     * @param string $imagePath  local server relative path to image
+     * @param int    $imageWidth image width in pixel
      * @return $this
      */
     public function setIcon($imagePath, $imageWidth = 12)
@@ -148,6 +152,7 @@ class ElementMenu implements \JsonSerializable
         $this->iconSize = $imageWidth;
         return $this;
     }
+
     /**
      * Add a html tag before label
      * Only use if no icon is set
@@ -159,6 +164,7 @@ class ElementMenu implements \JsonSerializable
         $this->beforeLabelHtmlText = $htmtText;
         return $this;
     }
+
     /**
      * Get before content label
      * @return string
@@ -167,6 +173,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->beforeLabelHtmlText;
     }
+
     /**
      * @return string
      */
@@ -174,6 +181,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->textLabel;
     }
+
     /**
      * @return string
      */
@@ -181,6 +189,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->tooltipLabel;
     }
+
     /**
      * @return string
      */
@@ -188,6 +197,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->tooltipPlacement;
     }
+
     /**
      * @return boolean
      */
@@ -195,6 +205,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->tooltipHtml;
     }
+
     /**
      * @return array
      */
@@ -202,6 +213,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->htmlAttributes;
     }
+
     /**
      * @return string
      */
@@ -209,6 +221,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->visibility;
     }
+
     /**
      * @return string
      */
@@ -216,6 +229,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->iconPath;
     }
+
     /**
      * @return string
      */
@@ -223,6 +237,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->beforeLabelHtmlText;
     }
+
     /**
      * @return boolean
      */
@@ -230,6 +245,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->isImportant;
     }
+
     /**
      * @return int
      */
@@ -237,6 +253,7 @@ class ElementMenu implements \JsonSerializable
     {
         return $this->iconSize;
     }
+
     /**
      * Set important status
      * Means that menu will not hide when window size is tiny
@@ -246,16 +263,17 @@ class ElementMenu implements \JsonSerializable
     {
         $this->isImportant = (bool)$isImportant;
     }
-    
+
     protected function getIconUrl()
     {
         if ($this->iconPath) {
             if ($this->iconSize > 0) {
-                return sprintf('resizeimg.php?img=%s&size=%d', urlencode($this->iconPath) , $this->iconSize);
+                return sprintf('api/v2/images/assets/sizes/%d/%s', $this->iconSize, $this->iconPath);
             }
         }
         return $this->iconPath;
     }
+
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
