@@ -32,6 +32,7 @@
     <xs:complexType name="viewControlType">
         <xs:sequence>
             <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="uif:standardRefType" name="primary-mask" minOccurs="0"/>
             <xs:element type="uif:standardRefType" name="creation-view" minOccurs="0"/>
             <xs:element type="uif:viewListType" name="view-list" minOccurs="0"/>
         </xs:sequence>
@@ -44,7 +45,7 @@
             <xs:element type="uif:renderAccessType" name="render-access" minOccurs="0"/>
             <xs:element type="uif:standardRefType" name="view-control" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="uif:logicalNameType" name="ref"/>
+        <xs:attribute type="uif:logicalNameType" name="ref" use="required"/>
     </xs:complexType>
 
 
@@ -89,7 +90,7 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:token" name="field" use="required"/>
-                <xs:attribute type="xs:token" name="value" use="required"/>
+                <xs:attribute type="uif:visibilityItemType" name="value" use="required"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -113,6 +114,19 @@
             <xs:enumeration value="edition"/>
         </xs:restriction>
     </xs:simpleType>
+
+
+    <xs:simpleType name="visibilityItemType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="H"/>
+            <xs:enumeration value="R"/>
+            <xs:enumeration value="W"/>
+            <xs:enumeration value="O"/>
+            <xs:enumeration value="S"/>
+            <xs:enumeration value="U"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 
     <xs:complexType name="needListType">
         <xs:sequence>

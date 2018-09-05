@@ -7,6 +7,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Dcp\Ui\Exception;
+use SmartStructure\Fields\Cvdoc as CvdocFields;
 
 class MaskManager
 {
@@ -93,13 +94,14 @@ class MaskManager
             }
         }
 
-
+        $cvdoc = null;
         if ($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW || $mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT) {
             if ($this->smartElement->cvid) {
                 /**
                  * @var \SmartStructure\CVDoc $cvdoc
                  */
                 $cvdoc = SEManager::getDocument($this->smartElement->cvid);
+                SEManager::cache()->addDocument($cvdoc);
                 if ($cvdoc && $cvdoc->isAlive()) {
                     $cvdoc = clone $cvdoc;
                     $cvdoc->Set($this->smartElement);
@@ -109,8 +111,7 @@ class MaskManager
                         $mid = ($tview !== false) ? $tview["CV_MSKID"] : 0;
                     }
                 }
-            }
-            if ($mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVVIEW || $mid == \Anakeen\Core\Internal\SmartElement::USEMASKCVEDIT) {
+            } else {
                 $mid = 0;
             }
         }
@@ -133,7 +134,18 @@ class MaskManager
                 }
             }
         }
-
+        if ($mid == 0) {
+            // Use primary mask if no one is defined
+            if ($this->smartElement->cvid) {
+                if (!$cvdoc) {
+                    $cvdoc = SEManager::getDocument($this->smartElement->cvid);
+                }
+                $primaryMask = $cvdoc->getRawValue(CvdocFields::cv_primarymask);
+                if ($primaryMask) {
+                    $mid = $primaryMask;
+                }
+            }
+        }
         if ($mid) {
             if (!$argMid) {
                 $argMid = $mid;
@@ -301,7 +313,7 @@ class MaskManager
     /**
      * retrieve first compatible view from default view control of a smart element
      *
-     * @param SmartElement $doc smart element
+     * @param SmartElement $doc     smart element
      * @param bool         $edition if true edition view else consultation view
      * @param string       $extract [id|mask|all]
      *

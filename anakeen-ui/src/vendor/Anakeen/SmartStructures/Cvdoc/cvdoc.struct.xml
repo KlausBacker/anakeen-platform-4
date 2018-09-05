@@ -6,7 +6,7 @@
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:fields>
-            <smart:field-set name="fr_basic" extended="true">
+            <smart:field-set name="fr_basic" extended="true" type="frame">
                 <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite" is-abstract="true"/>
                 <smart:field-docid name="cv_famid" label="Structure" access="ReadWrite" relation="-1"/>
                 <smart:field-set name="cv_t_views" type="array" label="Vues" access="ReadWrite">
