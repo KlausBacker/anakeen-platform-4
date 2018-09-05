@@ -396,6 +396,22 @@ exports.createSmartStructure = ({
                 //Add the xml to the postInstall and the postUpgrade tags
                 const postInstall = data.module["post-install"];
                 const postUpgrade = data.module["post-upgrade"];
+
+                if (!postInstall[0].process) {
+                  postInstall[0]["process"] = [];
+                  if (!postInstall[0].process) {
+                    // case of no empty tag
+                    postInstall[0] = { process: [] };
+                  }
+                }
+                if (!postUpgrade[0].process) {
+                  postUpgrade[0].process = [];
+                  if (!postUpgrade[0].process) {
+                    // case of no empty tag
+                    postUpgrade[0] = { process: [] };
+                  }
+                }
+
                 postInstall[0].process.push({
                   $: {
                     command: `./ank.php --script=importConfiguration --file=./${path.relative(
