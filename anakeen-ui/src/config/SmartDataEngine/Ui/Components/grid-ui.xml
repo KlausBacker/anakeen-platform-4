@@ -9,6 +9,14 @@
             <sde:requiredAccess/>
             <sde:authenticated>true</sde:authenticated>
         </sde:route>
+        <sde:route name="Grid:Columns">
+            <sde:callable>\Anakeen\Components\Grid\Routes\ColumnsConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/grid/columns[/]</sde:pattern>
+            <sde:description>Get grid columns configuration</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
         <sde:route name="Grid:Content">
             <sde:callable>\Anakeen\Components\Grid\Routes\Content</sde:callable>
             <sde:method>GET</sde:method>

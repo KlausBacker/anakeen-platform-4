@@ -10,7 +10,7 @@ namespace Anakeen\Components\Grid\Routes;
 
 
 use Anakeen\Core\SEManager;
-use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use SmartStructure\Fields\Search;
@@ -136,8 +136,8 @@ class Config
                 "title" => _(\Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]['label']),
                 "sortable" => \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]['sortable'],
                 "filterable" => \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]['filterable'],
-                "type" => \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]["type"],
-                "template" => self::getTypeTemplate($fieldId, \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]["type"])
+                "property" => true,
+                "type" => \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]["type"]
             ];
         }
         return $return;
@@ -185,13 +185,15 @@ class Config
         $return[] = array(
             "field" => "title",
             "encoded" => false,
+            "property" => true,
             "title" => _(\Anakeen\Core\Internal\SmartElement::$infofields['title']['label']),
             "sortable" => \Anakeen\Core\Internal\SmartElement::$infofields['title']['sortable'],
             "filterable" => \Anakeen\Core\Internal\SmartElement::$infofields['title']['filterable'],
-            "type" => \Anakeen\Core\Internal\SmartElement::$infofields['title']["type"],
-            "template" => self::getTypeTemplate('title', \Anakeen\Core\Internal\SmartElement::$infofields['title']["type"]));
+            "type" => \Anakeen\Core\Internal\SmartElement::$infofields['title']["type"]);
         foreach ($smartEl->getAttributes() as $myAttribute) {
-            $return[] = self::formatField($myAttribute);
+            if ($myAttribute->getAccess() !== NormalAttribute::NONE_ACCESS && $myAttribute->type !== "array" && $myAttribute->type !== "tab" && $myAttribute->type !== "frame") {
+                $return[] = self::formatField($myAttribute);
+            }
         }
         return $return;
     }
