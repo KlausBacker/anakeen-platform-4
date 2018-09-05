@@ -12,12 +12,40 @@ const convertPathInPhpNamespace = ({ vendorPath, smartStructurePath }) => {
     .join("\\");
 };
 
+const generateSmartRenderXML = ({ name, namespace }) => {
+  const ssNAME = name.toUpperCase();
+  const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  const structureConf = {
+    "smart:config": {
+      $: {
+        "xmlns:smart": "https://platform.anakeen.com/4/schemas/smart/1.0",
+        "xmlns:ui": "https://platform.anakeen.com/4/schemas/ui/1.0"
+      },
+      "ui:render": {
+        $: {
+          ref: ssNAME
+        }
+      }
+    }
+  };
+
+  structureConf["smart:config"]["ui:render"]["ui:render-access"] = {
+    $: {
+      class: namespace + "\\Render\\" + ssName + "Access"
+    }
+  };
+  return structureConf;
+};
+
 const generateSmartStructureXML = ({
   name,
   parentName,
   withClass,
   namespace
 }) => {
+  const ssNAME = name.toUpperCase();
+  const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  const ssname = name.toLowerCase();
   const structureConf = {
     "smart:config": {
       $: {
@@ -25,11 +53,11 @@ const generateSmartStructureXML = ({
       },
       "smart:structure-configuration": {
         $: {
-          name
+          name: ssNAME
         },
         "smart:icon": {
           $: {
-            file: `${name}.png`
+            file: `${ssname}.png`
           }
         }
       }
@@ -43,7 +71,7 @@ const generateSmartStructureXML = ({
   if (withClass) {
     structureConf["smart:config"]["smart:structure-configuration"][
       "smart:class"
-    ] = `${namespace}\\${name}SmartStructure`;
+    ] = `${namespace}\\${ssName}Behavior`;
   }
   structureConf["smart:config"]["smart:structure-configuration"][
     "smart:fields"
@@ -56,21 +84,20 @@ const generateSmartStructureXML = ({
   ] = {};
   return structureConf;
 };
-
 const generateStructurePhp = ({ name, namespace, parentName }) => {
   let extend = "\\Anakeen\\SmartElement";
-  if (parentName !== false) {
-    extend = `\\SmartStructure\\${name}`;
+  const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  if (parentName) {
+    extend = `\\SmartStructure\\${ssName}`;
   }
   return `<?php
 
 namespace ${namespace};
 
-use SmartStructure\\Fields\\${name} as ${name}Fields;
+use SmartStructure\\Fields\\${ssName} as ${ssName}Fields;
 
-class ${name}SmartStructure extends ${extend}
+class ${ssName}Behavior extends ${extend}
 {
-
     public function registerHooks()
     {
         parent::registerHooks();
@@ -80,24 +107,27 @@ class ${name}SmartStructure extends ${extend}
 };
 
 const generateRenderAccess = ({ name, namespace }) => {
+  const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   return `<?php
 
 namespace ${namespace};
 
-class ${name}Access implements \\Dcp\\Ui\\IRenderConfigAccess
+class ${ssName}Access implements \\Dcp\\Ui\\IRenderConfigAccess
 {
     /**
+     * Choose good render from view or edit mode
      * @param string $mode
-     * @return \\Dcp\\Ui\\IRenderConfig
+     * @param \\Anakeen\\Core\\Internal\\SmartElement $element
+     * @return \\Dcp\\Ui\\IRenderConfig 
      */
-    public function getRenderConfig($mode, \\Anakeen\\Core\\Internal\\SmartElement $document)
+    public function getRenderConfig($mode, \\Anakeen\\Core\\Internal\\SmartElement $element)
     {
         switch ($mode) {
             case \\Dcp\\Ui\\RenderConfigManager::CreateMode:
             case \\Dcp\\Ui\\RenderConfigManager::EditMode:
-                return new ${name}EditRender();
+                return new ${ssName}EditRender();
             case \\Dcp\\Ui\\RenderConfigManager::ViewMode:
-                return new ${name}ViewRender();
+                return new ${ssName}ViewRender();
         }
         return null;
     }
@@ -106,13 +136,14 @@ class ${name}Access implements \\Dcp\\Ui\\IRenderConfigAccess
 };
 
 const generateRender = ({ name, namespace, type = "View" }) => {
+  const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   return `<?php
 
 namespace ${namespace};
 
-use SmartStructure\\Fields\\${name} as ${name}Fields;
+use SmartStructure\\Fields\\${ssName} as ${ssName}Fields;
 
-class ${name}${type}Render extends \\Anakeen\\Ui\\DefaultConfig${type}Render
+class ${ssName}${type}Render extends \\Anakeen\\Ui\\DefaultConfig${type}Render
 {
 
 }`;
@@ -138,7 +169,8 @@ exports.createSmartStructure = ({
     }
     let srcPath;
     let vendorPath;
-    let xmlPath;
+    let xmlStructPath;
+    let xmlRenderPath;
     if (!smartStructurePath && !vendorName) {
       throw new Error(
         "You need to specify a vendor name or smartStructurePath"
@@ -175,8 +207,9 @@ exports.createSmartStructure = ({
     }
     //Create the directory if needed
     let directoryPromise = Promise.resolve(smartStructurePath);
+    const Name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     if (inSelfDirectory) {
-      const smartStructureDirectory = path.join(smartStructurePath, name);
+      const smartStructureDirectory = path.join(smartStructurePath, Name);
       directoryPromise = new Promise((resolve, reject) => {
         fs.mkdir(smartStructureDirectory, err => {
           if (err) {
@@ -191,7 +224,7 @@ exports.createSmartStructure = ({
         return new Promise((resolve, reject) => {
           //Build the xml
           const builder = new xml2js.Builder();
-          const xml = builder.buildObject(
+          const xmlStruct = builder.buildObject(
             generateSmartStructureXML({
               name,
               parentName,
@@ -203,14 +236,41 @@ exports.createSmartStructure = ({
             })
           );
           //Write the xml
-          xmlPath = path.join(currentPath, `${name}SmartStructure.xml`);
-          fs.writeFile(xmlPath, xml, err => {
+          xmlStructPath = path.join(currentPath, `${Name}.structure.xml`);
+          fs.writeFile(xmlStructPath, xmlStruct, err => {
             if (err) {
               return reject(err);
             }
             resolve(currentPath);
           });
         });
+      })
+      .then(currentPath => {
+        if (withRender) {
+          return new Promise((resolve, reject) => {
+            //Build the xml
+            const builder = new xml2js.Builder();
+            const xmlData = builder.buildObject(
+              generateSmartRenderXML({
+                name,
+                parentName,
+                withClass,
+                namespace: convertPathInPhpNamespace({
+                  vendorPath,
+                  smartStructurePath: currentPath
+                })
+              })
+            );
+            //Write the xml
+            xmlRenderPath = path.join(currentPath, `${Name}.render.xml`);
+            fs.writeFile(xmlRenderPath, xmlData, err => {
+              if (err) {
+                return reject(err);
+              }
+              resolve(currentPath);
+            });
+          });
+        }
       })
       .then(currentPath => {
         //Write the php if needed
@@ -225,7 +285,7 @@ exports.createSmartStructure = ({
               })
             });
             fs.writeFile(
-              path.join(currentPath, `${name}SmartStructure.php`),
+              path.join(currentPath, `${Name}Behavior.php`),
               structurePHP,
               err => {
                 if (err) {
@@ -271,7 +331,7 @@ exports.createSmartStructure = ({
                 })
               });
               fs.writeFile(
-                path.join(renderPath, `${name}Access.php`),
+                path.join(renderPath, `${Name}Access.php`),
                 renderAccess,
                 err => {
                   if (err) {
@@ -285,7 +345,7 @@ exports.createSmartStructure = ({
                     })
                   });
                   fs.writeFile(
-                    path.join(renderPath, `${name}ViewRender.php`),
+                    path.join(renderPath, `${Name}ViewRender.php`),
                     generateRenderView,
                     err => {
                       if (err) {
@@ -300,7 +360,7 @@ exports.createSmartStructure = ({
                         type: "Edit"
                       });
                       fs.writeFile(
-                        path.join(renderPath, `${name}EditRender.php`),
+                        path.join(renderPath, `${Name}EditRender.php`),
                         generateRenderEdit,
                         err => {
                           if (err) {
@@ -340,18 +400,38 @@ exports.createSmartStructure = ({
                   $: {
                     command: `./ank.php --script=importConfiguration --file=./${path.relative(
                       srcPath,
-                      xmlPath
+                      xmlStructPath
                     )}`
                   }
                 });
+
                 postUpgrade[0].process.push({
                   $: {
                     command: `./ank.php --script=importConfiguration --file=./${path.relative(
                       srcPath,
-                      xmlPath
+                      xmlStructPath
                     )}`
                   }
                 });
+                if (withRender) {
+                  postInstall[0].process.push({
+                    $: {
+                      command: `./ank.php --script=importConfiguration --file=./${path.relative(
+                        srcPath,
+                        xmlRenderPath
+                      )}`
+                    }
+                  });
+
+                  postUpgrade[0].process.push({
+                    $: {
+                      command: `./ank.php --script=importConfiguration --file=./${path.relative(
+                        srcPath,
+                        xmlRenderPath
+                      )}`
+                    }
+                  });
+                }
                 const builder = new xml2js.Builder();
                 fs.writeFile(infoXMLPath, builder.buildObject(data), err => {
                   if (err) {

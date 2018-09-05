@@ -1,5 +1,5 @@
-const nameRegExp = /[a-zA-Z][\w]+/;
-const smartStructureName = /[A-Z][\w]+/;
+const nameRegExp = /^[a-zA-Z][\w]+/;
+const smartStructureName = /^[A-Z][A-Z0-9_]+$/;
 
 exports.checkModuleName = moduleName => {
   return nameRegExp.test(moduleName);

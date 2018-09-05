@@ -34,7 +34,7 @@ const builder = {
     coerce: arg => {
       if (!checkSmartStructureName(arg)) {
         throw new Error(
-          "SmartStructure name must be only a-zA-Z0-9_ , the current value is not valid : " +
+          "SmartStructure name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
             arg
         );
       }
