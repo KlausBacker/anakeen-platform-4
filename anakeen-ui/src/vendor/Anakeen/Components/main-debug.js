@@ -1,6 +1,6 @@
 // Entry point to javascript file for webcomponents
 import Vue from "vue";
-import AnkComponents from "@anakeen/ank-components/lib/ank-components.umd.js";
+import AnkComponents from "@anakeen/ank-components";
 
 // Register web components
 Vue.use(AnkComponents, {
