@@ -3,12 +3,12 @@
 
 
 "@anakeen/ank-components@latest":
-  version "1.0.0-1536062297"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1536062297.tgz#da7d7f990b665a3c9889b5fa649022b9894a4c0a"
+  version "1.0.0-1536132890"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1536132890.tgz#70d2dbab3b477c52a0f7b672b588bb298bb58f61"
 
 "@anakeen/webpack-conf@latest":
-  version "1.0.0-1536133733"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1536133733.tgz#7ab311125796033a03e67c0806557cc2ff431f8a"
+  version "1.0.0-1536133916"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1536133916.tgz#ac8bf1c48e690cc6b5d81bec108396cd8aba870c"
   dependencies:
     assets-webpack-plugin "^3.9.4"
     babel-core "^6.26.3"

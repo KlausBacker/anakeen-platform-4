@@ -80,7 +80,7 @@ $(JS_ASSET_PATH): $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/assets.js
 	$(YARN_BIN) buildAsset
 	touch "$@"
 
-$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g')  $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/smartElement.js
+$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/smartElement.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"
 	make -f pojs.make compile
 	$(YARN_BIN) buildSmartElement
@@ -88,13 +88,11 @@ $(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_P
 
 $(JS_COMPONENT_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_COMPONENT_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/components.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
-	make -f pojs.make compile
 	$(YARN_BIN) buildComponent
 	touch "$@"
 
 $(JS_FAMILY_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_FAMILY_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/smartStructures.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
-	make -f pojs.make compile
 	$(YARN_BIN) buildSmartStructures
 	touch "$@"
 
@@ -103,7 +101,7 @@ $(JS_POLYFILL_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/polyfi
 	$(YARN_BIN) buildPolyfill
 	touch "$@"
 
-$(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH}/src -type f ! -path "*/public/components/dist/*" ! -path "*.map" -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
+$(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH}/src -type f -name '*.php' -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build app $@${RESET_COLOR}\n"
 	rm -f user-interfaces-*.app
 	-mkdir -p $(LOCALPUB_ANAKEEN_UI_PATH)
