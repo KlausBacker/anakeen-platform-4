@@ -1,7 +1,7 @@
 const path = require('path');
 const {prod, dev, prodLegacy} = require("@anakeen/webpack-conf");
 const webpack = require('webpack');
-const {cssLoader} = require("@anakeen/webpack-conf/parts");
+const {cssLoader, setKendoAndJqueryToGlobal} = require("@anakeen/webpack-conf/parts");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 
@@ -45,50 +45,9 @@ module.exports = () => {
           new HtmlWebpackInlineSVGPlugin(),
         ],
       },
-      {
-        externals: {
-          'dcpExternals/KendoUI/KendoUI': 'kendo', // For require("kendo") in mainDocument.js
-          './kendo.core': 'kendo',
-          './kendo.autocomplete': 'jQuery.fn.kendoX',
-          './kendo.binder': 'jQuery.fn.kendoX',
-          './kendo.button': 'jQuery.fn.kendoX',
-          './kendo.calendar': 'jQuery.fn.kendoX',
-          './kendo.color': 'jQuery.fn.kendoX',
-          './kendo.colorpicker': 'jQuery.fn.kendoX',
-          './kendo.combobox': 'jQuery.fn.kendoX',
-          './kendo.data': 'jQuery.fn.kendoX',
-          './kendo.data.odata': 'jQuery.fn.kendoX',
-          './kendo.data.xml': 'jQuery.fn.kendoX',
-          './kendo.dateinput': 'jQuery.fn.kendoX',
-          './kendo.datepicker': 'jQuery.fn.kendoX',
-          './kendo.datetimepicker': 'jQuery.fn.kendoX',
-          './kendo.draganddrop': 'jQuery.fn.kendoX',
-          './kendo.dropdownlist': 'jQuery.fn.kendoX',
-          './kendo.editable': 'jQuery.fn.kendoX',
-          './kendo.fx': 'jQuery.fn.kendoX',
-          './kendo.list': 'jQuery.fn.kendoX',
-          './kendo.listview': 'jQuery.fn.kendoX',
-          './kendo.menu': 'jQuery.fn.kendoX',
-          './kendo.mobile.scroller': 'jQuery.fn.kendoX',
-          './kendo.multiselect': 'jQuery.fn.kendoX',
-          './kendo.notification': 'jQuery.fn.kendoX',
-          './kendo.numerictextbox': 'jQuery.fn.kendoX',
-          './kendo.pager': 'jQuery.fn.kendoX',
-          './kendo.popup': 'jQuery.fn.kendoX',
-          './kendo.resizable': 'jQuery.fn.kendoX',
-          './kendo.selectable': 'jQuery.fn.kendoX',
-          './kendo.slider': 'jQuery.fn.kendoX',
-          './kendo.splitter': 'jQuery.fn.kendoX',
-          './kendo.tabstrip': 'jQuery.fn.kendoX',
-          './kendo.timepicker': 'jQuery.fn.kendoX',
-          './kendo.userevents': 'jQuery.fn.kendoX',
-          './kendo.validator': 'jQuery.fn.kendoX',
-          './kendo.virtuallist': 'jQuery.fn.kendoX',
-          './kendo.window': 'jQuery.fn.kendoX',
-
-          jquery: 'jQuery',
-        }
-      },
+      setKendoAndJqueryToGlobal([
+        /dcpExternals\/KendoUI\/KendoUI/
+      ]),
       cssLoader(),
     ]
   };
