@@ -32,7 +32,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 $cvdocRef = $this->evaluate($config, "string(ui:view-control/@ref)");
 
                 $data[] = ["BEGIN", "", "", "", "", $ref];
-                $data[] = ["CVDOC", $cvdocRef];
+                $data[] = ["CVID", $cvdocRef];
                 $data[] = ["END"];
 
                 $renderAccess = $this->evaluate($config, "string(ui:render-access/@class)");
