@@ -40,7 +40,6 @@ class FieldAccessLayerAutoComplete
                     self::getDisplayLabel($attr),
                     [
                         $attr->id,
-                        $attr->getLabel(),
                         FieldAccessManager::getTextAccess($attr->access)
                     ]
                 );

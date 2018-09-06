@@ -60,6 +60,9 @@
         <process command="programs/resetAccess">
             <label>Reset Default Access</label>
         </process>
+        <process command="./ank.php --script=refreshDocuments --famid=IUSER --method=store">
+            <label>Reset Account Access</label>
+        </process>
     </post-install>
     <post-upgrade>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml">

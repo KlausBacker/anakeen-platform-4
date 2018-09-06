@@ -8,7 +8,7 @@
         </smart:accesses>
     </smart:structure-configuration>
 
-    <smart:field-access-layer name="FAL_IUSER_PASSWORD" label="User password" access-structure="IUSER">
+    <smart:field-access-layer name="FAL_IUSER_PASSWORD" label="User password" structure="IUSER">
         <smart:description>User password modification</smart:description>
         <smart:field-access field="us_tab_sysinfo" access="ReadWrite"/>
         <smart:field-access field="us_fr_userchange" access="ReadWrite"/>
@@ -16,7 +16,7 @@
         <smart:field-access field="us_passwd2" access="Write"/>
     </smart:field-access-layer>
 
-    <smart:field-access-layer-list name="FALL_IUSER" label="Admin User Field Access">
+    <smart:field-access-layer-list name="FALL_IUSER" label="Admin User Field Access" structure="IUSER">
         <smart:description>Current user can modify identity information. Admin can modify technicals setting.</smart:description>
         <smart:field-access-layer ref="FAL_IUSER_PASSWORD" access-name="Password"/>
         <smart:field-access-layer name="FAL_IUSER_ADMIN" label="Admin User Access" access-name="Admin">
@@ -31,8 +31,8 @@
             <smart:field-access field="us_fr_sysident" access="ReadWrite"/>
             <smart:field-access field="us_login" access="ReadWrite"/>
             <smart:field-access field="us_whatid" access="Read"/>
-
         </smart:field-access-layer>
+
         <smart:field-access-layer name="FAL_IUSER_IDENTITY" label="User Identity Access" access-name="Identity">
             <smart:description>User identity modification</smart:description>
             <smart:field-access field="us_tab_sysinfo" access="Read"/>
@@ -49,7 +49,7 @@
 
     <smart:access-configuration name="PRF_IUSER_OWNER" label="User itself" access-structure="IUSER">
         <smart:description>User can modify its own information</smart:description>
-        <smart:element-access access="view" account="all" />
+        <smart:element-access access="view" account="all"/>
         <smart:element-access access="view" account="gadmin" field="us_meid"/>
         <smart:element-access access="edit" account="gadmin" field="us_meid"/>
         <smart:element-access access="delete" account="gadmin"/>

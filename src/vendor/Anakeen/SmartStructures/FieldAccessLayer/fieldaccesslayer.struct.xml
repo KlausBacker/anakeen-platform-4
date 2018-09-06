@@ -25,7 +25,6 @@
                 <smart:field-argument name="structure" type="field">fal_famid</smart:field-argument>
                 <smart:field-returns>
                     <smart:field-return field="fal_fieldid"/>
-                    <smart:field-return field="fal_fieldlabel"/>
                     <smart:field-return field="fal_fieldoriginalaccess"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
