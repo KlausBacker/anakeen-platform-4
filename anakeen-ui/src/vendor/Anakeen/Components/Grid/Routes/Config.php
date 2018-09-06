@@ -30,7 +30,8 @@ class Config
 
     const DEFAULT_COLUMNS = ["icon", "title"];
 
-    protected $columnFields = [];
+    protected $gridFields = [];
+    protected $urlFields = [];
 
     public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
     {
@@ -41,20 +42,30 @@ class Config
             $exception->setHttpStatus("404", "Smart Element not found");
             throw $exception;
         }
-        $this->columnFields = self::getGridFields($collectionDocument);
+        $urlFieldsParam = $request->getQueryParam("fields", "");
+        $this->gridFields = self::getGridFields($collectionDocument);
+        if (!empty($urlFieldsParam)) {
+            $urlFields = array_map("trim", explode(",", $urlFieldsParam));
+            $this->gridFields = array_values(array_filter($this->gridFields, function ($item) use ($urlFields){
+                return in_array($item["field"], $urlFields);
+            }));
+        }
         return ApiV2Response::withData($response, array(
-            "smartFields" => $this->columnFields,
+            "smartFields" => $this->gridFields,
             "footer" => array(),
             "header" => array(),
-            "contentURL" => sprintf("/api/v2/grid/content/%s?fields=%s", $collectionId, $this->getUrlFields())
+            "contentURL" => sprintf("/api/v2/grid/content/%s%s", $collectionId, "?fields=".$this->getUrlFields())
         ));
     }
 
     protected function getUrlFields() {
-        $filteredAttributes = array_filter($this->columnFields, function ($field) {
+        $filteredAttributes = array_filter($this->gridFields, function ($field) {
             return ($field["type"] !== 'array' && $field["type"] !== 'tab' && $field["type"] !== 'frame');
         });
         $result = implode(',', array_map(function ($field) {
+            if ($field["property"]) {
+                return "document.properties.".$field["field"];
+            }
             return "document.attributes.".$field["field"];
         }, $filteredAttributes));
         return $result;
@@ -91,61 +102,13 @@ class Config
             case "S": // Search
                 return self::getSearchFields($smartElement, $smartStructure);
             default:
-                return self::getResumeFields($smartStructure);
+                return self::getResumeFields($smartElement, $smartStructure);
         }
-    }
-
-    protected static function formatField($field)
-    {
-        $return = null;
-        if ($field) {
-            $return = [
-                "field" => $field->id,
-                "title" => $field->labelText,
-                "encoded" => false,
-                "sortable" => ColumnsDefinition::isFilterable($field),
-                "className" => sprintf("type--%s attr--%s", $field->type, $field->id),
-                "type" => $field->type
-            ];
-            if ($field->type === "docid") {
-                $return["withIcon"] = true;
-            }
-        }
-        return $return;
-    }
-
-    protected static function getTypeTemplate($id, $type) {
-        switch ($type) {
-            case "image":
-                return "<img src='#: $id#'></img>";
-            default:
-                return "<strong>#: $id#</strong>";
-        }
-    }
-
-    protected static function formatFieldId($fieldId, \Anakeen\Core\Internal\SmartElement $smartEl)
-    {
-        $return = null;
-        $attr = $smartEl->getAttribute($fieldId);
-        if ($attr) {
-            $return = self::formatField($attr);
-        } elseif (!empty(\Anakeen\Core\Internal\SmartElement::$infofields[$fieldId])) {
-            $return = [
-                "field" => $fieldId,
-                "encoded" => false,
-                "title" => _(\Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]['label']),
-                "sortable" => \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]['sortable'],
-                "filterable" => \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]['filterable'],
-                "property" => true,
-                "type" => \Anakeen\Core\Internal\SmartElement::$infofields[$fieldId]["type"]
-            ];
-        }
-        return $return;
     }
 
     protected static function getReportFields(
         \Anakeen\Core\Internal\SmartElement $document,
-        \Anakeen\Core\Internal\SmartElement $_searchfamily
+        $smartStruct
     ) {
         $return = [];
 
@@ -154,9 +117,9 @@ class Config
         if (empty($cols)) {
             $cols = self::DEFAULT_COLUMNS;
         }
-        //$return[] = array("id" => "title","withIcon" => "true");
+
         foreach ($cols as $attrid) {
-            $config = self::formatFieldId($attrid, $_searchfamily);
+            $config = ColumnsConfig::getColumnConfig($attrid, $smartStruct);
             if (!empty($config)) {
                 $return[] = $config;
             }
@@ -178,21 +141,16 @@ class Config
 
     }
 
-    protected static function getResumeFields(\Anakeen\Core\Internal\SmartElement $smartEl)
+    protected static function getResumeFields(\Anakeen\Core\Internal\SmartElement $smartEl, $smartStruct)
     {
         $return = array();
+        foreach (self::DEFAULT_COLUMNS as $id) {
+            $return[] = ColumnsConfig::getColumnConfig($id, $smartEl);
+        }
 
-        $return[] = array(
-            "field" => "title",
-            "encoded" => false,
-            "property" => true,
-            "title" => _(\Anakeen\Core\Internal\SmartElement::$infofields['title']['label']),
-            "sortable" => \Anakeen\Core\Internal\SmartElement::$infofields['title']['sortable'],
-            "filterable" => \Anakeen\Core\Internal\SmartElement::$infofields['title']['filterable'],
-            "type" => \Anakeen\Core\Internal\SmartElement::$infofields['title']["type"]);
         foreach ($smartEl->getAttributes() as $myAttribute) {
             if ($myAttribute->getAccess() !== NormalAttribute::NONE_ACCESS && $myAttribute->type !== "array" && $myAttribute->type !== "tab" && $myAttribute->type !== "frame") {
-                $return[] = self::formatField($myAttribute);
+                $return[] = ColumnsConfig::getColumnConfig($myAttribute->id, $smartStruct);
             }
         }
         return $return;

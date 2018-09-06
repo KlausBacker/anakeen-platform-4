@@ -98,6 +98,22 @@ class ColumnsConfig
         return $data;
     }
 
+    protected static function getDisplayableProperties() {
+        $properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item) {
+            return isset($item["displayable"]) ? $item["displayable"] : false;
+        });
+        array_walk($properties, function (&$value, $key) {
+            $value["field"] = $key;
+            $value["type"] = $key;
+            $value["label"] = _($value['label']);
+            if (isset($value["displayable"])) {
+                unset($value["displayable"]);
+            }
+            return $value;
+        });
+        return $properties;
+    }
+
     /**
      * Get currentFamDoc
      *
@@ -163,5 +179,44 @@ class ColumnsConfig
         }
 
         return $isFilterable;
+    }
+
+    protected static function getAttributeConfig(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \Anakeen\Core\SmartStructure $family)
+    {
+        $data = array(
+            "field" => $currentAttribute->id,
+            "type" => $currentAttribute->type,
+            "title" => $currentAttribute->getLabel(),
+            "encoded" => false,
+            "sortable" => self::isSortable($family, $currentAttribute->id),
+            "filterable" => self::isFilterable($currentAttribute)
+        );
+        if (($data["type"] == "docid" || $data["type"] == "account") && $data["filterable"]) {
+            $data["doctitle"] = $currentAttribute->getOption("doctitle") == "auto" ? $currentAttribute->id . "_title" : $currentAttribute->getOption("doctitle");
+        }
+        return $data;
+    }
+
+    public static function getColumnConfig($fieldId, \Anakeen\Core\Internal\SmartElement $smartEl = null) {
+        $properties = self::getDisplayableProperties();
+        if (isset($properties[$fieldId])) {
+            $currentData = $properties[$fieldId];
+            return $currentData;
+        }
+
+        if (empty($smartEl)) {
+            throw new Exception(sprintf("Smart Element is null"));
+        }
+
+        $currentAttribute = $smartEl->getAttribute($fieldId);
+        if (is_object($currentAttribute)) {
+            return self::getAttributeConfig($currentAttribute, $smartEl);
+        } else {
+            if (isset($properties[$fieldId])) {
+                return $properties[$fieldId];
+            } else {
+                throw new Exception(sprintf("Unknown id %s, famId %s", $fieldId, $smartEl->id));
+            }
+        }
     }
 }
