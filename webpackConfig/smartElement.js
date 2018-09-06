@@ -16,6 +16,7 @@ module.exports = () => {
       'smartElementWidget': [path.resolve(__dirname, '../anakeen-ui/src/Apps/DOCUMENT/IHM/smartElement.js')]
     },
     buildPath: PUBLIC_PATH,
+    excludeBabel: /node_modules\/ckeditor/,
     customParts: [
       {
         resolve: {
