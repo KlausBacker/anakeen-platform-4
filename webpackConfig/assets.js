@@ -48,6 +48,11 @@ module.exports = () => {
                 context: './node_modules/jquery/dist/',
                 from: '*',
                 to: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/externals/jquery/')
+              },
+              //ckeditor
+              {
+                from: './node_modules/ckeditor/',
+                to: path.resolve(__dirname, '../anakeen-ui/src/public/uiAssets/externals/ckeditor')
               }
             ]
           )
