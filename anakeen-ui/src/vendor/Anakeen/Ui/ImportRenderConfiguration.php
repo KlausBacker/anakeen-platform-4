@@ -32,7 +32,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 $cvdocRef = $this->evaluate($config, "string(ui:view-control/@ref)");
 
                 $data[] = ["BEGIN", "", "", "", "", $ref];
-                $data[] = ["CVDOC", $cvdocRef];
+                $data[] = ["CVID", $cvdocRef];
                 $data[] = ["END"];
 
                 $renderAccess = $this->evaluate($config, "string(ui:render-access/@class)");
@@ -142,9 +142,14 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
             if ($label) {
                 $cvdoc->setValue(CvDocFields::ba_title, $label);
             }
-            $desc = $cvNode->getAttribute("description");
+            $desc = $this->getNode($cvNode, "description");
             if ($desc) {
-                $cvdoc->setValue(CvDocFields::ba_desc, $desc);
+                $cvdoc->setValue(CvDocFields::ba_desc, $desc->nodeValue);
+            }
+
+            $masterMask = $this->evaluate($cvNode, "string(ui:primary-mask/@ref)");
+            if ($masterMask) {
+                $cvdoc->setValue(CvDocFields::cv_primarymask, $masterMask);
             }
             $createvid = $this->evaluate($cvNode, "string(ui:creation-view/@ref)");
             if ($createvid) {
@@ -183,7 +188,6 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
     protected function getElementdata(SmartElement $elt)
     {
         $values = $elt->getValues();
-
         $order = ["ORDER", $elt->fromname, "", ""];
         $data = ["DOC", $elt->fromname, $elt->name, ""];
         foreach ($values as $aid => $value) {
