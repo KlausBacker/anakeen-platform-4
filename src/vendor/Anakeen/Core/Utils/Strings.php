@@ -30,7 +30,7 @@ class Strings
     }
 
 
-    public static function Unaccent($string)
+    public static function unaccent($string)
     {
         return iconv("UTF-8", "ASCII//TRANSLIT", $string);
     }

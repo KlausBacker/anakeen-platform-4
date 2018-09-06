@@ -129,7 +129,7 @@
         </xs:sequence>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:boolean" name="needed"/>
-        <xs:attribute type="v1:fieldAccessType" name="access">
+        <xs:attribute type="v1:fieldAccessType" name="access" use="required">
             <xs:annotation>
                 <xs:documentation>
                     <p>
@@ -148,7 +148,7 @@
         <xs:attribute type="xs:boolean" name="is-abstract" default="false"/>
         <xs:attribute type="xs:boolean" name="is-title" default="false"/>
         <xs:attribute type="xs:string" name="link"/>
-        <xs:attribute type="xs:string" name="multiple"/>
+        <xs:attribute type="xs:boolean" name="multiple"/>
     </xs:complexType>
 
     <xs:complexType name="field-standardType">
@@ -208,7 +208,8 @@
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
-        <xs:attribute type="v1:logicalNameType" name="name"/>
+        <xs:attribute type="v1:logicalNameType" name="name" use="required"/>
+        <xs:attribute type="v1:logicalNameType" name="structure"/>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
 
@@ -226,6 +227,7 @@
             </xs:element>
         </xs:sequence>
         <xs:attribute type="v1:logicalNameType" name="name"/>
+        <xs:attribute type="v1:logicalNameType" name="structure"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:token" name="access-name"/>
         <xs:attribute type="v1:logicalNameType" name="ref"/>
@@ -528,7 +530,7 @@
         </xs:choice>
         <xs:attribute type="v1:attrNameType" name="name" use="required"/>
         <xs:attribute type="xs:boolean" name="extended"/>
-        <xs:attribute type="v1:fieldsetType" name="type"/>
+        <xs:attribute type="v1:fieldsetType" name="type" use="required"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="xs:string" name="relation"/>

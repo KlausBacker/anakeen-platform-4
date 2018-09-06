@@ -4271,9 +4271,10 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function getMoreValues()
     {
-        if (isset($this->fieldvalues)) {
+        if (!empty($this->fieldvalues)) {
             $moreValues=json_decode($this->fieldvalues, true);
 
+            if (!$moreValues) var_dump($this->fieldvalues);
             foreach ($moreValues as $attrid => $v) {
                 if (empty($this->$attrid)) {
                     if (is_array($v)) {
@@ -4291,7 +4292,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     private function resetMoreValues()
     {
-        if (isset($this->fieldvalues) && $this->id) {
+        if (!empty($this->fieldvalues) && $this->id) {
             $moreValues=json_decode($this->fieldvalues, true);
             foreach ($moreValues as $k => $v) {
                     $this->$k = null;
