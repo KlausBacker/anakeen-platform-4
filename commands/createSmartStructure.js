@@ -1,4 +1,5 @@
 const gulp = require("gulp");
+const { getModuleInfo } = require("../utils/moduleInfo");
 const signale = require("signale");
 const fs = require("fs");
 const inquirer = require("inquirer");
@@ -8,6 +9,7 @@ const {
   checkSmartStructureName
 } = require("../utils/checkName");
 
+let moduleData = {};
 signale.config({
   displayTimestamp: true,
   displayDate: true
@@ -15,6 +17,20 @@ signale.config({
 
 exports.desc = "Create a smart structure";
 const builder = {
+  name: {
+    defaultDescription: "name of the smart structure",
+    alias: "n",
+    type: "string",
+    coerce: arg => {
+      if (!checkSmartStructureName(arg)) {
+        throw new Error(
+          "SmartStructure name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
+            arg
+        );
+      }
+      return arg;
+    }
+  },
   sourcePath: {
     defaultDescription: "path to the module",
     alias: "s",
@@ -27,23 +43,16 @@ const builder = {
       return arg;
     }
   },
-  name: {
-    defaultDescription: "name of the smart structure",
-    alias: "n",
-    type: "string",
-    coerce: arg => {
-      if (!checkSmartStructureName(arg)) {
-        throw new Error(
-          "SmartStructure name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
-      }
-      return arg;
-    }
-  },
   vendorName: {
     defaultDescription: "vendor name of the module",
     alias: "v",
+    default: () => {
+      if (moduleData.moduleInfo) {
+        return moduleData.moduleInfo.vendor;
+      } else {
+        return undefined;
+      }
+    },
     type: "string",
     coerce: arg => {
       if (!checkVendorName(arg)) {
@@ -114,6 +123,7 @@ exports.builder = builder;
 exports.handler = async argv => {
   if (!argv.name) {
     // Mode question
+    moduleData = await getModuleInfo(argv.sourcePath);
     argv = await inquirer.prompt(
       Object.keys(builder).map(currentKey => {
         const currentParam = builder[currentKey];

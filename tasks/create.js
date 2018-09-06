@@ -44,20 +44,8 @@ const createInfoXML = ({ moduleName, vendorName }) => {
         version: "1.0.0",
         release: "0"
       },
-      "post-install": {
-        process: {
-          $: {
-            command: "programs/update_catalog"
-          }
-        }
-      },
-      "post-upgrade": {
-        process: {
-          $: {
-            command: "programs/update_catalog"
-          }
-        }
-      }
+      "post-install": {},
+      "post-upgrade": {}
     }
   };
 };
