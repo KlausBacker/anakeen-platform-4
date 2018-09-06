@@ -266,7 +266,7 @@ class ImportSingleDocument
             return $this;
         }
 
-        if (count($this->orders) == 0) {
+        if (count($this->orders) == 0 && count($data) > 4) {
             $this->setError("DOC0011", $this->doc->fromname);
             return $this;
         } else {

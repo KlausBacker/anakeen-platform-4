@@ -69,6 +69,9 @@ class BasicAttribute
         if ($i != $r) {
             return $i;
         }
+        if (!$this->labelText) {
+            return $this->id;
+        }
         return $this->labelText;
     }
 

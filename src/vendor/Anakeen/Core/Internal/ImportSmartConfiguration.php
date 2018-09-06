@@ -120,8 +120,20 @@ class ImportSmartConfiguration
             $prfType = "FIELDACCESSLAYERLIST";
             $prfName = $layerList->getAttribute("name");
             $prfLabel = $layerList->getAttribute("label");
+            $famid = $layerList->getAttribute("structure");
+
             $prfDesc = $this->getDescription($layerList);
-            $this->profilElements[] = ["ORDER", $prfType, "", "", FallFields::ba_title, FallFields::ba_desc, FallFields::fall_layer, FallFields::fall_aclname];
+            $this->profilElements[] = [
+                "ORDER",
+                $prfType,
+                "",
+                "",
+                FallFields::ba_title,
+                FallFields::ba_desc,
+                FallFields::fall_layer,
+                FallFields::fall_aclname,
+                FallFields::fall_famid
+            ];
             $this->profilElements[] = [
                 "DOC",
                 $prfType,
@@ -130,7 +142,8 @@ class ImportSmartConfiguration
                 $prfLabel,
                 $prfDesc,
                 $layerNameList,
-                $layerAccessList
+                $layerAccessList,
+                $famid
             ];
         }
     }
@@ -158,7 +171,16 @@ class ImportSmartConfiguration
 
         $prfName = $config->getAttribute("name");
         $prfLabel = $config->getAttribute("label");
+        $famid = $config->getAttribute("structure");
         $fas = $this->getNodes($config, "field-access");
+
+        if (! $famid) {
+            // Search in access list if not found itself
+            $parent=$config->parentNode;
+            if ($parent && $parent->tagName === 'smart:field-access-layer-list') {
+                $famid=$parent->getAttribute("structure");
+            }
+        }
 
         $fieldId = [];
         $fieldAccess = [];
@@ -168,7 +190,7 @@ class ImportSmartConfiguration
             $fieldAccess[] = $fa->getAttribute("access");
         }
 
-        $this->profilElements[] = ["ORDER", $prfType, "", "", FalFields::fal_title, FalFields::fal_desc, FalFields::fal_fieldid, FalFields::fal_fieldaccess];
+        $this->profilElements[] = ["ORDER", $prfType, "", "", FalFields::fal_title, FalFields::fal_desc, FalFields::fal_fieldid, FalFields::fal_fieldaccess, FalFields::fal_famid];
         $this->profilElements[] = [
             "DOC",
             $prfType,
@@ -177,7 +199,8 @@ class ImportSmartConfiguration
             $prfLabel,
             $prfDEsc,
             $fieldId,
-            $fieldAccess
+            $fieldAccess,
+            $famid
         ];
     }
 
@@ -432,7 +455,7 @@ class ImportSmartConfiguration
             });
 
 
-            list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
+            list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (/*\DOMElement $e*/) {
                 return true;
             });
             if ($attr->phpfile && !$attr->phpfunc) {
@@ -593,7 +616,7 @@ class ImportSmartConfiguration
             return $e->getAttribute("event") === "onPreRefresh";
         });
 
-        list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (\DOMElement $e) {
+        list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (/*\DOMElement $e*/) {
             return true;
         });
         if ($attr->phpfile && !$attr->phpfunc) {
