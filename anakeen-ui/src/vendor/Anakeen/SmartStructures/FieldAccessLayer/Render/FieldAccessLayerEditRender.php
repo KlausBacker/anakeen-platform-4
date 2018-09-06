@@ -25,8 +25,6 @@ class FieldAccessLayerEditRender extends DefaultConfigEditRender
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
         $vis =  parent::getVisibilities($document, $mask);
-        $vis->setVisibility(myAttributes::fal_fieldlabel, RenderAttributeVisibilities::StaticWriteVisibility);
-        $vis->setVisibility(myAttributes::fal_fieldoriginalaccess, RenderAttributeVisibilities::StaticWriteVisibility);
         return $vis;
     }
 }
