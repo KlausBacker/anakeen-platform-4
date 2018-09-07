@@ -183,7 +183,7 @@ class DataSource extends DocumentList
                     "skip" => $this->_searchDoc->start,
                     "take" => $this->_searchDoc->slice,
                     "pageSize" => $this->pageSize,
-                    "total" => count($documentList),
+                    "total" => $this->_searchDoc->onlyCount(),
                 ),
                 "sort" => $this->sort
             )
