@@ -24,11 +24,11 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
     {
         $js = parent::getJsReferences($document);
 
-        $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementGridPath();
+        $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath();
 
-        $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/prod/dsearch.js');
+        $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
         if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getCustomAssetPath('uiAssets/Families/dsearch/debug/dsearch.js?');
+            $js["dSearch"] =  \Dcp\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
         }
 
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
