@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="autotest">
+        <sde:route name="welcome">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\Autotest\Welcome\Main</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/autotest/welcome</sde:pattern>
+            <sde:description>autotest welcome</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="autotest">admin</sde:access>
+                <sde:access ns="autotest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="autotest">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\Autotest\AnkLogout\Main</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/autotest/anklogout</sde:pattern>
+            <sde:description>autotest logout</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="autotest">admin</sde:access>
+                <sde:access ns="autotest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="autotest">
+        <sde:access name="user">
+            <sde:description>Normal Access</sde:description>
+        </sde:access>
+        <sde:access name="admin">
+            <sde:description>Administrator Access</sde:description>
+        </sde:access>
+    </sde:accesses>
+</sde:config>

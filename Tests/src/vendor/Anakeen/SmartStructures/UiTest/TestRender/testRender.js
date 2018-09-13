@@ -7,8 +7,6 @@ window.dcp.document.documentController("addEventListener", "ready", {
     }
 }, function (event, documentObject)
 {
-    console.log(documentObject);
-
     var $target = $(".test-document");
     var docid = $(this).documentController("getValue", "tst_docname").value;
     var viewId = $(this).documentController("getValue", "tst_docviewid").value;

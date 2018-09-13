@@ -29,6 +29,9 @@
     "axios": "^0.18.0",
     "backbone": "^1.3.3",
     "bootstrap": "^4.1.3",
+    "chai": "^4.1.2",
+    "chai-webdriverio": "^0.4.3",
+    "chromedriver": "^2.41.0",
     "ckeditor": "^4.7.3",
     "copy-webpack-plugin": "^4.5.2",
     "core-js": "^2.5.7",
@@ -41,7 +44,6 @@
     "jquery": "^3.3.1",
     "little-loader": "^0.2.0",
     "mustache": "^2.3.0",
-    "nightwatch": "^0.9.21",
     "popper.js": "^1.12.5",
     "prettier": "^1.14.2",
     "roboto-fontface": "^0.9.0",
@@ -51,6 +53,10 @@
     "vue": "^2.5.17",
     "vue-custom-element": "^3.2.5",
     "vue-gettext": "^2.1.0",
+    "wdio-chromedriver-service": "^0.1.3",
+    "wdio-mocha-framework": "^0.6.3",
+    "wdio-selenium-standalone-service": "^0.0.10",
+    "webdriverio": "^4.13.2",
     "whatwg-fetch": "^2.0.4"
   }
 }
