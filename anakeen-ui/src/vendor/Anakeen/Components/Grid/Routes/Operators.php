@@ -57,7 +57,7 @@ class Operators
             ]
 
         ],
-        "ank:empty" => [
+        "ank:isempty" => [
             "label" => "is empty",
             "type" => [
                 "text",
@@ -71,10 +71,14 @@ class Operators
                 "int",
                 "double",
                 "file"
-            ]
+            ],
+            "operands" => ["field"],
+            "query" => "%s IS NULL"
         ],
-        "ank:not_empty" => [
+        "ank:isnotempty" => [
             "label" => "is not empty",
+            "operands" => ["field"],
+            "query" => "%s IS NOT NULL",
             "type" => [
                 "text",
                 "longtext",
@@ -103,15 +107,18 @@ class Operators
         ],
         "ank:contains" => [
             "label" => "contains",
-            "operator" => "~*",
+            "query" => "%s ~* '%s'",
+            "operands" => ["field", "value"],
             "type" => [
                 "text",
                 "longtext",
                 "htmltext"
             ]
         ],
-        "ank:not_contain" => [
+        "ank:doesnotcontain" => [
             "label" => "does not contain",
+            "query" => "%s !~* '%s'",
+            "operands" => ["field", "value"],
             "type" => [
                 "text",
                 "longtext",

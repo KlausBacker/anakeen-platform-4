@@ -164,9 +164,15 @@ class DataSource extends DocumentList
     protected function prepareFiltering() {
         if (!empty($this->filter)) {
             foreach($this->filter['filters'] as $filter) {
-                $operator = Operators::OPERATORS["ank:".$filter["operator"]]["operator"];
-                if (!empty($operator)) {
-                    $this->_searchDoc->addFilter("%s " . $operator . " '%s'", $filter["field"], $filter["value"]);
+                $query = Operators::OPERATORS["ank:".$filter["operator"]]["query"];
+                $operands = Operators::OPERATORS["ank:".$filter["operator"]]["operands"];
+                if (!empty($query)) {
+                    if (!empty($operands)) {
+                        $operandsValue = array_map(function ($item) use ($filter) {
+                            return $filter[$item];
+                        }, $operands);
+                        $this->_searchDoc->addFilter($query, ...$operandsValue);
+                    }
                 }
             }
         }

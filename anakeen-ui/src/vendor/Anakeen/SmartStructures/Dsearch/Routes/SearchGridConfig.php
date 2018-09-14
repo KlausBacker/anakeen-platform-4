@@ -44,7 +44,7 @@ class SearchGridConfig extends GridConfig
                 case "CARD":
                     $s = new \SearchDoc();
                     $s->useCollection($document->initid);
-                    $return[] = $s->onlyCount();
+                    $return[$cols[$k]] = $s->onlyCount();
                     break;
 
                 case "MOY":
@@ -64,10 +64,10 @@ class SearchGridConfig extends GridConfig
                     if ($function === "MOY") {
                         $sum = $sum / count($results);
                     }
-                    $return[] = $document->getHtmlValue($this->structureRef->getAttribute($attrid), $sum);
+                    $return[$cols[$k]] = $document->getHtmlValue($this->structureRef->getAttribute($attrid), $sum);
                     break;
                 default:
-                    $return[] = "";
+                    $return[$cols[$k]] = null;
             }
         }
 
