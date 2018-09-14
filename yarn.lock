@@ -3,8 +3,8 @@
 
 
 "@anakeen/ank-components@latest":
-  version "1.0.0-1536220639"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1536220639.tgz#5c98a94cfe3e5c7fa7b95ee42297d10cf3d9e126"
+  version "1.0.0-1536926417"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1536926417.tgz#79d9426504b46b36fcc1a8e794a713f978fa63a4"
 
 "@anakeen/webpack-conf@latest":
   version "1.0.0-1536227897"
