@@ -2,7 +2,7 @@
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes namespace="Ui:Component">
         <sde:route name="Grid:Config">
-            <sde:callable>\Anakeen\Components\Grid\Routes\Config</sde:callable>
+            <sde:callable>\Anakeen\Components\Grid\Routes\GridConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/grid/config/{collectionId}[/]</sde:pattern>
             <sde:description>Get grid component configuration</sde:description>
@@ -12,13 +12,13 @@
         <sde:route name="Grid:Columns">
             <sde:callable>\Anakeen\Components\Grid\Routes\ColumnsConfig</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/grid/columns[/]</sde:pattern>
+            <sde:pattern>/api/v2/grid/columns/{collectionId}[/]</sde:pattern>
             <sde:description>Get grid columns configuration</sde:description>
             <sde:requiredAccess/>
             <sde:authenticated>true</sde:authenticated>
         </sde:route>
         <sde:route name="Grid:Content">
-            <sde:callable>\Anakeen\Components\Grid\Routes\Content</sde:callable>
+            <sde:callable>\Anakeen\Components\Grid\Routes\GridContent</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/grid/content/{collectionId}[/]</sde:pattern>
             <sde:description>Get grid component content</sde:description>

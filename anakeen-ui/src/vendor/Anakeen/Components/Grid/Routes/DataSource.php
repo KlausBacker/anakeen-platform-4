@@ -13,6 +13,8 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\DocumentList;
+use SmartStructure\Fields\Report;
+use SmartStructure\Fields\Search;
 
 class DataSource extends DocumentList
 {
@@ -107,13 +109,6 @@ class DataSource extends DocumentList
         }
     }
 
-    /**
-     * Co
-     */
-    protected function computeOrderBy() {
-
-    }
-
     protected function parseUrlArgs($urlArgs = array()) {
         if (!empty($urlArgs['collectionId'])) {
             $this->smartElementId = $urlArgs['collectionId'];
@@ -135,7 +130,12 @@ class DataSource extends DocumentList
                 break;
             case 'D':
             case 'S':
-                $this->_searchDoc->useCollection($this->smartElement->initid);
+                $famId = $this->smartElement->getRawValue(Search::se_famid);
+                if (empty($famId)) {
+                    $this->_searchDoc->fromid = 0;
+                } else {
+                    $this->_searchDoc->useCollection($this->smartElement->initid);
+                }
                 break;
             default:
                 $exception = new Exception("GRID0002", $this->smartElementId);
@@ -149,10 +149,14 @@ class DataSource extends DocumentList
         parent::prepareDocumentList();
         $this->preparePaging();
         $this->prepareFiltering();
-        $this->prepareSorting();
     }
 
     protected function preparePaging() {
+        if (is_a($this->smartElement, \SmartStructure\Report::class)) {
+            $repLimit = intval($this->smartElement->getRawValue(Report::rep_limit, $this->pageSize));
+            $this->slice = $repLimit;
+            $this->pageSize = $this->slice;
+        }
         $this->_searchDoc->setSlice($this->pageSize);
         $this->_searchDoc->setStart(($this->page - 1) * $this->pageSize);
     }
@@ -161,7 +165,6 @@ class DataSource extends DocumentList
         if (!empty($this->filter)) {
             foreach($this->filter['filters'] as $filter) {
                 $operator = Operators::OPERATORS["ank:".$filter["operator"]]["operator"];
-                error_log($operator);
                 if (!empty($operator)) {
                     $this->_searchDoc->addFilter("%s " . $operator . " '%s'", $filter["field"], $filter["value"]);
                 }
@@ -169,8 +172,31 @@ class DataSource extends DocumentList
         }
     }
 
-    protected function prepareSorting() {
+    protected function extractOrderBy()
+    {
+        if (is_a($this->smartElement, \SmartStructure\Report::class)) {
+            $sortOrderDir = $this->smartElement->getRawValue(Report::rep_ordersort, "asc");
+            $sortField = $this->smartElement->getRawValue(Report::rep_idsort, "title");
+            $orderBy = "$sortField:$sortOrderDir";
+        }
+        if (!empty($this->sort)) {
+            $orderBy = implode(',', array_map(function ($item) {
+                return $item['field'] . ":" . $item['dir'];
+            }, $this->sort));
+        }
+        if (!empty($orderBy)) {
+            switch ($this->smartElement->defDoctype) {
+                case "C":
+                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->smartElement);
+                case "D":
+                    break;
+                case "S":
+                    $famId = $this->smartElement->getRawValue("se_famid");
+                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, SEManager::getFamily($famId));
+            }
 
+        }
+        return parent::extractOrderBy();
     }
 
     protected function getData() {
@@ -179,11 +205,11 @@ class DataSource extends DocumentList
             "requestParameters" => array(
                 "filter" => $this->filter,
                 "pager" => array(
-                    "page" => $this->page,
-                    "skip" => $this->_searchDoc->start,
-                    "take" => $this->_searchDoc->slice,
-                    "pageSize" => $this->pageSize,
-                    "total" => $this->_searchDoc->onlyCount(),
+                    "page" => intval($this->page),
+                    "skip" => intval($this->_searchDoc->start),
+                    "take" => intval($this->_searchDoc->slice),
+                    "pageSize" => intval($this->pageSize),
+                    "total" => intval($this->_searchDoc->onlyCount()),
                 ),
                 "sort" => $this->sort
             )

@@ -13,4 +13,5 @@ class ErrorCodeGRID
      */
     const GRID0001 = 'Error, collection "%s" not found';
     const GRID0002 = 'Error, smart structure "%s" not found';
+    const GRID0003 = 'Error, field "%s" not found in "%s" structure';
 }

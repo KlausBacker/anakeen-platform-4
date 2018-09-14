@@ -3,100 +3,145 @@
 namespace Anakeen\Components\Grid\Routes;
 
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure;
 use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use SmartStructure\Fields\Dir;
+use SmartStructure\Fields\Search;
+use SmartStructure\Report;
+use SmartStructure\Fields\Report as ReportFields;
 
 class ColumnsConfig
 {
-    protected $properties = [];
-    protected $defaultFamilyId = false;
 
+    protected $requestFields = [];
+    protected $availableColumns = [];
+    protected $structureId = -1;
+    const DEFAULT_COLUMNS = ["icon", "title"];
+
+    /**
+     * @var SmartStructure
+     */
+    protected $structureRef = null;
+
+    /**
+     * @var SmartElement
+     */
+    protected $collection = null;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $displayedColumns = $this->getDisplayColumns($request->getQueryParam("famId", false), $request->getQueryParam("fields", ""));
-
-        return ApiV2Response::withData($response, ["displayColumns" => $displayedColumns]);
-    }
-
-    public function getDisplayColumns($famid = false, $fields = "") {
-        $displayedColumns = [];
-        $this->properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item) {
-            return isset($item["displayable"]) ? $item["displayable"] : false;
-        });
-
-        array_walk($this->properties, function (&$value, $key) {
-            $value["field"] = $key;
-            $value["type"] = $key;
-            $value["label"] = _($value['label']);
-            if (isset($value["displayable"])) {
-                unset($value["displayable"]);
-            }
-            return $value;
-        });
-
-        $this->defaultFamilyId =$famid;
-
-        /**
-         * @var \Anakeen\Core\SmartStructure [] $famDef
-         */
-
-        if ($this->defaultFamilyId !== false) {
-            $famDef[$this->defaultFamilyId] = SEManager::getFamily($this->defaultFamilyId);
+        $collectionId = $args["collectionId"];
+        $this->collection = SEManager::getDocument($collectionId);
+        if (!$this->collection) {
+            $exception = new Exception("GRID0001", $collectionId);
+            $exception->setHttpStatus("404", "Smart Element not found");
+            throw $exception;
+        }
+        $queryFieldsParam = $request->getQueryParam("fields");
+        if ($queryFieldsParam) {
+            $this->requestFields = array_map("trim", explode(",", $request->getQueryParam("fields", "")));
         }
 
-        $elementsId = $fields;
-        $elementsId = explode(",", $elementsId);
-        foreach ($elementsId as $currentColumn) {
-            if (!isset($currentColumn)) {
-                throw new Exception("Bad column definition : id not defined");
-            }
-            $displayedColumns[] = $this->getColumnDef($currentColumn, $famDef);
-        }
-        return $displayedColumns;
+        $this->availableColumns = $this->getAvailableColumns();
+        return ApiV2Response::withData($response, $this->availableColumns);
     }
 
-    protected function getColumnDef($columnId, &$famDef)
+    protected function getAvailableColumns() {
+        switch ($this->collection->defDoctype) {
+            case "C": // Smart Structure
+                $this->structureId = $this->collection->initid;
+                break;
+            case "D": // Dir
+                $this->structureId = $this->collection->getRawValue(Dir::fld_famids);
+                break;
+            case "S": // Search
+                $this->structureId = $this->collection->getRawValue(Search::se_famid);
+                break;
+        }
+        if (!empty($this->structureId) && $this->structureId !== -1) {
+            $this->structureRef = SEManager::getFamily($this->structureId);
+            if (!$this->structureRef) {
+                $exception = new Exception("GRID0002", $this->structureId);
+                $exception->setHttpStatus("404", "Searched Smart Structure not found");
+                throw $exception;
+            }
+        }
+        return self::getCollectionAvailableFields($this->collection, $this->structureRef, $this->requestFields);
+    }
+
+    public static function getCollectionAvailableFields(SmartElement $collection, SmartStructure $structRef = null, $returnsOnly = []) {
+        switch ($collection->defDoctype) {
+            case "C":
+                return self::getStructureColumns($collection, $structRef, $returnsOnly);
+            case "D":
+                return self::getFolderColumns($collection, $returnsOnly);
+            case "S":
+                return self::getSearchColumns($collection, $structRef, $returnsOnly);
+        }
+    }
+
+    private static function getStructureColumns(SmartElement $famDoc, SmartStructure $struct, array $returnsOnly)
     {
-        if (isset($this->properties[$columnId])) {
-            $currentData = $this->properties[$columnId];
-            if ($columnId == "state") {
-                $currentData["urlSource"] = "?app=DOCUMENT_GRID_HTML5&action=GETSTATES";
-                $currentFamDoc = $this->getCurrentFamDoc($columnId, $famDef);
-                $currentData["urlSource"] .= "&famid=" . urlencode($currentFamDoc->name);
+        $return = array();
+        error_log(print_r($returnsOnly, true));
+        if (count($returnsOnly)) {
+            foreach ($returnsOnly as $attrId) {
+                $return[] = self::getColumnConfig($attrId, $struct);
             }
-            return $currentData;
-        }
-        $currentFamDoc = $this->getCurrentFamDoc($columnId, $famDef);
-
-        $currentAttribute = $currentFamDoc->getAttribute($columnId);
-        if (is_object($currentAttribute)) {
-            return $this->getAttributeDef($currentAttribute, $currentFamDoc);
         } else {
-            if (isset($this->properties[$columnId])) {
-                return $this->properties[$columnId];
-            } else {
-                throw new Exception(sprintf("Unknown id %s, famId %s", $columnId, $currentFamDoc->name));
+            foreach (self::DEFAULT_COLUMNS as $id) {
+                $return[] = self::getColumnConfig($id, $struct);
+            }
+            foreach ($famDoc->getAttributes() as $myAttribute) {
+                if ($myAttribute->getAccess() !== NormalAttribute::NONE_ACCESS && ($myAttribute->isNormal && $myAttribute->type !== "array")) {
+                    $return[] = self::getColumnConfig($myAttribute->id, $struct);
+                }
             }
         }
+        return $return;
     }
 
-    protected function getAttributeDef(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \Anakeen\Core\SmartStructure $family)
+    private static function getFolderColumns(SmartElement $collection, array $returnsOnly)
     {
-        $data = array(
-            "id" => $currentAttribute->id,
-            "type" => $currentAttribute->type,
-            "label" => $currentAttribute->getLabel(),
-            "sortable" => $this->isSortable($family, $currentAttribute->id),
-            "filterable" => $this->isFilterable($currentAttribute)
-        );
-        if (($data["type"] == "docid" || $data["type"] == "account") && $data["filterable"]) {
-            $data["doctitle"] = $currentAttribute->getOption("doctitle") == "auto" ? $currentAttribute->id . "_title" : $currentAttribute->getOption("doctitle");
-        }
-        return $data;
     }
+
+    private static function getSearchColumns(SmartElement $collection, SmartStructure $structRef = null, array $returnsOnly)
+    {
+        if (is_a($collection, Report::class)) {
+            return self::getReportColumns($collection, $structRef, $returnsOnly);
+        }
+        $return = [];
+        return $return;
+    }
+
+    private static function getReportColumns(SmartElement $collection, SmartStructure $structRef = null, array $returnsOnly)
+    {
+        $return = [];
+        $cols = $collection->getMultipleRawValues(ReportFields::rep_idcols);
+        if (empty($cols)) {
+            $cols = self::DEFAULT_COLUMNS;
+        }
+
+        if (count($returnsOnly)) {
+            $cols = array_filter($cols, function ($item) use ($returnsOnly) {
+              return in_array($item, $returnsOnly);
+            });
+        }
+
+        foreach ($cols as $attrid) {
+            $config = self::getColumnConfig($attrid, $structRef);
+            if (!empty($config)) {
+                $return[] = $config;
+            }
+        }
+        return $return;
+    }
+
 
     protected static function getDisplayableProperties() {
         $properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item) {
@@ -104,45 +149,16 @@ class ColumnsConfig
         });
         array_walk($properties, function (&$value, $key) {
             $value["field"] = $key;
-            $value["type"] = $key;
-            $value["label"] = _($value['label']);
+            $value["type"] = $value['type'];
+            $value["title"] = _($value['label']);
+            $value["property"] = true;
+
             if (isset($value["displayable"])) {
                 unset($value["displayable"]);
             }
             return $value;
         });
         return $properties;
-    }
-
-    /**
-     * Get currentFamDoc
-     *
-     * @param                                $currentColumn
-     * @param \Anakeen\Core\SmartStructure[] $famDef
-     * @param                                $this ->defaultFamilyId
-     *
-     * @return \Anakeen\Core\SmartStructure
-     * @throws Exception
-     */
-    protected function getCurrentFamDoc($currentColumn, &$famDef)
-    {
-        /* @var \Anakeen\Core\Internal\SmartElement $currentFamDoc */
-        if (isset($currentColumn["famId"])) {
-            if (!isset($famDef[$currentColumn["famId"]])) {
-                $famDef[$currentColumn["famId"]] = SEManager::getFamily($currentColumn["famId"]);
-            }
-            $currentFamDoc = $famDef[$currentColumn["famId"]];
-        } else {
-            if ($this->defaultFamilyId) {
-                $currentFamDoc = $famDef[$this->defaultFamilyId];
-            } else {
-                throw new Exception(sprintf("No famId and no default fam for attribute %s", $currentColumn));
-            }
-        }
-        if (!$currentFamDoc || !$currentFamDoc->isAlive()) {
-            throw new Exception(sprintf("The current fam %s is not alive", isset($currentColumn["famId"]) ? $currentColumn["famId"] : $this->defaultFamilyId));
-        }
-        return $currentFamDoc;
     }
 
     public static function isSortable(\Anakeen\Core\Internal\SmartElement $tmpDoc, $attrId)
@@ -185,11 +201,14 @@ class ColumnsConfig
     {
         $data = array(
             "field" => $currentAttribute->id,
+            "multiple" => $currentAttribute->isMultiple(),
             "type" => $currentAttribute->type,
             "title" => $currentAttribute->getLabel(),
+            "context" => self::getContextLabels($currentAttribute),
+            "withContext" => true,
             "encoded" => false,
             "sortable" => self::isSortable($family, $currentAttribute->id),
-            "filterable" => self::isFilterable($currentAttribute)
+            "filterable" => self::isFilterable($currentAttribute),
         );
         if (($data["type"] == "docid" || $data["type"] == "account") && $data["filterable"]) {
             $data["doctitle"] = $currentAttribute->getOption("doctitle") == "auto" ? $currentAttribute->id . "_title" : $currentAttribute->getOption("doctitle");
@@ -197,7 +216,16 @@ class ColumnsConfig
         return $data;
     }
 
+    protected static function getContextLabels( BasicAttribute $attribute, $contextLabels = []) {
+        if ($attribute && $attribute->fieldSet && $attribute->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
+            array_unshift($contextLabels, $attribute->fieldSet->getLabel());
+            return self::getContextLabels($attribute->fieldSet, $contextLabels);
+        }
+        return $contextLabels;
+    }
+
     public static function getColumnConfig($fieldId, \Anakeen\Core\Internal\SmartElement $smartEl = null) {
+        error_log($fieldId);
         $properties = self::getDisplayableProperties();
         if (isset($properties[$fieldId])) {
             $currentData = $properties[$fieldId];

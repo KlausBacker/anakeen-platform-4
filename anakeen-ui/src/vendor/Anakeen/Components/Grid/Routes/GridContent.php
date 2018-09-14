@@ -11,7 +11,7 @@ namespace Anakeen\Components\Grid\Routes;
 use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
 
-class Content extends DataSource
+class GridContent extends DataSource
 {
     protected function getData()
     {
