@@ -70,6 +70,7 @@ class ReportAutocomplete
         $pattern = preg_quote($name, "/");
         // Properties
         $propList = array(
+            "icon" => _("prop_icon"),
             "title" => _("doctitle"),
             "mdate" => _("mdate"),
             "revision" => _("revision"),
