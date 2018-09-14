@@ -11,6 +11,16 @@
                 <sde:access ns="Uitest">user</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GridPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\TestGridPage</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/apps/uitest/grid</sde:pattern>
+            <sde:description>Test UI Grid Page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="ExportData">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\UiTest\ExportData</sde:callable>

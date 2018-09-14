@@ -6,7 +6,7 @@
  Research result in edit mode
  */
 
-import showGrid from "./searchUIGrid";
+import showGrid from "./searchUISEGrid";
 
 {
   window.dcp.document.documentController(

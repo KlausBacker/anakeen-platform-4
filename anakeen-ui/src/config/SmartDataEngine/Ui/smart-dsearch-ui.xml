@@ -41,5 +41,13 @@
       <sde:description>Temporary Doc</sde:description>
       <sde:requiredAccess/>
     </sde:route>
+    <sde:route name="Ui:Smart:Search:GridConfig">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\SmartStructures\Dsearch\Routes\SearchGridConfig</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/gridConfig/{collectionId}</sde:pattern>
+      <sde:description>Get the search grid configc</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
   </sde:routes>
 </sde:config>
