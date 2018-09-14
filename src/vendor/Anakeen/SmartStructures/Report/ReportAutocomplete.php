@@ -65,9 +65,7 @@ class ReportAutocomplete
         SmartAutocompleteResponse $response,
         array $args
     ): SmartAutocompleteResponse {
-        $famid = $args["structure"];
         $name = $request->getFilterValue();
-        $doc = SEManager::getFamily($famid);
 
         $pattern = preg_quote($name, "/");
         // Properties
@@ -96,41 +94,46 @@ class ReportAutocomplete
             "account",
             "thesaurus"
         );
+
         // Attributes
-        $attrList = $doc->getNormalAttributes();
-        foreach ($attrList as $attr) {
-            if ($attr->type == "array") {
-                continue;
-            }
-            if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
-                $html = sprintf(
-                    "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s</span>",
-                    xml_entity_encode(self::getParentLabel($attr)),
-                    xml_entity_encode($attr->getLabel())
-                );
-                $response->appendEntry(
-                    $html,
-                    [
-                        $attr->id,
-                        $attr->getLabel(),
-                        ''
-                    ]
-                );
-                if (in_array($attr->type, $relTypes)) {
+        $famid = $args["structure"];
+        $doc = SEManager::getFamily($famid);
+        if (!empty($doc)) {
+            $attrList = $doc->getNormalAttributes();
+            foreach ($attrList as $attr) {
+                if ($attr->type == "array") {
+                    continue;
+                }
+                if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
                     $html = sprintf(
-                        "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s <i>(%s)</i></span>",
+                        "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s</span>",
                         xml_entity_encode(self::getParentLabel($attr)),
-                        xml_entity_encode($attr->getLabel()),
-                        ___("identifier", "smart report")
+                        xml_entity_encode($attr->getLabel())
                     );
                     $response->appendEntry(
                         $html,
                         [
                             $attr->id,
-                            sprintf("%s (%s)", $attr->getLabel(), _("report:docid")),
-                            "docid"
+                            $attr->getLabel(),
+                            ''
                         ]
                     );
+                    if (in_array($attr->type, $relTypes)) {
+                        $html = sprintf(
+                            "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s <i>(%s)</i></span>",
+                            xml_entity_encode(self::getParentLabel($attr)),
+                            xml_entity_encode($attr->getLabel()),
+                            ___("identifier", "smart report")
+                        );
+                        $response->appendEntry(
+                            $html,
+                            [
+                                $attr->id,
+                                sprintf("%s (%s)", $attr->getLabel(), _("report:docid")),
+                                "docid"
+                            ]
+                        );
+                    }
                 }
             }
         }
