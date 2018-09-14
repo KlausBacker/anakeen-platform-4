@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ui Grid Testing interface</title>
+    <link rel="icon" type="image/png" href="[appicon]"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="../../">
+
+    {{#CSS}}
+    <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
+    {{#JS_DEPS}}
+    <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+    <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
+
+</head>
+<body style="height: 100vh; width: 100vw; font-size: 12px;">
+<ank-se-grid style="height:100%;" context-titles-separator=">" collection="TST_RENDER" checkable="true" server-paging="true" server-filtering="true" server-sorting="true">
+</ank-se-grid>
+
+{{#JS_LEGACY}}
+<script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
+
+</body>
+</html>
