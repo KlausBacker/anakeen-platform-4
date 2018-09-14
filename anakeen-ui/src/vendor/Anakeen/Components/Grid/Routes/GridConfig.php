@@ -9,12 +9,12 @@
 namespace Anakeen\Components\Grid\Routes;
 
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
-use Anakeen\Core\SmartStructure\NormalAttribute;
+use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use SmartStructure\Fields\Search;
-use SmartStructure\Fields\Report;
 use SmartStructure\Fields\Dir;
 
 /**
@@ -33,12 +33,22 @@ class GridConfig
     protected $gridFields = [];
     protected $urlFields = [];
     protected $collectionId = null;
+
+    /**
+     * @var SmartElement
+     */
     protected $collectionDoc = null;
+
+    /**
+     * @var SmartStructure
+     */
+    protected $structureRef = null;
+    protected $structureId = null;
 
     public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
     {
         $this->parseRequestParams($request, $response, $args);
-        $this->gridFields = self::getGridFields($this->collectionDoc, $this->urlFields);
+        $this->gridFields = $this->getGridFields();
 
         return ApiV2Response::withData($response, $this->getConfig());
     }
@@ -61,7 +71,10 @@ class GridConfig
         return array(
             "smartFields" => $this->gridFields,
             "footer" => array(),
-            "toolbar" => [],
+            "toolbar" => [
+                "export" => true,
+                "columns" => true
+            ],
             "actions" => [],
             "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=".$this->getUrlFields())
         );
@@ -80,29 +93,29 @@ class GridConfig
         return $result;
     }
 
-    public static function getGridFields(\Anakeen\Core\Internal\SmartElement $smartElement, $returnsOnly = [])
+    public function getGridFields()
     {
         $smartStructureId = -1;
-        switch ($smartElement->defDoctype) {
+        switch ($this->collectionDoc->defDoctype) {
             case "C": // Smart Structure
-                $smartStructureId = $smartElement->initid;
+                $this->structureId = $this->collectionDoc->initid;
                 break;
             case "D": // Dir
-                $smartStructureId = $smartElement->getRawValue(Dir::fld_famids);
+                $this->structureId = $this->collectionDoc->getRawValue(Dir::fld_famids);
                 break;
             case "S": // Search
-                $smartStructureId = $smartElement->getRawValue(Search::se_famid);
-                if (empty($smartStructureId)) {
-                    return ColumnsConfig::getCollectionAvailableFields($smartElement, null, $returnsOnly);
+                $this->structureId = $this->collectionDoc->getRawValue(Search::se_famid);
+                if (empty($this->structureId)) {
+                    return ColumnsConfig::getCollectionAvailableFields($this->collectionDoc, null, $this->urlFields);
                 }
                 break;
         }
-        $smartStructure = SEManager::getFamily($smartStructureId);
-        if (!$smartStructure) {
+        $this->structureRef = SEManager::getFamily($this->structureId);
+        if (!$this->structureRef) {
             $exception = new Exception("GRID0002", $smartStructureId);
             $exception->setHttpStatus("404", "Searched Smart Structure not found");
             throw $exception;
         }
-        return ColumnsConfig::getCollectionAvailableFields($smartElement, $smartStructure, $returnsOnly);
+        return ColumnsConfig::getCollectionAvailableFields($this->collectionDoc, $this->structureRef, $this->urlFields);
     }
 }
