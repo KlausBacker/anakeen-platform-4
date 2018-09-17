@@ -1168,17 +1168,19 @@ define([
         customJS = _.pluck(this.get("customJS"), "path");
 
       _.each(customJS, function injectElement(currentPath) {
-        allInjectPromises.push(
-          new Promise(function addJs(resolve, reject) {
-            load(currentPath, function addJsDone(err) {
-              if (err) {
-                reject(err);
-              } else {
-                resolve();
-              }
-            });
-          })
-        );
+        if ($('script[src="' + currentPath + '"]').length === 0) {
+          allInjectPromises.push(
+            new Promise(function addJs(resolve, reject) {
+              load(currentPath, function addJsDone(err) {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve();
+                }
+              });
+            })
+          );
+        }
       });
 
       Promise.all(allInjectPromises)
@@ -1200,17 +1202,19 @@ define([
         throw new Error("The js to inject must be an array of string path");
       }
       _.each(jsToInject, function injectElement(currentPath) {
-        allInjectPromises.push(
-          new Promise(function addJs(resolve, reject) {
-            load(currentPath, function addJsDone(err) {
-              if (err) {
-                reject(err);
-              } else {
-                resolve();
-              }
-            });
-          })
-        );
+        if ($('script[src="' + currentPath + '"]').length === 0) {
+          allInjectPromises.push(
+            new Promise(function addJs(resolve, reject) {
+              load(currentPath, function addJsDone(err) {
+                if (err) {
+                  reject(err);
+                } else {
+                  resolve();
+                }
+              });
+            })
+          );
+        }
       });
       return Promise.all(allInjectPromises);
     },
