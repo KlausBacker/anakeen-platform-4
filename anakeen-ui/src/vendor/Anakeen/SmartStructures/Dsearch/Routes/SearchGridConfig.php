@@ -21,8 +21,7 @@ class SearchGridConfig extends GridConfig
         $config["actions"] = [
             "title" => "Actions",
             "actionConfigs" => [
-                [ "action" => "consult", "title" => "Consulter" ],
-                [ "action" => "edit", "title" => "Editer" ]
+                [ "action" => "consult", "title" => ___("View", "smart:dsearch") ]
             ]
         ];
         if (is_a($this->collectionDoc, \SmartStructure\Report::class)) {
