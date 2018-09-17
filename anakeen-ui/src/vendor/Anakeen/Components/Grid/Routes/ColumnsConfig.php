@@ -88,16 +88,16 @@ class ColumnsConfig
     private static function getStructureColumns(SmartElement $famDoc, SmartStructure $struct, array $returnsOnly)
     {
         $return = array();
-        error_log(print_r($returnsOnly, true));
         if (count($returnsOnly)) {
             foreach ($returnsOnly as $attrId) {
                 $return[] = self::getColumnConfig($attrId, $struct);
             }
         } else {
+            // Display default columns (icon + title + abstract fields)
             foreach (self::DEFAULT_COLUMNS as $id) {
                 $return[] = self::getColumnConfig($id, $struct);
             }
-            foreach ($famDoc->getAttributes() as $myAttribute) {
+            foreach ($famDoc->getAbstractAttributes() as $myAttribute) {
                 if ($myAttribute->getAccess() !== NormalAttribute::NONE_ACCESS && ($myAttribute->isNormal && $myAttribute->type !== "array")) {
                     $return[] = self::getColumnConfig($myAttribute->id, $struct);
                 }
