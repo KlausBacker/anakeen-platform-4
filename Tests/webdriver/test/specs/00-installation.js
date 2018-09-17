@@ -6,9 +6,9 @@ describe(`${scriptName} : basic check`, () => {
   //Get a login cookie and resize the browser to the stnndard size
   before(async () => {
     setWindowSize({browser});
-    return login({browser, login: "admin", password : "anakeen"});
+    return login({browser, login: "zoo.user1", password : "anakeen"});
   });
-  //Go to the welcome page (accessoble
+  //Go to the welcome page
   it(`check login procedure`, async () => {
     await browser.url("/autotest/welcome");
     expect((await browser.getText('#welcome')).toLowerCase()).to.have.string("welcome", "We didn't find the welcome page");
