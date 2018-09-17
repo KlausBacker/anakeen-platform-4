@@ -72,6 +72,11 @@
             <smart:enum name="asc" label="ascendant"/>
             <smart:enum name="desc" label="descendant"/>
         </smart:enum-configuration>
+        <smart:enum-configuration name="report-rep_foots">
+            <smart:enum name="CARD" label="Cardinal"/>
+            <smart:enum name="MOY" label="Moyenne"/>
+            <smart:enum name="SUM" label="Somme"/>
+        </smart:enum-configuration>
     </smart:enumerates>
 
 </smart:config>
