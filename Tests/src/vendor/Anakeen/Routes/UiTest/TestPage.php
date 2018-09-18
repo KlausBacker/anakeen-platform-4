@@ -49,11 +49,11 @@ class TestPage
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/bootstrap.min.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/kendo.min.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
                 ]
             ]
         ];
