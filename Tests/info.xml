@@ -8,9 +8,8 @@
         <module name="smart-data-engine-test"/>
     </requires>
 
-
-
     <post-install>
+        <process command="./ank.php --system  --resetRouteConfig"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__CVDOC.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__PARAM.csv"/>
@@ -34,6 +33,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_USERS_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_ACCESS_ROUTE.csv"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/tst_ddui_employee.views.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/tst_ddui_color.views.xml"/>
 
@@ -64,6 +64,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TestRender/TEST_RENDER__STRUCT.csv"/>
 
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_USERS_INIT_DATA.csv"/>
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_ACCESS_ROUTE.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
         <process command="./ank.php --system --localeGen"/>

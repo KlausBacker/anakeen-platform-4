@@ -3,10 +3,10 @@ const scriptName = path.basename(__filename);
 const { login, setWindowSize } = require("../config");
 
 describe(`${scriptName} : component : basic check`, () => {
-  //Get a login cookie and resize the browser to the stnndard size
+  //Get a login cookie and resize the browser to the standard size
   beforeEach(async () => {
     setWindowSize({ browser });
-    return login({ browser, login: "admin", password: "anakeen" });
+    return login({ browser, login: "zoo.user1", password: "anakeen" });
   });
   //Go to the logout test page and check dom
   it("ank-login : Check dom", () => {

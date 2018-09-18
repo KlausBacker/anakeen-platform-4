@@ -38,7 +38,7 @@ describe(`${scriptName} : check login page`, () => {
   it("Login page : do a login", async() => {
     await browser.url("/autotest/welcome");
     //Do a login
-    await browser.setValue("#login", "admin");
+    await browser.setValue("#login", "zoo.user1");
     await browser.setValue(".authent-password input", "anakeen");
     await browser.click(".authent-login-button");
     //Check welcome page
