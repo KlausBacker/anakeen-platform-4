@@ -2,9 +2,12 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\SEManager;
+
 class LateNameResolver
 {
     private $value = null;
+    private static $staticEntries = array();
 
     public function __construct($value)
     {
@@ -12,17 +15,54 @@ class LateNameResolver
         return $this;
     }
 
-    public function __toString()
+    public static function setStaticEntries($entries)
     {
-        return $this->resolve($this->value);
+        self::$staticEntries = $entries;
     }
 
-    private function resolve($value)
+    public function __get($name)
     {
-        $id = \Anakeen\Core\SEManager::getIdFromName($value);
-        if (is_numeric($id)) {
-            return (string)$id;
+        return $this->resolveNames($this->value);
+    }
+
+    private function resolveNames($value)
+    {
+        if (is_scalar($value)) {
+            return $this->resolveNamesScalar($value);
+        } else {
+            if (is_array($value)) {
+                return $this->resolveNamesArray($value);
+            }
         }
-        return (string)$value;
+        return $value;
+    }
+
+    private function resolveNamesScalar($value)
+    {
+        try {
+            if (isset(self::$staticEntries[$value])) {
+                return self::$staticEntries[$value];
+            }
+            $id = SEManager::getIdFromName($value);
+        } catch (\Exception $e) {
+            $id = 0;
+        }
+        if ($id > 0) {
+            return $id;
+        }
+        return $value;
+    }
+
+    private function resolveNamesArray($values)
+    {
+        array_walk_recursive($values, function (&$item) {
+            $item = $this->resolveNamesScalar($item);
+        });
+        return $values;
+    }
+
+    public static function resolve($value)
+    {
+        return (new self($value))->value;
     }
 }

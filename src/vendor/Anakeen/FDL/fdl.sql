@@ -30,7 +30,24 @@ begin
 end;
 $$ language 'plpgsql';
 
+CREATE OR REPLACE FUNCTION iregexp_commutator(text, text)
+  RETURNS bool AS
+$func$
+SELECT $2 ~* $1
+$func$  LANGUAGE sql IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION regexp_commutator(text, text)
+  RETURNS bool AS
+$func$
+SELECT $2 ~ $1
+$func$  LANGUAGE sql IMMUTABLE;
+
+DROP OPERATOR IF EXISTS ~*<(text, text);
+DROP OPERATOR IF EXISTS ~<(text, text);
+CREATE OPERATOR ~*< ( leftarg = text, rightarg = text, procedure = iregexp_commutator);
+CREATE OPERATOR ~< ( leftarg = text, rightarg = text, procedure = regexp_commutator);
+COMMENT ON OPERATOR ~*<(text, text) IS 'insensitive regexp commutator';
+COMMENT ON OPERATOR ~<(text, text) IS 'regexp commutator';
 
 
 -- change type of column

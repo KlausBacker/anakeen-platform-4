@@ -107,11 +107,7 @@ class SearchDoc
      */
     public $userid = 0;
     protected $dbaccess;
-    /**
-     * debug mode : to view query and delay
-     * @public bool
-     */
-    private $debug = false;
+
     private $debuginfo = [];
     private $join = "";
     /**
@@ -865,23 +861,35 @@ class SearchDoc
      */
     public function addFilter($filter, $args = '')
     {
-        if ($filter != "") {
-            $args = func_get_args();
-            if (count($args) > 1) {
-                $fs[0] = $args[0];
-                for ($i = 1; $i < count($args); $i++) {
-                    $fs[] = pg_escape_string($args[$i]);
+        if (is_string($filter)) {
+            if ($filter != "") {
+                $args = func_get_args();
+                if (count($args) > 1) {
+                    $fs[0] = $args[0];
+                    for ($i = 1; $i < count($args); $i++) {
+                        $fs[] = pg_escape_string($args[$i]);
+                    }
+                    $filter = call_user_func_array("sprintf", $fs);
                 }
-                $filter = call_user_func_array("sprintf", $fs);
-            }
-            if (preg_match('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', $filter, $reg)) {
-                // when use join filter like "zoo_espece.es_classe='Boo'"
-                $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['relname']);
-                if ($famid > 0) {
-                    $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
+                if (preg_match('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', $filter, $reg)) {
+                    // when use join filter like "zoo_espece.es_classe='Boo'"
+                    $famid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['relname']);
+                    if ($famid > 0) {
+                        $filter = preg_replace('/(\s|^|\()(?P<relname>[a-z0-9_\-]+)\./', '${1}doc' . $famid . '.', $filter);
+                    }
                 }
+                $this->filters[] = $filter;
             }
-            $this->filters[] = $filter;
+        }elseif (is_object($filter)) {
+            if (!is_a($filter, \Anakeen\Search\Filters\ElementSearchFilter::class)) {
+                throw new \Dcp\SearchDoc\Exception(sprintf("Filter object does not implements \"%s\" interface.", \Anakeen\Search\Filters\ElementSearchFilter::class));
+            }
+            /**
+             * @var \Anakeen\Search\Filters\ElementSearchFilter $filter
+             */
+            $filter->addFilter($this);
+        } else {
+            throw new \Dcp\SearchDoc\Exception(sprintf("Filter is neither a string nor an objet implementing \\Dcp\\Documentfilter interface."));
         }
     }
 
@@ -1578,7 +1586,16 @@ class SearchDoc
             $qsql
         );
     }
+    /**
+     * Get the family on which the search is operating
+     * @return \Anakeen\Core\SmartStructure
+     */
+    public function getFamily()
+    {
+        $fam = \Anakeen\Core\SEManager::getFamily($this->fromid);
 
+        return $fam;
+    }
     /**
      * Insert an additional relation in the FROM clause of the given query
      * to perform a sort on a label/title instead of a key/id.
