@@ -67,6 +67,15 @@ class UIGetAssetPath
         return $assets["KendoUI"]["js"];
     }
 
+    public static function getCssKendo() {
+        if (self::isInDebug()) {
+            $paths = self::getElementAssets("theme", "dev");
+        } else {
+            $paths = self::getElementAssets("theme");
+        }
+        return $paths["kendo"]["css"];
+    }
+
     /**
      * Add the VERSION query parameter to a custom asset path
      * @param $assetPath
@@ -104,6 +113,10 @@ class UIGetAssetPath
         return $paths["ank-components"]["js"];
     }
 
+    public static function getCssSmartWebComponents() {
+        return self::getCss("components");
+    }
+
     /**
      * @param bool $legacy
      * @return mixed
@@ -118,6 +131,10 @@ class UIGetAssetPath
         return $paths["smartElement"]["js"];
     }
 
+    public static function getCssSmartElement() {
+        return self::getCss("smartElement");
+    }
+
     /**
      * @param bool $legacy
      * @return mixed
@@ -130,6 +147,26 @@ class UIGetAssetPath
             $paths = self::getElementAssets("smartElement", $legacy ? "legacy": "prod");
         }
         return $paths["smartElementWidget"]["js"];
+    }
+
+    public static function getCssBootstrap() {
+        return self::getCss("bootstrap");
+    }
+
+    public static function getCssCkeditor() {
+        return self::getCss("kendo");
+    }
+
+    public static function getCss($moduleName) {
+        if (self::isInDebug()) {
+            $paths = self::getElementAssets("theme", "dev");
+        } else {
+            $paths = self::getElementAssets("theme");
+        }
+        if (!isset($paths[$moduleName]) || ! isset($paths[$moduleName]["css"])) {
+            throw new Exception("UI0401", $moduleName);
+        }
+        return $paths[$moduleName]["css"];
     }
 
 

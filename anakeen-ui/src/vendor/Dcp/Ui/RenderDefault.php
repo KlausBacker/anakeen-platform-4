@@ -25,9 +25,9 @@ class RenderDefault implements IRenderConfig
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         return array(
-            "bootstrap" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("css/ank/theme/bootstrap.min.css"),
-            "kendo" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("css/ank/theme/kendo.min.css"),
-            "smartElement" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("css/ank/theme/smartElement.min.css")
+            "bootstrap" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap(),
+            "kendo" => \Dcp\Ui\UIGetAssetPath::getCssKendo(),
+            "smartElement" => \Dcp\Ui\UIGetAssetPath::getCssSmartElement()
         );
     }
 

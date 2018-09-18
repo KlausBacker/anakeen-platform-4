@@ -64,19 +64,19 @@ class LoginPage
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/bootstrap.min.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/kendo.min.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
                 ],
                 [
                     "key" => "components",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/components.min.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents()
                 ],
                 [
                     "key" => "login",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCustomAssetPath("/css/ank/theme/login.min.css")
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCss("login")
                 ],
             ]
         ];

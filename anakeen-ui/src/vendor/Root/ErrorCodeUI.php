@@ -204,9 +204,14 @@ class ErrorCodeUI
     const UI0308 = 'view "%s" is not valid in view control document "%s" . It use a ZONE layout';
 
     /**
-     * @errorCode The view identifier use core ZONE and not declare renderConfig class
+     * @errorCode The manifest json is unknown
      */
     const UI0400 = 'The manifest for the asset "%s" is not known (%s)';
+
+    /**
+     * @errorCode The module is not known in the theme manifest (need upgrade the theme ?)
+     */
+    const UI0401 = 'The module %s is not known in the theme';
 
     /**
      * for beautifier
