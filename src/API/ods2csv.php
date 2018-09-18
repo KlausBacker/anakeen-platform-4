@@ -54,8 +54,11 @@ function startElementOds($parser, $name, $attrs)
         }
     }
     if ($name == "TEXT:P") {
+        if ($celldata) {
+            $celldata .= '\n';
+        }
         if ((isset($rows[$nrow][$ncol])) && strlen($rows[$nrow][$ncol]) > 0) {
-            $rows[$nrow][$ncol].= '\n';
+          //  $rows[$nrow][$ncol].= '\n';
         }
     }
 }
@@ -104,7 +107,7 @@ function characterDataOds($parser, $data)
 {
     global $rows, $nrow, $inrow, $incell, $ncol, $celldata;
     if ($inrow && $incell) {
-        $celldata.= preg_replace('/\s/u', ' ', preg_replace('/^\s*[\r\n]\s*$/ms', '', str_replace(SEPCHAR, ALTSEPCHAR, $data)));
+        $celldata.= preg_replace('/\s/u', ' ', preg_replace('/^\s*[\r\n]\s*$/ms', '', $data));
     }
     //  print $data. "- ";
 }
@@ -144,7 +147,15 @@ function xmlcontent2csv($xmlcontent, &$fcsv)
     xml_parser_free($xml_parser);
     //print_r($rows);
     foreach ($rows as $k => $row) {
-        $fcsv.= implode(SEPCHAR, $row) . "\n";
+        $cellData = array_map(function ($cell) {
+            if ($cell !== '') {
+               return  '"'.str_replace('"', '""', str_replace('\\"', '\\"', $cell)).'"';
+            } else {
+                return '';
+            }
+        }, $row);
+
+        $fcsv.= implode(SEPCHAR, $cellData) . "\n";
     }
     return "";
 }
