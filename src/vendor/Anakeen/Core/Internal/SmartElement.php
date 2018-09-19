@@ -3696,6 +3696,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final private function clearFullAttr($attrid, $index = -1)
     {
+        return;
         $attrid = strtolower($attrid);
         $oa = $this->getAttribute($attrid);
         if ($oa && $oa->usefor != 'Q') {
@@ -4274,7 +4275,6 @@ create unique index i_docir on doc(initid, revision);";
         if (!empty($this->fieldvalues)) {
             $moreValues=json_decode($this->fieldvalues, true);
 
-            if (!$moreValues) var_dump($this->fieldvalues);
             foreach ($moreValues as $attrid => $v) {
                 if (empty($this->$attrid)) {
                     if (is_array($v)) {
