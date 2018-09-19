@@ -4,7 +4,7 @@ namespace Anakeen\Components\Grid\Routes;
 
 
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Core\SEManager;
+use Anakeen\SmartElementManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\NormalAttribute;
@@ -36,7 +36,7 @@ class ColumnsConfig
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $collectionId = $args["collectionId"];
-        $this->collection = SEManager::getDocument($collectionId);
+        $this->collection = SmartElementManager::getDocument($collectionId);
         if (!$this->collection) {
             $exception = new Exception("GRID0001", $collectionId);
             $exception->setHttpStatus("404", "Smart Element not found");
@@ -64,7 +64,7 @@ class ColumnsConfig
                 break;
         }
         if (!empty($this->structureId) && $this->structureId !== -1) {
-            $this->structureRef = SEManager::getFamily($this->structureId);
+            $this->structureRef = SmartElementManager::getFamily($this->structureId);
             if (!$this->structureRef) {
                 $exception = new Exception("GRID0002", $this->structureId);
                 $exception->setHttpStatus("404", "Searched Smart Structure not found");
@@ -79,7 +79,7 @@ class ColumnsConfig
             case "C":
                 return self::getStructureColumns($collection, $structRef, $returnsOnly);
             case "D":
-                return self::getFolderColumns($collection, $returnsOnly);
+                return self::getFolderColumns($collection, $structRef, $returnsOnly);
             case "S":
                 return self::getSearchColumns($collection, $structRef, $returnsOnly);
         }
@@ -106,11 +106,17 @@ class ColumnsConfig
         return $return;
     }
 
-    private static function getFolderColumns(SmartElement $collection, array $returnsOnly)
+    private static function getFolderColumns(SmartElement $dir, SmartStructure $struct, array $returnsOnly)
     {
+        $return = array();
+        // Display default columns (icon + title + abstract fields)
+        foreach (self::DEFAULT_COLUMNS as $id) {
+            $return[] = self::getColumnConfig($id, $struct);
+        }
+        return $return;
     }
 
-    private static function getSearchColumns(SmartElement $collection, SmartStructure $structRef = null, array $returnsOnly)
+    private static function getSearchColumns(SmartElement $collection, SmartStructure $structRef = null, array $returnsOnly = [])
     {
         if (is_a($collection, Report::class)) {
             return self::getReportColumns($collection, $structRef, $returnsOnly);
@@ -119,7 +125,7 @@ class ColumnsConfig
         return $return;
     }
 
-    private static function getReportColumns(SmartElement $collection, SmartStructure $structRef = null, array $returnsOnly)
+    private static function getReportColumns(SmartElement $collection, SmartStructure $structRef = null, array $returnsOnly = [])
     {
         $return = [];
         $cols = $collection->getMultipleRawValues(ReportFields::rep_idcols);
@@ -225,25 +231,22 @@ class ColumnsConfig
     }
 
     public static function getColumnConfig($fieldId, \Anakeen\Core\Internal\SmartElement $smartEl = null) {
-        error_log($fieldId);
         $properties = self::getDisplayableProperties();
         if (isset($properties[$fieldId])) {
             $currentData = $properties[$fieldId];
             return $currentData;
         }
 
-        if (empty($smartEl)) {
-            throw new Exception(sprintf("Smart Element is null"));
-        }
-
-        $currentAttribute = $smartEl->getAttribute($fieldId);
-        if (is_object($currentAttribute)) {
-            return self::getAttributeConfig($currentAttribute, $smartEl);
-        } else {
-            if (isset($properties[$fieldId])) {
-                return $properties[$fieldId];
+        if (!empty($smartEl)) {
+            $currentAttribute = $smartEl->getAttribute($fieldId);
+            if (is_object($currentAttribute)) {
+                return self::getAttributeConfig($currentAttribute, $smartEl);
             } else {
-                throw new Exception(sprintf("Unknown id %s, famId %s", $fieldId, $smartEl->id));
+                if (isset($properties[$fieldId])) {
+                    return $properties[$fieldId];
+                } else {
+                    throw new Exception(sprintf("Unknown id %s, famId %s", $fieldId, $smartEl->id));
+                }
             }
         }
     }

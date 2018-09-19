@@ -25,6 +25,14 @@
             <sde:requiredAccess/>
             <sde:authenticated>true</sde:authenticated>
         </sde:route>
+        <sde:route name="Grid:Export">
+            <sde:callable>\Anakeen\Components\Grid\Routes\GridExport</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/grid/export/{collectionId}[/]</sde:pattern>
+            <sde:description>Get grid export content file</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
         <sde:route name="Grid:Operators">
             <sde:callable>\Anakeen\Components\Grid\Routes\Operators</sde:callable>
             <sde:method>GET</sde:method>

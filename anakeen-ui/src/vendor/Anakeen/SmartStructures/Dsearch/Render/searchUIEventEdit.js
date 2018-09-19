@@ -98,6 +98,9 @@ import showGrid from "./searchUISEGrid";
     $dataJSON = $documentController
       .data("dcpDocumentController")
       ._model.toJSON();
+    $dataJSON.document.attributes = $documentController
+      .data("dcpDocumentController")
+      ._model.getValues(false);
     $.ajax({
       method: "POST",
       url:

@@ -10,7 +10,7 @@ namespace Anakeen\Components\Grid\Routes;
 
 
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Core\SEManager;
+use Anakeen\SmartElementManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -55,7 +55,7 @@ class GridConfig
 
     protected function parseRequestParams(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)  {
         $this->collectionId = $args["collectionId"];
-        $this->collectionDoc = SEManager::getDocument($this->collectionId);
+        $this->collectionDoc = SmartElementManager::getDocument($this->collectionId);
         if (!$this->collectionDoc) {
             $exception = new Exception("GRID0001", $this->collectionId);
             $exception->setHttpStatus("404", "Smart Element not found");
@@ -71,10 +71,7 @@ class GridConfig
         return array(
             "smartFields" => $this->gridFields,
             "footer" => array(),
-            "toolbar" => [
-                "export" => true,
-                "columns" => true
-            ],
+            "toolbar" => [],
             "actions" => [],
             "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=".$this->getUrlFields())
         );
@@ -95,13 +92,12 @@ class GridConfig
 
     public function getGridFields()
     {
-        $smartStructureId = -1;
         switch ($this->collectionDoc->defDoctype) {
             case "C": // Smart Structure
                 $this->structureId = $this->collectionDoc->initid;
                 break;
             case "D": // Dir
-                $this->structureId = $this->collectionDoc->getRawValue(Dir::fld_famids);
+                $this->structureId = $this->collectionDoc->fromid;
                 break;
             case "S": // Search
                 $this->structureId = $this->collectionDoc->getRawValue(Search::se_famid);
@@ -110,9 +106,9 @@ class GridConfig
                 }
                 break;
         }
-        $this->structureRef = SEManager::getFamily($this->structureId);
+        $this->structureRef = SmartElementManager::getFamily($this->structureId);
         if (!$this->structureRef) {
-            $exception = new Exception("GRID0002", $smartStructureId);
+            $exception = new Exception("GRID0002", $this->structureId);
             $exception->setHttpStatus("404", "Searched Smart Structure not found");
             throw $exception;
         }
