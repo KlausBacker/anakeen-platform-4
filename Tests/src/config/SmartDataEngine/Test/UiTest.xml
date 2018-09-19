@@ -21,6 +21,16 @@
                 <sde:access ns="Uitest">user</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GridPageConfig">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\TestGridConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/uitest/gridConfig/{collectionId}</sde:pattern>
+            <sde:description>Test Grid Page Config</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="ExportData">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\UiTest\ExportData</sde:callable>

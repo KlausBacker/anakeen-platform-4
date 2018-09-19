@@ -18,7 +18,13 @@
 
 </head>
 <body style="height: 100vh; width: 100vw; font-size: 12px;">
-<ank-se-grid style="height:100%;" context-titles-separator=">" collection="TST_RENDER" checkable="true" server-paging="true" server-filtering="true" server-sorting="true">
+<ank-se-grid style="height:100%;" context-titles-separator=">"
+             url-config="/api/v2/uitest/gridConfig/<collection>"
+             collection="3104"
+             checkable="true"
+             server-paging="true"
+             server-filtering="true"
+             server-sorting="true">
 </ank-se-grid>
 
 {{#JS_LEGACY}}

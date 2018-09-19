@@ -10,7 +10,7 @@ namespace Anakeen\Components\Grid\Routes;
 
 
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Core\SEManager;
+use Anakeen\SmartElementManager;
 use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\DocumentList;
 use SmartStructure\Fields\Report;
@@ -117,7 +117,7 @@ class DataSource extends DocumentList
 
     protected function prepareSearchDoc() {
         parent::prepareSearchDoc();
-        $doc = SEManager::getDocument($this->smartElementId);
+        $doc = SmartElementManager::getDocument($this->smartElementId);
         if (!$doc) {
             $exception = new Exception('GRID0001', $this->smartElementId);
             $exception->setHttpStatus("404", "Smart Element not found");
@@ -129,6 +129,8 @@ class DataSource extends DocumentList
                 $this->_searchDoc->fromid = $this->smartElement->id;
                 break;
             case 'D':
+                $this->_searchDoc->useCollection($this->smartElement->initid);
+                break;
             case 'S':
                 $famId = $this->smartElement->getRawValue(Search::se_famid);
                 if (empty($famId)) {
@@ -195,10 +197,11 @@ class DataSource extends DocumentList
                 case "C":
                     return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->smartElement);
                 case "D":
+                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);
                     break;
                 case "S":
                     $famId = $this->smartElement->getRawValue("se_famid");
-                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, SEManager::getFamily($famId));
+                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, SmartElementManager::getFamily($famId));
             }
 
         }
