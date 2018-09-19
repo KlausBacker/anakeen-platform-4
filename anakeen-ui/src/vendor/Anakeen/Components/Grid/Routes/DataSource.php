@@ -160,6 +160,9 @@ class DataSource extends DocumentList
         $this->_searchDoc->setStart(($this->page - 1) * $this->pageSize);
     }
 
+    /**
+     * interpretation of Kendo Filters
+     */
     protected function prepareFiltering() {
         if (!empty($this->filter)) {
             foreach($this->filter['filters'] as $filter) {
