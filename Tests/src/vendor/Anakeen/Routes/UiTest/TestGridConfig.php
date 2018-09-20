@@ -9,27 +9,62 @@
 namespace Anakeen\Routes\UiTest;
 
 
+use Anakeen\Components\Grid\Routes\ColumnsConfig;
 use Anakeen\Components\Grid\Routes\GridConfig;
+
 
 class TestGridConfig extends GridConfig
 {
+    protected function getAllTypeConfig($originalConfig) {
+        if ($this->structureRef->name === "TST_DDUI_ALLTYPE") {
+            $originalConfig["toolbar"] = [
+                "actionConfigs" => [
+                    [ "action" => "columns", "title" => "Paramètres de la grille"]
+                ]
+            ];
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__title", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__account_multiple", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__date", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__integer", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__double", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__money", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__color_array", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("test_ddui_all__text_array", $this->collectionDoc);
+            $originalConfig["actions"] = [
+                "title" => "Actions",
+                "actionConfigs" => [
+                    [ "action" => "edit", "title" => "Modifier"]
+                ]
+            ];
+            $originalConfig["footer"] = [
+                "test_ddui_all__money" => "<div style='text-align: right'><b>Total : </b>248,00 €</div>"
+            ];
+        } else if ($this->structureRef->name === "DEVNOTE") {
+            $originalConfig["toolbar"] = [
+                "actionConfigs" => [
+                    [ "action" => "export", "title" => "Exporter les données"],
+                    [ "action" => "columns", "title" => "Paramètres de la grille"]
+                ]
+            ];
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("note_author", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("note_redactdate", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("note_location", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("note_coauthor", $this->collectionDoc);
+            $originalConfig["smartFields"][] = ColumnsConfig::getColumnConfig("note_phone", $this->collectionDoc);
+            $originalConfig["actions"] = [
+                "title" => "Actions",
+                "actionConfigs" => [
+                    [ "action" => "consult", "title" => "Ouvrir" ],
+                    [ "action" => "edit", "title" => "Modifier"],
+                    [ "action" => "customAction", "title" => "Custom"]
+                ]
+            ];
+        }
+        return $originalConfig;
+    }
     protected function getConfig()
     {
         $config = parent::getConfig();
-        $config["toolbar"] = [
-            "actionConfigs" => [
-                [ "action" => "export", "title" => "Exporter les données"],
-                [ "action" => "columns", "title" => "Paramètres de la grille"]
-            ]
-        ];
-        $config["actions"] = [
-            "title" => "Actions",
-            "actionConfigs" => [
-                [ "action" => "consult", "title" => "Ouvrir" ],
-                [ "action" => "edit", "title" => "Modifier"],
-                [ "action" => "delete", "title" => "Supprimer"]
-            ]
-        ];
-        return $config;
+        return $this->getAllTypeConfig($config);
     }
 }

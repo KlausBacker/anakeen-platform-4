@@ -21,6 +21,16 @@
                 <sde:access ns="Uitest">user</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="AllTypeGridPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\TestAllTypeGridPage</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/apps/uitest/grid/alltypes</sde:pattern>
+            <sde:description>Test UI Grid Page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="GridPageConfig">
             <sde:priority>1</sde:priority>
             <sde:callable>\Anakeen\Routes\UiTest\TestGridConfig</sde:callable>
