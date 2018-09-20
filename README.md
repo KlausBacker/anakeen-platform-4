@@ -24,3 +24,6 @@ Requirement :
 *  easygettext (npm install -g easygettext)
 *  xgettext (apt install gettext)
 
+## Autotest
+
+Pour ajouter, lancer des autotests se référer au README dans le répertoire `Tests/webdriver`

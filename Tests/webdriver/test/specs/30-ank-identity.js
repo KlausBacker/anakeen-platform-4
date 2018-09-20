@@ -181,7 +181,7 @@ describe(`${scriptName} : component : basic check`, () => {
         .getElementById("identity")
         .addEventListener("beforeUserLoaded", event => {
           document.getElementById("result--before").textContent = "before";
-          event.detail.initials = "CB";
+          event.detail[0].initials = "CB";
         });
     });
     //Register afterUserLoaded event
@@ -261,7 +261,7 @@ describe(`${scriptName} : component : basic check`, () => {
       document
         .getElementById("identity-email")
         .addEventListener("beforeMailAddressChange", event => {
-          event.detail.newEmail = "gj@example.net";
+          event.detail[0].newEmail = "gj@example.net";
         });
     });
     //Register afterMailAddressChange event
