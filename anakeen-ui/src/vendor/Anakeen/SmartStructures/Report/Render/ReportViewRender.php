@@ -27,10 +27,12 @@ class ReportViewRender extends SearchViewRender
         return $menu;
     }
 
-    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
-    {
-        $js = parent::getJsReferences($document);
 
-        return $js;
+    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
+        $css = parent::getCssReferences($document);
+        $css["ankcomponent"]= \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents();
+        return $css;
     }
+
 }
