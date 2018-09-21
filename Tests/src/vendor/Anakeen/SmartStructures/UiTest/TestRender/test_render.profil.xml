@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_RENDER">
+        <smart:accesses>
+            <smart:element-access-configuration ref="PRF_TST_RENDER"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+    <smart:access-configuration name="PRF_TST_RENDER" label="TST doc access" access-structure="TST_RENDER">
+        <smart:description>Everybody can do everything</smart:description>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="all"/>
+    </smart:access-configuration>
+</smart:config>

@@ -63,7 +63,7 @@ describe(`${scriptName} : component : basic check`, () => {
       await browser.getText("#identity-email .identity-badge-initials")
     ).to.have.string("JG", "The initial are not good");
     expect(
-      await browser.isExisting("#identity-email .email-modifier"),
+      await browser.isExisting("#identity-email .identity-email-modifier"),
       "mail modifier is not here"
     ).to.be.true;
 
@@ -75,7 +75,7 @@ describe(`${scriptName} : component : basic check`, () => {
       await browser.getText("#identity-password .identity-badge-initials")
     ).to.have.string("JG", "The initial are not good");
     expect(
-      await browser.isExisting("#identity-password .password-modifier"),
+      await browser.isExisting("#identity-password .identity-password-modifier"),
       "password modifier is not here"
     ).to.be.true;
   });
@@ -87,28 +87,28 @@ describe(`${scriptName} : component : basic check`, () => {
     //Open change email popup
     await browser.click("#identity-email .identity-badge");
     expect(
-      await browser.isVisible('.modification-popup[aria-hidden="false"]'),
+      await browser.isVisible('.identity-modification-popup[aria-hidden="false"]'),
       "check if menu is good"
     ).to.be.true;
     //Click on menu
-    await browser.click('.modification-popup[aria-hidden="false"]');
+    await browser.click('.identity-modification-popup[aria-hidden="false"]');
     //Wait until k-window has finished css animation
     await browser.waitUntil(() => {
-      return browser.getCssProperty(".email-window", "opacity").value === 1;
+      return browser.getCssProperty(".identity-email-window", "opacity").value === 1;
     });
     expect(
-      await browser.isVisible(".email-modifier"),
+      await browser.isVisible(".identity-email-modifier"),
       "check if email modifier is visible"
     ).to.be.true;
     //Click on cancel button
     //await browser.debug();
-    await browser.click(".email-modifier .emailModifier--cancel");
+    await browser.click(".identity-email-modifier .identity-emailModifier--cancel");
     //Wait until k window ended css anim
     await browser.waitUntil(() => {
-      return browser.isVisible(".email-window") === false;
+      return browser.isVisible(".identity-email-window") === false;
     });
     expect(
-      await browser.isVisible(".email-modifier"),
+      await browser.isVisible(".identity-email-modifier"),
       "check if email modifier is hidden"
     ).to.be.false;
     await browser.url("/autotest/ankidentity");
@@ -117,27 +117,27 @@ describe(`${scriptName} : component : basic check`, () => {
     //Open change password popup
     await browser.click("#identity-password .identity-badge");
     expect(
-      await browser.isVisible('.modification-popup[aria-hidden="false"]'),
+      await browser.isVisible('.identity-modification-popup[aria-hidden="false"]'),
       "check if menu is good"
     ).to.be.true;
     //Click on menu
-    await browser.click('.modification-popup[aria-hidden="false"]');
+    await browser.click('.identity-modification-popup[aria-hidden="false"]');
     //Wait until k-window has finished css animation
     await browser.waitUntil(() => {
-      return browser.getCssProperty(".password-window", "opacity").value === 1;
+      return browser.getCssProperty(".identity-password-window", "opacity").value === 1;
     });
     expect(
-      await browser.isVisible(".password-modifier"),
+      await browser.isVisible(".identity-password-modifier"),
       "check if password modifier is visible"
     ).to.be.true;
     //Click on cancel button
-    await browser.click(".password-modifier .passwordModifier--cancel");
+    await browser.click(".identity-password-modifier .identity-passwordModifier--cancel");
     //Wait until k window ended css anim
     await browser.waitUntil(() => {
-      return browser.isVisible(".password-window") === false;
+      return browser.isVisible(".identity-password-window") === false;
     });
     expect(
-      await browser.isVisible(".email-modifier"),
+      await browser.isVisible(".identity-email-modifier"),
       "check if password modifier is hidden"
     ).to.be.false;
   });
@@ -181,7 +181,7 @@ describe(`${scriptName} : component : basic check`, () => {
         .getElementById("identity")
         .addEventListener("beforeUserLoaded", event => {
           document.getElementById("result--before").textContent = "before";
-          event.detail.initials = "CB";
+          event.detail[0].initials = "CB";
         });
     });
     //Register afterUserLoaded event
@@ -224,22 +224,22 @@ describe(`${scriptName} : component : basic check`, () => {
     //Open change email popup
     await browser.click("#identity-email .identity-badge");
     //Click on menu
-    await browser.click('.modification-popup[aria-hidden="false"]');
+    await browser.click('.identity-modification-popup[aria-hidden="false"]');
     //Wait until k-window has finished css animation
     await browser.waitUntil(() => {
-      return browser.getCssProperty(".email-window", "opacity").value === 1;
+      return browser.getCssProperty(".identity-email-window", "opacity").value === 1;
     });
     //Complete
     await browser.setValue(
-      '.email-modifier[data-role="window"] .email-input',
+      '.identity-email-modifier[data-role="window"] .identity-email-input',
       "test@test.test"
     );
     await browser.setValue(
-      '.email-modifier[data-role="window"] input[type="password"]',
+      '.identity-email-modifier[data-role="window"] input[type="password"]',
       "anakeen"
     );
     //emailModifier--validate
-    await browser.click(".emailModifier--validate");
+    await browser.click(".identity-emailModifier--validate");
     //Wait event
     await browser.waitUntil(() => {
       return browser.getText("#result--after") === "after";
@@ -261,7 +261,7 @@ describe(`${scriptName} : component : basic check`, () => {
       document
         .getElementById("identity-email")
         .addEventListener("beforeMailAddressChange", event => {
-          event.detail.newEmail = "gj@example.net";
+          event.detail[0].newEmail = "gj@example.net";
         });
     });
     //Register afterMailAddressChange event
@@ -275,21 +275,21 @@ describe(`${scriptName} : component : basic check`, () => {
     //Open change email popup
     await browser.click("#identity-email .identity-badge");
     //Click on menu
-    await browser.click('.modification-popup[aria-hidden="false"]');
+    await browser.click('.identity-modification-popup[aria-hidden="false"]');
     //Wait until k-window has finished css animation
     await browser.waitUntil(() => {
-      return browser.getCssProperty(".email-window", "opacity").value === 1;
+      return browser.getCssProperty(".identity-email-window", "opacity").value === 1;
     });
     await browser.setValue(
-      '.email-modifier[data-role="window"] .email-input',
+      '.identity-email-modifier[data-role="window"] .identity-email-input',
       "test@test.test"
     );
     await browser.setValue(
-      '.email-modifier[data-role="window"] input[type="password"]',
+      '.identity-email-modifier[data-role="window"] input[type="password"]',
       "anakeen"
     );
     //emailModifier--validate
-    await browser.click(".emailModifier--validate");
+    await browser.click(".identity-emailModifier--validate");
     //Wait after event
     await browser.waitUntil(() => {
       return browser.getText("#result--after") === "after";
