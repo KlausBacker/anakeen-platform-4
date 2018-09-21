@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_RENDER" label="Test de rendu de document">
+        <smart:icon file="se-tst_render.png"/>
+        <smart:class>Anakeen\SmartStructures\UiTest\TestRender\TestRenderHooks</smart:class>
+        <smart:fields>
+            <smart:field-set name="tst_fr_desc" type="frame" access="ReadWrite" label="Titre">
+                <smart:field-int name="tst_ref" access="ReadWrite" label="Référence"/>
+                <smart:field-text name="tst_title" access="ReadWrite" label="Le titre"/>
+                <smart:field-htmltext name="tst_desc" access="ReadWrite" label="Description"/>
+            </smart:field-set>
+            <smart:field-set name="tst_fr_config" type="frame" access="ReadWrite" label="Configuration">
+                <smart:field-text name="tst_docname" access="ReadWrite" label="Nom logique"/>
+                <smart:field-text name="tst_docviewid" access="ReadWrite" label="Identifiant de vue"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:hooks/>
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config>
