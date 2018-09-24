@@ -1,7 +1,12 @@
 <?php
+
+
 namespace Anakeen\Components\Grid\Routes;
 
 
+use Anakeen\Components\Grid\Operators;
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Router\Exception;
@@ -133,6 +138,7 @@ class DataSource extends DocumentList
                 if (empty($famId)) {
                     $this->_searchDoc->fromid = 0;
                 } else {
+                    $this->_searchDoc->fromid = $famId;
                     $this->_searchDoc->useCollection($this->smartElement->initid);
                 }
                 break;
@@ -160,18 +166,16 @@ class DataSource extends DocumentList
         $this->_searchDoc->setStart(($this->page - 1) * $this->pageSize);
     }
 
-    protected function prepareFiltering() {
+    /**
+     * interpretation of Kendo Filters
+     */
+    protected function prepareFiltering()
+    {
         if (!empty($this->filter)) {
-            foreach($this->filter['filters'] as $filter) {
-                $query = Operators::OPERATORS["ank:".$filter["operator"]]["query"];
-                $operands = Operators::OPERATORS["ank:".$filter["operator"]]["operands"];
-                if (!empty($query)) {
-                    if (!empty($operands)) {
-                        $operandsValue = array_map(function ($item) use ($filter) {
-                            return $filter[$item];
-                        }, $operands);
-                        $this->_searchDoc->addFilter($query, ...$operandsValue);
-                    }
+            foreach ($this->filter['filters'] as $filter) {
+                $filterObject = Operators::getFilterObject($filter);
+                if (!empty($filterObject)) {
+                    $this->_searchDoc->addFilter($filterObject);
                 }
             }
         }

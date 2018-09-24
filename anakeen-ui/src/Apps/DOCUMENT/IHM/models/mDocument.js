@@ -240,7 +240,7 @@ define([
 
     /**
      * Return all the values of the current document
-     *
+     * @var onlyModified
      * @returns {{}}
      */
     getValues: function mDocumentdocumentGetValues(onlyModified) {
@@ -1247,13 +1247,14 @@ define([
 
     /**
      * Used by backbone for the save part
+     * @var getAllAttributes  ((false by default) : if true return also unmodified values
      * @returns {{document: {attributes: *, properties : *}}}
      */
-    toJSON: function mDocumenttoJSON() {
+    toJSON: function mDocumenttoJSON(getAllAttributes) {
       return {
         document: {
           properties: this.getModelProperties(),
-          attributes: this.getValues(true)
+          attributes: this.getValues(getAllAttributes !== true)
         },
         customClientData: this._customClientData
       };

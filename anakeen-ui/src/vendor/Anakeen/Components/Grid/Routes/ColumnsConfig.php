@@ -3,6 +3,7 @@
 namespace Anakeen\Components\Grid\Routes;
 
 
+use Anakeen\Components\Grid\Operators;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Core\SmartStructure;
@@ -51,7 +52,8 @@ class ColumnsConfig
         return ApiV2Response::withData($response, $this->availableColumns);
     }
 
-    protected function getAvailableColumns() {
+    protected function getAvailableColumns()
+    {
         switch ($this->collection->defDoctype) {
             case "C": // Smart Structure
                 $this->structureId = $this->collection->initid;
@@ -74,7 +76,8 @@ class ColumnsConfig
         return self::getCollectionAvailableFields($this->collection, $this->structureRef, $this->requestFields);
     }
 
-    public static function getCollectionAvailableFields(SmartElement $collection, SmartStructure $structRef = null, $returnsOnly = []) {
+    public static function getCollectionAvailableFields(SmartElement $collection, SmartStructure $structRef = null, $returnsOnly = [])
+    {
         switch ($collection->defDoctype) {
             case "C":
                 return self::getStructureColumns($collection, $structRef, $returnsOnly);
@@ -135,7 +138,7 @@ class ColumnsConfig
 
         if (count($returnsOnly)) {
             $cols = array_filter($cols, function ($item) use ($returnsOnly) {
-              return in_array($item, $returnsOnly);
+                return in_array($item, $returnsOnly);
             });
         }
 
@@ -149,15 +152,17 @@ class ColumnsConfig
     }
 
 
-    protected static function getDisplayableProperties() {
+    protected static function getDisplayableProperties()
+    {
         $properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item) {
             return isset($item["displayable"]) ? $item["displayable"] : false;
         });
         array_walk($properties, function (&$value, $key) {
             $value["field"] = $key;
-            $value["type"] = $value['type'];
+            $value["smartType"] = $value['type'];
             $value["title"] = _($value['label']);
             $value["property"] = true;
+            $value["filterable"] = self::getFilterable($value["type"]);
 
             if (isset($value["displayable"])) {
                 unset($value["displayable"]);
@@ -173,34 +178,43 @@ class ColumnsConfig
         return isset($sortable[$attrId]);
     }
 
-    public static function isFilterable(\Anakeen\Core\SmartStructure\BasicAttribute $attr)
+    protected static function getFilterable($type)
+    {
+        $operators = Operators::getTypeOperators($type);
+
+        if (!$operators) {
+            return false;
+        }
+
+        $stringsOperators=[];
+        foreach ($operators as $k=>$operator) {
+            $stringsOperators[$k]= $operator["label"];
+        }
+
+
+        $filterable = [
+            "operators" => [
+                "string" => $stringsOperators,
+                "date" => $stringsOperators,
+            ],
+            "cell" => [
+                "enable" => true,
+                "delay" => 9999999999 // Wait 115 days : only way to have the clear button easyly
+            ]
+        ];
+        return $filterable;
+    }
+
+    public static function getColumnFilterConfig(\Anakeen\Core\SmartStructure\BasicAttribute $attr)
     {
         if ($attr->getAccess() === BasicAttribute::NONE_ACCESS) {
             return false;
         }
-        $isFilterable = (in_array($attr->type, array(
-                "text",
-                "longtext",
-                "htmltext",
-                "docid",
-                "enum",
-                "account",
-                "money",
-                "int",
-                "double",
-                "date"
-            )) && $attr->getOption("searchCriteria") != "hidden");
-
-        if ($isFilterable && $attr->isMultiple() && ($attr->type === "money" || $attr->type === "int" || $attr->type === "double" || $attr->type === "date")) {
-            // No operators for multiple numeric values
-            $isFilterable = false;
-        }
-        if ($isFilterable && ($attr->type === "docid" || $attr->type === "account")) {
-            $docTitle = $attr->getOption("doctitle");
-            $isFilterable = !empty($docTitle);
+        if ($attr->getOption("searchCriteria") === "hidden") {
+            return false;
         }
 
-        return $isFilterable;
+        return self::getFilterable($attr->type . ($attr->isMultiple() ? '[]' : '') . ($attr->isMultipleInArray() ? '[]' : ''));
     }
 
     protected static function getAttributeConfig(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \Anakeen\Core\SmartStructure $family)
@@ -208,13 +222,15 @@ class ColumnsConfig
         $data = array(
             "field" => $currentAttribute->id,
             "multiple" => $currentAttribute->isMultiple(),
-            "type" => $currentAttribute->type,
+
+            "smartType" => $currentAttribute->type,
             "title" => $currentAttribute->getLabel(),
             "context" => self::getContextLabels($currentAttribute),
             "withContext" => true,
             "encoded" => false,
             "sortable" => self::isSortable($family, $currentAttribute->id),
-            "filterable" => self::isFilterable($currentAttribute),
+            "filterable" => self::getColumnFilterConfig($currentAttribute),
+
         );
         if (($data["type"] == "docid" || $data["type"] == "account") && $data["filterable"]) {
             $data["doctitle"] = $currentAttribute->getOption("doctitle") == "auto" ? $currentAttribute->id . "_title" : $currentAttribute->getOption("doctitle");
@@ -222,7 +238,8 @@ class ColumnsConfig
         return $data;
     }
 
-    protected static function getContextLabels( BasicAttribute $attribute, $contextLabels = []) {
+    protected static function getContextLabels(BasicAttribute $attribute, $contextLabels = [])
+    {
         if ($attribute && $attribute->fieldSet && $attribute->fieldSet->id != \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
             array_unshift($contextLabels, $attribute->fieldSet->getLabel());
             return self::getContextLabels($attribute->fieldSet, $contextLabels);
@@ -230,7 +247,8 @@ class ColumnsConfig
         return $contextLabels;
     }
 
-    public static function getColumnConfig($fieldId, \Anakeen\Core\Internal\SmartElement $smartEl = null) {
+    public static function getColumnConfig($fieldId, \Anakeen\Core\Internal\SmartElement $smartEl = null)
+    {
         $properties = self::getDisplayableProperties();
         if (isset($properties[$fieldId])) {
             $currentData = $properties[$fieldId];
