@@ -6,11 +6,11 @@ namespace Anakeen\Routes\UiTest;
 use Anakeen\Core\ContextManager;
 use Dcp\Ui\UIGetAssetPath;
 
-class TestGridPage
+class TestAllTypeGridPage
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $page = __DIR__ . "/TestGridPage.html.mustache";
+        $page = __DIR__ . "/TestAllTypeGridPage.html.mustache";
         $template = file_get_contents($page);
         $data = [
             "JS_DEPS" => [

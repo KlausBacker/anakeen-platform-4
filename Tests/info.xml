@@ -6,6 +6,7 @@
     <requires>
         <module name="user-interfaces"/>
         <module name="smart-data-engine-test"/>
+        <module name="anakeen-dev-data"/>
     </requires>
 
     <post-install>

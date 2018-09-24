@@ -1,5 +1,6 @@
 anakeen-ui/src/vendor/Anakeen/SmartStructures/Dsearch/Render/jquery.stickytableheaders.min.js
 anakeen-ui/src/public/
+anakeen-ui/src/vendor/Anakeen/Ui/PhpLib
 Tests/
 node_modules/
 webpackConfig/

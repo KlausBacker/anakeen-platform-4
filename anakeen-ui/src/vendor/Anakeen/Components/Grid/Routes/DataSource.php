@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: aurelien
- * Date: 07/08/18
- * Time: 14:53
- */
-
 namespace Anakeen\Components\Grid\Routes;
 
 
@@ -72,7 +65,11 @@ class DataSource extends DocumentList
             $this->offset = $queryParams['skip'];
         }
         if (isset($queryParams['take'])) {
-            $this->slice = $queryParams['take'];
+            if (is_numeric($queryParams['take'])) {
+                $this->slice = intval($queryParams['take']);
+            } else if ($queryParams['take'] == 'all') {
+                $this->slice = "ALL";
+            }
         }
 
         $this->computePage();
@@ -104,7 +101,7 @@ class DataSource extends DocumentList
             $this->pageSize = $this->slice;
         }
         // compute kendo page number (1 is first page)
-        if (!isset($this->page)) {
+        if (!isset($this->page) && is_numeric($this->slice)) {
             $this->page = intval($this->offset/$this->slice) + 1;
         }
     }
