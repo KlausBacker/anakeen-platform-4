@@ -208,8 +208,8 @@ class ImportDocumentDescription
             }
         } else {
             // converted from ods
-            // separator is ; no enclosure
-            $this->csvEnclosure = '';
+            // separator is ;  enclosure double quote
+            $this->csvEnclosure = '"';
             $this->csvSeparator = ';';
             $this->csvLinebreak = '\n';
         }
@@ -247,7 +247,9 @@ class ImportDocumentDescription
                     ), $v);
                 }, $data);
             } else {
-                $data = fgetcsv($this->fdoc, 0, $this->csvSeparator, $this->csvEnclosure);
+                // Use enclosure as escape : solution to not use escape character
+                $data = fgetcsv($this->fdoc, 0, $this->csvSeparator, $this->csvEnclosure, $this->csvEnclosure);
+
                 if ($data === false) {
                     continue;
                 }

@@ -36,8 +36,10 @@ deploy:
 	${ANAKEEN_CLI_BIN} build --auto-release
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w smart-data-engine-1*app
 
-deploy-test: app-test
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -a -s Tests
+deploy-test:
+	rm -f smart-data-engine-test*app
+	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
+	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w smart-data-engine-test*app
 
 po:
 	${DEVTOOL_BIN} extractPo -s . -o ./src

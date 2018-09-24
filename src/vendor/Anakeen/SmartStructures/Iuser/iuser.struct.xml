@@ -111,8 +111,9 @@
         <smart:defaults>
             <smart:default field="us_status">A</smart:default>
             <smart:default field="us_loginfailure">0</smart:default>
-            <smart:default field="us_defaultgroup">GDEFAULT</smart:default>
+            <smart:initial field="us_defaultgroup">GDEFAULT</smart:initial>
         </smart:defaults>
+
         <smart:accesses/>
 
     </smart:structure-configuration>

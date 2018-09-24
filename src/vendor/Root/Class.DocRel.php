@@ -161,7 +161,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);";
                 }
                 // reset old relations
                 pg_query($this->dbid, sprintf("delete from docrel where sinitid=%d and type='%s'", $doc->initid, pg_escape_string($v->id)));
-                if ($v->inArray()) {
+                if ($v->isMultiple()) {
                     $tv = array_unique(\Anakeen\Core\Utils\Postgres::stringToFlatArray($doc->$k));
                 } else {
                     $tv = array($doc->$k);
