@@ -66,8 +66,24 @@ class StandardAttributeFilter
         if ($fam->getPropertyValue($attrId) === false) {
             $attr = $fam->getAttribute($this->attributeId);
         } else {
-            $attr = new BasicAttribute("title", $fam->id, "title");
-            $attr->type = "text";
+            switch ($attrId) {
+                case "title":
+                    $attr = new BasicAttribute("title", $fam->id, "title");
+                    $attr->type = "text";
+                    break;
+                case "mdate":
+                    $attr = new BasicAttribute("mdate", $fam->id, "Modification date");
+                    $attr->type = "timestamp";
+                    break;
+                case "cdate":
+                    $attr = new BasicAttribute("cdate", $fam->id, "Revision date");
+                    $attr->type = "timestamp";
+                    break;
+                default:
+                    $attr = new BasicAttribute($attrId, $fam->id, $attrId);
+                    $attr->type = "text";
+                    break;
+            }
         }
         return $attr;
     }

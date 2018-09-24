@@ -15,6 +15,8 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
         'htmltext',
         'longtext'
     );
+    protected $regexpPrefix='***=';
+    protected $regexpPostfix='';
 
     public function __construct($attrId, $value)
     {
@@ -54,7 +56,8 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
          * The value is hence treated as a literal string.
          * - http://www.postgresql.org/docs/9.1/static/functions-matching.html#POSIX-METASYNTAX
         */
-        $value = '***=' . $this->value;
+        $value = $this->regexpPrefix . $this->value. $this->regexpPostfix;
+
         $sql = sprintf("%s IS NOT NULL AND %s ~%s %s", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), ($this->NOCASE ? '*' : ''), pg_escape_literal($value));
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);

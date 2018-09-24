@@ -9,6 +9,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
 {
     const NOT = 1;
     const NOCASE = 2;
+    const ALL = 4;
     protected $NOT = false;
     protected $NOCASE = false;
     protected $compatibleType = array(
@@ -17,6 +18,8 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
         'longtext'
     );
     protected $value = null;
+    protected $ALL= false;
+
     public function __construct($attrId, $value)
     {
         parent::__construct($attrId);
@@ -26,6 +29,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
         if (isset($argv[0])) {
             $this->NOT = $this->NOT | ($argv[0] & self::NOT);
             $this->NOCASE = $this->NOCASE | ($argv[0] & self::NOCASE);
+            $this->ALL = $this->ALL | ($argv[0] & self::ALL);
         }
     }
     public function verifyCompatibility(\SearchDoc & $search)
@@ -55,7 +59,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
          * - http://www.postgresql.org/docs/9.1/static/functions-matching.html#POSIX-METASYNTAX
         */
         $value = '***=' . $value;
-        $sql = sprintf("%s IS NOT NULL AND %s ~%s< ANY(%s)", pg_escape_identifier($attr->id) , pg_escape_literal($value) , ($this->NOCASE ? '*' : '') , pg_escape_identifier($attr->id));
+        $sql = sprintf("%s IS NOT NULL AND %s ~%s< %s(%s)", pg_escape_identifier($attr->id) , pg_escape_literal($value) , ($this->NOCASE ? '*' : '') ,($this->ALL ? 'ALL' : 'ANY'), pg_escape_identifier($attr->id));
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }
