@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Autotest : Smart Element List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{#CSS}}
+        <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
+    {{#JS_DEPS}}
+        <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+        <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
+</head>
+<body>
+
+<h1>Smart Element List</h1>
+<div>
+    <ank-se-list id="simple" smart-collection="TST_RENDER" />
+</div>
+
+<h1>Smart Element List : without collection</h1>
+<div>
+    <ank-se-list id="simple--withoutcollection" />
+</div>
+
+<h1>Smart Element List : label</h1>
+<div>
+    <ank-se-list id="simple--label" label="test"/>
+</div>
+
+<h1>Smart Element List : logo-url</h1>
+<div>
+    <ank-se-list id="simple--logo" logo-url="/Images/se-tst_render.png"/>
+</div>
+
+<h1>Smart Element List : content-url</h1>
+<div>
+    <ank-se-list id="simple--content-url" smart-collection="TST_RENDER" content-url="components/selist/pager/{collection}/pages/{page}"/>
+</div>
+
+<h1>Smart Element List : slot</h1>
+<div>
+    <ank-se-list id="simple--slot" smart-collection="TST_RENDER">
+        <div vue-slot="header">
+            <span id="mySuperList">SUPER</span>
+        </div>
+    </ank-se-list>
+</div>
+
+<div>
+    <ank-se-list id="simple--slot--bis" smart-collection="TST_RENDER">
+        <template slot id="header">
+            <span id="mySuperList--bis">SUPER</span>
+        </template>
+    </ank-se-list>
+</div>
+
+
+<div id="result--before">
+    Nope
+</div>
+<div id="result--after">
+    Nope
+</div>
+
+{{#JS_LEGACY}}
+    <script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
+</body>
+</html>

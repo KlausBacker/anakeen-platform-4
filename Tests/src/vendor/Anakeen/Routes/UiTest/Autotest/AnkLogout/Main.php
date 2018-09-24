@@ -43,6 +43,10 @@ class Main
                 [
                     "key" => "kendo",
                     "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
+                ],
+                [
+                    "key" => "component",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents()
                 ]
             ]
         ];
