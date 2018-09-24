@@ -31,6 +31,16 @@
                 <sde:access ns="autotest">user</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="ankselist">
+            <sde:priority>1</sde:priority>
+            <sde:callable>\Anakeen\Routes\UiTest\Autotest\AnkSeList\Main</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/autotest/ankselist</sde:pattern>
+            <sde:description>autotest ankselist</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="autotest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
     <sde:accesses namespace="autotest">
         <sde:access name="user">

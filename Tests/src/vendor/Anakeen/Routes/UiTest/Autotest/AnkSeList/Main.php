@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\UiTest\Autotest\AnkIdentity;
+namespace Anakeen\Routes\UiTest\Autotest\AnkSeList;
 
 class Main
 {
