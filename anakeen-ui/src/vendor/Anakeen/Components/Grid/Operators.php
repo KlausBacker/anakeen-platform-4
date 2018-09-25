@@ -4,12 +4,12 @@ namespace Anakeen\Components\Grid;
 
 use Anakeen\Search\Filters\Contains;
 use Anakeen\Search\Filters\ElementSearchFilter;
-use Anakeen\Search\Filters\IsBetween;
 use Anakeen\Search\Filters\IsEmpty;
 use Anakeen\Search\Filters\IsEqual;
 use Anakeen\Search\Filters\IsGreater;
 use Anakeen\Search\Filters\IsLesser;
 use Anakeen\Search\Filters\IsNotEmpty;
+use Anakeen\Search\Filters\IsNotEqual;
 use Anakeen\Search\Filters\OneContains;
 use Anakeen\Search\Filters\OneEquals;
 use Anakeen\Search\Filters\OneGreaterThan;
@@ -76,9 +76,26 @@ class Operators
                     "time",
                     "int",
                     "double",
-                    "money"
+                    "money",
+                    "enum"
                 ],
                 "filterClass" => IsEqual::class
+            ],
+
+
+            "neq" => [
+                "label" => ___("Is not equal to", "grid-component"),
+                "operands" => [":field", ":value"],
+                "type" => [
+                    "date",
+                    "timestamp",
+                    "time",
+                    "int",
+                    "double",
+                    "money",
+                    "enum"
+                ],
+                "filterClass" => IsNotEqual::class
             ],
 
             "eq*" => [
@@ -90,11 +107,28 @@ class Operators
                     "money[]",
                     "date[]",
                     "timestamp[]",
-                    "time[]"
+                    "time[]",
+                    "enum[]",
+                    "enum[][]"
                 ],
                 "filterClass" => OneEquals::class
             ],
 
+            "neq*" => [
+                "label" => ___("No one values are equal to", "grid-component"),
+                "operands" => [":field", ":value", OneEquals::NOT],
+                "type" => [
+                    "int[]",
+                    "double[]",
+                    "money[]",
+                    "date[]",
+                    "timestamp[]",
+                    "time[]",
+                    "enum[]",
+                    "enum[][]"
+                ],
+                "filterClass" => OneEquals::class
+            ],
             "gt" => [
                 "label" => ___("Is greater than", "grid-component"),
                 "operands" => [":field", ":value"],
@@ -177,8 +211,6 @@ class Operators
                 ],
                 "filterClass" => IsLesser::class
             ],
-
-
 
 
             "lt*" => [

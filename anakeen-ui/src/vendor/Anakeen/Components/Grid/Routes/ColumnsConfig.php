@@ -226,6 +226,7 @@ class ColumnsConfig
             "smartType" => $currentAttribute->type,
             "title" => $currentAttribute->getLabel(),
             "context" => self::getContextLabels($currentAttribute),
+            "relation" => $currentAttribute->format,
             "withContext" => true,
             "encoded" => false,
             "sortable" => self::isSortable($family, $currentAttribute->id),
