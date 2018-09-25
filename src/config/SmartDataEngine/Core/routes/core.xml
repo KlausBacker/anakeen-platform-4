@@ -269,10 +269,18 @@
     </sde:route>
     <sde:route name="Family:Enum">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\Enumerate</sde:callable>
+      <sde:callable>\Anakeen\Routes\Core\EnumerateField</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/families/{family}/enumerates/{enum}</sde:pattern>
       <sde:description>Content of the enumerate &lt;attributeIdentifier&gt; of the family &lt;familyId&gt;</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Field:Enum">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\Routes\Core\Enumerate</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/enumerates/{enum}/</sde:pattern>
+      <sde:description>Content of the enumerate identified by its reference</sde:description>
       <sde:requiredAccess/>
     </sde:route>
     <sde:route name="Workflow:StateList">
