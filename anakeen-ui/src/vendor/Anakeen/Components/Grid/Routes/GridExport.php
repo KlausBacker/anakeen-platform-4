@@ -10,6 +10,11 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+/**
+ * Class GridExport
+ * @package Anakeen\Components\Grid\Routes
+ * @note use by route /api/v2/grid/export/{collectionId}
+ */
 class GridExport extends GridContent {
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)

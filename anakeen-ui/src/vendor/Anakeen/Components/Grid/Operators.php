@@ -77,7 +77,9 @@ class Operators
                     "int",
                     "double",
                     "money",
-                    "enum"
+                    "enum",
+                    "docid",
+                    "account"
                 ],
                 "filterClass" => IsEqual::class
             ],
@@ -93,7 +95,9 @@ class Operators
                     "int",
                     "double",
                     "money",
-                    "enum"
+                    "enum",
+                    "docid",
+                    "account"
                 ],
                 "filterClass" => IsNotEqual::class
             ],
@@ -109,7 +113,11 @@ class Operators
                     "timestamp[]",
                     "time[]",
                     "enum[]",
-                    "enum[][]"
+                    "enum[][]",
+                    "docid[]",
+                    "account[]",
+                    "docid[][]",
+                    "account[][]"
                 ],
                 "filterClass" => OneEquals::class
             ],
@@ -125,7 +133,11 @@ class Operators
                     "timestamp[]",
                     "time[]",
                     "enum[]",
-                    "enum[][]"
+                    "enum[][]",
+                    "docid[]",
+                    "account[]",
+                    "docid[][]",
+                    "account[][]",
                 ],
                 "filterClass" => OneEquals::class
             ],
@@ -313,7 +325,13 @@ class Operators
                     "money[]",
                     "date[]",
                     "timestamp[]",
-                    "time[]"
+                    "time[]",
+                    "enum[]",
+                    "enum[][]",
+                    "docid[]",
+                    "account[]",
+                    "docid[][]",
+                    "account[][]"
                 ],
                 "operands" => [":field"],
                 "filterClass" => IsEmpty::class
@@ -339,7 +357,13 @@ class Operators
                     "money[]",
                     "date[]",
                     "timestamp[]",
-                    "time[]"
+                    "time[]",
+                    "enum[]",
+                    "enum[][]",
+                    "docid[]",
+                    "account[]",
+                    "docid[][]",
+                    "account[][]",
                 ],
                 "filterClass" => IsNotEmpty::class
             ],
