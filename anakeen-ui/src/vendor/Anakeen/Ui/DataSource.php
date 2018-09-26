@@ -1,12 +1,10 @@
 <?php
 
 
-namespace Anakeen\Components\Grid\Routes;
+namespace Anakeen\Ui;
 
 
 use Anakeen\Components\Grid\Operators;
-use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Router\Exception;
@@ -214,13 +212,6 @@ class DataSource extends DocumentList
         $data = array(
             "requestParameters" => array(
                 "filter" => $this->filter,
-                "pager" => array(
-                    "page" => intval($this->page),
-                    "skip" => intval($this->_searchDoc->start),
-                    "take" => intval($this->_searchDoc->slice),
-                    "pageSize" => intval($this->pageSize),
-                    "total" => intval($this->_searchDoc->onlyCount()),
-                ),
                 "sort" => $this->sort
             )
         );

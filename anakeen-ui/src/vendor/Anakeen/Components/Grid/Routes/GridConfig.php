@@ -15,7 +15,6 @@ use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use SmartStructure\Fields\Search;
-use SmartStructure\Fields\Dir;
 
 /**
  * Config for Smart Element Grid
