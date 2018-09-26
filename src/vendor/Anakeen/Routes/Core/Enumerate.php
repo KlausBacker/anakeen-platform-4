@@ -1,14 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Core\EnumManager;
 use Anakeen\Router\URLUtils;
-use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -16,7 +12,7 @@ use Anakeen\Router\Exception;
 /**
  * Class Enumerates
  *
- * @note    Used by route : POST /api/v2/families/{family}/enums/{enum}
+ * @note    Used by route : POST /api/v2/enumerates/{enum}/
  * @package Anakeen\Routes\Core
  */
 class Enumerate
@@ -51,41 +47,20 @@ class Enumerate
      *
      * @return \Slim\Http\response
      * @throws Exception
-     * @throws \Dcp\Core\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->request=$request;
         $this->enumid=$args["enum"];
-        $this->familyName=$args["family"];
-
-        $this->family = SEManager::getFamily($this->familyName);
-        if (!$this->family) {
-            $exception = new Exception("CRUD0200", $this->familyName);
-            $exception->setHttpStatus("404", "Family not found");
-            throw $exception;
-        }
 
         $this->setFilters();
 
-        $attribute = $this->family->getAttribute($this->enumid);
-        if (!$attribute) {
-            $exception = new Exception("CRUD0400", $this->enumid, $this->family->name);
-            $exception->setHttpStatus("404", "Attribute $this->enumid not found");
-            throw $exception;
-        }
-        if ($attribute->type !== "enum") {
-            $exception = new Exception("CRUD0401", $this->enumid, $attribute->type, $this->family->name);
-            $exception->setHttpStatus("403", "Attribute $this->enumid is not an enum");
-            throw $exception;
-        }
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute
          */
-        $enums = $attribute->getEnumLabel(null, false);
+        $enums =  EnumManager::getEnums($this->enumid, false);
         $info = array(
-            "uri" => $this->generateEnumUrl($this->family->name, $this->enumid),
-            "label" => $attribute->getLabel()
+            "uri" => $this->generateEnumUrl($this->family->name, $this->enumid)
         );
 
         $filterKeyword = $this->getFilterKeyword();
@@ -103,13 +78,10 @@ class Enumerate
             }
         }
         $enumItems = array();
-        foreach ($enums as $key => $label) {
+        foreach ($enums as $key => $info) {
             if ($key !== '' && $key !== ' ' && $key !== null) {
-                if ($filterKeyword === "" || preg_match($pattern, $label)) {
-                    $enumItems[] = array(
-                        "key" => (string)$key,
-                        "label" => $label
-                    );
+                if ($filterKeyword === "" || preg_match($pattern, $info["label"])) {
+                    $enumItems[] = $info;
                 }
             }
         }
