@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1536926417"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1536926417.tgz#79d9426504b46b36fcc1a8e794a713f978fa63a4"
+"@anakeen/ank-components@^1.0.0-1537966131":
+  version "1.0.0-1537966131"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1537966131.tgz#7217f9a25c415b934e718fc813000c0b781e6019"
 
 "@anakeen/webpack-conf@latest":
   version "1.0.0-1536227897"
