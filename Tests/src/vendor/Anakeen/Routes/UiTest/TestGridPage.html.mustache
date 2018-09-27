@@ -4,8 +4,6 @@
     <title>Ui Grid Testing interface</title>
     <link rel="icon" type="image/png" href="[appicon]"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="../../">
-
     {{#CSS}}
     <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
     {{/CSS}}
@@ -15,16 +13,26 @@
     {{#JS}}
     <script type="module" data-id="{{key}}" src="{{path}}"></script>
     {{/JS}}
+    <style lang="css">
+        html {
+            height: 100vh;
+            width: 100vw;
+            font-size: 12px;
+        }
+    </style>
 </head>
-<body style="height: 100vh; width: 100vw; font-size: 12px;">
+<body>
 <ank-se-grid
              url-config="/api/v2/uitest/gridConfig/<collection>"
              collection="DEVNOTE"
              checkable="true"
              reorderable="true"
+             context-titles="false"
              server-paging="true"
              server-filtering="true"
              server-sorting="true"
+             persist-state-key="grid-test-page"
+             persist-selection="true"
 >
 </ank-se-grid>
 
