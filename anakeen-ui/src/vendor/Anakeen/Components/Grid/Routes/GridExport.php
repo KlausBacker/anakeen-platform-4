@@ -29,7 +29,6 @@ class GridExport extends GridContent {
         $this->selectedRows = $request->getQueryParam("selectedRows", []);
 
         $data = $this->getData();
-        error_log(print_r(count($data["smartElements"]), true));
         $spreadSheet = new Spreadsheet();
         $sheet = $spreadSheet->getActiveSheet();
 
