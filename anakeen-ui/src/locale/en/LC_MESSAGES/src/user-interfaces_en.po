@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-13 15:53+0200\n"
+"POT-Creation-Date: 2018-09-27 08:11+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -17,6 +17,16 @@ msgctxt "ddui"
 msgid "%s Creation"
 msgstr ""
 
+msgctxt " smart iuser"
+msgid "<p>Set to \"<b>-1</b>\"  to cancel expiration</p>"
+msgstr ""
+
+msgctxt " smart iuser"
+msgid ""
+"<p>Set to \"<b>-</b>\" (<i>minus</i>) to explicit create user without login</"
+"p>"
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
 msgid "Access not granted for document #%s"
@@ -27,10 +37,24 @@ msgctxt "ddui"
 msgid "Access not granted to create \"%s\" document"
 msgstr ""
 
+#, php-format
+msgctxt "smart iuser"
+msgid "Account #%d does not exist"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Account access deny"
 msgstr ""
 
+msgctxt "smart iuser"
+msgid "Account has been activated"
+msgstr ""
+
+msgctxt "smart iuser"
+msgid "Account has been deactivated"
+msgstr ""
+
+msgctxt "smart iuser"
 msgid "Account management"
 msgstr ""
 
@@ -54,7 +78,15 @@ msgstr ""
 
 #, php-format
 msgctxt "authent"
-msgid "An email has been sended to user \"%s\""
+msgid "An email has been sent to user \"%s\""
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Any values is greater than or equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Any values is lesser than or equal to"
 msgstr ""
 
 #, php-format
@@ -95,6 +127,18 @@ msgctxt "ddui-image"
 msgid "Choose image"
 msgstr ""
 
+#, php-format
+msgid "Class \"%s\" not exists"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" not implement %s"
+msgstr ""
+
+#, php-format
+msgid "Class \"%s\" problem : %s"
+msgstr ""
+
 msgctxt "ddui-file"
 msgid "Click to upload file"
 msgstr ""
@@ -119,12 +163,7 @@ msgctxt "ddui"
 msgid "Close message"
 msgstr ""
 
-#, php-format
-msgctxt "docgrid"
-msgid "Collection \"%s\" not found"
-msgstr ""
-
-#. _COMMENT: searchHTML5_edit.mustache
+#. _COMMENT: reportHTML5_edit.mustache
 #. _COMMENT: mustache key
 msgctxt "dsearch"
 msgid "Conditions"
@@ -147,6 +186,15 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Confirm transition"
+msgstr ""
+
+#, php-format
+msgctxt "login"
+msgid "Connexion to %s"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Contains"
 msgstr ""
 
 msgctxt "ddui"
@@ -184,54 +232,6 @@ msgstr ""
 msgctxt "UiMenu"
 msgid "Create to server and view document"
 msgstr ""
-
-msgid "DCOGRIDHTML5: Document_grid_ui"
-msgstr "Document grid UI"
-
-msgid "DCOGRIDHTML5:KITCHEN_SINK"
-msgstr "Kitchen Sink"
-
-msgid "DOCGRID: Access to document grid element"
-msgstr "Access to document grid element"
-
-msgid "DOCGRIDHTML5: sFirst"
-msgstr "First"
-
-msgid "DOCGRIDHTML5: sInfo"
-msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
-
-msgid "DOCGRIDHTML5: sInfoEmpty"
-msgstr "Showing 0 to 0 of 0 entries"
-
-msgid "DOCGRIDHTML5: sInfoFiltered"
-msgstr "(filtered from _MAX_ total entries)"
-
-msgid "DOCGRIDHTML5: sInfoPostFix"
-msgstr " "
-
-msgid "DOCGRIDHTML5: sLast"
-msgstr "Last"
-
-msgid "DOCGRIDHTML5: sLengthMenu"
-msgstr "Show _MENU_ entries"
-
-msgid "DOCGRIDHTML5: sLoadingRecords"
-msgstr "Loading..."
-
-msgid "DOCGRIDHTML5: sNext"
-msgstr "Next"
-
-msgid "DOCGRIDHTML5: sPrevious"
-msgstr "Previous"
-
-msgid "DOCGRIDHTML5: sProcessing"
-msgstr "Processing..."
-
-msgid "DOCGRIDHTML5: sSearch"
-msgstr "Search:"
-
-msgid "DOCGRIDHTML5: sZeroRecords"
-msgstr "No matching records found"
 
 msgctxt "smart iuser"
 msgid "Deactivate account"
@@ -314,24 +314,20 @@ msgctxt "identityComponent"
 msgid "Email address \"%s\" is not valid"
 msgstr "Email address \"%s\"is not valid"
 
+msgctxt "smart exec"
+msgid "Execute now"
+msgstr ""
+
+msgctxt "smart exec"
+msgid "Execution failed"
+msgstr ""
+
+msgctxt "smart exec"
+msgid "Execution succeeded"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Family View"
-msgstr ""
-
-#, php-format
-msgctxt "docgrid"
-msgid ""
-"Filter \"%s\" is not a date value.\n"
-"You can use date operator \"contains\" or filter like \"> 23/11/2015\" , \"< "
-"23/11/2015\" or \"= 23/11/2015\" or \"> 2015\" or \"< 2015\""
-msgstr ""
-
-#, php-format
-msgctxt "docgrid"
-msgid ""
-"Filter \"%s\" is not a numeric value.\n"
-"You can use single numeric for operator \"contains\" or filter like \"> "
-"1234\" , \"< 1234\" or \"= 1234\""
 msgstr ""
 
 msgctxt "ddui"
@@ -342,6 +338,10 @@ msgctxt "UiMenu"
 msgid "Goto next activity"
 msgstr ""
 
+msgctxt "smart iuser"
+msgid "Group are be updated"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Help"
 msgstr ""
@@ -350,8 +350,19 @@ msgctxt "UiMenu"
 msgid "Historic"
 msgstr ""
 
+msgid "Impossible to have several identical names"
+msgstr ""
+
+msgid "Impossible to name a view like a control acl"
+msgstr ""
+
 msgctxt "ddui"
 msgid "In progress transition"
+msgstr ""
+
+#, php-format
+msgctxt "autocomplete"
+msgid "Incompatible type \"%s\" for autocomplete"
 msgstr ""
 
 msgctxt "ddui"
@@ -374,11 +385,50 @@ msgctxt "ddui"
 msgid "Invalid transition"
 msgstr ""
 
+msgctxt "grid-component"
+msgid "Is empty"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Is equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Is greater than"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Is greater than or equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Is lesser than"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Is lesser than or equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Is not empty"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Is not equal to"
+msgstr ""
+
+msgid "Label must not be empty"
+msgstr ""
+
+msgctxt " smart cvdoc"
+msgid "Label of menu list"
+msgstr ""
+
 msgctxt "ddui helppage"
 msgid "Lang"
 msgstr ""
 
-#. _COMMENT: searchHTML5_edit.mustache
+#. _COMMENT: reportHTML5_edit.mustache
 #. _COMMENT: mustache key
 msgctxt "dsearch"
 msgid "Loading criteria ..."
@@ -396,8 +446,22 @@ msgctxt "ddui"
 msgid "Locked by"
 msgstr ""
 
+msgctxt "smart iuser"
+msgid "Login fail count reseted"
+msgstr ""
+
+#, php-format
+msgctxt "ui"
+msgid "Menu \"%s\" : Method mismatch need \"%s\" and has \"%s\""
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
+msgid "Menu id \"%s\" not found "
+msgstr ""
+
+#, php-format
+msgctxt "ui"
 msgid "Menu id \"%s\" not found "
 msgstr ""
 
@@ -413,6 +477,13 @@ msgctxt "ddui"
 msgid "Modifying by"
 msgstr ""
 
+msgid "N"
+msgstr ""
+
+msgctxt "smart iuser"
+msgid "No groups"
+msgstr ""
+
 #, php-format
 msgctxt "ddui"
 msgid "No matches \"<i>%s</i>\""
@@ -422,12 +493,56 @@ msgctxt "ddui-docid"
 msgid "No more matching"
 msgstr ""
 
+msgctxt "grid-component"
+msgid "No one values are equal to"
+msgstr ""
+
 msgctxt "ddui"
 msgid "No result found"
 msgstr ""
 
+msgctxt "smart igroup"
+msgid "No roles"
+msgstr ""
+
+msgctxt "smart iuser"
+msgid "No roles"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "Not contains"
+msgstr ""
+
 msgctxt "ddui:notification"
 msgid "Notification"
+msgstr ""
+
+msgctxt "smart report"
+msgid "Number maximum of displayed elements"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "One of values equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "One of values is greater than or equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "One of values is lesser than or equal to"
+msgstr ""
+
+msgctxt " smart cvdoc"
+msgid "Order for control access"
+msgstr ""
+
+msgctxt " smart cvdoc"
+msgid "PHP Access render class used to fork the appropriate render config"
+msgstr ""
+
+msgctxt " smart cvdoc"
+msgid "PHP Config render class used to custom render"
 msgstr ""
 
 #, php-format
@@ -479,7 +594,7 @@ msgctxt "UiMenu"
 msgid "Restore document from the trash"
 msgstr ""
 
-#. _COMMENT: searchHTML5_edit.mustache
+#. _COMMENT: reportHTML5_edit.mustache
 #. _COMMENT: mustache key
 msgctxt "dsearch"
 msgid "Results"
@@ -550,6 +665,14 @@ msgctxt "ddui"
 msgid "Select line"
 msgstr ""
 
+msgctxt "grid-component"
+msgid "Start with"
+msgstr ""
+
+msgctxt " smart cvdoc"
+msgid "Structure used to configure access profil with account attributes"
+msgstr ""
+
 #, php-format
 msgctxt "UiMenu"
 msgid "Sure delete %s ?"
@@ -557,6 +680,14 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "System"
+msgstr ""
+
+msgctxt "smart iuser"
+msgid "This account has no system identifier"
+msgstr ""
+
+msgctxt " smart group"
+msgid "To avoid compute mail addresses when group has lot of members"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -571,12 +702,37 @@ msgctxt "ddui"
 msgid "Transition success"
 msgstr ""
 
+#, php-format
+msgid "Unlabeled menu (%s)"
+msgstr ""
+
+#, php-format
+msgid "Unlabeled view (%s)"
+msgstr ""
+
 msgctxt "UiMenu"
 msgid "Unlock"
 msgstr ""
 
 msgctxt "ddui"
 msgid "Unlock document"
+msgstr ""
+
+#, php-format
+msgctxt "smart iuser"
+msgid "User #%d does not exist"
+msgstr ""
+
+msgctxt "smart iuser"
+msgid "User has no record password. It cannot be connected"
+msgstr ""
+
+msgctxt "smart iuser"
+msgid "User is deactivated"
+msgstr ""
+
+msgctxt "smart:dsearch"
+msgid "View"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -591,16 +747,22 @@ msgctxt "UiMenu"
 msgid "View workflow graph"
 msgstr ""
 
-msgid "Visible columns by family"
-msgstr ""
-
 #, php-format
 msgctxt "ddui"
 msgid "Workflow Parameters : %s"
 msgstr ""
 
+msgctxt "mailtemplate"
+msgid ""
+"Workflow Structure to use revision comment and transition parameters in body "
+"message"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Workflow Transition Comment"
+msgstr ""
+
+msgid "Y"
 msgstr ""
 
 msgctxt "identityComponent"
@@ -609,6 +771,10 @@ msgstr ""
 
 msgctxt "identityComponent"
 msgid "You entered an invalid password"
+msgstr ""
+
+#, php-format
+msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr ""
 
 msgid "activity"
@@ -626,6 +792,11 @@ msgctxt "searchUi"
 msgid "consult"
 msgstr "Launch the research"
 
+#, php-format
+msgctxt "CVDOC"
+msgid "creation view '%s' does not exists"
+msgstr ""
+
 #. _COMMENT: document__header.mustache
 #. _COMMENT: mustache key
 msgid "ddui:Editing form"
@@ -634,6 +805,9 @@ msgstr "Form is modified"
 msgctxt "searchui"
 msgid "doctitle"
 msgstr "Title"
+
+msgid "hidden"
+msgstr ""
 
 msgctxt "searchui"
 msgid "id allocated"
@@ -647,13 +821,25 @@ msgctxt "searchui"
 msgid "id owner"
 msgstr "Owner's id"
 
+msgid "invisible"
+msgstr ""
+
 msgctxt "ddui-file"
 msgid "kB"
 msgstr "kB"
 
 msgctxt "searchui"
-msgid "revdate"
-msgstr "Last modif. date"
+msgid "mdate"
+msgstr ""
+
+msgid "read disabled"
+msgstr ""
+
+msgid "read only"
+msgstr ""
+
+msgid "read write"
+msgstr ""
 
 msgctxt "searchui"
 msgid "revision"
@@ -662,11 +848,17 @@ msgstr "Revision"
 msgid "state"
 msgstr "State"
 
+msgid "static array"
+msgstr ""
+
 msgid "step"
 msgstr "Step"
 
 msgid "workflow"
 msgstr "Workflow"
+
+msgid "write only"
+msgstr ""
 
 #, php-format
 msgctxt "ddui"
@@ -678,6 +870,54 @@ msgstr ""
 msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr ""
+
+#~ msgid "DCOGRIDHTML5: Document_grid_ui"
+#~ msgstr "Document grid UI"
+
+#~ msgid "DCOGRIDHTML5:KITCHEN_SINK"
+#~ msgstr "Kitchen Sink"
+
+#~ msgid "DOCGRID: Access to document grid element"
+#~ msgstr "Access to document grid element"
+
+#~ msgid "DOCGRIDHTML5: sFirst"
+#~ msgstr "First"
+
+#~ msgid "DOCGRIDHTML5: sInfo"
+#~ msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
+
+#~ msgid "DOCGRIDHTML5: sInfoEmpty"
+#~ msgstr "Showing 0 to 0 of 0 entries"
+
+#~ msgid "DOCGRIDHTML5: sInfoFiltered"
+#~ msgstr "(filtered from _MAX_ total entries)"
+
+#~ msgid "DOCGRIDHTML5: sInfoPostFix"
+#~ msgstr " "
+
+#~ msgid "DOCGRIDHTML5: sLast"
+#~ msgstr "Last"
+
+#~ msgid "DOCGRIDHTML5: sLengthMenu"
+#~ msgstr "Show _MENU_ entries"
+
+#~ msgid "DOCGRIDHTML5: sLoadingRecords"
+#~ msgstr "Loading..."
+
+#~ msgid "DOCGRIDHTML5: sNext"
+#~ msgstr "Next"
+
+#~ msgid "DOCGRIDHTML5: sPrevious"
+#~ msgstr "Previous"
+
+#~ msgid "DOCGRIDHTML5: sProcessing"
+#~ msgstr "Processing..."
+
+#~ msgid "DOCGRIDHTML5: sSearch"
+#~ msgstr "Search:"
+
+#~ msgid "DOCGRIDHTML5: sZeroRecords"
+#~ msgstr "No matching records found"
 
 #~ msgid "ddui:Admin"
 #~ msgstr "Admin"
@@ -723,3 +963,7 @@ msgstr ""
 
 #~ msgid "ddui:render parameters"
 #~ msgstr "Render parameters"
+
+#~ msgctxt "searchui"
+#~ msgid "revdate"
+#~ msgstr "Last modif. date"
