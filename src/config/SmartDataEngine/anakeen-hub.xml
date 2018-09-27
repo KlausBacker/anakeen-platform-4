@@ -37,6 +37,15 @@
                 <sde:access ns="Anakeen">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="hubElement">
+            <sde:callable>\Anakeen\Hub\IHM\Routes\HubElements</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/elements/</sde:pattern>
+            <sde:description>Get elements hub activities and visibilities content</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubUser</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
     <sde:accesses namespace="Anakeen">
         <sde:access name="HubUser">
