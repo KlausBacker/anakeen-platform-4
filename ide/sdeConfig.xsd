@@ -5,7 +5,6 @@
            xmlns:rout="https://platform.anakeen.com/4/schemas/sde/1.0">
     <xs:element name="config" type="rout:configType"/>
 
-
     <xs:complexType name="accessType">
         <xs:sequence>
             <xs:element type="xs:string" name="category" minOccurs="0"/>
@@ -13,6 +12,27 @@
         </xs:sequence>
         <xs:attribute type="xs:string" name="name" use="required"/>
     </xs:complexType>
+
+    <xs:complexType name="routeaccessType">
+        <xs:attribute type="xs:string" name="ref" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    <h1>Reference the access name</h1>
+                    <p>To add a privilege to @account reference</p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:string" name="account" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    <h1>In most case the role reference</h1>
+                    <p>Add the access (@ref) to the account</p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="rout:permissionPolicyType" name="policy" default="add"/>
+    </xs:complexType>
+
     <xs:complexType name="middlewaresType">
         <xs:sequence>
             <xs:element type="rout:middlewareType" name="middleware" maxOccurs="unbounded"/>
@@ -59,11 +79,18 @@
         <xs:attribute type="xs:string" name="name"/>
     </xs:complexType>
 
+    <xs:simpleType name="permissionPolicyType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="add"/>
+            <xs:enumeration value="delete"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:complexType name="accessRefType" mixed="true">
         <xs:attribute type="xs:token" name="ns" use="required"/>
     </xs:complexType>
 
-    <xs:complexType name="requiredAccessType" >
+    <xs:complexType name="requiredAccessType">
         <xs:sequence>
             <xs:element type="rout:accessRefType" name="access" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
@@ -77,7 +104,7 @@
         </xs:sequence>
 
         <xs:attribute type="xs:token" name="namespace" use="required"/>
-        <xs:attribute type="xs:token" name="label" />
+        <xs:attribute type="xs:token" name="label"/>
     </xs:complexType>
     <xs:complexType name="configType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -151,6 +178,7 @@
     <xs:complexType name="accessesType">
         <xs:sequence>
             <xs:element type="rout:accessType" name="access" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="rout:routeaccessType" name="route-access" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:token" name="namespace" use="required"/>
     </xs:complexType>

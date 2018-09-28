@@ -1,5 +1,9 @@
 <?php
+
 namespace Anakeen\Router\Config;
+
+use Anakeen\Core\Account;
+use Anakeen\Router\Exception;
 
 /**
  * Class AccessInfo
@@ -10,10 +14,13 @@ namespace Anakeen\Router\Config;
  */
 class AccessInfo
 {
+    const ROUTEACCESSFIELD = "_routeAccesses_";
     public $name;
     public $description;
     public $category;
     public $configFile = "";
+    public $routeAccess = [];
+    public $aclid; // Complete acl reference
 
     /**
      * @var \Acl
@@ -37,13 +44,19 @@ class AccessInfo
      */
     public function record()
     {
-        $acl = new \Acl();
-        $acl->set($this->name);
+        if ($this->name !== self::ROUTEACCESSFIELD) {
+            $acl = new \Acl();
+            $acl->set($this->name);
 
-        if (!$acl->isAffected()) {
-            $this->addAccess();
+            if (!$acl->isAffected()) {
+                $this->addAccess();
+            } else {
+                $this->updateApplication($acl);
+            }
         } else {
-            $this->updateApplication($acl);
+            foreach ($this->routeAccess as $routeAccess) {
+                $this->addPermission($routeAccess);
+            }
         }
     }
 
@@ -59,6 +72,38 @@ class AccessInfo
         $acl->group_default = 'N';
 
         $acl->add();
+    }
+
+    protected function addPermission($routeAccess)
+    {
+        $login = $routeAccess->account;
+        $acl = new \Acl();
+        $acl->set($routeAccess->aclid);
+
+        if (!$acl->isAffected()) {
+            throw new Exception("ROUTES0141", $routeAccess->aclid);
+        }
+        $u = new Account();
+        $u->setLoginName($login);
+        if (!$u->isAffected()) {
+            throw new Exception("ROUTES0140", $login);
+        }
+        $err = "";
+        $permission = new \Permission();
+        if (isset($routeAccess->policy) && $routeAccess->policy === "delete") {
+            if ($permission->exists($u->id, $acl->id)) {
+                $err = $permission->deletePermission($u->id, $acl->id);
+            }
+        } else {
+            if (!$permission->exists($u->id, $acl->id)) {
+                $permission->id_user = $u->id;
+                $permission->id_acl = $acl->id;
+                $err = $permission->add();
+            }
+        }
+        if ($err) {
+            throw new Exception($err);
+        }
     }
 
     /**
