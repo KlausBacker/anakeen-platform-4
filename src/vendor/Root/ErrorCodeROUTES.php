@@ -169,4 +169,12 @@ class ErrorCodeRoutes
      * @errorCode The slice search must be numeric or "all"
      */
     const ROUTES0139 = 'Incorrect Slice "%s" in search';
+    /**
+     * @errorCode In tag sde:route-access
+     */
+    const ROUTES0140 = 'Router access config error : Account "%s" not found';
+    /**
+     * @errorCode In tag sde:route-access
+     */
+    const ROUTES0141 = 'Router access config error : privilege "%s" not found';
 }

@@ -3,6 +3,7 @@
 namespace Anakeen\Router;
 
 use \Anakeen\Core\ContextManager;
+use Anakeen\Router\Config\AccessInfo;
 use \Dcp\Core\Exception;
 use \Anakeen\Router\Config\RouterInfo;
 
@@ -43,7 +44,6 @@ class RouterLib
             }
 
             $config = json_decode(json_encode($config));
-
             self::$config = new RouterConfig($config);
             return self::$config;
         } else {
@@ -85,16 +85,16 @@ class RouterLib
         }
         $data = [];
         foreach (["routes", "accesses", "middlewares", "parameters"] as $topNode) {
-            $data[$topNode] = self::normalizeData($simpleData[0], $topNode);
-        }
 
+            $data[$topNode] = self::normalizeData($simpleData[0], $topNode);
+
+        }
         return $data;
     }
 
     protected static function normalizeData(\SimpleXMLElement $data, $tag)
     {
         $node = ($data->$tag);
-
 
         $rawData = [];
         foreach ($node as $firstNode) {
@@ -105,7 +105,7 @@ class RouterLib
                     $ns = (string)$vAttr;
                 }
             }
-            foreach ($firstNode as $subNode) {
+            foreach ($firstNode as $subTagName => $subNode) {
                 $nodeAttrs = $subNode->attributes();
                 $name = "";
                 foreach ($nodeAttrs as $iAttr => $vAttr) {
@@ -114,6 +114,21 @@ class RouterLib
                     }
                 }
                 $key = ($ns) ? ($ns . "::" . $name) : $name;
+
+                if ($subTagName === "route-access") {
+                    $rName = (string)$subNode->attributes()["ref"];
+                    $rAccout = (string)$subNode->attributes()["account"];
+                    if ($rName && $rAccout) {
+                        $rkey = ($ns) ? ($ns . "::" . $rName) : $rName;
+                        $rData=[];
+                        foreach ($subNode->attributes() as $rId=>$rValue) {
+                            $rData[$rId] = (string)$rValue;
+                        }
+                        $rData["aclid"]=($ns) ? ($ns . "::" . $rName) : $rName;
+                        $rawData[AccessInfo::ROUTEACCESSFIELD]["routeAccess"][] = $rData;
+                    }
+                }
+
 
                 foreach ($subNode as $tagName => $tagValue) {
                     if ($tagName === "method") {
