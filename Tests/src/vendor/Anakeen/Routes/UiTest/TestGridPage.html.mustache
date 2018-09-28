@@ -19,22 +19,29 @@
             width: 100vw;
             font-size: 12px;
         }
+
+        body {
+            height: 100%;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
-<ank-se-grid
-             url-config="/api/v2/uitest/gridConfig/<collection>"
-             collection="DEVNOTE"
-             checkable="true"
-             reorderable="true"
-             context-titles="false"
-             server-paging="true"
-             server-filtering="true"
-             server-sorting="true"
-             persist-state-key="grid-test-page"
-             persist-selection="true"
->
-</ank-se-grid>
+<div class="grid" style="height: calc(100% - 1px)">
+    <ank-se-grid
+                 url-config="/api/v2/uitest/gridConfig/<collection>"
+                 collection="DEVNOTE"
+                 checkable="true"
+                 reorderable="true"
+                 context-titles="false"
+                 server-paging="true"
+                 server-filtering="true"
+                 server-sorting="true"
+                 persist-state-key="grid-test-page"
+                 persist-selection="true"
+    >
+    </ank-se-grid>
+</div>
 
 {{#JS_LEGACY}}
 <script nomodule data-id="{{key}}" src="{{path}}"></script>
