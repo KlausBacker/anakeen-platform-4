@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/ank-components@^1.0.0-1538140037":
-  version "1.0.0-1538140037"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1538140037.tgz#c9a7ae200b3ef1e9996539a59ac1d7e03ff64b9d"
-  integrity sha512-J6HDMsYZ6AYlHTRP+dn1KtMY3RG48RfU2hcXogXB2GcKn+VOLaegvp1577v54E0GuINYdmtgjumuTSfKXxaQXw==
+"@anakeen/ank-components@^1.0.0-0":
+  version "1.0.0-1538151936"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1538151936.tgz#f9bf6d0acd9b8fe57ca0621e002a9d512c4bb620"
+  integrity sha512-t1rTXGMmNuqyWVIKA0kq2iPKnlTrySgKlRKgD1eJX5kAVKcYPzzlbb9jOMM65R5mnQKcQQf2nKlFZRHX7lSB8A==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
