@@ -42,12 +42,4 @@
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
-    <sde:accesses namespace="autotest">
-        <sde:access name="user">
-            <sde:description>Normal Access</sde:description>
-        </sde:access>
-        <sde:access name="admin">
-            <sde:description>Administrator Access</sde:description>
-        </sde:access>
-    </sde:accesses>
 </sde:config>

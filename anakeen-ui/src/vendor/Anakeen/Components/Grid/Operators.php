@@ -296,7 +296,7 @@ class Operators
             ],
             "nocontains**" => [
                 "label" => ___("No one text contains", "grid-component"),
-                "operands" => [":field", ":value", OneContains::NOCASE] | OneContains::NOT | OneContains::ALL,
+                "operands" => [":field", ":value", OneContains::NOCASE | OneContains::NOT],
                 "type" => [
                     "text[]",
                     "longtext[]",

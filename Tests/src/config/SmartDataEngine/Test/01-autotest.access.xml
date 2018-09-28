@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+
+    <sde:accesses namespace="autotest">
+        <sde:access name="user">
+            <sde:description>Normal Access</sde:description>
+        </sde:access>
+        <sde:access name="admin">
+            <sde:description>Administrator Access</sde:description>
+        </sde:access>
+
+        <!-- add privilege "user" to big boss role -->
+        <sde:route-access ref="user" account="rtstdduibigboss"/>
+
+
+    </sde:accesses>
+</sde:config>
