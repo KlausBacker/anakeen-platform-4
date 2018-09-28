@@ -52,7 +52,7 @@ class DataSource extends DocumentList
     /**
      * Parse url and query parameters
      * @param \Slim\Http\request $request - request object
-     * @param $args - url parameters
+     * @param                    $args    - url parameters
      */
     protected function initParameters(\Slim\Http\request $request, $args)
     {
@@ -70,8 +70,10 @@ class DataSource extends DocumentList
         if (isset($queryParams['take'])) {
             if (is_numeric($queryParams['take'])) {
                 $this->slice = intval($queryParams['take']);
-            } else if ($queryParams['take'] == 'all') {
-                $this->slice = "ALL";
+            } else {
+                if ($queryParams['take'] == 'all') {
+                    $this->slice = "ALL";
+                }
             }
         }
 
@@ -99,23 +101,26 @@ class DataSource extends DocumentList
     /**
      * Compute page and page size
      */
-    protected function computePage() {
+    protected function computePage()
+    {
         if (!isset($this->pageSize)) {
             $this->pageSize = $this->slice;
         }
         // compute kendo page number (1 is first page)
         if (!isset($this->page) && is_numeric($this->slice)) {
-            $this->page = intval($this->offset/$this->slice) + 1;
+            $this->page = intval($this->offset / $this->slice) + 1;
         }
     }
 
-    protected function parseUrlArgs($urlArgs = array()) {
+    protected function parseUrlArgs($urlArgs = array())
+    {
         if (!empty($urlArgs['collectionId'])) {
             $this->smartElementId = $urlArgs['collectionId'];
         }
     }
 
-    protected function prepareSearchDoc() {
+    protected function prepareSearchDoc()
+    {
         parent::prepareSearchDoc();
         $doc = SmartElementManager::getDocument($this->smartElementId);
         if (!$doc) {
@@ -154,7 +159,8 @@ class DataSource extends DocumentList
         $this->prepareFiltering();
     }
 
-    protected function preparePaging() {
+    protected function preparePaging()
+    {
         if (is_a($this->smartElement, \SmartStructure\Report::class)) {
             $repLimit = intval($this->smartElement->getRawValue(Report::rep_limit, $this->pageSize));
             $this->slice = $repLimit;
@@ -170,13 +176,30 @@ class DataSource extends DocumentList
     protected function prepareFiltering()
     {
         if (!empty($this->filter)) {
-            foreach ($this->filter['filters'] as $filter) {
+            // First need flat filters
+            $flatFilters = $this->getFlatLevelFilters($this->filter['filters']);
+
+            foreach ($flatFilters as $filter) {
                 $filterObject = Operators::getFilterObject($filter);
                 if (!empty($filterObject)) {
                     $this->_searchDoc->addFilter($filterObject);
                 }
             }
         }
+    }
+
+    protected function getFlatLevelFilters($filters)
+    {
+        $flatFilters = [];
+
+        foreach ($filters as $filter) {
+            if (!empty($filter["field"])) {
+                $flatFilters[]=$filter;
+            } elseif ( !empty($filter["filters"])) {
+                $flatFilters=array_merge($flatFilters, $filter["filters"]);
+            }
+        }
+        return $flatFilters;
     }
 
     protected function extractOrderBy()
@@ -207,7 +230,8 @@ class DataSource extends DocumentList
         return parent::extractOrderBy();
     }
 
-    protected function getData() {
+    protected function getData()
+    {
         $documentList = $this->getDocumentList();
         $data = array(
             "requestParameters" => array(

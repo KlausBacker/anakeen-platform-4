@@ -10,7 +10,6 @@
     </requires>
 
     <post-install>
-        <process command="./ank.php --system  --resetRouteConfig"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__CVDOC.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiAllType/TST_DDUI_ALLTYPE__PARAM.csv"/>
