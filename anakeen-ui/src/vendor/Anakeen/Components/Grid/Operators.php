@@ -264,7 +264,7 @@ class Operators
                 "filterClass" => Contains::class
             ],
             "contains*" => [
-                "label" => "One text contains",
+                "label" => ___("One text contains", "grid-component"),
                 "operands" => [":field", ":value", OneContains::NOCASE],
                 "type" => [
                     "text[]",
@@ -274,7 +274,7 @@ class Operators
                 "filterClass" => OneContains::class
             ],
             "nocontains*" => [
-                "label" => "At least one text not contains",
+                "label" => ___("At least one text not contains", "grid-component"),
                 "operands" => [":field", ":value", OneContains::NOCASE] | OneContains::NOT,
                 "type" => [
                     "text[]",
@@ -285,7 +285,7 @@ class Operators
             ],
 
             "contains**" => [
-                "label" => "All text contains",
+                "label" => ___("All text contains", "grid-component"),
                 "operands" => [":field", ":value", OneContains::NOCASE | OneContains::ALL],
                 "type" => [
                     "text[]",
@@ -295,7 +295,7 @@ class Operators
                 "filterClass" => OneContains::class
             ],
             "nocontains**" => [
-                "label" => "No one text contains",
+                "label" => ___("No one text contains", "grid-component"),
                 "operands" => [":field", ":value", OneContains::NOCASE] | OneContains::NOT | OneContains::ALL,
                 "type" => [
                     "text[]",

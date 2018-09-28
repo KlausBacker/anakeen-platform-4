@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-27 08:11+0200\n"
+"POT-Creation-Date: 2018-09-28 10:26+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -76,6 +76,10 @@ msgctxt "UiMenu"
 msgid "Advanced"
 msgstr ""
 
+msgctxt "grid-component"
+msgid "All text contains"
+msgstr ""
+
 #, php-format
 msgctxt "authent"
 msgid "An email has been sent to user \"%s\""
@@ -87,6 +91,10 @@ msgstr ""
 
 msgctxt "grid-component"
 msgid "Any values is lesser than or equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "At least one text not contains"
 msgstr ""
 
 #, php-format
@@ -494,6 +502,10 @@ msgid "No more matching"
 msgstr ""
 
 msgctxt "grid-component"
+msgid "No one text contains"
+msgstr ""
+
+msgctxt "grid-component"
 msgid "No one values are equal to"
 msgstr ""
 
@@ -531,6 +543,10 @@ msgstr ""
 
 msgctxt "grid-component"
 msgid "One of values is lesser than or equal to"
+msgstr ""
+
+msgctxt "grid-component"
+msgid "One text contains"
 msgstr ""
 
 msgctxt " smart cvdoc"
