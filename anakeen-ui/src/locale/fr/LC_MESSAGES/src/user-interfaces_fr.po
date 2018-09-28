@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-27 08:11+0200\n"
-"PO-Revision-Date: 2018-09-27 08:18+0200\n"
+"POT-Creation-Date: 2018-09-28 10:26+0200\n"
+"PO-Revision-Date: 2018-09-28 10:37+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -75,6 +75,10 @@ msgctxt "UiMenu"
 msgid "Advanced"
 msgstr "Autres"
 
+msgctxt "grid-component"
+msgid "All text contains"
+msgstr "Chacun des textes contient"
+
 #, php-format
 msgctxt "authent"
 msgid "An email has been sent to user \"%s\""
@@ -87,6 +91,10 @@ msgstr "Toutes les valeurs sont supérieurs ou égales à"
 msgctxt "grid-component"
 msgid "Any values is lesser than or equal to"
 msgstr "Toutes les valeurs sont inférieures ou égales à"
+
+msgctxt "grid-component"
+msgid "At least one text not contains"
+msgstr "Un des textes ne contient pas"
 
 #, php-format
 msgctxt "ddui"
@@ -394,7 +402,7 @@ msgstr "Est égal à"
 
 msgctxt "grid-component"
 msgid "Is greater than"
-msgstr "Est plus grand que"
+msgstr "Est supérieur à"
 
 msgctxt "grid-component"
 msgid "Is greater than or equal to"
@@ -493,8 +501,12 @@ msgid "No more matching"
 msgstr "Aucune autre nouvelle correspondance"
 
 msgctxt "grid-component"
+msgid "No one text contains"
+msgstr "Aucun texte ne contient"
+
+msgctxt "grid-component"
 msgid "No one values are equal to"
-msgstr "Aucunes des valeurs n'est égales à"
+msgstr "Aucune des valeurs n'est égale à"
 
 msgctxt "ddui"
 msgid "No result found"
@@ -531,6 +543,10 @@ msgstr "Une des valeurs est supérieur ou égale à"
 msgctxt "grid-component"
 msgid "One of values is lesser than or equal to"
 msgstr "Une des valeurs est inférieure ou égale à"
+
+msgctxt "grid-component"
+msgid "One text contains"
+msgstr "Un des textes contient"
 
 msgctxt " smart cvdoc"
 msgid "Order for control access"
