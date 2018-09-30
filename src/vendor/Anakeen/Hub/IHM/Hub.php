@@ -13,17 +13,17 @@ class Hub
         $data = [
             "JS_DEPS" => [
                 [
-                    "key" =>"jquery",
+                    "key" => "jquery",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
                 ],
                 [
-                    "key" =>"kendo",
+                    "key" => "kendo",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
                 ]
             ],
             "JS" => [
                 [
-                    "key" =>"hub",
+                    "key" => "hub",
                     "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets("hub", UIGetAssetPath::isInDebug() ? "dev" : "prod")["hub"]["js"]
                 ]
             ],
@@ -33,7 +33,7 @@ class Hub
                     "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
                 ],
                 [
-                    "key" =>"hub",
+                    "key" => "hub",
                     "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets("hub", "legacy")["hub"]["js"]
                 ]
             ],
