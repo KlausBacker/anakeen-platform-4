@@ -1,12 +1,20 @@
+import { AnkDock } from "@anakeen/ank-components";
+
+const dock = AnkDock;
+
 export default {
   name: "ank-hub",
-
+  components: {
+    dock
+  },
   data() {
     return {
       content: []
     };
   },
-
+  mounted() {
+    this.getConfig();
+  },
   methods: {
     getConfig() {
       this.$http
@@ -19,9 +27,5 @@ export default {
           console.error(error);
         });
     }
-  },
-
-  mounted() {
-    this.getConfig();
   }
 };

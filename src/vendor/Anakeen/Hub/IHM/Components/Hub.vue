@@ -1,11 +1,13 @@
 <template>
-    <ank-dock id="hub-dock" :content="content">
-    </ank-dock>
+    <dock class="hub-dock" content="content"></dock>
 </template>
 
-<style lang="scss" scoped>
+<!-- CSS to this component only -->
+<style lang="scss">
     @import "./Hub.scss";
 </style>
-
+<!-- Global CSS -->
+<style lang="scss">
+</style>
 <script src="./Hub.controller.js"></script>
 

@@ -1,19 +1,17 @@
 require("../SCSS/hub.scss");
-//Some js code here !
 
 import Vue from "vue";
-import AnkComponents from "@anakeen/ank-components";
-import axios from "axios";
-import ankHub from "../Components/Hub.vue";
 
-Vue.use(AnkComponents, { globalVueComponent: true });
-Vue.axios = Vue.prototype.$axios = Vue.prototype.$http = axios.create({
-  timeout: 10000,
-  withCredentials: false
-});
+import ankHub from "../Components/Hub";
+import AnkComponents from "@anakeen/ank-components";
+import AnkAxios from "axios";
+
+Vue.prototype.$http = AnkAxios.create();
+Vue.use(AnkAxios);
+Vue.use(AnkComponents);
 
 new Vue({
-  el: "#hub",
+  el: "#ank-hub",
   template: "<ank-hub/>",
   components: {
     ankHub
