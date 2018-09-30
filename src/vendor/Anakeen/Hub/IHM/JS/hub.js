@@ -10,10 +10,12 @@ Vue.prototype.$http = AnkAxios.create();
 Vue.use(AnkAxios);
 Vue.use(AnkComponents);
 
-new Vue({
-  el: "#ank-hub",
-  template: "<ank-hub/>",
-  components: {
-    ankHub
-  }
-});
+new Vue(
+    {
+        el: "#ank-hub",
+        template: "<ank-hub/>",
+        components: {
+            ankHub
+        }
+    }
+);

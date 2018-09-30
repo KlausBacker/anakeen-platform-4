@@ -34,7 +34,7 @@ class Hub
                 ],
                 [
                     "key" =>"hub",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets("hub","legacy")["hub"]["js"]
+                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets("hub", "legacy")["hub"]["js"]
                 ]
             ],
             "CSS" => [
