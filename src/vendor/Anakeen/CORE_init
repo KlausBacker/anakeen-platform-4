@@ -9,7 +9,6 @@ fi
 . "$wpub"/log.sh
 . "$wpub"/libutil.sh
 
-set -e
 #------------------------------
 #post installation
 #------------------------------
