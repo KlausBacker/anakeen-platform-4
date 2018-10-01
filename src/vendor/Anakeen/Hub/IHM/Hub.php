@@ -6,8 +6,10 @@ use Dcp\Ui\UIGetAssetPath;
 
 class Hub
 {
-    public function __invoke(\Slim\Http\request $request,
-        \Slim\Http\response $response, $args
+    public function __invoke(
+        \Slim\Http\request $request,
+        \Slim\Http\response $response,
+        $args
     ) {
         $page = __DIR__ . "/Layout/hub.html.mustache";
         $mustache = new \Mustache_Engine();
