@@ -6,8 +6,9 @@ use Dcp\Ui\UIGetAssetPath;
 
 class Hub
 {
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
-    {
+    public function __invoke(\Slim\Http\request $request,
+        \Slim\Http\response $response, $args
+    ) {
         $page = __DIR__ . "/Layout/hub.html.mustache";
         $mustache = new \Mustache_Engine();
         $data = [
@@ -24,7 +25,10 @@ class Hub
             "JS" => [
                 [
                     "key" => "hub",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets("hub", UIGetAssetPath::isInDebug() ? "dev" : "prod")["hub"]["js"]
+                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                        "hub",
+                        UIGetAssetPath::isInDebug() ? "dev" : "prod"
+                    )["hub"]["js"]
                 ]
             ],
             "JS_LEGACY" => [
@@ -34,7 +38,10 @@ class Hub
                 ],
                 [
                     "key" => "hub",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets("hub", "legacy")["hub"]["js"]
+                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                        "hub",
+                        "legacy"
+                    )["hub"]["js"]
                 ]
             ],
             "CSS" => [
