@@ -19,11 +19,29 @@
                 <sde:access ns="Anakeen">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="hubAdmConfigStruct">
+            <sde:callable>\Anakeen\Hub\IHM\Routes\HubAdmConfigStruct</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/admin/configurationStructures/</sde:pattern>
+            <sde:description>Get inherited Smart Structures of the hub config smart structures </sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubAdmin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="hubConfig">
             <sde:callable>\Anakeen\Hub\IHM\Routes\MainConfiguration</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/config/</sde:pattern>
             <sde:description>Get initial config of the hub</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubUser</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="hubElement">
+            <sde:callable>\Anakeen\Hub\IHM\Routes\HubElements</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/elements/</sde:pattern>
+            <sde:description>Get elements hub activities and visibilities content</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="Anakeen">HubUser</sde:access>
             </sde:requiredAccess>
@@ -37,5 +55,11 @@
             <sde:description>Hub administrator access</sde:description>
         </sde:access>
     </sde:accesses>
-    <sde:parameters namespace="Anakeen"/>
+    <sde:parameters namespace="Anakeen">
+            <sde:parameter name="CONFIG">
+                <sde:description>Hub configuration</sde:description>
+                <sde:value>[]</sde:value>
+                <sde:type>JSON</sde:type>
+            </sde:parameter>
+    </sde:parameters>
 </sde:config>

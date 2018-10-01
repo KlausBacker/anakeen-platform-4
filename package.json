@@ -22,10 +22,11 @@
   "author": "Anakeen",
   "license": "MIT",
   "dependencies": {
-    "@anakeen/ank-components": "^1.0.0-1533690137"
+    "@anakeen/ank-components": "^1.0.0-1538120636"
   },
   "devDependencies": {
     "@anakeen/anakeen-cli": "^1.0.0-1533544440-1533544657",
+    "@anakeen/webpack-conf": "^1.0.0-1537274281",
     "@progress/kendo-ui": "^2018.2.806",
     "assets-webpack-plugin": "^3.5.1",
     "axios": "^0.18.0",
@@ -49,6 +50,7 @@
     "html-webpack-plugin": "^3.2.0",
     "jsoneditor": "^5.18.0",
     "node-sass": "^4.8.3",
+    "pngquant-bin": "^5.0.0",
     "progress-bar-webpack-plugin": "^1.11.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.1",

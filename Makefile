@@ -84,7 +84,7 @@ po: ## extract the po
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
 	$(YARN_BIN) run beautify
-	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
 
 ########################################################################################################################
 ##

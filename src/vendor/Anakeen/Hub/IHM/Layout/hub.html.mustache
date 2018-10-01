@@ -5,18 +5,21 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Center</title>
+    <title>Hub</title>
     {{#CSS}}
     <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
     {{/CSS}}
-    <link rel="stylesheet" href="">
+    {{#JS_DEPS}}
+        <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+    <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
 </head>
 <body>
-
-<div id="hub"></div>
-
-{{#JS}}
-<script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
-{{/JS}}
+<div id="ank-hub"></div>
+{{#JS_LEGACY}}
+<script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
 </body>
 </html>
