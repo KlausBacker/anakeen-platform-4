@@ -548,12 +548,12 @@ class FamilyImport
         }
         $phpAdoc->Set("hasMethods", !empty($tdoc["methods"]));
 
-        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmart.xml"] = SEManager::getDocumentClassFilename($tdoc["docFile"]);
-        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmartAttr.xml"] = SEManager::getAttributesClassFilename($tdoc["docFile"]);
-        $dfiles["/vendor/Anakeen/Core/Layout/Class.Doc.xml"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmart.layout"] = SEManager::getDocumentClassFilename($tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.NSSmartAttr.layout"] = SEManager::getAttributesClassFilename($tdoc["docFile"]);
+        $dfiles["/vendor/Anakeen/Core/Layout/Class.Doc.layout"] = sprintf("%s/Smart%d.php", $genDir, $tdoc["id"]);
 
         if (!empty($tdoc["methods"])) {
-            $dfiles["/vendor/Anakeen/Core/Layout/Class.SmartMethods.xml"] = sprintf("%s/Method.%s.php", $genDir, $tdoc["name"]);
+            $dfiles["/vendor/Anakeen/Core/Layout/Class.SmartMethods.layout"] = sprintf("%s/Method.%s.php", $genDir, $tdoc["name"]);
         }
 
         foreach ($dfiles as $kFile => $dfile) {
@@ -568,7 +568,7 @@ class FamilyImport
 
     protected static function attrIdToPhp($dbaccess, $tdoc)
     {
-        $phpAdoc = new \Layout("vendor/Anakeen/Core/Layout/Class.Attrid.xml");
+        $phpAdoc = new \Layout("vendor/Anakeen/Core/Layout/Class.Attrid.layout");
 
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("extend", '');
