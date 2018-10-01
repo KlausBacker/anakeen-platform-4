@@ -1,4 +1,3 @@
-var config = require("../wdio.conf.js").config;
 const axios = require("axios");
 
 exports.login = ({ browser, login, password }) => {
@@ -6,7 +5,7 @@ exports.login = ({ browser, login, password }) => {
     browser.url("/login/");
     axios({
       method: "post",
-      url: `${config.baseUrl}/api/v2/authent/sessions/${login}`,
+      url: `${browser.options.baseUrl}/api/v2/authent/sessions/${login}`,
       data: {
         password: password
       }
@@ -32,6 +31,7 @@ exports.login = ({ browser, login, password }) => {
         }
       })
       .catch(err => {
+        console.error(err);
         reject(err);
       });
   });
