@@ -1,182 +1,303 @@
-/**const fs = require("fs");
+const xml2js = require("xml2js");
+const vinylFile = require("vinyl-file");
+const File = require("vinyl");
 const path = require("path");
-const appConst = require("./appConst");
-const util = require("util");
+const fs = require("fs");
+
 const cp = require("child_process");
-const mustache = require("mustache");
-// const vueExtract = require("easygettext");
-const getTextOptions =
-  '--language={0} -a --sort-output --from-code=utf-8 --no-location --indent --add-comments=_COMMENT --keyword=___:1 --keyword=___:1,2c --keyword=n___:1,2 --keyword=pgettext:1c,2 --keyword=n___:1,2,4c --keyword=npgettext:1,2,4c --keyword="N_"  --keyword="text" -keyword="Text"';
-const fileFormats = {
-  PHP: ".php",
-  JavaScript: ".js",
-  Mustache: ".mst",
-  Vue: ".vue",
-  XML: ".xml"
+
+const attrType = {
+  fieldtext: "text",
+  fieldhtmltext: "htmltext",
+  fieldlongtext: "longtext",
+  fieldint: "int",
+  fieldmoney: "money",
+  fieldfloat: "float",
+  fieldcolor: "color",
+  fieldenum: "enum",
+  fielddate: "date",
+  fieldtime: "time",
+  fieldtimestamp: "timestamp",
+  fieldfile: "file",
+  fieldimage: "image",
+  fielddocid: "docid",
+  fieldaccount: "account"
 };
-const mustacheTags = ["[[", "]]"];
 
-exports.getPOExtractor = async (sourcePath, targetPath, format) => {
-  if (fs.existsSync(sourcePath) && fs.existsSync(targetPath)) {
-    // Create temporary directory
-    var dir = fs.mkdtempSync(path.join(`${targetPath}`, "tmpExt-"));
-    console.log("Temporary directory: " + dir);
-
-    // Get list of XML files
-    var files = fs.readdirSync(sourcePath);
-
-    function xgettext2PO(poFile, sourceFile, format) {
-      return new Promise(resolve => {
-        var command =
-          "xgettext " +
-          getTextOptions.replace("{0}", format) +
-          " -o " +
-          poFile +
-          " " +
-          sourceFile;
-        // console.log(command);
-        cp.exec(command, (error, stdout, stderr) => {
-          if (error) {
-            console.log(`exec error: ${error}`);
-            throw error;
-          }
-          // console.log(`stdout ${sourceFile}: ${stdout}`);
-          // console.log(`stderr: ${stderr}`);
-          resolve("Parse done");
-        });
-      });
-    }
-
-    function mst2PHP(poFile, sourceFile) {
-      return new Promise(resolve => {
-        var keys = [];
-        var mstTemplate = fs.readFileSync(sourceFile, "utf8");
-        // Search tokens in mustache template
-        var tokens = mustache.parse(mstTemplate, mustacheTags);
-        // Create content for PHP file
-        var PHPfile = poFile.substr(0, poFile.lastIndexOf(".")) + ".php";
-        var PHPcontent = "<?php\r\n";
-        tokens.forEach(function(token) {
-          if (token[0] === "name") {
-            var matches = token[1].match(/^(?:(.+[^(::)])::)?(.+)$/);
-            PHPcontent += `_('${matches[1]}:${matches[2]}')\r\n`;
-            // keys.push({context: matches[1], key: matches[2], file: sourceFile, position: token[2]});
-          }
-        });
-        // Write PHP file
-        fs.writeFile(PHPfile, PHPcontent, function(err) {
-          if (err) {
-            throw err;
-          }
-          resolve();
-        });
-        resolve(PHPfile);
-      });
-    }
-
-    var vue2PHP = function vue2PHP(poFile, sourceFile) {
-      return new Promise(resolve => {
-        var command =
-          "node_modules/.bin/gettext-extract --attribute v-translate --quiet --output " +
-          poFile +
-          " " +
-          sourceFile;
-        // console.log(command);
-        cp.exec(command, (error, stdout, stderr) => {
-          if (error) {
-            console.log(`exec error: ${error}`);
-            throw error;
-          }
-          // console.log(`stdout ${sourceFile}: ${stdout}`);
-          // console.log(`stderr: ${stderr}`);
-          resolve("Parse done");
-        });
-      });
-    };
-
-    function xml2PHP(poFile, sourceFile) {
-      // Syntaxe ?
-      // Type de fichiers ? Controle de vue, conf de routeur, etc.
-    }
-
-    var extractPO = function parseAllFiles(file) {
-      return new Promise(resolve => {
-        // Check if file type
-        if (fs.lstatSync(path.join(sourcePath, file)).isFile()) {
-          var filename = file.substr(0, file.lastIndexOf("."));
-          var extension = file.substr(file.lastIndexOf("."));
-          // Check if valid type (not .htaccess, .DS_Store, etc.)
-          if (
-            filename !== "" &&
-            (format === "all" ||
-              fileFormats[format].split(",").indexOf(extension) > -1)
-          ) {
-            // If we treat all format, get the file format from the file extension
-            if (format === "all") {
-              var BreakException = {};
-              try {
-                fileFormats.forEach(function(extensions) {
-                  if (extensions[1].split(",").indexOf(extension) > -1) {
-                    format = extensions[0];
-                    throw BreakException;
-                  }
-                });
-                resolve("Not parsed, format not found.");
-              } catch (e) {
-                if (e !== BreakException) throw e;
-              }
-            }
-
-            // Extract file to .po
-            var poFilePath = path.join(dir, filename + ".pot");
-            var sourceFilePath = path.join(sourcePath, file);
-            console.log(format + " " + sourceFilePath);
-            switch (format) {
-              case "PHP":
-              case "JavaScript":
-                xgettext2PO(poFilePath, sourceFilePath, format).then(
-                  function() {
-                    resolve("Parse done");
-                  }
-                );
-                break;
-              case "Mustache":
-                mst2PHP(poFilePath, sourceFilePath).then(function(tempPHPfile) {
-                  xgettext2PO(poFilePath, tempPHPfile, "PHP").then(function() {
-                    resolve("Parse done");
-                  });
-                });
-                break;
-              case "Vue":
-                vue2PHP(poFilePath, sourceFilePath).then(function() {
-                  resolve("Parse done");
-                });
-              case "XML":
-                xml2PHP(poFilePath, sourceFilePath).then(function() {
-                  resolve("Parse done");
-                });
-              default:
-                resolve("Not parsed, format not found.");
-            }
-          } else {
-            resolve("Not parsed, format not found");
-          }
-        } else {
-          resolve("Not parsed, not a valid file");
-        }
-      });
-    };
-
-    // Parsing list
-    var listParsing = files.map(extractPO);
-
-    return Promise.all(listParsing).then(results => {
-      console.log("Finished parsing");
-      return { extractDir: dir };
-    });
-  } else if (!fs.existsSync(sourcePath)) {
-    console.log("Source path not found: " + sourcePath);
-  } else if (!fs.existsSync(targetPath)) {
-    console.log("Target path not found: " + targetPath);
+const getPoEntry = (attr, info) => {
+  if (!attr) {
+    return "";
   }
-};**/
+  let label = "";
+  if (attr.label) {
+    label = attr.label.replace(/"/g, '\\"');
+  }
+
+  return `\n#: ${info.file.basename}\n#, fuzzy\nmsgctxt "${
+    info.name
+  }"\nmsgid "${attr.name}"\nmsgstr "${label}"\n`;
+};
+
+const generatePoEntry = (field, info) => {
+  return Object.keys(field).reduce((accumulator, currentKey) => {
+    if (currentKey === "$") {
+      return accumulator + getPoEntry(field[currentKey], info);
+    }
+    if (currentKey === "fieldset") {
+      return (
+        accumulator +
+        field[currentKey].reduce((accumulator, subAttr) => {
+          return accumulator + generatePoEntry(subAttr, info);
+        }, "")
+      );
+    }
+    if (!attrType[currentKey]) {
+      return accumulator;
+    }
+    return (
+      accumulator +
+      field[currentKey].reduce((accumulator, currentAttr) => {
+        if (!currentAttr.$) {
+          return accumulator;
+        }
+        return accumulator + getPoEntry(currentAttr.$, info);
+      }, "")
+    );
+  }, "");
+};
+
+exports.xmlStructure2Pot = file => {
+  return new Promise((resolve, reject) => {
+    const files = [];
+    const stripPrefix = xml2js.processors.stripPrefix;
+    const cleanDash = str => {
+      return str.replace("-", "");
+    };
+    const base = path.join(file.path, "..");
+    xml2js.parseString(
+      file.contents,
+      { tagNameProcessors: [stripPrefix, cleanDash] },
+      (err, result) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        //Analyze structure configuration
+        if (result.config.structureconfiguration) {
+          result.config.structureconfiguration.forEach(currentConf => {
+            let infos = currentConf.$;
+            const fields = currentConf.fields;
+            let poEntries = "";
+
+            infos.file = file;
+            if (fields) {
+              fields.forEach(fieldset => {
+                poEntries += generatePoEntry(fieldset, infos);
+              });
+            }
+
+            let now = new Date().toISOString();
+            let content = `msgid ""
+msgstr ""
+"Project-Id-Version: Smart ${infos.name} \\n"
+"Report-Msgid-Bugs-To: \\n"
+"PO-Revision-Date: ${now}\\n"
+"Last-Translator: Automatically generated\\n"
+"Language-Team: none\\n"
+"Language: fr\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+
+${poEntries}
+`;
+
+            files.push(
+              new File({
+                smartName: infos.name,
+                base: base,
+                path: path.join(base, "smart" + infos.name + ".pot"),
+                contents: Buffer.from(content)
+              })
+            );
+          });
+        }
+        resolve(files);
+      }
+    );
+  });
+};
+
+exports.xmlEnum2Pot = file => {
+  return new Promise((resolve, reject) => {
+    const files = [];
+    const stripPrefix = xml2js.processors.stripPrefix;
+    const cleanDash = str => {
+      return str.replace("-", "");
+    };
+    const base = path.join(file.path, "..");
+    xml2js.parseString(
+      file.contents,
+      { tagNameProcessors: [stripPrefix, cleanDash] },
+      (err, result) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        //Analyze structure configuration
+        if (result.config.enumerates) {
+          result.config.enumerates.forEach(enumMainTag => {
+            if (enumMainTag.enumconfiguration) {
+              enumMainTag.enumconfiguration.forEach(currentConf => {
+                let infos = currentConf.$;
+                const fields = currentConf.enum;
+                let poEntries = "";
+
+                infos.file = file;
+                if (fields) {
+                  fields.forEach(enumItem => {
+                    poEntries += getPoEntry(enumItem.$, infos);
+                  });
+                }
+
+                let now = new Date().toISOString();
+                let content = `msgid ""
+msgstr ""
+"Project-Id-Version: Enum ${infos.name} \\n"
+"Report-Msgid-Bugs-To: \\n"
+"PO-Revision-Date: ${now}\\n"
+"Last-Translator: Automatically generated\\n"
+"Language-Team: none\\n"
+"Language: fr\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+
+${poEntries}
+`;
+
+                files.push(
+                  new File({
+                    enumName: "enum" + infos.name,
+                    base: base,
+                    path: path.join(base, "enum" + infos.name + ".pot"),
+                    contents: Buffer.from(content)
+                  })
+                );
+              });
+            }
+          });
+        }
+        resolve(files);
+      }
+    );
+  });
+};
+/**
+ * Merge with locale files
+ * @param file
+ * @param srcPath
+ * @returns {Promise<any>}
+ */
+exports.msgmergeStructure = (file, srcPath) => {
+  return new Promise((resolve, reject) => {
+    const langs = ["fr", "en"];
+    const tmpDir = file.dirname;
+    const files = [];
+    let resolvCount = 0;
+
+    // console.log("merge", file.path, srcPath);
+
+    langs.forEach(lang => {
+      const tmpPo = `${tmpDir}/${file.smartName}_${lang}.po`;
+      const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${
+        file.smartName
+      }_${lang}.po`;
+
+      fs.access(basePo, err => {
+        let command;
+        if (err !== null) {
+          command = `msginit  -o "${tmpPo}" -i "${
+            file.path
+          }" --no-translator --locale=${lang}`;
+        } else {
+          command = `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${
+            file.path
+          }"`;
+        }
+        cp.exec(command, (error /*, stdout, stderr*/) => {
+          //eslint-disable-next-line no-console
+          console.log(command);
+          vinylFile.read(tmpPo).then(mergeFile => {
+            resolvCount++;
+            mergeFile.base = mergeFile.dirname;
+            mergeFile.lang = lang;
+
+            files.push(mergeFile);
+            if (resolvCount >= langs.length) {
+              resolve(files);
+            }
+          });
+          if (error) {
+            //eslint-disable-next-line no-console
+            console.log(`exec error: ${error}`);
+            reject(error);
+          }
+          //   console.log(command, `stdout: ${stdout}`);
+          //   console.log(`stderr: ${stderr}`);
+        });
+      });
+    });
+  });
+};
+
+exports.msgmergeEnum = (file, srcPath) => {
+  return new Promise((resolve, reject) => {
+    const langs = ["fr", "en"];
+    const tmpDir = file.dirname;
+    const files = [];
+    let resolvCount = 0;
+
+    // console.log("merge", file.path, srcPath);
+
+    langs.forEach(lang => {
+      const tmpPo = `${tmpDir}/${file.enumName}_${lang}.po`;
+      const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${
+        file.enumName
+      }_${lang}.po`;
+
+      fs.access(basePo, err => {
+        let command;
+        if (err !== null) {
+          command = `msginit  -o "${tmpPo}" -i "${
+            file.path
+          }" --no-translator --locale=${lang}`;
+        } else {
+          command = `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${
+            file.path
+          }"`;
+        }
+
+        cp.exec(command, (error /*, stdout, stderr*/) => {
+          //eslint-disable-next-line no-console
+          console.log(command);
+          vinylFile.read(tmpPo).then(mergeFile => {
+            resolvCount++;
+            mergeFile.base = mergeFile.dirname;
+            mergeFile.lang = lang;
+
+            files.push(mergeFile);
+            if (resolvCount >= langs.length) {
+              resolve(files);
+            }
+          });
+          if (error) {
+            //eslint-disable-next-line no-console
+            console.log(`exec error: ${error}`);
+            reject(error);
+          }
+        });
+      });
+    });
+  });
+};
