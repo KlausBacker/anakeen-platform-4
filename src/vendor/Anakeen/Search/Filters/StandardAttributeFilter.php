@@ -42,7 +42,7 @@ class StandardAttributeFilter
     {
         $fam = $search->getFamily();
         if (!$fam) {
-            throw new Exception("FLT0001");
+            $fam=new SmartStructure();
         }
         $attr = $this->getPropAttribute($fam, $this->attributeId);
         if (!$attr) {
