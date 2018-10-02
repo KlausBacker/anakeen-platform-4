@@ -13,54 +13,65 @@ msgstr ""
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_description"
+msgctxt "FILE"
+msgid "fi_description"
 msgstr "Résumé"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_file"
+msgctxt "FILE"
+msgid "fi_file"
 msgstr "Principal"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_fr_oformat"
+msgctxt "FILE"
+msgid "fi_fr_oformat"
 msgstr "Fichiers"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_frdesc"
+msgctxt "FILE"
+msgid "fi_frdesc"
 msgstr "Description"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_keyword"
+msgctxt "FILE"
+msgid "fi_keyword"
 msgstr "Mots-clés"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_ofile"
+msgctxt "FILE"
+msgid "fi_ofile"
 msgstr "Fichier"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_subject"
+msgctxt "FILE"
+msgid "fi_subject"
 msgstr "Sujet"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_title"
+msgctxt "FILE"
+msgid "fi_title"
 msgstr "Titre"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#fi_titlew"
+msgctxt "FILE"
+msgid "fi_titlew"
 msgstr "Titre"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "FILE#ft_t_oformat"
+msgctxt "FILE"
+msgid "ft_t_oformat"
 msgstr "Autres"
 
 #, fuzzy
-msgid "FILE#title"
+msgctxt "FILE"
+msgid "title"
 msgstr "Fichiers"

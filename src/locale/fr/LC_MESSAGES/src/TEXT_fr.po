@@ -13,34 +13,41 @@ msgstr ""
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "TEXT#ba_title"
+msgctxt "TEXT"
+msgid "ba_title"
 msgstr "Titre"
 
 #, fuzzy
-msgid "TEXT#title"
+msgctxt "TEXT"
+msgid "title"
 msgstr "Texte"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "TEXT#txt_fr_anx"
+msgctxt "TEXT"
+msgid "txt_fr_anx"
 msgstr "Annexes"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "TEXT#txt_img"
+msgctxt "TEXT"
+msgid "txt_img"
 msgstr "Images"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "TEXT#txt_img_ori"
+msgctxt "TEXT"
+msgid "txt_img_ori"
 msgstr "Source"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "TEXT#txt_t_img"
+msgctxt "TEXT"
+msgid "txt_t_img"
 msgstr "Images"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "TEXT#txt_text"
+msgctxt "TEXT"
+msgid "txt_text"
 msgstr "Texte"

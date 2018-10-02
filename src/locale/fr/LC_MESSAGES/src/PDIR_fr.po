@@ -12,5 +12,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #, fuzzy
-msgid "PDIR#title"
+msgctxt "PDIR"
+msgid "title"
 msgstr "Profil de dossier"

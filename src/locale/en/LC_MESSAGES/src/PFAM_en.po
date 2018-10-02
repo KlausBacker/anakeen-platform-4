@@ -12,8 +12,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PFAM#dpdoc_fr_dyn"
+msgctxt "PFAM"
+msgid "dpdoc_fr_dyn"
 msgstr ""
 
-msgid "PFAM#title"
+msgctxt "PFAM"
+msgid "title"
 msgstr "Family profile"

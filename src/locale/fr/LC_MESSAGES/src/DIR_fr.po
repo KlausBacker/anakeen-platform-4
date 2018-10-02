@@ -13,131 +13,159 @@ msgstr ""
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#ba_desc"
+msgctxt "DIR"
+msgid "ba_desc"
 msgstr "Description"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_allbut"
+msgctxt "DIR"
+msgid "fld_allbut"
 msgstr "Tout ou rien"
 
 #, fuzzy
-msgid "DIR#fld_allbut#0"
+msgctxt "DIR"
+msgid "fld_allbut#0"
 msgstr "tout sauf"
 
 #, fuzzy
-msgid "DIR#fld_allbut#1"
+msgctxt "DIR"
+msgid "fld_allbut#1"
 msgstr "seulement"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_copybasket"
+msgctxt "DIR"
+msgid "fld_copybasket"
 msgstr "Insérer le porte-document"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_fam"
+msgctxt "DIR"
+msgid "fld_fam"
 msgstr "Familles (titre)"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_famids"
+msgctxt "DIR"
+msgid "fld_famids"
 msgstr "Familles"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_fr_prof"
+msgctxt "DIR"
+msgid "fld_fr_prof"
 msgstr "Profils par défaut"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_fr_rest"
+msgctxt "DIR"
+msgid "fld_fr_rest"
 msgstr "Restrictions"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_insertdoc"
+msgctxt "DIR"
+msgid "fld_insertdoc"
 msgstr "Insérer des documents"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_open"
+msgctxt "DIR"
+msgid "fld_open"
 msgstr "Ouvrir"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_openfolio"
+msgctxt "DIR"
+msgid "fld_openfolio"
 msgstr "Ouvrir comme une chemise"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_pdir"
+msgctxt "DIR"
+msgid "fld_pdir"
 msgstr "Profil par défaut de dossier (titre)"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_pdirid"
+msgctxt "DIR"
+msgid "fld_pdirid"
 msgstr "Profil par défaut de dossier"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_pdoc"
+msgctxt "DIR"
+msgid "fld_pdoc"
 msgstr "Profil par défaut de document (titre)"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_pdocid"
+msgctxt "DIR"
+msgid "fld_pdocid"
 msgstr "Profil par défaut de document"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_setsysrss"
+msgctxt "DIR"
+msgid "fld_setsysrss"
 msgstr "RSS visible/masquée aux utilisateurs"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_subfam"
+msgctxt "DIR"
+msgid "fld_subfam"
 msgstr "Restriction sous famille"
 
 #, fuzzy
-msgid "DIR#fld_subfam#[bool]yes"
+msgctxt "DIR"
+msgid "fld_subfam#[bool]yes"
 msgstr "inclure les sous familles"
 
 #, fuzzy
-msgid "DIR#fld_subfam#no"
+msgctxt "DIR"
+msgid "fld_subfam#no"
 msgstr "ne pas inclure les sous familles"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#fld_tfam"
+msgctxt "DIR"
+msgid "fld_tfam"
 msgstr "Familles filtrées"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#gui_color"
+msgctxt "DIR"
+msgid "gui_color"
 msgstr "Couleur intercalaire"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#gui_isrss"
+msgctxt "DIR"
+msgid "gui_isrss"
 msgstr "Utilisable comme flux RSS"
 
 #, fuzzy
-msgid "DIR#gui_isrss#[bool]no"
+msgctxt "DIR"
+msgid "gui_isrss#[bool]no"
 msgstr "non"
 
 #, fuzzy
-msgid "DIR#gui_isrss#yes"
+msgctxt "DIR"
+msgid "gui_isrss#yes"
 msgstr "oui"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "DIR#gui_sysrss"
+msgctxt "DIR"
+msgid "gui_sysrss"
 msgstr "Flux RSS système"
 
-msgid "DIR#gui_sysrss#"
+msgctxt "DIR"
+msgid "gui_sysrss#"
 msgstr ""
 
 #, fuzzy
-msgid "DIR#title"
+msgctxt "DIR"
+msgid "title"
 msgstr "dossier"

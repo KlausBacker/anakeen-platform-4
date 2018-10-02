@@ -13,52 +13,63 @@ msgstr ""
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#dpdoc_fam"
+msgctxt "PDOC"
+msgid "dpdoc_fam"
 msgstr "Famille"
 
 #, fuzzy
-msgid "PDOC#dpdoc_fam#elabel"
+msgctxt "PDOC"
+msgid "dpdoc_fam#elabel"
 msgstr "famille utilisée pour les profils dynamiques"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#dpdoc_famid"
+msgctxt "PDOC"
+msgid "dpdoc_famid"
 msgstr "Famille (id)"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#dpdoc_fr_dyn"
+msgctxt "PDOC"
+msgid "dpdoc_fr_dyn"
 msgstr "Dynamique"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#prf_access"
+msgctxt "PDOC"
+msgid "prf_access"
 msgstr "Accessibilités"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#prf_activate"
+msgctxt "PDOC"
+msgid "prf_activate"
 msgstr "Activer"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#prf_desactivate"
+msgctxt "PDOC"
+msgid "prf_desactivate"
 msgstr "Désactiver"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#prf_desc"
+msgctxt "PDOC"
+msgid "prf_desc"
 msgstr "Description"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "PDOC#prf_forcecomputing"
+msgctxt "PDOC"
+msgid "prf_forcecomputing"
 msgstr "Forcer la propagation du profil"
 
 #, fuzzy
-msgid "PDOC#prf_forcecomputing#ltitle"
+msgctxt "PDOC"
+msgid "prf_forcecomputing#ltitle"
 msgstr "Force le recalcul des profils des documents associés"
 
 #, fuzzy
-msgid "PDOC#title"
+msgctxt "PDOC"
+msgid "title"
 msgstr "Profil de document"

@@ -12,85 +12,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#ba_title"
+msgctxt "GROUP"
+msgid "ba_title"
 msgstr "Title"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#fld_fr_prof"
+msgctxt "GROUP"
+msgid "fld_fr_prof"
 msgstr "Default profile"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#fld_fr_rest"
+msgctxt "GROUP"
+msgid "fld_fr_rest"
 msgstr "Restrictions"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#fld_tfam"
+msgctxt "GROUP"
+msgid "fld_tfam"
 msgstr ""
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#fr_basic"
+msgctxt "GROUP"
+msgid "fr_basic"
 msgstr "Basic"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_adduser"
+msgctxt "GROUP"
+msgid "grp_adduser"
 msgstr "Members' management"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_fr"
+msgctxt "GROUP"
+msgid "grp_fr"
 msgstr "Groups"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_fr_ident"
+msgctxt "GROUP"
+msgid "grp_fr_ident"
 msgstr "Identification"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_hasmail"
+msgctxt "GROUP"
+msgid "grp_hasmail"
 msgstr "Without group adress mail"
 
-msgid "GROUP#grp_hasmail#[bool]yes"
+msgctxt "GROUP"
+msgid "grp_hasmail#[bool]yes"
 msgstr "Mail regrouped"
 
-msgid "GROUP#grp_hasmail#elabel"
+msgctxt "GROUP"
+msgid "grp_hasmail#elabel"
 msgstr "Skip mail calculation for group with a lot of members"
 
-msgid "GROUP#grp_hasmail#no"
+msgctxt "GROUP"
+msgid "grp_hasmail#no"
 msgstr "Without mail adress"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_idgroup"
+msgctxt "GROUP"
+msgid "grp_idgroup"
 msgstr "Subgroups"
 
-msgid "GROUP#grp_idgroup#showempty"
+msgctxt "GROUP"
+msgid "grp_idgroup#showempty"
 msgstr "No subgroups"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_idpgroup"
+msgctxt "GROUP"
+msgid "grp_idpgroup"
 msgstr "Parent groups"
 
-msgid "GROUP#grp_idpgroup#showempty"
+msgctxt "GROUP"
+msgid "grp_idpgroup#showempty"
 msgstr "No parent groups"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_isrefreshed"
+msgctxt "GROUP"
+msgid "grp_isrefreshed"
 msgstr "Is refreshed"
 
-msgid "GROUP#grp_isrefreshed#0"
+msgctxt "GROUP"
+msgid "grp_isrefreshed#0"
 msgstr "no"
 
-msgid "GROUP#grp_isrefreshed#1"
+msgctxt "GROUP"
+msgid "grp_isrefreshed#1"
 msgstr "yes"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_mail"
+msgctxt "GROUP"
+msgid "grp_mail"
 msgstr "Mail"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_name"
+msgctxt "GROUP"
+msgid "grp_name"
 msgstr "Name"
 
 #: App/Fusers/account.ods.csv
-msgid "GROUP#grp_refresh"
+msgctxt "GROUP"
+msgid "grp_refresh"
 msgstr "Refresh"
 
-msgid "GROUP#title"
+msgctxt "GROUP"
+msgid "title"
 msgstr "Group of people"

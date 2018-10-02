@@ -11,198 +11,250 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "IUSER#title"
+msgctxt "IUSER"
+msgid "title"
 msgstr "Utilisateur"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_accexpiredate"
+msgctxt "IUSER"
+msgid "us_accexpiredate"
 msgstr "Date d'expiration du compte"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_activateaccount"
+msgctxt "IUSER"
+msgid "us_activateaccount"
 msgstr "Activer le compte"
 
-msgid "IUSER#us_activateaccount#submenu"
+msgctxt "IUSER"
+msgid "us_activateaccount#submenu"
 msgstr "Gestion du compte"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_daydelay"
+msgctxt "IUSER"
+msgid "us_daydelay"
 msgstr "Délai d'expiration en jours"
 
-msgid "IUSER#us_daydelay#elabel"
+msgctxt "IUSER"
+msgid "us_daydelay#elabel"
 msgstr "mettre -1 pour annuler l'expiration"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_defaultgroup"
+msgctxt "IUSER"
+msgid "us_defaultgroup"
 msgstr "Groupe par défaut"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_desactivateaccount"
+msgctxt "IUSER"
+msgid "us_desactivateaccount"
 msgstr "Désactiver le compte"
 
-msgid "IUSER#us_desactivateaccount#submenu"
+msgctxt "IUSER"
+msgid "us_desactivateaccount#submenu"
 msgstr "Gestion du compte"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_expires"
+msgctxt "IUSER"
+msgid "us_expires"
 msgstr "Date d'expiration epoch"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_expiresd"
+msgctxt "IUSER"
+msgid "us_expiresd"
 msgstr "Date d'expiration"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_expirest"
+msgctxt "IUSER"
+msgid "us_expirest"
 msgstr "Heure d'expiration"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_extmail"
+msgctxt "IUSER"
+msgid "us_extmail"
 msgstr "Mail principal"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fname"
+msgctxt "IUSER"
+msgid "us_fname"
 msgstr "Prénom"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_default"
+msgctxt "IUSER"
+msgid "us_fr_default"
 msgstr "Paramètre"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_ident"
+msgctxt "IUSER"
+msgid "us_fr_ident"
 msgstr "État civil"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_intranet"
+msgctxt "IUSER"
+msgid "us_fr_intranet"
 msgstr "Identification intranet"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_privacy"
+msgctxt "IUSER"
+msgid "us_fr_privacy"
 msgstr "Confidentialité"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_security"
+msgctxt "IUSER"
+msgid "us_fr_security"
 msgstr "Sécurité"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_substitute"
+msgctxt "IUSER"
+msgid "us_fr_substitute"
 msgstr "Suppléants"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_userchange"
+msgctxt "IUSER"
+msgid "us_fr_userchange"
 msgstr "Mot de passe"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_group"
+msgctxt "IUSER"
+msgid "us_group"
 msgstr "Groupe (titre)"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_groups"
+msgctxt "IUSER"
+msgid "us_groups"
 msgstr "Groupes d'appartenance"
 
-msgid "IUSER#us_groups#showempty"
+msgctxt "IUSER"
+msgid "us_groups#showempty"
 msgstr "Aucun groupe"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_idgroup"
+msgctxt "IUSER"
+msgid "us_idgroup"
 msgstr "Groupe"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_incumbents"
+msgctxt "IUSER"
+msgid "us_incumbents"
 msgstr "Titulaires"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_inituser"
+msgctxt "IUSER"
+msgid "us_inituser"
 msgstr "Actualiser les utilisateurs"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_ldapdn"
+msgctxt "IUSER"
+msgid "us_ldapdn"
 msgstr "Login LDAP"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_lname"
+msgctxt "IUSER"
+msgid "us_lname"
 msgstr "Nom"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_login"
+msgctxt "IUSER"
+msgid "us_login"
 msgstr "Login"
 
-msgid "IUSER#us_login#elabel"
+msgctxt "IUSER"
+msgid "us_login#elabel"
 msgstr "saisissez '-' pour indiquer qu'il n'y a pas de login"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_loginfailure"
+msgctxt "IUSER"
+msgid "us_loginfailure"
 msgstr "Échecs de connexion"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_mail"
+msgctxt "IUSER"
+msgid "us_mail"
 msgstr "Mail"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_meid"
+msgctxt "IUSER"
+msgid "us_meid"
 msgstr "Utilisateur id"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_menuresetlogfails"
+msgctxt "IUSER"
+msgid "us_menuresetlogfails"
 msgstr "Réinitialiser échecs de connexion"
 
-msgid "IUSER#us_menuresetlogfails#submenu"
+msgctxt "IUSER"
+msgid "us_menuresetlogfails#submenu"
 msgstr "Gestion du compte"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_passdelay"
+msgctxt "IUSER"
+msgid "us_passdelay"
 msgstr "Délai d'expiration epoch"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_passwd1"
+msgctxt "IUSER"
+msgid "us_passwd1"
 msgstr "Nouveau mot de passe"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_passwd2"
+msgctxt "IUSER"
+msgid "us_passwd2"
 msgstr "Confirmation mot de passe"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_rolegorigin"
+msgctxt "IUSER"
+msgid "us_rolegorigin"
 msgstr "Groupe"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_roles"
+msgctxt "IUSER"
+msgid "us_roles"
 msgstr "Rôle"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_rolesorigin"
+msgctxt "IUSER"
+msgid "us_rolesorigin"
 msgstr "Origine"
 
-msgid "IUSER#us_rolesorigin#group"
+msgctxt "IUSER"
+msgid "us_rolesorigin#group"
 msgstr "Obtenu par"
 
-msgid "IUSER#us_rolesorigin#internal"
+msgctxt "IUSER"
+msgid "us_rolesorigin#internal"
 msgstr "Affectation directe"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_status"
+msgctxt "IUSER"
+msgid "us_status"
 msgstr "État du compte"
 
-msgid "IUSER#us_status#A"
+msgctxt "IUSER"
+msgid "us_status#A"
 msgstr "Activé"
 
-msgid "IUSER#us_status#D"
+msgctxt "IUSER"
+msgid "us_status#D"
 msgstr "Désactivé"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_substitute"
+msgctxt "IUSER"
+msgid "us_substitute"
 msgstr "Suppléant"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_t_roles"
+msgctxt "IUSER"
+msgid "us_t_roles"
 msgstr "Rôles"
 
-msgid "IUSER#us_t_roles#showempty"
+msgctxt "IUSER"
+msgid "us_t_roles#showempty"
 msgstr "Aucun rôle"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_tab_system"
+msgctxt "IUSER"
+msgid "us_tab_system"
 msgstr "Système"
 
 #: App/Fusers/account.ods.csv
-msgid "IUSER#us_whatid"
+msgctxt "IUSER"
+msgid "us_whatid"
 msgstr "Identifiant"

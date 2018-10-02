@@ -13,108 +13,132 @@ msgstr ""
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_attrids"
+msgctxt "DSEARCH"
+msgid "se_attrids"
 msgstr "Attributs"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_filter"
+msgctxt "DSEARCH"
+msgid "se_filter"
 msgstr "Filtre"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_fr_detail"
+msgctxt "DSEARCH"
+msgid "se_fr_detail"
 msgstr "Conditions"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_funcs"
+msgctxt "DSEARCH"
+msgid "se_funcs"
 msgstr "Fonctions"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_keys"
+msgctxt "DSEARCH"
+msgid "se_keys"
 msgstr "Mot-clefs"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_leftp"
+msgctxt "DSEARCH"
+msgid "se_leftp"
 msgstr "Parenthèse gauche"
 
 #, fuzzy
-msgid "DSEARCH#se_leftp#no"
+msgctxt "DSEARCH"
+msgid "se_leftp#no"
 msgstr " "
 
 #, fuzzy
-msgid "DSEARCH#se_leftp#yes"
+msgctxt "DSEARCH"
+msgid "se_leftp#yes"
 msgstr "("
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_ol"
+msgctxt "DSEARCH"
+msgid "se_ol"
 msgstr "Condition"
 
 #, fuzzy
-msgid "DSEARCH#se_ol#and"
+msgctxt "DSEARCH"
+msgid "se_ol#and"
 msgstr "satisfait toutes les conditions"
 
 #, fuzzy
-msgid "DSEARCH#se_ol#or"
+msgctxt "DSEARCH"
+msgid "se_ol#or"
 msgstr "satisfait au moins une condition"
 
 #, fuzzy
-msgid "DSEARCH#se_ol#perso"
+msgctxt "DSEARCH"
+msgid "se_ol#perso"
 msgstr "personnalisée"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_ols"
+msgctxt "DSEARCH"
+msgid "se_ols"
 msgstr "Opérateur"
 
 #, fuzzy
-msgid "DSEARCH#se_ols#and"
+msgctxt "DSEARCH"
+msgid "se_ols#and"
 msgstr "et"
 
 #, fuzzy
-msgid "DSEARCH#se_ols#or"
+msgctxt "DSEARCH"
+msgid "se_ols#or"
 msgstr "ou"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_rightp"
+msgctxt "DSEARCH"
+msgid "se_rightp"
 msgstr "Parenthèse droite"
 
 #, fuzzy
-msgid "DSEARCH#se_rightp#no"
+msgctxt "DSEARCH"
+msgid "se_rightp#no"
 msgstr " "
 
 #, fuzzy
-msgid "DSEARCH#se_rightp#yes"
+msgctxt "DSEARCH"
+msgid "se_rightp#yes"
 msgstr ")"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_t_detail"
+msgctxt "DSEARCH"
+msgid "se_t_detail"
 msgstr "Conditions"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_t_filters"
+msgctxt "DSEARCH"
+msgid "se_t_filters"
 msgstr "Filtres"
 
 #: App/Fdl/searches.ods.csv
 #, fuzzy
-msgid "DSEARCH#se_typefilter"
+msgctxt "DSEARCH"
+msgid "se_typefilter"
 msgstr "Type"
 
 #, fuzzy
-msgid "DSEARCH#se_typefilter#generated"
+msgctxt "DSEARCH"
+msgid "se_typefilter#generated"
 msgstr "Généré"
 
 #, fuzzy
-msgid "DSEARCH#se_typefilter#specified"
+msgctxt "DSEARCH"
+msgid "se_typefilter#specified"
 msgstr "Spécifié"
 
 #, fuzzy
-msgid "DSEARCH#title"
+msgctxt "DSEARCH"
+msgid "title"
 msgstr "Recherche détaillée"

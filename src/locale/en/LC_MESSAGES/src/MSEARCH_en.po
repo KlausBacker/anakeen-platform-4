@@ -12,24 +12,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/searches.ods.csv
-msgid "MSEARCH#se_crit"
+msgctxt "MSEARCH"
+msgid "se_crit"
 msgstr "Criteria"
 
 #: App/Fdl/searches.ods.csv
-msgid "MSEARCH#se_fr_searches"
+msgctxt "MSEARCH"
+msgid "se_fr_searches"
 msgstr "Searches"
 
 #: App/Fdl/searches.ods.csv
-msgid "MSEARCH#seg_cond"
+msgctxt "MSEARCH"
+msgid "seg_cond"
 msgstr "Search (title)"
 
 #: App/Fdl/searches.ods.csv
-msgid "MSEARCH#seg_idcond"
+msgctxt "MSEARCH"
+msgid "seg_idcond"
 msgstr "Search"
 
 #: App/Fdl/searches.ods.csv
-msgid "MSEARCH#seg_t_cond"
+msgctxt "MSEARCH"
+msgid "seg_t_cond"
 msgstr "Search ensemble"
 
-msgid "MSEARCH#title"
+msgctxt "MSEARCH"
+msgid "title"
 msgstr "Grouped search"

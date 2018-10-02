@@ -12,85 +12,108 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#fld_open"
+msgctxt "PORTFOLIO"
+msgid "fld_open"
 msgstr "Open"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#fld_openfolio"
+msgctxt "PORTFOLIO"
+msgid "fld_openfolio"
 msgstr "Open as portfolio"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_copytab"
+msgctxt "PORTFOLIO"
+msgid "pfl_copytab"
 msgstr "Tab to copy"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_def"
+msgctxt "PORTFOLIO"
+msgid "pfl_def"
 msgstr "Default portfolio"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_fr_init"
+msgctxt "PORTFOLIO"
+msgid "pfl_fr_init"
 msgstr "Portfolio display"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_idcopytab"
+msgctxt "PORTFOLIO"
+msgid "pfl_idcopytab"
 msgstr "Tab id to copy"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_iddef"
+msgctxt "PORTFOLIO"
+msgid "pfl_iddef"
 msgstr "Default portfolio id"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_idlinktab"
+msgctxt "PORTFOLIO"
+msgid "pfl_idlinktab"
 msgstr "Tab id to link"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_linktab"
+msgctxt "PORTFOLIO"
+msgid "pfl_linktab"
 msgstr "Tab to link"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_liststyle"
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle"
 msgstr "List style"
 
-msgid "PORTFOLIO#pfl_liststyle#icon"
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle#icon"
 msgstr "Icon"
 
-msgid "PORTFOLIO#pfl_liststyle#list"
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle#list"
 msgstr "List"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_open"
+msgctxt "PORTFOLIO"
+msgid "pfl_open"
 msgstr "Open"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_savedispo"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo"
 msgstr "Last disposition display"
 
-msgid "PORTFOLIO#pfl_savedispo#0"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#0"
 msgstr "No"
 
-msgid "PORTFOLIO#pfl_savedispo#1"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#1"
 msgstr "Yes"
 
-msgid "PORTFOLIO#pfl_savedispo#elabel"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#elabel"
 msgstr "Display last seen documents"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_savetab"
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab"
 msgstr "Display last seen tab"
 
-msgid "PORTFOLIO#pfl_savetab#0"
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab#0"
 msgstr "No"
 
-msgid "PORTFOLIO#pfl_savetab#1"
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab#1"
 msgstr "Yes"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_t_copytab"
+msgctxt "PORTFOLIO"
+msgid "pfl_t_copytab"
 msgstr "Tab to copy for new documents"
 
 #: App/Fdl/misc.ods.csv
-msgid "PORTFOLIO#pfl_t_linktab"
+msgctxt "PORTFOLIO"
+msgid "pfl_t_linktab"
 msgstr "Tab to link (dynamic)"
 
-msgid "PORTFOLIO#title"
+msgctxt "PORTFOLIO"
+msgid "title"
 msgstr "Portfolio"

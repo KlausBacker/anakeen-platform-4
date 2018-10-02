@@ -13,84 +13,101 @@ msgstr ""
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_adoc"
+msgctxt "POSTIT"
+msgid "pit_adoc"
 msgstr "Doc attaché"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_color"
+msgctxt "POSTIT"
+msgid "pit_color"
 msgstr "Couleur"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_com"
+msgctxt "POSTIT"
+msgid "pit_com"
 msgstr "Commentaire"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_date"
+msgctxt "POSTIT"
+msgid "pit_date"
 msgstr "Date"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_fr_doc"
+msgctxt "POSTIT"
+msgid "pit_fr_doc"
 msgstr "Attachement"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_fr_edit"
+msgctxt "POSTIT"
+msgid "pit_fr_edit"
 msgstr "Édition"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_fr_text"
+msgctxt "POSTIT"
+msgid "pit_fr_text"
 msgstr "Texte"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_idadoc"
+msgctxt "POSTIT"
+msgid "pit_idadoc"
 msgstr "Id doc attaché"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_iduser"
+msgctxt "POSTIT"
+msgid "pit_iduser"
 msgstr "Id utilisateur"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_mod"
+msgctxt "POSTIT"
+msgid "pit_mod"
 msgstr "Modifier le contenu"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_ncolor"
+msgctxt "POSTIT"
+msgid "pit_ncolor"
 msgstr "Nouvelle couleur"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_ncom"
+msgctxt "POSTIT"
+msgid "pit_ncom"
 msgstr "Nouveau commentaire"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_tcom"
+msgctxt "POSTIT"
+msgid "pit_tcom"
 msgstr "Commentaires"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_title"
+msgctxt "POSTIT"
+msgid "pit_title"
 msgstr "Titre"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_user"
+msgctxt "POSTIT"
+msgid "pit_user"
 msgstr "Utilisateur"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "POSTIT#pit_viewdoc"
+msgctxt "POSTIT"
+msgid "pit_viewdoc"
 msgstr "Voir le document associé"
 
 #, fuzzy
-msgid "POSTIT#title"
+msgctxt "POSTIT"
+msgid "title"
 msgstr "Post-it"

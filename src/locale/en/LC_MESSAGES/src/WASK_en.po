@@ -12,40 +12,50 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#dpdoc_fam"
+msgctxt "WASK"
+msgid "dpdoc_fam"
 msgstr "Family"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#dpdoc_famid"
+msgctxt "WASK"
+msgid "dpdoc_famid"
 msgstr "Family id"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#dpdoc_fr_dyn"
+msgctxt "WASK"
+msgid "dpdoc_fr_dyn"
 msgstr "Dynamic profile"
 
-msgid "WASK#title"
+msgctxt "WASK"
+msgid "title"
 msgstr "Accord"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#was_ask"
+msgctxt "WASK"
+msgid "was_ask"
 msgstr "Question"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#was_fr_ident"
+msgctxt "WASK"
+msgid "was_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#was_keys"
+msgctxt "WASK"
+msgid "was_keys"
 msgstr "Key"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#was_labels"
+msgctxt "WASK"
+msgid "was_labels"
 msgstr "Label"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#was_ref"
+msgctxt "WASK"
+msgid "was_ref"
 msgstr "Reference"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WASK#was_t_answer"
+msgctxt "WASK"
+msgid "was_t_answer"
 msgstr "Possible answers"

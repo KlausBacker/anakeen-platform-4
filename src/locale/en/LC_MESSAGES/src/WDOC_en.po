@@ -12,54 +12,68 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#dpdoc_fam"
+msgctxt "WDOC"
+msgid "dpdoc_fam"
 msgstr "Family (title)"
 
-msgid "WDOC#dpdoc_fam#elabel"
+msgctxt "WDOC"
+msgid "dpdoc_fam#elabel"
 msgstr "Family used for dynamic profile"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#dpdoc_famid"
+msgctxt "WDOC"
+msgid "dpdoc_famid"
 msgstr "Family"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#dpdoc_fr_dyn"
+msgctxt "WDOC"
+msgid "dpdoc_fr_dyn"
 msgstr "Dynamic profile"
 
-msgid "WDOC#title"
+msgctxt "WDOC"
+msgid "title"
 msgstr "Workflow"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_desc"
+msgctxt "WDOC"
+msgid "wf_desc"
 msgstr "Description"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_fam"
+msgctxt "WDOC"
+msgid "wf_fam"
 msgstr "Family (title)"
 
-msgid "WDOC#wf_fam#elabel"
+msgctxt "WDOC"
+msgid "wf_fam#elabel"
 msgstr "family compatible with workflow"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_famid"
+msgctxt "WDOC"
+msgid "wf_famid"
 msgstr "Family"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_graph"
+msgctxt "WDOC"
+msgid "wf_graph"
 msgstr "See graph"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_graphc"
+msgctxt "WDOC"
+msgid "wf_graphc"
 msgstr "See complete graph"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_init"
+msgctxt "WDOC"
+msgid "wf_init"
 msgstr "Initialisation"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_tab_states"
+msgctxt "WDOC"
+msgid "wf_tab_states"
 msgstr "States"
 
 #: App/Fdl/workflows.ods.csv
-msgid "WDOC#wf_tab_transitions"
+msgctxt "WDOC"
+msgid "wf_tab_transitions"
 msgstr "Transitions"

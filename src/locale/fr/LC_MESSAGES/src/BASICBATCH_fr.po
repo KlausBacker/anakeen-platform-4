@@ -13,40 +13,49 @@ msgstr ""
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BASICBATCH#bbatch_copy"
+msgctxt "BASICBATCH"
+msgid "bbatch_copy"
 msgstr "Dupliquer"
 
 #, fuzzy
-msgid "BASICBATCH#bbatch_copy#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_copy#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BASICBATCH#bbatch_delete"
+msgctxt "BASICBATCH"
+msgid "bbatch_delete"
 msgstr "Supprimer"
 
 #, fuzzy
-msgid "BASICBATCH#bbatch_delete#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_delete#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BASICBATCH#bbatch_lock"
+msgctxt "BASICBATCH"
+msgid "bbatch_lock"
 msgstr "Verrouiller"
 
 #, fuzzy
-msgid "BASICBATCH#bbatch_lock#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_lock#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BASICBATCH#bbatch_unlock"
+msgctxt "BASICBATCH"
+msgid "bbatch_unlock"
 msgstr "Déverrouiller"
 
 #, fuzzy
-msgid "BASICBATCH#bbatch_unlock#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_unlock#submenu"
 msgstr "actions"
 
 #, fuzzy
-msgid "BASICBATCH#title"
+msgctxt "BASICBATCH"
+msgid "title"
 msgstr "Action basique"

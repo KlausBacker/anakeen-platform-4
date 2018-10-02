@@ -12,32 +12,40 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: App/Fdl/workflows.ods.csv
-msgid "MASK#msk_attrids"
+msgctxt "MASK"
+msgid "msk_attrids"
 msgstr "Attrid"
 
 #: App/Fdl/workflows.ods.csv
-msgid "MASK#msk_fam"
+msgctxt "MASK"
+msgid "msk_fam"
 msgstr "Family (title)"
 
 #: App/Fdl/workflows.ods.csv
-msgid "MASK#msk_famid"
+msgctxt "MASK"
+msgid "msk_famid"
 msgstr "Family"
 
 #: App/Fdl/workflows.ods.csv
-msgid "MASK#msk_fr_rest"
+msgctxt "MASK"
+msgid "msk_fr_rest"
 msgstr "Family"
 
 #: App/Fdl/workflows.ods.csv
-msgid "MASK#msk_needeeds"
+msgctxt "MASK"
+msgid "msk_needeeds"
 msgstr "Needed"
 
 #: App/Fdl/workflows.ods.csv
-msgid "MASK#msk_t_contain"
+msgctxt "MASK"
+msgid "msk_t_contain"
 msgstr "Content"
 
 #: App/Fdl/workflows.ods.csv
-msgid "MASK#msk_visibilities"
+msgctxt "MASK"
+msgid "msk_visibilities"
 msgstr "Visibility"
 
-msgid "MASK#title"
+msgctxt "MASK"
+msgid "title"
 msgstr "Mask"

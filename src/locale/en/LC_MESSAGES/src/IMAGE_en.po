@@ -12,34 +12,43 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_catg"
+msgctxt "IMAGE"
+msgid "img_catg"
 msgstr "Category"
 
-msgid "IMAGE#img_catg#1"
+msgctxt "IMAGE"
+msgid "img_catg#1"
 msgstr "Photo"
 
-msgid "IMAGE#img_catg#2"
+msgctxt "IMAGE"
+msgid "img_catg#2"
 msgstr "Picture"
 
 #: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_description"
+msgctxt "IMAGE"
+msgid "img_description"
 msgstr "Description"
 
 #: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_file"
+msgctxt "IMAGE"
+msgid "img_file"
 msgstr "Picture"
 
 #: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_fr_char"
+msgctxt "IMAGE"
+msgid "img_fr_char"
 msgstr "Description"
 
 #: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_frfile"
+msgctxt "IMAGE"
+msgid "img_frfile"
 msgstr "Picture"
 
 #: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_title"
+msgctxt "IMAGE"
+msgid "img_title"
 msgstr "Title"
 
-msgid "IMAGE#title"
+msgctxt "IMAGE"
+msgid "title"
 msgstr "Picture"

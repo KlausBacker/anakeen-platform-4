@@ -11,73 +11,92 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "TIMER#title"
+msgctxt "TIMER"
+msgid "title"
 msgstr "Timer"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_delay"
+msgctxt "TIMER"
+msgid "tm_delay"
 msgstr "Notice (in days)"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_dyndate"
+msgctxt "TIMER"
+msgid "tm_dyndate"
 msgstr "Reference date"
 
-msgid "TIMER#tm_dyndate#elabel"
+msgctxt "TIMER"
+msgid "tm_dyndate#elabel"
 msgstr "First action execution date"
 
-msgid "TIMER#tm_dyndate#showempty"
+msgctxt "TIMER"
+msgid "tm_dyndate#showempty"
 msgstr "Timer attachment date"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_family"
+msgctxt "TIMER"
+msgid "tm_family"
 msgstr "Family"
 
-msgid "TIMER#tm_family#elabel"
+msgctxt "TIMER"
+msgid "tm_family#elabel"
 msgstr "compatible family with this timer"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_fr_ident"
+msgctxt "TIMER"
+msgid "tm_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_hdelay"
+msgctxt "TIMER"
+msgid "tm_hdelay"
 msgstr "Notice (in hours)"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_iteration"
+msgctxt "TIMER"
+msgid "tm_iteration"
 msgstr "Iterations' number"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_method"
+msgctxt "TIMER"
+msgid "tm_method"
 msgstr "Method"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_refdaydelta"
+msgctxt "TIMER"
+msgid "tm_refdaydelta"
 msgstr "Interval (in days)"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_refhourdelta"
+msgctxt "TIMER"
+msgid "tm_refhourdelta"
 msgstr "Interval (in hours)"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_state"
+msgctxt "TIMER"
+msgid "tm_state"
 msgstr "New state"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_t_config"
+msgctxt "TIMER"
+msgid "tm_t_config"
 msgstr "Configuration"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_title"
+msgctxt "TIMER"
+msgid "tm_title"
 msgstr "Title"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_tmail"
+msgctxt "TIMER"
+msgid "tm_tmail"
 msgstr "Mail template"
 
 #: App/Fdl/workflows.ods.csv
-msgid "TIMER#tm_workflow"
+msgctxt "TIMER"
+msgid "tm_workflow"
 msgstr "Cycle family"
 
-msgid "TIMER#tm_workflow#elabel"
+msgctxt "TIMER"
+msgid "tm_workflow#elabel"
 msgstr "Cycle family for state choice"

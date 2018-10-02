@@ -12,44 +12,55 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_description"
+msgctxt "FILE"
+msgid "fi_description"
 msgstr "Summary"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_file"
+msgctxt "FILE"
+msgid "fi_file"
 msgstr "Main file"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_fr_oformat"
+msgctxt "FILE"
+msgid "fi_fr_oformat"
 msgstr "Files"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_frdesc"
+msgctxt "FILE"
+msgid "fi_frdesc"
 msgstr "Description"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_keyword"
+msgctxt "FILE"
+msgid "fi_keyword"
 msgstr "Key words"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_ofile"
+msgctxt "FILE"
+msgid "fi_ofile"
 msgstr "File"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_subject"
+msgctxt "FILE"
+msgid "fi_subject"
 msgstr "Subject"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_title"
+msgctxt "FILE"
+msgid "fi_title"
 msgstr "Title"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#fi_titlew"
+msgctxt "FILE"
+msgid "fi_titlew"
 msgstr "Title"
 
 #: App/Fdl/misc.ods.csv
-msgid "FILE#ft_t_oformat"
+msgctxt "FILE"
+msgid "ft_t_oformat"
 msgstr "Others"
 
-msgid "FILE#title"
+msgctxt "FILE"
+msgid "title"
 msgstr "Files"

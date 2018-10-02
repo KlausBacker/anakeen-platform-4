@@ -12,31 +12,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: App/Fusers/account.ods.csv
-msgid "IGROUP#grp_choosegroup"
+msgctxt "IGROUP"
+msgid "grp_choosegroup"
 msgstr "Choose group"
 
 #: App/Fusers/account.ods.csv
-msgid "IGROUP#grp_fr_intranet"
+msgctxt "IGROUP"
+msgid "grp_fr_intranet"
 msgstr "System"
 
 #: App/Fusers/account.ods.csv
-msgid "IGROUP#grp_roles"
+msgctxt "IGROUP"
+msgid "grp_roles"
 msgstr "Associated roles"
 
-msgid "IGROUP#grp_roles#showempty"
+msgctxt "IGROUP"
+msgid "grp_roles#showempty"
 msgstr "No role"
 
-msgid "IGROUP#title"
+msgctxt "IGROUP"
+msgid "title"
 msgstr "Users' group"
 
 #: App/Fusers/account.ods.csv
-msgid "IGROUP#us_login"
+msgctxt "IGROUP"
+msgid "us_login"
 msgstr "Login"
 
 #: App/Fusers/account.ods.csv
-msgid "IGROUP#us_meid"
+msgctxt "IGROUP"
+msgid "us_meid"
 msgstr "Group id"
 
 #: App/Fusers/account.ods.csv
-msgid "IGROUP#us_whatid"
+msgctxt "IGROUP"
+msgid "us_whatid"
 msgstr "Id system"

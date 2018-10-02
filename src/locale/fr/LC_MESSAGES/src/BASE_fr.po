@@ -13,14 +13,17 @@ msgstr ""
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "BASE#ba_title"
+msgctxt "BASE"
+msgid "ba_title"
 msgstr "Titre"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "BASE#fr_basic"
+msgctxt "BASE"
+msgid "fr_basic"
 msgstr "Basique"
 
 #, fuzzy
-msgid "BASE#title"
+msgctxt "BASE"
+msgid "title"
 msgstr "de base"

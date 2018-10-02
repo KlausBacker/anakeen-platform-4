@@ -13,107 +13,130 @@ msgstr ""
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#fld_open"
+msgctxt "PORTFOLIO"
+msgid "fld_open"
 msgstr "Ouvrir"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#fld_openfolio"
+msgctxt "PORTFOLIO"
+msgid "fld_openfolio"
 msgstr "Ouvrir comme une chemise"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_copytab"
+msgctxt "PORTFOLIO"
+msgid "pfl_copytab"
 msgstr "Onglet à copier"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_def"
+msgctxt "PORTFOLIO"
+msgid "pfl_def"
 msgstr "Chemise défaut"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_fr_init"
+msgctxt "PORTFOLIO"
+msgid "pfl_fr_init"
 msgstr "Affichage de la chemise"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_idcopytab"
+msgctxt "PORTFOLIO"
+msgid "pfl_idcopytab"
 msgstr "Id onglet à copier"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_iddef"
+msgctxt "PORTFOLIO"
+msgid "pfl_iddef"
 msgstr "Id chemise défaut "
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_idlinktab"
+msgctxt "PORTFOLIO"
+msgid "pfl_idlinktab"
 msgstr "Id onglet à lier"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_linktab"
+msgctxt "PORTFOLIO"
+msgid "pfl_linktab"
 msgstr "Onglet à lier"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_liststyle"
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle"
 msgstr "Style de la liste"
 
 #, fuzzy
-msgid "PORTFOLIO#pfl_liststyle#icon"
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle#icon"
 msgstr "Icône"
 
 #, fuzzy
-msgid "PORTFOLIO#pfl_liststyle#list"
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle#list"
 msgstr "Liste"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_open"
+msgctxt "PORTFOLIO"
+msgid "pfl_open"
 msgstr "Ouvrir"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_savedispo"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo"
 msgstr "Affichage dernière disposition"
 
 #, fuzzy
-msgid "PORTFOLIO#pfl_savedispo#0"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#0"
 msgstr "Non"
 
 #, fuzzy
-msgid "PORTFOLIO#pfl_savedispo#1"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#1"
 msgstr "Oui"
 
 #, fuzzy
-msgid "PORTFOLIO#pfl_savedispo#elabel"
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#elabel"
 msgstr "Affichage des derniers documents consultés"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_savetab"
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab"
 msgstr "Affichage dernier onglet consulté"
 
 #, fuzzy
-msgid "PORTFOLIO#pfl_savetab#0"
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab#0"
 msgstr "Non"
 
 #, fuzzy
-msgid "PORTFOLIO#pfl_savetab#1"
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab#1"
 msgstr "Oui"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_t_copytab"
+msgctxt "PORTFOLIO"
+msgid "pfl_t_copytab"
 msgstr "Onglets à copier pour les nouveaux documents"
 
 #: App/Fdl/misc.ods.csv
 #, fuzzy
-msgid "PORTFOLIO#pfl_t_linktab"
+msgctxt "PORTFOLIO"
+msgid "pfl_t_linktab"
 msgstr "Onglets à lier (dynamique)"
 
 #, fuzzy
-msgid "PORTFOLIO#title"
+msgctxt "PORTFOLIO"
+msgid "title"
 msgstr "Chemise"

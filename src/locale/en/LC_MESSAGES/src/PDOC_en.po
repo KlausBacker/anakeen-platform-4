@@ -12,42 +12,53 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#dpdoc_fam"
+msgctxt "PDOC"
+msgid "dpdoc_fam"
 msgstr "Family"
 
-msgid "PDOC#dpdoc_fam#elabel"
+msgctxt "PDOC"
+msgid "dpdoc_fam#elabel"
 msgstr "Family used for dynamic profiles"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#dpdoc_famid"
+msgctxt "PDOC"
+msgid "dpdoc_famid"
 msgstr "Family id"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#dpdoc_fr_dyn"
+msgctxt "PDOC"
+msgid "dpdoc_fr_dyn"
 msgstr "Dynamic"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_access"
+msgctxt "PDOC"
+msgid "prf_access"
 msgstr "Accessibility"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_activate"
+msgctxt "PDOC"
+msgid "prf_activate"
 msgstr "Activate"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_desactivate"
+msgctxt "PDOC"
+msgid "prf_desactivate"
 msgstr "Deactivate"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_desc"
+msgctxt "PDOC"
+msgid "prf_desc"
 msgstr "Description"
 
 #: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_forcecomputing"
+msgctxt "PDOC"
+msgid "prf_forcecomputing"
 msgstr "Force profile propagation"
 
-msgid "PDOC#prf_forcecomputing#ltitle"
+msgctxt "PDOC"
+msgid "prf_forcecomputing#ltitle"
 msgstr "Force associated documents profiles recalculation"
 
-msgid "PDOC#title"
+msgctxt "PDOC"
+msgid "title"
 msgstr "Document profile"

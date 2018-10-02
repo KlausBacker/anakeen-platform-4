@@ -13,34 +13,41 @@ msgstr ""
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BATCH#batch_desc"
+msgctxt "BATCH"
+msgid "batch_desc"
 msgstr "Description"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BATCH#batch_fam"
+msgctxt "BATCH"
+msgid "batch_fam"
 msgstr "Famille"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BATCH#batch_fr_ident"
+msgctxt "BATCH"
+msgid "batch_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BATCH#batch_idfam"
+msgctxt "BATCH"
+msgid "batch_idfam"
 msgstr "Id famille"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BATCH#batch_plan"
+msgctxt "BATCH"
+msgid "batch_plan"
 msgstr "Planification"
 
 #: App/Fdl/freeaction.ods.csv
 #, fuzzy
-msgid "BATCH#batch_title"
+msgctxt "BATCH"
+msgid "batch_title"
 msgstr "Titre"
 
 #, fuzzy
-msgid "BATCH#title"
+msgctxt "BATCH"
+msgid "title"
 msgstr "Traitement"

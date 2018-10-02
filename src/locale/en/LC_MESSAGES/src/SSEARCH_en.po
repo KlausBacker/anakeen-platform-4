@@ -12,24 +12,30 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_crit"
+msgctxt "SSEARCH"
+msgid "se_crit"
 msgstr ""
 
 #: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_fr_function"
+msgctxt "SSEARCH"
+msgid "se_fr_function"
 msgstr "Function"
 
 #: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_phparg"
+msgctxt "SSEARCH"
+msgid "se_phparg"
 msgstr "PHP arguments"
 
 #: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_phpfile"
+msgctxt "SSEARCH"
+msgid "se_phpfile"
 msgstr "PHP file"
 
 #: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_phpfunc"
+msgctxt "SSEARCH"
+msgid "se_phpfunc"
 msgstr "PHP function"
 
-msgid "SSEARCH#title"
+msgctxt "SSEARCH"
+msgid "title"
 msgstr "Specialized search"

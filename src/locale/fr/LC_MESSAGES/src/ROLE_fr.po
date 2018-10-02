@@ -12,20 +12,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: App/Fusers/account.ods.csv
-msgid "ROLE#role_fr_ident"
+msgctxt "ROLE"
+msgid "role_fr_ident"
 msgstr "Identification"
 
 #: App/Fusers/account.ods.csv
-msgid "ROLE#role_login"
+msgctxt "ROLE"
+msgid "role_login"
 msgstr "Référence"
 
 #: App/Fusers/account.ods.csv
-msgid "ROLE#role_name"
+msgctxt "ROLE"
+msgid "role_name"
 msgstr "Libellé"
 
-msgid "ROLE#title"
+msgctxt "ROLE"
+msgid "title"
 msgstr "Rôle"
 
 #: App/Fusers/account.ods.csv
-msgid "ROLE#us_whatid"
+msgctxt "ROLE"
+msgid "us_whatid"
 msgstr "Identifiant système"

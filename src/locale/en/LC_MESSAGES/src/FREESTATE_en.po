@@ -12,34 +12,43 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: App/Fdl/workflows.ods.csv
-msgid "FREESTATE#frst_color"
+msgctxt "FREESTATE"
+msgid "frst_color"
 msgstr "Color"
 
-msgid "FREESTATE#frst_color#elabel"
+msgctxt "FREESTATE"
+msgid "frst_color#elabel"
 msgstr "color representing the state"
 
 #: App/Fdl/workflows.ods.csv
-msgid "FREESTATE#frst_desc"
+msgctxt "FREESTATE"
+msgid "frst_desc"
 msgstr "Description"
 
 #: App/Fdl/workflows.ods.csv
-msgid "FREESTATE#frst_fam"
+msgctxt "FREESTATE"
+msgid "frst_fam"
 msgstr "Famille"
 
-msgid "FREESTATE#frst_fam#elabel"
+msgctxt "FREESTATE"
+msgid "frst_fam#elabel"
 msgstr "restrain usage to the specified family"
 
 #: App/Fdl/workflows.ods.csv
-msgid "FREESTATE#frst_famid"
+msgctxt "FREESTATE"
+msgid "frst_famid"
 msgstr "Family (id)"
 
 #: App/Fdl/workflows.ods.csv
-msgid "FREESTATE#frst_fr_ident"
+msgctxt "FREESTATE"
+msgid "frst_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/workflows.ods.csv
-msgid "FREESTATE#frst_name"
+msgctxt "FREESTATE"
+msgid "frst_name"
 msgstr "Name"
 
-msgid "FREESTATE#title"
+msgctxt "FREESTATE"
+msgid "title"
 msgstr "Free state"

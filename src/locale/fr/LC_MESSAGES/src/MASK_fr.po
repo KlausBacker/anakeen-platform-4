@@ -13,39 +13,47 @@ msgstr ""
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "MASK#msk_attrids"
+msgctxt "MASK"
+msgid "msk_attrids"
 msgstr "Attrid"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "MASK#msk_fam"
+msgctxt "MASK"
+msgid "msk_fam"
 msgstr "Famille (titre)"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "MASK#msk_famid"
+msgctxt "MASK"
+msgid "msk_famid"
 msgstr "Famille"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "MASK#msk_fr_rest"
+msgctxt "MASK"
+msgid "msk_fr_rest"
 msgstr "Famille"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "MASK#msk_needeeds"
+msgctxt "MASK"
+msgid "msk_needeeds"
 msgstr "Obligatoire"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "MASK#msk_t_contain"
+msgctxt "MASK"
+msgid "msk_t_contain"
 msgstr "Contenu"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "MASK#msk_visibilities"
+msgctxt "MASK"
+msgid "msk_visibilities"
 msgstr "Visibilité"
 
 #, fuzzy
-msgid "MASK#title"
+msgctxt "MASK"
+msgid "title"
 msgstr "Masque de saisie"

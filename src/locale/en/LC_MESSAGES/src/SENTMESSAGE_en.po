@@ -12,83 +12,105 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_attach"
+msgctxt "SENTMESSAGE"
+msgid "emsg_attach"
 msgstr "File"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_date"
+msgctxt "SENTMESSAGE"
+msgid "emsg_date"
 msgstr "Date"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_editcontrol"
+msgctxt "SENTMESSAGE"
+msgid "emsg_editcontrol"
 msgstr "Force read-only"
 
-msgid "SENTMESSAGE#emsg_editcontrol#freeedit"
+msgctxt "SENTMESSAGE"
+msgid "emsg_editcontrol#freeedit"
 msgstr "Free edit right"
 
-msgid "SENTMESSAGE#emsg_editcontrol#lockedit"
+msgctxt "SENTMESSAGE"
+msgid "emsg_editcontrol#lockedit"
 msgstr "Locked edit right"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_fr_bodies"
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_bodies"
 msgstr "Message body"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_fr_ident"
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_fr_parameters"
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_parameters"
 msgstr "Parameters"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_from"
+msgctxt "SENTMESSAGE"
+msgid "emsg_from"
 msgstr "From"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_htmlbody"
+msgctxt "SENTMESSAGE"
+msgid "emsg_htmlbody"
 msgstr "Formatted text"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_recipient"
+msgctxt "SENTMESSAGE"
+msgid "emsg_recipient"
 msgstr "Recipient"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_refid"
+msgctxt "SENTMESSAGE"
+msgid "emsg_refid"
 msgstr "Referent document"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_sendtype"
+msgctxt "SENTMESSAGE"
+msgid "emsg_sendtype"
 msgstr "Type"
 
-msgid "SENTMESSAGE#emsg_sendtype#bcc"
+msgctxt "SENTMESSAGE"
+msgid "emsg_sendtype#bcc"
 msgstr "Blind carbon copy"
 
-msgid "SENTMESSAGE#emsg_sendtype#cc"
+msgctxt "SENTMESSAGE"
+msgid "emsg_sendtype#cc"
 msgstr "Copy"
 
-msgid "SENTMESSAGE#emsg_sendtype#to"
+msgctxt "SENTMESSAGE"
+msgid "emsg_sendtype#to"
 msgstr "To"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_size"
+msgctxt "SENTMESSAGE"
+msgid "emsg_size"
 msgstr "Size"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_subject"
+msgctxt "SENTMESSAGE"
+msgid "emsg_subject"
 msgstr "Subject"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_t_attach"
+msgctxt "SENTMESSAGE"
+msgid "emsg_t_attach"
 msgstr "Attachments"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_t_recipient"
+msgctxt "SENTMESSAGE"
+msgid "emsg_t_recipient"
 msgstr "Recipients"
 
 #: App/Fdl/fdl.ods.csv
-msgid "SENTMESSAGE#emsg_textbody"
+msgctxt "SENTMESSAGE"
+msgid "emsg_textbody"
 msgstr "Text"
 
-msgid "SENTMESSAGE#title"
+msgctxt "SENTMESSAGE"
+msgid "title"
 msgstr "Sent message"
