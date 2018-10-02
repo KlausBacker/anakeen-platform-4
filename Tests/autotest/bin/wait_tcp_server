@@ -1,0 +1,58 @@
+#!/bin/bash
+
+function usage {
+	cat <<EOF
+
+Usage
+-----
+
+  $0 [--timeout <seconds>] <tcp-port-number>
+
+
+EOF
+}
+
+function main {
+	local WAIT_TIMEOUT=60
+	while [ $# -gt 0 ]; do
+		case "$1" in
+			--help|-h)
+				usage
+				return 1
+				;;
+			--timeout)
+				shift
+				WAIT_TIMEOUT=$1
+				if ! [[ "${WAIT_TIMEOUT}" =~ ^[0-9]+$ ]]; then
+					echo "Error: invalid non-integer value '${WAIT_TIMEOUT}' for '--timeout'!" 1>&2
+					usage
+					return 1
+				fi
+				shift
+				;;
+			*)
+				break
+				;;
+		esac
+	done
+	local TCP_PORT=$1
+	if ! [[ "${TCP_PORT}" =~ ^[0-9]+$ ]]; then
+		echo "Error: invalid TCP port number '${TCP_PORT}'!" 1>&2
+		usage
+		return 1
+	fi
+	echo -n "Waiting ${WAIT_TIMEOUT}s for TCP server on port ${TCP_PORT}: "
+	while [[ ${WAIT_TIMEOUT} -gt 0 ]]; do
+		echo -n "."
+		if (ss -tnlp | grep -P ":${TCP_PORT}\\s") > /dev/null 2>&1; then
+			echo " [OK]"
+			return 0
+		fi
+	sleep 1
+	WAIT_TIMEOUT=$(( ${WAIT_TIMEOUT}-1 ))
+	done
+	echo " [TIMEOUT]"
+	return 1
+}
+
+main "$@"

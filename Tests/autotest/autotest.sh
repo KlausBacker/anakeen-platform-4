@@ -47,7 +47,7 @@ function main {
 			fi
 			"${SCRIPT}"
 		done
-	)
+	) 2>&1 | timestamplog
 	RET=$?
 	if [ $RET -ne 0 ]; then
 		echo "Error: tests failed!" 1>&2
