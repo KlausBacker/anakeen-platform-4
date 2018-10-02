@@ -41,7 +41,7 @@ exports.po = ({ sourcePath }) => {
               return `${buildPath}/locale/${file.lang}/LC_MESSAGES/src/`;
             })
           )
-          .on("end",resolve)
+          .on("end", resolve)
           .on("error", reject);
       } catch (e) {
         reject(e);
