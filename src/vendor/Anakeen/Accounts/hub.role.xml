@@ -3,14 +3,14 @@
           xsi:noNamespaceSchemaLocation="xsd/accounts.xsd">
     <roles>
         <role>
-            <reference>hub_user_role</reference>
+            <reference>hub-user-role</reference>
             <displayName>Hub users</displayName>
             <document family="ROLE">
                 <role  name="hub-user-role"/>
             </document>
         </role>
         <role>
-            <reference>hub_admin_role</reference>
+            <reference>hub-admin-role</reference>
             <displayName>Hub admin</displayName>
             <document family="ROLE">
                 <role  name="hub-admin-role"/>
@@ -22,14 +22,14 @@
             <reference>all</reference>
             <displayName>Main Group</displayName>
             <associatedRoles reset="false">
-                <associatedRole reference="hub_user_role"/>
+                <associatedRole reference="hub-user-role"/>
             </associatedRoles>
         </group>
         <group>
             <reference>gadmin</reference>
             <displayName>Administrators</displayName>
             <associatedRoles reset="false">
-                <associatedRole reference="hub_admin_role"/>
+                <associatedRole reference="hub-admin-role"/>
             </associatedRoles>
         </group>
     </groups>
