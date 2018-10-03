@@ -2,6 +2,7 @@
 
 namespace Anakeen\Router;
 
+use Anakeen\Router\Config\AccessInfo;
 use \Anakeen\Router\Config\RouterInfo;
 
 /**
@@ -176,12 +177,15 @@ class RouterConfig
          */
         $accessesInfo = [];
         foreach ($this->accesses as $appData) {
-            if (isset($accessesInfo[$appData->name])) {
-                throw new Exception("ROUTES0137", $appData->configFile, $appData->name, $accessesInfo[$appData->name]->configFile);
+            if ($appData->name === AccessInfo::ROUTEACCESSFIELD) {
+                $accessesInfo[] = new Config\AccessInfo($appData);
+            } else {
+                if (isset($accessesInfo[$appData->name])) {
+                    throw new Exception("ROUTES0137", $appData->configFile, $appData->name, $accessesInfo[$appData->name]->configFile);
+                }
+                $accessesInfo[$appData->name] = new Config\AccessInfo($appData);
             }
-            $accessesInfo[$appData->name] = new Config\AccessInfo($appData);
         }
-
         return $accessesInfo;
     }
 
@@ -212,7 +216,7 @@ class RouterConfig
     {
         $accesses = $this->getAccesses();
         foreach ($accesses as $access) {
-                $access->record();
+            $access->record();
         }
     }
 
@@ -225,7 +229,7 @@ class RouterConfig
     {
         $parameters = $this->getParameters();
         foreach ($parameters as $param) {
-                $param->record();
+            $param->record();
         }
     }
 }
