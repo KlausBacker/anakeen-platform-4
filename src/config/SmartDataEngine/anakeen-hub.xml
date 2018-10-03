@@ -54,8 +54,8 @@
         <sde:access name="HubAdmin">
             <sde:description>Hub administrator access</sde:description>
         </sde:access>
-        <sde:route-access ref="HubUser" account="hub-user-role"></sde:route-access>
-        <sde:route-access ref="HubAdmin" account="hub-admin-role"></sde:route-access>
+        <sde:route-acces ref="HubAdmin" account="hub-admin-role"/>
+        <sde:route-acces ref="HubUser" account="hub-user-role"/>
     </sde:accesses>
     <sde:parameters namespace="Anakeen">
             <sde:parameter name="CONFIG">

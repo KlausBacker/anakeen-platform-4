@@ -2,8 +2,7 @@
 <module xmlns="urn:dynacase:webinst:module/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.0" release="0">
   <post-install>
     <process command="programs/update_catalog"/>
-    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Accounts/Roles.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Hub/Config/hubAccess.xml"/>
+    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Accounts/hub.role.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.view.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.xml"/>
@@ -15,8 +14,7 @@
   </post-install>
   <post-upgrade>
     <process command="programs/update_catalog"/>
-    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Accounts/Roles.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/Hub/Config/hubAccess.xml"/>
+    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Accounts/hub.role.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.view.xml"/>
     <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.xml"/>
