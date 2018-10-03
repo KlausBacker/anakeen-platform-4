@@ -1,0 +1,64 @@
+$content-height: calc(100vh - 3.4rem);
+
+body, html {
+  font-size: 14px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+body {
+  background-color: #DDDDDD;
+  overflow:scroll;
+}
+.hub-admin-grid {
+  height: 100%;
+  width:100%;
+}
+
+.hub-admin {
+  height: 100%;
+  width: 100%;
+}
+
+.hub-admin-header {
+  height: 3.4rem;
+  display: flex;
+  font-size: 1.1667rem;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: .5rem 1rem;
+  background: #424142;
+}
+
+.hub-admin-header__content {
+  display: flex;
+  align-items: center;
+  > * + * {
+    margin-left: 1rem;
+  }
+}
+
+.logout-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  .fa {
+    font-size: 2rem;
+  }
+}
+
+.hub-admin-content {
+  display: flex;
+  flex-direction: column;
+  height: $content-height;
+}
+
+.hub-modal {
+  height: 100% !important;
+  width: 100% !important;
+  visibility: visible !important;
+}
