@@ -31,9 +31,6 @@ export default {
       ]
     };
   },
-  mounted() {
-    // this.collection = this.$http.get("/hub/config/");
-  },
   methods: {
     toolbarConfig() {
       const options = this.$refs.hubGrid.kendoGrid.getOptions();
@@ -55,7 +52,7 @@ export default {
       this.$modal.show("hubConfigModal");
       this.collection = e.item.text();
     },
-    openedModal(e) {
+    openedModal() {
       if (this.$refs.smartConfig.isLoaded()) {
         this.createConfig(this.collection);
       } else {
