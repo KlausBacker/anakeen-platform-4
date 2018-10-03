@@ -1,13 +1,10 @@
-require("../SCSS/hub.scss");
-
 import Vue from "vue";
 
-import ankHub from "../Components/Hub";
+import ankHub from "../Components/Hub/Hub";
 import AnkComponents from "@anakeen/ank-components";
 import AnkAxios from "axios";
 
 Vue.prototype.$http = AnkAxios.create();
-Vue.use(AnkAxios);
 Vue.use(AnkComponents);
 
 new Vue({

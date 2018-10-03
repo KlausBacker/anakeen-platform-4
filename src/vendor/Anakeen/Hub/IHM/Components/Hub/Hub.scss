@@ -1,0 +1,52 @@
+$content-height: calc(100vh - 3.4rem);
+
+body, html {
+  width: 100vw;
+  height: 100vh;
+}
+
+.hub {
+  height: 100%;
+  width: 100%;
+}
+
+.hub-header {
+  height: 3.4rem;
+  display: flex;
+  font-size: 1.1667rem;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: .5rem 1rem;
+  background: #424142;
+}
+
+.hub-header__content {
+  display: flex;
+  align-items: center;
+  > * + * {
+    margin-left: 1rem;
+  }
+}
+
+.logout-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  .fa {
+    font-size: 2rem;
+  }
+}
+
+.dock {
+  width: 100%;
+  height: 100%;
+  border-width: 3px;
+}
+
+.hub-content {
+  display: flex;
+  flex-direction: column;
+  height: $content-height;
+}
