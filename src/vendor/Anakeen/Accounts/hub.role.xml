@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<accounts>
+<accounts date="2016-01-29T11:49:17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="xsd/accounts.xsd">
     <roles>
         <role>
             <reference>hub_user_role</reference>
