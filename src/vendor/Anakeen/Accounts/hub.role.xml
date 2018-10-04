@@ -5,16 +5,10 @@
         <role>
             <reference>hub-user-role</reference>
             <displayName>Hub users</displayName>
-            <document family="ROLE">
-                <role  name="hub-user-role"/>
-            </document>
         </role>
         <role>
             <reference>hub-admin-role</reference>
             <displayName>Hub admin</displayName>
-            <document family="ROLE">
-                <role  name="hub-admin-role"/>
-            </document>
         </role>
     </roles>
     <groups>
