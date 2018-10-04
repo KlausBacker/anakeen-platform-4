@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum MAIL-mail_savecopy \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-03T13:31:40.887Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: mail.struct.xml
+#, fuzzy
+msgctxt "MAIL-mail_savecopy"
+msgid "no"
+msgstr "Pas de copie"
+
+#: mail.struct.xml
+#, fuzzy
+msgctxt "MAIL-mail_savecopy"
+msgid "yes"
+msgstr "Copie sur le serveur"

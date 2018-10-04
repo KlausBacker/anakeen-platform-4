@@ -11,277 +11,277 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "title"
-msgstr "Modèle de mail"
-
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_attach"
 msgstr "Attachement"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_body"
 msgstr "Corps"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_copymode"
 msgstr "-"
 
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_copymode#bcc"
-msgstr "Bcc"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_copymode#cc"
-msgstr "Cc"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_copymode#to"
-msgstr "À"
-
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_dest"
 msgstr "Destinataires"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_desttype"
 msgstr "Type"
 
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#A"
-msgstr "Attribut texte"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#D"
-msgstr "Attribut relation"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#DE"
-msgstr "Paramètre de famille relation"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#E"
-msgstr "Paramètre de famille texte"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#F"
-msgstr "Adresse fixe"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#P"
-msgstr "Paramètres globaux"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#RD"
-msgstr "Document destinataire"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#WA"
-msgstr "Attribut cycle"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#WD"
-msgstr "Relation cycle"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_desttype#WE"
-msgstr "Paramètre cycle"
-
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_family"
 msgstr "Famille"
 
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_format"
-msgstr "Format"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_format#html"
-msgstr "HTML"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_format#htmlpdf"
-msgstr "HTML & PDF"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_format#pdf"
-msgstr "PDF"
-
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fr"
 msgstr "Entête"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fr_content"
 msgstr "Contenu"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_from"
 msgstr "De"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fromtype"
 msgstr "type"
 
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#A"
-msgstr "Attribut texte"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#D"
-msgstr "Attribut relation"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#DE"
-msgstr "Paramètre de famille relation"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#E"
-msgstr "Paramètre de famille texte"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#F"
-msgstr "Adresse fixe"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#P"
-msgstr "Paramètres globaux"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#WA"
-msgstr "Attribut cycle"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#WD"
-msgstr "Relation cycle"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_fromtype#WE"
-msgstr "Paramètre cycle"
-
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_recip"
 msgstr "Destinataire"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_savecopy"
 msgstr "Enregistrer une copie"
 
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_savecopy#elabel"
-msgstr "enregistrer une copie du message sur le serveur lors de l'envoi"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_savecopy#no"
-msgstr "Pas de copie"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_savecopy#yes"
-msgstr "Copie sur le serveur"
-
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_subject"
 msgstr "Sujet"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_t_attach"
 msgstr "Attachements"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_t_from"
 msgstr "Émetteur"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_title"
 msgstr "Titre"
 
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_ulink"
 msgstr "Avec liens"
 
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_ulink#no"
-msgstr "Sans lien"
-
-#, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_ulink#yes"
-msgstr "Avec liens"
-
-#: App/Fdl/fdl.ods.csv
+#: mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_workflow"
 msgstr "Famille cycle"
 
 #, fuzzy
-msgctxt "MAILTEMPLATE"
-msgid "tmail_workflow#elabel"
-msgstr ""
-"famille cycle pour récupérer le commentaire ou les paramètres de transition"
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "title"
+#~ msgstr "Modèle de mail"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#bcc"
+#~ msgstr "Bcc"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#cc"
+#~ msgstr "Cc"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#to"
+#~ msgstr "À"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#A"
+#~ msgstr "Attribut texte"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#D"
+#~ msgstr "Attribut relation"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#DE"
+#~ msgstr "Paramètre de famille relation"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#E"
+#~ msgstr "Paramètre de famille texte"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#F"
+#~ msgstr "Adresse fixe"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#P"
+#~ msgstr "Paramètres globaux"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#RD"
+#~ msgstr "Document destinataire"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WA"
+#~ msgstr "Attribut cycle"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WD"
+#~ msgstr "Relation cycle"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WE"
+#~ msgstr "Paramètre cycle"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format"
+#~ msgstr "Format"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#html"
+#~ msgstr "HTML"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#htmlpdf"
+#~ msgstr "HTML & PDF"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#pdf"
+#~ msgstr "PDF"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#A"
+#~ msgstr "Attribut texte"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#D"
+#~ msgstr "Attribut relation"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#DE"
+#~ msgstr "Paramètre de famille relation"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#E"
+#~ msgstr "Paramètre de famille texte"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#F"
+#~ msgstr "Adresse fixe"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#P"
+#~ msgstr "Paramètres globaux"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WA"
+#~ msgstr "Attribut cycle"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WD"
+#~ msgstr "Relation cycle"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WE"
+#~ msgstr "Paramètre cycle"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#elabel"
+#~ msgstr "enregistrer une copie du message sur le serveur lors de l'envoi"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#no"
+#~ msgstr "Pas de copie"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#yes"
+#~ msgstr "Copie sur le serveur"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_ulink#no"
+#~ msgstr "Sans lien"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_ulink#yes"
+#~ msgstr "Avec liens"
+
+#, fuzzy
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_workflow#elabel"
+#~ msgstr ""
+#~ "famille cycle pour récupérer le commentaire ou les paramètres de "
+#~ "transition"

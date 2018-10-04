@@ -11,109 +11,102 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "ba_title"
 msgstr "Title"
 
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "fld_fr_prof"
 msgstr "Default profile"
 
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "fld_fr_rest"
 msgstr "Restrictions"
 
-#: App/Fusers/account.ods.csv
-msgctxt "GROUP"
-msgid "fld_tfam"
-msgstr ""
-
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "fr_basic"
 msgstr "Basic"
 
-#: App/Fusers/account.ods.csv
-msgctxt "GROUP"
-msgid "grp_adduser"
-msgstr "Members' management"
-
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_fr"
 msgstr "Groups"
 
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_fr_ident"
 msgstr "Identification"
 
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_hasmail"
 msgstr "Without group adress mail"
 
-msgctxt "GROUP"
-msgid "grp_hasmail#[bool]yes"
-msgstr "Mail regrouped"
-
-msgctxt "GROUP"
-msgid "grp_hasmail#elabel"
-msgstr "Skip mail calculation for group with a lot of members"
-
-msgctxt "GROUP"
-msgid "grp_hasmail#no"
-msgstr "Without mail adress"
-
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_idgroup"
 msgstr "Subgroups"
 
-msgctxt "GROUP"
-msgid "grp_idgroup#showempty"
-msgstr "No subgroups"
-
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_idpgroup"
 msgstr "Parent groups"
 
-msgctxt "GROUP"
-msgid "grp_idpgroup#showempty"
-msgstr "No parent groups"
-
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_isrefreshed"
 msgstr "Is refreshed"
 
-msgctxt "GROUP"
-msgid "grp_isrefreshed#0"
-msgstr "no"
-
-msgctxt "GROUP"
-msgid "grp_isrefreshed#1"
-msgstr "yes"
-
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_mail"
 msgstr "Mail"
 
-#: App/Fusers/account.ods.csv
+#: group.struct.xml
 msgctxt "GROUP"
 msgid "grp_name"
 msgstr "Name"
 
-#: App/Fusers/account.ods.csv
-msgctxt "GROUP"
-msgid "grp_refresh"
-msgstr "Refresh"
+#~ msgctxt "GROUP"
+#~ msgid "grp_adduser"
+#~ msgstr "Members' management"
 
-msgctxt "GROUP"
-msgid "title"
-msgstr "Group of people"
+#~ msgctxt "GROUP"
+#~ msgid "grp_hasmail#[bool]yes"
+#~ msgstr "Mail regrouped"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_hasmail#elabel"
+#~ msgstr "Skip mail calculation for group with a lot of members"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_hasmail#no"
+#~ msgstr "Without mail adress"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_idgroup#showempty"
+#~ msgstr "No subgroups"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_idpgroup#showempty"
+#~ msgstr "No parent groups"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_isrefreshed#0"
+#~ msgstr "no"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_isrefreshed#1"
+#~ msgstr "yes"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_refresh"
+#~ msgstr "Refresh"
+
+#~ msgctxt "GROUP"
+#~ msgid "title"
+#~ msgstr "Group of people"

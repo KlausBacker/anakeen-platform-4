@@ -11,56 +11,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/misc.ods.csv
-msgctxt "FILE"
-msgid "fi_description"
-msgstr "Summary"
-
-#: App/Fdl/misc.ods.csv
+#: file.struct.xml
 msgctxt "FILE"
 msgid "fi_file"
 msgstr "Main file"
 
-#: App/Fdl/misc.ods.csv
-msgctxt "FILE"
-msgid "fi_fr_oformat"
-msgstr "Files"
-
-#: App/Fdl/misc.ods.csv
+#: file.struct.xml
 msgctxt "FILE"
 msgid "fi_frdesc"
 msgstr "Description"
 
-#: App/Fdl/misc.ods.csv
-msgctxt "FILE"
-msgid "fi_keyword"
-msgstr "Key words"
-
-#: App/Fdl/misc.ods.csv
-msgctxt "FILE"
-msgid "fi_ofile"
-msgstr "File"
-
-#: App/Fdl/misc.ods.csv
-msgctxt "FILE"
-msgid "fi_subject"
-msgstr "Subject"
-
-#: App/Fdl/misc.ods.csv
+#: file.struct.xml
 msgctxt "FILE"
 msgid "fi_title"
 msgstr "Title"
 
-#: App/Fdl/misc.ods.csv
+#: file.struct.xml
 msgctxt "FILE"
 msgid "fi_titlew"
 msgstr "Title"
 
-#: App/Fdl/misc.ods.csv
-msgctxt "FILE"
-msgid "ft_t_oformat"
-msgstr "Others"
+#~ msgctxt "FILE"
+#~ msgid "fi_description"
+#~ msgstr "Summary"
 
-msgctxt "FILE"
-msgid "title"
-msgstr "Files"
+#~ msgctxt "FILE"
+#~ msgid "fi_fr_oformat"
+#~ msgstr "Files"
+
+#~ msgctxt "FILE"
+#~ msgid "fi_keyword"
+#~ msgstr "Key words"
+
+#~ msgctxt "FILE"
+#~ msgid "fi_ofile"
+#~ msgstr "File"
+
+#~ msgctxt "FILE"
+#~ msgid "fi_subject"
+#~ msgstr "Subject"
+
+#~ msgctxt "FILE"
+#~ msgid "ft_t_oformat"
+#~ msgstr "Others"
+
+#~ msgctxt "FILE"
+#~ msgid "title"
+#~ msgstr "Files"

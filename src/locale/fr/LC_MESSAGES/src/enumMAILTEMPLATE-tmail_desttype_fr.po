@@ -1,0 +1,72 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum MAILTEMPLATE-tmail_desttype \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-03T13:31:40.903Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "A"
+msgstr "Attribut texte"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "D"
+msgstr "Attribut relation"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "DE"
+msgstr "Paramètre de famille relation"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "E"
+msgstr "Paramètre de famille texte"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "F"
+msgstr "Adresse fixe"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "P"
+msgstr "Paramètres globaux"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "RD"
+msgstr "Document destinataire"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "WA"
+msgstr "Attribut cycle"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "WD"
+msgstr "Relation cycle"
+
+#: mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE-tmail_desttype"
+msgid "WE"
+msgstr "Paramètre cycle"

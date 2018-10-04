@@ -11,133 +11,133 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_cm"
 msgstr "Commentaire"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_copymode"
 msgstr ""
 
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_copymode#bcc"
-msgstr "Bcc"
-
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_copymode#cc"
-msgstr "Cc"
-
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_copymode#to"
-msgstr "À"
-
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_dest"
 msgstr "Destinataires"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_format"
 msgstr "Format"
 
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_format#html"
-msgstr "HTML"
-
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_format#htmlpdf"
-msgstr "HTML & PDF"
-
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_format#pdf"
-msgstr "PDF"
-
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_fr"
 msgstr "Adresses"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_fr_cm"
 msgstr "Commentaire"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_from"
 msgstr "De"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_recip"
 msgstr "Destinataire"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_recipid"
 msgstr "Id destinataire"
 
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_savecopy"
 msgstr "Enregistrer une copie"
 
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_savecopy#elabel"
-msgstr "enregistrer une copie du message sur le serveur"
-
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_savecopy#no"
-msgstr "Pas de copie"
-
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_savecopy#yes"
-msgstr "Copie sur le serveur"
-
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_sendformat"
 msgstr "Notif."
 
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_sendformat#[bool]plain"
-msgstr "document complet"
-
-#, fuzzy
-msgctxt "MAIL"
-msgid "mail_sendformat#link"
-msgstr "notification avec lien vers le document"
-
-#: App/Fdl/fdl.ods.csv
+#: mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_subject"
 msgstr "Sujet"
 
 #, fuzzy
-msgctxt "MAIL"
-msgid "title"
-msgstr "Mail"
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#bcc"
+#~ msgstr "Bcc"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#cc"
+#~ msgstr "Cc"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#to"
+#~ msgstr "À"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#html"
+#~ msgstr "HTML"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#htmlpdf"
+#~ msgstr "HTML & PDF"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#pdf"
+#~ msgstr "PDF"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#elabel"
+#~ msgstr "enregistrer une copie du message sur le serveur"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#no"
+#~ msgstr "Pas de copie"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#yes"
+#~ msgstr "Copie sur le serveur"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#[bool]plain"
+#~ msgstr "document complet"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#link"
+#~ msgstr "notification avec lien vers le document"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "title"
+#~ msgstr "Mail"

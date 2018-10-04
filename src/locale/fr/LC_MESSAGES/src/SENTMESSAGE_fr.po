@@ -11,128 +11,126 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_attach"
 msgstr "Fichier"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_date"
 msgstr "Date"
 
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol"
-msgstr "Force la lecture seule"
-
-#, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol#freeedit"
-msgstr "Droit édit libre"
-
-#, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol#lockedit"
-msgstr "Droit édit verrouillé"
-
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Corps de messages"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_ident"
 msgstr "Identification"
 
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "emsg_fr_parameters"
-msgstr "Paramètres"
-
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_from"
 msgstr "De"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_htmlbody"
 msgstr "Texte formaté"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_recipient"
 msgstr "Destinataire"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_refid"
 msgstr "Document référence"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_sendtype"
 msgstr "Type"
 
-#, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "emsg_sendtype#bcc"
-msgstr "Copie cachée"
-
-#, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "emsg_sendtype#cc"
-msgstr "Copie"
-
-#, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "emsg_sendtype#to"
-msgstr "Pour"
-
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_size"
 msgstr "Taille"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_subject"
 msgstr "Sujet"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_attach"
 msgstr "Attachements"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_recipient"
 msgstr "Destinataires"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
 msgid "emsg_textbody"
 msgstr "Texte"
 
 #, fuzzy
-msgctxt "SENTMESSAGE"
-msgid "title"
-msgstr "Message envoyé"
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol"
+#~ msgstr "Force la lecture seule"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol#freeedit"
+#~ msgstr "Droit édit libre"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol#lockedit"
+#~ msgstr "Droit édit verrouillé"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_fr_parameters"
+#~ msgstr "Paramètres"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#bcc"
+#~ msgstr "Copie cachée"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#cc"
+#~ msgstr "Copie"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#to"
+#~ msgstr "Pour"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "title"
+#~ msgstr "Message envoyé"

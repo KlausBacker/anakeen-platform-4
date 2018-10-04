@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum SEARCH-se_trash \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-03T13:31:40.933Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_trash"
+msgid "also"
+msgstr "aussi"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_trash"
+msgid "no"
+msgstr "non"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_trash"
+msgid "only"
+msgstr "seulement"

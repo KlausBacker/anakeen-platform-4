@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum DSEARCH-se_ol \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-03T13:31:40.810Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: dsearch.struct.xml
+#, fuzzy
+msgctxt "DSEARCH-se_ol"
+msgid "and"
+msgstr "satisfait toutes les conditions"
+
+#: dsearch.struct.xml
+#, fuzzy
+msgctxt "DSEARCH-se_ol"
+msgid "or"
+msgstr "satisfait au moins une condition"
+
+#: dsearch.struct.xml
+#, fuzzy
+msgctxt "DSEARCH-se_ol"
+msgid "perso"
+msgstr "personnalisée"

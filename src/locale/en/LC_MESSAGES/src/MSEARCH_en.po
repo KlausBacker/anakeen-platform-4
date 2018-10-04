@@ -11,31 +11,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "se_crit"
 msgstr "Criteria"
 
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "se_fr_searches"
 msgstr "Searches"
 
-#: App/Fdl/searches.ods.csv
-msgctxt "MSEARCH"
-msgid "seg_cond"
-msgstr "Search (title)"
-
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "seg_idcond"
 msgstr "Search"
 
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "seg_t_cond"
 msgstr "Search ensemble"
 
-msgctxt "MSEARCH"
-msgid "title"
-msgstr "Grouped search"
+#~ msgctxt "MSEARCH"
+#~ msgid "seg_cond"
+#~ msgstr "Search (title)"
+
+#~ msgctxt "MSEARCH"
+#~ msgid "title"
+#~ msgstr "Grouped search"

@@ -11,65 +11,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: pdoc.struct.xml
+#, fuzzy
+msgctxt "PDOC"
+msgid "ba_desc"
+msgstr "Description"
+
+#: pdoc.struct.xml
+#, fuzzy
+msgctxt "PDOC"
+msgid "ba_title"
+msgstr "Profil de document"
+
+#: pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_fam"
 msgstr "Famille"
 
-#, fuzzy
-msgctxt "PDOC"
-msgid "dpdoc_fam#elabel"
-msgstr "famille utilisée pour les profils dynamiques"
-
-#: App/Fdl/fdl.ods.csv
+#: pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_famid"
 msgstr "Famille (id)"
 
-#: App/Fdl/fdl.ods.csv
+#: pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_fr_dyn"
 msgstr "Dynamique"
 
-#: App/Fdl/fdl.ods.csv
+#: pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
-msgid "prf_access"
-msgstr "Accessibilités"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "PDOC"
-msgid "prf_activate"
-msgstr "Activer"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "PDOC"
-msgid "prf_desactivate"
-msgstr "Désactiver"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "PDOC"
-msgid "prf_desc"
-msgstr "Description"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "PDOC"
-msgid "prf_forcecomputing"
-msgstr "Forcer la propagation du profil"
+msgid "fr_basic"
+msgstr "Basique"
 
 #, fuzzy
-msgctxt "PDOC"
-msgid "prf_forcecomputing#ltitle"
-msgstr "Force le recalcul des profils des documents associés"
+#~ msgctxt "PDOC"
+#~ msgid "dpdoc_fam#elabel"
+#~ msgstr "famille utilisée pour les profils dynamiques"
 
 #, fuzzy
-msgctxt "PDOC"
-msgid "title"
-msgstr "Profil de document"
+#~ msgctxt "PDOC"
+#~ msgid "prf_access"
+#~ msgstr "Accessibilités"
+
+#, fuzzy
+#~ msgctxt "PDOC"
+#~ msgid "prf_activate"
+#~ msgstr "Activer"
+
+#, fuzzy
+#~ msgctxt "PDOC"
+#~ msgid "prf_desactivate"
+#~ msgstr "Désactiver"
+
+#, fuzzy
+#~ msgctxt "PDOC"
+#~ msgid "prf_forcecomputing"
+#~ msgstr "Forcer la propagation du profil"
+
+#, fuzzy
+#~ msgctxt "PDOC"
+#~ msgid "prf_forcecomputing#ltitle"
+#~ msgstr "Force le recalcul des profils des documents associés"

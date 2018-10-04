@@ -11,106 +11,104 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_attach"
 msgstr "File"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_date"
 msgstr "Date"
 
-#: App/Fdl/fdl.ods.csv
-msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol"
-msgstr "Force read-only"
-
-msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol#freeedit"
-msgstr "Free edit right"
-
-msgctxt "SENTMESSAGE"
-msgid "emsg_editcontrol#lockedit"
-msgstr "Locked edit right"
-
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Message body"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_ident"
 msgstr "Identification"
 
-#: App/Fdl/fdl.ods.csv
-msgctxt "SENTMESSAGE"
-msgid "emsg_fr_parameters"
-msgstr "Parameters"
-
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_from"
 msgstr "From"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_htmlbody"
 msgstr "Formatted text"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_recipient"
 msgstr "Recipient"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_refid"
 msgstr "Referent document"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_sendtype"
 msgstr "Type"
 
-msgctxt "SENTMESSAGE"
-msgid "emsg_sendtype#bcc"
-msgstr "Blind carbon copy"
-
-msgctxt "SENTMESSAGE"
-msgid "emsg_sendtype#cc"
-msgstr "Copy"
-
-msgctxt "SENTMESSAGE"
-msgid "emsg_sendtype#to"
-msgstr "To"
-
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_size"
 msgstr "Size"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_subject"
 msgstr "Subject"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_attach"
 msgstr "Attachments"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_recipient"
 msgstr "Recipients"
 
-#: App/Fdl/fdl.ods.csv
+#: sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_textbody"
 msgstr "Text"
 
-msgctxt "SENTMESSAGE"
-msgid "title"
-msgstr "Sent message"
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol"
+#~ msgstr "Force read-only"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol#freeedit"
+#~ msgstr "Free edit right"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol#lockedit"
+#~ msgstr "Locked edit right"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_fr_parameters"
+#~ msgstr "Parameters"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#bcc"
+#~ msgstr "Blind carbon copy"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#cc"
+#~ msgstr "Copy"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#to"
+#~ msgstr "To"
+
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "title"
+#~ msgstr "Sent message"

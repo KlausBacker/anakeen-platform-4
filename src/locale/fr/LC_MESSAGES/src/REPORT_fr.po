@@ -11,244 +11,235 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_caption"
 msgstr "Description"
 
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_coloreven"
-msgstr "Couleur paire"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_coloreven#elabel"
-msgstr "couleur du fond pour les rangées paires"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_colorhf"
-msgstr "Couleur entête"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_colorhf#elabel"
-msgstr "couleur du fond pour l'entête et le pied de tableau"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_colorodd"
-msgstr "Couleur impaire"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_colorodd#elabel"
-msgstr "couleur du fond pour les rangées impaires"
-
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_colors"
 msgstr "Couleur"
 
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_csv"
-msgstr "Export CSV"
-
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_displayoption"
 msgstr "Option de présentation"
 
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_foots"
 msgstr "Pied de tableau"
 
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_foots#CARD"
-msgstr "Cardinal"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_foots#MOY"
-msgstr "Moyenne"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_foots#NONE"
-msgstr " "
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_foots#SUM"
-msgstr "Somme"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_fr_param"
-msgstr "Paramètres"
-
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_fr_presentation"
 msgstr "Présentation"
 
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_idcols"
 msgstr "Id colonnes"
 
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_idsort"
 msgstr "Id tri"
 
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_imp"
-msgstr "Version imprimable"
-
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_lcols"
 msgstr "Label"
 
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_limit"
 msgstr "Limite"
 
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_limit#elabel"
-msgstr "nombre maximum de documents retournés"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_maxdisplaylimit"
-msgstr "Limite d'affichage pour le nombre de rangées"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_noaccesstext"
-msgstr "Texte à afficher pour les valeurs protégées"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_noaccesstext#elabel"
-msgstr "Dans la cas où un attribut est protégé (visibilité I)"
-
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_ordersort"
 msgstr "Ordre"
 
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_ordersort#asc"
-msgstr "ascendant"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_ordersort#desc"
-msgstr "descendant"
-
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_sort"
 msgstr "Tri"
 
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style"
-msgstr "Style"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style# "
-msgstr "Personnalisé..."
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style#reportHBlue"
-msgstr "Bleu horizontal"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style#reportHInverse"
-msgstr "Inverse vidéo"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style#reportHYellow"
-msgstr "Jaune horizontal"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style#reportVGreen"
-msgstr "Vert vertical"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style#standard1"
-msgstr "Standard (Thème 1)"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style#standard2"
-msgstr "Standard (Thème 2)"
-
-#, fuzzy
-msgctxt "REPORT"
-msgid "rep_style#standard3"
-msgstr "Standard (Thème 3)"
-
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_tab_presentation"
 msgstr "Présentation"
 
-#: App/Fdl/searches.ods.csv
+#: report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_tcols"
 msgstr "Colonnes"
 
 #, fuzzy
-msgctxt "REPORT"
-msgid "rep_tcols#lsymbol"
-msgstr "Choisir les colonnes"
+#~ msgctxt "REPORT"
+#~ msgid "rep_coloreven"
+#~ msgstr "Couleur paire"
 
 #, fuzzy
-msgctxt "REPORT"
-msgid "rep_tcols#ltitle"
-msgstr "Choisir les colonnes du rapport"
+#~ msgctxt "REPORT"
+#~ msgid "rep_coloreven#elabel"
+#~ msgstr "couleur du fond pour les rangées paires"
 
 #, fuzzy
-msgctxt "REPORT"
-msgid "title"
-msgstr "Rapport"
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorhf"
+#~ msgstr "Couleur entête"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorhf#elabel"
+#~ msgstr "couleur du fond pour l'entête et le pied de tableau"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorodd"
+#~ msgstr "Couleur impaire"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorodd#elabel"
+#~ msgstr "couleur du fond pour les rangées impaires"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_csv"
+#~ msgstr "Export CSV"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#CARD"
+#~ msgstr "Cardinal"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#MOY"
+#~ msgstr "Moyenne"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#NONE"
+#~ msgstr " "
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#SUM"
+#~ msgstr "Somme"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_fr_param"
+#~ msgstr "Paramètres"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_imp"
+#~ msgstr "Version imprimable"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_limit#elabel"
+#~ msgstr "nombre maximum de documents retournés"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_maxdisplaylimit"
+#~ msgstr "Limite d'affichage pour le nombre de rangées"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_noaccesstext"
+#~ msgstr "Texte à afficher pour les valeurs protégées"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_noaccesstext#elabel"
+#~ msgstr "Dans la cas où un attribut est protégé (visibilité I)"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_ordersort#asc"
+#~ msgstr "ascendant"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_ordersort#desc"
+#~ msgstr "descendant"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style"
+#~ msgstr "Style"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style# "
+#~ msgstr "Personnalisé..."
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportHBlue"
+#~ msgstr "Bleu horizontal"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportHInverse"
+#~ msgstr "Inverse vidéo"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportHYellow"
+#~ msgstr "Jaune horizontal"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportVGreen"
+#~ msgstr "Vert vertical"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#standard1"
+#~ msgstr "Standard (Thème 1)"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#standard2"
+#~ msgstr "Standard (Thème 2)"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#standard3"
+#~ msgstr "Standard (Thème 3)"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_tcols#lsymbol"
+#~ msgstr "Choisir les colonnes"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "rep_tcols#ltitle"
+#~ msgstr "Choisir les colonnes du rapport"
+
+#, fuzzy
+#~ msgctxt "REPORT"
+#~ msgid "title"
+#~ msgstr "Rapport"

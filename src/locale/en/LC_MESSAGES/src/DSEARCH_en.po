@@ -11,110 +11,109 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_attrids"
 msgstr "Attributes"
 
-#: App/Fdl/searches.ods.csv
-msgctxt "DSEARCH"
-msgid "se_filter"
-msgstr "Filter"
-
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_fr_detail"
 msgstr "Conditions"
 
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_funcs"
 msgstr "Functions"
 
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_keys"
 msgstr "Keywords"
 
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_leftp"
 msgstr "Left parenthesis"
 
-msgctxt "DSEARCH"
-msgid "se_leftp#no"
-msgstr " "
-
-msgctxt "DSEARCH"
-msgid "se_leftp#yes"
-msgstr "("
-
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_ol"
 msgstr "Condition"
 
-msgctxt "DSEARCH"
-msgid "se_ol#and"
-msgstr "satisfy all conditions"
-
-msgctxt "DSEARCH"
-msgid "se_ol#or"
-msgstr "satisfy at least one condition"
-
-msgctxt "DSEARCH"
-msgid "se_ol#perso"
-msgstr "personalized"
-
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_ols"
 msgstr "Operator"
 
-msgctxt "DSEARCH"
-msgid "se_ols#and"
-msgstr "and"
-
-msgctxt "DSEARCH"
-msgid "se_ols#or"
-msgstr "or"
-
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_rightp"
 msgstr "Right parenthesis"
 
-msgctxt "DSEARCH"
-msgid "se_rightp#no"
-msgstr " "
-
-msgctxt "DSEARCH"
-msgid "se_rightp#yes"
-msgstr ")"
-
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_t_detail"
 msgstr "Conditions"
 
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_t_filters"
 msgstr "Filters"
 
-#: App/Fdl/searches.ods.csv
+#: dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_typefilter"
 msgstr "Type"
 
-msgctxt "DSEARCH"
-msgid "se_typefilter#generated"
-msgstr "Generated"
+#~ msgctxt "DSEARCH"
+#~ msgid "se_filter"
+#~ msgstr "Filter"
 
-msgctxt "DSEARCH"
-msgid "se_typefilter#specified"
-msgstr "Specified"
+#~ msgctxt "DSEARCH"
+#~ msgid "se_leftp#no"
+#~ msgstr " "
 
-msgctxt "DSEARCH"
-msgid "title"
-msgstr "Detailed search"
+#~ msgctxt "DSEARCH"
+#~ msgid "se_leftp#yes"
+#~ msgstr "("
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#and"
+#~ msgstr "satisfy all conditions"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#or"
+#~ msgstr "satisfy at least one condition"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#perso"
+#~ msgstr "personalized"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ols#and"
+#~ msgstr "and"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ols#or"
+#~ msgstr "or"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_rightp#no"
+#~ msgstr " "
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_rightp#yes"
+#~ msgstr ")"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_typefilter#generated"
+#~ msgstr "Generated"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_typefilter#specified"
+#~ msgstr "Specified"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "title"
+#~ msgstr "Detailed search"

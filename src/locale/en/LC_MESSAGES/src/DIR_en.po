@@ -11,134 +11,126 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "ba_desc"
 msgstr "Description"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_allbut"
 msgstr "All or nothing"
 
-msgctxt "DIR"
-msgid "fld_allbut#0"
-msgstr "All except"
-
-msgctxt "DIR"
-msgid "fld_allbut#1"
-msgstr "Only"
-
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "fld_copybasket"
-msgstr "Insert in the basket"
-
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fam"
 msgstr "Families (title)"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_famids"
 msgstr "Families"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fr_prof"
 msgstr "Profiles by default"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fr_rest"
 msgstr "Restrictions"
 
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "fld_insertdoc"
-msgstr "Insert documents"
-
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "fld_open"
-msgstr "Open"
-
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "fld_openfolio"
-msgstr "Open as a portfolio"
-
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "fld_pdir"
-msgstr "Default directory profile (title)"
-
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_pdirid"
 msgstr "Default directory profile"
 
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "fld_pdoc"
-msgstr "Default document profile (title)"
-
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_pdocid"
 msgstr "Default document profile"
 
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "fld_setsysrss"
-msgstr "RSS visible/hidden for the users"
-
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_subfam"
 msgstr "Sub family restriction"
 
-msgctxt "DIR"
-msgid "fld_subfam#[bool]yes"
-msgstr "Add the sub families"
-
-msgctxt "DIR"
-msgid "fld_subfam#no"
-msgstr "Do not add the sub families"
-
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "fld_tfam"
 msgstr "Filtered families"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
+msgctxt "DIR"
+msgid "fr_basic"
+msgstr ""
+
+#: dir.struct.xml
 msgctxt "DIR"
 msgid "gui_color"
 msgstr "Guide color"
 
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "gui_isrss"
-msgstr "Usable as RSS"
+#~ msgctxt "DIR"
+#~ msgid "fld_allbut#0"
+#~ msgstr "All except"
 
-msgctxt "DIR"
-msgid "gui_isrss#[bool]no"
-msgstr "No"
+#~ msgctxt "DIR"
+#~ msgid "fld_allbut#1"
+#~ msgstr "Only"
 
-msgctxt "DIR"
-msgid "gui_isrss#yes"
-msgstr "Yes"
+#~ msgctxt "DIR"
+#~ msgid "fld_copybasket"
+#~ msgstr "Insert in the basket"
 
-#: App/Fdl/fdl.ods.csv
-msgctxt "DIR"
-msgid "gui_sysrss"
-msgstr "Internal RSS"
+#~ msgctxt "DIR"
+#~ msgid "fld_insertdoc"
+#~ msgstr "Insert documents"
 
-msgctxt "DIR"
-msgid "gui_sysrss#"
-msgstr ""
+#~ msgctxt "DIR"
+#~ msgid "fld_open"
+#~ msgstr "Open"
 
-msgctxt "DIR"
-msgid "title"
-msgstr "Directory"
+#~ msgctxt "DIR"
+#~ msgid "fld_openfolio"
+#~ msgstr "Open as a portfolio"
+
+#~ msgctxt "DIR"
+#~ msgid "fld_pdir"
+#~ msgstr "Default directory profile (title)"
+
+#~ msgctxt "DIR"
+#~ msgid "fld_pdoc"
+#~ msgstr "Default document profile (title)"
+
+#~ msgctxt "DIR"
+#~ msgid "fld_setsysrss"
+#~ msgstr "RSS visible/hidden for the users"
+
+#~ msgctxt "DIR"
+#~ msgid "fld_subfam#[bool]yes"
+#~ msgstr "Add the sub families"
+
+#~ msgctxt "DIR"
+#~ msgid "fld_subfam#no"
+#~ msgstr "Do not add the sub families"
+
+#~ msgctxt "DIR"
+#~ msgid "gui_isrss"
+#~ msgstr "Usable as RSS"
+
+#~ msgctxt "DIR"
+#~ msgid "gui_isrss#[bool]no"
+#~ msgstr "No"
+
+#~ msgctxt "DIR"
+#~ msgid "gui_isrss#yes"
+#~ msgstr "Yes"
+
+#~ msgctxt "DIR"
+#~ msgid "gui_sysrss"
+#~ msgstr "Internal RSS"
+
+#~ msgctxt "DIR"
+#~ msgid "title"
+#~ msgstr "Directory"

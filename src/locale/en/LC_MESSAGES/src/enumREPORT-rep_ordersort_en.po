@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum REPORT-rep_ordersort \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-03T13:31:40.920Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: report.struct.xml
+#, fuzzy
+msgctxt "REPORT-rep_ordersort"
+msgid "asc"
+msgstr "ascendant"
+
+#: report.struct.xml
+#, fuzzy
+msgctxt "REPORT-rep_ordersort"
+msgid "desc"
+msgstr "descendant"

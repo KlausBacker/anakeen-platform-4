@@ -11,40 +11,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: App/Fusers/account.ods.csv
-msgctxt "IGROUP"
-msgid "grp_choosegroup"
-msgstr "Choose group"
-
-#: App/Fusers/account.ods.csv
+#: igroup.struct.xml
 msgctxt "IGROUP"
 msgid "grp_fr_intranet"
 msgstr "System"
 
-#: App/Fusers/account.ods.csv
+#: igroup.struct.xml
 msgctxt "IGROUP"
 msgid "grp_roles"
 msgstr "Associated roles"
 
-msgctxt "IGROUP"
-msgid "grp_roles#showempty"
-msgstr "No role"
-
-msgctxt "IGROUP"
-msgid "title"
-msgstr "Users' group"
-
-#: App/Fusers/account.ods.csv
+#: igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_login"
 msgstr "Login"
 
-#: App/Fusers/account.ods.csv
+#: igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_meid"
 msgstr "Group id"
 
-#: App/Fusers/account.ods.csv
+#: igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_whatid"
 msgstr "Id system"
+
+#~ msgctxt "IGROUP"
+#~ msgid "grp_choosegroup"
+#~ msgstr "Choose group"
+
+#~ msgctxt "IGROUP"
+#~ msgid "grp_roles#showempty"
+#~ msgstr "No role"
+
+#~ msgctxt "IGROUP"
+#~ msgid "title"
+#~ msgstr "Users' group"

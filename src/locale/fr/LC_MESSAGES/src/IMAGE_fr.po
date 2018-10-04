@@ -11,53 +11,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/misc.ods.csv
-#, fuzzy
-msgctxt "IMAGE"
-msgid "img_catg"
-msgstr "Catégorie"
-
-#, fuzzy
-msgctxt "IMAGE"
-msgid "img_catg#1"
-msgstr "Photo"
-
-#, fuzzy
-msgctxt "IMAGE"
-msgid "img_catg#2"
-msgstr "Dessin"
-
-#: App/Fdl/misc.ods.csv
-#, fuzzy
-msgctxt "IMAGE"
-msgid "img_description"
-msgstr "Description"
-
-#: App/Fdl/misc.ods.csv
+#: image.struct.xml
 #, fuzzy
 msgctxt "IMAGE"
 msgid "img_file"
 msgstr "Image"
 
-#: App/Fdl/misc.ods.csv
-#, fuzzy
-msgctxt "IMAGE"
-msgid "img_fr_char"
-msgstr "Caractéristiques"
-
-#: App/Fdl/misc.ods.csv
+#: image.struct.xml
 #, fuzzy
 msgctxt "IMAGE"
 msgid "img_frfile"
 msgstr "Image"
 
-#: App/Fdl/misc.ods.csv
+#: image.struct.xml
 #, fuzzy
 msgctxt "IMAGE"
 msgid "img_title"
 msgstr "Titre"
 
 #, fuzzy
-msgctxt "IMAGE"
-msgid "title"
-msgstr "Image"
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg"
+#~ msgstr "Catégorie"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg#1"
+#~ msgstr "Photo"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg#2"
+#~ msgstr "Dessin"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_description"
+#~ msgstr "Description"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_fr_char"
+#~ msgstr "Caractéristiques"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "title"
+#~ msgstr "Image"

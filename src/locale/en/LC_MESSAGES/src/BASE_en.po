@@ -11,16 +11,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: base.struct.xml
 msgctxt "BASE"
 msgid "ba_title"
 msgstr "Title"
 
-#: App/Fdl/fdl.ods.csv
+#: base.struct.xml
 msgctxt "BASE"
 msgid "fr_basic"
 msgstr "Basic"
 
-msgctxt "BASE"
-msgid "title"
-msgstr "Basic"
+#~ msgctxt "BASE"
+#~ msgid "title"
+#~ msgstr "Basic"

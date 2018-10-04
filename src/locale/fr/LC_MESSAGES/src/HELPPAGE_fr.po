@@ -11,111 +11,99 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_description"
 msgstr "Description"
 
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_family"
 msgstr "Famille"
 
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "HELPPAGE"
-msgid "help_fr_family"
-msgstr "Paramètres de famille"
-
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_fr_identification"
 msgstr "Aide"
 
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_lang"
 msgstr "Langue du libellé"
 
-msgctxt "HELPPAGE"
-msgid "help_lang#helppageenumlang()"
-msgstr ""
-
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_name"
 msgstr "Libellé"
 
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "HELPPAGE"
-msgid "help_p_lang_key"
-msgstr "Langue"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "HELPPAGE"
-msgid "help_p_lang_name"
-msgstr "Libellé de la langue"
-
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_key"
 msgstr "Clé de la rubrique"
 
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_lang"
 msgstr "Langue"
 
-msgctxt "HELPPAGE"
-msgid "help_sec_lang#helppageenumlang()"
-msgstr ""
-
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_name"
 msgstr "Nom de la rubrique"
 
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_order"
 msgstr "Ordre de la rubrique"
 
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_text"
 msgstr "Texte"
 
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgctxt "HELPPAGE"
-msgid "help_t_family"
-msgstr "Langues"
-
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_t_help"
 msgstr "Description"
 
-#: App/Fdl/fdl.ods.csv
+#: helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_t_sections"
 msgstr "Rubriques"
 
 #, fuzzy
-msgctxt "HELPPAGE"
-msgid "title"
-msgstr "Aide en ligne"
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_fr_family"
+#~ msgstr "Paramètres de famille"
+
+#, fuzzy
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_p_lang_key"
+#~ msgstr "Langue"
+
+#, fuzzy
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_p_lang_name"
+#~ msgstr "Libellé de la langue"
+
+#, fuzzy
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_t_family"
+#~ msgstr "Langues"
+
+#, fuzzy
+#~ msgctxt "HELPPAGE"
+#~ msgid "title"
+#~ msgstr "Aide en ligne"
