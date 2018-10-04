@@ -43,6 +43,7 @@ export default {
         dataTextField: "text",
         dataValueField: "value",
         dataSource: this.hubConfig,
+        optionLabel: "Create",
         select: e => {
           this.selectConfig(e);
         }
