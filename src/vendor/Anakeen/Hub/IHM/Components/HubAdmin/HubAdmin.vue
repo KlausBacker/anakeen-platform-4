@@ -14,9 +14,6 @@
                 <grid collection="HUBCONFIGURATION"
                       :checkable="true"
                       :reorderable="true"
-                      :serverPaging="true"
-                      :serverFiltering="true"
-                      :serverSorting="true"
                       class="hub-admin"
                       ref="hubGrid"
                       @grid-ready="toolbarConfig">
@@ -27,7 +24,6 @@
                     <grid-actions>
                         <grid-action action="consult"></grid-action>
                         <grid-action action="edit"></grid-action>
-                        <grid-action action="delete"></grid-action>
                     </grid-actions>
                     <grid-toolbar>
                         <grid-toolbar-action action="columns" title="Columns configuration"></grid-toolbar-action>
