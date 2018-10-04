@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+
+    <smart:structure-configuration name="HUBCONFIGURATIONLOGOUT">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_HUB_STRUCT"/>
+            <smart:element-access-configuration ref="PRF_HUB_ACCESS"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+
+    <smart:access-configuration name="PRF_HUB_STRUCT" label="Profil Structure Hub" profil-type="PFAM">
+        <smart:element-access access="view" account="hub-admin-role"/>
+        <smart:element-access access="create" account="hub-admin-role"/>
+        <smart:element-access access="edit" account="hub-admin-role"/>
+        <smart:element-access access="icreate" account="hub-admin-role"/>
+    </smart:access-configuration>
+    <smart:access-configuration name="PRF_HUB_ACCESS" label="Profil Hub" access-structure="HUBCONFIGURATIONLOGOUT">
+        <smart:element-access access="view" account="hub-admin-role"/>
+        <smart:element-access access="view" field="hub_role"/>
+        <smart:element-access access="edit" account="hub-admin-role"/>
+        <smart:element-access access="delete" account="hub-admin-role"/>
+    </smart:access-configuration>
+
+
+</smart:config>

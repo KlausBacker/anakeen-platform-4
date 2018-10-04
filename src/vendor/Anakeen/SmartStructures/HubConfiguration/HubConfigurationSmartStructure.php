@@ -62,7 +62,6 @@ class HubConfigurationSmartStructure extends \Anakeen\SmartElement
     protected function getHubConfigurationIcon()
     {
         return $this->icon;
-        // TODO Get icon from configuration
 //        return "<i class=\"material-icons\">favorite</i>";
     }
 
