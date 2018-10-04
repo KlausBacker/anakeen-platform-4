@@ -193,6 +193,7 @@ ${poEntries}
     );
   });
 };
+
 /**
  * Merge with locale files
  * @param file
@@ -251,6 +252,56 @@ exports.msgmergeStructure = (file, srcPath) => {
   });
 };
 
+exports.msgmergeMustache = (file, info) => {
+  return new Promise((resolve, reject) => {
+    const langs = ["fr", "en"];
+    const tmpDir = file.dirname;
+    const files = [];
+    const srcPath = info.buildInfo.buildPath[0];
+    let resolvCount = 0;
+
+    langs.forEach(lang => {
+      const tmpPo = `${tmpDir}/mustache-${info.moduleInfo.name}_${lang}.po`;
+      const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/mustache-${
+        info.moduleInfo.name
+      }_${lang}.po`;
+
+      fs.access(basePo, err => {
+        let command;
+        if (err !== null) {
+          command = `msginit  -o "${tmpPo}" -i "${
+            file.path
+          }" --no-translator --locale=${lang}`;
+        } else {
+          command = `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${
+            file.path
+          }"`;
+        }
+
+        cp.exec(command, (error /*, stdout, stderr*/) => {
+          //eslint-disable-next-line no-console
+          console.log(command);
+          vinylFile.read(tmpPo).then(mergeFile => {
+            resolvCount++;
+            mergeFile.base = mergeFile.dirname;
+            mergeFile.lang = lang;
+
+            files.push(mergeFile);
+            if (resolvCount >= langs.length) {
+              resolve(files);
+            }
+          });
+          if (error) {
+            //eslint-disable-next-line no-console
+            console.log(`exec error: ${error}`);
+            reject(error);
+          }
+        });
+      });
+    });
+  });
+};
+
 exports.msgmergeEnum = (file, srcPath) => {
   return new Promise((resolve, reject) => {
     const langs = ["fr", "en"];
@@ -301,7 +352,6 @@ exports.msgmergeEnum = (file, srcPath) => {
     });
   });
 };
-
 exports.php2Pot = (info, potdir) => {
   return new Promise((resolve, reject) => {
     const srcPath = info.buildInfo.buildPath;

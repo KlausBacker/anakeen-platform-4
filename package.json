@@ -19,7 +19,7 @@
     "gulp-replace": "^1.0.0",
     "gulp-tar": "^2.1.0",
     "inquirer": "^6.0.0",
-    "mustache": "^2.3.0",
+    "mustache": "^2.3.2",
     "node-fetch": "^2.2.0",
     "node-glob": "^1.2.0",
     "saxophone": "^0.4.0",
