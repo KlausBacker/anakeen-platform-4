@@ -1,5 +1,5 @@
 import { AnkDock } from "@anakeen/ank-components";
-import { AnkLogout } from "@anakeen/ank-components";
+import { AnkLogout } from "@anakeen/ank-components";
 import { AnkIdentity } from "@anakeen/ank-components";
 
 const dock = AnkDock;

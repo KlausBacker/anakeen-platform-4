@@ -5,7 +5,6 @@ namespace Anakeen\SmartStructures\HubConfiguration\Render;
 use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
 
-
 class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
 {
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
