@@ -53,13 +53,13 @@ namespace Anakeen\Core\Utils {
 namespace {
 
     // New gettext keyword for regular strings with optional context argument
-    function ___($message, $context = "")
+    function ___($message, $context)
     {
         return Anakeen\Core\Utils\Gettext::___($message, $context);
     }
 
     // New gettext keyword for plural strings with optional context argument
-    function n___($message, $message_plural, $num, $context = "")
+    function n___($message, $message_plural, $num, $context)
     {
         return Anakeen\Core\Utils\Gettext::n___($message, $message_plural, $num, $context);
     }

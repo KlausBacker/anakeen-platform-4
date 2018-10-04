@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<acli:config xmlns:acli="http://www.anakeen.com/ns/acli/1.0">
+<acli:config xmlns:acli="https://platform.anakeen.com/4/schemas/module/1.0">
     <acli:sources>
         <acli:source path="src" />
     </acli:sources>
