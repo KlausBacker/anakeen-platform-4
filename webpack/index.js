@@ -10,6 +10,7 @@ module.exports = () => {
         "moduleName": "hub",
         "entry": {
             "hub" : [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")],
+            "hubAdmin": [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")]
         },
       buildPath: PUBLIC_PATH,
       customParts: [useVueLoader()]
