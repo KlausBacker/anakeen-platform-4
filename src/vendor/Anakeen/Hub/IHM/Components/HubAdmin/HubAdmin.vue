@@ -30,6 +30,7 @@
                         <grid-action action="delete"></grid-action>
                     </grid-actions>
                     <grid-toolbar>
+                        <grid-toolbar-action action="columns" title="Columns configuration"></grid-toolbar-action>
                         <grid-toolbar-action action="export" title="Export"></grid-toolbar-action>
                     </grid-toolbar>
                 </grid>
