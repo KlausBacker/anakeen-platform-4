@@ -301,3 +301,52 @@ exports.msgmergeEnum = (file, srcPath) => {
     });
   });
 };
+
+exports.php2Pot = (info, potdir) => {
+  return new Promise((resolve, reject) => {
+    const srcPath = info.buildInfo.buildPath;
+    const langs = ["fr", "en"];
+    const moduleName = info.moduleInfo.name;
+    let resolvCount = 0;
+
+    langs.forEach(lang => {
+      const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${moduleName}_${lang}.po`;
+      const tmpPot = `${potdir}/${moduleName}_${lang}.pot`;
+      const tmpPo = `${potdir}/${moduleName}_${lang}.po`;
+
+      fs.access(basePo, err => {
+        let commands = [];
+
+        commands.push(
+          `find "${srcPath}" -type f -name "*php" -print | xgettext --no-location --from-code=utf-8 --language=PHP --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" -f-`
+        );
+        if (err !== null) {
+          commands.push(
+            `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`
+          );
+        } else {
+          commands.push(
+            `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`
+          );
+          commands.push(`cp "${tmpPo}" "${basePo}" `);
+        }
+
+        cp.exec(commands.join(" && "), (error /*, stdout, stderr*/) => {
+          //eslint-disable-next-line no-console
+          console.log(commands.join(" && "));
+
+          resolvCount++;
+          if (error) {
+            //eslint-disable-next-line no-console
+            console.log(`exec error: ${error}`);
+            reject(error);
+          } else {
+            if (resolvCount >= langs.length) {
+              resolve();
+            }
+          }
+        });
+      });
+    });
+  });
+};

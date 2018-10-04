@@ -2,6 +2,7 @@ const gulp = require("gulp");
 const {
   xmlStructure2Pot,
   xmlEnum2Pot,
+  php2Pot,
   msgmergeStructure,
   msgmergeEnum
 } = require("../utils/POExtractor");
@@ -41,7 +42,9 @@ exports.po = ({ sourcePath }) => {
               return `${buildPath}/locale/${file.lang}/LC_MESSAGES/src/`;
             })
           )
-          .on("end", resolve)
+          .on("end", () => {
+            php2Pot(info, potPath).then(resolve);
+          })
           .on("error", reject);
       } catch (e) {
         reject(e);
