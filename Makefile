@@ -7,7 +7,6 @@ LOCALPUB_PATH=$(MK_DIR)/localpub
 LOCALPUB_ANAKEEN_UI_PATH=$(LOCALPUB_PATH)/anakeen-ui
 LOCALPUB_TEST_PATH=$(LOCALPUB_PATH)/Tests
 VERSION_PATH=$(MK_DIR)/VERSION
-RELEASE_PATH=$(MK_DIR)/RELEASE
 NODE_MODULE_PATH=node_modules
 JS_CONF_PATH=$(MK_DIR)
 WEBPACK_CONF_PATH=webpackConfig/
@@ -27,8 +26,7 @@ ANAKEEN_UI_SRC_PATH=anakeen-ui/
 TEST_SRC_PATH=Tests/
 
 ## Version and release
-VERSION = $(shell cat VERSION)
-RELEASE = $(shell cat RELEASE)
+VERSION=$(shell node -p "require('./package.json').version")
 
 ## control conf
 port=80
