@@ -229,7 +229,7 @@ exports.msgmergeStructure = (file, srcPath) => {
         }
         cp.exec(command, (error /*, stdout, stderr*/) => {
           //eslint-disable-next-line no-console
-          console.log(command);
+          // console.log(command);
           vinylFile.read(tmpPo).then(mergeFile => {
             resolvCount++;
             mergeFile.base = mergeFile.dirname;
@@ -245,7 +245,7 @@ exports.msgmergeStructure = (file, srcPath) => {
             console.log(`exec error: ${error}`);
             reject(error);
           }
-          //   console.log(command, `stdout: ${stdout}`);
+          //   // console.log(command, `stdout: ${stdout}`);
           //   console.log(`stderr: ${stderr}`);
         });
       });
@@ -281,7 +281,7 @@ exports.msgmergeMustache = (file, info) => {
 
         cp.exec(command, (error /*, stdout, stderr*/) => {
           //eslint-disable-next-line no-console
-          console.log(command);
+          // console.log(command);
           vinylFile.read(tmpPo).then(mergeFile => {
             resolvCount++;
             mergeFile.base = mergeFile.dirname;
@@ -332,7 +332,7 @@ exports.msgmergeEnum = (file, srcPath) => {
 
         cp.exec(command, (error /*, stdout, stderr*/) => {
           //eslint-disable-next-line no-console
-          console.log(command);
+          // console.log(command);
           vinylFile.read(tmpPo).then(mergeFile => {
             resolvCount++;
             mergeFile.base = mergeFile.dirname;
@@ -384,7 +384,7 @@ exports.php2Pot = (info, potdir) => {
 
         cp.exec(commands.join(" && "), (error /*, stdout, stderr*/) => {
           //eslint-disable-next-line no-console
-          console.log(commands.join(" && "));
+          // console.log(commands.join(" && "));
 
           resolvCount++;
           if (error) {
@@ -439,7 +439,7 @@ exports.js2Po = (globInputs, targetName, info, potdir) => {
 
           cp.exec(commands.join(" && "), (error /*, stdout, stderr*/) => {
             //eslint-disable-next-line no-console
-            console.log(commands.join(" && "));
+            // console.log(commands.join(" && "));
 
             resolvCount++;
             if (error) {
