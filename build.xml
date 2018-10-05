@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<acli:config xmlns:acli="https://platform.anakeen.com/4/schemas/module/1.0">
-    <acli:sources>
-        <acli:source path="src" />
-    </acli:sources>
-</acli:config>
+<module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
+    <module:sources>
+        <module:source path="src" />
+    </module:sources>
+</module:config>

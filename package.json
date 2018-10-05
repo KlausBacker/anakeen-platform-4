@@ -8,14 +8,11 @@
   },
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
-  "dependencies": {
-    "@anakeen/anakeen-cli": "^1.0.0-1533732489"
+  "dependencies": {},
+  "devDependencies": {
+    "@anakeen/anakeen-cli": "^1.0.1-1538743497"
   },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.anakeen.com:Anakeen/Platform-4/smart-data-engine.git"
-  },
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/smart-data-engine.git",
   "keywords": [
     "anakeen",
     "platform",
