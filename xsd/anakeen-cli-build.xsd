@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ns="https://platform.anakeen.com/4/schemas/module/1.0"
+           elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/module/1.0">
+    <xs:element name="config" type="ns:configType"/>
+
+    <xs:complexType name="configType">
+        <xs:sequence>
+            <xs:element type="ns:sourcesType" name="sources" />
+            <xs:element type="ns:poconfigType" name="po-config" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="sourcesType">
+        <xs:sequence>
+            <xs:element type="ns:sourceType" name="source" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="poconfigType">
+        <xs:sequence>
+            <xs:element type="ns:pojsType" name="po-js" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="sourceType">
+        <xs:attribute type="xs:string" name="path" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="pojsType">
+        <xs:attribute type="xs:string" name="target" use="required"/>
+        <xs:attribute type="xs:string" name="source" use="required"/>
+    </xs:complexType>
+</xs:schema>

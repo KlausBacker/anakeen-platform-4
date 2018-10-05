@@ -21,7 +21,7 @@ exports.handler = function(argv) {
   try {
     signale.time("po");
     po(argv);
-    const task = gulp.task("po");
+    const task = gulp.task("poSmart");
     task()
       .then(() => {
         signale.timeEnd("po");
