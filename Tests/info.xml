@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="@moduleName@" release="@release@" version="@version@" vendor="Anakeen"
+<module xmlns="urn:dynacase:webinst:module/1.0" name="user-interfaces-test" release="alpha" version="1.0.0" vendor="Anakeen"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description>Tests for Anakeen Uis</description>
 

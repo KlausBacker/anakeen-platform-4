@@ -1,0 +1,112 @@
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "ba_desc"
+msgstr "Description"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_displayed"
+msgstr "Affichable"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_famid"
+msgstr "Structure"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_fr_default"
+msgstr "Vues par dfauts"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_idcview"
+msgstr "Id cration vues par dfaut"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_idview"
+msgstr "Identifiant de la vue"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_kview"
+msgstr "Type"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_lcview"
+msgstr "Cration vue"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_lview"
+msgstr "Label"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_menu"
+msgstr "Menu"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_mskid"
+msgstr "Masque"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_order"
+msgstr "Ordre de slection"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_primarymask"
+msgstr "Masque primaire"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_renderaccessclass"
+msgstr "Classe d'accs au rendu"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_renderconfigclass"
+msgstr "Classe de configuration de rendu (HTML5)"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_t_views"
+msgstr "Vues"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "dpdoc_famid"
+msgstr "Structure pour le profil"
+
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "dpdoc_fr_dyn"
+msgstr "Profil dynamique"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "fr_basic"
+msgstr ""

@@ -20,16 +20,16 @@ class CVDocConstraint
                 }
 
                 if (!Autoloader::classExists($className)) {
-                    return sprintf(___("Class \"%s\" not exists"), $className);
+                    return sprintf(___("Class \"%s\" not exists", "smartCvdoc"), $className);
                 }
 
 
                 $a = new $className();
                 if (!is_a($a, $isA)) {
-                    return sprintf(___("Class \"%s\" not implement %s"), $className, $isA);
+                    return sprintf(___("Class \"%s\" not implement %s", "smartCvdoc"), $className, $isA);
                 }
             } catch (\Exception $e) {
-                return sprintf(___("Class \"%s\" problem : %s"), $className, $e->getMessage());
+                return sprintf(___("Class \"%s\" problem : %s", "smartCvdoc"), $className, $e->getMessage());
             }
         }
         return "";

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-28 10:26+0200\n"
+"POT-Creation-Date: 2018-10-05 13:56+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -64,12 +64,6 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Add a note to the history"
-msgstr ""
-
-#. _COMMENT: content.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "Add new line"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -136,14 +130,17 @@ msgid "Choose image"
 msgstr ""
 
 #, php-format
+msgctxt "smartCvdoc"
 msgid "Class \"%s\" not exists"
 msgstr ""
 
 #, php-format
+msgctxt "smartCvdoc"
 msgid "Class \"%s\" not implement %s"
 msgstr ""
 
 #, php-format
+msgctxt "smartCvdoc"
 msgid "Class \"%s\" problem : %s"
 msgstr ""
 
@@ -171,12 +168,6 @@ msgctxt "ddui"
 msgid "Close message"
 msgstr ""
 
-#. _COMMENT: reportHTML5_edit.mustache
-#. _COMMENT: mustache key
-msgctxt "dsearch"
-msgid "Conditions"
-msgstr ""
-
 msgctxt "ddui"
 msgid "Confidential document"
 msgstr ""
@@ -189,6 +180,7 @@ msgctxt "UiMenu"
 msgid "Confirm deletion"
 msgstr ""
 
+msgctxt "render"
 msgid "Confirm deletion of {{{document.properties.title}}}"
 msgstr ""
 
@@ -253,18 +245,6 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
-#. _COMMENT: docidWrite.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "Delete : "
-msgstr ""
-
-#. _COMMENT: line.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "Delete line"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "Display document form"
 msgstr ""
@@ -283,12 +263,6 @@ msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
 msgstr ""
 
-#. _COMMENT: document__header-fixed.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "DocumentDeleted"
-msgstr "Document deleted at"
-
 msgctxt "ddui-file"
 msgid "Download file"
 msgstr ""
@@ -297,24 +271,12 @@ msgctxt "ddui-image"
 msgid "Download image"
 msgstr ""
 
-#. _COMMENT: line.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "Drag to move line"
-msgstr ""
-
 msgctxt "ddui-file"
 msgid "Drop file here"
 msgstr ""
 
 msgctxt "ddui-image"
 msgid "Drop image here"
-msgstr ""
-
-#. _COMMENT: content.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "Duplicate selected row"
 msgstr ""
 
 #, php-format
@@ -434,12 +396,6 @@ msgstr ""
 
 msgctxt "ddui helppage"
 msgid "Lang"
-msgstr ""
-
-#. _COMMENT: reportHTML5_edit.mustache
-#. _COMMENT: mustache key
-msgctxt "dsearch"
-msgid "Loading criteria ..."
 msgstr ""
 
 msgctxt "UiMenu"
@@ -610,12 +566,6 @@ msgctxt "UiMenu"
 msgid "Restore document from the trash"
 msgstr ""
 
-#. _COMMENT: reportHTML5_edit.mustache
-#. _COMMENT: mustache key
-msgctxt "dsearch"
-msgid "Results"
-msgstr ""
-
 msgctxt "ddui"
 msgid "Retry transition"
 msgstr ""
@@ -628,18 +578,6 @@ msgstr ""
 msgctxt "ddui"
 msgid "Revision \"%s\" must be a number or a state reference"
 msgstr ""
-
-#. _COMMENT: document__header-fixed.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "Revision :"
-msgstr ""
-
-#. _COMMENT: document__header-fixed.mustache
-#. _COMMENT: mustache key
-msgctxt "ddui"
-msgid "RevisionCreated"
-msgstr "Revision created at"
 
 msgctxt "ddui"
 msgid "Row count limit to {{limit}}"
@@ -661,12 +599,6 @@ msgctxt "ddui"
 msgid "Save and update \"{{label}}\""
 msgstr ""
 
-#. _COMMENT: reportHTML5_edit.mustache
-#. _COMMENT: mustache key
-msgctxt "dsearch"
-msgid "Searching ..."
-msgstr ""
-
 msgctxt "ddui:notification"
 msgid "See more ..."
 msgstr ""
@@ -675,10 +607,8 @@ msgctxt "ddui-enum"
 msgid "Select alternative choice"
 msgstr ""
 
-#. _COMMENT: line.mustache
-#. _COMMENT: mustache key
 msgctxt "ddui"
-msgid "Select line"
+msgid "Smart ELement"
 msgstr ""
 
 msgctxt "grid-component"
@@ -793,9 +723,6 @@ msgstr ""
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr ""
 
-msgid "activity"
-msgstr "Activity"
-
 msgctxt "searchui"
 msgid "any values"
 msgstr "Any values"
@@ -812,11 +739,6 @@ msgstr "Launch the research"
 msgctxt "CVDOC"
 msgid "creation view '%s' does not exists"
 msgstr ""
-
-#. _COMMENT: document__header.mustache
-#. _COMMENT: mustache key
-msgid "ddui:Editing form"
-msgstr "Form is modified"
 
 msgctxt "searchui"
 msgid "doctitle"
@@ -861,17 +783,8 @@ msgctxt "searchui"
 msgid "revision"
 msgstr "Revision"
 
-msgid "state"
-msgstr "State"
-
 msgid "static array"
 msgstr ""
-
-msgid "step"
-msgstr "Step"
-
-msgid "workflow"
-msgstr "Workflow"
 
 msgid "write only"
 msgstr ""
@@ -935,6 +848,17 @@ msgstr ""
 #~ msgid "DOCGRIDHTML5: sZeroRecords"
 #~ msgstr "No matching records found"
 
+#~ msgctxt "ddui"
+#~ msgid "DocumentDeleted"
+#~ msgstr "Document deleted at"
+
+#~ msgctxt "ddui"
+#~ msgid "RevisionCreated"
+#~ msgstr "Revision created at"
+
+#~ msgid "activity"
+#~ msgstr "Activity"
+
 #~ msgid "ddui:Admin"
 #~ msgstr "Admin"
 
@@ -952,6 +876,9 @@ msgstr ""
 
 #~ msgid "ddui:Document render"
 #~ msgstr "Document render"
+
+#~ msgid "ddui:Editing form"
+#~ msgstr "Form is modified"
 
 #~ msgid "ddui:Get some template"
 #~ msgstr "Get some template"
@@ -983,3 +910,12 @@ msgstr ""
 #~ msgctxt "searchui"
 #~ msgid "revdate"
 #~ msgstr "Last modif. date"
+
+#~ msgid "state"
+#~ msgstr "State"
+
+#~ msgid "step"
+#~ msgstr "Step"
+
+#~ msgid "workflow"
+#~ msgstr "Workflow"

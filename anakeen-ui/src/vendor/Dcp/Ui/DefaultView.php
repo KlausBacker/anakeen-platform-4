@@ -104,7 +104,7 @@ class DefaultView extends RenderDefault
             $item->setTooltipLabel(___("Put document to the trash", "UiMenu"));
         }
         $confirmOption = new MenuConfirmOptions();
-        $confirmOption->title = ___("Confirm deletion of {{{document.properties.title}}}");
+        $confirmOption->title = ___("Confirm deletion of {{{document.properties.title}}}","render");
         $confirmOption->confirmButton = ___("Confirm deletion", "UiMenu");
         $confirmOption->windowWidth = "35rem";
         $confirmOption->windowHeight = "12rem";

@@ -72,6 +72,7 @@ class DocumentHtml
         $data = new I18nTemplateContext();
         $data["BASEURL"] = self::getBaseUrl();
         $data["NOTIFICATION_DELAY"] = ContextManager::getParameterValue("Ui", "NOTIFICATION_DELAY");
+        $data["htmlTitle"] = ___("Smart ELement", "ddui");
         $data["notificationLabelMore"] = ___("See more ...", "ddui:notification");
         $data["notificationTitleMore"] = ___("Notification", "ddui:notification");
         $data["messages"] = "{}";
@@ -90,6 +91,7 @@ class DocumentHtml
                     $e->setHttpStatus("403", "Forbidden");
                     throw $e;
                 }
+                $data["htmlTitle"] =$doc->getTitle();
             } else {
                 $err = $doc->control("icreate");
                 if ($err) {
