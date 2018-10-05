@@ -22,14 +22,17 @@ export default {
   },
   data() {
     return {
+      // eslint-disable-next-line no-undef
+      childFam: window.ankChildFam,
       collection: "",
-      hubConfig: [
-        { text: "HUBCONFIGURATION", value: "1" },
-        { text: "HUBCONFIGURATIONIDENTITY", value: "2" },
-        { text: "HUBCONFIGURATIONLOGOUT", value: "3" },
-        { text: "HUBCONFIGURATIONSLOT", value: "4" }
-      ]
+      hubConfig: []
     };
+  },
+  mounted() {
+    Object.keys(this.childFam).forEach(key => {
+      const elt = this.childFam[key];
+      this.hubConfig.push({ text: elt.title, value: elt.name });
+    });
   },
   methods: {
     toolbarConfig() {
@@ -51,7 +54,7 @@ export default {
     },
     selectConfig(e) {
       this.$modal.show("hubConfigModal");
-      this.collection = e.item.text();
+      this.collection = e.sender.value();
     },
     openedModal() {
       if (this.$refs.smartConfig.isLoaded()) {
