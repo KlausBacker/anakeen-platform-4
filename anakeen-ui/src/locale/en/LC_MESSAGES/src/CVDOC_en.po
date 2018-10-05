@@ -11,145 +11,165 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
+#, fuzzy
 msgctxt "CVDOC"
-msgid "cv_desc"
+msgid "ba_desc"
 msgstr "Description"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_displayed"
 msgstr "Displayable"
 
-msgctxt "CVDOC"
-msgid "cv_displayed#[bool]no"
-msgstr "no"
-
-msgctxt "CVDOC"
-msgid "cv_displayed#yes"
-msgstr "yes"
-
-#: App/Fdl/workflows.ods.csv
-msgctxt "CVDOC"
-msgid "cv_fam"
-msgstr "Family"
-
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_famid"
 msgstr "Family id"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_fr_default"
 msgstr "Default view"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_idcview"
 msgstr "Default view id"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_idview"
 msgstr "Id view"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_kview"
 msgstr "Type"
 
-msgctxt "CVDOC"
-msgid "cv_kview#VCONS"
-msgstr "Consultation"
-
-msgctxt "CVDOC"
-msgid "cv_kview#VEDIT"
-msgstr "Edition"
-
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_lcview"
 msgstr "View creation"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_lview"
 msgstr "Label"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_menu"
 msgstr "Menu"
 
-msgctxt "CVDOC"
-msgid "cv_menu#elabel"
-msgstr "submenu name"
-
-msgctxt "CVDOC"
-msgid "cv_menu#showempty"
-msgstr "&lt;empty>"
-
-#: App/Fdl/workflows.ods.csv
-msgctxt "CVDOC"
-msgid "cv_msk"
-msgstr "Mask (title)"
-
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_mskid"
 msgstr "Mask id"
 
-msgctxt "CVDOC"
-msgid "cv_mskid#showempty"
-msgstr "&lt;empty>"
-
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_order"
 msgstr "Order"
 
+#: cvdoc.struct.xml
+#, fuzzy
 msgctxt "CVDOC"
-msgid "cv_order#elabel"
-msgstr "Profiling access order"
+msgid "cv_primarymask"
+msgstr "Masque primaire"
 
+#: cvdoc.struct.xml
+#, fuzzy
 msgctxt "CVDOC"
-msgid "cv_order#showempty"
-msgstr "&lt;empty>"
+msgid "cv_renderaccessclass"
+msgstr "Classe d'accès au rendu"
 
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_renderconfigclass"
+msgstr "Classe de configuration de rendu (HTML5)"
+
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_t_views"
 msgstr "Views"
 
-#: App/Fdl/workflows.ods.csv
-msgctxt "CVDOC"
-msgid "cv_zview"
-msgstr "Zone"
-
-msgctxt "CVDOC"
-msgid "cv_zview#showempty"
-msgstr "&lt;empty>"
-
-#: App/Fdl/workflows.ods.csv
-msgctxt "CVDOC"
-msgid "dpdoc_fam"
-msgstr "Family for profile (title)"
-
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "dpdoc_famid"
 msgstr "Family for profile"
 
-msgctxt "CVDOC"
-msgid "dpdoc_famid#elabel"
-msgstr "family used for dynamic profiles"
-
-#: App/Fdl/workflows.ods.csv
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "dpdoc_fr_dyn"
 msgstr "Dynamic profile"
 
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
-msgid "title"
-msgstr "Views control"
+msgid "fr_basic"
+msgstr ""
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_displayed#[bool]no"
+#~ msgstr "no"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_displayed#yes"
+#~ msgstr "yes"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_fam"
+#~ msgstr "Family"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_kview#VCONS"
+#~ msgstr "Consultation"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_kview#VEDIT"
+#~ msgstr "Edition"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_menu#elabel"
+#~ msgstr "submenu name"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_menu#showempty"
+#~ msgstr "&lt;empty>"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_msk"
+#~ msgstr "Mask (title)"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_mskid#showempty"
+#~ msgstr "&lt;empty>"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_order#elabel"
+#~ msgstr "Profiling access order"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_order#showempty"
+#~ msgstr "&lt;empty>"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_zview"
+#~ msgstr "Zone"
+
+#~ msgctxt "CVDOC"
+#~ msgid "cv_zview#showempty"
+#~ msgstr "&lt;empty>"
+
+#~ msgctxt "CVDOC"
+#~ msgid "dpdoc_fam"
+#~ msgstr "Family for profile (title)"
+
+#~ msgctxt "CVDOC"
+#~ msgid "dpdoc_famid#elabel"
+#~ msgstr "family used for dynamic profiles"
+
+#~ msgctxt "CVDOC"
+#~ msgid "title"
+#~ msgstr "Views control"

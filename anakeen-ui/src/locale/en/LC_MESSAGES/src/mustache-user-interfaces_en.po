@@ -1,0 +1,85 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ANAKEEN-UI\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-28 10:26+0200\n"
+"PO-Revision-Date: 2018-10-05 10:15+0200\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: English <distrib@anakeen.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: content.mustache
+msgctxt "ddui"
+msgid "Add new line"
+msgstr ""
+
+#: searchHTML5_edit.mustache reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Conditions"
+msgstr ""
+
+#: write.mustache docidWrite.mustache enumWrite.mustache
+#: enumWriteRadio.mustache enumWriteToggle.mustache fileWrite.mustache
+#: htmltextWrite.mustache imageWrite.mustache longtextWrite.mustache
+msgctxt "ddui"
+msgid "Delete : "
+msgstr ""
+
+#: line.mustache
+msgctxt "ddui"
+msgid "Delete line"
+msgstr ""
+
+#: document__header-fixed.mustache
+msgctxt "ddui"
+msgid "DocumentDeleted"
+msgstr "Document deleted at"
+
+#: line.mustache
+msgctxt "ddui"
+msgid "Drag to move line"
+msgstr ""
+
+#: content.mustache
+msgctxt "ddui"
+msgid "Duplicate selected row"
+msgstr ""
+
+#: document__header.mustache
+msgctxt "ddui"
+msgid "Editing form"
+msgstr "Form is under modification"
+
+#: searchHTML5_edit.mustache reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Loading criteria ..."
+msgstr ""
+
+#: searchHTML5_edit.mustache reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Results"
+msgstr ""
+
+#: document__header-fixed.mustache
+msgctxt "ddui"
+msgid "Revision :"
+msgstr ""
+
+#: document__header-fixed.mustache
+msgctxt "ddui"
+msgid "RevisionCreated"
+msgstr "Revision created at"
+
+#: reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Searching ..."
+msgstr ""
+
+#: line.mustache
+msgctxt "ddui"
+msgid "Select line"
+msgstr ""

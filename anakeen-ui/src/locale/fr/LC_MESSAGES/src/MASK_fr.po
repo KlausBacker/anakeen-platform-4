@@ -11,49 +11,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/workflows.ods.csv
+#: mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_attrids"
 msgstr "Attrid"
 
-#: App/Fdl/workflows.ods.csv
-#, fuzzy
-msgctxt "MASK"
-msgid "msk_fam"
-msgstr "Famille (titre)"
-
-#: App/Fdl/workflows.ods.csv
+#: mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_famid"
 msgstr "Famille"
 
-#: App/Fdl/workflows.ods.csv
+#: mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_fr_rest"
 msgstr "Famille"
 
-#: App/Fdl/workflows.ods.csv
+#: mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_needeeds"
 msgstr "Obligatoire"
 
-#: App/Fdl/workflows.ods.csv
+#: mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_t_contain"
 msgstr "Contenu"
 
-#: App/Fdl/workflows.ods.csv
+#: mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_visibilities"
 msgstr "Visibilité"
 
 #, fuzzy
-msgctxt "MASK"
-msgid "title"
-msgstr "Masque de saisie"
+#~ msgctxt "MASK"
+#~ msgid "msk_fam"
+#~ msgstr "Famille (titre)"
+
+#, fuzzy
+#~ msgctxt "MASK"
+#~ msgid "title"
+#~ msgstr "Masque de saisie"
