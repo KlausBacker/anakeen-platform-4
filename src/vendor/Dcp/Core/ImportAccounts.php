@@ -592,7 +592,7 @@ class ImportAccounts
                     $uNode->removeChild($delNode->item(0));
                 }
             }
-            $msg = sprintf(___("Account Type \"%s\""), $tag) . "\n" . $msg;
+            $msg = sprintf(_("Account Type \"%s\""), $tag) . "\n" . $msg;
             if ($account->id > 0) {
                 $err = $account->modify();
 

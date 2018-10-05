@@ -304,15 +304,15 @@ msgstr ""
                 file_put_contents($poFile, $msgInit);
             }
             // add new entry
-            $localeKey = sprintf("%s:%s", $enumName, $enumId);
             $msgEntry = sprintf(
-                'msgctxt "ENUM"'."\n".'msgid "%s"' . "\n" . 'msgstr "%s"',
-                str_replace('"', '\\"', $localeKey),
+                'msgctxt "%s"'."\n".'msgid "%s"' . "\n" . 'msgstr "%s"',
+                str_replace('"', '\\"',$enumName),
+                str_replace('"', '\\"', $enumId),
                 str_replace('"', '\\"', $label)
             );
             $content = file_get_contents($poFile);
             // fuzzy old entry
-            $match = sprintf('msgid "%s"', $localeKey);
+            $match = sprintf('msgid "%s"', $enumId);
             $content = str_replace($match, "#, fuzzy\n$match", $content);
             // delete previous header
             $content = str_replace('msgid ""', "#, fuzzy\nmsgid \"- HEADER DELETION -\"", $content);
