@@ -58,5 +58,8 @@
     "wdio-selenium-standalone-service": "^0.0.10",
     "webdriverio": "^4.13.2",
     "whatwg-fetch": "^2.0.4"
+  },
+  "dependencies": {
+    "@anakeen/anakeen-cli": "^1.0.1"
   }
 }

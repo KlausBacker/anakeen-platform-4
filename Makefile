@@ -42,6 +42,7 @@ CONTROL_CONTEXT=$(ctx)
 ##bin
 YARN_BIN=yarn
 DEVTOOL_BIN=php ./anakeen-devtool.phar
+ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 COMPOSER_BIN=composer
 
 -include Makefile.local
@@ -101,19 +102,16 @@ $(JS_POLYFILL_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/polyfi
 	$(YARN_BIN) buildPolyfill
 	touch "$@"
 
-$(LOCALPUB_ANAKEEN_UI_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ANAKEEN_UI_SRC_PATH}/src -type f -name '*.php' -print | sed 's/ /\\ /g') $(VERSION_PATH) $(RELEASE_PATH) $(PHP_LIB_PATH)/composer.lock $(JS_ASSET_PATH) $(JS_DDUI_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build app $@${RESET_COLOR}\n"
-	rm -f user-interfaces-*.app
-	-mkdir -p $(LOCALPUB_ANAKEEN_UI_PATH)
-	rsync -q --delete -azvr $(ANAKEEN_UI_SRC_PATH) $(LOCALPUB_ANAKEEN_UI_PATH)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_ANAKEEN_UI_PATH)/build.json
-	$(DEVTOOL_BIN) generateWebinst -s $(LOCALPUB_ANAKEEN_UI_PATH) -o .
-	touch "$@"
 
-app: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_POLYFILL_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH) $(LOCALPUB_ANAKEEN_UI_PATH) ## build the project
+compilation: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_POLYFILL_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
+
+app: compilation
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build --sourcePath ./anakeen-ui
 
-deploy: app ## deploy the project
+deploy: compilation ## deploy the project
+	rm -f user-interfaces-1*app
+	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./anakeen-ui
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	$(DEVTOOL_BIN) deploy -u http://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-*app -- --force
 	make clean
@@ -141,13 +139,8 @@ cleanAll: clean ## clean the local pub and the node_module
 ##
 ########################################################################################################################
 
-po: pojs ## extract the po
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(DEVTOOL_BIN) extractPo -s anakeen-ui -o anakeen-ui/src
-
-pojs:
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	make -f pojs.make
+po:
+	${ANAKEEN_CLI_BIN} extractPo --sourcePath ./anakeen-ui
 
 ########################################################################################################################
 ##
@@ -161,16 +154,17 @@ $(JS_TEST_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_TEST_SOURCE_P
 	$(YARN_BIN) buildTest
 	touch "$@"
 
-app-test: $(JS_CONF_PATH)/node_modules $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH) ## Build the test package
+compilation-test: $(JS_CONF_PATH)/node_modules $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH)
+
+app-test: compilation-test ## Build the test package
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	rm -f user-interfaces*test*app
-	-mkdir -p ${LOCALPUB_TEST_PATH}
-	rsync -q --delete -azvr $(TEST_SRC_PATH) ${LOCALPUB_TEST_PATH}
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" ${LOCALPUB_TEST_PATH}/build.json
-	$(DEVTOOL_BIN) generateWebinst -s ${LOCALPUB_TEST_PATH} -o .
+	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests
 
-deploy-test: app-test ## Deploy the test package
+deploy-test: compilation-test ## Deploy the test package
+	rm -f user-interfaces-test*app
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
 	$(DEVTOOL_BIN) deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-test*app -- --force
 
 ########################################################################################################################
