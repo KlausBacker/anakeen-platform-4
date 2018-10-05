@@ -2,10 +2,19 @@
 
 namespace Anakeen\Hub\IHM;
 
+use Anakeen\Core\SEManager;
 use Dcp\Ui\UIGetAssetPath;
 
 class HubAdmin
 {
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Dcp\Ui\Exception
+     */
     public function __invoke(
         \Slim\Http\request $request,
         \Slim\Http\response $response,
@@ -62,6 +71,7 @@ class HubAdmin
             ]
         ];
         $template = file_get_contents($page);
+        $data["CHILDFAM"] = json_encode(SEManager::getFamily("HUBCONFIGURATION")->getChildFam());
         return $response->write($mustache->render($template, $data));
     }
 }
