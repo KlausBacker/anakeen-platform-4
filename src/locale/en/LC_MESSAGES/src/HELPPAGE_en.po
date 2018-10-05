@@ -11,75 +11,82 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_description"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_description"
 msgstr "Description"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_family"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_family"
 msgstr "Family"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_fr_family"
-msgstr "Family parameters"
-
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_fr_identification"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_fr_identification"
 msgstr "Help"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_lang"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_lang"
 msgstr "Label language"
 
-msgid "HELPPAGE#help_lang#helppageenumlang()"
-msgstr ""
-
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_name"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_name"
 msgstr "Label"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_p_lang_key"
-msgstr "Language"
-
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_p_lang_name"
-msgstr "Language label"
-
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_sec_key"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_key"
 msgstr "Section key"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_sec_lang"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_lang"
 msgstr "Language"
 
-msgid "HELPPAGE#help_sec_lang#helppageenumlang()"
-msgstr ""
-
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_sec_name"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_name"
 msgstr "Section name"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_sec_order"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_order"
 msgstr "Section order"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_sec_text"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_text"
 msgstr "Text"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_t_family"
-msgstr "Languages"
-
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_t_help"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_t_help"
 msgstr "Description"
 
-#: App/Fdl/fdl.ods.csv
-msgid "HELPPAGE#help_t_sections"
+#: helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_t_sections"
 msgstr "Sections"
 
-msgid "HELPPAGE#title"
-msgstr "Online help"
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_fr_family"
+#~ msgstr "Family parameters"
+
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_p_lang_key"
+#~ msgstr "Language"
+
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_p_lang_name"
+#~ msgstr "Language label"
+
+#~ msgctxt "HELPPAGE"
+#~ msgid "help_t_family"
+#~ msgstr "Languages"
+
+#~ msgctxt "HELPPAGE"
+#~ msgid "title"
+#~ msgstr "Online help"

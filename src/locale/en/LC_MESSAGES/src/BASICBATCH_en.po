@@ -12,32 +12,41 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "BASICBATCH#bbatch_copy"
+msgctxt "BASICBATCH"
+msgid "bbatch_copy"
 msgstr "Duplicate"
 
-msgid "BASICBATCH#bbatch_copy#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_copy#submenu"
 msgstr "Actions"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "BASICBATCH#bbatch_delete"
+msgctxt "BASICBATCH"
+msgid "bbatch_delete"
 msgstr "Delete"
 
-msgid "BASICBATCH#bbatch_delete#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_delete#submenu"
 msgstr "Actions"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "BASICBATCH#bbatch_lock"
+msgctxt "BASICBATCH"
+msgid "bbatch_lock"
 msgstr "Lock"
 
-msgid "BASICBATCH#bbatch_lock#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_lock#submenu"
 msgstr "Actions"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "BASICBATCH#bbatch_unlock"
+msgctxt "BASICBATCH"
+msgid "bbatch_unlock"
 msgstr "Unlock"
 
-msgid "BASICBATCH#bbatch_unlock#submenu"
+msgctxt "BASICBATCH"
+msgid "bbatch_unlock#submenu"
 msgstr "Actions"
 
-msgid "BASICBATCH#title"
+msgctxt "BASICBATCH"
+msgid "title"
 msgstr "Basic action"

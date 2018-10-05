@@ -11,25 +11,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_crit"
-msgstr ""
-
-#: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_fr_function"
+#: ssearch.struct.xml
+msgctxt "SSEARCH"
+msgid "se_fr_function"
 msgstr "Function"
 
-#: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_phparg"
+#: ssearch.struct.xml
+msgctxt "SSEARCH"
+msgid "se_phparg"
 msgstr "PHP arguments"
 
-#: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_phpfile"
+#: ssearch.struct.xml
+msgctxt "SSEARCH"
+msgid "se_phpfile"
 msgstr "PHP file"
 
-#: App/Fdl/searches.ods.csv
-msgid "SSEARCH#se_phpfunc"
+#: ssearch.struct.xml
+msgctxt "SSEARCH"
+msgid "se_phpfunc"
 msgstr "PHP function"
 
-msgid "SSEARCH#title"
-msgstr "Specialized search"
+#~ msgctxt "SSEARCH"
+#~ msgid "title"
+#~ msgstr "Specialized search"

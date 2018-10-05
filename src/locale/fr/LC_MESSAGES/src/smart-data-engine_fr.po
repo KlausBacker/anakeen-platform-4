@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-12 15:54+0100\n"
+"POT-Creation-Date: 2018-10-05 14:59+0200\n"
 "PO-Revision-Date: 2018-01-12 15:56+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -16,69 +16,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #, php-format
-msgid "%d answer"
-msgstr "%d réponse"
-
-#, php-format
-msgid "%d answers"
-msgstr "%d réponses"
-
-#, php-format
-msgid "%d day"
-msgstr "%d jour"
-
-#, php-format
-msgid "%d days"
-msgstr "%d jours"
-
-#, php-format
-msgid "%d document detected"
-msgid_plural "%d documents detected"
-msgstr[0] "%d document détecté"
-msgstr[1] "%d documents détectés"
-
-#, php-format
-msgid "%d document processed"
-msgid_plural "%d documents processed"
-msgstr[0] "%d document traité"
-msgstr[1] "%d documents traités"
-
-#, php-format
-msgid "%d documents are updated"
-msgstr "%d documents mis à jour"
-
-#, php-format
-msgid "%d hour"
-msgstr "%d heure"
-
-#, php-format
-msgid "%d hours"
-msgstr "%d heures"
-
-#, php-format
-msgid "%d minute"
-msgstr "%d minute"
-
-#, php-format
-msgid "%d minutes"
-msgstr "%d minutes"
-
-#, php-format
-msgid "%d/%d profiling done"
-msgstr "%d/%d mise à jour de profils effectués"
-
-#, php-format
-msgid "%d/%d revision done"
-msgstr "%d/%d révisions effectuées"
-
-#, php-format
 msgid "%s (as substitute)"
 msgstr "%s (suppléant)"
-
-#, php-format
-msgctxt "ddui"
-msgid "%s Documents"
-msgstr ""
 
 #, php-format
 msgid "%s activity"
@@ -95,18 +34,6 @@ msgstr "Type d'affectation %s"
 #, php-format
 msgid "%s affected user"
 msgstr "Utilisateur affecté %s"
-
-#, php-format
-msgid "%s application has no aclss"
-msgstr "L'application %s n'a pas d'ACL"
-
-#, php-format
-msgid "%s application not exists"
-msgstr "l'application %s n'existe pas"
-
-#, php-format
-msgid "%s attribute"
-msgstr "attribut %s"
 
 #, php-format
 msgid "%s autolock"
@@ -131,10 +58,6 @@ msgstr "répertoire %s non trouvé"
 #, php-format
 msgid "%s directory not writable"
 msgstr "répertoire %s non accessible en écriture"
-
-#, php-format
-msgid "%s group"
-msgstr "groupe %s"
 
 #, php-format
 msgid "%s has no email address"
@@ -172,8 +95,8 @@ msgstr "masque %s"
 msgid "%s needed\n"
 msgstr "%s doit être rempli\n"
 
-#, php-format
-msgid "%s new state %s"
+#, fuzzy, php-format
+msgid "%s new \\state %s"
 msgstr "%s changement d'état vers %s"
 
 #, php-format
@@ -204,25 +127,8 @@ msgstr "%s mis à jour\n"
 msgid "%s wask"
 msgstr "accord %s"
 
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "&gt; or equal"
-msgstr "&gt; ou égal"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "&lt; or equal"
-msgstr "&lt; ou égal"
-
-msgid "(Other input)"
-msgstr "(Autre)"
-
-msgid "(Other)"
-msgstr "(Autre)"
-
 msgid "(file not found)"
 msgstr "(fichier non trouvé)"
-
-msgid "(only)"
-msgstr "(seulement)"
 
 #, php-format
 msgid "(substitute of %s) : "
@@ -231,23 +137,31 @@ msgstr "(suppléant de %s) : "
 msgid "(title)"
 msgstr "(titre)"
 
-msgid "<it's a message>"
-msgstr "<c'est un message>"
-
-#, php-format
-msgid "API file %s not found\n"
+#, fuzzy, php-format
+msgctxt "core"
+msgid "API file \"%s\" not found"
 msgstr "fichier API %s non trouvé\n"
 
-#, php-format
-msgid "Account Type \"%s\""
-msgstr "Type du compte \"%s\""
+#, fuzzy
+msgctxt "ank"
+msgid "Access not granted"
+msgstr "Privilège"
 
-#, php-format
-msgid "Acl [%s] not available for App %s"
-msgstr "ACL %s non valable pour l'application %s"
+#, fuzzy
+msgctxt "smart iuser"
+msgid "Access not granted to activate account"
+msgstr "L'utilisateur courant ne peut désactiver le compte"
 
-msgid "Action"
-msgstr "Action"
+#, fuzzy
+msgctxt "smart iuser"
+msgid "Access not granted to deactivate account"
+msgstr "L'utilisateur courant ne peut désactiver le compte"
+
+#, fuzzy
+msgctxt "authent"
+msgid "Account access not granted, please contact your system administrator"
+msgstr ""
+"Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
 
 #, php-format
 msgid "Add %s in %s folder"
@@ -279,13 +193,6 @@ msgstr "Affectation pour %s"
 msgid "Affected to %s %s"
 msgstr "Affectation à %s %s"
 
-msgid "Allow guest access"
-msgstr "Autoriser l'accès invité"
-
-#, php-format
-msgid "Archiving into %s"
-msgstr "Archivé dans %s"
-
 msgid "Attribut relation"
 msgstr "Relation document"
 
@@ -309,50 +216,9 @@ msgstr "Attribut %s non trouvé.\n"
 msgid "Attribute %s not modified : %s\n"
 msgstr "Attribut %s non modifié : %s\n"
 
-#, php-format
-msgid "Attribute '%s' could not be found in family '%s'."
-msgstr "L'attribut '%s' n'a pas été trouvé dans la famille '%s'"
-
-#, php-format
-msgid "Attribute '%s' should reference a docid attribute in family '%s'."
-msgstr "L'attribut '%s' doit référencer un attribut docid de la famille '%s'."
-
-#, php-format
-msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
-msgstr ""
-"Erreur d'attribut: la famille '%s' n'est pas valide ou en vie pour le docid "
-"'%s'."
-
-#, php-format
-msgid ""
-"Attribute Error: impossible to found the family for docid attribute '%s'"
-msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
-"'%s'"
-
-#, php-format
-msgid "Attribute format should not be empty on attribute '%s' in family '%s'."
-msgstr ""
-"La propriété format de l'attribut '%s' de la famille '%s' ne peut pas être "
-"vide."
-
 msgctxt "authentOpen"
 msgid "Authorization Required"
 msgstr "Autorisation requise"
-
-msgid "CHANGE_PASSWORD:The old password is not good"
-msgstr "Le mot de passe actuel est faux"
-
-#, php-format
-msgid "CHANGE_PASSWORD:The provided password is not good (%s)"
-msgstr "Le nouveau mot de passe n'est pas valide (%s)"
-
-#, php-format
-msgid "CHANGE_PASSWORD:Unable to change password (%s)"
-msgstr "Impossible de changer le mot de passe (%s)"
-
-msgid "CHANGE_PASSWORD:You can't modify your account"
-msgstr "Vous ne pouvez pas modifier votre mot de passe"
 
 #, php-format
 msgid "CVID : %s"
@@ -382,10 +248,6 @@ msgid "Cannot copy file %s to %s"
 msgstr "Ne peut copier le fichier %s vers %s"
 
 #, php-format
-msgid "Cannot find %s resource file"
-msgstr "La ressource fichier %s est introuvable"
-
-#, php-format
 msgid ""
 "Cannot import document because the ORDER line for family '%s' is incorrect: "
 "%s"
@@ -396,10 +258,6 @@ msgstr ""
 msgctxt "HTTPAPI_V1"
 msgid "Cannot store file because vault size limit is reached"
 msgstr ""
-
-#, php-format
-msgid "Cannot write to log %s"
-msgstr "Ne peux pas écrire dans les logs %s"
 
 #, php-format
 msgid "Change profil to default document profil : %d"
@@ -414,27 +272,12 @@ msgstr "Changement du profil avec le profil par défaut du dossier: %d"
 msgid "ChangeState :: the initial state '%s' is not known"
 msgstr "Changement d'état: l'état initial '%s' est inconnu"
 
-#, php-format
+#, fuzzy, php-format
 msgid ""
-"ChangeState :: the new state '%s' is not known or is not allowed from %s"
+"ChangeState :: the new \\state '%s' is not known or is not allowed from %s"
 msgstr ""
 "Changement d'état: le nouvel état '%s' n'est pas connu ou n'est pas autorisé "
 "depuis %s"
-
-#, php-format
-msgid "Class %s from file %s already declared in autoload with file %s"
-msgstr "Classe %s du fichier %s déjà déclaré dans le fichier %s"
-
-msgid "Close"
-msgstr "Fermer"
-
-#, php-format
-msgid "Close archive"
-msgstr "Clôture de l'archive"
-
-#, php-format
-msgid "Column type '%s' is not managed for export."
-msgstr "Le type de colonne '%s' n'est pas géré pour l'export."
 
 #, php-format
 msgid "Config file %s : attribute name not set"
@@ -454,34 +297,14 @@ msgstr "Fichier de configuration %s: le nom de la famille n'est pas précisé"
 msgid "Config file %s : unknow attribute name %s"
 msgstr "Fichier de configuration %s: nom de l'attribut %s inconnu"
 
-#, php-format
-msgid "Connection to freedom pg service '%s' OK !"
-msgstr "Connexion au pg service de dynacase '%s' OK !"
-
-#, php-format
-msgid "Connection to temporary pg service '%s' OK !"
-msgstr "Connexion au pg service temporaire '%s' OK !"
-
+#, fuzzy
+msgctxt "smart iuser"
 msgid "Control characters are not allowed"
 msgstr "Les caractères de contrôle ne sont pas autorisés"
 
 #, php-format
-msgid "Could not find attribute '%s' in family '%s'."
-msgstr "Impossible de trouver l'attribut '%s' dans la famille '%s'"
-
-msgid "Could not find pg_dump command in PATH."
-msgstr "Impossible de trouver la commande pg_dump dans le PATH"
-
-msgid "Could not find psql command in PATH."
-msgstr "Impossible de trouver la commande psql dans le PATH"
-
-#, php-format
 msgid "Could not generate output file name for node '%s'."
 msgstr "Ne peux générer le nom du fichier de sortie à partir du nœud '%s'."
-
-#, php-format
-msgid "Could not get family id for '%s'."
-msgstr "Impossible de trouver l'id de la famille '%s'."
 
 #, php-format
 msgid "Could not open '%s' for reading."
@@ -500,24 +323,9 @@ msgstr ""
 "La transition n'a pas pu être effectuée car le document est verrouillé par "
 "'%s'"
 
-#, php-format
-msgid "Create Schema '%s' ..."
-msgstr "Creation du schema '%s' ..."
-
-#, php-format
-msgid "Create Table '%s'"
-msgstr "Creation de la table '%s'"
-
-msgid "Create Tables ..."
-msgstr "Creation des tables ..."
-
 msgctxt "fusersimport"
 msgid "Create account"
 msgstr "Création d'un compte"
-
-msgctxt "HTTPAPI_V1"
-msgid "Create by HTTP API"
-msgstr ""
 
 #, php-format
 msgid "DbObj::Adds error in multiple insertion"
@@ -531,13 +339,25 @@ msgstr "Suppression atags \"%s\""
 msgid "Delete %d in %s folder"
 msgstr "Suppression n°%d du dossier %s"
 
-msgctxt "HTTPAPI_V1"
-msgid "Deleted by HTTP API"
-msgstr ""
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "Delete by route from %s"
+msgstr "supprimé avec l'action %s/%s depuis %s"
 
-#, php-format
-msgid "Destroyed by action %s/%s from %s"
-msgstr "Destruction définitive par l'action %s/%s depuis %s"
+#, fuzzy
+msgctxt "ank"
+msgid "Deleted by API"
+msgstr "Supprimer"
+
+#, fuzzy, php-format
+msgctxt "ank"
+msgid "Deleted document \"%s\" not found"
+msgstr "Le document [%s] est introuvable"
+
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "Destroyed by route from %s"
+msgstr "Détruit par la purge de l'archive %s"
 
 msgid "DetailSearch:malformed timestamp"
 msgstr "horodatage malformé"
@@ -551,15 +371,6 @@ msgstr "Dir::insertFolder l'identificateur [%s] doit être numérique"
 
 msgid "Directory already exists"
 msgstr "Répertoire déjà existant"
-
-msgid "Display available choices"
-msgstr "Afficher les choix possibles"
-
-msgid "Display errors in request response"
-msgstr ""
-
-msgid "Do choice"
-msgstr "Choisissez"
 
 #, php-format
 msgid ""
@@ -582,8 +393,20 @@ msgstr ""
 msgid "Doc Render %d/%d"
 msgstr "Composition %d/%d"
 
-msgid "DocProperties"
-msgstr "Propriétés"
+#, fuzzy, php-format
+msgctxt "ank"
+msgid "Document \"%s\" is deleted"
+msgstr "Insertion document %s "
+
+#, fuzzy, php-format
+msgctxt "ank"
+msgid "Document \"%s\" is not in the trash"
+msgstr "le document %s [%d] n'est pas dans la corbeille"
+
+#, fuzzy, php-format
+msgctxt "ank"
+msgid "Document \"%s\" not found"
+msgstr "Document %s non trouvé"
 
 #, php-format
 msgid "Document %s inserted"
@@ -597,11 +420,10 @@ msgstr "Document %s est en cours de modification par %s"
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
 
-msgid "Document Properties"
-msgstr "Propriétés du document"
-
-msgid "Document basket"
-msgstr "Porte-document"
+#, fuzzy
+msgctxt "ank"
+msgid "Document access not granted"
+msgstr "Document %s non trouvé"
 
 msgctxt "fusersimport"
 msgid "Document creation"
@@ -610,9 +432,10 @@ msgstr "Création du document associé"
 msgid "Document destroyed"
 msgstr "Document détruit définitivement"
 
-msgctxt "HTTPAPI_V1"
+#, fuzzy
+msgctxt "ank"
 msgid "Document information"
-msgstr ""
+msgstr "Création de document"
 
 #, php-format
 msgid "Document inserted in %s folder"
@@ -626,6 +449,11 @@ msgctxt "fusersimport"
 msgid "Document update"
 msgstr "Mise à jour du document associé"
 
+#, fuzzy
+msgctxt "ank"
+msgid "Document update failed"
+msgstr "Mise à jour du document associé"
+
 msgid "Doing csv render"
 msgstr "Composition du csv"
 
@@ -634,20 +462,6 @@ msgstr "Composition en cours"
 
 msgid "Doing search request"
 msgstr "Recherche en cours"
-
-#, php-format
-msgid "Dump pgservice '%s' ..."
-msgstr "Dump pgservice '%s' ..."
-
-#, php-format
-msgid "Dump to '%s' returned with exitcode %s"
-msgstr "Dump vers '%s' en échec avec code de retour %s"
-
-msgid "Dynacase frontpage description"
-msgstr "Description de la page principale de Dynacase"
-
-msgid "Dynacase pages favico"
-msgstr "Pages de favico de Dynacase"
 
 #, php-format
 msgid "Dynamic template %s not an odt file "
@@ -661,9 +475,6 @@ msgstr "Le modèle dynamique %s n'a pas été trouvé"
 msgid "ERROR %s\n"
 msgstr "ERREUR %s\n"
 
-msgid "ERROR :"
-msgstr "ERREUR :"
-
 #, php-format
 msgid ""
 "Element can't be perfectly analyze, some error might occur or be corrected "
@@ -672,9 +483,13 @@ msgstr ""
 "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
 "apparaître ou être corrigées lors de l'importation"
 
-#, php-format
-msgid "Emptying temporary database '%s' ..."
-msgstr "Vidage de la base temporaire '%s'"
+#, fuzzy, php-format
+msgid ""
+"Element can't be perfectly analyzed, some error might occurs or be corrected "
+"when importing"
+msgstr ""
+"L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
+"apparaître ou être corrigées lors de l'importation"
 
 msgid "English"
 msgstr "Anglais"
@@ -707,23 +522,8 @@ msgid "Error converting HTML from attribute '%s' from document '%s': %s"
 msgstr "Erreur de conversion HTML de l'attribut '%s' du document '%s': %s"
 
 #, php-format
-msgid "Error could not open output log file '%s' for writing."
-msgstr ""
-"Erreur: impossible d'ouvrir le fichier de log sql de sortie '%s' en écriture."
-
-#, php-format
-msgid "Error could not open sql log file '%s' for writing."
-msgstr "Erreur: impossible d'ouvrir le fichier de log sql '%s' en écriture."
-
-#, php-format
 msgid "Error creating directory '%s': %s"
 msgstr "Erreur lors de la création du répertoire '%s': %s"
-
-msgid "Error creating temp file for pg_dump output."
-msgstr "Erreur durant la création du fichier temporaire de sortie pour pg_dump"
-
-msgid "Error creating temp file for sql log output."
-msgstr "Erreur pendant la création du fichier temporaire de log sql."
 
 #, php-format
 msgid "Error creating temporary file in '%s'."
@@ -736,10 +536,6 @@ msgstr "Erreur lors de la suppression du répertoire '%s': %s"
 #, php-format
 msgid "Error extracting archive '%s' in '%s': %s"
 msgstr "Erreur lors de l'extraction de l'archive '%s' dans '%s': %s"
-
-#, php-format
-msgid "Error in portfolio : folder %s not exists"
-msgstr "Erreur dans la chemise : dossier %s n'existe pas"
 
 #, php-format
 msgid "Error opening %s file '%s'"
@@ -769,20 +565,10 @@ msgstr "Erreur d'écriture du fichier '%s'."
 msgid "Error writing to ouput file '%s'."
 msgstr "Erreur d'écriture dans le fichier de sortie '%s'."
 
-#, php-format
-msgid "Error: No column found in array '%s'"
-msgstr "Erreur: pas de colonne trouvée dans le tableau '%s'"
-
-msgid "Error: empty action->dbaccess"
-msgstr "Erreur: action->dbaccess est vide"
-
 msgid "Expiration delay must not be 0 to keep expiration date"
 msgstr ""
 "Le délai d'expiration doit être supérieur à zéro pour avoir une date "
 "d'expiration"
-
-msgid "Export 1NF done"
-msgstr "Export 1NF fini"
 
 msgctxt "fuserexport"
 msgid "Export Aborted"
@@ -801,9 +587,6 @@ msgctxt "fuserexport"
 msgid "Export relative document (%d/%d)"
 msgstr "Exportation des documents relatifs (%d/%d)"
 
-msgid "Export:Warnings"
-msgstr "Avertissements de l'exportation :"
-
 #, php-format
 msgid "Failed to copy %s to %s"
 msgstr "Échec de la copie du fichier %s vers %s"
@@ -816,6 +599,11 @@ msgstr "Échec de la copie du fichier %s dans le coffre"
 msgid "Failed to create directory \"%s\" in vault"
 msgstr "Échec de la création du répertoire \"%s\" dans le coffre"
 
+#, fuzzy, php-format
+msgctxt "ank"
+msgid "Family \"%s\" not found"
+msgstr "La famille [%s] n'a pas été trouvée"
+
 #, php-format
 msgctxt "fusersimport"
 msgid "Family %s"
@@ -824,10 +612,6 @@ msgstr "Famille \"%s\""
 #, php-format
 msgid "Family '%s' does not implements IMailRecipient interface."
 msgstr "La famille '%s' n'implémente pas l'interface IMailRecipient."
-
-#, php-format
-msgid "Family '%s' is not valid or alive."
-msgstr "La famille '%s' n'est pas valide ou en vie."
 
 #, php-format
 msgid "Family [%s] not found"
@@ -853,17 +637,6 @@ msgstr "Conversion réussie"
 msgid "File:: failed"
 msgstr "Échec de la conversion"
 
-msgid "Fill Tables ..."
-msgstr "Remplissage des tables ..."
-
-#, php-format
-msgid "Filling enum table '%s'"
-msgstr "Remplissage de la table enumérée '%s'"
-
-#, php-format
-msgid "Filling family table '%s' and relatives"
-msgstr "Remplissage de la table famille '%s' et afférentes"
-
 #, php-format
 msgid "Fix multiple alive document #%s"
 msgstr "Verrouillage des révisions vivantes concurrentes #%s"
@@ -888,36 +661,6 @@ msgctxt "fusersimport"
 msgid "Group reference already added"
 msgstr "Groupe déjà affecté"
 
-msgid "HTTPAPI_V1:API default page"
-msgstr ""
-
-msgid "HTTPAPI_V1:Anakeen documentation URL"
-msgstr ""
-
-msgid "HTTPAPI_V1:Base URL used to generate canonic URL response (uri)"
-msgstr ""
-
-msgid "HTTPAPI_V1:activate memory/time tracing"
-msgstr ""
-
-msgid "HTTPAPI_V1:activate the etag cache for the request that handle it"
-msgstr ""
-
-msgid "HTTPAPI_V1:crud class"
-msgstr ""
-
-msgid "HTTPAPI_V1:custom logger class"
-msgstr ""
-
-msgid "HTTPAPI_V1:default logger class"
-msgstr ""
-
-msgid "HTTPAPI_V1:default value of the slice for collection"
-msgstr ""
-
-msgid "HTTPAPI_V1:middleware crud classes"
-msgstr ""
-
 msgctxt "fuserimport"
 msgid "Import Aborted"
 msgstr "Abandon de l'importation"
@@ -941,16 +684,6 @@ msgctxt "fuserimport"
 msgid "Import user (%d/%d)"
 msgstr "Importation des utilisateurs (%d/%d)"
 
-msgid "Impossible to have several identical names"
-msgstr "Impossible d'avoir plusieurs vues avec le même nom"
-
-msgid "Impossible to name a view like a control acl"
-msgstr "Impossible de nommer une vue comme un droit"
-
-#, php-format
-msgid "Incoherent column type '%s' in array '%s'."
-msgstr "Type de colonne incohérent '%s' dans le tableau '%s'."
-
 #, php-format
 msgid "Invalid condition for attribute '%s' with value '%s': %s"
 msgstr "Condition invalide pour l'attribut '%s' avec la valeur '%s': %s"
@@ -959,7 +692,8 @@ msgstr "Condition invalide pour l'attribut '%s' avec la valeur '%s': %s"
 msgid "Invalid directory '%s'."
 msgstr "Répertoire non valide '%s'."
 
-#, php-format
+#, fuzzy, php-format
+msgctxt "smart iuser"
 msgid "It must contains at least %d characters (total length)"
 msgstr "Il doit contenir au moins %d caractères"
 
@@ -975,9 +709,6 @@ msgstr "Attribut LDAP modifié %s %s"
 msgid "LEX_GENERAL_FILTER:Unable to parse %s"
 msgstr "Problème interprétation du filtre pour la recherche générale \"%s\""
 
-msgid "Label must not be empty"
-msgstr "Le label ne doit pas être vide"
-
 #, php-format
 msgid "Layout \"%s\" : Controller not allowed"
 msgstr "Layout \"%s\" : L'accès au contrôleur n'est pas autorisé"
@@ -985,17 +716,6 @@ msgstr "Layout \"%s\" : L'accès au contrôleur n'est pas autorisé"
 msgctxt "fuserimport"
 msgid "Load XML file"
 msgstr "Chargement du fichier XML"
-
-#, php-format
-msgid "Load dump file into '%s' ..."
-msgstr "Chargement du fichier de dump dans '%s'"
-
-#, php-format
-msgid "Loading of dump '%s' returned with exitcode %s"
-msgstr "Chargement du dump '%s' en échec avec le code retour %s"
-
-msgid "Loading..."
-msgstr "Chargement..."
 
 #, php-format
 msgid "Logical name %s already set for %s. Use reset parameter to overhide it"
@@ -1011,49 +731,26 @@ msgstr "Le nom logique %s est déjà utilisé pour le document %s"
 msgid "Mail %s sent to %s"
 msgstr "Message %s envoyé à %s"
 
-msgid "Mail action URL"
-msgstr "URL d'action mail"
-
-msgid "Make references ..."
-msgstr "Fabrication des références ..."
-
-#, php-format
-msgid "Malformed HTML in attribute '%s' from document '%s': %s"
+#, fuzzy, php-format
+msgid "Malformed HTML in field '%s' from document '%s': %s"
 msgstr "HTML malformé dans l'attribut '%s' du document '%s': %s"
 
 msgid "Malformed HTML:"
 msgstr "HTML malformé:"
 
-#, php-format
-msgid "Max display limit %s reached. Use export to see all"
-msgstr ""
-"Limite d'affichage maximum %s atteinte. Utilisez l'exportation pour tout "
-"voir."
+#, fuzzy
+msgctxt "sed"
+msgid "Malformed HTML:"
+msgstr "HTML malformé:"
+
+#, fuzzy, php-format
+msgctxt "ank"
+msgid "Method \"%s\" Not Allowed. Must be one of: %s"
+msgstr "la méthode %s n'a pas été exécutée : %s"
 
 #, php-format
 msgid "Method [%s] not exists"
 msgstr "la méthode [%s] n'existe pas"
-
-msgid "Modify table"
-msgstr "Modification table"
-
-#. _COMMENT: Doc (Class.Doc.php)
-#. _COMMENT: searchLabel key
-#. _COMMENT: types: uid
-msgid "My system user id"
-msgstr "Identifiant système de mon compte utilisateur"
-
-#. _COMMENT: Doc (Class.Doc.php)
-#. _COMMENT: searchLabel key
-#. _COMMENT: types: docid("IUSER")
-msgid "My user account id"
-msgstr "Identifiant de mon compte utilisateur"
-
-msgid "N"
-msgstr "N"
-
-msgid "Name of table cannot be empty"
-msgstr "Le nom de la table ne doit pas être vide"
 
 msgctxt "fusersimport"
 msgid "New password"
@@ -1069,31 +766,39 @@ msgstr ""
 "Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
 "%s"
 
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "No privilege \"%s\" for %d"
+msgstr "Pas de privilège %s pour le document %s"
+
 #, php-format
 msgid "Not a family [%s]"
 msgstr "Pas une famille [%s]"
 
+#, fuzzy
+msgctxt "smart iuser"
 msgid "Not enough characters."
 msgstr "Pas assez de caractères"
 
+#, fuzzy
+msgctxt "smart iuser"
 msgid "Not enough digits."
 msgstr "Pas assez de chiffres"
 
+#, fuzzy
+msgctxt "smart iuser"
 msgid "Not enough lowercase characters."
 msgstr "Pas assez de minuscules"
 
+#, fuzzy
+msgctxt "smart iuser"
 msgid "Not enough special characters."
 msgstr "Pas assez de charactères spéciaux"
 
+#, fuzzy
+msgctxt "smart iuser"
 msgid "Not enough uppercase characters."
 msgstr "Pas assez de majuscules"
-
-#, php-format
-msgid "Only %s %s can view and edit"
-msgstr "Seul %s %s peut voir et éditer le document"
-
-msgid "Other..."
-msgstr "Autre..."
 
 #, php-format
 msgid "Output file '%s' already exists."
@@ -1103,23 +808,16 @@ msgstr "Le fichier de sortie '%s' existe déjà."
 msgid "Output file '%s' is already opened."
 msgstr "Le fichier de sortie '%s' est déjà ouvert."
 
-#, php-format
-msgid "PG Error: Connection to freedom pg service '%s' failed !"
-msgstr "Erreur PG : connexion au pg service dynacase '%s' en échec !"
-
-#, php-format
-msgid "PG Error: Connection to temporary pg service '%s' failed !"
-msgstr "Erreur PG : connexion au pg service temporaire '%s' en échec !"
+#, fuzzy
+msgctxt "ank"
+msgid "Page not found"
+msgstr "(fichier non trouvé)"
 
 msgid "Parameter name does not include spaces"
 msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
 
 msgid "Parametre cycle"
 msgstr "Relation paramètre cycle"
-
-#, php-format
-msgid "Personal profile for %s %s"
-msgstr "Profil personnel de %s %s"
 
 #, php-format
 msgid "Pivot rendering %d/%d"
@@ -1137,17 +835,10 @@ msgstr "Processus %s [%d] exécuté"
 msgid "Process %s [%d] executed in %.03f seconds"
 msgstr "Processus %s [%d] exécuté en %.03f secondes"
 
-#, php-format
-msgid "Profil for document's archive %s"
-msgstr "Profil pour l'archive %s"
-
-#, php-format
-msgid "Property '%s' is not valid (family '%s')."
-msgstr "La propriété '%s' n'est pas valide (famille '%s')."
-
-#, php-format
-msgid "Purge archive"
-msgstr "Purge de l'archive"
+#, fuzzy
+msgctxt "ank"
+msgid "Profil not configured"
+msgstr "Adresse non configurée"
 
 msgid "REPORT_pivot"
 msgstr "REPORT_pivot"
@@ -1164,22 +855,6 @@ msgstr "Relation cycle"
 
 msgid "Relation parametre"
 msgstr "Relation paramètre"
-
-#, php-format
-msgid "Remove duplicate attribute '%s' in family '%s'"
-msgstr "Suppression de l'atttribut dupliqué '%s' dans la famille '%s'"
-
-#, php-format
-msgid "Remove duplicate property '%s' in family '%s'"
-msgstr "Suppression de la propriété dupliquée '%s' dans la famille '%s'"
-
-#, php-format
-msgid "Remove duplicate reference '%s' in family '%s'"
-msgstr "Suppression de la référence dupliquée '%s' dans la famille '%s'"
-
-#, php-format
-msgid "Reopen archive"
-msgstr "Réouverture de l'archive"
 
 msgctxt "fusersimport"
 msgid "Reset all direct associated roles"
@@ -1269,12 +944,14 @@ msgstr "Affectation atags \"%s\""
 msgid "SetBlock:error [%s]"
 msgstr "SetBlock : erreur [%s]"
 
-msgid "Show a notification when a mail is sent"
-msgstr "Afficher une notification à l'utilisateur lorsqu'un mail est envoyé"
+#, fuzzy, php-format
+msgctxt "autocomplete"
+msgid "Smart Structure \"%s\" not found"
+msgstr "attribut %s non trouvé"
 
-#, php-format
-msgid "Skip already added property '%s' in family '%s'"
-msgstr "Evitement de la propriété '%s' déjà ajoutée dans la famille '%s'"
+msgctxt "autocomplete"
+msgid "Smart Structure must be set"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1295,34 +972,21 @@ msgid "TE not activated"
 msgstr "TE non activé"
 
 #, php-format
-msgid "Table '%s' unknown !"
-msgstr "Table '%s' inconnue !"
-
-#, php-format
 msgid "Template [%s] not found"
 msgstr "Template [%s] non trouvé."
 
-msgctxt "ddui"
-msgid "The folders"
-msgstr ""
+#, fuzzy
+msgctxt "smart iuser"
+msgid "The 2 passwords are not the same"
+msgstr "Les deux mots de passes ne sont pas identiques"
 
-msgctxt "ddui"
-msgid "The trash"
-msgstr ""
+#, fuzzy
+msgctxt "smart iuser"
+msgid "The email address is not valid"
+msgstr "absence d'adresse couriel"
 
 msgid "Timer infinity date"
 msgstr "Date non définie"
-
-#. _COMMENT: Class.WProcess.php
-msgid "Twprocess_private"
-msgstr "vers privé"
-
-#. _COMMENT: Class.WProcess.php
-msgid "Twprocess_public"
-msgstr "vers public"
-
-msgid "Ui style"
-msgstr ""
 
 msgid "Unallocate aborded"
 msgstr "Suppression de l'affectation abandonnée"
@@ -1336,24 +1000,12 @@ msgid "Unallocated of %s %s: %s"
 msgstr "Suppression de l'affectation de %s %s : %s"
 
 #, php-format
-msgid "Unarchiving from %s"
-msgstr "Désarchivé depuis %s"
-
-#, php-format
 msgid "Unexpected transition error on workflow %s [%d] : %s"
 msgstr "Erreur de transition sur le cycle %s [%d] : %s"
 
 #, php-format
 msgid "Unknown logical name '%s' in attribute '%s'."
 msgstr "Nom logique '%s' inconnu dans l'attribut '%s'."
-
-#, php-format
-msgid "Unlabeled menu (%s)"
-msgstr "Menu sans label (%s)"
-
-#, php-format
-msgid "Unlabeled view (%s)"
-msgstr "Vue sans label (%s)"
 
 #, php-format
 msgid "Unsupported archive format '%s' for archive '%s'."
@@ -1367,27 +1019,21 @@ msgid "Update by importation"
 msgstr "Mise à jour par importation"
 
 msgctxt "HTTPAPI_V1"
-msgid "Update failed"
-msgstr ""
-
-msgctxt "HTTPAPI_V1"
 msgid "Update forbidden"
 msgstr ""
 
-#, php-format
-msgid "Update history done"
-msgstr "Mise à jour de l'historique effectuée"
-
-msgctxt "HTTPAPI_V1"
-msgid "Updated by HTTP API"
-msgstr ""
+#, fuzzy
+msgctxt "ank"
+msgid "Updated by API"
+msgstr "mise à jour par import"
 
 msgctxt "dcp:import"
 msgid "Updated values"
 msgstr "Valeurs mise à jour"
 
-msgid "User must be authenticate"
-msgstr "L'utilisateur doit être authentifié"
+msgctxt "authent"
+msgid "Username and/or password is incorrect"
+msgstr ""
 
 msgid "Utilisateur fixe"
 msgstr "Utilisateur fixe"
@@ -1411,14 +1057,6 @@ msgstr "WID : '%s' n'est pas un cycle"
 msgid "WID : workflow '%s' not found"
 msgstr "WID : cycle '%s' introuvable"
 
-msgid "WSH error mail recipients (comma-separated list of mail addresses)"
-msgstr ""
-"Destinataires des messages d'erreurs de WSH (liste d'adresses de courriel "
-"séparés par des virgules)"
-
-msgid "WSH error mail subject"
-msgstr "Sujet des messages d'erreurs de WSH"
-
 #, php-format
 msgid "Warning : %s"
 msgstr "Avertissement : %s"
@@ -1427,27 +1065,14 @@ msgctxt "dcp"
 msgid "Whoops, looks like something went wrong"
 msgstr "Aïe aïe aïe, on dirait que quelque chose s'est mal passé"
 
-msgid "XML Error: no 'family' attribute on <table/> node."
-msgstr "Erreur XML: pas d'attribut 'family' sur le noeud <table />"
-
-msgid "XML Error: no <database/> root node."
-msgstr "Erreur XML: pas de noeud racine <database />"
-
-msgid "XML Error: no property or attribute on <column/> node."
-msgstr "Erreur XML: pas de propriété ou d'attribut sur le noeud <column />"
-
-msgid "XML Error: no table defined."
-msgstr "Erreur XML: pas de table définie"
-
-msgid "XML Error: only one <database/> root node allowed."
-msgstr "Erreur XML: un seul noeud racine <database /> autorisé"
+#, fuzzy
+msgctxt "autocomplete"
+msgid "Workflow must be set"
+msgstr "Paramètres d'affichage"
 
 #, php-format
 msgid "XML Root node is not a '%s' node (root node is '%s')."
 msgstr "Le nœud XML racine n'est pas '%s' (le nœud racine est '%s')."
-
-msgid "XML config parsed OK !"
-msgstr "Configuration XML analysée OK !"
 
 #, php-format
 msgid "XML error %s at line %d"
@@ -1463,13 +1088,6 @@ msgstr "importation XML : Le fichier %s ne peut être crée"
 #, php-format
 msgid "Xml import file %s not found"
 msgstr "importation XML : fichier %s introuvable"
-
-msgid "Y"
-msgstr "O"
-
-#, php-format
-msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
-msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ - \"%s\""
 
 #, php-format
 msgid "Your password is not secure."
@@ -1499,23 +1117,6 @@ msgid "[%s] must be lower than %s"
 msgstr "[%s] doit être inférieur à %s"
 
 #, php-format
-msgid "[%s] must match /%s/"
-msgstr "[%s] doit correspondre à /%s/"
-
-#. _COMMENT: Doc (Class.Doc.php)
-#. _COMMENT: searchLabel key
-#. _COMMENT: types: all
-msgid "account attribute"
-msgstr "Attribut de compte"
-
-#, php-format
-msgid "action %s is not declared to be access in open mode"
-msgstr "L'action %s n'est pas déclarée comme étant accessible en mode ouvert"
-
-msgid "activity"
-msgstr "activité"
-
-#, php-format
 msgid "add %s for %s"
 msgstr "ajout %s pour %s"
 
@@ -1539,16 +1140,9 @@ msgstr "ajout valeurs par défaut pour %s à %s"
 msgid "add id [%d] "
 msgstr "ajout id [%d] "
 
-msgid "add inputs"
-msgstr "ajouter entrée"
-
 #, php-format
 msgid "add negative acl %s"
 msgstr "ajout droit négatif %s"
-
-#. _COMMENT: importSingleDocument (Class.ImportSingleDocument.php)
-msgid "added"
-msgstr "ajouté"
 
 msgid "affect auto lock"
 msgstr "auto-verrouillage"
@@ -1563,94 +1157,60 @@ msgid "affect no mail"
 msgstr "pas de courriel"
 
 #, php-format
-msgid "all columns are hiddens"
-msgstr "toutes les colonnes sont cachées"
-
-msgid "allocated"
-msgstr "affecté"
-
-#, php-format
 msgid "allocation for %s document"
 msgstr "affectation pour le document %s"
 
 msgid "already deleted"
 msgstr "déjà supprimé"
 
-msgid "anchor color"
-msgstr "couleur des liens"
-
-#. _COMMENT: DocSearch (Class.DocSearch.php)
-msgid "and"
-msgstr "et"
-
 #, php-format
 msgid "and add in %s folder "
 msgstr "et ajout dans dossier %s"
-
-#. _COMMENT: Dcp\Core\Wask (Class.Wask.php)
-msgid "answer"
-msgstr "Répondre"
-
-msgid "any families"
-msgstr "toutes familles"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "any value include"
-msgstr "aucune valeur n'est incluse"
-
-msgid "any values"
-msgstr "une des valeurs"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "any values include {right}"
-msgstr "{right} n'est pas inclus dans le document"
-
-msgid "application version"
-msgstr "version application"
 
 #, php-format
 msgid "apply method %s"
 msgstr "appel de la méthode %s"
 
-msgid "archieve status must be open to modify content"
-msgstr "Le statut de l'archive doit être ouvert pour y insérer des documents"
-
-#, php-format
-msgid "argument %s=>%s"
-msgstr "argument %s=>%s"
-
 msgid "assigned workflow is not alive"
 msgstr "Le cycle de vie associé n'est pas vivant"
 
-#, php-format
+#, fuzzy, php-format
+msgctxt "smart iuser"
 msgid "at least %d digits"
 msgstr "au moins %d chiffres"
 
-#, php-format
+#, fuzzy, php-format
+msgctxt "smart iuser"
 msgid "at least %d lowercase alpha characters"
 msgstr "au moins %d lettres minuscules"
 
-#, php-format
+#, fuzzy, php-format
+msgctxt "smart iuser"
 msgid "at least %d symbol characters"
 msgstr "au moins %d caractères spéciaux"
 
-#, php-format
+#, fuzzy, php-format
+msgctxt "smart iuser"
 msgid "at least %d uppercase alpha characters"
 msgstr "au moins %d lettres majuscules"
 
-#, php-format
+#, fuzzy
+msgctxt "smart iuser"
 msgid "at least one digit"
 msgstr "au moins un chiffre"
 
-#, php-format
+#, fuzzy
+msgctxt "smart iuser"
 msgid "at least one lowercase alpha character"
 msgstr "au moins une lettre minuscule"
 
-#, php-format
+#, fuzzy
+msgctxt "smart iuser"
 msgid "at least one symbol character"
 msgstr "au moins un caractère spécial"
 
-#, php-format
+#, fuzzy
+msgctxt "smart iuser"
 msgid "at least one uppercase alpha character"
 msgstr "au moins une lettre majuscule"
 
@@ -1684,10 +1244,6 @@ msgid "attribute %s is not a file attribute"
 msgstr "l'attribut %s n'est pas du type file"
 
 #, php-format
-msgid "attribute %s is not int a array"
-msgstr "l'attribut %s n'est pas dans un tableau"
-
-#, php-format
 msgid "attribute %s not found [%s]"
 msgstr "l'attribut %s n'a pas été trouvé [%s]"
 
@@ -1706,33 +1262,6 @@ msgid ""
 msgstr ""
 "changement d'état automatique issu du document %s\n"
 "%s"
-
-msgid "background color for table cells"
-msgstr "couleur de fond de cellules"
-
-msgid "background color or image"
-msgstr "image ou couleur de fond"
-
-msgid "background color or image in security mode"
-msgstr "image ou couleur de fond en mode sécurité"
-
-msgid "background image for bar"
-msgstr "image de fond pour les barres"
-
-msgid "background image for menu"
-msgstr "image de fond pour les menus"
-
-#, php-format
-msgid "basket of %s"
-msgstr "porte-documents de %s"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "begin by"
-msgstr "commence par"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "between"
-msgstr "entre"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -1759,10 +1288,6 @@ msgid ""
 msgstr ""
 "ne peut créer le répertoire %s\n"
 "Le répertoire père doit être créé au préalable"
-
-#, php-format
-msgid "cannot create document for family [%s]"
-msgstr "création de document impossible pour la famille [%s]"
 
 #, php-format
 msgid "cannot create from family [%s]"
@@ -1814,26 +1339,6 @@ msgstr "Ne peut étendre le coffre de fichiers : %s"
 #, php-format
 msgid "cannot extract archive %s: status : %s"
 msgstr "L'archive %s n'a pas pu être extraite: statut : %s"
-
-#, php-format
-msgid "cannot load xml %s layout file"
-msgstr "ne peut charger le fichier modèle XML %s"
-
-#, php-format
-msgid "cannot load xml layout file : %s"
-msgstr "Le modèle XML ne peut être chargé : %s"
-
-#, php-format
-msgid "cannot load xml template : %s"
-msgstr "Le modèle XML ne peut être chargé : %s"
-
-#, php-format
-msgid "cannot open %s layout file"
-msgstr "ne peut ouvrir le fichier template %s"
-
-#, php-format
-msgid "cannot open layout file : %s"
-msgstr "ne peut ouvrir le fichier de template : %s"
 
 msgid "cannot produce sql request"
 msgstr "ne peut produire la requête sql"
@@ -1905,13 +1410,6 @@ msgstr "écriture impossible : %s"
 msgid "cannot write log in %s"
 msgstr "ne peut écrire le log dans %s"
 
-msgid "cdate"
-msgstr "Date de création de la révision"
-
-#, php-format
-msgid "change %s"
-msgstr "modification %s"
-
 #, php-format
 msgid "change application tag to '%s'"
 msgstr "change la balise applicative  à '%s'"
@@ -1953,60 +1451,15 @@ msgid "change tagable parameter to '%s'"
 msgstr "Changement du paramètre 'tagable' en '%s'"
 
 #, php-format
-msgid "change version to %s"
-msgstr "changement vers la version %s"
-
-#, php-format
-msgid "choose inputs for %s"
-msgstr "choisir une valeur pour %s"
-
-msgid "clear inputs"
-msgstr "effacer entrée(s)"
-
-msgid "clear selected inputs"
-msgstr "effacer les entrées sélectionnées"
-
-msgid "clic to the ... button to link document correctly"
-msgstr "cliquer sur le bouton .. pour lié le document correctement"
-
-msgid "clic to the [...] button to link document correctly"
-msgstr "cliquer sur le bouton [...] pour lié le document correctement"
-
-msgid "client logo"
-msgstr "logo du client"
-
-msgid "client name"
-msgstr "nom du client"
-
-#, php-format
 msgid "collection %s not exists"
 msgstr "la collection %s n'existe pas"
 
-msgid "color picker"
-msgstr "choix de couleur"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "confidential"
-msgstr "confidentiel"
-
-#, php-format
 msgid "confidential document"
 msgstr "document confidentiel"
 
 #, php-format
 msgid "config file %s not found"
 msgstr "le fichier de configuration %s non trouvé"
-
-#, php-format
-msgid "conflict %s [%s]: referer=%s, modified=%s"
-msgstr "conflit %s [%s] : référence=%s, modification=%s"
-
-msgid "connection type"
-msgstr "type de connexion"
-
-#, php-format
-msgid "connexion to %s has failed"
-msgstr "la connexion vers %s a échoué"
 
 #, php-format
 msgid "constraint broken %s"
@@ -2017,17 +1470,6 @@ msgstr "Erreur de contrainte"
 
 msgid "containt of searches cannot be modified"
 msgstr "les contenus de recherches ne peuvent être modifiés"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "content file expression"
-msgstr "le contenu du fichier contient l'expression"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "content file word"
-msgstr "le contenu du fichier contient les mots"
-
-msgid "control :: user identifier is null"
-msgstr "control :: identifiant utilisateur est nul"
 
 #, php-format
 msgid "conversion %s in progress"
@@ -2046,52 +1488,12 @@ msgid "convertion from %s to %s family"
 msgstr "conversion de la famille %s vers la famille %s"
 
 #, php-format
-msgid "copy attribute %s from %s"
-msgstr "copie attribut %s à partir de  %s"
-
-#, php-format
 msgid "copy from document #%d -%s-"
 msgstr "copie à partir du document n°%d -%s-"
-
-msgid "core_guest_sessionttl"
-msgstr "Durée des sessions guest (en secondes)"
-
-msgid "core_layout_execute_recursion_limit"
-msgstr "Limite de récursion de la fonction Layout execute"
-
-msgid "core_session_byte_length"
-msgstr "Longueur des identifiants de session en octets (au moins 16 octets)"
-
-msgid "core_sessiongcprobability"
-msgstr ""
-"Probabilité de déclenchement du nettoyage des sessions non utilisée "
-"(exprimée en pourcentage par un nombre de 0 à 1)"
-
-msgid "core_sessionmaxage"
-msgstr ""
-"Temps maximal au bout duquel une session non utilisée est éligible à la "
-"suppression"
-
-msgid "core_sessionttl"
-msgstr "Durée des sessions (en secondes)"
-
-msgid "core_tmpdir_maxage"
-msgstr ""
-"Temps maximal (en jours) au bout duquel les fichiers et répertoires "
-"temporaires sont supprimés"
-
-msgid "core_tmpdoc_maxage"
-msgstr ""
-"Temps maximal (en jours) au bout duquel les documents temporaires sont "
-"supprimés"
 
 #, php-format
 msgid "create %s family %s"
 msgstr "création %s famille %s"
-
-#, php-format
-msgid "create a %s document"
-msgstr "créer un document %s"
 
 #, php-format
 msgid "create default folder (id [%d])\n"
@@ -2100,14 +1502,6 @@ msgstr "Création du dossier par défaut (id [%d])\n"
 #, php-format
 msgid "create directory %s\n"
 msgstr "créer le dossier %s\n"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "create doc"
-msgstr "Créer des documents de la famille"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "create doc manually"
-msgstr "Créer des documents manuellement"
 
 msgid "createdate"
 msgstr "date de création"
@@ -2124,34 +1518,11 @@ msgid "creation : workflow %s not exists"
 msgstr "création : cycle de vie %s n'existe pas"
 
 #, php-format
-msgctxt "CVDOC"
-msgid "creation view '%s' does not exists"
-msgstr "La vue de création '%s' n'existe pas"
-
-#, php-format
 msgid "csv file <%s> wroted"
 msgstr "fichier csv <%s> écrit"
 
-#, php-format
-msgid "current (<em>%s</em>)"
-msgstr "courant (<em>%s</em>)"
-
-msgid "current user cannot deactivate account"
-msgstr "L'utilisateur courant ne peut désactiver le compte"
-
 msgid "cycle family must be defined"
 msgstr "la famille cycle doit être renseignée"
-
-#, php-format
-msgid "data:document %s is not a family"
-msgstr "Le document %s n'est pas une famille"
-
-#, php-format
-msgid "data:family %s not alive"
-msgstr "La famille %s n'est pas vivante"
-
-msgid "default delay before expiration of password in day"
-msgstr "délai d'expiration du mot de passe par défaut (en jours)"
 
 msgid "default folder"
 msgstr "dossier par défaut"
@@ -2160,50 +1531,12 @@ msgstr "dossier par défaut"
 msgid "default folder already set. Auto ignored"
 msgstr "dossier par défaut déjà présent. paramètre \"auto\" ignoré."
 
-msgid "default start application"
-msgstr "Application lancée au démarrage"
-
-msgid "default value"
-msgstr "valeur par défaut"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "delete"
-msgstr "supprimer"
-
 #, php-format
 msgid "delete %s for %s"
 msgstr "suppression %s pour %s"
 
-#, php-format
-msgid "delete by action %s/%s from %s"
-msgstr "supprimé avec l'action %s/%s depuis %s"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "delete document"
-msgstr "supprimer le document"
-
-#, php-format
-msgid "destroyed by archive purge from %s"
-msgstr "Détruit par la purge de l'archive %s"
-
 msgid "doctitle"
 msgstr "titre"
-
-#, php-format
-msgid "document %d deleted"
-msgstr "Le document %d est supprimé"
-
-#, php-format
-msgid "document %d inserted"
-msgstr "Le document %d est inséré"
-
-#, php-format
-msgid "document %d moved"
-msgstr "Le document %d est déplacé"
-
-#, php-format
-msgid "document %d unlinked"
-msgstr "Le document %d est enlevé"
 
 #, php-format
 msgid "document %s : set icon to '%s'"
@@ -2220,10 +1553,6 @@ msgstr "document %s [%d] est étrange"
 #, php-format
 msgid "document %s is not a folder"
 msgstr "le document %s n'est pas un dossier"
-
-#, php-format
-msgid "document %s not exist"
-msgstr "Le document %s n'existe pas"
 
 msgid "document already revised"
 msgstr "document déjà révisé"
@@ -2249,47 +1578,14 @@ msgid "document not exists yet"
 msgstr "le document n'existe pas encore"
 
 #, php-format
-msgid "document not initialized"
-msgstr "Le document n'est pas initialisé"
-
-msgid "document not referenced"
-msgstr "document non référencé"
-
-#, php-format
-msgid "document not set"
-msgstr "Document non initialisé"
-
-#, php-format
 msgid "document too big (%dKo): no highlight"
 msgstr "Document trop volumineux (%dKo): pas de mise en évidence"
-
-msgid "duration for log conservation (in days)"
-msgstr "durée de conservation des logs (en jours)"
 
 msgid "dynacase cron try execute"
 msgstr "Dynacase cron essai d'exécution"
 
-msgid "dynamic control"
-msgstr "contrôle dynamique"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "edit"
-msgstr "Modifier"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "edit document"
-msgstr " éditer le document"
-
 msgid "electronic messages cannot be modified"
 msgstr "les courriels ne peuvent être modifiés"
-
-#, php-format
-msgid "elinkEncode::attribute not found %s in %s : %s"
-msgstr "Impossible de trouver l'attribut %s dans %s: %s"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "equal"
-msgstr "égal"
 
 #, php-format
 msgid ""
@@ -2307,12 +1603,6 @@ msgstr "Le server LDAP n'a pas pu être contacté"
 msgid "errldaporginit"
 msgstr "Le server LDAP n'a pas pu être contacté"
 
-msgid "error color"
-msgstr "couleur messages d'erreur"
-
-msgid "error in filename"
-msgstr "erreur dans le nom de fichier"
-
 #, php-format
 msgid "error in import keys : %s"
 msgstr "erreur dans la format des clefs d'importation : %s"
@@ -2328,14 +1618,6 @@ msgstr "erreur lors de l'envoi de la conversion texte"
 msgid "error storing configuration property (%s, %s, %s)"
 msgstr ""
 "Erreur lors de l'enregistrement des propriétés de configuration (%s, %s, %s)"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "execute"
-msgstr "execute"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "execute search"
-msgstr "executer une recheche"
 
 #, php-format
 msgid "execute timer %s (level %d) : %s"
@@ -2372,10 +1654,6 @@ msgid "family must be defined"
 msgstr "la famille doit être précisée"
 
 #, php-format
-msgid "fdl_pubedit error: family %s not found"
-msgstr "fdl_pubedit erreur: Famille %s introuvable"
-
-#, php-format
 msgid "file %d"
 msgstr "fichier %d"
 
@@ -2399,28 +1677,9 @@ msgstr "fichier %s non trouvé."
 msgid "file status"
 msgstr "status du fichier"
 
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "file {left} contain the expression {right}"
-msgstr "le fichier {left} contient l'expression {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "file {left} contain the word {right}"
-msgstr "le fichier {left} contient le mot {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "filename or type include"
-msgstr "nom du fichier ou type du fichier contient"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "filename or type not include"
-msgstr "le nom du fichier ou son type ne contient pas"
-
 #, php-format
 msgid "find %s more than one, created aborded\n"
 msgstr "%s trouvé plus d'une fois, création abandonnée\n"
-
-msgid "fixstate"
-msgstr "état"
 
 msgid "folder"
 msgstr "dossier"
@@ -2433,25 +1692,9 @@ msgstr "le dossier est verrouillé : son contenu ne peut pas être modifié"
 msgid "folder/search %s not found"
 msgstr "Dossier/Recherche %s introuvable"
 
-msgid "font size"
-msgstr "taille de la police"
-
-msgid "frame border size"
-msgstr "taille de la bordure de la fenêtre"
-
-msgid "frame size"
-msgstr "taille de la fenêtre"
-
-msgid "french"
-msgstr "Français"
-
 #, php-format
 msgid "function '%s' declared in %s is not found"
 msgstr "fonction '%s' déclaré dans le %s est introuvable"
-
-#, php-format
-msgid "function [%s] not exists"
-msgstr "la fonction [%s] n'existe pas"
 
 #, php-format
 msgid "generate version '%s'"
@@ -2461,60 +1704,20 @@ msgid "generating file"
 msgstr "génération du fichier en cours"
 
 #, php-format
-msgid "group #%d does not exist"
-msgstr "le groupe n°%d n'existe pas"
-
-#, php-format
 msgid "group %d does not exist"
 msgstr "le groupe n°%d n'existe pas"
 
 msgid "group cannot be revived"
 msgstr "Un groupe ne peut être restauré"
 
-msgid "group has not identificator"
-msgstr "Le groupe n'a pas d'identificateur"
-
-#, php-format
-msgid "help for %s"
-msgstr "Aide pour %s"
-
-msgid "hidden"
-msgstr "caché"
-
-msgid "highlight background color"
-msgstr "couleur de fond pour la mise en évidence"
-
 #, php-format
 msgid "icon already set. No update allowed"
 msgstr "icône déjà affectée. Pas de mise à jour possible."
 
-msgid "icon size"
-msgstr "taille des icônes"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "icreate"
-msgstr "Créer manuellement"
-
-msgid "id allocated"
-msgstr "identifiant utilisateur affecté"
-
-msgid "id locked"
-msgstr "identifiant verrou"
-
-msgid "id owner"
-msgstr "identifiant propriétaire"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "identificator equal"
-msgstr "identificateur égal"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "identificator not equal"
-msgstr "l'identifiant est différent"
-
-#. _COMMENT: importSingleDocument (Class.ImportSingleDocument.php)
-msgid "ignored"
-msgstr "ignoré"
+#, fuzzy
+msgctxt "smart report"
+msgid "identifier"
+msgstr "Pas d'identificateurs"
 
 #, php-format
 msgid "import file %s not found"
@@ -2528,22 +1731,11 @@ msgid "impossible conversion"
 msgstr "conversion impossible"
 
 #, php-format
-msgid "in domain %s"
-msgstr "dans le domain %s"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "include"
-msgstr "contient"
-
-#, php-format
 msgid "incorrect conversion HTML to ODT %s"
 msgstr "erreur de conversion HTML vers ODT %s"
 
 msgid "information access deny"
 msgstr "Information non accessible"
-
-msgid "input color bg"
-msgstr "couleur des champs de saisie"
 
 #, php-format
 msgid "invalid freestate document %s"
@@ -2551,37 +1743,6 @@ msgstr "état libre %s invalide"
 
 msgid "invalid regular expression"
 msgstr "expression rationnelle invalide"
-
-#, php-format
-msgid "invalid syntax for [%s] for enum attribute [%s]"
-msgstr "erreur de syntaxe pour l'attribut énuméré [%s] [%s]"
-
-msgid "inverse video background color"
-msgstr "couleur de fond en inverse vidéo"
-
-msgid "inverse video color text"
-msgstr "couleur du texte en inverse vidéo"
-
-msgid "invisible"
-msgstr "invisible"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "is empty"
-msgstr "est vide"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "is not empty"
-msgstr "n'est pas vide"
-
-msgid "language"
-msgstr "langue"
-
-msgid "last modification date"
-msgstr "date de dernière modification"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "last or first name include"
-msgstr "le nom ou le prénom contient"
 
 #, php-format
 msgid "local config for date not found"
@@ -2594,9 +1755,6 @@ msgstr "Configuration du timestamp local introuvable"
 msgid "locked"
 msgstr "verrouillé"
 
-msgid "locked document of "
-msgstr "documents verrouillés par "
-
 #, php-format
 msgid "log file %s not writable"
 msgstr "Le fichier de log %s n'est pas être modifié"
@@ -2607,51 +1765,25 @@ msgstr "le login ne doit pas être vide"
 msgid "login yet use"
 msgstr "login déjà utilisé"
 
-msgctxt "mask"
-msgid "mandatory"
-msgstr "Obligatoire"
-
 #, php-format
 msgid "max revision '%d'"
 msgstr "max révision '%d'"
 
-msgid "memory max for PHP in Mo"
-msgstr "valeur minimale de memory_limit (en Mo)"
+#, fuzzy
+msgid "mdate"
+msgstr "date"
 
 #, php-format
 msgid "method %s not found"
 msgstr "méthode %s non trouvée"
 
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "modify"
-msgstr "Contenu"
-
 #, php-format
 msgid "modify %s family"
 msgstr "modification de la famille %s"
 
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "modify acl"
-msgstr "Modifier les droits"
-
-#, php-format
-msgid "modify document"
-msgstr "Modifier le document"
-
 #, php-format
 msgid "modify file %s"
 msgstr "modification du fichier %s"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "modify folder"
-msgstr "modifier le contenu du dossier"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "modifyacl"
-msgstr "modifier les droits"
-
-msgid "mot of the day"
-msgstr "Mot Of The Day"
 
 msgid "multiple document"
 msgstr "document multiple"
@@ -2664,27 +1796,13 @@ msgstr ""
 "Le nom [%s] est invalide : Le nom doit commencer par une lettre suivi de "
 "zéro ou plusieurs lettres, chiffres, tiret \"-\" et trait-bas \"_\""
 
-msgid "need answer"
-msgstr "nécessite une réponse"
-
 #, php-format
 msgid "need privilege delete to restore %s"
 msgstr "Le privilège delete est nécessaire pour restaurer %s"
 
 #, php-format
-msgid "need to select family"
-msgstr "Vous devez sélectionner une famille"
-
-msgid "need to select the document with the list"
-msgstr "Vous devez sélectionner le document dans la liste proposée"
-
-#, php-format
 msgid "need to select workflow"
 msgstr "le cycle doit être sélectionné"
-
-#, php-format
-msgid "new %s"
-msgstr "nouvelle %s"
 
 #, php-format
 msgid "new column order %s"
@@ -2694,22 +1812,9 @@ msgstr "nouvel ordre des colonnes %s"
 msgid "new import keys : %s"
 msgstr "nouvelles clefs d'importation : %s"
 
-msgid "no access control"
-msgstr "pas de contrôle d'accès"
-
-msgid "no allocate"
-msgstr "pas d'affectation"
-
-msgid "no available persons found"
-msgstr "pas de personnes valides trouvées"
-
 #, php-format
 msgid "no change icon : document %s not found"
 msgstr "pas de changement d'icône : document %s pas trouvé"
-
-#, php-format
-msgid "no columns specified"
-msgstr "pas de colonnes définies"
 
 #, php-format
 msgid "no compatible type with operator %s"
@@ -2725,8 +1830,10 @@ msgstr "Tous les coffres de fichiers sont saturés"
 msgid "no export folder specified"
 msgstr "pas de dossier d'export défini"
 
-msgid "no family"
-msgstr "pas de famille"
+#, fuzzy
+msgctxt "sde"
+msgid "no export folder specified"
+msgstr "pas de dossier d'export défini"
 
 msgid "no file"
 msgstr "pas de fichier"
@@ -2734,32 +1841,16 @@ msgstr "pas de fichier"
 msgid "no filename"
 msgstr "pas de fichier"
 
-msgid "no files"
-msgstr "pas de fichier"
-
-msgid "no folder"
-msgstr "pas de dossier"
-
 msgid "no freedom DB access"
 msgstr "pas d'accès à la base de données DYNACASE"
-
-msgid "no image"
-msgstr "pas d'image"
 
 #, php-format
 msgid "no level 0 specified in timer %s [%d]"
 msgstr "pas de niveau 0 spécifié dans le minuteur %s [%d]"
 
-msgid "no message : post-it creation aborted"
-msgstr "pas de message : création de post-it abandonné"
-
 #, php-format
 msgid "no operator detected"
 msgstr "pas d'opérateur détecté"
-
-#, php-format
-msgid "no permission to modify this attribute %s"
-msgstr "vous n'avez pas la permission de modifier cet attribut : %s"
 
 #, php-format
 msgid "no privilege %s for %s [%d]"
@@ -2770,25 +1861,8 @@ msgid "no privilege %s for document with id %d"
 msgstr "Pas de privilège %s pour le document %d"
 
 #, php-format
-msgid "no privilege to create this kind (%d) of document"
-msgstr "vous n'avez pas la permission de créer ce type (%d) de document "
-
-#, php-format
-msgid "no privilege view for %d"
-msgstr "Pas de privilège voir pour %d"
-
-#, php-format
 msgid "no processes specified in timer %s [%d]"
 msgstr "pas de processus spécifié pour le minuteur %s [%d]"
-
-msgid "no referer url found"
-msgstr "pas d'URL reférence trouvée"
-
-msgid "no revisable"
-msgstr "non révisable"
-
-msgid "no state"
-msgstr "pas d'état"
 
 msgid "no state specified"
 msgstr "pas d'état spécifié"
@@ -2799,18 +1873,11 @@ msgstr "Pas d'identificateur de tâche trouvé"
 msgid "no user tag specified"
 msgstr "pas d'étiquette utilisateur spécifiée"
 
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "no value include"
-msgstr "aucune valeur contient"
-
 msgid "no vault directory found"
 msgstr "Pas de système de fichier trouvé"
 
 msgid "no vault file system found"
 msgstr "Pas de système de fichier trouvé"
-
-msgid "no view control"
-msgstr "pas de contrôle de vues"
 
 #, php-format
 msgid "no workflow for this document"
@@ -2820,24 +1887,18 @@ msgstr "pas de cycle de vie pour ce document"
 msgid "none families are described to be used as recipient"
 msgstr "Aucune famille n'est déclarée utilisable comme destinataire"
 
+#, fuzzy
+msgctxt "smart mail"
+msgid "none smart structure are described to be used as recipient"
+msgstr "Aucune famille n'est déclarée utilisable comme destinataire"
+
 #, php-format
 msgid "not a freestate document %s"
 msgstr "ce document n'est pas un état libre : %s"
 
-msgid "not added"
-msgstr "pas ajouté"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "not equal"
-msgstr "pas égal"
-
 #, php-format
 msgid "not in XML format"
 msgstr "format XML non reconnu "
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "not include"
-msgstr "ne contient pas"
 
 msgid "not perm for admin"
 msgstr "pas de permission pour admin"
@@ -2847,52 +1908,8 @@ msgid "nothing to export. Do export before"
 msgstr "Rien à exporter. Faire l'exportation avant"
 
 #, php-format
-msgid "number of waiting answers %d"
-msgstr "Nombre de réponses en attente : %d"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "one id equal"
-msgstr "un des identifiants égal"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "one of the titles include"
-msgstr "un des titres contient"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "one of the titles {left} include {right}"
-msgstr "un des titres {left} contient {right}"
-
-#. _COMMENT: Dcp\Core\DetailSearch (Class.DetailSearch.php)
-msgid "one value equal"
-msgstr "une des valeurs égale"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "one value include"
-msgstr "une des valeurs contient"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "one value of {left} include {right}"
-msgstr "une des valeurs de {left} contient {right}"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "open"
-msgstr "ouvrir"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "open folder"
-msgstr "Ouvrir le dossier"
-
-#, php-format
 msgid "operator [%s] not allowed"
 msgstr "l'opérateur {%s] n'est pas autorisé"
-
-msgctxt "mask"
-msgid "optional"
-msgstr "Optionnel"
-
-#. _COMMENT: DocSearch (Class.DocSearch.php)
-msgid "or"
-msgstr "ou"
 
 msgid "owner"
 msgstr "identifiant propriétaire"
@@ -2913,58 +1930,13 @@ msgstr "erreur de parenthésage : %d gauche, %d droite"
 msgid "parse error config file %s : %s"
 msgstr "Erreur de parsing dans le fichier de configuration %s : %s"
 
-msgid "passwords must not be empty"
-msgstr "Le mot de passe ne doît pas être vide"
-
 #, php-format
 msgid "php file %s needed for request not found"
 msgstr "le fichier PHP %s nécessaire à la requête n'a pas pu être trouvé"
 
-msgid "plug inserted in footer"
-msgstr "reférence au plug du footer"
-
 #, php-format
 msgid "possible incorrect conversion HTML to ODT %s: %s"
 msgstr "Possible erreur de conversion HTML vers ODT %s: %s"
-
-#, php-format
-msgid "postit of %s"
-msgstr "post-it de %s"
-
-#, php-format
-msgid "process %s"
-msgstr "traitement %s"
-
-#, php-format
-msgid "process addValue for %d documents"
-msgstr "Traitement ajout de valeur pour %d documents"
-
-#, php-format
-msgid "process history for %d documents"
-msgstr "Traitement de l'historique pour %d documents"
-
-#, php-format
-msgid "process removeValue for %d documents"
-msgstr "Traitement suppression de valeur pour %d documents"
-
-#, php-format
-msgid "process replaceValue for %d documents"
-msgstr "Traitement remplacement de valeur pour %d documents"
-
-#, php-format
-msgid "process revision done"
-msgstr "traitement des révisions effectué"
-
-#, php-format
-msgid "process revision for %d documents"
-msgstr "traitement des révisions pour %d documents"
-
-#, php-format
-msgid "process setValue for %d documents"
-msgstr "traitement d'affectation de valeur pour %d documents"
-
-msgid "produce link for"
-msgstr "produit le lien pour"
 
 #, php-format
 msgid "profil id unknow %s"
@@ -2974,152 +1946,8 @@ msgstr "profil inconnu %s"
 msgid "profil id unkonow %s"
 msgstr "identificateur de profil inconnu '%s'"
 
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_allocated"
-msgstr "utilisateur alloué"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_atags"
-msgstr "tag applicatfs"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_cdate"
-msgstr "date de création de la révision"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_classname"
-msgstr "nom de la classe"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_comment"
-msgstr "commentaire"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_confidential"
-msgstr "confidentialité"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_cvid"
-msgstr "identifiant du contrôle de vue"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_doctype"
-msgstr "type de document"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_domainid"
-msgstr "Identifiant du domaine"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_dprofid"
-msgstr "identifiant du template de profil"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_fromid"
-msgstr "famille"
-
-#. _COMMENT: Doc (Class.Doc.php)
 msgid "prop_icon"
 msgstr "icône"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_id"
-msgstr "identificateur"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_initid"
-msgstr "identificateur initial"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_ldapdn"
-msgstr "chemin ldap"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_lmodify"
-msgstr "tag indiquant la modification"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_lockdomainid"
-msgstr "Identifiant du domaine du verrou"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_locked"
-msgstr "propriétaire du verrou"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_name"
-msgstr "référence logique"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_owner"
-msgstr "propriétaire"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_postitid"
-msgstr "identifiants des notes"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_prelid"
-msgstr "dossier primaire"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_profid"
-msgstr "profil"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_revdate"
-msgstr "date de modification"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_revision"
-msgstr "révision"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_state"
-msgstr "état"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_svalues"
-msgstr "une des valeurs"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_title"
-msgstr "titre"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_usefor"
-msgstr "tag utilisé pour"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_version"
-msgstr "version"
-
-#. _COMMENT: Doc (Class.Doc.php)
-msgid "prop_wid"
-msgstr "cycle de vie"
-
-#, php-format
-msgid "query %s has failed"
-msgstr "requête %s a échouée"
-
-msgid "read disabled"
-msgstr "statique"
-
-msgid "read only"
-msgstr "lecture seule"
-
-msgid "read write"
-msgstr "lecture écriture"
-
-msgid "real value to set"
-msgstr "valeur à utiliser"
-
-msgid "realm name for http authenticate"
-msgstr "nom du royaume pour authentification HTTP"
-
-#, php-format
-msgid "refreshing %s"
-msgstr "actualisation %s"
 
 #, php-format
 msgid "regeneration of file template %s"
@@ -3140,16 +1968,9 @@ msgstr "état supprimé : %s"
 msgid "report:docid"
 msgstr "id"
 
-msgid "request not found"
-msgstr "requête non trouvée"
-
 #, php-format
 msgid "reset profil %s"
 msgstr "réinitialisation du profil %s"
-
-#, php-format
-msgid "reset version"
-msgstr "réinitialisation de la version"
 
 msgid "restore document"
 msgstr "restaurer le document"
@@ -3161,17 +1982,8 @@ msgstr "Résultat de l'importation %s"
 msgid "retry file conversion"
 msgstr "retenter la conversion du fichier"
 
-msgid "revdate"
-msgstr "date de modification"
-
 msgid "revision"
 msgstr "révision"
-
-msgid "revision date"
-msgstr "date de révision"
-
-msgid "revision of document"
-msgstr "Révision du document"
 
 msgid "revival document"
 msgstr "restauration du document"
@@ -3187,10 +1999,6 @@ msgstr "Le role ne peut pas être ressuscité"
 msgid "root for %s"
 msgstr "racine pour %s"
 
-#, php-format
-msgid "roweditzone syntax %s is invalid"
-msgstr "La syntaxe %s est invalide"
-
 msgid "save document"
 msgstr "sauvegarde de document"
 
@@ -3198,23 +2006,8 @@ msgid "search"
 msgstr "recherche"
 
 #, php-format
-msgid "search %s"
-msgstr "recherche %s"
-
-#, php-format
 msgid "search join syntax error : %s"
 msgstr "Erreur de syntaxs lors d'une jointure de recherche : %s"
-
-msgid "second background color"
-msgstr "couleur secondaire pour le fond"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "send"
-msgstr "envoyer"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "send document"
-msgstr "envoyer le document"
 
 #, php-format
 msgid "send mail %s"
@@ -3227,9 +2020,6 @@ msgstr "envoi courriel %s avec le modèle %s"
 #, php-format
 msgid "send mail with template %s [%d]"
 msgstr "envoi courriel avec le modèle %s [%d]"
-
-msgid "send search"
-msgstr "Lancer la recherche"
 
 #, php-format
 msgid "sendmailbcc %s"
@@ -3260,10 +2050,6 @@ msgid "set doctype to '%s'"
 msgstr "affecter le doctype à '%s'"
 
 #, php-format
-msgid "set for %s, unset for %s"
-msgstr "cocher pour %s, décocher pour %s"
-
-#, php-format
 msgid "set icon to '%s'"
 msgstr "affecte l'icône à '%s'"
 
@@ -3279,33 +2065,40 @@ msgstr "reparamétrage du profil %s"
 msgid "set special characteristics to '%s'"
 msgstr "affecte la caractéristique spéciale à '%s'"
 
-msgid "setWaskAnswer::invalid parameters"
-msgstr "setWaskAnswer:: paramètres invalides"
-
 #, php-format
 msgid "similar document %s found. keep similar"
 msgstr "document similaire à %s a été trouve. L'original est conservé"
 
-msgid "society style"
-msgstr "style société"
+#, fuzzy, php-format
+msgctxt "smart mail"
+msgid ""
+"smart structure %s does not implement IMailRecipent - missing getMail method"
+msgstr ""
+"La famille %s n'implémente pas IMailRecipient - il manque la méthode getMail"
 
-msgid "specific control"
-msgstr "Contrôle dédié"
+#, fuzzy, php-format
+msgctxt "smart mail"
+msgid ""
+"smart structure %s does not implement IMailRecipent - missing "
+"getMailAttribute method"
+msgstr ""
+"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"getMailAttribute"
+
+#, fuzzy, php-format
+msgctxt "smart mail"
+msgid ""
+"smart structure %s does not implement IMailRecipient - missing getMailTitle "
+"method"
+msgstr ""
+"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"getMailTitle"
 
 msgid "state"
 msgstr "état"
 
-msgid "static array"
-msgstr "tableau statique"
-
 msgid "step"
 msgstr "étape"
-
-msgid "stop on sql error"
-msgstr "Arrêt lors d'une erreur sql"
-
-msgid "suppression date"
-msgstr "date de suppression"
 
 msgid ""
 "system id already set in database\n"
@@ -3314,37 +2107,9 @@ msgstr ""
 "L'identifiant est déjà utilisé\n"
 "Ce type de document ne peut pas être dupliqué"
 
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "system identifiant equal"
-msgstr "l'identifiant système est égal"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "system identifier not equal"
-msgstr "l'identifiant système n'est pas égal"
-
-#. _COMMENT: CORE_init.php
-#. _COMMENT: searchLabel key
-#. _COMMENT: types: all
-msgid "tag"
-msgstr "tag"
-
-#, php-format
-msgid "target folder [%s] is not a folder"
-msgstr "le dossier cible [%s] n'est pas un dossier"
-
-#, php-format
-msgid "target folder [%s] is not set"
-msgstr "le dossier cible [%s] n'est pas initialisé"
-
 #, php-format
 msgid "template file (layout [%s]) not found"
 msgstr "Fichier modèle (zone [%s]) non trouvé"
-
-msgid "text color"
-msgstr "couleur du texte"
-
-msgid "the 2 passwords are not the same"
-msgstr "Les deux mots de passes ne sont pas identiques"
 
 #, php-format
 msgid "the date %s is in the past: today is %s"
@@ -3354,24 +2119,8 @@ msgid "the date syntax must be like : AAAA-MM-DD"
 msgstr "la date doit être de la forme : AAAA-MM-JJ"
 
 #, php-format
-msgid "the document id [%s] for this attribute is not valid"
-msgstr "l'id du  document [%s] pour cet attribut n'est pas valide"
-
-msgid "the document id is empty"
-msgstr "l'id de document est vide"
-
-#, php-format
 msgid "the document of %s family cannot be revised"
 msgstr "lee documents de la famille %s ne peuvent être révisés"
-
-msgid "the document title is empty"
-msgstr "le titre du document est vide"
-
-msgid "the email must containt the @ character"
-msgstr "L'email doit contenir le caractère @"
-
-msgid "the email syntax  is like : john.doe@anywhere.org"
-msgstr "La syntaxe d'un email est de la forme : jean.martin@quelquepart.org"
 
 #, php-format
 msgid "the external pluggin file %s cannot be read"
@@ -3389,13 +2138,6 @@ msgid "the pluggins function description '%s' is not conform for %s attribut"
 msgstr ""
 "La description de la fonction externe '%s' est incorrect pour l'attribut %s"
 
-#, php-format
-msgid "the title of document [%s] is not conform to original [%s]"
-msgstr "le titre du document [%s] n'est pas conforme à l'original [%s]"
-
-msgid "this groups must be refreshed"
-msgstr "Ce groupe doit être actualisé"
-
 msgid "this login exists"
 msgstr "Cet identifiant de connexion existe"
 
@@ -3405,28 +2147,12 @@ msgstr "Cet utilisateur système n epeut être supprimé"
 msgid "timer already set"
 msgstr "minuteur déjà attaché"
 
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "title include"
-msgstr "le titre contient"
-
-msgid "to be add"
-msgstr "à ajouter"
-
 #, php-format
 msgid "to be update %s [%d] "
 msgstr "à mettre à jour %s [%d] "
 
-#. _COMMENT: Doc (Class.Doc.php)
-#. _COMMENT: searchLabel key
-#. _COMMENT: types: timestamp
-msgid "today"
-msgstr "aujourd'hui"
-
 msgid "tomorrow"
 msgstr "demain"
-
-msgid "top url to find help documentation"
-msgstr "url pour la documentation en ligne"
 
 #, php-format
 msgid "try add acl %s"
@@ -3450,9 +2176,6 @@ msgstr ""
 "unattachTimer : le paramètre minuteur n'est pas un document de la famille "
 "TIMER"
 
-msgid "uncomplete request"
-msgstr "requête incomplète"
-
 msgid "unit:GB"
 msgstr "Go"
 
@@ -3461,11 +2184,6 @@ msgstr "Mo"
 
 msgid "unit:TB"
 msgstr "To"
-
-msgid "unit:byte"
-msgid_plural "unit:bytes"
-msgstr[0] "octet"
-msgstr[1] "octets"
 
 msgid "unit:kB"
 msgstr "ko"
@@ -3485,14 +2203,6 @@ msgstr "attribut inconnu"
 msgid "unknow attribute %s"
 msgstr "attribut inconnu %s"
 
-#, php-format
-msgid "unknow attribute %s (family %s)"
-msgstr "attribut inconnu %s (famille  %s)"
-
-#, php-format
-msgid "unknow document reference '%s'"
-msgstr "référence de document inconnu '%s'"
-
 msgid "unknow operator"
 msgstr "opérateur inconnu"
 
@@ -3501,27 +2211,12 @@ msgid "unknow privilege %s"
 msgstr "privilège inconnu : %s"
 
 #, php-format
-msgid "unknow set for attribute %s %s"
-msgstr "Attribut structurant inconnu %s %s"
-
-#, php-format
 msgid "unknown document id %s"
 msgstr "Document id %s inconnu"
 
 #, php-format
 msgid "unknown file state %s"
 msgstr "status de la conversion inconnu %s"
-
-msgid "unlimited revisions"
-msgstr "révisions illimités"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "unlock"
-msgstr "déverrouiller"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "unlock unowner locked doc"
-msgstr "déverrouiller autres verrous"
 
 msgid "unreferenced document"
 msgstr "document non référencé"
@@ -3563,22 +2258,9 @@ msgstr "mise à jour id [%d] "
 msgid "update of %s in progress"
 msgstr "mise à jour de %s en cours"
 
-#. _COMMENT: importSingleDocument (Class.ImportSingleDocument.php)
-msgid "updated"
-msgstr "mis à jour"
-
 #, php-format
 msgid "updated by import"
 msgstr "mise à jour par import"
-
-msgid "url to reach http server index"
-msgstr "URL pour atteindre l'index du serveur web dynacase"
-
-msgid "url to reach http server index in open mode"
-msgstr "URL pour atteindre le serveur on authentification open"
-
-msgid "use dynacase user management"
-msgstr "utiliser la gestion d'utilisateur de dynacase"
 
 #, php-format
 msgid "user #%d does not exist"
@@ -3588,14 +2270,10 @@ msgstr "l'utilisateur n°%d n'existe pas"
 msgid "user %d does not exist"
 msgstr "l'utilisateur n°%d n'existe pas"
 
+#, fuzzy
+msgctxt "smart iuser"
 msgid "user cannot be revived"
 msgstr "L'utilisateur ne peut pas être ressuscité"
-
-msgid "user has not identificator"
-msgstr "L'utilisateur n'a pas d'identificateur"
-
-msgid "user is deactivated"
-msgstr "l'utilisateur est désactivé"
 
 msgid "user not know"
 msgstr "utilisateur inconnu"
@@ -3638,66 +2316,17 @@ msgstr "erreur fichier Vault"
 msgid "vault file is not initialized"
 msgstr "fichier du coffre non initialisé"
 
-msgid "version identificator"
-msgstr "identificateur de version"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "view"
-msgstr "voir"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "view acl"
-msgstr "voir les droits"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "view answers"
-msgstr "Voir les réponses"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "view confidential"
-msgstr "voir document confidentiel"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "view document"
-msgstr "voir le document"
-
 #, php-format
 msgid "viewDoc did not returned a valid file"
 msgstr "viewDoc n'a pas retourné de fichier valide"
 
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "viewacl"
-msgstr "voir les droits"
-
-#, php-format
-msgid "waiting : document not set"
-msgstr "en attente : document non affecté"
-
 msgid "waiting conversion file"
 msgstr "en attente de conversion"
 
-#. _COMMENT: importDocumentDescription (Class.ImportDescription.php)
-msgid "warning"
-msgstr "Avertissement"
-
-#. _COMMENT: DocCtrl (Class.DocCtrl.php)
-msgid "wask"
-msgstr "Voir les réponses"
-
-#, php-format
+#, fuzzy
+msgctxt "smart iuser"
 msgid "with these conditions"
 msgstr "avec les conditions suivantes"
-
-#. _COMMENT: Class.WProcess.php
-msgid "wprocess_private"
-msgstr "privé"
-
-#. _COMMENT: Class.WProcess.php
-msgid "wprocess_qualified"
-msgstr "qualifié"
-
-msgid "write only"
-msgstr "écriture seule"
 
 msgid "yesterday"
 msgstr "hier"
@@ -3713,98 +2342,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de document"
 #, php-format
 msgid "you cannot create this kind [%s] of folder"
 msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} begin by {right}"
-msgstr "{left} commence par {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} equal {right}"
-msgstr "{left} est égal à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} filename or type include {right}"
-msgstr "le nom du fichier {left} ou son type contient {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} filename or type not include {right}"
-msgstr "le nom du fichier {left} ou son type ne contient pas {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} greater or equal to {right}"
-msgstr "{left} est supérieur ou égal à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} greater than {right}"
-msgstr "{left} est supérieur à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} identifier equal {right}"
-msgstr "l'identificateur {left} est égal à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} identifier not equal {right}"
-msgstr "l'identifiant {left} est différent de {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} include no value of {right}"
-msgstr "aucunes des valeurs de {left} n'inclut {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} include {right}"
-msgstr "{left} contient {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} is between {min} and {max}"
-msgstr "{left] est compris entre {min} et {max}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} is not empty"
-msgstr "{left} n'est pas vide"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} is not equal {right}"
-msgstr "{left} est différent de {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} is null"
-msgstr "{left} est vide"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} last or first name include {right}"
-msgstr "le prénom ou le nom de {left} conteint {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} lesser or equal to {right}"
-msgstr "{left} est inférieur ou égal à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} lesser than {right}"
-msgstr "{left} est inférieur à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} not include {right}"
-msgstr "{left} ne contient pas {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} one id equal {right}"
-msgstr "L'identifiant {left} est égale à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} one value equal {right}"
-msgstr "{left} une des valeurs est égal à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} system identifier equal {right}"
-msgstr "l'identifiant système {left} est égal à {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} system identifier not equal {right}"
-msgstr "l'identifiant système {left} est différent de {right}"
-
-#. _COMMENT: DocCollection (Class.DocCollection.php)
-msgid "{left} title include {right}"
-msgstr "le titre de {left} inclus {right}"
 
 #~ msgid " Change password for"
 #~ msgstr "Modification du mot de passe pour"
@@ -3893,14 +2430,57 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "\"%s\" family structure has been updated"
 #~ msgstr "La structure de la famille \"%s\" a été mise à jour"
 
+#~ msgid "%d answer"
+#~ msgstr "%d réponse"
+
+#~ msgid "%d answers"
+#~ msgstr "%d réponses"
+
+#~ msgid "%d day"
+#~ msgstr "%d jour"
+
+#~ msgid "%d days"
+#~ msgstr "%d jours"
+
+#~ msgid "%d document detected"
+#~ msgid_plural "%d documents detected"
+#~ msgstr[0] "%d document détecté"
+#~ msgstr[1] "%d documents détectés"
+
+#~ msgid "%d document processed"
+#~ msgid_plural "%d documents processed"
+#~ msgstr[0] "%d document traité"
+#~ msgstr[1] "%d documents traités"
+
 #~ msgid "%d documents"
 #~ msgstr "%d documents"
+
+#~ msgid "%d documents are updated"
+#~ msgstr "%d documents mis à jour"
 
 #~ msgid "%d documents linked to the profil"
 #~ msgstr "%d documents liés à ce profil"
 
 #~ msgid "%d group(s) to update\n"
 #~ msgstr "%d groupe(s) à actualiser\n"
+
+#~ msgid "%d hour"
+#~ msgstr "%d heure"
+
+#~ msgid "%d hours"
+#~ msgstr "%d heures"
+
+#~ msgid "%d minute"
+#~ msgstr "%d minute"
+
+#~ msgid "%d minutes"
+#~ msgstr "%d minutes"
+
+#~ msgid "%d/%d profiling done"
+#~ msgstr "%d/%d mise à jour de profils effectués"
+
+#~ msgid "%d/%d revision done"
+#~ msgstr "%d/%d révisions effectuées"
 
 #~ msgid "%s : file %s has been replaced by new file %s"
 #~ msgstr "%s : le fichier %s a été remplacé par le nouveau fichier %s"
@@ -3914,6 +2494,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "%s all of %s"
 #~ msgstr "%s Tous les documents \"%s\""
 
+#~ msgid "%s application has no aclss"
+#~ msgstr "L'application %s n'a pas d'ACL"
+
+#~ msgid "%s application not exists"
+#~ msgstr "l'application %s n'existe pas"
+
+#~ msgid "%s attribute"
+#~ msgstr "attribut %s"
+
 #~ msgid "%s cannot be sent"
 #~ msgstr "%s n'a pas pu être envoyé"
 
@@ -3921,6 +2510,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "le document %s n'est pas un dossier et ne supporte pas le suppression en "
 #~ "cascade"
+
+#~ msgid "%s group"
+#~ msgstr "groupe %s"
 
 #~ msgid "%s has be sended"
 #~ msgstr "%s a été envoyé"
@@ -3955,11 +2547,29 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "%s style updated\n"
 #~ msgstr "%s style mis à jour\n"
 
+#~ msgid "&gt; or equal"
+#~ msgstr "&gt; ou égal"
+
+#~ msgid "&lt; or equal"
+#~ msgstr "&lt; ou égal"
+
+#~ msgid "(Other input)"
+#~ msgstr "(Autre)"
+
+#~ msgid "(Other)"
+#~ msgstr "(Autre)"
+
 #~ msgid "(free item)"
 #~ msgstr "(inséré)"
 
 #~ msgid "(new item)"
 #~ msgstr "(nouvelle entrée)"
+
+#~ msgid "(only)"
+#~ msgstr "(seulement)"
+
+#~ msgid "<it's a message>"
+#~ msgstr "<c'est un message>"
 
 #~ msgid "A?"
 #~ msgstr "R?"
@@ -4009,9 +2619,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Access for exchange documents"
 #~ msgstr "Accès aux échanges de documents"
 
-#~ msgid "Access name"
-#~ msgstr "Privilège"
-
 #~ msgid "Access path list"
 #~ msgstr "Liste des chemins d'accès"
 
@@ -4030,11 +2637,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Accord"
 #~ msgstr "Accord"
 
+#~ msgid "Account Type \"%s\""
+#~ msgstr "Type du compte \"%s\""
+
+#~ msgid "Acl [%s] not available for App %s"
+#~ msgstr "ACL %s non valable pour l'application %s"
+
 #~ msgid "Acls not activated"
 #~ msgstr "Droits non activés"
 
 #~ msgid "Acls not initialize"
 #~ msgstr "Droits non initialisés"
+
+#~ msgid "Action"
+#~ msgstr "Action"
 
 #~ msgid "Action to do"
 #~ msgstr "Action à faire"
@@ -4099,10 +2715,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Additionnals informations about import document"
 #~ msgstr "Informations sur les formats d'importation"
 
-#~ msgctxt "authent"
-#~ msgid "Address not configured"
-#~ msgstr "Adresse non configurée"
-
 #~ msgid "Admin edit"
 #~ msgstr "Administrer"
 
@@ -4132,6 +2744,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Allocate"
 #~ msgstr "Affecter"
+
+#~ msgid "Allow guest access"
+#~ msgstr "Autoriser l'accès invité"
 
 #~ msgid "An error occured, check the details for more information"
 #~ msgstr ""
@@ -4196,14 +2811,41 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Archives"
 #~ msgstr "Archives"
 
+#~ msgid "Archiving into %s"
+#~ msgstr "Archivé dans %s"
+
 #~ msgid "Attribut"
 #~ msgstr "Attribut"
 
 #~ msgid "Attribute"
 #~ msgstr "Attribut"
 
+#~ msgid "Attribute '%s' could not be found in family '%s'."
+#~ msgstr "L'attribut '%s' n'a pas été trouvé dans la famille '%s'"
+
+#~ msgid "Attribute '%s' should reference a docid attribute in family '%s'."
+#~ msgstr ""
+#~ "L'attribut '%s' doit référencer un attribut docid de la famille '%s'."
+
+#~ msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
+#~ msgstr ""
+#~ "Erreur d'attribut: la famille '%s' n'est pas valide ou en vie pour le "
+#~ "docid '%s'."
+
+#~ msgid ""
+#~ "Attribute Error: impossible to found the family for docid attribute '%s'"
+#~ msgstr ""
+#~ "Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
+#~ "'%s'"
+
 #~ msgid "Attribute [%s] is not found"
 #~ msgstr "L'attribut [%s] n'a pas été trouvé"
+
+#~ msgid ""
+#~ "Attribute format should not be empty on attribute '%s' in family '%s'."
+#~ msgstr ""
+#~ "La propriété format de l'attribut '%s' de la famille '%s' ne peut pas "
+#~ "être vide."
 
 #~ msgid "Attribute identifier"
 #~ msgstr "Identifiant de l'attribut"
@@ -4262,6 +2904,18 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Bookmarks"
 #~ msgstr "Signets"
 
+#~ msgid "CHANGE_PASSWORD:The old password is not good"
+#~ msgstr "Le mot de passe actuel est faux"
+
+#~ msgid "CHANGE_PASSWORD:The provided password is not good (%s)"
+#~ msgstr "Le nouveau mot de passe n'est pas valide (%s)"
+
+#~ msgid "CHANGE_PASSWORD:Unable to change password (%s)"
+#~ msgstr "Impossible de changer le mot de passe (%s)"
+
+#~ msgid "CHANGE_PASSWORD:You can't modify your account"
+#~ msgstr "Vous ne pouvez pas modifier votre mot de passe"
+
 #~ msgid "CSV"
 #~ msgstr "CSV"
 
@@ -4318,6 +2972,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ "Ne peut faire cette action. La fonction de la fenêtre parent est "
 #~ "introuvable"
 
+#~ msgid "Cannot find %s resource file"
+#~ msgstr "La ressource fichier %s est introuvable"
+
 #~ msgid "Cannot find %s ressource file"
 #~ msgstr "Fichier resource %s non trouvé"
 
@@ -4341,6 +2998,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [famille %s] est "
 #~ "inconnu."
+
+#~ msgid "Cannot write to log %s"
+#~ msgstr "Ne peux pas écrire dans les logs %s"
 
 #~ msgid "Caught Exception : %s\n"
 #~ msgstr "Attrape exception : %s\n"
@@ -4535,6 +3195,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Circular layout graphs"
 #~ msgstr "Modèle circulaire de graphe"
 
+#~ msgid "Class %s from file %s already declared in autoload with file %s"
+#~ msgstr "Classe %s du fichier %s déjà déclaré dans le fichier %s"
+
 #~ msgid "Clear Folder"
 #~ msgstr "Vider le dossier"
 
@@ -4566,6 +3229,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Click to view menu"
 #~ msgstr "Cliquer pour voir le menu"
 
+#~ msgid "Close"
+#~ msgstr "Fermer"
+
+#~ msgid "Close archive"
+#~ msgstr "Clôture de l'archive"
+
 #~ msgid "Close help"
 #~ msgstr "Fermer l'aide"
 
@@ -4574,6 +3243,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Column mode"
 #~ msgstr "Mode colonne"
+
+#~ msgid "Column type '%s' is not managed for export."
+#~ msgstr "Le type de colonne '%s' n'est pas géré pour l'export."
 
 #~ msgid "Comment"
 #~ msgstr "Commentaire"
@@ -4617,6 +3289,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Connect now"
 #~ msgstr "Se connecter maintenant"
 
+#~ msgid "Connection to freedom pg service '%s' OK !"
+#~ msgstr "Connexion au pg service de dynacase '%s' OK !"
+
+#~ msgid "Connection to temporary pg service '%s' OK !"
+#~ msgstr "Connexion au pg service temporaire '%s' OK !"
+
 #~ msgid "Constraint test"
 #~ msgstr "test des contraintes"
 
@@ -4647,6 +3325,18 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Core Application Manager"
 #~ msgstr "Page d'accueil"
 
+#~ msgid "Could not find attribute '%s' in family '%s'."
+#~ msgstr "Impossible de trouver l'attribut '%s' dans la famille '%s'"
+
+#~ msgid "Could not find pg_dump command in PATH."
+#~ msgstr "Impossible de trouver la commande pg_dump dans le PATH"
+
+#~ msgid "Could not find psql command in PATH."
+#~ msgstr "Impossible de trouver la commande psql dans le PATH"
+
+#~ msgid "Could not get family id for '%s'."
+#~ msgstr "Impossible de trouver l'id de la famille '%s'."
+
 #~ msgid "Create"
 #~ msgstr "Créer"
 
@@ -4658,6 +3348,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Create New"
 #~ msgstr "Créer un nouveau"
+
+#~ msgid "Create Schema '%s' ..."
+#~ msgstr "Creation du schema '%s' ..."
+
+#~ msgid "Create Table '%s'"
+#~ msgstr "Creation de la table '%s'"
+
+#~ msgid "Create Tables ..."
+#~ msgstr "Creation des tables ..."
 
 #~ msgid "Create a batch"
 #~ msgstr "Créer un traitement"
@@ -4722,9 +3421,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Default value recorded"
 #~ msgstr "La valeur par défaut est enregistrée"
 
-#~ msgid "Delete"
-#~ msgstr "Supprimer"
-
 #~ msgid "Delete acl %s for %s"
 #~ msgstr "Suppression Acl %s pour %s"
 
@@ -4739,6 +3435,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Description of the import format"
 #~ msgstr "Description du format d'import"
+
+#~ msgid "Destroyed by action %s/%s from %s"
+#~ msgstr "Destruction définitive par l'action %s/%s depuis %s"
 
 #~ msgid "Detail Permissions"
 #~ msgstr "Détail des droits"
@@ -4755,8 +3454,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Directed graph"
 #~ msgstr "Graphe directionnel"
 
+#~ msgid "Display available choices"
+#~ msgstr "Afficher les choix possibles"
+
+#~ msgid "Do choice"
+#~ msgstr "Choisissez"
+
 #~ msgid "Do connection"
 #~ msgstr "Se connecter"
+
+#~ msgid "DocProperties"
+#~ msgstr "Propriétés"
 
 #~ msgid "Docs admin"
 #~ msgstr "Docs admin"
@@ -4773,11 +3481,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Document %s is not alive"
 #~ msgstr "Le document [%s] n'est pas vivant"
 
-#~ msgid "Document %s not found"
-#~ msgstr "Document %s non trouvé"
-
 #~ msgid "Document Profile"
 #~ msgstr "Profil du document"
+
+#~ msgid "Document Properties"
+#~ msgstr "Propriétés du document"
+
+#~ msgid "Document basket"
+#~ msgstr "Porte-document"
 
 #~ msgid ""
 #~ "Document cannot be created.\n"
@@ -4788,9 +3499,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Document context menu"
 #~ msgstr "Menu contextuel du document"
-
-#~ msgid "Document creation"
-#~ msgstr "Création de document"
 
 #~ msgid "Document relations"
 #~ msgstr "Relations du document"
@@ -4829,11 +3537,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Draw graph"
 #~ msgstr "Dessiner le graphe"
 
+#~ msgid "Dump pgservice '%s' ..."
+#~ msgstr "Dump pgservice '%s' ..."
+
+#~ msgid "Dump to '%s' returned with exitcode %s"
+#~ msgstr "Dump vers '%s' en échec avec code de retour %s"
+
 #~ msgid "Duplicate"
 #~ msgstr "Dupliquer"
 
+#~ msgid "Dynacase frontpage description"
+#~ msgstr "Description de la page principale de Dynacase"
+
+#~ msgid "Dynacase pages favico"
+#~ msgstr "Pages de favico de Dynacase"
+
 #~ msgid "EDIT Zones for FOOTER"
 #~ msgstr "Zone dans le pied de page en mode édition"
+
+#~ msgid "ERROR :"
+#~ msgstr "ERREUR :"
 
 #~ msgid "EXPORT_CSV : identifiant unique"
 #~ msgstr "id (identifiant unique)"
@@ -4987,6 +3710,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Empty Post-It"
 #~ msgstr "Post-It vide"
 
+#~ msgid "Emptying temporary database '%s' ..."
+#~ msgstr "Vidage de la base temporaire '%s'"
+
 #~ msgid "Enclosure character"
 #~ msgstr "caractère délimiteur de texte (CSV)"
 
@@ -5059,8 +3785,29 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error converting HTML from attribute '%s' from document '%s'"
 #~ msgstr "Erreur de conversion du HTML de l'attribut '%s' du document '%s'"
 
+#~ msgid "Error could not open output log file '%s' for writing."
+#~ msgstr ""
+#~ "Erreur: impossible d'ouvrir le fichier de log sql de sortie '%s' en "
+#~ "écriture."
+
+#~ msgid "Error could not open sql log file '%s' for writing."
+#~ msgstr "Erreur: impossible d'ouvrir le fichier de log sql '%s' en écriture."
+
 #~ msgid "Error creating new default folder."
 #~ msgstr "Erreur de création du nouveau répertoire par défaut."
+
+#~ msgid "Error creating temp file for pg_dump output."
+#~ msgstr ""
+#~ "Erreur durant la création du fichier temporaire de sortie pour pg_dump"
+
+#~ msgid "Error creating temp file for sql log output."
+#~ msgstr "Erreur pendant la création du fichier temporaire de log sql."
+
+#~ msgid "Error in portfolio : folder %s not exists"
+#~ msgstr "Erreur dans la chemise : dossier %s n'existe pas"
+
+#~ msgid "Error: No column found in array '%s'"
+#~ msgstr "Erreur: pas de colonne trouvée dans le tableau '%s'"
 
 #~ msgid ""
 #~ "Error: at least one of those parameters is mandatory --outputsql --"
@@ -5075,6 +3822,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error: empty FREEDOM_DB"
 #~ msgstr "Erreur: FREEDOM_DB vide"
 
+#~ msgid "Error: empty action->dbaccess"
+#~ msgstr "Erreur: action->dbaccess est vide"
+
 #~ msgid "Error: missing or empty --tmppgservice"
 #~ msgstr "Erreur: --tmppgservice manquant ou absent"
 
@@ -5086,6 +3836,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Export"
 #~ msgstr "Exporter"
+
+#~ msgid "Export 1NF done"
+#~ msgstr "Export 1NF fini"
 
 #~ msgid "Export Documents from"
 #~ msgstr " Exporter les documents depuis"
@@ -5106,6 +3859,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "Exportation en tant qu'administrateur. Les attributs avec un accès "
 #~ "invisible sont exportés."
+
+#~ msgid "Export:Warnings"
+#~ msgstr "Avertissements de l'exportation :"
 
 #~ msgid "FGSEARCH:Add search engine"
 #~ msgstr "Ajouter le moteur de recherche"
@@ -5482,6 +4238,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Family %s not exist"
 #~ msgstr "La famille (%s) n'existe pas"
 
+#~ msgid "Family '%s' is not valid or alive."
+#~ msgstr "La famille '%s' n'est pas valide ou en vie."
+
 #~ msgid "Family (#%s) not exists"
 #~ msgstr "La famille (n°%s) n'existe pas"
 
@@ -5554,6 +4313,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Files"
 #~ msgstr "Fichiers"
+
+#~ msgid "Fill Tables ..."
+#~ msgstr "Remplissage des tables ..."
+
+#~ msgid "Filling enum table '%s'"
+#~ msgstr "Remplissage de la table enumérée '%s'"
+
+#~ msgid "Filling family table '%s' and relatives"
+#~ msgstr "Remplissage de la table famille '%s' et afférentes"
 
 #~ msgid "Filter import message"
 #~ msgstr "Filtrer parmi les messages"
@@ -5812,6 +4580,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Importation data"
 #~ msgstr "Données réimportables (CSV)"
 
+#~ msgid "Impossible to have several identical names"
+#~ msgstr "Impossible d'avoir plusieurs vues avec le même nom"
+
+#~ msgid "Impossible to name a view like a control acl"
+#~ msgstr "Impossible de nommer une vue comme un droit"
+
+#~ msgid "Incoherent column type '%s' in array '%s'."
+#~ msgstr "Type de colonne incohérent '%s' dans le tableau '%s'."
+
 #~ msgid "Incorrect filter %s"
 #~ msgstr "Le filtre \"%s\" est incorrect"
 
@@ -5916,6 +4693,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Label"
 #~ msgstr "Libellé"
 
+#~ msgid "Label must not be empty"
+#~ msgstr "Le label ne doit pas être vide"
+
 #~ msgid "Label of submit button"
 #~ msgstr "Label du bouton de validation"
 
@@ -5986,11 +4766,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "List view"
 #~ msgstr "Vue en liste"
 
+#~ msgid "Load dump file into '%s' ..."
+#~ msgstr "Chargement du fichier de dump dans '%s'"
+
 #~ msgid "Loading enum data ..."
 #~ msgstr "Chargement de la définition de l'énuméré ..."
 
 #~ msgid "Loading menu"
 #~ msgstr "Chargement du menu"
+
+#~ msgid "Loading of dump '%s' returned with exitcode %s"
+#~ msgstr "Chargement du dump '%s' en échec avec le code retour %s"
+
+#~ msgid "Loading..."
+#~ msgstr "Chargement..."
 
 #~ msgid "Lock"
 #~ msgstr "Verrouiller"
@@ -6022,6 +4811,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "MB_To"
 #~ msgstr "À"
 
+#~ msgid "Mail action URL"
+#~ msgstr "URL d'action mail"
+
 #~ msgid "Mail address"
 #~ msgstr "Adresse de courriel"
 
@@ -6029,6 +4821,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "Référence du modèle de mail utilisé pour la demande de changement de mot "
 #~ "de passe"
+
+#~ msgid "Make references ..."
+#~ msgstr "Fabrication des références ..."
 
 #~ msgid "Malformed HTML in attribute '%s' from document '%s'"
 #~ msgstr "HTML malformé dans l'attribut '%s' du document '%s'"
@@ -6048,6 +4843,11 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "Le document maître a été fermé.\n"
 #~ "Voulez-vous fermer la fenêtre ?"
+
+#~ msgid "Max display limit %s reached. Use export to see all"
+#~ msgstr ""
+#~ "Limite d'affichage maximum %s atteinte. Utilisez l'exportation pour tout "
+#~ "voir."
 
 #~ msgid "Maximum 20 views by control"
 #~ msgstr "Maximum 20 vues par contrôle"
@@ -6132,6 +4932,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Modify parameters Values"
 #~ msgstr "Modifier les paramètres"
 
+#~ msgid "Modify table"
+#~ msgstr "Modification table"
+
 #~ msgid "Monday"
 #~ msgstr "Lundi"
 
@@ -6144,11 +4947,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Move reference"
 #~ msgstr "Déplacer la référence"
 
+#~ msgid "My system user id"
+#~ msgstr "Identifiant système de mon compte utilisateur"
+
+#~ msgid "My user account id"
+#~ msgstr "Identifiant de mon compte utilisateur"
+
+#~ msgid "N"
+#~ msgstr "N"
+
 #~ msgid "N?"
 #~ msgstr "O?"
 
 #~ msgid "NOT Clear"
 #~ msgstr "Non effacé"
+
+#~ msgid "Name of table cannot be empty"
+#~ msgstr "Le nom de la table ne doit pas être vide"
 
 #~ msgid "Name of the glob"
 #~ msgstr "Nom du glob"
@@ -6206,9 +5021,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "No editable enums"
 #~ msgstr "Pas d'énumérés modifiables"
-
-#~ msgid "No identificator"
-#~ msgstr "Pas d'identificateurs"
 
 #~ msgid "No import : error detected"
 #~ msgstr "Pas d'importation: une erreur a été détectée"
@@ -6286,6 +5098,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Online help"
 #~ msgstr "Aide en ligne"
 
+#~ msgid "Only %s %s can view and edit"
+#~ msgstr "Seul %s %s peut voir et éditer le document"
+
 #~ msgid "Only one line by document is authorized"
 #~ msgstr "Une seule ligne par document est autorisée"
 
@@ -6322,6 +5137,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Other Archive"
 #~ msgstr "Autre archive"
 
+#~ msgid "Other..."
+#~ msgstr "Autre..."
+
 #~ msgid "Others"
 #~ msgstr "Autres"
 
@@ -6336,6 +5154,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "PDF conversion not found"
 #~ msgstr "Conversion PDF non trouvée"
+
+#~ msgid "PG Error: Connection to freedom pg service '%s' failed !"
+#~ msgstr "Erreur PG : connexion au pg service dynacase '%s' en échec !"
+
+#~ msgid "PG Error: Connection to temporary pg service '%s' failed !"
+#~ msgstr "Erreur PG : connexion au pg service temporaire '%s' en échec !"
 
 #~ msgid "POST_IT:Blue"
 #~ msgstr "Bleu"
@@ -6402,6 +5226,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Permissions"
 #~ msgstr "Droits"
 
+#~ msgid "Personal profile for %s %s"
+#~ msgstr "Profil personnel de %s %s"
+
 #~ msgid "Policy if same title"
 #~ msgstr "Politique si même titre"
 
@@ -6449,6 +5276,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Processes to exec"
 #~ msgstr "Processus à exécuter"
 
+#~ msgid "Profil for document's archive %s"
+#~ msgstr "Profil pour l'archive %s"
+
 #~ msgid "Profile"
 #~ msgstr "Profil"
 
@@ -6464,11 +5294,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Properties:"
 #~ msgstr "Propriétés:"
 
+#~ msgid "Property '%s' is not valid (family '%s')."
+#~ msgstr "La propriété '%s' n'est pas valide (famille '%s')."
+
 #~ msgid "PubliPreview"
 #~ msgstr "prévisualisation"
 
 #~ msgid "Publication directory"
 #~ msgstr "Repertoire d'installation"
+
+#~ msgid "Purge archive"
+#~ msgstr "Purge de l'archive"
 
 #~ msgid "Purge history"
 #~ msgstr "Nettoyage de l'historique"
@@ -6543,11 +5379,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Reload page"
 #~ msgstr "Recharger la page"
 
+#~ msgid "Remove duplicate attribute '%s' in family '%s'"
+#~ msgstr "Suppression de l'atttribut dupliqué '%s' dans la famille '%s'"
+
+#~ msgid "Remove duplicate property '%s' in family '%s'"
+#~ msgstr "Suppression de la propriété dupliquée '%s' dans la famille '%s'"
+
+#~ msgid "Remove duplicate reference '%s' in family '%s'"
+#~ msgstr "Suppression de la référence dupliquée '%s' dans la famille '%s'"
+
 #~ msgid "Rename"
 #~ msgstr "Renommer"
 
 #~ msgid "Rename file as %s"
 #~ msgstr "Renommer le fichier en %s"
+
+#~ msgid "Reopen archive"
+#~ msgstr "Réouverture de l'archive"
 
 #~ msgid "Report to (mail address)"
 #~ msgstr "Rapport à (adresse de courriel)"
@@ -6825,6 +5673,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Set through \"%s\" linked profil"
 #~ msgstr "Obtenu depuis le profil lié \"%s\""
 
+#~ msgid "Show a notification when a mail is sent"
+#~ msgstr "Afficher une notification à l'utilisateur lorsqu'un mail est envoyé"
+
 #~ msgid "Showing %br to %er of %nd documents%t%t%p%n"
 #~ msgstr "Affiche les documents %br à %er sur %nd au total%t%t%p%n"
 
@@ -6836,6 +5687,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Showing %d of %d documents"
 #~ msgstr "Affichage de %d sur %d documents"
+
+#~ msgid "Skip already added property '%s' in family '%s'"
+#~ msgstr "Evitement de la propriété '%s' déjà ajoutée dans la famille '%s'"
 
 #~ msgid ""
 #~ "Some change in the enum '%s > %e' are not saved do you really wish to "
@@ -6972,6 +5826,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "TST_ENUMFAM1#tst_enuma#a"
 #~ msgstr "Lettre A"
+
+#~ msgid "Table '%s' unknown !"
+#~ msgstr "Table '%s' inconnue !"
 
 #~ msgid "Tconvalescent"
 #~ msgstr "Tconvalescent"
@@ -7120,17 +5977,32 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Two cents"
 #~ msgstr "Deux centimes"
 
+#~ msgid "Twprocess_private"
+#~ msgstr "vers privé"
+
+#~ msgid "Twprocess_public"
+#~ msgstr "vers public"
+
 #~ msgid "Udm_Find Error : "
 #~ msgstr "Udm_Find_Error : "
 
 #~ msgid "Unable to store the file"
 #~ msgstr "Impossible d'enregistrer le fichier"
 
+#~ msgid "Unarchiving from %s"
+#~ msgstr "Désarchivé depuis %s"
+
 #~ msgid "Unattach Timers"
 #~ msgstr "Désactiver les minuteurs"
 
 #~ msgid "Undirected graphs"
 #~ msgstr "Graphe non-directionnel"
+
+#~ msgid "Unlabeled menu (%s)"
+#~ msgstr "Menu sans label (%s)"
+
+#~ msgid "Unlabeled view (%s)"
+#~ msgstr "Vue sans label (%s)"
 
 #~ msgid "Unlock"
 #~ msgstr "Déverrouiller"
@@ -7151,6 +6023,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "le document trouvé est mis à jour (si l'utilisateur n'a pas les droits "
 #~ "nécessaires, les nouvelles valeurs sont ignorées)"
+
+#~ msgid "Update history done"
+#~ msgstr "Mise à jour de l'historique effectuée"
 
 #~ msgid "Update profiling is in progress."
 #~ msgstr "Mise à jour des privilèges en cours"
@@ -7183,6 +6058,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Use your home folder instead <%s>"
 #~ msgstr "Utilisation du dossier personnel <%s> à la place"
+
+#~ msgid "User must be authenticate"
+#~ msgstr "L'utilisateur doit être authentifié"
 
 #~ msgid "User to affect"
 #~ msgstr "Utilisateur à affecter"
@@ -7331,6 +6209,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "WIDGET_CHANGE_PASSWORD:You need to provide twice the new password"
 #~ msgstr "Vous devez fournir la vérification"
 
+#~ msgid "WSH error mail recipients (comma-separated list of mail addresses)"
+#~ msgstr ""
+#~ "Destinataires des messages d'erreurs de WSH (liste d'adresses de courriel "
+#~ "séparés par des virgules)"
+
+#~ msgid "WSH error mail subject"
+#~ msgstr "Sujet des messages d'erreurs de WSH"
+
 #~ msgid "WebDav FREEDOM system file"
 #~ msgstr "Système de fichiers WebDAV DYNACASE"
 
@@ -7364,11 +6250,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Workflow"
 #~ msgstr "Cycle de vie"
 
-#~ msgid "Workflow - parameters"
-#~ msgstr "Paramètres d'affichage"
-
 #~ msgid "XML Archive"
 #~ msgstr "Archive XML"
+
+#~ msgid "XML Error: no 'family' attribute on <table/> node."
+#~ msgstr "Erreur XML: pas d'attribut 'family' sur le noeud <table />"
+
+#~ msgid "XML Error: no <database/> root node."
+#~ msgstr "Erreur XML: pas de noeud racine <database />"
+
+#~ msgid "XML Error: no property or attribute on <column/> node."
+#~ msgstr "Erreur XML: pas de propriété ou d'attribut sur le noeud <column />"
+
+#~ msgid "XML Error: no table defined."
+#~ msgstr "Erreur XML: pas de table définie"
+
+#~ msgid "XML Error: only one <database/> root node allowed."
+#~ msgstr "Erreur XML: un seul noeud racine <database /> autorisé"
+
+#~ msgid "XML config parsed OK !"
+#~ msgstr "Configuration XML analysée OK !"
 
 #~ msgid "XML data (Zip with one xml by document)"
 #~ msgstr "Données XML (Zip avec un fichier XML par document)"
@@ -7376,15 +6277,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "XML data (only one xml file)"
 #~ msgstr "Données XML (un seul fichier XML)"
 
+#~ msgid "Y"
+#~ msgstr "O"
+
 #~ msgid "You can close window now or waiting the end of processing"
 #~ msgstr ""
 #~ "Vous pouvez fermer la fenêtre maintenant ou attendre la fin du traitement"
-
-#~ msgid ""
-#~ "You don't have access to any content. Please contact your administrator."
-#~ msgstr ""
-#~ "Vous n'avez accès à aucun contenu. Veuillez contacter votre "
-#~ "administrateur."
 
 #~ msgid "You must upgrade to version 6 or more"
 #~ msgstr "Vous devez mettre à jour avec la version 6 au minimum"
@@ -7396,6 +6294,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "You must use only a-z, 0-9, _, - caracters"
 #~ msgstr "Vous devez utiliser uniquement les caractères 0-9, a-z, _ et -"
+
+#~ msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
+#~ msgstr "Vous devez utiliser seulement les caractères  a-z, 0-9, _ - \"%s\""
 
 #~ msgid "You use an too old Internet explorer navigator"
 #~ msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
@@ -7419,6 +6320,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Zip File"
 #~ msgstr "Fichier Zip"
 
+#~ msgid "[%s] must match /%s/"
+#~ msgstr "[%s] doit correspondre à /%s/"
+
 #~ msgid "access date"
 #~ msgstr "date de dernière consultation"
 
@@ -7434,11 +6338,18 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "access path list"
 #~ msgstr "liste des chemin d'accès"
 
+#~ msgid "account attribute"
+#~ msgstr "Attribut de compte"
+
 #~ msgid "acking detection : clear token"
 #~ msgstr "tentative d'intrusion détecté : suppression de la clef"
 
 #~ msgid "action"
 #~ msgstr "action"
+
+#~ msgid "action %s is not declared to be access in open mode"
+#~ msgstr ""
+#~ "L'action %s n'est pas déclarée comme étant accessible en mode ouvert"
 
 #~ msgid ""
 #~ "action %s is not declared to be access in open mode and token context not "
@@ -7449,6 +6360,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "actions"
 #~ msgstr "les actions"
+
+#~ msgid "activity"
+#~ msgstr "activité"
 
 #~ msgid "activity for %s"
 #~ msgstr "Activité pour %s"
@@ -7486,6 +6400,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "add folder in bookmark"
 #~ msgstr "Marquer ce dossier"
 
+#~ msgid "add inputs"
+#~ msgstr "ajouter entrée"
+
 #~ msgid "add new category"
 #~ msgstr "ajout nouvelle catégorie"
 
@@ -7500,6 +6417,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "addcond"
 #~ msgstr "Attributs"
+
+#~ msgid "added"
+#~ msgstr "ajouté"
 
 #~ msgid "address"
 #~ msgstr "Adresse..."
@@ -7522,6 +6442,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "all"
 #~ msgstr "tous les mots"
 
+#~ msgid "all columns are hiddens"
+#~ msgstr "toutes les colonnes sont cachées"
+
+#~ msgid "allocated"
+#~ msgstr "affecté"
+
 #~ msgid "allocated to"
 #~ msgstr "Affecté à"
 
@@ -7531,14 +6457,42 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "analyze archive file"
 #~ msgstr "analyse de fichier archive"
 
+#~ msgid "anchor color"
+#~ msgstr "couleur des liens"
+
+#~ msgid "and"
+#~ msgstr "et"
+
+#~ msgid "answer"
+#~ msgstr "Répondre"
+
 #~ msgid "any"
 #~ msgstr "un des mots"
+
+#~ msgid "any families"
+#~ msgstr "toutes familles"
 
 #~ msgid "any familly"
 #~ msgstr "toute famille"
 
+#~ msgid "any value include"
+#~ msgstr "aucune valeur n'est incluse"
+
+#~ msgid "any values"
+#~ msgstr "une des valeurs"
+
+#~ msgid "any values include {right}"
+#~ msgstr "{right} n'est pas inclus dans le document"
+
+#~ msgid "application version"
+#~ msgstr "version application"
+
 #~ msgid "apply a method to a document"
 #~ msgstr "appliquer une méthode sur un document"
+
+#~ msgid "archieve status must be open to modify content"
+#~ msgstr ""
+#~ "Le statut de l'archive doit être ouvert pour y insérer des documents"
 
 #~ msgid "archive %s not found and cannot be removed"
 #~ msgstr "L'archive %s n'a pas été trouvée et n'a pas pue être supprimée"
@@ -7548,6 +6502,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "archived"
 #~ msgstr "Archivé"
+
+#~ msgid "argument %s=>%s"
+#~ msgstr "argument %s=>%s"
 
 #~ msgid "ask"
 #~ msgstr "accord"
@@ -7561,11 +6518,11 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "attribute %s"
 #~ msgstr "attribut %s"
 
+#~ msgid "attribute %s is not int a array"
+#~ msgstr "l'attribut %s n'est pas dans un tableau"
+
 #~ msgid "attribute %s not an array"
 #~ msgstr "attribut %s n'est pas un tableau"
-
-#~ msgid "attribute %s not found"
-#~ msgstr "attribut %s non trouvé"
 
 #~ msgid "attribute %s unknow in family %s [%d]"
 #~ msgstr "attribut %s inconnu pour la famille %s [%d]"
@@ -7603,11 +6560,29 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "auto revision"
 #~ msgstr "révision automatique"
 
+#~ msgid "background color for table cells"
+#~ msgstr "couleur de fond de cellules"
+
+#~ msgid "background color or image"
+#~ msgstr "image ou couleur de fond"
+
+#~ msgid "background color or image in security mode"
+#~ msgstr "image ou couleur de fond en mode sécurité"
+
 #~ msgid "background document import"
 #~ msgstr "importation en tâche de fond"
 
+#~ msgid "background image for bar"
+#~ msgstr "image de fond pour les barres"
+
+#~ msgid "background image for menu"
+#~ msgstr "image de fond pour les menus"
+
 #~ msgid "bar menu"
 #~ msgstr "barre de menu"
+
+#~ msgid "basket of %s"
+#~ msgstr "porte-documents de %s"
 
 #~ msgid ""
 #~ "batcexec aborted\n"
@@ -7621,6 +6596,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "batch from %s folder"
 #~ msgstr "lot issu du dossier %s"
+
+#~ msgid "begin by"
+#~ msgstr "commence par"
+
+#~ msgid "between"
+#~ msgstr "entre"
 
 #~ msgid "bookmark folders"
 #~ msgstr "signets des dossiers"
@@ -7664,6 +6645,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot copy %s"
 #~ msgstr "écriture impossible : %s"
 
+#~ msgid "cannot create document for family [%s]"
+#~ msgstr "création de document impossible pour la famille [%s]"
+
 #~ msgid "cannot extract archive file %s"
 #~ msgstr "L'archive %s n'a pas pu être extraite"
 
@@ -7683,11 +6667,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot lauch <b>%s</b> transformation"
 #~ msgstr "Échec du lancement de la conversion <b>%s</b>"
 
+#~ msgid "cannot load xml %s layout file"
+#~ msgstr "ne peut charger le fichier modèle XML %s"
+
+#~ msgid "cannot load xml layout file : %s"
+#~ msgstr "Le modèle XML ne peut être chargé : %s"
+
+#~ msgid "cannot load xml template : %s"
+#~ msgstr "Le modèle XML ne peut être chargé : %s"
+
 #~ msgid "cannot modify forum %s"
 #~ msgstr "modification du forum impossible : %s"
 
 #~ msgid "cannot object update %s"
 #~ msgstr "ne peut mettre à jour %s"
+
+#~ msgid "cannot open %s layout file"
+#~ msgstr "ne peut ouvrir le fichier template %s"
+
+#~ msgid "cannot open layout file : %s"
+#~ msgstr "ne peut ouvrir le fichier de template : %s"
 
 #~ msgid "cannot see unknow folder"
 #~ msgstr "dossier inconnu, ne peut être consulté"
@@ -7710,8 +6709,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "case sensitive"
 #~ msgstr " tenir compte de la casse"
 
+#~ msgid "cdate"
+#~ msgstr "Date de création de la révision"
+
 #~ msgid "change"
 #~ msgstr "modification"
+
+#~ msgid "change %s"
+#~ msgstr "modification %s"
 
 #~ msgid "change creation profile"
 #~ msgstr "changer de profil par défaut"
@@ -7743,6 +6748,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "change user password"
 #~ msgstr "Changer le mot de passe de l'utilisateur"
 
+#~ msgid "change version to %s"
+#~ msgstr "changement vers la version %s"
+
 #~ msgid "changeCheckBoolClasses Error"
 #~ msgstr "Erreur changeCheckBoolClasses"
 
@@ -7757,6 +6765,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "choose action from batch document"
 #~ msgstr "choix d'une action à partir d'un traitement"
+
+#~ msgid "choose inputs for %s"
+#~ msgstr "choisir une valeur pour %s"
 
 #~ msgid "choose preferred families"
 #~ msgstr "Choix des familles préférées"
@@ -7776,8 +6787,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "clear file"
 #~ msgstr "Effacer le fichier"
 
+#~ msgid "clear inputs"
+#~ msgstr "effacer entrée(s)"
+
+#~ msgid "clear selected inputs"
+#~ msgstr "effacer les entrées sélectionnées"
+
+#~ msgid "clic to the ... button to link document correctly"
+#~ msgstr "cliquer sur le bouton .. pour lié le document correctement"
+
+#~ msgid "clic to the [...] button to link document correctly"
+#~ msgstr "cliquer sur le bouton [...] pour lié le document correctement"
+
 #~ msgid "click to change option"
 #~ msgstr "Cliquez pour changer les options"
+
+#~ msgid "client logo"
+#~ msgstr "logo du client"
+
+#~ msgid "client name"
+#~ msgstr "nom du client"
 
 #~ msgid "close forum"
 #~ msgstr "Fermer le forum"
@@ -7787,6 +6816,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "collapse all"
 #~ msgstr "replier tout"
+
+#~ msgid "color picker"
+#~ msgstr "choix de couleur"
 
 #~ msgid "column"
 #~ msgstr "colonne"
@@ -7803,11 +6835,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "concat stylecss+sizecss"
 #~ msgstr "concaténation style + size css"
 
+#~ msgid "confidential"
+#~ msgstr "confidentiel"
+
 #~ msgid "confirm mail sended before change state"
 #~ msgstr "confirmation envoi email avant changement d'état"
 
 #~ msgid "confirm manually send"
 #~ msgstr "Envoi manuel"
+
+#~ msgid "conflict %s [%s]: referer=%s, modified=%s"
+#~ msgstr "conflit %s [%s] : référence=%s, modification=%s"
+
+#~ msgid "connection type"
+#~ msgstr "type de connexion"
+
+#~ msgid "connexion to %s has failed"
+#~ msgstr "la connexion vers %s a échoué"
 
 #~ msgid "constraint"
 #~ msgstr "contrainte"
@@ -7817,6 +6861,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "construct batch document"
 #~ msgstr "construction d'un document lot"
+
+#~ msgid "content file expression"
+#~ msgstr "le contenu du fichier contient l'expression"
+
+#~ msgid "content file word"
+#~ msgstr "le contenu du fichier contient les mots"
+
+#~ msgid "control :: user identifier is null"
+#~ msgstr "control :: identifiant utilisateur est nul"
 
 #~ msgid "control view"
 #~ msgstr "contrôle de vues"
@@ -7839,8 +6892,52 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cookies seem to be blocked"
 #~ msgstr "les cookies semblent être bloqués par le navigateur"
 
+#~ msgid "copy attribute %s from %s"
+#~ msgstr "copie attribut %s à partir de  %s"
+
+#~ msgid "core_guest_sessionttl"
+#~ msgstr "Durée des sessions guest (en secondes)"
+
+#~ msgid "core_layout_execute_recursion_limit"
+#~ msgstr "Limite de récursion de la fonction Layout execute"
+
+#~ msgid "core_session_byte_length"
+#~ msgstr "Longueur des identifiants de session en octets (au moins 16 octets)"
+
+#~ msgid "core_sessiongcprobability"
+#~ msgstr ""
+#~ "Probabilité de déclenchement du nettoyage des sessions non utilisée "
+#~ "(exprimée en pourcentage par un nombre de 0 à 1)"
+
+#~ msgid "core_sessionmaxage"
+#~ msgstr ""
+#~ "Temps maximal au bout duquel une session non utilisée est éligible à la "
+#~ "suppression"
+
+#~ msgid "core_sessionttl"
+#~ msgstr "Durée des sessions (en secondes)"
+
+#~ msgid "core_tmpdir_maxage"
+#~ msgstr ""
+#~ "Temps maximal (en jours) au bout duquel les fichiers et répertoires "
+#~ "temporaires sont supprimés"
+
+#~ msgid "core_tmpdoc_maxage"
+#~ msgstr ""
+#~ "Temps maximal (en jours) au bout duquel les documents temporaires sont "
+#~ "supprimés"
+
+#~ msgid "create a %s document"
+#~ msgstr "créer un document %s"
+
 #~ msgid "create a new session id"
 #~ msgstr "créer un nouvel id de session"
+
+#~ msgid "create doc"
+#~ msgstr "Créer des documents de la famille"
+
+#~ msgid "create doc manually"
+#~ msgstr "Créer des documents manuellement"
 
 #~ msgid "create family"
 #~ msgstr "création de famille"
@@ -7869,6 +6966,10 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "creation processes"
 #~ msgstr "création de processus"
 
+#~ msgctxt "CVDOC"
+#~ msgid "creation view '%s' does not exists"
+#~ msgstr "La vue de création '%s' n'existe pas"
+
 #~ msgid "csv, ods, xml, zip (xml) supported import files"
 #~ msgstr "type de fichiers supportés : csv, ods, xml, zip (xml) "
 
@@ -7896,14 +6997,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "csv-simplequote"
 #~ msgstr "Simple quote"
 
+#~ msgid "current (<em>%s</em>)"
+#~ msgstr "courant (<em>%s</em>)"
+
+#~ msgid "data:document %s is not a family"
+#~ msgstr "Le document %s n'est pas une famille"
+
+#~ msgid "data:family %s not alive"
+#~ msgstr "La famille %s n'est pas vivante"
+
 #~ msgid "database access for webdav"
 #~ msgstr "coordonnées d'accès à la base de données webdav"
 
 #~ msgid "database record date style"
 #~ msgstr "style de la date pour la base de donnée"
-
-#~ msgid "date"
-#~ msgstr "date"
 
 #~ msgid "days"
 #~ msgstr "jours"
@@ -7914,6 +7021,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "declaration syntax does not match special help input '%s'"
 #~ msgstr ""
 #~ "Syntaxe de déclaration ne correspond pas à une aide à la saisie '%s'"
+
+#~ msgid "default delay before expiration of password in day"
+#~ msgstr "délai d'expiration du mot de passe par défaut (en jours)"
 
 #~ msgid "default document family"
 #~ msgstr "famille de document par défaut"
@@ -7930,8 +7040,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "default sort by family"
 #~ msgstr "tri par défaut par famille"
 
+#~ msgid "default start application"
+#~ msgstr "Application lancée au démarrage"
+
 #~ msgid "default style"
 #~ msgstr "style par défaut"
+
+#~ msgid "default value"
+#~ msgstr "valeur par défaut"
 
 #~ msgid "default values"
 #~ msgstr "Valeurs par défaut"
@@ -7957,11 +7073,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "delconfirm"
 #~ msgstr "Voulez-vous supprimer"
 
+#~ msgid "delete"
+#~ msgstr "supprimer"
+
 #~ msgid "delete %s on server %s...\n"
 #~ msgstr "suppression de %s sur le serveur %s...\n"
 
 #~ msgid "delete archive"
 #~ msgstr "supprimer l'archive"
+
+#~ msgid "delete document"
+#~ msgstr "supprimer le document"
 
 #~ msgid "delete file query into directory"
 #~ msgstr "supprimer un document dans un dossier"
@@ -8023,6 +7145,18 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "document #%s not found. Unaffectation aborded"
 #~ msgstr "document n°%s inconnu. Suppression de l'affectation abandonnée"
 
+#~ msgid "document %d deleted"
+#~ msgstr "Le document %d est supprimé"
+
+#~ msgid "document %d inserted"
+#~ msgstr "Le document %d est inséré"
+
+#~ msgid "document %d moved"
+#~ msgstr "Le document %d est déplacé"
+
+#~ msgid "document %d unlinked"
+#~ msgstr "Le document %d est enlevé"
+
 #~ msgid "document %s [%d] is not destroyed"
 #~ msgstr "Le document %s [%d] a été détruit"
 
@@ -8038,11 +7172,11 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "document %s is not a family"
 #~ msgstr "Le document [%s] n'est pas une famille"
 
-#~ msgid "document %s not exists"
+#~ msgid "document %s not exist"
 #~ msgstr "Le document %s n'existe pas"
 
-#~ msgid "document %s not found"
-#~ msgstr "Le document [%s] est introuvable"
+#~ msgid "document %s not exists"
+#~ msgstr "Le document %s n'existe pas"
 
 #~ msgid "document '%s' [revision %d] has no state"
 #~ msgstr "Le document '%s' [révision %d] n'a pas d'état"
@@ -8058,6 +7192,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "document not alive %s"
 #~ msgstr "document %s inexistant"
+
+#~ msgid "document not initialized"
+#~ msgstr "Le document n'est pas initialisé"
+
+#~ msgid "document not referenced"
+#~ msgstr "document non référencé"
+
+#~ msgid "document not set"
+#~ msgstr "Document non initialisé"
 
 #~ msgid "document(s)"
 #~ msgstr "documents(s)"
@@ -8119,6 +7262,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "duplication of"
 #~ msgstr "duplication de"
 
+#~ msgid "duration for log conservation (in days)"
+#~ msgstr "durée de conservation des logs (en jours)"
+
+#~ msgid "dynamic control"
+#~ msgstr "contrôle dynamique"
+
+#~ msgid "edit"
+#~ msgstr "Modifier"
+
 #~ msgid "edit args of actions in workflow edition "
 #~ msgstr "édition des arguments des actions dans l'édition des cycles"
 
@@ -8133,6 +7285,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "edit default folder"
 #~ msgstr "éditer dossier par défaut"
+
+#~ msgid "edit document"
+#~ msgstr " éditer le document"
 
 #~ msgid "edit document in extjs"
 #~ msgstr "Editer le document en extjs"
@@ -8188,6 +7343,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "elink"
 #~ msgstr "extra Lien"
 
+#~ msgid "elinkEncode::attribute not found %s in %s : %s"
+#~ msgstr "Impossible de trouver l'attribut %s dans %s: %s"
+
 #~ msgid "email sended"
 #~ msgstr "email envoyé"
 
@@ -8215,6 +7373,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "eprinting"
 #~ msgstr "publiimpression"
 
+#~ msgid "equal"
+#~ msgstr "égal"
+
 #~ msgid "err"
 #~ msgstr "err"
 
@@ -8233,6 +7394,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "error ::moveDocument %s %s"
 #~ msgstr "erreur ::moveDocument %s %s"
 
+#~ msgid "error color"
+#~ msgstr "couleur messages d'erreur"
+
 #~ msgid "error in calling function %s"
 #~ msgstr "erreur dans l'appel de la fonction %s"
 
@@ -8243,8 +7407,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ "erreur dans l'appel de la fonction %s\n"
 #~ "%s"
 
+#~ msgid "error in filename"
+#~ msgstr "erreur dans le nom de fichier"
+
 #~ msgid "exec plan"
 #~ msgstr "Planification des processus"
+
+#~ msgid "execute"
+#~ msgstr "execute"
+
+#~ msgid "execute search"
+#~ msgstr "executer une recheche"
 
 #~ msgid "existing key item %s"
 #~ msgstr "clef dèjà existante : %s"
@@ -8312,6 +7485,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "familyname"
 #~ msgstr "famille"
 
+#~ msgid "fdl_pubedit error: family %s not found"
+#~ msgstr "fdl_pubedit erreur: Famille %s introuvable"
+
 #~ msgid "fgsearch"
 #~ msgstr "Recherche générale"
 
@@ -8333,8 +7509,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "file not expected : possible attack : update aborted"
 #~ msgstr "fichier inattendu, attaque possible : mise à jour abandonnée"
 
+#~ msgid "file {left} contain the expression {right}"
+#~ msgstr "le fichier {left} contient l'expression {right}"
+
+#~ msgid "file {left} contain the word {right}"
+#~ msgstr "le fichier {left} contient le mot {right}"
+
 #~ msgid "filename"
 #~ msgstr "fichier"
+
+#~ msgid "filename or type include"
+#~ msgstr "nom du fichier ou type du fichier contient"
+
+#~ msgid "filename or type not include"
+#~ msgstr "le nom du fichier ou son type ne contient pas"
 
 #~ msgid "filter attributes"
 #~ msgstr "Filtrer les attributs"
@@ -8344,6 +7532,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "fixed"
 #~ msgstr "figé"
+
+#~ msgid "fixstate"
+#~ msgstr "état"
 
 #~ msgid "folder %s as been added in your bookmark"
 #~ msgstr "Le dossier %s a été ajouté dans vos signets"
@@ -8371,6 +7562,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "folio select doc"
 #~ msgstr "sélection de chemise"
+
+#~ msgid "font size"
+#~ msgstr "taille de la police"
 
 #~ msgid "for"
 #~ msgstr "pour"
@@ -8420,6 +7614,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "frame"
 #~ msgstr "fenêtre"
 
+#~ msgid "frame border size"
+#~ msgstr "taille de la bordure de la fenêtre"
+
+#~ msgid "frame size"
+#~ msgstr "taille de la fenêtre"
+
 #~ msgid "free item %s"
 #~ msgstr "insérer [%s]"
 
@@ -8428,6 +7628,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "freedom global search"
 #~ msgstr "Recherche générale dynacase"
+
+#~ msgid "french"
+#~ msgstr "Français"
 
 #~ msgid "from current folder"
 #~ msgstr "à partir du dossier courant"
@@ -8446,6 +7649,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "func"
 #~ msgstr "ft"
+
+#~ msgid "function [%s] not exists"
+#~ msgstr "la fonction [%s] n'existe pas"
 
 #~ msgid "generic Management"
 #~ msgstr "Gestion générique"
@@ -8519,6 +7725,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "goto latest specific ask"
 #~ msgstr "Aller à la dernière demande"
 
+#~ msgid "group #%d does not exist"
+#~ msgstr "le groupe n°%d n'existe pas"
+
+#~ msgid "group has not identificator"
+#~ msgstr "Le groupe n'a pas d'identificateur"
+
 #~ msgid "height of the frame for abstract card"
 #~ msgstr ""
 #~ "hauteur de la fenêtre pour l'affichage des listes de documents (découpage "
@@ -8527,11 +7739,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "help"
 #~ msgstr "aide"
 
+#~ msgid "help for %s"
+#~ msgstr "Aide pour %s"
+
 #~ msgid "help inline"
 #~ msgstr "aide en ligne"
 
 #~ msgid "help manual for family"
 #~ msgstr "manuel de description de famille"
+
+#~ msgid "hidden"
+#~ msgstr "caché"
+
+#~ msgid "highlight background color"
+#~ msgstr "couleur de fond pour la mise en évidence"
 
 #~ msgid "histoError"
 #~ msgstr "Erreur"
@@ -8559,14 +7780,38 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "icon"
 #~ msgstr "Icône"
 
+#~ msgid "icon size"
+#~ msgstr "taille des icônes"
+
+#~ msgid "icreate"
+#~ msgstr "Créer manuellement"
+
 #~ msgid "id"
 #~ msgstr "id"
+
+#~ msgid "id allocated"
+#~ msgstr "identifiant utilisateur affecté"
+
+#~ msgid "id locked"
+#~ msgstr "identifiant verrou"
 
 #~ msgid "id of the basket folder"
 #~ msgstr "identifiant du porte-documents"
 
+#~ msgid "id owner"
+#~ msgstr "identifiant propriétaire"
+
+#~ msgid "identificator equal"
+#~ msgstr "identificateur égal"
+
+#~ msgid "identificator not equal"
+#~ msgstr "l'identifiant est différent"
+
 #~ msgid "if you want to change order of column"
 #~ msgstr "pour changer l'ordre des colonnes"
+
+#~ msgid "ignored"
+#~ msgstr "ignoré"
 
 #~ msgid "import <I>%s</I> documents from"
 #~ msgstr " Importation de documents <I>%s</I> à partir de"
@@ -8596,6 +7841,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "import results"
 #~ msgstr "Résultats de l'importation"
 
+#~ msgid "in domain %s"
+#~ msgstr "dans le domain %s"
+
+#~ msgid "include"
+#~ msgstr "contient"
+
 #~ msgid "incorrect global filter %s"
 #~ msgstr "Le filtre global \"%s\" est incorrect"
 
@@ -8610,6 +7861,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "initial reference"
 #~ msgstr "référence initiale"
+
+#~ msgid "input color bg"
+#~ msgstr "couleur des champs de saisie"
 
 #~ msgid "insert containt of a folder into another"
 #~ msgstr "insérer le contenu d'un dossier dans un autre"
@@ -8644,8 +7898,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "interface to save choice of column export documents"
 #~ msgstr "Interface pour sauvgarder le choix des colonnes d'exportation"
 
+#~ msgid "invalid syntax for [%s] for enum attribute [%s]"
+#~ msgstr "erreur de syntaxe pour l'attribut énuméré [%s] [%s]"
+
+#~ msgid "inverse video background color"
+#~ msgstr "couleur de fond en inverse vidéo"
+
+#~ msgid "inverse video color text"
+#~ msgstr "couleur du texte en inverse vidéo"
+
 #~ msgid "inverted search"
 #~ msgstr "Recherche inversée"
+
+#~ msgid "invisible"
+#~ msgstr "invisible"
+
+#~ msgid "is empty"
+#~ msgstr "est vide"
+
+#~ msgid "is not empty"
+#~ msgstr "n'est pas vide"
 
 #~ msgid "it is the first"
 #~ msgstr "premier"
@@ -8667,6 +7939,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "labeltext"
 #~ msgstr "désignation"
+
+#~ msgid "language"
+#~ msgstr "langue"
+
+#~ msgid "last modification date"
+#~ msgstr "date de dernière modification"
+
+#~ msgid "last or first name include"
+#~ msgstr "le nom ou le prénom contient"
 
 #~ msgid "last search text typed"
 #~ msgstr "dernier texte tapé pour la recherche"
@@ -8691,6 +7972,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "locked by"
 #~ msgstr "verrouillé par"
+
+#~ msgid "locked document of "
+#~ msgstr "documents verrouillés par "
 
 #~ msgid "loginform:help"
 #~ msgstr "Aide"
@@ -8722,6 +8006,10 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "manage bookmarks"
 #~ msgstr "Gérer les signets"
 
+#~ msgctxt "mask"
+#~ msgid "mandatory"
+#~ msgstr "Obligatoire"
+
 #~ msgid "manual date"
 #~ msgstr "Date manuelle"
 
@@ -8746,6 +8034,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "memorisation of pref search"
 #~ msgstr "mémorisation de la recherche"
 
+#~ msgid "memory max for PHP in Mo"
+#~ msgstr "valeur minimale de memory_limit (en Mo)"
+
 #~ msgid "memosearch"
 #~ msgstr "mémo recherche"
 
@@ -8767,9 +8058,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "method %s executed for %s "
 #~ msgstr "méthode %s exécutée pour %s"
 
-#~ msgid "method %s not executed : %s"
-#~ msgstr "la méthode %s n'a pas été exécutée : %s"
-
 #~ msgid "mini view"
 #~ msgstr "mini vue"
 
@@ -8782,8 +8070,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "modification or creation"
 #~ msgstr "modification ou création"
 
+#~ msgid "modify"
+#~ msgstr "Contenu"
+
 #~ msgid "modify [%s] attribute"
 #~ msgstr "modification attribut %s"
+
+#~ msgid "modify acl"
+#~ msgstr "Modifier les droits"
 
 #~ msgid "modify application parameter"
 #~ msgstr "Modification des paramètres d'une application"
@@ -8796,6 +8090,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "modify default values :"
 #~ msgstr "Modifier les valeurs par défaut"
+
+#~ msgid "modify document"
+#~ msgstr "Modifier le document"
 
 #~ msgid "modify document option"
 #~ msgstr "modifier les options d'un document"
@@ -8815,17 +8112,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "modify family preference"
 #~ msgstr "modifier les préférences par familles"
 
+#~ msgid "modify folder"
+#~ msgstr "modifier le contenu du dossier"
+
 #~ msgid "modify parameters :"
 #~ msgstr "modifier les paramètres"
 
 #~ msgid "modify preferred families"
 #~ msgstr "modifier les familles préférées"
 
+#~ msgid "modifyacl"
+#~ msgstr "modifier les droits"
+
 #~ msgid "modoption: document [%d] is not alive"
 #~ msgstr "modoption: document [%d] n'est pas en vie"
 
 #~ msgid "more families"
 #~ msgstr "toutes les familles"
+
+#~ msgid "mot of the day"
+#~ msgstr "Mot Of The Day"
 
 #~ msgid "move file query into directory"
 #~ msgstr "déplacement d'un document dans un dossier"
@@ -8854,8 +8160,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "navigate between relations next"
 #~ msgstr "navigation entre relations suivantes"
 
+#~ msgid "need answer"
+#~ msgstr "nécessite une réponse"
+
+#~ msgid "need to select family"
+#~ msgstr "Vous devez sélectionner une famille"
+
+#~ msgid "need to select the document with the list"
+#~ msgstr "Vous devez sélectionner le document dans la liste proposée"
+
 #~ msgid "nestcape site"
 #~ msgstr "Site de Netscape"
+
+#~ msgid "new %s"
+#~ msgstr "nouvelle %s"
 
 #~ msgid "new card"
 #~ msgstr "Nouvelle carte"
@@ -8917,17 +8235,29 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "no"
 #~ msgstr "non"
 
+#~ msgid "no access control"
+#~ msgstr "pas de contrôle d'accès"
+
 #~ msgid "no action found for %s document"
 #~ msgstr "pas d'actions trouvée pour le document %s"
 
 #~ msgid "no alive document reference"
 #~ msgstr "référence à un document mort"
 
+#~ msgid "no allocate"
+#~ msgstr "pas d'affectation"
+
 #~ msgid "no attribute file found"
 #~ msgstr "Aucun attribut de type fichier trouvé"
 
+#~ msgid "no available persons found"
+#~ msgstr "pas de personnes valides trouvées"
+
 #~ msgid "no avalaible persons found"
 #~ msgstr "pas de personnes valides trouvées"
+
+#~ msgid "no columns specified"
+#~ msgstr "pas de colonnes définies"
 
 #~ msgid "no comment"
 #~ msgstr "pas de commentaire"
@@ -8953,8 +8283,8 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "no document type"
 #~ msgstr "pas de famille de document"
 
-#~ msgid "no email address found"
-#~ msgstr "absence d'adresse couriel"
+#~ msgid "no family"
+#~ msgstr "pas de famille"
 
 #~ msgid "no family identificator"
 #~ msgstr "aucun identificateur de famille"
@@ -8967,6 +8297,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "no file specified : change icon aborted"
 #~ msgstr "pas de fichier fournit, changement d'icône abandonnée"
+
+#~ msgid "no files"
+#~ msgstr "pas de fichier"
+
+#~ msgid "no folder"
+#~ msgstr "pas de dossier"
+
+#~ msgid "no image"
+#~ msgstr "pas d'image"
 
 #~ msgid "no inheritance"
 #~ msgstr "Aucun héritage"
@@ -8983,25 +8322,43 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "no match for %s"
 #~ msgstr "pas de choix possible pour %s"
 
-#~ msgid "no privilege %s for %s"
-#~ msgstr "Pas de privilège %s pour le document %s"
+#~ msgid "no message : post-it creation aborted"
+#~ msgstr "pas de message : création de post-it abandonné"
+
+#~ msgid "no permission to modify this attribute %s"
+#~ msgstr "vous n'avez pas la permission de modifier cet attribut : %s"
 
 #~ msgid "no privilege to create interactivaly this kind (%s) of document"
 #~ msgstr ""
 #~ "vous n'avez pas la permission de créer manuellement ce type (%s) de "
 #~ "document "
 
+#~ msgid "no privilege to create this kind (%d) of document"
+#~ msgstr "vous n'avez pas la permission de créer ce type (%d) de document "
+
 #~ msgid "no privilege to create this kind (%s) of document"
 #~ msgstr "vous n'avez pas la permission de créer ce type (%s) de document "
 
+#~ msgid "no privilege view for %d"
+#~ msgstr "Pas de privilège voir pour %d"
+
 #~ msgid "no profile"
 #~ msgstr "Pas de profil"
+
+#~ msgid "no referer url found"
+#~ msgstr "pas d'URL reférence trouvée"
+
+#~ msgid "no revisable"
+#~ msgstr "non révisable"
 
 #~ msgid "no search"
 #~ msgstr "pas de recherche"
 
 #~ msgid "no sort"
 #~ msgstr "non trié"
+
+#~ msgid "no state"
+#~ msgstr "pas d'état"
 
 #~ msgid "no subject"
 #~ msgstr "pas de sujet"
@@ -9011,6 +8368,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "no template defined"
 #~ msgstr "Pas de modèle défini"
+
+#~ msgid "no value include"
+#~ msgstr "aucune valeur contient"
+
+#~ msgid "no view control"
+#~ msgstr "pas de contrôle de vues"
 
 #~ msgid "no workflow"
 #~ msgstr "pas de cycle de vie"
@@ -9024,6 +8387,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "not a static folder %s"
 #~ msgstr "ce n'est pas un dossier statique %s"
 
+#~ msgid "not added"
+#~ msgstr "pas ajouté"
+
+#~ msgid "not equal"
+#~ msgstr "pas égal"
+
+#~ msgid "not include"
+#~ msgstr "ne contient pas"
+
 #~ msgid "not locked"
 #~ msgstr "non verrouillé"
 
@@ -9036,17 +8408,44 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "number of card by page"
 #~ msgstr "nombre de cartes par page"
 
+#~ msgid "number of waiting answers %d"
+#~ msgstr "Nombre de réponses en attente : %d"
+
+#~ msgid "one id equal"
+#~ msgstr "un des identifiants égal"
+
+#~ msgid "one of the titles include"
+#~ msgstr "un des titres contient"
+
+#~ msgid "one of the titles {left} include {right}"
+#~ msgstr "un des titres {left} contient {right}"
+
+#~ msgid "one value equal"
+#~ msgstr "une des valeurs égale"
+
+#~ msgid "one value include"
+#~ msgstr "une des valeurs contient"
+
+#~ msgid "one value of {left} include {right}"
+#~ msgstr "une des valeurs de {left} contient {right}"
+
 #~ msgid "only latest revision"
 #~ msgstr "seulement la dernière révision"
 
 #~ msgid "only one document linked to the profil"
 #~ msgstr "Un seul document lié à ce profil"
 
+#~ msgid "open"
+#~ msgstr "ouvrir"
+
 #~ msgid "open document to edit or view it"
 #~ msgstr "Ouvrir le document pour l'éditer ou le voir"
 
 #~ msgid "open file with your editor"
 #~ msgstr "ouvrir le fichier avec votre éditeur"
+
+#~ msgid "open folder"
+#~ msgstr "Ouvrir le dossier"
 
 #~ msgid "open forum"
 #~ msgstr "Ouvrir le forum"
@@ -9060,8 +8459,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "option: "
 #~ msgstr "option: "
 
+#~ msgctxt "mask"
+#~ msgid "optional"
+#~ msgstr "Optionnel"
+
 #~ msgid "options"
 #~ msgstr "options"
+
+#~ msgid "or"
+#~ msgstr "ou"
 
 #~ msgid "order"
 #~ msgstr "ordre"
@@ -9087,6 +8493,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "password must not be empty"
 #~ msgstr "Le mot de passe ne doit pas être vide"
 
+#~ msgid "passwords must not be empty"
+#~ msgstr "Le mot de passe ne doît pas être vide"
+
 #~ msgid "period from %s to %s"
 #~ msgstr "période du %s au %s"
 
@@ -9102,6 +8511,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "Mettez votre navigateur à jour avec une version Netscape 7.0 (ou "
 #~ "supérieur) ou Mozilla 1.0.1 (ou supérieur)"
+
+#~ msgid "plug inserted in footer"
+#~ msgstr "reférence au plug du footer"
 
 #~ msgid "policy"
 #~ msgstr "politique"
@@ -9126,6 +8538,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "post it"
 #~ msgstr "post-it"
+
+#~ msgid "postit of %s"
+#~ msgstr "post-it de %s"
 
 #~ msgid "precise search"
 #~ msgstr "Précisez la recherche"
@@ -9154,8 +8569,32 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "proceed background import of %d documents"
 #~ msgstr "Effectuer l'importation en tâche de fond de %d documents"
 
+#~ msgid "process %s"
+#~ msgstr "traitement %s"
+
+#~ msgid "process addValue for %d documents"
+#~ msgstr "Traitement ajout de valeur pour %d documents"
+
+#~ msgid "process history for %d documents"
+#~ msgstr "Traitement de l'historique pour %d documents"
+
+#~ msgid "process removeValue for %d documents"
+#~ msgstr "Traitement suppression de valeur pour %d documents"
+
+#~ msgid "process replaceValue for %d documents"
+#~ msgstr "Traitement remplacement de valeur pour %d documents"
+
+#~ msgid "process revision done"
+#~ msgstr "traitement des révisions effectué"
+
+#~ msgid "process revision for %d documents"
+#~ msgstr "traitement des révisions pour %d documents"
+
 #~ msgid "process search comes from %s"
 #~ msgstr "recherche de processus issus de %s"
+
+#~ msgid "process setValue for %d documents"
+#~ msgstr "traitement d'affectation de valeur pour %d documents"
 
 #~ msgid "processes execution plan"
 #~ msgstr "plabification de processus d'execution"
@@ -9166,8 +8605,104 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "processing...\n"
 #~ msgstr "en cours...\n"
 
+#~ msgid "produce link for"
+#~ msgstr "produit le lien pour"
+
 #~ msgid "profile access"
 #~ msgstr "Profil d'accès"
+
+#~ msgid "prop_allocated"
+#~ msgstr "utilisateur alloué"
+
+#~ msgid "prop_atags"
+#~ msgstr "tag applicatfs"
+
+#~ msgid "prop_cdate"
+#~ msgstr "date de création de la révision"
+
+#~ msgid "prop_classname"
+#~ msgstr "nom de la classe"
+
+#~ msgid "prop_comment"
+#~ msgstr "commentaire"
+
+#~ msgid "prop_confidential"
+#~ msgstr "confidentialité"
+
+#~ msgid "prop_cvid"
+#~ msgstr "identifiant du contrôle de vue"
+
+#~ msgid "prop_doctype"
+#~ msgstr "type de document"
+
+#~ msgid "prop_domainid"
+#~ msgstr "Identifiant du domaine"
+
+#~ msgid "prop_dprofid"
+#~ msgstr "identifiant du template de profil"
+
+#~ msgid "prop_fromid"
+#~ msgstr "famille"
+
+#~ msgid "prop_id"
+#~ msgstr "identificateur"
+
+#~ msgid "prop_initid"
+#~ msgstr "identificateur initial"
+
+#~ msgid "prop_ldapdn"
+#~ msgstr "chemin ldap"
+
+#~ msgid "prop_lmodify"
+#~ msgstr "tag indiquant la modification"
+
+#~ msgid "prop_lockdomainid"
+#~ msgstr "Identifiant du domaine du verrou"
+
+#~ msgid "prop_locked"
+#~ msgstr "propriétaire du verrou"
+
+#~ msgid "prop_name"
+#~ msgstr "référence logique"
+
+#~ msgid "prop_owner"
+#~ msgstr "propriétaire"
+
+#~ msgid "prop_postitid"
+#~ msgstr "identifiants des notes"
+
+#~ msgid "prop_prelid"
+#~ msgstr "dossier primaire"
+
+#~ msgid "prop_profid"
+#~ msgstr "profil"
+
+#~ msgid "prop_revdate"
+#~ msgstr "date de modification"
+
+#~ msgid "prop_revision"
+#~ msgstr "révision"
+
+#~ msgid "prop_state"
+#~ msgstr "état"
+
+#~ msgid "prop_svalues"
+#~ msgstr "une des valeurs"
+
+#~ msgid "prop_title"
+#~ msgstr "titre"
+
+#~ msgid "prop_usefor"
+#~ msgstr "tag utilisé pour"
+
+#~ msgid "prop_version"
+#~ msgstr "version"
+
+#~ msgid "prop_wid"
+#~ msgstr "cycle de vie"
+
+#~ msgid "query %s has failed"
+#~ msgstr "requête %s a échouée"
 
 #~ msgid "query [%s] not valid for select document"
 #~ msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
@@ -9184,8 +8719,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "quick save not possible"
 #~ msgstr "Sauvegarde rapide impossible"
 
+#~ msgid "read disabled"
+#~ msgstr "statique"
+
+#~ msgid "read only"
+#~ msgstr "lecture seule"
+
+#~ msgid "read write"
+#~ msgstr "lecture écriture"
+
 #~ msgid "read-only"
 #~ msgstr "lecture seule"
+
+#~ msgid "real value to set"
+#~ msgstr "valeur à utiliser"
+
+#~ msgid "realm name for http authenticate"
+#~ msgstr "nom du royaume pour authentification HTTP"
 
 #~ msgid "reference"
 #~ msgstr "référence"
@@ -9195,6 +8745,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "refresh directory"
 #~ msgstr "rafraichir le dossier"
+
+#~ msgid "refreshing %s"
+#~ msgstr "actualisation %s"
 
 #~ msgid "related documents of %s"
 #~ msgstr "documents référençant %s "
@@ -9219,6 +8772,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "reqpasswd_submit"
 #~ msgstr "Envoyer"
+
+#~ msgid "request not found"
+#~ msgstr "requête non trouvée"
+
+#~ msgid "reset version"
+#~ msgstr "réinitialisation de la version"
 
 #~ msgid "response for this forum entry"
 #~ msgstr "réponse pour cette entrée"
@@ -9247,11 +8806,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "retrieve task status"
 #~ msgstr "récupération des status de tâches"
 
+#~ msgid "revdate"
+#~ msgstr "date de modification"
+
 #~ msgid "revised by"
 #~ msgstr "révisé par"
 
+#~ msgid "revision date"
+#~ msgstr "date de révision"
+
+#~ msgid "revision of document"
+#~ msgstr "Révision du document"
+
 #~ msgid "root folder id"
 #~ msgstr "Identificateur du dossier racine"
+
+#~ msgid "roweditzone syntax %s is invalid"
+#~ msgstr "La syntaxe %s est invalide"
 
 #~ msgid "rss avaible for users"
 #~ msgstr "Le flux RSS est maintenant accessible pour les utilisateurs"
@@ -9273,6 +8844,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "search  contains %s in all state"
 #~ msgstr "recherche contenant %s (tout état)"
+
+#~ msgid "search %s"
+#~ msgstr "recherche %s"
 
 #~ msgid "search %s is %s"
 #~ msgstr "recherche %s est %s"
@@ -9331,20 +8905,32 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "searchdate prefix"
 #~ msgstr "exécutée le "
 
+#~ msgid "second background color"
+#~ msgstr "couleur secondaire pour le fond"
+
 #~ msgid "security"
 #~ msgstr "sécurité"
 
 #~ msgid "semaphore block"
 #~ msgstr "Blocage du sémaphore"
 
+#~ msgid "send"
+#~ msgstr "envoyer"
+
 #~ msgid "send a document"
 #~ msgstr "envoyer un document"
+
+#~ msgid "send document"
+#~ msgstr "envoyer le document"
 
 #~ msgid "send mail"
 #~ msgstr "envoyer le mail"
 
 #~ msgid "send mail copy"
 #~ msgstr "copie envoi de mail"
+
+#~ msgid "send search"
+#~ msgstr "Lancer la recherche"
 
 #~ msgid "senddoc"
 #~ msgstr "Envoyer le document"
@@ -9357,6 +8943,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "set RSS usable"
 #~ msgstr "rendre le RSS utilisable"
+
+#~ msgid "set for %s, unset for %s"
+#~ msgstr "cocher pour %s, décocher pour %s"
 
 #~ msgid "set logical name"
 #~ msgstr "affecter un nom logique"
@@ -9379,6 +8968,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "set user tag to a document"
 #~ msgstr "ajouter un tag utilisateur à un document"
 
+#~ msgid "setWaskAnswer::invalid parameters"
+#~ msgstr "setWaskAnswer:: paramètres invalides"
+
 #~ msgid "short_name"
 #~ msgstr "nom abrégé"
 
@@ -9395,6 +8987,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "simple"
 #~ msgstr "Simple"
 
+#~ msgid "society style"
+#~ msgstr "style société"
+
 #~ msgid "specialedit"
 #~ msgstr "Éditions spéciales"
 
@@ -9406,6 +9001,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "specialview %s"
 #~ msgstr "Vue %s"
+
+#~ msgid "specific control"
+#~ msgstr "Contrôle dédié"
 
 #~ msgid "specmessage"
 #~ msgstr "message spécifique"
@@ -9421,6 +9019,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "starting"
 #~ msgstr "commençant par..."
+
+#~ msgid "static array"
+#~ msgstr "tableau statique"
+
+#~ msgid "stop on sql error"
+#~ msgstr "Arrêt lors d'une erreur sql"
 
 #~ msgid "string limit for popup enum"
 #~ msgstr "taille maximum de chaines de caractère pour les choix"
@@ -9472,11 +9076,29 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "suppress document"
 #~ msgstr "enlève le document"
 
+#~ msgid "suppression date"
+#~ msgstr "date de suppression"
+
 #~ msgid "switch search mode (basic/advanced)"
 #~ msgstr "recherche simple / recherche avancée"
 
+#~ msgid "system identifiant equal"
+#~ msgstr "l'identifiant système est égal"
+
+#~ msgid "system identifier not equal"
+#~ msgstr "l'identifiant système n'est pas égal"
+
 #~ msgid "t"
 #~ msgstr "t"
+
+#~ msgid "tag"
+#~ msgstr "tag"
+
+#~ msgid "target folder [%s] is not a folder"
+#~ msgstr "le dossier cible [%s] n'est pas un dossier"
+
+#~ msgid "target folder [%s] is not set"
+#~ msgstr "le dossier cible [%s] n'est pas initialisé"
 
 #~ msgid "task %s is not done correctly"
 #~ msgstr "La tâche %s ne s'est pas terminée correctement"
@@ -9490,6 +9112,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 #~ msgstr ""
 #~ "terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
+
+#~ msgid "text color"
+#~ msgstr "couleur du texte"
 
 #~ msgid "text conversion done for file %s"
 #~ msgstr "conversion texte réussi pour le fichier %s"
@@ -9513,6 +9138,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "the document %s is not related to a workflow"
 #~ msgstr "le document %s n'est pas relié à un workflow"
 
+#~ msgid "the document id [%s] for this attribute is not valid"
+#~ msgstr "l'id du  document [%s] pour cet attribut n'est pas valide"
+
+#~ msgid "the document id is empty"
+#~ msgstr "l'id de document est vide"
+
 #~ msgid ""
 #~ "the document is not referenced: cannot apply profile access modification"
 #~ msgstr ""
@@ -9524,6 +9155,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ "le document n'est pas référencé : la modification du profil d'accès\n"
 #~ "ne peut pas être appliquée"
 
+#~ msgid "the document title is empty"
+#~ msgstr "le titre du document est vide"
+
+#~ msgid "the email must containt the @ character"
+#~ msgstr "L'email doit contenir le caractère @"
+
+#~ msgid "the email syntax  is like : john.doe@anywhere.org"
+#~ msgstr "La syntaxe d'un email est de la forme : jean.martin@quelquepart.org"
+
 #~ msgid "the end date (%s) is before the begin date (%s)"
 #~ msgstr "La date de fin (%s) est antérieure à la date de début (%s)"
 
@@ -9533,11 +9173,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "the state will be unchanged"
 #~ msgstr "L'état restera inchangé"
 
+#~ msgid "the title of document [%s] is not conform to original [%s]"
+#~ msgstr "le titre du document [%s] n'est pas conforme à l'original [%s]"
+
 #~ msgid "the two passwords must be the same"
 #~ msgstr "Les deux mots de passe doivent être identique"
 
 #~ msgid "these needed attributes are empty"
 #~ msgstr "Ces attributs obligatoires sont vides :"
+
+#~ msgid "this groups must be refreshed"
+#~ msgstr "Ce groupe doit être actualisé"
 
 #~ msgid "this kind of document cannot be duplicate"
 #~ msgstr "ce type de document ne peut être dupliqué"
@@ -9548,8 +9194,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "timeraction"
 #~ msgstr "actions"
 
+#~ msgid "title include"
+#~ msgstr "le titre contient"
+
 #~ msgid "to %s"
 #~ msgstr "vers %s"
+
+#~ msgid "to be add"
+#~ msgstr "à ajouter"
 
 #~ msgid "to choose value from input help"
 #~ msgstr "pour choisir une valeur à partir de l'aide à la saisie"
@@ -9572,6 +9224,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "todate"
 #~ msgstr "date de fin"
 
+#~ msgid "today"
+#~ msgstr "aujourd'hui"
+
+#~ msgid "top url to find help documentation"
+#~ msgstr "url pour la documentation en ligne"
+
 #~ msgid "total count"
 #~ msgstr "nombre total de fichiers indexés"
 
@@ -9593,14 +9251,31 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "unchanged state"
 #~ msgstr "Pas de changement d'état"
 
+#~ msgid "uncomplete request"
+#~ msgstr "requête incomplète"
+
+#~ msgid "unit:byte"
+#~ msgid_plural "unit:bytes"
+#~ msgstr[0] "octet"
+#~ msgstr[1] "octets"
+
+#~ msgid "unknow attribute %s (family %s)"
+#~ msgstr "attribut inconnu %s (famille  %s)"
+
 #~ msgid "unknow attribute '%s'"
 #~ msgstr "attribut inconnu '%s'"
+
+#~ msgid "unknow document reference '%s'"
+#~ msgstr "référence de document inconnu '%s'"
 
 #~ msgid "unknow item %s"
 #~ msgstr "entrée inconnue : %s"
 
 #~ msgid "unknow logical reference '%s'"
 #~ msgstr "la référence logique '%s' est inconnue"
+
+#~ msgid "unknow set for attribute %s %s"
+#~ msgstr "Attribut structurant inconnu %s %s"
 
 #~ msgid "unknow user #%s"
 #~ msgstr "Utilisateur inconnu #%s"
@@ -9623,8 +9298,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "unknown login : passwd unchanged"
 #~ msgstr "login incoonu : mot de passe inchangé"
 
+#~ msgid "unlimited revisions"
+#~ msgstr "révisions illimités"
+
+#~ msgid "unlock"
+#~ msgstr "déverrouiller"
+
 #~ msgid "unlock file to discard edit"
 #~ msgstr "déverrouillez le document pour le modifier"
+
+#~ msgid "unlock unowner locked doc"
+#~ msgstr "déverrouiller autres verrous"
 
 #~ msgid "unselect"
 #~ msgstr "déselectionner"
@@ -9641,6 +9325,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "update text file for fulltext"
 #~ msgstr "mise à jour fichier texte pour le fulltext"
 
+#~ msgid "updated"
+#~ msgstr "mis à jour"
+
 #~ msgid "updateldap"
 #~ msgstr "Mise à jour du serveur LDAP"
 
@@ -9650,8 +9337,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "upk"
 #~ msgstr "monter"
 
+#~ msgid "url to reach http server index"
+#~ msgstr "URL pour atteindre l'index du serveur web dynacase"
+
+#~ msgid "url to reach http server index in open mode"
+#~ msgstr "URL pour atteindre le serveur on authentification open"
+
 #~ msgid "use ctrl key in popup menu"
 #~ msgstr "utiliser la touche ctrl dans les menus popup"
+
+#~ msgid "use dynacase user management"
+#~ msgstr "utiliser la gestion d'utilisateur de dynacase"
 
 #~ msgid "user #%s has not a real account. Affectation aborded"
 #~ msgstr "utilisateur n°%s n'a pas de compte réel. Affectation abandonnée"
@@ -9685,6 +9381,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "user csv separator preferences when import documents"
 #~ msgstr "Importation CSV : Séparateur de cellule"
 
+#~ msgid "user has not identificator"
+#~ msgstr "L'utilisateur n'a pas d'identificateur"
+
+#~ msgid "user is deactivated"
+#~ msgstr "l'utilisateur est désactivé"
+
 #~ msgid "user preferences when export family"
 #~ msgstr "préférence utilisateur pour l'exportation de document"
 
@@ -9707,14 +9409,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "verify files status"
 #~ msgstr "Vérification status des fichiers"
 
+#~ msgid "version identificator"
+#~ msgstr "identificateur de version"
+
 #~ msgid "vertical size for secondary windows"
 #~ msgstr "taille verticale lors de l'ouverture de fenêtre secondaire"
 
 #~ msgid "vid %s stored"
 #~ msgstr "vid %s enregistré"
 
+#~ msgid "view"
+#~ msgstr "voir"
+
 #~ msgid "view a part of list"
 #~ msgstr "voir une partie d'une liste"
+
+#~ msgid "view acl"
+#~ msgstr "voir les droits"
 
 #~ msgid "view all columns"
 #~ msgstr "voir toutes les colonnes"
@@ -9722,8 +9433,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "view altern color in document fieldset"
 #~ msgstr "voir l'alternance des couleurs dans les documents"
 
+#~ msgid "view answers"
+#~ msgstr "Voir les réponses"
+
 #~ msgid "view card"
 #~ msgstr "voir une carte"
+
+#~ msgid "view confidential"
+#~ msgstr "voir document confidentiel"
 
 #~ msgid "view constraints"
 #~ msgstr "voir les contraintes"
@@ -9733,6 +9450,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "view detail"
 #~ msgstr "voir détails"
+
+#~ msgid "view document"
+#~ msgstr "voir le document"
 
 #~ msgid "view document in extjs"
 #~ msgstr "Voir le document en extjs"
@@ -9785,15 +9505,27 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "view xml"
 #~ msgstr "voir XML"
 
+#~ msgid "viewacl"
+#~ msgstr "voir les droits"
+
 #~ msgid "visibility %s does not allow modify attribute %s for document %s"
 #~ msgstr ""
 #~ "la visibilité %s ne permet pas de modifier l'attribut %s du document %s"
+
+#~ msgid "waiting : document not set"
+#~ msgstr "en attente : document non affecté"
+
+#~ msgid "warning"
+#~ msgstr "Avertissement"
 
 #~ msgid "warning_name"
 #~ msgstr "la saisie de votre nom est obligatoire."
 
 #~ msgid "warning_pass"
 #~ msgstr "la saisie de votre mot de passe est obligatoire."
+
+#~ msgid "wask"
+#~ msgstr "Voir les réponses"
 
 #~ msgid "welcome"
 #~ msgstr "Bienvenue !"
@@ -9830,6 +9562,15 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "workflow_init :: workflow id %s not found"
 #~ msgstr "workflow_init :: cycle id %s pas trouvé"
 
+#~ msgid "wprocess_private"
+#~ msgstr "privé"
+
+#~ msgid "wprocess_qualified"
+#~ msgstr "qualifié"
+
+#~ msgid "write only"
+#~ msgstr "écriture seule"
+
 #~ msgid "yes"
 #~ msgstr "oui"
 
@@ -9841,3 +9582,72 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "yourusername"
 #~ msgstr "Identifiant : "
+
+#~ msgid "{left} begin by {right}"
+#~ msgstr "{left} commence par {right}"
+
+#~ msgid "{left} equal {right}"
+#~ msgstr "{left} est égal à {right}"
+
+#~ msgid "{left} filename or type include {right}"
+#~ msgstr "le nom du fichier {left} ou son type contient {right}"
+
+#~ msgid "{left} filename or type not include {right}"
+#~ msgstr "le nom du fichier {left} ou son type ne contient pas {right}"
+
+#~ msgid "{left} greater or equal to {right}"
+#~ msgstr "{left} est supérieur ou égal à {right}"
+
+#~ msgid "{left} greater than {right}"
+#~ msgstr "{left} est supérieur à {right}"
+
+#~ msgid "{left} identifier equal {right}"
+#~ msgstr "l'identificateur {left} est égal à {right}"
+
+#~ msgid "{left} identifier not equal {right}"
+#~ msgstr "l'identifiant {left} est différent de {right}"
+
+#~ msgid "{left} include no value of {right}"
+#~ msgstr "aucunes des valeurs de {left} n'inclut {right}"
+
+#~ msgid "{left} include {right}"
+#~ msgstr "{left} contient {right}"
+
+#~ msgid "{left} is between {min} and {max}"
+#~ msgstr "{left] est compris entre {min} et {max}"
+
+#~ msgid "{left} is not empty"
+#~ msgstr "{left} n'est pas vide"
+
+#~ msgid "{left} is not equal {right}"
+#~ msgstr "{left} est différent de {right}"
+
+#~ msgid "{left} is null"
+#~ msgstr "{left} est vide"
+
+#~ msgid "{left} last or first name include {right}"
+#~ msgstr "le prénom ou le nom de {left} conteint {right}"
+
+#~ msgid "{left} lesser or equal to {right}"
+#~ msgstr "{left} est inférieur ou égal à {right}"
+
+#~ msgid "{left} lesser than {right}"
+#~ msgstr "{left} est inférieur à {right}"
+
+#~ msgid "{left} not include {right}"
+#~ msgstr "{left} ne contient pas {right}"
+
+#~ msgid "{left} one id equal {right}"
+#~ msgstr "L'identifiant {left} est égale à {right}"
+
+#~ msgid "{left} one value equal {right}"
+#~ msgstr "{left} une des valeurs est égal à {right}"
+
+#~ msgid "{left} system identifier equal {right}"
+#~ msgstr "l'identifiant système {left} est égal à {right}"
+
+#~ msgid "{left} system identifier not equal {right}"
+#~ msgstr "l'identifiant système {left} est différent de {right}"
+
+#~ msgid "{left} title include {right}"
+#~ msgstr "le titre de {left} inclus {right}"

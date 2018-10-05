@@ -12,92 +12,116 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#ba_title"
+msgctxt "PUBLIMAIL"
+msgid "ba_title"
 msgstr "Title"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#fr_basic"
+msgctxt "PUBLIMAIL"
+msgid "fr_basic"
 msgstr "Basic"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_adesc"
+msgctxt "PUBLIMAIL"
+msgid "pubm_adesc"
 msgstr "Description"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_bgimg"
+msgctxt "PUBLIMAIL"
+msgid "pubm_bgimg"
 msgstr "Background image"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_body"
+msgctxt "PUBLIMAIL"
+msgid "pubm_body"
 msgstr "Message body"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_display"
+msgctxt "PUBLIMAIL"
+msgid "pubm_display"
 msgstr "Display"
 
-msgid "PUBLIMAIL#pubm_display#submenu"
+msgctxt "PUBLIMAIL"
+msgid "pubm_display#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_fam"
+msgctxt "PUBLIMAIL"
+msgid "pubm_fam"
 msgstr "Batch family"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_fdesc"
+msgctxt "PUBLIMAIL"
+msgid "pubm_fdesc"
 msgstr "File"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_fr_att"
+msgctxt "PUBLIMAIL"
+msgid "pubm_fr_att"
 msgstr "Attachments"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_fr_body"
+msgctxt "PUBLIMAIL"
+msgid "pubm_fr_body"
 msgstr "Body"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_fr_config"
+msgctxt "PUBLIMAIL"
+msgid "pubm_fr_config"
 msgstr "Configuration"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_fr_ident"
+msgctxt "PUBLIMAIL"
+msgid "pubm_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_idfam"
+msgctxt "PUBLIMAIL"
+msgid "pubm_idfam"
 msgstr "Id family"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_mailatt"
+msgctxt "PUBLIMAIL"
+msgid "pubm_mailatt"
 msgstr "Mail attribute"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_preview"
+msgctxt "PUBLIMAIL"
+msgid "pubm_preview"
 msgstr "Preview"
 
-msgid "PUBLIMAIL#pubm_preview#submenu"
+msgctxt "PUBLIMAIL"
+msgid "pubm_preview#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_print"
+msgctxt "PUBLIMAIL"
+msgid "pubm_print"
 msgstr "Print"
 
-msgid "PUBLIMAIL#pubm_print#submenu"
+msgctxt "PUBLIMAIL"
+msgid "pubm_print#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_send"
+msgctxt "PUBLIMAIL"
+msgid "pubm_send"
 msgstr "Send"
 
-msgid "PUBLIMAIL#pubm_send#submenu"
+msgctxt "PUBLIMAIL"
+msgid "pubm_send#submenu"
 msgstr "actions"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_t_att"
+msgctxt "PUBLIMAIL"
+msgid "pubm_t_att"
 msgstr "Attachments"
 
 #: App/Fdl/freeaction.ods.csv
-msgid "PUBLIMAIL#pubm_title"
+msgctxt "PUBLIMAIL"
+msgid "pubm_title"
 msgstr "Subject"
 
-msgid "PUBLIMAIL#title"
+msgctxt "PUBLIMAIL"
+msgid "title"
 msgstr "Mailings"

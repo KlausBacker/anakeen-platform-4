@@ -11,86 +11,109 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_attrids"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_attrids"
 msgstr "Attributes"
 
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_filter"
-msgstr "Filter"
-
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_fr_detail"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_fr_detail"
 msgstr "Conditions"
 
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_funcs"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_funcs"
 msgstr "Functions"
 
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_keys"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_keys"
 msgstr "Keywords"
 
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_leftp"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_leftp"
 msgstr "Left parenthesis"
 
-msgid "DSEARCH#se_leftp#no"
-msgstr " "
-
-msgid "DSEARCH#se_leftp#yes"
-msgstr "("
-
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_ol"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_ol"
 msgstr "Condition"
 
-msgid "DSEARCH#se_ol#and"
-msgstr "satisfy all conditions"
-
-msgid "DSEARCH#se_ol#or"
-msgstr "satisfy at least one condition"
-
-msgid "DSEARCH#se_ol#perso"
-msgstr "personalized"
-
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_ols"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_ols"
 msgstr "Operator"
 
-msgid "DSEARCH#se_ols#and"
-msgstr "and"
-
-msgid "DSEARCH#se_ols#or"
-msgstr "or"
-
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_rightp"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_rightp"
 msgstr "Right parenthesis"
 
-msgid "DSEARCH#se_rightp#no"
-msgstr " "
-
-msgid "DSEARCH#se_rightp#yes"
-msgstr ")"
-
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_t_detail"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_t_detail"
 msgstr "Conditions"
 
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_t_filters"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_t_filters"
 msgstr "Filters"
 
-#: App/Fdl/searches.ods.csv
-msgid "DSEARCH#se_typefilter"
+#: dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_typefilter"
 msgstr "Type"
 
-msgid "DSEARCH#se_typefilter#generated"
-msgstr "Generated"
+#~ msgctxt "DSEARCH"
+#~ msgid "se_filter"
+#~ msgstr "Filter"
 
-msgid "DSEARCH#se_typefilter#specified"
-msgstr "Specified"
+#~ msgctxt "DSEARCH"
+#~ msgid "se_leftp#no"
+#~ msgstr " "
 
-msgid "DSEARCH#title"
-msgstr "Detailed search"
+#~ msgctxt "DSEARCH"
+#~ msgid "se_leftp#yes"
+#~ msgstr "("
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#and"
+#~ msgstr "satisfy all conditions"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#or"
+#~ msgstr "satisfy at least one condition"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#perso"
+#~ msgstr "personalized"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ols#and"
+#~ msgstr "and"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ols#or"
+#~ msgstr "or"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_rightp#no"
+#~ msgstr " "
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_rightp#yes"
+#~ msgstr ")"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_typefilter#generated"
+#~ msgstr "Generated"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_typefilter#specified"
+#~ msgstr "Specified"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "title"
+#~ msgstr "Detailed search"

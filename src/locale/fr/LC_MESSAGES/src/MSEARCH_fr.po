@@ -11,31 +11,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 #, fuzzy
-msgid "MSEARCH#se_crit"
+msgctxt "MSEARCH"
+msgid "se_crit"
 msgstr "Critère"
 
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 #, fuzzy
-msgid "MSEARCH#se_fr_searches"
+msgctxt "MSEARCH"
+msgid "se_fr_searches"
 msgstr "Les recherches"
 
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 #, fuzzy
-msgid "MSEARCH#seg_cond"
-msgstr "Recherche (titre)"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "MSEARCH#seg_idcond"
+msgctxt "MSEARCH"
+msgid "seg_idcond"
 msgstr "Recherche"
 
-#: App/Fdl/searches.ods.csv
+#: msearch.struct.xml
 #, fuzzy
-msgid "MSEARCH#seg_t_cond"
+msgctxt "MSEARCH"
+msgid "seg_t_cond"
 msgstr "Ensemble de recherche"
 
 #, fuzzy
-msgid "MSEARCH#title"
-msgstr "Recherche groupée"
+#~ msgctxt "MSEARCH"
+#~ msgid "seg_cond"
+#~ msgstr "Recherche (titre)"
+
+#, fuzzy
+#~ msgctxt "MSEARCH"
+#~ msgid "title"
+#~ msgstr "Recherche groupée"

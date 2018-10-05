@@ -11,35 +11,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_catg"
-msgstr "Category"
-
-msgid "IMAGE#img_catg#1"
-msgstr "Photo"
-
-msgid "IMAGE#img_catg#2"
+#: image.struct.xml
+msgctxt "IMAGE"
+msgid "img_file"
 msgstr "Picture"
 
-#: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_description"
-msgstr "Description"
-
-#: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_file"
+#: image.struct.xml
+msgctxt "IMAGE"
+msgid "img_frfile"
 msgstr "Picture"
 
-#: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_fr_char"
-msgstr "Description"
-
-#: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_frfile"
-msgstr "Picture"
-
-#: App/Fdl/misc.ods.csv
-msgid "IMAGE#img_title"
+#: image.struct.xml
+msgctxt "IMAGE"
+msgid "img_title"
 msgstr "Title"
 
-msgid "IMAGE#title"
-msgstr "Picture"
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg"
+#~ msgstr "Category"
+
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg#1"
+#~ msgstr "Photo"
+
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg#2"
+#~ msgstr "Picture"
+
+#~ msgctxt "IMAGE"
+#~ msgid "img_description"
+#~ msgstr "Description"
+
+#~ msgctxt "IMAGE"
+#~ msgid "img_fr_char"
+#~ msgstr "Description"
+
+#~ msgctxt "IMAGE"
+#~ msgid "title"
+#~ msgstr "Picture"

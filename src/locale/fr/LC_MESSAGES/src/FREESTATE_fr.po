@@ -13,42 +13,51 @@ msgstr ""
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "FREESTATE#frst_color"
+msgctxt "FREESTATE"
+msgid "frst_color"
 msgstr "Couleur"
 
 #, fuzzy
-msgid "FREESTATE#frst_color#elabel"
+msgctxt "FREESTATE"
+msgid "frst_color#elabel"
 msgstr "couleur représentant l'état"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "FREESTATE#frst_desc"
+msgctxt "FREESTATE"
+msgid "frst_desc"
 msgstr "Description"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "FREESTATE#frst_fam"
+msgctxt "FREESTATE"
+msgid "frst_fam"
 msgstr "Famille"
 
 #, fuzzy
-msgid "FREESTATE#frst_fam#elabel"
+msgctxt "FREESTATE"
+msgid "frst_fam#elabel"
 msgstr "restreindre l'usage à la famille spécifiée"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "FREESTATE#frst_famid"
+msgctxt "FREESTATE"
+msgid "frst_famid"
 msgstr "Famille (id)"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "FREESTATE#frst_fr_ident"
+msgctxt "FREESTATE"
+msgid "frst_fr_ident"
 msgstr "Identification"
 
 #: App/Fdl/workflows.ods.csv
 #, fuzzy
-msgid "FREESTATE#frst_name"
+msgctxt "FREESTATE"
+msgid "frst_name"
 msgstr "Nom"
 
 #, fuzzy
-msgid "FREESTATE#title"
+msgctxt "FREESTATE"
+msgid "title"
 msgstr "État libre"

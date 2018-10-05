@@ -11,240 +11,283 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_action"
+msgctxt "EXEC"
+msgid "exec_action"
 msgstr "Action"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_api"
+msgctxt "EXEC"
+msgid "exec_api"
 msgstr "Api"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_application"
+msgctxt "EXEC"
+msgid "exec_application"
 msgstr "Application"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_bgexec"
-msgstr "Exécuter maintenant"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_date"
+msgctxt "EXEC"
+msgid "exec_date"
 msgstr "Date d'exécution"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_detail"
+msgctxt "EXEC"
+msgid "exec_detail"
 msgstr "Détail"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_detaillog"
+msgctxt "EXEC"
+msgid "exec_detaillog"
 msgstr "Log"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_elapsed"
+msgctxt "EXEC"
+msgid "exec_elapsed"
 msgstr "Durée d'exécution"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_fr_batch"
+msgctxt "EXEC"
+msgid "exec_fr_batch"
 msgstr "Traitement"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_fr_cr"
+msgctxt "EXEC"
+msgid "exec_fr_cr"
 msgstr "Compte-rendu"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_fr_date"
+msgctxt "EXEC"
+msgid "exec_fr_date"
 msgstr "Dates"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_fr_ident"
+msgctxt "EXEC"
+msgid "exec_fr_ident"
 msgstr "Identification"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_fr_param"
-msgstr "Paramètre"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_handnextdate"
+msgctxt "EXEC"
+msgid "exec_handnextdate"
 msgstr "À exécuter le"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_idadmin"
-msgstr "Administrateur"
-
-#, fuzzy
-msgid "EXEC#exec_idadmin#elabel"
-msgstr "recevra en copie les couriels des rapports d'exécution"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_idref"
+msgctxt "EXEC"
+msgid "exec_idref"
 msgstr "Issue de"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_iduser"
+msgctxt "EXEC"
+msgid "exec_iduser"
 msgstr "Exécutant"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_idvar"
+msgctxt "EXEC"
+msgid "exec_idvar"
 msgstr "Variable"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_nextdate"
+msgctxt "EXEC"
+msgid "exec_nextdate"
 msgstr "Prochaine date d'exécution"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_periodday"
+msgctxt "EXEC"
+msgid "exec_periodday"
 msgstr "Période en jours"
 
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_periodday#elabel"
-msgstr "à faire tous les n jours"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber"
-msgstr "Jour de la semaine"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber# "
-msgstr "---"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber#1"
-msgstr "Lundi"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber#2"
-msgstr "Mardi"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber#3"
-msgstr "Mercredi"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber#4"
-msgstr "Jeudi"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber#5"
-msgstr "Vendredi"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber#6"
-msgstr "Samedi"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber#7"
-msgstr "Dimanche"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_periodenddate"
-msgstr "Jusqu'au"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_periodhour"
+msgctxt "EXEC"
+msgid "exec_periodhour"
 msgstr "Période en heures"
 
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_periodhour#elabel"
-msgstr "à faire tous les n heures"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_periodmin"
+msgctxt "EXEC"
+msgid "exec_periodmin"
 msgstr "Période en minutes"
 
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_periodmin#elabel"
-msgstr "à faire tous les n minutes"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_prevdate"
+msgctxt "EXEC"
+msgid "exec_prevdate"
 msgstr "Précédente date d'exécution"
 
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_prevdate#ltitle"
-msgstr "Voir l'exécution précédente"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_ref"
-msgstr "Référent (titre)"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_reset"
-msgstr "Abandonner l'exécution en cours"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_state"
+msgctxt "EXEC"
+msgid "exec_state"
 msgstr "Statut"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_status"
+msgctxt "EXEC"
+msgid "exec_status"
 msgstr "Exécution"
 
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_status#none"
-msgstr "Non"
-
-#, fuzzy
-msgid "EXEC#exec_status#progressing"
-msgstr "En cours"
-
-#, fuzzy
-msgid "EXEC#exec_status#waiting"
-msgstr "En attente"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_statusdate"
+msgctxt "EXEC"
+msgid "exec_statusdate"
 msgstr "Exécution depuis"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_t_parameters"
+msgctxt "EXEC"
+msgid "exec_t_parameters"
 msgstr "Paramètres"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_title"
+msgctxt "EXEC"
+msgid "exec_title"
 msgstr "Titre"
 
-#: App/Fdl/freeaction.ods.csv
+#: exec.struct.xml
 #, fuzzy
-msgid "EXEC#exec_user"
-msgstr "Exécutant (titre)"
-
-#: App/Fdl/freeaction.ods.csv
-#, fuzzy
-msgid "EXEC#exec_valuevar"
+msgctxt "EXEC"
+msgid "exec_valuevar"
 msgstr "Valeur"
 
 #, fuzzy
-msgid "EXEC#title"
-msgstr "Processus"
+#~ msgctxt "EXEC"
+#~ msgid "exec_bgexec"
+#~ msgstr "Exécuter maintenant"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_fr_param"
+#~ msgstr "Paramètre"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_idadmin"
+#~ msgstr "Administrateur"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_idadmin#elabel"
+#~ msgstr "recevra en copie les couriels des rapports d'exécution"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodday#elabel"
+#~ msgstr "à faire tous les n jours"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber"
+#~ msgstr "Jour de la semaine"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber# "
+#~ msgstr "---"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#1"
+#~ msgstr "Lundi"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#2"
+#~ msgstr "Mardi"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#3"
+#~ msgstr "Mercredi"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#4"
+#~ msgstr "Jeudi"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#5"
+#~ msgstr "Vendredi"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#6"
+#~ msgstr "Samedi"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#7"
+#~ msgstr "Dimanche"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodenddate"
+#~ msgstr "Jusqu'au"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodhour#elabel"
+#~ msgstr "à faire tous les n heures"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodmin#elabel"
+#~ msgstr "à faire tous les n minutes"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_prevdate#ltitle"
+#~ msgstr "Voir l'exécution précédente"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_ref"
+#~ msgstr "Référent (titre)"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_reset"
+#~ msgstr "Abandonner l'exécution en cours"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#none"
+#~ msgstr "Non"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#progressing"
+#~ msgstr "En cours"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#waiting"
+#~ msgstr "En attente"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_user"
+#~ msgstr "Exécutant (titre)"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "title"
+#~ msgstr "Processus"

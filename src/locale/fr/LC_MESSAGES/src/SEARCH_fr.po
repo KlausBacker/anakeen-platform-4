@@ -11,233 +11,278 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#gui_color"
-msgstr "Couleur intercalaire"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "fr_basic"
+msgstr ""
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#gui_isrss"
-msgstr "Utilisable comme flux RSS"
-
-#, fuzzy
-msgid "SEARCH#gui_isrss#[bool]no"
-msgstr "non"
-
-#, fuzzy
-msgid "SEARCH#gui_isrss#yes"
-msgstr "oui"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#gui_sysrss"
-msgstr "Flux RSS système"
-
-#, fuzzy
-msgid "SEARCH#gui_sysrss#[bool]no"
-msgstr "non"
-
-#, fuzzy
-msgid "SEARCH#gui_sysrss#yes"
-msgstr "oui"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_acl"
+msgctxt "SEARCH"
+msgid "se_acl"
 msgstr "Document"
 
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_acl#delete"
-msgstr "Supprimable"
-
-#, fuzzy
-msgid "SEARCH#se_acl#edit"
-msgstr "Modifiable"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_archive"
-msgstr "Dans l'archive"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_author"
+msgctxt "SEARCH"
+msgid "se_author"
 msgstr "Auteur"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_case"
+msgctxt "SEARCH"
+msgid "se_case"
 msgstr "Mode "
 
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_case#full"
-msgstr "mot complet"
-
-#, fuzzy
-msgid "SEARCH#se_case#no"
-msgstr "expression sans casse"
-
-#, fuzzy
-msgid "SEARCH#se_case#yes"
-msgstr "expression avec casse"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_ccfld"
-msgstr "Dossier père courant"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_cfld"
-msgstr "À partir du dossier"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_crit"
+msgctxt "SEARCH"
+msgid "se_crit"
 msgstr "Critère"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_fam"
-msgstr "Famille"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_famid"
+msgctxt "SEARCH"
+msgid "se_famid"
 msgstr "Famille (id)"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_famonly"
+msgctxt "SEARCH"
+msgid "se_famonly"
 msgstr "Sans sous famille"
 
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_famonly#no"
-msgstr "Avec les sous familles"
-
-#, fuzzy
-msgid "SEARCH#se_famonly#yes"
-msgstr "Sans les sous familles"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_idcfld"
+msgctxt "SEARCH"
+msgid "se_idcfld"
 msgstr "Id dossier père courant"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_idfld"
+msgctxt "SEARCH"
+msgid "se_idfld"
 msgstr "Dossier racine"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_key"
+msgctxt "SEARCH"
+msgid "se_key"
 msgstr "Mot-clef"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_latest"
+msgctxt "SEARCH"
+msgid "se_latest"
 msgstr "Révision"
 
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_latest#allfixed"
-msgstr "sans la courante"
-
-#, fuzzy
-msgid "SEARCH#se_latest#fixed"
-msgstr "dernière révision"
-
-#, fuzzy
-msgid "SEARCH#se_latest#lastfixed"
-msgstr "dernière parmi les révisions effectuées"
-
-#, fuzzy
-msgid "SEARCH#se_latest#no"
-msgstr "toutes les révisions"
-
-#, fuzzy
-msgid "SEARCH#se_latest#yes"
-msgstr "courante"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_memo"
-msgstr "À utiliser dans les menus"
-
-#, fuzzy
-msgid "SEARCH#se_memo#[bool]no"
-msgstr "non"
-
-#, fuzzy
-msgid "SEARCH#se_memo#yes"
-msgstr "oui"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_open"
-msgstr "Ouvrir"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_openfolio"
-msgstr "Ouvrir comme une chemise"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_orderby"
+msgctxt "SEARCH"
+msgid "se_orderby"
 msgstr "Trié par"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_setsysrss"
-msgstr "RSS visible/masquée aux utilisateurs"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_sqlselect"
+msgctxt "SEARCH"
+msgid "se_sqlselect"
 msgstr "Requête sql"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_static"
+msgctxt "SEARCH"
+msgid "se_static"
 msgstr "Requête statique"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_sublevel"
+msgctxt "SEARCH"
+msgid "se_sublevel"
 msgstr "Profondeur de recherche"
 
-#: App/Fdl/searches.ods.csv
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_sysfam"
+msgctxt "SEARCH"
+msgid "se_sysfam"
 msgstr "Inclure les documents système"
 
+#: search.struct.xml
 #, fuzzy
-msgid "SEARCH#se_sysfam#[bool]no"
-msgstr "non"
-
-#, fuzzy
-msgid "SEARCH#se_sysfam#yes"
-msgstr "oui"
-
-#: App/Fdl/searches.ods.csv
-#, fuzzy
-msgid "SEARCH#se_trash"
+msgctxt "SEARCH"
+msgid "se_trash"
 msgstr "Dans la poubelle"
 
 #, fuzzy
-msgid "SEARCH#se_trash#also"
-msgstr "aussi"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_color"
+#~ msgstr "Couleur intercalaire"
 
 #, fuzzy
-msgid "SEARCH#se_trash#no"
-msgstr "non"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_isrss"
+#~ msgstr "Utilisable comme flux RSS"
 
 #, fuzzy
-msgid "SEARCH#se_trash#only"
-msgstr "seulement"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_isrss#[bool]no"
+#~ msgstr "non"
 
 #, fuzzy
-msgid "SEARCH#title"
-msgstr "Recherche"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_isrss#yes"
+#~ msgstr "oui"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "gui_sysrss"
+#~ msgstr "Flux RSS système"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "gui_sysrss#[bool]no"
+#~ msgstr "non"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "gui_sysrss#yes"
+#~ msgstr "oui"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_acl#delete"
+#~ msgstr "Supprimable"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_acl#edit"
+#~ msgstr "Modifiable"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_archive"
+#~ msgstr "Dans l'archive"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_case#full"
+#~ msgstr "mot complet"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_case#no"
+#~ msgstr "expression sans casse"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_case#yes"
+#~ msgstr "expression avec casse"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_ccfld"
+#~ msgstr "Dossier père courant"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_cfld"
+#~ msgstr "À partir du dossier"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_fam"
+#~ msgstr "Famille"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_famonly#no"
+#~ msgstr "Avec les sous familles"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_famonly#yes"
+#~ msgstr "Sans les sous familles"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#allfixed"
+#~ msgstr "sans la courante"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#fixed"
+#~ msgstr "dernière révision"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#lastfixed"
+#~ msgstr "dernière parmi les révisions effectuées"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#no"
+#~ msgstr "toutes les révisions"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#yes"
+#~ msgstr "courante"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_memo"
+#~ msgstr "À utiliser dans les menus"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_memo#[bool]no"
+#~ msgstr "non"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_memo#yes"
+#~ msgstr "oui"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_open"
+#~ msgstr "Ouvrir"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_openfolio"
+#~ msgstr "Ouvrir comme une chemise"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_setsysrss"
+#~ msgstr "RSS visible/masquée aux utilisateurs"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_sysfam#[bool]no"
+#~ msgstr "non"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_sysfam#yes"
+#~ msgstr "oui"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_trash#also"
+#~ msgstr "aussi"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_trash#no"
+#~ msgstr "non"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "se_trash#only"
+#~ msgstr "seulement"
+
+#, fuzzy
+#~ msgctxt "SEARCH"
+#~ msgid "title"
+#~ msgstr "Recherche"

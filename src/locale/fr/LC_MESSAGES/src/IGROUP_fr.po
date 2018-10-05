@@ -11,32 +11,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: App/Fusers/account.ods.csv
-msgid "IGROUP#grp_choosegroup"
-msgstr "Modifier la hiérarchie"
-
-#: App/Fusers/account.ods.csv
-msgid "IGROUP#grp_fr_intranet"
+#: igroup.struct.xml
+msgctxt "IGROUP"
+msgid "grp_fr_intranet"
 msgstr "Système"
 
-#: App/Fusers/account.ods.csv
-msgid "IGROUP#grp_roles"
+#: igroup.struct.xml
+msgctxt "IGROUP"
+msgid "grp_roles"
 msgstr "Rôles associés"
 
-msgid "IGROUP#grp_roles#showempty"
-msgstr "Aucun rôle"
-
-msgid "IGROUP#title"
-msgstr "Groupe d'utilisateurs"
-
-#: App/Fusers/account.ods.csv
-msgid "IGROUP#us_login"
+#: igroup.struct.xml
+msgctxt "IGROUP"
+msgid "us_login"
 msgstr "Identifiant"
 
-#: App/Fusers/account.ods.csv
-msgid "IGROUP#us_meid"
+#: igroup.struct.xml
+msgctxt "IGROUP"
+msgid "us_meid"
 msgstr "Groupe id"
 
-#: App/Fusers/account.ods.csv
-msgid "IGROUP#us_whatid"
+#: igroup.struct.xml
+msgctxt "IGROUP"
+msgid "us_whatid"
 msgstr "Identifiant système"
+
+#~ msgctxt "IGROUP"
+#~ msgid "grp_choosegroup"
+#~ msgstr "Modifier la hiérarchie"
+
+#~ msgctxt "IGROUP"
+#~ msgid "grp_roles#showempty"
+#~ msgstr "Aucun rôle"
+
+#~ msgctxt "IGROUP"
+#~ msgid "title"
+#~ msgstr "Groupe d'utilisateurs"

@@ -11,9 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/fdl.ods.csv
-msgid "PFAM#dpdoc_fr_dyn"
-msgstr ""
-
-msgid "PFAM#title"
-msgstr "Family profile"
+#~ msgctxt "PFAM"
+#~ msgid "title"
+#~ msgstr "Family profile"

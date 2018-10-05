@@ -11,43 +11,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#dpdoc_fam"
-msgstr "Family"
-
-msgid "PDOC#dpdoc_fam#elabel"
-msgstr "Family used for dynamic profiles"
-
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#dpdoc_famid"
-msgstr "Family id"
-
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#dpdoc_fr_dyn"
-msgstr "Dynamic"
-
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_access"
-msgstr "Accessibility"
-
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_activate"
-msgstr "Activate"
-
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_desactivate"
-msgstr "Deactivate"
-
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_desc"
+#: pdoc.struct.xml
+#, fuzzy
+msgctxt "PDOC"
+msgid "ba_desc"
 msgstr "Description"
 
-#: App/Fdl/fdl.ods.csv
-msgid "PDOC#prf_forcecomputing"
-msgstr "Force profile propagation"
-
-msgid "PDOC#prf_forcecomputing#ltitle"
-msgstr "Force associated documents profiles recalculation"
-
-msgid "PDOC#title"
+#: pdoc.struct.xml
+#, fuzzy
+msgctxt "PDOC"
+msgid "ba_title"
 msgstr "Document profile"
+
+#: pdoc.struct.xml
+msgctxt "PDOC"
+msgid "dpdoc_fam"
+msgstr "Family"
+
+#: pdoc.struct.xml
+msgctxt "PDOC"
+msgid "dpdoc_famid"
+msgstr "Family id"
+
+#: pdoc.struct.xml
+msgctxt "PDOC"
+msgid "dpdoc_fr_dyn"
+msgstr "Dynamic"
+
+#: pdoc.struct.xml
+#, fuzzy
+msgctxt "PDOC"
+msgid "fr_basic"
+msgstr "Basique"
+
+#~ msgctxt "PDOC"
+#~ msgid "dpdoc_fam#elabel"
+#~ msgstr "Family used for dynamic profiles"
+
+#~ msgctxt "PDOC"
+#~ msgid "prf_access"
+#~ msgstr "Accessibility"
+
+#~ msgctxt "PDOC"
+#~ msgid "prf_activate"
+#~ msgstr "Activate"
+
+#~ msgctxt "PDOC"
+#~ msgid "prf_desactivate"
+#~ msgstr "Deactivate"
+
+#~ msgctxt "PDOC"
+#~ msgid "prf_forcecomputing"
+#~ msgstr "Force profile propagation"
+
+#~ msgctxt "PDOC"
+#~ msgid "prf_forcecomputing#ltitle"
+#~ msgstr "Force associated documents profiles recalculation"

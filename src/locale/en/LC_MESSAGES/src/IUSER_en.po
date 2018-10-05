@@ -11,198 +11,252 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-msgid "IUSER#title"
-msgstr "User Account"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_accexpiredate"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_accexpiredate"
 msgstr "Account expiration date"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_activateaccount"
-msgstr "Activate account"
-
-msgid "IUSER#us_activateaccount#submenu"
-msgstr "Manage account"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_daydelay"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_daydelay"
 msgstr "Expiration deadline in day"
 
-msgid "IUSER#us_daydelay#elabel"
-msgstr "enter -1 to cancel expiration"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_defaultgroup"
-msgstr "Default group"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_desactivateaccount"
-msgstr "Deactivate account"
-
-msgid "IUSER#us_desactivateaccount#submenu"
-msgstr "Manage account"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_expires"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_expires"
 msgstr "Expiration date epoch"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_expiresd"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_expiresd"
 msgstr "Expiration date"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_expirest"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_expirest"
 msgstr "Expiration hour"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_extmail"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_extmail"
 msgstr "Main mail"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fname"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fname"
 msgstr "First name"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_default"
-msgstr "Parameter"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_ident"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_ident"
 msgstr "Civil status"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_intranet"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_intranet"
 msgstr "Intranet login"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_privacy"
-msgstr "Privacy"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_security"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_security"
 msgstr "Security"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_substitute"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_substitute"
 msgstr "Substitute"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_fr_userchange"
+#: iuser.struct.xml
+#, fuzzy
+msgctxt "IUSER"
+msgid "us_fr_sysident"
+msgstr "Civil status"
+
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_userchange"
 msgstr "Password"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_group"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_group"
 msgstr "Group (title)"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_groups"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_groups"
 msgstr "User groups"
 
-msgid "IUSER#us_groups#showempty"
-msgstr "No group"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_idgroup"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_idgroup"
 msgstr "Group"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_incumbents"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_incumbents"
 msgstr "Holders"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_inituser"
-msgstr "Refresh users"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_ldapdn"
-msgstr "Login LDAP"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_lname"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_lname"
 msgstr "Name"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_login"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_login"
 msgstr "Login"
 
-msgid "IUSER#us_login#elabel"
-msgstr "Enter '-' if you don't want a login"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_loginfailure"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_loginfailure"
 msgstr "Login failures"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_mail"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_mail"
 msgstr "Mail"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_meid"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_meid"
 msgstr "User id"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_menuresetlogfails"
-msgstr "Reset login failures"
-
-msgid "IUSER#us_menuresetlogfails#submenu"
-msgstr "Manage account"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_passdelay"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_passdelay"
 msgstr "Deadline epoch"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_passwd1"
-msgstr "New password"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_passwd2"
-msgstr "Confirm password"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_rolegorigin"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_rolegorigin"
 msgstr "Group"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_roles"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_roles"
 msgstr "Role"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_rolesorigin"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_rolesorigin"
 msgstr "Origin"
 
-msgid "IUSER#us_rolesorigin#group"
-msgstr "Obtained by"
-
-msgid "IUSER#us_rolesorigin#internal"
-msgstr "Affectation direct"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_status"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_status"
 msgstr "Account status"
 
-msgid "IUSER#us_status#A"
-msgstr "Activated"
-
-msgid "IUSER#us_status#D"
-msgstr "Deactivated"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_substitute"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_substitute"
 msgstr "Substitute"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_t_roles"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_t_roles"
 msgstr "Roles"
 
-msgid "IUSER#us_t_roles#showempty"
-msgstr "No role"
-
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_tab_system"
+#: iuser.struct.xml
+#, fuzzy
+msgctxt "IUSER"
+msgid "us_tab_sysinfo"
 msgstr "System"
 
-#: App/Fusers/account.ods.csv
-msgid "IUSER#us_whatid"
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_tab_system"
+msgstr "System"
+
+#: iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_whatid"
 msgstr "Identifier"
+
+#~ msgctxt "IUSER"
+#~ msgid "title"
+#~ msgstr "User Account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_activateaccount"
+#~ msgstr "Activate account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_activateaccount#submenu"
+#~ msgstr "Manage account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_daydelay#elabel"
+#~ msgstr "enter -1 to cancel expiration"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_defaultgroup"
+#~ msgstr "Default group"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_desactivateaccount"
+#~ msgstr "Deactivate account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_desactivateaccount#submenu"
+#~ msgstr "Manage account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_fr_default"
+#~ msgstr "Parameter"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_fr_privacy"
+#~ msgstr "Privacy"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_groups#showempty"
+#~ msgstr "No group"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_inituser"
+#~ msgstr "Refresh users"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_ldapdn"
+#~ msgstr "Login LDAP"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_login#elabel"
+#~ msgstr "Enter '-' if you don't want a login"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_menuresetlogfails"
+#~ msgstr "Reset login failures"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_menuresetlogfails#submenu"
+#~ msgstr "Manage account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_passwd1"
+#~ msgstr "New password"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_passwd2"
+#~ msgstr "Confirm password"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_rolesorigin#group"
+#~ msgstr "Obtained by"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_rolesorigin#internal"
+#~ msgstr "Affectation direct"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_status#A"
+#~ msgstr "Activated"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_status#D"
+#~ msgstr "Deactivated"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_t_roles#showempty"
+#~ msgstr "No role"

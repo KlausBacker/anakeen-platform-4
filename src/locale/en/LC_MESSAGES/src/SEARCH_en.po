@@ -11,182 +11,227 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#gui_color"
-msgstr "Guide color"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "fr_basic"
+msgstr ""
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#gui_isrss"
-msgstr "Use as RSS feed"
-
-msgid "SEARCH#gui_isrss#[bool]no"
-msgstr "no"
-
-msgid "SEARCH#gui_isrss#yes"
-msgstr "yes"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#gui_sysrss"
-msgstr "RSS system feed"
-
-msgid "SEARCH#gui_sysrss#[bool]no"
-msgstr "no"
-
-msgid "SEARCH#gui_sysrss#yes"
-msgstr "yes"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_acl"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_acl"
 msgstr "Document"
 
-msgid "SEARCH#se_acl#delete"
-msgstr "Deletable"
-
-msgid "SEARCH#se_acl#edit"
-msgstr "Alterable"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_archive"
-msgstr "In archive"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_author"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_author"
 msgstr "Author"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_case"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_case"
 msgstr "Mode "
 
-msgid "SEARCH#se_case#full"
-msgstr "full word"
-
-msgid "SEARCH#se_case#no"
-msgstr "case insensitive"
-
-msgid "SEARCH#se_case#yes"
-msgstr "case sensitive"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_ccfld"
-msgstr "Current father folder"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_cfld"
-msgstr "From folder"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_crit"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_crit"
 msgstr "Criteria"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_fam"
-msgstr "Family"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_famid"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_famid"
 msgstr "Family (id)"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_famonly"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_famonly"
 msgstr "Without inherited families"
 
-msgid "SEARCH#se_famonly#no"
-msgstr "With inherited families"
-
-msgid "SEARCH#se_famonly#yes"
-msgstr "Without inherited families"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_idcfld"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_idcfld"
 msgstr "Id of current father folder"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_idfld"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_idfld"
 msgstr "Root folder"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_key"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_key"
 msgstr "Keyword"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_latest"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_latest"
 msgstr "Revision"
 
-msgid "SEARCH#se_latest#allfixed"
-msgstr "without current revision"
-
-msgid "SEARCH#se_latest#fixed"
-msgstr "last revision"
-
-msgid "SEARCH#se_latest#lastfixed"
-msgstr "last of fixed revisions"
-
-msgid "SEARCH#se_latest#no"
-msgstr "all revisions"
-
-msgid "SEARCH#se_latest#yes"
-msgstr "current"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_memo"
-msgstr "Use in sub-menus"
-
-msgid "SEARCH#se_memo#[bool]no"
-msgstr "no"
-
-msgid "SEARCH#se_memo#yes"
-msgstr "yes"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_open"
-msgstr "Open"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_openfolio"
-msgstr "Open as portfolio"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_orderby"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_orderby"
 msgstr "Order by"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_setsysrss"
-msgstr "RSS visible/hidden to users"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_sqlselect"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_sqlselect"
 msgstr "SQL request"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_static"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_static"
 msgstr "Static request"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_sublevel"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_sublevel"
 msgstr "Search depth"
 
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_sysfam"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_sysfam"
 msgstr "Include system documents"
 
-msgid "SEARCH#se_sysfam#[bool]no"
-msgstr "no"
-
-msgid "SEARCH#se_sysfam#yes"
-msgstr "yes"
-
-#: App/Fdl/searches.ods.csv
-msgid "SEARCH#se_trash"
+#: search.struct.xml
+msgctxt "SEARCH"
+msgid "se_trash"
 msgstr "In trash"
 
-msgid "SEARCH#se_trash#also"
-msgstr "also"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_color"
+#~ msgstr "Guide color"
 
-msgid "SEARCH#se_trash#no"
-msgstr "no"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_isrss"
+#~ msgstr "Use as RSS feed"
 
-msgid "SEARCH#se_trash#only"
-msgstr "only"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_isrss#[bool]no"
+#~ msgstr "no"
 
-msgid "SEARCH#title"
-msgstr "Search"
+#~ msgctxt "SEARCH"
+#~ msgid "gui_isrss#yes"
+#~ msgstr "yes"
+
+#~ msgctxt "SEARCH"
+#~ msgid "gui_sysrss"
+#~ msgstr "RSS system feed"
+
+#~ msgctxt "SEARCH"
+#~ msgid "gui_sysrss#[bool]no"
+#~ msgstr "no"
+
+#~ msgctxt "SEARCH"
+#~ msgid "gui_sysrss#yes"
+#~ msgstr "yes"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_acl#delete"
+#~ msgstr "Deletable"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_acl#edit"
+#~ msgstr "Alterable"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_archive"
+#~ msgstr "In archive"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_case#full"
+#~ msgstr "full word"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_case#no"
+#~ msgstr "case insensitive"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_case#yes"
+#~ msgstr "case sensitive"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_ccfld"
+#~ msgstr "Current father folder"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_cfld"
+#~ msgstr "From folder"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_fam"
+#~ msgstr "Family"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_famonly#no"
+#~ msgstr "With inherited families"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_famonly#yes"
+#~ msgstr "Without inherited families"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#allfixed"
+#~ msgstr "without current revision"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#fixed"
+#~ msgstr "last revision"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#lastfixed"
+#~ msgstr "last of fixed revisions"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#no"
+#~ msgstr "all revisions"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_latest#yes"
+#~ msgstr "current"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_memo"
+#~ msgstr "Use in sub-menus"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_memo#[bool]no"
+#~ msgstr "no"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_memo#yes"
+#~ msgstr "yes"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_open"
+#~ msgstr "Open"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_openfolio"
+#~ msgstr "Open as portfolio"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_setsysrss"
+#~ msgstr "RSS visible/hidden to users"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_sysfam#[bool]no"
+#~ msgstr "no"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_sysfam#yes"
+#~ msgstr "yes"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_trash#also"
+#~ msgstr "also"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_trash#no"
+#~ msgstr "no"
+
+#~ msgctxt "SEARCH"
+#~ msgid "se_trash#only"
+#~ msgstr "only"
+
+#~ msgctxt "SEARCH"
+#~ msgid "title"
+#~ msgstr "Search"

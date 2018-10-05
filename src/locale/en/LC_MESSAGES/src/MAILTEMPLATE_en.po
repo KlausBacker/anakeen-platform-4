@@ -11,174 +11,224 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "MAILTEMPLATE#title"
-msgstr "Mail template"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_attach"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_attach"
 msgstr "Attachment"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_body"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_body"
 msgstr "Body"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_copymode"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_copymode"
 msgstr "-"
 
-msgid "MAILTEMPLATE#tmail_copymode#bcc"
-msgstr "Bcc"
-
-msgid "MAILTEMPLATE#tmail_copymode#cc"
-msgstr "Cc"
-
-msgid "MAILTEMPLATE#tmail_copymode#to"
-msgstr "To"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_dest"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_dest"
 msgstr "Recipient"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_desttype"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_desttype"
 msgstr "Type"
 
-msgid "MAILTEMPLATE#tmail_desttype#A"
-msgstr "Text attribute"
-
-msgid "MAILTEMPLATE#tmail_desttype#D"
-msgstr "Relation attribute"
-
-msgid "MAILTEMPLATE#tmail_desttype#DE"
-msgstr "Family relation parameter"
-
-msgid "MAILTEMPLATE#tmail_desttype#E"
-msgstr "Family text parameter"
-
-msgid "MAILTEMPLATE#tmail_desttype#F"
-msgstr "Fixed address"
-
-msgid "MAILTEMPLATE#tmail_desttype#P"
-msgstr "Global parameters"
-
-msgid "MAILTEMPLATE#tmail_desttype#RD"
-msgstr "Recipient document"
-
-msgid "MAILTEMPLATE#tmail_desttype#WA"
-msgstr "Workflow attribute"
-
-msgid "MAILTEMPLATE#tmail_desttype#WD"
-msgstr "Workflow relation"
-
-msgid "MAILTEMPLATE#tmail_desttype#WE"
-msgstr "Workflow parameter"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_family"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_family"
 msgstr "Family"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_format"
-msgstr "Format"
-
-msgid "MAILTEMPLATE#tmail_format#html"
-msgstr "HTML"
-
-msgid "MAILTEMPLATE#tmail_format#htmlpdf"
-msgstr "HTML & PDF"
-
-msgid "MAILTEMPLATE#tmail_format#pdf"
-msgstr "PDF"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_fr"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_fr"
 msgstr "Header"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_fr_content"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_fr_content"
 msgstr "Content"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_from"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_from"
 msgstr "From"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_fromtype"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_fromtype"
 msgstr "type"
 
-msgid "MAILTEMPLATE#tmail_fromtype#A"
-msgstr "Text attribute"
-
-msgid "MAILTEMPLATE#tmail_fromtype#D"
-msgstr "Relation attribute"
-
-msgid "MAILTEMPLATE#tmail_fromtype#DE"
-msgstr "Family relation parameter"
-
-msgid "MAILTEMPLATE#tmail_fromtype#E"
-msgstr "Family text parameter"
-
-msgid "MAILTEMPLATE#tmail_fromtype#F"
-msgstr "Fixed address"
-
-msgid "MAILTEMPLATE#tmail_fromtype#P"
-msgstr "Global parameters"
-
-msgid "MAILTEMPLATE#tmail_fromtype#WA"
-msgstr "Workflow attribute"
-
-msgid "MAILTEMPLATE#tmail_fromtype#WD"
-msgstr "Workflow relation"
-
-msgid "MAILTEMPLATE#tmail_fromtype#WE"
-msgstr "Workflow parameter"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_recip"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_recip"
 msgstr "Recipient"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_savecopy"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_savecopy"
 msgstr "Save a copy"
 
-msgid "MAILTEMPLATE#tmail_savecopy#elabel"
-msgstr "save a message copy on server when sending"
-
-msgid "MAILTEMPLATE#tmail_savecopy#no"
-msgstr "No copy"
-
-msgid "MAILTEMPLATE#tmail_savecopy#yes"
-msgstr "Copy on server"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_subject"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_subject"
 msgstr "Subject"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_t_attach"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_t_attach"
 msgstr "Attachments"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_t_from"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_t_from"
 msgstr "Sender"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_title"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_title"
 msgstr "Title"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_ulink"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_ulink"
 msgstr "With links"
 
-msgid "MAILTEMPLATE#tmail_ulink#no"
-msgstr "Without link"
-
-msgid "MAILTEMPLATE#tmail_ulink#yes"
-msgstr "With links"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAILTEMPLATE#tmail_workflow"
+#: mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_workflow"
 msgstr "Workflow family"
 
-msgid "MAILTEMPLATE#tmail_workflow#elabel"
-msgstr "workflow family to recover comment or transition settings"
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "title"
+#~ msgstr "Mail template"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#bcc"
+#~ msgstr "Bcc"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#cc"
+#~ msgstr "Cc"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#to"
+#~ msgstr "To"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#A"
+#~ msgstr "Text attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#D"
+#~ msgstr "Relation attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#DE"
+#~ msgstr "Family relation parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#E"
+#~ msgstr "Family text parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#F"
+#~ msgstr "Fixed address"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#P"
+#~ msgstr "Global parameters"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#RD"
+#~ msgstr "Recipient document"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WA"
+#~ msgstr "Workflow attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WD"
+#~ msgstr "Workflow relation"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WE"
+#~ msgstr "Workflow parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format"
+#~ msgstr "Format"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#html"
+#~ msgstr "HTML"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#htmlpdf"
+#~ msgstr "HTML & PDF"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#pdf"
+#~ msgstr "PDF"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#A"
+#~ msgstr "Text attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#D"
+#~ msgstr "Relation attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#DE"
+#~ msgstr "Family relation parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#E"
+#~ msgstr "Family text parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#F"
+#~ msgstr "Fixed address"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#P"
+#~ msgstr "Global parameters"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WA"
+#~ msgstr "Workflow attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WD"
+#~ msgstr "Workflow relation"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WE"
+#~ msgstr "Workflow parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#elabel"
+#~ msgstr "save a message copy on server when sending"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#no"
+#~ msgstr "No copy"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#yes"
+#~ msgstr "Copy on server"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_ulink#no"
+#~ msgstr "Without link"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_ulink#yes"
+#~ msgstr "With links"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_workflow#elabel"
+#~ msgstr "workflow family to recover comment or transition settings"

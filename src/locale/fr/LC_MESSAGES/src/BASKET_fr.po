@@ -13,14 +13,17 @@ msgstr ""
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "BASKET#fld_clear"
+msgctxt "BASKET"
+msgid "fld_clear"
 msgstr "Vider"
 
 #: App/Fdl/fdl.ods.csv
 #, fuzzy
-msgid "BASKET#fld_copybasket"
+msgctxt "BASKET"
+msgid "fld_copybasket"
 msgstr "Insérer le porte-document"
 
 #, fuzzy
-msgid "BASKET#title"
+msgctxt "BASKET"
+msgid "title"
 msgstr "Porte-documents"

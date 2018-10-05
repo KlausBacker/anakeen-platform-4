@@ -12,12 +12,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: App/Fdl/fdl.ods.csv
-msgid "BASKET#fld_clear"
+msgctxt "BASKET"
+msgid "fld_clear"
 msgstr "Clear"
 
 #: App/Fdl/fdl.ods.csv
-msgid "BASKET#fld_copybasket"
+msgctxt "BASKET"
+msgid "fld_copybasket"
 msgstr "Insert the basket"
 
-msgid "BASKET#title"
+msgctxt "BASKET"
+msgid "title"
 msgstr "Basket"

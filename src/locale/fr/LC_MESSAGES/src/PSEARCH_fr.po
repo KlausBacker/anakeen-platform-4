@@ -12,5 +12,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #, fuzzy
-msgid "PSEARCH#title"
-msgstr "Profil de recherche"
+#~ msgctxt "PSEARCH"
+#~ msgid "title"
+#~ msgstr "Profil de recherche"

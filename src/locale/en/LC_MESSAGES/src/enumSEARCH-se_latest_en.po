@@ -1,0 +1,42 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum SEARCH-se_latest \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-03T13:31:40.933Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_latest"
+msgid "allfixed"
+msgstr "sans la courante"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_latest"
+msgid "fixed"
+msgstr "dernière révision"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_latest"
+msgid "lastfixed"
+msgstr "dernière parmi les révisions effectuées"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_latest"
+msgid "no"
+msgstr "toutes les révisions"
+
+#: search.struct.xml
+#, fuzzy
+msgctxt "SEARCH-se_latest"
+msgid "yes"
+msgstr "courante"

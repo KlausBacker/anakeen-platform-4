@@ -11,21 +11,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: App/Fusers/account.ods.csv
-msgid "ROLE#role_fr_ident"
+#: role.struct.xml
+msgctxt "ROLE"
+msgid "role_fr_ident"
 msgstr "Identification"
 
-#: App/Fusers/account.ods.csv
-msgid "ROLE#role_login"
+#: role.struct.xml
+msgctxt "ROLE"
+msgid "role_login"
 msgstr "Référence"
 
-#: App/Fusers/account.ods.csv
-msgid "ROLE#role_name"
+#: role.struct.xml
+msgctxt "ROLE"
+msgid "role_name"
 msgstr "Libellé"
 
-msgid "ROLE#title"
-msgstr "Rôle"
-
-#: App/Fusers/account.ods.csv
-msgid "ROLE#us_whatid"
+#: role.struct.xml
+msgctxt "ROLE"
+msgid "us_whatid"
 msgstr "Identifiant système"
+
+#~ msgctxt "ROLE"
+#~ msgid "title"
+#~ msgstr "Rôle"

@@ -42,7 +42,7 @@ deploy-test:
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w smart-data-engine-test*app
 
 po:
-	${DEVTOOL_BIN} extractPo -s . -o ./src
+	${ANAKEEN_CLI_BIN} extractPo -s .
 
 stub:
 	${ANAKEEN_CLI_BIN} generateStubs

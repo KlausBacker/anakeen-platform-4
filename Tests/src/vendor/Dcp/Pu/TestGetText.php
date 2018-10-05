@@ -1,16 +1,9 @@
 <?php
-/*
- * @author Anakeen
- * @package Dcp\Pu
-*/
 
 namespace Dcp\Pu;
 
 //require_once 'PU_testcase_dcp.php';
 use Anakeen\Core\Utils\Gettext;
-
-include_once 'WHAT/Lib.Http.php';
-include_once 'FDL/enum_choice.php';
 
 class TestGetText extends TestCaseDcp
 {
@@ -29,7 +22,7 @@ class TestGetText extends TestCaseDcp
     public function test3Underscore($text, $textp, $lang, $num, $expectedText)
     {
         \Anakeen\Core\ContextManager::setLanguage($lang);
-        $this->assertEquals($expectedText, sprintf(n___($text, $textp, $num), $num));
+        $this->assertEquals($expectedText, sprintf(n___($text, $textp, $num,""), $num));
     }
 
     /**
@@ -89,9 +82,9 @@ class TestGetText extends TestCaseDcp
     {
         $i18n = _("dcptest:Hello");
         $i18n = _("dcptest:Good Bye");
-        $i18n = Gettext::n___("dcptest:%d symbol", "dcptest:%d symbols", 45);
+        $i18n = Gettext::n___("dcptest:%d symbol", "dcptest:%d symbols", 45, "");
         $i18n = n___("%d symbol", "%d symbols", 45, "dcpctx1");
-        $i18n = ___("dcptest:Test locale");
+        $i18n = _("dcptest:Test locale");
         $i18n = ___("dcptest:Test locale", "dcpctx1");
         $i18n = ___("dcptest:Test locale", "dcpctx2");
         return array(
@@ -227,8 +220,8 @@ class TestGetText extends TestCaseDcp
 
     public function data3Underscore()
     {
-        $i18n = Gettext::n___("dcptest:%d symbol", "dcptest:%d symbols", 1);
-        $i18n = n___("dcptest:%.02f symbol", "dcptest:%02f symbols", 1);
+        $i18n = Gettext::n___("dcptest:%d symbol", "dcptest:%d symbols", 1, "");
+        $i18n = n___("dcptest:%.02f symbol", "dcptest:%02f symbols", 1, "");
         return array(
             array(
                 "dcptest:%d symbol",

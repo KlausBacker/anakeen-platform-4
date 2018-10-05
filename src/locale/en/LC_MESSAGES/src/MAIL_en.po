@@ -11,86 +11,110 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_cm"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_cm"
 msgstr "Comment"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_copymode"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_copymode"
 msgstr ""
 
-msgid "MAIL#mail_copymode#bcc"
-msgstr "Bcc"
-
-msgid "MAIL#mail_copymode#cc"
-msgstr "Cc"
-
-msgid "MAIL#mail_copymode#to"
-msgstr "To"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_dest"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_dest"
 msgstr "Recipients"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_format"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_format"
 msgstr "Format"
 
-msgid "MAIL#mail_format#html"
-msgstr "HTML"
-
-msgid "MAIL#mail_format#htmlpdf"
-msgstr "HTML & PDF"
-
-msgid "MAIL#mail_format#pdf"
-msgstr "PDF"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_fr"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_fr"
 msgstr "Address"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_fr_cm"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_fr_cm"
 msgstr "Comment"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_from"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_from"
 msgstr "From"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_recip"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_recip"
 msgstr "Recipient"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_recipid"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_recipid"
 msgstr "ID recipient"
 
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_savecopy"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_savecopy"
 msgstr "Save a copy"
 
-msgid "MAIL#mail_savecopy#elabel"
-msgstr "Save a copy on the server"
-
-msgid "MAIL#mail_savecopy#no"
-msgstr "No copy"
-
-msgid "MAIL#mail_savecopy#yes"
-msgstr "Copy on the server"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_sendformat"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_sendformat"
 msgstr "Notif."
 
-msgid "MAIL#mail_sendformat#[bool]plain"
-msgstr "Document"
-
-msgid "MAIL#mail_sendformat#link"
-msgstr "Link to the document"
-
-#: App/Fdl/fdl.ods.csv
-msgid "MAIL#mail_subject"
+#: mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_subject"
 msgstr "Subject"
 
-msgid "MAIL#title"
-msgstr "Mail"
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#bcc"
+#~ msgstr "Bcc"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#cc"
+#~ msgstr "Cc"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#to"
+#~ msgstr "To"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#html"
+#~ msgstr "HTML"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#htmlpdf"
+#~ msgstr "HTML & PDF"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#pdf"
+#~ msgstr "PDF"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#elabel"
+#~ msgstr "Save a copy on the server"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#no"
+#~ msgstr "No copy"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#yes"
+#~ msgstr "Copy on the server"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#[bool]plain"
+#~ msgstr "Document"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#link"
+#~ msgstr "Link to the document"
+
+#~ msgctxt "MAIL"
+#~ msgid "title"
+#~ msgstr "Mail"

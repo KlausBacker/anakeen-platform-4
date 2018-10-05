@@ -11,190 +11,233 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_action"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_action"
 msgstr "Action"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_api"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_api"
 msgstr "Api"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_application"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_application"
 msgstr "Application"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_bgexec"
-msgstr "Execute now"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_date"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_date"
 msgstr "Execution date"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_detail"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_detail"
 msgstr "Detail"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_detaillog"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_detaillog"
 msgstr "Log"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_elapsed"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_elapsed"
 msgstr "Execution duration"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_fr_batch"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_batch"
 msgstr "Treatment"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_fr_cr"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_cr"
 msgstr "Report"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_fr_date"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_date"
 msgstr "Dates"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_fr_ident"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_ident"
 msgstr "Identification"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_fr_param"
-msgstr "Parameter"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_handnextdate"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_handnextdate"
 msgstr "Execute on"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_idadmin"
-msgstr "Administrator"
-
-msgid "EXEC#exec_idadmin#elabel"
-msgstr "Will receive execution report copy in mail"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_idref"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_idref"
 msgstr "From"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_iduser"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_iduser"
 msgstr "Performer"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_idvar"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_idvar"
 msgstr "Variable"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_nextdate"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_nextdate"
 msgstr "Next execution date"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_periodday"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_periodday"
 msgstr "Period in day"
 
-msgid "EXEC#exec_periodday#elabel"
-msgstr "Perform every n day"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_perioddaynumber"
-msgstr "day of the week"
-
-#, fuzzy
-msgid "EXEC#exec_perioddaynumber# "
-msgstr "---"
-
-msgid "EXEC#exec_perioddaynumber#1"
-msgstr "Monday"
-
-msgid "EXEC#exec_perioddaynumber#2"
-msgstr "Tuesday"
-
-msgid "EXEC#exec_perioddaynumber#3"
-msgstr "Wednesday"
-
-msgid "EXEC#exec_perioddaynumber#4"
-msgstr "Thursday"
-
-msgid "EXEC#exec_perioddaynumber#5"
-msgstr "Friday"
-
-msgid "EXEC#exec_perioddaynumber#6"
-msgstr "Saturday"
-
-msgid "EXEC#exec_perioddaynumber#7"
-msgstr "Sunday"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_periodenddate"
-msgstr "Until"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_periodhour"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_periodhour"
 msgstr "Period in hours"
 
-msgid "EXEC#exec_periodhour#elabel"
-msgstr "perform every n hours"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_periodmin"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_periodmin"
 msgstr "Period in minutes"
 
-msgid "EXEC#exec_periodmin#elabel"
-msgstr "perform every n minutes"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_prevdate"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_prevdate"
 msgstr "Previous execution date"
 
-msgid "EXEC#exec_prevdate#ltitle"
-msgstr "See previous execution"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_ref"
-msgstr "Referrer (title)"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_reset"
-msgstr "Abandon current execution"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_state"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_state"
 msgstr "Status"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_status"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_status"
 msgstr "Execution"
 
-msgid "EXEC#exec_status#none"
-msgstr "No"
-
-msgid "EXEC#exec_status#progressing"
-msgstr "Ongoing"
-
-msgid "EXEC#exec_status#waiting"
-msgstr "Waiting"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_statusdate"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_statusdate"
 msgstr "Execution since"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_t_parameters"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_t_parameters"
 msgstr "Parameters"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_title"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_title"
 msgstr "Title"
 
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_user"
-msgstr "Performer (title)"
-
-#: App/Fdl/freeaction.ods.csv
-msgid "EXEC#exec_valuevar"
+#: exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_valuevar"
 msgstr "Value"
 
-msgid "EXEC#title"
-msgstr "Process"
+#~ msgctxt "EXEC"
+#~ msgid "exec_bgexec"
+#~ msgstr "Execute now"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_fr_param"
+#~ msgstr "Parameter"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_idadmin"
+#~ msgstr "Administrator"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_idadmin#elabel"
+#~ msgstr "Will receive execution report copy in mail"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodday#elabel"
+#~ msgstr "Perform every n day"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber"
+#~ msgstr "day of the week"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber# "
+#~ msgstr "---"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#1"
+#~ msgstr "Monday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#2"
+#~ msgstr "Tuesday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#3"
+#~ msgstr "Wednesday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#4"
+#~ msgstr "Thursday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#5"
+#~ msgstr "Friday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#6"
+#~ msgstr "Saturday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#7"
+#~ msgstr "Sunday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodenddate"
+#~ msgstr "Until"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodhour#elabel"
+#~ msgstr "perform every n hours"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodmin#elabel"
+#~ msgstr "perform every n minutes"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_prevdate#ltitle"
+#~ msgstr "See previous execution"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_ref"
+#~ msgstr "Referrer (title)"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_reset"
+#~ msgstr "Abandon current execution"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#none"
+#~ msgstr "No"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#progressing"
+#~ msgstr "Ongoing"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#waiting"
+#~ msgstr "Waiting"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_user"
+#~ msgstr "Performer (title)"
+
+#~ msgctxt "EXEC"
+#~ msgid "title"
+#~ msgstr "Process"

@@ -64,15 +64,12 @@ class BasicAttribute
      */
     public function getLabel()
     {
-        $r = $this->docname . '#' . $this->id;
-        $i = _($r);
-        if ($i != $r) {
+        $i = ___($this->id, $this->docname);
+        if ($i !== $this->id) {
             return $i;
         }
-        if (!$this->labelText) {
-            return $this->id;
-        }
-        return $this->labelText;
+
+        return $this->labelText?:$this->id;
     }
 
     /**

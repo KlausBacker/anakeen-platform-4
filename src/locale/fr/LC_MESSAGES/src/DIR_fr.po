@@ -11,133 +11,153 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#ba_desc"
+msgctxt "DIR"
+msgid "ba_desc"
 msgstr "Description"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_allbut"
+msgctxt "DIR"
+msgid "fld_allbut"
 msgstr "Tout ou rien"
 
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_allbut#0"
-msgstr "tout sauf"
-
-#, fuzzy
-msgid "DIR#fld_allbut#1"
-msgstr "seulement"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_copybasket"
-msgstr "Insérer le porte-document"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_fam"
+msgctxt "DIR"
+msgid "fld_fam"
 msgstr "Familles (titre)"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_famids"
+msgctxt "DIR"
+msgid "fld_famids"
 msgstr "Familles"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_fr_prof"
+msgctxt "DIR"
+msgid "fld_fr_prof"
 msgstr "Profils par défaut"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_fr_rest"
+msgctxt "DIR"
+msgid "fld_fr_rest"
 msgstr "Restrictions"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_insertdoc"
-msgstr "Insérer des documents"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_open"
-msgstr "Ouvrir"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_openfolio"
-msgstr "Ouvrir comme une chemise"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_pdir"
-msgstr "Profil par défaut de dossier (titre)"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_pdirid"
+msgctxt "DIR"
+msgid "fld_pdirid"
 msgstr "Profil par défaut de dossier"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_pdoc"
-msgstr "Profil par défaut de document (titre)"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_pdocid"
+msgctxt "DIR"
+msgid "fld_pdocid"
 msgstr "Profil par défaut de document"
 
-#: App/Fdl/fdl.ods.csv
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_setsysrss"
-msgstr "RSS visible/masquée aux utilisateurs"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_subfam"
+msgctxt "DIR"
+msgid "fld_subfam"
 msgstr "Restriction sous famille"
 
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#fld_subfam#[bool]yes"
-msgstr "inclure les sous familles"
-
-#, fuzzy
-msgid "DIR#fld_subfam#no"
-msgstr "ne pas inclure les sous familles"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#fld_tfam"
+msgctxt "DIR"
+msgid "fld_tfam"
 msgstr "Familles filtrées"
 
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#gui_color"
-msgstr "Couleur intercalaire"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#gui_isrss"
-msgstr "Utilisable comme flux RSS"
-
-#, fuzzy
-msgid "DIR#gui_isrss#[bool]no"
-msgstr "non"
-
-#, fuzzy
-msgid "DIR#gui_isrss#yes"
-msgstr "oui"
-
-#: App/Fdl/fdl.ods.csv
-#, fuzzy
-msgid "DIR#gui_sysrss"
-msgstr "Flux RSS système"
-
-msgid "DIR#gui_sysrss#"
+#: dir.struct.xml
+msgctxt "DIR"
+msgid "fr_basic"
 msgstr ""
 
+#: dir.struct.xml
 #, fuzzy
-msgid "DIR#title"
-msgstr "dossier"
+msgctxt "DIR"
+msgid "gui_color"
+msgstr "Couleur intercalaire"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_allbut#0"
+#~ msgstr "tout sauf"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_allbut#1"
+#~ msgstr "seulement"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_copybasket"
+#~ msgstr "Insérer le porte-document"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_insertdoc"
+#~ msgstr "Insérer des documents"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_open"
+#~ msgstr "Ouvrir"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_openfolio"
+#~ msgstr "Ouvrir comme une chemise"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_pdir"
+#~ msgstr "Profil par défaut de dossier (titre)"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_pdoc"
+#~ msgstr "Profil par défaut de document (titre)"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_setsysrss"
+#~ msgstr "RSS visible/masquée aux utilisateurs"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_subfam#[bool]yes"
+#~ msgstr "inclure les sous familles"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "fld_subfam#no"
+#~ msgstr "ne pas inclure les sous familles"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "gui_isrss"
+#~ msgstr "Utilisable comme flux RSS"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "gui_isrss#[bool]no"
+#~ msgstr "non"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "gui_isrss#yes"
+#~ msgstr "oui"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "gui_sysrss"
+#~ msgstr "Flux RSS système"
+
+#, fuzzy
+#~ msgctxt "DIR"
+#~ msgid "title"
+#~ msgstr "dossier"

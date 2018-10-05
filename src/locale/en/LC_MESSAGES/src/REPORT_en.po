@@ -11,156 +11,191 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_caption"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_caption"
 msgstr "Description"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_coloreven"
-msgstr "Even color"
-
-msgid "REPORT#rep_coloreven#elabel"
-msgstr "background color for even rows"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_colorhf"
-msgstr "Header color"
-
-msgid "REPORT#rep_colorhf#elabel"
-msgstr "background color for header and footer"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_colorodd"
-msgstr "Odd color"
-
-msgid "REPORT#rep_colorodd#elabel"
-msgstr "background color for odd rows"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_colors"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_colors"
 msgstr "Color"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_csv"
-msgstr "Export CSV"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_displayoption"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_displayoption"
 msgstr "Presentation option"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_foots"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_foots"
 msgstr "Footer"
 
-msgid "REPORT#rep_foots#CARD"
-msgstr "Cardinality"
-
-msgid "REPORT#rep_foots#MOY"
-msgstr "Mean"
-
-msgid "REPORT#rep_foots#NONE"
-msgstr " "
-
-msgid "REPORT#rep_foots#SUM"
-msgstr "Sum"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_fr_param"
-msgstr "Parameters"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_fr_presentation"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_fr_presentation"
 msgstr "Presentation"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_idcols"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_idcols"
 msgstr "Column id"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_idsort"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_idsort"
 msgstr "Sort id"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_imp"
-msgstr "Printable version"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_lcols"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_lcols"
 msgstr "Label"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_limit"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_limit"
 msgstr "Limit"
 
-msgid "REPORT#rep_limit#elabel"
-msgstr "Maximum number of displayed documents"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_maxdisplaylimit"
-msgstr "Maximum number of displayed rows"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_noaccesstext"
-msgstr "Text displayed when the value is protected"
-
-msgid "REPORT#rep_noaccesstext#elabel"
-msgstr "I.e. when an attribute visibility is I"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_ordersort"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_ordersort"
 msgstr "Order"
 
-msgid "REPORT#rep_ordersort#asc"
-msgstr "ascending"
-
-msgid "REPORT#rep_ordersort#desc"
-msgstr "descending"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_sort"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_sort"
 msgstr "Sort"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_style"
-msgstr "Style"
-
-msgid "REPORT#rep_style# "
-msgstr "Customized..."
-
-msgid "REPORT#rep_style#reportHBlue"
-msgstr "Horizontal blue"
-
-msgid "REPORT#rep_style#reportHInverse"
-msgstr "Horizontal reverse video"
-
-msgid "REPORT#rep_style#reportHYellow"
-msgstr "Horizontal yellow"
-
-msgid "REPORT#rep_style#reportVGreen"
-msgstr "Vertical green"
-
-msgid "REPORT#rep_style#standard1"
-msgstr "Standard (Theme 1)"
-
-msgid "REPORT#rep_style#standard2"
-msgstr "Standard (Theme 2)"
-
-msgid "REPORT#rep_style#standard3"
-msgstr "Standard (Theme 3)"
-
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_tab_presentation"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_tab_presentation"
 msgstr "Presentation"
 
-#: App/Fdl/searches.ods.csv
-msgid "REPORT#rep_tcols"
+#: report.struct.xml
+msgctxt "REPORT"
+msgid "rep_tcols"
 msgstr "Columns"
 
-msgid "REPORT#rep_tcols#lsymbol"
-msgstr "Choose columns"
+#~ msgctxt "REPORT"
+#~ msgid "rep_coloreven"
+#~ msgstr "Even color"
 
-msgid "REPORT#rep_tcols#ltitle"
-msgstr "Choose report displayed columns"
+#~ msgctxt "REPORT"
+#~ msgid "rep_coloreven#elabel"
+#~ msgstr "background color for even rows"
 
-msgid "REPORT#title"
-msgstr "Report"
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorhf"
+#~ msgstr "Header color"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorhf#elabel"
+#~ msgstr "background color for header and footer"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorodd"
+#~ msgstr "Odd color"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_colorodd#elabel"
+#~ msgstr "background color for odd rows"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_csv"
+#~ msgstr "Export CSV"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#CARD"
+#~ msgstr "Cardinality"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#MOY"
+#~ msgstr "Mean"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#NONE"
+#~ msgstr " "
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_foots#SUM"
+#~ msgstr "Sum"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_fr_param"
+#~ msgstr "Parameters"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_imp"
+#~ msgstr "Printable version"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_limit#elabel"
+#~ msgstr "Maximum number of displayed documents"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_maxdisplaylimit"
+#~ msgstr "Maximum number of displayed rows"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_noaccesstext"
+#~ msgstr "Text displayed when the value is protected"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_noaccesstext#elabel"
+#~ msgstr "I.e. when an attribute visibility is I"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_ordersort#asc"
+#~ msgstr "ascending"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_ordersort#desc"
+#~ msgstr "descending"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style"
+#~ msgstr "Style"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style# "
+#~ msgstr "Customized..."
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportHBlue"
+#~ msgstr "Horizontal blue"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportHInverse"
+#~ msgstr "Horizontal reverse video"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportHYellow"
+#~ msgstr "Horizontal yellow"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#reportVGreen"
+#~ msgstr "Vertical green"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#standard1"
+#~ msgstr "Standard (Theme 1)"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#standard2"
+#~ msgstr "Standard (Theme 2)"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_style#standard3"
+#~ msgstr "Standard (Theme 3)"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_tcols#lsymbol"
+#~ msgstr "Choose columns"
+
+#~ msgctxt "REPORT"
+#~ msgid "rep_tcols#ltitle"
+#~ msgstr "Choose report displayed columns"
+
+#~ msgctxt "REPORT"
+#~ msgid "title"
+#~ msgstr "Report"

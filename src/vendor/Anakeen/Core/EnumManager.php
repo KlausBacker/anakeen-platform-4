@@ -45,9 +45,9 @@ class EnumManager
         }
         foreach ($dbEnums as $item) {
             $enumKey = $item["key"];
-            $translatedEnumValue = ___($br . $enumKey, "ENUM");
+            $translatedEnumValue = ___($enumKey, $name);
 
-            if ($translatedEnumValue != $br . $enumKey) {
+            if ($translatedEnumValue !==  $enumKey) {
                 $enumLabel = $translatedEnumValue;
             } else {
                 $enumLabel = $item["label"];

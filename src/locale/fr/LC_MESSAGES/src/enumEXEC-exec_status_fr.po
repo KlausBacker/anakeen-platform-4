@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum EXEC-exec_status \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-03T13:31:40.822Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: exec.struct.xml
+#, fuzzy
+msgctxt "EXEC-exec_status"
+msgid "none"
+msgstr "Non"
+
+#: exec.struct.xml
+#, fuzzy
+msgctxt "EXEC-exec_status"
+msgid "progressing"
+msgstr "En cours"
+
+#: exec.struct.xml
+#, fuzzy
+msgctxt "EXEC-exec_status"
+msgid "waiting"
+msgstr "En attente"
