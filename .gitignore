@@ -1,5 +1,5 @@
 node_modules
-src/public/anakeen/hub/
+src/public/
 Makefile.local
 .idea/
 ide/vendor/

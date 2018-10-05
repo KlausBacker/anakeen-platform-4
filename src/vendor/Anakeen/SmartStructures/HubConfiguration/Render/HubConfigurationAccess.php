@@ -5,7 +5,7 @@ namespace Anakeen\SmartStructures\HubConfiguration\Render;
 class HubConfigurationAccess implements \Dcp\Ui\IRenderConfigAccess
 {
     /**
-     * @param string $mode
+     * @param string                              $mode
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @return \Dcp\Ui\IRenderConfig
      */

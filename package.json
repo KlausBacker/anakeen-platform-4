@@ -21,12 +21,11 @@
   ],
   "author": "Anakeen",
   "license": "MIT",
-  "dependencies": {
-    "@anakeen/ank-components": "^1.0.0-1538120636"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.0.0-1533544440-1533544657",
-    "@anakeen/webpack-conf": "^1.0.0-1537274281",
+    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/ank-components": "latest",
+    "@anakeen/webpack-conf": "latest",
     "@progress/kendo-ui": "^2018.2.806",
     "assets-webpack-plugin": "^3.5.1",
     "axios": "^0.18.0",
@@ -59,6 +58,7 @@
     "vue": "^2.5.16",
     "vue-custom-element": "^3.0.6",
     "vue-gettext": "^2.0.30",
+    "vue-js-modal": "^1.3.26",
     "vue-loader": "^15.0.11",
     "vue-plugin-load-script": "^1.0.1",
     "vue-router": "^3.0.1",

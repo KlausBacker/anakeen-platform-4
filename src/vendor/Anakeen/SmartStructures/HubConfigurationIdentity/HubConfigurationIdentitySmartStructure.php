@@ -15,6 +15,7 @@ class HubConfigurationIdentitySmartStructure extends \SmartStructure\Hubconfigur
 
     /**
      * Get component specific configuration, to display it correctly with its options
+     *
      * @return array
      * @throws \Dcp\Exception
      */

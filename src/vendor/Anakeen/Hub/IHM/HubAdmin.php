@@ -2,27 +2,35 @@
 
 namespace Anakeen\Hub\IHM;
 
+use Dcp\Ui\UIGetAssetPath;
+
 class HubAdmin
 {
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
-    {
+    public function __invoke(
+        \Slim\Http\request $request,
+        \Slim\Http\response $response,
+        $args
+    ) {
         $page = __DIR__ . "/Layout/hubAdmin.html.mustache";
-        $template = file_get_contents($page);
+        $mustache = new \Mustache_Engine();
         $data = [
             "JS_DEPS" => [
                 [
-                    "key" =>"jquery",
+                    "key" => "jquery",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
                 ],
                 [
-                    "key" =>"kendo",
+                    "key" => "kendo",
                     "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
                 ]
             ],
             "JS" => [
                 [
-                    "key" =>"ankcomponents",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()
+                    "key" => "hubAdmin",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                        "hub",
+                        UIGetAssetPath::isInDebug() ? "dev" : "prod"
+                    )["hubAdmin"]["js"]
                 ]
             ],
             "JS_LEGACY" => [
@@ -31,8 +39,11 @@ class HubAdmin
                     "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
                 ],
                 [
-                    "key" =>"ankcomponents",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
+                    "key" => "hubAdmin",
+                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                        "hub",
+                        "legacy"
+                    )["hubAdmin"]["js"]
                 ]
             ],
             "CSS" => [
@@ -50,7 +61,7 @@ class HubAdmin
                 ]
             ]
         ];
-        $mustache = new \Mustache_Engine();
+        $template = file_get_contents($page);
         return $response->write($mustache->render($template, $data));
     }
 }
