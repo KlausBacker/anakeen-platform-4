@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/ank-components@1.0.0-1538701751":
-  version "1.0.0-1538701751"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1538701751.tgz#af83f1dda0a089a19fc79317eb52be2a936788e4"
-  integrity sha512-nmnHKLvXMhG+T/reKLRJzYWgn0hiLVLCzNKxPaAD49xZ8E8ba6jyxz8TheOalM5c0CmKxLSJfIvEeKaDfTDAPQ==
+"@anakeen/ank-components@latest":
+  version "1.0.0-1538743057"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1538743057.tgz#3ae46e7a935ac719ad8f3ee42ce341f6f13b63f2"
+  integrity sha512-7u/0qJg1eZb76rHIbt8ZUdg445z0U7b93KojUBThNo/5Xv1TnpWY9Ww4yyG8AtaGQGZz4vG4ZgLBytSN4djHug==
 
 "@anakeen/webpack-conf@latest":
   version "1.0.0-1537274281"
