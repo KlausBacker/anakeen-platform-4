@@ -22,7 +22,8 @@
   "license": "MIT",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/ank-components": "latest",
+    "@anakeen/anakeen-cli": "^1.0.1-1538743497",
+    "@anakeen/ank-components": "1.0.0-1538743057",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-ui": "^2018.0.0",
     "@webcomponents/webcomponentsjs": "2.0.2",
@@ -59,7 +60,5 @@
     "webdriverio": "^4.13.2",
     "whatwg-fetch": "^2.0.4"
   },
-  "dependencies": {
-    "@anakeen/anakeen-cli": "^1.0.1"
-  }
+  "dependencies": {}
 }
