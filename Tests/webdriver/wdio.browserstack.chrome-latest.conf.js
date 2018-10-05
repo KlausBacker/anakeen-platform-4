@@ -39,19 +39,13 @@ exports.config = {
   //
   capabilities: [
     {
-      // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-      // grid with only 5 firefox instances available you can make sure that not more than
-      // 5 instances get started at a time.
-      maxInstances: 1,
-      //
-      browserName: "chrome",
-      chromeOptions: {
-        args: [
-          "--headless", "--disable-gpu", // Headless and no GPU
-          "--no-sandbox", // Required for running as root
-        ]
-      }
-    }
+      browserName: 'Google Chrome 69',
+      browser: 'Chrome',
+      browser_version: '69.0',
+      os: 'Windows',
+      os_version : '10',
+      resolution : '1024x768',
+    },
   ],
   reporters: ['dot', 'junit'],
   reporterOptions: {
@@ -71,7 +65,7 @@ exports.config = {
   sync: true,
   //
   // Level of logging verbosity: silent | verbose | command | data | result | error
-  logLevel: "silent",
+  logLevel: "error",
   //
   // Enables colors for log output.
   coloredLogs: true,
@@ -90,7 +84,7 @@ exports.config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: "http://localhost",
+  baseUrl: "http://localhost/",
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 60000,
@@ -120,13 +114,17 @@ exports.config = {
   //     browserevent: {}
   // },
   //
-  port: "9515",
-  path: "/",
+  // host: 'hub.browserstack.com',
+  // port: "80",
+  // path: "/",
   // Test runner services
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ["chromedriver"],
+  services: ["browserstack"],
+  user: process.env.BROWSERSTACK_USERNAME,
+  key: process.env.BROWSERSTACK_ACCESS_KEY,
+  browserstackLocal: true,
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -177,7 +175,7 @@ exports.config = {
     global.expect = chai.expect;
     global.assert = chai.assert;
     chai.Should();
-  }
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {String} commandName hook command name

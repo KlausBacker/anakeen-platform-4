@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function main {
+	local VAR=$1
+	if [ -z "${VAR}" ]; then
+		return
+	fi
+	local VAL=$(eval "echo \$${VAR}")
+	if [[ $VAL =~ ^base64: ]]; then
+		VAL=$(echo "${VAL:7}" | base64 -di)
+	fi
+	printf "export %q=%q\n" "${VAR}" "${VAL}"
+}
+
+main "$@"

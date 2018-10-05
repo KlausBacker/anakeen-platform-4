@@ -9,18 +9,27 @@ function usage {
 Usage
 -----
 
-  $0 <docker-image-name> [<git-ref>]
+  $0 [--env <name> <value>]* <docker-image-name> [<git-ref>]
 
 Example
 -------
 
   $0 php71pg96
 
+  $0 \\
+      --env AUTOTEST_VARIANT full \\
+      --env AUTOTEST_WDIO_CONFIG wdio.browserstack.all.conf.js \\
+      --env BROWSERSTACK_USERNAME xxx_username_xxx \\
+      --env BROWSERSTACK_ACCESS_KEY xxx_access_key_xxx \\
+      php71pg96
+
+
 EOF
 }
 
 function main {
-	local AUTOTEST_USE=""
+	local AUTOTEST_ENVS
+	declare -A AUTOTEST_ENVS
 	while [ $# -gt 0 ]; do
 		case $1 in
 			--help)
@@ -30,6 +39,12 @@ function main {
 			--)
 				shift
 				break
+				;;
+			--env)
+				shift
+				AUTOTEST_ENVS[$1]=$2
+				shift
+				shift
 				;;
 			--*)
 				echo "Error: unknown option '$1'!" 1>&2
@@ -91,15 +106,22 @@ function main {
 			PROPAGATE_SSH_PRIVATE_KEY=$(printf -- "--env=SSH_PRIVATE_KEY=base64:%s" "$(echo "${SSH_PRIVATE_KEY}" | base64 -w0)")
 		fi
 
+		local PROPAGATE_ENV=""
+		local K
+		for K in "${!AUTOTEST_ENVS[@]}"; do
+			PROPAGATE_ENV="${PROPAGATE_ENV} $(printf -- "--env=%q=%q" "$K" "${AUTOTEST_ENVS[$K]}")"
+		done
+
 		echo "[+] Running docker '${IMAGE}'... "
-		docker run -it --rm \
+		eval docker run -it --rm \
 			--env="SHARE_USER=$(id -u)" \
 			--env="SHARE_GROUP=$(id -g)" \
 			${PROPAGATE_SSH_AUTH_SOCK} \
 			${PROPAGATE_SSH_PRIVATE_KEY} \
+			${PROPAGATE_ENV} \
 			--volume "${WORK_DIR}:/autotest/work" \
 			"${IMAGE}" \
-			/autotest/work/${AUTOTEST_SUBDIR}/autotest.sh /autotest/work
+			"/autotest/work/${AUTOTEST_SUBDIR}/autotest.sh" /autotest/work
 		echo "[+] Done."
 	) 2>&1 | tee "${SOURCE}/${AUTOTEST_SUBDIR}/outputs/local-run.log"
 	RET=$?

@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+use strict;
+use POSIX;
+
+select STDOUT;
+$| = 1;
+my $ts = time();
+
+while (<>) {
+	printf("%s +%s %s", strftime("%Y-%m-%dT%H:%M:%S", localtime()), (time() - $ts), $_);
+}
+
+exit(0);
