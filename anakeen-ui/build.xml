@@ -3,4 +3,8 @@
     <acli:sources>
         <acli:source path="src" />
     </acli:sources>
+    <acli:po-config>
+        <acli:po-js source="Apps/DOCUMENT/**/*js" target="DOCUMENT"/>
+        <acli:po-js source="vendor/Anakeen/SmartStructures/Dsearch/**/*js" target="SEARCH_UI_HTML5"/>
+    </acli:po-config>
 </acli:config>

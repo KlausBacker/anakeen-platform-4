@@ -77,9 +77,9 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
              * get operands
              */
             if ($condition != "perso") {
-                $operand = ___($condition);
+                $operand = _($condition);
             } else {
-                $operand = ___($operand);
+                $operand = _($operand);
             }
 
 
@@ -155,18 +155,18 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
                 if ($k == $func) {
                     foreach ($tmptop["sdynlabel"] as $i => $label) {
                         if ($i == $type) {
-                            $func = ___($label);
+                            $func = _($label);
                             $boolTyped = true;
                         } else {
                             if ($i == "array" && strripos($type, "[]") != false) {
-                                $func = ___($label);
+                                $func = _($label);
                                 $boolTyped = true;
                             }
                         }
                     }
 
                     if (!$boolTyped) {
-                        $func = ___($tmptop["dynlabel"]);
+                        $func = _($tmptop["dynlabel"]);
                     }
                 }
             }

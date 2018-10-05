@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package DDUI
-*/
 
 namespace Anakeen\SmartStructures\Search\Render;
 

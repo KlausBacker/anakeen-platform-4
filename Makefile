@@ -67,8 +67,7 @@ $(PHP_LIB_PATH)/composer.lock: $(PHP_LIB_PATH)/composer.json
 install: $(JS_CONF_PATH)/yarn.lock $(PHP_LIB_PATH)/composer.lock ## Install deps (js and php)
 
 stub: ## Generate stubs
-	$(DEVTOOL_BIN) generateStub -s anakeen-ui -o $(STUB_PATH)
-	$(DEVTOOL_BIN) generateStub -s Tests -o $(STUB_PATH)
+	${ANAKEEN_CLI_BIN} generateStubs -s anakeen-ui
 
 ########################################################################################################################
 ##
