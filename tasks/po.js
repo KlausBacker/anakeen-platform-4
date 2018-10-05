@@ -3,6 +3,7 @@ const {
   xmlStructure2Pot,
   xmlEnum2Pot,
   php2Pot,
+  js2Po,
   msgmergeStructure,
   msgmergeMustache,
   msgmergeEnum
@@ -57,6 +58,37 @@ exports.po = ({ sourcePath }) => {
     }).then(resolveEnum, rejectEnum);
   });
 
+  gulp.task("poJs", async (resolveJs, rejectJs) => {
+    const info = await getModuleInfo(sourcePath);
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let poJs = null;
+
+    if (poConfig) {
+      poJs = poConfig[0]["po-js"];
+    }
+    if (!poJs) {
+      return new Promise(resolve => {
+        resolve();
+      }).then(resolveJs);
+    }
+    let resolvCount = 0;
+
+    return new Promise(resolve => {
+      poJs.forEach(jsItem => {
+        js2Po(jsItem.$.source, jsItem.$.target, info, potPath).then(() => {
+          resolvCount++;
+          if (resolvCount >= poJs.length) {
+            resolve();
+          }
+        }, rejectJs);
+      });
+    }).then(resolveJs, rejectJs);
+  });
+  gulp.task("poPhp", async (resolvePhp, rejectPhp) => {
+    const info = await getModuleInfo(sourcePath);
+
+    return php2Pot(info, potPath).then(resolvePhp, rejectPhp);
+  });
   gulp.task("poEnum", async (resolveEnum, rejectEnum) => {
     return new Promise(async (resolve, reject) => {
       if (sourcePath === undefined) {
@@ -87,7 +119,8 @@ exports.po = ({ sourcePath }) => {
             })
           )
           .on("end", () => {
-            php2Pot(info, potPath).then(resolve);
+            //php2Pot(info, potPath).then(resolve);
+            resolve();
           })
           .on("error", reject);
       } catch (e) {
@@ -126,7 +159,11 @@ exports.po = ({ sourcePath }) => {
           )
           .on("end", () => {
             gulp.task("poEnum")(() => {
-              gulp.task("poMustache")(resolve, reject);
+              gulp.task("poMustache")(() => {
+                gulp.task("poPhp")(() => {
+                  gulp.task("poJs")(resolve, reject);
+                }, reject);
+              }, reject);
             }, reject);
           })
           .on("error", reject);

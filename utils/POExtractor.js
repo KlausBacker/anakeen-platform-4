@@ -3,6 +3,7 @@ const vinylFile = require("vinyl-file");
 const File = require("vinyl");
 const path = require("path");
 const fs = require("fs");
+const glob = require("glob");
 
 const cp = require("child_process");
 
@@ -395,6 +396,62 @@ exports.php2Pot = (info, potdir) => {
               resolve();
             }
           }
+        });
+      });
+    });
+  });
+};
+exports.js2Po = (globInputs, targetName, info, potdir) => {
+  return new Promise((resolve, reject) => {
+    const srcPath = info.buildInfo.buildPath;
+    const langs = ["fr", "en"];
+    let resolvCount = 0;
+
+    glob(srcPath + "/" + globInputs, {}, (err, inputPathes) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      let inputPathArgs = '"' + inputPathes.join('" "') + '"';
+
+      langs.forEach(lang => {
+        const basePo = `${srcPath}/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
+        const tmpPot = `${potdir}/js_${targetName}_${lang}.pot`;
+        const tmpPo = `${potdir}/js_${targetName}_${lang}.po`;
+
+        fs.access(basePo, err => {
+          let commands = [];
+
+          commands.push(
+            `xgettext --no-location --from-code=utf-8 --language=javascript --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${inputPathArgs}`
+          );
+          if (err !== null) {
+            commands.push(
+              `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`
+            );
+          } else {
+            commands.push(
+              `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`
+            );
+            commands.push(`cp "${tmpPo}" "${basePo}" `);
+          }
+
+          cp.exec(commands.join(" && "), (error /*, stdout, stderr*/) => {
+            //eslint-disable-next-line no-console
+            console.log(commands.join(" && "));
+
+            resolvCount++;
+            if (error) {
+              //eslint-disable-next-line no-console
+              console.log(`exec error: ${error}`);
+              reject(error);
+            } else {
+              if (resolvCount >= langs.length) {
+                resolve();
+              }
+            }
+          });
         });
       });
     });
