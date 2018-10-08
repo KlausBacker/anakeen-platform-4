@@ -28,7 +28,7 @@ const commonConfig = merge([
         },
     },
     parts.splitChunksPlugin(),
-    parts.useVueLoader(/node_modules/),
+    parts.useVueLoader(),
 ]);
 
 const productionComponentConfig = merge([
