@@ -5,6 +5,7 @@ namespace Anakeen\SmartStructures\Group\Render;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
 use Dcp\Ui\RenderOptions;
+use Dcp\Ui\UIGetAssetPath;
 use \SmartStructure\Fields\Group as myAttributes;
 
 class GroupEditRender extends DefaultConfigEditRender
@@ -56,12 +57,9 @@ class GroupEditRender extends DefaultConfigEditRender
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $smartElement = null)
     {
         $js = parent::getJsReferences();
-        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
-        $js["iuser"] = '/uiAssets/Families/iuser/prod/iuser.js?ws=' . $version;
-        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["iuser"] = '/uiAssets/Families/iuser/debug/iuser.js?ws=' . $version;
-        }
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $js["dduiIuser"] = $path["Iuser"]["js"];
 
         return $js;
     }
