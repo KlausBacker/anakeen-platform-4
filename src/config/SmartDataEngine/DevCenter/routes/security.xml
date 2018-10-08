@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="DevCenter">
+    <sde:route name="GetDocument">
+      <sde:callable>\Anakeen\Routes\DevCenter\Security\Profil</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/devel/security/profil/{id:[^/.]+}[.json]</sde:pattern>
+      <sde:description>Get right accesses for a profil</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+</sde:config>
