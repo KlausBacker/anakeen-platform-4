@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@anakeen/ank-components@^1.0.0-1539001708":
+"@anakeen/ank-components@^1.0.0-0":
   version "1.0.0-1539001708"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1539001708.tgz#794bda5995a186c1ea55d9b426d0f5f95d29b93e"
   integrity sha512-DFhUQj08hlrwjVWMaJVRkUAYXnPfO9sxEKcm720+sVVczuvj4mwS/Myalu+5lRmOzo+Gtv2H7U47mglRB5pQtw==
