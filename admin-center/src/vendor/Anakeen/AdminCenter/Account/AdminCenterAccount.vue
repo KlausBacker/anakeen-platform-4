@@ -38,7 +38,7 @@
                             <ank-smart-element ref="groupDoc" ></ank-smart-element>
                         </div>
                         <div v-show="!displayGroupDocument" class="accountManager_logo">
-                            <div><img class="anakeen-logo" src="/AdminCenter/Images/anakeen_monogramme.svg" alt="Anakeen Logo"/></div>
+                            <div><img class="anakeen-logo" src="/admin-center/src/public/Anakeen/adminCenter/images/anakeen_monogramme.svg" alt="Anakeen Logo"/></div>
                         </div>
                     </div>
                     <div class="accountManager_contentPart_gridPart">
