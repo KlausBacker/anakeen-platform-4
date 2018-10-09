@@ -42,7 +42,8 @@ class Exception extends \Exception
             for ($ip = 1; $ip < $nargs; $ip++) {
                 $tArgs[] = func_get_arg($ip);
             }
-            $msg = call_user_func_array("ErrorCode::getError", $tArgs);
+            $msg = \ErrorCode::getError(...$tArgs);
+
             if ($msg) {
                 $message = $msg;
             }

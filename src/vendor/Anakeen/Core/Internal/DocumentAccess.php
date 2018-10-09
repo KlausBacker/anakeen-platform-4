@@ -9,7 +9,6 @@ use \Anakeen\Core\DbManager;
 use \Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
-use Dcp\Db\Exception;
 
 /**
  * Control Access Document Class
@@ -415,7 +414,7 @@ class DocumentAccess
                     if ($duid == "") {
                         $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                     }
-                    $tduid=[];
+                    $tduid = [];
                     if ($duid != "") {
                         $oa = $fromdocidvalues->getAttribute($aid);
                         if (!is_array($duid)) {
@@ -423,7 +422,7 @@ class DocumentAccess
                                 if ($oa && $oa->isMultiple() === false) {
                                     $tduid = [$duid];
                                 } else {
-                                    $tduid =  Postgres::stringToFlatArray($duid);
+                                    $tduid = Postgres::stringToFlatArray($duid);
                                 }
                             } else {
                                 $errorMessage = \ErrorCode::getError('DOC0134', $aid);
@@ -754,20 +753,18 @@ class DocumentAccess
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
-    public function controlUserId($profid, $uid, $aclname)
+    public static function controlUserId($profid, $uid, $aclname)
     {
-        $perm = new \DocPerm($this->document->dbaccess, array(
+        $perm = new \DocPerm("", array(
             $profid,
             $uid
         ));
 
-        if ($perm->isAffected()) {
-            $uperm = $perm->uperm;
-        } else {
-            $uperm = $perm->getUperm($profid, $uid);
-        }
 
-        return $this->controlUp($uperm, $aclname);
+        $uperm = $perm->getUperm($profid, $uid);
+
+
+        return self::controlUp($uperm, $aclname);
     }
 
     /**
@@ -777,15 +774,15 @@ class DocumentAccess
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
-    public function controlUp($uperm, $aclname)
+    public static function controlUp($uperm, $aclname)
     {
         $has = self::hasControl($uperm, $aclname);
         if ($has === true) {
             return "";
         } elseif ($has === false) {
-            return sprintf(_("no privilege %s for %s [%d]"), $aclname, $this->document->title, $this->document->id);
+            return sprintf(_("Access \"%s\" not granted"), $aclname);
         } else {
-            return sprintf(_("unknow privilege %s"), $aclname);
+            return sprintf(_("Access \"%s\" unknow"), $aclname);
         }
     }
 

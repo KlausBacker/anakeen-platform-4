@@ -107,6 +107,7 @@ create unique index idx_perm on docperm(docid, userid);";
             return -1;
         }
         $userMember = DocPerm::getMemberOfVector($userid, $strict);
+
         $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
         \Anakeen\Core\DbManager::query($sql, $uperm, true, true);
         if ($uperm === false) {
@@ -131,29 +132,9 @@ create unique index idx_perm on docperm(docid, userid);";
         
         return $uperm;
     }
-    /**
-     * control access at $pos position (direct or indirect) (green or grey)
-     * @param $pos
-     * @return bool
-     */
-    public function ControlU($pos)
-    {
-        if ($this->uperm == 0) {
-            $this->uperm = $this->getUperm($this->docid, $this->userid);
-        }
-        return ($this->controlMask($this->uperm, $pos));
-    }
-    // --------------------------------------------------------------------
+
     
-    /**
-     * @param $pos
-     * @deprecated no need now. Control process has changed
-     * @return bool
-     */
-    public function ControlG($pos)
-    {
-        return false;
-    }
+
     /**
      * control access at $pos position direct inly (green)
      * @param $pos
