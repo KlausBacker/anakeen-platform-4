@@ -2,7 +2,6 @@
 
 namespace Anakeen\Routes\DevelopmentCenter\UI;
 
-
 use Dcp\Ui\UIGetAssetPath;
 
 class Main

@@ -4,6 +4,7 @@
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
   "scripts": {
+    "beautify": "./node_modules/eslint/bin/eslint.js ./ --fix",
     "buildJs": "webpack --config webpack/index.js"
   },
   "author": "anakeen",

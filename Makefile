@@ -1,3 +1,9 @@
+#MAKEFILE dir
+MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+MODULE_NAME=development-center
+NODE_MODULE_PATH=node_modules
+
 ## control conf
 port=80
 CONTROL_PROTOCOL=http
@@ -12,6 +18,7 @@ YARN_BIN=yarn
 COMPOSER=composer
 DEVTOOL_BIN=php ./anakeen-devtool.phar
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
+CBF_BIN=php ./ide/vendor/bin/phpcbf
 -include Makefile.local
 
 
@@ -31,7 +38,17 @@ app: $(NODE_MODULE_PATH)
 deploy:
 	rm -f dev*app
 	${ANAKEEN_CLI_BIN} build --auto-release
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w dev*app
+	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w ${MODULE_NAME}*.app
+
+########################################################################################################################
+##
+## CLEAN TARGET
+##
+########################################################################################################################
+
+clean: ## clean the local pub
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	rm -rf ${MODULE_NAME}*.app
 
 ########################################################################################################################
 ##
@@ -44,6 +61,17 @@ po:
 
 stub:
 	${ANAKEEN_CLI_BIN} generateStubs
+
+########################################################################################################################
+##
+## Beautify TARGET
+##
+########################################################################################################################
+
+beautify:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
+	$(YARN_BIN) run beautify
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
 ########################################################################################################################
 ##
