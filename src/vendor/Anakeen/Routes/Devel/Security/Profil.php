@@ -21,7 +21,6 @@ use Anakeen\SmartElementManager;
  */
 class Profil
 {
-    const FAILDELAY = 2;
     protected $documentId;
     /**
      * @var SmartElement
@@ -46,7 +45,6 @@ class Profil
     }
 
     protected function initParameters(
-        /** @noinspection PhpUnusedParameterInspection */
         \Slim\Http\request $request,
         $args
     ) {
@@ -161,9 +159,10 @@ class Profil
 
     protected function getGreenAccesses()
     {
-        $sql
-            = sprintf("select docperm.upacl, users.login, users.id, users.accounttype from docperm, users where userid=users.id and docid = %d order by users.accounttype, users.login;",
-            $this->_document->id);
+        $sql = sprintf(
+            "select docperm.upacl, users.login, users.id, users.accounttype from docperm, users where userid=users.id and docid = %d order by users.accounttype, users.login;",
+            $this->_document->id
+        );
         DbManager::query($sql, $results);
 
         $greenAccess = [];
@@ -176,9 +175,10 @@ class Profil
             ];
         }
 
-        $sql
-            = sprintf("select docpermext.acl, users.login, users.id, users.accounttype from docpermext, users where userid=users.id and docid = %d order by users.accounttype, users.login;",
-            $this->_document->id);
+        $sql = sprintf(
+            "select docpermext.acl, users.login, users.id, users.accounttype from docpermext, users where userid=users.id and docid = %d order by users.accounttype, users.login;",
+            $this->_document->id
+        );
         DbManager::query($sql, $extResults);
         foreach ($extResults as $result) {
             if (!isset($greenAccess[$result["login"]])) {
@@ -191,8 +191,10 @@ class Profil
             $greenAccess[$result["login"]]["aclNames"][] = $result["acl"];
         }
 
-        $sql = sprintf("select docperm.upacl, vgroup.id as field, vgroup.num as id from docperm, vgroup where userid=vgroup.num and docid =  %d order by vgroup.id;",
-            $this->_document->id);
+        $sql = sprintf(
+            "select docperm.upacl, vgroup.id as field, vgroup.num as id from docperm, vgroup where userid=vgroup.num and docid =  %d order by vgroup.id;",
+            $this->_document->id
+        );
         DbManager::query($sql, $results);
         foreach ($results as $result) {
             $greenAccess[$result["field"]] = [
@@ -203,8 +205,10 @@ class Profil
             ];
         }
 
-        $sql = sprintf("select docpermext.acl, vgroup.id as field, vgroup.num as id from docpermext, vgroup where userid=vgroup.num and docid =  %d order by vgroup.id;",
-            $this->_document->id);
+        $sql = sprintf(
+            "select docpermext.acl, vgroup.id as field, vgroup.num as id from docpermext, vgroup where userid=vgroup.num and docid =  %d order by vgroup.id;",
+            $this->_document->id
+        );
         DbManager::query($sql, $results);
         foreach ($results as $result) {
             if (!isset($greenAccess[$result["field"]])) {
@@ -220,7 +224,6 @@ class Profil
 
         $accesses = [];
         foreach ($greenAccess as $login => $accountAccess) {
-
             $uperm = $accountAccess["uperm"];
             $aclNames = $accountAccess["aclNames"];
             $access = ["id" => intval($accountAccess["id"]), "account" => ["reference" => $login, "type" => $accountAccess["type"]]];
