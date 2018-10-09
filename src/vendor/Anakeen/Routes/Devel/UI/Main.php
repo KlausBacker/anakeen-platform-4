@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\DevelopmentCenter\UI;
+namespace Anakeen\Routes\Devel\UI;
 
 use Dcp\Ui\UIGetAssetPath;
 
