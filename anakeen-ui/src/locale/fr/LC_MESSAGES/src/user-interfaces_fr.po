@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 13:56+0200\n"
-"PO-Revision-Date: 2018-09-28 10:37+0200\n"
+"POT-Creation-Date: 2018-10-08 11:46+0200\n"
+"PO-Revision-Date: 2018-10-08 12:43+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -77,6 +77,14 @@ msgstr "Chacun des textes contient"
 msgctxt "authent"
 msgid "An email has been sent to user \"%s\""
 msgstr ""
+
+msgctxt "grid-component"
+msgid "Any values is after than or equal to"
+msgstr "Toutes les valeurs sont postérieures ou égales à"
+
+msgctxt "grid-component"
+msgid "Any values is earlier than or equal to"
+msgstr "Toutes les valeurs sont antérieures ou égales à"
 
 msgctxt "grid-component"
 msgid "Any values is greater than or equal to"
@@ -356,6 +364,22 @@ msgid "Invalid transition"
 msgstr "Transition invalide"
 
 msgctxt "grid-component"
+msgid "Is after than"
+msgstr "Est postérieur à"
+
+msgctxt "grid-component"
+msgid "Is after than or equal to"
+msgstr "Est postérieur ou égal à"
+
+msgctxt "grid-component"
+msgid "Is earlier than"
+msgstr "Est antérieur à"
+
+msgctxt "grid-component"
+msgid "Is earlier than or equal to"
+msgstr "Est antérieur ou égal à"
+
+msgctxt "grid-component"
 msgid "Is empty"
 msgstr "Est vide"
 
@@ -492,6 +516,14 @@ msgstr ""
 msgctxt "grid-component"
 msgid "One of values equal to"
 msgstr "Une des valeurs est égale à"
+
+msgctxt "grid-component"
+msgid "One of values is after than or equal to"
+msgstr "Une des valeurs est postérieure à"
+
+msgctxt "grid-component"
+msgid "One of values is earlier than or equal to"
+msgstr "Une des valeurs est antérieure à"
 
 msgctxt "grid-component"
 msgid "One of values is greater than or equal to"

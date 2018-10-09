@@ -188,7 +188,11 @@ class ColumnsConfig
 
         $stringsOperators=[];
         foreach ($operators as $k=>$operator) {
-            $stringsOperators[$k]= $operator["label"];
+            if (!empty($operator["typedLabels"])) {
+                $stringsOperators[$k] = $operator["typedLabels"][$type] ?? $operator["label"];
+            } else {
+                $stringsOperators[$k] = $operator["label"];
+            }
         }
 
 
