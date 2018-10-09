@@ -30,7 +30,7 @@ class ErrorCodeRoutes
     /**
      * @errorCode The ressource is not found
      */
-    const ROUTES0105 = 'Family "%s" not found';
+    const ROUTES0105 = 'Structure "%s" not found';
     /**
      * @errorCode Content-type said json and content must be contains {document:{attributes:[]}
      */
