@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="DevelopmentCenter">
+        <sde:route name="main">
+            <sde:callable>\Anakeen\Routes\DevelopmentCenter\UI\Main</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/developmentCenter/</sde:pattern>
+            <sde:description>Get development center main page</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+    </sde:routes>
+</sde:config>

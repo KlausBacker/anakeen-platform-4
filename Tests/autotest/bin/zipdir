@@ -1,0 +1,49 @@
+#!/bin/bash
+
+function usage {
+	cat <<EOF
+
+Usage
+-----
+
+  $0 <zip-filename> <directory>
+
+EOF
+}
+
+function main {
+	while [ $# -ne 0 ]; do
+		case $1 in
+			-h|--help)
+				usage
+				return 1
+				;;
+			--)
+				shift
+				break
+				;;
+			*)
+				break
+				;;
+		esac
+	done
+	local ZIP=$1
+	if [ -z "${ZIP}" ]; then
+		echo "Error: missing or empty zip filename argument!" 1>&2
+		usage
+		return 1
+	fi
+	local DIR=$2
+	if [ -z "${DIR}" ]; then
+		echo "Error: missing or empty directory argument!" 1>&2
+		usage
+		return 1
+	fi
+
+	set -e
+
+	# Generate artifacts only when running under GitLab CI
+	( cd "${DIR}" && zip --quiet -r "${ZIP}" . )
+}
+
+main "$@"

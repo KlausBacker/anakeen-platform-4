@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Development Center</title>
+    {{#CSS}}
+        <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
+    {{#JS_DEPS}}
+        <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+        <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
+</head>
+<body>
+
+<div id="development-center"></div>
+
+</body>
+</html>
