@@ -5,8 +5,8 @@
             <admin:title>Account management</admin:title>
             <admin:icon><![CDATA[<i class="material-icons" title="account management">group</i>]]></admin:icon>
             <admin:pluginPath>/accountManagement</admin:pluginPath>
-            <admin:scriptURL>/AdminCenter/prod/ank-admin-account.js</admin:scriptURL>
-            <admin:debugScriptURL>/AdminCenter/debug/ank-admin-account.js</admin:debugScriptURL>
+            <admin:scriptURL>/Anakeen/adminCenter/prod/ank-admin-account.js</admin:scriptURL>
+            <admin:debugScriptURL>/Anakeen/adminCenter/dev/ank-admin-account.js</admin:debugScriptURL>
             <admin:pluginTemplate><![CDATA[<ank-admin-account></ank-admin-account>]]></admin:pluginTemplate>
             <admin:order position="first"/>
         </admin:plugin>

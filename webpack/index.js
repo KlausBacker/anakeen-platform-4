@@ -1,6 +1,45 @@
 const path = require('path');
-global.__PROJECT_ROOT = path.resolve(__dirname, '..');
+const {prod, prodLegacy, dev} = require("@anakeen/webpack-conf");
+const {useVueLoader, setKendoAndJqueryToGlobal, splitChunksPlugin} = require("@anakeen/webpack-conf/parts");
 
-module.exports = (env) => {
-    return require('./config')(env);
+const BASE_DIR = path.resolve(__dirname, "../admin-center/");
+const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
+
+const adminPluginsEntries = require('./config/pluginsEntries');
+const adminPluginsChunks = Object.keys(adminPluginsEntries);
+
+const productionFilename = (bundle) => {
+  const bundleName = bundle.chunk.name;
+  if (adminPluginsChunks.indexOf(bundleName) >= 0) {
+    return '[name].js';
+  }
+  return '[name]-[chunkhash].js';
+};
+
+module.exports = () => {
+  const conf = {
+    "moduleName": "adminCenter",
+    "entry": {
+      'adminCenter': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/AdminCenter/Components/main.js')],
+      ...adminPluginsEntries
+    },
+    buildPath: PUBLIC_PATH,
+    customParts: [
+      useVueLoader(),
+      setKendoAndJqueryToGlobal([
+        /kendo.pdf/,
+        /kendo.excel/
+      ]),
+      {
+        output: {
+          filename: productionFilename
+        }
+      }
+    ]
+  };
+  return [
+    prod(conf),
+    prodLegacy(conf),
+    dev(conf)
+  ];
 };
