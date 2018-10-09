@@ -4,102 +4,274 @@
  * @package FDL
 */
 
-namespace Anakeen\Routes\Authent;
+namespace Anakeen\Routes\Devel\Security;
 
-use Anakeen\Core\Internal\ContextParameterManager;
-use Anakeen\Core\Settings;
-use Anakeen\Router\AuthenticatorManager;
+use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\DocumentAccess;
+use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
-use Anakeen\Core\LogException;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Core\Utils\Gettext;
+use Anakeen\SmartElementManager;
 
 /**
- * Class Session
- * Create a user session
+ * Get Right Accesses
  *
- * @note    Used by route : POST /api/v2/authent/sessions/{login}
- * @package Anakeen\Routes\Authent
+ * @note    Used by route : GET api/v2/devel/security/profil/{id}
  */
-class Session
+class Profil
 {
     const FAILDELAY = 2;
+    protected $documentId;
+    /**
+     * @var SmartElement
+     */
+    protected $_document;
+    protected $completeGroup = false;
+    protected $completeRole = false;
 
     /**
      * Create User Session after verify authentication
      *
-     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param                     $args
      *
      * @return \Slim\Http\response $response
-     * @throws Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
+        $this->initParameters($request, $args);
+        return ApiV2Response::withData($response, $this->doRequest());
+    }
 
-        $login = $args["login"];
-        $password = $request->getParam("password");
-        $language = $request->getParam("language");
+    protected function initParameters(
+        /** @noinspection PhpUnusedParameterInspection */
+        \Slim\Http\request $request,
+        $args
+    ) {
+        $this->documentId = $args["id"];
+        $this->setDocument($this->documentId);
+        $this->completeGroup = ($request->getQueryParam("group") === "all");
+        $this->completeRole = ($request->getQueryParam("role") === "all");
+    }
 
 
-        if (!isset($password) || $password === "") {
-            sleep(self::FAILDELAY);
-            $e = new Exception('AUTH0001', __METHOD__);
-            $e->setHttpStatus('403', 'Forbidden');
-            throw $e;
+    public function doRequest()
+    {
+        $data["properties"] = $this->getProperties();
+        $data["accesses"] = $this->getGreenAccesses();
+
+        if ($this->completeGroup) {
+            // add all groups in response even they has no accesses
+            $this->completeGroupAccess($data["accesses"]);
         }
-        $user = new \Anakeen\Core\Account();
-        $user->setLoginName($login);
-        $result = false;
-        if ($user->isAffected()) {
-            try {
-                $result = $user->checkpassword($password);
-            } catch (\Exception $e) {
-                LogException::writeLog($e);
-                sleep(self::FAILDELAY);
-                $e = new Exception('AUTH0001', __METHOD__);
-                $e->setHttpStatus('403', 'Forbidden');
-                throw $e;
+        if ($this->completeRole) {
+            // add all roles in response even they has no accesses
+            $this->completeRoleAccess($data["accesses"]);
+        }
+
+        $this->getGreyAccesses($data["accesses"]);
+        return $data;
+    }
+
+
+    protected function getGreyAccesses(array &$accesses)
+    {
+        $parentGroups = self::getGroupParents();
+        foreach ($accesses as &$access) {
+            if ($access["type"] === "group" || $access["type"] === "user") {
+                if (isset($parentGroups[$access["id"]])) {
+                    $access["parents"] = $parentGroups[$access["id"]];
+                }
+                foreach ($this->_document->acls as $aclName) {
+                    if (!isset($access[$aclName])) {
+                        if (DocumentAccess::controlUserId($this->_document->id, $access["id"], $aclName) === "") {
+                            $access[$aclName] = "inherit";
+                        }
+                    }
+                }
             }
-        } else {
-            if (!$user->isAffected()) {
-                sleep(self::FAILDELAY);
-                $e = new Exception('AUTH0023', __METHOD__);
-                $e->setHttpStatus('403', 'Forbidden');
-                $e->setUserMessage(Gettext::___("Username and/or password is incorrect", "authent"));
-                throw $e;
+        }
+    }
+
+    protected static function getGroupParents()
+    {
+        $sql = "select users.id as id, groups.idgroup as parent from users, groups where groups.iduser = users.id and accounttype='G';";
+        DbManager::query($sql, $results);
+
+        $parents = [];
+        foreach ($results as $result) {
+            $parents[intval($result["id"])][] = intval($result["parent"]);
+        }
+        return $parents;
+    }
+
+    protected function completeGroupAccess(array &$accesses)
+    {
+
+        $sql = "select id, login from users where accounttype='G'";
+        DbManager::query($sql, $groups);
+        foreach ($groups as $group) {
+            if (!self::existsAccess($group["login"], $accesses)) {
+                $accesses[] = ["id" => intval($group["id"]), "account" => ["reference" => $group["login"], "type" => "group"]];
             }
         }
-        if (!$result) {
-            sleep(self::FAILDELAY);
-            $e = new Exception('AUTH0023', __METHOD__);
-            $e->setHttpStatus('403', 'Forbidden');
-            $e->setUserMessage(Gettext::___("Username and/or password is incorrect", "authent"));
-            throw $e;
+    }
+
+    protected function completeRoleAccess(array &$accesses)
+    {
+        $sql = "select id, login from users where accounttype='R'";
+        DbManager::query($sql, $roles);
+        foreach ($roles as $role) {
+            if (!self::existsAccess($role["login"], $accesses)) {
+                $accesses[] = ["id" => intval($role["id"]), "account" => ["reference" => $role["login"], "type" => "role"]];
+            }
         }
-        $_SERVER['PHP_AUTH_USER'] = $login;
+    }
 
-
-        $session = new \Anakeen\Core\Internal\Session();
-        $session->set();
-        $session->register('username', $login);
-        if ($language) {
-            $u = new \Anakeen\Core\Account();
-            $u->setLoginName($login);
-            \Anakeen\Core\ContextManager::initContext($u, AuthenticatorManager::$session);
-            ContextParameterManager::setUserValue(Settings::NsSde, "CORE_LANG", $language);
+    protected static function existsAccess($accountRef, $accesses)
+    {
+        foreach ($accesses as $access) {
+            if ($access["account"] === $accountRef) {
+                return true;
+            }
         }
-        AuthenticatorManager::$auth->auth_session=$session;
-        $status = AuthenticatorManager::checkAccess(null, true);
+        return false;
+    }
 
-        if ($status !== AuthenticatorManager::AccessOk) {
-            $e = new Exception('AUTH0002', $status);
-            $e->setHttpStatus('403', 'Forbidden');
-            $e->setUserMessage(___("Account access not granted, please contact your system administrator", "authent"));
-            throw $e;
+    protected function getProperties()
+    {
+        $props = [
+            "id" => $this->_document->id,
+            "title" => $this->_document->getTitle(),
+            "icon" => $this->_document->getIcon(),
+            "type" => $this->_document->fromname,
+            "name" => $this->_document->name
+        ];
+
+        if ($this->_document->accessControl()->isRealProfile()) {
+            $props["structure"] = SEManager::getNameFromId($this->_document->getRawValue("dpdoc_famid"));
         }
 
-        return ApiV2Response::withData($response, ["login" => $login]);
+        $props["acl"] = array_values($this->_document->acls);
+
+        return $props;
+    }
+
+    protected function getGreenAccesses()
+    {
+        $sql
+            = sprintf("select docperm.upacl, users.login, users.id, users.accounttype from docperm, users where userid=users.id and docid = %d order by users.accounttype, users.login;",
+            $this->_document->id);
+        DbManager::query($sql, $results);
+
+        $greenAccess = [];
+        foreach ($results as $result) {
+            $greenAccess[$result["login"]] = [
+                "id" => $result["id"],
+                "uperm" => $result["upacl"],
+                "type" => self::getAccountType($result["accounttype"]),
+                "aclNames" => []
+            ];
+        }
+
+        $sql
+            = sprintf("select docpermext.acl, users.login, users.id, users.accounttype from docpermext, users where userid=users.id and docid = %d order by users.accounttype, users.login;",
+            $this->_document->id);
+        DbManager::query($sql, $extResults);
+        foreach ($extResults as $result) {
+            if (!isset($greenAccess[$result["login"]])) {
+                $greenAccess[$result["login"]] = [
+                    "id" => $result["id"],
+                    "type" => self::getAccountType($result["accounttype"]),
+                    "aclNames" => []
+                ];
+            }
+            $greenAccess[$result["login"]]["aclNames"][] = $result["acl"];
+        }
+
+        $sql = sprintf("select docperm.upacl, vgroup.id as field, vgroup.num as id from docperm, vgroup where userid=vgroup.num and docid =  %d order by vgroup.id;",
+            $this->_document->id);
+        DbManager::query($sql, $results);
+        foreach ($results as $result) {
+            $greenAccess[$result["field"]] = [
+                "id" => $result["id"],
+                "uperm" => $result["upacl"],
+                "type" => "field",
+                "aclNames" => []
+            ];
+        }
+
+        $sql = sprintf("select docpermext.acl, vgroup.id as field, vgroup.num as id from docpermext, vgroup where userid=vgroup.num and docid =  %d order by vgroup.id;",
+            $this->_document->id);
+        DbManager::query($sql, $results);
+        foreach ($results as $result) {
+            if (!isset($greenAccess[$result["field"]])) {
+                $greenAccess[$result["field"]] = [
+                    "id" => $result["id"],
+                    "type" => "field",
+                    "aclNames" => []
+                ];
+            }
+            $greenAccess[$result["field"]]["aclNames"][] = $result["acl"];
+        }
+
+
+        $accesses = [];
+        foreach ($greenAccess as $login => $accountAccess) {
+
+            $uperm = $accountAccess["uperm"];
+            $aclNames = $accountAccess["aclNames"];
+            $access = ["id" => intval($accountAccess["id"]), "account" => ["reference" => $login, "type" => $accountAccess["type"]]];
+
+            foreach ($this->_document->acls as $aclName) {
+                if ($uperm && DocumentAccess::hasControl($uperm, $aclName)) {
+                    $access[$aclName] = "set";
+                } elseif (array_search($aclName, $aclNames) !== false) {
+                    $access[$aclName] = "set";
+                }
+            }
+
+
+            $accesses[] = $access;
+        }
+
+        return $accesses;
+    }
+
+    protected static function getAccountType($systemType)
+    {
+        switch ($systemType) {
+            case 'U':
+                return "user";
+            case "G":
+                return "group";
+            case "R":
+                return "role";
+        }
+        return "?";
+    }
+
+    /**
+     * Find the current document and set it in the internal options
+     *
+     * @param $resourceId
+     *
+     * @throws Exception
+     */
+    protected function setDocument($resourceId)
+    {
+        $this->_document = SmartElementManager::getDocument($resourceId);
+        if (!$this->_document) {
+            $exception = new Exception("ROUTES0100", $resourceId);
+            $exception->setHttpStatus("404", "Element not found");
+            throw $exception;
+        }
+        if ($this->_document->defDoctype !== "P") {
+            if ($this->_document->id !== $this->_document->profid) {
+                throw new Exception("DEV0100", $resourceId);
+            }
+        }
     }
 }
