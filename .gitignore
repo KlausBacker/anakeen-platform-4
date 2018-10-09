@@ -13,11 +13,10 @@ ide/vendor/
 .idea/vcs.xml
 .idea/modules.xml
 .idea/vcs.xml
-
-smart-data-engine*app
+*app
 .php_cs.cache
 .idea/*.iml"
 src/vendor/Anakeen/lib/vendor/
-Tests/src/vendor/Anakeen/TestUnits/lib/vendor/
 Makefile.local
 node_modules/
+src/public/Anakeen/

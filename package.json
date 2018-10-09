@@ -4,12 +4,12 @@
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "buildJs": "webpack --config webpack/index.js"
   },
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
-  "dependencies": {},
   "devDependencies": {
+    "@anakeen/webpack-conf": "latest",
     "@anakeen/anakeen-cli": "^1.0.1-1"
   },
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/development-center.git",
