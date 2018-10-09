@@ -106,7 +106,7 @@ app: compilation
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} build --sourcePath ./anakeen-ui
 
-autotest: install
+autotest: compilation
 	rm -f *app
 	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./anakeen-ui
 	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
