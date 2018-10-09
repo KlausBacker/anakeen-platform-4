@@ -1,112 +1,107 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart CVDOC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-09 16:50+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: cvdoc.struct.xml
-#, fuzzy
+msgctxt "CVDOC"
+msgid "fr_basic"
+msgstr "Identification"
+
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "ba_desc"
 msgstr "Description"
 
 #: cvdoc.struct.xml
-#, fuzzy
-msgctxt "CVDOC"
-msgid "cv_displayed"
-msgstr "Affichable"
-
-#: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
 msgid "cv_famid"
 msgstr "Structure"
 
 #: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
-msgid "cv_fr_default"
-msgstr "Vues par dfauts"
+msgid "cv_t_views"
+msgstr "Views"
 
 #: cvdoc.struct.xml
-#, fuzzy
-msgctxt "CVDOC"
-msgid "cv_idcview"
-msgstr "Id cration vues par dfaut"
-
-#: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
 msgid "cv_idview"
-msgstr "Identifiant de la vue"
+msgstr "View id"
 
 #: cvdoc.struct.xml
-#, fuzzy
-msgctxt "CVDOC"
-msgid "cv_kview"
-msgstr "Type"
-
-#: cvdoc.struct.xml
-#, fuzzy
-msgctxt "CVDOC"
-msgid "cv_lcview"
-msgstr "Cration vue"
-
-#: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
 msgid "cv_lview"
 msgstr "Label"
 
 #: cvdoc.struct.xml
-#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_renderconfigclass"
+msgstr "Render PHP class"
+
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_menu"
 msgstr "Menu"
 
 #: cvdoc.struct.xml
-#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_kview"
+msgstr "Type"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_displayed"
+msgstr "Displayable"
+
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_mskid"
-msgstr "Masque"
+msgstr "Mask"
 
 #: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
 msgid "cv_order"
-msgstr "Ordre de slection"
+msgstr "Select order"
 
 #: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
-msgid "cv_primarymask"
-msgstr "Masque primaire"
+msgid "cv_fr_default"
+msgstr "Default view"
 
 #: cvdoc.struct.xml
-#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_idcview"
+msgstr "Default create view"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_lcview"
+msgstr "Default create view label"
+
+#: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_renderaccessclass"
-msgstr "Classe d'accs au rendu"
+msgstr "Render access PHP class"
 
 #: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
-msgid "cv_renderconfigclass"
-msgstr "Classe de configuration de rendu (HTML5)"
+msgid "cv_primarymask"
+msgstr "Primary mask"
 
 #: cvdoc.struct.xml
-#, fuzzy
-msgctxt "CVDOC"
-msgid "cv_t_views"
-msgstr "Vues"
-
-#: cvdoc.struct.xml
-#, fuzzy
-msgctxt "CVDOC"
-msgid "dpdoc_famid"
-msgstr "Structure pour le profil"
-
-#: cvdoc.struct.xml
-#, fuzzy
 msgctxt "CVDOC"
 msgid "dpdoc_fr_dyn"
-msgstr "Profil dynamique"
+msgstr "Dynamic profile"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
-msgid "fr_basic"
-msgstr ""
+msgid "dpdoc_famid"
+msgstr "Profile structure reference"
