@@ -113,7 +113,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             $this->assertEquals($expectRender, $fValue, sprintf("values is : %s", sprintf(json_encode($fValue))));
         }
         foreach ($expectContainRender as $expAttr => $expVal) {
-            $this->assertTrue(preg_match("/$expVal/", $fValue->$expAttr) > 0, sprintf("not match for $expVal. values is : %s", json_encode($fValue)));
+            $this->assertTrue(preg_match("%$expVal%", $fValue->$expAttr) > 0, sprintf("not match for \"$expVal\". values is : \"%s\"", json_encode($fValue)));
         }
     }
 
@@ -353,13 +353,13 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             ),
             array(
                 "TST_FMTCOL1",
-                "revdate",
-                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+                "mdate",
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d).\d*$/'
             ),
             array(
                 "TST_FMTCOL1",
                 "cdate",
-                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d).\d*$/'
             ),
             array(
                 "TST_FMTCOL1",
@@ -368,7 +368,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                     "name" => $this->famName,
                     "title" => "Test Format",
                     "id" => '/^[0-9]+$/',
-                    "icon" => "/resizeimg.php/"
+                    "icon" => "/images/"
                 )
             ),
             array(
@@ -423,23 +423,18 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 array(
                     "title" => "Cycle format",
                     "id" => '/^[0-9]+$/',
-                    "icon" => "/resizeimg.php/"
+                    "icon" => "/images/"
                 )
             ),
             array(
                 "TST_FMTCOL1",
                 \Anakeen\Core\Internal\FormatCollection::propCreationDate,
-                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d).\d+$/'
             ),
             array(
                 "TST_FMTCOL1",
                 \Anakeen\Core\Internal\FormatCollection::propLastModificationDate,
-                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
-            ),
-            array(
-                "TST_FMTCOL1",
-                \Anakeen\Core\Internal\FormatCollection::propLastAccessDate,
-                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/'
+                '/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d).\d+$/'
             )
         );
     }
@@ -570,24 +565,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     public function dataDatePropertyRenderFormatCollection()
     {
         return array(
-            array(
-                "TST_FMTCOL1",
-                "adate",
-                DateAttributeValue::frenchStyle,
-                '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
-            ),
-            array(
-                "TST_FMTCOL1",
-                "adate",
-                DateAttributeValue::isoWTStyle,
-                '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
-            ),
-            array(
-                "TST_FMTCOL1",
-                "adate",
-                DateAttributeValue::isoStyle,
-                '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
-            ),
+
             array(
                 "TST_FMTCOL2",
                 "cdate",
@@ -608,19 +586,19 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
             ),
             array(
                 "TST_FMTCOL3",
-                "revdate",
+                "mdate",
                 DateAttributeValue::frenchStyle,
                 '/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL3",
-                "revdate",
+                "mdate",
                 DateAttributeValue::isoWTStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             ),
             array(
                 "TST_FMTCOL3",
-                "revdate",
+                "mdate",
                 DateAttributeValue::isoStyle,
                 '/^(\d\d\d\d)-(\d\d)-(\d\d)T?(\d\d)?:?(\d\d)?:?(\d\d)?/'
             )
@@ -703,7 +681,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 ),
                 array(
                     "value" => "^[0-9]+$",
-                    "url" => "latest=Y"
+                    "url" => "api/v2"
                 )
             ),
 
@@ -716,7 +694,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 ),
                 array(
                     "value" => "^[0-9]+$",
-                    "url" => "latest=Y"
+                    "url" => "api/v2/documents/"
                 )
             ),
             array(
@@ -786,7 +764,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 "TST_FMTCOL2",
                 "tst_ts",
                 array(
-                    "value" => "2012-06-13 11:27:00"
+                    "value" => "2012-06-13T11:27:00"
                 )
             ),
             array(
@@ -934,7 +912,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 ),
                 array(
                     "value" => "^[0-9]+$",
-                    "url" => "latest=Y"
+                    "url" => "api/v2/documents/"
                 )
             ),
 
@@ -948,7 +926,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 ),
                 array(
                     "value" => "^[0-9]+$",
-                    "url" => "latest=Y"
+                    "url" => "api/v2/documents/"
                 )
             ),
 

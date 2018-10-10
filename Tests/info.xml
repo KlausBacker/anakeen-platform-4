@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<module name="@moduleName@" disabled="no"
+<module name="workflow-test" disabled="no"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
-        version="@version@" release="@release@" vendor="Anakeen"
+        version="1.0.0" release="0" vendor="Anakeen"
         basecomponent="no">
     <description>Test case for Anakeen Platform Workflow.</description>
     <requires>
