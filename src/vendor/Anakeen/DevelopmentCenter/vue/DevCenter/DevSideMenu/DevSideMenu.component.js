@@ -1,7 +1,5 @@
 export default {
-  mounted() {
-
-  },
+  mounted() {},
   computed: {
     sections() {
       return this.$router.options.routes[0].children;
