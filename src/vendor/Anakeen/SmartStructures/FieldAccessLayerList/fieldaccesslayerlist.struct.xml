@@ -5,6 +5,7 @@
         <smart:class>Anakeen\SmartStructures\FieldAccessLayerList\FieldAccessLayerListHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="fall_fr_ident" type="frame" label="Properties" access="ReadWrite">
                 <smart:field-text name="ba_title" label="Title" access="ReadWrite" is-title="true"/>
