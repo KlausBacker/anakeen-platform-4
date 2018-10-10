@@ -13,48 +13,8 @@ msgstr ""
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
-msgid "fr_basic"
-msgstr "Identification"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
 msgid "ba_desc"
 msgstr "Description"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_famid"
-msgstr "Structure"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_t_views"
-msgstr "Views"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_idview"
-msgstr "View id"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_lview"
-msgstr "Label"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_renderconfigclass"
-msgstr "Render PHP class"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_menu"
-msgstr "Menu"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_kview"
-msgstr "Type"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
@@ -63,13 +23,8 @@ msgstr "Displayable"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
-msgid "cv_mskid"
-msgstr "Mask"
-
-#: cvdoc.struct.xml
-msgctxt "CVDOC"
-msgid "cv_order"
-msgstr "Select order"
+msgid "cv_famid"
+msgstr "Structure"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
@@ -83,13 +38,38 @@ msgstr "Default create view"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
+msgid "cv_idview"
+msgstr "View id"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_kview"
+msgstr "Type"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
 msgid "cv_lcview"
 msgstr "Default create view label"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
-msgid "cv_renderaccessclass"
-msgstr "Render access PHP class"
+msgid "cv_lview"
+msgstr "Label"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_menu"
+msgstr "Menu"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_mskid"
+msgstr "Mask"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_order"
+msgstr "Select order"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
@@ -98,10 +78,30 @@ msgstr "Primary mask"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
-msgid "dpdoc_fr_dyn"
-msgstr "Dynamic profile"
+msgid "cv_renderaccessclass"
+msgstr "Render access PHP class"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_renderconfigclass"
+msgstr "Render PHP class"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_t_views"
+msgstr "Views"
 
 #: cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "dpdoc_famid"
 msgstr "Profile structure reference"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "dpdoc_fr_dyn"
+msgstr "Dynamic profile"
+
+#: cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "fr_basic"
+msgstr "Identification"
