@@ -3399,7 +3399,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $value = $ov;
                 }
-                if ($oattr->isMultipleInArray()) {
+                if ($oattr && $oattr->isMultipleInArray()) {
                     foreach ($value as $k => $v) {
                         if ($v === "" || $v === null) {
                             // Need to cast to respect pg array constraint

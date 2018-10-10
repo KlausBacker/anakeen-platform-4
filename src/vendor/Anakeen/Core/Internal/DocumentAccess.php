@@ -558,7 +558,11 @@ class DocumentAccess
                     $duid = $fromdocidvalues->getFamilyParameterValue($aid);
                 }
                 if ($duid != "") {
-                    $tduid = Postgres::stringToFlatArray($duid);
+                    if ($duid[0] === '{') {
+                        $tduid = Postgres::stringToFlatArray($duid);
+                    } else {
+                        $tduid=[$duid];
+                    }
                     foreach ($tduid as $duid) {
                         if ($duid > 0) {
                             $sysId = AccountManager::getIdFromSEId(intval($duid));
