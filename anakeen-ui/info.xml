@@ -51,12 +51,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.views.xml">
             <label>MAILTEMPLATE Structure view</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.views.xml">
-            <label>WDOC Structure view</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.views.xml">
-            <label>TIMER Structure view</label>
-        </process>
+
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
             <label>MASK Structure view</label>
         </process>
@@ -130,12 +125,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.views.xml">
             <label>MAILTEMPLATE Structure view</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.views.xml">
-            <label>WDOC Structure view</label>
-        </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.views.xml">
-            <label>TIMER Structure view</label>
-        </process>
+
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mask/mask.views.xml">
             <label>MASK Structure view</label>
         </process>
