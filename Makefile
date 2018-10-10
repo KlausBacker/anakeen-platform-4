@@ -11,7 +11,7 @@ JS_CONF_PATH=$(MK_DIR)
 NODE_MODULE_PATH=node_modules
 WEBPACK_CONF_PATH=webpack
 ADMIN_CENTER_SRC_PATH=admin-center
-JS_ADMIN_CENTER_PATH=admin-center/src/public/AdminCenter/prod
+JS_ADMIN_CENTER_PATH=admin-center/src/public/Anakeen/adminCenter/prod
 
 ## Version and release
 VERSION = $(shell cat VERSION)

@@ -2,48 +2,71 @@
 
 namespace Anakeen\Routes\Admin;
 
-
-use Anakeen\Core\ContextManager;
+use Dcp\Ui\UIGetAssetPath;
 
 class MainPage
 {
 
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     * @throws \Dcp\Ui\Exception
+     */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $page=__DIR__."/../../AdminCenter/Layout/adminCenterMainPage.html";
-
-        if ($request->getQueryParam("debug") === "true") {
-            $page=__DIR__."/../../AdminCenter/Layout/adminCenterMainPage-debug.html";
-        }
-
-        $template = file_get_contents($page);
-
-        $version = \Dcp\Ui\UIGetAssetPath::getWs();
-
+        $page=__DIR__."/../../AdminCenter/Layout/adminCenterMainPage.html.mustache";
+        $mustache = new \Mustache_Engine();
         $data = [
-            "CSS" => [
+            "JS_DEPS" => [
                 [
-                    "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap()
+                    "key" => "jquery",
+                    "path" => UIGetAssetPath::getJSJqueryPath()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
+                    "path" => UIGetAssetPath::getJSKendoPath()
+                ]
+            ],
+            "JS" => [
+                [
+                    "key" => "adminCenter",
+                    "path" => UIGetAssetPath::getElementAssets(
+                        "adminCenter",
+                        UIGetAssetPath::isInDebug() ? "dev" : "prod"
+                    )["adminCenter"]["js"]
+                ]
+            ],
+            "JS_LEGACY" => [
+                [
+                    "key" => "polyfill",
+                    "path" => UIGetAssetPath::getPolyfill()
                 ],
                 [
-                    "key" => "components",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents()
+                    "key" => "adminCenterLegacy",
+                    "path" => UIGetAssetPath::getElementAssets(
+                        "adminCenter",
+                        "legacy"
+                    )["adminCenter"]["js"]
+                ]
+            ],
+            "CSS" => [
+                [
+                    "key" => "bootstrap",
+                    "path" => UIGetAssetPath::getCssBootstrap()
                 ],
                 [
-                    "key" => "admin",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCss("admin")
+                    "key" => "kendo",
+                    "path" => UIGetAssetPath::getCssKendo()
                 ],
+                [
+                    "key" => "component",
+                    "path" => UIGetAssetPath::getCssSmartWebComponents()
+                ]
             ]
         ];
-
-        $mustache = new \Mustache_Engine();
-
+        $template = file_get_contents($page);
         return $response->write($mustache->render($template, $data));
     }
-
 }

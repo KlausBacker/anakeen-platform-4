@@ -6,9 +6,7 @@
 *~
 *#
 node_modules/
-admin-center/src/public/AdminCenter/debug/
-admin-center/src/public/AdminCenter/prod/
-admin-center/src/vendor/Anakeen/AdminCenter/Layout/
+admin-center/src/public/Anakeen
 localpub/
 Makefile.local
 /.idea/deployment.xml

@@ -9,15 +9,15 @@
                 <admin:plugin name="parametersManagement" autoselect="true">
                     <admin:title>Parameters</admin:title>
                     <admin:pluginPath>parametersManagement</admin:pluginPath>
-                    <admin:scriptURL>/AdminCenter/prod/ank-admin-parameters.js</admin:scriptURL>
-                    <admin:debugScriptURL>/AdminCenter/debug/ank-admin-parameters.js</admin:debugScriptURL>
+                    <admin:scriptURL>/Anakeen/adminCenter/prod/ank-admin-parameters.js</admin:scriptURL>
+                    <admin:debugScriptURL>/Anakeen/adminCenter/dev/ank-admin-parameters.js</admin:debugScriptURL>
                     <admin:pluginTemplate><![CDATA[<ank-admin-parameters></ank-admin-parameters>]]></admin:pluginTemplate>
                 </admin:plugin>
                 <admin:plugin name="routesManagement">
                     <admin:title>Routes</admin:title>
                     <admin:pluginPath>routesManagement</admin:pluginPath>
-                    <admin:scriptURL>/AdminCenter/prod/ank-admin-routes.js</admin:scriptURL>
-                    <admin:debugScriptURL>/AdminCenter/debug/ank-admin-routes.js</admin:debugScriptURL>
+                    <admin:scriptURL>/Anakeen/adminCenter/prod/ank-admin-routes.js</admin:scriptURL>
+                    <admin:debugScriptURL>/Anakeen/adminCenter/dev/ank-admin-routes.js</admin:debugScriptURL>
                     <admin:pluginTemplate><![CDATA[<ank-admin-routes></ank-admin-routes>]]></admin:pluginTemplate>
                 </admin:plugin>
             </admin:sublevel>

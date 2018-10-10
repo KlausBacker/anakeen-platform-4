@@ -1,3 +1,4 @@
+// Routes tree style
 .list-routes {
  height: 100%;
  width: 100%;
@@ -13,10 +14,7 @@
 
 }
 
-.tree-level-1{
- background: #DDDDDD !important;
-}
-
+// Technical Settings Routes tabstrip
 .tabstrip h2 {
  font-weight: lighter;
  font-size: 5em;
@@ -42,20 +40,23 @@ td[role=gridcell]:nth-child(3) {
  white-space: pre ;
 }
 
+// Route plugin buttons
 .btn {
  text-align: center;
  text-decoration: none;
  display: inline-block;
 }
 
+
+// Route activation buttons
 .btn.activation-btn {
  border-color: #0EC40E;
- color: #8AE234;
+ color: #0EC40E;
 }
 
 .btn.activation-btn:hover {
- border-color: #0EC40E;
- background-color: #0EC40E;
+ border-color: lighten(#0EC40E, 10%);
+ background-color: lighten(#0EC40E, 10%);
  color: white;
 }
 
@@ -65,14 +66,15 @@ td[role=gridcell]:nth-child(3) {
  color: white;
 }
 
+// Route deactivation buttons
 .btn.deactivation-btn {
  border-color: #FF542C;
  color: #FF542C;
 }
 
 .btn.deactivation-btn:hover {
- border-color: #FF542C;
- background-color: #FF542C;
+ border-color: lighten(#FF542C, 10%);
+ background-color: lighten(#FF542C, 10%);
  color: white;
 }
 
@@ -81,9 +83,16 @@ td[role=gridcell]:nth-child(3) {
  color: white;
 }
 
+
+// Applicable middleware to route buttons and dialog
 .btn.mwList-btn {
  border-color: #B1B1B1;
  background-color: #B1B1B1;
+}
+
+.btn.mwList-btn:hover {
+ border-color: lighten(#B1B1B1, 10%);
+ background-color: lighten(#B1B1B1, 10%);
 }
 
 .middlewares-dialog {

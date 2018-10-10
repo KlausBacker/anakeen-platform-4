@@ -91,8 +91,9 @@ export const asyncVueComponent = pluginDescription => () => {
   return {
     component: new Promise((resolve, reject) => {
       let scriptURL = "";
+
       if (
-        process.env.NODE_ENV === "debug" &&
+        process.env.NODE_ENV === "development" &&
         pluginDescription[PLUGIN_SCHEMA.debugScriptURL]
       ) {
         scriptURL = pluginDescription[PLUGIN_SCHEMA.debugScriptURL];

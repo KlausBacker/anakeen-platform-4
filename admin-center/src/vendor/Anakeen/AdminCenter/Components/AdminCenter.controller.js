@@ -1,6 +1,6 @@
-import AdminHeader from "./AdminHeader/AdminHeader.vue";
-import AdminContent from "./AdminContent/AdminContent.vue";
-import AdminModal from "./AdminModal/AdminModal.vue";
+import AdminHeader from "./AdminHeader/AdminHeader";
+import AdminContent from "./AdminContent/AdminContent";
+import AdminModal from "./AdminModal/AdminModal";
 
 import { mapActions } from "vuex";
 export default {

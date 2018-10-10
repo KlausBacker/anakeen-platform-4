@@ -1,5 +1,5 @@
 const path = require('path');
-const BASE_DIR = __PROJECT_ROOT;
+const BASE_DIR = "../admin-center/";
 const PATHS = {
     account: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Account/accountMain.js'),
     parameters: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Parameters/parametersMain.js'),
