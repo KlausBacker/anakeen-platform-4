@@ -6,6 +6,7 @@
         <smart:class>Anakeen\SmartStructures\Mask\MaskHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="msk_fr_rest" type="frame" label="Informtation" access="ReadWrite">
                 <smart:field-docid name="msk_famid" label="Structure" access="ReadWrite" needed="true" relation="-1"/>

@@ -5,6 +5,7 @@
         <smart:class>Anakeen\SmartStructures\Cvdoc\CVDocHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="fr_basic" extended="true" type="frame">
                 <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite" is-abstract="true"/>
