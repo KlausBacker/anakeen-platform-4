@@ -342,7 +342,7 @@
             </xs:element>
             <xs:element type="v1:revisableType" name="revisable" default="default" minOccurs="0"/>
             <xs:element type="xs:string" name="usefor" minOccurs="0"/>
-            <xs:element type="xs:string" name="tag" minOccurs="0"/>
+            <xs:element type="v1:tagType" name="tag" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:attributesType" name="fields" minOccurs="0"/>
             <xs:element type="v1:attributesType" name="parameters" minOccurs="0"/>
             <xs:element type="v1:field-overrideType" name="field-override" minOccurs="0"/>
@@ -451,6 +451,15 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:boolean" name="disable-inheritance-condition"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="tagType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="name" use="required"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

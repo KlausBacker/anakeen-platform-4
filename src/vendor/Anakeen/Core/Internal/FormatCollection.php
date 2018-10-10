@@ -237,6 +237,9 @@ class FormatCollection
         $keys[] = self::propNote;
         $keys[] = self::propUsage;
         $keys[] = self::propType;
+        // atags is rename to tags
+        $ktag=array_search("atags", $keys);
+        unset($keys[$ktag]);
         return $keys;
     }
 
@@ -683,9 +686,9 @@ class FormatCollection
     protected function getApplicationTagsData(\Anakeen\Core\Internal\SmartElement $doc)
     {
         if ($doc->atags) {
-            return explode("\n", $doc->atags);
+            return json_decode($doc->atags, true);
         } else {
-            return array();
+            return null;
         }
     }
 

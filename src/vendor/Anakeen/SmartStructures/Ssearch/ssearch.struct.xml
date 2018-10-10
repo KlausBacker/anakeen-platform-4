@@ -5,6 +5,7 @@
         <smart:icon file="se-ssearch.png"/>
         <smart:class>Anakeen\SmartStructures\Ssearch\SSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="se_fr_function" type="frame" label="Fonction" access="ReadWrite">
                 <smart:field-text name="se_phpfile" label="Fichier PHP" access="ReadWrite"/>

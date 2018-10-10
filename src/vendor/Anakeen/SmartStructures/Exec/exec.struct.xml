@@ -5,6 +5,7 @@
         <smart:class>Anakeen\SmartStructures\Exec\ExecHooks</smart:class>
         <smart:revisable max="100">default</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="exec_fr_ident" type="frame" label="Identification" access="ReadWrite">
                 <smart:field-docid name="exec_iduser" label="Exécutant" access="ReadWrite" relation="IUSER">

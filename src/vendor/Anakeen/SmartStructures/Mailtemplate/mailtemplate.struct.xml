@@ -4,6 +4,7 @@
         <smart:icon file="se-mailtemplate.png"/>
         <smart:class>Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="tmail_fr" type="frame" label="Entête" access="ReadWrite">
                 <smart:field-text name="tmail_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>

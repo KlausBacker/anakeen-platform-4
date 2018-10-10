@@ -5,6 +5,7 @@
         <smart:icon file="se-dir.png"/>
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Dir\DirHooks</smart:class>
         <smart:usefor>F</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
 
         <smart:fields>
             <smart:field-set name="fr_basic" extended="true">

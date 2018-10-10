@@ -5,6 +5,7 @@
         <smart:class>Anakeen\SmartStructures\Iuser\IUserHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>N</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <!--<smart:tag>MAILRECIPIENT</smart:tag>-->
         <smart:fields>
             <smart:field-set name="us_fr_ident" type="frame" label="État civil" access="Read">

@@ -4702,7 +4702,8 @@ create unique index i_docir on doc(initid, revision);";
             ), true);
         } else {
             $tags=json_decode($this->atags, true);
-            if (!$this->getATag($tag)) {
+            $previousTag=$this->getATag($tag);
+            if (!$previousTag || $previousTag!==$value) {
                 $tags[$tag]=$value;
                 $this->atags = json_encode($tags);
                 $err = $this->modify(true, array(

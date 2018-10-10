@@ -519,7 +519,11 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $err = $this->doc->AddATag($data[1]);
+        $value = $data[2]??true;
+        if ($value === "") {
+            $value=true;
+        }
+        $err = $this->doc->addATag($data[1], $value);
         if (!$err) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("change application tag to '%s'"), $this->doc->atags);
         } else {

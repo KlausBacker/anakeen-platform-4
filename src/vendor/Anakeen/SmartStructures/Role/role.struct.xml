@@ -5,6 +5,7 @@
         <smart:class>Anakeen\SmartStructures\Role\RoleHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="role_fr_ident" type="frame" label="Identification" access="ReadWrite">
                 <smart:field-text name="role_login" label="Référence" access="ReadWrite"/>

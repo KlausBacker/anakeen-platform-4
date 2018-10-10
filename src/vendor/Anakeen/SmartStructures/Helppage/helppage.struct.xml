@@ -3,6 +3,7 @@
     <smart:structure-configuration name="HELPPAGE" label="Aide en ligne">
         <smart:class>Anakeen\SmartStructures\Helppage\HelpPageHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
 
         <smart:fields>
             <smart:field-set name="help_fr_identification" type="frame" label="Aide" access="ReadWrite">

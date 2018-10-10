@@ -5,6 +5,7 @@
         <smart:icon file="se-dsearch.png"/>
         <smart:class>Anakeen\SmartStructures\Dsearch\DSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="se_fr_detail" type="frame" label="Conditions" access="ReadWrite">
                 <smart:field-enum name="se_ol" label="Condition" access="ReadWrite" relation="DSEARCH-se_ol"/>

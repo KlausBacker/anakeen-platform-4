@@ -6,6 +6,7 @@
         <smart:class>Anakeen\SmartStructures\Group\GroupHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="fr_basic" type="frame" label="basique" access="None">
                 <smart:field-text name="ba_title" label="titre" access="None"/>

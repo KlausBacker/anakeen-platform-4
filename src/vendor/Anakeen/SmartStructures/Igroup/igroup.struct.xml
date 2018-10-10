@@ -6,6 +6,7 @@
         <smart:class>Anakeen\SmartStructures\Igroup\IGroupHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="grp_fr_intranet" type="frame" label="Système" access="None">
                 <smart:field-text name="us_login" label="identifiant" access="Read" needed="true"/>

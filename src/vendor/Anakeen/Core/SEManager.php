@@ -281,7 +281,7 @@ class SEManager
 
         $doc->icon = $family->icon; // inherit from its familly
         $doc->usefor = $family->usefor; // inherit from its familly
-        $doc->atags = $family->atags;
+        
 
         return $doc;
     }

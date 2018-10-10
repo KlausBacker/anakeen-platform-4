@@ -5,6 +5,7 @@
         <smart:icon file="se-search.png"/>
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Search\SearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="fr_basic" extended="true">
                 <smart:field-account name="se_author" label="Auteur" access="Read"/>

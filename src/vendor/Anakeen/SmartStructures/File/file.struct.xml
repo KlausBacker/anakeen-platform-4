@@ -5,6 +5,7 @@
     <smart:class>Anakeen\SmartStructures\File\FileHooks</smart:class>
     <smart:revisable>auto</smart:revisable>
     <smart:usefor>N</smart:usefor>
+    <smart:tag name="vendor">Anakeen</smart:tag>
     <smart:fields>
       <smart:field-set name="fi_frdesc" type="frame" label="Description" access="ReadWrite">
         <smart:field-text name="fi_title" label="titre" access="Read" is-title="true"/>
