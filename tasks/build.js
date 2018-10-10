@@ -15,7 +15,11 @@ const buildPipe = (exports.buildPipe = async ({
   const moduleInfo = await getModuleInfo(sourcePath);
   let release = moduleInfo.moduleInfo.release;
   if (autoRelease) {
-    release += Date.now();
+    let dNow = new Date();
+    release += dNow
+      .toISOString()
+      .replace(/[^0-9]/g, "")
+      .substr(0, 14);
   }
   const moduleFileName = `${moduleInfo.moduleInfo.name}-${
     moduleInfo.moduleInfo.version
