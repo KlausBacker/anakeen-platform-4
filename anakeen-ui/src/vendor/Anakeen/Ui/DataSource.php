@@ -177,7 +177,7 @@ class DataSource extends DocumentList
     {
         if (!empty($this->filter)) {
             // First need flat filters
-            $flatFilters = $this->getFlatLevelFilters($this->filter['filters']);
+            $flatFilters = self::getFlatLevelFilters($this->filter);
 
             foreach ($flatFilters as $filter) {
                 $filterObject = Operators::getFilterObject($filter);
@@ -188,15 +188,17 @@ class DataSource extends DocumentList
         }
     }
 
-    protected function getFlatLevelFilters($filters)
+    public static function getFlatLevelFilters($filterArg)
     {
         $flatFilters = [];
-
-        foreach ($filters as $filter) {
-            if (!empty($filter["field"])) {
-                $flatFilters[]=$filter;
-            } elseif ( !empty($filter["filters"])) {
-                $flatFilters=array_merge($flatFilters, $filter["filters"]);
+        if (!empty($filterArg["filters"])) {
+            $filters=$filterArg["filters"];
+            foreach ($filters as $filter) {
+                if (!empty($filter["field"])) {
+                    $flatFilters[] = $filter;
+                } elseif (!empty($filter["filters"])) {
+                    $flatFilters = array_merge($flatFilters, $filter);
+                }
             }
         }
         return $flatFilters;
