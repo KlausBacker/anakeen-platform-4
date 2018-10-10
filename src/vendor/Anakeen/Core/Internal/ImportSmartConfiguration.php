@@ -174,11 +174,11 @@ class ImportSmartConfiguration
         $famid = $config->getAttribute("structure");
         $fas = $this->getNodes($config, "field-access");
 
-        if (! $famid) {
+        if (!$famid) {
             // Search in access list if not found itself
-            $parent=$config->parentNode;
+            $parent = $config->parentNode;
             if ($parent && $parent->tagName === 'smart:field-access-layer-list') {
-                $famid=$parent->getAttribute("structure");
+                $famid = $parent->getAttribute("structure");
             }
         }
 
@@ -740,9 +740,12 @@ class ImportSmartConfiguration
         if ($node) {
             $data[] = ["ICON", $node->getAttribute("file")];
         }
-        $node = $this->getNode($config, "tag");
-        if ($node) {
-            $data[] = ["TAG", $node->nodeValue];
+        $nodes = $this->getNodes($config, "tag");
+
+        foreach ($nodes as $node) {
+            /**  @var \DOMElement $node  */
+            $tagName = $node->getAttribute("name");
+            $data[] = ["TAG", $tagName, $node->nodeValue];
         }
 
 

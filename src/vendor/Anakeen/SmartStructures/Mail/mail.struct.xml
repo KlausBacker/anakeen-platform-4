@@ -4,6 +4,7 @@
         <smart:icon file="se-mail.png"/>
         <smart:class>Anakeen\SmartStructures\Mail\MailHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="mail_fr" type="frame" label="Adresses" access="ReadWrite">
                 <smart:field-text name="mail_from" label="De" access="Read" is-abstract="true"/>

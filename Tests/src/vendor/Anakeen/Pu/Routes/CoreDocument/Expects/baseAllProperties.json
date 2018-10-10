@@ -10,7 +10,6 @@
                     "title": ""
                 },
                 "allocated": null,
-                "atags": null,
                 "cdate": "%isoDate%",
                 "confidential": null,
                 "createdBy": {
@@ -61,7 +60,9 @@
                     "confidentiality": "public"
                 },
                 "status": "alive",
-                "tags": [],
+                "tags": {
+                    "vendor": "Anakeen"
+                },
                 "type": "family",
                 "usage": "system",
                 "usefor": "S",

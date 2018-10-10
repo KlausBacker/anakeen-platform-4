@@ -6,6 +6,7 @@
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PDocHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="fr_basic" type="frame" label="Basique" access="ReadWrite">
                 <smart:field-text name="ba_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
@@ -32,6 +33,7 @@
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PDirHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
     </smart:structure-configuration>
 
     <smart:structure-configuration name="PSEARCH" id="6" label="Profil de recherche">
@@ -40,6 +42,7 @@
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PSearchHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
     </smart:structure-configuration>
 
     <smart:structure-configuration name="PFAM" id="23" label="Profil de famille">
@@ -48,6 +51,7 @@
         <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PFamHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:field-override field="dpdoc_fr_dyn" access="None"/>
     </smart:structure-configuration>
 

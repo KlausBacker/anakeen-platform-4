@@ -5,6 +5,7 @@
         <smart:icon file="se-report.png"/>
         <smart:class>Anakeen\SmartStructures\Report\ReportHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="rep_tab_presentation" type="tab" label="Présentation" access="ReadWrite">
                 <smart:field-set name="rep_fr_presentation" type="frame" label="Présentation" access="ReadWrite">

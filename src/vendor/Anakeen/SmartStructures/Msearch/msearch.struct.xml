@@ -5,6 +5,7 @@
         <smart:icon file="se-msearch.png"/>
         <smart:class>Anakeen\SmartStructures\Msearch\MSearchHooks</smart:class>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="se_crit" type="frame" label="Critère" access="None"/>
             <smart:field-set name="se_fr_searches" type="frame" label="Les recherches" access="ReadWrite">

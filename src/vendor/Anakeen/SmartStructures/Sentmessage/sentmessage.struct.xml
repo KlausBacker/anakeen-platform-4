@@ -5,6 +5,7 @@
         <smart:class>Anakeen\SmartStructures\Sentmessage\SentMessageHooks</smart:class>
         <smart:revisable>false</smart:revisable>
         <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="emsg_fr_ident" type="frame" label="Identification" access="Read">
                 <smart:field-docid name="emsg_refid" label="Document référence" access="Read" relation="x"/>
