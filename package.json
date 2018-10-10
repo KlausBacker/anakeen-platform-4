@@ -20,13 +20,13 @@
     "RELEASE"
   ],
   "devDependencies": {
-    "@anakeen/ank-components": "^1.0.0-0",
-    "@anakeen/webpack-conf": "^1.0.0-1537274281",
+    "@anakeen/ank-components": "latest",
+    "@anakeen/webpack-conf": "latest",
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
     "@progress/kendo-dialog-vue-wrapper": "^2018.2.516",
     "@progress/kendo-grid-vue-wrapper": "^2018.2.516",
     "@progress/kendo-treeview-vue-wrapper": "^2018.2.516",
-    "@progress/kendo-ui": "2018.1.226",
+    "@progress/kendo-ui": "^2018.1.226",
     "axios": "^0.18.0",
     "document-register-element": "^1.8.1",
     "easygettext": "^2.4.0",
