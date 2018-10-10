@@ -32,10 +32,10 @@
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1539088453.tgz#074ac2b959766d97d95dd122ca17be7eaff75fe5"
   integrity sha512-13EWEmqZSkpbVSD1YyF5E+OwsNSJXXvk2rKUeIIcm6hHJVCspnCTRYjcPJT1ivQsLMhun5O5xIkittiakz2gpA==
 
-"@anakeen/webpack-conf@latest":
-  version "1.0.0-1537274281"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1537274281.tgz#136ccc8822ee4081427eaff061e833cc2cb101cd"
-  integrity sha512-0JZb6aQNOP0akM65MeLV2dNt6QecXVOfuNWU/ufTUaW8C/P+u3JGg6A30jJ/WVxZnvQM/vPk08I8NsUsluaPVQ==
+"@anakeen/webpack-conf@1.0.0-1539166243":
+  version "1.0.0-1539166243"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1539166243.tgz#38f22edc399ed09fc520070ed4168afb32ac3199"
+  integrity sha512-/js8RNUH2zoEoqQVZ9lOX0QoTWcOuvQ/SXM0TyRYDxjWotJ6WCjfHVgsvfMHFt0etzft20pc4jfJlJb6BqJw8A==
   dependencies:
     assets-webpack-plugin "^3.9.4"
     babel-core "^6.26.3"
