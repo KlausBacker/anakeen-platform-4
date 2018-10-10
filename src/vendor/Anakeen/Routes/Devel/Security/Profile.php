@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Anakeen\Routes\Devel\Security;
 
@@ -17,9 +13,9 @@ use Anakeen\SmartElementManager;
 /**
  * Get Right Accesses
  *
- * @note    Used by route : GET api/v2/devel/security/profil/{id}
+ * @note    Used by route : GET api/v2/devel/security/profile/{id}/accesses/
  */
-class Profil
+class Profile
 {
     protected $documentId;
     /**
@@ -30,7 +26,7 @@ class Profil
     protected $completeRole = false;
 
     /**
-     * Create User Session after verify authentication
+     * Return right accesses for a profil element
      *
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
