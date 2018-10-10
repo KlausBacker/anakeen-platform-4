@@ -6,13 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.0.1-1-1539154390"
-  },
   "repository": {
     "type": "git",
     "url": "git@gitlab.anakeen.com:Anakeen/Users/eric.brison/workflow.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@anakeen/anakeen-cli": "^1.0.1-1-1539154390"
+  }
 }
