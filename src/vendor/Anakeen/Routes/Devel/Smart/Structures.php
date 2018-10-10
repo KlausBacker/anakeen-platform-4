@@ -2,9 +2,7 @@
 
 namespace Anakeen\Routes\Devel\Smart;
 
-use Anakeen\Core\DbManager;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Ui\DataSource;
 
 /**
  * Get All Structures
@@ -14,11 +12,7 @@ use Anakeen\Ui\DataSource;
  */
 class Structures
 {
-    const ENUMPAGESIZE = 50;
     protected $target="all";
-    protected $filters = [];
-    protected $slice = self::ENUMPAGESIZE;
-    protected $offset = 0;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -33,8 +27,6 @@ class Structures
 
     public function doRequest()
     {
-        $data = [];
-
         $s=new \SearchDoc("", -1);
         if ($this->target === "vendor") {
             $s->addFilter("atags is null or atags->>'vendor' <> 'Anakeen'");
