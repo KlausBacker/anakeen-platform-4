@@ -9,7 +9,7 @@ use Anakeen\Ui\DataSource;
 /**
  * Get All Enumerate Items
  *
- * @note    Used by route : GET /api/v2/devel/smart/enumerates/
+ * @note Used by route : GET /api/v2/devel/smart/enumerates/
  * Use request  parameters : ?take=50&skip=0&filter=<kendo filters>
  */
 class Enumerates
