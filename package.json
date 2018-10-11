@@ -11,6 +11,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-cli": "latest",
+    "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-ui": "^2018.3.1003",
     "axios": "^0.18.0",

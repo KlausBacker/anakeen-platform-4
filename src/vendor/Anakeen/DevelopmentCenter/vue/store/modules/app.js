@@ -1,13 +1,13 @@
-import { APP_HELLO_WORLD } from "../mutation-types";
+import { SET_ERROR } from "../mutation-types";
 
 const mutations = {
-  [APP_HELLO_WORLD](state) {
-    state.app.sampleData = "Hello world";
+  [SET_ERROR](state, error) {
+    state.error = error;
   }
 };
 
 const state = {
-  app: {}
+  error: {}
 };
 
 export default {

@@ -5,6 +5,8 @@
             <dev-side-menu></dev-side-menu>
             <router-view></router-view>
         </div>
+        <ank-notifier ref="ankNotifier" position="top-right"
+                      defaultType="notice"></ank-notifier>
     </div>
 
 </template>

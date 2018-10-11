@@ -37,21 +37,23 @@ import General from "./General.vue";
 
 export default {
   label: "Parameters", // Only available for the top level route
-  name: "parameters", // name of the route (recommended for nested routing)
+  name: "Parameters", // name of the route (recommended for nested routing)
   path: "parameters", // path of the route (required) (relative to parent),
   component: Parameters, // The Vue component to route to (optional, if not present the component display is the parent route component)
   children: [ // Eventually, some sub routes of the component
     {
-      name: "General",
+      name: "Parameters::general",
       path: "general",
       component: General
     },
     {
-      name: "SmartStructure",
+      name: "Parameters::smartStructure",
       path: "smartstructure",
       component: SSList,
       children: {
+        name: "Parameters::smartStructureName"
         path: ":ssname" // Url params are defined with ":paramname"
+        // Use this.$router.push({name: "Parameters::smartStructureName", params: { ssname: "DEVSTRUCTURE" }}) to route the app programmatically 
       }
     }
   ]
@@ -82,4 +84,27 @@ If sub routes are defined and route to another Vue component, the tag `<router-v
       }
     }
 </script>
+```
+
+### Errors management
+
+#### From a vue component
+
+```javascript
+export default {
+  data() {
+    return {
+      error: "An error has occured"
+    };
+  },
+  mounted() {
+    if (this.error) {
+      this.$store.dispatch("displayError", {
+        title: "Error",
+        textContent: this.error,
+        type: "success" // Optional, "error" by default
+      })
+    }
+  }
+}
 ```
