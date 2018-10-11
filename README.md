@@ -83,3 +83,25 @@ If sub routes are defined and route to another Vue component, the tag `<router-v
     }
 </script>
 ```
+
+### Errors management
+
+#### From a vue component
+
+```javascript
+export default {
+  data() {
+    return {
+      error: "An error has occured"
+    };
+  },
+  mounted() {
+    if (this.error) {
+      this.$store.dispatch("displayError", {
+        title: "Error",
+        textContent: this.error
+      })
+    }
+  }
+}
+```

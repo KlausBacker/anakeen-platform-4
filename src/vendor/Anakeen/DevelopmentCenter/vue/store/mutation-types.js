@@ -1,1 +1,1 @@
-export const APP_HELLO_WORLD = "APP_HELLO_WORLD";
+export const SET_ERROR = "SET_ERROR";

@@ -1,5 +1,9 @@
 import * as mutations from "./mutation-types";
 
-export const helloWorld = ({ commit }) => {
-  commit(mutations.APP_HELLO_WORLD);
+export const displayError = ({ commit }, error) => {
+  commit(mutations.SET_ERROR, error);
+};
+
+export const clearError = ({ commit }) => {
+  commit(mutations.SET_ERROR, {});
 };
