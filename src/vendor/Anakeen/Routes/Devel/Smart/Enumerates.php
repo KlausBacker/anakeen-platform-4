@@ -33,7 +33,11 @@ class Enumerates
         if ($filters) {
             $this->filters = DataSource::getFlatLevelFilters($filters);
         }
-        $this->slice = intval($request->getQueryParam("take", self::ENUMPAGESIZE));
+        if ($request->getQueryParam("take") === 'all') {
+            $this->slice = $request->getQueryParam("take");
+        } else {
+            $this->slice = intval($request->getQueryParam("take", self::ENUMPAGESIZE));
+        }
         $this->offset = intval($request->getQueryParam("skip", 0));
     }
 
@@ -50,7 +54,10 @@ class Enumerates
         }
 
 
-        $sql = sprintf("select * from docenum %s order by name, eorder limit %d offset %d", $swhere, $this->slice, $this->offset);
+        $sql = sprintf("select * from docenum %s order by name, eorder offset %d", $swhere, $this->offset);
+        if ($this->slice !== 'all') {
+            $sql = sprintf("select * from docenum %s order by name, eorder limit %d offset %d", $swhere, $this->slice, $this->offset);
+        }
         DbManager::query($sql, $results);
         foreach ($results as &$result) {
             $result["eorder"] = intval($result["eorder"]);
