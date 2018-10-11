@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TIMER" label="Minuteur">
+        <smart:icon file="se-timer.png"/>
+        <smart:class>Anakeen\SmartStructures\Timer\TimerHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tm_fr_ident" type="frame" label="Identification" access="ReadWrite">
+                <smart:field-text name="tm_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-docid name="tm_family" label="Famille" access="ReadWrite" relation="x">
+                    <smart:field-option name="elabel">famille compatible avec ce timer</smart:field-option>
+                </smart:field-docid>
+                <smart:field-docid name="tm_workflow" label="Famille cycle" access="ReadWrite" relation="x">
+                    <smart:field-option name="elabel">famille cycle pour le choix des états</smart:field-option>
+                </smart:field-docid>
+                <smart:field-text name="tm_dyndate" label="Date de référence" access="ReadWrite">
+                    <smart:field-option name="elabel">date d'exécution de la première action</smart:field-option>
+                    <smart:field-option name="showempty">Date d'attachement du minuteur</smart:field-option>
+                </smart:field-text>
+                <smart:field-double name="tm_refdaydelta" label="Décalage (en jours)" access="ReadWrite">
+                    <smart:field-option name="cwidth">50px</smart:field-option>
+                </smart:field-double>
+                <smart:field-double name="tm_refhourdelta" label="Décalage (en heures)" access="ReadWrite">
+                    <smart:field-option name="cwidth">50px</smart:field-option>
+                </smart:field-double>
+                <smart:field-set name="tm_t_config" type="array" label="Configuration" access="ReadWrite">
+                    <smart:field-option name="vlabel">up</smart:field-option>
+                    <smart:field-double name="tm_delay" label="Délai (en jours)" access="ReadWrite">
+                        <smart:field-option name="cwidth">50px</smart:field-option>
+                    </smart:field-double>
+                    <smart:field-double name="tm_hdelay" label="Délai (en heures)" access="ReadWrite">
+                        <smart:field-option name="cwidth">50px</smart:field-option>
+                    </smart:field-double>
+                    <smart:field-int name="tm_iteration" label="Nombre d'itérations" access="ReadWrite">
+                        <smart:field-option name="cwidth">50px</smart:field-option>
+                    </smart:field-int>
+                    <smart:field-docid name="tm_tmail" label="Modèle de mail" access="ReadWrite" relation="MAILTEMPLATE" multiple="true"/>
+                    <smart:field-text name="tm_state" label="Nouvel état" access="ReadWrite"/>
+                    <smart:field-text name="tm_method" label="Méthode" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:defaults>
+            <smart:default field="tm_iteration">1</smart:default>
+        </smart:defaults>
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+</smart:config>

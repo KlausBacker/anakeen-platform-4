@@ -1,43 +1,52 @@
 <?xml version="1.0" ?>
 <module xmlns="urn:dynacase:webinst:module/1.0"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
-        name="@moduleName@" release="@release@" version="@version@"  vendor="Anakeen">
+        name="workflow" release="0" version="1.0.0" vendor="Anakeen">
     <description>Workflow Package</description>
-
-    <replaces>
-        <module name="anakeen-workflow"/>
-    </replaces>
 
     <requires>
         <module name="security"/>
+        <module name="user-interfaces"/>
     </requires>
 
     <pre-install>
 
     </pre-install>
     <post-install>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.csv ">
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml ">
             <label>WDOC Family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Timer/timer.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.struct.xml ">
             <label>TIMER Family</label>
         </process>
 
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.profil.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.profile.xml ">
             <label>WDOC Profil</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Timer/timer.profil.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.profile.xml ">
             <label>TIMER Profil</label>
         </process>
-        <process command="./ank.php --system --localeGen"/>
+
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.views.xml">
+            <label>WDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.views.xml">
+            <label>TIMER Structure view</label>
+        </process>
     </post-install>
     <post-upgrade>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml ">
             <label>WDOC Family</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Timer/timer.struct.csv ">
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.struct.xml ">
             <label>TIMER Family</label>
         </process>
-        <process command="./ank.php --system --localeGen"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Wdoc/wdoc.views.xml">
+            <label>WDOC Structure view</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Timer/timer.views.xml">
+            <label>TIMER Structure view</label>
+        </process>
     </post-upgrade>
 </module>

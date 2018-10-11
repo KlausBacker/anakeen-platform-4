@@ -1,0 +1,18 @@
+{
+  "name": "workflow",
+  "version": "1.0.0",
+  "description": "Workflow functionalities for documents",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.anakeen.com:Anakeen/Users/eric.brison/workflow.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anakeen/anakeen-cli": "^1.0.1-1-1539154390"
+  }
+}

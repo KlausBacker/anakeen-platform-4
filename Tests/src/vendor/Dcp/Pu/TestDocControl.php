@@ -16,8 +16,6 @@ class TestDocControl extends TestCaseDcpDocument
      */
     public function testHelpPage($data)
     {
-        $myAction = self::getAction();
-        
         if (isset($data['import'])) {
             if (!is_array($data['import'])) {
                 $data['import'] = array(

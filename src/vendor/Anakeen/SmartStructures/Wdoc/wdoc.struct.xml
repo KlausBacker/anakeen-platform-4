@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+
+  <smart:structure-configuration name="WDOC" id="20" label="Cycle de vie">
+    <smart:extends ref="BASE"/>
+    <smart:icon file="se-wdoc.png"/>
+    <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Wdoc\WDocHooks</smart:class>
+    <smart:revisable>false</smart:revisable>
+    <smart:usefor>SW</smart:usefor>
+    <smart:tag name="vendor">Anakeen</smart:tag>
+    <smart:fields>
+      <smart:field-set name="fr_basic" extended="true">
+        <smart:field-longtext name="wf_desc" label="description" access="ReadWrite" is-abstract="true"/>
+        <smart:field-docid name="wf_famid" label="Structure" access="ReadWrite" relation="-1"/>
+        <smart:field-text name="wf_fam" label="Structure (titre)" access="ReadWrite" is-title="true">
+          <smart:field-option name="elabel">Structure compatible avec ce cycle</smart:field-option>
+        </smart:field-text>
+      </smart:field-set>
+      <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Profil dynamique" access="ReadWrite">
+        <smart:field-docid name="dpdoc_famid" label="Structure" access="ReadWrite" relation="-1"/>
+        <smart:field-text name="dpdoc_fam" label="Structure (titre)" access="ReadWrite">
+          <smart:field-option name="elabel">Structure utilisée pour le profil dynamique</smart:field-option>
+        </smart:field-text>
+      </smart:field-set>
+      <smart:field-set name="wf_tab_states" type="tab" label="Étapes" access="ReadWrite"/>
+      <smart:field-set name="wf_tab_transitions" type="tab" label="Transitions" access="ReadWrite"/>
+    </smart:fields>
+    <smart:parameters/>
+    <smart:hooks>
+      <smart:field-hook event="onPreRefresh" field="wf_fam">
+        <smart:field-callable function="::getTitle"/>
+        <smart:field-argument type="field">wf_famid</smart:field-argument>
+      </smart:field-hook>
+      <smart:field-hook event="onPreRefresh" field="dpdoc_fam">
+        <smart:field-callable function="::getTitle"/>
+        <smart:field-argument type="field">dpdoc_famid</smart:field-argument>
+      </smart:field-hook>
+    </smart:hooks>
+
+    <smart:defaults/>
+    <smart:accesses>
+      <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+    </smart:accesses>
+  </smart:structure-configuration>
+</smart:config>
