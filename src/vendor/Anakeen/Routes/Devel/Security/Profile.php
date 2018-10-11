@@ -242,12 +242,12 @@ class Profile
     protected static function getAccountType($systemType)
     {
         switch ($systemType) {
-        case 'U':
-            return "user";
-        case "G":
-            return "group";
-        case "R":
-            return "role";
+            case 'U':
+                return "user";
+            case "G":
+                return "group";
+            case "R":
+                return "role";
         }
         return "?";
     }
