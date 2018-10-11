@@ -81,7 +81,6 @@ export default {
     },
     disabledFilter(args) {
       args.element.kendoDropDownList({
-        filter: "contains",
         valuePrimitive: true,
         dataSource: [true.toString(), false.toString()]
       });
