@@ -48,7 +48,13 @@ class Enumerates
         if ($this->filters) {
             $where = [];
             foreach ($this->filters as $filter) {
-                $where[] = sprintf("%s ~* '%s'", pg_escape_identifier($filter["field"]), pg_escape_string($filter["value"]));
+                if (pg_escape_string($filter["value"]) === "true") {
+                    $where[] = sprintf("%s", pg_escape_identifier($filter["field"]));
+                } elseif (pg_escape_string($filter["value"]) === "false") {
+                        $where[] = sprintf("%s is null", pg_escape_identifier($filter["field"]));
+                } else {
+                    $where[] = sprintf("%s ~* '%s'", pg_escape_identifier($filter["field"]), pg_escape_string($filter["value"]));
+                }
             }
             $swhere = "where " . implode(" and ", $where);
         }
