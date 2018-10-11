@@ -19,9 +19,18 @@ export default class ErrorManager {
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          console.error(error.response.data);
-          console.error(error.response.status);
-          console.error(error.response.headers);
+          if (
+            error.response.data.message ||
+            error.response.data.exceptionMessage
+          ) {
+            this.appInstance.$store.dispatch("displayError", {
+              title: "Server Error",
+              textContent:
+                error.response.data.message ||
+                error.response.data.exceptionMessage
+            });
+          }
+          console.error(error.response);
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -33,7 +42,7 @@ export default class ErrorManager {
           console.error(error.request);
         } else {
           // Something happened in setting up the request that triggered an Error
-          console.log("Error", error.message);
+          console.error("Error", error.message);
         }
         return Promise.reject(error);
       }
