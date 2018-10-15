@@ -6,15 +6,6 @@ const BASE_DIR = path.resolve(__dirname, "../admin-center/");
 const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
 
 const adminPluginsEntries = require('./config/pluginsEntries');
-const adminPluginsChunks = Object.keys(adminPluginsEntries);
-
-const productionFilename = (bundle) => {
-  const bundleName = bundle.chunk.name;
-  if (adminPluginsChunks.indexOf(bundleName) >= 0) {
-    return '[name].js';
-  }
-  return '[name]-[chunkhash].js';
-};
 
 module.exports = () => {
   const conf = {
@@ -29,12 +20,7 @@ module.exports = () => {
       setKendoAndJqueryToGlobal([
         /kendo.pdf/,
         /kendo.excel/
-      ]),
-      {
-        output: {
-          filename: productionFilename
-        }
-      }
+      ])
     ]
   };
   return [

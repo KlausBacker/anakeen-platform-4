@@ -1,5 +1,5 @@
 const path = require('path');
-const BASE_DIR = "../admin-center/";
+const BASE_DIR = path.resolve(__dirname,"../../");
 const PATHS = {
     account: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Account/accountMain.js'),
     parameters: path.resolve(BASE_DIR, 'admin-center/src/vendor/Anakeen/AdminCenter/Parameters/parametersMain.js'),
@@ -7,9 +7,9 @@ const PATHS = {
 };
 
 const entries = {
-    'ank-admin-account': PATHS.account,
-    'ank-admin-parameters': PATHS.parameters,
-    'ank-admin-routes': PATHS.routes,
+    'userAdmin': PATHS.account,
+    'parametersManagement': PATHS.parameters,
+    'routesManagement': PATHS.routes,
 };
 
 module.exports = entries;
