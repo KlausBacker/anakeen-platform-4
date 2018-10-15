@@ -86,6 +86,152 @@ If sub routes are defined and route to another Vue component, the tag `<router-v
 </script>
 ```
 
+#### Full complex example
+
+##### File hierarchy
+```text
+sections
+       |      
+       |Security
+       |    |index.js
+       |    |Security.vue
+       |    |Subsections
+       |    |       |
+       |    |       |Infos.vue
+       |    |       |Accesses.vue
+       |    |       |Roles.vue
+       |    |       |SmartStructures.vue
+       |    |       |StructureContent.vue
+       |    |       |Routes.vue      
+```
+
+##### Security routes declaration
+`Security/index.js`
+```javascript
+// Route definition export for Security section
+import Security from "./Security.vue";
+import Roles from "./Subsections/Roles.vue";
+import Routes from "./Subsections/Routes.vue";
+import SmartStructures from "./Subsections/SmartStructures.vue";
+import SSContent from "./Subsections/StructureContent.vue";
+import Infos from "./Subsections/Infos.vue";
+import Infos from "./Subsections/Accesses.vue";
+
+export default {
+  name: "Security",
+  path: "security",
+  component: Security,
+  children: [
+    {
+      name: "Security::Roles",
+      path: "roles",
+      component: Roles
+    },
+    {
+      name: "Security::SmartStructures",
+      path: "smartStructures",
+      component: SmartStructures,
+      children: [
+        {
+          name: "Security::SmartStructures::name",
+          path: ":ssName",
+          component: SSContent,
+          children: [
+            {
+              name: "Security::SS::Info",
+              path: "infos",
+              component: Infos
+            },
+            {
+              name: "Security::SS::Accesses",
+              path: "accesses",
+              component: Accesses
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "Security::Routes",
+      path: "routes",
+      component: Routes
+    }
+  ]
+};
+```
+
+##### Entry point of security section
+`Security/Security.vue`
+```vue
+<template>
+    <div class="security-plugin">
+        <nav class="security-nav">
+            <!--Route to named route -->
+            <router-link :to="{name: 'Security::Roles'}">Roles</router-link>
+            <router-link :to="{name: 'Security::SmartStructures'}">Smart Structures</router-link>
+            <router-link :to="{name: 'Security::Routes'}">Routes</router-link>
+        </nav>
+        <!-- Use <router-multi-view> to route and manage multiple content view silmutaneously-->
+        <router-multi-view class="security-content"></router-multi-view>
+    </div>
+</template>
+
+<script>
+  export default {
+    name: "security"
+  }
+</script>
+```
+##### Smart Structure List in subsections
+`Security/Subsections/SmartStructures.vue`
+```vue
+<template>
+    <div>
+        <h3>Smart Structure Security Configuration</h3>
+        <ss-list routeName="Security::SmartStructures::name"
+                 routeParamField="ssName"
+                 smartStructureCategory="vendor"
+                 position="left"
+        >
+        </ss-list>
+    </div>
+</template>
+
+<script>
+    import SSList from "../../components/SSList/SSList.vue";
+  export default {
+    name: "SmartStructures",
+    components: {
+      "ss-list": SSList
+    }
+  }
+</script>
+```
+##### Nested sections management (Security -> Smart Structures -> Infos)
+`Security/Subsections/Infos.vue`
+```vue
+<template>
+    <h1>Infos for {{structure}}</h1>
+</template>
+
+<script>
+    import { mapGetters } from "vuex";
+  export default {
+    name: "Infos",
+    computed: {
+      ...mapGetters([
+        "currentStoredRoute"
+      ]),
+      structure() {
+        // Use store getters to bind url parameters change
+        return this.currentStoredRoute.params.ssName; // or this.$store.state.route.currentRoute.params.ssName
+      }
+    }
+  }
+</script>
+```
+
+
 ### Errors management
 
 #### From a vue component

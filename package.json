@@ -11,11 +11,12 @@
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-cli": "latest",
-    "@anakeen/ank-components": "^1.0.0-1539088453",
-    "@anakeen/webpack-conf": "^1.0.0-1539166243",
+    "@anakeen/ank-components": "latest",
+    "@anakeen/webpack-conf": "latest",
     "@progress/kendo-buttons-vue-wrapper": "^2018.3.911",
     "@progress/kendo-datasource-vue-wrapper": "^2018.3.911",
     "@progress/kendo-grid-vue-wrapper": "^2018.3.911",
+    "@progress/kendo-listview-vue-wrapper": "^2018.3.911",
     "@progress/kendo-ui": "^2018.3.1003",
     "axios": "^0.18.0",
     "document-register-element": "^1.11.1",
@@ -23,6 +24,7 @@
     "vue-custom-element": "^3.2.5",
     "vue-gettext": "^2.1.0",
     "vue-router": "^3.0.1",
+    "vue-router-multi-view": "^0.0.5",
     "vuex": "^3.0.1",
     "vuex-router-sync": "^5.0.0"
   },
