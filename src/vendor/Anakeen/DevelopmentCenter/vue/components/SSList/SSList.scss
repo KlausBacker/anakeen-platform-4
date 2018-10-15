@@ -39,7 +39,7 @@
 
     }
 
-    .smart-structure-tabs-list {
+    .smart-structure-tabs-list-nav {
       background: white;
       border: none;
       display: flex;
@@ -88,7 +88,7 @@
   &.smart-structure-list-position--left, &.smart-structure-list-position--right {
     .smart-structure-tabs {
       flex-direction: row;
-      .smart-structure-tabs-list {
+      .smart-structure-tabs-list-nav {
         flex-direction: column;
         .smart-structure-list-item {
           &.router-link-active {
@@ -103,7 +103,7 @@
   &.smart-structure-list-position--top, &.smart-structure-list-position--bottom {
     .smart-structure-tabs {
       flex-direction: column;
-      .smart-structure-tabs-list {
+      .smart-structure-tabs-list-nav {
         flex-direction: row;
         .smart-structure-list-item {
 

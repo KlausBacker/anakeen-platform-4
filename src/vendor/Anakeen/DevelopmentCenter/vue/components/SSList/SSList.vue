@@ -12,7 +12,7 @@
                     <input class="form-control k-textbox" type="search" :placeholder="translations.listFilterPlaceholder" v-model="listFilter"/>
                     <span class="filter-list-clear" @click="clearFilter"><i class="material-icons">close</i></span>
                 </div>
-                <div class="smart-structure-tabs-list" ref="listview">
+                <div class="smart-structure-tabs-list-nav">
                     <router-link tag="div" :to="{name: routeName, params: { [routeParamField]: tab.name }}" v-for="(tab, index) in tabs" :key="`tab-${index}`" :class="{'smart-structure-list-item': true}" :title="tab.title">
                         <img class="smart-structure-list-item-icon" :src='tab.icon'/>
                         <div class="smart-structure-list-item-title">{{tab.name}}</div>

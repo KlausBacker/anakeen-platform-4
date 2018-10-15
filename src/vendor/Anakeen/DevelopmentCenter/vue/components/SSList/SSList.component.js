@@ -1,10 +1,6 @@
 import Vue from "vue";
-import "@progress/kendo-ui/js/kendo.listview";
-import "@progress/kendo-ui/js/kendo.pager";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
-import { ListViewInstaller } from "@progress/kendo-listview-vue-wrapper";
 
-Vue.use(ListViewInstaller);
 Vue.use(DataSourceInstaller);
 export default {
   props: {
