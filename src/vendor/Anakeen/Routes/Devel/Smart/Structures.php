@@ -26,7 +26,8 @@ class Structures
         $this->filters = $request->getParam("filter", []);
     }
 
-    protected function filterRequest(\SearchDoc $searchDoc) {
+    protected function filterRequest(\SearchDoc $searchDoc)
+    {
         if (!empty($this->filters)) {
             if (!empty($this->filters["logic"]) && !empty($this->filters["filters"])) {
                 $filters = $this->filters["filters"];
