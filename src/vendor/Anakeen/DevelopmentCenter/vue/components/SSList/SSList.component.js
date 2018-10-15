@@ -4,8 +4,6 @@ import "@progress/kendo-ui/js/kendo.pager";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { ListViewInstaller } from "@progress/kendo-listview-vue-wrapper";
 
-import structureItemVue from "./template/structureItemTemplate.vue";
-
 Vue.use(ListViewInstaller);
 Vue.use(DataSourceInstaller);
 export default {
@@ -64,6 +62,7 @@ export default {
   data() {
     return {
       selectedStructure: null,
+      dataSource: null,
       listModel: {
         id: "name"
       },
@@ -73,11 +72,11 @@ export default {
   watch: {
     listFilter(newValue, oldValue) {
       if (newValue !== oldValue) {
-        if (this.$refs.remoteDataSource) {
+        if (this.dataSource) {
           if (this.$router.currentRoute.query.filter !== newValue) {
             this.$router.push({ query: { filter: newValue } });
           }
-          this.$refs.remoteDataSource.kendoWidget().filter({
+          this.dataSource.filter({
             logic: "or",
             filters: [
               {
@@ -97,6 +96,20 @@ export default {
     }
   },
   computed: {
+    translations() {
+      return {
+        listFilterPlaceholder: "Search a structure"
+      };
+    },
+    tabs() {
+      if (this.dataSource) {
+        const view = this.dataSource.view();
+        if (view.length) {
+          return view.toJSON();
+        }
+      }
+      return [];
+    },
     hasFilter() {
       return !!this.filter;
     },
@@ -109,20 +122,8 @@ export default {
     }
   },
   mounted() {
-    if (
-      this.$router.currentRoute.matched.find(
-        match => match.name === this.routeName
-      )
-    ) {
-      this.selectedStructure =
-        this.$router.currentRoute.params[this.routeParamField] || null;
-      this.$once("smart-structure-list-ready", () => {
-        this.selectStructure(this.selectedStructure);
-      });
-    }
-    if (this.$router.currentRoute.query.filter) {
-      this.listFilter = this.$router.currentRoute.query.filter;
-    }
+    this.dataSource = this.$refs.remoteDataSource.kendoWidget();
+    this.dataSource.read();
   },
   methods: {
     readData(options) {
@@ -144,35 +145,8 @@ export default {
       }
       return [];
     },
-    selectStructure(structureName) {
-      this.$nextTick(() => {
-        const domItem = this.$refs.listview
-          .kendoWidget()
-          .element.children(
-            `.smart-structure-list-item[data-smartstructname=${structureName}]`
-          );
-        this.$refs.listview.kendoWidget().select(domItem);
-      });
-    },
-    structureItemTemplate(e) {
-      return {
-        template: Vue.component(structureItemVue.name, structureItemVue),
-        templateArgs: {
-          to: {
-            name: this.routeName,
-            params: { [this.routeParamField]: e.name }
-          },
-          structure: e,
-          parentComponent: this.$refs.listview,
-          parentVueComponent: this
-        }
-      };
-    },
     clearFilter() {
       this.listFilter = "";
-    },
-    onDataBound() {
-      this.$emit("smart-structure-list-ready");
     }
   }
 };
