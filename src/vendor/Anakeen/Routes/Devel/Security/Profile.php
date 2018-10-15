@@ -13,7 +13,7 @@ use Anakeen\SmartElementManager;
 /**
  * Get Right Accesses
  *
- * @note    Used by route : GET api/v2/devel/security/profile/{id}/accesses/
+ * @note Used by route : GET api/v2/devel/security/profile/{id}/accesses/
  */
 class Profile
 {
@@ -28,9 +28,9 @@ class Profile
     /**
      * Return right accesses for a profil element
      *
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param                     $args
+     * @param $args
      *
      * @return \Slim\Http\response $response
      */

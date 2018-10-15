@@ -9,8 +9,8 @@ use Anakeen\Ui\DataSource;
 /**
  * Get All Structures
  *
- * @note    Used by route : GET /api/v2/devel/smart/structures/vendor/
- * @note    Used by route : GET /api/v2/devel/smart/structures/all/
+ * @note Used by route : GET /api/v2/devel/smart/structures/vendor/
+ * @note Used by route : GET /api/v2/devel/smart/structures/all/
  */
 class Structures
 {

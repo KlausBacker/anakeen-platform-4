@@ -9,7 +9,7 @@ use Anakeen\Ui\DataSource;
 /**
  * Get All Enumerate Items
  *
- * @note    Used by route : GET /api/v2/devel/smart/enumerates/
+ * @note Used by route : GET /api/v2/devel/smart/enumerates/
  * Use request  parameters : ?take=50&skip=0&filter=<kendo filters>
  */
 class Enumerates
@@ -33,7 +33,11 @@ class Enumerates
         if ($filters) {
             $this->filters = DataSource::getFlatLevelFilters($filters);
         }
-        $this->slice = intval($request->getQueryParam("take", self::ENUMPAGESIZE));
+        if ($request->getQueryParam("take") === 'all') {
+            $this->slice = $request->getQueryParam("take");
+        } else {
+            $this->slice = intval($request->getQueryParam("take", self::ENUMPAGESIZE));
+        }
         $this->offset = intval($request->getQueryParam("skip", 0));
     }
 
@@ -44,13 +48,22 @@ class Enumerates
         if ($this->filters) {
             $where = [];
             foreach ($this->filters as $filter) {
-                $where[] = sprintf("%s ~* '%s'", pg_escape_identifier($filter["field"]), pg_escape_string($filter["value"]));
+                if (pg_escape_string($filter["value"]) === "true") {
+                    $where[] = sprintf("%s", pg_escape_identifier($filter["field"]));
+                } elseif (pg_escape_string($filter["value"]) === "false") {
+                        $where[] = sprintf("%s is null", pg_escape_identifier($filter["field"]));
+                } else {
+                    $where[] = sprintf("%s ~* '%s'", pg_escape_identifier($filter["field"]), pg_escape_string($filter["value"]));
+                }
             }
             $swhere = "where " . implode(" and ", $where);
         }
 
 
-        $sql = sprintf("select * from docenum %s order by name, eorder limit %d offset %d", $swhere, $this->slice, $this->offset);
+        $sql = sprintf("select * from docenum %s order by name, eorder offset %d", $swhere, $this->offset);
+        if ($this->slice !== 'all') {
+            $sql = sprintf("select * from docenum %s order by name, eorder limit %d offset %d", $swhere, $this->slice, $this->offset);
+        }
         DbManager::query($sql, $results);
         foreach ($results as &$result) {
             $result["eorder"] = intval($result["eorder"]);
