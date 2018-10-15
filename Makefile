@@ -30,10 +30,15 @@ CBF_BIN=php ./ide/vendor/bin/phpcbf
 $(NODE_MODULE_PATH):
 	$(YARN_BIN) install
 
-app: $(NODE_MODULE_PATH)
+compile: $(NODE_MODULE_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	$(YARN_BIN) run buildJs
+
+app: compile
 	${ANAKEEN_CLI_BIN} build
+
+autotest: compile
+	${ANAKEEN_CLI_BIN} build --auto-release
 
 deploy:
 	rm -f dev*app
