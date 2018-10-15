@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Admin;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Settings;
 use Dcp\Core\Exception;
+use Dcp\Ui\UIGetAssetPath;
 
 /**
  * Class Plugins
@@ -160,6 +161,10 @@ class Plugins
     protected static function normalizeXMLPlugins(\SimpleXMLElement $xmlObject, $parentPluginPath = "") {
         $result = [];
         $wsVersion = ContextManager::getParameterValue(Settings::NsSde, "WVERSION");
+        $generatedJs = UIGetAssetPath::getElementAssets(
+            "adminCenter",
+            UIGetAssetPath::isInDebug() ? "dev" : "prod"
+        );
         if (!empty($xmlObject) && !empty($xmlObject->plugin)) {
             $plugins = $xmlObject->plugin;
             foreach ($plugins as $xmlPlugin) {
@@ -184,6 +189,12 @@ class Plugins
                 }
                 if (isset($plugin["scriptURL"])) {
                     $plugin["scriptURL"] .= "?ws=$wsVersion";
+                }
+                if (!isset($plugin["scriptURL"])) {
+                    $jsAsset = isset($generatedJs[$pluginComponentName]["js"]) ? $generatedJs[$pluginComponentName]["js"] : false;
+                    if ($jsAsset) {
+                        $plugin["scriptURL"] = $jsAsset;
+                    }
                 }
                 if (isset($plugin["debugScriptURL"])) {
                     $plugin["debugScriptURL"] .= "?ws=$wsVersion";
@@ -213,12 +224,11 @@ class Plugins
     }
 
 
-
     protected static function mergePlugins(array $plugins) {
         $result = [];
         foreach ($plugins as $pluginName => $overrides) {
             $completeOverrides = array_filter($overrides, function ($override) {
-               return $override['override'] === 'complete';
+               return isset($override['override']) && ($override['override'] === 'complete');
             });
             $baseOverrides = array_filter($overrides, function ($override) {
                return !isset($override['override'])
@@ -250,7 +260,7 @@ class Plugins
             }
             $partialOverrides = array_filter($overrides, function ($override) use ($priorityBase) {
                 $priority = $override['priority'] ?? 0;
-                return $override['override'] === 'partial' && $priority >= $priorityBase;
+                return isset($override['override']) && $override['override'] === 'partial' && $priority >= $priorityBase;
             });
             usort($partialOverrides, function ($o1, $o2) {
                 $p1 = $o1['priority'] ?? 0;
