@@ -8,7 +8,10 @@ namespace Dcp\Pu;
 
 //require_once 'PU_testcase_dcp_commonfamily.php';
 
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Search\SearchElementData;
+use Anakeen\Search\SearchElements;
 
 class TestSearch extends TestCaseDcpCommonFamily
 {
@@ -42,6 +45,31 @@ class TestSearch extends TestCaseDcpCommonFamily
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s  %s", $criteria, $arg, print_r($s->getSearchInfo(), true)));
     }
+
+    /**
+     * test basic search criteria
+     *
+     * @param string $criteria filter
+     * @param string $arg      filter argument
+     * @param string $family   family name or id
+     *
+     * @return void
+     * @dataProvider loginCriteria
+     */
+    public function testBasicSearchElements($criteria, $arg, $family)
+    {
+        $s = new SearchElements($family);
+        $s->addFilter($criteria, $arg);
+        $err = "";
+        try {
+            $s->search();
+        } catch (\Exception $e) {
+            $err = $e->getMessage();
+        }
+
+        $this->assertEmpty($err, sprintf("Search error %s %s  %s", $criteria, $arg, print_r($s->getSearchInfo(), true)));
+    }
+
 
     protected function createDataSearch()
     {
@@ -87,7 +115,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         foreach ($fruits as $socTitle) {
             foreach ($socTitle as $k => $title) {
                 if ($k === 0) {
-                    $d1 = createDoc(self::$dbaccess, $this->famName, false);
+                    $d1 = SEManager::createDocument($this->famName, false);
                     $d1->setTitle($title);
                     $err = $d1->add();
                     $this->assertEmpty($err, "Cannot create data");
@@ -141,6 +169,32 @@ class TestSearch extends TestCaseDcpCommonFamily
     /**
      * test basic search criteria
      *
+     * @param string  $criteria filter
+     * @param string  $arg      filter argument
+     * @param string  $family   family name or id
+     * @param integer $count    expected results count
+     *
+     * @return void
+     * @dataProvider countCriteria
+     */
+    public function testCountSearchElements($criteria, $arg, $family, $count)
+    {
+        $this->createDataSearch();
+
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $s->search();
+
+
+        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s : %s", $count, $s->count(), $criteria, $arg, print_r($s->getSearchInfo(), true)));
+    }
+
+
+    /**
+     * test basic search criteria
+     *
      * @param bool   $latest
      * @param bool   $distinct
      * @param string $trash
@@ -173,6 +227,51 @@ class TestSearch extends TestCaseDcpCommonFamily
             sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles), print_r($s->getSearchInfo(), true)));
         $this->assertEquals($expectTitles, $returnTitles,
             sprintf("Not expected result %s %s \nFound : %s %s", $criteria, $arg, implode(", ", $returnTitles), print_r($s->getSearchInfo(), true)));
+    }
+
+    /**
+     * test basic search criteria
+     *
+     * @param bool   $latest
+     * @param bool   $distinct
+     * @param string $trash
+     * @param string $criteria filter
+     * @param string $arg      filter argument
+     * @param string $family   family name or id
+     * @param array  $expectTitles
+     *
+     * @dataProvider countAllRevisionCriteria
+     */
+    public function testCountRevisionSearchElements($latest, $distinct, $trash, $criteria, $arg, $family, array $expectTitles)
+    {
+        $this->createDataSearch();
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $s->setLatest($latest);
+        $s->setdistinct($distinct);
+        $s->useTrash($trash);
+        $s->search();
+
+        $returnTitles = $this->getReturnElementTitles($s);
+        sort($returnTitles);
+        sort($expectTitles);
+        $this->assertEquals(count($expectTitles), $s->count(),
+            sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles), print_r($s->getSearchInfo(), true)));
+        $this->assertEquals($expectTitles, $returnTitles,
+            sprintf("Not expected result %s %s \nFound : %s %s", $criteria, $arg, implode(", ", $returnTitles), print_r($s->getSearchInfo(), true)));
+    }
+
+    private function getReturnElementTitles(SearchElements $s)
+    {
+        $dl = $s->getResults();
+        $titles = array();
+        foreach ($dl as $doc) {
+            $titles[] = $doc->getTitle();
+        }
+
+        return $titles;
     }
 
     private function getReturnTitles(\SearchDoc $s)
@@ -249,6 +348,36 @@ class TestSearch extends TestCaseDcpCommonFamily
     /**
      * test basic search criteria
      *
+     * @param string  $criteria filter
+     * @param string  $arg      filter argument
+     * @param string  $family   family name or id
+     * @param integer $count    expected results count
+     *
+     * @return void
+     * @dataProvider countCriteria
+     * @depends      testCountSearch
+     */
+    public function testOnlyCountSearchElements($criteria, $arg, $family, $count)
+    {
+        $this->createDataSearch();
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $c = -2;
+        try {
+            $c = $s->onlyCount();
+        } catch (\Dcp\Db\Exception $e) {
+        }
+
+
+        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
+        $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
+    }
+
+    /**
+     * test basic search criteria
+     *
      * @param string $criteria filter
      * @param string $arg      filter argument
      * @param string $family   family name or id
@@ -272,6 +401,39 @@ class TestSearch extends TestCaseDcpCommonFamily
         } catch (\Dcp\Db\Exception $e) {
         }
         $err = $s->getError();
+        $this->assertContains($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo(), true)));
+        $count = -1;
+        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
+        $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
+    }
+
+    /**
+     * test basic search criteria
+     *
+     * @param string $criteria filter
+     * @param string $arg      filter argument
+     * @param string $family   family name or id
+     * @param string $error    expected error
+     *
+     * @return void
+     * @dataProvider countErrorCriteria
+     * @depends      testCountSearch
+     */
+    public function testOnlyCountErrorSearchElements($criteria, $arg, $family, $error)
+    {
+        $this->createDataSearch();
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $c = null;
+        $err = "";
+        try {
+            $c = $s->onlyCount();
+        } catch (\Exception $e) {
+            $err = $e->getMessage();
+            $c = -1;
+        }
         $this->assertContains($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo(), true)));
         $count = -1;
         $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
@@ -312,6 +474,38 @@ class TestSearch extends TestCaseDcpCommonFamily
     }
 
     /**
+     * test basic search criteria
+     *
+     * @param string $criteria filter
+     * @param string $arg      filter argument
+     * @param string $family   family name or id
+     * @param string $error    expected error
+     *
+     * @return void
+     * @dataProvider countErrorCriteriaException
+     * @depends      testCountSearch
+     */
+    public function testOnlyCountErrorSearchElementException($criteria, $arg, $family, $error)
+    {
+        $this->createDataSearch();
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $exceptionError = '';
+        try {
+            $s->onlyCount();
+        } catch (\Dcp\Db\Exception $e) {
+            $exceptionError = $e->getMessage();
+        }
+
+        $this->assertContains($error, $exceptionError, sprintf("Exception error '%s' does not contains '%s' (%s)", $exceptionError, $error, print_r($s->getSearchInfo(), true)));
+
+        $count = -1;
+        $this->assertEquals($count, $s->count(), sprintf("count() must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
+    }
+
+    /**
      * test only count user search
      *
      * @param array $data test specification
@@ -334,7 +528,7 @@ class TestSearch extends TestCaseDcpCommonFamily
                 $this->sudo($test['sudo']);
             }
 
-            $fam = new_doc(self::$dbaccess, $test['search:family']);
+            $fam = SEManager::getFamily($test['search:family']);
             $this->assertTrue($fam->isAlive(), sprintf("test#%s> Family '%s' not found.", $i, $test['search:family']));
 
             $s = new \SearchDoc(self::$dbaccess, $test['search:family']);
@@ -361,6 +555,54 @@ class TestSearch extends TestCaseDcpCommonFamily
     }
 
     /**
+     * test only count user search
+     *
+     * @param array $data test specification
+     *
+     * @return void
+     * @dataProvider onlyCountWithNoAccessControlCriteria
+     * @depends      testCountSearch
+     */
+    public function testOnlyCountWithNoViewControlSearchElements($data)
+    {
+
+        if (isset($data['import'])) {
+            $this->importDocument($data['import']);
+        }
+
+        $this->assertTrue(isset($data['tests']), sprintf("Missing 'tests'."));
+
+        foreach ($data['tests'] as $i => & $test) {
+            if (isset($test['sudo'])) {
+                $this->sudo($test['sudo']);
+            }
+
+            $fam = SEManager::getFamily($test['search:family']);
+            $this->assertTrue($fam->isAlive(), sprintf("test#%s> Family '%s' not found.", $i, $test['search:family']));
+
+            $s = new SearchElements($test['search:family']);
+
+            if (isset($test['search:noviewcontrol']) && $test['search:noviewcontrol']) {
+                $s->overrideAccessControl();
+            }
+
+            $count = $s->onlyCount();
+
+            $this->assertEquals(
+                $count,
+                $test['expect:count'],
+                sprintf("test#%s> Result size is %s while expecting %s. [%s]", $i, $count, $test['expect:count'], print_r($s->getSearchInfo(), true))
+            );
+
+            if (isset($test['sudo'])) {
+                $this->exitSudo();
+            }
+        }
+        unset($test);
+    }
+
+
+    /**
      * test search filters
      *
      * @param array $data test specification
@@ -384,7 +626,7 @@ class TestSearch extends TestCaseDcpCommonFamily
                 $this->sudo($test['sudo']);
             }
 
-            $fam = new_doc(self::$dbaccess, $test['search:family']);
+            $fam = SEManager::getFamily($test['search:family']);
             $this->assertTrue($fam->isAlive(), sprintf("test#%s> Family '%s' not found.", $i, $test['search:family']));
 
             $s = new \SearchDoc(self::$dbaccess, $test['search:family']);
@@ -440,16 +682,38 @@ class TestSearch extends TestCaseDcpCommonFamily
     /**
      * test basic search criteria
      *
-     * @param string  $criteria filter
-     * @param string  $arg      filter argument
-     * @param string  $family   family name or id
-     * @param integer $count    expected results count
+     * @param string $criteria filter
+     * @param string $arg      filter argument
+     * @param string $family   family name or id
+     *
+     * @dataProvider countCriteria
+     * @---depends testCountSearch
+     */
+    public function testSliceSearchElements($criteria, $arg, $family)
+    {
+        $this->createDataSearch();
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $s->setSlice(2);
+        $s->search();
+        $c = $s->count();
+        $this->assertLessThanOrEqual(2, $c);
+    }
+
+    /**
+     * test basic search criteria
+     *
+     * @param string $criteria filter
+     * @param string $arg      filter argument
+     * @param string $family   family name or id
      *
      * @return void
      * @dataProvider countCriteria
      * @---depends testCountSearch
      */
-    public function testStartSearch($criteria, $arg, $family, $count)
+    public function testStartSearch($criteria, $arg, $family)
     {
         $this->createDataSearch();
 
@@ -458,7 +722,7 @@ class TestSearch extends TestCaseDcpCommonFamily
             $s->addFilter($criteria, $arg);
         }
         $s->setObjectReturn(true);
-        $c = $s->onlyCount();
+        $s->onlyCount();
         $call = $s->count();
 
         $s = new \SearchDoc(self::$dbaccess, $family);
@@ -471,6 +735,38 @@ class TestSearch extends TestCaseDcpCommonFamily
         $cstart = $s->count();
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
+        $this->assertLessThanOrEqual($call, $cstart);
+    }
+
+    /**
+     * test basic search criteria
+     *
+     * @param string $criteria filter
+     * @param string $arg      filter argument
+     * @param string $family   family name or id
+     *
+     * @return void
+     * @dataProvider countCriteria
+     * @---depends testCountSearch
+     */
+    public function testStartSearchElements($criteria, $arg, $family)
+    {
+        $this->createDataSearch();
+
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $s->onlyCount();
+        $call = $s->count();
+
+        $s = new SearchElements($family);
+        if ($criteria) {
+            $s->addFilter($criteria, $arg);
+        }
+        $s->setStart(2);
+        $s->search();
+        $cstart = $s->count();
         $this->assertLessThanOrEqual($call, $cstart);
     }
 
@@ -492,6 +788,32 @@ class TestSearch extends TestCaseDcpCommonFamily
             $s->setObjectReturn(true);
             $s->search();
             $err = $s->getError();
+        } catch (\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertFalse($err == "", sprintf("Need detect Search error %s %s", $data['criteria'], $data['arg']));
+        foreach ($data['expectErrors'] as $error) {
+            $this->assertContains($error, $err, sprintf("no good error code"));
+        }
+    }
+
+    /**
+     * test basic search criteria
+     *
+     * @param $data
+     *
+     * @dataProvider errorCriteria
+     */
+    public function testErrorSearchElements($data)
+    {
+        $err = "";
+        try {
+            $s = new SearchElements($data['family']);
+            $s->addFilter($data['criteria'], $data['arg']);
+            if (isset($data['collection'])) {
+                $s->useCollection($data['collection']);
+            }
+            $s->search();
         } catch (\Exception $e) {
             $err = $e->getMessage();
         }
@@ -568,7 +890,11 @@ class TestSearch extends TestCaseDcpCommonFamily
             $expected[] = $doc->name;
         }
 
-        $err = simpleQuery(self::$dbaccess, $sql, $res);
+        try {
+            DbManager::query($sql, $res);
+        } catch (\Exception $e) {
+            $err = $e->getMessage();
+        }
         $this->assertEmpty($err, sprintf("Unexpected error in simpleQuery() [%s]: %s", $sql, $err));
         foreach ($res as & $row) {
             $row = $row['name'];
@@ -583,6 +909,10 @@ class TestSearch extends TestCaseDcpCommonFamily
     /**
      * @param $famName
      *
+     * @param $docName
+     * @param $expectedAttr
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\SearchDoc\Exception
      * @dataProvider dataSearchGetValue
      */
     public function testSearchGetValue($famName, $docName, $expectedAttr)
@@ -595,6 +925,72 @@ class TestSearch extends TestCaseDcpCommonFamily
             if ($doc->name === $docName) {
                 foreach ($expectedAttr as $attrid => $value) {
                     $this->assertEquals($value, $doc->getRawValue($attrid), sprintf("attribute \"%s\"", $attrid));
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $famName
+     *
+     * @param $docName
+     * @param $expectedAttr
+     * @dataProvider dataSearchGetValue
+     */
+    public function testSearchElementsGetValue($famName, $docName, $expectedAttr)
+    {
+        $s = new SearchElements($famName);
+        $dl = $s->search()->getResults();
+
+        foreach ($dl as $doc) {
+            if ($doc->name === $docName) {
+                foreach ($expectedAttr as $attrid => $value) {
+                    $this->assertEquals($value, $doc->getRawValue($attrid), sprintf("attribute \"%s\"", $attrid));
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $famName
+     *
+     * @param $docName
+     * @param $expectedAttr
+     * @throws \Dcp\Db\Exception
+     * @throws \Dcp\SearchDoc\Exception
+     * @dataProvider dataSearchGetValue
+     */
+    public function testSearchGetData($famName, $docName, $expectedAttr)
+    {
+        $s = new \SearchDoc("", $famName);
+        $s->setObjectReturn(false);
+        $data = $s->search();
+
+        foreach ($data as $doc) {
+            if ($doc["name"] === $docName) {
+                foreach ($expectedAttr as $attrid => $value) {
+                    $this->assertEquals($value, $doc[$attrid] ?? SearchElementData::getRawData($doc, $attrid), sprintf("attribute \"%s\"", $attrid));
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $famName
+     *
+     * @param $docName
+     * @param $expectedAttr
+     * @dataProvider dataSearchGetValue
+     */
+    public function testSearchElementGetData($famName, $docName, $expectedAttr)
+    {
+        $s = new SearchElementData($famName);
+        $data = $s->search()->getResults();
+
+        foreach ($data as $doc) {
+            if ($doc["name"] === $docName) {
+                foreach ($expectedAttr as $attrid => $value) {
+                    $this->assertEquals($value, $s->getRawData($doc, $attrid), sprintf("attribute \"%s\"", $attrid));
                 }
             }
         }
@@ -961,6 +1357,35 @@ class TestSearch extends TestCaseDcpCommonFamily
                             "import" => "PU_data_dcp_search.ods",
                             "sudo" => "anonymous",
                             "search:family" => "TST_SEARCH_NOVIEWCONTROL",
+                            "search:noviewcontrol" => true,
+                            "expect:count" => 6
+                        )
+                    )
+                )
+            )
+        );
+    }
+
+    public function onlyCountWithNoAccessControlCriteria()
+    {
+        return array(
+            array(
+                array(
+                    "import" => "PU_data_dcp_search_noaccesscontrol.ods",
+                    "tests" => array(
+                        array(
+                            "search:family" => "TST_SEARCH_NOACCESSCONTROL",
+                            "expect:count" => 6
+                        ),
+                        array(
+                            "sudo" => "anonymous",
+                            "search:family" => "TST_SEARCH_NOACCESSCONTROL",
+                            "expect:count" => 3
+                        ),
+                        array(
+                            "import" => "PU_data_dcp_search.ods",
+                            "sudo" => "anonymous",
+                            "search:family" => "TST_SEARCH_NOACCESSCONTROL",
                             "search:noviewcontrol" => true,
                             "expect:count" => 6
                         )

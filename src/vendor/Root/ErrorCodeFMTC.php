@@ -27,6 +27,6 @@ class ErrorCodeFMTC
      * @see       DateAttributeValue
      */
     const FMTC0003 = 'Date style %s is not correct.';
-    
+
 }
 

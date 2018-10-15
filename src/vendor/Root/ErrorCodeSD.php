@@ -53,4 +53,29 @@ class ErrorCodeSD
      * @errorCode When setting a "Specialized search" collection with useCollection() and adding filters with addFilter()
      */
     const SD0008 = 'Searching on a "Specialized search" collection and specifying additional filters is not supported';
+    /**
+     * @errorCode The slice must be a number
+     * @see \Anakeen\Search\SearchElements::setSlice()
+     */
+    const SD0009 = 'Slice "%s" is not correct - use positive number or "ALL"';
+     /**
+      * @errorCode The start must be a number
+      * @see \Anakeen\Search\SearchElements::setStart()
+      */
+    const SD0010 = 'Start "%s" is not correct - use positive number';
+     /**
+      * @errorCode The id may be not reference a id collection
+      * @see \Anakeen\Search\SearchElements::useCollection()
+      */
+    const SD0011 = 'Collection id "%s" is not correct';
+    /**
+     * @errorCode Query cannot be executed
+     * @see \Anakeen\Search\SearchElements::onlyCount()
+     */
+    const SD0012 = 'Only count error :"%s"';
+    /**
+     * @errorCode Query cannot be executed
+     * @see \Anakeen\Search\SearchElements::search()
+     */
+    const SD0013 = 'Search error :"%s"';
 }

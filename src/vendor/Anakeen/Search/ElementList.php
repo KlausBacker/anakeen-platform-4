@@ -1,36 +1,35 @@
 <?php
-/**
- * Document list class
- *
- * @author Anakeen
- * @version $Id:  $
- * @package FDL
- */
-/**
- */
-class DocumentList implements Iterator, Countable
+
+
+namespace Anakeen\Search;
+
+
+use Anakeen\Core\Internal\SmartElement;
+
+class ElementList implements \Iterator, \Countable
 {
     /**
-     * @var null|SearchDoc
+     * @var null|SearchElements
      */
     private $search = null;
     /**
-     * @var null|Doc
+     * @var null|SmartElement
      */
     private $currentDoc = null;
     /**
      * anonymous function
-     * @var Closure
+     * @var \Closure
      */
     private $hookFunction = null;
-    
+
     private $init = false;
     public $length = 0;
-    
-    public function __construct(SearchDoc & $s = null)
+
+    public function __construct(SearchElements & $s = null)
     {
-        $this->search = & $s;
+        $this->search = &$s;
     }
+
     /**
      * get number of returned documents
      * can be upper of real length due to callback map
@@ -43,6 +42,7 @@ class DocumentList implements Iterator, Countable
         $this->initSearch();
         return $this->length;
     }
+
     private function initSearch()
     {
         if ($this->search) {
@@ -50,9 +50,7 @@ class DocumentList implements Iterator, Countable
                 if (!$this->search->isExecuted()) {
                     $this->search->search();
                 }
-                if ($this->search->getError()) {
-                    throw new Dcp\Exception($this->search->getError());
-                }
+
                 $this->length = $this->search->count();
                 $this->init = true;
             } else {
@@ -60,13 +58,13 @@ class DocumentList implements Iterator, Countable
             }
         }
     }
-    
+
     private function getCurrentDoc()
     {
-        $this->currentDoc = $this->search->getNextDoc();
+        $this->currentDoc = $this->search->getNextElement();
         $good = ($this->callHook() !== false);
         if (!$good) {
-            while ($this->currentDoc = $this->search->getNextDoc()) {
+            while ($this->currentDoc = $this->search->getNextElement()) {
                 $good = ($this->callHook() !== false);
                 if ($good) {
                     break;
@@ -74,12 +72,13 @@ class DocumentList implements Iterator, Countable
             }
         }
     }
-    
+
     public function rewind()
     {
         $this->initSearch();
         $this->getCurrentDoc();
     }
+
     /**
      * @return void
      */
@@ -87,7 +86,7 @@ class DocumentList implements Iterator, Countable
     {
         $this->getCurrentDoc();
     }
-    
+
     private function callHook()
     {
         if ($this->currentDoc && $this->hookFunction) {
@@ -97,17 +96,20 @@ class DocumentList implements Iterator, Countable
         }
         return true;
     }
+
     public function key()
     {
         return is_array($this->currentDoc) ? $this->currentDoc["id"] : $this->currentDoc->id;
     }
+
     /**
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public function current()
     {
         return $this->currentDoc;
     }
+
     /**
      * @return bool
      */
@@ -115,52 +117,19 @@ class DocumentList implements Iterator, Countable
     {
         return $this->currentDoc != false;
     }
+
     /**
-     * @return null|SearchDoc
+     * @return null|searchElements
      */
-    public function &getSearchDocument()
+    public function &getSearchElement()
     {
         return $this->search;
     }
-    /**
-     * set document identifiers to be used in iterator
-     * @param int[] $ids document identifiers
-     * @param bool $useInitid if true identifier must ne initid else must be latest ids
-     * @deprecated use addDocumentIdentifiers instead
-     */
-    public function addDocumentIdentificators(array $ids, $useInitid = true)
-    {
-        $this->addDocumentIdentifiers($ids, $useInitid);
-    }
-    /**
-     * set document identifiers to be used in iterator
-     *
-     * @api Set document identifiers to be used in iterator
-     * @param int[] $ids document identifiers
-     * @param bool $useInitid if true identifier must ne initid else must be latest ids
-     */
-    public function addDocumentIdentifiers(array $ids, $useInitid = true)
-    {
-        $this->search = new SearchDoc();
-        $this->search->setObjectReturn();
-        $this->search->excludeConfidential();
-        foreach ($ids as $k => $v) {
-            if ((!$v) || (!is_numeric($v))) {
-                unset($ids[$k]);
-            }
-        }
-        $ids = array_unique($ids);
-        $sid = $useInitid ? "initid" : "id";
-        if (count($ids) == 0) {
-            $this->search->addFilter("false");
-        } else {
-            $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
-        }
-    }
+
     /**
      * apply a callback on each document
      * if callback return false, the document is skipped from list
-     * @param Closure $hookFunction
+     * @param \Closure $hookFunction
      * @return void
      */
     public function listMap($hookFunction)

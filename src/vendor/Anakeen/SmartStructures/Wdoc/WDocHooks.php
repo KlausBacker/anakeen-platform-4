@@ -6,6 +6,7 @@
 
 namespace Anakeen\SmartStructures\Wdoc;
 
+use Anakeen\Core\Account;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\DocAttr;
@@ -838,7 +839,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             if ($this->doc->isLocked()) {
                 $lockUserId = abs($this->doc->locked);
-                $lockUserAccount = getDocFromUserId($this->dbaccess, $lockUserId);
+                $lockU = new Account("", $lockUserId);
+                $lockUserAccount=null;
+                if ($lockU -> isAffected()) {
+                    $lockUserAccount= SEManager::getDocument($lockU->fid);
+                }
+
                 if (is_object($lockUserAccount) && $lockUserAccount->isAlive()) {
                     $lockUserTitle = $lockUserAccount->getTitle();
                     if ($lockUserId != ContextManager::getCurrentUser()->id) {
