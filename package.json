@@ -22,8 +22,8 @@
   "license": "MIT",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.0.1-1538746706",
-    "@anakeen/ank-components": "1.0.0-1538743057",
+    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-ui": "^2018.0.0",
     "@webcomponents/webcomponentsjs": "2.0.2",
