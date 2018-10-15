@@ -497,7 +497,7 @@ class SearchDoc
                 }
             }
             if ($fromid == 0) {
-                $error = sprintf(_("%s is not a family"), $this->fromid);
+                $error = sprintf(___("\"%s\" is not a structure", "search"), $this->fromid);
                 $this->debuginfo["error"] = $error;
                 error_log("ERROR SearchDoc: " . $error);
                 if ($this->mode == "ITEM") {
@@ -839,7 +839,7 @@ class SearchDoc
             if (!isset($this->cacheDocuments[$fromid])) {
                 $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid,  false);
                 if (empty($this->cacheDocuments[$fromid])) {
-                    throw new Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
+                    throw new \Dcp\SearchDoc\Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }
             }
         }
@@ -1592,9 +1592,7 @@ class SearchDoc
      */
     public function getFamily()
     {
-        $fam = \Anakeen\Core\SEManager::getFamily($this->fromid);
-
-        return $fam;
+        return \Anakeen\Core\SEManager::getFamily($this->fromid);
     }
     /**
      * Insert an additional relation in the FROM clause of the given query

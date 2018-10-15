@@ -17,6 +17,20 @@ class AccountManager
 
 
     /**
+     * Return system account from login, null if login not found
+     * @param string $login
+     * @return Account|null
+     * @throws \Dcp\Core\Exception
+     */
+    public static function getAccount(string $login) {
+        $u= new Account("");
+        $u->setLoginName($login);
+        if ($u->isAffected()) {
+            return $u;
+        }
+        return null;
+    }
+    /**
      * Return system id from SmartElement Id
      * @param int $fid
      * @return int

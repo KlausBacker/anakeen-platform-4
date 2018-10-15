@@ -412,49 +412,11 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
  */
 function getv(&$t, $k, $d = "")
 {
-    if (isset($t[$k]) && ($t[$k] != "")) {
-        return $t[$k];
-    }
-    if (strpos($t["attrids"], "£$k") !== 0) {
-        $tvalues = explode("£", $t["values"]);
-        $tattrids = explode("£", $t["attrids"]);
-        foreach ($tattrids as $ka => $va) {
-            if ($va != "") {
-                if (!isset($t[$va])) {
-                    $t[$va] = $tvalues[$ka];
-                }
-                if ($va == $k) {
-                    if ($tvalues[$ka] != "") {
-                        return $tvalues[$ka];
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    return $d;
+    $v=\Anakeen\Search\SearchElementData::getRawData($t, $k);
+    return $v?:$d;
 }
 
-/**
- * complete all values of an doc array item
- *
- * @param array &$t the array where get value
- *
- * @return string[]
- */
-function getvs(&$t)
-{
-    $tvalues = explode("£", $t["values"]);
-    $tattrids = explode("£", $t["attrids"]);
-    foreach ($tattrids as $ka => $va) {
-        if ($va != "") {
-            if (!isset($t[$va])) {
-                $t[$va] = $tvalues[$ka];
-            }
-        }
-    }
-    return $t;
-}
+
 
 /**
  * use to usort attributes
@@ -555,19 +517,6 @@ function getDocObject($dbaccess, $v, $k = 0)
     return $_OgetDocObject[$k][$v["fromid"]];
 }
 
-/**
- * return the next document in sql select ressources
- * use with "ITEM" type searches direct in QueryDb
- * return \Anakeen\Core\Internal\SmartElement the next doc (false if the end)
- */
-function getNextDbObject($dbaccess, $res)
-{
-    $tdoc = pg_fetch_array($res, null, PGSQL_ASSOC);
-    if ($tdoc === false) {
-        return false;
-    }
-    return getDocObject($dbaccess, $tdoc, intval($res));
-}
 
 /**
  * return the next document in sql select ressources
@@ -594,36 +543,9 @@ function getNextDoc($dbaccess, &$tres)
     return getDocObject($dbaccess, $tdoc, intval(current($tres)));
 }
 
-/**
- * count returned document in sql select ressources
- *
- * @param array $tres of ressources
- *                    return \Anakeen\Core\Internal\SmartElement the next doc (false if the end)
- */
-function countDocs(&$tres)
-{
-    $n = 0;
-    foreach ($tres as $res) {
-        $n += pg_num_rows($res);
-    }
-    reset($tres);
-    return $n;
-}
 
-/**
- * return the identifier of a family from internal name
- *
- * @deprecated use SEManager::getFamilyIdFromName
- *
- * @param string $dbaccess database specification
- * @param string $name     internal family name
- *
- * @return int 0 if not found
- */
-function getFamIdFromName($dbaccess, $name)
-{
-    return SEManager::getFamilyIdFromName($name);
-}
+
+
 
 /**
  * return the identifier of a document from a search with title
@@ -657,57 +579,10 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
     return $id;
 }
 
-/**
- * return the latest identifier of a document from its logical name
- *
- * @deprecated use SEManager::getIdFromName
- *
- * @param string $dbaccess database specification
- * @param string $name     logical name
- *
- * @return string|false return numeric id, false if not found, if revision (name must be unique) return the latest id
- */
-function getIdFromName($dbaccess, $name)
-{
-    try {
-        $id = (string)SEManager::getIdFromName($name);
-        if ($id === "0") {
-            $id = false;
-        }
-    } catch (Exception $e) {
-        $id = false;
-    }
-    return $id;
-}
 
-/**
- * return the initial identifier of a document from its logical name
- *
- * @deprecated use SEManager::getInitIdFromName
- *
- * @param string $name
- *
- * @return int
- */
-function getInitidFromName($name)
-{
-    return SEManager::getInitIdFromName($name);
-}
 
-/**
- * return the logical name of a document from its initial identifier
- *
- * @deprecated use SEManager::getNameFromId
- *
- * @param string $dbaccess database specification
- * @param string $id       initial identifier
- *
- * @return string empty if not found
- */
-function getNameFromId($dbaccess, $id)
-{
-    return SEManager::getNameFromId($id);
-}
+
+
 
 /**
  * return freedom user document in concordance with what user id
