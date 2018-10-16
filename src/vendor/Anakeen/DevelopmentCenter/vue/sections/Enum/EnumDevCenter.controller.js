@@ -56,6 +56,9 @@ export default {
         valuePrimitive: true,
         dataSource: ["true", "false"]
       });
+    },
+    autoFilterCol(e) {
+      e.element.addClass("k-textbox filter-input");
     }
   }
 };
