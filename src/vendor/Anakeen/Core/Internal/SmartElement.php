@@ -116,7 +116,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "sortable" => true,
                 "filterable" => true,
                 "label" => "prop_title"
-            ), # N_("prop_title"),
+            ), # _("prop_title"),
             "revision" => array(
                 "type" => "integer",
                 "displayable" => true,
@@ -207,7 +207,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "sortable" => false,
                 "filterable" => false,
                 "label" => "prop_comment"
-            ), # N_("prop_comment"),
+            ), # N_("prop_mdate"),
             "classname" => array(
                 "type" => "text",
                 "displayable" => false,
