@@ -15,5 +15,12 @@
             <sde:description>Get structure</sde:description>
             <sde:requiredAccess/>
         </sde:route>
+        <sde:route name="GetStructureConfig">
+            <sde:callable>\Anakeen\Routes\Devel\Config\Structure</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/config/{type:structures|uis|accesses}/{structure}.xml</sde:pattern>
+            <sde:description>Get structure configuration</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
     </sde:routes>
 </sde:config>
