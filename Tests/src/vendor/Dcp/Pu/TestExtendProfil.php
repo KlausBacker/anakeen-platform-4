@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -33,7 +34,6 @@ class TestExtendProfil extends TestCaseDcpCommonFamily
         if ($expectedControl) {
             $this->assertEmpty($err, "acl $aclName not granted for $login : $err");
         } else {
-            
             $this->assertNotEmpty($err, "acl $aclName granted for $login. It must not");
         }
         
@@ -56,7 +56,6 @@ class TestExtendProfil extends TestCaseDcpCommonFamily
         if ($expectedControl) {
             $this->assertEmpty($err, "acl $aclName not granted for $login : $err");
         } else {
-            
             $this->assertNotEmpty($err, "acl $aclName granted for $login. It must not");
         }
         
@@ -201,4 +200,3 @@ class TestExtendProfil extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

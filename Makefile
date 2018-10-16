@@ -44,8 +44,8 @@ po:
 	${ANAKEEN_CLI_BIN} extractPo -s .
 
 beautify:
-	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
 	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
+	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}Tests/src
 
 stub:
 	${ANAKEEN_CLI_BIN} generateStubs

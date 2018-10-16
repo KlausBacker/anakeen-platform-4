@@ -7,7 +7,6 @@
 namespace Anakeen\Pu\SmartStructures;
 
 class WTestBadImp13 extends \Anakeen\Core\Internal\SmartElement
-
 {
     var $attrPrefix = "WTST";
     const alive = "alive"; # N_("alive")
@@ -86,4 +85,3 @@ class WTestBadImp13 extends \Anakeen\Core\Internal\SmartElement
     {
     }
 }
-?>

@@ -7,7 +7,6 @@
 namespace Anakeen\Pu\SmartStructures;
 
 class WTestImp1 extends \SmartStructure\Wdoc
-
 {
     var $attrPrefix = "WAN";
     
@@ -83,4 +82,3 @@ class WTestImp1 extends \SmartStructure\Wdoc
     {
     }
 }
-?>

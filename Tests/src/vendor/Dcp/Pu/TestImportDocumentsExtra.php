@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -24,8 +25,7 @@ class TestImportDocumentsExtra extends TestCaseDcpCommonFamily
         $err = "";
         try {
             $this->importDocument($file);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, "import error detected $err");
@@ -33,8 +33,8 @@ class TestImportDocumentsExtra extends TestCaseDcpCommonFamily
             $docName = $data[0];
             $stateExpected = $data[1];
             $doc = new_Doc(self::$dbaccess, $docName);
-            $this->assertTrue($doc->isAlive() , sprintf("cannot find doc [%s]", $docName));
-            $stateFound = json_decode($doc->getRawValue("test_extra") , true);
+            $this->assertTrue($doc->isAlive(), sprintf("cannot find doc [%s]", $docName));
+            $stateFound = json_decode($doc->getRawValue("test_extra"), true);
             $this->assertEquals($stateExpected, $stateFound, sprintf("State found : [%s] is not the same as state expected: [%s]", $stateFound["state"], $stateExpected["state"]));
         }
     }
