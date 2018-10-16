@@ -3,7 +3,6 @@
         <kendo-datasource ref="remoteDataSource"
             :transport-read="readData"
             :schema-data="parseData"
-            :server-filtering="true"
             :schema-model="listModel"
         ></kendo-datasource>
         <div class="smart-structure-tabs">

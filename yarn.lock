@@ -27,12 +27,12 @@
     xml2js "^0.4.19"
     yargs "^11.1.0"
 
-"@anakeen/ank-components@^1.0.0-1539088453":
+"@anakeen/ank-components@latest":
   version "1.0.0-1539088453"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1539088453.tgz#074ac2b959766d97d95dd122ca17be7eaff75fe5"
   integrity sha512-13EWEmqZSkpbVSD1YyF5E+OwsNSJXXvk2rKUeIIcm6hHJVCspnCTRYjcPJT1ivQsLMhun5O5xIkittiakz2gpA==
 
-"@anakeen/webpack-conf@^1.0.0-1539166243":
+"@anakeen/webpack-conf@latest":
   version "1.0.0-1539166243"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1539166243.tgz#38f22edc399ed09fc520070ed4168afb32ac3199"
   integrity sha512-/js8RNUH2zoEoqQVZ9lOX0QoTWcOuvQ/SXM0TyRYDxjWotJ6WCjfHVgsvfMHFt0etzft20pc4jfJlJb6BqJw8A==
@@ -111,16 +111,6 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
 
-<<<<<<< Updated upstream
-"@progress/kendo-listview-vue-wrapper@^2018.3.911":
-  version "2018.3.911"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-listview-vue-wrapper/-/kendo-listview-vue-wrapper-2018.3.911.tgz#246ccb308d4a8f02c66697689e82bf5f7b62378f"
-  integrity sha512-+jgUNqqgbFA4fN/+QmyBSygbfIB0b1DhAmPnqrrpZpedMIaJb7bmbiyUAAmD7YBfHm4tQdGlcy6kJrHFk4oHYw==
-  dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
-
-=======
->>>>>>> Stashed changes
 "@progress/kendo-ui@^2018.3.1003":
   version "2018.3.1003"
   resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.3.1003.tgz#2285afa36280589e1a510b752599abcdf21dd0a5"
@@ -9589,6 +9579,11 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
   integrity sha512-AA86yKZ5uOKz87/q1UpngEXhbRkaYg1b7HMMVRobNV1IVKqZe8oLIzo6iMocVwZXnYitlGwf2k4ZRLOZlS8oPQ==
+
+vue-js-modal@^1.3.26:
+  version "1.3.26"
+  resolved "https://registry.yarnpkg.com/vue-js-modal/-/vue-js-modal-1.3.26.tgz#00c8b9d4765e034c6b6535a2d6373117519f343f"
+  integrity sha512-lHg/j4jxaCvc29d+yskbpeH1Pbbhrzv6B40Jp57WeJtYE7313R/lXYEkQN12H2kNNeZTOjz98aYrk1peBJQu8Q==
 
 vue-loader@^15.3.0:
   version "15.4.2"

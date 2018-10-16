@@ -2,6 +2,7 @@ import Vue from "vue";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 
 Vue.use(DataSourceInstaller);
+
 export default {
   props: {
     filter: {
@@ -68,26 +69,7 @@ export default {
   watch: {
     listFilter(newValue, oldValue) {
       if (newValue !== oldValue) {
-        if (this.dataSource) {
-          if (this.$router.currentRoute.query.filter !== newValue) {
-            this.$router.push({ query: { filter: newValue } });
-          }
-          this.dataSource.filter({
-            logic: "or",
-            filters: [
-              {
-                field: "name",
-                operator: "contains",
-                value: newValue
-              },
-              {
-                field: "title",
-                operator: "contains",
-                value: newValue
-              }
-            ]
-          });
-        }
+        this.filterList(newValue);
       }
     }
   },
@@ -119,15 +101,32 @@ export default {
   },
   mounted() {
     this.dataSource = this.$refs.remoteDataSource.kendoWidget();
+    if (this.$router.currentRoute.query.filter) {
+      this.listFilter = this.$router.currentRoute.query.filter;
+    }
     this.dataSource.read();
   },
   methods: {
+    filterList(filterValue) {
+      if (this.dataSource) {
+        if (this.$router.currentRoute.query.filter !== filterValue) {
+          this.$router.push({ query: { filter: filterValue } });
+        }
+        this.dataSource.filter({
+          logic: "or",
+          filters: [
+            {
+              field: "name",
+              operator: "contains",
+              value: filterValue
+            }
+          ]
+        });
+      }
+    },
     readData(options) {
       this.$http
-        .get(this.resolveListUrl, {
-          params: options.data,
-          paramsSerializer: kendo.jQuery.param
-        })
+        .get(this.resolveListUrl)
         .then(response => {
           options.success(response);
         })
