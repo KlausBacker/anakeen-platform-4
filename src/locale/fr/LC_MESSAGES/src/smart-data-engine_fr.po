@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 14:59+0200\n"
+"POT-Creation-Date: 2018-10-16 11:04+0200\n"
 "PO-Revision-Date: 2018-01-12 15:56+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -14,6 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#, fuzzy, php-format
+msgctxt "search"
+msgid "\"%s\" is not a structure"
+msgstr "%s n'est pas un attribut de type tableau"
 
 #, php-format
 msgid "%s (as substitute)"
@@ -142,6 +147,14 @@ msgctxt "core"
 msgid "API file \"%s\" not found"
 msgstr "fichier API %s non trouvé\n"
 
+#, fuzzy, php-format
+msgid "Access \"%s\" not granted"
+msgstr "Privilège"
+
+#, php-format
+msgid "Access \"%s\" unknow"
+msgstr ""
+
 #, fuzzy
 msgctxt "ank"
 msgid "Access not granted"
@@ -156,6 +169,10 @@ msgstr "L'utilisateur courant ne peut désactiver le compte"
 msgctxt "smart iuser"
 msgid "Access not granted to deactivate account"
 msgstr "L'utilisateur courant ne peut désactiver le compte"
+
+#, php-format
+msgid "Account Type \"%s\""
+msgstr "Type du compte \"%s\""
 
 #, fuzzy
 msgctxt "authent"
@@ -1636,22 +1653,22 @@ msgstr ""
 msgid ""
 "family %s does not implement IMailRecipent - missing getMailAttribute method"
 msgstr ""
-"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"La structure %s n'implémente pas IMailRecipient - il manque la méthode "
 "getMailAttribute"
 
 #, php-format
 msgid ""
 "family %s does not implement IMailRecipient - missing getMailTitle method"
 msgstr ""
-"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"La structure %s n'implémente pas IMailRecipient - il manque la méthode "
 "getMailTitle"
 
 #, php-format
 msgid "family %s not found"
-msgstr "famille %s non trouvée"
+msgstr "structure %s non trouvée"
 
 msgid "family must be defined"
-msgstr "la famille doit être précisée"
+msgstr "la structure doit être précisée"
 
 #, php-format
 msgid "file %d"
@@ -1779,7 +1796,7 @@ msgstr "méthode %s non trouvée"
 
 #, php-format
 msgid "modify %s family"
-msgstr "modification de la famille %s"
+msgstr "modification de la structure %s"
 
 #, php-format
 msgid "modify file %s"
@@ -1885,12 +1902,12 @@ msgstr "pas de cycle de vie pour ce document"
 
 #, php-format
 msgid "none families are described to be used as recipient"
-msgstr "Aucune famille n'est déclarée utilisable comme destinataire"
+msgstr "Aucune structure n'est déclarée utilisable comme destinataire"
 
 #, fuzzy
 msgctxt "smart mail"
 msgid "none smart structure are described to be used as recipient"
-msgstr "Aucune famille n'est déclarée utilisable comme destinataire"
+msgstr "Aucune structure n'est déclarée utilisable comme destinataire"
 
 #, php-format
 msgid "not a freestate document %s"
@@ -1946,8 +1963,84 @@ msgstr "profil inconnu %s"
 msgid "profil id unkonow %s"
 msgstr "identificateur de profil inconnu '%s'"
 
+msgid "prop_allocated"
+msgstr "utilisateur alloué"
+
+msgid "prop_atags"
+msgstr "tag applicatfs"
+
+msgid "prop_cdate"
+msgstr "date de création de la révision"
+
+msgid "prop_classname"
+msgstr "nom de la classe"
+
+msgid "prop_confidential"
+msgstr "confidentialité"
+
+msgid "prop_cvid"
+msgstr "identifiant du contrôle de vue"
+
+msgid "prop_doctype"
+msgstr "type de document"
+
+msgid "prop_dprofid"
+msgstr "identifiant du template de profil"
+
+msgid "prop_fromid"
+msgstr "structure"
+
 msgid "prop_icon"
 msgstr "icône"
+
+msgid "prop_id"
+msgstr "identificateur"
+
+msgid "prop_initid"
+msgstr "identificateur initial"
+
+msgid "prop_ldapdn"
+msgstr "chemin ldap"
+
+msgid "prop_lmodify"
+msgstr "tag indiquant la modification"
+
+msgid "prop_lockdomainid"
+msgstr "Identifiant du domaine du verrou"
+
+#, fuzzy
+msgid "prop_mdate"
+msgstr "date de création de la révision"
+
+msgid "prop_name"
+msgstr "référence logique"
+
+msgid "prop_owner"
+msgstr "propriétaire"
+
+msgid "prop_postitid"
+msgstr "identifiants des notes"
+
+msgid "prop_prelid"
+msgstr "dossier primaire"
+
+msgid "prop_profid"
+msgstr "profil"
+
+msgid "prop_revision"
+msgstr "révision"
+
+msgid "prop_state"
+msgstr "état"
+
+msgid "prop_title"
+msgstr "titre"
+
+msgid "prop_usefor"
+msgstr "tag utilisé pour"
+
+msgid "prop_wid"
+msgstr "cycle de vie"
 
 #, php-format
 msgid "regeneration of file template %s"
@@ -2074,7 +2167,7 @@ msgctxt "smart mail"
 msgid ""
 "smart structure %s does not implement IMailRecipent - missing getMail method"
 msgstr ""
-"La famille %s n'implémente pas IMailRecipient - il manque la méthode getMail"
+"La structure %s n'implémente pas IMailRecipient - il manque la méthode getMail"
 
 #, fuzzy, php-format
 msgctxt "smart mail"
@@ -2082,7 +2175,7 @@ msgid ""
 "smart structure %s does not implement IMailRecipent - missing "
 "getMailAttribute method"
 msgstr ""
-"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"La structure %s n'implémente pas IMailRecipient - il manque la méthode "
 "getMailAttribute"
 
 #, fuzzy, php-format
@@ -2091,7 +2184,7 @@ msgid ""
 "smart structure %s does not implement IMailRecipient - missing getMailTitle "
 "method"
 msgstr ""
-"La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+"La structure %s n'implémente pas IMailRecipient - il manque la méthode "
 "getMailTitle"
 
 msgid "state"
@@ -2120,7 +2213,7 @@ msgstr "la date doit être de la forme : AAAA-MM-JJ"
 
 #, php-format
 msgid "the document of %s family cannot be revised"
-msgstr "lee documents de la famille %s ne peuvent être révisés"
+msgstr "lee documents de la structure %s ne peuvent être révisés"
 
 #, php-format
 msgid "the external pluggin file %s cannot be read"
@@ -2173,7 +2266,7 @@ msgstr "Détachement minuteur %s [%d]"
 #, php-format
 msgid "unattachTimer : the timer parameter is not a document of TIMER family"
 msgstr ""
-"unattachTimer : le paramètre minuteur n'est pas un document de la famille "
+"unattachTimer : le paramètre minuteur n'est pas un document de la structure "
 "TIMER"
 
 msgid "unit:GB"
@@ -2244,7 +2337,7 @@ msgstr "mise à jour attribut %s"
 
 #, php-format
 msgid "update %s family %s"
-msgstr "mise à jour %s  famille %s"
+msgstr "mise à jour %s  structure %s"
 
 #, php-format
 msgid "update %s search"
@@ -2350,7 +2443,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Choisir un document profil existant"
 
 #~ msgid " Choose an existing family profil"
-#~ msgstr "Choisir un profil de famille existant"
+#~ msgstr "Choisir un profil de structure existant"
 
 #~ msgid " Modify acls for transitions"
 #~ msgstr "Modifier les droits pour les transitions"
@@ -2359,13 +2452,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Aucun privilège pour modifier les droits d'accès au document"
 
 #~ msgid " No privilege to change acl for familly access"
-#~ msgstr "Pas de privilège pour modifier les droits d'accès à la famille"
+#~ msgstr "Pas de privilège pour modifier les droits d'accès à la structure"
 
 #~ msgid " Please, see your manager"
 #~ msgstr "Contactez votre administrateur"
 
 #~ msgid " any familly"
-#~ msgstr "toute famille"
+#~ msgstr "toute structure"
 
 #~ msgid " cancel"
 #~ msgstr " annuler"
@@ -2383,7 +2476,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr " commentaire de révision"
 
 #~ msgid " familly"
-#~ msgstr " famille"
+#~ msgstr " structure"
 
 #~ msgid " folder containt"
 #~ msgstr " contenu du dossier"
@@ -2428,7 +2521,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "afficher les fichiers attachés"
 
 #~ msgid "\"%s\" family structure has been updated"
-#~ msgstr "La structure de la famille \"%s\" a été mise à jour"
+#~ msgstr "La structure de la structure \"%s\" a été mise à jour"
 
 #~ msgid "%d answer"
 #~ msgstr "%d réponse"
@@ -2593,7 +2686,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Accès à la gestion par des lots"
 
 #~ msgid "Access Families Management"
-#~ msgstr "Accès à la gestion des familles"
+#~ msgstr "Accès à la gestion des structures"
 
 #~ msgid "Access Generic Master Management"
 #~ msgstr "Accès à l'administration générique"
@@ -2636,9 +2729,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "Accord"
 #~ msgstr "Accord"
-
-#~ msgid "Account Type \"%s\""
-#~ msgstr "Type du compte \"%s\""
 
 #~ msgid "Acl [%s] not available for App %s"
 #~ msgstr "ACL %s non valable pour l'application %s"
@@ -2821,21 +2911,21 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Attribut"
 
 #~ msgid "Attribute '%s' could not be found in family '%s'."
-#~ msgstr "L'attribut '%s' n'a pas été trouvé dans la famille '%s'"
+#~ msgstr "L'attribut '%s' n'a pas été trouvé dans la structure '%s'"
 
 #~ msgid "Attribute '%s' should reference a docid attribute in family '%s'."
 #~ msgstr ""
-#~ "L'attribut '%s' doit référencer un attribut docid de la famille '%s'."
+#~ "L'attribut '%s' doit référencer un attribut docid de la structure '%s'."
 
 #~ msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
 #~ msgstr ""
-#~ "Erreur d'attribut: la famille '%s' n'est pas valide ou en vie pour le "
+#~ "Erreur d'attribut: la structure '%s' n'est pas valide ou en vie pour le "
 #~ "docid '%s'."
 
 #~ msgid ""
 #~ "Attribute Error: impossible to found the family for docid attribute '%s'"
 #~ msgstr ""
-#~ "Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
+#~ "Erreur d'attribut: impossible de trouver la structure pour l'attribut docid "
 #~ "'%s'"
 
 #~ msgid "Attribute [%s] is not found"
@@ -2844,7 +2934,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid ""
 #~ "Attribute format should not be empty on attribute '%s' in family '%s'."
 #~ msgstr ""
-#~ "La propriété format de l'attribut '%s' de la famille '%s' ne peut pas "
+#~ "La propriété format de l'attribut '%s' de la structure '%s' ne peut pas "
 #~ "être vide."
 
 #~ msgid "Attribute identifier"
@@ -2996,7 +3086,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "Cannot update enum. Attribute '%s'[family %s] not found"
 #~ msgstr ""
-#~ "Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [famille %s] est "
+#~ "Ne peut pas mettre à jour l'énuméré. L'attribut '%s' [structure %s] est "
 #~ "inconnu."
 
 #~ msgid "Cannot write to log %s"
@@ -3053,13 +3143,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Changer la valeur par défaut"
 
 #~ msgid "Change default value for family"
-#~ msgstr "Changer les valeurs par défaut pour la famille"
+#~ msgstr "Changer les valeurs par défaut pour la structure"
 
 #~ msgid "Change enum"
 #~ msgstr "Changer d'énuméré"
 
 #~ msgid "Change family structure"
-#~ msgstr "Modifier la structure de la famille"
+#~ msgstr "Modifier la structure de la structure"
 
 #~ msgid "Change icon"
 #~ msgstr "Changer d'icône"
@@ -3089,7 +3179,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Changer le profil pour les nouveaux documents"
 
 #~ msgid "Change profile of family document"
-#~ msgstr "Changer le profil du document famille"
+#~ msgstr "Changer le profil du document structure"
 
 #~ msgid "Change root folder"
 #~ msgstr "Changer le dossier racine"
@@ -3138,7 +3228,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "Choose a family to import only set of attributes"
 #~ msgstr ""
-#~ "Choisissez une famille pour importer un sous-ensemble d'attributs choisis"
+#~ "Choisissez une structure pour importer un sous-ensemble d'attributs choisis"
 
 #~ msgid "Choose a father category"
 #~ msgstr "Choisissez une catégorie père"
@@ -3147,7 +3237,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Choisir un attribut"
 
 #~ msgid "Choose another family document"
-#~ msgstr "Choisissez une autre famille de document"
+#~ msgstr "Choisissez une autre structure de document"
 
 #~ msgid "Choose column export"
 #~ msgstr "Choix des colonnes à exporter"
@@ -3162,7 +3252,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Choix des colonnes à exporter"
 
 #~ msgid "Choose family"
-#~ msgstr "Choisissez une famille"
+#~ msgstr "Choisissez une structure"
 
 #~ msgid "Choose file"
 #~ msgstr "Choisissez un fichier"
@@ -3174,7 +3264,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Choisissez dans la liste d'icônes"
 
 #~ msgid "Choose mask family"
-#~ msgstr "Choisissez la famille du masque"
+#~ msgstr "Choisissez la structure du masque"
 
 #~ msgid "Choose new categories"
 #~ msgstr "Choisissez de nouvelles catégories"
@@ -3187,7 +3277,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Choisir les colonnes du rapport"
 
 #~ msgid "Choose visibles families"
-#~ msgstr "Choix des familles visibles"
+#~ msgstr "Choix des structures visibles"
 
 #~ msgid "Choose workflow"
 #~ msgstr "Choisir un cycle"
@@ -3326,7 +3416,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Page d'accueil"
 
 #~ msgid "Could not find attribute '%s' in family '%s'."
-#~ msgstr "Impossible de trouver l'attribut '%s' dans la famille '%s'"
+#~ msgstr "Impossible de trouver l'attribut '%s' dans la structure '%s'"
 
 #~ msgid "Could not find pg_dump command in PATH."
 #~ msgstr "Impossible de trouver la commande pg_dump dans le PATH"
@@ -3335,7 +3425,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Impossible de trouver la commande psql dans le PATH"
 
 #~ msgid "Could not get family id for '%s'."
-#~ msgstr "Impossible de trouver l'id de la famille '%s'."
+#~ msgstr "Impossible de trouver l'id de la structure '%s'."
 
 #~ msgid "Create"
 #~ msgstr "Créer"
@@ -3365,7 +3455,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Créer un nouveau document processus"
 
 #~ msgid "Create new family"
-#~ msgstr "Créer une nouvelle famille"
+#~ msgstr "Créer une nouvelle structure"
 
 #~ msgid "Create subfolder"
 #~ msgstr "Créer un dossier"
@@ -3377,10 +3467,10 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Création %s"
 
 #~ msgid "Creation aborded : no family specified"
-#~ msgstr "Création abandonnée : pas de famille spécifiée"
+#~ msgstr "Création abandonnée : pas de structure spécifiée"
 
 #~ msgid "Creation aborded : unknow family %s"
-#~ msgstr "Création abandonnée : famille inconnue : %s"
+#~ msgstr "Création abandonnée : structure inconnue : %s"
 
 #~ msgid "Current_state"
 #~ msgstr "Courant"
@@ -3885,7 +3975,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Rechercher"
 
 #~ msgid "FGSEARCH:any familly"
-#~ msgstr "Toute famille"
+#~ msgstr "Toute structure"
 
 #~ msgid "FGSEARCH:close search online help"
 #~ msgstr "Fermer l'aide à la recherche"
@@ -3899,7 +3989,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ "fichiers.\n"
 #~ "    Pour l'utiliser, il suffit de saisir les termes recherchés dans la "
 #~ "zone de saisie,\n"
-#~ "    de choisir (si nécessaire) une famille,\n"
+#~ "    de choisir (si nécessaire) une structure,\n"
 #~ "    et de lancer la recherche.<br>\n"
 #~ "    La recherche est lancée en tapant [Entrée] ou en cliquant sur le\n"
 #~ "    bouton [Rechercher].\n"
@@ -4048,12 +4138,12 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "FGSEARCH:help for family selection"
 #~ msgstr ""
-#~ "<h2>Sélection de famille</h2>\n"
+#~ "<h2>Sélection de structure</h2>\n"
 #~ "\n"
 #~ "<p>\n"
-#~ "    Si la recherche porte sur des documents d'une famille précise, il est "
+#~ "    Si la recherche porte sur des documents d'une structure précise, il est "
 #~ "possible de la restreindre au moyen de cette liste déroulante.\n"
-#~ "    Les résultats seront alors limités aux documents de la famille "
+#~ "    Les résultats seront alors limités aux documents de la structure "
 #~ "sélectionnée. \n"
 #~ "</p>"
 
@@ -4230,25 +4320,25 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "recherche simple / recherche avancée"
 
 #~ msgid "Familly Document"
-#~ msgstr "Famille de document"
+#~ msgstr "Structure de document"
 
 #~ msgid "Family"
-#~ msgstr "Famille"
+#~ msgstr "Structure"
 
 #~ msgid "Family %s not exist"
-#~ msgstr "La famille (%s) n'existe pas"
+#~ msgstr "La structure (%s) n'existe pas"
 
 #~ msgid "Family '%s' is not valid or alive."
-#~ msgstr "La famille '%s' n'est pas valide ou en vie."
+#~ msgstr "La structure '%s' n'est pas valide ou en vie."
 
 #~ msgid "Family (#%s) not exists"
-#~ msgstr "La famille (n°%s) n'existe pas"
+#~ msgstr "La structure (n°%s) n'existe pas"
 
 #~ msgid "Family Creation"
-#~ msgstr "Création de famille"
+#~ msgstr "Création de structure"
 
 #~ msgid "Family preferences"
-#~ msgstr "Préférences des familles"
+#~ msgstr "Préférences des structures"
 
 #~ msgid "February"
 #~ msgstr "Février"
@@ -4321,7 +4411,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Remplissage de la table enumérée '%s'"
 
 #~ msgid "Filling family table '%s' and relatives"
-#~ msgstr "Remplissage de la table famille '%s' et afférentes"
+#~ msgstr "Remplissage de la table structure '%s' et afférentes"
 
 #~ msgid "Filter import message"
 #~ msgstr "Filtrer parmi les messages"
@@ -4627,7 +4717,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Inséré dans un domaine"
 
 #~ msgid "Inspect another family"
-#~ msgstr "Inspecter une autre famille"
+#~ msgstr "Inspecter une autre structure"
 
 #~ msgid "Internet explorer site"
 #~ msgstr "Site de Microsoft"
@@ -4829,7 +4919,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "HTML malformé dans l'attribut '%s' du document '%s'"
 
 #~ msgid "Manage families"
-#~ msgstr "gestion des familles"
+#~ msgstr "gestion des structures"
 
 #~ msgid "March"
 #~ msgstr "Mars"
@@ -4912,7 +5002,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Modifier les droits des documents"
 
 #~ msgid "Modify acls for familly"
-#~ msgstr "Modifier les droits de la famille"
+#~ msgstr "Modifier les droits de la structure"
 
 #~ msgid "Modify default Values"
 #~ msgstr "Modifier les valeurs par défaut"
@@ -4999,10 +5089,10 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Page suivante"
 
 #~ msgid "No acl for family"
-#~ msgstr "Pas de droits définis pour la famille"
+#~ msgstr "Pas de droits définis pour la structure"
 
 #~ msgid "No acl for new documents of this family"
-#~ msgstr "Pas de droits définis pour les nouveaux documents de cette famille"
+#~ msgstr "Pas de droits définis pour les nouveaux documents de cette structure"
 
 #~ msgid "No columns has been defined"
 #~ msgstr "Aucune colonne n'est sélectionnée pour la présentation du rapport."
@@ -5194,7 +5284,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Le paramètre [%s] est introuvable"
 
 #~ msgid "Parameter [%s] not found in family [%s]"
-#~ msgstr "Le paramétre [%s] de la famille [%s] n'a pas été trouvé"
+#~ msgstr "Le paramétre [%s] de la structure [%s] n'a pas été trouvé"
 
 #~ msgid "Parameter [%s] not found. Error message: [%s]"
 #~ msgstr "Paramétre [%s] introuvable.Une erreur a été reçue: [%s]"
@@ -5295,7 +5385,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Propriétés:"
 
 #~ msgid "Property '%s' is not valid (family '%s')."
-#~ msgstr "La propriété '%s' n'est pas valide (famille '%s')."
+#~ msgstr "La propriété '%s' n'est pas valide (structure '%s')."
 
 #~ msgid "PubliPreview"
 #~ msgstr "prévisualisation"
@@ -5347,7 +5437,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Enregistrer la nouvelle valeur sur le serveur"
 
 #~ msgid "Record system families"
-#~ msgstr "Enregistrement des familles systèmes"
+#~ msgstr "Enregistrement des structures systèmes"
 
 #~ msgid "Redo export"
 #~ msgstr "Relancer l'exportation"
@@ -5380,13 +5470,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Recharger la page"
 
 #~ msgid "Remove duplicate attribute '%s' in family '%s'"
-#~ msgstr "Suppression de l'atttribut dupliqué '%s' dans la famille '%s'"
+#~ msgstr "Suppression de l'atttribut dupliqué '%s' dans la structure '%s'"
 
 #~ msgid "Remove duplicate property '%s' in family '%s'"
-#~ msgstr "Suppression de la propriété dupliquée '%s' dans la famille '%s'"
+#~ msgstr "Suppression de la propriété dupliquée '%s' dans la structure '%s'"
 
 #~ msgid "Remove duplicate reference '%s' in family '%s'"
-#~ msgstr "Suppression de la référence dupliquée '%s' dans la famille '%s'"
+#~ msgstr "Suppression de la référence dupliquée '%s' dans la structure '%s'"
 
 #~ msgid "Rename"
 #~ msgstr "Renommer"
@@ -5577,7 +5667,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ "pour une sauvegarde"
 
 #~ msgid "Select a family"
-#~ msgstr "Sélectionner une famille"
+#~ msgstr "Sélectionner une structure"
 
 #~ msgid "Select all columns"
 #~ msgstr "Sélectionner tout"
@@ -5689,7 +5779,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Affichage de %d sur %d documents"
 
 #~ msgid "Skip already added property '%s' in family '%s'"
-#~ msgstr "Evitement de la propriété '%s' déjà ajoutée dans la famille '%s'"
+#~ msgstr "Evitement de la propriété '%s' déjà ajoutée dans la structure '%s'"
 
 #~ msgid ""
 #~ "Some change in the enum '%s > %e' are not saved do you really wish to "
@@ -6043,7 +6133,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Utiliser les références aux comptes"
 
 #~ msgid "Use another import interface for a specific family"
-#~ msgstr "Utiliser une autre interface d'importation pour une famille précise"
+#~ msgstr "Utiliser une autre interface d'importation pour une structure précise"
 
 #~ msgid "Use document reference"
 #~ msgstr "Utiliser les références aux documents"
@@ -6126,7 +6216,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Voir le document de référence"
 
 #~ msgid "View family"
-#~ msgstr "Voir la famille"
+#~ msgstr "Voir la structure"
 
 #~ msgid "View folder content"
 #~ msgstr "Voir le contenu du dossier"
@@ -6144,7 +6234,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Voir l'historique"
 
 #~ msgid "View inherit family"
-#~ msgstr "Voir les familles dérivées"
+#~ msgstr "Voir les structures dérivées"
 
 #~ msgid "View latest"
 #~ msgstr "révision courante"
@@ -6470,10 +6560,10 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "un des mots"
 
 #~ msgid "any families"
-#~ msgstr "toutes familles"
+#~ msgstr "toutes structures"
 
 #~ msgid "any familly"
-#~ msgstr "toute famille"
+#~ msgstr "toute structure"
 
 #~ msgid "any value include"
 #~ msgstr "aucune valeur n'est incluse"
@@ -6525,10 +6615,10 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "attribut %s n'est pas un tableau"
 
 #~ msgid "attribute %s unknow in family %s [%d]"
-#~ msgstr "attribut %s inconnu pour la famille %s [%d]"
+#~ msgstr "attribut %s inconnu pour la structure %s [%d]"
 
 #~ msgid "attribute %s unknow in family \\#%s\""
-#~ msgstr "attribut %s inconnu dans la famille \"%s\" "
+#~ msgstr "attribut %s inconnu dans la structure \"%s\" "
 
 #~ msgid "attribute id"
 #~ msgstr "Identifiant de l'attribut"
@@ -6640,13 +6730,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "cannot compare two document which comes from two different family"
 #~ msgstr ""
-#~ "la comparaison de 2 documents de famille différente ne peut être effectuée"
+#~ "la comparaison de 2 documents de structure différente ne peut être effectuée"
 
 #~ msgid "cannot copy %s"
 #~ msgstr "écriture impossible : %s"
 
 #~ msgid "cannot create document for family [%s]"
-#~ msgstr "création de document impossible pour la famille [%s]"
+#~ msgstr "création de document impossible pour la structure [%s]"
 
 #~ msgid "cannot extract archive file %s"
 #~ msgstr "L'archive %s n'a pas pu être extraite"
@@ -6743,7 +6833,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "changement d'état"
 
 #~ msgid "change title family"
-#~ msgstr "changement du titre de famille"
+#~ msgstr "changement du titre de structure"
 
 #~ msgid "change user password"
 #~ msgstr "Changer le mot de passe de l'utilisateur"
@@ -6770,7 +6860,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "choisir une valeur pour %s"
 
 #~ msgid "choose preferred families"
-#~ msgstr "Choix des familles préférées"
+#~ msgstr "Choix des structures préférées"
 
 #~ msgid "choose workflow"
 #~ msgstr "choisir un cycle"
@@ -6934,13 +7024,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "créer un nouvel id de session"
 
 #~ msgid "create doc"
-#~ msgstr "Créer des documents de la famille"
+#~ msgstr "Créer des documents de la structure"
 
 #~ msgid "create doc manually"
 #~ msgstr "Créer des documents manuellement"
 
 #~ msgid "create family"
-#~ msgstr "création de famille"
+#~ msgstr "création de structure"
 
 #~ msgid "create forum"
 #~ msgstr "créer le forum"
@@ -6961,7 +7051,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "date de création"
 
 #~ msgid "creation of document family"
-#~ msgstr "Création de famille de documents"
+#~ msgstr "Création de structure de documents"
 
 #~ msgid "creation processes"
 #~ msgstr "création de processus"
@@ -7001,10 +7091,10 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "courant (<em>%s</em>)"
 
 #~ msgid "data:document %s is not a family"
-#~ msgstr "Le document %s n'est pas une famille"
+#~ msgstr "Le document %s n'est pas une structure"
 
 #~ msgid "data:family %s not alive"
-#~ msgstr "La famille %s n'est pas vivante"
+#~ msgstr "La structure %s n'est pas vivante"
 
 #~ msgid "database access for webdav"
 #~ msgstr "coordonnées d'accès à la base de données webdav"
@@ -7026,19 +7116,19 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "délai d'expiration du mot de passe par défaut (en jours)"
 
 #~ msgid "default document family"
-#~ msgstr "famille de document par défaut"
+#~ msgstr "structure de document par défaut"
 
 #~ msgid "default file family"
-#~ msgstr "famille fichier par défaut"
+#~ msgstr "structure fichier par défaut"
 
 #~ msgid "default folder family"
-#~ msgstr "famille répertoire par défaut"
+#~ msgstr "structure répertoire par défaut"
 
 #~ msgid "default import values"
 #~ msgstr "Valeurs par défaut pour l'import"
 
 #~ msgid "default sort by family"
-#~ msgstr "tri par défaut par famille"
+#~ msgstr "tri par défaut par structure"
 
 #~ msgid "default start application"
 #~ msgstr "Application lancée au démarrage"
@@ -7116,7 +7206,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "différence entre 2 documents"
 
 #~ msgid "differents view mode by family"
-#~ msgstr "mode de vues par familles"
+#~ msgstr "mode de vues par structures"
 
 #~ msgid "directory to upload archive"
 #~ msgstr "Répertoire de stockage de l'archive"
@@ -7170,7 +7260,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Le document %s a le nouvel état %s"
 
 #~ msgid "document %s is not a family"
-#~ msgstr "Le document [%s] n'est pas une famille"
+#~ msgstr "Le document [%s] n'est pas une structure"
 
 #~ msgid "document %s not exist"
 #~ msgstr "Le document %s n'existe pas"
@@ -7278,7 +7368,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Éditer les attribut en ligne"
 
 #~ msgid "edit create family"
-#~ msgstr "édition pour la création de famille"
+#~ msgstr "édition pour la création de structure"
 
 #~ msgid "edit default document properties"
 #~ msgstr "éditer les propriétés par défaut du document"
@@ -7296,7 +7386,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "éditer les propriétés du document"
 
 #~ msgid "edit family preference"
-#~ msgstr "éditer les préférences par familles"
+#~ msgstr "éditer les préférences par structures"
 
 #~ msgid "edit forum"
 #~ msgstr " éditer le forum"
@@ -7462,31 +7552,31 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "exportXml : ne peut écrire le fichier %s"
 
 #~ msgid "familly"
-#~ msgstr "famille"
+#~ msgstr "structure"
 
 #~ msgid "family %s not exists"
-#~ msgstr "la famille %s n'existe pas"
+#~ msgstr "la structure %s n'existe pas"
 
 #~ msgid "family id"
-#~ msgstr "Identifiant de la famille"
+#~ msgstr "Identifiant de la structure"
 
 #~ msgid "family logical name"
-#~ msgstr "Nom logique de la famille"
+#~ msgstr "Nom logique de la structure"
 
 #~ msgid "family manual"
-#~ msgstr "Manuel de description de famille"
+#~ msgstr "Manuel de description de structure"
 
 #~ msgid "family search result"
-#~ msgstr "Famille"
+#~ msgstr "Structure"
 
 #~ msgid "family title"
-#~ msgstr "Titre de la famille"
+#~ msgstr "Titre de la structure"
 
 #~ msgid "familyname"
-#~ msgstr "famille"
+#~ msgstr "structure"
 
 #~ msgid "fdl_pubedit error: family %s not found"
-#~ msgstr "fdl_pubedit erreur: Famille %s introuvable"
+#~ msgstr "fdl_pubedit erreur: Structure %s introuvable"
 
 #~ msgid "fgsearch"
 #~ msgstr "Recherche générale"
@@ -7690,7 +7780,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Récupère le libellé de l'énuméré à partir de sa clé"
 
 #~ msgid "get family import schema"
-#~ msgstr "récupération du schéma d'une famille"
+#~ msgstr "récupération du schéma d'une structure"
 
 #~ msgid "get search methods"
 #~ msgstr "récupération des méthodes de recherche"
@@ -7746,7 +7836,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "aide en ligne"
 
 #~ msgid "help manual for family"
-#~ msgstr "manuel de description de famille"
+#~ msgstr "manuel de description de structure"
 
 #~ msgid "hidden"
 #~ msgstr "caché"
@@ -8107,10 +8197,10 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Modifier l'aide"
 
 #~ msgid "modify family parameter"
-#~ msgstr "Modification des paramètres d'une famille"
+#~ msgstr "Modification des paramètres d'une structure"
 
 #~ msgid "modify family preference"
-#~ msgstr "modifier les préférences par familles"
+#~ msgstr "modifier les préférences par structures"
 
 #~ msgid "modify folder"
 #~ msgstr "modifier le contenu du dossier"
@@ -8119,7 +8209,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "modifier les paramètres"
 
 #~ msgid "modify preferred families"
-#~ msgstr "modifier les familles préférées"
+#~ msgstr "modifier les structures préférées"
 
 #~ msgid "modifyacl"
 #~ msgstr "modifier les droits"
@@ -8128,7 +8218,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "modoption: document [%d] n'est pas en vie"
 
 #~ msgid "more families"
-#~ msgstr "toutes les familles"
+#~ msgstr "toutes les structures"
 
 #~ msgid "mot of the day"
 #~ msgstr "Mot Of The Day"
@@ -8164,7 +8254,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "nécessite une réponse"
 
 #~ msgid "need to select family"
-#~ msgstr "Vous devez sélectionner une famille"
+#~ msgstr "Vous devez sélectionner une structure"
 
 #~ msgid "need to select the document with the list"
 #~ msgstr "Vous devez sélectionner le document dans la liste proposée"
@@ -8185,13 +8275,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Nouveau document"
 
 #~ msgid "new document family"
-#~ msgstr "nelle famille de document"
+#~ msgstr "nelle structure de document"
 
 #~ msgid "new duplicate document is named : %s"
 #~ msgstr "la duplication est nommée : %s"
 
 #~ msgid "new familly document"
-#~ msgstr "nouvelle famille de document"
+#~ msgstr "nouvelle structure de document"
 
 #~ msgid "new forum answer"
 #~ msgstr "ajouter une entrée"
@@ -8275,19 +8365,19 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
 
 #~ msgid "no document family"
-#~ msgstr "Aucune famille de document"
+#~ msgstr "Aucune structure de document"
 
 #~ msgid "no document reference"
 #~ msgstr "pas de référence au document"
 
 #~ msgid "no document type"
-#~ msgstr "pas de famille de document"
+#~ msgstr "pas de structure de document"
 
 #~ msgid "no family"
-#~ msgstr "pas de famille"
+#~ msgstr "pas de structure"
 
 #~ msgid "no family identificator"
-#~ msgstr "aucun identificateur de famille"
+#~ msgstr "aucun identificateur de structure"
 
 #~ msgid "no father category (its a top category)"
 #~ msgstr "pas de catégorie père (catégorie primaire)"
@@ -8611,95 +8701,23 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "profile access"
 #~ msgstr "Profil d'accès"
 
-#~ msgid "prop_allocated"
-#~ msgstr "utilisateur alloué"
-
-#~ msgid "prop_atags"
-#~ msgstr "tag applicatfs"
-
-#~ msgid "prop_cdate"
-#~ msgstr "date de création de la révision"
-
-#~ msgid "prop_classname"
-#~ msgstr "nom de la classe"
-
 #~ msgid "prop_comment"
 #~ msgstr "commentaire"
-
-#~ msgid "prop_confidential"
-#~ msgstr "confidentialité"
-
-#~ msgid "prop_cvid"
-#~ msgstr "identifiant du contrôle de vue"
-
-#~ msgid "prop_doctype"
-#~ msgstr "type de document"
 
 #~ msgid "prop_domainid"
 #~ msgstr "Identifiant du domaine"
 
-#~ msgid "prop_dprofid"
-#~ msgstr "identifiant du template de profil"
-
-#~ msgid "prop_fromid"
-#~ msgstr "famille"
-
-#~ msgid "prop_id"
-#~ msgstr "identificateur"
-
-#~ msgid "prop_initid"
-#~ msgstr "identificateur initial"
-
-#~ msgid "prop_ldapdn"
-#~ msgstr "chemin ldap"
-
-#~ msgid "prop_lmodify"
-#~ msgstr "tag indiquant la modification"
-
-#~ msgid "prop_lockdomainid"
-#~ msgstr "Identifiant du domaine du verrou"
-
 #~ msgid "prop_locked"
 #~ msgstr "propriétaire du verrou"
-
-#~ msgid "prop_name"
-#~ msgstr "référence logique"
-
-#~ msgid "prop_owner"
-#~ msgstr "propriétaire"
-
-#~ msgid "prop_postitid"
-#~ msgstr "identifiants des notes"
-
-#~ msgid "prop_prelid"
-#~ msgstr "dossier primaire"
-
-#~ msgid "prop_profid"
-#~ msgstr "profil"
 
 #~ msgid "prop_revdate"
 #~ msgstr "date de modification"
 
-#~ msgid "prop_revision"
-#~ msgstr "révision"
-
-#~ msgid "prop_state"
-#~ msgstr "état"
-
 #~ msgid "prop_svalues"
 #~ msgstr "une des valeurs"
 
-#~ msgid "prop_title"
-#~ msgstr "titre"
-
-#~ msgid "prop_usefor"
-#~ msgstr "tag utilisé pour"
-
 #~ msgid "prop_version"
 #~ msgstr "version"
-
-#~ msgid "prop_wid"
-#~ msgstr "cycle de vie"
 
 #~ msgid "query %s has failed"
 #~ msgstr "requête %s a échouée"
@@ -8795,7 +8813,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Annuler l'effacement du fichier"
 
 #~ msgid "restrict to preferred families"
-#~ msgstr "restriction aux familles préférées"
+#~ msgstr "restriction aux structures préférées"
 
 #~ msgid "result of archive import  %s"
 #~ msgstr "Résultat de l'importation d'archive %s"
@@ -8876,7 +8894,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "recherche plein texte"
 
 #~ msgid "search in inherited family by family"
-#~ msgstr "recherche dans les familles héritées par famille"
+#~ msgstr "recherche dans les structures héritées par structure"
 
 #~ msgid "search methods"
 #~ msgstr "Méthodes de recherche"
@@ -9012,7 +9030,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "rapide"
 
 #~ msgid "split view mode by family"
-#~ msgstr "mode de découpage par famille"
+#~ msgstr "mode de découpage par structure"
 
 #~ msgid "squirrelmail install dir (relative)"
 #~ msgstr "squirrelmail:  répertoire d'installation (relatif)"
@@ -9260,7 +9278,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr[1] "octets"
 
 #~ msgid "unknow attribute %s (family %s)"
-#~ msgstr "attribut inconnu %s (famille  %s)"
+#~ msgstr "attribut inconnu %s (structure  %s)"
 
 #~ msgid "unknow attribute '%s'"
 #~ msgstr "attribut inconnu '%s'"
@@ -9314,7 +9332,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "déselectionner"
 
 #~ msgid "untitle family"
-#~ msgstr "famille sans titre"
+#~ msgstr "structure sans titre"
 
 #~ msgid "update logical name from %s to %s"
 #~ msgstr "Modification du nom logique de \"%s\" à \"%s\""
@@ -9497,7 +9515,7 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "voir une carte autonome"
 
 #~ msgid "view tab letter by family"
-#~ msgstr "voir les onglets alphabetiques par famille"
+#~ msgstr "voir les onglets alphabetiques par structure"
 
 #~ msgid "view timers attached to a document"
 #~ msgstr "voir les minuteurs attachés à un document"
