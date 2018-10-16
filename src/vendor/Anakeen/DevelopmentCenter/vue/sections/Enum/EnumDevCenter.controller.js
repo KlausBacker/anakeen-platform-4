@@ -51,38 +51,10 @@ export default {
       this.$refs.enumGridContent.kendoWidget().dataSource.filter({});
       this.$refs.enumGridContent.kendoWidget().dataSource.read();
     },
-    nameFilter(args) {
-      args.element.kendoDropDownList({
-        dataTextField: "text",
-        dataValueField: "value",
-        valuePrimitive: true,
-        dataSource: new kendo.data.DataSource({
-          transport: {
-            read: {
-              url: "/api/v2/devel/smart/enumerates/?take=all&skip=0"
-            }
-          },
-          schema: {
-            data: response => {
-              let results = [];
-              response.data.enumerates.forEach(item => {
-                results.push({
-                  text: item.name,
-                  value: item.name
-                });
-              });
-              return results.filter(
-                (el, i, a) => a.findIndex(el2 => el2.text === el.text) === i
-              );
-            }
-          }
-        })
-      });
-    },
     disabledFilter(args) {
       args.element.kendoDropDownList({
         valuePrimitive: true,
-        dataSource: [true.toString(), false.toString()]
+        dataSource: ["true", "false"]
       });
     }
   }
