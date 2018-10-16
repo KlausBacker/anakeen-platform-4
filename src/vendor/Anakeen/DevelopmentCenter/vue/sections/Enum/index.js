@@ -4,5 +4,5 @@ export default {
   label: "Enums",
   name: "enumDevCenter",
   path: "enums",
-  component: Enum,
+  component: Enum
 };
