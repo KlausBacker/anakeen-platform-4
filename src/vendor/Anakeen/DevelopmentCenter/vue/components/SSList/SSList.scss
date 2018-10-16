@@ -1,78 +1,89 @@
 .smart-structure-list {
   flex: 1;
   display: flex;
+  overflow: auto;
   .smart-structure-tabs {
     display: flex;
     flex: 1;
 
-    .smart-structure-tabs-filter {
+    .smart-structure-tabs-list {
       display: flex;
-      position: relative;
-      .filter-list-clear {
-        cursor: pointer;
-        padding: 0;
-        width: 1.333rem;
-        height: 1.333rem;
-        position: absolute;
-        top: .5rem;
-        right: .5rem;
-        background: transparent;
-        border: transparent;
-        border-radius: 50%;
-        .material-icons {
-          font-size: 1.333rem;
-          width: 100%;
-          height: 100%;
-          margin: .1rem auto;
+      flex-direction: column;
+
+      .smart-structure-tabs-filter {
+        display: flex;
+        position: relative;
+        .filter-list-clear {
+          cursor: pointer;
+          padding: 0;
+          width: 1.333rem;
+          height: 1.333rem;
+          position: absolute;
+          top: .5rem;
+          right: .5rem;
+          background: transparent;
+          border: transparent;
+          border-radius: 50%;
+          .material-icons {
+            font-size: 1.333rem;
+            width: 100%;
+            height: 100%;
+            margin: .1rem auto;
+          }
+          &:hover {
+            color: white;
+            background: orangered;
+          }
         }
-        &:hover {
-          color: white;
-          background: orangered;
+      }
+
+      .smart-structure-tabs-list-nav {
+        background: white;
+        border: none;
+        display: flex;
+        //overflow-y: auto;
+        //
+        ///* for Firefox */
+        //min-height: 0;
+
+        .smart-structure-list-item {
+          &.router-link-active {
+            z-index: 10;
+            border-color: rgba(33, 37, 41, .125);
+            border-right-color: transparent;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            background: white;
+          }
+          &:not(.router-link-active):hover {
+            border-color: rgba(33, 37, 41, .125);
+          }
+          border: 1px solid transparent;
+          border-radius: .25rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          padding: .5rem;
+          .smart-structure-list-item-icon {
+            width: 1.33333rem;
+            height: 1.33333rem;
+            margin-right: .5rem;
+            line-height: 1;
+          }
+
+          .smart-structure-list-item-title {
+            line-height: 1;
+          }
         }
       }
     }
+
     .smart-structure-tabs-content {
       padding: .5rem;
       flex: 1;
-      border: 1px solid rgba(33,37,41,.125);
+      border: 1px solid rgba(33, 37, 41, .125);
       border-radius: .25rem;
 
-    }
-
-    .smart-structure-tabs-list-nav {
-      background: white;
-      border: none;
-      display: flex;
-
-      .smart-structure-list-item {
-        &.router-link-active {
-          z-index: 10;
-          border-color: rgba(33,37,41,.125);
-          border-right-color: transparent;
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-          background: white;
-        }
-        &:not(.router-link-active):hover {
-          border-color: rgba(33,37,41,.125);
-        }
-        border: 1px solid transparent;
-        border-radius: .25rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        padding: .5rem;
-        .smart-structure-list-item-icon {
-          width: 1.33333rem;
-          height: 1.33333rem;
-          margin-right: .5rem;
-          line-height: 1;
-        }
-
-        .smart-structure-list-item-title {
-          line-height: 1;
-        }
-      }
     }
   }
 
