@@ -16,5 +16,4 @@ class WdocEditRender extends DefaultConfigEditRender
         $options = parent::getOptions($document);
         return $options;
     }
-
 }

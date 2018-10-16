@@ -6,8 +6,7 @@
 
 namespace Anakeen\Pu\SmartStructures;
 
-class WTestBadImp14 extends  \SmartStructure\Wdoc
-
+class WTestBadImp14 extends \SmartStructure\Wdoc
 {
     var $attrPrefix = "WTST";
     public $transitions = "must be an array";
@@ -16,4 +15,3 @@ class WTestBadImp14 extends  \SmartStructure\Wdoc
     
     public $stateactivity = "must be an array";
 }
-?>

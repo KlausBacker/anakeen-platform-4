@@ -6,8 +6,7 @@
 
 namespace Anakeen\Pu\SmartStructures;
 
-class WTestBadImp9 extends  \SmartStructure\Wdoc
-
+class WTestBadImp9 extends \SmartStructure\Wdoc
 {
     var $attrPrefix = "";
     
@@ -85,4 +84,3 @@ class WTestBadImp9 extends  \SmartStructure\Wdoc
     {
     }
 }
-?>

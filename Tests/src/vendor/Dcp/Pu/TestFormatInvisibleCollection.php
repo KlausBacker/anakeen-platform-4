@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -47,7 +48,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         $r = $fc->render();
         foreach ($expectedValues as $aid => $value) {
             $this->assertTrue($this->getRenderValue($r, $docName, $aid) !== null, "$aid not found");
-            $this->assertEquals($value, $this->getRenderValue($r, $docName, $aid)->displayValue, sprintf("%s [%s]<>\n%s", $aid, $value, print_r($this->getRenderValue($r, $docName, $aid) , true)));
+            $this->assertEquals($value, $this->getRenderValue($r, $docName, $aid)->displayValue, sprintf("%s [%s]<>\n%s", $aid, $value, print_r($this->getRenderValue($r, $docName, $aid), true)));
         }
         $this->exitSudo();
     }
@@ -73,7 +74,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         $r = $fc->render();
         foreach ($expectedValues as $aid => $value) {
             $this->assertTrue($this->getRenderValue($r, $docName, $aid) !== null, "$aid not found");
-            $this->assertEquals($value, $this->getRenderValue($r, $docName, $aid)->displayValue, sprintf("%s [%s]<>\n%s", $aid, $value, print_r($this->getRenderValue($r, $docName, $aid) , true)));
+            $this->assertEquals($value, $this->getRenderValue($r, $docName, $aid)->displayValue, sprintf("%s [%s]<>\n%s", $aid, $value, print_r($this->getRenderValue($r, $docName, $aid), true)));
         }
         $this->exitSudo();
     }
@@ -84,7 +85,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $this->sudo($login);
         
-        $outFile = tempnam(getTmpDir() , 'tstexport');
+        $outFile = tempnam(getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
@@ -110,7 +111,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $this->sudo($login);
         
-        $outFile = tempnam(getTmpDir() , 'tstexport');
+        $outFile = tempnam(getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
@@ -134,19 +135,18 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $results = fopen($outFile, "r");
         $resultData = array();
-        while (($data = fgetcsv($results, 1000, $separator, $enclosure)) !== FALSE) {
-            
+        while (($data = fgetcsv($results, 1000, $separator, $enclosure)) !== false) {
             $docName = $data[$columnId];
             $resultData[$docName] = $data;
         }
         fclose($results);
         foreach ($expectedData as $docName => $docValues) {
-            $this->assertTrue(isset($resultData[$docName]) , sprintf("%s document not found : %s", $docName, print_r($resultData, true)));
+            $this->assertTrue(isset($resultData[$docName]), sprintf("%s document not found : %s", $docName, print_r($resultData, true)));
             foreach ($docValues as $index => $value) {
                 if (strpos($value, "*") === false) {
-                    $this->assertEquals($value, $resultData[$docName][$index], sprintf("%s  (index %s) : %s \n %s", $docName, $index, print_r($resultData, true) , $outFile));
+                    $this->assertEquals($value, $resultData[$docName][$index], sprintf("%s  (index %s) : %s \n %s", $docName, $index, print_r($resultData, true), $outFile));
                 } else {
-                    $this->assertEquals(preg_match('/' . $value . '/', $resultData[$docName][$index]) , 1, sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $value, $docName, $index, print_r($resultData, true) , $outFile));
+                    $this->assertEquals(preg_match('/' . $value . '/', $resultData[$docName][$index]), 1, sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $value, $docName, $index, print_r($resultData, true), $outFile));
                 }
             }
         }
@@ -157,12 +157,12 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     public function testExportXmlSingle($login, array $expectedData)
     {
         $this->sudo($login);
-        $outFile = tempnam(getTmpDir() , 'tstexport');
+        $outFile = tempnam(getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
         
-        $this->assertEmpty($s->searchError() , sprintf("Error in search %s", print_r($s->getSearchInfo() , true)));
+        $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
         
         $ec = new \Dcp\ExportCollection();
         
@@ -190,7 +190,9 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
             $foundValues = array();
             
             foreach ($entries as $entry) {
-                if ($entry->nodeValue == $value) $found++;
+                if ($entry->nodeValue == $value) {
+                    $found++;
+                }
                 $foundValues[] = $entry->nodeValue;
             }
             $this->assertGreaterThan(0, $found, sprintf("Item \"%s\" not found in %s path, found \n\t%s\n", $value, $path, implode("\n\t", $foundValues)));
@@ -569,4 +571,3 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

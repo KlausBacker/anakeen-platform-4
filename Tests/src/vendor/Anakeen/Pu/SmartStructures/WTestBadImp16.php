@@ -6,8 +6,8 @@
 
 
 namespace Anakeen\Pu\SmartStructures;
-class WTestBadImp16 extends  \SmartStructure\Wdoc
 
+class WTestBadImp16 extends \SmartStructure\Wdoc
 {
     var $attrPrefix = "WTST";
     const alive = "alive";
@@ -84,11 +84,10 @@ class WTestBadImp16 extends  \SmartStructure\Wdoc
         )
     );
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
-       {
-           for ($i = 40; $i < 400; $i++) {
-               $this->transitions["T$i"] = array();
-           }
+    {
+        for ($i = 40; $i < 400; $i++) {
+            $this->transitions["T$i"] = array();
+        }
            parent::__construct($dbaccess, $id, $res, $dbid);
-       }
+    }
 }
-?>

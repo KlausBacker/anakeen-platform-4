@@ -6,7 +6,6 @@
 
 namespace Dcp\Pu;
 
-
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 class TestImportWorkflow extends TestCaseDcpDocument
@@ -210,5 +209,3 @@ class TestImportWorkflow extends TestCaseDcpDocument
         );
     }
 }
-
-?>

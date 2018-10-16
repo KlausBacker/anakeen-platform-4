@@ -6,7 +6,6 @@
 
 namespace Dcp\Pu;
 
-
 class TestImportFamilyProperty extends TestCaseDcpDocument
 {
     protected static $outputDir;
@@ -117,5 +116,3 @@ class TestImportFamilyProperty extends TestCaseDcpDocument
         );
     }
 }
-
-?>

@@ -6,8 +6,8 @@
 
 
 namespace Anakeen\Pu\SmartStructures;
-class WTestBadImp11 extends  \SmartStructure\Wdoc
 
+class WTestBadImp11 extends \SmartStructure\Wdoc
 {
     var $attrPrefix = "WTST";
     const alive = "alive"; #
@@ -98,4 +98,3 @@ class WTestBadImp11 extends  \SmartStructure\Wdoc
     {
     }
 }
-?>

@@ -8,7 +8,6 @@
 namespace Anakeen\Pu\SmartStructures;
 
 class WTestBad extends \Anakeen\SmartStructures\Wdoc\WDocHooks
-
 {
     var $attrPrefix = "WAN";
 
@@ -99,5 +98,3 @@ class WTestBad extends \Anakeen\SmartStructures\Wdoc\WDocHooks
         return "->";
     }
 } //class
-
-?>

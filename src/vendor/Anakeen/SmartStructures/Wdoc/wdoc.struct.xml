@@ -12,7 +12,7 @@
       <smart:field-set name="fr_basic" extended="true">
         <smart:field-longtext name="wf_desc" label="description" access="ReadWrite" is-abstract="true"/>
         <smart:field-docid name="wf_famid" label="Structure" access="ReadWrite" relation="-1"/>
-        <smart:field-text name="wf_fam" label="Structure (titre)" access="ReadWrite" is-title="true">
+        <smart:field-text name="wf_fam" label="Structure (titre)" access="Read" is-title="true">
           <smart:field-option name="elabel">Structure compatible avec ce cycle</smart:field-option>
         </smart:field-text>
       </smart:field-set>

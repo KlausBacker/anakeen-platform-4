@@ -5,8 +5,8 @@
 */
 
 namespace Anakeen\Pu\SmartStructures;
-class WTestSyntax extends \SmartStructure\Wdoc
 
+class WTestSyntax extends \SmartStructure\Wdoc
 {
     var $attrPrefix = "WAN"const alive = "alive"; // N_("alive")
     const dead = "dead"; // N_("dead")
@@ -77,16 +77,20 @@ class WTestSyntax extends \SmartStructure\Wdoc
     function SendMailToVeto($newstate)
     {
         global $action;
-        include_once ("FDL/mailcard.php");
+        include_once("FDL/mailcard.php");
         
-        $subject = sprintf(("Disease of %s ") , $this->doc->title);
+        $subject = sprintf(("Disease of %s "), $this->doc->title);
         $zone = "ZOO:DE_MAIL_SICK:S";
         
         $to = $this->GetRValue("WAN_IDVETO:US_MAIL");
         $cc = "";
-        if (!$this->doc->getHealthCardId()) $err = $this->doc->createHealthCard();
+        if (!$this->doc->getHealthCardId()) {
+            $err = $this->doc->createHealthCard();
+        }
         
-        if ($err != "") return $err;
+        if ($err != "") {
+            return $err;
+        }
         SetHttpVar("redirect_app", "FDL");
         SetHttpVar("redirect_act", "CONFIRMMAIL&state=$newstate&ulink=Y&mzone=$zone&mail_from=$from&mail_to=$to&mail_format=html&mail_subject=$subject&mid=" . $this->doc->id);
         
@@ -96,8 +100,8 @@ class WTestSyntax extends \SmartStructure\Wdoc
     function toHealthCard($newstate)
     {
         global $action;
-        include_once ("FDL/mailcard.php");
-        include_once ("FDL/Lib.Dir.php");
+        include_once("FDL/mailcard.php");
+        include_once("FDL/Lib.Dir.php");
         $idcarnet = $this->doc->getHealthCardId();
         
         $carnet = new_Doc($this->dbaccess, $idcarnet);
@@ -119,5 +123,3 @@ class WTestSyntax extends \SmartStructure\Wdoc
         return "->";
     }
 } //class
-
-?>

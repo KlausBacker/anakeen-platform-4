@@ -7,7 +7,6 @@
 namespace Anakeen\Pu\SmartStructures;
 
 class WTestM0M3 extends \SmartStructure\Wdoc
-
 {
     var $attrPrefix = "WAN";
     
@@ -117,4 +116,3 @@ class WTestM0M3 extends \SmartStructure\Wdoc
         return "T5 m3 pass";
     }
 }
-?>

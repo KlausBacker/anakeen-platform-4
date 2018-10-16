@@ -10,7 +10,6 @@ use Anakeen\Core\Utils\Gettext;
 use Dcp\Pu\FrameworkDcp;
 use Dcp\Pu\SuiteWorkflow;
 
-
 set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 
 
@@ -32,5 +31,4 @@ class WorkflowTests
 
         return $suite;
     }
-
 }
