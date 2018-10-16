@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
+import VueRouterMultiView from "vue-router-multi-view";
+
 import { sync } from "vuex-router-sync";
 import Axios from "axios";
 
@@ -11,6 +13,7 @@ import RouterConfig from "../vue/router";
 const axios = Axios.create();
 Vue.prototype.$http = axios;
 
+Vue.use(VueRouterMultiView);
 Vue.use(Vuex);
 Vue.use(VueRouter);
 

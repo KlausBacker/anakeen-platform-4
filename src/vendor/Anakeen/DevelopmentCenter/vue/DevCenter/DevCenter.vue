@@ -3,7 +3,7 @@
         <dev-header></dev-header>
         <div class="dev-center-content">
             <dev-side-menu></dev-side-menu>
-            <router-view></router-view>
+            <router-multi-view class="dev-center-content-view"></router-multi-view>
         </div>
         <ank-notifier ref="ankNotifier" position="top-right"
                       defaultType="notice"></ank-notifier>
@@ -30,6 +30,11 @@
         .dev-center-content {
             display: flex;
             flex: 1;
+
+            .dev-center-content-view {
+                display: flex;
+                flex: 1;
+            }
         }
     }
 </style>
