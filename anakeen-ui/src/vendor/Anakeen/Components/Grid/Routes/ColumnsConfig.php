@@ -22,7 +22,7 @@ class ColumnsConfig
     protected $requestFields = [];
     protected $availableColumns = [];
     protected $structureId = -1;
-    const DEFAULT_COLUMNS = ["icon", "title"];
+    const DEFAULT_COLUMNS = ["title"];
 
     /**
      * @var SmartStructure
