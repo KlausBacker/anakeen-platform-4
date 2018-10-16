@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<module name="development-center" version="1.0.0" release="0" vendor="Anakeen"
+        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
+
+    <description lang="en">Developement Center</description>
+
+    <requires>
+        <module name="user-interfaces"/>
+        <module name="security"/>
+    </requires>
+
+    <parameters>
+    </parameters>
+
+    <post-install>
+    </post-install>
+
+    <post-upgrade>
+    </post-upgrade>
+
+
+</module>

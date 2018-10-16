@@ -1,0 +1,21 @@
+{
+  "name": "development-center",
+  "version": "1.0.0",
+  "description": "Developement Center for Anakeen Platform",
+  "main": "index.js",
+  "scripts": {
+    "beautify": "./node_modules/eslint/bin/eslint.js ./ --fix",
+    "buildJs": "webpack --config webpack/index.js"
+  },
+  "author": "anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "devDependencies": {
+    "@anakeen/anakeen-cli": "latest",
+  },
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/migration-tools.git",
+  "keywords": [
+    "anakeen",
+    "platform",
+    "migration"
+  ]
+}
