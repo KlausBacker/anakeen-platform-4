@@ -74,7 +74,7 @@ class Profile
     {
         $parentGroups = self::getGroupParents();
         foreach ($accesses as &$access) {
-            if ($access["type"] === "group" || $access["type"] === "user") {
+            if ($access["account"]["type"] === "group" || $access["account"]["type"] === "user") {
                 if (isset($parentGroups[$access["id"]])) {
                     $access["parents"] = $parentGroups[$access["id"]];
                 }
