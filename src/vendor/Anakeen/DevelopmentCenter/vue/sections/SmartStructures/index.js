@@ -7,6 +7,7 @@ export default {
   name: "SmartStructures",
   path: "smartStructures",
   label: "Smart Structures",
+  order: 1, // Set smart structure in first position
   component: SmartStructures,
   children: [
     {
