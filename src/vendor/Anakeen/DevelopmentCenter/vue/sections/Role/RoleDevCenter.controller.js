@@ -17,6 +17,11 @@ export default {
     };
   },
   methods: {
+    setCellRender(e) {
+      if (e.data.columnConfig.field === "title") {
+        e.data.cellRender.find(".grid-cell-value").prepend("<img src='" + e.data.rowData.icon + "'/>  ");
+      }
+    },
     setGridOption() {
       const options = this.$refs.roleContent.kendoGrid.getOptions();
       options.filterable = { mode: "row" };
