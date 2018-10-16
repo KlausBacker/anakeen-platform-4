@@ -115,7 +115,7 @@ deploy: compilation ## deploy the project
 	rm -f user-interfaces-1*app
 	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./anakeen-ui
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(DEVTOOL_BIN) deploy -u http://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-*app -- --force
+	$(DEVTOOL_BIN) deploy -u http://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-1*app -- --force
 	make clean
 
 ########################################################################################################################

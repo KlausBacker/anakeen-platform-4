@@ -6,13 +6,14 @@ use Anakeen\Core\SEManager;
 use Dcp\Ui\RenderConfigManager;
 use SmartStructure\Fields\Cvdoc as CvDocFields;
 use SmartStructure\Fields\Mask as MaskFields;
+use SmartStructure\Mask;
 
 /**
  * Class ExportRenderConfiguration
  *
  * Export Smart Structure Render in Xml
  */
-class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfiguration
+class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfigurationAccesses
 {
     const NSUIURL = self::NSBASEURL."ui/1.0";
     const NSUI = "ui";
@@ -72,6 +73,12 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             $primaryMskNode = $this->celui("primary-mask");
             $primaryMskNode->setAttribute("ref", static::getLogicalName($primaryMask));
             $cvtag->appendChild($primaryMskNode);
+            /**
+             * @var Mask $mask
+             */
+            $mask=SEManager::getDocument($primaryMask);
+            $this->domConfig->appendChild($this->extractMaskData($mask));
+            $this->setAccessProfile($mask);
         }
         $idcview = $cvdoc->getRawValue(CvDocFields::cv_idcview);
         if ($idcview) {
@@ -103,6 +110,7 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
                  */
                 $mask = SEManager::getDocument($view[CvDocFields::cv_mskid]);
                 $this->domConfig->appendChild($this->extractMaskData($mask));
+                $this->setAccessProfile($mask);
             }
             if ($view[CvDocFields::cv_renderconfigclass]) {
                 $rcctag = $this->celui("render-config");
