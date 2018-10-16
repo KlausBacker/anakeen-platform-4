@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 14:59+0200\n"
+"POT-Creation-Date: 2018-10-16 11:04+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -11,6 +11,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#, php-format
+msgctxt "search"
+msgid "\"%s\" is not a structure"
+msgstr ""
 
 #, php-format
 msgid "%s (as substitute)"
@@ -139,6 +144,14 @@ msgctxt "core"
 msgid "API file \"%s\" not found"
 msgstr ""
 
+#, php-format
+msgid "Access \"%s\" not granted"
+msgstr ""
+
+#, php-format
+msgid "Access \"%s\" unknow"
+msgstr ""
+
 msgctxt "ank"
 msgid "Access not granted"
 msgstr ""
@@ -149,6 +162,10 @@ msgstr ""
 
 msgctxt "smart iuser"
 msgid "Access not granted to deactivate account"
+msgstr ""
+
+#, php-format
+msgid "Account Type \"%s\""
 msgstr ""
 
 msgctxt "authent"
@@ -1844,8 +1861,85 @@ msgstr ""
 msgid "profil id unkonow %s"
 msgstr ""
 
+msgid "prop_allocated"
+msgstr "allocate"
+
+msgid "prop_atags"
+msgstr "application tags"
+
+msgid "prop_cdate"
+msgstr "revision creation date"
+
+msgid "prop_classname"
+msgstr "class name"
+
+msgid "prop_confidential"
+msgstr "confidential"
+
+msgid "prop_cvid"
+msgstr "view control"
+
+msgid "prop_doctype"
+msgstr "doctype"
+
+msgid "prop_dprofid"
+msgstr "template profil"
+
+msgid "prop_fromid"
+msgstr "family"
+
 msgid "prop_icon"
 msgstr "icon"
+
+msgid "prop_id"
+msgstr "identificator"
+
+msgid "prop_initid"
+msgstr "initial identificator"
+
+msgid "prop_ldapdn"
+msgstr "ldap DN"
+
+msgid "prop_lmodify"
+msgstr "is modified"
+
+#, fuzzy
+msgid "prop_lockdomainid"
+msgstr "lock"
+
+#, fuzzy
+msgid "prop_mdate"
+msgstr "revision creation date"
+
+msgid "prop_name"
+msgstr "logical name"
+
+msgid "prop_owner"
+msgstr "owner"
+
+msgid "prop_postitid"
+msgstr "note"
+
+msgid "prop_prelid"
+msgstr "primary relation"
+
+msgid "prop_profid"
+msgstr "profil"
+
+msgid "prop_revision"
+msgstr "revision"
+
+msgid "prop_state"
+msgstr "state"
+
+msgid "prop_title"
+msgstr "title"
+
+msgid "prop_usefor"
+msgstr "use for"
+
+msgid "prop_wid"
+msgstr "workflow"
 
 #, php-format
 msgid "regeneration of file template %s"
@@ -3299,89 +3393,17 @@ msgstr ""
 #~ msgid "no"
 #~ msgstr "No"
 
-#~ msgid "prop_allocated"
-#~ msgstr "allocate"
-
-#~ msgid "prop_atags"
-#~ msgstr "application tags"
-
-#~ msgid "prop_cdate"
-#~ msgstr "revision creation date"
-
-#~ msgid "prop_classname"
-#~ msgstr "class name"
-
 #~ msgid "prop_comment"
 #~ msgstr "comment"
-
-#~ msgid "prop_confidential"
-#~ msgstr "confidential"
-
-#~ msgid "prop_cvid"
-#~ msgstr "view control"
-
-#~ msgid "prop_doctype"
-#~ msgstr "doctype"
-
-#~ msgid "prop_dprofid"
-#~ msgstr "template profil"
-
-#~ msgid "prop_fromid"
-#~ msgstr "family"
-
-#~ msgid "prop_id"
-#~ msgstr "identificator"
-
-#~ msgid "prop_initid"
-#~ msgstr "initial identificator"
-
-#~ msgid "prop_ldapdn"
-#~ msgstr "ldap DN"
-
-#~ msgid "prop_lmodify"
-#~ msgstr "is modified"
-
-#~ msgid "prop_locked"
-#~ msgstr "lock"
-
-#~ msgid "prop_name"
-#~ msgstr "logical name"
-
-#~ msgid "prop_owner"
-#~ msgstr "owner"
-
-#~ msgid "prop_postitid"
-#~ msgstr "note"
-
-#~ msgid "prop_prelid"
-#~ msgstr "primary relation"
-
-#~ msgid "prop_profid"
-#~ msgstr "profil"
 
 #~ msgid "prop_revdate"
 #~ msgstr "modfication date"
 
-#~ msgid "prop_revision"
-#~ msgstr "revision"
-
-#~ msgid "prop_state"
-#~ msgstr "state"
-
 #~ msgid "prop_svalues"
 #~ msgstr "search values"
 
-#~ msgid "prop_title"
-#~ msgstr "title"
-
-#~ msgid "prop_usefor"
-#~ msgstr "use for"
-
 #~ msgid "prop_version"
 #~ msgstr "version"
-
-#~ msgid "prop_wid"
-#~ msgstr "workflow"
 
 #~ msgid "reqpasswd_email"
 #~ msgstr "E-mail address"
