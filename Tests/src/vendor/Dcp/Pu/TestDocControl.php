@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package Dcp\Pu
-*/
 
 namespace Dcp\Pu;
 

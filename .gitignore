@@ -3,3 +3,4 @@
 /Tests/autotest/outputs/*
 /node_modules/
 Makefile.local
+ide/vendor
