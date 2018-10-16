@@ -6214,12 +6214,6 @@ create unique index i_docir on doc(initid, revision);";
                 $cache ? "yes" : "no",
                 $inline ? "yes" : "no"
             );
-            if ($this->cvid > 0) {
-                $viewId = getHttpVars("vid");
-                if ($viewId) {
-                    $url .= '&cvViewid=' . $viewId;
-                }
-            }
             return $url;
         }
         return '';
