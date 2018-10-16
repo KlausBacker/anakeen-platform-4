@@ -1,7 +1,7 @@
 #MAKEFILE dir
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-MODULE_NAME=development-center
+MODULE_NAME=migration-tools
 NODE_MODULE_PATH=node_modules
 
 ## control conf
@@ -32,7 +32,6 @@ $(NODE_MODULE_PATH):
 
 compile: $(NODE_MODULE_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(YARN_BIN) run buildJs
 
 app: compile
 	${ANAKEEN_CLI_BIN} build
