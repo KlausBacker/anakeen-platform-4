@@ -36,7 +36,9 @@ export default {
             }
           },
           operators: {
-            contains: "Contains"
+            string: {
+              contains: "Contains"
+            }
           }
         };
       });
