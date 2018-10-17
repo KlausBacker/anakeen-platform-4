@@ -6,7 +6,9 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/devel[/{args:.*}]</sde:pattern>
             <sde:description>Get development center main page</sde:description>
-            <sde:requiredAccess/>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
         </sde:route>
     </sde:routes>
 </sde:config>

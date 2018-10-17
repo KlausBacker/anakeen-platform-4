@@ -239,7 +239,7 @@ class Profile
         return $accesses;
     }
 
-    protected static function getAccountType($systemType)
+    public static function getAccountType($systemType)
     {
         switch ($systemType) {
             case 'U':
