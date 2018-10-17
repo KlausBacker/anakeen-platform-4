@@ -26,9 +26,6 @@ use SmartStructure\Fields\Search;
  */
 class GridConfig
 {
-
-    const DEFAULT_COLUMNS = ["icon", "title"];
-
     protected $gridFields = [];
     protected $urlFields = [];
     protected $collectionId = null;
