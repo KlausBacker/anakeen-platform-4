@@ -6,7 +6,18 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/security/profile/{id}/accesses/</sde:pattern>
             <sde:description>Get right accesses for a profile</sde:description>
-            <sde:requiredAccess/>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetRouteAccesses">
+            <sde:callable>\Anakeen\Routes\Devel\Security\RoleRouteAccesses</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/routes/accesses/</sde:pattern>
+            <sde:description>Get accesses for routes</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
         </sde:route>
     </sde:routes>
 </sde:config>

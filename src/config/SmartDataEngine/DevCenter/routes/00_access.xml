@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:accesses namespace="DevCenter">
+        <sde:access name="DevelAccess">
+            <sde:description>Developer access</sde:description>
+        </sde:access>
+    </sde:accesses>
+</sde:config>
