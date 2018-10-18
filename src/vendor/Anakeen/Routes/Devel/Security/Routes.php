@@ -9,7 +9,7 @@ use Anakeen\Router\RouterManager;
 class Routes
 {
     /**
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @return \Slim\Http\response
      */
@@ -24,7 +24,7 @@ class Routes
                 $result[] = $formatedRoute;
             }
         }
-        return ApiV2Response::withData($response,$result);
+        return ApiV2Response::withData($response, $result);
     }
     /**
      * @param $route
@@ -37,7 +37,7 @@ class Routes
         $formatedRoute = [];
         $nsName = explode('::', $route->name, 2);
 
-        if(!empty($nsName[1])) {
+        if (!empty($nsName[1])) {
             $formatedRoute['nameSpace'] = $nsName[0];
             $formatedRoute['name'] = $nsName[1];
         } else {
@@ -46,7 +46,7 @@ class Routes
         $formatedRoute['description'] = $route->description;
 
         $formatedRoute['method'] = $route->methods[0];
-        $formatedRoute['pattern'] = is_array($route->pattern) ? implode("\n",$route->pattern) : $route->pattern;
+        $formatedRoute['pattern'] = is_array($route->pattern) ? implode("\n", $route->pattern) : $route->pattern;
         $formatedRoute['priority'] = $route->priority;
         $formatedRoute['override'] = $route->override;
         $formatedRoute['active'] = $route->isActive();
