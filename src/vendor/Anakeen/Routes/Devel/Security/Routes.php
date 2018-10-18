@@ -4,17 +4,26 @@
 namespace Anakeen\Routes\Devel\Security;
 
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Router\RouterManager;
+use Anakeen\Routes\Devel\GridFiltering;
+use Anakeen\Ui\DataSource;
 
-class Routes
+class Routes extends GridFiltering
 {
+    protected $sWhere;
+    const PAGESIZE = 50;
+    protected $filters = [];
+    protected $slice = self::PAGESIZE;
+    protected $offset = 0;
+    protected $filtered = [];
+
     /**
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @return \Slim\Http\response
      */
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
+        $this->initParameters($request, $args);
         $allRoutes = new \Anakeen\Router\RouterManager();
         $tabRoutes = $allRoutes->getRoutes();
         $result = [];
@@ -24,7 +33,32 @@ class Routes
                 $result[] = $formatedRoute;
             }
         }
-        return ApiV2Response::withData($response, $result);
+        if ($this->filters) {
+            $this->filtered = [];
+            $this->filtered = $this->recursiveFilter($result, $this->filters[0]);
+            foreach ($this->filters as $filter) {
+                if ($filter !== $this->filters[0]) {
+                    $this->filtered = $this->recursiveFilter($this->filtered, $filter);
+                }
+            }
+            $data["requestParameters"] = $this->getRequestParameters($this->filtered);
+            $data["routes"] = $this->filtered;
+            return ApiV2Response::withData($response, $data);
+        }
+        $data["requestParameters"] = $this->getRequestParameters($result);
+        $data["routes"] = $result;
+        return ApiV2Response::withData($response, $data);
+    }
+
+    private function recursiveFilter($result, $filter)
+    {
+        $filtered = [];
+        foreach ($result as $r) {
+            if (stripos($r[$filter["field"]], $filter["value"]) !== false) {
+                $filtered[] = $r;
+            }
+        }
+        return $filtered;
     }
     /**
      * @param $route
@@ -53,5 +87,26 @@ class Routes
         $formatedRoute['requiredAccess'] = $route->requiredAccess;
 
         return $formatedRoute;
+    }
+    protected function getRequestParameters($tab)
+    {
+        $requestData["take"] = $this->slice;
+        $requestData["skip"] = $this->offset;
+        $requestData["total"] = count($tab);
+        return $requestData;
+    }
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $filters = $request->getQueryParam("filter");
+        if ($filters) {
+            $this->filters = DataSource::getFlatLevelFilters($filters);
+        }
+        if ($request->getQueryParam("take") === 'all') {
+            $this->slice = $request->getQueryParam("take");
+        } else {
+            $this->slice = intval($request->getQueryParam("take", self::PAGESIZE));
+        }
+        $this->offset = intval($request->getQueryParam("skip", 0));
     }
 }

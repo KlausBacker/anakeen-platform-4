@@ -25,9 +25,10 @@ export default {
         this.$refs.routesGridContent.kendoWidget().resize();
       }
     });
+  },
   beforeRouteEnter(to, from, next) {
-    if (to.query.filter) {
-      let filter = to.query.filter;
+    if (to.query.accesName) {
+      let filter = to.query.accesName;
       next(function(vueInstance) {
         if (filter && filter !== "") {
           vueInstance.$refs.routesGridContent.kendoWidget().dataSource.filter({
@@ -59,9 +60,12 @@ export default {
     },
     parseRoutesData(response) {
       if (response && response.data && response.data.data) {
-        return response.data.data;
+        return response.data.data.routes;
       }
       return [];
+    },
+    parseRoutesTotal(response) {
+      return response.data.data.requestParameters.total;
     },
     refreshRoutes() {
       this.$refs.routesGridContent.kendoWidget().dataSource.filter({});
@@ -78,7 +82,7 @@ export default {
           elt.map(e => {
             let accessName = e.split("::")[1];
             this.tabMultiple.push(
-              `<a href="/devel/security/routes/access/permissions/?filter=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`
+              `<a href="/devel/security/routes/access/permissions/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`
             );
           });
         });

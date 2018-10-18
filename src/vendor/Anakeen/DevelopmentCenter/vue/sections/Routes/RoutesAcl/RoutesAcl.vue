@@ -7,10 +7,10 @@
         </div>
         <kendo-datasource ref="routesGrid"
                           :transport-read="getRoutes"
-                          :server-paging="true"
                           :pageable="true"
                           :page-size="20"
                           :schema-data="parseRoutesData"
+                          :schema-total="parseRoutesTotal"
                           :server-filtering="true">
         </kendo-datasource>
         <kendo-grid ref="routesGridContent" class="routes-grid-content"

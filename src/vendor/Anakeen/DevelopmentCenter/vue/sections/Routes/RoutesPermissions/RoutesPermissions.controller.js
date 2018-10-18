@@ -27,8 +27,8 @@ export default {
     });
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.filter) {
-      let filter = to.query.filter;
+    if (to.query.accesName) {
+      let filter = to.query.accesName;
       next(function(vueInstance) {
         if (filter && filter !== "") {
           vueInstance.$refs.routesPermissionsContent
@@ -80,7 +80,7 @@ export default {
     },
     displayLink(e) {
       const accessName = e.accessName;
-      return `<a href="/devel/security/routes/access/controls/?filter=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`;
+      return `<a href="/devel/security/routes/access/controls/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`;
     }
   }
 };
