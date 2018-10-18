@@ -127,7 +127,7 @@ class Profile
     protected static function existsAccess($accountRef, $accesses)
     {
         foreach ($accesses as $access) {
-            if ($access["account"] === $accountRef) {
+            if ($access["account"]["reference"] === $accountRef) {
                 return true;
             }
         }
