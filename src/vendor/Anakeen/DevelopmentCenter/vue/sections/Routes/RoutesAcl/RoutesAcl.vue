@@ -18,9 +18,7 @@
                     :pageable="true"
                     :filterable-mode="'row'"
                     :filterable-extra="false"
-                    :sortable="true"
-                    :selectable="'cell'"
-                    v-on:change="showPermissions">
+                    :sortable="true">
             <kendo-grid-column :field="'nameSpace'" :title="'<b>Namespace</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'name'" :title="'<b>Name</b>'" :property="true" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'method'" :title="'<b>Method</b>'" :property="true" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>

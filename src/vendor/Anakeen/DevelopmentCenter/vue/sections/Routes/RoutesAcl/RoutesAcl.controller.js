@@ -19,6 +19,24 @@ export default {
       tabMultiple: []
     };
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.filter) {
+      let filter = to.query.filter;
+      next(function(vueInstance) {
+        if (filter && filter !== "") {
+          vueInstance.$refs.routesGridContent.kendoWidget().dataSource.filter({
+            field: "requiredAccess",
+            operator: "contains",
+            value: filter
+          });
+        }
+      });
+    } else {
+      next(function(vueInstance) {
+        vueInstance.$refs.routesGridContent.kendoWidget().dataSource.filter({});
+      });
+    }
+  },
   methods: {
     getRoutes(options) {
       this.$http
@@ -51,25 +69,17 @@ export default {
       if (e && e.requiredAccess) {
         Object.keys(e.requiredAccess.toJSON()).forEach(key => {
           const elt = e.requiredAccess.toJSON()[key];
-          this.tabMultiple.push(elt);
+          elt.map(e => {
+            let accessName = e.split("::")[1];
+            this.tabMultiple.push(
+              `<a href="/devel/security/routes/access/permissions/?filter=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`
+            );
+          });
         });
       }
       return this.tabMultiple
         .toString()
         .replace(new RegExp(",", "g"), " <b>and</b> ");
-    },
-    showPermissions(e) {
-      e.preventDefault();
-      this.$.map(e.sender.select(), item => {
-        const clickedItem = this.$(item)[0];
-        clickedItem.className = "";
-        if (clickedItem.cellIndex === 4 && clickedItem.innerText !== "") {
-          this.$router.push({
-            name: "Security::Routes::RoutesPermissions",
-            query: { filter: { logicalName: clickedItem.innerText } }
-          });
-        }
-      });
     }
   }
 };
