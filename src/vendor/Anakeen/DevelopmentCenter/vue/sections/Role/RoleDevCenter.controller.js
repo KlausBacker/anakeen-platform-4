@@ -18,6 +18,13 @@ export default {
       collection: ""
     };
   },
+  mounted() {
+    $(window).resize(() => {
+      if (this.$refs.roleContent) {
+        this.$refs.roleContent.kendoWidget().resize();
+      }
+    });
+  },
   methods: {
     setCellRender(e) {
       if (e.data.columnConfig.field === "title") {

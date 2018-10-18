@@ -1,14 +1,11 @@
 .routes-acl-content {
   height: 100%;
   width: 100%;
+  min-height: 200px;
+  overflow: hidden;
 }
 
 .routes-grid-content {
-  height: 100%;
   width: 100%;
-}
-
-.grid-cell--requiredAccess td:hover {
-  text-decoration: underline;
-  color: #157EFB;
+  height: 100%;
 }

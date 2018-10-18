@@ -14,6 +14,7 @@
                           :schema-total="parsePermissionsTotal">
         </kendo-datasource>
         <kendo-grid ref="routesPermissionsContent"
+                    class="routes-grid-content"
                     :data-source-ref="'routesPermissions'"
                     :pageable="true"
                     :filterable-mode="'row'"

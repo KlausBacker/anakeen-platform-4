@@ -19,6 +19,13 @@ export default {
       permissionsDataSource: ""
     };
   },
+  mounted() {
+    $(window).resize(() => {
+      if (this.$refs.routesPermissionsContent) {
+        this.$refs.routesPermissionsContent.kendoWidget().resize();
+      }
+    });
+  },
   beforeRouteEnter(to, from, next) {
     if (to.query.filter) {
       let filter = to.query.filter;

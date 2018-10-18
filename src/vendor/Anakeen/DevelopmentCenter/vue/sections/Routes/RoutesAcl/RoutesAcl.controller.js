@@ -19,6 +19,12 @@ export default {
       tabMultiple: []
     };
   },
+  mounted() {
+    $(window).resize(() => {
+      if (this.$refs.routesGridContent) {
+        this.$refs.routesGridContent.kendoWidget().resize();
+      }
+    });
   beforeRouteEnter(to, from, next) {
     if (to.query.filter) {
       let filter = to.query.filter;
