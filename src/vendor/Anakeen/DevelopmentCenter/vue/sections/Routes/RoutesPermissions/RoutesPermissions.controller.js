@@ -19,30 +19,17 @@ export default {
       permissionsDataSource: ""
     };
   },
-  mounted() {
-    $(window).resize(() => {
-      this.$refs.routesPermissionsContent.kendoWidget().resize();
-    });
-  },
   beforeRouteEnter(to, from, next) {
     if (to.query.filter) {
-      let filter = to.query.filter.logicalName;
+      let filter = to.query.filter;
       next(function(vueInstance) {
-        //vueInstance.$refs.routesPermissionsContent.$on("grid-ready", () => {
         if (filter && filter !== "") {
-          filter = filter.split(" and ").map(String);
           vueInstance.$refs.routesPermissionsContent
             .kendoWidget()
             .dataSource.filter({
-              logic: "or",
-              filters: filter.map(andFilters => {
-                const filtersToAdd = andFilters.split("::")[1];
-                return {
-                  field: "accessName",
-                  operators: "contains",
-                  value: filtersToAdd
-                };
-              })
+              field: "accessName",
+              operator: "contains",
+              value: filter
             });
         }
       });
@@ -81,14 +68,12 @@ export default {
       this.$refs.routesPermissionsContent.kendoWidget().dataSource.filter({});
       this.$refs.routesPermissionsContent.kendoWidget().dataSource.read();
     },
-    disabledFilter(args) {
-      args.element.kendoDropDownList({
-        valuePrimitive: true,
-        dataSource: ["true", "false"]
-      });
-    },
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");
+    },
+    displayLink(e) {
+      const accessName = e.accessName;
+      return `<a href="/devel/security/routes/access/controls/?filter=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`;
     }
   }
 };
