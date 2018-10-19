@@ -1,13 +1,13 @@
 <template>
     <div class="role-parent">
         <ank-se-grid
-                     ref="roleContent"
-                     class="role-content"
-                     collection="ROLE"
-                     :reorderable="true"
-                     @action-click="selectRole"
-                     @grid-ready="setGridOption"
-                     @before-grid-cell-render="setCellRender">
+                ref="roleContent"
+                class="role-content"
+                collection="ROLE"
+                :reorderable="true"
+                @action-click="selectRole"
+                @grid-ready="setGridOption"
+                @before-grid-cell-render="setCellRender">
             <ank-se-grid-column title="Icon" field="icon" :hidden="true"></ank-se-grid-column>
             <ank-se-grid-column title="Title" field="title"></ank-se-grid-column>
             <ank-se-grid-column title="Reference (login)" field="role_login"></ank-se-grid-column>
@@ -17,6 +17,7 @@
             </ank-se-grid-actions>
         </ank-se-grid>
         <modal name="roleModal" :width="'80%'" :height="'80%'" @opened="openedModal">
+            <kendo-button @click="$modal.hide('roleModal')" style="float:right" icon="close" ></kendo-button>
             <ank-smart-element ref="roleConsult" class="role-modal"></ank-smart-element>
         </modal>
     </div>

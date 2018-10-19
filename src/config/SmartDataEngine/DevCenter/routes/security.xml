@@ -19,5 +19,12 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GetAllRoutes">
+            <sde:callable>\Anakeen\Routes\Devel\Security\Routes</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/routes/</sde:pattern>
+            <sde:description>Get All routes</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
     </sde:routes>
 </sde:config>

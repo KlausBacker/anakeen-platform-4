@@ -20,7 +20,7 @@
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true">
-            <kendo-grid-column :field="'name'" :title="'<b>Name</b>'":filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
+            <kendo-grid-column :field="'name'" :title="'<b>Set name</b>'":filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'key'" :title="'<b>Key</b>'"  :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'label'" :title="'<b>Label</b>'"  :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'parentkey'" :title="'<b>Parent</b>'"  :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>

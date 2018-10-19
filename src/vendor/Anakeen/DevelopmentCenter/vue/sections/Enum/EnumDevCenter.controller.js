@@ -21,7 +21,9 @@ export default {
   },
   mounted() {
     $(window).resize(() => {
-      this.$refs.enumGridContent.kendoWidget().resize();
+      if (this.$refs.enumGridContent) {
+        this.$refs.enumGridContent.kendoWidget().resize();
+      }
     });
   },
   methods: {

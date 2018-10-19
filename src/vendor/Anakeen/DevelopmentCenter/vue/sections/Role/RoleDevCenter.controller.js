@@ -2,10 +2,12 @@ import Vue from "vue";
 import { AnkSEGrid } from "@anakeen/ank-components";
 import VModal from "vue-js-modal";
 import { AnkSmartElement } from "@anakeen/ank-components";
+import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 
 Vue.use(VModal);
 Vue.use(AnkSEGrid);
 Vue.use(AnkSmartElement);
+Vue.use(ButtonsInstaller);
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
@@ -15,6 +17,13 @@ export default {
     return {
       collection: ""
     };
+  },
+  mounted() {
+    $(window).resize(() => {
+      if (this.$refs.roleContent) {
+        this.$refs.roleContent.kendoWidget().resize();
+      }
+    });
   },
   methods: {
     setCellRender(e) {
@@ -36,7 +45,9 @@ export default {
             }
           },
           operators: {
-            contains: "Contains"
+            string: {
+              contains: "Contains"
+            }
           }
         };
       });
