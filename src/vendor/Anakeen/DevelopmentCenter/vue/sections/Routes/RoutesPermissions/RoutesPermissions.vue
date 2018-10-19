@@ -1,5 +1,5 @@
 <template>
-    <div class="routes-permissions-content">
+    <div class="routes-permissions-parent">
         <div>
             <kendo-toolbar class="routes-permissions-toolbar">
                 <kendo-toolbar-item type="button" icon="refresh" @click="refreshPermissions"></kendo-toolbar-item>
@@ -14,9 +14,9 @@
                           :schema-total="parsePermissionsTotal">
         </kendo-datasource>
         <kendo-grid ref="routesPermissionsContent"
-                    class="routes-grid-content"
+                    class="routes-permissions-content"
                     :data-source-ref="'routesPermissions'"
-                    :pageable="true"
+                    :pageable="{ pageSizes: [10,20,40,50]}"
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true">
