@@ -26,14 +26,17 @@ create or replace function text_to_array(text)
 returns text[] as $$
 declare
   svalues alias for $1;
-  arr text[];
-  wt text;
-   m   text;
-   r text[];
+  r text[];
+  i integer ;
 begin
   r:=null;
   IF svalues is not null THEN
     r:=  regexp_split_to_array(svalues, E'\n');
+    FOR i IN array_lower(r, 1) .. array_upper(r, 1) LOOP
+        IF r[i] = '' or r[i] = ' ' or r[i] = E'\t'  THEN
+          r[i] := null;
+        END IF;
+    END LOOP;
   END IF;
   return (r);
 end;

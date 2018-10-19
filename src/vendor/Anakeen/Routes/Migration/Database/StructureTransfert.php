@@ -40,7 +40,7 @@ class StructureTransfert
         $data = [];
 
 
-        $this->transfertRequest($this->structure);
+        $data["count"]=count($this->transfertRequest($this->structure));
 
         return $data;
     }
@@ -74,6 +74,12 @@ class StructureTransfert
 
             if ($field->isMultiple() && !$field->isMultipleInArray()) {
                 switch ($field->type) {
+                    case "int":
+                        $propMapping[$field->id] = sprintf("text_to_array(%s)::int[]", $field->id);
+                        break;
+                    case "xml":
+                        $propMapping[$field->id] = sprintf("text_to_array(%s)::xml[]", $field->id);
+                        break;
                     default:
                         $propMapping[$field->id] = sprintf("text_to_array(%s)", $field->id);
                 }
@@ -82,11 +88,19 @@ class StructureTransfert
 
 
         if ($structure->usefor === "SP") {
-             $propMapping["ba_desc"]="prf_desc";
+            $propMapping["ba_desc"] = "prf_desc";
+        }
+        if ($structure->name === "CVDOC") {
+            $propMapping["ba_desc"] = "cv_desc";
+            unset($propMapping["cv_primarymask"]);
         }
 
+        $qsql = <<<SQL
+insert into doc%d (%s) select %s from dynacase.doc%d where fromid=%d and id not in (select id from only doc%d ) and (name is null or name not in (select name from docname where fromid=%d)) returning id
+SQL;
+
         $sql = sprintf(
-            "insert into doc%d (%s) select %s from dynacase.doc%d where fromid=%d and id not in (select id from only doc%d ) and name not in (select name from docname where fromid=%d)",
+            $qsql,
             $structure->id,
             implode(", ", array_keys($propMapping)),
             implode(", ", array_values($propMapping)),
@@ -97,8 +111,11 @@ class StructureTransfert
         );
 
         print_r($sql . "\n");
-        DbManager::query($sql);
+        DbManager::query($sql, $ids, true);
+        return $ids;
     }
+
+
 
     protected function getPropMapping()
     {
