@@ -40,27 +40,33 @@ class StructureTransfert
         $data = [];
 
 
-        $data["count"]=count($this->transfertRequest($this->structure));
+        $data["count"] = count($this->transfertRequest($this->structure));
 
         return $data;
     }
 
+    protected static function importForeignTable($tableName)
+    {
+        $sql = sprintf("select ftrelid from pg_foreign_table where 'table_name=%s' = any(ftoptions)", $tableName);
+        DbManager::query($sql, $succeed, true);
 
-    protected function transfertRequest(SmartStructure $structure)
+        if (!$succeed) {
+            $sql = sprintf("IMPORT FOREIGN SCHEMA public LIMIT TO (%s) FROM SERVER dynacase into dynacase;", pg_escape_identifier($tableName));
+            DbManager::query($sql);
+        }
+    }
+
+    protected static function transfertRequest(SmartStructure $structure)
     {
 
         $sql = sprintf("select id from only docfam where name='%s'", pg_escape_string($structure->name));
         DbDynacase::query($sql, $dynacaseId, true, true);
 
 
-        $sql = sprintf("DROP FOREIGN TABLE  IF EXISTS  dynacase.doc%d;", $dynacaseId);
-        DbManager::query($sql);
-
-        $sql = sprintf("IMPORT FOREIGN SCHEMA public LIMIT TO (doc%d) FROM SERVER dynacase into dynacase;", $dynacaseId);
-        DbManager::query($sql);
+        static::importForeignTable(sprintf("doc%d", $dynacaseId));
 
 
-        $propMapping = $this->getPropMapping();
+        $propMapping = static::getPropMapping();
         $fields = $structure->getNormalAttributes();
         foreach ($fields as $field) {
             if (!$field->isMultiple()) {
@@ -96,7 +102,10 @@ class StructureTransfert
         }
 
         $qsql = <<<SQL
-insert into doc%d (%s) select %s from dynacase.doc%d where fromid=%d and id not in (select id from only doc%d ) and (name is null or name not in (select name from docname where fromid=%d)) returning id
+insert into doc%d (%s) 
+select %s from dynacase.doc%d where fromid=%d and id not in (
+    select id from only doc%d ) and (name is null or name not in (select name from docname where fromid=%d
+)) returning id
 SQL;
 
         $sql = sprintf(
@@ -116,8 +125,7 @@ SQL;
     }
 
 
-
-    protected function getPropMapping()
+    protected static function getPropMapping()
     {
         return ["id" => "id",
             "owner" => "owner",

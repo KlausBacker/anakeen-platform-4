@@ -35,13 +35,13 @@
 ./ank.php --route=Migration::TableTransfert --method=POST --table=Group
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocHisto
 ./ank.php --route=Migration::TableTransfert --method=POST --table=VGroup
- ./ank.php --route=Migration::TableTransfert --method=POST --table=VaultDiskDirStorage --query=clear=all
- ./ank.php --route=Migration::TableTransfert --method=POST --table=VaultDiskStorage --query=clear=all
- ./ank.php --route=Migration::TableTransfert --method=POST --table=VaultDiskFsStorage --query=clear=all
- ./ank.php --route=Migration::TableTransfert --method=POST --table=DocVaultIndex --query=clear=all
+./ank.php --route=Migration::TableTransfert --method=POST --table=VaultDiskDirStorage --query=clear=all
+./ank.php --route=Migration::TableTransfert --method=POST --table=VaultDiskStorage --query=clear=all
+./ank.php --route=Migration::TableTransfert --method=POST --table=VaultDiskFsStorage --query=clear=all
+./ank.php --route=Migration::TableTransfert --method=POST --table=DocVaultIndex --query=clear=all
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocUTag --query=clear=all
 ./ank.php --route=Migration::TableTransfert --method=POST --table=UserToken --query=clear=all
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocPerm --query=clear=all
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocPermExt --query=clear=all
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocTimer --query=clear=all
- ./ank.php --route=Migration::TableTransfert --method=POST --table=DocRel --query=clear=all
+./ank.php --route=Migration::TableTransfert --method=POST --table=DocRel --query=clear=all
