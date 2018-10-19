@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:parameters namespace="Migration">
+        <sde:parameter name="DYNACASE_DB">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Dynacase Database Access</sde:description>
+            <sde:value>host=localhost port=5432 dbname=dynacase user=postgres</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
+
+        <sde:parameter name="DYNACASE_PATH">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Dynacase Complete Path to server context</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>

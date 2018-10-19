@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="Migration">
+        <sde:route name="InitTransfert">
+            <sde:callable>\Anakeen\Routes\Migration\Database\InitTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/init</sde:pattern>
+            <sde:description>Database transfert move ids</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="StructureTransfert">
+            <sde:callable>\Anakeen\Routes\Migration\Database\StructureTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/structures/{structure}</sde:pattern>
+            <sde:description>Database transfert structure data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="ProfileTransfert">
+            <sde:callable>\Anakeen\Routes\Migration\Database\ProfileTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/profile/{structure}</sde:pattern>
+            <sde:description>Database transfert profile accesses data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+
+    </sde:routes>
+</sde:config>
