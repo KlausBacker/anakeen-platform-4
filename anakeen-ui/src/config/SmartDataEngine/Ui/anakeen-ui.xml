@@ -16,5 +16,20 @@
       <sde:description>Fetch Anakeen Web Components</sde:description>
       <sde:authenticated>false</sde:authenticated>
     </sde:route>
+    <sde:route name="Transaction">
+      <sde:callable>\Anakeen\Routes\Ui\Transaction\Transactions</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/ui/transaction[/{transactionId}]</sde:pattern>
+      <sde:description>Create and launch a transaction</sde:description>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
+    <sde:route name="PollTransaction">
+      <sde:callable>\Anakeen\Routes\Ui\Transaction\PollTransaction</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/ui/transaction/{transactionId}/status</sde:pattern>
+      <sde:description>Read a transaction status</sde:description>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
   </sde:routes>
 </sde:config>
