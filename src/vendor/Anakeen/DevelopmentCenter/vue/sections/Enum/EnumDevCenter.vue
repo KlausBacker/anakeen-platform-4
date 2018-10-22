@@ -16,7 +16,7 @@
         </kendo-datasource>
         <kendo-grid ref="enumGridContent" class="enum-grid-content"
                     :data-source-ref="'enumGrid'"
-                    :pageable="true"
+                    :pageable="{ pageSizes: [10,20,40,50]}"
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true">

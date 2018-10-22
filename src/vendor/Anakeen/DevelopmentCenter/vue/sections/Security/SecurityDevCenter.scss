@@ -1,11 +1,24 @@
 .security-parent {
-  height: 100%;
-  width: 100%;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.security-content {
+  display: flex;
+  flex: 1;
 }
 
 .security-nav {
-  font-size: 18px;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  .security-nav-link {
+    cursor: pointer;
+    border-radius: .25rem .25rem 0 0;
+    padding: .5rem;
+    background: white;
+    &.router-link-active {
+      z-index: 10;
+      margin-bottom: -1px;
+      border: 1px solid rgba(33, 37, 41, .125);
+      border-bottom-color: transparent;
+    }
+  }
 }
-

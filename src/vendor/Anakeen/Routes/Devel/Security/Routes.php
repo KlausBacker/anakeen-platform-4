@@ -41,12 +41,13 @@ class Routes extends GridFiltering
                     $this->filtered = $this->recursiveFilter($this->filtered, $filter);
                 }
             }
-            $data["requestParameters"] = $this->getRequestParameters($this->filtered);
+            $data["requestParameters"] = $this->getRoutesRequestParameters($this->filtered);
             $data["routes"] = $this->filtered;
-            return ApiV2Response::withData($response, $data);
+        } else {
+            $data["requestParameters"] = $this->getRoutesRequestParameters($result);
+            $data["routes"] = $result;
         }
-        $data["requestParameters"] = $this->getRequestParameters($result);
-        $data["routes"] = $result;
+        $data["routes"] = array_slice($data["routes"], $this->offset, $this->slice);
         return ApiV2Response::withData($response, $data);
     }
 
@@ -54,8 +55,22 @@ class Routes extends GridFiltering
     {
         $filtered = [];
         foreach ($result as $r) {
-            if (stripos($r[$filter["field"]], $filter["value"]) !== false) {
-                $filtered[] = $r;
+            if (strcmp($r[$filter["field"]], "") === 0) {
+                $value = " ";
+            } else {
+                $value = $r[$filter["field"]];
+            }
+            if (is_array(json_decode(json_encode($value), true))) {
+                foreach ($value as $item) {
+                    $item = explode("::", $item[0])[1];
+                    if (stripos($item, $filter["value"]) !== false) {
+                        $filtered[] = $r;
+                    }
+                }
+            } else {
+                if (stripos($value, $filter["value"]) !== false) {
+                    $filtered[] = $r;
+                }
             }
         }
         return $filtered;
@@ -88,7 +103,8 @@ class Routes extends GridFiltering
 
         return $formatedRoute;
     }
-    protected function getRequestParameters($tab)
+
+    protected function getRoutesRequestParameters($tab)
     {
         $requestData["take"] = $this->slice;
         $requestData["skip"] = $this->offset;

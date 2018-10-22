@@ -70,6 +70,7 @@ export default {
     refreshRoutes() {
       this.$refs.routesGridContent.kendoWidget().dataSource.filter({});
       this.$refs.routesGridContent.kendoWidget().dataSource.read();
+      document.location = "/devel/security/routes/access/controls/";
     },
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");

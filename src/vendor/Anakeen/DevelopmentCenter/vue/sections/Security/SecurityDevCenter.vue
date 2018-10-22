@@ -1,8 +1,8 @@
 <template>
     <div class="security-parent">
         <nav class="security-nav">
-            <router-link :to="{name: 'Security::Routes'}">Routes</router-link>
-            <router-link :to="{name: 'Security::Roles'}">Roles</router-link>
+            <router-link class="security-nav-link" tag="div" :to="{name: 'Security::Routes'}">Routes</router-link>
+            <router-link class="security-nav-link" tag="div" :to="{name: 'Security::Roles'}">Roles</router-link>
         </nav>
         <router-multi-view class="security-content"></router-multi-view>
     </div>
