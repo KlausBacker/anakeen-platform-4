@@ -49,21 +49,6 @@ class GridExport extends GridContent {
                 $this->transaction = TransactionManager::createTransaction();
                 return ApiV2Response::withData($response, $this->transaction->getData());
         }
-//        parent::__invoke($request, $response, $args);
-//        $this->clientColumnsConfig = $request->getQueryParam("columnsConfig", []);
-//        $this->selectedRows = $request->getQueryParam("selectedRows", []);
-//        $this->unselectedRows = $request->getQueryParam("unselectedRows", []);
-//
-//        $data = $this->getData();
-//        $spreadSheet = new Spreadsheet();
-//        $sheet = $spreadSheet->getActiveSheet();
-//
-//        $this->writeHeaders($sheet);
-//        $this->writeValues($sheet, $data["smartElements"]);
-//        $this->writeFile($spreadSheet);
-//
-//
-//        return self::withFile($response, "./export.xlsx", "export.xlsx");
     }
 
     protected function doExport(\Slim\Http\request $request, \Slim\Http\response $response, $args) {
