@@ -14,7 +14,7 @@ use Anakeen\Router\Exception;
  * @package Anakeen\Routes\Migration\Database
  * @use by route /api/v2/migration/database/transfert/structures/{structure}
  */
-class StructureTransfert
+class DataStructureTransfert
 {
     protected $structureName;
     protected $structure;
@@ -80,6 +80,22 @@ class StructureTransfert
 
             if ($field->isMultiple() && !$field->isMultipleInArray()) {
                 switch ($field->type) {
+                    case "longtext":
+                        $propMapping[$field->id] = sprintf("longtext_to_array(%s)", $field->id);
+                        break;
+                    case "time":
+                        $propMapping[$field->id] = sprintf("text_to_array(%s)::time[]", $field->id);
+                        break;
+                    case "timestamp":
+                        $propMapping[$field->id] = sprintf("text_to_array(%s)::timestamp[]", $field->id);
+                        break;
+                    case "date":
+                        $propMapping[$field->id] = sprintf("text_to_array(%s)::date[]", $field->id);
+                        break;
+                    case "money":
+                    case "double":
+                        $propMapping[$field->id] = sprintf("text_to_array(%s)::double[]", $field->id);
+                        break;
                     case "int":
                         $propMapping[$field->id] = sprintf("text_to_array(%s)::int[]", $field->id);
                         break;
@@ -119,7 +135,6 @@ SQL;
             $structure->id
         );
 
-        print_r($sql . "\n");
         DbManager::query($sql, $ids, true);
         return $ids;
     }

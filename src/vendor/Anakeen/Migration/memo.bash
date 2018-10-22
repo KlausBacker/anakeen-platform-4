@@ -45,3 +45,7 @@
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocPermExt --query=clear=all
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocTimer --query=clear=all
 ./ank.php --route=Migration::TableTransfert --method=POST --table=DocRel --query=clear=all
+
+./ank.php --route=Migration::ConfigStructureTransfert --method=POST --structure=PORTAL_SERVICE
+./ank.php --script=generateDocumentClass --docid=PORTAL_SERVICE
+./ank.php --route=Migration::StructureTransfert --method=POST --structure=PORTAL_SERVICE

@@ -41,3 +41,26 @@ begin
   return (r);
 end;
 $$ language 'plpgsql';
+
+
+create or replace function longtext_to_array(text)
+returns text[] as $$
+declare
+  svalues alias for $1;
+  r text[];
+  i integer ;
+begin
+  r:=null;
+  IF svalues is not null THEN
+    r:=  regexp_split_to_array(svalues, E'\n');
+    FOR i IN array_lower(r, 1) .. array_upper(r, 1) LOOP
+        IF r[i] = '' or r[i] = ' ' or r[i] = E'\t'  THEN
+          r[i] := null;
+        ELSE
+          r[i]=replace( r[i], '<BR>', E'\n');
+        END IF;
+    END LOOP;
+  END IF;
+  return (r);
+end;
+$$ language 'plpgsql';
