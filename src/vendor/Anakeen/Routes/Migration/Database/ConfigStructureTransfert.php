@@ -32,7 +32,7 @@ class ConfigStructureTransfert extends DataStructureTransfert
 
     protected function transfertConfig($structureName)
     {
-        static::importForeignTable("docfam");
+        Utils::importForeignTable("docfam");
 
         DbManager::query("begin");
 
@@ -76,31 +76,27 @@ class ConfigStructureTransfert extends DataStructureTransfert
             "select name from docfam where id=(select fromid from docfam where name='%s');",
             pg_escape_string($structureName)
         );
-        print $sql;
-        DbManager::query($sql, $parentName, true, true);
-
-        $namePath = explode('\\', $classPath);
-        foreach ($namePath as $k => $part) {
-            $namePath[$k] = ucfirst(strtolower($part));
+        $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        if (!$vendorName) {
+            throw new Exception("Migration VENDOR parameter is not set");
         }
-        $className = array_pop($namePath);
+        DbManager::query($sql, $parentName, true, true);
+        $className = ucfirst(strtolower($structureName));
+
+        $namePath = [$vendorName, $className];
+        $className = sprintf("%sBehavior", $className);
         $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
         $template = file_get_contents(__DIR__ . '/../../../Migration/StructureBehavior.php.mustache');
 
-        $nameSpace = implode("\\\\", $namePath);
         $sql = sprintf(
             "update docfam set classname = E'%s\\\\%s' where name='%s'",
-            $nameSpace,
+            implode("\\\\", $namePath),
             $className,
             pg_escape_string($structureName)
         );
 
-        if ($namePath) {
-            $nameSpace = implode("\\", $namePath);
-            $stubPath = sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
-        } else {
-            $stubPath = sprintf("%s/Root/%s.php", $vendorPath, $className);
-        }
+        $stubPath = sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
+
         if ($parentName) {
             $extends = '\\SmartStructure\\' . ucfirst(strtolower($parentName));
         } else {
@@ -108,12 +104,14 @@ class ConfigStructureTransfert extends DataStructureTransfert
         }
 
         DbManager::query($sql);
-        print "$stubPath\n$sql\n";
+        //print "$stubPath\n$sql\n";
         $mustache = new \Mustache_Engine();
         $stubBehaviorContent = $mustache->render($template, [
             "Classname" => $className,
-            "Namespace" => $nameSpace,
-            "Extends" => $extends
+            "Namespace" => implode("\\", $namePath),
+            "Extends" => $extends,
+            "OriginalClass" => $classPath,
+            "structureName" => $structureName
         ]);
         Utils::writeFileContent($stubPath, $stubBehaviorContent);
     }
@@ -121,7 +119,7 @@ class ConfigStructureTransfert extends DataStructureTransfert
     protected function importStructureEnums($structureName)
     {
 
-        static::importForeignTable("docenum");
+        Utils::importForeignTable("docenum");
 
 
         $sql = sprintf(
@@ -157,7 +155,7 @@ SQL;
     protected function importStructureFields($structureName)
     {
 
-        static::importForeignTable("docattr");
+        Utils::importForeignTable("docattr");
         $qsql = <<<SQL
 insert into docattr (%s) 
 select %s from dynacase.docattr where docid=(select id from docfam where name='%s') returning id
@@ -230,6 +228,7 @@ SQL;
         return ["dfldid" => "dfldid",
             "cfldid" => "cfldid",
             "ccvid" => "ccvid",
+            "cprofid" => "cprofid",
             "ddocid" => "ddocid",
             "methods" => "methods",
             "schar" => "schar"];

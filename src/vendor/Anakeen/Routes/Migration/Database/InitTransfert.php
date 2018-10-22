@@ -40,8 +40,11 @@ class InitTransfert
      */
     protected function moveIds()
     {
+        // @TODO Need to restore constraint after
         $sql = "alter table docpermext drop constraint docpermext_docid_check";
+        DbManager::query($sql);
         $sql = "alter table docperm drop constraint docperm_docid_check";
+        DbManager::query($sql);
 
         $sql = "DROP FOREIGN TABLE IF EXISTS  dynacase.docname;";
         DbManager::query($sql);

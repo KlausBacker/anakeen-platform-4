@@ -15,5 +15,14 @@
             <sde:value/>
             <sde:access>admin</sde:access>
         </sde:parameter>
+
+
+        <sde:parameter name="VENDOR">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Vendor to place config files</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
     </sde:parameters>
 </sde:config>

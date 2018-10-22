@@ -6,6 +6,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Migration\DbDynacase;
+use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -45,25 +46,17 @@ class DataStructureTransfert
         return $data;
     }
 
-    protected static function importForeignTable($tableName)
-    {
-        $sql = sprintf("select ftrelid from pg_foreign_table where 'table_name=%s' = any(ftoptions)", $tableName);
-        DbManager::query($sql, $succeed, true);
 
-        if (!$succeed) {
-            $sql = sprintf("IMPORT FOREIGN SCHEMA public LIMIT TO (%s) FROM SERVER dynacase into dynacase;", pg_escape_identifier($tableName));
-            DbManager::query($sql);
-        }
-    }
 
     protected static function transfertRequest(SmartStructure $structure)
     {
 
-        $sql = sprintf("select id from only docfam where name='%s'", pg_escape_string($structure->name));
-        DbDynacase::query($sql, $dynacaseId, true, true);
+        Utils::importForeignTable("docfam");
+        $sql = sprintf("select id from only dynacase.docfam where name='%s'", pg_escape_string($structure->name));
+        DbManager::query($sql, $dynacaseId, true, true);
 
 
-        static::importForeignTable(sprintf("doc%d", $dynacaseId));
+        Utils::importForeignTable(sprintf("doc%d", $dynacaseId));
 
 
         $propMapping = static::getPropMapping();
@@ -94,7 +87,7 @@ class DataStructureTransfert
                         break;
                     case "money":
                     case "double":
-                        $propMapping[$field->id] = sprintf("text_to_array(%s)::double[]", $field->id);
+                        $propMapping[$field->id] = sprintf("text_to_array(%s)::float8[]", $field->id);
                         break;
                     case "int":
                         $propMapping[$field->id] = sprintf("text_to_array(%s)::int[]", $field->id);

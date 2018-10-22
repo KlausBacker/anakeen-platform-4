@@ -1,0 +1,27 @@
+<?php
+
+namespace {{Namespace}};
+
+/**
+ * Access render to display {{structureName}} elements in browser
+ * @ TODO Use original class to complete behavior
+ * @see {{OriginalClass}}
+ */
+class {{Classname}} implements \Dcp\Ui\IRenderConfigAccess
+{
+      /**
+       * @param string $mode
+       * @return \Dcp\Ui\IRenderConfig
+       */
+      public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
+      {
+          switch ($mode) {
+              case \Dcp\Ui\RenderConfigManager::CreateMode:
+              case \Dcp\Ui\RenderConfigManager::EditMode:
+                 // return new {{structureClass}}EditRender();
+              case \Dcp\Ui\RenderConfigManager::ViewMode:
+                 // return new {{structureClass}}ViewRender();
+          }
+          return null;
+      }
+}

@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Migration\Database;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\DbObj;
+use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -51,14 +52,9 @@ class TableTransfert
     {
 
         $pgTable = pg_escape_identifier($tableObject->dbtable);
-        $sql = sprintf("DROP FOREIGN TABLE  IF EXISTS  dynacase.%s;", $pgTable);
-        DbManager::query($sql);
 
-        $sql = sprintf("IMPORT FOREIGN SCHEMA public LIMIT TO (%s) FROM SERVER dynacase into dynacase;", $pgTable);
-        DbManager::query($sql);
+        Utils::importForeignTable($tableObject->dbtable);
 
-
-        print_r($sql . "\n");
 
         if ($this->clearBefore === true) {
             $sql = sprintf("delete from %s", $pgTable);
@@ -78,7 +74,6 @@ SQL;
                 $pgTable
             );
             $qsql .= $where;
-
         }
 
         $qsql .= " returning " . $tableObject->id_fields[0];
