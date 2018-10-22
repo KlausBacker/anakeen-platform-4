@@ -70,6 +70,11 @@ class Profile
     }
 
 
+    /**
+     * Get inherited accesses (from group management)
+     *
+     * @param array $accesses
+     */
     protected function getGreyAccesses(array &$accesses)
     {
         $parentGroups = self::getGroupParents();
@@ -258,6 +263,7 @@ class Profile
      * @param $resourceId
      *
      * @throws Exception
+     * @throws \Anakeen\Core\DocManager\Exception
      */
     protected function setDocument($resourceId)
     {
