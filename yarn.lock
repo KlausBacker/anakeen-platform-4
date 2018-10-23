@@ -27,10 +27,10 @@
     xml2js "^0.4.19"
     yargs "^11.1.0"
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1539763624"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1539763624.tgz#54108da3d9270c35bfc83a664ed7032195f8a1df"
-  integrity sha512-DGNlBe5C2/scleQhJ6Jdb/HIjPPtDHclnRUimo7On2jFHnfMJDl9saz5k9EEeZd0rupi1cT8ANhl34ptxjglZA==
+"@anakeen/ank-components@1.0.0-1540279589":
+  version "1.0.0-1540279589"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1540279589.tgz#e12871d9d86fb3b2f8992b9d2d4433bac898eb15"
+  integrity sha512-ynEhCkFZSPbyuIOIadYboRq9HYclHZDFMCGdKrLClDYuSQL10S1XZk4boLeLLKy34X2MoQ7Wt7PiwhEfV10n0g==
 
 "@anakeen/webpack-conf@latest":
   version "1.0.0-1539166243"
