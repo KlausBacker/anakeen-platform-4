@@ -238,7 +238,7 @@ class FormatCollection
         $keys[] = self::propUsage;
         $keys[] = self::propType;
         // atags is rename to tags
-        $ktag=array_search("atags", $keys);
+        $ktag = array_search("atags", $keys);
         unset($keys[$ktag]);
         return $keys;
     }
@@ -670,17 +670,18 @@ class FormatCollection
     {
         if ($doc->wid > 0) {
             $workflow = SEManager::getDocument($doc->wid);
-            return array(
-                "id" => intval($workflow->initid),
-                "title" => $workflow->getTitle(),
-                "icon" => $workflow->getIcon("", $this->familyIconSize)
-            );
-        } else {
-            return array(
-                "id" => 0,
-                "title" => ""
-            );
+            if ($workflow) {
+                return array(
+                    "id" => intval($workflow->initid),
+                    "title" => $workflow->getTitle(),
+                    "icon" => $workflow->getIcon("", $this->familyIconSize)
+                );
+            }
         }
+        return array(
+            "id" => 0,
+            "title" => ""
+        );
     }
 
     protected function getApplicationTagsData(\Anakeen\Core\Internal\SmartElement $doc)
@@ -908,7 +909,7 @@ class FormatCollection
         if ($oa->isMultiple()) {
             if ($oa->isMultipleInArray()) {
                 // double level multiple
-                if (! is_array($value)) {
+                if (!is_array($value)) {
                     $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value);
                 } else {
                     $tv = $value;
@@ -937,7 +938,7 @@ class FormatCollection
                 }
             } else {
                 // single level multiple
-                if (! is_array($value)) {
+                if (!is_array($value)) {
                     $tv = \Anakeen\Core\Internal\SmartElement::rawValueToArray($value, true);
                 } else {
                     $tv = $value;
