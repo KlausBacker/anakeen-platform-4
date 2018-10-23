@@ -64,7 +64,7 @@ class RouterLib
                         $result[] = sprintf("%s/%s", $value, $filename);
                     }
                 } else {
-                    if (preg_match("/\\.xml/", $value)) {
+                    if (preg_match("/\\.xml$/", $value)) {
                         $result[] = $value;
                     }
                 }

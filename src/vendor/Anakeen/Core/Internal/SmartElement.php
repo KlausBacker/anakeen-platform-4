@@ -5323,7 +5323,7 @@ create unique index i_docir on doc(initid, revision);";
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
              */
             $wdoc = SEManager::getDocument($this->wid);
-            if ($wdoc->isAffected()) {
+            if ($wdoc) {
                 return $wdoc->getActivity($this->state, $def);
             }
         } else {
@@ -6214,6 +6214,7 @@ create unique index i_docir on doc(initid, revision);";
                 $cache ? "yes" : "no",
                 $inline ? "yes" : "no"
             );
+
             return $url;
         }
         return '';

@@ -2,22 +2,19 @@
 
 namespace Anakeen\Core;
 
-use Anakeen\Core\Internal\Debug;
-use Anakeen\LogManager;
-
 class DbManager
 {
     protected static $inTransition = false;
     protected static $savepoint;
     protected static $masterLock;
     protected static $lockpoint;
+    protected static $pgConnection=null;
+    protected static $dbRessource;
 
     public static function getDbAccess()
     {
-        static $pgConnection = null;
-
-        if ($pgConnection) {
-            return $pgConnection;
+        if (static::$pgConnection) {
+            return static::$pgConnection;
         }
 
         $configFile = ContextManager::getRootDirectory() . "/" . Settings::DbAccessFilePath;
@@ -32,9 +29,9 @@ class DbManager
         if (!$pgservice_core) {
             throw new \Dcp\Core\Exception("CORE0016", $configFile);
         }
-        $pgConnection = sprintf("service='%s'", $pgservice_core);
+        static::$pgConnection = sprintf("service='%s'", $pgservice_core);
 
-        return $pgConnection;
+        return static::$pgConnection;
     }
 
 
@@ -44,19 +41,17 @@ class DbManager
      */
     public static function getDbid()
     {
-        static $dbRessource = null;
-
-        if ($dbRessource) {
-            return $dbRessource;
+        if (static::$dbRessource) {
+            return static::$dbRessource;
         }
-        $dbRessource = pg_connect(self::getDbAccess());
-        if (!$dbRessource) {
+        static::$dbRessource = pg_connect(static::getDbAccess());
+        if (!static::$dbRessource) {
             // fatal error
             header('HTTP/1.0 503 DB connection unavalaible');
-            throw new \Dcp\Db\Exception('DB0101', self::getDbAccess());
+            throw new \Dcp\Db\Exception('DB0101', static::getDbAccess());
         }
 
-        return $dbRessource;
+        return static::$dbRessource;
     }
 
     /**
@@ -75,7 +70,7 @@ class DbManager
     {
         static $sqlStrict = null;
 
-        $dbid = self::getDbid();
+        $dbid = static::getDbid();
 
         // error_log("SQL>".$query."\n".Debug::getDebugStackString(2, 5));
 
@@ -106,29 +101,28 @@ class DbManager
      *
      * @param string $point point identifier
      *
-     * @throws \Dcp\Core\Exception
      * @return void
      */
     public static function savePoint($point)
     {
-        $idbid = intval(self::getDbid());
+        $idbid = intval(static::getDbid());
 
-        if (empty(self::$savepoint[$idbid])) {
-            self::$savepoint[$idbid] = array(
+        if (empty(static::$savepoint[$idbid])) {
+            static::$savepoint[$idbid] = array(
                 $point
             );
-            self::query("begin");
-            self::$inTransition=true;
+            static::query("begin");
+            static::$inTransition=true;
         } else {
-            self::$savepoint[$idbid][] = $point;
+            static::$savepoint[$idbid][] = $point;
         }
 
-        self::query(sprintf('savepoint "%s"', pg_escape_string($point)));
+        static::query(sprintf('savepoint "%s"', pg_escape_string($point)));
     }
 
     public static function inTransition()
     {
-        return self::$inTransition;
+        return static::$inTransition;
     }
 
     /**
@@ -155,8 +149,8 @@ class DbManager
         $exclusiveLock = $exclusiveLock_int32;
 
 
-        $idbid = intval(self::getDbid());
-        if (empty(self::$savepoint[$idbid])) {
+        $idbid = intval(static::getDbid());
+        if (empty(static::$savepoint[$idbid])) {
             throw new \Dcp\Db\Exception("DB0011", $exclusiveLock, $exclusiveLockPrefix);
         }
 
@@ -168,11 +162,11 @@ class DbManager
         } else {
             $prefixLockId = 0;
         }
-        if (self::$masterLock === false) {
-            self::query(sprintf('select pg_advisory_lock(0), pg_advisory_unlock(0), pg_advisory_xact_lock(%d,%d);', $exclusiveLock, $prefixLockId));
+        if (static::$masterLock === false) {
+            static::query(sprintf('select pg_advisory_lock(0), pg_advisory_unlock(0), pg_advisory_xact_lock(%d,%d);', $exclusiveLock, $prefixLockId));
         }
 
-        self::$lockpoint[$idbid][sprintf("%d-%s", $exclusiveLock, $exclusiveLockPrefix)] = array(
+        static::$lockpoint[$idbid][sprintf("%d-%s", $exclusiveLock, $exclusiveLockPrefix)] = array(
             $exclusiveLock,
             $prefixLockId
         );
@@ -188,16 +182,16 @@ class DbManager
      */
     public static function commitPoint($point)
     {
-        $idbid = intval(self::getDbid());
+        $idbid = intval(static::getDbid());
 
-        $lastPoint = array_search($point, self::$savepoint[$idbid]);
+        $lastPoint = array_search($point, static::$savepoint[$idbid]);
 
         if ($lastPoint !== false) {
-            self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
-            self::query(sprintf('release savepoint "%s"', pg_escape_string($point)));
-            if (count(self::$savepoint[$idbid]) == 0) {
-                self::query("commit");
-                self::$inTransition=false;
+            static::$savepoint[$idbid] = array_slice(static::$savepoint[$idbid], 0, $lastPoint);
+            static::query(sprintf('release savepoint "%s"', pg_escape_string($point)));
+            if (count(static::$savepoint[$idbid]) == 0) {
+                static::query("commit");
+                static::$inTransition=false;
             }
         } else {
             throw new \Dcp\Core\Exception(sprintf("cannot commit unsaved point : %s", $point));
@@ -214,18 +208,18 @@ class DbManager
      */
     public static function rollbackPoint($point)
     {
-        $idbid = intval(self::getDbid());
-        if (isset(self::$savepoint[$idbid])) {
-            $lastPoint = array_search($point, self::$savepoint[$idbid]);
+        $idbid = intval(static::getDbid());
+        if (isset(static::$savepoint[$idbid])) {
+            $lastPoint = array_search($point, static::$savepoint[$idbid]);
         } else {
             $lastPoint = false;
         }
         if ($lastPoint !== false) {
-            self::$savepoint[$idbid] = array_slice(self::$savepoint[$idbid], 0, $lastPoint);
-            self::query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
-            if (count(self::$savepoint[$idbid]) == 0) {
-                self::query("commit");
-                self::$inTransition=false;
+            static::$savepoint[$idbid] = array_slice(static::$savepoint[$idbid], 0, $lastPoint);
+            static::query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
+            if (count(static::$savepoint[$idbid]) == 0) {
+                static::query("commit");
+                static::$inTransition=false;
             }
         } else {
             throw new \Dcp\Core\Exception(sprintf("cannot rollback unsaved point : %s", $point));
@@ -244,12 +238,12 @@ class DbManager
     public static function setMasterLock($useLock)
     {
         if ($useLock) {
-            self::query('select pg_advisory_lock(0)');
+            static::query('select pg_advisory_lock(0)');
         } else {
-            self::query('select pg_advisory_unlock(0)');
+            static::query('select pg_advisory_unlock(0)');
         }
 
-        self::$masterLock = (bool)$useLock;
+        static::$masterLock = (bool)$useLock;
     }
 
     /**

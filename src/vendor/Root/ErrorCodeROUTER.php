@@ -1,6 +1,6 @@
 <?php
 
-class ErrorCodeRouter
+class ErrorCodeROUTER
 {
 
     /**
