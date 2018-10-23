@@ -30,6 +30,12 @@ export default class ErrorManager {
                 error.response.data.exceptionMessage
             });
           }
+          if (error.response.data.error) {
+            this.appInstance.$store.dispatch("displayError", {
+              title: "Server Error",
+              textContent: error.response.data.error
+            });
+          }
           console.error(error.response);
         } else if (error.request) {
           // The request was made but no response was received

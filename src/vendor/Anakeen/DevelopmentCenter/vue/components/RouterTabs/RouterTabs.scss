@@ -1,0 +1,32 @@
+.router-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .router-tabs-nav {
+    padding: .25rem 0 0 0;
+    display: flex;
+    .router-tab-nav-link {
+      min-width: 6rem;
+      text-align: center;
+      cursor: pointer;
+      border-radius: .25rem .25rem 0 0;
+      padding: .5rem 1rem;
+      background: white;
+      &.router-link-active {
+        z-index: 10;
+        margin-bottom: -1px;
+        border: 1px solid rgba(33, 37, 41, .125);
+        border-bottom-color: transparent;
+      }
+    }
+  }
+
+  .router-tabs-content {
+    background: white;
+    padding: .5rem;
+    display: flex;
+    flex: 1;
+    border: 1px solid rgba(33, 37, 41, .125);
+    border-radius: .25rem;
+  }
+}
