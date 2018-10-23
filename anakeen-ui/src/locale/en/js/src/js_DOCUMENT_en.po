@@ -354,5 +354,5 @@ msgstr ""
 
 msgctxt "historyDiffUi"
 msgid ""
-"{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>"
+"{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{mdate}}</em>"
 msgstr ""

@@ -1101,7 +1101,7 @@ define([
               attributeId: i18n.___("Attribute id", "historyDiffUi"),
               attributeLabel: i18n.___("Attribute label", "historyDiffUi"),
               documentHeader: i18n.___(
-                "{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>",
+                "{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{mdate}}</em>",
                 "historyDiffUi"
               ),
               filterMessages: i18n.___("Filter data", "historyDiffUi"),

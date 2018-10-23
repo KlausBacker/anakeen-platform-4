@@ -503,7 +503,7 @@ class DocumentView
                 $this->document = SmartElementManager::getDocument($revId, false);
             }
             if ($this->document === null) {
-                $exception = new Exception("CRUD0200", $resourceId);
+                $exception = new Exception("ROUTES0100", $resourceId);
                 $exception->setHttpStatus("404", "Document not found");
                 throw $exception;
             }
@@ -518,7 +518,7 @@ class DocumentView
         $this->document = SmartElementManager::createDocument($resourceId, false);
 
         if ($this->document === null) {
-            $exception = new Exception("CRUD0200", $resourceId);
+            $exception = new Exception("ROUTES0100", $resourceId);
             $exception->setHttpStatus("404", "Document not found");
             throw $exception;
         }
@@ -635,7 +635,7 @@ class DocumentView
                 case "view":
                     $err = $this->document->control("view");
                     if ($err) {
-                        $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                        $exception = new Exception("ROUTES0101", $this->resourceIdentifier, $err);
                         $exception->setHttpStatus("403", "Forbidden");
                         throw $exception;
                     }
@@ -649,14 +649,14 @@ class DocumentView
                         $err = $this->document->control("icreate");
                         $err .= $this->document->control("create");
                         if ($err) {
-                            $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                            $exception = new Exception("ROUTES0101", $this->resourceIdentifier, $err);
                             $exception->setHttpStatus("403", "Forbidden");
                             throw $exception;
                         }
                     } else {
                         $err = $this->document->canEdit();
                         if ($err) {
-                            $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                            $exception = new Exception("ROUTES0101", $this->resourceIdentifier, $err);
                             $exception->setHttpStatus("403", "Forbidden");
                             throw $exception;
                         }
@@ -664,7 +664,7 @@ class DocumentView
             }
             if ($this->document->isConfidential()) {
                 $err = "Confidential document";
-                $exception = new Exception("CRUD0201", $this->resourceIdentifier, $err);
+                $exception = new Exception("ROUTES0101", $this->resourceIdentifier, $err);
                 $exception->setHttpStatus("403", "Forbidden");
                 throw $exception;
             }

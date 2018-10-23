@@ -36,7 +36,7 @@ define([
         attributeId: "Attribute id",
         attributeLabel: "Attribute label",
         documentHeader:
-          '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>',
+          '"{{title}}"  (Revision : {{revision}}). <br/>Created on <em>{{mdate}}</em>',
         filterMessages: "Filter data",
         showOnlyDiff: "Show only differences",
         showAll: "Show all"
@@ -202,7 +202,7 @@ define([
                 revisionDiffWidget.options.documentId +
                 "/revisions/" +
                 revisionDiffWidget.options.firstRevision +
-                ".json?useTrash=true&fields=family.structure,document.properties.revdate,document.properties.revision,document.attributes"
+                ".json?useTrash=true&fields=family.structure,document.properties.mdate,document.properties.revision,document.attributes"
             )
               .done(function dcpRevisionDiff_getDataDone(data1) {
                 revisionDiffWidget.firstDocument = data1.data.revision;
@@ -211,7 +211,7 @@ define([
                     revisionDiffWidget.options.documentId +
                     "/revisions/" +
                     revisionDiffWidget.options.secondRevision +
-                    ".json?useTrash=true&fields=document.properties.revdate,document.properties.revision,document.attributes"
+                    ".json?useTrash=true&fields=document.properties.mdate,document.properties.revision,document.attributes"
                 )
                   .done(function dcpRevisionDiff_getRevisionDone(data2) {
                     revisionDiffWidget.secondDocument = data2.data.revision;
