@@ -357,9 +357,9 @@ msgstr "{{parentLabel}} / {{label}} est requis"
 
 msgctxt "historyDiffUi"
 msgid ""
-"{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{revdate}}</em>"
+"{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{mdate}}</em>"
 msgstr ""
-"{{title}}  (Révision : {{revision}}). <br/>Créé le <em>{{revdate}}</em>"
+"{{title}}  (Révision : {{revision}}). <br/>Créé le <em>{{mdate}}</em>"
 
 #~ msgctxt "propertyUi"
 #~ msgid "Last access date"

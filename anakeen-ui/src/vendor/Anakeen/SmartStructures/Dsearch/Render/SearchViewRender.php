@@ -199,20 +199,20 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
                         }
                     } else {
                         if ($attribute == "state") {
-                            $key = ___($key);
-                            $attr = ___("state");
+                            $key = _($key);
+                            $attr = _("state");
                         } else {
                             if ($attribute == "activity") {
                                 $key = $workflow->getStateActivity($key);
-                                $attr = ___("activity");
+                                $attr = _("activity");
                             } else {
                                 if ($attribute == "step") {
                                     if ($workflow->getStateActivity($key) != "") {
-                                        $key = ___($key) . "/" . $workflow->getStateActivity($key);
+                                        $key = _($key) . "/" . $workflow->getStateActivity($key);
                                     } else {
-                                        $key = ___($key);
+                                        $key = _($key);
                                     }
-                                    $attr = ___("step");
+                                    $attr = _("step");
                                 }
                             }
                         }
