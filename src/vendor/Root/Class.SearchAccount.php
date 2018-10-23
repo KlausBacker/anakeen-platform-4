@@ -3,6 +3,7 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Search Account : User / Group / Role
  *
@@ -81,7 +82,11 @@ class SearchAccount
      */
     public function addRoleFilter($role)
     {
-        $roles = explode(' ', $role);
+        if (is_array($role)) {
+            $roles = $role;
+        } else {
+            $roles = [$role];
+        }
         foreach ($roles as $aRole) {
             $aRole = trim($aRole);
             if ($aRole) {
@@ -106,11 +111,15 @@ class SearchAccount
      */
     public function addGroupFilter($group)
     {
-        $groups = explode(' ', $group);
+        if (is_array($group)) {
+            $groups = $group;
+        } else {
+            $groups = [$group];
+        }
         foreach ($groups as $aGroup) {
             $aGroup = trim($aGroup);
             if ($aGroup) {
-                $sql = sprintf("select id from users where accounttype='G' and login='%s'", pg_escape_string(mb_strtolower($aGroup)));
+                $sql = sprintf("select id from users where accounttype='G' and login='%s'", pg_escape_string($aGroup));
                 DbManager::query($sql, $result, true, true);
                 if (!$result) {
                     throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0005", $aGroup));
@@ -215,7 +224,6 @@ class SearchAccount
     }
 
 
-
     /**
      * include accounts the user cannot view
      *
@@ -262,7 +270,6 @@ class SearchAccount
         }
         $this->returnType = $type;
     }
-
 
 
     /**
