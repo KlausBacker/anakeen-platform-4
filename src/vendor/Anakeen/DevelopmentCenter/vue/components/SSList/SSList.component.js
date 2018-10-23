@@ -1,9 +1,12 @@
 import Vue from "vue";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 
+import { vendorCategory } from "../../store/getters";
+
 Vue.use(DataSourceInstaller);
 
 export default {
+  name: "ss-list",
   props: {
     filter: {
       type: [Boolean, Object],
@@ -35,15 +38,15 @@ export default {
       type: String,
       required: true
     },
-    smartStructureCategory: {
+    vendorCategory: {
       type: String,
-      default: "all",
+      default: "auto",
       validator: value => {
-        const validValues = ["all", "vendor"];
+        const validValues = ["auto", "anakeen", "vendor"];
         const valid = validValues.indexOf(value) >= 0;
         if (!valid) {
           console.error(
-            `Property "smartStructureCategory" must be in ${JSON.stringify(
+            `Property "vendorCategory" must be in ${JSON.stringify(
               validValues
             )}`
           );
@@ -71,6 +74,11 @@ export default {
       if (newValue !== oldValue) {
         this.filterList(newValue);
       }
+    },
+    vendorCategory() {
+      if (this.dataSource) {
+        this.dataSource.read();
+      }
     }
   },
   computed: {
@@ -78,6 +86,16 @@ export default {
       return {
         listFilterPlaceholder: "Search a structure"
       };
+    },
+    vendorType() {
+      let value = this.vendorCategory;
+      if (value === "auto") {
+        value = this.$store.getters.vendorTypeUrl;
+      }
+      if (value === "anakeen") {
+        value = "all";
+      }
+      return value;
     },
     tabs() {
       if (this.dataSource) {
@@ -96,7 +114,7 @@ export default {
       if (baseUrl.indexOf("<type>") < -1) {
         return baseUrl;
       }
-      return baseUrl.replace("<type>", this.smartStructureCategory);
+      return baseUrl.replace("<type>", this.vendorType);
     }
   },
   mounted() {
@@ -105,12 +123,19 @@ export default {
       this.listFilter = this.$router.currentRoute.query.filter;
     }
     this.dataSource.read();
+    this.$store.watch(vendorCategory, () => {
+      if (this.vendorCategory === "auto") {
+        if (this.dataSource) {
+          this.dataSource.read();
+        }
+      }
+    });
   },
   methods: {
     filterList(filterValue) {
       if (this.dataSource) {
         if (this.$router.currentRoute.query.filter !== filterValue) {
-          this.$router.push({ query: { filter: filterValue } });
+          this.$router.addQueryParams({ filter: filterValue });
         }
         this.dataSource.filter({
           logic: "or",

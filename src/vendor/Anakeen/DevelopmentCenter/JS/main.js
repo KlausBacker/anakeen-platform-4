@@ -10,6 +10,7 @@ import DevCenter from "../vue/DevCenter/DevCenter.vue";
 import StoreConfig from "../vue/store";
 import RouterConfig from "../vue/router";
 import RouterTabs from "../vue/components/RouterTabs/RouterTabs.vue";
+import SSList from "../vue/components/SSList/SSList.vue";
 
 const axios = Axios.create();
 Vue.prototype.$http = axios;
@@ -30,6 +31,7 @@ const router = new VueRouter(RouterConfig);
 sync(store, router);
 
 Vue.component(RouterTabs.name, RouterTabs);
+Vue.component(SSList.name, SSList);
 new Vue({
   el: "#development-center",
   components: {

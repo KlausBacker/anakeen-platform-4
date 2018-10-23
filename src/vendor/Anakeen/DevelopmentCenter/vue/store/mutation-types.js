@@ -1,1 +1,2 @@
 export const SET_ERROR = "SET_ERROR";
+export const SELECT_VENDOR_CATEGORY = "SELECT_VENDOR_CATEGORY";
