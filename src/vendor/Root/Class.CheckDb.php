@@ -275,7 +275,7 @@ class CheckDb
             $fid = intval($row["id"]);
             $test = pg_query(
                 $this->r,
-                sprintf("SELECT relname from pg_class where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='doc%d'));", $fid)
+                sprintf("SELECT pg_class.relname from pg_class where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='doc%d'));", $fid)
             );
             $dbfrom = pg_fetch_array($test, null, PGSQL_ASSOC);
             if ($dbfrom["relname"] != "doc$fromid") {
@@ -472,7 +472,7 @@ class CheckDb
         $fam = Anakeen\Core\SEManager::getFamily($famid);
         if ($fam) {
             $sql = sprintf(
-                "select pg_attribute.attname,pg_type.typname FROM pg_attribute, pg_type where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=(SELECT oid from pg_class where relname='doc%d') order by pg_attribute.attname;",
+                "select pg_attribute.attname,pg_type.typname FROM pg_attribute, pg_type where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=(SELECT pg_class.oid from pg_class, pg_namespace where pg_class.relname='doc%d' and pg_class.relnamespace = pg_namespace.oid  and pg_namespace.nspname = 'public') order by pg_attribute.attname;",
                 $fam->id
             );
 
