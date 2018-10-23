@@ -33,7 +33,7 @@ begin
   IF svalues is not null THEN
     r:=  regexp_split_to_array(svalues, E'\n');
     FOR i IN array_lower(r, 1) .. array_upper(r, 1) LOOP
-        IF r[i] = '' or r[i] = ' ' or r[i] = E'\t'  THEN
+        IF r[i] = '' or r[i] = ' ' or r[i] = E'\t' or r[i] = E'\u00a0' THEN
           r[i] := null;
         END IF;
     END LOOP;
@@ -54,7 +54,7 @@ begin
   IF svalues is not null THEN
     r:=  regexp_split_to_array(svalues, E'\n');
     FOR i IN array_lower(r, 1) .. array_upper(r, 1) LOOP
-        IF r[i] = '' or r[i] = ' ' or r[i] = E'\t'  THEN
+        IF r[i] = '' or r[i] = ' ' or r[i] = E'\t'  or r[i] = E'\u00a0' THEN
           r[i] := null;
         ELSE
           r[i]=replace( r[i], '<BR>', E'\n');

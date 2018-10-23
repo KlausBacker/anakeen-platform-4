@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Migration\Database;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -46,10 +47,7 @@ class InitTransfert
         $sql = "alter table docperm drop constraint docperm_docid_check";
         DbManager::query($sql);
 
-        $sql = "DROP FOREIGN TABLE IF EXISTS  dynacase.docname;";
-        DbManager::query($sql);
-        $sql = "IMPORT FOREIGN SCHEMA public LIMIT TO (docname) FROM SERVER dynacase into dynacase;";
-        DbManager::query($sql);
+        Utils::importForeignTable("docname");
 
         $sqls = ["begin"];
         $sqls[] = "SET CONSTRAINTS ALL DEFERRED";
@@ -75,7 +73,6 @@ class InitTransfert
             }
         }
 
-        print_r($results);
         foreach ($results as $result) {
             $id4 = $result["id4"];
             $id32 = $result["id32"];
@@ -96,10 +93,8 @@ class InitTransfert
             }
         }
 
-
         $sqls[] = "commit";
         foreach ($sqls as $sql) {
-            print("$sql\n");
             DbManager::query($sql);
         }
     }
@@ -140,6 +135,10 @@ SQL;
         $sqls[] = sprintf("update doc set cvid=%d where cvid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update doc set prelid=%d where prelid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update doc set wid=%d where wid=%d", $idTo, $idFrom);
+        $sqls[] = sprintf("update docfam set ccvid=%d where ccvid=%d", $idTo, $idFrom);
+        $sqls[] = sprintf("update docfam set cprofid=%d where cprofid=%d", $idTo, $idFrom);
+        $sqls[] = sprintf("update docfam set dfldid=%d where dfldid=%d", $idTo, $idFrom);
+        $sqls[] = sprintf("update docfam set cfldid=%d where cfldid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update dochisto set id=%d where id=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update dochisto set initid=%d where initid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update docfrom set id=%d where id=%d", $idTo, $idFrom);

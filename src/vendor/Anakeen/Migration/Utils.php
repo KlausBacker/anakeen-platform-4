@@ -36,7 +36,7 @@ class Utils
             $sql = sprintf("IMPORT FOREIGN SCHEMA public LIMIT TO (%s) FROM SERVER dynacase into dynacase;", pg_escape_identifier($tableName));
             DbManager::query($sql);
 
-            print "$sql\n";
+            //print "$sql\n";
         }
     }
 }

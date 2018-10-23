@@ -5,7 +5,6 @@ namespace Anakeen\Routes\Migration\Database;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
-use Anakeen\Migration\DbDynacase;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -15,7 +14,7 @@ use Anakeen\Router\Exception;
  * @package Anakeen\Routes\Migration\Database
  * @use by route /api/v2/migration/database/transfert/structures/{structure}
  */
-class DataStructureTransfert
+class DataElementTransfert
 {
     protected $structureName;
     protected $structure;
@@ -64,6 +63,8 @@ class DataStructureTransfert
         foreach ($fields as $field) {
             if (!$field->isMultiple()) {
                 switch ($field->type) {
+                    case "action":
+                    case "menu":
                     case "array":
                         break;
                     default:

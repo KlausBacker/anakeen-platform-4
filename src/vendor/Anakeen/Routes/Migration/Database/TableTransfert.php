@@ -87,7 +87,7 @@ SQL;
             $pgTable
         );
 
-        print_r($sql . "\n");
+        //print_r($sql . "\n");
         DbManager::query($sql, $ids, true);
         return $ids;
     }

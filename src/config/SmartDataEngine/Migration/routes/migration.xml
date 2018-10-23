@@ -8,8 +8,8 @@
             <sde:description>Database transfert move ids</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="StructureTransfert">
-            <sde:callable>\Anakeen\Routes\Migration\Database\DataStructureTransfert</sde:callable>
+        <sde:route name="DataElementTransfert">
+            <sde:callable>\Anakeen\Routes\Migration\Database\DataElementTransfert</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/migration/database/transfert/data/{structure}</sde:pattern>
             <sde:description>Database transfert structure data</sde:description>

@@ -9,7 +9,7 @@ use Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\Exception;
 
-class ConfigStructureTransfert extends DataStructureTransfert
+class ConfigStructureTransfert extends DataElementTransfert
 {
     protected function initParameters($args)
     {
@@ -230,7 +230,7 @@ SQL;
             "ccvid" => "ccvid",
             "cprofid" => "cprofid",
             "ddocid" => "ddocid",
-            "methods" => "methods",
+          //  "methods" => "methods",
             "schar" => "schar"];
     }
 
