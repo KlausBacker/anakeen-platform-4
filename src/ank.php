@@ -83,6 +83,7 @@ if ($routeReference) {
     } else {
         $output = $routeCmd->requestRoute($routeReference, Anakeen\Script\ShellManager::getArgs());
         print $output;
+        print "\n";
     }
 }
 
