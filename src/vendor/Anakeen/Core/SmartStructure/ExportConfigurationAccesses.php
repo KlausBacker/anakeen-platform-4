@@ -54,7 +54,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
         $access = $this->cel("accesses");
         if ($this->sst->cprofid) {
             $tag = $this->cel("element-access-configuration");
-            $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->cprofid));
+            $tag->setAttribute("ref", static::getLogicalName($this->sst->cprofid));
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->cprofid);
             $this->domConfig->appendChild($accessControl);
@@ -65,7 +65,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->profid);
             if ($this->sst->profid !== $this->sst->id) {
-                $tag->setAttribute("ref", SEManager::getNameFromId($this->sst->profid));
+                $tag->setAttribute("ref", static::getLogicalName($this->sst->profid));
                 $this->domConfig->appendChild($accessControl);
             } else {
                 $tag->appendChild($accessControl);
@@ -168,7 +168,11 @@ class ExportConfigurationAccesses extends ExportConfiguration
 
         $accessControl->setAttribute("name", $profil->name ?: $profil->id);
         $accessControl->setAttribute("label", $profil->title);
-        $accessControl->setAttribute("profil-type", $profil->fromname);
+        if ($profil->defDoctype === 'C') {
+            $accessControl->setAttribute("profil-type", "PFAM");
+        } else {
+            $accessControl->setAttribute("profil-type", $profil->fromname);
+        }
         if ($profil->getRawValue("dpdoc_famid")) {
             $accessControl->setAttribute("access-structure", static::getLogicalName($profil->getRawValue("dpdoc_famid")));
         }
@@ -251,18 +255,17 @@ class ExportConfigurationAccesses extends ExportConfiguration
         }
         foreach ($accessResults as $result) {
             $acl = $result["acl"];
-            if (!isset($elementAccesses[$acl])) {
-                $elementAccesses[$acl] = $this->cel("element-access");
-                $elementAccesses[$acl]->setAttribute("access", $acl);
-            }
+            $elementAccess=$this->cel("element-access");
+            $elementAccess->setAttribute("access", $acl);
+
             if (isset($result["login"])) {
-                $elementAccesses[$acl]->setAttribute("account", $result["login"]);
+                $elementAccess->setAttribute("account", $result["login"]);
             }
             if (isset($result["attrid"])) {
-                $elementAccesses[$acl]->setAttribute("field", $result["attrid"]);
+                $elementAccess->setAttribute("field", $result["attrid"]);
             }
+            $elementAccesses[]=$elementAccess;
         }
-
 
         foreach ($elementAccesses as $elementAccess) {
             $accessControl->appendChild($elementAccess);
