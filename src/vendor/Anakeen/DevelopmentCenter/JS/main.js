@@ -27,11 +27,31 @@ VueRouter.prototype.addQueryParams = function(queryParams) {
 const store = new Vuex.Store(StoreConfig);
 const router = new VueRouter(RouterConfig);
 
+router.beforeEach((to, from, next) => {
+  const visitedRoute = store.getters.visitedRoutes.find(
+    r => r.path.startsWith(to.path) && r.path !== to.path
+  );
+  if (visitedRoute) {
+    next({
+      name: visitedRoute.name,
+      params: visitedRoute.params,
+      query: visitedRoute.query
+    });
+  } else {
+    next();
+  }
+});
+
+router.afterEach(to => {
+  store.dispatch("updateVisitedRoute", to);
+});
+
 // Sync automatically router state in the store
 sync(store, router);
 
 Vue.component(RouterTabs.name, RouterTabs);
 Vue.component(SSList.name, SSList);
+
 new Vue({
   el: "#development-center",
   components: {
