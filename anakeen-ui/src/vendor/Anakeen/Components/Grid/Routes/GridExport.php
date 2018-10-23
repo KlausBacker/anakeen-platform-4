@@ -1,13 +1,16 @@
 <?php
 namespace Anakeen\Components\Grid\Routes;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\Format\FormatAttributeValue;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\Utils\FileMime;
+use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
 require_once "vendor/Anakeen/Ui/PhpLib/vendor/autoload.php";
 
+use Anakeen\Routes\Ui\Transaction\TransactionManager;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -23,10 +26,32 @@ class GridExport extends GridContent {
     protected $clientColumnsConfig = [];
     protected $selectedRows = [];
     protected $unselectedRows = [];
+    protected $transaction = null;
+    protected $transactionId = null;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        parent::__invoke($request, $response, $args);
+        $method = $request->getMethod();
+        switch ($method) {
+            case "GET":
+                parent::__invoke($request, $response, $args);
+                $transactionId = $args["transactionId"];
+                if (empty($transactionId)) {
+                    $exception = new Exception("TRANS0002");
+                    $exception->setHttpStatus("400", "Transaction id missing");
+                    throw $exception;
+                }
+                return TransactionManager::runTransaction($transactionId, function ($tId) use ($request, $response, $args) {
+                    $this->transactionId = $tId;
+                    return $this->doExport($request, $response, $args);
+                });
+            case "POST":
+                $this->transaction = TransactionManager::createTransaction();
+                return ApiV2Response::withData($response, $this->transaction->getData());
+        }
+    }
+
+    protected function doExport(\Slim\Http\request $request, \Slim\Http\response $response, $args) {
         $this->clientColumnsConfig = $request->getQueryParam("columnsConfig", []);
         $this->selectedRows = $request->getQueryParam("selectedRows", []);
         $this->unselectedRows = $request->getQueryParam("unselectedRows", []);
@@ -38,7 +63,6 @@ class GridExport extends GridContent {
         $this->writeHeaders($sheet);
         $this->writeValues($sheet, $data["smartElements"]);
         $this->writeFile($spreadSheet);
-
 
         return self::withFile($response, "./export.xlsx", "export.xlsx");
     }
@@ -93,10 +117,15 @@ class GridExport extends GridContent {
     }
 
     private function writeValues(Worksheet $sheet, $values) {
-//        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         $rowIndex = 2;
         $defaultHeight = 20.0;
+        $totalValues = count($values);
+        $modulo = intval($totalValues/100) || 1;
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder() );
+        TransactionManager::updateProgression($this->transactionId, [
+            "exportedRows" => 0,
+            "totalRows" => $totalValues
+        ]);
         foreach ($values as $datum) {
             $maxHeightCoeff = 1;
             $row = [];
@@ -118,7 +147,7 @@ class GridExport extends GridContent {
                         },$datum[$fieldType][$fieldId]));
                     }
                 } else {
-                    $row[] = $datum[$fieldType][$fieldId];
+                    $row[] = $this->getCellPropertyValue($datum[$fieldType][$fieldId], $fieldId);
                 }
                 $this->setCellFormat(
                     $sheet,
@@ -129,7 +158,27 @@ class GridExport extends GridContent {
             }
             $sheet->getRowDimension($rowIndex)->setRowHeight(($maxHeightCoeff * $defaultHeight));
             $sheet->fromArray($row, NULL, "A".$rowIndex++);
+
+            if (($rowIndex - 2) % $modulo === 0) {
+                TransactionManager::updateProgression($this->transactionId, [
+                    "exportedRows" => $rowIndex - 2,
+                    "totalRows" => $totalValues
+                ]);
+            }
         }
+    }
+
+    private function getCellPropertyValue($data, $propId) {
+        if (is_array($data)) {
+            switch ($propId) {
+                case "cdate":
+                case "mdate":
+                    return $data["value"];
+                default:
+                    return $data["displayValue"];
+            }
+        }
+        return $data;
     }
 
     private function getCellFieldValue($data, $dataConfig) {
