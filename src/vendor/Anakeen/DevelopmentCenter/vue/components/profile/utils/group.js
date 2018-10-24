@@ -19,6 +19,25 @@ const convertAclArrayToIndexedAcl = acls => {
   }, {});
 };
 
+const cleanNonGroupParent = indexedAcls => {
+  return Object.values(indexedAcls).reduce((acc, currentValue) => {
+    currentValue.parents = currentValue.parents || [];
+    acc[currentValue.id] = {
+      ...currentValue,
+      ...{
+        parents: currentValue.parents.filter(currentParentId => {
+          //Keep only parent of group type
+          return (
+            indexedAcls[currentParentId] &&
+            indexedAcls[currentParentId].account.type !== "group"
+          );
+        })
+      }
+    };
+    return acc;
+  }, {});
+};
+
 const addChildrenToParent = indexedAcls => {
   const internalAcls = JSON.parse(JSON.stringify(indexedAcls));
   Object.values(internalAcls).forEach(currentAcl => {
@@ -82,7 +101,8 @@ const reindexAndCleanList = flatList => {
 
 export const convertAclToKendoStyle = acls => {
   const indexedAcls = convertAclArrayToIndexedAcl(acls);
-  const childrenAcls = addChildrenToParent(indexedAcls);
+  const suppressUselessParents = cleanNonGroupParent(indexedAcls);
+  const childrenAcls = addChildrenToParent(suppressUselessParents);
   const uniqueChildrenRefs = deduplicateRefs(childrenAcls);
   const parentOnly = getAncestors(uniqueChildrenRefs);
   const flatList = flattenList(parentOnly);

@@ -20,11 +20,7 @@ export default {
     this.privateScope = {
       initTreeView: () => {
         this.$http
-          .get(
-            `/api/v2/devel/security/profile/${
-              this.profileId
-            }/accesses/?group=all`
-          )
+          .get(`/api/v2/devel/security/profile/${this.profileId}/accesses/`)
           .then(content => {
             if (!content.data.success) {
               return this.$emit("error", content.data.messages.join(" "));
@@ -72,9 +68,14 @@ export default {
                 title: "Dynamic fields",
                 parentId: null
               },
-              { id: checksum("role"), title: "Roles", parentId: null },
+              {
+                id: checksum("role"),
+                title: "Roles",
+                parentId: null,
+                expanded: true
+              },
               { id: checksum("group"), title: "Groupes", parentId: null },
-              { id: checksum("users"), title: "Users", parentId: null }
+              { id: checksum("user"), title: "Users", parentId: null }
             ];
             dataSource = [
               ...dataSource,
@@ -92,9 +93,6 @@ export default {
             ];
             columns.unshift({ field: "title" });
             $(this.$refs.profileTreeList).kendoTreeList({
-              toolbar: kendo.template(
-                `<label for="enableChk"><input type="checkbox" />Show all elements</label>`
-              ),
               columnMenu: true,
               columns,
               dataSource
