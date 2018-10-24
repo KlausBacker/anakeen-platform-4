@@ -32,13 +32,53 @@ router.beforeEach((to, from, next) => {
     r => r.path.startsWith(to.path) && r.path !== to.path
   );
   if (visitedRoute) {
+    // Redirect to the already visited route that match the destination
     next({
       name: visitedRoute.name,
       params: visitedRoute.params,
       query: visitedRoute.query
     });
   } else {
-    next();
+    // If the route is never visited, try to redirect to default child route
+    const allRoutesDef = router.options.routes;
+
+    // Find the route definition to get children routes
+    const findRouteDef = routes => {
+      const found = routes.find(r => r.name === to.name);
+      if (found) {
+        return found;
+      }
+      let i = 0;
+      let result = null;
+      while (i < routes.length && !result) {
+        const childRoute = routes[i];
+        if (childRoute.children && childRoute.children.length) {
+          result = findRouteDef(childRoute.children);
+        }
+        i++;
+      }
+      return result;
+    };
+
+    // Find the default child route
+    const findDefaultRoute = (routeDef, fromRouteDef = null) => {
+      // stop the recursion if the route contain a variable parameter
+      if (fromRouteDef && routeDef.path.indexOf(":") !== -1) {
+        return fromRouteDef;
+      }
+      if (!(routeDef.children && routeDef.children.length)) {
+        return routeDef;
+      }
+      return findDefaultRoute(routeDef.children[0], routeDef);
+    };
+
+    const routeDef = findRouteDef(allRoutesDef);
+    const defaultRouteDef = findDefaultRoute(routeDef);
+    if (routeDef === defaultRouteDef) {
+      next();
+    } else {
+      next({ name: defaultRouteDef.name, query: to.query, params: to.params });
+    }
   }
 });
 
