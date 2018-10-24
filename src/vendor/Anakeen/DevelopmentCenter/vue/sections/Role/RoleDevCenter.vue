@@ -7,7 +7,9 @@
                 :reorderable="true"
                 @action-click="selectRole"
                 @grid-ready="setGridOption"
-                @before-grid-cell-render="setCellRender">
+                @before-grid-cell-render="setCellRender"
+                     @grid-error="onGridError"
+        >
             <ank-se-grid-column title="Icon" field="icon" :hidden="true"></ank-se-grid-column>
             <ank-se-grid-column title="Title" field="title"></ank-se-grid-column>
             <ank-se-grid-column title="Reference (login)" field="role_login"></ank-se-grid-column>

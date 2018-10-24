@@ -10,8 +10,9 @@ Vue.prototype.$http = Axios.create();
 
 export default {
   label: "Security",
-  name: "securityDevCenter",
+  name: "Security",
   path: "security",
+  order: 2,
   component: Security,
   children: [
     {

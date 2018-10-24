@@ -1,5 +1,5 @@
 <template>
-    <router-view></router-view>
+    <router-multi-view class="devel-center-main-view"></router-multi-view>
 </template>
 
 <script>
@@ -9,5 +9,8 @@
 </script>
 
 <style>
-
+    .devel-center-main-view {
+        flex: 1;
+        display:flex;
+    }
 </style>

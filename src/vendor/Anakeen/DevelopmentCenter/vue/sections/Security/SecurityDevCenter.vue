@@ -1,13 +1,28 @@
 <template>
     <div class="security-parent">
-        <nav class="security-nav">
-            <router-link class="security-nav-link" tag="div" :to="{name: 'Security::Routes'}">Routes</router-link>
-            <router-link class="security-nav-link" tag="div" :to="{name: 'Security::Roles'}">Roles</router-link>
-        </nav>
-        <router-multi-view class="security-content"></router-multi-view>
+        <router-tabs class="security-content" :items="items"></router-tabs>
     </div>
 </template>
 <!-- CSS to this component only -->
 <style lang="scss">
     @import "./SecurityDevCenter.scss";
 </style>
+
+<script>
+    export default {
+      data() {
+        return {
+          items: [
+            {
+              name: "Security::Routes",
+              label: "Routes"
+            },
+            {
+              name: "Security::Roles",
+              label: "Roles"
+            },
+          ]
+        }
+      }
+    }
+</script>

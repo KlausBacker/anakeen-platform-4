@@ -1,7 +1,6 @@
 .smart-structure-list {
   flex: 1;
   display: flex;
-  overflow: auto;
   .smart-structure-tabs {
     display: flex;
     flex: 1;
@@ -11,6 +10,8 @@
       flex-direction: column;
 
       .smart-structure-tabs-filter {
+        z-index: 20;
+        flex-shrink: 0;
         display: flex;
         position: relative;
         .filter-list-clear {
@@ -41,12 +42,12 @@
         background: white;
         border: none;
         display: flex;
-        //overflow-y: auto;
-        //
-        ///* for Firefox */
-        //min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+
 
         .smart-structure-list-item {
+          flex-shrink:0;
           &.router-link-active {
             z-index: 10;
             border-color: rgba(33, 37, 41, .125);

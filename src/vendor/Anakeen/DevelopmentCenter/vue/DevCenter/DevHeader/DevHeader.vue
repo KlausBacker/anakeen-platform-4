@@ -1,7 +1,9 @@
 <template>
     <header class="dev-center-header">
         <div class="header-content header-left-content">
-            <span class="header-app-title vendor-name">{{vendorName}}</span> <span>-</span>
+            <!--<span class="header-app-title vendor-name">{{vendorName}}</span>-->
+            <vendor-selector></vendor-selector>
+            <span>-</span>
             <span class="header-app-title">{{appTitle}}</span>
             <!--<span v-if="rootPlugin">></span> <span v-if="rootPlugin" class="header-app-title">{{rootPlugin.title||''}}</span>-->
         </div>

@@ -15,9 +15,6 @@
     components: {
       "smart-element": AnkSmartElement
     },
-    mounted() {
-      console.log(this.ssName);
-    },
     watch: {
       ssName(newValue, oldValue) {
         if (newValue !== oldValue) {

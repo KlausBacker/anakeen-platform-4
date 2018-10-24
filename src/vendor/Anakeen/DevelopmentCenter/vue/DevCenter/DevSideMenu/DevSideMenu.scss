@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    padding-left: 1rem;
     > .dev-center-section-link + .dev-center-section-link {
       margin-top: 2rem;
     }
@@ -39,12 +40,14 @@
     .dev-center-section-link {
       cursor: pointer;
       color: white;
-      padding: 1rem .25rem;
+      padding: 1rem .75rem;
       border-radius: .25rem 0 0 .25rem;
 
       &.router-link-active {
         background: white;
         color: black;
+        margin-right: -1px;
+        z-index: 20;
       }
     }
   }

@@ -11,7 +11,9 @@ export const routes = [
   // Redirection
   {
     path: "*",
-    redirect: "/devel"
+    redirect: {
+      name: "devCenter"
+    }
   }
 ];
 

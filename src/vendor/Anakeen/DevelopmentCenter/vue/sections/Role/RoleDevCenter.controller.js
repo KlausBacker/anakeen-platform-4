@@ -71,6 +71,12 @@ export default {
         initid: e,
         viewId: "!defaultConsultation"
       });
+    },
+    onGridError(event) {
+      this.$store.dispatch("displayError", {
+        title: "Error",
+        textContent: event.data.message
+      });
     }
   }
 };
