@@ -55,7 +55,11 @@ class AllParameters
      */
     private function getDataFromDb()
     {
-        $sqlRequest = 'select paramdef.*, paramv.val as value, paramv.type as usefor  from paramdef, paramv where  paramdef.name = paramv.name;';
+        $sqlRequest = <<<SQL
+select paramdef.*, paramv.val as value, paramv.type as usefor 
+from paramdef full outer join paramv on  paramdef.name = paramv.name 
+where paramdef.name is not null
+SQL;
         $outputResult = [];
 
         DbManager::query($sqlRequest, $outputResult);
@@ -74,7 +78,7 @@ class AllParameters
         $allParameters = [];
 
         foreach ($parameters as $parameter) {
-            if ($parameter['usefor'] === 'A' || $parameter['usefor'] === 'G') {
+            if ($parameter['usefor'] === null || $parameter['usefor'] === 'G') {
                 $formatedParameter = [];
 
                 $nsName = explode('::', $parameter['name'], 2);
