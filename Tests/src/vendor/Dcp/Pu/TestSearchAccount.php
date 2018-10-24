@@ -428,7 +428,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                "role" => "tstLoginR1",
+                "role" => "tstloginr1",
                 "group" => "",
                 array(
                     "tstLoginU1",
@@ -440,7 +440,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "role" => "tstLoginR2",
+                "role" => "tstloginr2",
                 "group" => "",
                 array(
                     "tstLoginU2",
@@ -451,7 +451,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "role" => "tstLoginR3",
+                "role" => "tstloginr3",
                 "group" => "",
                 array(
                     "tstLoginU3",
@@ -461,7 +461,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "role" => "tstLoginR3 tstLoginR2",
+                "role" => ["tstloginr3", "tstloginr2"],
                 "group" => "",
                 array(
                     "tstLoginU2",
@@ -473,7 +473,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "role" => "tstLoginR3 tstLoginR1 tstLoginR2",
+                "role" => ["tstloginr3","tstloginr1","tstloginr2"],
                 "group" => "",
                 array(
                     "tstLoginU1",
@@ -487,7 +487,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "role" => "tstLoginR4",
+                "role" => "tstloginr4",
                 "group" => "",
                 array(
                     "tstLoginG1",
@@ -499,7 +499,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             ) ,
             array(
                 "role" => "",
-                "group" => "tstLoginG1",
+                "group" => "tstloging1",
                 array(
                     "tstLoginU10",
                     "tstLoginU11",
@@ -509,7 +509,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             
             array(
                 "role" => "",
-                "group" => "tstLoginG2",
+                "group" => "tstloging2",
                 array(
                     "tstLoginU12",
                     "tstLoginU13",
@@ -519,7 +519,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             
             array(
                 "role" => "",
-                "group" => "tstLoginG3",
+                "group" => "tstloging3",
                 array(
                     "tstLoginU14",
                     "tstLoginU15"
@@ -528,7 +528,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             
             array(
                 "role" => "",
-                "group" => "tstLoginG3 tstLoginG2 tstLoginG1",
+                "group" => ["tstloging3","tstloging2","tstloging1"],
                 array(
                     "tstLoginU10",
                     "tstLoginU11",
@@ -540,8 +540,8 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             ) ,
             
             array(
-                "role" => "tstLoginR3",
-                "group" => "tstLoginG3",
+                "role" => "tstloginr3",
+                "group" => "tstloging3",
                 array(
                     "tstLoginU14",
                     "tstLoginU15",

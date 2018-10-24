@@ -298,24 +298,22 @@ create or replace FUNCTION updatevector(int) RETURNS void LANGUAGE sql AS
 
 
 create or replace function droptrigger(name) 
-returns bool as '
+returns bool as $$
 declare 
   tname alias for $1;
   toid oid;
   trigname pg_trigger%ROWTYPE;
 begin
-   select into toid oid from pg_class where relname=tname;
+   select into toid  pg_class.oid,* from pg_class, pg_namespace where pg_class.relname=tname and pg_class.relnamespace = pg_namespace.oid and pg_namespace.nspname = 'public';
    --select into trigname tgname from pg_trigger where tgrelid=toid;
    for trigname in select * from pg_trigger where tgrelid=toid  loop
 --	 drop trigger quote_ident(trigname.tgname) on tname;
-         EXECUTE ''DROP TRIGGER '' || quote_ident(trigname.tgname) || '' on  '' || tname;
+         EXECUTE 'DROP TRIGGER ' || quote_ident(trigname.tgname) || ' on  ' || tname;
    end loop;
-
-
 
    return true;
 end;
-' language 'plpgsql' ;
+$$ language 'plpgsql' ;
 
 
 

@@ -333,14 +333,13 @@ class FamilyImport
                         $repeat = "false";
                         $repeat2 = false;
 
-
                         if (isset($tnormal[strtolower($v->frameid)])) {
                             if (self::getTypeMain($tnormal[strtolower($v->frameid)]["type"]) == "array") {
                                 $repeat = "true";
                             }
                         }
-
                         if (($repeat == "false") && isset($pa[strtolower($v->frameid)])) {
+
                             if (self::getTypeMain($pa[strtolower($v->frameid)]["type"]) == "array") {
                                 $repeat = "true";
                             }
@@ -353,7 +352,6 @@ class FamilyImport
                                 $repeat = "true";
                             }
                         }
-
 
                         $atype = strtolower(trim($atype));
                         // create code for calculated attributes
@@ -450,13 +448,12 @@ class FamilyImport
                             }
                             if ($repeat === "true") {
                                 $attrids[$v->id] .= '[]';
-                                if ($repeat2) {
-                                    $attrids[$v->id] .= '[]';
-                                }
+
                             }
                         }
                 }
             }
+
             FamilyAbsoluteOrder::completeForNumericOrder($allAttributes, $tdoc["id"]);
             $absoluteOrders = FamilyAbsoluteOrder::getAbsoluteOrders($allAttributes, $tdoc["id"]);
             $tAbsOrders = [];
