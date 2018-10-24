@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="{{APPNAME}}">
+    {{#actions}}
+        <sde:route name="{{name}}">
+            <sde:callable>{{VENDOR}}\Routes\Apps\{{APPNAME}}\{{name}}</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/apps/{{APPNAME}}/{{name}}</sde:pattern>
+            <sde:description>{{short_name}}</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="{{APPNAME}}">{{acl}}</sde:access>
+            </requiredAccess>
+        </sde:route>
+
+      {{/actions}}
+    </sde:routes>
+</sde:config>

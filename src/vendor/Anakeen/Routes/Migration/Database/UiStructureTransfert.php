@@ -64,7 +64,7 @@ class UiStructureTransfert
             throw new Exception("Migration VENDOR parameter is not set");
         }
         $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
-        $namePath = [$vendorName, $className, "Ui"];
+        $namePath = [$vendorName, ConfigStructureTransfert::SMART_STRUCTURES, $className, "Ui"];
 
         if (!empty($renderParam["families"][$structure->name])) {
             foreach ($renderParam["families"][$structure->name] as $kr => $vr) {

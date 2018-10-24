@@ -36,11 +36,11 @@
             <sde:description>Database transfert structure table</sde:description>
             <sde:requiredAccess/>
         </sde:route>
-        <sde:route name="ProfileTransfert">
-            <sde:callable>\Anakeen\Routes\Migration\Database\ProfileTransfert</sde:callable>
+        <sde:route name="ApplicationTransfert">
+            <sde:callable>\Anakeen\Routes\Migration\Database\ConfigApplicationTransfert</sde:callable>
             <sde:method>POST</sde:method>
-            <sde:pattern>/api/v2/migration/database/transfert/profile/{structure}</sde:pattern>
-            <sde:description>Database transfert profile accesses data</sde:description>
+            <sde:pattern>/api/v2/migration/database/transfert/application/{application}</sde:pattern>
+            <sde:description>Database transfert app acl and parameters data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
 

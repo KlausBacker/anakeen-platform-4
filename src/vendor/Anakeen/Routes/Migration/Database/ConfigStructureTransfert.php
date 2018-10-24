@@ -11,6 +11,8 @@ use Anakeen\Router\Exception;
 
 class ConfigStructureTransfert extends DataElementTransfert
 {
+    const SMART_STRUCTURES = "SmartStructures";
+
     protected function initParameters($args)
     {
         $this->structureName = $args["structure"];
@@ -83,7 +85,7 @@ class ConfigStructureTransfert extends DataElementTransfert
         DbManager::query($sql, $parentName, true, true);
         $className = ucfirst(strtolower($structureName));
 
-        $namePath = [$vendorName, $className];
+        $namePath = [$vendorName, self::SMART_STRUCTURES, $className];
         $className = sprintf("%sBehavior", $className);
         $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
         $template = file_get_contents(__DIR__ . '/../../../Migration/StructureBehavior.php.mustache');
@@ -104,7 +106,6 @@ class ConfigStructureTransfert extends DataElementTransfert
         }
 
         DbManager::query($sql);
-        //print "$stubPath\n$sql\n";
         $mustache = new \Mustache_Engine();
         $stubBehaviorContent = $mustache->render($template, [
             "Classname" => $className,
@@ -136,6 +137,11 @@ class ConfigStructureTransfert extends DataElementTransfert
             $attrObject = new DocAttr("", [$enum["docid"], $enum["id"]]);
 
             $enumSetName = sprintf("%s-%s", $structureName, $enum["id"]);
+
+            $sql = sprintf("delete from docenum where name = '%s'", pg_escape_string($enumSetName));
+            DbManager::query($sql);
+
+
             $qsql = <<<SQL
 insert into docenum ("name", key, label, parentkey, disabled, eorder) 
                select  '%s', key, label, parentkey, disabled, eorder from dynacase.docenum 
@@ -230,7 +236,7 @@ SQL;
             "ccvid" => "ccvid",
             "cprofid" => "cprofid",
             "ddocid" => "ddocid",
-          //  "methods" => "methods",
+            //  "methods" => "methods",
             "schar" => "schar"];
     }
 

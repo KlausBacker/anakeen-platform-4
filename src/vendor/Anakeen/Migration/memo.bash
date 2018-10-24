@@ -36,3 +36,8 @@ do
     ./ank.php --route=Migration::DataElementTransfert --method=POST --structure=$S \
     ./ank.php --route=Migration::UiStructureTransfert --method=POST --structure=$S
 done
+
+
+./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCFD
+./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCDL
+./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCFD_LOGIN
