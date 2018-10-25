@@ -34,8 +34,7 @@ class Structure
     {
         $this->structureName = $args["structure"];
         $this->structure= SEManager::getFamily($this->structureName);
-        if (empty($this->structure))
-        {
+        if (empty($this->structure)) {
             $exception = new Exception("DEV0101");
             $exception->setHttpStatus(404, "Structure not found");
             throw $exception;
