@@ -38,6 +38,7 @@ class Users
             }
             $searchAccount->setOrder($sortString);
         }
+
         if ($filter) {
             foreach ($filter["filters"] as $currentFilter) {
                 if ($currentFilter["field"] === "group") {
@@ -49,7 +50,6 @@ class Users
         }
 
         //count max result
-
         $request = $searchAccount->getQuery();
         DbManager::query("select count(*) from (".$request.") as nbResult;", $nResult, true, true);
 
