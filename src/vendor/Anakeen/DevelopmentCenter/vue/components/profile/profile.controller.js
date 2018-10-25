@@ -9,13 +9,14 @@ export default {
     defaultColumns: {
       type: Array,
       default: () => ["create", "icreate", "view", "edit", "delete"]
-    }
+    },
+    onlyExtendedAcls: false
   },
   data: () => ({
     title: "",
     id: "",
     name: "",
-    extendedView: false
+    displayAllElements: false
   }),
   created() {
     this.privateScope = {
@@ -35,7 +36,7 @@ export default {
                   this.title = data.properties.title;
                   this.name = data.properties.name;
                   this.id = data.properties.id;
-                  //Add standard data
+                  //Count entry by cat
                   const nbElementsByCat = data.accesses.reduce(
                     (acc, currentAccess) => {
                       acc[currentAccess.account.type] =
@@ -49,30 +50,50 @@ export default {
                       user: 0
                     }
                   );
+                  //Init source data with standard cat
                   let dataSourceContent = [
                     {
                       id: checksum("field"),
-                      title: `Fields : ${nbElementsByCat.field}`,
+                      title: `Fields : <span class="badge ${
+                        nbElementsByCat.field === 0
+                          ? "badge-light"
+                          : "badge-primary"
+                      }">${nbElementsByCat.field}</span>`,
                       parentId: null,
                       expanded: true
                     },
                     {
                       id: checksum("role"),
-                      title: `Roles : ${nbElementsByCat.role}`,
+                      title: `Roles : <span class="badge ${
+                        nbElementsByCat.role === 0
+                          ? "badge-light"
+                          : "badge-primary"
+                      }">${nbElementsByCat.role}</span>`,
                       parentId: null,
                       expanded: true
                     },
                     {
                       id: checksum("group"),
-                      title: `Groups : ${nbElementsByCat.group}`,
+                      title: `Groups : <span class="groupElement badge account-type-group ${
+                        nbElementsByCat.group === 0
+                          ? "badge-light"
+                          : "badge-primary"
+                      }">${nbElementsByCat.group}</span> 
+<button class="k-button k-button-icon foldGroups"><span class="k-icon k-i-sort-asc-sm"></span></button> 
+<button class="k-button k-button-icon unfoldGroups"><span class="k-icon k-i-sort-desc-sm"></span></button>`,
                       parentId: null
                     },
                     {
                       id: checksum("user"),
-                      title: `Users : ${nbElementsByCat.user}`,
+                      title: `Users : <span class="badge ${
+                        nbElementsByCat.user === 0
+                          ? "badge-light"
+                          : "badge-primary"
+                      }">${nbElementsByCat.user}</span>`,
                       parentId: null
                     }
                   ];
+                  //Add other elements
                   options.success([
                     ...dataSourceContent,
                     ...accesses.map(currentElement => {
@@ -97,7 +118,7 @@ export default {
         });
       },
       getCurrentUrl: () => {
-        if (this.extendedView) {
+        if (this.displayAllElements) {
           return `/api/v2/devel/security/profile/${
             this.profileId
           }/accesses/?group=all&role=all`;
@@ -109,7 +130,11 @@ export default {
       },
       initTreeView: () => {
         this.$http
-          .get(this.privateScope.getCurrentUrl())
+          .get(
+            `/api/v2/devel/security/profile/${
+              this.profileId
+            }/accesses/?acls=only`
+          )
           .then(content => {
             if (!content.data.success) {
               return this.$emit("error", content.data.messages.join(" "));
@@ -124,9 +149,10 @@ export default {
                 return callback(column, currentLine);
               };
             };
-            const columns = data.properties.acl.map(currentElement => {
+            const columns = data.properties.acls.map(currentElement => {
               return {
-                field: currentElement,
+                field: `acls.${currentElement.name}`,
+                title: `${currentElement.name}`,
                 attributes: {
                   class: "rightColumn"
                 },
@@ -135,27 +161,35 @@ export default {
                     if (accumulator) {
                       return true;
                     }
-                    return currentColumn === currentElement;
+                    if (this.onlyExtendedAcls && currentElement.extended) {
+                      return true;
+                    }
+                    return currentColumn === currentElement.name;
                   },
                   false
                 ),
-                template: lineRender(currentElement, (column, currentLine) => {
-                  switch (currentLine[column]) {
-                    case "set":
-                      return `<span class="k-icon k-i-kpi-status-open right-set"></span>`;
-                    case "inherit":
-                      return `<span class="k-icon k-i-kpi-status-open right-inherited"></span>`;
-                    default:
+                template: lineRender(
+                  currentElement.name,
+                  (column, currentLine) => {
+                    if (!currentLine.acls) {
                       return "";
+                    }
+                    switch (currentLine.acls[column]) {
+                      case "set":
+                        return `<span class="k-icon k-i-kpi-status-open right-set"></span>`;
+                      case "inherit":
+                        return `<span class="k-icon k-i-kpi-status-open right-inherited"></span>`;
+                      default:
+                        return "";
+                    }
                   }
-                })
+                )
               };
             });
             this.dataSource.bind("change", () => {
               treeList.data("kendoTreeList").autoFitColumn("title");
             });
             const treeList = $(this.$refs.profileTreeList).kendoTreeList({
-              resizable: true,
               columnMenu: true,
               columns: [
                 {
@@ -165,13 +199,15 @@ export default {
                     if (currentElement.title) {
                       return currentElement.title;
                     }
-                    return `<span title="${currentElement.accountId}">${
+                    return `<span title="${
+                      currentElement.accountId
+                    }" class="account-type-${currentElement.account.type}">${
                       currentElement.account.reference
                     }</span>`;
                   }
                 },
                 {
-                  field: "Rights",
+                  field: "Acls",
                   columns
                 }
               ],
@@ -185,6 +221,26 @@ export default {
                 treeList.data("kendoTreeList").autoFitColumn("title");
               },
               dataSource: this.dataSource
+            });
+            treeList.on("click", ".foldGroups", () => {
+              treeList
+                .find(".account-type-group")
+                .toArray()
+                .forEach(currentElement => {
+                  treeList
+                    .data("kendoTreeList")
+                    .collapse($(currentElement).closest(`[role="row"]`));
+                });
+            });
+            treeList.on("click", ".unfoldGroups", () => {
+              treeList
+                .find(".account-type-group")
+                .toArray()
+                .forEach(currentElement => {
+                  treeList
+                    .data("kendoTreeList")
+                    .expand($(currentElement).closest(`[role="row"]`));
+                });
             });
           })
           .catch(err => {
