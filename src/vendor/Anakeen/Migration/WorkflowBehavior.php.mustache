@@ -9,11 +9,9 @@ namespace {{Namespace}};
  */
 class {{Classname}} extends  {{Extends}}
 {
-
-    public function __construct(string $dbaccess = '', string $id = '', string $res = '', int $dbid = 0)
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
+        $this->useWorkflowGraph(__DIR__."/{{StructureName}}.graph.xml");
         parent::__construct($dbaccess, $id, $res, $dbid);
-        $this->useWorkflowGraph(__DIR__."/{{Classname}}.graph.xml");
     }
-
 }

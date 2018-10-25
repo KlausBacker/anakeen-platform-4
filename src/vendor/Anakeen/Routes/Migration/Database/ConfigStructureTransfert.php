@@ -103,10 +103,10 @@ class ConfigStructureTransfert extends DataElementTransfert
             throw new Exception("Migration VENDOR parameter is not set");
         }
         DbManager::query($sql, $parentName, true, true);
-        $className = ucfirst(strtolower($structureName));
+        $structDir = ucfirst(strtolower($structureName));
 
-        $namePath = [$vendorName, self::SMART_STRUCTURES, $className];
-        $className = sprintf("%sBehavior", $className);
+        $namePath = [$vendorName, self::SMART_STRUCTURES, $structDir];
+        $className = sprintf("%sBehavior", $structDir);
         $template = static::getBehaviorTemplateContent();
 
         $sql = sprintf(
@@ -132,10 +132,11 @@ class ConfigStructureTransfert extends DataElementTransfert
             "Namespace" => implode("\\", $namePath),
             "Extends" => $extends,
             "OriginalClass" => $classPath,
+            "StructureName" => $structDir,
             "structureName" => $structureName
         ]);
         Utils::writeFileContent($stubPath, $stubBehaviorContent);
-        print "$stubPath\n";
+        //print "$stubPath\n";
     }
 
     protected static function importStructureEnums($structureName)

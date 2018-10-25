@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
-    <workflow:graph ns="{{VENDOR}}" name="{{properties.name}} label="{{properties.title}}">
+    <workflow:graph ns="{{properties.prefix}}" name="{{properties.name}}" label="{{properties.title}}">
         <workflow:steps>
         {{#steps}}
             <workflow:step name="{{name}}" {{#activity-label}}activity-label="{{activity-label}}"  {{/activity-label}}state-label="{{state-label}}"/>

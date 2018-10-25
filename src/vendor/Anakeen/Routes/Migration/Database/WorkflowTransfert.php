@@ -4,10 +4,7 @@ namespace Anakeen\Routes\Migration\Database;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\SEManager;
-use Anakeen\Core\SmartStructure;
 use Anakeen\Migration\Utils;
-use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
 class WorkflowTransfert extends ConfigStructureTransfert
@@ -24,30 +21,24 @@ class WorkflowTransfert extends ConfigStructureTransfert
         // Transferring wdoc config => done by ConfigStructure Tranfert
 
         // Retrieve workflow graph data
-        $this->getWorkflowGraph($this->structureName);
+        $xmlGraphPath = $this->getWorkflowGraph($this->structureName);
 
         // Construct graph.xml
 
         parent::transfertConfig($this->structureName);
-        /**
-         * Write PHP Class file
-         */
-        // Construct Stub Workflow.php which include graph.xml
 
-        // replace classname by stub
+        // Delete auto created fields : They will be created on generate class
+        $sql = sprintf("delete from docattr where docid=(select id from docfam where name ='%s') and options ~ 'autocreated=yes'", $this->structureName);
+        DbManager::query($sql);
 
-        // Regenerate class to redo workflow fields
-
-        // Transferring wdoc data => done by DataElement Tranfert
-
-
+        $data["graph"] = $xmlGraphPath;
         return $data;
     }
 
     protected function getWorkflowGraph($workflowName)
     {
-        $className=ucfirst(strtolower($workflowName));
-        $graphData=Utils::wgetDynacase(sprintf("/api/v1/migration/4/workflows/%s/graph", urlencode($workflowName)));
+        $className = ucfirst(strtolower($workflowName));
+        $graphData = Utils::wgetDynacase(sprintf("/api/v1/migration/4/workflows/%s/graph", urlencode($workflowName)));
 
         $template = file_get_contents(__DIR__ . '/../../../Migration/WorkflowGraph.xml.mustache');
 
@@ -59,10 +50,10 @@ class WorkflowTransfert extends ConfigStructureTransfert
         $namePath = [$vendorName, ConfigStructureTransfert::SMART_STRUCTURES, $className];
         $stubPath = sprintf("%s/%s/%s.graph.xml", $vendorPath, implode("/", $namePath), $className);
 
-        $graphData["data"]["VENDOR"]=$vendorName;
+        $graphData["data"]["VENDOR"] = $vendorName;
         $mustache = new \Mustache_Engine();
         $routeConfigContent = $mustache->render($template, $graphData["data"]);
         Utils::writeFileContent($stubPath, $routeConfigContent);
-        print "$stubPath\n";
+        return $stubPath;
     }
 }
