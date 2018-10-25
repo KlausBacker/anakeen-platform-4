@@ -29,7 +29,7 @@ const cleanNonGroupParent = indexedAcls => {
           //Keep only parent of group type
           return (
             indexedAcls[currentParentId] &&
-            indexedAcls[currentParentId].account.type !== "group"
+            indexedAcls[currentParentId].account.type === "group"
           );
         })
       }
@@ -56,28 +56,22 @@ const deduplicateRefs = indexedAcls => {
   return JSON.parse(JSON.stringify(indexedAcls));
 };
 
-const flattenList = aclList => {
-  const firstLevel = "fl";
-  const resultList = Object.values(aclList).map(currentElement => {
-    currentElement.hierarchicalId = firstLevel;
-    return currentElement;
-  });
-  const customDuplicator = (aclList, currentId = "") => {
+const flattenList = ancestorList => {
+  const resultList = [];
+  const customDuplicator = (aclList, parentId) => {
     aclList.forEach(currentAcl => {
-      currentAcl.children.forEach(currentChildren => {
-        const namedChildren = {
-          ...currentChildren,
-          ...{
-            parentId: currentId,
-            hierarchicalId: currentId + "-" + currentChildren.id
-          }
-        };
-        customDuplicator(namedChildren.children, namedChildren.hierarchicalId);
-        resultList.push(namedChildren);
-      });
+      const namedChildren = {
+        ...currentAcl,
+        ...{
+          parentId,
+          hierarchicalId: `${parentId || ""} ${currentAcl.id}`
+        }
+      };
+      customDuplicator(namedChildren.children, namedChildren.hierarchicalId);
+      resultList.push(namedChildren);
     });
   };
-  customDuplicator(aclList, firstLevel);
+  customDuplicator(ancestorList, false);
   return resultList;
 };
 
@@ -90,7 +84,9 @@ const getAncestors = indexedList => {
 const reindexAndCleanList = flatList => {
   return flatList.map(currentElement => {
     currentElement.accountId = currentElement.id;
-    currentElement.id = checksum(currentElement.hierarchicalId);
+    currentElement.id = checksum(
+      currentElement.hierarchicalId || currentElement.id
+    );
     if (currentElement.parentId) {
       currentElement.parentId = checksum(currentElement.parentId);
     }
