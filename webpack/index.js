@@ -18,7 +18,7 @@ module.exports = () => {
       setKendoAndJqueryToGlobal([
         /kendo.pdf/,
         /kendo.excel/
-      ]),
+      ])
     ]
   };
   return [

@@ -18,6 +18,10 @@
               label: "Routes"
             },
             {
+              name: "Security::SmartStructures",
+              label: "Smart Structures"
+            },
+            {
               name: "Security::Roles",
               label: "Roles"
             },

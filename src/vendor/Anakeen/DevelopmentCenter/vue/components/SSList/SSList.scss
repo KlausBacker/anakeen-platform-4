@@ -1,3 +1,4 @@
+$smart-structure-list-border-color: rgb(210, 210, 210);
 .smart-structure-list {
   flex: 1;
   display: flex;
@@ -44,20 +45,25 @@
         display: flex;
         overflow-y: auto;
         overflow-x: hidden;
+        direction: rtl;
 
 
         .smart-structure-list-item {
           flex-shrink:0;
+          color: #848484;
+          direction: ltr;
           &:hover {
             text-decoration: none;
           }
           &.router-link-active {
             z-index: 10;
-            border-color: rgba(33, 37, 41, .125);
+            border-color: $smart-structure-list-border-color;
             border-right-color: transparent;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
             background: white;
+            font-weight: bold;
+            color: initial;
           }
           &:not(.router-link-active):hover {
             border-color: rgba(33, 37, 41, .125);
@@ -85,7 +91,8 @@
     .smart-structure-tabs-content {
       padding: .5rem;
       flex: 1;
-      border: 1px solid rgba(33, 37, 41, .125);
+      display: flex;
+      border: 1px solid $smart-structure-list-border-color;
       border-radius: .25rem;
 
     }
@@ -103,13 +110,17 @@
   &.smart-structure-list-position--left, &.smart-structure-list-position--right {
     .smart-structure-tabs {
       flex-direction: row;
-      .smart-structure-tabs-list-nav {
-        flex-direction: column;
-        .smart-structure-list-item {
-          &.router-link-active {
-            margin-right: -1px;
+      .smart-structure-tabs-list {
+        padding-left: .2rem;
+        .smart-structure-tabs-list-nav {
+          flex-direction: column;
+          .smart-structure-list-item {
+            position: relative;
+            &.router-link-active {
+              margin-right: -1px;
+            }
+            padding: 1rem .5rem;
           }
-          padding: 1rem .5rem;
         }
       }
     }
