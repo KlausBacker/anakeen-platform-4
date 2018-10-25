@@ -383,7 +383,7 @@ class ReportHooks extends \SmartStructure\Dsearch
     {
         switch ($internalName) {
             case "state":
-                return $doc->getStatelabel();
+                return $doc->getSteplabel();
             case "title":
                 return $doc->getHTMLTitle();
             case "id":

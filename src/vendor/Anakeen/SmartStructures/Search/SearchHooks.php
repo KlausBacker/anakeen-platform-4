@@ -155,9 +155,10 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     }
 
     /**
+     * Search on title
      * @param bool $full set to true if wan't use full text indexing
      */
-    public function getSqlGeneralFilters($keyword, $latest, $sensitive, $full = false)
+    public function getSqlGeneralFilters($keyword, $latest, $sensitive)
     {
         $filters = array();
 
@@ -183,28 +184,13 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
             $filters[] = "locked = -1";
         }
 
-        if ($keyword) {
-            if ($keyword[0] == '~') {
-                $full = false; // force REGEXP
-                $keyword = substr($keyword, 1);
-            } elseif ($keyword[0] == '*') {
-                $full = true; // force FULLSEARCH
-                $keyword = substr($keyword, 1);
-            }
-        }
-        if ($full) {
-            $this->getFullSqlFilters($keyword, $sqlfilters, $order, $tkeys);
-            $filters = array_merge($filters, $sqlfilters);
-            $this->setValue("se_orderby", $order);
-        } else {
+
+
             $op = ($sensitive) ? '~' : '~*';
-            //    $filters[] = "usefor != 'D'";
-            $keyword = str_replace("^", "£", $keyword);
-            $keyword = str_replace("$", "£", $keyword);
             if (strtolower(substr($keyword, 0, 5)) == "::get") { // only get method allowed
                 // it's method call
                 $keyword = $this->ApplyMethod($keyword);
-                $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($keyword));
+                $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($keyword));
             } elseif ($keyword != "") {
                 // transform conjonction
                 $tkey = explode(" ", $keyword);
@@ -215,25 +201,25 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
                         if ($v[strlen($v) - 1] == '"') {
                             $ing = false;
                             $ckey .= " " . substr($v, 0, -1);
-                            $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
+                            $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($ckey));
                         } else {
                             $ckey .= " " . $v;
                         }
                     } elseif ($v && $v[0] == '"') {
                         if ($v[strlen($v) - 1] == '"') {
                             $ckey = substr($v, 1, -1);
-                            $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($ckey));
+                            $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($ckey));
                         } else {
                             $ing = true;
                             $ckey = substr($v, 1);
                         }
                     } else {
-                        $filters[] = sprintf("svalues %s '%s'", $op, pg_escape_string($v));
+                        $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($v));
                     }
                 }
             }
             $this->setValue("se_orderby", " ");
-        }
+
         if ($this->getRawValue("se_sysfam") == 'no' && (!$this->getRawValue("se_famid"))) {
             $filters[] = sprintf("usefor !~ '^S'");
             $filters[] = sprintf("doctype != 'C'");
@@ -241,125 +227,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
         return $filters;
     }
 
-    /**
-     * return sqlfilters for a simple query in fulltext mode
-     *
-     * @param string $keyword     the word(s) searched
-     * @param array  &$sqlfilters return array of sql conditions
-     * @param string &$sqlorder   return sql order by
-     * @param string &$fullkeys   return tsearch2 keys for use it in headline sql function
-     *
-     * @return void
-     */
-    public static function getFullSqlFilters($keyword, &$sqlfilters, &$sqlorder, &$fullkeys)
-    {
-        $fullkeys = "";
-        $sqlorder = "";
-        $sqlfilters = array(
-            "true"
-        );
-        if ($keyword == "") {
-            return;
-        }
-        $pspell_link = false;
-        if (function_exists('pspell_new')) {
-            $pspell_link = pspell_new("fr", "", "", "utf-8", PSPELL_FAST);
-        }
-        $sqlfilters = array();
-
-        $keyword = preg_replace('/\s+(OR)\s+/u', '|', $keyword);
-        $keyword = preg_replace('/\s+(AND)\s+/u', ' ', $keyword);
-        $tkeys = explode(" ", $keyword);
-        $sqlfiltersbrut = array();
-        $tsearchkeys = array();
-        foreach ($tkeys as $k => $key) {
-            $key = trim($key);
-            if ($key) {
-                $tsearchkeys[$k] = $key;
-                if ($pspell_link !== false) {
-                    if ((!is_numeric($key)) && (strstr($key, '|') === false) && (strstr($key, '&') === false) && (ord($key[0]) > 47) && (!pspell_check($pspell_link, $key))) {
-                        $suggestions = pspell_suggest($pspell_link, $key);
-                        $sug = $suggestions[0];
-                        //foreach ($suggestions as $k=>$suggestion) {  echo "$k : $suggestion\n";  }
-                        if ($sug && (\Anakeen\Core\Utils\Strings::Unaccent($sug) != $key) && (!strstr($sug, ' '))) {
-                            $tsearchkeys[$k] = "$key|$sug";
-                        }
-                    }
-                }
-                if (strstr($key, '"') !== false) {
-                    // add more filter for search complete and exact expression
-                    if (strstr($key, '|') === false) {
-                        $sqlfiltersbrut[] = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
-                                '"',
-                                '&',
-                                '(',
-                                ')'
-                            ), array(
-                                "",
-                                ' ',
-                                '',
-                                ''
-                            ), $key)) . "\\\\y' ";
-                    } else {
-                        list($left, $right) = explode("|", $key);
-                        if (strstr($left, '"') !== false) {
-                            $q1 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
-                                    '"',
-                                    '&',
-                                    '(',
-                                    ')'
-                                ), array(
-                                    "",
-                                    ' ',
-                                    '',
-                                    ''
-                                ), $left)) . "\\\\y' ";
-                        } else {
-                            $q1 = "";
-                        }
-                        if (strstr($right, '"') !== false) {
-                            $q2 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
-                                    '"',
-                                    '&',
-                                    '(',
-                                    ')'
-                                ), array(
-                                    "",
-                                    ' ',
-                                    '',
-                                    ''
-                                ), $right)) . "\\\\y' ";
-                        } else {
-                            $q2 = "";
-                        }
-                        $q3 = "fulltext @@ to_tsquery('french','" . pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($left)) . "') ";
-                        $q4 = "fulltext @@ to_tsquery('french','" . pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent($right)) . "') ";
-
-                        if ((!$q1) && $q2) {
-                            $sqlfiltersbrut[] = "($q4 and $q2) or $q3";
-                        } elseif ((!$q2) && $q1) {
-                            $sqlfiltersbrut[] = "($q3 and $q1) or $q4";
-                        } elseif ($q2 && $q1) {
-                            $sqlfiltersbrut[] = "($q3 and $q1) or ($q4 and $q2)";
-                        }
-                    }
-                }
-            }
-        }
-
-        if (count($tsearchkeys) > 0) {
-            $fullkeys = '(' . implode(")&(", $tsearchkeys) . ')';
-            $fullkeys = \Anakeen\Core\Utils\Strings::Unaccent($fullkeys);
-            $fullkeys = pg_escape_string($fullkeys);
-            $sqlfilters[] = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string($fullkeys));
-        }
-        if (count($sqlfiltersbrut) > 0) {
-            $sqlfilters = array_merge($sqlfilters, $sqlfiltersbrut);
-        }
-        $sqlorder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string($fullkeys));
-    }
-
-    public function computeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
+    public function computeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true)
     {
         if ($dirid > 0) {
             if ($subfolder) {
@@ -379,7 +247,7 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
                 $keyword = substr($keyword, 1);
             }
         }
-        $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive, $full);
+        $filters = $this->getSqlGeneralFilters($keyword, $latest, $sensitive);
 
         $only = '';
         if ($this->getRawValue("se_famonly") == "yes") {

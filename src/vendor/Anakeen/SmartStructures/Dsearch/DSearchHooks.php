@@ -656,34 +656,6 @@ class DSearchHooks extends \SmartStructure\Search
                 }
                 break;
 
-            case "~@":
-                if ($validateCond) {
-                    if (($err = $this->isValidPgRegex($val)) != '') {
-                        return '';
-                    }
-                }
-                if (trim($val) != "") {
-                    $cond = " " . $col . '_txt' . " ~ '" . strtolower($val) . "' ";
-                }
-                break;
-
-            case "=@":
-            case "@@":
-                if (trim($val) != "") {
-                    $tstatickeys = explode(' ', $val);
-                    if (count($tstatickeys) > 1) {
-                        $keyword = str_replace(" ", "&", trim($val));
-                    } else {
-                        $keyword = trim($val);
-                    }
-                    if ($op == "@@") {
-                        $cond = " " . $col . '_vec' . " @@ to_tsquery('french','." . pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent(strtolower($keyword))) . "') ";
-                    } elseif ($op == "=@") {
-                        $cond = sprintf("fulltext @@ to_tsquery('french','%s') ", pg_escape_string(\Anakeen\Core\Utils\Strings::Unaccent(strtolower($keyword))));
-                    }
-                }
-                break;
-
             default:
                 switch ($atype) {
                     case "enum":

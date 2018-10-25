@@ -27,7 +27,6 @@ class CollectionDataFormatter
         = array(
             "lockdomainid",
             "domainid",
-            "svalues",
             "ldapdn",
             "comment",
             "classname"

@@ -529,17 +529,7 @@ class CheckDb
 
         $nAttributes = $fam->getNormalAttributes();
         $oasIds = array_keys($nAttributes);
-        $oasIds = array_merge($oasIds, $d->fields, $d->sup_fields, array(
-            "fulltext",
-            "svalues"
-        ));
-
-        foreach ($nAttributes as $attrid => $oa) {
-            if ($oa->type == "file") {
-                $oasIds[] = $attrid . '_txt';
-                $oasIds[] = $attrid . '_vec';
-            }
-        }
+        $oasIds = array_merge($oasIds, $d->fields, $d->sup_fields);
 
         $orphan = array();
         foreach ($res as $dbAttr) {

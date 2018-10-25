@@ -75,10 +75,30 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
         if (isset($this->fromid)) {
+            // it's a profil model itself
             $this->defProfFamId = $this->fromid;
-        } // it's a profil itself
-        // don't use \Anakeen\Core\Internal\SmartElement constructor because it could call this constructor => infinitive loop
+        }
+
         \Anakeen\Core\Internal\SmartElement::__construct($dbaccess, $id, $res, $dbid);
+    }
+
+
+    public function registerHooks()
+    {
+        parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
+            /**
+             * affect action label
+             */
+            foreach ($this->stateactivity as $k => $v) {
+                $this->setValue($this->_aid("_ACTIVITYLABEL", $k), $v);
+            }
+            $this->getStates();
+
+            if ($this->isChanged()) {
+                $this->modify();
+            }
+        });
     }
 
     /**
@@ -126,88 +146,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     }
 
     /**
-     * change allocate user according to state
-     * @param string $newstate new \state of document
-     * @return string
-     */
-    public function changeAllocateUser($newstate)
-    {
-        $err = "";
-        if ($newstate != "") {
-            $auserref = trim($this->getRawValue($this->_aid("_AFFECTREF", $newstate)));
-            if ($auserref) {
-                $uid = $this->getAllocatedUser($newstate);
-                $wuid = 0;
-                if ($uid) {
-                    $wuid = $this->getDocValue($uid, "us_whatid");
-                }
-                if ($wuid > 0) {
-                    $lock = (trim($this->getRawValue($this->_aid("_AFFECTLOCK", $newstate))) == "yes");
-                    $err = $this->doc->allocate($wuid, "", false, $lock);
-                    if ($err == "") {
-                        $automail = (trim($this->getRawValue($this->_aid("_AFFECTMAIL", $newstate))) == "yes");
-                        if ($automail) {
-                            include_once("FDL/mailcard.php");
-                            $to = trim($this->getDocValue($uid, "us_mail"));
-                            if (!$to) {
-                                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("%s has no email address"), $this->getTitle($uid)));
-                            } else {
-                                $subject = sprintf(_("allocation for %s document"), $this->doc->title);
-                                $commentaction = '';
-                                // $err = sendCard(\Anakeen\Core\ContextManager::getCurrentAction(), $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
-                                if ($err != "") {
-                                    \Anakeen\Core\Utils\System::addWarningMsg($err);
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                $err = $this->doc->unallocate("", false);
-            }
-        }
-        return $err;
-    }
-
-    private function getAllocatedUser($newstate)
-    {
-        $auserref = trim($this->getRawValue($this->_aid("_AFFECTREF", $newstate)));
-        $type = trim($this->getRawValue($this->_aid("_AFFECTTYPE", $newstate)));
-        if (!$auserref) {
-            return false;
-        }
-        $aid = strtok($auserref, " ");
-        $uid = false;
-        switch ($type) {
-            case 'F': // fixed address
-                //	$wuid=$this->getDocValue($aid,"us_whatid");
-                $uid = $aid;
-                break;
-
-            case 'PR': // docid parameter
-                $uid = $this->doc->getFamilyParameterValue($aid);
-                //	if ($uid) $wuid=$this->getDocValue($uid,"us_whatid");
-                break;
-
-            case 'WPR': // workflow docid parameter
-                $uid = $this->getFamilyParameterValue($aid);
-                //	if ($uid) $wuid=$this->getDocValue($uid,"us_whatid");
-                break;
-
-            case 'D': // user relations
-                $uid = $this->doc->getRValue($aid);
-                //	if ($uid)  $wuid=$this->getDocValue($docid,'us_whatid');
-                break;
-
-            case 'WD': // user relations
-                $uid = $this->getRValue($aid);
-                //	if ($uid) $wuid=$this->getDocValue($docid,'us_whatid');
-                break;
-        }
-        return $uid;
-    }
-
-    /**
      * change cv according to state
      * @param string $newstate new \state of document
      */
@@ -231,6 +169,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     private function _aid($fix, $state)
     {
         return strtolower($this->attrPrefix . $fix . str_replace(":", "_", $state));
+    }
+
+    public function getStateLabel($state) {
+        return _($state);
     }
 
     /**
@@ -502,30 +444,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             } else {
                 $oattr->add();
             }
-            // --------------------------
-            //  Ask link
-            $aid = $this->_aid("_ASKID", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
-                $cid,
-                $aid
-            ));
-            $oattr->docid = $cid;
-            $oattr->accessibility = "ReadWrite";
-            $oattr->type = 'docid("WASK")';
-            $oattr->link = "";
-            $oattr->phpfile = "";
-            $oattr->phpfunc = "";
-            $oattr->id = $aid;
-            $oattr->elink = '';
-            $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes"}';
-            $oattr->frameid = $aidframe;
-            $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s wask"), _($state));
-            if ($oattr->isAffected()) {
-                $oattr->Modify();
-            } else {
-                $oattr->add();
-            }
+
             // --------------------------
             // Label action
             $aid = $this->_aid("_ACTIVITYLABEL", $k);
@@ -550,116 +469,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->ordered = $ordered++;
 
             $oattr->labeltext = sprintf(_("%s activity"), _($k));
-            if ($oattr->isAffected()) {
-                $oattr->Modify();
-            } else {
-                $oattr->add();
-            }
-            // --------------------------
-            //  Affected user link
-            $aid = $this->_aid("_T_AFFECT", $state);
-            $afaid = $aid;
-            $oattr = new DocAttr($this->dbaccess, array(
-                $cid,
-                $aid
-            ));
-            $oattr->docid = $cid;
-            $oattr->accessibility = "ReadWrite";
-            $oattr->type = 'array';
-            $oattr->id = $aid;
-            $oattr->frameid = $aidframe;
-            $oattr->options = "vlabel=none|autocreated=yes";
-            $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s affectation"), _($state));
-            if ($oattr->isAffected()) {
-                $oattr->Modify();
-            } else {
-                $oattr->add();
-            }
-
-            $aid = $this->_aid("_AFFECTTYPE", $state);
-            $aidtype = $aid;
-            $oattr = new DocAttr($this->dbaccess, array(
-                $cid,
-                $aid
-            ));
-            $oattr->docid = $cid;
-            $oattr->accessibility = "ReadWrite";
-            $oattr->type = 'enum';
-            $oattr->options = "autocreated=yes|system=yes";
-            $oattr->phpfunc = "F|" . _("Utilisateur fixe") .
-                ",D|" . _("Attribut relation") .
-                ",PR|" . _("Relation parametre") .
-                ",WD|" . _("Relation cycle") .
-                ",WPR|" . _("Parametre cycle");
-            $oattr->id = $aid;
-            $oattr->frameid = $afaid;
-            $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s affectation type"), _($state));
-            if ($oattr->isAffected()) {
-                $oattr->Modify();
-            } else {
-                $oattr->add();
-            }
-
-            $aid = $this->_aid("_AFFECTREF", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
-                $cid,
-                $aid
-            ));
-            $oattr->docid = $cid;
-            $oattr->accessibility = "ReadWrite";
-            $oattr->type = 'text';
-            $oattr->link = "";
-            $oattr->options = "cwidth=160px|autocreated=yes";
-            $oattr->phpfile = "fdl.php";
-            $oattr->phpfunc = "tpluser(D,$aidtype,WF_FAMID,FROMID,$aid):$aid";
-            $oattr->id = $aid;
-            $oattr->frameid = $afaid;
-            $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s affected user"), _($state));
-            if ($oattr->isAffected()) {
-                $oattr->Modify();
-            } else {
-                $oattr->add();
-            }
-
-            $aid = $this->_aid("_AFFECTLOCK", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
-                $cid,
-                $aid
-            ));
-            $oattr->docid = $cid;
-            $oattr->accessibility = "ReadWrite";
-            $oattr->type = 'enum';
-            $oattr->link = "";
-            $oattr->options = "eformat=bool|autocreated=yes|system=yes";
-            $oattr->phpfunc = "no|" . _("affect no lock") . ",yes|" . _("affect auto lock");
-            $oattr->id = $aid;
-            $oattr->frameid = $afaid;
-            $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s autolock"), _($state));
-            if ($oattr->isAffected()) {
-                $oattr->Modify();
-            } else {
-                $oattr->add();
-            }
-
-            $aid = $this->_aid("_AFFECTMAIL", $state);
-            $oattr = new DocAttr($this->dbaccess, array(
-                $cid,
-                $aid
-            ));
-            $oattr->docid = $cid;
-            $oattr->accessibility = "ReadWrite";
-            $oattr->type = 'enum';
-            $oattr->link = "";
-            $oattr->options = "eformat=bool|autocreated=yes|system=yes";
-            $oattr->phpfunc = "no|" . _("affect no mail") . ",yes|" . _("affect auto mail");
-            $oattr->id = $aid;
-            $oattr->frameid = $afaid;
-            $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s automail"), _($state));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -840,9 +649,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             if ($this->doc->isLocked()) {
                 $lockUserId = abs($this->doc->locked);
                 $lockU = new Account("", $lockUserId);
-                $lockUserAccount=null;
-                if ($lockU -> isAffected()) {
-                    $lockUserAccount= SEManager::getDocument($lockU->fid);
+                $lockUserAccount = null;
+                if ($lockU->isAffected()) {
+                    $lockUserAccount = SEManager::getDocument($lockU->fid);
                 }
 
                 if (is_object($lockUserAccount) && $lockUserAccount->isAlive()) {
@@ -1016,7 +825,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         $msg .= $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
         $this->workflowAttachTimer($newstate, $tname);
-        $err .= $this->changeAllocateUser($newstate);
         // post action
         $msg3 = '';
         if ($wm3 && (!empty($tr["m3"]))) {
@@ -1246,38 +1054,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return $err;
     }
 
-    /**
-     * to change state of a document from this workflow
-     * @param        $docid
-     * @param        $newstate
-     * @param string $comment
-     * @return string
-     */
-    public function changeStateOfDocid($docid, $newstate, $comment = "")
-    {
-        $err = '';
-        $cmd = SEManager::getDocument($docid);
 
-        if ($cmd && $cmd->wid > 0) {
-            /**
-             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
-             */
-            $wdoc = SEManager::getDocument($cmd->wid);
-
-            if (!$wdoc) {
-                $err = sprintf(_("cannot change state of document #%d to %s"), $cmd->wid, $newstate);
-            }
-            if ($err != "") {
-                return $err;
-            }
-            $wdoc->Set($cmd);
-            $err = $wdoc->ChangeState($newstate, sprintf(_("automaticaly by change state of %s\n%s"), $this->doc->title, $comment));
-            if ($err != "") {
-                return $err;
-            }
-        }
-        return $err;
-    }
 
     /**
      * get transition array for the transition between $to and $from states
@@ -1339,31 +1116,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     }
 
 
-    public function registerHooks()
-    {
-        parent::registerHooks();
-        $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            /**
-             * affect action label
-             */
-            foreach ($this->stateactivity as $k => $v) {
-                $this->setValue($this->_aid("_ACTIVITYLABEL", $k), $v);
-            }
-            $this->getStates();
-            foreach ($this->states as $k => $state) {
-                $allo = trim($this->getRawValue($this->_aid("_AFFECTREF", $state)));
-                if (!$allo) {
-                    $this->removeArrayRow($this->_aid("_T_AFFECT", $state), 0);
-                }
-            }
-
-            if ($this->isChanged()) {
-                $this->modify();
-            }
-        });
-    }
-
-
     /**
      * get value of instanced document
      * @param string $attrid attribute identifier
@@ -1376,5 +1128,16 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             return $this->doc->getRawValue($attrid, $def);
         }
         return $def;
+    }
+
+    public function getInstance()
+    {
+        return $this->doc;
+    }
+
+    protected function useWorkflowGraph($xmlFilePath)
+    {
+        XmlGraph::setWorkflowGraph($this, $xmlFilePath);
+
     }
 }

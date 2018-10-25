@@ -912,16 +912,4 @@ create unique index idx_idfam on docfam(id);";
         }
         return parent::PostUpdate();
     }
-
-    /**
-     * Inhibit search values : no need and must not be use when import family
-     *
-     * @param bool $withLocale
-     *
-     * @return string
-     */
-    protected function getExtraSearchableDisplayValues($withLocale = true)
-    {
-        return "";
-    }
 }
