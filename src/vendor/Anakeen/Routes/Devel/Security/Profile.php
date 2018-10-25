@@ -24,11 +24,12 @@ class Profile
     protected $_document;
     protected $completeGroup = false;
     protected $completeRole = false;
+    protected $onlyAcl = false;
 
     /**
      * Return right accesses for a profil element
      *
-     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param $args
      *
@@ -40,12 +41,11 @@ class Profile
         return ApiV2Response::withData($response, $this->doRequest());
     }
 
-    protected function initParameters(
-        \Slim\Http\request $request,
-        $args
-    ) {
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
         $this->documentId = $args["id"];
         $this->setDocument($this->documentId);
+        $this->onlyAcl = ($request->getQueryParam("acls") === "only");
         $this->completeGroup = ($request->getQueryParam("group") === "all");
         $this->completeRole = ($request->getQueryParam("role") === "all");
     }
@@ -54,18 +54,20 @@ class Profile
     public function doRequest()
     {
         $data["properties"] = $this->getProperties();
-        $data["accesses"] = $this->getGreenAccesses();
+        if ($this->onlyAcl === false) {
+            $data["accesses"] = $this->getGreenAccesses();
 
-        if ($this->completeGroup) {
-            // add all groups in response even they has no accesses
-            $this->completeGroupAccess($data["accesses"]);
-        }
-        if ($this->completeRole) {
-            // add all roles in response even they has no accesses
-            $this->completeRoleAccess($data["accesses"]);
-        }
+            if ($this->completeGroup) {
+                // add all groups in response even they has no accesses
+                $this->completeGroupAccess($data["accesses"]);
+            }
+            if ($this->completeRole) {
+                // add all roles in response even they has no accesses
+                $this->completeRoleAccess($data["accesses"]);
+            }
 
-        $this->getGreyAccesses($data["accesses"]);
+            $this->getGreyAccesses($data["accesses"]);
+        }
         return $data;
     }
 
@@ -86,7 +88,7 @@ class Profile
                 foreach ($this->_document->acls as $aclName) {
                     if (!isset($access[$aclName])) {
                         if (DocumentAccess::controlUserId($this->_document->id, $access["id"], $aclName) === "") {
-                            $access[$aclName] = "inherit";
+                            $access["acls"][$aclName] = "inherit";
                         }
                     }
                 }
@@ -153,7 +155,25 @@ class Profile
             $props["structure"] = SEManager::getNameFromId($this->_document->getRawValue("dpdoc_famid"));
         }
 
-        $props["acl"] = array_values($this->_document->acls);
+        $acls = array_values($this->_document->acls);
+
+        $extended = $this->_document->extendedAcls;
+
+        foreach ($acls as $acl) {
+            if (isset($extended[$acl])) {
+                $isExtendedAcl = true;
+                $label = $extended[$acl]["description"];
+            } else {
+                $isExtendedAcl = false;
+                $label = DocumentAccess::$dacls[$acl]["description"];
+            }
+            $props["acls"][] = [
+                "name" => $acl,
+                "label" => $label,
+                "extended" => $isExtendedAcl
+
+            ];
+        }
 
         return $props;
     }
@@ -231,9 +251,9 @@ class Profile
 
             foreach ($this->_document->acls as $aclName) {
                 if ($uperm && DocumentAccess::hasControl($uperm, $aclName)) {
-                    $access[$aclName] = "set";
+                    $access["acls"][$aclName] = "set";
                 } elseif (array_search($aclName, $aclNames) !== false) {
-                    $access[$aclName] = "set";
+                    $access["acls"][$aclName] = "set";
                 }
             }
 
