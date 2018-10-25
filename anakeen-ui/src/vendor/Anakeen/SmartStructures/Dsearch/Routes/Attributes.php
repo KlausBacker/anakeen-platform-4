@@ -29,16 +29,14 @@ class Attributes
         }
 
         $return = array();
-        //Propriétés
+        //Properties
         $internals = array(
             "title" => ___("doctitle", "searchui"),
             "mdate" => ___("mdate", "searchui"),
             "cdate" => ___("cdate", "searchui"),
             "revision" => ___("revision", "searchui"),
             "owner" => ___("id owner", "searchui"),
-            "locked" => ___("id locked", "searchui"),
-            "allocated" => ___("id allocated", "searchui"),
-            "svalues" => ___("any values", "searchui")
+            "locked" => ___("id locked", "searchui")
         );
 
         if ($this->familyname) {
@@ -56,23 +54,20 @@ class Attributes
                     if ($k == "locked") {
                         $type = "uid";
                     } else {
-                        if ($k == "allocated") {
-                            $type = "uid";
+                        if ($k == "cdate") {
+                            $type = "date";
                         } else {
-                            if ($k == "cdate") {
-                                $type = "date";
+                            if ($k == "revision") {
+                                $type = "int";
                             } else {
-                                if ($k == "revision") {
-                                    $type = "int";
+                                if ($k == "state") {
+                                    $type = "docid";
                                 } else {
-                                    if ($k == "state") {
-                                        $type = "docid";
-                                    } else {
-                                        $type = "text";
-                                    }
+                                    $type = "text";
                                 }
                             }
                         }
+
                     }
                 }
             }
@@ -132,14 +127,14 @@ class Attributes
                     "id" => "state",
                     "methods" => [],
                     "label" => array(
-                        ___("activity"),
-                        ___("step"),
-                        ___("state")
+                        _("activity"),
+                        _("step"),
+                        _("state")
                     ),
                     "type" => "wid",
                     "parent" => array(
                         "id" => "workflow",
-                        "label" => ___("workflow")
+                        "label" => _("workflow")
                     )
                 );
             }

@@ -123,14 +123,6 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
                                 } else {
                                     if ($attribute == "locked") {
                                         $attr = ___("id locked", "searchui");
-                                    } else {
-                                        if ($attribute == "allocated") {
-                                            $attr = ___("id allocated", "searchui");
-                                        } else {
-                                            if ($attribute == "svalues") {
-                                                $attr = ___("any values", "searchui");
-                                            }
-                                        }
                                     }
                                 }
                             }
