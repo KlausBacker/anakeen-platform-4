@@ -1,0 +1,19 @@
+<?php
+
+namespace {{Namespace}};
+
+/**
+ * Workflow Behavior of {{structureName}} elements
+ * @ TODO Use original class to complete behavior
+ * @see {{OriginalClass}}
+ */
+class {{Classname}} extends  {{Extends}}
+{
+
+    public function __construct(string $dbaccess = '', string $id = '', string $res = '', int $dbid = 0)
+    {
+        parent::__construct($dbaccess, $id, $res, $dbid);
+        $this->useWorkflowGraph(__DIR__."/{{Classname}}.graph.xml");
+    }
+
+}

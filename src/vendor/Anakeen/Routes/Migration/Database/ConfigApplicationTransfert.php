@@ -50,7 +50,7 @@ class ConfigApplicationTransfert
 
         $data["countAcl"] = count($aclIds);
         $data["countParam"] = count($paramIds);
-        $data["countPAction"] = count($actionIds);
+        $data["countAction"] = count($actionIds);
         return $data;
     }
 
@@ -137,7 +137,6 @@ SQL;
     {
         Utils::importForeignTable('paramv');
         Utils::importForeignTable('paramdef');
-
 
         $dsql = <<<SQL
         insert into paramdef(name, isuser, descr, kind)

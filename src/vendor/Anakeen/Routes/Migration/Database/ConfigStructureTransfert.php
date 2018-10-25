@@ -67,7 +67,27 @@ class ConfigStructureTransfert extends DataElementTransfert
         return array_merge($ids, $fieldIds, $enumIds);
     }
 
-    protected function createBehaviorStub($structureName)
+    protected static function getBehaviorPath($structureName)
+    {
+        $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        if (!$vendorName) {
+            throw new Exception("Migration VENDOR parameter is not set");
+        }
+        $className = ucfirst(strtolower($structureName));
+
+        $namePath = [$vendorName, self::SMART_STRUCTURES, $className];
+        $className = sprintf("%sBehavior", $className);
+        $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
+        $stubPath = sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
+        return $stubPath;
+    }
+
+    protected static function getBehaviorTemplateContent()
+    {
+        return file_get_contents(__DIR__ . '/../../../Migration/StructureBehavior.php.mustache');
+    }
+
+    protected static function createBehaviorStub($structureName)
     {
         $sql = sprintf(
             "select classname from docfam where name='%s'",
@@ -87,8 +107,7 @@ class ConfigStructureTransfert extends DataElementTransfert
 
         $namePath = [$vendorName, self::SMART_STRUCTURES, $className];
         $className = sprintf("%sBehavior", $className);
-        $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
-        $template = file_get_contents(__DIR__ . '/../../../Migration/StructureBehavior.php.mustache');
+        $template = static::getBehaviorTemplateContent();
 
         $sql = sprintf(
             "update docfam set classname = E'%s\\\\%s' where name='%s'",
@@ -97,7 +116,7 @@ class ConfigStructureTransfert extends DataElementTransfert
             pg_escape_string($structureName)
         );
 
-        $stubPath = sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
+        $stubPath = static::getBehaviorPath($structureName);
 
         if ($parentName) {
             $extends = '\\SmartStructure\\' . ucfirst(strtolower($parentName));
@@ -108,6 +127,7 @@ class ConfigStructureTransfert extends DataElementTransfert
         DbManager::query($sql);
         $mustache = new \Mustache_Engine();
         $stubBehaviorContent = $mustache->render($template, [
+            "VENDOR" => $vendorName,
             "Classname" => $className,
             "Namespace" => implode("\\", $namePath),
             "Extends" => $extends,
@@ -115,9 +135,10 @@ class ConfigStructureTransfert extends DataElementTransfert
             "structureName" => $structureName
         ]);
         Utils::writeFileContent($stubPath, $stubBehaviorContent);
+        print "$stubPath\n";
     }
 
-    protected function importStructureEnums($structureName)
+    protected static function importStructureEnums($structureName)
     {
 
         Utils::importForeignTable("docenum");
@@ -158,7 +179,7 @@ SQL;
         return $transferedEnum;
     }
 
-    protected function importStructureFields($structureName)
+    protected static function importStructureFields($structureName)
     {
 
         Utils::importForeignTable("docattr");
@@ -187,7 +208,7 @@ SQL;
         return $ids;
     }
 
-    protected function importStructureProperties($structureName)
+    protected static function importStructureProperties($structureName)
     {
         $qsql = <<<SQL
 insert into docfam (%s) 
@@ -209,7 +230,7 @@ SQL;
         return $ids;
     }
 
-    protected function importStructureDefValParam($structureName)
+    protected static function importStructureDefValParam($structureName)
     {
         $sql = sprintf("select defval, param from dynacase.docfam where name='%s'", pg_escape_string($structureName));
         DbManager::query($sql, $config, false, true);

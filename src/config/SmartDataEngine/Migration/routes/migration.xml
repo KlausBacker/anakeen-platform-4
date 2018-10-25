@@ -29,6 +29,13 @@
             <sde:description>Database transfert ui config</sde:description>
             <sde:requiredAccess/>
         </sde:route>
+        <sde:route name="WorkflowTransfert">
+            <sde:callable>\Anakeen\Routes\Migration\Database\WorkflowTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/workflow/{structure}</sde:pattern>
+            <sde:description>Database transfert workflow</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
         <sde:route name="TableTransfert">
             <sde:callable>\Anakeen\Routes\Migration\Database\TableTransfert</sde:callable>
             <sde:method>POST</sde:method>

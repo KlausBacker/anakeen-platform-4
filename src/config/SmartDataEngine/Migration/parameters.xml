@@ -8,14 +8,19 @@
             <sde:access>admin</sde:access>
         </sde:parameter>
 
-
-        <sde:parameter name="DYNACASE_PATH">
+        <sde:parameter name="DYNACASE_URL">
             <sde:category>MIGRATION</sde:category>
-            <sde:description>Dynacase Complete Path to server context</sde:description>
+            <sde:description>Dynacase Complete Url to context</sde:description>
             <sde:value/>
             <sde:access>admin</sde:access>
         </sde:parameter>
 
+        <sde:parameter name="DYNACASE_PASSWORD">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Admin password</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
 
         <sde:parameter name="VENDOR">
             <sde:category>MIGRATION</sde:category>
