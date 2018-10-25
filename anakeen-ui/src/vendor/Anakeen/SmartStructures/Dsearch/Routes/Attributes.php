@@ -29,7 +29,7 @@ class Attributes
         }
 
         $return = array();
-        //Propriétés
+        //Properties
         $internals = array(
             "title" => ___("doctitle", "searchui"),
             "mdate" => ___("mdate", "searchui"),
@@ -37,8 +37,7 @@ class Attributes
             "revision" => ___("revision", "searchui"),
             "owner" => ___("id owner", "searchui"),
             "locked" => ___("id locked", "searchui"),
-            "allocated" => ___("id allocated", "searchui"),
-            "svalues" => ___("any values", "searchui")
+            "allocated" => ___("id allocated", "searchui")
         );
 
         if ($this->familyname) {
