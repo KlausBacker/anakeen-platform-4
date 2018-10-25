@@ -665,25 +665,20 @@ class FamilyImport
              */
             foreach ($oattr as $ka => $attr) {
                 $tattr[strtolower($attr->id)] = $attr;
-                if ($attr->type == 'file') {
-                    $tattr[strtolower($attr->id) . '_txt'] = $attr;
-                    $tattr[strtolower($attr->id) . '_vec'] = clone ($attr);
-                    $tattr[strtolower($attr->id) . '_vec']->type = 'tsvector';
-                } else {
-                    $type = trim(strtok($attr->type, "("));
-                    if ($type === "docid" || $type === "account" || $type === "thesaurus") {
-                        if ($attr->usefor !== "Q" && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $attr->options, $reg)) {
-                            $doctitle = $reg[1];
-                            if ($doctitle == "auto") {
-                                $doctitle = $attr->id . "_title";
-                            }
-                            $doctitle = strtolower($doctitle);
-                            $tattr[$doctitle] = $attr;
-                            $tattr[$doctitle]->id = $doctitle;
-                            $tattr[$doctitle]->type = "text";
+                $type = trim(strtok($attr->type, "("));
+                if ($type === "docid" || $type === "account" || $type === "thesaurus") {
+                    if ($attr->usefor !== "Q" && preg_match("/doctitle=([A-Za-z0-9_-]+)/", $attr->options, $reg)) {
+                        $doctitle = $reg[1];
+                        if ($doctitle == "auto") {
+                            $doctitle = $attr->id . "_title";
                         }
+                        $doctitle = strtolower($doctitle);
+                        $tattr[$doctitle] = $attr;
+                        $tattr[$doctitle]->id = $doctitle;
+                        $tattr[$doctitle]->type = "text";
                     }
                 }
+
             }
 
             $updateView = false;
@@ -823,7 +818,7 @@ class FamilyImport
     {
         $genDir = sprintf("%s/%s/SmartStructure/", DEFAULT_PUBDIR, Settings::DocumentGenDirectory);
         $genAttrDir = sprintf("%s/Fields", $genDir);
-        $dfile = sprintf("%s/%s.php", $genDir, $tdoc["name"]);
+        $dfile = sprintf("%s/%s.php", $genDir, ucfirst(strtolower($tdoc["name"])));
 
         if (!is_dir($genDir)) {
             if (!(is_dir(dirname($genDir)))) {

@@ -40,13 +40,7 @@ class ErrorCodeSD
      *
      */
     const SD0006 = 'recursive search: level depth must be integer : %s';
-    /**
-     * Only words can be use in fulltext not symbol or punctauation
-     *
-     * @errorCode when use DocSearch::addGeneralFilter()
-     *
-     */
-    const SD0007 = 'general filter: words not supported : "%s"';
+
     /**
      * Searching on a "Specialized search" and specifying additional filters is not supported
      *

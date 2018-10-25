@@ -10,7 +10,6 @@ class ParamDef extends DbObj
         = array(
             "name",
             "isuser",
-            "domain",
             "category",
             "descr",
             "kind"
@@ -18,7 +17,6 @@ class ParamDef extends DbObj
     public $name;
     public $isuser;
     public $appid;
-    public $domain;
     public $descr;
     public $category;
     public $kind;
@@ -34,7 +32,6 @@ class ParamDef extends DbObj
       create table paramdef (
               name    text not null,
               isuser   varchar(1),
-              domain text,
               category text,
               descr    text,
               kind    text);

@@ -78,10 +78,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "confidential",
             "ldapdn"
         );
-    /**
-     * @var string searchable values
-     */
-    protected $svalues;
+
     public $hooks = null;
     public $sup_fields
         = array(
@@ -292,13 +289,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "filterable" => true,
                 "label" => "prop_confidential"
             ), # N_("prop_confidential")
-            "svalues" => array(
-                "type" => "fulltext",
-                "displayable" => false,
-                "sortable" => false,
-                "filterable" => true,
-                "label" => "prop_svalues"
-            ), # N_("prop_svalues")
+
             "ldapdn" => array(
                 "type" => "text",
                 "displayable" => false,
@@ -537,10 +528,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var string raw family title
      */
     public $fromtitle;
-    /**
-     * @var string fulltext vector
-     */
-    public $fulltext;
+
     /**
      * for system purpose only
      *
@@ -598,11 +586,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "unique" => true,
                 "on" => "name,revision,doctype"
             ),
-            "doc_full" => array(
-                "unique" => false,
-                "using" => "gin",
-                "on" => "fulltext"
-            ),
+
             "doc_profid" => array(
                 "unique" => false,
                 "on" => "profid"
@@ -640,13 +624,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var \DocOooFormat
      */
     private $oooFormater = null;
-    /**
-     * used by fulltext indexing
-     *
-     * @var array
-     */
-    private $textsend = array();
-    private $vidNoSendTextToEngine = array();
+
     /**
      * to not detect changed when it is automatic setValue
      *
@@ -707,8 +685,7 @@ create table doc ( id int not null,
                    prelid int DEFAULT 0,
                    atags jsonb,
                    confidential int DEFAULT 0,
-                   ldapdn text,
-                   svalues text DEFAULT ''
+                   ldapdn text
                    );
 create table docfrom ( id int not null,
                    primary key (id),
@@ -806,7 +783,6 @@ create unique index i_docir on doc(initid, revision);";
                 "fromname" => $this->fromname
             ));
         }
-        unset($this->fields["svalues"]);
         $this->select($this->id);
         // set creation date
         $this->cdate = Date::getNow(true);
@@ -830,7 +806,6 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                 }
-                $this->sendTextToEngine();
                 if ($this->dprofid > 0) {
                     $this->accessControl()->setProfil($this->dprofid); // recompute profil if needed
                     $this->accessControl()->recomputeProfiledDocument();
@@ -928,11 +903,7 @@ create unique index i_docir on doc(initid, revision);";
                 return $err;
             }
         }
-        unset($this->fields["svalues"]);
-        if ($this->doctype !== "T") {
-            $this->svalues = $this->getExtraSearchableDisplayValues();
-            $this->fields["svalues"] = "svalues";
-        }
+
         if ($this->wid > 0) {
             /**
              * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
@@ -986,17 +957,13 @@ create unique index i_docir on doc(initid, revision);";
             return (sprintf(_("constraint broken %s"), $this->constraintbroken));
         }
 
-        unset($this->fields["svalues"]);
         $this->RefreshTitle();
         if ($this->hasChanged) {
             if (chop($this->title) == "") {
                 $this->title = _("untitle document");
             }
             // set modification date
-            if ($this->doctype !== "T") {
-                $this->svalues = $this->getExtraSearchableDisplayValues();
-                $this->fields["svalues"] = "svalues";
-            }
+
             $this->mdate = Date::getNow(true);
             $this->version = $this->getVersion();
             $this->lmodify = 'Y';
@@ -1064,7 +1031,6 @@ create unique index i_docir on doc(initid, revision);";
                 $this->addLog("changed", array_keys($this->getOldRawValues()));
             }
         }
-        $this->sendTextToEngine();
         $this->hasChanged = false;
         return '';
     }
@@ -2053,9 +2019,6 @@ create unique index i_docir on doc(initid, revision);";
                 $this->formaterLevel = 0;
                 $this->otherFormatter = array();
                 $this->mid = 0;
-                $this->svalues = null;
-                $this->vidNoSendTextToEngine = array();
-                $this->textsend = array();
             }
             $this->isset = true;
             $this->getHooks()->trigger(SmartHooks::POSTAFFECT, $array, $more, $reset);
@@ -2562,7 +2525,6 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * reset Conversion of file
-     * update $attrid_txt table column
      *
      * @param string $attrid file attribute identifier
      * @param int    $index  index in case of multiple attribute
@@ -2595,7 +2557,6 @@ create unique index i_docir on doc(initid, revision);";
 
     /**
      * send a request to TE to convert files
-     * update $attrid_txt table column
      * waiting end of conversion
      *
      * @param string $va      value of file attribute like mime|vid|name
@@ -2667,8 +2628,6 @@ create unique index i_docir on doc(initid, revision);";
                         }
 
                         $this->addHistoryEntry("value $engine : $value");
-                        /* Do not index temporary vid "vidout" while waiting for transformation result */
-                        $this->vidNoSendTextToEngine[$vidout] = true;
                     } else {
                         if ($err == "") {
                             $info1 = \Dcp\VaultManager::getFileInfo($vidin);
@@ -2702,10 +2661,6 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     } else {
                         $value = $info->mime_s . '|' . $info->id_file . '|' . $info->name;
-                    }
-                    /* Do not index vid with failed or pending transformations */
-                    if ($info->teng_state != \Dcp\TransformationEngine\Client::status_done) {
-                        $this->vidNoSendTextToEngine[$info->id_file] = true;
                     }
                 }
             }
@@ -3440,10 +3395,6 @@ create unique index i_docir on doc(initid, revision);";
                         $this->_oldvalue[$attrid] = $this->$attrid;
                     }
                     $this->$attrid = $value;
-                    if ($oattr->type == "file") {
-                        // need clear computed column
-                        $this->clearFullAttr($oattr->id);
-                    }
                 }
             } else {
                 $value = trim($value, " \x0B\r"); // suppress white spaces end & begin
@@ -3599,25 +3550,6 @@ create unique index i_docir on doc(initid, revision);";
                                             }
                                         }
                                         break;
-
-                                    case 'file':
-                                        // clear fulltext realtive column
-                                        if ((!$oattr->repeat)
-                                            || ($avalue != $this->getMultipleRawValues($attrid, "", $kvalue))) {
-                                            // only if changed
-                                            $this->clearFullAttr($oattr->id, ($oattr->repeat) ? $kvalue : -1);
-                                        }
-                                        $tvalues[$kvalue] = str_replace(
-                                            '\\',
-                                            '',
-                                            $tvalues[$kvalue]
-                                        ); // correct possible save error in old versions
-                                        break;
-
-                                    case 'image':
-                                        $tvalues[$kvalue] = str_replace('\\', '', $tvalues[$kvalue]);
-                                        break;
-
                                     case 'htmltext':
                                         $tvalues[$kvalue] = str_replace('&#39;', "'", $tvalues[$kvalue]);
                                         $tvalues[$kvalue] = preg_replace(
@@ -3687,115 +3619,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     /**
-     * clear $attrid_txt and $attrid_vec
-     *
-     * @param string $attrid identifier of file attribute
-     * @param int    $index  in case of multiple values
-     *
-     * @return void
-     */
-    final private function clearFullAttr($attrid, $index = -1)
-    {
-        return;
-        $attrid = strtolower($attrid);
-        $oa = $this->getAttribute($attrid);
-        if ($oa && $oa->usefor != 'Q') {
-            if ($oa->getOption("search") != "no") {
-                $ak = $attrid . '_txt';
-                if ($index == -1) {
-                    $this->$ak = '';
-                } else {
-                    if ($this->affectColumn(array(
-                        $ak
-                    ), false)) {
-                        $this->$ak = sep_replace($this->$ak, $index);
-                    }
-                }
-                $this->fields[$ak] = $ak;
-                $ak = $attrid . '_vec';
-                $this->$ak = '';
-                $this->fields[$ak] = $ak;
-                $this->fulltext = '';
-                $this->fields['fulltext'] = 'fulltext'; // to enable trigger
-                $this->textsend[$attrid . $index] = array(
-                    "attrid" => $attrid,
-                    "index" => $index
-                );
-            }
-        }
-    }
-
-    /**
-     * send text transformation
-     * after ::clearFullAttr is called
-     *
-     */
-    final private function sendTextToEngine()
-    {
-        $err = '';
-        if (!empty($this->textsend)) {
-            foreach ($this->textsend as $k => $v) {
-                $index = $v["index"];
-                if ($index > 0) {
-                    $fval = $this->getMultipleRawValues($v["attrid"], "", $index);
-                } else {
-                    $fval = strtok($this->getRawValue($v["attrid"]), "\n");
-                }
-                if (preg_match(PREGEXPFILE, $fval, $reg)) {
-                    $vid = $reg[2];
-                    if (isset($this->vidNoSendTextToEngine[$vid])) {
-                        return '';
-                    }
-                    $err = sendTextTransformation($this->dbaccess, $this->id, $v["attrid"], $index, $vid);
-                    if ($err != "") {
-                        $this->addHistoryEntry(_("error sending text conversion") . ": $err", \DocHisto::NOTICE);
-                    }
-                    $this->vidNoSendTextToEngine[$vid] = true;
-                }
-            }
-            $this->textsend = array(); //reinit
-        }
-        return $err;
-    }
-
-    /**
-     * force recompute all file text transformation
-     *
-     * @param string $aid file attribute identifier. If empty all files attributes will be reseted
-     *
-     * @return string error message, if no error empty string
-     */
-    final public function recomputeTextFiles($aid = '')
-    {
-        if (!$aid) {
-            $afiles = $this->GetFileAttributes(true);
-        } else {
-            $afiles[$aid] = $this->getAttribute($aid);
-        }
-
-        $ttxt = array();
-        foreach ($afiles as $k => $v) {
-            $kt = $k . '_txt';
-            $ttxt[] = $kt;
-            if ($v->inArray()) {
-                $tv = $this->getMultipleRawValues($k);
-                foreach ($tv as $kv => $vv) {
-                    $this->clearFullAttr($k, $kv);
-                }
-            } else {
-                $this->clearFullAttr($k);
-            }
-            $this->$kt = '';
-            $kv = $k . '_vec';
-            $ttxt[] = $kv;
-            $this->$kv = '';
-        }
-        $this->modify(true, $ttxt, true);
-        $err = $this->sendTextToEngine();
-        return $err;
-    }
-
-    /**
      * affect text value in $attrid file attribute
      *
      * create a new \file in Vault to replace old file
@@ -3842,10 +3665,6 @@ create unique index i_docir on doc(initid, revision);";
                 $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($filename))));
                 $value = "$mime|$vid|$basename";
                 $err = $this->setValue($attrid, $value);
-                //$err="file conversion $mime|$vid";
-                if ($err == "xx") {
-                    $this->clearFullAttr($attrid); // because internal values not changed
-                }
             }
             if ($nc > 0) {
                 unlink($filename);
@@ -3979,10 +3798,6 @@ create unique index i_docir on doc(initid, revision);";
                             $value = "$mime|$vaultid|$oftitle";
                         }
                         $err = $this->setValue($attrid, $value, $index);
-                        if ($err == "") {
-                            $this->clearFullAttr($attrid); // because internal values not changed
-                        }
-                        //$err="file conversion $mime|$vid";
                     }
                     unlink($filename);
                     $this->addHistoryEntry(sprintf(_("modify file %s"), $ftitle));
@@ -5047,17 +4862,6 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
 
-        $fa = $this->GetFileAttributes(true); // copy cached values
-        $ca = array();
-        foreach ($fa as $k => $v) {
-            $ca[] = $v->id . "_txt";
-        }
-        $this->affectColumn($ca, false);
-        foreach ($ca as $a) {
-            if ($this->$a != "") {
-                $this->fields[$a] = $a;
-            }
-        }
         //$listvalue = $this->GetValues(); // save copy of values
         // duplicate values
         $olddocid = $this->id;
@@ -6584,7 +6388,6 @@ create unique index i_docir on doc(initid, revision);";
     {
         if (get_class($this) === \Anakeen\Core\SmartStructure::class) {
             $cid = "fam";
-            $famId = $this->id;
         } else {
             if ($this->doctype == 'C') {
                 return '';
@@ -6594,7 +6397,6 @@ create unique index i_docir on doc(initid, revision);";
             }
 
             $cid = $this->fromid;
-            $famId = $this->fromid;
         }
 
         $sql = "";
@@ -6604,12 +6406,9 @@ create unique index i_docir on doc(initid, revision);";
             return $sql;
         } // only drop
         if ($code) {
-            $files = array();
             $lay = new \Layout("vendor/Anakeen/Core/Layout/sqltrigger.sql");
             $na = $this->GetNormalAttributes();
             $tvalues = array();
-            $tsearch = array();
-            $fulltext_c = array();
             foreach ($na as $k => $v) {
                 $opt_searchcriteria = $v->getOption("searchcriteria", "");
                 if (($v->type !== "array") && ($v->type !== "frame") && ($v->type !== "tab")) {
@@ -6618,62 +6417,17 @@ create unique index i_docir on doc(initid, revision);";
                             "attrid" => $k,
                             "casttype" => ($v->isMultiple()===true)?"text[]":"text"
                         );
-                    // svalues += attribute allowed to be indexed
-                    if (($v->type != "file") && ($v->type != "image") && ($v->type != "password")
-                        && ($opt_searchcriteria != "hidden")) {
-                        $tsearch[] = array(
-                            "attrid" => $k
-                        );
+                }
 
-                        $fulltext_c[] = array(
-                            "attrid" => $k
-                        );
-                    }
-                }
-                if ($v->type == "file" && $opt_searchcriteria != "hidden") {
-                    // fulltext += file attributes
-                    $files[] = array(
-                        "attrid" => $k . "_txt",
-                        "vecid" => $k . "_vec"
-                    );
-                    // svalues += file attributes
-                    $tsearch[] = array(
-                        "attrid" => $k . "_txt"
-                    );
-                }
             }
-            // fulltext += abstract attributes
-            $tabstract = array();
-            $na = $this->GetAbstractAttributes();
-            foreach ($na as $k => $v) {
-                $opt_searchcriteria = $v->getOption("searchcriteria", "");
-                if ($opt_searchcriteria == "hidden") {
-                    continue;
-                }
-                if (($v->type != "array") && ($v->type != "file") && ($v->type != "image")
-                    && ($v->type != "password")) {
-                    $tabstract[] = array(
-                        "attrid" => $k
-                    );
-                }
-            }
+
             $lay->setBlockData("ATTRFIELD", $tvalues);
-            $lay->setBlockData("SEARCHFIELD", $tsearch);
-            $lay->setBlockData("ABSATTR", $tabstract);
-            $lay->setBlockData("FILEATTR", $files);
-            $lay->setBlockData("FILEATTR2", $files);
-            $lay->setBlockData("FILEATTR3", $files);
-            $lay->setBlockData("FULLTEXT_C", $fulltext_c);
-            $lay->set("hasattr", (count($tvalues) > 0));
-            $lay->set("hassattr", (count($tsearch) > 0));
-            $lay->set("hasabsattr", (count($tabstract) > 0));
             $lay->set("docid", $this->fromid);
             $sql = $lay->gen();
         } else {
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
                 $sql .= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetlogicalname();";
-                $sql .= "create trigger VSEARCH{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE searchvalues$cid();";
                  $sql.= "create trigger beforeiu{$cid} BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE doc{$cid}_fieldvalues();";
             } else {
                 $sql .= "create trigger UVdocfam before insert or update on docfam FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
@@ -8234,97 +7988,6 @@ create unique index i_docir on doc(initid, revision);";
             );
         }, $tags);
         return $tags;
-    }
-
-
-    /**
-     * get display values for general searches
-     *
-     * @param bool $withLocale use all defined locale
-     *
-     * @return string
-     * @throws \Dcp\Exception
-     * @throws \Dcp\Fmtc\Exception
-     *
-     */
-    protected function getExtraSearchableDisplayValues($withLocale = true)
-    {
-        $moreSearchValues = [];
-
-        $fmt = new \Anakeen\Core\Internal\FormatCollection($this);
-        $attributes = $this->getNormalAttributes();
-        $datesValues = [];
-        $oneAttributeAtLeast = false;
-        foreach ($attributes as $attr) {
-            if ($attr->type !== "array" && $attr->getOption("searchcriteria") !== "hidden"
-                && $this->getRawValue($attr->id)) {
-                $fmt->addAttribute($attr->id);
-                $oneAttributeAtLeast = true;
-                if ($attr->type === "date") {
-                    if ($attr->isMultiple()) {
-                        $datesValues = array_merge($datesValues, $this->getMultipleRawValues($attr->id));
-                    } else {
-                        $datesValues[] = $this->getRawValue($attr->id);
-                    }
-                }
-            }
-        }
-
-        if ($oneAttributeAtLeast) {
-            $datesValues = array_unique($datesValues);
-            if ($withLocale) {
-                $currentLocale = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG", "fr_FR");
-                $lang = ContextManager::getLocales();
-
-                $locales = array_keys($lang);
-                // set current at then end to get same locale when function finished
-                unset($locales[$currentLocale]);
-                $locales[] = $currentLocale;
-            } else {
-                $locales = array(
-                    "current"
-                );
-            }
-            foreach ($locales as $klang) {
-                if ($withLocale) {
-                    ContextManager::setLanguage($klang);
-                }
-                $moreSearchValues[] = $this->getTitle();
-                $r = $fmt->render();
-
-                foreach ($datesValues as $date) {
-                    $moreSearchValues[] = strftime("%A %B %Y %m %d", strtotime($date));
-                }
-                /**
-                 * @var StandardAttributeValue $renderInfo
-                 */
-                foreach ($r[0]["attributes"] as $renderInfo) {
-                    if (isset($renderInfo->value) && $renderInfo->displayValue !== $renderInfo->value) {
-                        $moreSearchValues[] = $renderInfo->displayValue;
-                    } elseif ($renderInfo && is_array($renderInfo)) {
-                        foreach ($renderInfo as $rowInfo) {
-                            if (isset($rowInfo->value) && $rowInfo->displayValue !== $rowInfo->value) {
-                                $moreSearchValues[] = $rowInfo->displayValue;
-                            } elseif ($rowInfo && is_array($rowInfo)) {
-                                foreach ($rowInfo as $subRowInfo) {
-                                    if (isset($subRowInfo->value) && $subRowInfo->displayValue !== $subRowInfo->value) {
-                                        $moreSearchValues[] = $subRowInfo->displayValue;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        $custom = $this->getCustomSearchValues();
-        if ($custom) {
-            if (!is_array($custom)) {
-                throw new \Dcp\Exception("DOC0126", gettype($custom));
-            }
-            $moreSearchValues = array_merge($moreSearchValues, $custom);
-        }
-        return implode("£", array_unique($moreSearchValues));
     }
 
     /**

@@ -24,8 +24,7 @@ ALTER TABLE docread ADD CONSTRAINT docread_pkey PRIMARY KEY (id);
 create index fromid_docread on docread(fromid);
 create index initid_docread on docread(initid);
 create index title_docread on docread(title);
-create index docty_docread on docread(doctype);
-create index full_docread on docread using gist(fulltext);";
+create index docty_docread on docread(doctype);";
     
     public $fields = array(
         "id",

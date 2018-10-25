@@ -21,8 +21,6 @@ class DirLib
             $d = new \Anakeen\Core\Internal\SmartElement();
             $props = $d->fields;
             $props = array_merge($props, $d->sup_fields);
-            $props[] = "fulltext";
-            $props[] = "svalues";
         }
 
         foreach ($sqlfilters as $k => $v) {
@@ -30,7 +28,6 @@ class DirLib
             $tok = ltrim($tok, " ");
             $tok = strtok($tok, " !=~@");
             if (!(strpos($tok, '.') > 0)) { // join is not in main table
-                //if ($tok == "fulltext") return true;
                 if (($tok !== false) && ($tok !== "true") && ($tok !== "false") && (!in_array(ltrim($tok, "("), $props))) {
                     return false;
                 }

@@ -48,8 +48,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
                 "ifile",
                 "array",
                 "file",
-                "image",
-                "fulltext"
+                "image"
             )
         ) ,
         "=~*" => array(
@@ -74,28 +73,8 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
                 "docidtitle[]"
             )
         ) ,
-        "@@" => array(
-            "label" => "content file word",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "file {left} contain the word {right}", # _("file {left} contain the word {right}")
-            "type" => array(
-                "file"
-            )
-        ) ,
-        "~@" => array(
-            "label" => "content file expression",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "file {left} contain the expression {right}", # _("file {left} contain the expression {right}")
-            "type" => array(
-                "file"
-            )
-        ) ,
+
+
         "=" => array(
             "label" => "equal",
             "operand" => array(
@@ -183,14 +162,12 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
             "dynlabel" => "{left} not include {right}", # _("{left} not include {right}")
             "slabel" => array(
                 "file" => "filename or type not include",
-                "fulltext" => "any value include", #_("any value include")
                 "image" => "filename or type not include", #_("filename or type not include")
                 "array" => "no value include", #_("no value include")
                 
             ) ,
             "sdynlabel" => array(
                 "file" => "{left} filename or type not include {right}",
-                "fulltext" => "any values include {right}", #_("any values include {right}")
                 "image" => "{left} filename or type not include {right}", #_("{left} filename or type not include {right}")
                 "array" => "{left} include no value of {right}"
             ) , #_("{left} include no value of {right}")
@@ -201,8 +178,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
                 "ifile",
                 "array",
                 "file",
-                "image",
-                "fulltext"
+                "image"
             )
         ) ,
         ">" => array(
@@ -303,27 +279,6 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
                 "time",
                 "timestamp",
                 "money"
-            )
-        ) ,
-        "~y" => array(
-            "label" => "one value equal", #("one value equal")
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} one value equal {right}", # _("{left} one value equal {right}")
-            "slabel" => array(
-                "docid[]" => "one id equal", # _("one id equal")
-                "account[]" => "one id equal"
-            ) ,
-            "sdynlabel" => array(
-                "docid[]" => "{left} one id equal {right}", #_("{left} one id equal {right}")
-                "account[]" => "{left} one id equal {right}"
-            ) ,
-            "type" => array(
-                "array",
-                "docid[]",
-                "account[]"
             )
         )
     );

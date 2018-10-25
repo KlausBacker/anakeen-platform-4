@@ -127,44 +127,6 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
  */
 
 /**
- * send request to have text conversion of file
- * @deprecated
- */
-function sendTextTransformation($dbaccess, $docid, $attrid, $index, $vid)
-{
-    $err = '';
-    if (($docid > 0) && ($vid > 0)) {
-        $tea = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "TE_ACTIVATE");
-        if ($tea != "yes" || !\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
-            return '';
-        }
-        $tea = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "TE_FULLTEXT");
-        if ($tea != "yes") {
-            return '';
-        }
-        
-        global $action;
-        include_once("FDL/Class.TaskRequest.php");
-        $of = new VaultDiskStorage($dbaccess, $vid);
-        $filename = $of->getPath();
-        $urlindex = getOpenTeUrl();
-        $callback = $urlindex . "&sole=Y&app=FDL&action=SETTXTFILE&docid=$docid&attrid=" . $attrid . "&index=$index";
-        $ot = new \Dcp\TransformationEngine\Client(\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "TE_HOST"), \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "TE_PORT"));
-        $err = $ot->sendTransformation('utf8', $vid, $filename, $callback, $info);
-        if ($err == "") {
-            $tr = new TaskRequest($dbaccess);
-            $tr->tid = $info["tid"];
-            $tr->fkey = $vid;
-            $tr->status = $info["status"];
-            $tr->comment = $info["comment"];
-            $tr->uid = $action->user->id;
-            $tr->uname = $action->user->firstname . " " . $action->user->lastname;
-            $err = $tr->add();
-        }
-    }
-    return $err;
-}
-/**
  * send request to convert and waiting
  * @param string  $infile path to file to convert
  * @param string  $engine engine name to use

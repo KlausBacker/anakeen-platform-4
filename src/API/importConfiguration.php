@@ -54,7 +54,6 @@ if (! $err && class_exists(\Anakeen\Ui\ImportRenderConfiguration::class)) {
     $oUiImport->import($filename);
     $err = $oUiImport->getErrorMessage();
 }
-
 if ($err) {
     \Anakeen\Core\DbManager::rollbackPoint($point);
     \Anakeen\Core\ContextManager::exitError($err);
