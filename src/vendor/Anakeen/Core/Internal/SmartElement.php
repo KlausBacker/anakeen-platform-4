@@ -8,11 +8,6 @@ namespace Anakeen\Core\Internal;
  * @author Anakeen
  */
 
-// define constant for search attributes in concordance with the file "init.freedom"
-/**#@+
- * constant for document family identifier in concordance with the file "FDL/init.freedom"
- *
- */
 define("FAM_ACCESSDOC", 3);
 define("FAM_ACCESSDIR", 4);
 define("FAM_SEARCH", 5);
@@ -24,12 +19,11 @@ define("DELVALUE", 'DEL??');
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 
-require_once "FDL/LegacyDocManager.php";
+require_once __DIR__."/../../FDL/LegacyDocManager.php";
 
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
-use Anakeen\Core\Internal\Format\StandardAttributeValue;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\Utils\Date;
@@ -774,7 +768,6 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->wdoc) {
                 $this->wdoc->workflowSendMailTemplate($this->state, _("creation"));
                 $this->wdoc->workflowAttachTimer($this->state);
-                $this->wdoc->changeAllocateUser($this->state);
             }
             $this->addLog("create", array(
                 "id" => $this->id,
@@ -2249,29 +2242,6 @@ create unique index i_docir on doc(initid, revision);";
             return false;
         } // it's an attribute
         return $this->$prop;
-    }
-
-    /**
-     * Return the tag object for the document
-     *
-     * @throws \Dcp\Exception
-     * @return \TagManager &$tag object reference use to modify tags
-     */
-    final public function &tag()
-    {
-        /**
-         * @var \TagManager $tag
-         */
-        static $tag = null;
-
-        if (empty($tag) || $tag->docid != $this->initid) {
-            if (class_exists("TagManager")) {
-                $tag = new \TagManager($this, $this->initid);
-            } else {
-                throw new \Dcp\Exception("Need install dynacase-tags module.\n");
-            }
-        }
-        return $tag;
     }
 
     /**
@@ -3770,7 +3740,7 @@ create unique index i_docir on doc(initid, revision);";
                          * @var $revdoc array
                          */
                         $revdoc = $trev[1];
-                        $prevfile = getv($revdoc, strtolower($attrid));
+                        $prevfile = \Anakeen\Search\SearchElementData::getRawData($revdoc, strtolower($attrid));
                         if ($prevfile == $fvalue) {
                             $newfile = true;
                         }
@@ -4088,12 +4058,12 @@ create unique index i_docir on doc(initid, revision);";
     private function getMoreValues()
     {
         if (!empty($this->fieldvalues)) {
-            $moreValues=json_decode($this->fieldvalues, true);
+            $moreValues = json_decode($this->fieldvalues, true);
 
             foreach ($moreValues as $attrid => $v) {
                 if (empty($this->$attrid)) {
                     if (is_array($v)) {
-                        $v=Postgres::arrayToString($v);
+                        $v = Postgres::arrayToString($v);
                     }
                     $this->$attrid = $v;
                     $this->mvalues[$attrid] = $v; // to be use in getValues()
@@ -4108,9 +4078,9 @@ create unique index i_docir on doc(initid, revision);";
     private function resetMoreValues()
     {
         if (!empty($this->fieldvalues) && $this->id) {
-            $moreValues=json_decode($this->fieldvalues, true);
+            $moreValues = json_decode($this->fieldvalues, true);
             foreach ($moreValues as $k => $v) {
-                    $this->$k = null;
+                $this->$k = null;
             }
         }
         $this->mvalues = array();
@@ -4496,12 +4466,12 @@ create unique index i_docir on doc(initid, revision);";
      * if it is already set no set twice
      * A application tag must not contains "\n" character
      *
-     * @param string $tag the tag to add
+     * @param string $tag   the tag to add
      *
-     * @param mixed   $value value of tag (true by default)
+     * @param mixed  $value value of tag (true by default)
      * @return string error message
      */
-    final public function addATag($tag, $value=true)
+    final public function addATag($tag, $value = true)
     {
         $err = "";
         if (strpos($tag, "\n") !== false) {
@@ -4516,10 +4486,10 @@ create unique index i_docir on doc(initid, revision);";
                 "atags"
             ), true);
         } else {
-            $tags=json_decode($this->atags, true);
-            $previousTag=$this->getATag($tag);
-            if (!$previousTag || $previousTag!==$value) {
-                $tags[$tag]=$value;
+            $tags = json_decode($this->atags, true);
+            $previousTag = $this->getATag($tag);
+            if (!$previousTag || $previousTag !== $value) {
+                $tags[$tag] = $value;
                 $this->atags = json_encode($tags);
                 $err = $this->modify(true, array(
                     "atags"
@@ -4532,18 +4502,18 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Return true if application tag is present
      *
-     * @param string $tag the tag to search
+     * @param string $tag   the tag to search
      * @param string $value return tag value recorded
      * @return bool return true if found
      */
-    final public function getATag($tag, &$value=null)
+    final public function getATag($tag, &$value = null)
     {
         if ($this->atags == "") {
             return false;
         }
-        $tags=json_decode($this->atags, true);
-        if (isset($tags[$tag])){
-            $value=$tags[$tag];
+        $tags = json_decode($this->atags, true);
+        if (isset($tags[$tag])) {
+            $value = $tags[$tag];
             return true;
         }
         return false;
@@ -4562,8 +4532,8 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->atags == "") {
             return "";
         }
-        $tags=json_decode($this->atags, true);
-        if (isset($tags[$tag])){
+        $tags = json_decode($this->atags, true);
+        if (isset($tags[$tag])) {
             unset($tags[$tag]);
             $this->atags = json_encode($tags);
             $err = $this->modify(true, array(
@@ -4794,7 +4764,12 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function isFixed()
     {
-        return isFixedDoc($this->dbaccess, $this->id);
+        $tdoc = SEManager::getRawData($this->id, ["locked"], false, false);
+
+        if (!$tdoc) {
+            return null;
+        }
+        return ($tdoc["locked"] == -1);
     }
 
     /**
@@ -4942,67 +4917,6 @@ create unique index i_docir on doc(initid, revision);";
         return $err;
     }
 
-
-    /**
-     * Set a free state to the document
-     * for the document without workflow
-     * a new \revision is created
-     *
-     * @param string $newstateid the document id of the state (FREESTATE family)
-     * @param string $comment    the comment of the state change
-     * @param bool   $revision   if false no revision are made
-     *
-     * @return string error text (empty if no error)
-     */
-    final public function changeFreeState($newstateid, $comment = '', $revision = true)
-    {
-        if ($this->wid > 0) {
-            return sprintf(_("cannot set free state in workflow controlled document %s"), $this->title);
-        }
-        if ($this->wid == -1) {
-            return sprintf(_("cannot set free state for document %s: workflow not allowed"), $this->title);
-        }
-        if (!$this->isRevisable()) {
-            return sprintf(_("cannot set free state for document %s: document cannot be revised"), $this->title);
-        }
-        if ($newstateid == 0) {
-            $this->state = "";
-            $err = $this->modify(false, array(
-                "state"
-            ));
-            if ($err == "") {
-                $comment = sprintf(_("remove state : %s"), $comment);
-                if ($revision) {
-                    $err = $this->revise($comment);
-                } else {
-                    $err = $this->addHistoryEntry($comment);
-                }
-            }
-        } else {
-            $state = SEManager::getDocument($newstateid);
-            if (!$state || !$state->isAlive()) {
-                return sprintf(_("invalid freestate document %s"), $newstateid);
-            }
-            if ($state->fromid != 39) {
-                return sprintf(_("not a freestate document %s"), $state->title);
-            }
-
-            $this->state = $state->id;
-            $err = $this->modify(false, array(
-                "state"
-            ));
-            if ($err == "") {
-                $comment = sprintf(_("change state to %s : %s"), $state->title, $comment);
-                if ($revision) {
-                    $err = $this->revise($comment);
-                } else {
-                    $err = $this->addHistoryEntry($comment);
-                }
-            }
-        }
-        return $err;
-    }
-
     /**
      * set state for a document controled by a workflow
      * apply associated transaction
@@ -5075,18 +4989,13 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->wid > 0) {
             return $this->state;
         }
-        if (is_numeric($this->state) && ($this->state > 0)) {
-            $state = $this->getTitle($this->state);
-            return $state;
-        }
 
-        return $this->state;
+        return null;
     }
 
     /**
      * return the color associated for the state of a document
      * if document has workflow : the color state
-     * if document state is a free state the color
      *
      * @param string $def default color if state not found or color is empty
      *
@@ -5102,11 +5011,6 @@ create unique index i_docir on doc(initid, revision);";
             if ($wdoc && $wdoc->isAffected()) {
                 return $wdoc->getColor($this->state, $def);
             }
-        } else {
-            if (is_numeric($this->state) && ($this->state > 0)) {
-                $state = $this->getDocValue($this->state, "frst_color", $def);
-                return $state;
-            }
         }
         return $def;
     }
@@ -5114,7 +5018,6 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return the action associated for the state of a document
      * if document has workflow : the action label description
-     * if document state is a free state : state description
      *
      * @param string $def default activity is activity is empty
      *
@@ -5130,11 +5033,6 @@ create unique index i_docir on doc(initid, revision);";
             if ($wdoc) {
                 return $wdoc->getActivity($this->state, $def);
             }
-        } else {
-            if (is_numeric($this->state) && ($this->state > 0)) {
-                $stateact = $this->getDocValue($this->state, "frst_desc", $def);
-                return $stateact;
-            }
         }
         return $def;
     }
@@ -5145,14 +5043,24 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string localized state label
      */
-    final public function getStatelabel()
+    public function getStepLabel()
     {
-        if ($this->locked == -1) {
-            $stateValue = $this->getState();
-        } else {
-            $stateValue = $this->getStateActivity($this->getState());
+        $label = "";
+        if ($this->wid > 0) {
+            /**
+             * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $wdoc
+             */
+            $wdoc = SEManager::getDocument($this->wid);
+            if ($wdoc) {
+                if ($this->locked == -1) {
+                    $label =$wdoc->getActivity($this->state);
+                }
+                if (! $label) {
+                    $label = $wdoc->getStateLabel($this->state);
+                }
+            }
         }
-        return (empty($stateValue) ? '' : _($stateValue));
+        return $label;
     }
 
 
@@ -5665,7 +5573,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string
      */
-    public function specRefreshGen($onlyspec = false) {
+    public function specRefreshGen($onlyspec = false)
+    {
         return '';
     }
 
@@ -5926,12 +5835,12 @@ create unique index i_docir on doc(initid, revision);";
      * @return array
      * @throws \Dcp\Db\Exception
      */
-    public static function rawValueToArray($v, bool $force=false)
+    public static function rawValueToArray($v, bool $force = false)
     {
         if ($v === "" || $v === null) {
             return array();
         }
-        if ($force===true && $v[0] !== '{') {
+        if ($force === true && $v[0] !== '{') {
             return [$v];
         }
         return Postgres::stringToArray($v);
@@ -6410,15 +6319,13 @@ create unique index i_docir on doc(initid, revision);";
             $na = $this->GetNormalAttributes();
             $tvalues = array();
             foreach ($na as $k => $v) {
-                $opt_searchcriteria = $v->getOption("searchcriteria", "");
                 if (($v->type !== "array") && ($v->type !== "frame") && ($v->type !== "tab")) {
                     // values += any attribute
-                        $tvalues[] = array(
-                            "attrid" => $k,
-                            "casttype" => ($v->isMultiple()===true)?"text[]":"text"
-                        );
+                    $tvalues[] = array(
+                        "attrid" => $k,
+                        "casttype" => ($v->isMultiple() === true) ? "text[]" : "text"
+                    );
                 }
-
             }
 
             $lay->setBlockData("ATTRFIELD", $tvalues);
@@ -6428,7 +6335,7 @@ create unique index i_docir on doc(initid, revision);";
             // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
             if ($cid != "fam") {
                 $sql .= "create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetlogicalname();";
-                 $sql.= "create trigger beforeiu{$cid} BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE doc{$cid}_fieldvalues();";
+                $sql .= "create trigger beforeiu{$cid} BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE doc{$cid}_fieldvalues();";
             } else {
                 $sql .= "create trigger UVdocfam before insert or update on docfam FOR EACH ROW EXECUTE PROCEDURE upvaldocfam();";
             }
@@ -6833,11 +6740,10 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $target     window target name for hyperlink destination
      * @param bool   $ulink      if false hyperlink are not generated
      * @param bool   $abstract   if true only abstract attribute are generated
-     * @param bool   $viewhidden if true view also hidden attributes
      */
-    final public function viewdefaultcard($target = "_self", $ulink = true, $abstract = false, $viewhidden = false)
+    final public function viewdefaultcard($target = "_self", $ulink = true, $abstract = false)
     {
-        $this->viewattr($target, $ulink, $abstract, $viewhidden);
+        $this->viewattr($target, $ulink, $abstract);
         $this->viewprop($target, $ulink, $abstract);
     }
 
@@ -6849,9 +6755,8 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $target     HTML target for links
      * @param bool   $ulink      set to true to have HTML hyperlink when it is possible
      * @param bool   $abstract   set to true to restrict to abstract attributes
-     * @param bool   $viewhidden set to true to return also hidden attribute (visibility H)
      */
-    final public function viewattr($target = "_self", $ulink = true, $abstract = false, $viewhidden = false)
+    final public function viewattr($target = "_self", $ulink = true, $abstract = false)
     {
         $listattr = $this->GetNormalAttributes();
         // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
@@ -7296,7 +7201,7 @@ create unique index i_docir on doc(initid, revision);";
                 $id = SEManager::getIdFromName($id);
             }
             if ($id > 0) {
-                $title = getDocTitle($id, $latest);
+                $title = \DocTitle::getTitle($id, $latest);
                 if (!$title) {
                     return " ";
                 } // delete title
@@ -7843,7 +7748,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return SEManager::getDocument($helpId);
-    }
+    }/** @noinspection PhpUnusedParameterInspection */
 
     /**
      * Get the list of compatible search methods for a given attribute type
@@ -7854,10 +7759,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
      */
-    public function getSearchMethods(
-        $attrId,
-        $attrType = ''
-    ) {
+    public function getSearchMethods( $attrId,  $attrType = ''  ) {
         // Strip format strings for non-docid types
         $pType = \Dcp\FamilyImport::parseType($attrType);
         if ($pType['type'] != 'docid') {
@@ -7936,7 +7838,7 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Check if a specific method from a specific class is a valid search method
      *
-     * @param string|object $className  the class name
+     * @param string|\stdClass $className  the class name
      * @param string        $methodName the method name
      *
      * @return bool boolean 'true' if valid, boolean 'false' is not valid

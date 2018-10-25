@@ -56,6 +56,7 @@ class DestroySmartStructure
                 sprintf("DELETE FROM doc%d;", $resid),
                 sprintf("DELETE FROM docname WHERE name = %s;", pg_escape_literal($resname)),
                 sprintf("DELETE FROM docfrom WHERE fromid = %d;", $resid),
+                sprintf("DELETE FROM docname WHERE fromid = %d;", $resid),
                 sprintf("DELETE FROM docattr WHERE docid = %d;", $resid),
                 sprintf("DELETE FROM docfam WHERE id = %d;", $resid),
                 sprintf("DROP VIEW IF EXISTS family.%s;", pg_escape_identifier(strtolower($resname))),

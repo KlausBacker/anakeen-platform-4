@@ -14,29 +14,12 @@
 /**
  */
 
-include_once("FDL/Lib.Util.php");
+include_once(__DIR__."/Lib.Util.php");
 
 use Anakeen\Core\SEManager;
 use Anakeen\Core\DbManager;
 
-//
-// ------------------------------------------------------
-// construction of a sql disjonction
-// ------------------------------------------------------
-function GetSqlCond2($Table, $column)
-// ------------------------------------------------------
-{
-    $sql_cond = "";
-    if (count($Table) > 0) {
-        $sql_cond = "(($column = '$Table[0]') ";
-        for ($i = 1; $i < count($Table); $i++) {
-            $sql_cond = $sql_cond . "OR ($column = '$Table[$i]') ";
-        }
-        $sql_cond = $sql_cond . ")";
-    }
 
-    return $sql_cond;
-}
 
 /**
  * @deprecated use DbManager::getSqlOrCond
@@ -48,26 +31,8 @@ function GetSqlCond($Table, $column, $integer = false)
     return DbManager::getSqlOrCond($Table, $column, $integer);
 }
 
-/**
- * return first element of array
- *
- * @param array $a
- *
- * @return string the first, false is empty
- */
-function first($a)
-{
-    if (count($a) == 0) {
-        return false;
-    }
-    reset($a);
-    return current($a);
-}
 
-function notEmpty($a)
-{
-    return (!empty($a));
-}
+
 
 /**
  * clear all cache used by new_doc function
@@ -193,139 +158,6 @@ function createTmpDoc($dbaccess, $fromid, $defaultvalue = true)
     return $d;
 }
 
-/**
- * return from id for document (not for family (use @see getFamFromId() instead)
- *
- * @deprecated use SEManager::getFromId(
- *
- * @param string $dbaccess database specification
- * @param int    $id       identifier of the object
- *
- * @return int|false false if error occured (return -1 if family document )
- */
-function getFromId($dbaccess, $id)
-{
-    if (!($id > 0)) {
-        return false;
-    }
-    if (!is_numeric($id)) {
-        return false;
-    }
-
-    $fromid = SEManager::getFromId($id);
-    if (!$fromid) {
-        return false;
-    }
-
-    return $fromid;
-}
-
-/**
- * return from name for document (not for family (use @see getFamFromId() instead)
- *
- * @deprecated use SEManager::getFromName()
- *
- * @param string $dbaccess database specification
- * @param int    $id       identifier of the object
- *
- * @return string false if error occured (return -1 if family document )
- */
-function getFromName($dbaccess, $id)
-{
-    if (!($id > 0)) {
-        return false;
-    }
-    if (!is_numeric($id)) {
-        return false;
-    }
-
-    $fromname = SEManager::getFromName($id);
-    if (!$fromname) {
-        return false;
-    }
-
-    return $fromname;
-}
-
-
-/**
- * get document title from document identifier
- *
- * @param int|string $id     document identifier
- * @param bool       $latest set to false for a fixed id or true for latest
- *
- * @return string
- */
-function getDocTitle($id, $latest = true)
-{
-    if (!is_numeric($id)) {
-        $id = \Anakeen\Core\SEManager::getIdFromName($id);
-    }
-    if ($id > 0) {
-        if (!$latest) {
-            $sql = sprintf("select title, doctype, locked, initid, name from docread where id=%d", $id);
-        } else {
-            $sql
-                = sprintf(
-                "select title, doctype, locked, initid, name from docread where initid=(select initid from docread where id=%d) order by id desc limit 1",
-                $id
-            );
-        }
-        DbManager::query($sql, $t, false, true);
-
-        if (!$t) {
-            return '';
-        }
-        if ($t["doctype"] == 'C') {
-            return getFamTitle($t);
-        }
-        // TODO confidential property
-        return $t["title"];
-    }
-    return '';
-}
-
-/**
- * get some properties for a document
- *
- * @param       $id
- * @param bool  $latest
- * @param array $prop properties list to retrieve
- *
- * @return array|null of indexed properties's values - empty array if not found
- */
-function getDocProperties(
-    $id,
-    $latest = true,
-    array $prop
-    = array(
-        "title"
-    )
-) {
-    if (!is_numeric($id)) {
-        $id = \Anakeen\Core\SEManager::getIdFromName($id);
-    }
-    if (($id > 0) && count($prop) > 0) {
-        $sProps = implode(',', $prop);
-        if (!$latest) {
-            $sql = sprintf("select %s, doctype, locked, initid from docread where id=%d", $sProps, $id);
-        } else {
-            $sql
-                = sprintf(
-                "select %s, doctype, locked, initid from docread where initid=(select initid from docread where id=%d) order by id desc limit 1",
-                $sProps,
-                $id
-            );
-        }
-        DbManager::query($sql, $t, false, true);
-
-        if (!$t) {
-            return null;
-        }
-        return $t;
-    }
-    return null;
-}
 
 /**
  * return document table value
@@ -401,56 +233,9 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
     return false;
 }
 
-/**
- * return the value of an doc array item
- *
- * @param array  &$t the array where get value
- * @param string $k  the index of the value
- * @param string $d  default value if not found or if it is empty
- *
- * @return string
- */
-function getv(&$t, $k, $d = "")
-{
-    $v=\Anakeen\Search\SearchElementData::getRawData($t, $k);
-    return $v?:$d;
-}
 
 
 
-/**
- * use to usort attributes
- *
- * @param \Anakeen\Core\SmartStructure\BasicAttribute $a
- * @param \Anakeen\Core\SmartStructure\BasicAttribute $b
- */
-function tordered($a, $b)
-{
-    if (isset($a->ordered) && isset($b->ordered)) {
-        if ($a->ordered == $b->ordered) {
-            return 0;
-        }
-        if ($a->ordered > $b->ordered) {
-            return 1;
-        }
-        return -1;
-    }
-    if (isset($a->ordered)) {
-        return 1;
-    }
-    if (isset($b->ordered)) {
-        return -1;
-    }
-    return 0;
-}
-
-function cmp_cvorder3($a, $b)
-{
-    if ($a["cv_order"] == $b["cv_order"]) {
-        return 0;
-    }
-    return ($a["cv_order"] < $b["cv_order"]) ? -1 : 1;
-}
 
 /**
  * control privilege for a document in the array form
@@ -581,62 +366,6 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
 
 
 
-
-
-
-/**
- * return freedom user document in concordance with what user id
- *
- * @param string $dbaccess database specification
- * @param int    $userid   what user identifier
- *
- * @return \Anakeen\Core\Internal\SmartElement |false the user document
- */
-function getDocFromUserId($dbaccess, $userid)
-{
-    if ($userid == "") {
-        return false;
-    }
-    $tdoc = array();
-    $user = new \Anakeen\Core\Account("", $userid);
-    if (!$user->isAffected()) {
-        return false;
-    }
-    if ($user->accounttype == \Anakeen\Core\Account::GROUP_TYPE) {
-        $filter = array(
-            "us_whatid = '$userid'"
-        );
-        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
-            $dbaccess,
-            0,
-            0,
-            "ALL",
-            $filter,
-            1,
-            "LIST",
-            SEManager::getFamilyIdFromName("IGROUP")
-        );
-    } else {
-        $filter = array(
-            "us_whatid = '$userid'"
-        );
-        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
-            $dbaccess,
-            0,
-            0,
-            "ALL",
-            $filter,
-            1,
-            "LIST",
-            SEManager::getFamilyIdFromName("IUSER")
-        );
-    }
-    if (count($tdoc) == 0) {
-        return false;
-    }
-    return $tdoc[0];
-}
-
 function getFamTitle(&$tdoc)
 {
     $r = $tdoc["name"] . '#title';
@@ -646,23 +375,6 @@ function getFamTitle(&$tdoc)
     }
     return $tdoc['title'];
 }
-
-/**
- * verify in database if document is fixed
- *
- * @return bool
- */
-function isFixedDoc($dbaccess, $id)
-{
-    $tdoc = SEManager::getRawData($id, ["locked"], false, false);
-
-    if (!$tdoc) {
-        return null;
-    }
-    return ($tdoc["locked"] == -1);
-}
-
-
 
 
 /**
