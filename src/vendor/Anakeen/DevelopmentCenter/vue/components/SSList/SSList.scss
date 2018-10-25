@@ -48,6 +48,9 @@
 
         .smart-structure-list-item {
           flex-shrink:0;
+          &:hover {
+            text-decoration: none;
+          }
           &.router-link-active {
             z-index: 10;
             border-color: rgba(33, 37, 41, .125);
