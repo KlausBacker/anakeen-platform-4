@@ -6,17 +6,21 @@ use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 
+use Anakeen\Core\Utils\Xml;
 use Dcp\Ui\RenderConfigManager;
 use SmartStructure\Fields\Cvdoc as CvDocFields;
 use SmartStructure\Fields\Mask as MaskFields;
 
 class ImportRenderConfiguration extends ImportSmartConfiguration
 {
+    protected $uiPrefix;
     protected function importConfigurations()
     {
+        $this->uiPrefix=Xml::getPrefix($this->dom, ExportRenderConfiguration::NSUIURL);
         $data = $this->importMasks();
         $data = array_merge($data, $this->importCvDocs());
         $data = array_merge($data, $this->importStructureRender());
+
 
         $this->recordSmartData($data);
     }
@@ -29,17 +33,17 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
         /** @var \DOMElement $config */
         foreach ($configs as $config) {
             if ($ref = $config->getAttribute("ref")) {
-                $cvdocRef = $this->evaluate($config, "string(ui:view-control/@ref)");
+                $cvdocRef = $this->evaluate($config, "string({$this->uiPrefix}:view-control/@ref)");
 
                 $data[] = ["BEGIN", "", "", "", "", $ref];
                 $data[] = ["CVID", $cvdocRef];
                 $data[] = ["END"];
 
-                $renderAccess = $this->evaluate($config, "string(ui:render-access/@class)");
+                $renderAccess = $this->evaluate($config, "string({$this->uiPrefix}:render-access/@class)");
                 if ($renderAccess) {
                     RenderConfigManager::setRenderParameter($ref, "renderAccessClass", $renderAccess);
                 }
-                $disableEtag = $this->evaluate($config, "string(ui:render-access/@disable-etag)");
+                $disableEtag = $this->evaluate($config, "string({$this->uiPrefix}:render-access/@disable-etag)");
                 if ($disableEtag) {
                     RenderConfigManager::setRenderParameter($ref, "disableEtag", $disableEtag==="true");
                 }
@@ -147,11 +151,11 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 $cvdoc->setValue(CvDocFields::ba_desc, $desc->nodeValue);
             }
 
-            $masterMask = $this->evaluate($cvNode, "string(ui:primary-mask/@ref)");
+            $masterMask = $this->evaluate($cvNode, "string({$this->uiPrefix}:primary-mask/@ref)");
             if ($masterMask) {
                 $cvdoc->setValue(CvDocFields::cv_primarymask, $masterMask);
             }
-            $createvid = $this->evaluate($cvNode, "string(ui:creation-view/@ref)");
+            $createvid = $this->evaluate($cvNode, "string({$this->uiPrefix}:creation-view/@ref)");
             if ($createvid) {
                 $cvdoc->setValue(CvDocFields::cv_idcview, $createvid);
             }
@@ -161,8 +165,8 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
              * @var \DOMElement $viewNode
              */
             foreach ($viewNodes as $viewNode) {
-                $mskid = $this->evaluate($viewNode, "string(ui:mask/@ref)");
-                $rcClass = $this->evaluate($viewNode, "string(ui:render-config/@class)");
+                $mskid = $this->evaluate($viewNode, "string({$this->uiPrefix}:mask/@ref)");
+                $rcClass = $this->evaluate($viewNode, "string({$this->uiPrefix}:render-config/@class)");
 
                 $cvdoc->addArrayRow(
                     CvDocFields::cv_t_views,
@@ -213,7 +217,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
     protected function evaluate(\DOMElement $e, $path)
     {
         $xpath = new \DOMXpath($this->dom);
-        $xpath->registerNamespace("ui", ExportRenderConfiguration::NSUIURL);
+        $xpath->registerNamespace($this->uiPrefix, ExportRenderConfiguration::NSUIURL);
         return $xpath->evaluate($path, $e);
     }
 }
