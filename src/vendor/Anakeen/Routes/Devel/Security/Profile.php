@@ -86,7 +86,7 @@ class Profile
                     $access["parents"] = $parentGroups[$access["id"]];
                 }
                 foreach ($this->_document->acls as $aclName) {
-                    if (!isset($access[$aclName])) {
+                    if (!isset($access["acls"][$aclName])) {
                         if (DocumentAccess::controlUserId($this->_document->id, $access["id"], $aclName) === "") {
                             $access["acls"][$aclName] = "inherit";
                         }
