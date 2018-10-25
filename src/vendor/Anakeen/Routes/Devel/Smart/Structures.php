@@ -44,7 +44,7 @@ class Structures
     {
         $s=new \SearchDoc("", -1);
         if ($this->target === "vendor") {
-            $s->addFilter("atags is null or atags->>'vendor' <> 'Anakeen'");
+            $s->addFilter("atags is null or atags->>'vendor' <> 'Anakeen' or atags ->> 'vendor' is null");
         }
         $s->setOrder("name, id");
 
