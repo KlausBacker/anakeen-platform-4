@@ -12,5 +12,6 @@
     .devel-center-main-view {
         flex: 1;
         display:flex;
+        min-height: 0;
     }
 </style>

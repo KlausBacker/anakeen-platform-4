@@ -2,6 +2,7 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
 .smart-structure-list {
   flex: 1;
   display: flex;
+  min-height: 0;
   .smart-structure-tabs {
     display: flex;
     flex: 1;
