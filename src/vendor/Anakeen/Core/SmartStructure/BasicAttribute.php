@@ -92,14 +92,7 @@ class BasicAttribute
     public function getOption($x, $def = "")
     {
         if (!isset($this->_topt)) {
-            $topt = explode("|", $this->options);
-            $this->_topt = array();
-            foreach ($topt as $k => $v) {
-                if ($v) {
-                    $v = explode("=", $v, 2);
-                    $this->_topt[$v[0]] = isset($v[1]) ? $v[1] : null;
-                }
-            }
+            $this->_topt=self::optionsToArray($this->options);
         }
         $r = $this->docname . '#' . $this->id . '#' . $x;
         $i = _($r);
@@ -109,6 +102,23 @@ class BasicAttribute
 
         $v = (isset($this->_topt[$x]) && $this->_topt[$x] !== '') ? $this->_topt[$x] : $def;
         return $v;
+    }
+
+    /**
+     * Convert flat options declaration to indexed array
+     * @param string $options
+     * @return array
+     */
+    public static function optionsToArray(string $options) {
+        $topt = explode("|", $options);
+        $optArray = array();
+        foreach ($topt as $k => $v) {
+            if ($v) {
+                $v = explode("=", $v, 2);
+                $optArray[$v[0]] = isset($v[1]) ? $v[1] : null;
+            }
+        }
+        return $optArray;
     }
 
     /**

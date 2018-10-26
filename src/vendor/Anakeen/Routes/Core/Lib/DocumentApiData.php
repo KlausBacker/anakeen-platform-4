@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core\Lib;
 
+use Anakeen\Core\SmartStructure\Attributes;
 use Anakeen\Router\URLUtils;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
@@ -242,7 +243,7 @@ class DocumentApiData
             }
             $parentAttribute = $attribute->fieldSet;
             $parentIds = array();
-            while ($parentAttribute && $parentAttribute->id != 'FIELD_HIDDENS') {
+            while ($parentAttribute && $parentAttribute->id != Attributes::HIDDENFIELD) {
                 $parentId = $parentAttribute->id;
                 $parentIds[] = $parentId;
                 $parentAttribute = $parentAttribute->fieldSet;
