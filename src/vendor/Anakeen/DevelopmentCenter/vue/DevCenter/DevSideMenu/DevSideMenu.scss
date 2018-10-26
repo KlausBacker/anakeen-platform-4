@@ -38,6 +38,9 @@
     }
 
     .dev-center-section-link {
+      &:hover {
+        text-decoration: none;
+      }
       cursor: pointer;
       color: white;
       padding: 1rem .75rem;

@@ -1,0 +1,10 @@
+.security-ss-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .security-ss-section-content {
+    flex: 1;
+    display: flex;
+  }
+}

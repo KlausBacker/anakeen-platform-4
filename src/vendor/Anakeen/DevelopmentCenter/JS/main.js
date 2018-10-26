@@ -9,6 +9,7 @@ import Axios from "axios";
 import DevCenter from "../vue/DevCenter/DevCenter.vue";
 import StoreConfig from "../vue/store";
 import RouterConfig from "../vue/router";
+import * as RouterUtils from "../vue/router/utils";
 import RouterTabs from "../vue/components/RouterTabs/RouterTabs.vue";
 import SSList from "../vue/components/SSList/SSList.vue";
 
@@ -28,9 +29,9 @@ const store = new Vuex.Store(StoreConfig);
 const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
-  const visitedRoute = store.getters.visitedRoutes.find(
-    r => r.path.startsWith(to.path) && r.path !== to.path
-  );
+  const visitedRoute = store.getters.visitedRoutes.find(visited => {
+    return visited.path !== to.path && RouterUtils.startsWithRoute(visited, to);
+  });
   if (visitedRoute) {
     // Redirect to the already visited route that match the destination
     next({
@@ -42,38 +43,8 @@ router.beforeEach((to, from, next) => {
     // If the route is never visited, try to redirect to default child route
     const allRoutesDef = router.options.routes;
 
-    // Find the route definition to get children routes
-    const findRouteDef = routes => {
-      const found = routes.find(r => r.name === to.name);
-      if (found) {
-        return found;
-      }
-      let i = 0;
-      let result = null;
-      while (i < routes.length && !result) {
-        const childRoute = routes[i];
-        if (childRoute.children && childRoute.children.length) {
-          result = findRouteDef(childRoute.children);
-        }
-        i++;
-      }
-      return result;
-    };
-
-    // Find the default child route
-    const findDefaultRoute = (routeDef, fromRouteDef = null) => {
-      // stop the recursion if the route contain a variable parameter
-      if (fromRouteDef && routeDef.path.indexOf(":") !== -1) {
-        return fromRouteDef;
-      }
-      if (!(routeDef.children && routeDef.children.length)) {
-        return routeDef;
-      }
-      return findDefaultRoute(routeDef.children[0], routeDef);
-    };
-
-    const routeDef = findRouteDef(allRoutesDef);
-    const defaultRouteDef = findDefaultRoute(routeDef);
+    const routeDef = RouterUtils.findRouteDef(to)(allRoutesDef);
+    const defaultRouteDef = RouterUtils.findDefaultRoute(routeDef);
     if (routeDef === defaultRouteDef) {
       next();
     } else {
@@ -83,6 +54,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(to => {
+  // Save the visited route
   store.dispatch("updateVisitedRoute", to);
 });
 

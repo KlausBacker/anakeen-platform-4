@@ -6,6 +6,10 @@
     padding: .25rem 0 0 0;
     display: flex;
     .router-tab-nav-link {
+      &:hover {
+        text-decoration: none;
+      }
+      color: inherit;
       min-width: 6rem;
       text-align: center;
       cursor: pointer;

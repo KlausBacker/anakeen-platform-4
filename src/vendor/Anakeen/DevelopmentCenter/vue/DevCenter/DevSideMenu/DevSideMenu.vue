@@ -2,7 +2,7 @@
     <div class="dev-center-side-menu-wrapper">
         <div class="side-menu">
             <div class="side-menu-sections-list">
-                <router-link class="dev-center-section-link" v-for="(section, index) in sections" :key="`section-link-${index}`" :to="section" tag="div">{{section.label||section.name}}</router-link>
+                <router-link class="dev-center-section-link" v-for="(section, index) in sections" :key="`section-link-${index}`" :to="section">{{section.label||section.name}}</router-link>
             </div>
             <div class="side-menu-bottom-content">
             </div>
