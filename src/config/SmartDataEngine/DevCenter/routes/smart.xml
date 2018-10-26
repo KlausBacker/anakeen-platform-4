@@ -28,6 +28,15 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GetStructureFields">
+            <sde:callable>\Anakeen\Routes\Devel\Smart\StructureFields</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{structure}/fields/</sde:pattern>
+            <sde:description>Get structure fields configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="GetStructureConfig">
             <sde:callable>\Anakeen\Routes\Devel\Config\Structure</sde:callable>
             <sde:method>GET</sde:method>
