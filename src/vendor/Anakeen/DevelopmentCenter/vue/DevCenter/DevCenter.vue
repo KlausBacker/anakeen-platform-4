@@ -26,14 +26,17 @@
         display: flex;
         flex-direction: column;
         flex:1;
+        min-height: 0;
 
         .dev-center-content {
             display: flex;
             flex: 1;
+            min-height: 0;
 
             .dev-center-content-view {
                 display: flex;
                 flex: 1;
+                min-height: 0;
             }
         }
     }

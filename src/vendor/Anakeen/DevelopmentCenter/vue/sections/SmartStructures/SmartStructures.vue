@@ -11,6 +11,7 @@
 
 <style>
     .smart-structure-section {
+        min-height: 0;
         padding: 2rem;
         flex: 1;
         display: flex;
