@@ -20,6 +20,7 @@ use Anakeen\Routes\Core\Lib\DocumentDataFormatter;
 class StructureFields
 {
     protected $structureName = "";
+    protected $sqlFilter = "usefor != 'Q'";
 
     /**
      * @var SmartStructure $structure
@@ -81,11 +82,16 @@ class StructureFields
                 $ancestrors[$docParent->name] = $docParent;
             }
         }
+        $parentStructure = null;
+        if ($family->fromid) {
+            $parentStructure = SEManager::getFamily($family->fromid);
+        }
+
         $ancestrors = array_reverse($ancestrors, true);
-        $sql = sprintf("select * from docattr where docid in (%s) and usefor != 'Q' and id !~ '^:' order by ordered", implode(',', $fromids));
+        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and type != 'menu' and id !~ '^:' order by ordered", implode(',', $fromids));
         $dbAttrs = [];
         DbManager::query($sql, $dbAttrs);
-        $sql = sprintf("select id, docid from docattr where docid in (%s) and usefor != 'Q' and id ~ '^:' order by ordered", implode(',', $fromids));
+        $sql = sprintf("select * from docattr where docid in (%s) and {$this->sqlFilter} and id ~ '^:' order by ordered", implode(',', $fromids));
 
         DbManager::query($sql, $dbModAttr);
 
@@ -93,7 +99,6 @@ class StructureFields
             $dbAttrs[$v["id"]] = $v;
             unset($dbAttrs[$k]);
         }
-        $ModPostFix = " [*]";
         $oDocAttr = new SmartStructure\DocAttr();
         $oAttrs = $family->getAttributes();
         $family->attributes->orderAttributes(true);
@@ -103,7 +108,7 @@ class StructureFields
          * @var SmartStructure\NormalAttribute $oa
          */
         foreach ($oAttrs as $oa) {
-            if ($oa->usefor === "Q") {
+            if ($this->checkAttribute($oa) === false) {
                 continue;
             }
             if ($oa->getOption("relativeOrder")) {
@@ -145,15 +150,11 @@ class StructureFields
                     $dbAttrs[$oa->id]["overrides"][] = "type";
                 }
 
-
-                if ($oa->fieldSet && $oa->fieldSet->id && $oa->fieldSet->id != $dbAttrs[$oa->id]["frameid"] && $oa->fieldSet->id !== SmartStructure\Attributes::HIDDENFIELD) {
-                    $dbAttrs[$oa->id]["frameid"] = $oa->fieldSet->id . $ModPostFix;
-                }
                 if (!empty($oa->ordered) && $oa->ordered != $dbAttrs[$oa->id]["ordered"]) {
                     if (preg_match("/relativeOrder=([a-zA-Z0-9_:]+)/", $dbAttrs[$oa->id]["options"], $reg)) {
                         $dbAttrs[$oa->id]["ordered"] = $reg[1];
                         if ($oa->ordered !== $reg[1]) {
-                            $dbAttrs[$oa->id]["ordered"] = $oa->ordered . $ModPostFix;
+                            $dbAttrs[$oa->id]["overrides"][] = "ordered";
                         }
                         $dbAttrs[$oa->id]["options"] = preg_replace("/(relativeOrder=[a-zA-Z0-9_:]+)/", "", $dbAttrs[$oa->id]["options"]);
                     }
@@ -172,14 +173,11 @@ class StructureFields
                     }
                 }
                 if ($oa->access != SmartStructure\FieldAccessManager::getRawAccess($dbAttrs[$oa->id]["accessibility"])) {
-                    $dbAttrs[$oa->id]["accessibility"] = SmartStructure\FieldAccessManager::getTextAccess($oa->access) . $ModPostFix;
-                }
-                
-                $types = ["labeltext", "ordered", "options", "link", "elink", "phpfunc", "phpfile", "usefor"];
-                foreach ($types as $type) {
-                    if ($oa->$type != $dbAttrs[$oa->id][$type]) {
-                        $dbAttrs[$oa->id]["overrides"][] = $type;
-                    }
+                    $dbAttrs[$oa->id]["overrides"]["accessibility"] = [
+                        "before" => SmartStructure\FieldAccessManager::getTextAccess($parentStructure->getAttribute($oa->id)->access),
+                        "after" => SmartStructure\FieldAccessManager::getTextAccess($oa->access)
+                    ];
+                    $dbAttrs[$oa->id]["accessibility"] = SmartStructure\FieldAccessManager::getTextAccess($oa->access);
                 }
             }
 
@@ -192,6 +190,44 @@ class StructureFields
             foreach ($dbModAttr as $modAttr) {
                 if ($modAttr["id"] === ":" . $oa->id && $modAttr["docid"] == $oa->structureId) {
                     $dbAttrs[$oa->id]["declaration"] = "overrided";
+                    $types = [
+                        "labeltext" => "labelText",
+                        "ordered" => "ordered",
+                        "options" => "options",
+                        "link" => "link",
+                        "needed" => "needed",
+                        "title" => "title",
+                        "abstract" => "abstract",
+                        "elink" => "elink",
+                        "phpfunc" => "phpfunc",
+                        "phpconstraint" => "phpconstraint",
+                        "phpfile" => "phpfile"];
+                    foreach ($types as $type => $oType) {
+                        if ($modAttr[$type]) {
+                            $before = $parentStructure->getAttribute($oa->id)->$oType;
+                            switch ($type) {
+                                case "needed":
+                                    $after = $oa->needed ? "Y" : "N";
+                                    break;
+                                case "title":
+                                    $after = $oa->isInTitle ? "Y" : "N";
+                                    break;
+                                case "abstract":
+                                    $after = $oa->isInAbstract ? "Y" : "N";
+                                    break;
+                                default:
+                                    $after = $oa->$oType;
+                            }
+
+                            if (true || $before != $after) {
+                                $dbAttrs[$oa->id][$type] = $oa->$oType;
+                                $dbAttrs[$oa->id]["overrides"][$type] = [
+                                    "before" => $parentStructure->getAttribute($oa->id)->$oType,
+                                    "after" => $oa->$oType
+                                ];
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -245,5 +281,10 @@ class StructureFields
         }
 
         return $result;
+    }
+
+    protected function checkAttribute(SmartStructure\BasicAttribute $oa)
+    {
+        return $oa->usefor !== "Q" && $oa->type !== "menu";
     }
 }
