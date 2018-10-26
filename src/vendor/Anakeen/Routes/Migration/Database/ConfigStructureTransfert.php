@@ -195,7 +195,7 @@ SQL;
         foreach ($attrObject->fields as $field) {
             $fields[$field] = $field;
         }
-        $fields["accessibility"] = "'ReadWrite'"; // Default Access is ReadWrite
+
         unset($fields["properties"]);// delete new properties
 
         $sql = sprintf(
@@ -206,6 +206,10 @@ SQL;
         );
 
         DbManager::query($sql, $ids, true);
+        // Default Access is ReadWrite
+        $sql="update docattr set accessibility='ReadWrite' where accessibility is null and id !~ '^:'";
+        DbManager::query($sql);
+
         return $ids;
     }
 
