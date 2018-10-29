@@ -5,6 +5,10 @@
             </router-link>
             <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::structure'}">Structure
             </router-link>
+            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::parameters'}">Parameters
+            </router-link>
+            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::defaults'}">Defaults
+            </router-link>
             <router-link class="smart-structures-nav-link" tag="div" :to="{name: 'SmartStructures::others'}">Others
             </router-link>
         </div>
