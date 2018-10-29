@@ -80,7 +80,7 @@ export default {
     },
     displayLink(e) {
       const accessName = e.accessName;
-      return `<a href="/devel/security/routes/access/controls/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`;
+      return `<a data-role="develRouterLink" href="/devel/security/routes/access/controls/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`;
     }
   }
 };

@@ -161,6 +161,16 @@ Get url params in the component as props :
   }
 </script>
 ```
+### Router navigation
+
+If DOM link `<a href="/devel/..."></a>` are used to navigate through the development center, 
+add `data-role="develRouterLink"` to prevent the page reloading.
+
+Example: 
+```html
+<a data-role="develRouterLink" href="/devel/security/routes/access/permissions"></a>
+```
+
 
 ### Errors management
 

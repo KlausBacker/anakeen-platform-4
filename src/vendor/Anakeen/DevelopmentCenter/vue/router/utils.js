@@ -1,3 +1,10 @@
+const LINK_ROUTER_ROLE = "develRouterLink";
+/**
+ * Check if a given route path match with another route path
+ * @param route - The route to compare
+ * @param routeStart - The reference route
+ * @return {boolean}
+ */
 export const startsWithRoute = (route, routeStart) => {
   const routePath = route.path.split("/").filter(p => !!p);
   const routeStartPath = routeStart.path.split("/").filter(p => !!p);
@@ -35,4 +42,25 @@ export const findRouteDef = to => routes => {
     i++;
   }
   return result;
+};
+
+/**
+ * Intercept DOM links and use the vue router to navigate. Prevent the page reloading.
+ * The link must be marked with data-role="develRouterLink"
+ * @param router - Vue router instance
+ * @param element - parent DOM element
+ */
+export const interceptDOMLinks = (router, element) => {
+  const $element = kendo.jQuery(element);
+  $element.on("click", `[data-role=${LINK_ROUTER_ROLE}]`, event => {
+    event.preventDefault();
+    event.stopPropagation();
+    const link = event.currentTarget;
+    if (kendo.jQuery(link).is("a")) {
+      const path = link.pathname + (link.search || "");
+      router.push(path);
+    } else {
+      console.warn(link.outerHTML, "is not a link (<a>)");
+    }
+  });
 };
