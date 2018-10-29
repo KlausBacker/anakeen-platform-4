@@ -20,7 +20,7 @@ class ExportConfiguration
     protected $data;
     const NS = "smart";
     const NSBASEURL = "https://platform.anakeen.com/4/schemas/";
-    const NSURL = self::NSBASEURL."smart/1.0";
+    const NSURL = self::NSBASEURL . "smart/1.0";
     /**
      * @var SmartStructure|null
      */
@@ -77,16 +77,14 @@ class ExportConfiguration
     }
 
 
-
-    protected static function getLogicalName($id) {
-        $name= SEManager::getNameFromId($id);
+    protected static function getLogicalName($id)
+    {
+        $name = SEManager::getNameFromId($id);
         if ($name === null) {
-            $name= "NAME#$id";
+            $name = "NAME#$id";
         }
         return $name;
     }
-
-
 
 
     protected function extractProps(\DOMElement $structConfig)
@@ -141,9 +139,9 @@ class ExportConfiguration
         }
         if ($this->sst->atags) {
             $atags = json_decode($this->sst->atags, true);
-            foreach ($atags as $kTag=>$vTag) {
+            foreach ($atags as $kTag => $vTag) {
                 $tag = $this->cel("tag");
-                $tag->setAttribute("name",$kTag);
+                $tag->setAttribute("name", $kTag);
                 $tag->nodeValue = $vTag;
                 $structConfig->appendChild($tag);
             }
