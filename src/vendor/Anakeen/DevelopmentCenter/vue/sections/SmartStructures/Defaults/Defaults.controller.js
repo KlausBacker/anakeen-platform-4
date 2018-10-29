@@ -44,7 +44,6 @@ export default {
       },
       schema: {
         data: response => {
-          console.log(response);
           return response.data.data.parameterFields;
         },
         model: {
