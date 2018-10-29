@@ -1,27 +1,25 @@
 .structure-parent {
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
   min-height: 0;
   overflow: hidden;
 }
 
 .structure-tree {
-  width: 100%;
-  height: 95%;
+  flex: 1;
+  align-items: flex-start;
+  justify-content: stretch;
 }
 
 .structure-toolbar {
-  width: 100%;
-  height: 5%;
-
+  flex: 1;
 }
-
-.overrided {
-
-}
-
-.inherited {
-
+.overrided:after {
+  font-family: "WebComponentsIcons";
+  content: '\e905';
+  font-size: 18px;
+  margin-left: .6rem;
+  color: red;
 }
 
 .is-overrided {
@@ -29,6 +27,9 @@
   outline-style: solid;
 }
 
+.is-herited {
+  color: #949494 !important;
+}
 .attr-type--tab, .attr-type--tab:hover {
   background-color: #e7cfff !important;
 }

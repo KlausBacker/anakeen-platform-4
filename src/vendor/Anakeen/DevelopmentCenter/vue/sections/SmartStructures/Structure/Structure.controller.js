@@ -54,6 +54,11 @@ export default {
         sort: [{ field: "displayOrder", order: "asc" }]
       }
     });
+    $(window).resize(() => {
+      if (this.$refs.structureTree) {
+        this.$refs.structureTree.kendoWidget().resize();
+      }
+    });
   },
   methods: {
     onDataBound(e) {
@@ -72,12 +77,16 @@ export default {
     addRowClassName(tree) {
       let items = tree.items();
       window.setTimeout(() => {
+        const that = this;
         items.each(function addTypeClass() {
           let dataItem = tree.dataItem(this);
           if (dataItem.type) {
             $(this).addClass(" attr-type--" + dataItem.type);
           }
-          if (dataItem.overrides && dataItem.declaration === "overrided") {
+          if (dataItem.structure !== that.ssName) {
+            $(this).addClass(" is-herited");
+          }
+          if (dataItem.declaration === "overrided") {
             $(this).addClass(" is-overrided");
           }
         });
@@ -94,30 +103,24 @@ export default {
         ) {
           let str = "";
           Object.keys(dataItem[colId].toJSON()).forEach(item => {
-            str += "<li>" + item + "</li><br>";
+            str += `<li><span><b>${item}</b></span> : <span>${
+              dataItem[colId][item]
+            }</span></li>`;
           });
-          str = "<ul>" + str + "</ul>";
           return str;
         }
-        if (dataItem["structure"] !== this.ssName && colId === "structure") {
-          return (
-            "<div class='inherited'>" +
-            dataItem[colId] +
-            " <span class='k-icon k-i-js' style='color:#b169f9;'></span></div>"
-          );
-        }
+        let className = "";
         if (colId !== "overrides" && dataItem["declaration"] === "overrided") {
           Object.keys(dataItem["overrides"].toJSON()).forEach(item => {
             if (item === colId) {
-              dataItem[colId] =
-                "<div class='overrided'>" +
-                dataItem[colId] +
-                " <span class='k-icon k-i-aggregate-fields' style='color: red;'></span></div>";
-              return dataItem[colId];
+              className = "overrided";
             }
           });
         }
-        return "<div>" + dataItem[colId] + "</div>";
+        if (className) {
+          return `<div class="${className}">${dataItem[colId]}</div>`;
+        }
+        return dataItem[colId];
       };
     },
     refreshStructure() {
