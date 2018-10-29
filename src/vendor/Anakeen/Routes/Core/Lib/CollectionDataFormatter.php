@@ -81,6 +81,7 @@ class CollectionDataFormatter
         $this->generateUrl = function ($document) {
             return \Anakeen\Routes\Core\Lib\DocumentUtils::getURI($document, static::APIURL);
         };
+        $this->setDefaultHooks();
     }
 
     /**
@@ -168,20 +169,10 @@ class CollectionDataFormatter
         sort($this->properties);
 
         $formatCollection = $this->getFormatCollection();
-        foreach ($this->properties as $currentProperty) {
-            $formatCollection->addProperty($currentProperty);
-        }
-        /** Add the initid of the document (used to generate standard uri) **/
-        $formatCollection->addProperty("initid");
-        /** Format uniformly the void multiple values */
 
-        $formatCollection->setAttributeRenderHook(function ($info, $attribute, $doc) {
-            return $this->attributeHook($info, $attribute, $doc);
-        });
-        /** Add uri property and suppress state if no state **/
-        $formatCollection->setDocumentRenderHook(function ($values, \Anakeen\Core\Internal\SmartElement $document) {
-            return $this->documentHook($values, $document);
-        });
+        foreach ($this->properties as $currentProperty) {
+            $this->formatCollection->addProperty($currentProperty);
+        }
 
         return $formatCollection->render();
     }
@@ -356,5 +347,20 @@ class CollectionDataFormatter
     public function getFormatCollection()
     {
         return $this->formatCollection;
+    }
+
+    protected function setDefaultHooks()
+    {
+        /** Add the initid of the document (used to generate standard uri) **/
+        $this->formatCollection->addProperty("initid");
+        /** Format uniformly the void multiple values */
+
+        $this->formatCollection->setAttributeRenderHook(function ($info, $attribute, $doc) {
+            return $this->attributeHook($info, $attribute, $doc);
+        });
+        /** Add uri property and suppress state if no state **/
+        $this->formatCollection->setDocumentRenderHook(function ($values, \Anakeen\Core\Internal\SmartElement $document) {
+            return $this->documentHook($values, $document);
+        });
     }
 }
