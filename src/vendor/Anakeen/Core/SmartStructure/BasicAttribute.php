@@ -69,7 +69,7 @@ class BasicAttribute
             return $i;
         }
 
-        return $this->labelText?:$this->id;
+        return $this->labelText ?: $this->id;
     }
 
     /**
@@ -92,7 +92,7 @@ class BasicAttribute
     public function getOption($x, $def = "")
     {
         if (!isset($this->_topt)) {
-            $this->_topt=self::optionsToArray($this->options);
+            $this->_topt = self::optionsToArray($this->options);
         }
         $r = $this->docname . '#' . $this->id . '#' . $x;
         $i = _($r);
@@ -109,9 +109,13 @@ class BasicAttribute
      * @param string $options
      * @return array
      */
-    public static function optionsToArray(string $options) {
+    public static function optionsToArray($options)
+    {
+        if (!$options) {
+            return [];
+        }
         $topt = explode("|", $options);
-        $optArray = array();
+        $optArray = [];
         foreach ($topt as $k => $v) {
             if ($v) {
                 $v = explode("=", $v, 2);
@@ -224,7 +228,6 @@ class BasicAttribute
     {
         return ($this->inArray() && ($this->getOption('multiple') === 'yes'));
     }
-
 
 
     /**
