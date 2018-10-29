@@ -38,7 +38,7 @@ class StructureFields
         $this->structureName = $args["structure"];
         $this->structure = SEManager::getFamily($this->structureName);
         if (empty($this->structure)) {
-            $exception = new Exception("DEV0101");
+            $exception = new Exception("DEV0101", $this->structureName);
             $exception->setHttpStatus(404, "Structure not found");
             throw $exception;
         }
@@ -51,15 +51,8 @@ class StructureFields
         $df->addProperty("profid");
 
         $data = $df->getData();
-        if ($this->structure->fromid) {
-            $parentsName = array_values(array_map(function ($fromid) {
-                return SEManager::getNameFromId($fromid);
-            }, $this->structure->attributes->fromids));
-            array_pop($parentsName);
-            $data["properties"]["parents"] = array_reverse($parentsName);
-        } else {
-            $data["properties"]["parents"] = [];
-        }
+
+        $data["properties"]["parents"] = StructureInfo::getParents($this->structure);
         $data["fields"] = $this->getFieldsConfig($this->structure);
         $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("devel/smart/structures/%s/fields/", $this->structureName));
         return $data;

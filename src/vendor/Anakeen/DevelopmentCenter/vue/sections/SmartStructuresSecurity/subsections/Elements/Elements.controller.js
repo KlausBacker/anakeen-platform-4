@@ -10,12 +10,15 @@ export default {
     },
     structureUrl: {
       type: String,
-      default: "/api/v2/devel/smart/structures/<ssName>/"
+      default: "/api/v2/devel/smart/structures/<ssName>/info/"
     },
     profilData: {
       type: [String, Function],
       default: () => response => {
-        return response.data.data.document.properties.cprofid;
+        if (response.data.data.security.cprofid) {
+          return response.data.data.security.cprofid.id;
+        }
+        return 0;
       }
     }
   },
