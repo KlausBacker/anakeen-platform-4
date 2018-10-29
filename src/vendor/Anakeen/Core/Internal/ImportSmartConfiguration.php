@@ -4,6 +4,7 @@
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\SmartStructure\ExportConfiguration;
+use Anakeen\Core\Utils\Xml;
 use Dcp\Exception;
 use SmartStructure\Fields\Fieldaccesslayer as FalFields;
 use SmartStructure\Fields\Fieldaccesslayerlist as FallFields;
@@ -16,6 +17,7 @@ class ImportSmartConfiguration
     protected $dom;
     protected $verbose = false;
     protected $profilElements = [];
+    protected $smartPrefix = "smart";
 
 
     /**
@@ -58,6 +60,7 @@ class ImportSmartConfiguration
 
     protected function importConfigurations()
     {
+        $this->smartPrefix = Xml::getPrefix($this->dom, ExportConfiguration::NSURL);
         $configs = $this->getNodes($this->dom->documentElement, "structure-configuration");
         $data = [];
         foreach ($configs as $config) {
@@ -155,7 +158,7 @@ class ImportSmartConfiguration
             if (!is_a($attrNode, \DOMElement::class)) {
                 continue;
             }
-            if ($attrNode->tagName === "smart:description") {
+            if ($attrNode->tagName === "{$this->smartPrefix}:description") {
                 /* @var \DOMElement $attrNode ; */
                 $desc .= $attrNode->nodeValue;
             }
@@ -177,7 +180,7 @@ class ImportSmartConfiguration
         if (!$famid) {
             // Search in access list if not found itself
             $parent = $config->parentNode;
-            if ($parent && $parent->tagName === 'smart:field-access-layer-list') {
+            if ($parent && $parent->tagName === '{$this->smartPrefix}:field-access-layer-list') {
                 $famid = $parent->getAttribute("structure");
             }
         }
@@ -331,7 +334,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match('/smart:field-/', $attrNode->tagName) && $attrNode->tagName !== "smart:field-option") {
+                if (preg_match("/{$this->smartPrefix}:field-/", $attrNode->tagName) && $attrNode->tagName !== "{$this->smartPrefix}:field-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "PARAM"));
                 }
             }
@@ -353,10 +356,10 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if ($attrNode->tagName === "smart:default") {
+                if ($attrNode->tagName === "{$this->smartPrefix}:default") {
                     $data[] = $this->extractDefault($attrNode, "DEFAULT");
                 }
-                if ($attrNode->tagName === "smart:initial") {
+                if ($attrNode->tagName === "{$this->smartPrefix}:initial") {
                     $data[] = $this->extractDefault($attrNode, "INITIAL");
                 }
             }
@@ -485,7 +488,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $attrNode
                  */
-                if (preg_match('/smart:field-/', $attrNode->tagName) && $attrNode->tagName !== "smart:field-option") {
+                if (preg_match("/{$this->smartPrefix}:field-/", $attrNode->tagName) && $attrNode->tagName !== "{$this->smartPrefix}:field-option") {
                     $data = array_merge($data, $this->extractAttr($attrNode, "ATTR"));
                 }
             }
@@ -541,7 +544,7 @@ class ImportSmartConfiguration
             /**
              * @var \DOMElement $enumNode
              */
-            if (!is_a($enumNode, \DOMElement::class) || $enumNode->tagName !== "smart:enum") {
+            if (!is_a($enumNode, \DOMElement::class) || $enumNode->tagName !== "{$this->smartPrefix}:enum") {
                 continue;
             }
             $data[] = [
@@ -561,7 +564,7 @@ class ImportSmartConfiguration
     protected function extractAttr(\DOMElement $attrNode, $key, $fieldName = "")
     {
         $data = [];
-        if ($attrNode->tagName === "smart:field-set") {
+        if ($attrNode->tagName === "{$this->smartPrefix}:field-set") {
             if ($attrNode->getAttribute("extended") !== "true") {
                 $data[] = $this->extractSingleAttr($attrNode, $key, $fieldName);
             }
@@ -573,7 +576,7 @@ class ImportSmartConfiguration
                 /**
                  * @var \DOMElement $childNode
                  */
-                if (preg_match('/smart:field-/', $childNode->tagName) && $childNode->tagName !== "smart:field-option") {
+                if (preg_match("/{$this->smartPrefix}:field-/", $childNode->tagName) && $childNode->tagName !== "{$this->smartPrefix}:field-option") {
                     $data = array_merge($data, $this->extractAttr($childNode, $key, $fieldName));
                 }
             }
@@ -589,10 +592,10 @@ class ImportSmartConfiguration
         $attr = new ImportSmartAttr();
         $attr->id = $attrNode->getAttribute("name");
 
-        if ($attrNode->tagName === "smart:field-set") {
+        if ($attrNode->tagName === "{$this->smartPrefix}:field-set") {
             $attr->type = $attrNode->getAttribute("type");
         } else {
-            $attr->type = substr($attrNode->tagName, strlen("smart:field-"));
+            $attr->type = substr($attrNode->tagName, strlen("{$this->smartPrefix}:field-"));
             $rel = $attrNode->getAttribute("relation");
             if ($rel) {
                 $attr->type .= '("' . $rel . '")';
@@ -691,7 +694,7 @@ class ImportSmartConfiguration
             /**
              * @var \DOMElement $optNode
              */
-            if (!is_a($optNode, \DOMElement::class) || $optNode->tagName !== "smart:field-option") {
+            if (!is_a($optNode, \DOMElement::class) || $optNode->tagName !== "{$this->smartPrefix}:field-option") {
                 continue;
             }
             $optData[$optNode->getAttribute("name")] = $optNode->getAttribute("name");
@@ -743,7 +746,7 @@ class ImportSmartConfiguration
         $nodes = $this->getNodes($config, "tag");
 
         foreach ($nodes as $node) {
-            /**  @var \DOMElement $node  */
+            /**  @var \DOMElement $node */
             $tagName = $node->getAttribute("name");
             $data[] = ["TAG", $tagName, $node->nodeValue];
         }
@@ -801,7 +804,7 @@ class ImportSmartConfiguration
      */
     private function getClosest(\DOMElement $e, $name)
     {
-        $tagName = "smart:" . $name;
+        $tagName = $this->smartPrefix . ":" . $name;
         while ($e) {
             if (is_a($e, \DOMElement::class) && $e->tagName === $tagName) {
                 return $e;
