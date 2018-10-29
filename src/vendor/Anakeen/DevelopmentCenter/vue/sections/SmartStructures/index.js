@@ -1,6 +1,7 @@
 import SmartStructures from "./SmartStructures.vue";
 import SSContent from "./SSContent.vue";
 import Infos from "./Infos.vue";
+import Structure from "./Structure/Structure";
 import Others from "./Others.vue";
 
 export default {
@@ -20,6 +21,12 @@ export default {
           path: "infos",
           component: Infos,
           props: true // Set ssName as a vue component prop
+        },
+        {
+          name: "SmartStructures::structure",
+          path: "structure",
+          component: Structure,
+          props: true //Set ssName as a vue component prop
         },
         {
           name: "SmartStructures::others",
