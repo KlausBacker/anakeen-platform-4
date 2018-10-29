@@ -34,11 +34,12 @@ router.beforeEach((to, from, next) => {
   });
   if (visitedRoute) {
     // Redirect to the already visited route that match the destination
-    next({
-      name: visitedRoute.name,
-      params: visitedRoute.params,
-      query: visitedRoute.query
-    });
+    // next({
+    //   name: visitedRoute.name,
+    //   params: visitedRoute.params,
+    //   query: visitedRoute.query
+    // });
+    next(visitedRoute.fullPath);
   } else {
     // If the route is never visited, try to redirect to default child route
     const allRoutesDef = router.options.routes;

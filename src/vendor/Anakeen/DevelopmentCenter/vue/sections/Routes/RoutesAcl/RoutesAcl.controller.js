@@ -83,7 +83,7 @@ export default {
           elt.map(e => {
             let accessName = e.split("::")[1];
             this.tabMultiple.push(
-              `<a href="/devel/security/routes/access/permissions/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`
+              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`
             );
           });
         });
