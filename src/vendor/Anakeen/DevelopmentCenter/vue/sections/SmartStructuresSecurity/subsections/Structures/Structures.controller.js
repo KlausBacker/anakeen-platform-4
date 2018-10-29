@@ -10,12 +10,15 @@ export default {
     },
     structureUrl: {
       type: String,
-      default: "/api/v2/families/<ssName>?fields=document.properties.profid"
+      default: "/api/v2/devel/smart/structures/<ssName>/info/"
     },
     profilData: {
       type: [String, Function],
       default: () => response => {
-        return response.data.data.document.properties.profid;
+        if (response.data.data.properties.security.profil) {
+          return response.data.data.properties.security.profil.id;
+        }
+        return 0;
       }
     }
   },

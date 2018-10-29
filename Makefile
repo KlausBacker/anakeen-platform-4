@@ -40,7 +40,7 @@ app: compile
 autotest: compile
 	${ANAKEEN_CLI_BIN} build --auto-release
 
-deploy:
+deploy: compile
 	rm -f dev*app
 	${ANAKEEN_CLI_BIN} build --auto-release
 	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w ${MODULE_NAME}*.app
@@ -53,6 +53,7 @@ deploy:
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	rm -fr ./src/public/Anakeen/
 	rm -rf ${MODULE_NAME}*.app
 
 ########################################################################################################################
