@@ -6,8 +6,8 @@ const LINK_ROUTER_ROLE = "develRouterLink";
  * @return {boolean}
  */
 export const startsWithRoute = (route, routeStart) => {
-  const routePath = route.path.split("/").filter(p => !!p);
-  const routeStartPath = routeStart.path.split("/").filter(p => !!p);
+  const routePath = route.fullPath.split("/").filter(p => !!p);
+  const routeStartPath = routeStart.fullPath.split("/").filter(p => !!p);
   let result = true;
   routeStartPath.forEach((p, index) => {
     result = result && p === routePath[index];
