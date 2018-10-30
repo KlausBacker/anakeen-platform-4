@@ -32,6 +32,7 @@ Les tables distantes seront enregistrées dans le schéma `dynacase`.
     (user) create schema dynacase;
     -- create mapping between 2 sql roles (here "postgres" is foreign role,  
     (user) CREATE USER MAPPING FOR "postgres" SERVER dynacase OPTIONS (user 'postgres');
+    (user) CREATE USER MAPPING FOR "anakeen-platform" SERVER dynacase OPTIONS (user 'postgres');
 ```
 
 ### Configure les paramètres d'accès au contexte 

@@ -179,6 +179,12 @@ SQL;
             $attrObject->modify();
         }
 
+        // Clean declaration of enum
+        $sql = sprintf(
+            "update docattr set phpfunc = null where phpfile is null and type ~ '^enum' and docid=(select id from docfam where name='%s')",
+            pg_escape_string($structureName)
+        );
+        DbManager::query($sql);
         return $transferedEnum;
     }
 

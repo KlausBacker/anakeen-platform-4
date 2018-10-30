@@ -183,6 +183,9 @@ SQL;
         $sqls[] = sprintf("update docperm set docid=%d where docid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update docpermext set docid=%d where docid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update users set fid=%d where fid=%d", $idTo, $idFrom);
+
+        $sqls[] = sprintf("update family.cvdoc set cv_mskid=array_replace(cv_mskid:int[], %d, %d):int[]", $idTo, $idFrom);
+        $sqls[] = sprintf("update family.fieldaccesslayerlist set cv_mskfall_layerid=array_replace(fall_layer:int[], %d, %d):int[]", $idTo, $idFrom);
         return $sqls;
     }
 }
