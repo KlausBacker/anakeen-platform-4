@@ -3,6 +3,12 @@
         <div class="ss-nav">
             <router-link class="smart-structures-nav-link" tag="div" :to="{name: 'SmartStructures::infos'}">Infos
             </router-link>
+            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::structure'}">Structure
+            </router-link>
+            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::parameters'}">Parameters
+            </router-link>
+            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::defaults'}">Defaults
+            </router-link>
             <router-link class="smart-structures-nav-link" tag="div" :to="{name: 'SmartStructures::others'}">Others
             </router-link>
         </div>
@@ -39,6 +45,7 @@
 
 
         .ss-content {
+            display: flex;
             flex: 1;
             padding: 1rem;
             border: 1px solid rgba(33, 37, 41, .125);

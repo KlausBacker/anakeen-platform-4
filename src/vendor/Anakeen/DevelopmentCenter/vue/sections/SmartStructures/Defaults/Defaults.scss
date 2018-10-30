@@ -1,0 +1,42 @@
+.defaults-parent {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.defaults-tree {
+  flex: 1;
+  align-items: flex-start;
+  justify-content: stretch;
+}
+
+.defaults-toolbar {
+  flex: 1;
+}
+
+.is-overrided {
+  outline-color: red !important;
+  outline-style: solid;
+}
+
+.attr-type--tab, .attr-type--tab:hover {
+  background-color: #e7cfff !important;
+}
+
+.attr-type--frame, .attr-type--frame:hover {
+  background-color: rgba(110, 167, 255, 0.52) !important;
+}
+
+.attr-type--array, .attr-type--array:hover {
+  background-color: rgba(255, 184, 148, 0.43) !important;
+}
+
+.k-treelist .k-icon.k-i-collapse,
+.k-treelist .k-icon.k-i-expand {
+  float: left;
+}
+
+.k-treelist tbody tr:hover {
+  outline: solid 1px grey;
+}
