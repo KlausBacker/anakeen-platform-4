@@ -26,13 +26,14 @@ class Groups
             if (is_array($userList)) {
                 $nbUser = count($userList);
             }
+
             /* @var $currentAccount \Anakeen\Core\Account */
             $groups[$currentAccount->id] = [
                 "login"=> $currentAccount->login,
                 "documentId" => $currentAccount->fid,
                 "accountId" => $currentAccount->id,
                 "parents" => $currentAccount->getGroupsId(),
-                "title" => getDocTitle($currentAccount->fid),
+                "title" => \DocTitle::getTitle($currentAccount->fid),
                 "nbUser" => $nbUser,
                 "items" => []
             ];

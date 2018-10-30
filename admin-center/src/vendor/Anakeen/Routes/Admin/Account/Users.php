@@ -60,13 +60,14 @@ class Users
             $searchAccount->setSlice($take);
         }
 
+
         foreach ($searchAccount->search() as $currentAccount) {
             /* @var $currentAccount \Anakeen\Core\Account */
             $result[$currentAccount->id] = [
                 "login"=> $currentAccount->login,
                 "id" => $currentAccount->fid,
                 "accountId" => $currentAccount->id,
-                "title" => getDocTitle($currentAccount->fid),
+                "title" => \DocTitle::getTitle($currentAccount->fid),
                 "mail"=> $currentAccount->mail,
                 "firstname" => $currentAccount->firstname,
                 "lastname" => $currentAccount->lastname
