@@ -177,7 +177,7 @@ class DataSource extends DocumentList
     {
         if (!empty($this->filter)) {
             // First need flat filters
-            $flatFilters = self::getFlatLevelFilters($this->filter);
+            $flatFilters = static::getFlatLevelFilters($this->filter);
 
             foreach ($flatFilters as $filter) {
                 $filterObject = Operators::getFilterObject($filter);

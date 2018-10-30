@@ -1,9 +1,6 @@
 <?php
 namespace Anakeen\Components\Grid\Routes;
 
-use Anakeen\Core\ContextManager;
-use Anakeen\Core\Internal\Format\FormatAttributeValue;
-use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
