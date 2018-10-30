@@ -6,6 +6,9 @@ export const routes = [
     path: "/devel",
     name: "devCenter",
     component: Main,
+    meta: {
+      label: "Development Center"
+    },
     children: SectionsRoutes
   },
   // Redirection

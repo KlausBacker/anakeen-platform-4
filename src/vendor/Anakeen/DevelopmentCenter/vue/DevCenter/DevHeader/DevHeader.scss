@@ -16,17 +16,15 @@
   }
 }
 
-.header-app-title {
+.header-breadcrumb-root-item {
   font-size: 1.33rem;
   color: white;
   font-weight: bold;
+}
 
-  &.vendor-name {
-    background: yellow;
-    color: black;
-    font-style:italic;
-    padding: .2rem;
-  }
+.header-breadcrumb-separator {
+  margin-left: .5rem;
+  margin-right: .5rem;
 }
 
 .header-admin-logout-button {
