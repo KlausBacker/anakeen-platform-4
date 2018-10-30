@@ -97,6 +97,9 @@ exports.parseStub = file => {
         if (result.config.structureconfiguration) {
           result.config.structureconfiguration.forEach(currentConf => {
             const infos = currentConf.$;
+            const extend = currentConf.extends
+              ? currentConf.extends[0].$.ref
+              : false;
             let currentClass =
               currentConf.class !== undefined ? currentConf.class[0] : false;
             const fields = currentConf.fields;
@@ -108,9 +111,7 @@ exports.parseStub = file => {
             }
 
             //Extends for field part
-            const extendsPart = infos.extends
-              ? ` extends ${infos.extends}`
-              : "";
+            const extendsPart = extend ? ` extends ${extend}` : "";
 
             //Extend for class part
             let extendsSSPart = "";
@@ -126,9 +127,9 @@ exports.parseStub = file => {
               }
             }
 
-            if (!extendsSSPart && infos.extends) {
+            if (!extendsSSPart && extend) {
               //the current structure extends another one
-              extendsSSPart = infos.extends;
+              extendsSSPart = extend;
             }
 
             let content = `<?php
