@@ -32,6 +32,7 @@ class WorkflowTransfert extends ConfigStructureTransfert
         DbManager::query($sql);
 
         $data["graph"] = $xmlGraphPath;
+        $data["properties"]=$this->getProperties();
         return $data;
     }
 

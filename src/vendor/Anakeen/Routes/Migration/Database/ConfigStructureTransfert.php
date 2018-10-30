@@ -29,6 +29,8 @@ class ConfigStructureTransfert extends DataElementTransfert
 
         $data["count"] = count($this->transfertConfig($this->structureName));
 
+        $data["properties"]=$this->getProperties();
+
         return $data;
     }
 
@@ -197,7 +199,7 @@ SQL;
         }
 
         unset($fields["properties"]);// delete new properties
-
+        unset($fields["accessibility"]);
         $sql = sprintf(
             $qsql,
             implode(", ", array_keys($fields)),
@@ -206,6 +208,9 @@ SQL;
         );
 
         DbManager::query($sql, $ids, true);
+        // Delete MODATTR without father
+        $sql="delete from docattr where id ~ '^:' and substring(id,2) not in (select id from docattr)";
+        DbManager::query($sql);
         // Default Access is ReadWrite
         $sql="update docattr set accessibility='ReadWrite' where accessibility is null and id !~ '^:'";
         DbManager::query($sql);

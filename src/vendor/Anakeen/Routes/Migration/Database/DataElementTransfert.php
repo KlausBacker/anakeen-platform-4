@@ -17,6 +17,9 @@ use Anakeen\Router\Exception;
 class DataElementTransfert
 {
     protected $structureName;
+    /**
+     * @var SmartStructure
+     */
     protected $structure;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
@@ -42,10 +45,25 @@ class DataElementTransfert
 
         $data["count"] = count($this->transfertRequest($this->structure));
 
+        $data["properties"]=$this->getProperties();
         return $data;
     }
 
 
+    protected function getProperties()
+    {
+        if ($this->structure) {
+            return [
+                "id" => $this->structure->id,
+                "name" => $this->structure->name,
+                "title" => $this->structure->getTitle(),
+            ];
+        } else {
+            return [
+                "name" => $this->structureName
+            ];
+        }
+    }
 
     protected static function transfertRequest(SmartStructure $structure)
     {

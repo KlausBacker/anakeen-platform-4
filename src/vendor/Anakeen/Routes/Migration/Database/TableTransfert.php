@@ -30,7 +30,7 @@ class TableTransfert
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
-        $this->tableName = $args["table"];
+        $this->tableName = $args["class"];
 
         $this->tableObject = new  $this->tableName;
 
@@ -41,7 +41,7 @@ class TableTransfert
     {
         $data = [];
 
-
+        $data["table"] =  $this->tableObject->dbtable;
         $data["count"] = count($this->transfertRequest($this->tableObject));
 
         return $data;

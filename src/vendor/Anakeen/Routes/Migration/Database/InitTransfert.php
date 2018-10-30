@@ -31,9 +31,38 @@ class InitTransfert
     {
         $data = [];
 
+        $tools=file_get_contents(__DIR__."/../../../Migration/Tools.sql");
+        DbManager::query($tools);
+
+
+        $this->move1000();
         $this->moveIds();
 
         return $data;
+    }
+
+    protected function move1000()
+    {
+        DbManager::query("begin");
+        $sql = "select id from doc where id > 999";
+        DbManager::query($sql, $ids, true, false);
+        foreach ($ids as $id) {
+            $id = intval($id);
+            $sqls = static::getSqlToMoveId($id, $id - 100);
+            foreach ($sqls as $sql) {
+                DbManager::query($sql);
+            }
+        }
+        $sql = "select id from docfam where id > 899";
+        DbManager::query($sql, $ids, true, false);
+        foreach ($ids as $id) {
+            $id = intval($id);
+            $sql = sprintf("alter table doc%d rename to doc%d", $id + 100, $id);
+            DbManager::query($sql);
+        }
+
+
+        DbManager::query("commit");
     }
 
     /**
@@ -62,10 +91,10 @@ class InitTransfert
             $id4s[] = $result["id4"];
         }
         foreach ($results as &$result2) {
-            if (array_search($result["id32"], $id4s) !== false) {
+            if (array_search($result2["id32"], $id4s) !== false) {
                 $result2["isSimple"] = false;
             } else {
-                if (array_search($result["id4"], $id32s) !== false) {
+                if (array_search($result2["id4"], $id32s) !== false) {
                     $result2["isSimple"] = false;
                 } else {
                     $result2["isSimple"] = true;
@@ -77,7 +106,6 @@ class InitTransfert
             $id4 = $result["id4"];
             $id32 = $result["id32"];
 
-            printf("mv $id4 $id32\n");
             if ($result["isSimple"] === true) {
                 $sqls = array_merge($sqls, static::getSqlToMoveId($id4, $id32));
             } else {
@@ -127,6 +155,8 @@ SQL;
 
     protected static function getSqlToMoveId($idFrom, $idTo)
     {
+        //printf("mv $idFrom $idTo\n");
+        $sqls[] = sprintf("update docread set id=%d where id=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update doc set id=%d where id=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update doc set initid=%d where initid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update doc set profid=%d where profid=%d", $idTo, $idFrom);

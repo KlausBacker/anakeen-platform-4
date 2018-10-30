@@ -39,7 +39,7 @@
         <sde:route name="TableTransfert">
             <sde:callable>\Anakeen\Routes\Migration\Database\TableTransfert</sde:callable>
             <sde:method>POST</sde:method>
-            <sde:pattern>/api/v2/migration/database/transfert/tables/{table}</sde:pattern>
+            <sde:pattern>/api/v2/migration/database/transfert/tables/{class}</sde:pattern>
             <sde:description>Database transfert structure table</sde:description>
             <sde:requiredAccess/>
         </sde:route>
