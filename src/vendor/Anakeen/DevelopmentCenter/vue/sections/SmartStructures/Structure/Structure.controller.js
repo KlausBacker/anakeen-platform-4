@@ -110,7 +110,11 @@ export default {
           return str;
         }
         let className = "";
-        if (colId !== "overrides" && dataItem["declaration"] === "overrided") {
+        if (
+          colId !== "overrides" &&
+          dataItem["declaration"] === "overrided" &&
+          dataItem["overrides"]
+        ) {
           Object.keys(dataItem["overrides"].toJSON()).forEach(item => {
             if (item === colId) {
               className = "overrided";
