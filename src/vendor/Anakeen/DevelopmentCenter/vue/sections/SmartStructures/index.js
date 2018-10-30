@@ -9,7 +9,9 @@ import Defaults from "./Defaults/Defaults.vue";
 export default {
   name: "SmartStructures",
   path: "smartStructures",
-  label: "Smart Structures",
+  meta: {
+    label: "Smart Structures"
+  },
   order: 1, // Set smart structure in first position
   component: SmartStructures,
   children: [
@@ -17,10 +19,16 @@ export default {
       name: "SmartStructures::name",
       path: ":ssName",
       component: SSContent,
+      meta: {
+        label: ":ssName"
+      },
       children: [
         {
           name: "SmartStructures::infos",
           path: "infos",
+          meta: {
+            label: "Infos"
+          },
           component: Infos,
           props: true // Set ssName as a vue component prop
         },
