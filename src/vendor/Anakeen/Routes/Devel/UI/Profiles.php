@@ -7,7 +7,6 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use SearchDoc;
 
-
 /**
  * Get Profiles
  *
@@ -49,6 +48,4 @@ class Profiles extends GridContent
         $formatter->addProperty("family");
         return $formatter;
     }
-
-
 }
