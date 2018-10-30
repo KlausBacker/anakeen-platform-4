@@ -7,6 +7,7 @@ import SmartStructures from "../SmartStructuresSecurity/SmartStructuresSecurity.
 import SmartStructuresContent from "../SmartStructuresSecurity/SmartStructuresSecurityContent.vue";
 import SmartStructuresSections from "../SmartStructuresSecurity/subsections/export";
 
+import SmartElements from "../SmartElementsSecurity/SmartElementsSecurity.vue";
 export default {
   label: "Security",
   name: "Security",
@@ -68,6 +69,11 @@ export default {
           ]
         }
       ]
+    },
+    {
+      name: "Security::SmartElements",
+      path: "smartElements",
+      component: SmartElements
     },
     {
       name: "Security::Roles",

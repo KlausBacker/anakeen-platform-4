@@ -22,6 +22,10 @@
               label: "Smart Structures"
             },
             {
+              name: "Security::SmartElements",
+              label: "Profiles"
+            },
+            {
               name: "Security::Roles",
               label: "Roles"
             },
