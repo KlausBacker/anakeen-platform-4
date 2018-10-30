@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/workflow/1.0"
+           xmlns:wfl="https://platform.anakeen.com/4/schemas/workflow/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="graph" type="ns:graphType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <xs:complexType name="stepType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="wfl:fieldName" name="name" use="required"/>
+                <xs:attribute type="xs:string" name="state-label" use="required"/>
+                <xs:attribute type="xs:string" name="activity-label"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="stepsType">
+        <xs:sequence>
+            <xs:element type="wfl:stepType" name="step" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>State label can use locale. Set the i18n key</p>
+                        <ul>
+                            <li>msgctxt : "{{GRAPH.ns}}::{{GRAPH.name}}::State"</li>
+                            <li>msgid:{{Step.name}}</li>
+                        </ul>
+                        <p>Activity label can use locale. Set the i18n key</p>
+                        <ul>
+                            <li>msgctxt : "{{GRAPH.ns}}::{{GRAPH.name}}::Activity"</li>
+                            <li>msgid:{{Step.name}}</li>
+                        </ul>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="transitionType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="wfl:fieldName" name="name" use="required"/>
+                <xs:attribute type="wfl:fieldName" name="from"/>
+                <xs:attribute type="wfl:fieldName" name="to"/>
+                <xs:attribute type="xs:string" name="label"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="transitionsType">
+        <xs:sequence>
+            <xs:element type="wfl:transitionType" name="transition" maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>Transition label can use locale. Set the i18n key</p>
+                        <ul>
+                            <li>msgctxt : "{{GRAPH.ns}}::{{GRAPH.name}}::Transition"</li>
+                            <li>msgid:{{Transition.name}}</li>
+                        </ul>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="graphType">
+        <xs:sequence>
+            <xs:element type="wfl:stepsType" name="steps"/>
+            <xs:element type="wfl:transitionsType" name="transitions"/>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="ns" use="required"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="label"/>
+    </xs:complexType>
+    <xs:simpleType name="fieldName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
