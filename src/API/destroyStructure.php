@@ -4,7 +4,7 @@
  * @package FDL
 */
 /**
- * Delete family document and its documents
+ * Delete structure and elements
  *
  * @subpackage
  */
@@ -14,8 +14,8 @@ global $action;
 
 
 $usage = new \Anakeen\Script\ApiUsage();
-$usage->setDefinitionText("Delete family document and its documents");
-$docid = $usage->addRequiredParameter("famid", "special docid");
+$usage->setDefinitionText("Delete smart structures and its elements");
+$docid = $usage->addRequiredParameter("name", "structure logical name");
 $force = $usage->addHiddenParameter("force", "force without transaction");
 
 $transaction = $usage->addEmptyParameter("transaction", "abort deletion if one of query failed");
@@ -39,10 +39,10 @@ class DestroySmartStructure
             $resid = $tdoc["id"];
             $resname = $tdoc["name"];
             if (empty($tdoc["name"])) {
-                throw new Exception("Family has no name !!");
+                throw new Exception("Structure has no name !!");
             }
             if ($tdoc["doctype"] !== "C") {
-                throw new Exception("Not a family !!");
+                throw new Exception("Not a structure !!");
             }
 
             print "Destroying [" . $tdoc["title"] . "(" . $tdoc["name"] . ")]\n";
@@ -80,13 +80,13 @@ class DestroySmartStructure
                 }
             }
             if ($res) {
-                printf("Family %s (id : %d) is destroyed.\n", $tdoc["name"], $tdoc["id"]);
+                printf("Structure %s (id : %d) is destroyed.\n", $tdoc["name"], $tdoc["id"]);
             }
         } else {
             if (!is_numeric($idfam)) {
                 \Dcp\FamilyImport::deleteGenFiles($idfam);
             }
-            throw new Exception(sprintf("Family \"%s\" not found", $idfam));
+            throw new Exception(sprintf("Structure \"%s\" not found", $idfam));
         }
     }
 }
