@@ -24,7 +24,7 @@ const mutations = {
 
 const state = {
   error: {},
-  vendorCategory: "anakeen",
+  vendorCategory: "all",
   visitedRoutes: []
 };
 

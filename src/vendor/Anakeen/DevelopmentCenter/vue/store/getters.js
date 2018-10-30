@@ -9,11 +9,3 @@ export const vendorCategory = state => {
 export const visitedRoutes = state => {
   return state.app.visitedRoutes;
 };
-
-export const vendorTypeUrl = (state, getters) => {
-  let value = getters.vendorCategory;
-  if (value === "anakeen") {
-    return "all";
-  }
-  return value;
-};

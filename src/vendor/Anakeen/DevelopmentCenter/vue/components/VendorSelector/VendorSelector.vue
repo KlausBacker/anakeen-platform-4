@@ -1,7 +1,7 @@
 <template>
     <div class="vendor-selector">
         <select ref="selector" :value="vendorCategory">
-            <option value="anakeen">Anakeen</option>
+            <option value="all">All</option>
             <option value="vendor">Vendors</option>
         </select>
     </div>

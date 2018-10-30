@@ -42,7 +42,7 @@ export default {
       type: String,
       default: "auto",
       validator: value => {
-        const validValues = ["auto", "anakeen", "vendor"];
+        const validValues = ["auto", "all", "vendor"];
         const valid = validValues.indexOf(value) >= 0;
         if (!valid) {
           console.error(
@@ -90,10 +90,7 @@ export default {
     vendorType() {
       let value = this.vendorCategory;
       if (value === "auto") {
-        value = this.$store.getters.vendorTypeUrl;
-      }
-      if (value === "anakeen") {
-        value = "all";
+        value = this.$store.getters.vendorCategory;
       }
       return value;
     },
