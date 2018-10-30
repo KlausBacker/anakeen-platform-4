@@ -1,24 +1,36 @@
 <template>
-    <div class="ss-section">
-        <div class="ss-nav">
-            <router-link class="smart-structures-nav-link" tag="div" :to="{name: 'SmartStructures::infos'}">Infos
-            </router-link>
-            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::structure'}">Structure
-            </router-link>
-            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::parameters'}">Parameters
-            </router-link>
-            <router-link class="smart-structures-nav-link" tab="div" :to="{name: 'SmartStructures::defaults'}">Defaults
-            </router-link>
-            <router-link class="smart-structures-nav-link" tag="div" :to="{name: 'SmartStructures::others'}">Others
-            </router-link>
-        </div>
-        <router-multi-view class="ss-content"></router-multi-view>
-    </div>
+    <router-tabs class="ss-section" :items="items"></router-tabs>
 </template>
 
 <script>
   export default {
-    name: "SSContent"
+    name: "SSContent",
+    data() {
+      return {
+        items: [
+          {
+            name: "SmartStructures::infos",
+            label: "Infos"
+          },
+          {
+            name: "SmartStructures::structure",
+            label: "Structure"
+          },
+          {
+            name: "SmartStructures::parameters",
+            label: "Parameters"
+          },
+          {
+            name: "SmartStructures::defaults",
+            label: "Defaults"
+          },
+          {
+            name: "SmartStructures::others",
+            label: "Others"
+          }
+        ]
+      }
+    }
   }
 </script>
 
@@ -26,23 +38,6 @@
     .ss-section {
         display: flex;
         flex-direction: column;
-
-        .ss-nav {
-            display: flex;
-            .smart-structures-nav-link {
-                cursor: pointer;
-                border-radius: .25rem .25rem 0 0;
-                padding: .5rem;
-                background: white;
-                &.router-link-active {
-                    z-index: 10;
-                    margin-bottom: -1px;
-                    border: 1px solid rgba(33, 37, 41, .125);
-                    border-bottom-color: transparent;
-                }
-            }
-        }
-
 
         .ss-content {
             display: flex;
