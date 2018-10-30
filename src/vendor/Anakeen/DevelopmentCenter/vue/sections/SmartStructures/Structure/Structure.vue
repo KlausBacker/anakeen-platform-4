@@ -9,7 +9,7 @@
                         class="structure-tree"
                         :data-source="remoteDataSource"
                         :height="'100%'"
-                        :filterable="true"
+                        :filterable="{ extra: false}"
                         :resizable="true"
                         :sortable="true"
                         :dataBound="onDataBound"
