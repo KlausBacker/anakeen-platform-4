@@ -30,7 +30,7 @@
             <kendo-treelist-column :template="columnTemplate('phpfile')" :field="'phpfile'" :title="'PHP File'" :hidden="true"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('link')" :field="'link'" :title="'Link'" :hidden="true"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('optionValues')" :field="'optionValues'" :title="'Options'"></kendo-treelist-column>
-            <kendo-treelist-column :template="columnTemplate('properties')" :field="'properties'" :title="'Properties'"></kendo-treelist-column>
+            <kendo-treelist-column :template="columnTemplate('properties')" :field="'properties'" :title="'Properties'" :hidden="true"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('overrides')" :field="'overrides'" :title="'Overrides'" :hidden="true"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('declaration')" :field="'declaration'" :title="'Declaration'" :hidden="true"></kendo-treelist-column>
         </kendo-treelist>
