@@ -10,10 +10,10 @@
 </template>
 <!-- CSS to this component only -->
 <style scoped lang="scss">
-    @import "./SmartElementsSecurity.scss";
+    @import "./Profiles.scss";
 </style>
 <!-- Global CSS -->
 <style lang="scss">
 </style>
-<script src="./SmartElementsSecurity.controller.js">
+<script src="./Profiles.controller.js">
 </script>

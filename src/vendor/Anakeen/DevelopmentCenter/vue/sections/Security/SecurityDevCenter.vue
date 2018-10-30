@@ -22,7 +22,7 @@
               label: "Smart Structures"
             },
             {
-              name: "Security::SmartElements",
+              name: "Security::Profiles",
               label: "Profiles"
             },
             {
