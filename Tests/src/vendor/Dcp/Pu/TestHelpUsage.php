@@ -35,7 +35,7 @@ class TestHelpUsage extends TestCaseDcp
                 "processExecute"
             ),
             array(
-                "destroyFamily"
+                "destroyStructure"
             ),
             array(
                 "fdl_trigger"
