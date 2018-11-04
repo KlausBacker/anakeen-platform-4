@@ -98,13 +98,25 @@ export default {
       window.setTimeout(() => {
         items.each(function removeTypeClass() {
           let dataItem = tree.dataItem(this);
-          if ($(this).attr("class").includes(" attr-type--")) {
+          if (
+            $(this)
+              .attr("class")
+              .includes(" attr-type--")
+          ) {
             $(this).removeClass(" attr-type--" + dataItem.type);
           }
-          if ($(this).attr("class").includes(" is-herited")) {
+          if (
+            $(this)
+              .attr("class")
+              .includes(" is-herited")
+          ) {
             $(this).removeClass(" is-herited");
           }
-          if ($(this).attr("class").includes(" is-overrided")) {
+          if (
+            $(this)
+              .attr("class")
+              .includes(" is-overrided")
+          ) {
             $(this).removeClass(" is-overrided");
           }
         });

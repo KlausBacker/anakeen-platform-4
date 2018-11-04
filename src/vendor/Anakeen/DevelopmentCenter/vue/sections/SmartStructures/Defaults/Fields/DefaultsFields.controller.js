@@ -64,7 +64,6 @@ export default {
       let tree = e.sender;
       this.addRowClassName(tree);
       tree.autoFitColumn(1);
-      console.log(tree);
     },
     onExpand(e) {
       let tree = e.sender;

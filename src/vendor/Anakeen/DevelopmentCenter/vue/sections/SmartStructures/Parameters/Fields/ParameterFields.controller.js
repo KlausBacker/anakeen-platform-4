@@ -44,7 +44,6 @@ export default {
       },
       schema: {
         data: response => {
-          console.log(response.data.data.parameterFields);
           return response.data.data.parameterFields;
         },
         model: {
@@ -65,7 +64,6 @@ export default {
       let tree = e.sender;
       this.addRowClassName(tree);
       tree.autoFitColumn(1);
-      console.log(tree);
     },
     onExpand(e) {
       let tree = e.sender;

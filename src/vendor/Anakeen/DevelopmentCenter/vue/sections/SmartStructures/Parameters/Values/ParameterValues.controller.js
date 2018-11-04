@@ -39,9 +39,7 @@ export default {
           this.$http
             .get(this.url)
             .then(options.success)
-            .catch(options => {
-              console.log(options.error);
-            });
+            .catch(options.error);
         }
       },
       schema: {
