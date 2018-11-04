@@ -2,41 +2,39 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
 }
-
-.parameters-tree {
-  flex: 1;
-  align-items: flex-start;
-  justify-content: stretch;
-}
-
-.parameters-toolbar {
+.parameters-content {
+  display: flex;
   flex: 1;
 }
 
-.is-overrided {
-  outline-color: red !important;
-  outline-style: solid;
+.parameters-nav {
+  display: flex;
+  .parameters-nav-link {
+    cursor: pointer;
+    border-radius: .25rem .25rem 0 0;
+    padding: .5rem;
+    background: white;
+    &.router-link-active {
+      z-index: 10;
+      margin-bottom: -1px;
+      border: 1px solid rgba(33, 37, 41, .125);
+      border-bottom-color: transparent;
+    }
+  }
 }
 
-.attr-type--tab, .attr-type--tab:hover {
-  background-color: #e7cfff !important;
+.k-status {
+  visibility: hidden;
 }
-
-.attr-type--frame, .attr-type--frame:hover {
-  background-color: rgba(110, 167, 255, 0.52) !important;
-}
-
-.attr-type--array, .attr-type--array:hover {
-  background-color: rgba(255, 184, 148, 0.43) !important;
-}
-
-.k-treelist .k-icon.k-i-collapse,
-.k-treelist .k-icon.k-i-expand {
-  float: left;
-}
-
-.k-treelist tbody tr:hover {
-  outline: solid 1px grey;
+.k-status:after {
+  visibility: visible;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: "WebComponentsIcons";
+  content: '\e682 ';
+  font-size: 10rem;
+  text-align: center;
+  align-items: center;
 }

@@ -10,7 +10,7 @@ Vue.use(DataSourceInstaller);
 Vue.use(TreeListInstaller);
 
 export default {
-  name: "parameters",
+  name: "parameterFields",
   props: ["ssName"],
   components: {
     "kendo-treelist": TreeList
@@ -44,7 +44,8 @@ export default {
       },
       schema: {
         data: response => {
-          return response.data.data.parameterValues;
+          console.log(response.data.data.parameterFields);
+          return response.data.data.parameterFields;
         },
         model: {
           id: "id",
@@ -54,8 +55,8 @@ export default {
       }
     });
     $(window).resize(() => {
-      if (this.$refs.parametersTree) {
-        this.$refs.parametersTree.kendoWidget().resize();
+      if (this.$refs.parameterFieldsTree) {
+        this.$refs.parameterFieldsTree.kendoWidget().resize();
       }
     });
   },
@@ -64,6 +65,7 @@ export default {
       let tree = e.sender;
       this.addRowClassName(tree);
       tree.autoFitColumn(1);
+      console.log(tree);
     },
     onExpand(e) {
       let tree = e.sender;
@@ -87,9 +89,9 @@ export default {
         });
       }, 1);
     },
-    refreshParameters() {
-      this.$refs.parametersTree.kendoWidget().dataSource.filter({});
-      this.$refs.parametersTree.kendoWidget().dataSource.read();
+    refreshParameterFields() {
+      this.$refs.parameterFieldsTree.kendoWidget().dataSource.filter({});
+      this.$refs.parameterFieldsTree.kendoWidget().dataSource.read();
     },
     columnTemplate(colId) {
       return dataItem => {

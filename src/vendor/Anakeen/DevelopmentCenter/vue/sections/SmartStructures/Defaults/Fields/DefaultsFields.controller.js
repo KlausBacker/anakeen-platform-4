@@ -10,7 +10,7 @@ Vue.use(DataSourceInstaller);
 Vue.use(TreeListInstaller);
 
 export default {
-  name: "structure",
+  name: "defaultFields",
   props: ["ssName"],
   components: {
     "kendo-treelist": TreeList
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     url() {
-      return `/api/v2/devel/smart/structures/${this.ssName}/fields/`;
+      return `/api/v2/devel/smart/structures/${this.ssName}/defaults/`;
     }
   },
   mounted() {
@@ -50,22 +50,21 @@ export default {
           id: "id",
           parentId: "parentId",
           expanded: true
-        },
-        sort: [{ field: "displayOrder", order: "asc" }]
+        }
       }
     });
     $(window).resize(() => {
-      if (this.$refs.structureTree) {
-        this.$refs.structureTree.kendoWidget().resize();
+      if (this.$refs.defaultFieldsTree) {
+        this.$refs.defaultFieldsTree.kendoWidget().resize();
       }
     });
   },
   methods: {
     onDataBound(e) {
       let tree = e.sender;
-      this.removeRowClassName(tree);
       this.addRowClassName(tree);
       tree.autoFitColumn(1);
+      console.log(tree);
     },
     onExpand(e) {
       let tree = e.sender;
@@ -78,37 +77,20 @@ export default {
     addRowClassName(tree) {
       let items = tree.items();
       window.setTimeout(() => {
-        const that = this;
         items.each(function addTypeClass() {
           let dataItem = tree.dataItem(this);
           if (dataItem.type) {
             $(this).addClass(" attr-type--" + dataItem.type);
           }
-          if (dataItem.structure !== that.ssName) {
-            $(this).addClass(" is-herited");
-          }
-          if (dataItem.declaration === "overrided") {
+          if (dataItem.overrides && dataItem.declaration === "overrided") {
             $(this).addClass(" is-overrided");
           }
         });
       }, 1);
     },
-    removeRowClassName(tree) {
-      let items = tree.items();
-      window.setTimeout(() => {
-        items.each(function removeTypeClass() {
-          let dataItem = tree.dataItem(this);
-          if ($(this).attr("class").includes(" attr-type--")) {
-            $(this).removeClass(" attr-type--" + dataItem.type);
-          }
-          if ($(this).attr("class").includes(" is-herited")) {
-            $(this).removeClass(" is-herited");
-          }
-          if ($(this).attr("class").includes(" is-overrided")) {
-            $(this).removeClass(" is-overrided");
-          }
-        });
-      }, 1);
+    refreshDefaultFields() {
+      this.$refs.defaultFieldsTree.kendoWidget().dataSource.filter({});
+      this.$refs.defaultFieldsTree.kendoWidget().dataSource.read();
     },
     columnTemplate(colId) {
       return dataItem => {
@@ -121,33 +103,12 @@ export default {
         ) {
           let str = "";
           Object.keys(dataItem[colId].toJSON()).forEach(item => {
-            str += `<li><span><b>${item}</b></span> : <span>${
-              dataItem[colId][item]
-            }</span></li>`;
+            str += "<li>" + item + "</li>";
           });
           return str;
         }
-        let className = "";
-        if (
-          colId !== "overrides" &&
-          dataItem["declaration"] === "overrided" &&
-          dataItem["overrides"]
-        ) {
-          Object.keys(dataItem["overrides"].toJSON()).forEach(item => {
-            if (item === colId) {
-              className = "overrided";
-            }
-          });
-        }
-        if (className) {
-          return `<div class="${className}">${dataItem[colId]}</div>`;
-        }
         return dataItem[colId];
       };
-    },
-    refreshStructure() {
-      this.$refs.structureTree.kendoWidget().dataSource.filter({});
-      this.$refs.structureTree.kendoWidget().dataSource.read();
     }
   }
 };

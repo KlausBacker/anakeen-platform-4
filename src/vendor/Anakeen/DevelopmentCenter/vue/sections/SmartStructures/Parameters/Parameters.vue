@@ -1,28 +1,28 @@
 <template>
     <div class="parameters-parent">
-        <div>
-            <kendo-toolbar class="parameters-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="refreshParameters"></kendo-toolbar-item>
-            </kendo-toolbar>
-        </div>
-        <kendo-treelist ref="parametersTree"
-                        class="parameters-tree"
-                        :data-source="remoteDataSource"
-                        :height="'100%'"
-                        :filterable="true"
-                        :resizable="true"
-                        :sortable="true"
-                        :dataBound="onDataBound"
-                        :expand="onExpand"
-                        :collapse="onCollapse"
-                        :columnMenu="true">
-            <kendo-treelist-column :template="columnTemplate('id')" :field="'id'" :title="'Identification'" :width="'10%'"></kendo-treelist-column>
-            <kendo-treelist-column :template="columnTemplate('config')" :field="'config'" :title="'Configuration'" :width="'10%'"></kendo-treelist-column>
-            <kendo-treelist-column :template="columnTemplate('value')" :field="'value'" :title="'Value'"></kendo-treelist-column>
-        </kendo-treelist>
+        <router-tabs :items="items"></router-tabs>
     </div>
 </template>
+<!-- CSS to this component only -->
 <style lang="scss">
     @import "./Parameters.scss";
 </style>
-<script src="./Parameters.controller.js"></script>
+
+<script>
+  export default {
+    data() {
+      return {
+        items: [
+          {
+            name: "SmartStructures::parameters::parameterFields",
+            label: "Fields"
+          },
+          {
+            name: "SmartStructures::parameters::parameterValues",
+            label: "Values"
+          }
+        ]
+      }
+    }
+  }
+</script>

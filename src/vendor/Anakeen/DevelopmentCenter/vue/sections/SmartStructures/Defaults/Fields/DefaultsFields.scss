@@ -1,26 +1,19 @@
-.structure-parent {
+.defaults-fields-parent {
   width: 100%;
   height: 100%;
+  flex-direction: column;
   min-height: 0;
   overflow: hidden;
 }
 
-.structure-tree {
-  overflow: hidden;
+.defaults-fields-tree {
   flex: 1;
   align-items: flex-start;
   justify-content: stretch;
 }
 
-.structure-toolbar {
+.defaults-fields-toolbar {
   flex: 1;
-}
-.overrided:after {
-  font-family: "WebComponentsIcons";
-  content: '\e905';
-  font-size: 18px;
-  margin-left: .6rem;
-  color: red;
 }
 
 .is-overrided {
@@ -28,9 +21,6 @@
   outline-style: solid;
 }
 
-.is-herited {
-  color: #949494 !important;
-}
 .attr-type--tab, .attr-type--tab:hover {
   background-color: #e7cfff !important;
 }
@@ -50,19 +40,4 @@
 
 .k-treelist tbody tr:hover {
   outline: solid 1px grey;
-}
-
-.k-status {
-  visibility: hidden;
-}
-.k-status:after {
-  visibility: visible;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-family: "WebComponentsIcons";
-  content: '\e682 ';
-  font-size: 10rem;
-  text-align: center;
-  align-items: center;
 }
