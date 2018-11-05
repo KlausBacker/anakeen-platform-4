@@ -4,7 +4,6 @@ const fs = require("fs");
 const FormData = require("form-data");
 
 const CONTROL_API_BASE = (exports.CONTROL_API_BASE = "/wiff.php");
-const CONTROL_DEFAULT_CONTEXT = "a4";
 
 //Generate the control arguments, for all cli that need control access
 exports.controlArguments = parameters => {
@@ -105,11 +104,12 @@ exports.postModule = ({
   controlPassword,
   fileName,
   force,
-  action
+  action,
+  context
 }) => {
   const formData = new FormData();
   formData.append("deployWebinst", "true");
-  formData.append("context", CONTROL_DEFAULT_CONTEXT);
+  formData.append("context", context);
   formData.append("webinst", fs.createReadStream(fileName));
   if (action) {
     formData.append("action", action);
@@ -135,11 +135,8 @@ exports.postModule = ({
       return response.json();
     })
     .then(result => {
-      if (result.error || result.warnings) {
-        throw new Error(
-          result.error ||
-            result.warnings.join(" ") + " " + result.data.join(" ")
-        );
+      if (result.error) {
+        throw new Error(result.error + " " + result.data.join("\n"));
       }
       return result;
     });

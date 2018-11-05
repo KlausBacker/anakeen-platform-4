@@ -24,7 +24,8 @@ const deployPipe = (exports.deployPipe = async ({
   controlPassword,
   force,
   log,
-  action
+  action,
+  context
 }) => {
   let tmpDir = false;
   if (!appPath) {
@@ -48,8 +49,10 @@ const deployPipe = (exports.deployPipe = async ({
     controlPassword,
     fileName: appPath,
     force,
-    action
+    action,
+    context
   });
+  log(result.data.join("\n"));
   if (tmpDir) {
     tmpDir.removeCallback();
   }
@@ -63,7 +66,8 @@ exports.deploy = ({
   controlPassword,
   force,
   parameterValues,
-  action
+  action,
+  context
 }) => {
   return gulp.task("deploy", () => {
     try {
@@ -80,7 +84,8 @@ exports.deploy = ({
           force,
           log,
           parameterValues,
-          action
+          action,
+          context
         })
           .then(message => {
             //console.log(message.data.join(" "));
@@ -106,6 +111,7 @@ exports.buildAndDeploy = ({
   controlUrl,
   controlUsername,
   controlPassword,
+  context,
   force,
   autoRelease = false
 }) => {
@@ -125,6 +131,7 @@ exports.buildAndDeploy = ({
           controlUsername,
           controlPassword,
           force,
+          context,
           errorCallback: reject,
           log
         })
