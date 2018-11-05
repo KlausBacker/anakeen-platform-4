@@ -4,10 +4,16 @@ let moduleExport = [];
 routes.keys().forEach(file => {
   if (file !== "." + __filename) {
     const routesSectionExport = routes(file).default;
-    if (Array.isArray(routesSectionExport)) {
-      moduleExport = moduleExport.concat(routesSectionExport);
+    if (routesSectionExport) {
+      if (Array.isArray(routesSectionExport)) {
+        moduleExport = moduleExport.concat(routesSectionExport);
+      } else {
+        moduleExport.push(routesSectionExport);
+      }
     } else {
-      moduleExport.push(routes(file).default);
+      console.warn(
+        `File "${file}" does not export a valid route configuration`
+      );
     }
   }
 });
