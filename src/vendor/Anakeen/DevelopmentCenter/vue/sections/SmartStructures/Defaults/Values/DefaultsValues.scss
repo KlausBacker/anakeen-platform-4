@@ -1,36 +1,21 @@
-.structure-parent {
+.defaults-values-parent {
   display: flex;
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
 }
 
-.structure-tree {
-  flex: 2;
+.defaults-values-tree {
+  flex: 1;
   align-items: flex-start;
   justify-content: stretch;
 }
 
-.structure-toolbar {
+.defaults-values-toolbar {
   min-height: 32px;
   flex: 1;
 }
-.overrided:after {
-  font-family: "WebComponentsIcons";
-  content: '\e905';
-  font-size: 18px;
-  margin-left: .6rem;
-  color: red;
-}
 
-.is-overrided {
-  font-weight: bold;
-
-}
-
-.is-herited {
-  color: #949494 !important;
-}
 .attr-type--tab, .attr-type--tab:hover {
   background-color: #e7cfff !important;
 }

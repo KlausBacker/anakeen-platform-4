@@ -1,12 +1,12 @@
 <template>
-    <div class="structure-parent">
+    <div class="defaults-fields-parent">
         <div>
-            <kendo-toolbar class="structure-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="refreshStructure"></kendo-toolbar-item>
+            <kendo-toolbar class="defaults-fields-toolbar">
+                <kendo-toolbar-item type="button" icon="refresh" @click="refreshDefaultFields"></kendo-toolbar-item>
             </kendo-toolbar>
         </div>
-        <kendo-treelist ref="structureTree"
-                        class="structure-tree"
+        <kendo-treelist ref="defaultFieldsTree"
+                        class="defaults-fields-tree"
                         :data-source="remoteDataSource"
                         :height="'100%'"
                         :filterable="{ extra: false}"
@@ -37,6 +37,6 @@
     </div>
 </template>
 <style lang="scss">
-    @import "./Structure.scss";
+    @import "./DefaultsFields.scss";
 </style>
-<script src="./Structure.controller.js"></script>
+<script src="./DefaultsFields.controller.js"></script>
