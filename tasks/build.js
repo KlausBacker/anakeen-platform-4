@@ -10,7 +10,8 @@ const appConst = require("../utils/appConst");
 
 const buildPipe = (exports.buildPipe = async ({
   sourcePath,
-  autoRelease = false
+  autoRelease = false,
+  localName = false
 }) => {
   const moduleInfo = await getModuleInfo(sourcePath);
   let release = moduleInfo.moduleInfo.release;
@@ -21,9 +22,12 @@ const buildPipe = (exports.buildPipe = async ({
       .replace(/[^0-9]/g, "")
       .substr(0, 14);
   }
-  const moduleFileName = `${moduleInfo.moduleInfo.name}-${
+  let moduleFileName = `${moduleInfo.moduleInfo.name}-${
     moduleInfo.moduleInfo.version
   }-${release}`;
+  if (localName) {
+    moduleFileName = localName;
+  }
   const mainFiles = gulp
     .src(path.join(moduleInfo.buildInfo.buildPath[0], "**"), {
       dot: true
