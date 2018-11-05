@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
-import VueRouterMultiView from "vue-router-multi-view";
+import DevelRouterMultiView from "../vue/components/RouterMultiView";
 
 import { sync } from "vuex-router-sync";
 import Axios from "axios";
@@ -16,7 +16,7 @@ import SSList from "../vue/components/SSList/SSList.vue";
 const axios = Axios.create();
 Vue.prototype.$http = axios;
 
-Vue.use(VueRouterMultiView);
+Vue.use(DevelRouterMultiView, { forceMultiViews: true });
 Vue.use(Vuex);
 Vue.use(VueRouter);
 

@@ -90,6 +90,11 @@
   resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.2.82-2.8270928.tgz#9dbcdb819dc10c40d76203228d3b15356e0dae01"
   integrity sha512-SBSe5HE9H446qgE2ykLMeteOf7eNlaI5BiYATgUfjzMR57ZqR0BCdkB71v7O6LlNSkQ7XLUGQydXq3+0F4yseA==
 
+"@progress/kendo-base-components-vue-wrapper@2018.3.1025":
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.3.1025.tgz#17072b6b7d4fd569e85aa5692978daf0bd992496"
+  integrity sha512-UlmfSpplyS94rKlETgfbMD0Bzu8YeAPVrWqsxgOC9+yvLwyRb4P8dTbkltjqYRdul1jMUiXaHCVlaLw1sRyEIQ==
+
 "@progress/kendo-buttons-vue-wrapper@^2018.3.911":
   version "2018.3.911"
   resolved "https://registry.yarnpkg.com/@progress/kendo-buttons-vue-wrapper/-/kendo-buttons-vue-wrapper-2018.3.911.tgz#412dbde05e1f5c56122f6dbed5b0866a639de291"
@@ -97,12 +102,12 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
 
-"@progress/kendo-datasource-vue-wrapper@^2018.3.911":
-  version "2018.3.911"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-datasource-vue-wrapper/-/kendo-datasource-vue-wrapper-2018.3.911.tgz#90e67921fbd41e297a431143861ddfefe4b9269e"
-  integrity sha512-edyrj447LerehA3lEkX1upaFaIU1Ne/OuCrhGVQls3O3koY5CmnfS49RYyTZodO/ca5EJCN1d3KPvN1TFFy3nQ==
+"@progress/kendo-datasource-vue-wrapper@^2018.3.1018":
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-datasource-vue-wrapper/-/kendo-datasource-vue-wrapper-2018.3.1025.tgz#053876dafb4bbb67795ba85e651e7a444baf4439"
+  integrity sha512-0lrBsdmqx+4ntx2Nsi1k6L1Q9w1KoRRt4hKeeSs5OP1Wmw/GAFFi0Axo+3OrPP7B+5tkAQZ27ObgNRmFumlLnQ==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
 "@progress/kendo-grid-vue-wrapper@^2018.3.911":
   version "2018.3.911"
@@ -110,6 +115,13 @@
   integrity sha512-aT26Pg5LSZZgGEN+JGGnCujwZH5NK1yBMaThO0XmCaGhe73bBDpRzBY9w0bIVj8JAA1dZRVS0eHFgE6iA+QtuQ==
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
+
+"@progress/kendo-treelist-vue-wrapper@^2018.3.1018":
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-treelist-vue-wrapper/-/kendo-treelist-vue-wrapper-2018.3.1025.tgz#f17137a86472a704de4fd369520a98c500f3bcc9"
+  integrity sha512-t7U6xA9XiOg8O7TuhVW4o6LCZZBRtkMkMZ2MByTnypw/B1rEMwgmyfrZuaZAxQApHV5aKzzgTWcklw5PQ32RIw==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
 "@progress/kendo-ui@^2018.3.1003":
   version "2018.3.1003"
@@ -9595,11 +9607,6 @@ vue-loader@^15.3.0:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
-
-vue-router-multi-view@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/vue-router-multi-view/-/vue-router-multi-view-0.0.5.tgz#72f243b994eb3ec13381ad4258de02abc942b4a7"
-  integrity sha512-GnGQIVg+vTNwFCluRUfKx8/RfYXkaIi2rru3xVI3vVbkdDSE9UNd0h36XLbdS9YEeWpd+ohLc9RE5XqT+iRRhg==
 
 vue-router@^3.0.1:
   version "3.0.1"
