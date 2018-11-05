@@ -44,7 +44,7 @@ export default {
       },
       schema: {
         data: response => {
-          return response.data.data.fields;
+          return this.getDefaultValues(response.data.data);
         },
         model: {
           id: "id",
@@ -96,18 +96,35 @@ export default {
         if (dataItem[colId] === null || dataItem[colId] === undefined) {
           return "";
         }
-        if (
-          dataItem[colId] &&
-          (colId === "optionValues" || colId === "properties")
-        ) {
+        if (dataItem[colId] && colId === "value") {
           let str = "";
           Object.keys(dataItem[colId].toJSON()).forEach(item => {
-            str += "<li>" + item + "</li>";
+            str += "<li>" + dataItem[colId][item] + "</li>";
           });
           return str;
         }
         return dataItem[colId];
       };
+    },
+    getDefaultValues(response) {
+      const items = response.defaultValues;
+      const fields = Object.keys(items).map(item => {
+        return {
+          idVal: item,
+          config: items[item].config,
+          type: items[item].type,
+          value: items[item].value
+        };
+      });
+      fields.forEach(items2 => {
+        Object.keys(response.fields).forEach(items => {
+          if (items2.idVal === response.fields[items].id) {
+            response.fields[items].config = items2.config;
+            response.fields[items].value = items2.value;
+          }
+        });
+      });
+      return response.fields;
     }
   }
 };

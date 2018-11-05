@@ -12,7 +12,8 @@
 }
 
 .defaults-values-toolbar {
-  min-height: 32px;
+  min-height: 50px;
+  min-width: 500px;
   flex: 1;
 }
 
@@ -35,19 +36,4 @@
 
 .k-treelist tbody tr:hover {
   outline: solid 1px grey;
-}
-
-.k-status {
-  visibility: hidden;
-}
-.k-status:after {
-  visibility: visible;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  font-family: "WebComponentsIcons";
-  content: '\e682 ';
-  font-size: 10rem;
-  text-align: center;
-  align-items: center;
 }
