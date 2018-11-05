@@ -49,6 +49,11 @@ exports.builder = controlArguments({
     defaultDescription: "action to execute (install|upgrade)",
     default: "",
     type: "string"
+  },
+  context: {
+    defaultDescription: "context to deploy",
+    default: "a4",
+    type: "string"
   }
 });
 
