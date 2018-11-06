@@ -10,7 +10,7 @@
         items: [
           {
             name: "Ui::infos",
-            label: "Infos"
+            label: "Informations"
           },
           {
             name: "Ui::views",
