@@ -17,6 +17,9 @@ exports.stub = ({ sourcePath, targetPath = "./stubs" }) => {
           return currentStruct.path;
         });
 
+        if (files.length === 0) {
+          return resolve();
+        }
         gulp
           .src(files)
           .pipe(asyncCallback(parseStub, true))

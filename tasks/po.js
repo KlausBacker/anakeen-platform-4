@@ -143,6 +143,9 @@ exports.po = ({ sourcePath }) => {
         });
 
         // Smart structure
+        if (files.length === 0) {
+          return resolve();
+        }
         gulp
           .src(files)
           .pipe(asyncCallback(xmlStructure2Pot, true))
