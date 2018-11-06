@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function main {
+	if [ -z "${WIFF_ROOT}" ]; then
+		echo "Error: missing or empty 'WIFF_ROOT' environment variable!" 1>&2
+		return 1
+	fi
+
+	"${WIFF_ROOT}/wiff" "$@"
+}
+
+main "$@"
