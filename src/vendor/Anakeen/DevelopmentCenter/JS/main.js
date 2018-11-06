@@ -28,6 +28,15 @@ VueRouter.prototype.addQueryParams = function(queryParams) {
 const store = new Vuex.Store(StoreConfig);
 const router = new VueRouter(RouterConfig);
 
+store.watch(StoreConfig.getters.vendorCategory, (newValue, oldValue) => {
+  if (localStorage && newValue !== oldValue) {
+    localStorage.setItem(
+      "devCenterAppStorage",
+      JSON.stringify({ vendorCategory: store.state.app.vendorCategory })
+    );
+  }
+});
+
 router.beforeEach((to, from, next) => {
   const visitedRoute = store.getters.visitedRoutes.find(visited => {
     return visited.path !== to.path && RouterUtils.startsWithRoute(visited, to);
