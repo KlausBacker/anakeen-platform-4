@@ -1,0 +1,66 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart FIELDACCESSLAYERLIST \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-11-06T16:20:35.500Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "fall_fr_ident"
+msgstr "Properties"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "ba_title"
+msgstr "Title"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "ba_desc"
+msgstr "Description"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "fall_famid"
+msgstr "Structure"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "fall_t_layers"
+msgstr "Access Layers"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "fall_aclname"
+msgstr "Access name"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "fall_layer"
+msgstr "Layer"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "dpdoc_fr_dyn"
+msgstr "Profil dynamique"
+
+#: fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "dpdoc_famid"
+msgstr "Structure pour le profil"
