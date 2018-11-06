@@ -11,10 +11,31 @@ const {
 const { getModuleInfo, getStructureFiles } = require("../utils/moduleInfo");
 const asyncCallback = require("./plugins/asyncCallback");
 const mustache2Pot = require("./plugins/POExtractorMustache");
+const { Signale } = require("signale");
 const signale = require("signale");
+const path = require("path");
+const fs = require("fs");
+
+const TMPPO = "tmppot";
+
+const deleteFolderRecursive = path => {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(file => {
+      const curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        deleteFolderRecursive(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+};
 
 exports.po = ({ sourcePath }) => {
-  const potPath = sourcePath + "/tmppot/";
+  const potPath = path.join(sourcePath, TMPPO);
 
   gulp.task("poMustache", async (resolveEnum, rejectEnum) => {
     const tmpMuPot = potPath + "must.pot";
@@ -28,17 +49,10 @@ exports.po = ({ sourcePath }) => {
         const info = await getModuleInfo(sourcePath);
         const buildPath = info.buildInfo.buildPath[0];
 
-        // Smart structure
+        // mustache file
         gulp
-          // .src(buildPath + "/**/*.mustache")
           .src(buildPath + "/**/*.mustache")
           .pipe(mustache2Pot(tmpMuPot, info))
-          /*.pipe(
-            asyncCallback(file => {
-              return mustache2Pot(file, info);
-            }, true)
-          )*/
-
           .pipe(gulp.dest(potPath))
           .pipe(
             asyncCallback(file => {
@@ -134,7 +148,12 @@ exports.po = ({ sourcePath }) => {
         signale.error("No source path specified.");
         return;
       }
+      const interactive = new Signale({ scope: "po" });
+      const log = message => {
+        interactive.info(message);
+      };
       try {
+        log("Analyze package");
         const info = await getModuleInfo(sourcePath);
         const buildPath = info.buildInfo.buildPath;
         const structureFiles = await getStructureFiles({ buildPath });
@@ -146,6 +165,8 @@ exports.po = ({ sourcePath }) => {
         if (files.length === 0) {
           return resolve();
         }
+        log("Extract smart structure");
+
         gulp
           .src(files)
           .pipe(asyncCallback(xmlStructure2Pot, true))
@@ -161,10 +182,19 @@ exports.po = ({ sourcePath }) => {
             })
           )
           .on("end", () => {
+            log("Extract enum");
             gulp.task("poEnum")(() => {
+              log("Extract mustache");
               gulp.task("poMustache")(() => {
+                log("Extract php");
                 gulp.task("poPhp")(() => {
-                  gulp.task("poJs")(resolve, reject);
+                  log("Extract JS");
+                  gulp.task("poJs")(() => {
+                    //Delete temp repo
+                    log("Suppress temp directory");
+                    deleteFolderRecursive(potPath);
+                    resolve();
+                  }, reject);
                 }, reject);
               }, reject);
             }, reject);
