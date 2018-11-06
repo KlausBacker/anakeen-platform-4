@@ -7,6 +7,8 @@ const glob = require("glob");
 
 const cp = require("child_process");
 
+const PO_LANGS = ["fr", "en"];
+
 const attrType = {
   fieldtext: "text",
   fieldhtmltext: "htmltext",
@@ -203,14 +205,11 @@ ${poEntries}
  */
 exports.msgmergeStructure = (file, srcPath) => {
   return new Promise((resolve, reject) => {
-    const langs = ["fr", "en"];
     const tmpDir = file.dirname;
     const files = [];
     let resolvCount = 0;
 
-    // console.log("merge", file.path, srcPath);
-
-    langs.forEach(lang => {
+    PO_LANGS.forEach(lang => {
       const tmpPo = `${tmpDir}/${file.smartName}_${lang}.po`;
       const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${
         file.smartName
@@ -236,7 +235,7 @@ exports.msgmergeStructure = (file, srcPath) => {
             mergeFile.lang = lang;
 
             files.push(mergeFile);
-            if (resolvCount >= langs.length) {
+            if (resolvCount >= PO_LANGS.length) {
               resolve(files);
             }
           });
@@ -255,13 +254,12 @@ exports.msgmergeStructure = (file, srcPath) => {
 
 exports.msgmergeMustache = (file, info) => {
   return new Promise((resolve, reject) => {
-    const langs = ["fr", "en"];
     const tmpDir = file.dirname;
     const files = [];
     const srcPath = info.buildInfo.buildPath[0];
     let resolvCount = 0;
 
-    langs.forEach(lang => {
+    PO_LANGS.forEach(lang => {
       const tmpPo = `${tmpDir}/mustache-${info.moduleInfo.name}_${lang}.po`;
       const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/mustache-${
         info.moduleInfo.name
@@ -280,15 +278,13 @@ exports.msgmergeMustache = (file, info) => {
         }
 
         cp.exec(command, (error /*, stdout, stderr*/) => {
-          //eslint-disable-next-line no-console
-          // console.log(command);
           vinylFile.read(tmpPo).then(mergeFile => {
             resolvCount++;
             mergeFile.base = mergeFile.dirname;
             mergeFile.lang = lang;
 
             files.push(mergeFile);
-            if (resolvCount >= langs.length) {
+            if (resolvCount >= PO_LANGS.length) {
               resolve(files);
             }
           });
@@ -305,18 +301,17 @@ exports.msgmergeMustache = (file, info) => {
 
 exports.msgmergeEnum = (file, srcPath) => {
   return new Promise((resolve, reject) => {
-    const langs = ["fr", "en"];
     const tmpDir = file.dirname;
     const files = [];
     let resolvCount = 0;
 
     // console.log("merge", file.path, srcPath);
 
-    langs.forEach(lang => {
-      const tmpPo = `${tmpDir}/${file.enumName}_${lang}.po`;
-      const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${
-        file.enumName
-      }_${lang}.po`;
+    PO_LANGS.forEach(lang => {
+      const tmpPo = path.resolve(`${tmpDir}/${file.enumName}_${lang}.po`);
+      const basePo = path.resolve(
+        `${srcPath}/locale/${lang}/LC_MESSAGES/src/${file.enumName}_${lang}.po`
+      );
 
       fs.access(basePo, err => {
         let command;
@@ -339,7 +334,7 @@ exports.msgmergeEnum = (file, srcPath) => {
             mergeFile.lang = lang;
 
             files.push(mergeFile);
-            if (resolvCount >= langs.length) {
+            if (resolvCount >= PO_LANGS.length) {
               resolve(files);
             }
           });
@@ -354,106 +349,154 @@ exports.msgmergeEnum = (file, srcPath) => {
   });
 };
 exports.php2Pot = (info, potdir) => {
-  return new Promise((resolve, reject) => {
-    const srcPath = info.buildInfo.buildPath;
-    const langs = ["fr", "en"];
-    const moduleName = info.moduleInfo.name;
-    let resolvCount = 0;
+  const promises = [];
 
-    langs.forEach(lang => {
-      const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${moduleName}_${lang}.po`;
-      const tmpPot = `${potdir}/${moduleName}_${lang}.pot`;
-      const tmpPo = `${potdir}/${moduleName}_${lang}.po`;
+  const srcPath = info.buildInfo.buildPath[0];
+  const moduleName = info.moduleInfo.name;
 
-      fs.access(basePo, err => {
-        let commands = [];
-
-        commands.push(
-          `find "${srcPath}" -type f -name "*php" -print | xgettext --no-location --from-code=utf-8 --language=PHP --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" -f-`
-        );
-        if (err !== null) {
-          commands.push(
-            `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`
+  PO_LANGS.forEach(lang => {
+    promises.push(
+      new Promise((resolve, reject) => {
+        try {
+          const basePo = path.resolve(
+            `${srcPath}/locale/${lang}/LC_MESSAGES/src/${moduleName}_${lang}.po`
           );
-        } else {
-          commands.push(
-            `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`
-          );
-          commands.push(`cp "${tmpPo}" "${basePo}" `);
-        }
+          const tmpPot = path.resolve(`${potdir}/${moduleName}_${lang}.pot`);
+          const tmpPo = path.resolve(`${potdir}/${moduleName}_${lang}.po`);
 
-        cp.exec(commands.join(" && "), (error /*, stdout, stderr*/) => {
-          //eslint-disable-next-line no-console
-          // console.log(commands.join(" && "));
+          //Find all the php files in src
+          glob(
+            `./**/*.php`,
+            {
+              cwd: srcPath
+            },
+            (err, files) => {
+              if (err) {
+                return reject(err);
+              }
+              //join files
+              const fileList = files.reduce((acc, currentValue) => {
+                return acc + " " + path.resolve(srcPath, currentValue);
+              }, "");
+              cp.exec(
+                `xgettext --no-location --from-code=utf-8 --language=PHP --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${fileList}`,
+                err => {
+                  if (err) {
+                    return reject(err);
+                  }
+                  if (!fs.existsSync(tmpPot)) {
+                    //no element found by tmpPot
+                    resolve();
+                  }
+                  if (!fs.existsSync(tmpPo)) {
+                    cp.exec(
+                      `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
+                      err => {
+                        if (err) {
+                          return reject(err);
+                        }
+                        resolve();
+                      }
+                    );
+                  } else {
+                    cp.exec(
+                      `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
+                      err => {
+                        if (err) {
+                          return reject(err);
+                        }
+                        fs.copyFileSync(tmpPo, basePo);
+                        resolve();
+                      }
+                    );
+                  }
+                }
+              );
 
-          resolvCount++;
-          if (error) {
-            //eslint-disable-next-line no-console
-            console.log(`exec error: ${error}`);
-            reject(error);
-          } else {
-            if (resolvCount >= langs.length) {
               resolve();
             }
-          }
-        });
-      });
-    });
+          );
+        } catch (e) {
+          console.error(e);
+          reject(e);
+        }
+      })
+    );
   });
+
+  return Promise.all(promises);
 };
 exports.js2Po = (globInputs, targetName, info, potdir) => {
-  return new Promise((resolve, reject) => {
-    const srcPath = info.buildInfo.buildPath;
-    const langs = ["fr", "en"];
-    let resolvCount = 0;
+  const promises = [];
 
-    glob(srcPath + "/" + globInputs, {}, (err, inputPathes) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+  const srcPath = info.buildInfo.buildPath[0];
 
-      let inputPathArgs = '"' + inputPathes.join('" "') + '"';
+  PO_LANGS.forEach(lang => {
+    promises.push(
+      new Promise((resolve, reject) => {
+        try {
+          const basePo = `${srcPath}/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
+          const tmpPot = `${potdir}/js_${targetName}_${lang}.pot`;
+          const tmpPo = `${potdir}/js_${targetName}_${lang}.po`;
 
-      langs.forEach(lang => {
-        const basePo = `${srcPath}/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
-        const tmpPot = `${potdir}/js_${targetName}_${lang}.pot`;
-        const tmpPo = `${potdir}/js_${targetName}_${lang}.po`;
-
-        fs.access(basePo, err => {
-          let commands = [];
-
-          commands.push(
-            `xgettext --no-location --from-code=utf-8 --language=javascript --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${inputPathArgs}`
-          );
-          if (err !== null) {
-            commands.push(
-              `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`
-            );
-          } else {
-            commands.push(
-              `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`
-            );
-            commands.push(`cp "${tmpPo}" "${basePo}" `);
-          }
-
-          cp.exec(commands.join(" && "), (error /*, stdout, stderr*/) => {
-            //eslint-disable-next-line no-console
-            // console.log(commands.join(" && "));
-
-            resolvCount++;
-            if (error) {
-              //eslint-disable-next-line no-console
-              console.log(`exec error: ${error}`);
-              reject(error);
-            } else {
-              if (resolvCount >= langs.length) {
-                resolve();
+          //Find all the php files in src
+          glob(
+            globInputs,
+            {
+              cwd: srcPath
+            },
+            (err, files) => {
+              if (err) {
+                return reject(err);
               }
+              //join files
+              const fileList = files.reduce((acc, currentValue) => {
+                return acc + " " + path.resolve(srcPath, currentValue);
+              }, "");
+              cp.exec(
+                `xgettext --no-location --from-code=utf-8 --language=javascript --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${fileList}`,
+                err => {
+                  if (err) {
+                    return reject(err);
+                  }
+                  if (!fs.existsSync(tmpPot)) {
+                    resolve();
+                  }
+                  if (!fs.existsSync(tmpPo)) {
+                    cp.exec(
+                      `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
+                      err => {
+                        if (err) {
+                          return reject(err);
+                        }
+                        resolve();
+                      }
+                    );
+                  } else {
+                    cp.exec(
+                      `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
+                      err => {
+                        if (err) {
+                          return reject(err);
+                        }
+                        fs.copyFileSync(tmpPo, basePo);
+                        resolve();
+                      }
+                    );
+                  }
+                }
+              );
+
+              resolve();
             }
-          });
-        });
-      });
-    });
+          );
+        } catch (e) {
+          console.error(e);
+          reject(e);
+        }
+      })
+    );
   });
+
+  return Promise.all(promises);
 };

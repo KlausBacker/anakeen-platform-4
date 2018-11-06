@@ -45,14 +45,13 @@ module.exports = function(fileName, info) {
 
   let keys = [];
 
-  function bufferContents(file, enc, cb) {
+  const bufferContents = (file, enc, cb) => {
     // ignore empty files
     if (file.isNull()) {
       cb();
       return;
     }
     let tokens = Mustache.parse(file.contents.toString(), ["[[", "]]"]);
-    //console.log("Yo", file.path, file.contents.toString(), tokens);
     tokens.forEach(token => {
       let lkeys = getMustachei18n(token);
       lkeys.forEach(lkey => {
@@ -62,7 +61,7 @@ module.exports = function(fileName, info) {
     });
 
     cb();
-  }
+  };
 
   function endStream(cb) {
     // no files passed in, no file goes out
@@ -86,6 +85,10 @@ module.exports = function(fileName, info) {
     Object.entries(uniqueKeys).forEach(item => {
       poEntries += getPoEntry(item[1]);
     });
+
+    if (poEntries.length === 0) {
+      return cb();
+    }
 
     //console.log(uniqueKeys);
     let now = new Date().toISOString();
