@@ -40,5 +40,14 @@
             <sde:description>Get all the profiles</sde:description>
             <sde:requiredAccess/>
         </sde:route>
+        <sde:route name="profilesGridConfig">
+            <sde:callable>\Anakeen\Routes\Devel\UI\ProfilesGridConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/profiles/gridConfig</sde:pattern>
+            <sde:description>Get profiles grid config</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>
