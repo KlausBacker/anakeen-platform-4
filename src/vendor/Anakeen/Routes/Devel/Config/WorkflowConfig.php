@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Devel\Config;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
  * Class Structure
@@ -12,10 +13,13 @@ use Anakeen\Router\Exception;
  * use by route GET /api/v2/devel/config/uis/{structure}.xml
  * use by route GET /api/v2/devel/config/accesses/{structure}.xml
  */
-class Structure
+class WorkflowConfig
 {
-    protected $structure;
-    protected $structureId = 0;
+    /**
+     * @var WDocHooks $workflow
+     */
+    protected $workflow;
+    protected $workflowId = 0;
     protected $type = "structures";
 
     /**
@@ -39,28 +43,21 @@ class Structure
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
-        $this->structureId = $args["structure"];
-        $this->structure = SEManager::getFamily($this->structureId);
-        if (!$this->structure) {
-            throw new Exception(sprintf("Structure \"%s\" not found", $this->structureId));
+        $this->workflowId = $args["workflow"];
+        $this->workflow = SEManager::getDocument($this->workflowId);
+        if (!$this->workflow) {
+            throw new Exception(sprintf("Workflow \"%s\" not found", $this->workflowId));
+        }
+        if (!is_a($this->workflow, WDocHooks::class)) {
+            throw new Exception(sprintf("Element \"%s\" is not a workflow", $this->workflowId));
         }
         $this->type = $args["type"];
     }
 
     public function doRequest()
     {
-        switch ($this->type) {
-            case "uis":
-                $e = new \Anakeen\Ui\ExportRenderConfiguration($this->structure);
-                break;
-            case "accesses":
-                $e = new \Anakeen\Core\SmartStructure\ExportConfigurationAccesses($this->structure);
-                break;
-            case "structures":
-            default:
-                $e = new \Anakeen\Core\SmartStructure\ExportConfiguration($this->structure);
-                break;
-        }
+
+        $e = new \Anakeen\Workflow\ExportWorkflowConfiguration($this->workflow);
 
         return $e->toXml();
     }

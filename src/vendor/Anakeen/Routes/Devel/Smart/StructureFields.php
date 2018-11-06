@@ -183,6 +183,7 @@ class StructureFields
             foreach ($dbModAttr as $modAttr) {
                 if ($modAttr["id"] === ":" . $oa->id && $modAttr["docid"] == $oa->structureId) {
                     $dbAttrs[$oa->id]["declaration"] = "overrided";
+                    $dbAttrs[$oa->id]["overrides"]=[];
                     $types = [
                         "labeltext" => "labelText",
                         "ordered" => "ordered",
