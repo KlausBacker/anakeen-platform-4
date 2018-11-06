@@ -8,7 +8,7 @@
                     <div class="infos-card-content-item">
                         <span class="card-content-item-label">Structure profile:</span>
                         <span class="card-content-item-value">
-                            <router-link v-if="structureProperties.security && structureProperties.security.profil" :to="{name: 'Security::SmartStructures::Structures', params: { ssName: ssName}}">{{structureProperties.security.profil.name}} ({{structureProperties.security.profil.title}})</router-link>
+                            <router-link v-if="structureProperties.security && structureProperties.security.profil && structureProperties.security.profil.id" :to="{name: 'Security::SmartStructures::Structures', params: { ssName: ssName}}">{{structureProperties.security.profil.name}} ({{structureProperties.security.profil.title}})</router-link>
                             <span v-else>No profile</span>
                         </span>
                     </div>
