@@ -180,7 +180,10 @@
           nodeEnter.append("rect")
             .attr("y", -20 / 2)
             .attr("height", 20)
-            .attr("width", 150)
+            .attr("width", (d) => {
+              const value = d.data.name;
+              return `${value.split("").length}rem`;
+            })
             .style("fill", color(this));
 
           nodeEnter.append("text")
