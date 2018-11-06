@@ -15,7 +15,8 @@
                         :dataBound="onDataBound"
                         :expand="onExpand"
                         :collapse="onCollapse"
-                        :columnMenu="true">
+                        :columnMenu="true"
+                        :messages="{ noRows: 'There are no data for this Smart Structure...' }">
             <kendo-treelist-column :field="'id'" :title="'Identification'" :min-width="'10%'"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('type')" :field="'type'" :title="'Type'"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('labeltext')" :field="'labeltext'" :title="'Label'"></kendo-treelist-column>

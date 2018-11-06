@@ -23,3 +23,28 @@
     }
   }
 }
+.k-treelist {
+
+}
+.k-status {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  top: 50%;
+  left: 40%;
+  font-size: 1.5rem;
+}
+
+.k-status:after {
+  display: inline-block;
+  font-family: "WebComponentsIcons";
+  content: "\e682";
+  font-size: 10rem;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  top: -150%;
+  left: 20%;
+}
