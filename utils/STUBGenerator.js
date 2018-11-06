@@ -8,7 +8,7 @@ const attrType = {
   fieldlongtext: "longtext",
   fieldint: "int",
   fieldmoney: "money",
-  fieldfloat: "float",
+  fielddouble: "double",
   fieldcolor: "color",
   fieldenum: "enum",
   fielddate: "date",
@@ -17,7 +17,8 @@ const attrType = {
   fieldfile: "file",
   fieldimage: "image",
   fielddocid: "docid",
-  fieldaccount: "account"
+  fieldaccount: "account",
+  fieldxml: "xml"
 };
 
 const generateDescription = (attr, type = "") => {
