@@ -17,8 +17,12 @@ export default {
     this.$http.get(this.url).then(response => {
       const ui = response.data.data.ui;
       this.mskfamid = response.data.data.msk["msk_famid"];
-      this.cvdoc = ui.ccvid || {};
-      this.renderaccess = ui.render || {};
+      if (ui.ccvid) {
+        this.cvdoc = ui.ccvid;
+      }
+      if (ui.render) {
+        this.renderaccess = ui.render;
+      }
     });
   }
 };
