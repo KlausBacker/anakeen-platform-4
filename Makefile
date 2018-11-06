@@ -29,10 +29,9 @@ TEST_SRC_PATH=Tests/
 VERSION=$(shell node -p "require('./package.json').version")
 
 ## control conf
-CONTROL_PROTOCOL=http
 CONTROL_USER= admin
 CONTROL_PASSWORD= anakeen
-CONTROL_URL=$(host)/control/
+CONTROL_URL=http://$(host)/control/
 CONTROL_CONTEXT=$(ctx)
 
 ##bin
@@ -111,7 +110,7 @@ autotest: compilation
 deploy: compilation ## deploy the project
 	rm -f user-interfaces-1*app
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./anakeen-ui -c $(CONTROL_PROTOCOL)://${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./anakeen-ui -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 	make clean
 
 ########################################################################################################################
@@ -162,7 +161,7 @@ app-test: compilation-test ## Build the test package
 deploy-test: compilation-test ## Deploy the test package
 	rm -f user-interfaces-test*app
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c $(CONTROL_PROTOCOL)://${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 ########################################################################################################################
 ##
