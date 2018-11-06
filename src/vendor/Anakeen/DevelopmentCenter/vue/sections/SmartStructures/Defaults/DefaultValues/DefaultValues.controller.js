@@ -96,14 +96,16 @@ export default {
         if (dataItem[colId] === null || dataItem[colId] === undefined) {
           return "";
         }
-        if (dataItem[colId].length > 1 && colId === "value") {
-          let str = "";
-          Object.keys(dataItem[colId].toJSON()).forEach(item => {
-            str += "<li>" + dataItem[colId][item] + "</li>";
-          });
-          return str;
-        } else if (dataItem[colId].length <= 1 && colId === "value") {
-          return dataItem[colId][0];
+        if (dataItem[colId] instanceof Object && colId === "value") {
+          if (dataItem[colId].length > 1) {
+            let str = "";
+            Object.keys(dataItem[colId].toJSON()).forEach(item => {
+              str += "<li>" + dataItem[colId][item] + "</li>";
+            });
+            return str;
+          } else {
+            return dataItem[colId][0] ? dataItem[colId][0] : "";
+          }
         }
         return dataItem[colId];
       };
