@@ -19,16 +19,16 @@ RELEASE = $(shell cat RELEASE)
 
 ## control conf
 port=80
-CONTROL_PROTOCOL=http
 CONTROL_PORT=$(port)
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
-CONTROL_URL=$(host)/control/
+CONTROL_URL=http://$(host)/control/
 CONTROL_CONTEXT=$(ctx)
 
 ##bin
 YARN_BIN=yarn
 DEVTOOL_BIN=php ./anakeen-devtool.phar
+ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 COMPOSER_BIN=composer
 
 -include Makefile.local
@@ -46,7 +46,7 @@ $(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
 install: $(JS_CONF_PATH)/yarn.lock ## Install deps (js an php)
 
 stub: ## Generate stubs
-	$(DEVTOOL_BIN) generateStub -s $(ADMIN_CENTER_SRC_PATH) -o $(STUB_PATH)
+	${ANAKEEN_CLI_BIN} generateStubs --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH)
 
 ########################################################################################################################
 ##
@@ -66,8 +66,7 @@ $(LOCALPUB_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(JS_ADMIN_CENTER_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	-mkdir -p $(LOCALPUB_ADMIN_CENTER_PATH)
 	rsync --delete -azvr $(ADMIN_CENTER_SRC_PATH)/ $(LOCALPUB_ADMIN_CENTER_PATH)
-	sed -i -e "s/{{VERSION}}/$(VERSION)/" -e "s/{{RELEASE}}/$(RELEASE)/" $(LOCALPUB_ADMIN_CENTER_PATH)/build.json
-	$(DEVTOOL_BIN) generateWebinst --force -s $(LOCALPUB_ADMIN_CENTER_PATH) -o .
+	${ANAKEEN_CLI_BIN} build --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH)
 	touch "$@"
 
 
@@ -75,7 +74,7 @@ app: $(NODE_MODULE_PATH) $(LOCALPUB_ADMIN_CENTER_PATH) $(JS_ADMIN_CENTER_PATH) #
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 
 deploy: app ## deploy admin center
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w admin-center*.app -- --force
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH) -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 ########################################################################################################################
 ##
@@ -118,7 +117,7 @@ cleanAll: clean ## clean the local pub and the node_module
 ########################################################################################################################
 
 po: ## extract the po
-	${DEVTOOL_BIN} extractPo -s $(ADMIN_CENTER_SRC_PATH)/ -o $(MK_DIR)/$(ADMIN_CENTER_SRC_PATH)/src/
+	${ANAKEEN_CLI_BIN} extractPo --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH)
 
 ########################################################################################################################
 ##
