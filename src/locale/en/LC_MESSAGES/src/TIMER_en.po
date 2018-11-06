@@ -1,0 +1,59 @@
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_dyndate"
+msgstr "Date de rfrence"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_family"
+msgstr "Famille"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_fr_ident"
+msgstr "Identification"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_iteration"
+msgstr "Nombre d'itrations"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_method"
+msgstr "Mthode"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_state"
+msgstr "Nouvel tat"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_t_config"
+msgstr "Configuration"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_title"
+msgstr "Titre"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_tmail"
+msgstr "Modle de mail"
+
+#: timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_workflow"
+msgstr "Famille cycle"

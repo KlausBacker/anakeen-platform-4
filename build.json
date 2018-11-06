@@ -1,9 +1,0 @@
-{
-    "moduleName" : "workflow",
-    "version" : "0.0.1",
-    "release" : "alpha",
-    "application" : [],
-    "includedPath" : ["src/*"],
-    "lang" : ["fr","en"],
-    "csvParam" : {"enclosure" : "\"", "delimiter": ";"}
-}

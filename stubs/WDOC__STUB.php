@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Wdoc
+    class Wdoc extends BASE
     {
         const ba_title='ba_title';
         /**
@@ -40,7 +40,7 @@ namespace SmartStructure\Fields {
         /**
         * Structure (titre)
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>is-title</i> true </li>
         * <li> <i>type</i> text </li>
         * </ul>
