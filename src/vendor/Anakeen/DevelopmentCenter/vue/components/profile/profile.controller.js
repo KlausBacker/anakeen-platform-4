@@ -5,7 +5,7 @@ import { checksum, convertAclToKendoStyle } from "./utils/group";
 export default {
   name: "ank-dev-profile",
   props: {
-    profileId: Number,
+    profileId: [Number, String],
     defaultColumns: {
       type: Array,
       default: () => ["create", "icreate", "view", "edit", "delete"]

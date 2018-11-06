@@ -29,6 +29,10 @@
               name: "Security::Roles",
               label: "Roles"
             },
+            {
+              name: "Security::Profile::Access",
+              label: "Profile Access Control"
+            }
           ]
         }
       }

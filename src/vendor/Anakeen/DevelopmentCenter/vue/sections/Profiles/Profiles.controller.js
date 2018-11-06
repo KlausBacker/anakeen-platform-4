@@ -17,6 +17,19 @@ export default {
             break;
         }
       }
+    },
+    actionClick(event) {
+      switch (event.data.type) {
+        case "view": {
+          this.$router.push({
+            name: "Security::Profile::Access::Element",
+            params: {
+              seIdentifier: event.data.row.name || event.data.row.initid
+            }
+          });
+          break;
+        }
+      }
     }
   }
 };

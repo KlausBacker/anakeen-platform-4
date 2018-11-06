@@ -1,11 +1,11 @@
 <template>
     <div class="security-se-section">
-        <ank-se-grid urlConfig="/api/v2/devel/security/profiles/gridConfig" filterable="inline" @before-grid-cell-render="cellRender">
+        <ank-se-grid urlConfig="/api/v2/devel/security/profiles/gridConfig" filterable="inline" @before-grid-cell-render="cellRender" @action-click="actionClick">
         </ank-se-grid>
     </div>
 </template>
 <!-- CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
     @import "./Profiles.scss";
 </style>
 <!-- Global CSS -->
