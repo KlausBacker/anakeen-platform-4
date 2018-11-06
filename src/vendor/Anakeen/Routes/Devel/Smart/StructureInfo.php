@@ -48,6 +48,12 @@ class StructureInfo
         $df = new DocumentDataFormatter($this->structure);
         $df->useDefaultProperties();
         $df->addProperty("security");
+        $df->getFormatCollection()->setPropertyRenderHook(function ($propValue, $propId) {
+            if ($propId === "security" && isset($propValue["profil"]["id"])) {
+                $propValue["profil"]["name"] = SEManager::getNameFromId($propValue["profil"]["id"]);
+            }
+            return $propValue;
+        });
         $data = $df->getData();
         $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("devel/smart/structures/%s/info/", $this->structureName));
 
@@ -130,8 +136,17 @@ class StructureInfo
         $childsInfo=$structure->getChildFam();
 
         $childs=[];
-        foreach ($childsInfo as $child) {
-            $childs[]=$child["name"];
+        foreach ($childsInfo as $childInfo) {
+            $child = SEManager::getFamily($childInfo["id"]);
+            $parentName = "";
+            if (!empty($child) && $child->fromid) {
+                $parentName = SEManager::getNameFromId($child->fromid);
+            }
+
+            $childs[]=[
+                "name"=> $childInfo["name"],
+                "parent" => $parentName
+            ];
         }
 
         return $childs;

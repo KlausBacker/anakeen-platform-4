@@ -1,4 +1,13 @@
 import StructureHierarchy from "./StructureHierarchy.vue";
+
+const formatChildrenList = (parent, children) => {
+  const result = children.filter(c => c.parent === parent).map(c => ({
+    name: c.name,
+    children: formatChildrenList(c.name, children)
+  }));
+  return result;
+};
+
 export default {
   name: "Infos",
   components: {
@@ -38,10 +47,10 @@ export default {
         data.reduce((acc, curr, index, array) => {
           const element = { name: curr, children: [] };
           if (index === array.length - 1) {
-            element.children = this.structureProperties.childs.map(c => ({
-              name: c,
-              children: []
-            }));
+            element.children = formatChildrenList(
+              this.ssName,
+              this.structureProperties.childs
+            );
           }
           acc.push(element);
           return element.children;
