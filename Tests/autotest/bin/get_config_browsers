@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function main {
+	php -- "$@" <<'EOF'
+<?php
+
+$c = json_decode(file_get_contents($argv[1]), true);
+printf("%s\n", join("\n", $c['browsers']));
+EOF
+}
+
+main "$@"

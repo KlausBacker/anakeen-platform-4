@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ -z "${AUTOTEST_HOME}" ]; then
+	export AUTOTEST_HOME=$(realpath "$(dirname "$(realpath "$0")")/../")
+fi
+
+function usage {
+	cat <<EOF
+
+Usage
+-----
+
+  $0 <scoreboard-file.csv>
+
+EOF
+}
+
+function main {
+	local SCOREBOARD_FILE=$1
+	if [ -z "${SCOREBOARD_FILE}" ]; then
+		echo "Error: missing or empty scoreboard-file.csv argument!" 1>&2
+		usage
+		return 1
+	fi
+	local SCOREBOARD_DIR=$(dirname "${SCOREBOARD_FILE}")
+	local INDEX_FILE="${SCOREBOARD_DIR}/index.html"
+
+	php "${AUTOTEST_HOME}/bin/scoreboard2index.php" "${SCOREBOARD_FILE}" > "${INDEX_FILE}"
+}
+
+main "$@"

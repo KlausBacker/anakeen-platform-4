@@ -1,6 +1,5 @@
 ## control conf
 port=80
-CONTROL_PROTOCOL=http
 CONTROL_PORT=$(port)
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
@@ -8,17 +7,21 @@ CONTROL_URL=$(host)/control/
 CONTROL_CONTEXT=$(ctx)
 
 ##bin
-DEVTOOL_BIN=php ./anakeen-devtool.phar
+ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
+CBF_BIN=php ./ide/vendor/bin/phpcbf
 -include Makefile.local
 
 app:
-	${DEVTOOL_BIN} generateWebinst -s .
+	${ANAKEEN_CLI_BIN} build
 
 po:
-	${DEVTOOL_BIN} extractPo -s .
+	${ANAKEEN_CLI_BIN} extractPo -s .
 
 deploy:
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -a -s .
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./ -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 stub:
 	npx anakeen-cli generateStubs
+
+beautify:
+	$(CBF_BIN) --standard=./ide/anakeenPhpCs.xml --extensions=php ./src

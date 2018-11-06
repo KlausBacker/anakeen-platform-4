@@ -1,0 +1,178 @@
+#!/usr/bin/env php
+<?php
+
+$me = array_shift($argv);
+
+function usage($me) {
+  print <<<EOF
+
+Usage
+-----
+
+  $me </path/to/repository> [<repo-label> [<repo-format>]]
+
+
+EOF;
+}
+
+if(count($argv) <= 0) {
+  usage($me);
+  exit( 1 );
+}
+
+$repoPath = array_shift($argv);
+if( !is_dir($repoPath) ) {
+  print "Supplied repository path '".$repoPath."' is not a directory !\n";
+  exit( 1 );
+}
+$repoLabel = array_shift($argv);
+$repoStatus = array_shift($argv);
+
+$dir = opendir($repoPath);
+if( $dir === FALSE ) {
+  print "Error opening directory '".$repoPath."'\n";
+  exit( 1 );
+}
+
+$contentxml = new DOMDocument();
+$contentxml->formatOutput = true;
+
+$repoNode = new DOMElement('repo');
+$contentxml->appendChild($repoNode);
+$repoNode->setAttribute('format', 'control');
+if( $repoLabel !== null ) {
+  $repoNode->setAttribute('label', $repoLabel);
+} else {
+  $repoNode->setAttribute('label', '');
+}
+if( $repoStatus !== null ) {
+  $repoNode->setAttribute('status', $repoStatus);
+} else {
+  $repoNode->setAttribute('status', '');
+}
+
+$modulesNode = new DOMElement('modules');
+$repoNode->appendChild($modulesNode);
+
+while( ($file = readdir($dir)) !== FALSE ) {
+  if( ! is_file($repoPath.'/'.$file) ) {
+    continue;
+  }
+  if( ! preg_match('/\.app/', $file) ) {
+    continue;
+  }
+  $cmd = "tar -zxOf ".escapeshellcmd($repoPath.'/'.$file)." info.xml 2> /dev/null";
+  $tar = popen($cmd, "r");
+  if( $tar === FALSE ) {
+    print "Error running '".$cmd."'\n";
+    exit( 2 );
+  }
+  $info = '';
+  while( ($data = fgets($tar)) !== FALSE ) {
+    $info .= $data;
+  }
+  fclose($tar);
+  if( $info == '' ) {
+    print "Empty or non-existing 'info.xml' file found in package '".$file."'.\n";
+    continue;
+  }
+
+  $ret = process_info($contentxml, $modulesNode, $info, $file);
+  if( $ret === FALSE ) {
+    print "Error processing file '".$repoPath.'/'.$file."' !\n";
+    exit( 3 );
+  }
+}
+
+closedir($dir);
+
+$temp = tempnam($repoPath, "tmp.content.xml");
+if( $temp === FALSE ) {
+  print "Error creating temporary content.xml file !\n";
+  exit( 4 );
+}
+
+$fh = fopen($temp, "w");
+if( $fh === FALSE ) {
+  print "Error opening temp file '".$temp."' for writing !\n";
+  exit( 4 );
+}
+
+$ret = fwrite($fh, $contentxml->saveXML());
+if( $ret === FALSE ) {
+  print "Error writing to temp file '".$temp."' !\n";
+  exit( 4 );
+}
+
+fclose($fh);
+
+$ret = chmod($temp, 0644);
+if( $ret === FALSE ) {
+  print "Error chmoding temp file '".$temp."' !\n";
+  exit( 4 );
+}
+
+$ret = rename($temp, $repoPath.'/content.xml');
+if( $ret === FALSE ) {
+  print "Error renaming temp file '".$temp."' to '".$repoPath."/content.xml' !\n";
+  exit( 4 );
+}
+
+exit( 0 );
+
+function process_info(DOMDocument & $parentDocument, DOMElement & $parentNode, $info, $file) {
+  $info = removeNamespaceFromInfoXmlData("urn:dynacase:webinst:module/1.0", $info);
+  $infoxml = new DOMDocument();
+  $ret = $infoxml->loadXML($info);
+  if( $ret === FALSE ) {
+    print "Error loading XML content !\n";
+    return FALSE;
+  }
+  $node = $infoxml->documentElement;
+  $node->setAttribute('src', $file);
+
+  $xpath = new DOMXpath($infoxml);
+  $childs = $xpath->query('/module/*');
+
+  $i = 0;
+  while( $i < $childs->length ) {
+    $child = $childs->item($i);
+    if( $child->nodeName != "description" &&
+	$child->nodeName != "requires" &&
+	$child->nodeName != "replaces" &&
+	$child->nodeName != "changelog" ) {
+      $node->removeChild($child);
+    }
+    $i++;
+  }
+
+  $newNode = $parentDocument->importNode($node, TRUE);
+  $parentNode->appendChild($newNode);
+
+  return TRUE;
+}
+
+function removeNamespaceFromInfoXmlData($ns, $data) {
+  /*
+   * Load original XML with xmlns="xxx"
+   */
+  $dom = new DOMDocument();
+  $dom->loadXML($data, LIBXML_NSCLEAN);
+
+  /*
+   * Create a new DOMDocument with a root element
+   * having the same xmlns="xxx"
+   */
+  $dom2 = new DOMDocument();
+  $root2 = $dom2->createElementNS($ns, 'root');
+  /*
+   * Import the original root element as a child
+   */
+  $import = $dom2->importNode($dom->documentElement, true);
+  $root2->appendChild($import);
+  $dom2->appendChild($root2);
+  /*
+   * Save back the imported root node, which should be without xmlns="xxx"
+   */
+  return $dom2->saveXML($import);
+}
