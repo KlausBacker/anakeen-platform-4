@@ -16,7 +16,9 @@
                         :expand="onExpand"
                         :collapse="onCollapse"
                         :columnMenu="true">
-            <kendo-treelist-column :field="'idVal'" :title="'Identification'" :min-width="'10%'"></kendo-treelist-column>
+            <kendo-treelist-column :field="'id'" :title="'Identification'" :min-width="'10%'"></kendo-treelist-column>
+            <kendo-treelist-column :template="columnTemplate('type')" :field="'type'" :title="'Type'"></kendo-treelist-column>
+            <kendo-treelist-column :template="columnTemplate('labeltext')" :field="'labeltext'" :title="'Label'"></kendo-treelist-column>
             <kendo-treelist-column :field="'config'" :title="'Configuration'" ></kendo-treelist-column>
             <kendo-treelist-column :field="'value'" :title="'Value'"></kendo-treelist-column>
         </kendo-treelist>

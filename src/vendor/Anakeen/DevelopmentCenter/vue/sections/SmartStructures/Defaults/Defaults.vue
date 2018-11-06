@@ -15,10 +15,6 @@
         items: [
           {
             name: "SmartStructures::defaults::defaultFields",
-            label: "Fields"
-          },
-          {
-            name: "SmartStructures::defaults::defaultValues",
             label: "Default Values"
           },
           {

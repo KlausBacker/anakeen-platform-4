@@ -17,7 +17,7 @@
             label: "Structure"
           },
           {
-            name: "SmartStructures::parameters",
+            name: "SmartStructures::parameters::parameterValues",
             label: "Parameters"
           },
           {

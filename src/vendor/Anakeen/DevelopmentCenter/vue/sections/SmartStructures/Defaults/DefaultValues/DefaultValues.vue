@@ -19,12 +19,12 @@
             <kendo-treelist-column :template="columnTemplate('id')" :field="'id'" :title="'Identification'" :width="'10%'"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('type')" :field="'type'" :title="'Type'"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('labeltext')" :field="'labeltext'" :title="'Label'"></kendo-treelist-column>
-            <kendo-treelist-column :field="'config'" :title="'Configuration'"></kendo-treelist-column>
+            <kendo-treelist-column :template="columnTemplate('config')" :field="'config'" :title="'Configuration'"></kendo-treelist-column>
             <kendo-treelist-column :template="columnTemplate('value')" :field="'value'" :title="'Value'"></kendo-treelist-column>
         </kendo-treelist>
     </div>
 </template>
 <style lang="scss">
-    @import "./DefaultsFields.scss";
+    @import "./DefaultValues.scss";
 </style>
-<script src="./DefaultsFields.controller.js"></script>
+<script src="./DefaultValues.controller.js"></script>
