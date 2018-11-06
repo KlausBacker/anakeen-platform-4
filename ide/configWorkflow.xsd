@@ -4,6 +4,7 @@
            xmlns:wfl="https://platform.anakeen.com/4/schemas/workflow/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="graph" type="ns:graphType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <xs:element name="config" type="ns:configType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <xs:complexType name="stepType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
@@ -67,9 +68,80 @@
         <xs:attribute type="xs:string" name="name" use="required"/>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
+
+    <xs:complexType name="mailtemplateRefType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="wfl:elementName" name="ref" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="timerRefType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="wfl:elementName" name="ref" use="required"/>
+                <xs:attribute type="wfl:timerType" name="type" default="volatile"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="timerType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Timer type</h1>
+                <ul>
+                    <li><code>volatile</code> : the timer is attache on transition and unatached when next transition is done</li>
+                    <li><code>persistent</code>  : the timer is attached until an unattach order is performed</li>
+                    <li><code>unattach</code>  : the timer is unattached on transition</li>
+                </ul>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unattach"/>
+            <xs:enumeration value="volatile"/>
+            <xs:enumeration value="persistent"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="stepRefType" mixed="true">
+        <xs:sequence>
+            <xs:element type="wfl:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="wfl:timerRefType" name="timer" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="wfl:fieldName" name="ref" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="stepsRefType">
+        <xs:sequence>
+            <xs:element type="wfl:stepRefType" name="step" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="transitionRefType" mixed="true">
+        <xs:sequence>
+            <xs:element type="wfl:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="wfl:timerRefType" name="timer" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="wfl:fieldName" name="ref" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="transitionsRefType">
+        <xs:sequence>
+            <xs:element type="wfl:transitionRefType" name="transition" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="configType">
+        <xs:sequence>
+            <xs:element type="wfl:stepsRefType" name="steps"/>
+            <xs:element type="wfl:transitionsRefType" name="transitions"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:simpleType name="fieldName">
         <xs:restriction base="xs:token">
             <xs:pattern value="[a-z][a-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="elementName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-zA-Z][A-Za-z0-9_-]+"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

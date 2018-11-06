@@ -9,10 +9,10 @@
         <smart:fields>
             <smart:field-set name="tm_fr_ident" type="frame" label="Identification" access="ReadWrite">
                 <smart:field-text name="tm_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
-                <smart:field-docid name="tm_family" label="Famille" access="ReadWrite" relation="x">
+                <smart:field-docid name="tm_family" label="Famille" access="ReadWrite" relation="-1">
                     <smart:field-option name="elabel">famille compatible avec ce timer</smart:field-option>
                 </smart:field-docid>
-                <smart:field-docid name="tm_workflow" label="Famille cycle" access="ReadWrite" relation="x">
+                <smart:field-docid name="tm_workflow" label="Famille cycle" access="ReadWrite" relation="-1">
                     <smart:field-option name="elabel">famille cycle pour le choix des états</smart:field-option>
                 </smart:field-docid>
                 <smart:field-text name="tm_dyndate" label="Date de référence" access="ReadWrite">
