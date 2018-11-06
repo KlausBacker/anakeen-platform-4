@@ -6,10 +6,9 @@ export default {
       if (newValue !== oldValue) {
         this.$http.get(this.url).then(response => {
           const ui = response.data.data.ui;
-          const msk = response.data.data.msk;
+          this.mskfamid = response.data.data.msk["msk_famid"];
           this.cvdoc = ui.ccvid || {};
           this.renderaccess = ui.render || {};
-          this.mskfamid = msk.mskfamid;
         });
       }
     }
