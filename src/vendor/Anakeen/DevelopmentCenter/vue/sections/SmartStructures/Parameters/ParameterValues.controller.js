@@ -10,7 +10,7 @@ Vue.use(DataSourceInstaller);
 Vue.use(TreeListInstaller);
 
 export default {
-  name: "parameterFields",
+  name: "parameterValues",
   props: ["ssName"],
   components: {
     "kendo-treelist": TreeList
@@ -18,13 +18,13 @@ export default {
   watch: {
     ssName(newValue, oldValue) {
       if (newValue !== oldValue) {
-        this.remoteDataSource.read();
+        this.valuesDataSource.read();
       }
     }
   },
   data() {
     return {
-      remoteDataSource: ""
+      valuesDataSource: ""
     };
   },
   computed: {
@@ -33,7 +33,7 @@ export default {
     }
   },
   mounted() {
-    this.remoteDataSource = new kendo.data.TreeListDataSource({
+    this.valuesDataSource = new kendo.data.TreeListDataSource({
       transport: {
         read: options => {
           this.$http
@@ -44,7 +44,7 @@ export default {
       },
       schema: {
         data: response => {
-          return response.data.data.parameterFields;
+          return this.getParameterValues(response.data.data);
         },
         model: {
           id: "id",
@@ -54,8 +54,8 @@ export default {
       }
     });
     $(window).resize(() => {
-      if (this.$refs.parameterFieldsTree) {
-        this.$refs.parameterFieldsTree.kendoWidget().resize();
+      if (this.$refs.parameterValuesTree) {
+        this.$refs.parameterValuesTree.kendoWidget().resize();
       }
     });
   },
@@ -87,9 +87,9 @@ export default {
         });
       }, 1);
     },
-    refreshParameterFields() {
-      this.$refs.parameterFieldsTree.kendoWidget().dataSource.filter({});
-      this.$refs.parameterFieldsTree.kendoWidget().dataSource.read();
+    refreshParameterValues() {
+      this.$refs.parameterValuesTree.kendoWidget().dataSource.filter({});
+      this.$refs.parameterValuesTree.kendoWidget().dataSource.read();
     },
     columnTemplate(colId) {
       return dataItem => {
@@ -108,6 +108,25 @@ export default {
         }
         return dataItem[colId];
       };
+    },
+    getParameterValues(response) {
+      const items = response.parameterValues;
+      const fields = Object.keys(items).map(item => {
+        return {
+          idVal: item,
+          config: items[item].config,
+          value: items[item].value
+        };
+      });
+      fields.forEach(items2 => {
+        Object.keys(response.parameterFields).forEach(items => {
+          if (items2.idVal === response.parameterFields[items].id) {
+            response.parameterFields[items].config = items2.config;
+            response.parameterFields[items].value = items2.value;
+          }
+        });
+      });
+      return response.parameterFields;
     }
   }
 };

@@ -96,12 +96,14 @@ export default {
         if (dataItem[colId] === null || dataItem[colId] === undefined) {
           return "";
         }
-        if (dataItem[colId] && colId === "value") {
+        if (dataItem[colId].length > 1 && colId === "value") {
           let str = "";
           Object.keys(dataItem[colId].toJSON()).forEach(item => {
             str += "<li>" + dataItem[colId][item] + "</li>";
           });
           return str;
+        } else if (dataItem[colId].length <= 1 && colId === "value") {
+          return dataItem[colId][0];
         }
         return dataItem[colId];
       };
@@ -118,9 +120,11 @@ export default {
       });
       fields.forEach(items2 => {
         Object.keys(response.fields).forEach(items => {
-          if (items2.idVal === response.fields[items].id) {
-            response.fields[items].config = items2.config;
-            response.fields[items].value = items2.value;
+          if (items2.type === "field") {
+            if (items2.idVal === response.fields[items].id) {
+              response.fields[items].config = items2.config;
+              response.fields[items].value = items2.value;
+            }
           }
         });
       });

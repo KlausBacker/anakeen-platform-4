@@ -86,7 +86,7 @@ export default {
               props: true // Set ssName as a vue component prop
             },
             {
-              name: "Security::SmartStructures::Fields",
+              name: "Security::SmartStructures::DefaultValues",
               path: "fields",
               component: SmartStructuresSections.Fields,
               props: true // Set ssName as a vue component prop
