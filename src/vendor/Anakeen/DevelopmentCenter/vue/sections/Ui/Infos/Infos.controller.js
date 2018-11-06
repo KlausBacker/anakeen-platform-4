@@ -30,7 +30,6 @@ export default {
     this.$http.get(this.url).then(response => {
       const ui = response.data.data.ui;
       this.mskfamid = response.data.data.msk["msk_famid"];
-      console.log(response.data.data);
       this.cvdoc = ui.ccvid || {};
       this.renderaccess = ui.render || {};
     });
