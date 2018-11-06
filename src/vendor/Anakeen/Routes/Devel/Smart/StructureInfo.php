@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Devel\Smart;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\FormatCollection;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure;
@@ -20,6 +21,7 @@ use Dcp\Ui\RenderConfigManager;
 class StructureInfo
 {
     protected $structureName = "";
+    protected $mskFamId = null;
 
     /**
      * @var SmartStructure $structure
@@ -36,10 +38,23 @@ class StructureInfo
     {
         $this->structureName = $args["structure"];
         $this->structure = SEManager::getFamily($this->structureName);
+        $this->getMasks();
+
         if (empty($this->structure)) {
             $exception = new Exception("DEV0101", $this->structureName);
             $exception->setHttpStatus(404, "Structure not found");
             throw $exception;
+        }
+    }
+
+    protected function getMasks()
+    {
+        $searchDoc = new \SearchDoc("", "MASK");
+        $documents = $searchDoc->search();
+        foreach ($documents as $doc) {
+            if ($doc["msk_famid"] === $this->structure->initid) {
+                $this->mskFamId = $doc["name"];
+            }
         }
     }
 
@@ -56,6 +71,7 @@ class StructureInfo
         $data["security"]["cprofid"] = $this->getElementInfo($this->structure->cprofid);
         $data["security"]["cfallid"] = $this->getElementInfo($this->structure->cfallid);
         $data["ui"]["ccvid"] = $this->getElementInfo($this->structure->ccvid);
+        $data["msk"]["msk_famid"] = $this->mskFamId;
         $data["tags"] = json_decode($this->structure->atags, true) ?: [];
 
         $data["ui"]["render"] = RenderConfigManager::getRenderParameter($this->structure->name);
