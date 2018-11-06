@@ -20,3 +20,4 @@ Makefile.local
 /.idea/vcs.xml
 /.idea/webServers.xml
 /.idea/workspace.xml
+/.cibuild/targets/*/outputs/*
