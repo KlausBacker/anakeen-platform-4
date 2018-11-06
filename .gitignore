@@ -4,3 +4,4 @@
 Makefile.local
 security-*.app
 node_modules/
+ide/vendor/

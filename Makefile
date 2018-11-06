@@ -22,3 +22,6 @@ deploy:
 
 stub:
 	npx anakeen-cli generateStubs
+
+beautify:
+	$(CBF_BIN) --standard=./ide/anakeenPhpCs.xml --extensions=php ./src
