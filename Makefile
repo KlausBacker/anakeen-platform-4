@@ -29,9 +29,7 @@ TEST_SRC_PATH=Tests/
 VERSION=$(shell node -p "require('./package.json').version")
 
 ## control conf
-port=80
 CONTROL_PROTOCOL=http
-CONTROL_PORT=$(port)
 CONTROL_USER= admin
 CONTROL_PASSWORD= anakeen
 CONTROL_URL=$(host)/control/
@@ -39,7 +37,6 @@ CONTROL_CONTEXT=$(ctx)
 
 ##bin
 YARN_BIN=yarn
-DEVTOOL_BIN=php ./anakeen-devtool.phar
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 COMPOSER_BIN=composer
 
@@ -113,9 +110,8 @@ autotest: compilation
 
 deploy: compilation ## deploy the project
 	rm -f user-interfaces-1*app
-	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./anakeen-ui
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(DEVTOOL_BIN) deploy -u http://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-1*app -- --force
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./anakeen-ui -c $(CONTROL_PROTOCOL)://${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 	make clean
 
 ########################################################################################################################
@@ -166,8 +162,7 @@ app-test: compilation-test ## Build the test package
 deploy-test: compilation-test ## Deploy the test package
 	rm -f user-interfaces-test*app
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
-	$(DEVTOOL_BIN) deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w user-interfaces-test*app -- --force
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c $(CONTROL_PROTOCOL)://${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 ########################################################################################################################
 ##
