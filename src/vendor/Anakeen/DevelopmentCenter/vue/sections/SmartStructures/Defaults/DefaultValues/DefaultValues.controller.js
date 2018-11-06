@@ -15,13 +15,6 @@ export default {
   components: {
     "kendo-treelist": TreeList
   },
-  watch: {
-    ssName(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.remoteDataSource.read();
-      }
-    }
-  },
   data() {
     return {
       remoteDataSource: ""
