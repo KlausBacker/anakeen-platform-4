@@ -56,10 +56,19 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="GetStructureConfig">
-            <sde:callable>\Anakeen\Routes\Devel\Config\Structure</sde:callable>
+            <sde:callable>\Anakeen\Routes\Devel\Config\StructureConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/config/{type:structures|uis|accesses}/{structure}.xml</sde:pattern>
             <sde:description>Get structure configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetWorkflowConfig">
+            <sde:callable>\Anakeen\Routes\Devel\Config\WorkflowConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/config/workflows/{workflow}.xml</sde:pattern>
+            <sde:description>Get workflow configuration</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
