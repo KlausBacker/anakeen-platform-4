@@ -5,5 +5,5 @@ set -eo pipefail
 #register npm
 npm config set @anakeen:registry http://npm.corp.anakeen.com:4873
 
-npm install
+yarn install
 node ./node_modules/eslint/bin/eslint.js ./
