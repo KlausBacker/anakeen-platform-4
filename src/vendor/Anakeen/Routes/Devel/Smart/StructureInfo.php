@@ -49,11 +49,10 @@ class StructureInfo
 
     protected function getMasks()
     {
-        $searchDoc = new \SearchDoc("", "MASK");
-        $documents = $searchDoc->search();
-        foreach ($documents as $doc) {
-            if ($doc["msk_famid"] === $this->structure->initid) {
-                $this->mskFamId = $doc["name"];
+        if ($this->structure->ccvid !== null) {
+            $searchDoc = SEManager::getDocument($this->structure->ccvid);
+            if ($searchDoc) {
+                $this->mskFamId = $searchDoc->getAttributeValue("cv_primarymask");
             }
         }
     }

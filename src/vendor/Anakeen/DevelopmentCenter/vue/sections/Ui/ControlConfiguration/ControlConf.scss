@@ -1,0 +1,27 @@
+.access-grid-parent {
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.access-grid {
+  display: flex;
+  flex-direction: column;
+  max-width: 30%;
+}
+.access-grid-tree {
+  flex: 1;
+  align-items: flex-start;
+  justify-content: stretch;
+}
+
+.access-grid-toolbar {
+  min-height: 50px;
+  min-width: 500px;
+  flex: 1;
+}
+
+.access-document {
+  max-width: 70%;
+}
