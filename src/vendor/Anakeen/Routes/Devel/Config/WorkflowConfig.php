@@ -51,7 +51,7 @@ class WorkflowConfig
         if (!is_a($this->workflow, WDocHooks::class)) {
             throw new Exception(sprintf("Element \"%s\" is not a workflow", $this->workflowId));
         }
-        $this->type = $args["type"];
+      //  $this->type = $args["type"];
     }
 
     public function doRequest()
