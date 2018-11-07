@@ -10,5 +10,14 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GetStructureViews">
+            <sde:callable>\Anakeen\Routes\Devel\UI\StructureViews</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/views/</sde:pattern>
+            <sde:description>Get all views from view control elements compatible with structure</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>
