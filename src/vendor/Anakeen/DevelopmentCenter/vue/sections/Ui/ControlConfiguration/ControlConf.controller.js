@@ -1,53 +1,57 @@
 import Vue from "vue";
-import "@progress/kendo-ui/js/kendo.toolbar.js";
-import "@progress/kendo-ui/js/kendo.grid.js";
-import "@progress/kendo-ui/js/kendo.filtercell.js";
-import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
-import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
-import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
+import { AnkSEGrid } from "@anakeen/ank-components";
+import "@progress/kendo-ui";
+import "@progress/kendo-ui/js/kendo.splitter";
 import { AnkSmartElement } from "@anakeen/ank-components";
 
-Vue.use(GridInstaller);
-Vue.use(DataSourceInstaller);
-Vue.use(ButtonsInstaller);
+Vue.use(AnkSEGrid);
 Vue.use(AnkSmartElement);
 
 export default {
   components: {
-    Grid,
+    "ank-se-grid": AnkSEGrid,
     "ank-smart-element": AnkSmartElement
   },
-  data() {
-    return {
-      accessDataSource: ""
-    };
-  },
+  props: ["ssName"],
   mounted() {
-    $(window).resize(() => {
-      if (this.$refs.accessGridContent) {
-        this.$refs.accessGridContent.kendoWidget().resize();
-      }
+    const onContentResize = (part, $split) => {
+      return () => {
+        window.setTimeout(() => {
+          this.$(window).trigger("resize");
+        }, 100);
+        window.localStorage.setItem(
+          "ui.control.conf." + part,
+          this.$($split)
+            .data("kendoSplitter")
+            .size(".k-pane:first")
+        );
+      };
+    };
+    this.$(this.$refs.controlConfSplitter).kendoSplitter({
+      orientation: "horizontal",
+      panes: [
+        {
+          collapsible: false,
+          resizable: true,
+          size: window.localStorage.getItem("ui.control.conf.content") || "50%"
+        },
+        { collapsible: false, resizable: true, size: "50%" }
+      ],
+      resize: onContentResize("content", this.$refs.controlConfSplitter)
     });
   },
   methods: {
-    getAccessConf() {
-      return [];
-    },
-    parseAccessConfData(response) {
-      return response;
-    },
-    parseAccessConfTotal(response) {
-      return response;
-    },
-    refreshAccessConf() {
-      this.$refs.accessGridContent.kendoWidget().dataSource.filter({});
-      this.$refs.accessGridContent.kendoWidget().dataSource.read();
-    },
-    autoFilterCol(e) {
-      e.element.addClass("k-textbox filter-input");
-    },
-    displayConsult() {
-      return "<button class='openConsult'></button>";
+    actionClick(event) {
+      event.preventDefault();
+      switch (event.data.type) {
+        case "consult": {
+          this.$refs.controlConfConsult.fetchSmartElement({
+            initid: event.data.row.id,
+            viewId: "!defaultConsultation"
+          });
+          break;
+        }
+      }
     }
   }
 };
