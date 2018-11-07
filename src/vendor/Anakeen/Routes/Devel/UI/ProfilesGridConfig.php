@@ -87,7 +87,12 @@ class ProfilesGridConfig extends GridConfig
             static::getDynamciFamidConfig()
         ];
 
-        $originalConfig["actions"] = [];
+        $originalConfig["actions"] = [
+            "title" => "Actions",
+            "actionConfigs" => [
+                [ "action" => "view", "title" => "View"]
+            ]
+        ];
         $originalConfig["footer"] = [];
         $originalConfig["contentURL"] = sprintf("/api/v2/devel/security/profiles/");
         return $originalConfig;

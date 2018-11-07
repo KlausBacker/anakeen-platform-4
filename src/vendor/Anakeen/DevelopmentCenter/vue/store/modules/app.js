@@ -22,11 +22,21 @@ const mutations = {
   }
 };
 
-const state = {
+const loadInitialState = defaultState => {
+  if (localStorage) {
+    const saved = localStorage.getItem("devCenterAppStorage");
+    if (saved) {
+      return Object.assign({}, defaultState, JSON.parse(saved));
+    }
+  }
+  return defaultState;
+};
+
+const state = loadInitialState({
   error: {},
   vendorCategory: "all",
   visitedRoutes: []
-};
+});
 
 export default {
   state,

@@ -120,7 +120,6 @@
         },
         initGraph(element) {
           let { width, height } = this.$el.getBoundingClientRect();
-          console.log(width, height);
           const margin = { top: 0, right: 90, bottom: 90, left: 90 };
           width = width - margin.left - margin.right;
           height = height - margin.top - margin.bottom;
@@ -247,7 +246,6 @@
           });
         },
         onClickNode(d) {
-          console.log(d);
           this.$router.push({ name: "SmartStructures::name", params: { ssName: d.data.name }})
         },
         resizeAndUpdateTree(element) {
