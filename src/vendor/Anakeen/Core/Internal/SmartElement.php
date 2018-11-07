@@ -1620,17 +1620,14 @@ create unique index i_docir on doc(initid, revision);";
                         $max = $count;
                     }
                 }
-                $tmpVal = "";
+                $tmpVal = [];
                 for ($i = 0; $i < $max; $i++) {
                     $val = $this->applyMethod($paramAttr->phpfunc, "", $i);
                     if ($val != $paramAttr->phpfunc) {
-                        if ($tmpVal) {
-                            $tmpVal .= "\n";
-                        }
-                        $tmpVal .= $val;
+                        $tmpVal []= $val;
                     }
                 }
-                $r = $tmpVal;
+                $r = self::arrayToRawValue($tmpVal);
             } else {
                 $val = $this->getValueMethod($paramAttr->phpfunc);
                 if ($val != $paramAttr->phpfunc) {

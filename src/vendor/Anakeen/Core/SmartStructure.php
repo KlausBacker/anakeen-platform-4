@@ -138,7 +138,7 @@ create unique index idx_idfam on docfam(id);";
         })->addListener(SmartHooks::POSTIMPORT, function () {
             return $this->updateWorkflowAttributes();
         })->addListener(SmartHooks::PREDELETE, function () {
-            return _("cannot delete family");
+            return ___("Structure cannot be deleted", "sde");
         })->addListener(SmartHooks::PRECREATED, function () {
             return $this->resetProperties();
         })->addListener(SmartHooks::POSTAFFECT, function () {

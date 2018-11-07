@@ -217,7 +217,6 @@ class MailtemplateAutoComplete
         $name = $request->getFilterValue();
         $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\ParamDef::class);
 
-        $q->AddQuery("isglob = 'Y'");
         if ($name) {
             $q->AddQuery("name ~* '" . pg_escape_string($name) . "'");
         }

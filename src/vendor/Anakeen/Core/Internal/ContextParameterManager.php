@@ -78,6 +78,21 @@ class ContextParameterManager
         self::setValue($ns, $name, $val, sprintf("%s%d", Param::PARAM_USER, $accountId));
     }
 
+    /**
+     * get namespace if parameter name if found and unique
+     * @param string $name
+     * @return string the namespace (empty if not)
+     */
+    public static function getNs(string $name) {
+        $sql=sprintf("select name from paramdef where name ~ '::%s$'", pg_escape_string($name));
+        DbManager::query($sql, $results, true);
+        if (count($results) === 1) {
+            list($ns) = explode("::", $results[0]);
+            return $ns;
+        }
+        return "";
+    }
+
     public static function getValue(string $ns, string $name, $def = null)
     {
         $key=$ns.'::'.$name;

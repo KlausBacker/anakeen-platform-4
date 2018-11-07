@@ -14,6 +14,7 @@ namespace Anakeen\SmartStructures\Mailtemplate;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\IMailRecipient;
+use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
@@ -204,73 +205,55 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                             $vdocid = $udoc->getFamilyParameterValue($aid);
                         } else {
                             $vdocid = $udoc->getRawValue($aid); // for array of users
-                            if ($udoc->getAttribute($aid)->isMultiple()) {
-                                $vdocid = Postgres::stringToFlatArray($vdocid);
-                            }
+
+                        }
+                        if ($udoc->getAttribute($aid)->isMultiple()) {
+                            $tvdoc = Postgres::stringToFlatArray($vdocid);
+                        } else {
+                            $tvdoc = [$vdocid];
                         }
 
-                        if (is_array($vdocid)) {
-                            $tvdoc = $vdocid;
-                            $tmail = array();
-                            $it = new \DocumentList();
-                            $it->addDocumentIdentifiers($tvdoc);
-                            /**
-                             * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
-                             */
-                            foreach ($it as $aDoc) {
-                                $umail = '';
-                                if (method_exists($aDoc, "getMail")) {
-                                    $umail = $aDoc->getMail();
-                                }
-                                if (!$umail) {
-                                    $umail = $aDoc->getRawValue('us_mail', '');
-                                }
-                                if (!$umail) {
-                                    $umail = $aDoc->getRawValue('grp_mail', '');
-                                }
-                                if ($umail) {
-                                    $tmail[] = $umail;
-                                }
+                        $tmail = array();
+                        $it = new \DocumentList();
+                        $it->addDocumentIdentifiers($tvdoc);
+                        /**
+                         * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
+                         */
+                        foreach ($it as $aDoc) {
+                            $umail = '';
+                            if (method_exists($aDoc, "getMail")) {
+                                $umail = $aDoc->getMail();
                             }
-                            $mail = implode(",", $tmail);
-                        } else {
-                            if (strpos($aid, ':')) {
-                                $mail = $udoc->getRValue($aid);
-                            } else {
-                                if ($type == "DE") {
-                                    /**
-                                     * @var \SmartStructure\IUSER|\SmartStructure\IGROUP|\SmartStructure\ROLE $aDoc
-                                     */
-                                    $aDoc = SEManager::getDocument($vdocid);
-                                    $mail = '';
-                                    if (method_exists($aDoc, "getMail")) {
-                                        $mail = $aDoc->getMail();
-                                    }
-                                    if (!$mail) {
-                                        $mail = $aDoc->getRawValue('us_mail', '');
-                                    }
-                                    if (!$mail) {
-                                        $mail = $aDoc->getRawValue('grp_mail', '');
-                                    }
-                                } else {
-                                    $mail = $udoc->getRValue($aid . ':us_mail');
-                                    if (!$mail) {
-                                        $mail = $udoc->getRValue($aid . ':grp_mail');
-                                    }
-                                }
+                            if (!$umail) {
+                                $umail = $aDoc->getRawValue('us_mail', '');
+                            }
+                            if (!$umail) {
+                                $umail = $aDoc->getRawValue('grp_mail', '');
+                            }
+                            if ($umail) {
+                                $tmail[] = $umail;
                             }
                         }
+                        $mail = implode(",", $tmail);
+
                     }
                     break;
 
                 case 'P':
                     $aid = strtok($v["tmail_recip"], " ");
-                    if (!\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $aid)) {
+                    if (strpos($aid, '::') === false) {
+                        $ns = ContextParameterManager::getNs($aid);
+                        $pvalue = $aid;
+                    } else {
+                        list($ns, $pvalue) = explode("::", $aid);
+                    }
+
+                    $mail = \Anakeen\Core\ContextManager::getParameterValue($ns, $pvalue);
+                    if (!$mail) {
                         LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
-                    $mail = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $aid);
                     break;
 
                 case 'RD':

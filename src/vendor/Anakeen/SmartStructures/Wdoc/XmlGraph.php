@@ -30,6 +30,8 @@ class XmlGraph
                 "e2" => $transition->getAttribute("to"),
                 "t" => $transition->getAttribute("name")
             ];
+
+            $wfl->transitions[$transition->getAttribute("name")]=[];
         }
 
 
