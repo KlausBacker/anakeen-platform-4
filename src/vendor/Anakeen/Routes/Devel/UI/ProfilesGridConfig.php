@@ -61,7 +61,7 @@ class ProfilesGridConfig extends GridConfig
             "smartType" => "text",
             "title" => "Type",
             "property" => true,
-            "sortable" => true,
+            "sortable" => false,
             "filterable" => self::getFilterable("text")
         ];
     }
@@ -72,7 +72,7 @@ class ProfilesGridConfig extends GridConfig
             "field" => "dpdoc_famid",
             "smartType" => "text",
             "title" => "Dynamic",
-            "sortable" => true,
+            "sortable" => false,
             "filterable" => self::getFilterable("text")
         ];
     }

@@ -1,11 +1,6 @@
 <template>
     <div class="smart-structure-hierarchy">
         <svg class="smart-structure-hierarchy-graph" ref="treeSvg">
-            <defs>
-                <marker id="arrowhead" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
-                    <path d="M 0 0 L 10 5 L 0 10 z" />
-                </marker>
-            </defs>
         </svg>
     </div>
 </template>
@@ -16,6 +11,7 @@
 <!-- Global CSS -->
 <style lang="scss">
     .smart-structure-hierarchy {
+        overflow-y: auto;
         width: 100%;
         height: 100%;
         .smart-structure-hierarchy-graph {
@@ -53,7 +49,11 @@
         return "#fd8d3c";
       }
       return "#c6dbef";
-    }
+    };
+    const BOX_HEIGHT = 20;
+    const OFFSET_DRAWX = 50;
+    const OFFSET_DRAWY = 20;
+    const BOX_SPACE_Y = 5;
     export default {
         props: {
           data: {
@@ -107,36 +107,28 @@
             this.root = this.data[0];
           }
           this.root = d3.hierarchy(this.root, d => d.children);
-          this.root.x0 = 50;
-          this.root.y0 = 10;
+          this.root.x0 = OFFSET_DRAWX;
+          this.root.y0 = OFFSET_DRAWY;
         },
         reinitNodes() {
           this.root = {
             name: 'Hierarchy',
-            x0: 50,
-            y0: 10,
+            x0: OFFSET_DRAWX,
+            y0: OFFSET_DRAWY,
             children: [],
           };
         },
         initGraph(element) {
           let { width, height } = this.$el.getBoundingClientRect();
-          const margin = { top: 0, right: 90, bottom: 90, left: 90 };
-          width = width - margin.left - margin.right;
-          height = height - margin.top - margin.bottom;
 
           // append the svg object to the body of the page
           // appends a 'group' element to 'svg'
           // moves the 'group' element to the top left margin
-          let translateValue = `translate(${margin.left}, 0)`;
           this.svg = d3.select(element)
-            .attr('width', width + margin.left)
-            .attr('height', height + margin.bottom)
-            .call(d3.zoom().scaleExtent([0, 100]).on('zoom', () => {
-              this.svg.attr('transform', `translate( ${d3.event.transform.x},${d3.event.transform.y} )`);
-            }))
-            .on('dblclick.zoom', null)
+            .style("overflow-y", "auto")
+            .style("padding", "1rem")
             .append('g')
-            .attr('transform', translateValue);
+            .style("overflow-y", "auto");
 
           const realSize = {
             width: height,
@@ -155,13 +147,13 @@
 
 
           // Compute the "layout". TODO https://github.com/d3/d3-hierarchy/issues/67
-          var index = -1;
-          this.root.eachBefore(function(n) {
-            ++index;
-            n.x = (index * 25) + 20;
-            n.y = n.depth * 50;
-          });
+          var index = 0;
 
+          this.root.eachBefore(function(n) {
+            n.x = (index++ * (BOX_HEIGHT + BOX_SPACE_Y)) + OFFSET_DRAWY;
+            n.y = n.depth * OFFSET_DRAWX;
+          });
+          this.$refs.treeSvg.style.height = (((index+1)* (BOX_HEIGHT + BOX_SPACE_Y)) + OFFSET_DRAWY/2) + "px";
           // Update the nodes…
           var node = this.svg.selectAll(".node")
             .data(nodes, function(d) {
@@ -177,8 +169,8 @@
 
           // Enter any new nodes at the parent's previous position.
           nodeEnter.append("rect")
-            .attr("y", -20 / 2)
-            .attr("height", 20)
+            .attr("y", -BOX_HEIGHT / 2)
+            .attr("height", BOX_HEIGHT)
             .attr("width", (d) => {
               const value = d.data.name;
               return `${value.split("").length}rem`;
