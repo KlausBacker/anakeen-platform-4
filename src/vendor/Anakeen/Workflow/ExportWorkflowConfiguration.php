@@ -47,6 +47,8 @@ class ExportWorkflowConfiguration extends \Anakeen\Core\SmartStructure\ExportCon
             $defaultWorkflowNode = $this->cel("default-workflow");
             $defaultWorkflowNode->setAttribute("ref", self::getLogicalName($this->workflow->id));
             $structConfig->appendChild($defaultWorkflowNode);
+
+            $this->domConfig->appendChild($this->dom->createComment("Default workflow for the structure"));
             $this->domConfig->appendChild($structConfig);
         }
     }
@@ -56,24 +58,68 @@ class ExportWorkflowConfiguration extends \Anakeen\Core\SmartStructure\ExportCon
         $this->extractMailTemplatesData($this->domConfig);
         $this->extractTimersData($this->domConfig);
         $this->extractConfig($this->domConfig);
+        $this->extractAccessConfig($this->domConfig);
         $this->extractAccess($this->domConfig);
     }
 
     protected function extractAccess(\DOMElement $structConfig)
     {
         if ($this->workflow->profid) {
-            $accessControl = $this->setAccess($this->workflow->profid);
-
+            $structConfig->appendChild($this->dom->createComment("Access of workflow configuration"));
+            $accessControl = $this->setAccess($this->workflow->profid, "basic");
+            $structConfig->appendChild($accessControl);
+            $structConfig->appendChild($this->dom->createComment("Access of workflow transitions"));
+            $accessControl = $this->setAccess($this->workflow->profid, "extended");
             $structConfig->appendChild($accessControl);
         }
     }
 
+    protected function extractAccessConfig(\DOMElement $structConfig)
+    {
+        $config = $this->celw("config");
+
+        $config->setAttribute("name", self::getLogicalName($this->workflow->id));
+        $config->setAttribute("structure", self::getLogicalName($this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_famid)));
+
+
+        $stepsNode = $this->celw("steps");
+        $steps = $this->workflow->getStates();
+        foreach ($steps as $step) {
+            $stepNode = $this->celw("step");
+            $stepNode->setAttribute("ref", $step);
+
+            $profilId = $this->workflow->getStateProfil($step);
+            if ($profilId) {
+                $timerNode = $this->celw("element-access-configuration");
+                $timerNode->setAttribute("ref", static::getLogicalName($profilId));
+                $stepNode->appendChild($timerNode);
+            }
+            $stepsNode->appendChild($stepNode);
+
+            $fallId = $this->workflow->getStateFall($step);
+            if ($fallId) {
+                $timerNode = $this->celw("field-access-configuration");
+                $timerNode->setAttribute("ref", static::getLogicalName($fallId));
+                $stepNode->appendChild($timerNode);
+            }
+            $stepsNode->appendChild($stepNode);
+        }
+
+        $config->appendChild($this->dom->createComment("Step Element Accesses of workflow"));
+        $config->appendChild($stepsNode);
+
+
+
+
+        $structConfig->appendChild($config);
+    }
     protected function extractConfig(\DOMElement $structConfig)
     {
         $config = $this->celw("config");
 
         $config->setAttribute("name", self::getLogicalName($this->workflow->id));
         $config->setAttribute("label", $this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::ba_title));
+        $config->setAttribute("structure", self::getLogicalName($this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_famid)));
 
         $desc = $this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_desc);
         if ($desc) {
@@ -142,11 +188,13 @@ class ExportWorkflowConfiguration extends \Anakeen\Core\SmartStructure\ExportCon
 
     protected function extractMailTemplatesData(\DOMElement $structConfig)
     {
+
+        $structConfig->appendChild($this->dom->createComment("Definition of mail templates used by workflow"));
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
             $mails = $this->workflow->getStateMailTemplate($step);
             foreach ($mails as $mail) {
-                if (!$this->dataSet[$mail]) {
+                if (empty($this->dataSet[$mail])) {
                     $structConfig->appendChild($this->getMailTemplateData($mail));
                 }
             }
@@ -155,7 +203,7 @@ class ExportWorkflowConfiguration extends \Anakeen\Core\SmartStructure\ExportCon
         foreach ($this->workflow->transitions as $transitionName => $transitionConfig) {
             $mails = $this->workflow->getTransitionMailTemplates($transitionName);
             foreach ($mails as $mail) {
-                if (!$this->dataSet[$mail]) {
+                if (empty($this->dataSet[$mail])) {
                     $structConfig->appendChild($this->getMailTemplateData($mail));
                 }
             }
@@ -241,11 +289,13 @@ class ExportWorkflowConfiguration extends \Anakeen\Core\SmartStructure\ExportCon
 
     protected function extractTimersData(\DOMElement $structConfig)
     {
+        $structConfig->appendChild($this->dom->createComment("Definition of timers used by workflow"));
+
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
             $timer = $this->workflow->getStateTimers($step);
             if ($timer) {
-                if (!$this->dataSet[$timer]) {
+                if (empty($this->dataSet[$timer])) {
                     $structConfig->appendChild($this->getTimerData($timer));
                 }
             }
@@ -254,7 +304,7 @@ class ExportWorkflowConfiguration extends \Anakeen\Core\SmartStructure\ExportCon
         foreach ($this->workflow->transitions as $transitionName => $transitionConfig) {
             $timers = $this->workflow->getTransitionTimers($transitionName);
             foreach ($timers as $timer) {
-                if (!$this->dataSet[$timer["id"]]) {
+                if (empty($this->dataSet[$timer["id"]])) {
                     $structConfig->appendChild($this->getTimerData($timer["id"]));
                 }
             }

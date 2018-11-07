@@ -3,6 +3,8 @@
            targetNamespace="https://platform.anakeen.com/4/schemas/workflow/1.0"
            xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/smart/1.0"/>
     <xs:element name="graph" type="ns:graphType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <xs:element name="config" type="ns:configType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <xs:complexType name="stepType">
@@ -72,7 +74,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- Config workflow part -->
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <xs:complexType name="mailtemplateRefType">
+    <xs:complexType name="commonRefType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="ns:elementName" name="ref" use="required"/>
@@ -115,10 +117,12 @@
     </xs:simpleType>
     <xs:complexType name="stepRefType" mixed="true">
         <xs:sequence>
-            <xs:element type="ns:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="element-access-configuration" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="field-access-configuration" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:timerRefType" name="timer" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="ns:fieldName" name="ref" use="required"/>
+        <xs:attribute type="xs:token" name="ref" use="required"/>
     </xs:complexType>
     <xs:complexType name="stepsRefType">
         <xs:sequence>
@@ -127,7 +131,7 @@
     </xs:complexType>
     <xs:complexType name="transitionRefType" mixed="true">
         <xs:sequence>
-            <xs:element type="ns:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:timerRefType" name="timer" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="ns:fieldName" name="ref" use="required"/>
@@ -139,11 +143,12 @@
     </xs:complexType>
     <xs:complexType name="configType">
         <xs:sequence>
-            <xs:element type="xs:string" name="description"/>
-            <xs:element type="ns:stepsRefType" name="steps"/>
-            <xs:element type="ns:transitionsRefType" name="transitions"/>
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="ns:stepsRefType" name="steps" minOccurs="0"/>
+            <xs:element type="ns:transitionsRefType" name="transitions" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="ns:elementName" name="name" use="required"/>
+        <xs:attribute type="ns:elementName" name="structure" />
         <xs:attribute type="xs:string" name="label" />
     </xs:complexType>
 

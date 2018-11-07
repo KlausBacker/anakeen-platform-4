@@ -20,6 +20,10 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const tm_fr_ident='tm_fr_ident';
+        const tm_refdaydelta='';
+        const tm_refhourdelta='';
+        const tm_delay='';
+        const tm_hdelay='';
         /**
         * Titre
         * <ul>
