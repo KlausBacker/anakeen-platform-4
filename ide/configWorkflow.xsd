@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema elementFormDefault="qualified"
            targetNamespace="https://platform.anakeen.com/4/schemas/workflow/1.0"
-           xmlns:wfl="https://platform.anakeen.com/4/schemas/workflow/1.0"
+           xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="graph" type="ns:graphType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <xs:element name="config" type="ns:configType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <xs:complexType name="stepType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="wfl:fieldName" name="name" use="required"/>
+                <xs:attribute type="ns:fieldName" name="name" use="required"/>
                 <xs:attribute type="xs:string" name="state-label" use="required"/>
                 <xs:attribute type="xs:string" name="activity-label"/>
             </xs:extension>
@@ -16,7 +16,7 @@
     </xs:complexType>
     <xs:complexType name="stepsType">
         <xs:sequence>
-            <xs:element type="wfl:stepType" name="step" maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="ns:stepType" name="step" maxOccurs="unbounded" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         <p>State label can use locale. Set the i18n key</p>
@@ -37,16 +37,16 @@
     <xs:complexType name="transitionType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="wfl:fieldName" name="name" use="required"/>
-                <xs:attribute type="wfl:fieldName" name="from"/>
-                <xs:attribute type="wfl:fieldName" name="to"/>
+                <xs:attribute type="ns:fieldName" name="name" use="required"/>
+                <xs:attribute type="ns:fieldName" name="from"/>
+                <xs:attribute type="ns:fieldName" name="to"/>
                 <xs:attribute type="xs:string" name="label"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="transitionsType">
         <xs:sequence>
-            <xs:element type="wfl:transitionType" name="transition" maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="ns:transitionType" name="transition" maxOccurs="unbounded" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         <p>Transition label can use locale. Set the i18n key</p>
@@ -61,8 +61,8 @@
     </xs:complexType>
     <xs:complexType name="graphType">
         <xs:sequence>
-            <xs:element type="wfl:stepsType" name="steps"/>
-            <xs:element type="wfl:transitionsType" name="transitions"/>
+            <xs:element type="ns:stepsType" name="steps"/>
+            <xs:element type="ns:transitionsType" name="transitions"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="ns" use="required"/>
         <xs:attribute type="xs:string" name="name" use="required"/>
@@ -75,15 +75,15 @@
     <xs:complexType name="mailtemplateRefType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="wfl:elementName" name="ref" use="required"/>
+                <xs:attribute type="ns:elementName" name="ref" use="required"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="timerRefType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="wfl:elementName" name="ref" use="required"/>
-                <xs:attribute type="wfl:timerType" name="type" default="volatile"/>
+                <xs:attribute type="ns:elementName" name="ref" use="required"/>
+                <xs:attribute type="ns:timerType" name="type" default="volatile"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -115,161 +115,40 @@
     </xs:simpleType>
     <xs:complexType name="stepRefType" mixed="true">
         <xs:sequence>
-            <xs:element type="wfl:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="wfl:timerRefType" name="timer" minOccurs="0"/>
+            <xs:element type="ns:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:timerRefType" name="timer" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="wfl:fieldName" name="ref" use="required"/>
+        <xs:attribute type="ns:fieldName" name="ref" use="required"/>
     </xs:complexType>
     <xs:complexType name="stepsRefType">
         <xs:sequence>
-            <xs:element type="wfl:stepRefType" name="step" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:stepRefType" name="step" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="transitionRefType" mixed="true">
         <xs:sequence>
-            <xs:element type="wfl:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="wfl:timerRefType" name="timer" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:mailtemplateRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:timerRefType" name="timer" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="wfl:fieldName" name="ref" use="required"/>
+        <xs:attribute type="ns:fieldName" name="ref" use="required"/>
     </xs:complexType>
     <xs:complexType name="transitionsRefType">
         <xs:sequence>
-            <xs:element type="wfl:transitionRefType" name="transition" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:transitionRefType" name="transition" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="configType">
         <xs:sequence>
-            <xs:element type="wfl:stepsRefType" name="steps"/>
-            <xs:element type="wfl:transitionsRefType" name="transitions"/>
+            <xs:element type="xs:string" name="description"/>
+            <xs:element type="ns:stepsRefType" name="steps"/>
+            <xs:element type="ns:transitionsRefType" name="transitions"/>
         </xs:sequence>
+        <xs:attribute type="ns:elementName" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="label" />
     </xs:complexType>
 
 
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <!-- Mailtemplate data part -->
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <xs:element name="mailtemplate" type="wfl:mailtemplateType" />
-    <xs:complexType name="workflow-field-valueType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="label"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="fromType">
-        <xs:sequence>
-            <xs:element type="wfl:workflow-field-valueType" name="workflow-field-value" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-            <xs:element type="wfl:element-account-fieldType" name="element-account-field" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-            <xs:element type="wfl:config-parameterType" name="config-parameter" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="element-account-fieldType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="label"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="recipientType">
-        <xs:sequence>
-            <xs:element type="wfl:element-account-fieldType" name="element-account-field" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-            <xs:element type="wfl:structure-account-parameterType" name="structure-account-parameter" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-        </xs:sequence>
-        <xs:attribute type="wfl:destType" name="dest"/>
-    </xs:complexType>
-    <xs:complexType name="structure-account-parameterType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="label"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="recipientsType">
-        <xs:sequence>
-            <xs:element type="wfl:recipientType" name="recipient" maxOccurs="unbounded" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="bodyType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="content-type"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="attachmentType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="label"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-    <xs:complexType name="attachmentsType">
-        <xs:sequence>
-            <xs:element type="wfl:attachmentType" name="attachment" maxOccurs="unbounded" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="mailtemplateType">
-        <xs:sequence>
-            <xs:element type="wfl:fromType" name="from" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-            <xs:element type="wfl:recipientsType" name="recipients" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-            <xs:element name="subject">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="Archivage"/>
-                        <xs:enumeration value="Demande de règlement projet"/>
-                        <xs:enumeration value="[CSL_TITRE] FAIT L'OBJET D'UN TRANSFERT DE GESTION"/>
-                        <xs:enumeration value="Validation BAP  [CSL_TITRE]"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="savecopy" maxOccurs="unbounded" minOccurs="0">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="true"/>
-                        <xs:enumeration value="false"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element type="wfl:bodyType" name="body" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-            <xs:element type="wfl:attachmentsType" name="attachments" minOccurs="0" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-        </xs:sequence>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="label"/>
-    </xs:complexType>
-    <xs:simpleType name="destType">
-        <xs:annotation>
-            <xs:documentation>
-                <h1>Destination type</h1>
-                <ul>
-                    <li>
-                        <code>to</code>
-                        : Send copy
-                    </li>
-                    <li>
-                        <code>cc</code>
-                        : Carbon copy
-                    </li>
-                    <li>
-                        <code>bcc</code>
-                        : Blind carbon copy
-                    </li>
-                </ul>
-            </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="to"/>
-            <xs:enumeration value="cc"/>
-            <xs:enumeration value="bcc"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:complexType name="config-parameterType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="ns"/>
-                <xs:attribute type="xs:string" name="label"/>
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
+
 
 
     <!-- Basic type workflow  -->
