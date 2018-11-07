@@ -28,11 +28,11 @@ class RecordedImage extends ImageAsset
         $location = \Anakeen\Routes\Core\Lib\Files::getVaultPath($vaultId, true);
         
         if (!$location || !file_exists($location)) {
-            throw new Exception("CRUD0600", $vaultId);
+            throw new Exception("ROUTES0200", $vaultId);
         }
         
         if (!$this->size && !empty($this->extension) && basename($location) !== sprintf("%s%s", $vaultId, $this->extension)) {
-            throw new Exception("CRUD0604", $vaultId, $this->extension);
+            throw new Exception("ROUTES0201", $vaultId, $this->extension);
         }
         
         return $location;

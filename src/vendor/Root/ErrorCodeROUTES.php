@@ -177,4 +177,14 @@ class ErrorCodeRoutes
      * @errorCode In tag sde:route-access
      */
     const ROUTES0141 = 'Router access config error : privilege "%s" not found';
+    /**
+     * @errorCode in route recorded image
+     */
+    const ROUTES0200 = 'Image file "%s" not found';
+    /**
+     * @errorCode in route recorded image
+     */
+    const ROUTES0201 = 'File "%s" is not an image file';
+
+
 }
