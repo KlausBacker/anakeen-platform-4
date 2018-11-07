@@ -49,12 +49,20 @@ class StructureDefaultValues extends StructureFields
 
         foreach ($fields as $field => $value) {
             $oa = $structure->getAttribute($field);
-            $isMultiple = $oa->isMultiple();
-            $data[$field] = [
-                "config" => $value,
-                "type" => $oa->usefor === "Q" ? "parameter" : "field",
-                "value" => $isMultiple ? $element->getRawValue($field) : $element->getMultipleRawValues($field)
-            ];
+            if (!$oa) {
+                $data[$field] = [
+                    "config" => $value,
+                    "type" => "unknow",
+                    "value" => "Error : Unknow field"
+                ];
+            } else {
+                $isMultiple = $oa->isMultiple();
+                $data[$field] = [
+                    "config" => $value,
+                    "type" => $oa->usefor === "Q" ? "parameter" : "field",
+                    "value" => $isMultiple ? $element->getRawValue($field) : $element->getMultipleRawValues($field)
+                ];
+            }
         }
         return $data;
     }

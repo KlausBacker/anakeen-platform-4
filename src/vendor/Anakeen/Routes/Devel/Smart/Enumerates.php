@@ -13,12 +13,10 @@ use Anakeen\Routes\Devel\GridFiltering;
  */
 class Enumerates extends GridFiltering
 {
-    protected $enumName;
     protected $sWhere = "";
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
-        $this->enumName = $args["id"];
         parent::initParameters($request, $args);
     }
 
