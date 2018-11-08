@@ -41,13 +41,6 @@ class AttributeValue
         foreach ($rawValues as $rawValue) {
             $typedValues[] = self::castValue($type, $rawValue);
         }
-        switch ($type) {
-            case 'longtext':
-                foreach ($typedValues as & $v) {
-                   // $v = str_replace('<BR>', "\n", $v);
-                }
-                break;
-        }
 
         return $typedValues;
     }
@@ -59,8 +52,10 @@ class AttributeValue
         $typedValues = array();
         foreach ($rawValues as $rawValue) {
             $finalTypedValues = array();
-            foreach ($rawValue as $finalValue) {
-                $finalTypedValues[] = self::castValue($type, $finalValue);
+            if ($rawValue) {
+                foreach ($rawValue as $finalValue) {
+                    $finalTypedValues[] = self::castValue($type, $finalValue);
+                }
             }
 
             // Trim right null values

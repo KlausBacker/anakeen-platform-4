@@ -148,6 +148,15 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                 // change only if new profil
                 $err = $this->doc->accessControl()->setProfil($profid);
             }
+
+            $fallid = $this->getRawValue($this->_aid("_FALLID", $newstate));
+            if (!is_numeric($fallid)) {
+                $fallid = \Anakeen\Core\SEManager::getIdFromName($profid);
+            }
+            if ($fallid > 0) {
+                // change only if new field access
+                $this->doc->accessControl()->setFallid($fallid);
+            }
         }
         return $err;
     }
@@ -178,7 +187,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return strtolower($this->attrPrefix . $fix . str_replace(":", "_", $state));
     }
 
-    public function getStateLabel($state) {
+    public function getStateLabel($state)
+    {
         return _($state);
     }
 
@@ -190,6 +200,16 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function getStateProfil($state)
     {
         return $this->getRawValue($this->_aid("_id", $state));
+    }
+
+    /**
+     * get the field access list id according to state
+     * @param string $state
+     * @return string
+     */
+    public function getStateFall($state)
+    {
+        return $this->getRawValue($this->_aid("_fallid", $state));
     }
 
     /**
@@ -239,25 +259,25 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getTransitionTimers($transName)
     {
-        $persistents=$this->getMultipleRawValues($this->_aid("_trans_pa_tmid", $transName));
-        $volatiles=$this->getMultipleRawValues($this->_aid("_trans_tmid", $transName));
+        $persistents = $this->getMultipleRawValues($this->_aid("_trans_pa_tmid", $transName));
+        $volatiles = $this->getMultipleRawValues($this->_aid("_trans_tmid", $transName));
         $todetach = $this->getMultipleRawValues($this->_aid("_trans_pu_tmid", $transName));
-        $timers=[];
+        $timers = [];
         foreach ($persistents as $timerId) {
-            $timers[]=[
-                "type"=> self::TIMER_PERSISTENT,
+            $timers[] = [
+                "type" => self::TIMER_PERSISTENT,
                 "id" => $timerId
             ];
         }
         foreach ($volatiles as $timerId) {
-            $timers[]=[
-                "type"=> self::TIMER_VOLATILE,
+            $timers[] = [
+                "type" => self::TIMER_VOLATILE,
                 "id" => $timerId
             ];
         }
         foreach ($todetach as $timerId) {
-            $timers[]=[
-                "type"=> self::TIMER_UNATTACH,
+            $timers[] = [
+                "type" => self::TIMER_UNATTACH,
                 "id" => $timerId
             ];
         }
@@ -320,7 +340,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->labeltext = sprintf(_("parameters for %s step"), _($state));
             $oattr->link = "";
             $oattr->phpfunc = "";
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
 
             $oattr->ordered = $ordered++;
             if ($oattr->isAffected()) {
@@ -342,7 +362,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->labeltext = sprintf(_("%s profile"), _($state));
             $oattr->link = "";
             $oattr->frameid = $aidframe;
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
 
             $oattr->ordered = $ordered++;
             if ($oattr->isAffected()) {
@@ -350,6 +370,29 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             } else {
                 $oattr->add();
             }
+
+            // profil id
+            $aidprofilid = $this->_aid("_FALLID", $state); //strtolower($this->attrPrefix."_ID".strtoupper($state));
+            $oattr = new DocAttr($this->dbaccess, array(
+                $cid,
+                $aidprofilid
+            ));
+            $oattr->docid = $cid;
+            $oattr->accessibility = "ReadWrite";
+            $oattr->type = 'docid("FIELDACCESSLAYERLIST")';
+            $oattr->id = $aidprofilid;
+            $oattr->labeltext = sprintf(_("%s field access list"), _($state));
+            $oattr->link = "";
+            $oattr->frameid = $aidframe;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
+
+            $oattr->ordered = $ordered++;
+            if ($oattr->isAffected()) {
+                $oattr->Modify();
+            } else {
+                $oattr->add();
+            }
+
             // --------------------------
             // mask id
             $aid = $this->_aid("_MSKID", $state);
@@ -366,7 +409,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->elink = '';
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->ordered = $ordered++;
             if ($oattr->isAffected()) {
                 $oattr->Modify();
@@ -389,7 +432,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->phpfunc = "";
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->labeltext = sprintf(_("%s color"), _($state));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
@@ -408,7 +451,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->type = 'docid("CVDOC")';
             $oattr->link = "";
             $oattr->elink = '';
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
@@ -432,7 +475,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->link = "";
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
-            $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->elink = '';
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s mail template"), _($state));
@@ -454,7 +497,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->link = "";
             $oattr->id = $aid;
             $oattr->elink = '';
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s timer"), _($state));
@@ -483,7 +526,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->phpfile = "";
             $oattr->phpfunc = "";
             $oattr->id = $aid;
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
 
@@ -511,7 +554,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->labeltext = sprintf(_("parameters for %s transition"), _($k));
             $oattr->link = "";
             $oattr->phpfunc = "";
-            $oattr->options = "autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->ordered = $ordered++;
             if ($oattr->isAffected()) {
                 $oattr->Modify();
@@ -533,7 +576,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->options = "autocreated=yes|multiple=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|multiple=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
 
             $oattr->labeltext = sprintf(_("%s mail template"), _($k));
             if ($oattr->isAffected()) {
@@ -553,7 +596,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->elink = "";
-            $oattr->options = "autocreated=yes|multiple=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "autocreated=yes|multiple=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
 
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -576,7 +619,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->type = 'docid("TIMER")';
             $oattr->link = "";
             $oattr->elink = "";
-            $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
 
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -600,7 +643,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->link = "";
             $oattr->elink = "";
             $oattr->id = $aid;
-            $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=".FamilyAbsoluteOrder::autoOrder;
+            $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s unattach timer"), _($k));
@@ -1066,7 +1109,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     }
 
 
-
     /**
      * get transition array for the transition between $to and $from states
      * @param string $to   first state
@@ -1128,7 +1170,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
 
     /**
-    /**
+     * /**
      * get value of instanced document
      * @param string $attrid attribute identifier
      * @param bool   $def    default value if no value

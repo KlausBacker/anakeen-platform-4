@@ -34,8 +34,8 @@ class SearchElements
      */
     public function onlyCount()
     {
-        $c= $this->searchDoc->onlyCount();
-        if ($err=$this->searchDoc->getError()) {
+        $c = $this->searchDoc->onlyCount();
+        if ($err = $this->searchDoc->getError()) {
             throw new Exception("SD0012", $err);
         }
         return $c;
@@ -205,13 +205,14 @@ class SearchElements
     /**
      * add a condition in filters
      * @api add a new condition in filters
-     * @param string $filter the filter string
-     * @param string $args   arguments of the filter string (arguments are escaped to avoid sql injection)
+     * @param string $filter  the filter string
+     * @param mixed  ...$args arguments of the filter string (arguments are escaped to avoid sql injection)
      * @return void
+     * @throws Exception
      */
-    public function addFilter($filter, $args = '')
+    public function addFilter($filter, ...$args)
     {
-        $this->searchDoc->addFilter($filter, $args);
+        $this->searchDoc->addFilter($filter, ...$args);
     }
 
     /**
@@ -235,7 +236,7 @@ class SearchElements
     {
         $this->searchDoc->search();
 
-        if ($err=$this->searchDoc->getError()) {
+        if ($err = $this->searchDoc->getError()) {
             throw new Exception("SD0013", $err);
         }
         return $this;
