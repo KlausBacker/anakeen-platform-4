@@ -16,6 +16,7 @@
     "@progress/kendo-buttons-vue-wrapper": "^2018.3.911",
     "@progress/kendo-datasource-vue-wrapper": "^2018.3.1018",
     "@progress/kendo-grid-vue-wrapper": "^2018.3.911",
+    "@progress/kendo-layout-vue-wrapper": "^2018.3.1025",
     "@progress/kendo-treelist-vue-wrapper": "^2018.3.1018",
     "@progress/kendo-ui": "^2018.3.1003",
     "axios": "^0.18.0",
