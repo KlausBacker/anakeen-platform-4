@@ -3,6 +3,7 @@
 namespace Anakeen\Ui;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Router\Exception;
 use Dcp\Ui\RenderConfigManager;
 use SmartStructure\Fields\Cvdoc as CvDocFields;
 use SmartStructure\Fields\Mask as MaskFields;
@@ -15,12 +16,14 @@ use SmartStructure\Mask;
  */
 class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfigurationAccesses
 {
-    const NSUIURL = self::NSBASEURL."ui/1.0";
+    const NSUIURL = self::NSBASEURL . "ui/1.0";
     const NSUI = "ui";
 
-    protected function extract($structConfig)
+    protected $extractedData = [];
+
+    protected function extract(\DOMElement $structConfig)
     {
-        $this->domConfig->setAttribute("xmlns:ui", self::NSUIURL);
+        $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
         $this->extractCv($this->domConfig);
     }
 
@@ -45,16 +48,21 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             $cvdoc = SEManager::getDocument($this->sst->ccvid);
 
             $cvData = $this->extractCvdocData($cvdoc);
-            $this->domConfig->appendChild($cvData);
+            if ($cvData) {
+                $this->domConfig->appendChild($cvData);
+            }
 
-            $accessControl = $this->setAccess($this->sst->ccvid);
-            $this->domConfig->appendChild($accessControl);
+            $this->setComment("Ui render configuration", $structConfig);
             $structConfig->appendChild($access);
         }
     }
 
     protected function extractCvdocData(\SmartStructure\Cvdoc $cvdoc)
     {
+        if (isset($this->extractedData[$cvdoc->id])) {
+            return null;
+        }
+        $this->extractedData[$cvdoc->id] = true;
         $cvtag = $this->celui("view-control");
 
         $cvtag->setAttribute("name", $cvdoc->name ?: $cvdoc->id);
@@ -76,15 +84,20 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             /**
              * @var Mask $mask
              */
-            $mask=SEManager::getDocument($primaryMask);
-            $this->domConfig->appendChild($this->extractMaskData($mask));
-            $this->setAccessProfile($mask);
+            $mask = SEManager::getDocument($primaryMask);
+            $maskDataNode = $this->extractMaskData($mask);
+            if ($maskDataNode) {
+                $this->setComment("Primary mask configuration");
+                $this->domConfig->appendChild($maskDataNode);
+            }
         }
         $idcview = $cvdoc->getRawValue(CvDocFields::cv_idcview);
         if ($idcview) {
             $idcviewtag = $this->celui("creation-view");
             $idcviewtag->setAttribute("ref", $idcview);
+
             $cvtag->appendChild($idcviewtag);
+
         }
         $accessClass = $cvdoc->getRawValue(CvDocFields::cv_renderaccessclass);
         if ($accessClass) {
@@ -100,7 +113,7 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             $viewtag = $this->celui("view");
             $viewtag->setAttribute("name", $view[CvDocFields::cv_idview]);
             $viewtag->setAttribute("label", $view[CvDocFields::cv_lview]);
-            $viewtag->setAttribute("display-mode", $view[CvDocFields::cv_kview]==="VEDIT"?"edition":"consultation");
+            $viewtag->setAttribute("display-mode", $view[CvDocFields::cv_kview] === "VEDIT" ? "edition" : "consultation");
             if ($view[CvDocFields::cv_mskid]) {
                 $msktag = $this->celui("mask");
                 $msktag->setAttribute("ref", static::getLogicalName($view[CvDocFields::cv_mskid]));
@@ -109,8 +122,14 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
                  * @var \SmartStructure\Mask $mask
                  */
                 $mask = SEManager::getDocument($view[CvDocFields::cv_mskid]);
-                $this->domConfig->appendChild($this->extractMaskData($mask));
-                $this->setAccessProfile($mask);
+                if (!$mask) {
+                    throw new Exception(sprintf('Mask "%s" not found', $view[CvDocFields::cv_mskid]));
+                }
+                $maskDataNode = $this->extractMaskData($mask);
+                if ($maskDataNode) {
+                    $this->setComment("Mask configuration");
+                    $this->domConfig->appendChild($maskDataNode);
+                }
             }
             if ($view[CvDocFields::cv_renderconfigclass]) {
                 $rcctag = $this->celui("render-config");
@@ -126,6 +145,8 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             }
             $viewlist->appendChild($viewtag);
         }
+
+        $this->setComment("View control configuration");
         $cvtag->appendChild($viewlist);
 
         return $cvtag;
@@ -133,9 +154,13 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
 
     protected function extractMaskData(\SmartStructure\Mask $mask)
     {
+        if (isset($this->extractedData[$mask->id])) {
+            return null;
+        }
+        $this->extractedData[$mask->id] = true;
         $masktag = $this->celui("mask");
 
-        $masktag->setAttribute("name", $mask->name ?: $mask->id);
+        $masktag->setAttribute("name", self::getLogicalName($mask->id));
         $masktag->setAttribute("label", $mask->title);
         $masktag->setAttribute("structure", self::getLogicalName($mask->getRawvalue(MaskFields::msk_famid)));
         $views = $mask->getAttributeValue(MaskFields::msk_t_contain);

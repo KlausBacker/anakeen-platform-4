@@ -79,8 +79,7 @@ class Autocomplete
             throw new Exception(sprintf(___("Attribute \"%s\" not found ", "ddui"), $attrId));
         }
 
-
-        if ($attributeObject->properties->autocomplete) {
+        if ($attributeObject->properties && $attributeObject->properties->autocomplete) {
             return $this->standardAutocomplete($attributeObject);
         } elseif (!$attributeObject->phpfile) {
             return $this->defaultAutocomplete($attributeObject);

@@ -13,7 +13,7 @@ use SmartStructure\Fields\Mask as MaskFields;
 
 class ImportRenderConfiguration extends ImportSmartConfiguration
 {
-    protected $uiPrefix;
+    protected $uiPrefix= "ui";
     protected function importConfigurations()
     {
         $this->uiPrefix=Xml::getPrefix($this->dom, ExportRenderConfiguration::NSUIURL);

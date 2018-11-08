@@ -20,7 +20,13 @@ class MailtemplateEditRender extends DefaultConfigEditRender
         $options->enum(myAttributes::tmail_ulink)->setDisplay('bool');
         $options->enum(myAttributes::tmail_savecopy)->displayDeleteButton(false);
         $options->enum(myAttributes::tmail_ulink)->displayDeleteButton(false);
+        $options->enum(myAttributes::tmail_ulink)->displayDeleteButton(false);
         $options->arrayAttribute(myAttributes::tmail_t_from)->setRowMinDefault(1);
+        $options->arrayAttribute(myAttributes::tmail_t_from)->setRowMaxLimit(1);
+        $options->arrayAttribute(myAttributes::tmail_t_from)->disableRowAdd(true);
+        $options->arrayAttribute(myAttributes::tmail_t_from)->disableRowDel(true);
+        $options->arrayAttribute(myAttributes::tmail_t_from)->disableRowMove(true);
+
         $options->frame(myAttributes::tmail_fr_content)->setTemplate(
             <<< 'HTML'
             <div>

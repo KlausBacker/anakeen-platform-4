@@ -34,7 +34,7 @@ class MaskVisibilities
 
         return ApiV2Response::withData($response, $data["visibilities"]);
     }
-    
+
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->documentId = $args["mask"];
@@ -90,7 +90,7 @@ class MaskVisibilities
              * @var $attr \Anakeen\Core\SmartStructure\NormalAttribute
              */
 
-            if ($attr->usefor == 'Q') {
+            if ($attr->usefor == 'Q' || $attr->id === \Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD) {
                 continue;
             }
             $tmask[$k]["attrid"] = $attr->id;
@@ -100,6 +100,7 @@ class MaskVisibilities
                 $hasMenu = true;
                 $tmask[$k]["parentId"] = "_menu";
             }
+
             $tmask[$k]["label"] = $attr->getLabel();
             $tmask[$k]["type"] = $attr->type;
             $tmask[$k]["attrid"] = $attr->id;
