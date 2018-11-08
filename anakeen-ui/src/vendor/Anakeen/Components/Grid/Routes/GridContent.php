@@ -5,6 +5,7 @@ namespace Anakeen\Components\Grid\Routes;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\Format\FormatAttributeValue;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\URLUtils;
 use Anakeen\Ui\DataSource;
@@ -32,11 +33,27 @@ class GridContent extends DataSource
     }
 
     protected static function formatProperty($propertyValue, $propertyId, SmartElement $smartEl) {
+        $propertyInfo = [];
         switch ($propertyId) {
             case "title":
                 $propertyInfo["value"] = $propertyValue;
                 $propertyInfo["displayValue"] = $propertyValue;
                 $propertyInfo["iconUrl"] = $smartEl->getIcon("", 24);
+                break;
+            case "fromid":
+                $propertyInfo["value"] = $propertyValue;
+                $propertyInfo["displayValue"] = null;
+                $propertyInfo["url"] = "";
+                $propertyInfo["icon"] = "";
+                $propertyInfo["name"] = "";
+                if (!empty($propertyValue)) {
+                    $structure = SEManager::getFamily($propertyValue);
+                    if (!empty($structure)) {
+                        $propertyInfo["displayValue"] = $structure->getTitle();
+                        $propertyInfo["icon"] = $structure->getIcon("", 24);
+                        $propertyInfo["name"] = $structure->name;
+                    }
+                }
                 break;
             default:
                 return $propertyValue;

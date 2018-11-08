@@ -154,9 +154,7 @@ class ColumnsConfig
 
     protected static function getDisplayableProperties()
     {
-        $properties = array_filter(\Anakeen\Core\Internal\SmartElement::$infofields, function ($item) {
-            return isset($item["displayable"]) ? $item["displayable"] : false;
-        });
+        $properties = \Anakeen\Core\Internal\SmartElement::$infofields;
         array_walk($properties, function (&$value, $key) {
             $value["field"] = $key;
             $value["smartType"] = $value['type'];

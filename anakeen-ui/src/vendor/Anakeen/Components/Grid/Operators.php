@@ -3,6 +3,7 @@
 namespace Anakeen\Components\Grid;
 
 use Anakeen\Search\Filters\Contains;
+use Anakeen\Search\Filters\DocumentTitle;
 use Anakeen\Search\Filters\ElementSearchFilter;
 use Anakeen\Search\Filters\IsEmpty;
 use Anakeen\Search\Filters\IsEqual;
@@ -56,6 +57,16 @@ class Operators
                     "htmltext"
                 ],
                 "filterClass" => Contains::class
+            ],
+
+            "titleContains" => [
+                "label" => ___("Contains", "grid-component"),
+                "operands" => [":field", ":value", StartsWith::NOCASE],
+                "type" => [
+                    "docid",
+                    "account"
+                ],
+                "filterClass" => DocumentTitle::class
             ],
             "startswith" => [
                 "label" => ___("Start with", "grid-component"),
