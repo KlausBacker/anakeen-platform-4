@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@^1.0.1-1-1541520596":
+"@anakeen/anakeen-cli@^1.0.1-1-1541498352":
   version "1.0.1-1-1541520596"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1-1541520596.tgz#02cc7b5204e516a06c99d3b59c014b17ee350dd8"
   integrity sha512-qrnrtjLgHCme/PglAFwbvywzwfNF2VZW8qkQ+SNAaBMIqjzf4q1Jk6ikrKavMKWIOcf3k5wq6yypBwq/eGf18A==
@@ -30,10 +30,10 @@
     xml2js "^0.4.19"
     yargs "^11.1.0"
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1540602565"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1540602565.tgz#91b134cb7507e16a3471269d1fba74280ffd22a1"
-  integrity sha512-r13UfKFofVQfCqbPyRtJTsTDu16xw+Tu0JVwWmsABcEbDsGisLYa/pHIhuoOZ3iroXoWCxFK9TE+v8WCiaNPNA==
+"@anakeen/ank-components@1.0.0-1541665775":
+  version "1.0.0-1541665775"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1541665775.tgz#2b6e3800d00d648465f01850c78db743f403acec"
+  integrity sha512-solueqIrrE/4euDQ8GmQQ1wnSUEEz7lK9rsTnlzNoTWEhKGCGbXuKD+rydOpDUb/mX1Es7hOZIx1V3hsGyICOg==
 
 "@anakeen/webpack-conf@latest":
   version "1.0.0-1539166243"
