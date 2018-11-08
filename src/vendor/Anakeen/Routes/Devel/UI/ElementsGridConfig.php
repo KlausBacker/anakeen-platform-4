@@ -84,7 +84,8 @@ class ElementsGridConfig extends GridConfig
                 [ "action" => "viewJSON", "title" => "JSON"],
                 [ "action" => "viewXML", "title" => "XML"],
                 [ "action" => "viewProps", "title" => "Properties"],
-                [ "action" => "security", "title" => "Security"]
+                [ "action" => "security", "title" => "Security"],
+                [ "action" => "create", "title" => "Create"]
             ]
         ];
         $originalConfig["footer"] = [];

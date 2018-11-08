@@ -8,4 +8,9 @@
   .structure-type-cell {
     font-weight: bold;
   }
+  .k-splitter {
+    .k-pane {
+      transition: width,left .3s ease;
+    }
+  }
 }
