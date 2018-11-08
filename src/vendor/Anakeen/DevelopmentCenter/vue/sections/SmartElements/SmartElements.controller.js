@@ -16,7 +16,7 @@ export default {
     cellRender(event) {
       if (event.data && event.data.columnConfig) {
         switch (event.data.columnConfig.field) {
-          case "family":
+          case "fromid":
             event.data.cellRender.text(event.data.cellData.name);
             break;
         }

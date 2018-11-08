@@ -12,6 +12,9 @@ export default {
           case "family":
             event.data.cellRender.text(event.data.cellData.name);
             break;
+          case "fromid":
+            event.data.cellRender.text(event.data.cellData.name);
+            break;
           case "dpdoc_famid":
             event.data.cellRender.text(event.data.cellData.name);
             break;
