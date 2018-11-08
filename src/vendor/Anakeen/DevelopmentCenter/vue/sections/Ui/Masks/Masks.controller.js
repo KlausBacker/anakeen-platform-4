@@ -20,24 +20,24 @@ export default {
           this.$(window).trigger("resize");
         }, 100);
         window.localStorage.setItem(
-          "ui.control.conf." + part,
+          "ui.masks." + part,
           this.$($split)
             .data("kendoSplitter")
             .size(".k-pane:first")
         );
       };
     };
-    this.$(this.$refs.controlConfSplitter).kendoSplitter({
+    this.$(this.$refs.masksSplitter).kendoSplitter({
       orientation: "horizontal",
       panes: [
         {
           collapsible: false,
           resizable: true,
-          size: window.localStorage.getItem("ui.control.conf.content") || "50%"
+          size: window.localStorage.getItem("ui.masks.content") || "50%"
         },
         { collapsible: false, resizable: true, size: "50%" }
       ],
-      resize: onContentResize("content", this.$refs.controlConfSplitter)
+      resize: onContentResize("content", this.$refs.masksSplitter)
     });
   },
   methods: {
@@ -45,7 +45,7 @@ export default {
       event.preventDefault();
       switch (event.data.type) {
         case "consult": {
-          this.$refs.controlConfConsult.fetchSmartElement({
+          this.$refs.masksConsult.fetchSmartElement({
             initid: event.data.row.id,
             viewId: "!defaultConsultation"
           });
