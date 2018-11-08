@@ -79,6 +79,10 @@ class StandardAttributeFilter
                     $attr = new BasicAttribute("cdate", $fam->id, "Revision date");
                     $attr->type = "timestamp";
                     break;
+                case "fromid":
+                    $attr = new NormalAttribute("fromid", $fam->id,  "Parent structure", "docid", "-1",false, 1, "", NormalAttribute::READ_ACCESS);
+                    $attr->type = "docid";
+                    break;
                 default:
                     $attr = new BasicAttribute($attrId, $fam->id, $attrId);
                     $attr->type = "text";
