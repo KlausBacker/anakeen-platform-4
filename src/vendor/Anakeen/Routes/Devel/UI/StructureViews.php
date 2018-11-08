@@ -63,6 +63,7 @@ class StructureViews
                     "cvId" => $cvdoc->name ?: $cvdoc->id,
                     "cvStructure" => SEManager::getNameFromId($cvdoc->getRawValue(CvFields::cv_famid)),
                     "viewId" => $view[CvFields::cv_idview],
+                    "viewLabel" => $view[CvFields::cv_lview],
                     "viewMode" => ($view[CvFields::cv_kview] === "VEDIT") ? "edit" : "view",
                     "maskId" => SEManager::getNameFromId($view[CvFields::cv_mskid]) ?: $view[CvFields::cv_mskid],
                     "renderConfigClass" => $view[CvFields::cv_renderconfigclass],
