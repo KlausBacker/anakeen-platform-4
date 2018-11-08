@@ -65,11 +65,16 @@ class ElementsGridConfig extends GridConfig
         $fromConfig["relation"] = "-1";
         $idConfig = ColumnsConfig::getColumnConfig("id");
         $idConfig["filterable"] = self::getFilterable("int");
+
+        $docTypeConfig = ColumnsConfig::getColumnConfig("doctype");
+        $docTypeConfig["hidden"] = true;
+
         $originalConfig["smartFields"] = [
             $fromConfig,
             ColumnsConfig::getColumnConfig("title"),
             $idConfig,
             ColumnsConfig::getColumnConfig("name"),
+            $docTypeConfig
         ];
 
         $originalConfig["actions"] = [
@@ -79,7 +84,7 @@ class ElementsGridConfig extends GridConfig
                 [ "action" => "viewJSON", "title" => "JSON"],
                 [ "action" => "viewXML", "title" => "XML"],
                 [ "action" => "viewProps", "title" => "Properties"],
-                [ "action" => "security", "title" => "Security"],
+                [ "action" => "security", "title" => "Security"]
             ]
         ];
         $originalConfig["footer"] = [];
