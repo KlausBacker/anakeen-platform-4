@@ -18,25 +18,28 @@
           { name: "config", label: "Configuration", hidden: false},
           { name: "value", label: "Value", hidden: false},
         ],
-        url: `/api/v2/devel/smart/structures/${this.ssName}/parameters/`,
+        url: `/api/v2/devel/smart/structures/${this.ssName}/defaults/`,
         getValues(response) {
-          const items = response.parameterValues;
+          const items = response.defaultValues;
           const fields = Object.keys(items).map(item => {
             return {
               idVal: item,
               config: items[item].config,
+              type: items[item].type,
               value: items[item].value
             };
           });
           fields.forEach(items2 => {
-            Object.keys(response.parameterFields).forEach(items => {
-              if (items2.idVal === response.parameterFields[items].id) {
-                response.parameterFields[items].config = items2.config;
-                response.parameterFields[items].value = items2.value;
+            Object.keys(response.fields).forEach(items => {
+              if (items2.type === "field") {
+                if (items2.idVal === response.fields[items].id) {
+                  response.fields[items].config = items2.config;
+                  response.fields[items].value = items2.value;
+                }
               }
             });
           });
-          return response.parameterFields;
+          return response.fields;
         },
         columnTemplate(colId) {
           return dataItem => {
