@@ -7,18 +7,21 @@
         </div>
         <kendo-datasource ref="viewsGrid"
                           :transport-read="getViews"
-                          :server-paging="true"
-                          :pageable="true"
-                          :page-size="20"
                           :schema-data="parseViewsData">
         </kendo-datasource>
         <kendo-grid ref="viewsGridContent" class="views-grid-content"
                     :data-source-ref="'viewsGrid'"
-                    :pageable="{ pageSizes: [10,20,40,50]}"
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true"
-                    :noRecords="{ template: `<span class='k-icon k-i-table-delete empty-grid'></span><span class='empty-grid'> No View Controller has been set for this Smart Structure...</span>`}">
+                    :noRecords="{ template: `<div class='empty-grid'>
+                                                <div class='empty-grid-icon'>
+                                                    <span class='k-icon k-i-table-delete'></span>
+                                                </div>
+                                                <div class='empty-grid-text'>
+                                                    <span> No View Controller has been set for this Smart Structure...</span>
+                                                </div>
+                                            </div>`}">
             <kendo-grid-column :field="'cvId'" :title="'<b>Logical Name</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'cvStructure'" :title="'<b>Structure</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'viewId'" :title="'<b>View Name</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
