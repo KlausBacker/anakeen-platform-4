@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@^1.0.1-1-1541498352":
-  version "1.0.1-1-1541498352"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1-1541498352.tgz#d9d17276b064f72991ad2be11a0f9c7cc83a3694"
-  integrity sha512-fMvYckivBkzVaO4091AUlxxSBM3MM5vw5VrO/pn8wl9oBoEpP8leHVuEkftD1XeZ2JcmjRehUrIQUWGzuJ/p8A==
+"@anakeen/anakeen-cli@^1.0.1-1-1541520596":
+  version "1.0.1-1-1541520596"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1-1541520596.tgz#02cc7b5204e516a06c99d3b59c014b17ee350dd8"
+  integrity sha512-qrnrtjLgHCme/PglAFwbvywzwfNF2VZW8qkQ+SNAaBMIqjzf4q1Jk6ikrKavMKWIOcf3k5wq6yypBwq/eGf18A==
   dependencies:
     easygettext "^2.6.3"
     find-up "^3.0.0"
