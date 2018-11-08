@@ -10,8 +10,31 @@ Vue.use(DataSourceInstaller);
 Vue.use(TreeListInstaller);
 
 export default {
-  name: "structure",
-  props: ["ssName"],
+  name: "ss-treelist",
+  props: {
+    ssName: {
+      type: String,
+      default: () => ""
+    },
+    items: {
+      type: Array,
+      default: () => []
+    },
+    url: {
+      type: String,
+      default: () => ""
+    },
+    getValues: {
+      default: () => {
+        return {};
+      }
+    },
+    columnTemplate: {
+      default: () => {
+        return {};
+      }
+    }
+  },
   components: {
     "kendo-treelist": TreeList
   },
@@ -19,11 +42,6 @@ export default {
     return {
       remoteDataSource: ""
     };
-  },
-  computed: {
-    url() {
-      return `/api/v2/devel/smart/structures/${this.ssName}/fields/`;
-    }
   },
   mounted() {
     this.remoteDataSource = new kendo.data.TreeListDataSource({
@@ -37,19 +55,18 @@ export default {
       },
       schema: {
         data: response => {
-          return response.data.data.fields;
+          return this.getValues(response.data.data);
         },
         model: {
           id: "id",
           parentId: "parentId",
           expanded: true
-        },
-        sort: [{ field: "displayOrder", order: "asc" }]
+        }
       }
     });
     $(window).resize(() => {
-      if (this.$refs.structureTree) {
-        this.$refs.structureTree.kendoWidget().resize();
+      if (this.$refs.ssTreelist) {
+        this.$refs.ssTreelist.kendoWidget().resize();
       }
     });
   },
@@ -77,10 +94,16 @@ export default {
           if (dataItem.type) {
             $(this).addClass(" attr-type--" + dataItem.type);
           }
-          if (dataItem.structure !== that.ssName) {
+          if (
+            dataItem.structure !== that.ssName &&
+            that.$route.name === "SmartStructures::structure"
+          ) {
             $(this).addClass(" is-herited");
           }
-          if (dataItem.declaration === "overrided") {
+          if (
+            dataItem.declaration === "overrided" &&
+            that.$route.name === "SmartStructures::structure"
+          ) {
             $(this).addClass(" is-overrided");
           }
         });
@@ -115,44 +138,9 @@ export default {
         });
       }, 1);
     },
-    columnTemplate(colId) {
-      return dataItem => {
-        if (dataItem[colId] === null || dataItem[colId] === undefined) {
-          return "";
-        }
-        if (
-          dataItem[colId] &&
-          (colId === "optionValues" || colId === "properties")
-        ) {
-          let str = "";
-          Object.keys(dataItem[colId].toJSON()).forEach(item => {
-            str += `<li><span><b>${item}</b></span> : <span>${
-              dataItem[colId][item]
-            }</span></li>`;
-          });
-          return str;
-        }
-        let className = "";
-        if (
-          colId !== "overrides" &&
-          dataItem["declaration"] === "overrided" &&
-          dataItem["overrides"]
-        ) {
-          Object.keys(dataItem["overrides"].toJSON()).forEach(item => {
-            if (item === colId) {
-              className = "overrided";
-            }
-          });
-        }
-        if (className) {
-          return `<div class="${className}">${dataItem[colId]}</div>`;
-        }
-        return dataItem[colId];
-      };
-    },
-    refreshStructure() {
-      this.$refs.structureTree.kendoWidget().dataSource.filter({});
-      this.$refs.structureTree.kendoWidget().dataSource.read();
+    refreshTree() {
+      this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+      this.$refs.ssTreelist.kendoWidget().dataSource.read();
     }
   }
 };

@@ -4,7 +4,9 @@
 namespace Anakeen\Routes\Devel\UI;
 
 use Anakeen\Components\Grid\Routes\GridContent;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use SmartStructure\Fields\Mask as MskFields;
 
 class Masks extends GridContent
 {
@@ -28,6 +30,7 @@ class Masks extends GridContent
     {
         parent::prepareFiltering();
         $this->structure = SEManager::getFamily($this->structureName);
-        $this->_searchDoc->addFilter("msk_famid = '".$this->structure->initid."'");
+        // search in all parent structure
+        $this->_searchDoc->addFilter(DbManager::getSqlOrCond($this->structure->attributes->fromids, MskFields::msk_famid));
     }
 }

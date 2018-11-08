@@ -4,8 +4,8 @@ import Infos from "./Infos.vue";
 import Structure from "./Structure/Structure";
 import Others from "./Others.vue";
 import ParameterValues from "./Parameters/ParameterValues.vue";
-import DefaultsFields from "./Defaults/DefaultValues/DefaultValues.vue";
-import DefaultsParamFields from "./Defaults/ParameterFields/DefaultsParamFields.vue";
+import DefaultsFields from "./Defaults/DefaultValues.vue";
+import DefaultsParamFields from "./Defaults/DefaultsParamFields.vue";
 import Defaults from "./Defaults/Defaults.vue";
 
 export default {
