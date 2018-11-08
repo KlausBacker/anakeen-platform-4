@@ -220,12 +220,11 @@ class DataSource extends DocumentList
             switch ($this->smartElement->defDoctype) {
                 case "C":
                     return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->smartElement);
-                case "D":
-                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);
-                    break;
                 case "S":
                     $famId = $this->smartElement->getRawValue("se_famid");
                     return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, SmartElementManager::getFamily($famId));
+                default:
+                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);
             }
 
         }

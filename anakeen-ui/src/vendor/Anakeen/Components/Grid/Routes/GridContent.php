@@ -36,7 +36,7 @@ class GridContent extends DataSource
             case "title":
                 $propertyInfo["value"] = $propertyValue;
                 $propertyInfo["displayValue"] = $propertyValue;
-                $propertyInfo["withIcon"] = $smartEl->getIcon();
+                $propertyInfo["iconUrl"] = $smartEl->getIcon("", 24);
                 break;
             default:
                 return $propertyValue;
