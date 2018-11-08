@@ -2,7 +2,6 @@ import SmartStructures from "./SmartStructures.vue";
 import SSContent from "./SSContent.vue";
 import Infos from "./Infos.vue";
 import Structure from "./Structure/Structure";
-import Others from "./Others.vue";
 import ParameterValues from "./Parameters/ParameterValues.vue";
 import DefaultsFields from "./Defaults/DefaultValues.vue";
 import DefaultsParamFields from "./Defaults/DefaultsParamFields.vue";
@@ -65,12 +64,6 @@ export default {
               props: true
             }
           ]
-        },
-        {
-          name: "SmartStructures::others",
-          path: "others",
-          component: Others,
-          props: true // Set ssName as a vue component prop
         }
       ]
     }
