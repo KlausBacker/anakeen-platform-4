@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@^1.0.1-1-1541520596":
+"@anakeen/anakeen-cli@latest":
   version "1.0.1-1-1541520596"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1-1541520596.tgz#02cc7b5204e516a06c99d3b59c014b17ee350dd8"
   integrity sha512-qrnrtjLgHCme/PglAFwbvywzwfNF2VZW8qkQ+SNAaBMIqjzf4q1Jk6ikrKavMKWIOcf3k5wq6yypBwq/eGf18A==
@@ -86,41 +86,43 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@progress/kendo-base-components-vue-wrapper@2018.2.822.08270928":
-  version "2018.2.82-2.8270928"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.2.82-2.8270928.tgz#9dbcdb819dc10c40d76203228d3b15356e0dae01"
-
-"@progress/kendo-base-components-vue-wrapper@2018.3.1018":
-  version "2018.3.1018"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.3.1018.tgz#d1a417c45d8f459834ee60b22841ca637bfff0cf"
+"@progress/kendo-base-components-vue-wrapper@2018.3.1025":
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.3.1025.tgz#17072b6b7d4fd569e85aa5692978daf0bd992496"
+  integrity sha512-UlmfSpplyS94rKlETgfbMD0Bzu8YeAPVrWqsxgOC9+yvLwyRb4P8dTbkltjqYRdul1jMUiXaHCVlaLw1sRyEIQ==
 
 "@progress/kendo-buttons-vue-wrapper@^2018.3.911":
-  version "2018.3.911"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-buttons-vue-wrapper/-/kendo-buttons-vue-wrapper-2018.3.911.tgz#412dbde05e1f5c56122f6dbed5b0866a639de291"
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-buttons-vue-wrapper/-/kendo-buttons-vue-wrapper-2018.3.1025.tgz#e7d2f9afd277f430cb1c10f34e5a509411d4670d"
+  integrity sha512-IPZ6dwzQ7GY6bXWhv4SDkQpeyt3dJR9JFBiztqF/HkrnWo50P6HYQEHddY7M35r2IXJt4ppUiZoCVeM42+trbQ==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
 "@progress/kendo-datasource-vue-wrapper@^2018.3.1018":
-  version "2018.3.1018"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-datasource-vue-wrapper/-/kendo-datasource-vue-wrapper-2018.3.1018.tgz#a535e57ecade30150077599054dbaded98de8ccb"
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-datasource-vue-wrapper/-/kendo-datasource-vue-wrapper-2018.3.1025.tgz#053876dafb4bbb67795ba85e651e7a444baf4439"
+  integrity sha512-0lrBsdmqx+4ntx2Nsi1k6L1Q9w1KoRRt4hKeeSs5OP1Wmw/GAFFi0Axo+3OrPP7B+5tkAQZ27ObgNRmFumlLnQ==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.3.1018"
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
 "@progress/kendo-grid-vue-wrapper@^2018.3.911":
-  version "2018.3.911"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2018.3.911.tgz#7d8a63c204cc1f9ca9df7061137b951f296db87d"
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2018.3.1025.tgz#8ba6350cfdf454ad900d189106314843789e3d1b"
+  integrity sha512-RXMhaqr+zXpodwSjL1obC2Bz6zEpk579+4jSJ7P/kpz5Rk56VWah1O8NSIasUZlUsScI9PwH0D9URmXOZWZMKw==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
 "@progress/kendo-treelist-vue-wrapper@^2018.3.1018":
-  version "2018.3.1018"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-treelist-vue-wrapper/-/kendo-treelist-vue-wrapper-2018.3.1018.tgz#050e2bc3fe77e7dd35f81288927f9e31e5dc697d"
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-treelist-vue-wrapper/-/kendo-treelist-vue-wrapper-2018.3.1025.tgz#f17137a86472a704de4fd369520a98c500f3bcc9"
+  integrity sha512-t7U6xA9XiOg8O7TuhVW4o6LCZZBRtkMkMZ2MByTnypw/B1rEMwgmyfrZuaZAxQApHV5aKzzgTWcklw5PQ32RIw==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.3.1018"
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
 "@progress/kendo-ui@^2018.3.1003":
-  version "2018.3.1003"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.3.1003.tgz#2285afa36280589e1a510b752599abcdf21dd0a5"
+  version "2018.3.1107"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.3.1107.tgz#49f94716930f6d4d256b46b75e879c8e4497c6b7"
+  integrity sha512-N6SteVUwjfgsp9p9vX+bhQNMQ+dIiKyHqSvDW/Nn684g3v3dSKmow4dp2TMSoqWCIHXP+8MCx7owBu0LV9W+iQ==
   dependencies:
     jquery "<=3"
 
@@ -3060,8 +3062,9 @@ doctypes@^1.1.0:
   integrity sha1-6oCxBqh1OHdOijpKWv4pPeSJ4Kk=
 
 document-register-element@^1.11.1:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.11.1.tgz#cc40170cbbe4286946326603615b3bb0f4564f64"
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.13.1.tgz#dad8cb7be38e04ee3f56842e6cf81af46c1249ba"
+  integrity sha512-92ZyLDKg9j4rOll//NNXj25f+8rAzOkYsGJonhugKwXfeqH7bzs8Ucpvey0WzZ2ZzKdrvW9RnUw3UyOZ/uhBFw==
   dependencies:
     lightercollective "^0.1.0"
 
@@ -5258,6 +5261,7 @@ jest-docblock@^21.0.0:
 jquery@<=3:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+  integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
 
 js-base64@^2.1.8:
   version "2.4.9"
@@ -5461,6 +5465,7 @@ liftoff@^2.5.0:
 lightercollective@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.1.0.tgz#70df102c530dcb8d0ccabfe6175a8d00d5f61300"
+  integrity sha512-J9tg5uraYoQKaWbmrzDDexbG6hHnMcWS1qLYgJSWE+mpA3U5OCSeMUhb+K55otgZJ34oFdR0ECvdIb3xuO5JOQ==
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -8976,12 +8981,14 @@ void-elements@^2.0.1:
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
 vue-custom-element@^3.2.5:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.5.tgz#83e359242291c2c02157db1428802510b4cece65"
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.6.tgz#9e3f52eb5c5014c298cad731321ed64487fada0b"
+  integrity sha512-tNWsax/Rq4Sr1QHj0pi4CWaBnAYfva75rlQg2fBKGja35+6AmdcZre/ztoiBWCSlSJ7APsMakG5R0A+GWBAc4Q==
 
 vue-gettext@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.0.tgz#e4932037a8601412dd9f7d7d7a5d60c4bdb341d1"
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.1.tgz#8431b57c27d0becff131de6a643ac4ea8ffcb52c"
+  integrity sha512-vbKhl7VGlVtTElNIdvpC4GKTRH1CwZmzhELcP6jS/UaFcF+yZvS5bIIAiPCQzMEU5dpAI0hIgJAxAKOMIg7UXw==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
