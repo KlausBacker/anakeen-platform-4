@@ -36,6 +36,7 @@
   .security-smartstructure-profile-content {
     display: flex;
     .security-smartstructure-profile-grid {
+      overflow-y: auto;
       background: #F1F1F1;
       padding: 1rem;
       flex: 1;

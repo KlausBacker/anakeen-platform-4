@@ -1,6 +1,7 @@
 <template>
     <div class="security-infos-section" v-if="isReady">
-        <h1 class="security-title"><img class="security-icon" :src="structureProperties.icon"/> {{ssName}} ({{structureProperties.title}}) Security Overview</h1>
+        <h1 class="security-title">
+            <img class="security-icon" :src="structureProperties.icon"/> {{ssName}} ({{structureProperties.title}}) Security Overview</h1>
         <div class="security-infos-content">
             <div class="security-infos-card">
                 <div class="infos-card-title">Profiles</div>
@@ -42,53 +43,5 @@
 </script>
 
 <style lang="scss">
-    .security-infos-section {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        padding: 1rem;
-        .security-title {
-            display: flex;
-            align-items: center;
-            .security-icon {
-                margin-right: 1rem;
-            }
-        }
-
-        .security-infos-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            flex: 1;
-            overflow-y: auto;
-            .security-infos-card {
-
-                .infos-card-title {
-                    font-size: 1.5rem;
-                    margin-bottom: 1rem;
-                }
-
-                & + .security-infos-card {
-                    /*margin-left: 1rem;*/
-                }
-                margin: auto;
-                padding: .5rem;
-                border: 1px solid rgb(210, 210, 210);
-                display: inline-block;
-                box-shadow: 3px 3px rgba(210, 210, 210, 0.5);
-                height: 40%;
-                width: 45%;
-                min-width: 30%;
-
-                .infos-card-content {
-                    height: calc(100% - 2.8rem);
-                    font-size: 1.1rem;
-                    .card-content-item-label {
-                        font-weight: bold;
-                        margin-right: .5rem;
-                    }
-                }
-            }
-        }
-    }
+    @import "./Infos.scss";
 </style>

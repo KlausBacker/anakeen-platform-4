@@ -37,6 +37,7 @@
     display: flex;
     flex: 1;
     .security-smartelement-profile-grid {
+      overflow-y:auto;
       background: #F1F1F1;
       padding: 1rem;
       flex: 1;

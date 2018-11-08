@@ -7,8 +7,11 @@ use Anakeen\Components\Grid\Routes\ColumnsConfig;
 use Anakeen\Components\Grid\Routes\GridConfig;
 use Anakeen\Router\ApiV2Response;
 
-class ProfilesGridConfig extends GridConfig
+class ElementsGridConfig extends GridConfig
 {
+
+    protected $vendorType = "all";
+
     public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
     {
         $this->parseRequestParams($request, $response, $args);
@@ -21,6 +24,7 @@ class ProfilesGridConfig extends GridConfig
         if (!empty($urlFieldsParam)) {
             $this->urlFields = array_map("trim", explode(",", $urlFieldsParam));
         }
+        $this->vendorType = $request->getQueryParam("vendor", "all");
     }
 
     protected static function getFilterable($type)
@@ -59,47 +63,39 @@ class ProfilesGridConfig extends GridConfig
         return [
             "field" => "family",
             "smartType" => "text",
-            "title" => "Type",
+            "title" => "Parent Structure",
             "property" => true,
             "sortable" => false,
             "filterable" => self::getFilterable("text")
         ];
     }
 
-    protected static function getDynamciFamidConfig()
+    protected function getElementsConfig($originalConfig)
     {
-        return [
-            "field" => "dpdoc_famid",
-            "smartType" => "text",
-            "title" => "Dynamic",
-            "sortable" => false,
-            "filterable" => self::getFilterable("text")
-        ];
-    }
-
-    protected function getProfilesConfig($originalConfig)
-    {
-        $originalConfig["toolbar"] = [];
+        $originalConfig["toolbar"] = null;
         $originalConfig["smartFields"] = [
-            ColumnsConfig::getColumnConfig("title"),
-            ColumnsConfig::getColumnConfig("name"),
             static::getFamilyPropConfig(),
-            static::getDynamciFamidConfig()
+            ColumnsConfig::getColumnConfig("title"),
+            ColumnsConfig::getColumnConfig("id"),
+            ColumnsConfig::getColumnConfig("name"),
         ];
 
         $originalConfig["actions"] = [
             "title" => "Actions",
             "actionConfigs" => [
-                [ "action" => "view", "title" => "View"]
+                [ "action" => "consult", "title" => "Consult"],
+                [ "action" => "viewJSON", "title" => "View JSON"],
+                [ "action" => "viewXML", "title" => "View XML"],
+                [ "action" => "security", "title" => "View Security"],
             ]
         ];
         $originalConfig["footer"] = [];
-        $originalConfig["contentURL"] = sprintf("/api/v2/devel/security/profiles/");
+        $originalConfig["contentURL"] = sprintf("/api/v2/devel/security/elements/?vendor=%s", $this->vendorType);
         return $originalConfig;
     }
     protected function getConfig()
     {
         $config = parent::getConfig();
-        return $this->getProfilesConfig($config);
+        return $this->getElementsConfig($config);
     }
 }
