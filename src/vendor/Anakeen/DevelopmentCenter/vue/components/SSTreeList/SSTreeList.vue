@@ -9,7 +9,7 @@
                         class="ss-treelist-tree"
                         :data-source="remoteDataSource"
                         :height="'100%'"
-                        :filterable="{ extra: false}"
+                        :filterable="{ extra: false, operators: { string: { contains: 'Contains'}}}"
                         :resizable="true"
                         :sortable="true"
                         :dataBound="onDataBound"
