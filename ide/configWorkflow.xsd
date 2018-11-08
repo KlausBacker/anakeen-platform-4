@@ -121,6 +121,9 @@
             <xs:element type="ns:commonRefType" name="field-access-configuration" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:commonRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:timerRefType" name="timer" minOccurs="0"/>
+            <xs:element type="xs:token" name="color" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="mask" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="view-control" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:token" name="ref" use="required"/>
     </xs:complexType>
