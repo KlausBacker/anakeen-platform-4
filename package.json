@@ -22,11 +22,11 @@
   "license": "MIT",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.0.1-1-1541438915",
+    "@anakeen/anakeen-cli": "latest",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-ui": "^2018.0.0",
-    "@webcomponents/webcomponentsjs": "2.0.2",
+    "@webcomponents/webcomponentsjs": "2.1.3",
     "axios": "^0.18.0",
     "backbone": "^1.3.3",
     "bootstrap": "^4.1.3",
@@ -41,14 +41,14 @@
     "document-register-element": "^1.11.0",
     "easygettext": "^2.4.0",
     "eslint": "^5.1.0",
-    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-prettier": "^3.0.0",
     "jquery": "^3.3.1",
     "little-loader": "^0.2.0",
-    "mustache": "^2.3.0",
+    "mustache": "^3.0.0",
     "popper.js": "^1.12.5",
     "prettier": "^1.14.2",
-    "roboto-fontface": "^0.9.0",
-    "style-loader": "^0.22.1",
+    "roboto-fontface": "^0.10.0",
+    "style-loader": "^0.23.1",
     "tracekit": "^0.4.5",
     "underscore": "^1.8.3",
     "vue": "^2.5.17",
@@ -59,7 +59,7 @@
     "wdio-junit-reporter": "^0.4.4",
     "wdio-mocha-framework": "^0.6.3",
     "webdriverio": "^4.13.2",
-    "whatwg-fetch": "^2.0.4"
+    "whatwg-fetch": "^3.0.0"
   },
   "dependencies": {}
 }
