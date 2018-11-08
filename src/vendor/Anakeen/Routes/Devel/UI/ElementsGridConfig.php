@@ -58,35 +58,33 @@ class ElementsGridConfig extends GridConfig
         return $filterable;
     }
 
-    protected static function getFamilyPropConfig()
-    {
-        return [
-            "field" => "family",
-            "smartType" => "text",
-            "title" => "Parent Structure",
-            "property" => true,
-            "sortable" => false,
-            "filterable" => self::getFilterable("text")
-        ];
-    }
-
     protected function getElementsConfig($originalConfig)
     {
         $originalConfig["toolbar"] = null;
+        $fromConfig = ColumnsConfig::getColumnConfig("fromid");
+        $fromConfig["relation"] = "-1";
+        $idConfig = ColumnsConfig::getColumnConfig("id");
+        $idConfig["filterable"] = self::getFilterable("int");
+
+        $docTypeConfig = ColumnsConfig::getColumnConfig("doctype");
+        $docTypeConfig["hidden"] = true;
+
         $originalConfig["smartFields"] = [
-            static::getFamilyPropConfig(),
+            $fromConfig,
             ColumnsConfig::getColumnConfig("title"),
-            ColumnsConfig::getColumnConfig("id"),
+            $idConfig,
             ColumnsConfig::getColumnConfig("name"),
+            $docTypeConfig
         ];
 
         $originalConfig["actions"] = [
             "title" => "Actions",
             "actionConfigs" => [
                 [ "action" => "consult", "title" => "Consult"],
-                [ "action" => "viewJSON", "title" => "View JSON"],
-                [ "action" => "viewXML", "title" => "View XML"],
-                [ "action" => "security", "title" => "View Security"],
+                [ "action" => "viewJSON", "title" => "JSON"],
+                [ "action" => "viewXML", "title" => "XML"],
+                [ "action" => "viewProps", "title" => "Properties"],
+                [ "action" => "security", "title" => "Security"]
             ]
         ];
         $originalConfig["footer"] = [];

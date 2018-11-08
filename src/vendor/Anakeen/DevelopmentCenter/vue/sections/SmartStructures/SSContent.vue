@@ -23,10 +23,6 @@
           {
             name: "SmartStructures::defaults",
             label: "Defaults"
-          },
-          {
-            name: "SmartStructures::others",
-            label: "Others"
           }
         ]
       }

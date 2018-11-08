@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Devel\UI;
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Components\Grid\Routes\ColumnsConfig;
 use Anakeen\Components\Grid\Routes\GridConfig;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 
 class ProfilesGridConfig extends GridConfig
@@ -54,37 +55,18 @@ class ProfilesGridConfig extends GridConfig
         return $filterable;
     }
 
-    protected static function getFamilyPropConfig()
-    {
-        return [
-            "field" => "family",
-            "smartType" => "text",
-            "title" => "Type",
-            "property" => true,
-            "sortable" => false,
-            "filterable" => self::getFilterable("text")
-        ];
-    }
-
-    protected static function getDynamciFamidConfig()
-    {
-        return [
-            "field" => "dpdoc_famid",
-            "smartType" => "text",
-            "title" => "Dynamic",
-            "sortable" => false,
-            "filterable" => self::getFilterable("text")
-        ];
-    }
-
     protected function getProfilesConfig($originalConfig)
     {
-        $originalConfig["toolbar"] = [];
+        $originalConfig["toolbar"] = null;
+        $fromConfig = ColumnsConfig::getColumnConfig("fromid");
+        $fromConfig["relation"] = "-1";
+        $dpdocConfig = ColumnsConfig::getColumnConfig("dpdoc_famid", SEManager::getFamily("PDOC"));
+        $dpdocConfig["title"] = "Dynamic";
         $originalConfig["smartFields"] = [
             ColumnsConfig::getColumnConfig("title"),
             ColumnsConfig::getColumnConfig("name"),
-            static::getFamilyPropConfig(),
-            static::getDynamciFamidConfig()
+            $fromConfig,
+            $dpdocConfig
         ];
 
         $originalConfig["actions"] = [

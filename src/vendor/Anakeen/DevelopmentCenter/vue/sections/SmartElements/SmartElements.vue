@@ -4,7 +4,7 @@
     </div>
 </template>
 <!-- CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
     @import "./SmartElements.scss";
 </style>
 <!-- Global CSS -->
