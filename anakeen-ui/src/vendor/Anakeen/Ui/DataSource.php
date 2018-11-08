@@ -114,7 +114,7 @@ class DataSource extends DocumentList
 
     protected function parseUrlArgs($urlArgs = array())
     {
-        if (!empty($urlArgs['collectionId'])) {
+        if (isset($urlArgs['collectionId'])) {
             $this->smartElementId = $urlArgs['collectionId'];
         }
     }
@@ -122,33 +122,38 @@ class DataSource extends DocumentList
     protected function prepareSearchDoc()
     {
         parent::prepareSearchDoc();
-        $doc = SmartElementManager::getDocument($this->smartElementId);
-        if (!$doc) {
-            $exception = new Exception('GRID0001', $this->smartElementId);
-            $exception->setHttpStatus("404", "Smart Element not found");
-            throw $exception;
-        }
-        $this->smartElement = $doc;
-        switch ($this->smartElement->defDoctype) {
-            case 'C':
-                $this->_searchDoc->fromid = $this->smartElement->id;
-                break;
-            case 'D':
-                $this->_searchDoc->useCollection($this->smartElement->initid);
-                break;
-            case 'S':
-                $famId = $this->smartElement->getRawValue(Search::se_famid);
-                if (empty($famId)) {
-                    $this->_searchDoc->fromid = 0;
-                } else {
-                    $this->_searchDoc->fromid = $famId;
-                    $this->_searchDoc->useCollection($this->smartElement->initid);
-                }
-                break;
-            default:
-                $exception = new Exception("GRID0002", $this->smartElementId);
-                $exception->setHttpStatus("400", "Smart Element is not a structure or collection");
+        if ($this->smartElementId === "-1") {
+            $this->_searchDoc->fromid = -1;
+            $this->smartElement = null;
+        } else {
+            $doc = SmartElementManager::getDocument($this->smartElementId);
+            if (!$doc) {
+                $exception = new Exception('GRID0001', $this->smartElementId);
+                $exception->setHttpStatus("404", "Smart Element not found");
                 throw $exception;
+            }
+            $this->smartElement = $doc;
+            switch ($this->smartElement->defDoctype) {
+                case 'C':
+                    $this->_searchDoc->fromid = $this->smartElement->id;
+                    break;
+                case 'D':
+                    $this->_searchDoc->useCollection($this->smartElement->initid);
+                    break;
+                case 'S':
+                    $famId = $this->smartElement->getRawValue(Search::se_famid);
+                    if (empty($famId)) {
+                        $this->_searchDoc->fromid = 0;
+                    } else {
+                        $this->_searchDoc->fromid = $famId;
+                        $this->_searchDoc->useCollection($this->smartElement->initid);
+                    }
+                    break;
+                default:
+                    $exception = new Exception("GRID0002", $this->smartElementId);
+                    $exception->setHttpStatus("400", "Smart Element is not a structure or collection");
+                    throw $exception;
+            }
         }
     }
 
@@ -161,7 +166,7 @@ class DataSource extends DocumentList
 
     protected function preparePaging()
     {
-        if (is_a($this->smartElement, \SmartStructure\Report::class)) {
+        if (!empty($this->smartElement) && is_a($this->smartElement, \SmartStructure\Report::class)) {
             $repLimit = intval($this->smartElement->getRawValue(Report::rep_limit, $this->pageSize));
             $this->slice = $repLimit;
             $this->pageSize = $this->slice;
@@ -206,27 +211,39 @@ class DataSource extends DocumentList
 
     protected function extractOrderBy()
     {
-        if (is_a($this->smartElement, \SmartStructure\Report::class)) {
-            $sortOrderDir = $this->smartElement->getRawValue(Report::rep_ordersort, "asc");
-            $sortField = $this->smartElement->getRawValue(Report::rep_idsort, "title");
-            $orderBy = "$sortField:$sortOrderDir";
-        }
-        if (!empty($this->sort)) {
-            $orderBy = implode(',', array_map(function ($item) {
-                return $item['field'] . ":" . $item['dir'];
-            }, $this->sort));
-        }
-        if (!empty($orderBy)) {
-            switch ($this->smartElement->defDoctype) {
-                case "C":
-                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->smartElement);
-                case "S":
-                    $famId = $this->smartElement->getRawValue("se_famid");
-                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, SmartElementManager::getFamily($famId));
-                default:
-                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);
+        if (!empty($this->smartElement)) {
+            if (is_a($this->smartElement, \SmartStructure\Report::class)) {
+                $sortOrderDir = $this->smartElement->getRawValue(Report::rep_ordersort, "asc");
+                $sortField = $this->smartElement->getRawValue(Report::rep_idsort, "title");
+                $orderBy = "$sortField:$sortOrderDir";
             }
+            if (!empty($this->sort)) {
+                $orderBy = implode(',', array_map(function ($item) {
+                    return $item['field'] . ":" . $item['dir'];
+                }, $this->sort));
+            }
+            if (!empty($orderBy)) {
+                switch ($this->smartElement->defDoctype) {
+                    case "C":
+                        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->smartElement);
+                    case "S":
+                        $famId = $this->smartElement->getRawValue("se_famid");
+                        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy,
+                            SmartElementManager::getFamily($famId));
+                    default:
+                        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);
+                }
 
+            }
+        } else {
+            if (!empty($this->sort)) {
+                $orderBy = implode(',', array_map(function ($item) {
+                    return $item['field'] . ":" . $item['dir'];
+                }, $this->sort));
+                if (!empty($orderBy)) {
+                    return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);
+                }
+            }
         }
         return parent::extractOrderBy();
     }
