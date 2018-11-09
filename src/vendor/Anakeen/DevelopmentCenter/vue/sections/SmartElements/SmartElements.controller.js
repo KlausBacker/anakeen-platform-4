@@ -1,6 +1,7 @@
 import Vue from "vue";
 import { Splitter, LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import { AnkSEGrid } from "@anakeen/ank-components";
+import PropertyView from "./PropertyView/PropertyView.vue";
 Vue.use(AnkSEGrid);
 Vue.use(LayoutInstaller);
 
@@ -33,7 +34,8 @@ const prettifyXml = sourceXml => {
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "kendo-splitter": Splitter
+    "kendo-splitter": Splitter,
+    "property-view": PropertyView
   },
   computed: {
     urlConfig() {
@@ -48,7 +50,9 @@ export default {
       ],
       viewURL: "",
       viewType: "html",
-      viewRawContent: ""
+      viewRawContent: "",
+      viewComponent: null,
+      viewComponentProps: {}
     };
   },
   mounted() {
@@ -117,7 +121,11 @@ export default {
           }
           break;
         case "viewProps":
-          this.viewURL = `/api/v2/documents/${event.data.row.id}.xml`;
+          this.viewType = "vue";
+          this.viewComponent = "property-view";
+          this.viewComponentProps = {
+            elementId: event.data.row.id
+          };
           break;
         case "security":
           // console.log(event.data);
@@ -131,7 +139,7 @@ export default {
           }
           break;
       }
-      if (this.viewType === "html") {
+      if (this.viewType === "html" || this.viewType === "vue") {
         this.openView();
       } else if (this.viewType === "json" || this.viewType === "xml") {
         this.$http

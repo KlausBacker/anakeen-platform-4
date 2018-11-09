@@ -9,6 +9,7 @@
                 <div v-else-if="viewType=== 'json' || viewType === 'xml'">
                     <pre>{{viewRawContent}}</pre>
                 </div>
+                <component v-else-if="viewType === 'vue' && viewComponent" :is="viewComponent" v-bind="viewComponentProps"></component>
             </div>
         </kendo-splitter>
 
