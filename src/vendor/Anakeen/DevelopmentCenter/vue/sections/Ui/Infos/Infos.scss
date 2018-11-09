@@ -32,6 +32,7 @@
       min-width: 30%;
 
       .ui-infos-card-content {
+        overflow-y: auto;
         height: calc(100% - 2.8rem);
         font-size: 1.1rem;
         .ui-infos-card-content-item-label {
