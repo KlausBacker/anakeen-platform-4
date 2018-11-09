@@ -57,13 +57,14 @@ class MasksGridConfig extends GridConfig
         return [
             "field" => "usedIn",
             "smartType" => "text",
+            "abstract" => true,
             "title" => "Used In",
             "sortable" => true,
             "filterable" => self::getFilterable("text")
         ];
     }
 
-    protected function getProfilesConfig($originalConfig)
+    protected function getMasksConfig($originalConfig)
     {
         $originalConfig["toolbar"] = [];
         $originalConfig["smartFields"] = [
@@ -85,6 +86,6 @@ class MasksGridConfig extends GridConfig
     protected function getConfig()
     {
         $config = parent::getConfig();
-        return $this->getProfilesConfig($config);
+        return $this->getMasksConfig($config);
     }
 }

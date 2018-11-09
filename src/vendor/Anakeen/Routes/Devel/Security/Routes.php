@@ -55,8 +55,12 @@ class Routes extends GridFiltering
     {
         $filtered = [];
         foreach ($result as $r) {
-            if (strcmp($r[$filter["field"]], "") === 0) {
-                $value = " ";
+            if (is_string($r[$filter["field"]])) {
+                if (strcmp($r[$filter["field"]], "") === 0) {
+                    $value = " ";
+                } else {
+                    $value = $r[$filter["field"]];
+                }
             } else {
                 $value = $r[$filter["field"]];
             }
