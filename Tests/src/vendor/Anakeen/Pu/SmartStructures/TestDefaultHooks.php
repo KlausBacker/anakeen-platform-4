@@ -14,7 +14,8 @@ class TestDefaultHooks extends \Anakeen\SmartElement
     
     public function addAllPlusOne($ar1, $ar2, $val)
     {
-        return Postgres::arrayToString([$ar1 + $ar2 + $val + 1]);
+        return $ar1 + $ar2 + $val + 1;
+       // return Postgres::arrayToString([$ar1 + $ar2 + $val + 1]);
     }
     
     public function oneMore($x)
@@ -24,7 +25,8 @@ class TestDefaultHooks extends \Anakeen\SmartElement
 
     public function oneArrayMore($x)
     {
-        return Postgres::arrayToString([intval($x) + 1]);
+        return intval($x) + 1;
+        //return Postgres::arrayToString([intval($x) + 1]);
     }
     public function itself($x)
     {

@@ -54,7 +54,7 @@ class ExportConfiguration
         $this->extract($structConfig);
     }
 
-    protected function extract($structConfig)
+    protected function extract(\DOMElement $structConfig)
     {
         $this->extractProps($structConfig);
         $this->extractAttr($structConfig);
@@ -73,9 +73,21 @@ class ExportConfiguration
      */
     public function toXml()
     {
+        static::removeNsAttr($this->dom, self::NS);
         return $this->dom->saveXML();
     }
 
+    public static function removeNsAttr(\DOMDocument $doc, $ns)
+    {
+        $finder = new \DOMXPath($doc);
+        $nodes = $finder->query("/*//*[namespace::{$ns}]");
+        /** @var \DOMNode $n $n */
+        foreach ($nodes as $n) {
+            $ns_uri = $n->lookupNamespaceURI($ns);
+            /** @var \DOMElement $n */
+            $n->removeAttributeNS($ns_uri, $ns);
+        }
+    }
 
     protected static function getLogicalName($id)
     {
@@ -89,6 +101,7 @@ class ExportConfiguration
 
     protected function extractProps(\DOMElement $structConfig)
     {
+        $this->setComment("Structure Properties", $structConfig);
         $structConfig->setAttribute("label", $this->sst->title);
         if ($this->sst->fromid) {
             $extendTag = $this->cel("extends");
@@ -222,9 +235,11 @@ class ExportConfiguration
                     $this->fieldSets[$docattr->frameid]->appendChild($smartOver);
                 } else {
                     $smartOver->setAttribute("unknow-fieldset", $docattr->frameid);
+                    $this->setComment("Alterated Fields", $structConfig);
                     $structConfig->appendChild($smartOver);
                 }
             } else {
+                $this->setComment("Alterated Fields", $structConfig);
                 $structConfig->appendChild($smartOver);
             }
         }
@@ -249,12 +264,12 @@ class ExportConfiguration
             }
             $smartDefaults->appendChild($def);
         }
+        $this->setComment("Default values", $structConfig);
         $structConfig->appendChild($smartDefaults);
     }
 
     protected function extractEnums()
     {
-
         $smartEnums = $this->cel("enumerates");
         $attrs = $this->sst->getNormalAttributes();
         $enumNames = [];
@@ -299,9 +314,13 @@ class ExportConfiguration
                 }
             }
 
-            foreach ($enumConfs as $enumConf) {
+            foreach ($enumConfs as $ke => $enumConf) {
+
+                $this->setComment("Enum [$ke] definitions", $smartEnums);
                 $smartEnums->appendChild($enumConf);
             }
+
+            $this->setComment("Enums definitions");
             $this->domConfig->appendChild($smartEnums);
         }
     }
@@ -421,7 +440,9 @@ class ExportConfiguration
                 }
             }
         }
+        $this->setComment("Structure Fields", $structConfig);
         $structConfig->appendChild($smartAttributes);
+        $this->setComment("Structure Parameters", $structConfig);
         $structConfig->appendChild($smartParameters);
     }
 
@@ -456,6 +477,7 @@ class ExportConfiguration
                 $smartHooks->appendChild($this->getComputeFunc($attr));
             }
         }
+        $this->setComment("Hooks methods", $structConfig);
         $structConfig->appendChild($smartHooks);
     }
 
@@ -480,6 +502,7 @@ class ExportConfiguration
             }
         }
 
+        $this->setComment("Autocomplete methods", $structConfig);
         $structConfig->appendChild($smartAuto);
     }
 
@@ -647,5 +670,18 @@ class ExportConfiguration
     protected function cel($name)
     {
         return $this->dom->createElementNS(self::NSURL, self::NS . ":" . $name);
+    }
+
+    protected function setComment($text, $dom = null)
+    {
+        $l = mb_strlen($text);
+
+        $border = str_pad('~', $l, '~');
+        if (!$dom) {
+            $dom = $this->domConfig;
+        }
+        $dom->appendChild($this->dom->createComment($border));
+        $dom->appendChild($this->dom->createComment($text));
+        $dom->appendChild($this->dom->createComment($border));
     }
 }

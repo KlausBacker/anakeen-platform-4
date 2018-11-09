@@ -30,11 +30,11 @@ autotest: install
 
 deploy:
 	rm -f smart-data-engine-1*app
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c $(CONTROL_PROTOCOL)://${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 deploy-test:
 	rm -f smart-data-engine-test*app
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c $(CONTROL_PROTOCOL)://${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 po:
 	${ANAKEEN_CLI_BIN} extractPo -s .

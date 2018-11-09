@@ -3,8 +3,14 @@
            targetNamespace="https://platform.anakeen.com/4/schemas/smart/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0"
+           xmlns:wfl="https://platform.anakeen.com/4/schemas/workflow/1.0"
+           xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"
+           xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0"
            xmlns:v1="https://platform.anakeen.com/4/schemas/smart/1.0">
     <xs:import namespace="https://platform.anakeen.com/4/schemas/ui/1.0"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/timer/1.0"/>
     <xs:element name="config" type="v1:configType">
         <xs:annotation>
             <xs:documentation>
@@ -16,6 +22,10 @@
 
     <xs:complexType name="configType">
         <xs:sequence>
+            <xs:element ref="mail:mailtemplate" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="timer:timer" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="wfl:config" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:accessConfigurationType" name="access-configuration" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
@@ -29,7 +39,6 @@
             <xs:element type="v1:fieldAccessLayerListType" name="field-access-layer-list" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:view-control" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:accessConfigurationType" name="access-configuration" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:render" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
@@ -167,7 +176,7 @@
 
     <xs:simpleType name="logicalNameType">
         <xs:restriction base="xs:token">
-            <xs:pattern value="[A-Za-z][A-Za-z0-9_]+"/>
+            <xs:pattern value="[A-Za-z][A-Za-z0-9_-]+"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -347,6 +356,7 @@
             <xs:element type="v1:attributesType" name="parameters" minOccurs="0"/>
             <xs:element type="v1:field-overrideType" name="field-override" minOccurs="0"/>
             <xs:element type="v1:hooksType" name="hooks" minOccurs="0"/>
+            <xs:element type="v1:extendsType" name="default-workflow" minOccurs="0"/>
             <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
             <xs:element type="v1:defaultsType" name="defaults" minOccurs="0">
                 <xs:annotation>
@@ -355,7 +365,6 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-
             <xs:element type="v1:accessesType" name="accesses" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="v1:logicalNameType" name="name"/>
@@ -413,7 +422,7 @@
     <xs:complexType name="extendsType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="v1:logicalNameType" name="ref"/>
+                <xs:attribute type="v1:logicalNameType" name="ref" use="required"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

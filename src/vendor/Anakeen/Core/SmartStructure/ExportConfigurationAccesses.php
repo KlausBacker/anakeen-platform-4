@@ -7,6 +7,7 @@ use Anakeen\Core\Internal\DocumentAccess;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
+use Anakeen\Router\Exception;
 
 /**
  * Class ExportConfiguration
@@ -16,15 +17,15 @@ use Anakeen\Core\SmartStructure;
  */
 class ExportConfigurationAccesses extends ExportConfiguration
 {
-    /** @noinspection PhpMissingParentConstructorInspection */
+    protected $extractedAccessProfile = [];
 
+    /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * ExportConfiguration constructor.
      * @param SmartStructure $sst Smart Structure to export
      */
     public function __construct(SmartStructure $sst)
     {
-
         $this->sst = $sst;
         $this->dom = new \DOMDocument("1.0", "UTF-8");
         $this->dom->formatOutput = true;
@@ -40,7 +41,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
         $this->extract($structConfig);
     }
 
-    protected function extract($structConfig)
+    protected function extract(\DOMElement $structConfig)
     {
 
         $this->extractProfil($structConfig);
@@ -76,7 +77,8 @@ class ExportConfigurationAccesses extends ExportConfiguration
             $tag = $this->cel("field-access-configuration");
             $tag->setAttribute("ref", static::getLogicalName($this->sst->cfallid) ?: $this->sst->cfallid);
             $access->appendChild($tag);
-            $this->setFieldAccessProfile($tag, $this->sst->cfallid);
+            $access->appendChild($tag);
+            $this->setFieldAccessProfile($this->sst->cfallid);
             $this->setFieldAccess($this->sst->cfallid);
             $accessControl = $this->setAccess($this->sst->cfallid);
             $this->domConfig->appendChild($accessControl);
@@ -110,7 +112,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
         $this->domConfig->appendChild($tag);
     }
 
-    protected function setFieldAccessProfile(\DOMElement $domNode, $fallid)
+    protected function setFieldAccessProfile($fallid)
     {
         $fall = SEManager::getDocument($fallid);
         $layers = $fall->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayerlist::fall_layer);
@@ -143,6 +145,10 @@ class ExportConfigurationAccesses extends ExportConfiguration
 
     protected function setAccessProfile(SmartElement $e)
     {
+        if (isset($this->extractedAccessProfile[$e->id])) {
+            return null;
+        }
+        $this->extractedAccessProfile[$e->id] = true;
         if ($e->accessControl()->isRealProfile()) {
             $accessControl = $this->setAccess($e->id);
             $this->domConfig->appendChild($accessControl);
@@ -155,18 +161,23 @@ class ExportConfigurationAccesses extends ExportConfiguration
     protected function setAccessRef(SmartElement $e)
     {
         $accessControl = $this->cel("access-configuration");
-        $accessControl->setAttribute("name", $e->name ?: $e->id);
-        $accessControl->setAttribute("ref", static::getLogicalName($e->dprofid ?: $e->profid));
+        $accessControl->setAttribute("name", static::getLogicalName($e->id));
 
+        if ($e->profid) {
+            $accessControl->setAttribute("ref", static::getLogicalName($e->dprofid ?: $e->profid));
+        }
         return $accessControl;
     }
 
-    protected function setAccess($profid)
+    protected function setAccess(string $profid, $returns = "all")
     {
         $accessControl = $this->cel("access-configuration");
         $profil = SEManager::getDocument($profid);
+        if (!$profil) {
+            throw new Exception(sprintf("Profil \"%s\" not found", $profid));
+        }
 
-        $accessControl->setAttribute("name", $profil->name ?: $profil->id);
+        $accessControl->setAttribute("name", static::getLogicalName($profil->id));
         $accessControl->setAttribute("label", $profil->title);
         if ($profil->defDoctype === 'C') {
             $accessControl->setAttribute("profil-type", "PFAM");
@@ -183,29 +194,32 @@ class ExportConfigurationAccesses extends ExportConfiguration
                 $accessControl->appendChild($desc);
             }
         }
-        $sql = sprintf(
-            "select users.login, docperm.upacl from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0 order by users.login",
-            $profil->id
-        );
-        DbManager::query($sql, $resultsAccount);
-        $sql = sprintf(
-            "select vgroup.id as attrid, docperm.upacl from docperm,vgroup where docperm.docid=%d and vgroup.num=docperm.userid and docperm.upacl != 0 order by vgroup.id",
-            $profil->id
-        );
-        DbManager::query($sql, $resultsRelation);
+        $resultsAccount = $resultsRelation = $resultsExtAccount = $resultsExtRelation = [];
+        if ($returns === "all" || $returns === "basic") {
+            $sql = sprintf(
+                "select users.login, docperm.upacl from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0 order by users.login",
+                $profil->id
+            );
+            DbManager::query($sql, $resultsAccount);
+            $sql = sprintf(
+                "select vgroup.id as attrid, docperm.upacl from docperm,vgroup where docperm.docid=%d and vgroup.num=docperm.userid and docperm.upacl != 0 order by vgroup.id",
+                $profil->id
+            );
+            DbManager::query($sql, $resultsRelation);
+        }
+        if ($returns === "all" || $returns === "extended") {
+            $sql = sprintf(
+                "select users.login, docpermext.acl from docpermext,users where docpermext.docid=%d and users.id=docpermext.userid order by users.login",
+                $profil->id
+            );
+            DbManager::query($sql, $resultsExtAccount);
 
-        $sql = sprintf(
-            "select users.login, docpermext.acl from docpermext,users where docpermext.docid=%d and users.id=docpermext.userid order by users.login",
-            $profil->id
-        );
-        DbManager::query($sql, $resultsExtAccount);
-
-        $sql = sprintf(
-            "select vgroup.id as attrid, docpermext.acl from docpermext,vgroup where docpermext.docid=%d and vgroup.num=docpermext.userid order by vgroup.id",
-            $profil->id
-        );
-        DbManager::query($sql, $resultsExtRelation);
-
+            $sql = sprintf(
+                "select vgroup.id as attrid, docpermext.acl from docpermext,vgroup where docpermext.docid=%d and vgroup.num=docpermext.userid order by vgroup.id",
+                $profil->id
+            );
+            DbManager::query($sql, $resultsExtRelation);
+        }
         $results = array_merge($resultsAccount, $resultsRelation);
 
         /**
@@ -255,7 +269,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
         }
         foreach ($accessResults as $result) {
             $acl = $result["acl"];
-            $elementAccess=$this->cel("element-access");
+            $elementAccess = $this->cel("element-access");
             $elementAccess->setAttribute("access", $acl);
 
             if (isset($result["login"])) {
@@ -264,7 +278,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
             if (isset($result["attrid"])) {
                 $elementAccess->setAttribute("field", $result["attrid"]);
             }
-            $elementAccesses[]=$elementAccess;
+            $elementAccesses[] = $elementAccess;
         }
 
         foreach ($elementAccesses as $elementAccess) {

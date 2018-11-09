@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
@@ -35,7 +36,12 @@ class ImageAsset
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
-        $location = $this->getSourceImage();
+        try {
+            $location = $this->getSourceImage();
+        } catch (Exception $e) {
+            $location = sprintf("%s/public/CORE/Images/core-noimage.png", ContextManager::getRootDirectory());
+            $response = $response->withStatus(404, "Image not found");
+        }
 
         if ($this->size !== null) {
             $dest = $this->getDestinationCacheImage($this->imageFileName, $this->size);

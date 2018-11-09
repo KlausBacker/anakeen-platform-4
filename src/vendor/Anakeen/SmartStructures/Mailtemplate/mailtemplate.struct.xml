@@ -70,7 +70,7 @@
                 <smart:field-argument name="workflow" type="field">TMAIL_WORKFLOW</smart:field-argument>
                 <smart:field-argument name="from" type="field">TMAIL_ATTACH</smart:field-argument>
                 <smart:field-returns>
-                    <smart:field-return field="mail_attach"/>
+                    <smart:field-return field="tmail_attach"/>
                 </smart:field-returns>
             </smart:field-autocomplete>
         </smart:autocompletion>

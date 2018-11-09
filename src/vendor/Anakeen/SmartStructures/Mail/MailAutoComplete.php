@@ -25,7 +25,7 @@ class MailAutoComplete
         $sf = new \SearchDoc("", -1);
         $sf->setObjectReturn();
         $sf->overrideViewControl();
-        $sf->addFilter("atags ~* 'MAILRECIPIENT'");
+        $sf->addFilter("atags->>'MAILRECIPIENT' = 'true'");
         $dlf = $sf->search()->getDocumentList();
 
         if ($dlf->count() == 0) {
