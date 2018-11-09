@@ -62,9 +62,8 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
             border-right-color: transparent;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
-            background: white;
-            font-weight: bold;
-            color: initial;
+            background-color: var(--primary);
+            color: var(--white);
           }
           &:not(.router-link-active):hover {
             border-color: rgba(33, 37, 41, .125);

@@ -14,15 +14,15 @@
           },
           {
             name: "Security::SmartStructures::Structures",
-            label: "Smart Structures"
+            label: "Structure Access"
           },
           {
             name: "Security::SmartStructures::Elements",
-            label: "Smart Elements"
+            label: "Element Access"
           },
           {
             name: "Security::SmartStructures::Fields",
-            label: "Smart Fields"
+            label: "Fields Access"
           }
         ]
       }
