@@ -60,6 +60,9 @@ class ProfilesGridConfig extends GridConfig
         $originalConfig["toolbar"] = null;
         $fromConfig = ColumnsConfig::getColumnConfig("fromid");
         $fromConfig["relation"] = "-1";
+        $fromConfig["smartType"] = "text";
+        $fromConfig["title"] = "Type";
+
         $dpdocConfig = ColumnsConfig::getColumnConfig("dpdoc_famid", SEManager::getFamily("PDOC"));
         $dpdocConfig["title"] = "Dynamic";
         $originalConfig["smartFields"] = [

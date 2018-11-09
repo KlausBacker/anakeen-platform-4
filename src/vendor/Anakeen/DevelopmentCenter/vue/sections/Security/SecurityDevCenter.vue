@@ -14,10 +14,6 @@
         return {
           items: [
             {
-              name: "Security::Routes",
-              label: "Routes"
-            },
-            {
               name: "Security::SmartStructures",
               label: "Smart Structures"
             },
@@ -32,6 +28,10 @@
             {
               name: "Security::Profile::Access",
               label: "Profile Access Control"
+            },
+            {
+              name: "Security::Routes",
+              label: "Routes"
             }
           ]
         }
