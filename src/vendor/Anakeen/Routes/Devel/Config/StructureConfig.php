@@ -44,7 +44,7 @@ class StructureConfig
         if (!$this->structure) {
             throw new Exception(sprintf("Structure \"%s\" not found", $this->structureId));
         }
-        $this->type = $args["type"];
+        $this->type = $args["type"]??"all";
     }
 
     public function doRequest()
@@ -55,6 +55,12 @@ class StructureConfig
                 break;
             case "accesses":
                 $e = new \Anakeen\Core\SmartStructure\ExportConfigurationAccesses($this->structure);
+                break;
+            case "uiaccesses":
+                $e = new \Anakeen\Ui\ExportRenderAccessConfiguration($this->structure);
+                break;
+            case "all":
+                $e = new \Anakeen\Ui\ExportRenderAllConfiguration($this->structure);
                 break;
             case "structures":
             default:

@@ -194,3 +194,20 @@ export default {
   }
 }
 ```
+
+# Routes
+
+## Export structure configuration routes
+
+*  `/api/v2/devel/config/smart/structures/{structure}.xml` : All config of a smart structure (structure+ui+accesses) 
+*  `/api/v2/devel/config/smart/structures/{structure}/uis.xml` : Ui config (render, cvdoc and masks)
+*  `/api/v2/devel/config/smart/structures/{structure}/structure.xml` : Fields, parameters, hooks, autocomplete, properties
+*  `/api/v2/devel/config/smart/structures/{structure}/accesses.xml` : Access of structure and default element profile
+
+## Export workflow configuration routes
+
+*  `/api/v2/devel/config/smart/workflows/{workflow}.xml` : All config of a workflow instance 
+*  `/api/v2/devel/config/smart/workflows/{workflow}/uis.xml` : View control / masks /color and access control to ui elements
+*  `/api/v2/devel/config/smart/workflows/{workflow}/accesses.xml` : Transition profile, Timer, mail access
+*  `/api/v2/devel/config/smart/workflows/{workflow}/config.xml` : Timer and mail template references in steps
+*  `/api/v2/devel/config/smart/workflows/{workflow}/data.xml` : Timer and mail template configuration

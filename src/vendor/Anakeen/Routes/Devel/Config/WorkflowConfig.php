@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Devel\Config;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
-
+use Anakeen\Workflow\ExportWorkflowConfiguration as EWC;
 /**
  * Class Structure
  * Get configuration of smart structure object
@@ -51,13 +51,29 @@ class WorkflowConfig
         if (!is_a($this->workflow, WDocHooks::class)) {
             throw new Exception(sprintf("Element \"%s\" is not a workflow", $this->workflowId));
         }
-      //  $this->type = $args["type"];
+        $this->type = $args["type"]??"all";
     }
 
     public function doRequest()
     {
 
-        $e = new \Anakeen\Workflow\ExportWorkflowConfiguration($this->workflow);
+        $e = new EWC($this->workflow);
+        switch ($this->type) {
+            case "uis":
+                $e->extractWorkflow(EWC::X_UICONFIG|EWC::X_UIACCESS|EWC::X_UIDATA|EWC::X_UIDATAACCESS);
+                break;
+            case "data":
+                $e->extractWorkflow(EWC::X_MAILTEMPLATEDATA|EWC::X_TIMERDATA);
+                break;
+            case "accesses":
+                $e->extractWorkflow(EWC::X_CONFIGACCESS|EWC::X_WFLACCESS|X_TIMERACCESS|X_MAILTEMPLATEACCESS);
+                break;
+            case "config":
+                $e->extractWorkflow(EWC::X_CONFIG);
+                break;
+            default:
+                $e->extractWorkflow(EWC::X_ALL);
+        }
 
         return $e->toXml();
     }
