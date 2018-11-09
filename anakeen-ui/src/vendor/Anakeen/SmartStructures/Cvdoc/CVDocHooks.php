@@ -9,6 +9,7 @@ namespace Anakeen\SmartStructures\Cvdoc;
 /**
  * Control view Class
  */
+
 use Anakeen\Core\Internal\DocumentAccess;
 use Anakeen\Core\SmartStructure\ExtendedControl;
 use Anakeen\SmartHooks;
@@ -33,7 +34,6 @@ class CVDocHooks extends \SmartStructure\Base
 
     public $usefor = 'SW';
     public $defDoctype = 'P';
-
 
 
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
@@ -65,7 +65,6 @@ class CVDocHooks extends \SmartStructure\Base
             $this->setAcls();
         });
     }
-
 
 
     public function setAcls()
@@ -251,10 +250,6 @@ class CVDocHooks extends \SmartStructure\Base
     }
 
 
-
-
-
-
     /**
      * retrieve first compatible view
      * @param bool $edition if true edition view else consultation view
@@ -281,7 +276,12 @@ class CVDocHooks extends \SmartStructure\Base
                 // search preferred view
                 $tv = $this->getArrayRawValues("cv_t_views");
                 // sort
-                usort($tv, "cmp_cvorder3");
+                usort($tv, function ($a, $b) {
+                    if ($a["cv_order"] == $b["cv_order"]) {
+                        return 0;
+                    }
+                    return ($a["cv_order"] < $b["cv_order"]) ? -1 : 1;
+                });
                 foreach ($tv as $k => $v) {
                     if ($v["cv_order"] > 0) {
                         if ($v["cv_kview"] == $type) {
