@@ -12,6 +12,7 @@ namespace SmartStructure\Fields {
 
     class Wdoc
     {
+        const ba_title='ba_title';
         /**
         * <ul>
         * <li> <i>extended</i> true </li>

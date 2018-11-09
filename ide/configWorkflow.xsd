@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema elementFormDefault="qualified"
            targetNamespace="https://platform.anakeen.com/4/schemas/workflow/1.0"
-           xmlns:wfl="https://platform.anakeen.com/4/schemas/workflow/1.0"
+           xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/smart/1.0"/>
     <xs:element name="graph" type="ns:graphType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <xs:element name="config" type="ns:configType" xmlns:ns="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <xs:complexType name="stepType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="wfl:fieldName" name="name" use="required"/>
+                <xs:attribute type="ns:fieldName" name="name" use="required"/>
                 <xs:attribute type="xs:string" name="state-label" use="required"/>
                 <xs:attribute type="xs:string" name="activity-label"/>
             </xs:extension>
@@ -15,7 +18,7 @@
     </xs:complexType>
     <xs:complexType name="stepsType">
         <xs:sequence>
-            <xs:element type="wfl:stepType" name="step" maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="ns:stepType" name="step" maxOccurs="unbounded" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         <p>State label can use locale. Set the i18n key</p>
@@ -36,16 +39,16 @@
     <xs:complexType name="transitionType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="wfl:fieldName" name="name" use="required"/>
-                <xs:attribute type="wfl:fieldName" name="from"/>
-                <xs:attribute type="wfl:fieldName" name="to"/>
+                <xs:attribute type="ns:fieldName" name="name" use="required"/>
+                <xs:attribute type="ns:fieldName" name="from"/>
+                <xs:attribute type="ns:fieldName" name="to"/>
                 <xs:attribute type="xs:string" name="label"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="transitionsType">
         <xs:sequence>
-            <xs:element type="wfl:transitionType" name="transition" maxOccurs="unbounded" minOccurs="0">
+            <xs:element type="ns:transitionType" name="transition" maxOccurs="unbounded" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         <p>Transition label can use locale. Set the i18n key</p>
@@ -60,16 +63,112 @@
     </xs:complexType>
     <xs:complexType name="graphType">
         <xs:sequence>
-            <xs:element type="wfl:stepsType" name="steps"/>
-            <xs:element type="wfl:transitionsType" name="transitions"/>
+            <xs:element type="ns:stepsType" name="steps"/>
+            <xs:element type="ns:transitionsType" name="transitions"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="ns" use="required"/>
         <xs:attribute type="xs:string" name="name" use="required"/>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Config workflow part -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xs:complexType name="commonRefType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="ns:elementName" name="ref" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="timerRefType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="ns:elementName" name="ref" use="required"/>
+                <xs:attribute type="ns:timerType" name="type" default="volatile"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="timerType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Timer type</h1>
+                <ul>
+                    <li>
+                        <code>volatile</code>
+                        : the timer is attache on transition and unatached when next transition is done
+                    </li>
+                    <li>
+                        <code>persistent</code>
+                        : the timer is attached until an unattach order is performed
+                    </li>
+                    <li>
+                        <code>unattach</code>
+                        : the timer is unattached on transition
+                    </li>
+                </ul>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="unattach"/>
+            <xs:enumeration value="volatile"/>
+            <xs:enumeration value="persistent"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="stepRefType" mixed="true">
+        <xs:sequence>
+            <xs:element type="ns:commonRefType" name="element-access-configuration" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="field-access-configuration" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:timerRefType" name="timer" minOccurs="0"/>
+            <xs:element type="xs:token" name="color" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="mask" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:commonRefType" name="view-control" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="xs:token" name="ref" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="stepsRefType">
+        <xs:sequence>
+            <xs:element type="ns:stepRefType" name="step" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="transitionRefType" mixed="true">
+        <xs:sequence>
+            <xs:element type="ns:commonRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:timerRefType" name="timer" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="ns:fieldName" name="ref" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="transitionsRefType">
+        <xs:sequence>
+            <xs:element type="ns:transitionRefType" name="transition" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="configType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="ns:stepsRefType" name="steps" minOccurs="0"/>
+            <xs:element type="ns:transitionsRefType" name="transitions" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="ns:elementName" name="name" use="required"/>
+        <xs:attribute type="ns:elementName" name="structure" />
+        <xs:attribute type="xs:string" name="label" />
+    </xs:complexType>
+
+
+
+
+
+    <!-- Basic type workflow  -->
     <xs:simpleType name="fieldName">
         <xs:restriction base="xs:token">
             <xs:pattern value="[a-z][a-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="elementName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-zA-Z][A-Za-z0-9_-]+"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>
