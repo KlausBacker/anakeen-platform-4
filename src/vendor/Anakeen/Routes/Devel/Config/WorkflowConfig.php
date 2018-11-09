@@ -6,6 +6,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Router\Exception;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Anakeen\Workflow\ExportWorkflowConfiguration as EWC;
+
 /**
  * Class Structure
  * Get configuration of smart structure object
