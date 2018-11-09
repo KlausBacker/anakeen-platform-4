@@ -9,7 +9,7 @@
                         class="ss-treelist-tree"
                         :data-source="remoteDataSource"
                         :height="'100%'"
-                        :filterable="{ extra: false}"
+                        :filterable="{ extra: false, operators: { string: { contains: 'Contains'}}}"
                         :resizable="true"
                         :sortable="true"
                         :dataBound="onDataBound"
@@ -17,7 +17,9 @@
                         :collapse="onCollapse"
                         :columnMenu="true"
                         :messages="{ noRows: 'There are no data for this Smart Structure...' }">
-            <kendo-treelist-column v-for="item in items" :template="columnTemplate(`${item.name}`)" :field="`${item.name}`" :title="`${item.label}`" :hidden="item.hidden"></kendo-treelist-column>
+            <kendo-treelist-column v-for="item in items" :template="columnTemplate(`${item.name}`)"
+                                   :field="`${item.name}`" :title="`${item.label}`" :hidden="item.hidden">
+            </kendo-treelist-column>
         </kendo-treelist>
     </div>
 </template>
