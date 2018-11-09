@@ -6,6 +6,7 @@
   .router-tabs-nav {
     padding: .25rem 0 0 0;
     display: flex;
+    margin-left: 1rem;
     .router-tab-nav-link {
       &:hover {
         text-decoration: none;
@@ -22,6 +23,8 @@
         margin-bottom: -1px;
         border: 1px solid rgba(33, 37, 41, .125);
         border-bottom-color: transparent;
+        background-color: var(--primary);
+        color: var(--white);
       }
     }
   }
@@ -32,7 +35,7 @@
     padding: .5rem;
     display: flex;
     flex: 1;
-    border: 1px solid rgba(33, 37, 41, .125);
+    border: 1px solid var(--primary);
     border-radius: .25rem;
   }
 }
