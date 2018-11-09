@@ -15,7 +15,10 @@ class GridContent extends DataSource
     protected function getData()
     {
         $data = parent::getData();
-        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("grid/content/%s", $this->smartElementId));
+        if (isset($this->smartElementId)) {
+            $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("grid/content/%s", $this->smartElementId));
+        }
+        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("grid/content/"));
 
         if (ContextManager::getParameterValue("Ui",  "MODE_DEBUG")) {
             $data["debug"]=$this->_searchDoc->getSearchInfo();
