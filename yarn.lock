@@ -30,10 +30,12 @@
     xml2js "^0.4.19"
     yargs "^11.1.0"
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1541665775"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1541665775.tgz#2b6e3800d00d648465f01850c78db743f403acec"
-  integrity sha512-solueqIrrE/4euDQ8GmQQ1wnSUEEz7lK9rsTnlzNoTWEhKGCGbXuKD+rydOpDUb/mX1Es7hOZIx1V3hsGyICOg==
+"@anakeen/ank-components@1.0.0-1541729305":
+  version "1.0.0-1541729305"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1541729305.tgz#040a94a56b9fc21dcfc7b170582aa5df0b2c8e79"
+  integrity sha512-TmHZoemRNJ6AhUOajdnMqoImbZfz2Q1qbEudoemIMYKAx4rFQ/HI+/0tzX4/ujMqJnNfgJf0yRy7VOJqWnPXUw==
+  dependencies:
+    vue-gettext "^2.1.1"
 
 "@anakeen/webpack-conf@latest":
   version "1.0.0-1541674165"
@@ -8504,7 +8506,7 @@ vue-custom-element@^3.2.5:
   resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.6.tgz#9e3f52eb5c5014c298cad731321ed64487fada0b"
   integrity sha512-tNWsax/Rq4Sr1QHj0pi4CWaBnAYfva75rlQg2fBKGja35+6AmdcZre/ztoiBWCSlSJ7APsMakG5R0A+GWBAc4Q==
 
-vue-gettext@^2.1.0:
+vue-gettext@^2.1.0, vue-gettext@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.1.tgz#8431b57c27d0becff131de6a643ac4ea8ffcb52c"
   integrity sha512-vbKhl7VGlVtTElNIdvpC4GKTRH1CwZmzhELcP6jS/UaFcF+yZvS5bIIAiPCQzMEU5dpAI0hIgJAxAKOMIg7UXw==
