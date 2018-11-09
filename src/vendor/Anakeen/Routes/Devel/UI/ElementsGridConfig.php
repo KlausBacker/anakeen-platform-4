@@ -63,6 +63,9 @@ class ElementsGridConfig extends GridConfig
         $originalConfig["toolbar"] = null;
         $fromConfig = ColumnsConfig::getColumnConfig("fromid");
         $fromConfig["relation"] = "-1";
+        $fromConfig["smartType"] = "text";
+        $fromConfig["title"] = "Parent";
+
         $idConfig = ColumnsConfig::getColumnConfig("id");
         $idConfig["filterable"] = self::getFilterable("int");
 
@@ -70,10 +73,10 @@ class ElementsGridConfig extends GridConfig
         $docTypeConfig["hidden"] = true;
 
         $originalConfig["smartFields"] = [
-            $fromConfig,
             ColumnsConfig::getColumnConfig("title"),
-            $idConfig,
             ColumnsConfig::getColumnConfig("name"),
+            $idConfig,
+            $fromConfig,
             $docTypeConfig
         ];
 
