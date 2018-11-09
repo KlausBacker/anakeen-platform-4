@@ -85,8 +85,7 @@ class MasksGridConfig extends GridConfig
     }
     protected function getConfig()
     {
-        $config =
-            rent::getConfig();
+        $config = parent::getConfig();
         return $this->getMasksConfig($config);
     }
 }
