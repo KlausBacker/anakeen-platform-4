@@ -37,9 +37,7 @@ export default {
   },
   computed: {
     urlConfig() {
-      return `/api/v2/devel/security/elements/config/?vendor=${
-        this.$store.getters.vendorCategory
-      }`;
+      return `/api/v2/devel/security/elements/config/`;
     }
   },
   data() {
