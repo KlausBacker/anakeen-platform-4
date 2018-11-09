@@ -235,7 +235,7 @@ class ColumnsConfig
             "filterable" => self::getColumnFilterConfig($currentAttribute),
 
         );
-        if (($data["type"] == "docid" || $data["type"] == "account") && $data["filterable"]) {
+        if (($data["smartType"] == "docid" || $data["smartType"] == "account") && $data["filterable"]) {
             $data["doctitle"] = $currentAttribute->getOption("doctitle") == "auto" ? $currentAttribute->id . "_title" : $currentAttribute->getOption("doctitle");
         }
         return $data;
