@@ -25,3 +25,7 @@ stub:
 
 beautify:
 	$(CBF_BIN) --standard=./ide/anakeenPhpCs.xml --extensions=php ./src
+
+autotest:
+	rm -f *app
+	${ANAKEEN_CLI_BIN} build --auto-release
