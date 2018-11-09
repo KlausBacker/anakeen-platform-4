@@ -11,10 +11,8 @@ class PDocHooks extends \Anakeen\Core\Internal\SmartElement
         "delete",
         "send",
         "unlock",
-        "confidential",
-        "wask"
+        "confidential"
     );
-
     public $defDoctype = 'P';
     public $defProfFamId = FAM_ACCESSDOC;
 }
