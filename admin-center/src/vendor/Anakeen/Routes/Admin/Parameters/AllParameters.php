@@ -93,7 +93,6 @@ SQL;
                 $formatedParameter['value'] = $parameter['value'];
 
                 $formatedParameter['isUser'] = ($parameter['isuser'] === 'Y');
-                $formatedParameter['isGlobal'] = ($parameter['isglob'] === 'Y');
 
                 $formatedParameter['isStatic'] = ($parameter['kind'] === 'static');
                 $formatedParameter['isReadOnly'] = ($parameter['kind'] === 'readonly');
@@ -159,7 +158,7 @@ SQL;
 
         foreach ($params as $param) {
             $param['id'] = $currentId++;
-            $currentNameSpace = $nameSpaceIds[$param['nameSpace']];
+            $currentNameSpace = $nameSpaceIds[$param['nameSpace']] ?? null;
             if ($currentNameSpace === null) {
                 $newId = $currentId++;
                 $data[] = ['id' => $newId, 'parentId' => null, 'name' => $param['nameSpace'], 'rowLevel' => 1];
@@ -169,7 +168,7 @@ SQL;
             }
 
             if ($param['category']) {
-                $currentCategory = $categoryIds[$param['nameSpace']][$param['category']];
+                $currentCategory = $categoryIds[$param['nameSpace']][$param['category']] ?? null;
                 if ($currentCategory === null) {
                     $newId = $currentId++;
                     $data[] = ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2];
