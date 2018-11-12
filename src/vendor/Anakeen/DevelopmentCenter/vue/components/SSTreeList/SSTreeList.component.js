@@ -100,15 +100,24 @@ export default {
           }
           if (
             dataItem.structure !== that.ssName &&
-            that.$route.name === "SmartStructures::structure"
+            that.$route.name === "SmartStructures::fields::structure"
           ) {
             $(this).addClass(" is-herited");
           }
           if (
             dataItem.declaration === "overrided" &&
-            that.$route.name === "SmartStructures::structure"
+            that.$route.name === "SmartStructures::fields::structure"
           ) {
             $(this).addClass(" is-overrided");
+          }
+          if (dataItem.parentId) {
+            if (
+              that.$refs.ssTreelist
+                .kendoWidget()
+                .dataSource.get(dataItem.parentId).type === "array"
+            ) {
+              $(this).addClass(" is-array-children");
+            }
           }
         });
       }, 1);

@@ -48,7 +48,10 @@
 }
 
 .is-herited {
-  color: #949494 !important;
+  color: lighten(#000000, 40%) !important;
+}
+.is-array-children {
+  background-color: rgba(255, 184, 148, 0.2) !important;
 }
 .attr-type--tab, .attr-type--tab:hover {
   background-color: #e7cfff !important;
