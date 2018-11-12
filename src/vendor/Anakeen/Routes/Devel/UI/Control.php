@@ -44,6 +44,7 @@ class Control extends GridContent
             $doc = SEManager::getDocument($datum["properties"]["id"]);
             if ($doc) {
                 $result["name"] = $doc->name;
+                $result["title"] = $doc->title;
                 $result["cv_renderaccessclass"] = $doc->getAttributeValue("cv_renderaccessclass");
                 $result["cv_primarymask"] = $doc->getAttributeValue("cv_primarymask");
             }

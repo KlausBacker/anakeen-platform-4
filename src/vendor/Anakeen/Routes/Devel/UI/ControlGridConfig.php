@@ -58,6 +58,7 @@ class ControlGridConfig extends GridConfig
         $originalConfig["toolbar"] = [];
         $originalConfig["smartFields"] = [
             ColumnsConfig::getColumnConfig("name"),
+            ColumnsConfig::getColumnConfig("title"),
             ColumnsConfig::getColumnConfig("cv_renderaccessclass", SEManager::getFamily("CVDOC")),
             ColumnsConfig::getColumnConfig("cv_primarymask", SEManager::getFamily("CVDOC"))
         ];
