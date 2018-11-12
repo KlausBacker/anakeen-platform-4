@@ -23,7 +23,7 @@
                     :sortable="true">
             <kendo-grid-column :field="'accessNs'" :title="'<b>Namespace</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'accessName'" :title="'<b>Name</b>'" :template="displayLink" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
-            <kendo-grid-column :field="'account.reference'" :title="'<b>Account</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
+            <kendo-grid-column :field="'account.reference'" :title="'<b>Account</b>'" :template="displayRole" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
         </kendo-grid>
     </div>
 </template>
