@@ -1,6 +1,6 @@
 <template>
     <div class="se-properties-view" v-if="isReady">
-        <h1>{{elementProperties.name}} properties</h1>
+        <h1>{{elementProperties.name||elementProperties.title}} properties</h1>
         <table class="se-properties-main table table-condensed table-hover">
             <thead>
             <tr class="se-properties-header">
@@ -45,9 +45,11 @@
             <tr>
                 <td class="se-properties-description">Structure</td>
                 <td class="se-properties-value">
-                    <a v-if="elementProperties.family" :href="`/api/v2/documents/${elementProperties.fromid}.html`">
-                        <img :src="elementProperties.family.icon">{{elementProperties.family.title}}</a><br>
-                    <div class="se-properties-value--famname">{{elementProperties.family.name}}</div>
+                    <router-link v-if="elementProperties.family" :to="`/devel/smartStructures/${elementProperties.family.name}`">
+                        <img :src="elementProperties.family.icon">{{elementProperties.family.title}}
+                        <span v-if="elementProperties.family.name" class="se-properties-value--famname"> ({{elementProperties.family.name}})</span>
+                    </router-link>
+
                 </td>
             </tr>
             <tr>
@@ -57,7 +59,8 @@
                 <td class="se-properties-description">Créé par</td>
                 <td class="se-properties-value">
                     <a v-if="elementProperties.createdBy"
-                       :href="`api/v2/documents/${elementProperties.createdBy.id}.html`"><img
+                       target="_blank"
+                       :href="`/api/v2/documents/${elementProperties.createdBy.id}.html`"><img
                         :src="elementProperties.createdBy.icon">{{elementProperties.createdBy.title}}</a>
                 </td>
             </tr>
@@ -66,7 +69,8 @@
                 <td v-if="!elementProperties.locked" class="se-properties-value">Aucun verrou</td>
                 <td class="se-properties-value" v-else>
                     <a v-if="elementProperties.security"
-                       :href="`api/v2/documents/${elementProperties.security.lock.lockedBy.id}.html`"><img
+                       target="_blank"
+                       :href="`/api/v2/documents/${elementProperties.security.lock.lockedBy.id}.html`"><img
                             :src="elementProperties.security.lock.lockedBy.icon">{{elementProperties.security.lock.lockedBy.title}}</a>
                 </td>
             </tr>
@@ -94,7 +98,12 @@
             </tr>
             <tr>
                 <td class="se-properties-description">Profil</td>
-                <td class="se-properties-value"></td>
+                <td class="se-properties-value">
+                    <router-link v-if="elementProperties.security && elementProperties.security.profil"
+                       :to="`/devel/security/profiles/${elementProperties.security.profil.id}`">
+                        <img :src="elementProperties.security.profil.icon">{{elementProperties.security.profil.title}}
+                    </router-link>
+                </td>
             </tr>
             <tr>
                 <td class="se-properties-description">Profil de référence</td>
@@ -102,11 +111,21 @@
             </tr>
             <tr>
                 <td class="se-properties-description">Field access</td>
-                <td class="se-properties-value"></td>
+                <td class="se-properties-value">
+                    <a v-if="elementProperties.security && elementProperties.security.fieldAccess"
+                       target="_blank"
+                       :href="`/api/v2/documents/${elementProperties.security.fieldAccess.id}.html`"><img
+                            :src="elementProperties.security.fieldAccess.icon">{{elementProperties.security.fieldAccess.title}}</a>
+                </td>
             </tr>
             <tr>
                 <td class="se-properties-description">Contrôle de vue</td>
-                <td class="se-properties-value"></td>
+                <td class="se-properties-value">
+                    <a v-if="elementProperties.viewController"
+                       target="_blank"
+                       :href="`/api/v2/documents/${elementProperties.viewController.id}.html`"><img
+                            :src="elementProperties.viewController.icon">{{elementProperties.viewController.title}}</a>
+                </td>
             </tr>
             </tbody>
         </table>

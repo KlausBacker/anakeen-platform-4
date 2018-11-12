@@ -53,7 +53,7 @@ export default {
       if (!date) {
         return "";
       }
-      return new Date(date).toLocaleDateString();
+      return kendo.toString(new Date(date), "g");
     }
   }
 };
