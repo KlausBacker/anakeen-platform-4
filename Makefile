@@ -5,9 +5,6 @@ MODULE_NAME=migration-tools
 NODE_MODULE_PATH=node_modules
 
 ## control conf
-port=80
-CONTROL_PROTOCOL=http
-CONTROL_PORT=$(port)
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
 CONTROL_URL=$(host)/control/
@@ -16,7 +13,6 @@ CONTROL_CONTEXT=$(ctx)
 ##bin
 YARN_BIN=yarn
 COMPOSER=composer
-DEVTOOL_BIN=php ./anakeen-devtool.phar
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
 -include Makefile.local
@@ -41,8 +37,8 @@ autotest: compile
 
 deploy:
 	rm -f ${MODULE_NAME}*app
-	${ANAKEEN_CLI_BIN} build --auto-release
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w ${MODULE_NAME}*.app
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
 
 ########################################################################################################################
 ##
