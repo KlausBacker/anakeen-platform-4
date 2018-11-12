@@ -27,7 +27,7 @@ CONTROL_CONTEXT=$(ctx)
 
 ##bin
 YARN_BIN=yarn
-DEVTOOL_BIN=php ./anakeen-devtool.phar
+
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 COMPOSER_BIN=composer
 
