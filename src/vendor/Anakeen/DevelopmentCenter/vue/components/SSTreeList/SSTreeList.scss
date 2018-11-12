@@ -74,28 +74,3 @@
 .k-treelist tbody tr:hover {
   outline: solid 1px grey;
 }
-
-.tree-item-search {
-  .tree-search-input:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .tree-search-input {
-    position: relative;
-    flex: 1;
-    margin-bottom: 0;
-  }
-}
-
-.reset-search-btn {
-  border: 0;
-  margin: auto;
-  font-size: 1.3rem;
-  line-height: 1;
-  border-radius: 50%;
-  background: transparent;
-  position: relative;
-  z-index: 10;
-  padding: 0;
-  cursor: pointer;
-}
