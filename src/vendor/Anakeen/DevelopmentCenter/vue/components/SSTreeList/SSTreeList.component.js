@@ -12,6 +12,10 @@ Vue.use(TreeListInstaller);
 export default {
   name: "ss-treelist",
   props: {
+    messages: {
+      type: String,
+      default: () => "There are no data for this SmartStructure"
+    },
     ssName: {
       type: String,
       default: () => ""

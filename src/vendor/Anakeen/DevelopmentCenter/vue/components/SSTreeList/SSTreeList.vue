@@ -16,7 +16,7 @@
                         :expand="onExpand"
                         :collapse="onCollapse"
                         :columnMenu="true"
-                        :messages="{ noRows: 'There are no data for this Smart Structure...' }">
+                        :messages="{ noRows: messages }">
             <kendo-treelist-column v-for="item in items" :key="item.name" :template="columnTemplate(`${item.name}`)"
                                    :field="`${item.name}`" :title="`${item.label}`" :hidden="item.hidden">
             </kendo-treelist-column>
