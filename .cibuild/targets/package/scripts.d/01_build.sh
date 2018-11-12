@@ -1,15 +1,10 @@
 #!/bin/bash
 
 set -eo pipefail
+shopt -s nullglob
 
-npm config set @anakeen:registry http://npm.corp.anakeen.com:4873
+make app
 
-if [ -z "${A4PPM_MAKE_TARGET}" ]; then
-	A4PPM_MAKE_TARGET="app"
-fi
-
-make "${A4PPM_MAKE_TARGET}"
-
-OUTPUT_DIR="${PWD}/outputs"
-
-mv -v *.app "${PWD}/outputs"
+for F in *.app; do
+	mv -v "${F}" "${CIBUILD_OUTPUTS}/"
+done
