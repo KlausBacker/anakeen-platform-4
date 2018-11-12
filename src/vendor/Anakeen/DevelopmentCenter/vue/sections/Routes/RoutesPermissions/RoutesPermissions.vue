@@ -9,14 +9,14 @@
                           :transport-read="getPermissions"
                           :server-paging="true"
                           :pageable="true"
-                          :page-size="20"
+                          :page-size="100"
                           :schema-data="parsePermissionsData"
                           :schema-total="parsePermissionsTotal">
         </kendo-datasource>
         <kendo-grid ref="routesPermissionsContent"
                     class="routes-permissions-content"
                     :data-source-ref="'routesPermissions'"
-                    :pageable="{ pageSizes: [10,20,40,50]}"
+                    :pageable="{ pageSizes: [100,200,500]}"
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true">
