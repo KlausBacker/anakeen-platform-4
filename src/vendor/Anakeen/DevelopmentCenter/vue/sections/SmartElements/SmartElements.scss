@@ -13,6 +13,23 @@
       display: flex;
       flex: 1;
       transition: width,left .3s ease;
+
+      .se-grid {
+        .actionMenu {
+          .k-animation-container {
+            left: -9rem !important;
+          }
+        }
+      }
+    }
+  }
+
+  .smart-elements-raw-view {
+    display: flex;
+    flex: 1;
+    background: white;
+    pre {
+      flex: 1;
     }
   }
 }
