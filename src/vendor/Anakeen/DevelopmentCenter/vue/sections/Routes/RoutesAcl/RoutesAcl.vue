@@ -8,6 +8,7 @@
                           :server-paging="true"
                           :pageable="true"
                           :page-size="100"
+                          :sort="[{ field: 'nameSpace', dir: 'asc'},{field: 'name', dir:'asc'}]"
                           :schema-data="parseRoutesData"
                           :schema-total="parseRoutesTotal"
                           :server-filtering="true">

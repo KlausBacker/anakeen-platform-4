@@ -10,6 +10,7 @@
                           :server-paging="true"
                           :pageable="true"
                           :page-size="100"
+                          :sort="[{ field: 'accessNs', dir: 'asc'},{field: 'accessName', dir:'asc'}]"
                           :schema-data="parsePermissionsData"
                           :schema-total="parsePermissionsTotal">
         </kendo-datasource>
