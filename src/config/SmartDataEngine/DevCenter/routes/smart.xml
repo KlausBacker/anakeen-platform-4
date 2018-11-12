@@ -75,41 +75,5 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
-        <sde:route name="GetMasks">
-            <sde:callable>\Anakeen\Routes\Devel\UI\Masks</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/masks/</sde:pattern>
-            <sde:description>Get masks</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="DevCenter">DevelAccess</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
-        <sde:route name="GetMasksConfig">
-            <sde:callable>\Anakeen\Routes\Devel\UI\MasksGridConfig</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/masks/config/</sde:pattern>
-            <sde:description>Get masks</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="DevCenter">DevelAccess</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
-        <sde:route name="GetViewControls">
-            <sde:callable>\Anakeen\Routes\Devel\UI\Control</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/control/</sde:pattern>
-            <sde:description>Get Control </sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="DevCenter">DevelAccess</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
-        <sde:route name="GetControlConfig">
-            <sde:callable>\Anakeen\Routes\Devel\UI\ControlGridConfig</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/control/config/</sde:pattern>
-            <sde:description>Get Control configuration</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="DevCenter">DevelAccess</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
     </sde:routes>
 </sde:config>
