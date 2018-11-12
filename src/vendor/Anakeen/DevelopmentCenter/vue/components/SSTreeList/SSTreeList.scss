@@ -7,8 +7,9 @@
 
 .ss-treelist-tree {
   flex: 1;
-  align-items: flex-start;
-  justify-content: stretch;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
 }
 
 .ss-treelist-toolbar {
@@ -18,26 +19,24 @@
 }
 
 .k-status {
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
+  margin-left: 35%;
+  margin-top: 15rem;
   top: 50%;
   left: 40%;
   font-size: 1.5rem;
+  color: #A4A4A4 !important;
 }
 
-.k-status:after {
-  display: inline-block;
-  font-family: "WebComponentsIcons";
-  content: "\e682";
+.k-status:before {
+  display: block;
+  font-family: "Material Icons";
+  content: "grid_off";
   font-size: 10rem;
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
-  top: -150%;
-  left: 20%;
+  padding-bottom: 5rem;
+  padding-left: 8rem;
+  top: calc((20rem/2) - (30rem/2));
+  left: calc((20rem/2) - (10rem/2));
+  color: #A4A4A4 !important;
 }
 
 .overrided:after {
@@ -76,3 +75,27 @@
   outline: solid 1px grey;
 }
 
+.tree-item-search {
+  .tree-search-input:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .tree-search-input {
+    position: relative;
+    flex: 1;
+    margin-bottom: 0;
+  }
+}
+
+.reset-search-btn {
+  border: 0;
+  margin: auto;
+  font-size: 1.3rem;
+  line-height: 1;
+  border-radius: 50%;
+  background: transparent;
+  position: relative;
+  z-index: 10;
+  padding: 0;
+  cursor: pointer;
+}
