@@ -13,6 +13,19 @@ export default class ErrorManager {
   bindNetworkCommonsErrors() {
     this.appInstance.$http.interceptors.response.use(
       response => {
+        if (response.headers) {
+          if (
+            response.headers["content-type"].indexOf("application/json") > -1 &&
+            response.request &&
+            response.request.responseText
+          ) {
+            try {
+              JSON.parse(response.request.responseText);
+            } catch (err) {
+              return Promise.reject(err);
+            }
+          }
+        }
         return response;
       },
       error => {

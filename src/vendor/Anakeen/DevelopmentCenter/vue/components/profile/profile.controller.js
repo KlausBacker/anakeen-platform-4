@@ -111,7 +111,7 @@ export default {
                 .catch(err => {
                   console.error(err);
                   //this.emit("error", err);
-                  options.fail(err);
+                  options.error(err);
                 });
             }
           }
