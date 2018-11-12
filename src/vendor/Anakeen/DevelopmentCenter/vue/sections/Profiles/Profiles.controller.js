@@ -1,9 +1,30 @@
 import Vue from "vue";
+import { Splitter, LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import { AnkSEGrid } from "@anakeen/ank-components";
+
+Vue.use(LayoutInstaller);
 Vue.use(AnkSEGrid);
 export default {
   components: {
-    "ank-se-grid": AnkSEGrid
+    "ank-se-grid": AnkSEGrid,
+    "kendo-splitter": Splitter
+  },
+  data() {
+    return {
+      panes: [
+        { scrollable: false, min: "33%", max: "100%" },
+        { collapsed: true, collapsible: true }
+      ]
+    };
+  },
+  beforeRouteEnter(to, from, next) {
+    if (to.name === "Security::Profile::Access::Element") {
+      next(vueInstance => {
+        vueInstance.openView();
+      });
+    } else {
+      next();
+    }
   },
   methods: {
     cellRender(event) {
@@ -30,9 +51,14 @@ export default {
               seIdentifier: event.data.row.name || event.data.row.initid
             }
           });
+          this.openView();
           break;
         }
       }
+    },
+    openView() {
+      const splitter = this.$refs.splitter.kendoWidget();
+      splitter.expand(".k-pane:last");
     }
   }
 };

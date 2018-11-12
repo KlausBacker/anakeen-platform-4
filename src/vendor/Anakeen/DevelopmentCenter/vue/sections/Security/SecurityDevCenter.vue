@@ -26,10 +26,6 @@
               label: "Roles"
             },
             {
-              name: "Security::Profile::Access",
-              label: "Profile Access Control"
-            },
-            {
               name: "Security::Routes",
               label: "Routes"
             }
