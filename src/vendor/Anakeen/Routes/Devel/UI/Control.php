@@ -3,7 +3,6 @@
 
 namespace Anakeen\Routes\Devel\UI;
 
-
 use Anakeen\Components\Grid\Routes\GridContent;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
