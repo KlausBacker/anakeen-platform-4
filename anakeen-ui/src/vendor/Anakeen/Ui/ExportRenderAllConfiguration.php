@@ -9,27 +9,28 @@ namespace Anakeen\Ui;
  */
 class ExportRenderAllConfiguration extends ExportRenderAccessConfiguration
 {
-    protected function extract(\DOMElement $structConfig)
+    public function extract()
     {
         $this->domConfig->setAttribute("xmlns:" . self::NS, self::NSURL);
         $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
 
-        $this->extractCv($this->domConfig);
+        $this->extractCvRef();
+        $this->extractDefaultCvData();
 
         $this->setComment("View control accesses");
-        $this->extractCvAccess($this->domConfig);
+        $this->extractCvAccess();
 
         $this->setComment("Structure Profil Accesses");
-        $this->extractProfil($structConfig);
+        $this->extractProfil();
 
-        $this->extractProps($structConfig);
-        $this->extractAttr($structConfig);
-        $this->extractModAttr($structConfig);
-        $this->extractHooks($structConfig);
-        $this->extractAutoComplete($structConfig);
-        $this->extractDefaults($structConfig);
+        $this->extractProps();
+        $this->extractAttr();
+        $this->extractModAttr();
+        $this->extractHooks();
+        $this->extractAutoComplete();
+        $this->extractDefaults();
         $this->extractEnums();
 
-        $this->domConfig->appendChild($structConfig);
+        $this->domConfig->appendChild($this->structConfig);
     }
 }
