@@ -96,7 +96,7 @@ class ExportConfiguration
         }
     }
 
-    protected static function getLogicalName($id)
+    public static function getLogicalName($id)
     {
         $name = SEManager::getNameFromId($id);
         if ($name === null) {
@@ -374,6 +374,9 @@ class ExportConfiguration
             $smartAttr = null;
             $attrName = $attr->id;
             $type = $attr->type;
+            if ($type === "integer") {
+                $type="int";
+            }
             switch ($type) {
                 case "menu":
                 case "action":

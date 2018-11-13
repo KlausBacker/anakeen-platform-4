@@ -25,6 +25,10 @@
             <xs:element ref="mail:mailtemplate" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="timer:timer" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="wfl:config" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="ui:view-control" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:fieldAccessLayerListType" name="field-access-layer-list" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:accessConfigurationType" name="access-configuration" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
@@ -35,22 +39,18 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element type="v1:fieldAccessLayerListType" name="field-access-layer-list" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="ui:view-control" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:render" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="field-returnType">
-        <xs:attribute type="v1:attrNameType" name="field"/>
+        <xs:attribute type="v1:fieldNameType" name="field"/>
     </xs:complexType>
 
     <xs:complexType name="field-overrideType">
         <xs:complexContent>
             <xs:extension base="v1:field-propsStandardType">
-                <xs:attribute type="v1:attrNameType" name="field" use="required"/>
+                <xs:attribute type="v1:fieldNameType" name="field" use="required"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -60,7 +60,7 @@
             <xs:element type="v1:field-argumentType" name="field-argument" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="v1:field-returnsType" name="field-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="field"/>
+        <xs:attribute type="v1:fieldNameType" name="field"/>
     </xs:complexType>
 
     <xs:simpleType name="attrReturnArgType">
@@ -156,6 +156,7 @@
         </xs:attribute>
         <xs:attribute type="xs:boolean" name="is-abstract" default="false"/>
         <xs:attribute type="xs:boolean" name="is-title" default="false"/>
+        <xs:attribute type="v1:fieldNameType" name="insert-after"/>
         <xs:attribute type="xs:string" name="link"/>
         <xs:attribute type="xs:boolean" name="multiple"/>
     </xs:complexType>
@@ -163,12 +164,12 @@
     <xs:complexType name="field-standardType">
         <xs:complexContent>
             <xs:extension base="v1:field-propsStandardType">
-                <xs:attribute type="v1:attrNameType" name="name" use="required"/>
+                <xs:attribute type="v1:fieldNameType" name="name" use="required"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:simpleType name="attrNameType">
+    <xs:simpleType name="fieldNameType">
         <xs:restriction base="xs:string">
             <xs:pattern value="[a-z][a-z0-9_]+"/>
         </xs:restriction>
@@ -244,7 +245,7 @@
     </xs:complexType>
 
     <xs:complexType name="fieldSetAccessType">
-        <xs:attribute type="v1:attrNameType" name="field"/>
+        <xs:attribute type="v1:fieldNameType" name="field"/>
         <xs:attribute type="v1:fieldAccessType" name="access"/>
     </xs:complexType>
 
@@ -433,7 +434,7 @@
                 <xs:attribute type="xs:token" name="ref"/>
                 <xs:attribute type="xs:token" name="account"/>
                 <xs:attribute type="xs:token" name="access"/>
-                <xs:attribute type="v1:attrNameType" name="field"/>
+                <xs:attribute type="v1:fieldNameType" name="field"/>
                 <xs:attribute type="v1:logicalNameType" name="element"/>
             </xs:extension>
         </xs:simpleContent>
@@ -446,7 +447,7 @@
             <xs:element type="v1:field-argumentType" name="field-argument" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="v1:field-returnsType" name="field-returns" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="v1:attrNameType" name="field" use="required"/>
+        <xs:attribute type="v1:fieldNameType" name="field" use="required"/>
         <xs:attribute type="xs:boolean" name="reset" default="false"/>
     </xs:complexType>
 
@@ -515,7 +516,7 @@
             <xs:element type="v1:field-returnType" name="field-return" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="event"/>
-        <xs:attribute type="v1:attrNameType" name="field"/>
+        <xs:attribute type="v1:fieldNameType" name="field"/>
         <xs:attribute type="xs:string" name="type"/>
     </xs:complexType>
     <xs:complexType name="hooksType">
@@ -546,9 +547,9 @@
             <xs:element type="v1:field-standardType" name="field-json"/>
             <xs:element type="v1:field-optionType" name="field-option"/>
         </xs:choice>
-        <xs:attribute type="v1:attrNameType" name="name" use="required"/>
+        <xs:attribute type="v1:fieldNameType" name="name" use="required"/>
         <xs:attribute type="xs:boolean" name="extended"/>
-        <xs:attribute type="v1:fieldsetType" name="type" use="required"/>
+        <xs:attribute type="v1:fieldsetType" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="xs:string" name="relation"/>
