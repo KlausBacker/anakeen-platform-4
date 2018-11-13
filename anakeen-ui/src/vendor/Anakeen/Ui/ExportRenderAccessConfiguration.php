@@ -15,17 +15,15 @@ class ExportRenderAccessConfiguration extends ExportRenderConfiguration
 {
     protected $extractedDataAccess = [];
 
-    protected function extract(\DOMElement $structConfig)
+    public function extract()
     {
         $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
-        $this->extractCvAccess($this->domConfig);
+        $this->extractCvAccess();
     }
 
 
-    protected function extractCvAccess(\DOMElement $structConfig)
+    public function extractCvAccess()
     {
-        $access = $this->celui("render");
-        $access->setAttribute("ref", $this->sst->name);
 
         if ($this->sst->ccvid) {
             /**
@@ -35,9 +33,11 @@ class ExportRenderAccessConfiguration extends ExportRenderConfiguration
 
             $this->extractCvdocDataAccess($cvdoc);
 
+
             $accessControl = $this->setAccess($this->sst->ccvid);
             $this->domConfig->appendChild($accessControl);
-            $structConfig->appendChild($access);
+
+
         }
     }
 

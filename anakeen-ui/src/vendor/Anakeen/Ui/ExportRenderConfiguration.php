@@ -21,13 +21,14 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
 
     protected $extractedData = [];
 
-    protected function extract(\DOMElement $structConfig)
+    public function extract()
     {
         $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
-        $this->extractCv($this->domConfig);
+        $this->extractCvRef();
+        $this->extractDefaultCvData();
     }
 
-    protected function extractCv(\DOMElement $structConfig)
+    public function extractCvRef()
     {
         $access = $this->celui("render");
         $access->setAttribute("ref", $this->sst->name);
@@ -42,6 +43,14 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             $tag->setAttribute("ref", static::getLogicalName($this->sst->ccvid));
             $access->appendChild($tag);
 
+            $this->setComment("Ui render configuration");
+            $this->domConfig->appendChild($access);
+        }
+    }
+
+    public function extractDefaultCvData()
+    {
+        if ($this->sst->ccvid) {
             /**
              * @var \SmartStructure\Cvdoc $cvdoc
              */
@@ -51,12 +60,8 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
             if ($cvData) {
                 $this->domConfig->appendChild($cvData);
             }
-
-            $this->setComment("Ui render configuration", $structConfig);
-            $structConfig->appendChild($access);
         }
     }
-
     protected function extractCvdocData(\SmartStructure\Cvdoc $cvdoc)
     {
         if (isset($this->extractedData[$cvdoc->id])) {
