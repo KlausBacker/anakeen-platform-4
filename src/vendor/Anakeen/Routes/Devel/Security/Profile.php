@@ -235,6 +235,7 @@ class Profile
             if (!isset($greenAccess[$result["field"]])) {
                 $greenAccess[$result["field"]] = [
                     "id" => $result["id"],
+                    "uperm"  => 0,
                     "type" => "field",
                     "aclNames" => []
                 ];
@@ -256,7 +257,6 @@ class Profile
                     $access["acls"][$aclName] = "set";
                 }
             }
-
 
             $accesses[] = $access;
         }
