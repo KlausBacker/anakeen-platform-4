@@ -14,43 +14,12 @@ export default {
   },
   props: ["ssName"],
   beforeRouteEnter(to, from, next) {
-    if (to.query.open) {
-      let filter = to.query.open;
+    if (to.name === "Ui::masks::element") {
       next(function(vueInstance) {
-        if (filter && filter !== "") {
-          if (vueInstance.$refs.masksGrid.kendoGrid) {
-            vueInstance.$refs.masksConsult.fetchSmartElement({
-              initid: filter,
-              viewId: "!defaultConsultation"
-            });
-          } else {
-            vueInstance.$refs.masksGrid.$on("grid-ready", () => {
-              vueInstance.$refs.masksConsult.$once("documentLoaded", () => {
-                vueInstance.$refs.masksConsult.fetchSmartElement({
-                  initid: filter,
-                  viewId: "!defaultConsultation"
-                });
-                vueInstance
-                  .$(
-                    "[data-uid=" +
-                      vueInstance.$refs.masksGrid.kendoGrid.dataSource
-                        .view()
-                        .find(d => d.rowData.name === filter).uid +
-                      "]",
-                    vueInstance.$el
-                  )
-                  .addClass("masks-view-is-opened");
-              });
-            });
-          }
-        }
+        vueInstance.getSelected(to.params.seIdentifier);
       });
     } else {
-      next(function(vueInstance) {
-        vueInstance.$refs.masksGrid.$on("grid-ready", () => {
-          vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({});
-        });
-      });
+      next();
     }
   },
   mounted() {
@@ -71,28 +40,48 @@ export default {
       orientation: "horizontal",
       panes: [
         {
+          scrollable: false,
           collapsible: false,
           resizable: true,
           size: window.localStorage.getItem("ui.masks.content") || "50%"
         },
-        { collapsible: false, resizable: true, size: "50%" }
+        {
+          scrollable: false,
+          collapsible: false,
+          resizable: true,
+          size: "50%"
+        }
       ],
       resize: onContentResize("content", this.$refs.masksSplitter)
     });
   },
   methods: {
+    getSelected(e) {
+      if (e !== "") {
+        if (this.$refs.masksGrid.kendoGrid) {
+          this.$("[role=row]", this.$el).removeClass("control-view-is-opened");
+          this.$(
+            "[data-uid=" +
+              this.$refs.masksGrid.kendoGrid.dataSource
+                .view()
+                .find(d => d.rowData.name === e).uid +
+              "]",
+            this.$el
+          ).addClass("control-view-is-opened");
+        }
+      }
+    },
     actionClick(event) {
       event.preventDefault();
       switch (event.data.type) {
         case "consult": {
-          this.$refs.masksConsult.fetchSmartElement({
-            initid: event.data.row.id,
-            viewId: "!defaultConsultation"
+          this.$router.push({
+            name: "Ui::masks::element",
+            params: {
+              seIdentifier: event.data.row.name
+            }
           });
-          this.$("[role=row]", this.$el).removeClass("masks-view-is-opened");
-          this.$(event.target)
-            .closest("tr")
-            .addClass("masks-view-is-opened");
+          this.getSelected(event.data.row.name);
           break;
         }
       }

@@ -15,6 +15,8 @@
                         :dataBound="onDataBound"
                         :expand="onExpand"
                         :collapse="onCollapse"
+                        :columnHide="onColumnHide"
+                        :columnShow="onColumnShow"
                         :columnMenu="true"
                         :messages="{ noRows: messages }">
             <kendo-treelist-column v-for="item in items" :key="item.name" :template="columnTemplate(`${item.name}`)"

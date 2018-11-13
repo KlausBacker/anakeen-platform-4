@@ -73,8 +73,32 @@ export default {
         this.$refs.ssTreelist.kendoWidget().resize();
       }
     });
+    const columns = window.localStorage.getItem(
+      "ss-list-column-conf-" + this.$route.name
+    );
+    if (columns) {
+      JSON.parse(columns).forEach(item => {
+        if (item.hidden) {
+          this.$refs.ssTreelist.kendoWidget().hideColumn(item.field);
+        } else {
+          this.$refs.ssTreelist.kendoWidget().showColumn(item.field);
+        }
+      });
+    }
   },
   methods: {
+    onColumnHide() {
+      window.localStorage.setItem(
+        "ss-list-column-conf-" + this.$route.name,
+        JSON.stringify(this.$refs.ssTreelist.kendoWidget().columns)
+      );
+    },
+    onColumnShow() {
+      window.localStorage.setItem(
+        "ss-list-column-conf-" + this.$route.name,
+        JSON.stringify(this.$refs.ssTreelist.kendoWidget().columns)
+      );
+    },
     onDataBound(e) {
       let tree = e.sender;
       this.removeRowClassName(tree);

@@ -14,46 +14,12 @@ export default {
   },
   props: ["ssName"],
   beforeRouteEnter(to, from, next) {
-    if (to.query.open) {
-      let filter = to.query.open;
+    if (to.name === "Ui::control::element") {
       next(function(vueInstance) {
-        if (filter && filter !== "") {
-          if (vueInstance.$refs.controlConfGrid.kendoGrid) {
-            vueInstance.$refs.controlConfConsult.fetchSmartElement({
-              initid: filter,
-              viewId: "!defaultConsultation"
-            });
-          } else {
-            vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
-              vueInstance.$refs.controlConfConsult.$once(
-                "documentLoaded",
-                () => {
-                  vueInstance.$refs.controlConfConsult.fetchSmartElement({
-                    initid: filter,
-                    viewId: "!defaultConsultation"
-                  });
-                  vueInstance
-                    .$(
-                      "[data-uid=" +
-                        vueInstance.$refs.controlConfGrid.kendoGrid.dataSource
-                          .view()
-                          .find(d => d.rowData.name === filter).uid +
-                        "]",
-                      vueInstance.$el
-                    )
-                    .addClass("control-view-is-opened");
-                }
-              );
-            });
-          }
-        }
+        vueInstance.getSelected(to.params.seIdentifier);
       });
     } else {
-      next(function(vueInstance) {
-        vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
-          vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({});
-        });
-      });
+      next();
     }
   },
   mounted() {
@@ -74,28 +40,48 @@ export default {
       orientation: "horizontal",
       panes: [
         {
+          scrollable: false,
           collapsible: false,
           resizable: true,
           size: window.localStorage.getItem("ui.control.conf.content") || "50%"
         },
-        { collapsible: false, resizable: true, size: "50%" }
+        {
+          scrollable: false,
+          collapsible: false,
+          resizable: true,
+          size: "50%"
+        }
       ],
       resize: onContentResize("content", this.$refs.controlConfSplitter)
     });
   },
   methods: {
+    getSelected(e) {
+      if (e !== "") {
+        if (this.$refs.controlConfGrid.kendoGrid) {
+          this.$("[role=row]", this.$el).removeClass("control-view-is-opened");
+          this.$(
+            "[data-uid=" +
+              this.$refs.controlConfGrid.kendoGrid.dataSource
+                .view()
+                .find(d => d.rowData.name === e).uid +
+              "]",
+            this.$el
+          ).addClass("control-view-is-opened");
+        }
+      }
+    },
     actionClick(event) {
       event.preventDefault();
       switch (event.data.type) {
         case "consult": {
-          this.$refs.controlConfConsult.fetchSmartElement({
-            initid: event.data.row.id,
-            viewId: "!defaultConsultation"
+          this.$router.push({
+            name: "Ui::control::element",
+            params: {
+              seIdentifier: event.data.row.name
+            }
           });
-          this.$("[role=row]", this.$el).removeClass("control-view-is-opened");
-          this.$(event.target)
-            .closest("tr")
-            .addClass("control-view-is-opened");
+          this.getSelected(event.data.row.name);
           break;
         }
       }

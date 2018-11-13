@@ -3,6 +3,10 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+
+  .k-grid-header {
+    background-color: #F5F5F5;
+  }
 }
 
 .ss-treelist-tree {

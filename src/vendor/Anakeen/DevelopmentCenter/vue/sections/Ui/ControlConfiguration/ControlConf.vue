@@ -7,8 +7,8 @@
                          @action-click="actionClick">
             </ank-se-grid>
         </div>
-        <div>
-            <ank-smart-element ref="controlConfConsult" class="control-conf-consult-content"></ank-smart-element>
+        <div style="display: flex; flex: 1">
+            <router-multi-view style="display:flex; flex: 1"></router-multi-view>
         </div>
     </div>
 </template>
