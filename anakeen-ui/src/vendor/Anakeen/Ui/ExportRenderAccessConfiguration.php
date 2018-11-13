@@ -36,8 +36,6 @@ class ExportRenderAccessConfiguration extends ExportRenderConfiguration
 
             $accessControl = $this->setAccess($this->sst->ccvid);
             $this->domConfig->appendChild($accessControl);
-
-
         }
     }
 

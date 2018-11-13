@@ -14,7 +14,8 @@ class ExportRenderAllConfiguration extends ExportRenderAccessConfiguration
         $this->domConfig->setAttribute("xmlns:" . self::NS, self::NSURL);
         $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
 
-        $this->extractCv();
+        $this->extractCvRef();
+        $this->extractDefaultCvData();
 
         $this->setComment("View control accesses");
         $this->extractCvAccess();
