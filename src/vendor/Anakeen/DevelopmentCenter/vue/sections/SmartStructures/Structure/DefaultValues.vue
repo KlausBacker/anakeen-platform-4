@@ -46,7 +46,7 @@
             if (dataItem[colId] === null || dataItem[colId] === undefined) {
               return "";
             }
-            if (dataItem[colId] instanceof Object && colId === "value") {
+            if (dataItem[colId] instanceof Object && (colId === "value" || colId === "config" )) {
               if (dataItem[colId].length > 1) {
                 let str = "";
                 Object.keys(dataItem[colId].toJSON()).forEach(item => {
