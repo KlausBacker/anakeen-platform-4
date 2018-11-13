@@ -4,6 +4,7 @@ import Infos from "./Infos/Infos.vue";
 import ViewsConf from "./ViewsConfiguration/ViewsConf.vue";
 import ControlConf from "./ControlConfiguration/ControlConf.vue";
 import Masks from "./Masks/Masks.vue";
+import { AnkSmartElement } from "@anakeen/ank-components";
 
 export default {
   name: "Ui",
@@ -35,15 +36,43 @@ export default {
         },
         {
           name: "Ui::control",
-          path: "control/",
+          path: "control",
           component: ControlConf,
-          props: true
+          props: true,
+          children: [
+            {
+              name: "Ui::control::element",
+              path: ":seIdentifier",
+              meta: {
+                label: ":seIdentifier"
+              },
+              component: AnkSmartElement,
+              props: route => ({
+                initid: route.params.seIdentifier.toString(),
+                viewId: "!defaultConsultation"
+              })
+            }
+          ]
         },
         {
           name: "Ui::masks",
-          path: "masks/",
+          path: "masks",
           component: Masks,
-          props: true
+          props: true,
+          children: [
+            {
+              name: "Ui::masks::element",
+              path: ":seIdentifier",
+              meta: {
+                label: ":seIdentifier"
+              },
+              component: AnkSmartElement,
+              props: route => ({
+                initid: route.params.seIdentifier.toString(),
+                viewId: "!defaultConsultation"
+              })
+            }
+          ]
         }
       ]
     }

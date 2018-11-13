@@ -8,8 +8,8 @@
                          @action-click="actionClick">
             </ank-se-grid>
         </div>
-        <div>
-            <ank-smart-element ref="masksConsult" class="masks-consult-content"></ank-smart-element>
+        <div style="display: flex; flex: 1">
+            <router-multi-view style="display:flex; flex: 1"></router-multi-view>
         </div>
     </div>
 </template>
@@ -22,7 +22,6 @@
         width: 100%;
         height: 100%;
     }
-
     .masks-view-is-opened {
         background: #157EFB !important;
         color: white !important;
@@ -37,7 +36,6 @@
             color: #157EFB !important;
         }
     }
-
 </style>
 <script src="./Masks.controller.js">
 </script>
