@@ -32,33 +32,31 @@ class ExportConfigurationAccesses extends ExportConfiguration
         $this->domConfig = $this->cel("config");
         $this->dom->appendChild($this->domConfig);
 
-        $structConfig = $this->cel("structure-configuration");
-        $structConfig->setAttribute("name", $this->sst->name);
-        if ($this->sst->id < 1000) {
-            $structConfig->setAttribute("id", $this->sst->id);
-        }
-
-        $this->extract($structConfig);
+        $this->initStructureConfig();
     }
 
-    protected function extract(\DOMElement $structConfig)
+    public function extract()
     {
+        $this->extractProfil();
 
-        $this->extractProfil($structConfig);
-
-        $this->domConfig->appendChild($structConfig);
+        $this->domConfig->appendChild($this->structConfig);
     }
 
 
-    protected function extractProfil(\DOMElement $structConfig)
+    public function extractProfil($part="all")
     {
+        $structConfig=$this->structConfig;
         $access = $this->cel("accesses");
         if ($this->sst->cprofid) {
-            $tag = $this->cel("element-access-configuration");
-            $tag->setAttribute("ref", static::getLogicalName($this->sst->cprofid));
-            $access->appendChild($tag);
-            $accessControl = $this->setAccess($this->sst->cprofid);
-            $this->domConfig->appendChild($accessControl);
+            if ($part === "all"|| $part === "ref") {
+                $tag = $this->cel("element-access-configuration");
+                $tag->setAttribute("ref", static::getLogicalName($this->sst->cprofid));
+                $access->appendChild($tag);
+            }
+            if ($part === "all" || $part === "access") {
+                $accessControl = $this->setAccess($this->sst->cprofid);
+                $this->domConfig->appendChild($accessControl);
+            }
         }
 
         if ($this->sst->profid) {
@@ -66,22 +64,31 @@ class ExportConfigurationAccesses extends ExportConfiguration
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->profid);
             if ($this->sst->profid !== $this->sst->id) {
-                $tag->setAttribute("ref", static::getLogicalName($this->sst->profid));
-                $this->domConfig->appendChild($accessControl);
+                if ($part === "all" || $part === "ref") {
+                    $tag->setAttribute("ref", static::getLogicalName($this->sst->profid));
+                }
+                if ($part === "all" || $part === "access") {
+                    $this->domConfig->appendChild($accessControl);
+                }
             } else {
-                $tag->appendChild($accessControl);
+                if ($part === "all" || $part === "access") {
+                    $tag->appendChild($accessControl);
+                }
             }
         }
 
         if ($this->sst->cfallid) {
-            $tag = $this->cel("field-access-configuration");
-            $tag->setAttribute("ref", static::getLogicalName($this->sst->cfallid) ?: $this->sst->cfallid);
-            $access->appendChild($tag);
-            $access->appendChild($tag);
-            $this->setFieldAccessProfile($this->sst->cfallid);
-            $this->setFieldAccess($this->sst->cfallid);
-            $accessControl = $this->setAccess($this->sst->cfallid);
-            $this->domConfig->appendChild($accessControl);
+            if ($part === "all" || $part === "ref") {
+                $tag = $this->cel("field-access-configuration");
+                $tag->setAttribute("ref", static::getLogicalName($this->sst->cfallid) ?: $this->sst->cfallid);
+                $access->appendChild($tag);
+            }
+            if ($part === "all" || $part === "access") {
+                $this->setFieldAccessProfile($this->sst->cfallid);
+                $this->setFieldAccess($this->sst->cfallid);
+                $accessControl = $this->setAccess($this->sst->cfallid);
+                $this->domConfig->appendChild($accessControl);
+            }
 
         }
 

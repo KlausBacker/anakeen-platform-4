@@ -71,9 +71,9 @@ class ErrorCodeRoutes
      */
     const ROUTES0114 = 'Asset Image file "%s" is not an image';
     /**
-     * @errorCode The image file must be in "Images" directory
+     * @errorCode The file to download not found
      */
-    const ROUTES0115 = 'Asset Image file "%s" not found';
+    const ROUTES0115 = 'File "%s" not found';
     /**
      * @errorCode The attribute set in url is not part of document
      */
