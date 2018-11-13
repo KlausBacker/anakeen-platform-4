@@ -9,11 +9,7 @@
                 ></ank-se-grid>
             </div>
             <div>
-                <iframe v-if="viewType === 'html'" style="width: 100%; height: 100%;" ref="iframe" :src="viewURL"></iframe>
-                <div class="smart-elements-raw-view" v-else-if="viewType=== 'json' || viewType === 'xml'">
-                    <pre><code :class="viewType" v-html="viewRawContent"></code></pre>
-                </div>
-                <component v-else-if="viewType === 'vue' && viewComponent" :is="viewComponent" v-bind="viewComponentProps"></component>
+                <router-multi-view class="smart-elements-view"></router-multi-view>
             </div>
         </kendo-splitter>
 

@@ -10,7 +10,7 @@ export default {
   props: {
     filter: {
       type: [Boolean, Object],
-      default: true
+      default: false
     },
     position: {
       type: String,

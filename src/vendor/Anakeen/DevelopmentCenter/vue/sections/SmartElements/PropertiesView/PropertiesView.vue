@@ -133,9 +133,9 @@
 </template>
 <!-- CSS to this component only -->
 <style scoped lang="scss">
-    @import "./PropertyView.scss";
+    @import "./PropertiesView.scss";
 </style>
 <!-- Global CSS -->
 <style lang="scss">
 </style>
-<script src="./PropertyView.controller.js"></script>
+<script src="./PropertiesView.controller.js"></script>

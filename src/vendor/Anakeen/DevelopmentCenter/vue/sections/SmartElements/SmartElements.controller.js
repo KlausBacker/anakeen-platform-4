@@ -1,49 +1,50 @@
 import Vue from "vue";
 import { Splitter, LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import { AnkSEGrid } from "@anakeen/ank-components";
-import PropertyView from "./PropertyView/PropertyView.vue";
-import hljs from "highlight.js/lib/highlight";
-import xml from "highlight.js/lib/languages/xml";
-import json from "highlight.js/lib/languages/json";
 
 Vue.use(AnkSEGrid);
 Vue.use(LayoutInstaller);
 
-const prettifyXml = sourceXml => {
-  const xmlDoc = new DOMParser().parseFromString(sourceXml, "application/xml");
-  const xsltDoc = new DOMParser().parseFromString(
-    [
-      // describes how we want to modify the XML - indent everything
-      '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
-      '  <xsl:strip-space elements="*"/>',
-      '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
-      '    <xsl:value-of select="normalize-space(.)"/>',
-      "  </xsl:template>",
-      '  <xsl:template match="node()|@*">',
-      '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
-      "  </xsl:template>",
-      '  <xsl:output indent="yes"/>',
-      "</xsl:stylesheet>"
-    ].join("\n"),
-    "application/xml"
-  );
-
-  const xsltProcessor = new XSLTProcessor();
-  xsltProcessor.importStylesheet(xsltDoc);
-  const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-  const resultXml = new XMLSerializer().serializeToString(resultDoc);
-  return resultXml;
+const docTypeString = doctype => {
+  switch (doctype) {
+    case "F":
+      return "element";
+    case "C":
+      return "structure";
+    case "D":
+      return "folder";
+    case "P":
+      return "profil";
+    case "S":
+      return "search";
+    case "T":
+      return "temporary";
+    case "W":
+      return "workflow";
+    case "Z":
+      return "zombie";
+    default:
+      return "element";
+  }
 };
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "kendo-splitter": Splitter,
-    "property-view": PropertyView
+    "kendo-splitter": Splitter
   },
   computed: {
     urlConfig() {
       return `/api/v2/devel/security/elements/config/`;
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    if (to.name !== "SmartElements") {
+      next(vueInstance => {
+        vueInstance.openView();
+      });
+    } else {
+      next();
     }
   },
   data() {
@@ -58,10 +59,6 @@ export default {
       viewComponent: null,
       viewComponentProps: {}
     };
-  },
-  beforeCreate() {
-    hljs.registerLanguage("xml", xml);
-    hljs.registerLanguage("json", json);
   },
   methods: {
     cellRender(event) {
@@ -94,84 +91,71 @@ export default {
       }
     },
     actionClick(event) {
-      let urlRawContent;
       switch (event.data.type) {
         case "consult":
-          this.viewType = "html";
           event.preventDefault();
-          this.viewURL = `/api/v2/documents/${event.data.row.id}.html`;
+          this.$router.push({
+            name: "SmartElements::ElementView",
+            params: { seIdentifier: event.data.row.name || event.data.row.id }
+          });
           break;
         case "viewJSON":
-          this.viewType = "json";
-          switch (event.data.row.doctype) {
-            case "C":
-              urlRawContent = `/api/v2/families/${
-                event.data.row.id
-              }/views/structure`;
-              break;
-            default:
-              urlRawContent = `/api/v2/documents/${event.data.row.id}.json`;
-              break;
-          }
+          this.$router.push({
+            name: "SmartElements::RawElementView",
+            params: {
+              seIdentifier: event.data.row.name || event.data.row.id,
+              seType: docTypeString(event.data.row.doctype)
+            },
+            query: {
+              formatType: "json"
+            }
+          });
           break;
         case "viewXML":
-          this.viewType = "xml";
-          switch (event.data.row.doctype) {
-            case "C":
-              urlRawContent = `/api/v2/devel/config/smart/structures/${
-                event.data.row.id
-              }.xml`;
-              break;
-            case "W":
-              urlRawContent = `/api/v2/devel/config/smart/workflows/${
-                event.data.row.id
-              }.xml`;
-              break;
-            default:
-              urlRawContent = `/api/v2/documents/${event.data.row.id}.xml`;
-          }
+          this.$router.push({
+            name: "SmartElements::RawElementView",
+            params: {
+              seIdentifier: event.data.row.name || event.data.row.id,
+              seType: docTypeString(event.data.row.doctype)
+            },
+            query: {
+              formatType: "xml"
+            }
+          });
           break;
         case "viewProps":
-          this.viewType = "vue";
-          this.viewComponent = "property-view";
-          this.viewComponentProps = {
-            elementId: event.data.row.id
-          };
+          this.$router.push({
+            name: "SmartElements::PropertiesView",
+            params: {
+              seIdentifier: event.data.row.name || event.data.row.id
+            }
+          });
           break;
         case "security":
-          // console.log(event.data);
+          if (event.data.row.profid) {
+            this.$router.push({
+              name: "SmartElements::ProfilView",
+              params: {
+                seIdentifier: event.data.row.name || event.data.row.id
+              },
+              query: {
+                profileId: event.data.row.profid
+              }
+            });
+          }
           break;
         case "create":
           if (event.data.row.doctype === "C") {
-            this.viewType = "html";
-            this.viewURL = `/api/v2/documents/${
-              event.data.row.id
-            }/views/!defaultCreation.html`;
+            this.$router.push({
+              name: "SmartElements::CreationView",
+              params: {
+                seIdentifier: event.data.row.name || event.data.row.id
+              }
+            });
           }
           break;
       }
-      if (this.viewType === "html" || this.viewType === "vue") {
-        this.openView();
-      } else if (this.viewType === "json" || this.viewType === "xml") {
-        this.$http
-          .get(urlRawContent)
-          .then(response => {
-            if (this.viewType === "json") {
-              this.viewRawContent = hljs.highlightAuto(
-                JSON.stringify(response.data.data, null, 2)
-              ).value;
-            } else if (this.viewType === "xml") {
-              this.viewRawContent = hljs.highlightAuto(
-                prettifyXml(response.data)
-              ).value;
-            }
-            this.openView();
-          })
-          .catch(err => {
-            console.error(err);
-            throw err;
-          });
-      }
+      this.openView();
     },
     openView() {
       const splitter = this.$refs.splitter.kendoWidget();

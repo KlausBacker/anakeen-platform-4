@@ -20,13 +20,11 @@ function updateActive(isCurrent, cached, vm) {
 
 function getEffectiveRoute(key, currentRoute) {
   let effectiveRoute = key;
+
   // Fetch url params names
-  const tokensRegex = /.*:([a-zA-Z0-9]+)\/?.*/g;
-  const matchedTokens = tokensRegex.exec(key);
-  const queryParamsName =
-    matchedTokens && matchedTokens.length && matchedTokens.length > 1
-      ? matchedTokens.slice(1)
-      : [];
+  const tokensRegex = /:[a-zA-Z0-9]+/g;
+  let queryParamsName = key.match(tokensRegex) || [];
+  queryParamsName = queryParamsName.map(k => k.replace(":", ""));
   queryParamsName.forEach(paramName => {
     if (currentRoute.params && currentRoute.params[paramName]) {
       effectiveRoute = effectiveRoute.replace(
