@@ -5,10 +5,13 @@ const xml2js = require("xml2js");
 const glob = require("glob");
 const Saxophone = require("saxophone");
 const signale = require("signale");
+const libxml = require("libxmljs");
 
 const REG_EXP_CHECK_NAMESPACE = /https:\/\/platform.anakeen.com\/4\/schemas\/smart\/1.0/;
 const REG_EXP_STRUCTURE_CONF = /[\w]?:?structure-configuration/;
 const REG_EXP_CLASS_CONF = /[\w]?:?class/;
+
+const buildXSD = path.resolve(__dirname, "../xsd/anakeen-cli-build.xsd");
 
 exports.getModuleInfo = async sourcePath => {
   let existsSourcePath = fs.existsSync(sourcePath);
@@ -35,6 +38,15 @@ exports.getModuleInfo = async sourcePath => {
         appConst.buildPath
       )}"`
     );
+  }
+  //Check build path against xsd
+  const xsd = libxml.parseXml(fs.readFileSync(buildXSD));
+  const buildXML = libxml.parseXml(
+    fs.readFileSync(path.join(sourcePath, appConst.buildPath))
+  );
+
+  if (buildXML.validate(xsd) === false) {
+    return Promise.reject(buildXML.validationErrors);
   }
 
   return Promise.all([
@@ -72,7 +84,7 @@ exports.getModuleInfo = async sourcePath => {
             (err, data) => {
               if (err) return reject(err);
               const buildPath = [
-                path.join(sourcePath, data.config.sources[0].source[0].$.path)
+                path.join(sourcePath, data.config.source[0].$.path)
               ];
               resolve({ build: data, buildPath });
             }
