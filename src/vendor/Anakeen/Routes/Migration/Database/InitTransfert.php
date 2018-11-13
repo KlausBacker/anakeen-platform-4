@@ -38,6 +38,8 @@ class InitTransfert
         $this->move1000();
         $this->moveIds();
 
+        $sql = "delete from docread where id not in (select id from doc);";
+        DbManager::query($sql);
         return $data;
     }
 
@@ -59,14 +61,15 @@ class InitTransfert
             $id = intval($id);
             $sql = sprintf("alter table doc%d rename to doc%d", $id + 100, $id);
             DbManager::query($sql);
+            $sql = sprintf("alter sequence seq_doc%d rename to seq_doc%d", $id + 100, $id);
+            DbManager::query($sql);
         }
-
 
         DbManager::query("commit");
     }
 
     /**
-     * Move platform id to use dynacase id
+     * Import platform id to use dynacase id
      */
     protected function moveIds()
     {
@@ -185,7 +188,7 @@ SQL;
         $sqls[] = sprintf("update users set fid=%d where fid=%d", $idTo, $idFrom);
 
         $sqls[] = sprintf("update family.cvdoc set cv_mskid=array_replace(cv_mskid:int[], %d, %d):int[]", $idTo, $idFrom);
-        $sqls[] = sprintf("update family.fieldaccesslayerlist set cv_mskfall_layerid=array_replace(fall_layer:int[], %d, %d):int[]", $idTo, $idFrom);
+        $sqls[] = sprintf("update family.fieldaccesslayerlist set fall_layerid=array_replace(fall_layer:int[], %d, %d):int[]", $idTo, $idFrom);
         return $sqls;
     }
 }

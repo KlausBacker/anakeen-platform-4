@@ -51,5 +51,12 @@
             <sde:requiredAccess/>
         </sde:route>
 
+        <sde:route name="DownloadVendorModule">
+            <sde:callable>\Anakeen\Routes\Migration\Module\Download</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/migration/modules/{vendor}.zip</sde:pattern>
+            <sde:description>Download module files associated to a vendor</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
     </sde:routes>
 </sde:config>

@@ -124,6 +124,11 @@ SQL;
         $routeConfigPath = sprintf("%s/%s/%s/accesses.xml", ContextManager::getRootDirectory(), \Anakeen\Core\Settings::RouterConfigDir, $appName);
         $data["APPNAME"] = $appName;
         $data["VENDOR"] = ContextManager::getParameterValue("Migration", "VENDOR");
+        foreach ($results as &$result) {
+            if (preg_match('/^(.*)::(.*)/',$result["name"], $reg )) {
+                $result["aclName"]=$reg[2];
+            }
+        }
         $data["acls"] = $results;
 
         $mustache = new \Mustache_Engine();

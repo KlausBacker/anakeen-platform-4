@@ -127,6 +127,17 @@ class ConfigStructureTransfert extends DataElementTransfert
         }
 
         DbManager::query($sql);
+
+
+        $sql = sprintf(
+            "update docfam set atags = atags || '{\"vendor\":\"%s\"}' where name='%s'",
+            implode("\\\\", $namePath),
+            $className,
+            pg_escape_string($structureName)
+        );
+        DbManager::query($sql);
+
+
         $mustache = new \Mustache_Engine();
         $stubBehaviorContent = $mustache->render($template, [
             "VENDOR" => $vendorName,
@@ -175,7 +186,7 @@ SQL;
             //print "$sql\n";
             DbManager::query($sql, $keys);
             $transferedEnum = array_merge($transferedEnum, $keys);
-            $attrObject->type = sprintf("enum(%s)", $enumSetName);
+            $attrObject->type = sprintf("enum(\"%s\")", $enumSetName);
             $attrObject->modify();
         }
 

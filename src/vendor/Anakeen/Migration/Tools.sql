@@ -14,7 +14,7 @@ begin
 
     FOREACH m IN ARRAY arr
      LOOP
-        r := r || jsonb_build_object(m, true);
+        r := r || jsonb_build_object(trim(m), true);
      END LOOP;
   END IF;
   return (r);
