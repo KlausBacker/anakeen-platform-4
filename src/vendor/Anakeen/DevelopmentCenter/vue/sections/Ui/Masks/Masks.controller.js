@@ -71,11 +71,17 @@ export default {
       orientation: "horizontal",
       panes: [
         {
+          scrollable: false,
           collapsible: false,
           resizable: true,
           size: window.localStorage.getItem("ui.masks.content") || "50%"
         },
-        { collapsible: false, resizable: true, size: "50%" }
+        {
+          scrollable: false,
+          collapsible: false,
+          resizable: true,
+          size: "50%"
+        }
       ],
       resize: onContentResize("content", this.$refs.masksSplitter)
     });
