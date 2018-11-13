@@ -1,0 +1,10 @@
+.se-properties-view {
+  padding: 1rem;
+  background: white;
+  flex: 1;
+
+  .se-properties-value:before, .se-properties-header--value:before {
+    content: ":";
+    padding-right: 0.6em;
+  }
+}

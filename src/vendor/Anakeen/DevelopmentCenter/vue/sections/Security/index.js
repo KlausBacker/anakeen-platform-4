@@ -7,9 +7,8 @@ import SmartStructures from "../SmartStructuresSecurity/SmartStructuresSecurity.
 import SmartStructuresContent from "../SmartStructuresSecurity/SmartStructuresSecurityContent.vue";
 import SmartStructuresSections from "../SmartStructuresSecurity/subsections/export";
 
-import SecuritySections from "../Security/subsections/export";
-
 import Profiles from "../Profiles/Profiles.vue";
+import ProfileView from "../Profiles/ProfileVisualizer/ProfileVisualizerContent.vue";
 
 export default {
   label: "Security",
@@ -103,7 +102,18 @@ export default {
       meta: {
         label: "Profiles"
       },
-      component: Profiles
+      component: Profiles,
+      children: [
+        {
+          name: "Security::Profile::Access::Element",
+          path: ":seIdentifier",
+          meta: {
+            label: ":seIdentifier"
+          },
+          component: ProfileView,
+          props: true
+        }
+      ]
     },
     {
       name: "Security::Roles",
@@ -112,26 +122,6 @@ export default {
         label: "Roles"
       },
       component: Roles
-    },
-    {
-      name: "Security::Profile::Access",
-      path: "profilesAccessControl",
-      meta: {
-        label: "Profile Access Control"
-      },
-      component: SecuritySections.ElementsVisualizer,
-      props: true,
-      children: [
-        {
-          name: "Security::Profile::Access::Element",
-          path: ":seIdentifier",
-          meta: {
-            label: ":seIdentifier"
-          },
-          component: SecuritySections.ElementsVisualizerContent,
-          props: true
-        }
-      ]
     }
   ]
 };

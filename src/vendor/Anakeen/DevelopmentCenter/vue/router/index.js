@@ -1,4 +1,5 @@
 import Main from "../DevCenter/Main.vue";
+import ErrorNotFound from "../DevCenter/Error.vue";
 import SectionsRoutes from "../sections/index";
 
 export const routes = [
@@ -14,8 +15,9 @@ export const routes = [
   // Redirection
   {
     path: "*",
-    redirect: {
-      name: "devCenter"
+    component: ErrorNotFound,
+    meta: {
+      label: "Page not found"
     }
   }
 ];

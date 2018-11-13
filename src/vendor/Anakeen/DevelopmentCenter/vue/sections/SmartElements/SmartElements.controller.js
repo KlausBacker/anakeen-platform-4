@@ -1,6 +1,11 @@
 import Vue from "vue";
 import { Splitter, LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import { AnkSEGrid } from "@anakeen/ank-components";
+import PropertyView from "./PropertyView/PropertyView.vue";
+import hljs from "highlight.js/lib/highlight";
+import xml from "highlight.js/lib/languages/xml";
+import json from "highlight.js/lib/languages/json";
+
 Vue.use(AnkSEGrid);
 Vue.use(LayoutInstaller);
 
@@ -33,7 +38,8 @@ const prettifyXml = sourceXml => {
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "kendo-splitter": Splitter
+    "kendo-splitter": Splitter,
+    "property-view": PropertyView
   },
   computed: {
     urlConfig() {
@@ -43,25 +49,19 @@ export default {
   data() {
     return {
       panes: [
-        { min: "33%", max: "100%" },
+        { scrollable: false, min: "33%", max: "100%" },
         { collapsed: true, collapsible: true }
       ],
       viewURL: "",
       viewType: "html",
-      viewRawContent: ""
+      viewRawContent: "",
+      viewComponent: null,
+      viewComponentProps: {}
     };
   },
-  mounted() {
-    this.$(this.$el).on("click", ".actionMenu", event => {
-      const item = this.$refs.grid.kendoGrid.dataItem(
-        this.$(event.currentTarget).closest("tr")
-      );
-      if (item.rowData.doctype !== "C") {
-        this.$(event.currentTarget)
-          .find("[data-actiontype=create]")
-          .hide();
-      }
-    });
+  beforeCreate() {
+    hljs.registerLanguage("xml", xml);
+    hljs.registerLanguage("json", json);
   },
   methods: {
     cellRender(event) {
@@ -75,6 +75,21 @@ export default {
         }
         if (event.data.rowData.doctype && event.data.rowData.doctype === "C") {
           event.data.cellRender.addClass("structure-type-cell");
+        }
+      }
+    },
+    gridDataBound(event) {
+      if (event.data.kendoWidget.dataSource) {
+        const items = event.data.kendoWidget.dataSource.view().toJSON();
+        if (items.length) {
+          const that = this;
+          this.$(".actionMenu", this.$el).each(function(indexItem) {
+            const kendoMenu = that.$(this).data("kendoMenu");
+            const currentData = items[indexItem];
+            if (currentData.rowData && currentData.rowData.doctype !== "C") {
+              kendoMenu.remove("[data-actiontype=create]");
+            }
+          });
         }
       }
     },
@@ -117,7 +132,11 @@ export default {
           }
           break;
         case "viewProps":
-          this.viewURL = `/api/v2/documents/${event.data.row.id}.xml`;
+          this.viewType = "vue";
+          this.viewComponent = "property-view";
+          this.viewComponentProps = {
+            elementId: event.data.row.id
+          };
           break;
         case "security":
           // console.log(event.data);
@@ -131,16 +150,20 @@ export default {
           }
           break;
       }
-      if (this.viewType === "html") {
+      if (this.viewType === "html" || this.viewType === "vue") {
         this.openView();
       } else if (this.viewType === "json" || this.viewType === "xml") {
         this.$http
           .get(urlRawContent)
           .then(response => {
             if (this.viewType === "json") {
-              this.viewRawContent = JSON.stringify(response.data.data, null, 2);
+              this.viewRawContent = hljs.highlightAuto(
+                JSON.stringify(response.data.data, null, 2)
+              ).value;
             } else if (this.viewType === "xml") {
-              this.viewRawContent = prettifyXml(response.data);
+              this.viewRawContent = hljs.highlightAuto(
+                prettifyXml(response.data)
+              ).value;
             }
             this.openView();
           })
