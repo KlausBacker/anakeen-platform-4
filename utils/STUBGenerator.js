@@ -2,24 +2,7 @@ const xml2js = require("xml2js");
 const File = require("vinyl");
 const path = require("path");
 
-const attrType = {
-  fieldtext: "text",
-  fieldhtmltext: "htmltext",
-  fieldlongtext: "longtext",
-  fieldint: "int",
-  fieldmoney: "money",
-  fielddouble: "double",
-  fieldcolor: "color",
-  fieldenum: "enum",
-  fielddate: "date",
-  fieldtime: "time",
-  fieldtimestamp: "timestamp",
-  fieldfile: "file",
-  fieldimage: "image",
-  fielddocid: "docid",
-  fieldaccount: "account",
-  fieldxml: "xml"
-};
+const attrType = require("./appConst").sfType;
 
 const generateDescription = (attr, type = "") => {
   if (!attr) {
