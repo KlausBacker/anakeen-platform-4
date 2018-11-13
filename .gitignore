@@ -1,7 +1,6 @@
-/Tests/autotest/autotest.override.sh
 *~
 *#*
-/Tests/autotest/outputs/*
+/.cibuild/targets/*/outputs/*
 ide/vendor/
 .idea/workspace.xml
 .idea/deployment.xml
