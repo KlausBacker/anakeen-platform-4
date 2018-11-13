@@ -2,6 +2,7 @@ anakeen-ui/src/vendor/Anakeen/SmartStructures/Dsearch/Render/jquery.stickytableh
 anakeen-ui/src/public/
 anakeen-ui/src/vendor/Anakeen/Ui/PhpLib
 Tests/
+.cibuild/
 node_modules/
 webpackConfig/
 localpub/

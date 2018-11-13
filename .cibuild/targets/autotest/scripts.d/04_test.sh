@@ -27,10 +27,10 @@ OUTPUT_DIR="${PWD}/outputs"
 		(( RET = RET || $? ))
 
 		if [ "${AUTOTEST_WDIO_CONFIG}" != "" ]; then
-			npx wdio ./Tests/webdriver/${AUTOTEST_WDIO_CONFIG} -b http://localhost/
+			npx wdio ./cibuild/targets/autotest/webdriver/${AUTOTEST_WDIO_CONFIG} -b http://localhost/
 			(( RET = RET || $? ))
 		else
-			npx wdio ./Tests/webdriver/wdio.conf.js -b http://localhost/
+			npx wdio ./cibuild/targets/autotest/webdriver/wdio.conf.js -b http://localhost/
 			(( RET = RET || $? ))
 		fi
 
