@@ -19,14 +19,22 @@ export default {
   methods: {
     getRouteLabel(route) {
       if (route.meta && route.meta.label) {
-        const title = route.meta.label.trim();
-        const indexOf = title.indexOf(":");
-        if (indexOf === 0 && title.length > 0) {
-          const paramName = title.substring(1).trim();
-          return this.$route.params[paramName];
+        let title = route.name;
+        if (typeof route.meta.label === "function") {
+          title = route.meta.label.call(null, this.$route);
+          if (!title) {
+            return route.name;
+          }
         } else {
-          return title;
+          title = route.meta.label.trim();
         }
+        const regex = /:[a-zA-Z0-9]+/g;
+        const matches = title.match(regex) || [];
+        matches.forEach(m => {
+          const paramName = m.replace(":", "");
+          title = title.replace(m, this.$route.params[paramName]);
+        });
+        return title;
       }
       return route.name;
     }

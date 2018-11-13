@@ -22,6 +22,9 @@ export default class ErrorManager {
             try {
               JSON.parse(response.request.responseText);
             } catch (err) {
+              console.error(
+                `JSON parsing response error for request : ${response.request.toString()}`
+              );
               return Promise.reject(err);
             }
           }

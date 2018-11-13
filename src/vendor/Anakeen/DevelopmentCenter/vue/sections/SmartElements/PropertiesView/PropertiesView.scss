@@ -1,6 +1,7 @@
 .se-properties-view {
   padding: 1rem;
   background: white;
+  flex-direction: column;
   flex: 1;
 
   .se-properties-value:before, .se-properties-header--value:before {

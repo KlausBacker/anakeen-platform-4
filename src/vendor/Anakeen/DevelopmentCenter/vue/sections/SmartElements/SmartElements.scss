@@ -24,11 +24,12 @@
     }
   }
 
-  .smart-elements-raw-view {
-    display: flex;
+  .smart-elements-view {
     flex: 1;
-    background: white;
-    pre {
+    display: flex;
+    > * {
+      display: flex;
+      flex-direction: column;
       flex: 1;
     }
   }

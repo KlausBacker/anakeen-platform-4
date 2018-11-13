@@ -10,7 +10,8 @@ export default {
       type: Array,
       default: () => ["create", "icreate", "view", "edit", "delete"]
     },
-    onlyExtendedAcls: false
+    onlyExtendedAcls: false,
+    detachable: false
   },
   data: () => ({
     title: "",
@@ -156,6 +157,7 @@ export default {
                 attributes: {
                   class: "rightColumn"
                 },
+                width: "7rem",
                 hidden: !this.defaultColumns.reduce(
                   (accumulator, currentColumn) => {
                     if (accumulator) {
@@ -187,7 +189,7 @@ export default {
               };
             });
             this.dataSource.bind("change", () => {
-              treeList.data("kendoTreeList").autoFitColumn("title");
+              // treeList.data("kendoTreeList").autoFitColumn("title");
             });
             const treeList = $(this.$refs.profileTreeList).kendoTreeList({
               columnMenu: true,
@@ -212,13 +214,13 @@ export default {
                 }
               ],
               expand: () => {
-                treeList.data("kendoTreeList").autoFitColumn("title");
+                // treeList.data("kendoTreeList").autoFitColumn("title");
               },
               collapse: () => {
-                treeList.data("kendoTreeList").autoFitColumn("title");
+                // treeList.data("kendoTreeList").autoFitColumn("title");
               },
               dataBound: () => {
-                treeList.data("kendoTreeList").autoFitColumn("title");
+                // treeList.data("kendoTreeList").autoFitColumn("title");
               },
               dataSource: this.dataSource
             });
@@ -231,6 +233,7 @@ export default {
                     .data("kendoTreeList")
                     .collapse($(currentElement).closest(`[role="row"]`));
                 });
+              // treeList.data("kendoTreeList").autoFitColumn("title");
             });
             treeList.on("click", ".unfoldGroups", () => {
               treeList
@@ -241,6 +244,7 @@ export default {
                     .data("kendoTreeList")
                     .expand($(currentElement).closest(`[role="row"]`));
                 });
+              // treeList.data("kendoTreeList").autoFitColumn("title");
             });
           })
           .catch(err => {
@@ -257,6 +261,11 @@ export default {
   methods: {
     updateGrid: function() {
       this.privateScope.updateDataSource();
+    },
+    onDetachProfile() {
+      if (window.open) {
+        window.open(`/api/v2/devels/security/profile/${this.profileId}.html`);
+      }
     }
   }
 };

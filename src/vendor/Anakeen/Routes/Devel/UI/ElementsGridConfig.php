@@ -72,12 +72,16 @@ class ElementsGridConfig extends GridConfig
         $docTypeConfig = ColumnsConfig::getColumnConfig("doctype");
         $docTypeConfig["hidden"] = true;
 
+        $profilIdConfig = ColumnsConfig::getColumnConfig("profid");
+        $profilIdConfig["hidden"] = true;
+
         $originalConfig["smartFields"] = [
             ColumnsConfig::getColumnConfig("title"),
             ColumnsConfig::getColumnConfig("name"),
             $idConfig,
             $fromConfig,
-            $docTypeConfig
+            $docTypeConfig,
+            $profilIdConfig
         ];
 
         $originalConfig["actions"] = [
