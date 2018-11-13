@@ -14,11 +14,11 @@ class SearchElements
     /**
      * initialize with family
      *
-     * @param int|string $familyName family identifier to filter
+     * @param int|string $structureName structure identifier to filter
      */
-    public function __construct($familyName = 0)
+    public function __construct($structureName = 0)
     {
-        $this->searchDoc = new \SearchDoc("", $familyName);
+        $this->searchDoc = new \SearchDoc("", $structureName);
         $this->searchDoc->setObjectReturn(true);
     }
 

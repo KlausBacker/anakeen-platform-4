@@ -351,7 +351,7 @@ class ContextManager
         $tmp = self::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_TMPDIR', $def);
         if (empty($tmp)) {
             if (empty($def)) {
-                $tmp = './var/tmp';
+                $tmp = sprintf("%s/var/tmp", ContextManager::getRootDirectory());
             } else {
                 $tmp = $def;
             }

@@ -8,9 +8,9 @@ class SearchElementData extends SearchElements
 {
     protected $data = [];
 
-    public function __construct($familyName = 0)
+    public function __construct($structureName = 0)
     {
-        parent::__construct($familyName);
+        parent::__construct($structureName);
         $this->searchDoc->setObjectReturn(false);
     }
 

@@ -85,9 +85,7 @@ class RouterLib
         }
         $data = [];
         foreach (["routes", "accesses", "middlewares", "parameters"] as $topNode) {
-
             $data[$topNode] = self::normalizeData($simpleData[0], $topNode);
-
         }
         return $data;
     }

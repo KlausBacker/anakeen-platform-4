@@ -10,7 +10,7 @@
             <xs:element type="xs:string" name="category" minOccurs="0"/>
             <xs:element type="xs:string" name="description"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:token" name="name" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="routeaccessType">
@@ -94,7 +94,7 @@
         <xs:sequence>
             <xs:element type="rout:accessRefType" name="access" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="operator" default="and"/>
+        <xs:attribute type="rout:operatorType" name="operator" default="and"/>
     </xs:complexType>
 
     <xs:complexType name="parametersType">
@@ -114,6 +114,13 @@
             <xs:element type="rout:parametersType" name="parameters"/>
         </xs:choice>
     </xs:complexType>
+
+    <xs:simpleType name="operatorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="or"/>
+            <xs:enumeration value="and"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="paramAccessType">
         <xs:restriction base="xs:string">
