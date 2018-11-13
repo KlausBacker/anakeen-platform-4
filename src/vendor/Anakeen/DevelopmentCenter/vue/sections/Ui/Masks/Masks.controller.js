@@ -13,6 +13,46 @@ export default {
     "ank-smart-element": AnkSmartElement
   },
   props: ["ssName"],
+  beforeRouteEnter(to, from, next) {
+    if (to.query.open) {
+      let filter = to.query.open;
+      next(function(vueInstance) {
+        if (filter && filter !== "") {
+          if (vueInstance.$refs.masksGrid.kendoGrid) {
+            vueInstance.$refs.masksConsult.fetchSmartElement({
+              initid: filter,
+              viewId: "!defaultConsultation"
+            });
+          } else {
+            vueInstance.$refs.masksGrid.$on("grid-ready", () => {
+              vueInstance.$refs.masksConsult.$once("documentLoaded", () => {
+                vueInstance.$refs.masksConsult.fetchSmartElement({
+                  initid: filter,
+                  viewId: "!defaultConsultation"
+                });
+                vueInstance
+                  .$(
+                    "[data-uid=" +
+                      vueInstance.$refs.masksGrid.kendoGrid.dataSource
+                        .view()
+                        .find(d => d.rowData.name === filter).uid +
+                      "]",
+                    vueInstance.$el
+                  )
+                  .addClass("masks-view-is-opened");
+              });
+            });
+          }
+        }
+      });
+    } else {
+      next(function(vueInstance) {
+        vueInstance.$refs.masksGrid.$on("grid-ready", () => {
+          vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({});
+        });
+      });
+    }
+  },
   mounted() {
     const onContentResize = (part, $split) => {
       return () => {
@@ -49,6 +89,10 @@ export default {
             initid: event.data.row.id,
             viewId: "!defaultConsultation"
           });
+          this.$("[role=row]", this.$el).removeClass("masks-view-is-opened");
+          this.$(event.target)
+            .closest("tr")
+            .addClass("masks-view-is-opened");
           break;
         }
       }

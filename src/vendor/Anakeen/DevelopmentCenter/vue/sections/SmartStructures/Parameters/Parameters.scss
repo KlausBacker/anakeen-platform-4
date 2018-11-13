@@ -1,16 +1,16 @@
-.defaults-parent {
+.parameters-parent {
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
-.defaults-content {
+.parameters-content {
   display: flex;
   flex: 1;
 }
 
-.defaults-nav {
+.parameters-nav {
   display: flex;
-  .defaults-nav-link {
+  .parameters-nav-link {
     cursor: pointer;
     border-radius: .25rem .25rem 0 0;
     padding: .5rem;

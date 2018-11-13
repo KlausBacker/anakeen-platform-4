@@ -13,16 +13,12 @@
             label: "Infos"
           },
           {
-            name: "SmartStructures::structure",
-            label: "Structure"
+            name: "SmartStructures::fields",
+            label: "Fields"
           },
           {
-            name: "SmartStructures::parameters::parameterValues",
+            name: "SmartStructures::parameters",
             label: "Parameters"
-          },
-          {
-            name: "SmartStructures::defaults",
-            label: "Defaults"
           }
         ]
       }

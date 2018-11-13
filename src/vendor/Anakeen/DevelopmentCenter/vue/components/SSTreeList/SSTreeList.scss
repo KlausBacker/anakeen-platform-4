@@ -7,8 +7,9 @@
 
 .ss-treelist-tree {
   flex: 1;
-  align-items: flex-start;
-  justify-content: stretch;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
 }
 
 .ss-treelist-toolbar {
@@ -18,26 +19,20 @@
 }
 
 .k-status {
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
-  top: 50%;
-  left: 40%;
+  margin-left: 30%;
+  margin-top: 15rem;
   font-size: 1.5rem;
+  color: #A4A4A4 !important;
 }
 
-.k-status:after {
-  display: inline-block;
-  font-family: "WebComponentsIcons";
-  content: "\e682";
+.k-status:before {
+  display: block;
+  font-family: "Material Icons";
+  content: "grid_off";
   font-size: 10rem;
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  width: 40%;
-  top: -150%;
-  left: 20%;
+  padding-bottom: 5rem;
+  padding-left: 14rem;
+  color: #A4A4A4 !important;
 }
 
 .overrided:after {
@@ -53,7 +48,10 @@
 }
 
 .is-herited {
-  color: #949494 !important;
+  color: lighten(#000000, 40%) !important;
+}
+.is-array-children {
+  background-color: rgba(255, 184, 148, 0.2) !important;
 }
 .attr-type--tab, .attr-type--tab:hover {
   background-color: #e7cfff !important;
@@ -75,4 +73,3 @@
 .k-treelist tbody tr:hover {
   outline: solid 1px grey;
 }
-

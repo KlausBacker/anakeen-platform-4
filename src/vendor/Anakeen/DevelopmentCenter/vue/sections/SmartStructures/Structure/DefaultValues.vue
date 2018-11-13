@@ -1,5 +1,5 @@
 <template>
-    <ss-treelist :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate"></ss-treelist>
+    <ss-treelist :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate" :messages="messages"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
@@ -59,7 +59,8 @@
             }
             return dataItem[colId];
           };
-        }
+        },
+        messages: "There are no default values for this Smart Structure..."
       }
     }
   }

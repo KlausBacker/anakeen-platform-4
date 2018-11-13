@@ -1,11 +1,11 @@
 <template>
-    <div class="defaults-parent">
+    <div class="fields-parent">
         <router-tabs :items="items"></router-tabs>
     </div>
 </template>
 <!-- CSS to this component only -->
 <style lang="scss">
-    @import "./Defaults.scss";
+    @import "./Fields.scss";
 </style>
 
 <script>
@@ -14,12 +14,12 @@
       return {
         items: [
           {
-            name: "SmartStructures::defaults::defaultFields",
+            name: "SmartStructures::fields::structure",
             label: "Default Fields Values"
           },
           {
-            name: "SmartStructures::defaults::defaultParamFields",
-            label: "Default Parameters Values"
+            name: "SmartStructures::fields::defaults",
+            label: "Default Values"
           }
         ]
       }

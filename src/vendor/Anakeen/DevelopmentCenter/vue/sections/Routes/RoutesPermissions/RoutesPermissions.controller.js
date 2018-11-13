@@ -81,6 +81,10 @@ export default {
     displayLink(e) {
       const accessName = e.accessName;
       return `<a data-role="develRouterLink" href="/devel/security/routes/access/controls/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`;
+    },
+    displayRole(e) {
+      const ref = e.account.reference;
+      return `<a data-role="develRouterLink" href="/devel/security/roles/?role=${ref}" style="text-decoration: underline; color: #157EFB">${ref}</a>`;
     }
   }
 };

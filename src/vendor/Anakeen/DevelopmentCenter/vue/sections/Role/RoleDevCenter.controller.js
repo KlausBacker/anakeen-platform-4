@@ -25,6 +25,25 @@ export default {
       }
     });
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.role) {
+      let filter = to.query.role;
+      next(function(vueInstance) {
+        if (filter && filter !== "") {
+          vueInstance.$refs.roleContent.kendoGrid.dataSource.filter({
+            field: "role_login",
+            operator: "contains",
+            value: filter
+          });
+        }
+      });
+    } else {
+      next(function(vueInstance) {
+        vueInstance.$refs.roleContent.kendoGrid.dataSource.filter({});
+      });
+    }
+  },
+
   methods: {
     setGridOption() {
       const options = this.$refs.roleContent.kendoGrid.getOptions();

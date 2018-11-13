@@ -14,12 +14,13 @@
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true"
+                    :resizable="true"
                     :noRecords="{ template: `<div class='empty-grid'>
                                                 <div class='empty-grid-icon'>
-                                                    <span class='k-icon k-i-table-delete'></span>
+                                                   <i class='material-icons'>grid_off</i>
                                                 </div>
                                                 <div class='empty-grid-text'>
-                                                    <span> No View Controller has been set for this Smart Structure...</span>
+                                                    <span> No View Controller data to display for this Smart Structure</span>
                                                 </div>
                                             </div>`}">
             <kendo-grid-column :field="'cvId'" :title="'<b>Logical Name</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>

@@ -7,14 +7,15 @@
                           :transport-read="getRoutes"
                           :server-paging="true"
                           :pageable="true"
-                          :page-size="20"
+                          :page-size="100"
+                          :sort="[{ field: 'nameSpace', dir: 'asc'},{field: 'name', dir:'asc'}]"
                           :schema-data="parseRoutesData"
                           :schema-total="parseRoutesTotal"
                           :server-filtering="true">
         </kendo-datasource>
         <kendo-grid ref="routesGridContent" class="routes-acl-content"
                     :data-source-ref="'routesGrid'"
-                    :pageable="{ pageSizes: [10,20,40,50]}"
+                    :pageable="{ pageSizes: [100,200,500]}"
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true">
@@ -29,7 +30,7 @@
                                :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'pattern'" :title="'<b>Pattern</b>'" :property="true"
                                :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false"
-                               :filterable-cell-template="autoFilterCol"></kendo-grid-column>
+                               :filterable-cell-template="autoFilterCol" :hidden="true"></kendo-grid-column>
             <kendo-grid-column :field="'requiredAccess'" :title="'<b>Required Accesses</b>'" :property="true"
                                :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false"
                                :template="displayMultiple"
