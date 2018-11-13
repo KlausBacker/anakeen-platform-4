@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:structure-configuration name="IUSER">
-        <smart:accesses>
-            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration ref="PRF_IUSER_OWNER"/>
-            <smart:field-access-configuration ref="FALL_IUSER"/>
-        </smart:accesses>
-    </smart:structure-configuration>
 
     <smart:field-access-layer name="FAL_IUSER_PASSWORD" label="User password" structure="IUSER">
         <smart:description>User password modification</smart:description>
@@ -65,4 +58,12 @@
     <!-- Render Access Configuration -->
     <smart:access-configuration name="MSK_IUSERSUBSTITUTE" ref="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="MSK_IUSER_ADMIN" ref="PRF_ADMIN_EDIT"/>
+
+    <smart:structure-configuration name="IUSER">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_IUSER_OWNER"/>
+            <smart:field-access-configuration ref="FALL_IUSER"/>
+        </smart:accesses>
+    </smart:structure-configuration>
 </smart:config>
