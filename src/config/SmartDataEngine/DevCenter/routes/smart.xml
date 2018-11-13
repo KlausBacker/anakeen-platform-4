@@ -59,7 +59,9 @@
             <sde:callable>\Anakeen\Routes\Devel\Config\StructureConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/config/smart/structures/{structure}.xml</sde:pattern>
-            <sde:pattern>/api/v2/devel/config/smart/structures/{structure}/{type:structure|uis|accesses|uiaccesses}.xml</sde:pattern>
+            <sde:pattern>
+                /api/v2/devel/config/smart/structures/{structure}/{type:structure|uis|accesses|uiaccesses}.xml
+            </sde:pattern>
             <sde:description>Get structure configuration</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
@@ -69,8 +71,18 @@
             <sde:callable>\Anakeen\Routes\Devel\Config\WorkflowConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/config/smart/workflows/{workflow}.xml</sde:pattern>
-            <sde:pattern>/api/v2/devel/config/smart/workflows/{workflow}/{type:data|config|accesses|uis}.xml</sde:pattern>
+            <sde:pattern>/api/v2/devel/config/smart/workflows/{workflow}/{type:data|config|accesses|uis}.xml
+            </sde:pattern>
             <sde:description>Get workflow configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetElementConfig">
+            <sde:callable>\Anakeen\Routes\Devel\Config\ElementConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/config/smart/elements/{id}.xml</sde:pattern>
+            <sde:description>Get system element configuration</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
