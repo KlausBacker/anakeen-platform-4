@@ -2,13 +2,9 @@
 
 namespace Anakeen\Workflow;
 
-use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\SEManager;
-use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Anakeen\Ui\ExportRenderAccessConfiguration;
-use SmartStructure\Fields\Mailtemplate as MailFields;
-use SmartStructure\Fields\Timer as TimerFields;
 
 class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
 {
@@ -63,7 +59,6 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
             // Timers definition used in workflow
             $this->extractTimersData($this->domConfig);
         }
-
 
         if ($type & self::X_CONFIG) {
             // References to mailtemplates and timers by steps
@@ -363,7 +358,8 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
             $mails = $this->workflow->getStateMailTemplate($step);
             foreach ($mails as $mail) {
                 if (empty($this->dataSet[$mail])) {
-                    $structConfig->appendChild($this->getMailTemplateData($mail));
+                    $structConfig->appendChild(ExportElementConfiguration::getMailTemplateData($mail, $this->dom));
+                    $this->dataSet[$mail] = true;
                 }
             }
         }
@@ -372,7 +368,8 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
             $mails = $this->workflow->getTransitionMailTemplates($transitionName);
             foreach ($mails as $mail) {
                 if (empty($this->dataSet[$mail])) {
-                    $structConfig->appendChild($this->getMailTemplateData($mail));
+                    $structConfig->appendChild(ExportElementConfiguration::getMailTemplateData($mail, $this->dom));
+                    $this->dataSet[$mail] = true;
                 }
             }
         }
@@ -407,80 +404,6 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
         $this->domConfig->setAttribute("xmlns:" . self::NSMT, self::NSMTURL);
     }
 
-    protected function getMailTemplateData($name)
-    {
-        $this->dataSet[$name] = true;
-        $mail = SEManager::getDocument($name);
-        $mailNode = $this->celmail("mailtemplate");
-
-        $mailNode->setAttribute("name", static::getLogicalName($name));
-        $mailNode->setAttribute("label", $mail->getRawValue(MailFields::tmail_title));
-        $mailNode->setAttribute("structure", static::getLogicalName($mail->getRawValue(MailFields::tmail_family)));
-
-        $fromNode = $this->celmail("from");
-
-        $fromType = $mail->getMultipleRawValues(MailFields::tmail_fromtype);
-        $from = $mail->getMultipleRawValues(MailFields::tmail_from);
-
-        if ($from) {
-            $fromNode->appendChild($this->getRecipient($fromType[0], $from[0]));
-        }
-
-        $nodeRecipients = $this->celmail("recipients");
-        $recips = $mail->getMultipleRawValues(MailFields::tmail_recip);
-        $destTypes = $mail->getMultipleRawValues(MailFields::tmail_desttype);
-        $copyModes = $mail->getMultipleRawValues(MailFields::tmail_copymode);
-        foreach ($recips as $k => $recip) {
-            $nodeRecipient = $this->celmail("recipient");
-            $nodeRecipient->setAttribute("dest", $copyModes[$k]);
-            $recipient = $this->getRecipient($destTypes[$k], $recip);
-            $nodeRecipient->appendChild($recipient);
-            $nodeRecipients->appendChild($nodeRecipient);
-        }
-        $nodeSubject = $this->celmail("subject");
-        $nodeSubject->nodeValue = $mail->getRawValue(MailFields::tmail_subject);
-
-        $nodeSave = $this->celmail("savecopy");
-        $nodeSave->nodeValue = ($mail->getRawValue(MailFields::tmail_savecopy) === "yes" ? "true" : "false");
-
-        $nodeLink = $this->celmail("savecopy");
-        $nodeLink->nodeValue = ($mail->getRawValue(MailFields::tmail_ulink) === "yes" ? "true" : "false");
-
-
-        $nodeBody = $this->celmail("body");
-        $nodeBody->setAttribute("content-type", "html");
-        $nodeBody->appendChild($this->dom->createCDATASection($mail->getRawValue(MailFields::tmail_body)));
-
-        $mailNode->appendChild($fromNode);
-        $mailNode->appendChild($nodeRecipients);
-        $mailNode->appendChild($nodeSubject);
-        $mailNode->appendChild($nodeSave);
-        $mailNode->appendChild($nodeLink);
-        $mailNode->appendChild($nodeBody);
-
-        $attachements = $mail->getMultipleRawValues(MailFields::tmail_attach);
-
-        if ($attachements) {
-            $attchementsNode = $this->celmail("attachments");
-            foreach ($attachements as $attachement) {
-                $attchNode = $this->celmail("attachment");
-                if (preg_match("/([^(]*)\((.*)\)/", $attachement, $reg)) {
-                    $value = trim($reg[1]);
-                    $label = trim($reg[2]);
-                    $attchNode->setAttribute("label", $label);
-                    $attchNode->nodeValue = $value;
-                } else {
-                    $attchNode->nodeValue = $attachement;
-                }
-                $attchementsNode->appendChild($attchNode);
-            }
-            $mailNode->appendChild($attchementsNode);
-        }
-
-
-        return $mailNode;
-    }
-
 
     protected function extractTimersData(\DOMElement $structConfig)
     {
@@ -491,7 +414,8 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
             $timer = $this->workflow->getStateTimers($step);
             if ($timer) {
                 if (empty($this->dataSet[$timer])) {
-                    $structConfig->appendChild($this->getTimerData($timer));
+                    $structConfig->appendChild(ExportElementConfiguration::getTimerData($timer, $this->dom));
+                    $this->dataSet[$timer] = true;
                 }
             }
         }
@@ -500,7 +424,8 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
             $timers = $this->workflow->getTransitionTimers($transitionName);
             foreach ($timers as $timer) {
                 if (empty($this->dataSet[$timer["id"]])) {
-                    $structConfig->appendChild($this->getTimerData($timer["id"]));
+                    $structConfig->appendChild(ExportElementConfiguration::getTimerData($timer["id"], $this->dom));
+                    $this->dataSet[$timer["id"]] = true;
                 }
             }
         }
@@ -535,161 +460,6 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
         $this->domConfig->setAttribute("xmlns:" . self::NSTM, self::NSTMURL);
     }
 
-    protected function getTimerData($name)
-    {
-        $this->dataSet[$name] = true;
-        $timer = SEManager::getDocument($name);
-        $timerNode = $this->celtimer("timer");
-
-        $timerNode->setAttribute("name", static::getLogicalName($name));
-        $timerNode->setAttribute("label", $timer->getRawValue(TimerFields::tm_title));
-
-        $timerNode->setAttribute("structure", static::getLogicalName($timer->getRawValue(TimerFields::tm_family)));
-        $timerNode->setAttribute("workflow", static::getLogicalName($timer->getRawValue(TimerFields::tm_workflow)));
-
-        $dateRef = $timer->getRawValue(TimerFields::tm_dyndate);
-        $dateNode = $this->celtimer("field-date-reference");
-        if ($dateRef) {
-            $dateNode->setAttribute("ref", $dateRef);
-        }
-        $timerNode->appendChild($dateNode);
-        $deltaDay = $timer->getRawValue(TimerFields::tm_refdaydelta);
-        $deltaHourDay = $timer->getRawValue(TimerFields::tm_refhourdelta);
-        if ($deltaDay || $deltaHourDay) {
-            $delay = sprintf("%d days %d hours", $deltaDay, $deltaHourDay);
-            $dateNode->setAttribute("delta", $delay);
-        }
-
-        $tasks = $timer->getAttributeValue(TimerFields::tm_t_config);
-        $tasksNode = $this->celtimer("tasks");
-
-        /*  [1] => Array
-        (
-            [tm_delay] => 2
-            [tm_hdelay] => 9
-            [tm_iteration] => 1
-            [tm_tmail] => Array
-                (
-                )
-
-            [tm_state] => e_ccfd_sl_validee_directeur
-            [tm_method] => ::sayHello(2)
-        )*/
-
-        foreach ($tasks as $task) {
-            $taskNode = $this->celtimer("task");
-            $delay = sprintf("%d days %d hours", $task[TimerFields::tm_delay], $task[TimerFields::tm_hdelay]);
-            $taskNode->setAttribute("delta", $delay);
-            if ($task[TimerFields::tm_state]) {
-                $singleTask = $this->celtimer("setstate");
-                $singleTask->setAttribute("state", $task[TimerFields::tm_state]);
-                $taskNode->appendChild($singleTask);
-            }
-            if ($task[TimerFields::tm_tmail]) {
-                foreach ($task[TimerFields::tm_tmail] as $mail) {
-                    $singleTask = $this->celtimer("sendmail");
-                    $singleTask->setAttribute("ref", self::getLogicalName($mail));
-                    $taskNode->appendChild($singleTask);
-                }
-            }
-            if ($task[TimerFields::tm_method]) {
-                $singleTask = $this->celtimer("process");
-                $method = new ParseFamilyMethod();
-                $method->parse($task[TimerFields::tm_method]);
-
-                $pcNode = $this->celtimer("process-callable");
-                $pcNode->setAttribute("function", sprintf("%s::%s", $method->className, $method->methodName));
-                $singleTask->appendChild($pcNode);
-
-                foreach ($method->inputs as $input) {
-                    $argNode = $this->celtimer("process-argument");
-                    $argNode->nodeValue = $input->name;
-                    $argNode->setAttribute("type", $input->type === "string" ? "string" : "field");
-                    $singleTask->appendChild($argNode);
-                }
-
-                $taskNode->appendChild($singleTask);
-            }
-            $tasksNode->appendChild($taskNode);
-        }
-        $timerNode->appendChild($tasksNode);
-
-        return $timerNode;
-    }
-
-    protected function getRecipient($type, $value)
-    {
-        $label = "";
-        if (preg_match("/([^(]*)\((.*)\)/", $value, $reg)) {
-            $value = trim($reg[1]);
-            $label = trim($reg[2]);
-        }
-        switch ($type) {
-            /*
-                "F" :"Adresse fixe":
-                "A" :"Attribut texte"
-                "D" :"Attribut relation"
-                "E" :"Paramètre de famille texte"
-                "DE":"Paramètre de famille relation"
-                "P" :"Paramètres globaux"
-                "WA":"Attribut cycle"
-                "WD":"Relation cycle"
-                "WE":"Paramètre cycle"
-            */
-            case "F":
-                $node = $this->celmail("address");
-                $node->nodeValue = $value;
-                break;
-            case "A":
-                $node = $this->celmail("element-field-value");
-                $node->nodeValue = $value;
-                break;
-            case "D":
-                $node = $this->celmail("element-account-field");
-                $node->nodeValue = $value;
-                break;
-            case "E":
-                $node = $this->celmail("structure-parameter-value");
-                $node->nodeValue = $value;
-                break;
-            case "DE":
-                $node = $this->celmail("structure-account-parameter");
-                $node->nodeValue = $value;
-                break;
-            case "WA":
-                $node = $this->celmail("workflow-field-value");
-                $node->nodeValue = $value;
-                break;
-            case "WE":
-                $node = $this->celmail("workflow-parameter-value");
-                $node->nodeValue = $value;
-                break;
-            case "WD":
-                $node = $this->celmail("workflow-account-field");
-                $node->nodeValue = $value;
-                break;
-            case "P":
-                $node = $this->celmail("config-parameter");
-
-                if (strpos($value, '::') === false) {
-                    $ns = ContextParameterManager::getNs($value);
-                    $pvalue = $value;
-                } else {
-                    list($ns, $pvalue) = explode("::", $value);
-                }
-                $node->setAttribute("ns", $ns);
-                $node->nodeValue = $pvalue;
-
-                break;
-            default:
-                $node = $this->celmail("unknomtype");
-                $node->setAttribute("type", $type);
-        }
-        if ($label) {
-            $node->setAttribute("label", $label);
-        }
-        return $node;
-    }
 
     protected function celw($name)
     {
