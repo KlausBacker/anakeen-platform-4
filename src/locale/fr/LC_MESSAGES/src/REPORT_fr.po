@@ -11,79 +11,79 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_caption"
 msgstr "Description"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_colors"
 msgstr "Couleur"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_displayoption"
 msgstr "Option de présentation"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_foots"
 msgstr "Pied de tableau"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_fr_presentation"
 msgstr "Présentation"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_idcols"
 msgstr "Id colonnes"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_idsort"
 msgstr "Id tri"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_lcols"
 msgstr "Label"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_limit"
 msgstr "Limite"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_ordersort"
 msgstr "Ordre"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_sort"
 msgstr "Tri"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_tab_presentation"
 msgstr "Présentation"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_tcols"

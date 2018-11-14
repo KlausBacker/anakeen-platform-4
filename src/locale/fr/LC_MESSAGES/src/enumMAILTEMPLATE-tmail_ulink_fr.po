@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_ulink"
 msgid "no"
 msgstr "Sans lien"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_ulink"
 msgid "yes"

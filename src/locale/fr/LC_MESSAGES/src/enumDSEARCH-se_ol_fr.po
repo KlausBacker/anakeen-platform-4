@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH-se_ol"
 msgid "and"
 msgstr "satisfait toutes les conditions"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH-se_ol"
 msgid "or"
 msgstr "satisfait au moins une condition"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH-se_ol"
 msgid "perso"

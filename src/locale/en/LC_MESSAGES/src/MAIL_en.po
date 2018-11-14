@@ -11,62 +11,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_cm"
 msgstr "Comment"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_copymode"
 msgstr ""
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_dest"
 msgstr "Recipients"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_format"
 msgstr "Format"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_fr"
 msgstr "Address"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_fr_cm"
 msgstr "Comment"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_from"
 msgstr "From"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_recip"
 msgstr "Recipient"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_recipid"
 msgstr "ID recipient"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_savecopy"
 msgstr "Save a copy"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_sendformat"
 msgstr "Notif."
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_subject"
 msgstr "Subject"

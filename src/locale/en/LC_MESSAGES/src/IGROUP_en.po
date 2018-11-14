@@ -11,27 +11,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: igroup.struct.xml
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "grp_fr_intranet"
 msgstr "System"
 
-#: igroup.struct.xml
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "grp_roles"
 msgstr "Associated roles"
 
-#: igroup.struct.xml
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_login"
 msgstr "Login"
 
-#: igroup.struct.xml
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_meid"
 msgstr "Group id"
 
-#: igroup.struct.xml
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_whatid"
 msgstr "Id system"

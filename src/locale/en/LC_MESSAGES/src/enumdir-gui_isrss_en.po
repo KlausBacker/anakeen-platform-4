@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: igroup.struct.xml
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 #, fuzzy
 msgctxt "dir-gui_isrss"
 msgid "no"
 msgstr "non"
 
-#: igroup.struct.xml
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 #, fuzzy
 msgctxt "dir-gui_isrss"
 msgid "yes"

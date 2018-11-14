@@ -11,25 +11,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 #, fuzzy
 msgctxt "MSEARCH"
 msgid "se_crit"
 msgstr "Critère"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 #, fuzzy
 msgctxt "MSEARCH"
 msgid "se_fr_searches"
 msgstr "Les recherches"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 #, fuzzy
 msgctxt "MSEARCH"
 msgid "seg_idcond"
 msgstr "Recherche"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 #, fuzzy
 msgctxt "MSEARCH"
 msgid "seg_t_cond"

@@ -11,73 +11,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_description"
 msgstr "Description"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_family"
 msgstr "Famille"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_fr_identification"
 msgstr "Aide"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_lang"
 msgstr "Langue du libellé"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_name"
 msgstr "Libellé"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_key"
 msgstr "Clé de la rubrique"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_lang"
 msgstr "Langue"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_name"
 msgstr "Nom de la rubrique"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_order"
 msgstr "Ordre de la rubrique"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_sec_text"
 msgstr "Texte"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_t_help"
 msgstr "Description"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
 msgid "help_t_sections"

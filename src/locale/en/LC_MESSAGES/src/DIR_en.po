@@ -11,62 +11,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "ba_desc"
 msgstr "Description"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_allbut"
 msgstr "All or nothing"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fam"
 msgstr "Families (title)"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_famids"
 msgstr "Families"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fr_prof"
 msgstr "Profiles by default"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fr_rest"
 msgstr "Restrictions"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_pdirid"
 msgstr "Default directory profile"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_pdocid"
 msgstr "Default document profile"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_subfam"
 msgstr "Sub family restriction"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_tfam"
 msgstr "Filtered families"
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fr_basic"
 msgstr ""
 
-#: dir.struct.xml
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "gui_color"
 msgstr "Guide color"

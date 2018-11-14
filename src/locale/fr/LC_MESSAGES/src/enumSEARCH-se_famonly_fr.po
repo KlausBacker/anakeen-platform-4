@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH-se_famonly"
 msgid "no"
 msgstr "Avec les sous-structures"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH-se_famonly"
 msgid "yes"
 msgstr "Sans les sous-structures"

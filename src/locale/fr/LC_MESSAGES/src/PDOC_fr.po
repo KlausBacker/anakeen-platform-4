@@ -11,37 +11,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: pdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "ba_desc"
 msgstr "Description"
 
-#: pdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "ba_title"
 msgstr "Profil de document"
 
-#: pdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_fam"
 msgstr "Famille"
 
-#: pdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_famid"
 msgstr "Famille (id)"
 
-#: pdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_fr_dyn"
 msgstr "Dynamique"
 
-#: pdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "fr_basic"

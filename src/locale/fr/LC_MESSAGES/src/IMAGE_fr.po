@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: image.struct.xml
+#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
 #, fuzzy
 msgctxt "IMAGE"
 msgid "img_file"
 msgstr "Image"
 
-#: image.struct.xml
+#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
 #, fuzzy
 msgctxt "IMAGE"
 msgid "img_frfile"
 msgstr "Image"
 
-#: image.struct.xml
+#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
 #, fuzzy
 msgctxt "IMAGE"
 msgid "img_title"
