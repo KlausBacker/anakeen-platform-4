@@ -3,7 +3,8 @@ namespace Anakeen\Routes\Devel\Smart;
 
 use Anakeen\Router\ApiV2Response;
 
-class Workflows {
+class Workflows
+{
 
     protected $filters = null;
 
@@ -58,5 +59,4 @@ class Workflows {
         $data=$workflowData;
         return $data;
     }
-
 }

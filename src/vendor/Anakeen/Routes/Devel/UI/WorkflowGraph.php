@@ -1,15 +1,15 @@
 <?php
 namespace Anakeen\Routes\Devel\UI;
-use Anakeen\Core\ContextManager;
+
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Routes\Core\Lib\Files;
 
 /**
  * Get Workflow graph image
  *
  * @note Used by route : GET /api/v2/devel/ui/workflows/image/{workflow}/sizes/{size:[0-9x]+[cfs]?}[.{extension:png|jpeg|jpg|svg}]
  */
-class WorkflowGraph {
+class WorkflowGraph
+{
 
     protected $extension = "svg";
     protected $wid = null;
