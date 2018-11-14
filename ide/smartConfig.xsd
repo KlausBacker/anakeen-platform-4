@@ -24,6 +24,7 @@
         <xs:sequence>
             <xs:element ref="mail:mailtemplate" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="timer:timer" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="wfl:graph" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="wfl:config" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:view-control" minOccurs="0" maxOccurs="unbounded"/>
@@ -120,7 +121,7 @@
         <xs:sequence maxOccurs="unbounded" minOccurs="0">
             <xs:element type="v1:enumType" name="enum"/>
         </xs:sequence>
-        <xs:attribute type="xs:token" name="name"/>
+        <xs:attribute type="v1:enumNameType" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
 
@@ -175,9 +176,15 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="enumNameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[\p{L}\p{Po} 0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="logicalNameType">
         <xs:restriction base="xs:token">
-            <xs:pattern value="[A-Za-z][A-Za-z0-9_-]+"/>
+            <xs:pattern value="[A-Za-z][A-Za-z 0-9_-]+"/>
         </xs:restriction>
     </xs:simpleType>
 

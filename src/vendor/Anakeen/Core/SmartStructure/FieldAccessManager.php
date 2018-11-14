@@ -51,6 +51,9 @@ class FieldAccessManager
         }
         /** @var \SmartStructure\Fieldaccesslayerlist $fall */
         $fall = SEManager::getDocument($se->fallid, false);
+        if (!$fall) {
+            throw new Exception("PRFL0301", $se->fallid, $se);
+        }
         SEManager::cache()->addDocument($fall);
         return self::getFalAccess($fall, $se, $oa);
     }

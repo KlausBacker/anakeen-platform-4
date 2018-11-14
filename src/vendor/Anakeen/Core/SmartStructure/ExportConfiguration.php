@@ -49,7 +49,8 @@ class ExportConfiguration
 
     }
 
-    protected function initStructureConfig() {
+    protected function initStructureConfig()
+    {
         $this->structConfig = $this->cel("structure-configuration");
         $this->structConfig->setAttribute("name", $this->sst->name);
         if ($this->sst->id < 1000) {
@@ -67,10 +68,11 @@ class ExportConfiguration
         $this->extractDefaults();
         $this->extractEnums();
 
-       $this->insertStructConfig();
+        $this->insertStructConfig();
     }
 
-    public function insertStructConfig() {
+    public function insertStructConfig()
+    {
         $this->domConfig->appendChild($this->structConfig);
     }
 
@@ -108,7 +110,7 @@ class ExportConfiguration
 
     public function extractProps()
     {
-        $structConfig=$this->structConfig;
+        $structConfig = $this->structConfig;
         $this->setComment("Structure Properties", $structConfig);
         $structConfig->setAttribute("label", $this->sst->title);
         if ($this->sst->fromid) {
@@ -172,7 +174,7 @@ class ExportConfiguration
     protected function extractModAttr()
     {
 
-        $structConfig=$this->structConfig;
+        $structConfig = $this->structConfig;
         /**
          * @var \DOMElement[]
          */
@@ -228,7 +230,7 @@ class ExportConfiguration
                 $this->setOptions($smartOver, $attr->getOptions());
             }
             if ($docattr->phpconstraint && $docattr->phpconstraint !== "-") {
-                if (! is_a($attr, NormalAttribute::class)) {
+                if (!is_a($attr, NormalAttribute::class)) {
                     throw new \Anakeen\Router\Exception(sprintf("\"%s\" is not a normal attribute. Constraint cannot be set", $attr->id));
                 }
                 $smartOver->appendChild($this->getConstraint($attr));
@@ -259,7 +261,7 @@ class ExportConfiguration
 
     public function extractDefaults()
     {
-        $structConfig=$this->structConfig;
+        $structConfig = $this->structConfig;
         $smartDefaults = $this->cel("defaults");
 
         $defaults = $this->sst->getOwnDefValues();
@@ -336,17 +338,22 @@ class ExportConfiguration
             $this->setComment("Enums definitions");
             $this->domConfig->appendChild($smartEnums);
         }
+        return count($enumNames) > 0;
     }
 
-    public function extractFields() {
+    public function extractFields()
+    {
         $this->extractAttr("fields");
     }
-    public function extractParameters() {
+
+    public function extractParameters()
+    {
         $this->extractAttr("parameters");
     }
-    protected function extractAttr($part="all")
+
+    protected function extractAttr($part = "all")
     {
-        $structConfig=$this->structConfig;
+        $structConfig = $this->structConfig;
         $smartAttributes = $this->cel("fields");
         $smartParameters = $this->cel("parameters");
 
@@ -358,6 +365,9 @@ class ExportConfiguration
         $this->fieldSets = [];
         foreach ($attrs as $attr) {
             if ($attr->structureId !== $this->sst->id) {
+                continue;
+            }
+            if ($attr->getOption("autocreated") === "yes") {
                 continue;
             }
 
@@ -375,7 +385,7 @@ class ExportConfiguration
             $attrName = $attr->id;
             $type = $attr->type;
             if ($type === "integer") {
-                $type="int";
+                $type = "int";
             }
             switch ($type) {
                 case "menu":
@@ -463,11 +473,11 @@ class ExportConfiguration
                 }
             }
         }
-        if ($part === "all" || $part==="fields") {
+        if ($part === "all" || $part === "fields") {
             $this->setComment("Structure Fields", $structConfig);
             $structConfig->appendChild($smartAttributes);
         }
-        if ($part === "all"|| $part==="parameters") {
+        if ($part === "all" || $part === "parameters") {
             $this->setComment("Structure Parameters", $structConfig);
             $structConfig->appendChild($smartParameters);
         }
@@ -475,7 +485,7 @@ class ExportConfiguration
 
     public function extractHooks()
     {
-        $structConfig=$this->structConfig;
+        $structConfig = $this->structConfig;
         $smartHooks = $this->cel("hooks");
 
         /**
@@ -512,7 +522,7 @@ class ExportConfiguration
 
     public function extractAutoComplete()
     {
-        $structConfig=$this->structConfig;
+        $structConfig = $this->structConfig;
         $smartAuto = $this->cel("autocompletion");
         /**
          * @var \DOMElement[]
@@ -703,14 +713,25 @@ class ExportConfiguration
 
     protected function setComment($text, $dom = null)
     {
-        $l = mb_strlen($text);
-
-        $border = str_pad('~', $l, '~');
         if (!$dom) {
             $dom = $this->domConfig;
         }
-        $dom->appendChild($this->dom->createComment($border));
-        $dom->appendChild($this->dom->createComment($text));
-        $dom->appendChild($this->dom->createComment($border));
+        $nodes = self::getComment($text, $this->dom);
+        foreach ($nodes as $node) {
+            $dom->appendChild($node);
+        }
+    }
+
+    public static function getComment($text, \DOMDocument $dom)
+    {
+        $l = mb_strlen($text);
+
+        $borderBegin = str_pad('region ~', $l, '~');
+        $borderEnd = str_pad('endregion ~', $l, '~');
+
+        $nodes[] = $dom->createComment($borderBegin);
+        $nodes[] = $dom->createComment($text);
+        $nodes[] = $dom->createComment($borderEnd);
+        return $nodes;
     }
 }

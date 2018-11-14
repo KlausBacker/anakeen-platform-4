@@ -50,10 +50,11 @@ class ExportConfigurationAccesses extends ExportConfiguration
             $tag = $this->cel("structure-access-configuration");
             $access->appendChild($tag);
             $accessControl = $this->setAccess($this->sst->profid);
+
+            if ($part === "all" || $part === "ref") {
+                $tag->setAttribute("ref", static::getLogicalName($this->sst->profid));
+            }
             if ($this->sst->profid !== $this->sst->id) {
-                if ($part === "all" || $part === "ref") {
-                    $tag->setAttribute("ref", static::getLogicalName($this->sst->profid));
-                }
                 if ($part === "all" || $part === "access") {
                     $this->domConfig->appendChild($accessControl);
                 }
