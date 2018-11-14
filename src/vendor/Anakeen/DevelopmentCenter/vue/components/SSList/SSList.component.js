@@ -64,7 +64,7 @@ export default {
       selectedStructure: null,
       dataSource: null,
       listModel: {
-        id: "name"
+        id: "id"
       },
       listFilter: ""
     };
@@ -105,6 +105,14 @@ export default {
     },
     hasFilter() {
       return !!this.filter;
+    },
+    filterPlaceholder() {
+      if (this.hasFilter && typeof this.filter === "object") {
+        return (
+          this.filter.placeholder || this.translations.listFilterPlaceholder
+        );
+      }
+      return this.translations.listFilterPlaceholder;
     },
     resolveListUrl() {
       const baseUrl = this.listUrl;
