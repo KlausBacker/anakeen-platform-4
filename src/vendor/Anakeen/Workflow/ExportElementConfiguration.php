@@ -464,7 +464,7 @@ class ExportElementConfiguration
             return self::getAccess($name);
         }
 
-        if ($e->accessControl()->isRealProfile()) {
+        if ($e->accessControl()->isRealProfile() || $e->id === $e->profid) {
             $accessControl = self::getAccess($e->id);
             return $accessControl;
         } else {
