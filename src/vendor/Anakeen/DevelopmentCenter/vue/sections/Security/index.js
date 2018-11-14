@@ -18,32 +18,6 @@ export default {
   component: Security,
   children: [
     {
-      name: "Security::Routes",
-      path: "routes",
-      meta: {
-        label: "Routes"
-      },
-      component: Routes,
-      children: [
-        {
-          name: "Security::Routes::RoutesAcl",
-          path: "access/controls/",
-          meta: {
-            label: "Acls"
-          },
-          component: RoutesAcl
-        },
-        {
-          name: "Security::Routes::RoutesPermissions",
-          path: "access/permissions/",
-          meta: {
-            label: "Permissions"
-          },
-          component: AclAccount
-        }
-      ]
-    },
-    {
       name: "Security::SmartStructures",
       path: "smartStructures",
       component: SmartStructures,
@@ -122,6 +96,32 @@ export default {
         label: "Roles"
       },
       component: Roles
+    },
+    {
+      name: "Security::Routes",
+      path: "routes",
+      meta: {
+        label: "Routes"
+      },
+      component: Routes,
+      children: [
+        {
+          name: "Security::Routes::RoutesAcl",
+          path: "access/controls/",
+          meta: {
+            label: "Acls"
+          },
+          component: RoutesAcl
+        },
+        {
+          name: "Security::Routes::RoutesPermissions",
+          path: "access/permissions/",
+          meta: {
+            label: "Permissions"
+          },
+          component: AclAccount
+        }
+      ]
     }
   ]
 };
