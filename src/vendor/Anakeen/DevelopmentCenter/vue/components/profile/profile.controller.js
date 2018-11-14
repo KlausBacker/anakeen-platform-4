@@ -80,8 +80,8 @@ export default {
                           ? "badge-light"
                           : "badge-primary"
                       }">${nbElementsByCat.group}</span> 
-<button class="k-button k-button-icon foldGroups"><span class="k-icon k-i-sort-asc-sm"></span></button> 
-<button class="k-button k-button-icon unfoldGroups"><span class="k-icon k-i-sort-desc-sm"></span></button>`,
+<button class="k-button k-button-icon foldGroups"><span class="k-icon k-i-minus"></span></button> 
+<button class="k-button k-button-icon unfoldGroups"><span class="k-icon k-i-plus"></span></button>`,
                       parentId: null
                     },
                     {
@@ -189,10 +189,11 @@ export default {
               };
             });
             this.dataSource.bind("change", () => {
-              // treeList.data("kendoTreeList").autoFitColumn("title");
+              treeList.data("kendoTreeList").autoFitColumn("title");
             });
             const treeList = $(this.$refs.profileTreeList).kendoTreeList({
               columnMenu: true,
+              height: "100%",
               columns: [
                 {
                   field: "title",
@@ -214,13 +215,13 @@ export default {
                 }
               ],
               expand: () => {
-                // treeList.data("kendoTreeList").autoFitColumn("title");
+                treeList.data("kendoTreeList").autoFitColumn("title");
               },
               collapse: () => {
-                // treeList.data("kendoTreeList").autoFitColumn("title");
+                treeList.data("kendoTreeList").autoFitColumn("title");
               },
               dataBound: () => {
-                // treeList.data("kendoTreeList").autoFitColumn("title");
+                treeList.data("kendoTreeList").autoFitColumn("title");
               },
               dataSource: this.dataSource
             });
@@ -233,7 +234,7 @@ export default {
                     .data("kendoTreeList")
                     .collapse($(currentElement).closest(`[role="row"]`));
                 });
-              // treeList.data("kendoTreeList").autoFitColumn("title");
+              treeList.data("kendoTreeList").autoFitColumn("title");
             });
             treeList.on("click", ".unfoldGroups", () => {
               treeList
@@ -244,7 +245,7 @@ export default {
                     .data("kendoTreeList")
                     .expand($(currentElement).closest(`[role="row"]`));
                 });
-              // treeList.data("kendoTreeList").autoFitColumn("title");
+              treeList.data("kendoTreeList").autoFitColumn("title");
             });
           })
           .catch(err => {

@@ -1,5 +1,5 @@
 <template>
-    <profile-grid style="height: 100%" v-if="seIdentifier" class="security-smartstructure-profile-grid" :detachable="true" :profileId="seIdentifier"></profile-grid>
+    <profile-grid style="width: 100%;" v-if="seIdentifier" class="security-smartstructure-profile-grid" :detachable="true" :profileId="seIdentifier"></profile-grid>
 </template>
 
 <script>
