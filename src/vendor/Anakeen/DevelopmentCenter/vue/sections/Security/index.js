@@ -10,6 +10,11 @@ import SmartStructuresSections from "../Security/SmartStructures/subsections/exp
 import Profiles from "../Security/Profiles/Profiles.vue";
 import ProfileView from "../Security/Profiles/ProfileVisualizer/ProfileVisualizerContent.vue";
 
+import Workflows from "../Security/Workflows/Workflows.vue";
+import WorkflowsContent from "../Security/Workflows/WorkflowsContent.vue";
+import WorkflowsRights from "../Security/Workflows/Rights/Rights.vue";
+import WorkflowsAccesses from "../Security/Workflows/Accesses/Accesses.vue";
+
 export default {
   label: "Security",
   name: "Security",
@@ -96,6 +101,44 @@ export default {
         label: "Roles"
       },
       component: Roles
+    },
+    {
+      name: "Security::Workflows",
+      path: "workflows",
+      meta: {
+        label: "Workflows"
+      },
+      component: Workflows,
+      children: [
+        {
+          name: "Security::Workflows::Content",
+          path: ":workflowId",
+          meta: {
+            label: ":workflowId"
+          },
+          component: WorkflowsContent,
+          children: [
+            {
+              name: "Security::Workflows::Rights",
+              path: "rights",
+              meta: {
+                label: "Rights"
+              },
+              component: WorkflowsRights,
+              props: true // Set ssName as a vue component prop
+            },
+            {
+              name: "Security::Workflows::Access",
+              path: "accesses",
+              meta: {
+                label: "Accesses"
+              },
+              component: WorkflowsAccesses,
+              props: true // Set ssName as a vue component prop
+            }
+          ]
+        }
+      ]
     },
     {
       name: "Security::Routes",

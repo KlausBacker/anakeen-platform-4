@@ -26,6 +26,10 @@
               label: "Roles"
             },
             {
+              name: "Security::Workflows",
+              label: "Workflows"
+            },
+            {
               name: "Security::Routes",
               label: "Routes"
             }

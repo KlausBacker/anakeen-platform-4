@@ -50,7 +50,6 @@
       onReady(event, element) {
         this.element = element;
         this.element.name = this.$refs.smartElement.getProperty("name");
-        console.log(this.$refs.smartElement.getValues());
         kendo.ui.progress(this.$(this.$el), false);
       }
     }
