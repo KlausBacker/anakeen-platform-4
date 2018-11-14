@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK-needed"
 msgid "-"
 msgstr " "
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK-needed"
 msgid "N"
 msgstr "No"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK-needed"
 msgid "Y"

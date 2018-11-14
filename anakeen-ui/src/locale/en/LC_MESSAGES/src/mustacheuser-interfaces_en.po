@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Mustache user-interfaces \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-11-13T20:51:15.460Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+#, fuzzy
+msgctxt "dsearch"
+msgid "Conditions"
+msgstr "Conditions"
+
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+#, fuzzy
+msgctxt "dsearch"
+msgid "Results"
+msgstr "Results"
+
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+#, fuzzy
+msgctxt "dsearch"
+msgid "Loading criteria ..."
+msgstr "Loading criteria ..."
+
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+#, fuzzy
+msgctxt "dsearch"
+msgid "Searching ..."
+msgstr "Searching ..."

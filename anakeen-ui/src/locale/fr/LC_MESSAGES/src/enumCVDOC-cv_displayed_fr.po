@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 #, fuzzy
 msgctxt "CVDOC-cv_displayed"
 msgid "no"
 msgstr "non"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 #, fuzzy
 msgctxt "CVDOC-cv_displayed"
 msgid "yes"

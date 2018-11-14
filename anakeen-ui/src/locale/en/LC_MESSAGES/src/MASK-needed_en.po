@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Enum MASK-needed \n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2018-10-04T06:09:34.618Z\n"
+"PO-Revision-Date: 2018-11-08T16:11:11.714Z\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -20,11 +20,11 @@ msgstr " "
 #: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK-needed"
-msgid "N"
-msgstr "No"
+msgid "Y"
+msgstr "Yes"
 
 #: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK-needed"
-msgid "Y"
-msgstr "Yes"
+msgid "N"
+msgstr "No"

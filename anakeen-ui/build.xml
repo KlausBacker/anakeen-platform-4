@@ -1,9 +1,11 @@
 <?xml version="1.0" ?>
 <acli:config xmlns:acli="https://platform.anakeen.com/4/schemas/module/1.0">
-    <acli:sources>
-        <acli:source path="src" />
-    </acli:sources>
+    <acli:source path="src" />
     <acli:po-config>
+        <acli:po-struct source="**/*struct.xml"/>
+        <acli:po-enum source="**/*struct.xml"/>
+        <acli:po-mustache target="user-interfaces" source="**/*.mustache"/>
+        <acli:po-php source="**/*.php" target="user-interfaces"/>
         <acli:po-js source="Apps/DOCUMENT/**/*js" target="DOCUMENT"/>
         <acli:po-js source="vendor/Anakeen/SmartStructures/Dsearch/**/*js" target="SEARCH_UI_HTML5"/>
     </acli:po-config>
