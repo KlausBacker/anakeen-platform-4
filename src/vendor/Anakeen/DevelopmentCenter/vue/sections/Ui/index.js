@@ -9,6 +9,7 @@ import { AnkSmartElement } from "@anakeen/ank-components";
 export default {
   name: "Ui",
   path: "ui",
+  order: 2,
   meta: {
     label: "User Interface"
   },

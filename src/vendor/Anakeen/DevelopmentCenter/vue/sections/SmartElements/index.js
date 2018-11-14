@@ -10,7 +10,7 @@ export default {
   meta: {
     label: "Smart Elements"
   },
-  order: 3,
+  order: 4,
   component: Component,
   children: [
     {

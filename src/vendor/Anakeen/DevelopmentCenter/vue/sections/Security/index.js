@@ -14,7 +14,7 @@ export default {
   label: "Security",
   name: "Security",
   path: "security",
-  order: 2,
+  order: 3,
   component: Security,
   children: [
     {
