@@ -1,4 +1,4 @@
-import ProfileGrid from "../../../../components/profile/profile.vue";
+import ProfileGrid from "../../../../../components/profile/profile.vue";
 export default {
   components: {
     "profile-grid": ProfileGrid
@@ -15,8 +15,8 @@ export default {
     profilData: {
       type: [String, Function],
       default: () => response => {
-        if (response.data.data.properties.security.profil) {
-          return response.data.data.properties.security.profil.id;
+        if (response.data.data.security.cprofid) {
+          return response.data.data.security.cprofid.id;
         }
         return 0;
       }
@@ -24,8 +24,9 @@ export default {
   },
   data() {
     return {
-      profid: 0,
-      profilWaitingLabel: "Chargement en cours...",
+      cprofid: 0,
+      profilWaitingLabel: "",
+      empty: false,
       noContentIcon: "security",
       noProfile: false
     };
@@ -49,21 +50,21 @@ export default {
   methods: {
     loadProfil() {
       kendo.ui.progress(this.$(this.$el), true);
-      this.profid = 0;
+      this.cprofid = 0;
       this.$http
         .get(this.profilUrl)
         .then(response => {
-          let profid;
+          let cprofid;
           if (typeof this.profilData === "string") {
-            profid = response.data.data[this.profilData];
+            cprofid = response.data.data[this.profilData];
           } else if (typeof this.profilData === "function") {
-            profid = this.profilData(response);
+            cprofid = this.profilData(response);
           }
-          const profidValue = parseInt(profid);
-          if (profidValue) {
-            this.profid = profidValue;
+          const cprofidValue = parseInt(cprofid);
+          if (cprofidValue) {
+            this.cprofid = cprofidValue;
           } else {
-            this.noProfile = true;
+            this.empty = true;
             this.profilWaitingLabel =
               "Aucun profil pour la structure " + this.ssName;
           }
@@ -71,6 +72,9 @@ export default {
         })
         .catch(err => {
           console.error(err);
+          this.empty = true;
+          this.profilWaitingLabel =
+            "Aucun profil pour la structure " + this.ssName;
           kendo.ui.progress(this.$(this.$el), false);
         });
     }

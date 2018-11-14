@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import ProfileGrid from "../../../components/profile/profile.vue";
+    import ProfileGrid from "../../../../components/profile/profile.vue";
   export default {
     components: {
       ProfileGrid
