@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_case"
 msgid "full"
 msgstr "mot complet"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_case"
 msgid "no"
 msgstr "expression sans casse"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_case"
 msgid "yes"

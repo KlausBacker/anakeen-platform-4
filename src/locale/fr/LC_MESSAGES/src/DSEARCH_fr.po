@@ -11,76 +11,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_attrids"
 msgstr "Attributs"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#, fuzzy
+msgctxt "DSEARCH"
+msgid "se_filter"
+msgstr "Filtre"
+
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_fr_detail"
 msgstr "Conditions"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_funcs"
 msgstr "Fonctions"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_keys"
 msgstr "Mot-clefs"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_leftp"
 msgstr "Parenthèse gauche"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_ol"
 msgstr "Condition"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_ols"
 msgstr "Opérateur"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_rightp"
 msgstr "Parenthèse droite"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_t_detail"
 msgstr "Conditions"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_t_filters"
 msgstr "Filtres"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 #, fuzzy
 msgctxt "DSEARCH"
 msgid "se_typefilter"
 msgstr "Type"
-
-#, fuzzy
-#~ msgctxt "DSEARCH"
-#~ msgid "se_filter"
-#~ msgstr "Filtre"
 
 #, fuzzy
 #~ msgctxt "DSEARCH"

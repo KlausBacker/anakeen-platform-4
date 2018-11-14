@@ -11,132 +11,132 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_action"
 msgstr "Action"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_api"
 msgstr "Api"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_application"
 msgstr "Application"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_date"
 msgstr "Execution date"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_detail"
 msgstr "Detail"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_detaillog"
 msgstr "Log"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_elapsed"
 msgstr "Execution duration"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_fr_batch"
 msgstr "Treatment"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_fr_cr"
 msgstr "Report"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_fr_date"
 msgstr "Dates"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_fr_ident"
 msgstr "Identification"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_handnextdate"
 msgstr "Execute on"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_idref"
 msgstr "From"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_iduser"
 msgstr "Performer"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_idvar"
 msgstr "Variable"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_nextdate"
 msgstr "Next execution date"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_periodday"
 msgstr "Period in day"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_periodhour"
 msgstr "Period in hours"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_periodmin"
 msgstr "Period in minutes"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_prevdate"
 msgstr "Previous execution date"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_state"
 msgstr "Status"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_status"
 msgstr "Execution"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_statusdate"
 msgstr "Execution since"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_t_parameters"
 msgstr "Parameters"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_title"
 msgstr "Title"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 msgctxt "EXEC"
 msgid "exec_valuevar"
 msgstr "Value"

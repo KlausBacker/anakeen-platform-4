@@ -11,31 +11,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_latest"
 msgid "allfixed"
 msgstr "sans la courante"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_latest"
 msgid "fixed"
 msgstr "dernière révision"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_latest"
 msgid "lastfixed"
 msgstr "dernière parmi les révisions effectuées"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_latest"
 msgid "no"
 msgstr "toutes les révisions"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-se_latest"
 msgid "yes"

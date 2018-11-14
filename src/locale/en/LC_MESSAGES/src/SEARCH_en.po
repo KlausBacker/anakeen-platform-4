@@ -11,87 +11,87 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "fr_basic"
 msgstr ""
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_acl"
 msgstr "Document"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_author"
 msgstr "Author"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_case"
 msgstr "Mode "
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_crit"
 msgstr "Criteria"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_famid"
 msgstr "Family (id)"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_famonly"
 msgstr "Without inherited families"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_idcfld"
 msgstr "Id of current father folder"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_idfld"
 msgstr "Root folder"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_key"
 msgstr "Keyword"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_latest"
 msgstr "Revision"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_orderby"
 msgstr "Order by"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_sqlselect"
 msgstr "SQL request"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_static"
 msgstr "Static request"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_sublevel"
 msgstr "Search depth"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_sysfam"
 msgstr "Include system documents"
 
-#: search.struct.xml
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "se_trash"
 msgstr "In trash"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-16 11:04+0200\n"
+"POT-Creation-Date: 2018-11-14 16:24+0100\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -26,26 +26,6 @@ msgid "%s activity"
 msgstr ""
 
 #, php-format
-msgid "%s affectation"
-msgstr ""
-
-#, php-format
-msgid "%s affectation type"
-msgstr ""
-
-#, php-format
-msgid "%s affected user"
-msgstr ""
-
-#, php-format
-msgid "%s autolock"
-msgstr ""
-
-#, php-format
-msgid "%s automail"
-msgstr ""
-
-#, php-format
 msgid "%s color"
 msgstr ""
 
@@ -62,7 +42,7 @@ msgid "%s directory not writable"
 msgstr ""
 
 #, php-format
-msgid "%s has no email address"
+msgid "%s field access list"
 msgstr ""
 
 #, php-format
@@ -123,10 +103,6 @@ msgstr ""
 
 #, php-format
 msgid "%s updated\n"
-msgstr ""
-
-#, php-format
-msgid "%s wask"
 msgstr ""
 
 msgid "(file not found)"
@@ -200,9 +176,6 @@ msgstr ""
 
 #, php-format
 msgid "Affected to %s %s"
-msgstr ""
-
-msgid "Attribut relation"
 msgstr ""
 
 #, php-format
@@ -682,10 +655,6 @@ msgid "LDAP Attribute modified to %s %s"
 msgstr ""
 
 #, php-format
-msgid "LEX_GENERAL_FILTER:Unable to parse %s"
-msgstr ""
-
-#, php-format
 msgid "Layout \"%s\" : Controller not allowed"
 msgstr ""
 
@@ -781,9 +750,6 @@ msgstr ""
 msgid "Parameter name does not include spaces"
 msgstr ""
 
-msgid "Parametre cycle"
-msgstr ""
-
 #, php-format
 msgid "Pivot rendering %d/%d"
 msgstr ""
@@ -812,12 +778,6 @@ msgstr ""
 
 #, php-format
 msgid "Record documents %d/%d"
-msgstr ""
-
-msgid "Relation cycle"
-msgstr ""
-
-msgid "Relation parametre"
 msgstr ""
 
 msgctxt "fusersimport"
@@ -919,6 +879,10 @@ msgctxt "fusersimport"
 msgid "Stopped on first error"
 msgstr ""
 
+msgctxt "sde"
+msgid "Structure cannot be deleted"
+msgstr ""
+
 #, php-format
 msgid "Syntax error in file '%s': %s"
 msgstr ""
@@ -985,9 +949,6 @@ msgstr ""
 
 msgctxt "authent"
 msgid "Username and/or password is incorrect"
-msgstr ""
-
-msgid "Utilisateur fixe"
 msgstr ""
 
 msgid ""
@@ -1093,22 +1054,6 @@ msgstr ""
 msgid "add negative acl %s"
 msgstr ""
 
-msgid "affect auto lock"
-msgstr ""
-
-msgid "affect auto mail"
-msgstr ""
-
-msgid "affect no lock"
-msgstr ""
-
-msgid "affect no mail"
-msgstr ""
-
-#, php-format
-msgid "allocation for %s document"
-msgstr ""
-
 msgid "already deleted"
 msgstr ""
 
@@ -1199,21 +1144,11 @@ msgstr ""
 msgid "attribute %s unknow in family \"%s\""
 msgstr ""
 
-#, php-format
-msgid ""
-"automaticaly by change state of %s\n"
-"%s"
-msgstr ""
-
 msgid "can't access file"
 msgstr ""
 
 #, php-format
 msgid "cannot access to vault file system"
-msgstr ""
-
-#, php-format
-msgid "cannot change state of document #%d to %s"
 msgstr ""
 
 msgid "cannot contact server"
@@ -1235,9 +1170,6 @@ msgstr ""
 
 #, php-format
 msgid "cannot create user %s: %s"
-msgstr ""
-
-msgid "cannot delete family"
 msgstr ""
 
 #, php-format
@@ -1288,18 +1220,6 @@ msgstr ""
 
 #, php-format
 msgid "cannot send mail %s with template %s : %s"
-msgstr ""
-
-#, php-format
-msgid "cannot set free state for document %s: document cannot be revised"
-msgstr ""
-
-#, php-format
-msgid "cannot set free state for document %s: workflow not allowed"
-msgstr ""
-
-#, php-format
-msgid "cannot set free state in workflow controlled document %s"
 msgstr ""
 
 #, php-format
@@ -1369,10 +1289,6 @@ msgstr ""
 
 #, php-format
 msgid "change state to %s"
-msgstr ""
-
-#, php-format
-msgid "change state to %s : %s"
 msgstr ""
 
 #, php-format
@@ -1537,9 +1453,6 @@ msgstr ""
 msgid "error in pzone format %s"
 msgstr ""
 
-msgid "error sending text conversion"
-msgstr ""
-
 #, php-format
 msgid "error storing configuration property (%s, %s, %s)"
 msgstr ""
@@ -1654,10 +1567,6 @@ msgid "incorrect conversion HTML to ODT %s"
 msgstr ""
 
 msgid "information access deny"
-msgstr ""
-
-#, php-format
-msgid "invalid freestate document %s"
 msgstr ""
 
 msgid "invalid regular expression"
@@ -1808,10 +1717,6 @@ msgid "none smart structure are described to be used as recipient"
 msgstr ""
 
 #, php-format
-msgid "not a freestate document %s"
-msgstr ""
-
-#, php-format
 msgid "not in XML format"
 msgstr ""
 
@@ -1951,10 +1856,6 @@ msgstr ""
 
 #, php-format
 msgid "reinit all properties"
-msgstr ""
-
-#, php-format
-msgid "remove state : %s"
 msgstr ""
 
 msgid "report:docid"

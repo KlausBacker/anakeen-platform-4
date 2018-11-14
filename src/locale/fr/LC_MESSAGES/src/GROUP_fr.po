@@ -11,62 +11,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "ba_title"
 msgstr "Titre"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "fld_fr_prof"
 msgstr "Profils par défaut"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "fld_fr_rest"
 msgstr "Restrictions"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "fr_basic"
 msgstr "Basique"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_fr"
 msgstr "Groupes"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_fr_ident"
 msgstr "Identification"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_hasmail"
 msgstr "Sans adresse mail de groupe"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_idgroup"
 msgstr "Sous groupes"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_idpgroup"
 msgstr "Groupes parents"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_isrefreshed"
 msgstr "Est rafraîchi"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_mail"
 msgstr "Mail"
 
-#: group.struct.xml
+#: vendor/Anakeen/SmartStructures/Group/group.struct.xml
 msgctxt "GROUP"
 msgid "grp_name"
 msgstr "Nom"

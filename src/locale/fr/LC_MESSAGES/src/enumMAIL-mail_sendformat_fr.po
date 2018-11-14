@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL-mail_sendformat"
 msgid "link"
 msgstr "notification avec lien vers le document"
 
-#: mail.struct.xml
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL-mail_sendformat"
 msgid "plain"

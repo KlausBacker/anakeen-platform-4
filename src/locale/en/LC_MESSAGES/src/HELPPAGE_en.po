@@ -11,62 +11,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_description"
 msgstr "Description"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_family"
 msgstr "Family"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_fr_identification"
 msgstr "Help"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_lang"
 msgstr "Label language"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_name"
 msgstr "Label"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_sec_key"
 msgstr "Section key"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_sec_lang"
 msgstr "Language"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_sec_name"
 msgstr "Section name"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_sec_order"
 msgstr "Section order"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_sec_text"
 msgstr "Text"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_t_help"
 msgstr "Description"
 
-#: helppage.struct.xml
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
 msgid "help_t_sections"
 msgstr "Sections"

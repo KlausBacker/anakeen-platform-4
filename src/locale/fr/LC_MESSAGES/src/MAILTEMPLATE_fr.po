@@ -11,109 +11,109 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_attach"
 msgstr "Attachement"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_body"
 msgstr "Corps"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_copymode"
 msgstr "-"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_dest"
 msgstr "Destinataires"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_desttype"
 msgstr "Type"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_family"
 msgstr "Famille"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fr"
 msgstr "Entête"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fr_content"
 msgstr "Contenu"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_from"
 msgstr "De"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fromtype"
 msgstr "type"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_recip"
 msgstr "Destinataire"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_savecopy"
 msgstr "Enregistrer une copie"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_subject"
 msgstr "Sujet"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_t_attach"
 msgstr "Attachements"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_t_from"
 msgstr "Émetteur"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_title"
 msgstr "Titre"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_ulink"
 msgstr "Avec liens"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_workflow"

@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "report-rep_foots"
 msgid "CARD"
 msgstr "Cardinal"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "report-rep_foots"
 msgid "MOY"
 msgstr "Moyenne"
 
-#: report.struct.xml
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "report-rep_foots"
 msgid "SUM"

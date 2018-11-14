@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: iuser.struct.xml
+#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 #, fuzzy
 msgctxt "IUSER-us_rolesorigin"
 msgid "group"
 msgstr "Obtenu par"
 
-#: iuser.struct.xml
+#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 #, fuzzy
 msgctxt "IUSER-us_rolesorigin"
 msgid "internal"

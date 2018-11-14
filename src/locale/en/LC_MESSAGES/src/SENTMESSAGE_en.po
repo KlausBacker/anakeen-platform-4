@@ -11,72 +11,72 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_attach"
 msgstr "File"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_date"
 msgstr "Date"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Message body"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_ident"
 msgstr "Identification"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_from"
 msgstr "From"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_htmlbody"
 msgstr "Formatted text"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_recipient"
 msgstr "Recipient"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_refid"
 msgstr "Referent document"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_sendtype"
 msgstr "Type"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_size"
 msgstr "Size"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_subject"
 msgstr "Subject"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_attach"
 msgstr "Attachments"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_recipient"
 msgstr "Recipients"
 
-#: sentmessage.struct.xml
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_textbody"
 msgstr "Text"

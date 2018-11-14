@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-16 11:04+0200\n"
+"POT-Creation-Date: 2018-11-14 16:24+0100\n"
 "PO-Revision-Date: 2018-01-12 15:56+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -29,26 +29,6 @@ msgid "%s activity"
 msgstr "activité %s"
 
 #, php-format
-msgid "%s affectation"
-msgstr "affectation %s"
-
-#, php-format
-msgid "%s affectation type"
-msgstr "Type d'affectation %s"
-
-#, php-format
-msgid "%s affected user"
-msgstr "Utilisateur affecté %s"
-
-#, php-format
-msgid "%s autolock"
-msgstr "auto-verrouillage %s"
-
-#, php-format
-msgid "%s automail"
-msgstr "courriel automatique %s"
-
-#, php-format
 msgid "%s color"
 msgstr "couleur %s"
 
@@ -64,9 +44,9 @@ msgstr "répertoire %s non trouvé"
 msgid "%s directory not writable"
 msgstr "répertoire %s non accessible en écriture"
 
-#, php-format
-msgid "%s has no email address"
-msgstr "%s n'a âs d'edresse email"
+#, fuzzy, php-format
+msgid "%s field access list"
+msgstr " profil d'accès"
 
 #, php-format
 msgid "%s igroup created\n"
@@ -127,10 +107,6 @@ msgstr "Minuteur à détacher %s"
 #, php-format
 msgid "%s updated\n"
 msgstr "%s mis à jour\n"
-
-#, php-format
-msgid "%s wask"
-msgstr "accord %s"
 
 msgid "(file not found)"
 msgstr "(fichier non trouvé)"
@@ -209,9 +185,6 @@ msgstr "Affectation pour %s"
 #, php-format
 msgid "Affected to %s %s"
 msgstr "Affectation à %s %s"
-
-msgid "Attribut relation"
-msgstr "Relation document"
 
 #, php-format
 msgid ""
@@ -723,10 +696,6 @@ msgid "LDAP Attribute modified to %s %s"
 msgstr "Attribut LDAP modifié %s %s"
 
 #, php-format
-msgid "LEX_GENERAL_FILTER:Unable to parse %s"
-msgstr "Problème interprétation du filtre pour la recherche générale \"%s\""
-
-#, php-format
 msgid "Layout \"%s\" : Controller not allowed"
 msgstr "Layout \"%s\" : L'accès au contrôleur n'est pas autorisé"
 
@@ -833,9 +802,6 @@ msgstr "(fichier non trouvé)"
 msgid "Parameter name does not include spaces"
 msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
 
-msgid "Parametre cycle"
-msgstr "Relation paramètre cycle"
-
 #, php-format
 msgid "Pivot rendering %d/%d"
 msgstr "Composition du pivot %d/%d"
@@ -866,12 +832,6 @@ msgstr "Recalcul des documents profilés"
 #, php-format
 msgid "Record documents %d/%d"
 msgstr "Enregistrement des documents %d/%d"
-
-msgid "Relation cycle"
-msgstr "Relation cycle"
-
-msgid "Relation parametre"
-msgstr "Relation paramètre"
 
 msgctxt "fusersimport"
 msgid "Reset all direct associated roles"
@@ -981,6 +941,11 @@ msgctxt "fusersimport"
 msgid "Stopped on first error"
 msgstr "Arrêt à la première erreur"
 
+#, fuzzy
+msgctxt "sde"
+msgid "Structure cannot be deleted"
+msgstr "Cet utilisateur système n epeut être supprimé"
+
 #, php-format
 msgid "Syntax error in file '%s': %s"
 msgstr "Erreur de syntaxe dans le fichier '%s' : %s"
@@ -1051,9 +1016,6 @@ msgstr "Valeurs mise à jour"
 msgctxt "authent"
 msgid "Username and/or password is incorrect"
 msgstr ""
-
-msgid "Utilisateur fixe"
-msgstr "Utilisateur fixe"
 
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
@@ -1161,22 +1123,6 @@ msgstr "ajout id [%d] "
 msgid "add negative acl %s"
 msgstr "ajout droit négatif %s"
 
-msgid "affect auto lock"
-msgstr "auto-verrouillage"
-
-msgid "affect auto mail"
-msgstr "courriel automatique"
-
-msgid "affect no lock"
-msgstr "pas de verrou"
-
-msgid "affect no mail"
-msgstr "pas de courriel"
-
-#, php-format
-msgid "allocation for %s document"
-msgstr "affectation pour le document %s"
-
 msgid "already deleted"
 msgstr "déjà supprimé"
 
@@ -1272,24 +1218,12 @@ msgstr "attribut %s inconnu dans le document \"%s\" [%s]"
 msgid "attribute %s unknow in family \"%s\""
 msgstr "attribut %s inconnu dans la famille \"%s\""
 
-#, php-format
-msgid ""
-"automaticaly by change state of %s\n"
-"%s"
-msgstr ""
-"changement d'état automatique issu du document %s\n"
-"%s"
-
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
 
 #, php-format
 msgid "cannot access to vault file system"
 msgstr "Accès impossible au coffre des fichiers"
-
-#, php-format
-msgid "cannot change state of document #%d to %s"
-msgstr "ne peux pas changer l'état du document n°%d vers %s"
 
 msgid "cannot contact server"
 msgstr "ne peut contacter le serveur"
@@ -1313,9 +1247,6 @@ msgstr "création impossible depuis la famille [%s]"
 #, php-format
 msgid "cannot create user %s: %s"
 msgstr "Ne peut créer l'utilisateur %s : %s"
-
-msgid "cannot delete family"
-msgstr "Les familles ne peuvent être supprimées"
 
 #, php-format
 msgid "cannot delete link : initial query not found for doc %d in folder %d"
@@ -1371,24 +1302,6 @@ msgstr "ne peut envoyer le courriel %s à %s : %s"
 #, php-format
 msgid "cannot send mail %s with template %s : %s"
 msgstr "ne peut envoyer le courriel %s avec le modèle %s :%s"
-
-#, php-format
-msgid "cannot set free state for document %s: document cannot be revised"
-msgstr ""
-"l'affectation d'un état libre est impossible pour le  document %s : non "
-"révisable"
-
-#, php-format
-msgid "cannot set free state for document %s: workflow not allowed"
-msgstr ""
-"l'affectation d'un état libre est impossible pour le document %s : cycle de "
-"vie non autorisé"
-
-#, php-format
-msgid "cannot set free state in workflow controlled document %s"
-msgstr ""
-"l'affectation d'un état libre est impossible dans un document controlé par "
-"un cycle de vie : %s"
 
 #, php-format
 msgid "cannot set substitute %s id not found"
@@ -1458,10 +1371,6 @@ msgstr "changement d'état de %s vers %s"
 #, php-format
 msgid "change state to %s"
 msgstr "changement d'état vers %s"
-
-#, php-format
-msgid "change state to %s : %s"
-msgstr "changement d'état vers %s : %s"
 
 #, php-format
 msgid "change tagable parameter to '%s'"
@@ -1628,9 +1537,6 @@ msgstr "erreur dans la format des clefs d'importation : %s"
 msgid "error in pzone format %s"
 msgstr "erreur dans la format pzone %s"
 
-msgid "error sending text conversion"
-msgstr "erreur lors de l'envoi de la conversion texte"
-
 #, php-format
 msgid "error storing configuration property (%s, %s, %s)"
 msgstr ""
@@ -1753,10 +1659,6 @@ msgstr "erreur de conversion HTML vers ODT %s"
 
 msgid "information access deny"
 msgstr "Information non accessible"
-
-#, php-format
-msgid "invalid freestate document %s"
-msgstr "état libre %s invalide"
 
 msgid "invalid regular expression"
 msgstr "expression rationnelle invalide"
@@ -1910,10 +1812,6 @@ msgid "none smart structure are described to be used as recipient"
 msgstr "Aucune structure n'est déclarée utilisable comme destinataire"
 
 #, php-format
-msgid "not a freestate document %s"
-msgstr "ce document n'est pas un état libre : %s"
-
-#, php-format
 msgid "not in XML format"
 msgstr "format XML non reconnu "
 
@@ -2054,10 +1952,6 @@ msgstr "réinitialisation des attributs"
 msgid "reinit all properties"
 msgstr "réinitialisation des propriétés"
 
-#, php-format
-msgid "remove state : %s"
-msgstr "état supprimé : %s"
-
 msgid "report:docid"
 msgstr "id"
 
@@ -2167,7 +2061,8 @@ msgctxt "smart mail"
 msgid ""
 "smart structure %s does not implement IMailRecipent - missing getMail method"
 msgstr ""
-"La structure %s n'implémente pas IMailRecipient - il manque la méthode getMail"
+"La structure %s n'implémente pas IMailRecipient - il manque la méthode "
+"getMail"
 
 #, fuzzy, php-format
 msgctxt "smart mail"
@@ -2502,9 +2397,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid " only latest revision"
 #~ msgstr " seulement la dernière révision"
 
-#~ msgid " profile access"
-#~ msgstr " profil d'accès"
-
 #~ msgid " revise document"
 #~ msgstr "réviser le document"
 
@@ -2581,6 +2473,15 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "%s Authentification"
 #~ msgstr "%s Authentification"
 
+#~ msgid "%s affectation"
+#~ msgstr "affectation %s"
+
+#~ msgid "%s affectation type"
+#~ msgstr "Type d'affectation %s"
+
+#~ msgid "%s affected user"
+#~ msgstr "Utilisateur affecté %s"
+
 #~ msgid "%s all "
 #~ msgstr "%s tout"
 
@@ -2595,6 +2496,12 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "%s attribute"
 #~ msgstr "attribut %s"
+
+#~ msgid "%s autolock"
+#~ msgstr "auto-verrouillage %s"
+
+#~ msgid "%s automail"
+#~ msgstr "courriel automatique %s"
 
 #~ msgid "%s cannot be sent"
 #~ msgstr "%s n'a pas pu être envoyé"
@@ -2631,6 +2538,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "%s has been unlocked"
 #~ msgstr "%s a été déverrouillé"
 
+#~ msgid "%s has no email address"
+#~ msgstr "%s n'a âs d'edresse email"
+
 #~ msgid "%s inserted"
 #~ msgstr "%s inséré"
 
@@ -2639,6 +2549,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "%s style updated\n"
 #~ msgstr "%s style mis à jour\n"
+
+#~ msgid "%s wask"
+#~ msgstr "accord %s"
 
 #~ msgid "&gt; or equal"
 #~ msgstr "&gt; ou égal"
@@ -2907,6 +2820,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Attribut"
 #~ msgstr "Attribut"
 
+#~ msgid "Attribut relation"
+#~ msgstr "Relation document"
+
 #~ msgid "Attribute"
 #~ msgstr "Attribut"
 
@@ -2925,8 +2841,8 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid ""
 #~ "Attribute Error: impossible to found the family for docid attribute '%s'"
 #~ msgstr ""
-#~ "Erreur d'attribut: impossible de trouver la structure pour l'attribut docid "
-#~ "'%s'"
+#~ "Erreur d'attribut: impossible de trouver la structure pour l'attribut "
+#~ "docid '%s'"
 
 #~ msgid "Attribute [%s] is not found"
 #~ msgstr "L'attribut [%s] n'a pas été trouvé"
@@ -3228,7 +3144,8 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "Choose a family to import only set of attributes"
 #~ msgstr ""
-#~ "Choisissez une structure pour importer un sous-ensemble d'attributs choisis"
+#~ "Choisissez une structure pour importer un sous-ensemble d'attributs "
+#~ "choisis"
 
 #~ msgid "Choose a father category"
 #~ msgstr "Choisissez une catégorie père"
@@ -4141,8 +4058,8 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ "<h2>Sélection de structure</h2>\n"
 #~ "\n"
 #~ "<p>\n"
-#~ "    Si la recherche porte sur des documents d'une structure précise, il est "
-#~ "possible de la restreindre au moyen de cette liste déroulante.\n"
+#~ "    Si la recherche porte sur des documents d'une structure précise, il "
+#~ "est possible de la restreindre au moyen de cette liste déroulante.\n"
 #~ "    Les résultats seront alors limités aux documents de la structure "
 #~ "sélectionnée. \n"
 #~ "</p>"
@@ -4780,6 +4697,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "LDAP server root"
 #~ msgstr "racine du serveur LDAP"
 
+#~ msgid "LEX_GENERAL_FILTER:Unable to parse %s"
+#~ msgstr "Problème interprétation du filtre pour la recherche générale \"%s\""
+
 #~ msgid "Label"
 #~ msgstr "Libellé"
 
@@ -5092,7 +5012,8 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Pas de droits définis pour la structure"
 
 #~ msgid "No acl for new documents of this family"
-#~ msgstr "Pas de droits définis pour les nouveaux documents de cette structure"
+#~ msgstr ""
+#~ "Pas de droits définis pour les nouveaux documents de cette structure"
 
 #~ msgid "No columns has been defined"
 #~ msgstr "Aucune colonne n'est sélectionnée pour la présentation du rapport."
@@ -5307,6 +5228,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Parameters values"
 #~ msgstr "Valeurs des paramètres"
 
+#~ msgid "Parametre cycle"
+#~ msgstr "Relation paramètre cycle"
+
 #~ msgid "Password has been cnanged"
 #~ msgstr "Votre nouveau mot de passe a été enregistré"
 
@@ -5460,8 +5384,14 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Reimport report"
 #~ msgstr "Réimporter le rapport"
 
+#~ msgid "Relation cycle"
+#~ msgstr "Relation cycle"
+
 #~ msgid "Relation document"
 #~ msgstr "Relations entre documents"
+
+#~ msgid "Relation parametre"
+#~ msgstr "Relation paramètre"
 
 #~ msgid "Reload document"
 #~ msgstr "Recharger le document"
@@ -6133,7 +6063,8 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgstr "Utiliser les références aux comptes"
 
 #~ msgid "Use another import interface for a specific family"
-#~ msgstr "Utiliser une autre interface d'importation pour une structure précise"
+#~ msgstr ""
+#~ "Utiliser une autre interface d'importation pour une structure précise"
 
 #~ msgid "Use document reference"
 #~ msgstr "Utiliser les références aux documents"
@@ -6157,6 +6088,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "Users"
 #~ msgstr "Utilisateurs"
+
+#~ msgid "Utilisateur fixe"
+#~ msgstr "Utilisateur fixe"
 
 #~ msgid "Validate"
 #~ msgstr "Valider"
@@ -6523,6 +6457,18 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "addstate"
 #~ msgstr "État"
 
+#~ msgid "affect auto lock"
+#~ msgstr "auto-verrouillage"
+
+#~ msgid "affect auto mail"
+#~ msgstr "courriel automatique"
+
+#~ msgid "affect no lock"
+#~ msgstr "pas de verrou"
+
+#~ msgid "affect no mail"
+#~ msgstr "pas de courriel"
+
 #~ msgid "affect user to a document"
 #~ msgstr "affecter un utilisateur à un document"
 
@@ -6540,6 +6486,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "allocated to"
 #~ msgstr "Affecté à"
+
+#~ msgid "allocation for %s document"
+#~ msgstr "affectation pour le document %s"
 
 #~ msgid "an error has occured: %s"
 #~ msgstr "Une erreur a été produite: %s"
@@ -6650,6 +6599,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "auto revision"
 #~ msgstr "révision automatique"
 
+#~ msgid ""
+#~ "automaticaly by change state of %s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "changement d'état automatique issu du document %s\n"
+#~ "%s"
+
 #~ msgid "background color for table cells"
 #~ msgstr "couleur de fond de cellules"
 
@@ -6728,15 +6684,22 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ "accès impossible à la base de données par défaut "
 #~ "[service='$pgservice_core']"
 
+#~ msgid "cannot change state of document #%d to %s"
+#~ msgstr "ne peux pas changer l'état du document n°%d vers %s"
+
 #~ msgid "cannot compare two document which comes from two different family"
 #~ msgstr ""
-#~ "la comparaison de 2 documents de structure différente ne peut être effectuée"
+#~ "la comparaison de 2 documents de structure différente ne peut être "
+#~ "effectuée"
 
 #~ msgid "cannot copy %s"
 #~ msgstr "écriture impossible : %s"
 
 #~ msgid "cannot create document for family [%s]"
 #~ msgstr "création de document impossible pour la structure [%s]"
+
+#~ msgid "cannot delete family"
+#~ msgstr "Les familles ne peuvent être supprimées"
 
 #~ msgid "cannot extract archive file %s"
 #~ msgstr "L'archive %s n'a pas pu être extraite"
@@ -6787,6 +6750,21 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "cannot see unknow reference %s"
 #~ msgstr "impossible de voir : la référence %s est inconnue"
 
+#~ msgid "cannot set free state for document %s: document cannot be revised"
+#~ msgstr ""
+#~ "l'affectation d'un état libre est impossible pour le  document %s : non "
+#~ "révisable"
+
+#~ msgid "cannot set free state for document %s: workflow not allowed"
+#~ msgstr ""
+#~ "l'affectation d'un état libre est impossible pour le document %s : cycle "
+#~ "de vie non autorisé"
+
+#~ msgid "cannot set free state in workflow controlled document %s"
+#~ msgstr ""
+#~ "l'affectation d'un état libre est impossible dans un document controlé "
+#~ "par un cycle de vie : %s"
+
 #~ msgid "cannot suppress archive file %s"
 #~ msgstr "L'archive %s n'a pas pue être supprimée"
 
@@ -6828,6 +6806,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "change root folder"
 #~ msgstr "changer le dossier racine"
+
+#~ msgid "change state to %s : %s"
+#~ msgstr "changement d'état vers %s : %s"
 
 #~ msgid "change state transition"
 #~ msgstr "changement d'état"
@@ -7500,6 +7481,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "error in filename"
 #~ msgstr "erreur dans le nom de fichier"
 
+#~ msgid "error sending text conversion"
+#~ msgstr "erreur lors de l'envoi de la conversion texte"
+
 #~ msgid "exec plan"
 #~ msgstr "Planification des processus"
 
@@ -7988,6 +7972,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "interface to save choice of column export documents"
 #~ msgstr "Interface pour sauvgarder le choix des colonnes d'exportation"
 
+#~ msgid "invalid freestate document %s"
+#~ msgstr "état libre %s invalide"
+
 #~ msgid "invalid syntax for [%s] for enum attribute [%s]"
 #~ msgstr "erreur de syntaxe pour l'attribut énuméré [%s] [%s]"
 
@@ -8474,6 +8461,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "noone document"
 #~ msgstr "Aucun document"
 
+#~ msgid "not a freestate document %s"
+#~ msgstr "ce document n'est pas un état libre : %s"
+
 #~ msgid "not a static folder %s"
 #~ msgstr "ce n'est pas un dossier statique %s"
 
@@ -8772,6 +8762,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "related search aborted : no parameter found"
 #~ msgstr "recherche relative abondonnée ; pas de paramètres"
+
+#~ msgid "remove state : %s"
+#~ msgstr "état supprimé : %s"
 
 #~ msgid "report to (mail address)"
 #~ msgstr "rapport à (email)"

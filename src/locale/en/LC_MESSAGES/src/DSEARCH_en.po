@@ -11,64 +11,65 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_attrids"
 msgstr "Attributes"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_filter"
+msgstr "Filter"
+
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_fr_detail"
 msgstr "Conditions"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_funcs"
 msgstr "Functions"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_keys"
 msgstr "Keywords"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_leftp"
 msgstr "Left parenthesis"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_ol"
 msgstr "Condition"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_ols"
 msgstr "Operator"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_rightp"
 msgstr "Right parenthesis"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_t_detail"
 msgstr "Conditions"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_t_filters"
 msgstr "Filters"
 
-#: dsearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_typefilter"
 msgstr "Type"
-
-#~ msgctxt "DSEARCH"
-#~ msgid "se_filter"
-#~ msgstr "Filter"
 
 #~ msgctxt "DSEARCH"
 #~ msgid "se_leftp#no"

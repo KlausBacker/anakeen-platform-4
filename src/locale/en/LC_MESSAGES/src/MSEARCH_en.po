@@ -11,22 +11,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "se_crit"
 msgstr "Criteria"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "se_fr_searches"
 msgstr "Searches"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "seg_idcond"
 msgstr "Search"
 
-#: msearch.struct.xml
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "seg_t_cond"
 msgstr "Search ensemble"

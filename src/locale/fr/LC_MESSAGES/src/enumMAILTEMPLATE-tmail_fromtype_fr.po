@@ -11,55 +11,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "A"
 msgstr "Attribut texte"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "D"
 msgstr "Attribut relation"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "DE"
 msgstr "Paramètre de famille relation"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "E"
 msgstr "Paramètre de famille texte"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "F"
 msgstr "Adresse fixe"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "P"
 msgstr "Paramètres globaux"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WA"
 msgstr "Attribut cycle"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WD"
 msgstr "Relation cycle"
 
-#: mailtemplate.struct.xml
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WE"

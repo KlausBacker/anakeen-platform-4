@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 #, fuzzy
 msgctxt "EXEC-exec_status"
 msgid "none"
 msgstr "Non"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 #, fuzzy
 msgctxt "EXEC-exec_status"
 msgid "progressing"
 msgstr "En cours"
 
-#: exec.struct.xml
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 #, fuzzy
 msgctxt "EXEC-exec_status"
 msgid "waiting"
