@@ -55,5 +55,14 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GetWorkflowGraph">
+            <sde:callable>\Anakeen\Routes\Devel\UI\WorkflowGraph</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/ui/workflows/image/{workflow}/sizes/{size:[0-9x]+[cfs]?}[.{extension:png|jpeg|jpg|svg}]</sde:pattern>
+            <sde:description>Get Control configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>
