@@ -1,51 +1,51 @@
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "dpdoc_fam"
 msgstr "Structure (titre)"
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "dpdoc_famid"
 msgstr "Structure"
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "dpdoc_fr_dyn"
 msgstr "Profil dynamique"
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 msgctxt "WDOC"
 msgid "fr_basic"
 msgstr ""
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "wf_desc"
 msgstr "description"
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "wf_fam"
 msgstr "Structure (titre)"
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "wf_famid"
 msgstr "Structure"
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "wf_tab_states"
 msgstr "tapes"
 
-#: wdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "wf_tab_transitions"

@@ -11,61 +11,85 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_delay"
+msgstr "Délai (en jours)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_dyndate"
 msgstr "Date de référence"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_family"
 msgstr "Famille"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_fr_ident"
 msgstr "Identification"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_hdelay"
+msgstr "Délai (en heures)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_iteration"
 msgstr "Nombre d'itérations"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_method"
 msgstr "Méthode"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_refdaydelta"
+msgstr "Décalage (en jours)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_refhourdelta"
+msgstr "Décalage (en heures)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_state"
 msgstr "Nouvel état"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_t_config"
 msgstr "Configuration"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_title"
 msgstr "Titre"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_tmail"
 msgstr "Modèle de mail"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_workflow"

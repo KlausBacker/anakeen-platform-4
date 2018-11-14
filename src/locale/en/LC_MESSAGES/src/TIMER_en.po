@@ -1,58 +1,82 @@
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_delay"
+msgstr "Dlai (en jours)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_dyndate"
 msgstr "Date de rfrence"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_family"
 msgstr "Famille"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_fr_ident"
 msgstr "Identification"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_hdelay"
+msgstr "Dlai (en heures)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_iteration"
 msgstr "Nombre d'itrations"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_method"
 msgstr "Mthode"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_refdaydelta"
+msgstr "Dcalage (en jours)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
+msgid "tm_refhourdelta"
+msgstr "Dcalage (en heures)"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_state"
 msgstr "Nouvel tat"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_t_config"
 msgstr "Configuration"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_title"
 msgstr "Titre"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_tmail"
 msgstr "Modle de mail"
 
-#: timer.struct.xml
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
 msgid "tm_workflow"
