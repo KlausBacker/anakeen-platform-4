@@ -2,5 +2,5 @@
 
 set -eo pipefail
 
-npm install
+yarn install
 node ./node_modules/eslint/bin/eslint.js ./

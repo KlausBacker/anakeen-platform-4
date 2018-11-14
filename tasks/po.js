@@ -2,15 +2,14 @@ const gulp = require("gulp");
 const {
   xmlStructure2Pot,
   xmlEnum2Pot,
-  php2Pot,
+  php2Po,
   js2Po,
   msgmergeStructure,
   msgmergeMustache,
   msgmergeEnum
 } = require("../utils/POExtractor");
-const { getModuleInfo, getStructureFiles } = require("../utils/moduleInfo");
-const asyncCallback = require("./plugins/asyncCallback");
-const mustache2Pot = require("./plugins/POExtractorMustache");
+const { getModuleInfo } = require("../utils/moduleInfo");
+const mustache2Pot = require("../utils/POExtractorMustache");
 const { Signale } = require("signale");
 const signale = require("signale");
 const path = require("path");
@@ -18,6 +17,10 @@ const fs = require("fs");
 
 const TMPPO = "tmppot";
 
+/**
+ * Delete a folder and all the files inside
+ * @param path
+ */
 const deleteFolderRecursive = path => {
   if (fs.existsSync(path)) {
     fs.readdirSync(path).forEach(file => {
@@ -36,43 +39,54 @@ const deleteFolderRecursive = path => {
 
 exports.po = ({ sourcePath }) => {
   const potPath = path.join(sourcePath, TMPPO);
+  const interactive = new Signale({ scope: "po" });
+  const log = message => {
+    interactive.info(message);
+  };
 
-  gulp.task("poMustache", async (resolveEnum, rejectEnum) => {
-    const tmpMuPot = potPath + "must.pot";
+  /**
+   * Extract the mustache part
+   */
+  gulp.task("poMustache", async () => {
+    const info = await getModuleInfo(sourcePath);
+    const srcPath = info.buildInfo.buildPath[0];
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let poEntry = null;
 
-    return new Promise(async (resolve, reject) => {
-      if (sourcePath === undefined) {
-        signale.error("No source path specified.");
-        return;
-      }
-      try {
-        const info = await getModuleInfo(sourcePath);
-        const buildPath = info.buildInfo.buildPath[0];
+    if (poConfig) {
+      poEntry = poConfig[0]["po-mustache"];
+    }
+    if (!poEntry) {
+      log("No mustache template to extract");
+      return Promise.resolve();
+    }
 
-        // mustache file
-        gulp
-          .src(buildPath + "/**/*.mustache")
-          .pipe(mustache2Pot(tmpMuPot, info))
-          .pipe(gulp.dest(potPath))
-          .pipe(
-            asyncCallback(file => {
-              return msgmergeMustache(file, info);
-            }, true)
-          )
-          .pipe(
-            gulp.dest(file => {
-              return `${buildPath}/locale/${file.lang}/LC_MESSAGES/src/`;
-            })
-          )
-          .on("end", resolve)
-          .on("error", reject);
-      } catch (e) {
-        reject(e);
-      }
-    }).then(resolveEnum, rejectEnum);
+    log("Extract Mustache template");
+    return Promise.all(
+      poEntry.map(item => {
+        return mustache2Pot(item.$.source, item.$.target, info, potPath);
+      })
+    ).then(files => {
+      //Flat files element
+      files = files.reduce((acc, currentFiles) => {
+        return [...acc, ...currentFiles];
+      }, []);
+      //Remove useless elements
+      files = files.filter(currentElement => {
+        return currentElement;
+      });
+      return Promise.all(
+        files.map(element => {
+          return msgmergeMustache({ element, srcPath });
+        })
+      );
+    });
   });
 
-  gulp.task("poJs", async (resolveJs, rejectJs) => {
+  /**
+   * Extract the js part
+   */
+  gulp.task("poJs", async () => {
     const info = await getModuleInfo(sourcePath);
     const poConfig = info.buildInfo.build.config["po-config"];
     let poJs = null;
@@ -81,126 +95,142 @@ exports.po = ({ sourcePath }) => {
       poJs = poConfig[0]["po-js"];
     }
     if (!poJs) {
-      return new Promise(resolve => {
-        resolve();
-      }).then(resolveJs);
+      log("No JS to extract");
+      return Promise.resolve();
     }
-    let resolvCount = 0;
 
-    return new Promise(resolve => {
-      poJs.forEach(jsItem => {
-        js2Po(jsItem.$.source, jsItem.$.target, info, potPath).then(() => {
-          resolvCount++;
-          if (resolvCount >= poJs.length) {
-            resolve();
-          }
-        }, rejectJs);
-      });
-    }).then(resolveJs, rejectJs);
+    log("Extract JS");
+    return Promise.all(
+      poJs.map(jsItem => {
+        return js2Po(jsItem.$.source, jsItem.$.target, info, potPath);
+      })
+    );
   });
-  gulp.task("poPhp", async (resolvePhp, rejectPhp) => {
+  /**
+   * Extract the php part
+   */
+  gulp.task("poPhp", async () => {
     const info = await getModuleInfo(sourcePath);
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let poPhp = null;
 
-    return php2Pot(info, potPath).then(resolvePhp, rejectPhp);
-  });
-  gulp.task("poEnum", async (resolveEnum, rejectEnum) => {
-    return new Promise(async (resolve, reject) => {
-      if (sourcePath === undefined) {
-        signale.error("No source path specified.");
-        return;
-      }
-      try {
-        const info = await getModuleInfo(sourcePath);
-        const buildPath = info.buildInfo.buildPath;
-        const structureFiles = await getStructureFiles({ buildPath });
-        const files = structureFiles.map(currentStruct => {
-          return currentStruct.path;
+    if (poConfig) {
+      poPhp = poConfig[0]["po-php"];
+    }
+    if (!poPhp) {
+      log("No PHP to extract");
+      return Promise.resolve();
+    }
+
+    log("Extract PHP");
+
+    return Promise.all(
+      poPhp.map(jsItem => {
+        return php2Po({
+          phpGlob: jsItem.$.source,
+          target: jsItem.$.target,
+          info,
+          potPath
         });
-
-        // Smart structure
-        gulp
-          .src(files)
-          .pipe(asyncCallback(xmlEnum2Pot, true))
-          .pipe(gulp.dest(potPath))
-          .pipe(
-            asyncCallback(file => {
-              return msgmergeEnum(file, buildPath);
-            }, true)
-          )
-          .pipe(
-            gulp.dest(file => {
-              return `${buildPath}/locale/${file.lang}/LC_MESSAGES/src/`;
-            })
-          )
-          .on("end", () => {
-            //php2Pot(info, potPath).then(resolve);
-            resolve();
-          })
-          .on("error", reject);
-      } catch (e) {
-        reject(e);
-      }
-    }).then(resolveEnum, rejectEnum);
+      })
+    );
   });
-  gulp.task("poSmart", async () => {
-    return new Promise(async (resolve, reject) => {
-      if (sourcePath === undefined) {
-        signale.error("No source path specified.");
-        return;
-      }
-      const interactive = new Signale({ scope: "po" });
-      const log = message => {
-        interactive.info(message);
-      };
-      try {
-        log("Analyze package");
-        const info = await getModuleInfo(sourcePath);
-        const buildPath = info.buildInfo.buildPath;
-        const structureFiles = await getStructureFiles({ buildPath });
-        const files = structureFiles.map(currentStruct => {
-          return currentStruct.path;
-        });
+  /**
+   * Extract the enum part
+   */
+  gulp.task("poEnum", async () => {
+    const info = await getModuleInfo(sourcePath);
+    const srcPath = info.buildInfo.buildPath[0];
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let globXML = null;
 
-        // Smart structure
-        if (files.length === 0) {
-          return resolve();
+    if (poConfig) {
+      globXML = poConfig[0]["po-enum"];
+    }
+    if (!globXML) {
+      log("No enum to extract");
+      return Promise.resolve();
+    }
+
+    log("Extract enum");
+    const poGlob = globXML.map(currentElement => {
+      return currentElement.$.source;
+    });
+
+    return xmlEnum2Pot({ poGlob, info, potPath }).then(files => {
+      //Concat files
+      files = files.reduce((acc, currentFiles) => {
+        if (currentFiles.length > 0) {
+          return [...acc, ...currentFiles];
         }
-        log("Extract smart structure");
+        return acc;
+      }, []);
+      return Promise.all(
+        files.map(element => {
+          return msgmergeEnum({ element, srcPath, potPath });
+        })
+      );
+    });
+  });
+  /**
+   * Extract the smart structure part
+   */
+  gulp.task("poSmart", async () => {
+    const info = await getModuleInfo(sourcePath);
+    const srcPath = info.buildInfo.buildPath[0];
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let poStruct = null;
 
-        gulp
-          .src(files)
-          .pipe(asyncCallback(xmlStructure2Pot, true))
-          .pipe(gulp.dest(potPath))
-          .pipe(
-            asyncCallback(file => {
-              return msgmergeStructure(file, buildPath);
-            }, true)
-          )
-          .pipe(
-            gulp.dest(file => {
-              return `${buildPath}/locale/${file.lang}/LC_MESSAGES/src/`;
-            })
-          )
-          .on("end", () => {
-            log("Extract enum");
-            gulp.task("poEnum")(() => {
-              log("Extract mustache");
-              gulp.task("poMustache")(() => {
-                log("Extract php");
-                gulp.task("poPhp")(() => {
-                  log("Extract JS");
-                  gulp.task("poJs")(() => {
-                    //Delete temp repo
-                    log("Suppress temp directory");
-                    deleteFolderRecursive(potPath);
-                    resolve();
-                  }, reject);
-                }, reject);
-              }, reject);
-            }, reject);
-          })
-          .on("error", reject);
+    if (poConfig) {
+      poStruct = poConfig[0]["po-struct"];
+    }
+    if (!poStruct) {
+      log("No smart element to extract");
+      return Promise.resolve();
+    }
+
+    log("Extract smart element");
+    const poGlob = poStruct.map(currentElement => {
+      return currentElement.$.source;
+    });
+
+    return xmlStructure2Pot({ poGlob, info, potPath }).then(files => {
+      //Concat files
+      files = files.reduce((acc, currentFiles) => {
+        if (currentFiles.length > 0) {
+          return [...acc, ...currentFiles];
+        }
+        return acc;
+      }, []);
+      return Promise.all(
+        files.map(element => {
+          return msgmergeStructure({ element, srcPath, potPath });
+        })
+      );
+    });
+  });
+
+  gulp.task("extractPo", async () => {
+    return new Promise(async (resolve, reject) => {
+      if (sourcePath === undefined) {
+        signale.error("No source path specified.");
+        return;
+      }
+      //Create temp file
+      if (!fs.existsSync(potPath)) {
+        fs.mkdirSync(potPath);
+      }
+      try {
+        await gulp.task("poSmart")();
+        await gulp.task("poEnum")();
+        await gulp.task("poMustache")();
+        await gulp.task("poPhp")();
+        await gulp.task("poJs")();
+
+        deleteFolderRecursive(potPath);
+        resolve();
       } catch (e) {
+        deleteFolderRecursive(potPath);
         reject(e);
       }
     });

@@ -8,27 +8,31 @@
 
     <xs:complexType name="configType">
         <xs:sequence>
-            <xs:element type="ns:sourcesType" name="sources" />
-            <xs:element type="ns:poconfigType" name="po-config" />
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="sourcesType">
-        <xs:sequence>
-            <xs:element type="ns:sourceType" name="source" />
+            <xs:element type="ns:sourceType" name="source"/>
+            <xs:element type="ns:poconfigType" name="po-config" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="poconfigType">
         <xs:sequence>
-            <xs:element type="ns:pojsType" name="po-js" maxOccurs="unbounded"/>
+            <xs:element type="ns:poXML" name="po-struct" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:poXML" name="po-enum" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:poTarget" name="po-mustache" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:poTarget" name="po-php" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:poTarget" name="po-js" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
+
     <xs:complexType name="sourceType">
         <xs:attribute type="xs:string" name="path" use="required"/>
     </xs:complexType>
-    <xs:complexType name="pojsType">
+
+    <xs:complexType name="poTarget">
         <xs:attribute type="xs:string" name="target" use="required"/>
+        <xs:attribute type="xs:string" name="source" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="poXML">
         <xs:attribute type="xs:string" name="source" use="required"/>
     </xs:complexType>
 </xs:schema>
