@@ -13,7 +13,7 @@ export default {
     return {
       panes: [
         { scrollable: false, min: "33%", max: "100%" },
-        { collapsed: true, collapsible: true }
+        { scrollable: false, collapsed: true, collapsible: true }
       ]
     };
   },

@@ -1,48 +1,22 @@
 import Security from "./SecurityDevCenter";
-import Routes from "../Routes/RoutesDevCenter";
-import Roles from "../Role/RoleDevCenter";
-import RoutesAcl from "../Routes/RoutesAcl/RoutesAcl";
-import AclAccount from "../Routes/RoutesPermissions/RoutesPermissions";
-import SmartStructures from "../SmartStructuresSecurity/SmartStructuresSecurity.vue";
-import SmartStructuresContent from "../SmartStructuresSecurity/SmartStructuresSecurityContent.vue";
-import SmartStructuresSections from "../SmartStructuresSecurity/subsections/export";
+import Routes from "../Security/Routes/RoutesDevCenter";
+import Roles from "../Security/Role/RoleDevCenter";
+import RoutesAcl from "../Security/Routes/RoutesAcl/RoutesAcl";
+import AclAccount from "../Security/Routes/RoutesPermissions/RoutesPermissions";
+import SmartStructures from "../Security/SmartStructures/SmartStructuresSecurity.vue";
+import SmartStructuresContent from "../Security/SmartStructures/SmartStructuresSecurityContent.vue";
+import SmartStructuresSections from "../Security/SmartStructures/subsections/export";
 
-import Profiles from "../Profiles/Profiles.vue";
-import ProfileView from "../Profiles/ProfileVisualizer/ProfileVisualizerContent.vue";
+import Profiles from "../Security/Profiles/Profiles.vue";
+import ProfileView from "../Security/Profiles/ProfileVisualizer/ProfileVisualizerContent.vue";
 
 export default {
   label: "Security",
   name: "Security",
   path: "security",
-  order: 2,
+  order: 3,
   component: Security,
   children: [
-    {
-      name: "Security::Routes",
-      path: "routes",
-      meta: {
-        label: "Routes"
-      },
-      component: Routes,
-      children: [
-        {
-          name: "Security::Routes::RoutesAcl",
-          path: "access/controls/",
-          meta: {
-            label: "Acls"
-          },
-          component: RoutesAcl
-        },
-        {
-          name: "Security::Routes::RoutesPermissions",
-          path: "access/permissions/",
-          meta: {
-            label: "Permissions"
-          },
-          component: AclAccount
-        }
-      ]
-    },
     {
       name: "Security::SmartStructures",
       path: "smartStructures",
@@ -122,6 +96,32 @@ export default {
         label: "Roles"
       },
       component: Roles
+    },
+    {
+      name: "Security::Routes",
+      path: "routes",
+      meta: {
+        label: "Routes"
+      },
+      component: Routes,
+      children: [
+        {
+          name: "Security::Routes::RoutesAcl",
+          path: "access/controls/",
+          meta: {
+            label: "Acls"
+          },
+          component: RoutesAcl
+        },
+        {
+          name: "Security::Routes::RoutesPermissions",
+          path: "access/permissions/",
+          meta: {
+            label: "Permissions"
+          },
+          component: AclAccount
+        }
+      ]
     }
   ]
 };

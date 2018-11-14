@@ -40,6 +40,8 @@
 
 <style lang="scss">
     .profile-acls-view {
+        display: flex;
+        flex-direction: column;
         .k-grid-header {
             background: #F5F5F5;
             border-bottom: 1px solid rgba(33, 37, 41, 0.125);
@@ -52,7 +54,16 @@
             &[data-index="0"] {
                 border-left-width: 0;
                 border-right-width: 0;
+                border-top-width: 0;
+                & + .k-header {
+                    border-top-width: 0;
+                }
             }
+        }
+
+        .k-grid table {
+            border-right: 1px solid rgba(33, 37, 41, 0.125);;
+            border-bottom: 1px solid rgba(33, 37, 41, 0.125);;
         }
 
         .k-grid-content {
@@ -64,16 +75,19 @@
         }
 
         .k-treelist.k-grid {
+            flex: 1;
             border-width: 0;
         }
 
         .profile-toolbar {
             border-top: 1px solid rgba(33, 37, 41, 0.125);
-            background-color: rgba(255, 255, 255, 0.4);
+            border-bottom: 1px solid rgba(33, 37, 41, 0.125);
+            background-color: #f5f5f5;
             justify-content: space-between;
         }
 
         .profile-infos {
+            background: #f1f1f1;
             align-items: center;
             padding: 0.75rem 0;
             .detach-button {

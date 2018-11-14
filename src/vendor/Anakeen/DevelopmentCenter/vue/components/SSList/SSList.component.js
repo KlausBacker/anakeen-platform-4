@@ -10,7 +10,7 @@ export default {
   props: {
     filter: {
       type: [Boolean, Object],
-      default: false
+      default: true
     },
     position: {
       type: String,
@@ -151,6 +151,12 @@ export default {
         .get(this.resolveListUrl)
         .then(response => {
           options.success(response);
+          this.$nextTick(() => {
+            const active = this.$(".router-link-active", this.$el);
+            if (active.length) {
+              active[0].scrollIntoView();
+            }
+          });
         })
         .catch(error => {
           options.error(error);
