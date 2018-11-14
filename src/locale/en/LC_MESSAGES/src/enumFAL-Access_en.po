@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: fieldaccesslayer.struct.xml
-#, fuzzy
-msgctxt "FAL-Access"
-msgid "ReadWrite"
-msgstr "Read Write"
-
-#: fieldaccesslayer.struct.xml
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
 #, fuzzy
 msgctxt "FAL-Access"
 msgid "Read"
 msgstr "Read Only"
 
-#: fieldaccesslayer.struct.xml
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FAL-Access"
+msgid "ReadWrite"
+msgstr "Read Write"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
 #, fuzzy
 msgctxt "FAL-Access"
 msgid "Write"

@@ -10,3 +10,45 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_desc"
+msgstr "Description"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_famid"
+msgstr "Structure"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_fieldaccess"
+msgstr "New Access"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_fieldid"
+msgstr "Field id"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_fr_ident"
+msgstr "Properties"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_t_fields"
+msgstr "Fields"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_title"
+msgstr "Title"
