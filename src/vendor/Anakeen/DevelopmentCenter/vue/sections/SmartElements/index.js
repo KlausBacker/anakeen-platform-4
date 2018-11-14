@@ -1,5 +1,5 @@
 import Component from "./SmartElements.vue";
-import { AnkSmartElement } from "@anakeen/ank-components";
+import ElementView from "./ElementView/ElementView.vue";
 import RawElementView from "./RawElementView/RawElementView.vue";
 import PropertiesView from "./PropertiesView/PropertiesView.vue";
 import ProfileGrid from "../../components/profile/profile.vue";
@@ -19,9 +19,10 @@ export default {
       meta: {
         label: ":seIdentifier"
       },
-      component: AnkSmartElement,
+      component: ElementView,
       props: route => ({
-        initid: route.params.seIdentifier.toString()
+        initid: route.params.seIdentifier.toString(),
+        viewId: "!defaultConsultation"
       })
     },
     {
@@ -30,7 +31,7 @@ export default {
       meta: {
         label: ":seIdentifier"
       },
-      component: AnkSmartElement,
+      component: ElementView,
       props: route => ({
         initid: route.params.seIdentifier.toString(),
         viewId: "!defaultCreation"
