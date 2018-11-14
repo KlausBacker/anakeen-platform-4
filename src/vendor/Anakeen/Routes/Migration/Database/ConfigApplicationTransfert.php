@@ -4,6 +4,7 @@ namespace Anakeen\Routes\Migration\Database;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -67,11 +68,14 @@ SQL;
         DbManager::query($sql, $results);
 
         $template = file_get_contents(__DIR__ . '/../../../Migration/RouteApp.xml.mustache');
-        $routeConfigPath = sprintf("%s/%s/%s/app.xml", ContextManager::getRootDirectory(), \Anakeen\Core\Settings::RouterConfigDir, $appName);
+
         $data["APPNAME"] = $appName;
         $data["VENDOR"] = ContextManager::getParameterValue("Migration", "VENDOR");
+        $data["MODULE"] = ContextManager::getParameterValue("Migration", "MODULE");
         $data["actions"] = $results;
 
+        $configDir = sprintf("%s/%s/Config/Routes", $data["VENDOR"], $data["MODULE"]);
+        $routeConfigPath = sprintf("%s/vendor/%s/%s/app.xml", ContextManager::getRootDirectory(), $configDir, $appName);
         $mustache = new \Mustache_Engine();
         $routeConfigContent = $mustache->render($template, $data);
         Utils::writeFileContent($routeConfigPath, $routeConfigContent);
@@ -82,13 +86,15 @@ SQL;
         // Write Route PHP class stubs : one by action
         foreach ($results as $result) {
             $routeAppPath = sprintf(
-                "%s/vendor/%s/Routes/Apps/%s/%s.php",
+                "%s/vendor/%s/%s/Routes/Apps/%s/%s.php",
                 ContextManager::getRootDirectory(),
                 $data["VENDOR"],
+                $data["MODULE"],
                 $appName,
                 $result["name"]
             );
             $result["VENDOR"] = $data["VENDOR"];
+            $result["MODULE"] = $data["MODULE"];
             $result["APPNAME"] = $data["APPNAME"];
             //print "$routeAppPath\n";
 
@@ -121,12 +127,16 @@ SQL;
 
 
         $template = file_get_contents(__DIR__ . '/../../../Migration/RouteAccesses.xml.mustache');
-        $routeConfigPath = sprintf("%s/%s/%s/accesses.xml", ContextManager::getRootDirectory(), \Anakeen\Core\Settings::RouterConfigDir, $appName);
         $data["APPNAME"] = $appName;
         $data["VENDOR"] = ContextManager::getParameterValue("Migration", "VENDOR");
+        $data["MODULE"] = ContextManager::getParameterValue("Migration", "MODULE");
+
+        $configDir = sprintf("%s/%s/Config/Routes", $data["VENDOR"], $data["MODULE"]);
+        $routeConfigPath = sprintf("%s/vendor/%s/%s/accesses.xml", ContextManager::getRootDirectory(), $configDir, $appName);
+
         foreach ($results as &$result) {
-            if (preg_match('/^(.*)::(.*)/',$result["name"], $reg )) {
-                $result["aclName"]=$reg[2];
+            if (preg_match('/^(.*)::(.*)/', $result["name"], $reg)) {
+                $result["aclName"] = $reg[2];
             }
         }
         $data["acls"] = $results;
@@ -169,6 +179,41 @@ SQL;
         DbManager::query($sql, $ids);
 
         DbManager::query("update paramv set type='G' where type='A'");
+
+
+        $sql = sprintf("select * from paramdef where name ~ '^%s::'", pg_escape_string($appName));
+        DbManager::query($sql, $results);
+
+
+        $template = file_get_contents(__DIR__ . '/../../../Migration/RouteParameters.xml.mustache');
+        $data["APPNAME"] = $appName;
+        $data["VENDOR"] = ContextManager::getParameterValue("Migration", "VENDOR");
+        $data["MODULE"] = ContextManager::getParameterValue("Migration", "MODULE");
+
+        $configDir = sprintf("%s/%s/Config/Routes", $data["VENDOR"], $data["MODULE"]);
+        $routeConfigPath = sprintf("%s/vendor/%s/%s/parameters.xml", ContextManager::getRootDirectory(), $configDir, $appName);
+
+        foreach ($results as &$result) {
+            if (preg_match('/^(.*)::(.*)/', $result["name"], $reg)) {
+                $result["paramName"] = $reg[2];
+                $result["value"] = ContextParameterManager::getValue($reg[1], $reg[2]);
+            }
+            if ($result["kind"] === "readonly") {
+                $result["accessValue"] = "readonly";
+                $result["type"] = "text";
+            } elseif ($result["kind"] === "static") {
+                $result["accessValue"] = "static";
+                $result["type"] = "text";
+            } else {
+                $result["type"] = $result["kind"];
+                $result["accessValue"] = "admin";
+            }
+        }
+        $data["params"] = $results;
+
+        $mustache = new \Mustache_Engine();
+        $routeConfigContent = $mustache->render($template, $data);
+        Utils::writeFileContent($routeConfigPath, $routeConfigContent);
 
         return $ids;
     }

@@ -29,7 +29,7 @@ class ConfigStructureTransfert extends DataElementTransfert
 
         $data["count"] = count($this->transfertConfig($this->structureName));
 
-        $data["properties"]=$this->getProperties();
+        $data["properties"] = $this->getProperties();
 
         return $data;
     }
@@ -72,14 +72,18 @@ class ConfigStructureTransfert extends DataElementTransfert
     protected static function getBehaviorPath($structureName)
     {
         $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        $subDirName = ContextManager::getParameterValue("Migration", "MODULE");
         if (!$vendorName) {
             throw new Exception("Migration VENDOR parameter is not set");
         }
-        $className = ucfirst(strtolower($structureName));
+        $structName = ucfirst(strtolower($structureName));
 
-        $namePath = [$vendorName, self::SMART_STRUCTURES, $className];
-        $className = sprintf("%sBehavior", $className);
+        $namePath = [$vendorName, self::SMART_STRUCTURES, $structName];
+        $className = sprintf("%sBehavior", $structName);
         $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
+        if ($subDirName) {
+            $namePath = [$vendorName, $subDirName, self::SMART_STRUCTURES, $structName];
+        }
         $stubPath = sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $className);
         return $stubPath;
     }
@@ -101,13 +105,18 @@ class ConfigStructureTransfert extends DataElementTransfert
             pg_escape_string($structureName)
         );
         $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        $subDirName = ContextManager::getParameterValue("Migration", "MODULE");
         if (!$vendorName) {
             throw new Exception("Migration VENDOR parameter is not set");
         }
         DbManager::query($sql, $parentName, true, true);
         $structDir = ucfirst(strtolower($structureName));
 
-        $namePath = [$vendorName, self::SMART_STRUCTURES, $structDir];
+        if ($subDirName) {
+            $namePath = [$vendorName, $subDirName, self::SMART_STRUCTURES, $structDir];
+        } else {
+            $namePath = [$vendorName, self::SMART_STRUCTURES, $structDir];
+        }
         $className = sprintf("%sBehavior", $structDir);
         $template = static::getBehaviorTemplateContent();
 
@@ -118,6 +127,16 @@ class ConfigStructureTransfert extends DataElementTransfert
             pg_escape_string($structureName)
         );
 
+        DbManager::query($sql);
+
+
+        $sql = sprintf(
+            "update docfam set atags = atags || E'{\"vendor\":\"%s\"}' where name='%s'",
+            $vendorName,
+            pg_escape_string($structureName)
+        );
+        DbManager::query($sql);
+
         $stubPath = static::getBehaviorPath($structureName);
 
         if ($parentName) {
@@ -125,18 +144,6 @@ class ConfigStructureTransfert extends DataElementTransfert
         } else {
             $extends = '\\Anakeen\\SmartElement';
         }
-
-        DbManager::query($sql);
-
-
-        $sql = sprintf(
-            "update docfam set atags = atags || '{\"vendor\":\"%s\"}' where name='%s'",
-            implode("\\\\", $namePath),
-            $className,
-            pg_escape_string($structureName)
-        );
-        DbManager::query($sql);
-
 
         $mustache = new \Mustache_Engine();
         $stubBehaviorContent = $mustache->render($template, [
@@ -226,10 +233,10 @@ SQL;
 
         DbManager::query($sql, $ids, true);
         // Delete MODATTR without father
-        $sql="delete from docattr where id ~ '^:' and substring(id,2) not in (select id from docattr)";
+        $sql = "delete from docattr where id ~ '^:' and substring(id,2) not in (select id from docattr)";
         DbManager::query($sql);
         // Default Access is ReadWrite
-        $sql="update docattr set accessibility='ReadWrite' where accessibility is null and id !~ '^:'";
+        $sql = "update docattr set accessibility='ReadWrite' where accessibility is null and id !~ '^:'";
         DbManager::query($sql);
 
         return $ids;

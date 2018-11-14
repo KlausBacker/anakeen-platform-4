@@ -8,6 +8,7 @@ use Anakeen\Core\SmartStructure;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
  * Class StructureTransfert
@@ -45,7 +46,7 @@ class DataElementTransfert
 
         $data["count"] = count($this->transfertRequest($this->structure));
 
-        $data["properties"]=$this->getProperties();
+        $data["properties"] = $this->getProperties();
         return $data;
     }
 
@@ -90,6 +91,11 @@ class DataElementTransfert
                 }
             }
 
+            if ($field->isMultipleInArray()) {
+                throw new Exception(sprintf("MULTIPLEx2 CONVERT NOT IMPLEMENTED YET for '%s'", $field->id));
+            }
+
+
             if ($field->isMultiple() && !$field->isMultipleInArray()) {
                 switch ($field->type) {
                     case "longtext":
@@ -128,6 +134,19 @@ class DataElementTransfert
             $propMapping["ba_desc"] = "cv_desc";
             unset($propMapping["cv_primarymask"]);
         }
+
+        if ($structure->usefor === "W") {
+            // Delete fall because not exists in 3.2
+            /** @var WDocHooks $iWorkflow */
+            $iWorkflow = SEManager::initializeDocument($structure->id);
+            $prefix = $iWorkflow->attrPrefix;
+            foreach ($propMapping as $k => $v) {
+                if (preg_match("/^${prefix}_fallid/", $k)) {
+                    unset($propMapping[$k]);
+                }
+            }
+        }
+
 
         $qsql = <<<SQL
 insert into doc%d (%s) 

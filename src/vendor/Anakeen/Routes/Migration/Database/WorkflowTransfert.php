@@ -45,11 +45,12 @@ class WorkflowTransfert extends ConfigStructureTransfert
 
         $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
         $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        $dirName = ContextManager::getParameterValue("Migration", "MODULE");
         if (!$vendorName) {
             throw new Exception("Migration VENDOR parameter is not set");
         }
-        $namePath = [$vendorName, ConfigStructureTransfert::SMART_STRUCTURES, $className];
-        $stubPath = sprintf("%s/%s/%s.graph.xml", $vendorPath, implode("/", $namePath), $className);
+        $namePath = [$vendorName, $dirName, ConfigStructureTransfert::SMART_STRUCTURES, $className];
+        $stubPath = sprintf("%s/%s/%sGraph.xml", $vendorPath, implode("/", $namePath), $className);
 
         $graphData["data"]["VENDOR"] = $vendorName;
         $mustache = new \Mustache_Engine();

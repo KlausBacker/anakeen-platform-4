@@ -3,7 +3,7 @@
     <sde:routes namespace="{{APPNAME}}">
     {{#actions}}
         <sde:route name="{{name}}">
-            <sde:callable>{{VENDOR}}\Routes\Apps\{{APPNAME}}\{{name}}</sde:callable>
+            <sde:callable>{{VENDOR}}\{{MODULE}}\Routes\Apps\{{APPNAME}}\{{name}}</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/apps/{{APPNAME}}/{{name}}</sde:pattern>
             <sde:description>{{short_name}}</sde:description>

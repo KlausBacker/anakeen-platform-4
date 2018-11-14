@@ -60,11 +60,16 @@ class UiStructureTransfert
 
         $className = ucfirst(strtolower($structure->name));
         $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        $subDir = ContextManager::getParameterValue("Migration", "MODULE");
         if (!$vendorName) {
             throw new Exception("Migration VENDOR parameter is not set");
         }
         $vendorPath = sprintf("%s/vendor", ContextManager::getRootDirectory());
-        $namePath = [$vendorName, ConfigStructureTransfert::SMART_STRUCTURES, $className, "Ui"];
+        if ($subDir) {
+            $namePath = [$vendorName, $subDir, ConfigStructureTransfert::SMART_STRUCTURES, $className, "Ui"];
+        } else {
+            $namePath = [$vendorName, ConfigStructureTransfert::SMART_STRUCTURES, $className, "Ui"];
+        }
 
         if (!empty($renderParam["families"][$structure->name])) {
             foreach ($renderParam["families"][$structure->name] as $kr => $vr) {

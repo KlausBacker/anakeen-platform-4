@@ -31,9 +31,9 @@ class InitTransfert
     {
         $data = [];
 
-        $tools=file_get_contents(__DIR__."/../../../Migration/Tools.sql");
+        DbManager::query("create schema if not exists dynacase;");
+        $tools = file_get_contents(__DIR__ . "/../../../Migration/Tools.sql");
         DbManager::query($tools);
-
 
         $this->move1000();
         $this->moveIds();
@@ -168,7 +168,9 @@ SQL;
         $sqls[] = sprintf("update doc set cvid=%d where cvid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update doc set prelid=%d where prelid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update doc set wid=%d where wid=%d", $idTo, $idFrom);
+        $sqls[] = sprintf("update doc set fallid=%d where fallid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update docfam set ccvid=%d where ccvid=%d", $idTo, $idFrom);
+        $sqls[] = sprintf("update docfam set cfallid=%d where cfallid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update docfam set cprofid=%d where cprofid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update docfam set dfldid=%d where dfldid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update docfam set cfldid=%d where cfldid=%d", $idTo, $idFrom);
@@ -187,8 +189,8 @@ SQL;
         $sqls[] = sprintf("update docpermext set docid=%d where docid=%d", $idTo, $idFrom);
         $sqls[] = sprintf("update users set fid=%d where fid=%d", $idTo, $idFrom);
 
-        $sqls[] = sprintf("update family.cvdoc set cv_mskid=array_replace(cv_mskid:int[], %d, %d):int[]", $idTo, $idFrom);
-        $sqls[] = sprintf("update family.fieldaccesslayerlist set fall_layerid=array_replace(fall_layer:int[], %d, %d):int[]", $idTo, $idFrom);
+        $sqls[] = sprintf("update family.cvdoc set cv_mskid=array_replace(cv_mskid::int[], %d, %d)::int[]", $idFrom, $idTo);
+        $sqls[] = sprintf("update family.fieldaccesslayerlist set fall_layer=array_replace(fall_layer::int[], %d, %d)::int[]", $idFrom, $idTo);
         return $sqls;
     }
 }

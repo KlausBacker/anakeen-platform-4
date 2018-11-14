@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Migration\Module;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Config\RouterInfo;
@@ -12,8 +13,11 @@ use Anakeen\Router\Exception;
 use Anakeen\Router\ExportRoutesConfiguration;
 use Anakeen\Router\RouterManager;
 use Anakeen\Search\SearchElements;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Anakeen\Ui\ExportRenderAccessConfiguration;
 use Anakeen\Workflow\ExportElementConfiguration;
+use Anakeen\Workflow\ExportWorkflowConfiguration;
+use Dcp\Core\ExportAccounts;
 
 class Download
 {
@@ -31,8 +35,8 @@ class Download
         $this->initParameters($args);
         $data = $this->doRequest();
 
-        return ApiV2Response::withData($response, $data);
-        //return ApiV2Response::withFile($response, $data);
+        // return ApiV2Response::withData($response, $data);
+        return ApiV2Response::withFile($response, $data);
     }
 
     protected function initParameters($args)
@@ -59,7 +63,8 @@ class Download
 
             $this->zipAddDirectory($path);
             $this->addStructuresConfig();
-            $this->addRoutesConfig();
+            // Not necessary already set by App migration
+           // $this->addRoutesConfig();
             $this->zip->close();
         }
 
@@ -77,7 +82,6 @@ class Download
         }
     }
 
-
     protected function addStructureConfig(SmartStructure $structure)
     {
         $structName = self::camelCase($structure->name);
@@ -87,15 +91,6 @@ class Download
         $e->insertStructConfig();
         $xmlFile = sprintf("%s/SmartStructures/%s/500-%sSetting.xml", $this->outputPath, $structName, $structName);
         $this->zip->addFromString($xmlFile, $e->toXml());
-
-
-        $e = new ExportRenderAccessConfiguration($structure);
-        $e->extractProfil("access");
-        $e->extractCvAccess();
-        $xmlFile = sprintf("%s/SmartStructures/%s/Settings/240-%sProfiles.xml", $this->outputPath, $structName, $structName);
-        $this->zip->addFromString($xmlFile, $e->toXml());
-
-
 
 
         $e = new SmartStructure\ExportConfiguration($structure);
@@ -115,12 +110,28 @@ class Download
         $xmlFile = sprintf("%s/SmartStructures/%s/110-%sParameters.xml", $this->outputPath, $structName, $structName);
         $this->zip->addFromString($xmlFile, $e->toXml());
 
+
+        $e = new SmartStructure\ExportConfiguration($structure);
+        if ($e->extractEnums()) {
+            $xmlFile = sprintf("%s/Enumerates/100-%sEnumerate.xml", $this->outputPath, $structName);
+            $this->zip->addFromString($xmlFile, $e->toXml());
+        }
+
+        $e=new ExportAccounts();
+        $sAccounts=new \SearchAccount();
+        $sAccounts->setTypeFilter(\SearchAccount::roleType);
+        $e->setSearchAccount($sAccounts);
+        $e->setExportDocument(false);
+        $xmlFile = sprintf("%s/Accounts/100-Roles.xml", $this->outputPath);
+        $this->zip->addFromString($xmlFile, $e->export());
+
         $this->addTimersConfig($structure);
         $this->addMasksConfig($structure);
         $this->addMailTemplatesConfig($structure);
         $this->addProfilesConfig($structure);
         $this->addCvdocsConfig($structure);
         $this->addFieldAccessConfig($structure);
+        $this->addWorkflowConfig($structure);
     }
 
     protected function addTimersConfig(SmartStructure $structure)
@@ -148,6 +159,7 @@ class Download
             $this->zip->addFromString($xmlFile, $xml);
         }
     }
+
     protected function addMailTemplatesConfig(SmartStructure $structure)
     {
         $structName = self::camelCase($structure->name);
@@ -160,6 +172,7 @@ class Download
             $this->zip->addFromString($xmlFile, $xml);
         }
     }
+
     protected function addCvdocsConfig(SmartStructure $structure)
     {
         $structName = self::camelCase($structure->name);
@@ -179,6 +192,11 @@ class Download
         $s = new SearchElements("PDOC");
         $s->addFilter("%s = '%d'", \SmartStructure\Fields\Pdoc::dpdoc_famid, $structure->id);
         $profiles = $s->search()->getResults();
+        if ($structure->id == $structure->profid) {
+            $xml = ExportElementConfiguration::getProfileConfig($structure->id);
+            $xmlFile = sprintf("%s/SmartStructures/%s/Settings/Profiles/240-Profile%s.xml", $this->outputPath, $structName, self::getLogicalName($structure));
+            $this->zip->addFromString($xmlFile, $xml);
+        }
         foreach ($profiles as $profile) {
             $xml = ExportElementConfiguration::getProfileConfig($profile->id);
             $xmlFile = sprintf("%s/SmartStructures/%s/Settings/Profiles/240-Profile%s.xml", $this->outputPath, $structName, self::getLogicalName($profile));
@@ -198,6 +216,58 @@ class Download
             $xmlFile = sprintf("%s/SmartStructures/%s/Settings/Profiles/270-FieldAccesses%s.xml", $this->outputPath, $structName, self::getLogicalName($profile));
             $this->zip->addFromString($xmlFile, $xml);
         }
+    }
+
+    protected function addWorkflowConfig(SmartStructure $structure)
+    {
+        $s = new SearchElements("WDOC");
+        $s->addFilter("%s = '%d'", \SmartStructure\Fields\Wdoc::wf_famid, $structure->id);
+        $workflows = $s->search()->getResults();
+
+        $structName = self::camelCase($structure->name);
+        $wFromids=[];
+        foreach ($workflows as $workflow) {
+            /** @var WDocHooks $workflow */
+            $wFromids[$workflow->fromid]=$workflow->fromid;
+            $e = new ExportWorkflowConfiguration($workflow);
+            $e->extractWorkflow(
+                ExportWorkflowConfiguration::X_CONFIG |
+                ExportWorkflowConfiguration::X_UICONFIG
+            );
+            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/510-%sWorkflowSettings.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
+            $this->zip->addFromString($xmlFile, $e->toXml());
+
+            $e = new ExportWorkflowConfiguration($workflow);
+            $e->extractWorkflow(
+                ExportWorkflowConfiguration::X_CONFIGACCESS
+            );
+            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/130-%sWorkflowPermissions.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
+            $this->zip->addFromString($xmlFile, $e->toXml());
+        }
+
+        /*
+        foreach ($wFromids as $wFromid) {
+            $wStructure=SEManager::getFamily($wFromid);
+
+            $wStructName = self::camelCase($wStructure->name);
+            $e = new SmartStructure\ExportConfiguration($wStructure);
+            $e->extractProps();
+            $e->extractFields();
+            $e->extractHooks();
+            $e->extractAutoComplete();
+            $e->extractDefaults();
+            $e->insertStructConfig();
+            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/120-%sStructure.xml", $this->outputPath, $structName, $wStructName);
+            $this->zip->addFromString($xmlFile, $e->toXml());
+
+
+            $e = new SmartStructure\ExportConfiguration($wStructure);
+            $e->extractParameters();
+            $e->insertStructConfig();
+            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/121-%sParameters.xml", $this->outputPath, $structName, $wStructName);
+            $this->zip->addFromString($xmlFile, $e->toXml());
+        }
+        */
     }
 
     protected static function getLogicalName(SmartElement $e)
