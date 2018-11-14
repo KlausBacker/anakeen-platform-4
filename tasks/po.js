@@ -58,7 +58,7 @@ exports.po = ({ sourcePath }) => {
     }
     if (!poEntry) {
       log("No mustache template to extract");
-      return new Promise.resolve();
+      return Promise.resolve();
     }
 
     log("Extract Mustache template");
@@ -96,7 +96,7 @@ exports.po = ({ sourcePath }) => {
     }
     if (!poJs) {
       log("No JS to extract");
-      return new Promise.resolve();
+      return Promise.resolve();
     }
 
     log("Extract JS");
@@ -158,10 +158,13 @@ exports.po = ({ sourcePath }) => {
     });
 
     return xmlEnum2Pot({ poGlob, info, potPath }).then(files => {
-      //Remove useless elements
-      files = files.filter(currentElement => {
-        return currentElement;
-      });
+      //Concat files
+      files = files.reduce((acc, currentFiles) => {
+        if (currentFiles.length > 0) {
+          return [...acc, ...currentFiles];
+        }
+        return acc;
+      }, []);
       return Promise.all(
         files.map(element => {
           return msgmergeEnum({ element, srcPath, potPath });
@@ -192,10 +195,13 @@ exports.po = ({ sourcePath }) => {
     });
 
     return xmlStructure2Pot({ poGlob, info, potPath }).then(files => {
-      //Remove useless elements
-      files = files.filter(currentElement => {
-        return currentElement;
-      });
+      //Concat files
+      files = files.reduce((acc, currentFiles) => {
+        if (currentFiles.length > 0) {
+          return [...acc, ...currentFiles];
+        }
+        return acc;
+      }, []);
       return Promise.all(
         files.map(element => {
           return msgmergeStructure({ element, srcPath, potPath });

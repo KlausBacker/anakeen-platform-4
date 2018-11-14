@@ -83,6 +83,7 @@ exports.xmlStructure2Pot = ({ poGlob, info, potPath }) => {
     return Promise.all(
       allFilesFound.map(currentFilePath => {
         return new Promise((resolve, reject) => {
+          const filesCreated = [];
           xml2js.parseString(
             fs.readFileSync(path.resolve(srcPath, currentFilePath)),
             { tagNameProcessors: [stripPrefix, cleanDash] },
@@ -129,17 +130,15 @@ ${poEntries}
                       potPath,
                       `smart${infos.name}.pot`
                     );
-                    return fs.writeFile(potFile, content, err => {
-                      if (err) {
-                        return reject(err);
-                      }
-                      resolve({ path: potFile, smartName: infos.name });
+                    fs.writeFileSync(potFile, content);
+                    filesCreated.push({
+                      path: potFile,
+                      smartName: infos.name
                     });
                   }
-                  //Nothing to do here
-                  resolve(false);
                 });
               }
+              resolve(filesCreated);
             }
           );
         });
@@ -181,8 +180,11 @@ exports.xmlEnum2Pot = ({ poGlob, info, potPath }) => {
     return Promise.all(
       allFilesFound.map(currentFilePath => {
         return new Promise((resolve, reject) => {
+          const filesCreated = [];
           xml2js.parseString(
-            fs.readFileSync(path.resolve(srcPath, currentFilePath)),
+            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+              encoding: "utf8"
+            }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
             (err, result) => {
               if (err) {
@@ -229,19 +231,17 @@ ${poEntries}
                           potPath,
                           `enum${infos.name}.pot`
                         );
-                        return fs.writeFile(potFile, content, err => {
-                          if (err) {
-                            return reject(err);
-                          }
-                          resolve({ path: potFile, smartName: infos.name });
+                        fs.writeFileSync(potFile, content);
+                        filesCreated.push({
+                          path: potFile,
+                          smartName: infos.name
                         });
                       }
-                      //Nothing to do here
-                      resolve(false);
                     });
                   }
                 });
               }
+              resolve(filesCreated);
             }
           );
         });
