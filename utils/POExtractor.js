@@ -486,8 +486,6 @@ exports.js2Po = (globInputs, targetName, info, potPath) => {
                   }
                 }
               );
-
-              resolve();
             }
           );
         } catch (e) {
