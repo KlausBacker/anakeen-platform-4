@@ -30,14 +30,6 @@
             color: white !important;
         }
     }
-    .control-view-is-opened:hover {
-        background: white !important;
-        color: inherit !important;
-        .action-label {
-            color: #157EFB !important;
-        }
-    }
-
 </style>
 <script src="./ControlConf.controller.js">
 </script>
