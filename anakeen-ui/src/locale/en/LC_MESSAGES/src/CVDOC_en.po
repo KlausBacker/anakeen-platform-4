@@ -11,97 +11,97 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "ba_desc"
 msgstr "Description"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_displayed"
 msgstr "Displayable"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_famid"
 msgstr "Structure"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_fr_default"
 msgstr "Default view"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_idcview"
 msgstr "Default create view"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_idview"
 msgstr "View id"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_kview"
 msgstr "Type"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_lcview"
 msgstr "Default create view label"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_lview"
 msgstr "Label"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_menu"
 msgstr "Menu"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_mskid"
 msgstr "Mask"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_order"
 msgstr "Select order"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_primarymask"
 msgstr "Primary mask"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_renderaccessclass"
 msgstr "Render access PHP class"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_renderconfigclass"
 msgstr "Render PHP class"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "cv_t_views"
 msgstr "Views"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "dpdoc_famid"
 msgstr "Profile structure reference"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "dpdoc_fr_dyn"
 msgstr "Dynamic profile"
 
-#: cvdoc.struct.xml
+#: vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
 msgctxt "CVDOC"
 msgid "fr_basic"
 msgstr "Identification"

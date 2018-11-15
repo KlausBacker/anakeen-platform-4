@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 11:46+0200\n"
+"POT-Creation-Date: 2018-11-14 17:03+0100\n"
 "PO-Revision-Date: 2018-10-08 12:43+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -755,9 +755,8 @@ msgstr "Vous avez entré un mot de passe invalide"
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr ""
 
-msgctxt "searchui"
-msgid "any values"
-msgstr "Une des valeurs"
+msgid "activity"
+msgstr "Activité"
 
 msgctxt "searchui"
 msgid "cdate"
@@ -778,10 +777,6 @@ msgstr "Titre"
 
 msgid "hidden"
 msgstr ""
-
-msgctxt "searchui"
-msgid "id allocated"
-msgstr "Identifiant utilisateur affecté"
 
 msgctxt "searchui"
 msgid "id locked"
@@ -815,8 +810,17 @@ msgctxt "searchui"
 msgid "revision"
 msgstr "Révision"
 
+msgid "state"
+msgstr "État"
+
 msgid "static array"
 msgstr ""
+
+msgid "step"
+msgstr "Étape"
+
+msgid "workflow"
+msgstr "Cycle de vie"
 
 msgid "write only"
 msgstr ""
@@ -973,17 +977,13 @@ msgstr "{{value}} (autre choix)"
 #~ msgid "Visible columns by family"
 #~ msgstr "Colonnes visibles par familles"
 
-#~ msgid "activity"
-#~ msgstr "Activité"
+#~ msgctxt "searchui"
+#~ msgid "any values"
+#~ msgstr "Une des valeurs"
 
 #~ msgid "ddui:Editing form"
 #~ msgstr "Formulaire en cours de modification"
 
-#~ msgid "state"
-#~ msgstr "État"
-
-#~ msgid "step"
-#~ msgstr "Étape"
-
-#~ msgid "workflow"
-#~ msgstr "Cycle de vie"
+#~ msgctxt "searchui"
+#~ msgid "id allocated"
+#~ msgstr "Identifiant utilisateur affecté"

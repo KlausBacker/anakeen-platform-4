@@ -11,74 +11,72 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: content.mustache
+#: Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache
 msgctxt "ddui"
 msgid "Add new line"
 msgstr "Ajouter une nouvelle ligne"
 
-#: searchHTML5_edit.mustache reportHTML5_edit.mustache
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Conditions"
 msgstr "Conditions"
 
-#: write.mustache docidWrite.mustache enumWrite.mustache
-#: enumWriteRadio.mustache enumWriteToggle.mustache fileWrite.mustache
-#: htmltextWrite.mustache imageWrite.mustache longtextWrite.mustache
+#: Apps/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache
 msgctxt "ddui"
 msgid "Delete : "
 msgstr "Suppression de : "
 
-#: line.mustache
+#: Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Delete line"
 msgstr "Supprimer la ligne"
 
-#: document__header-fixed.mustache
+#: Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 msgctxt "ddui"
 msgid "DocumentDeleted"
 msgstr "Supprimée le"
 
-#: line.mustache
+#: Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Drag to move line"
 msgstr "Cliquer pour déplacer la ligne"
 
-#: content.mustache
+#: Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache
 msgctxt "ddui"
 msgid "Duplicate selected row"
 msgstr "Dupliquer la ligne sélectionnée"
 
-#: document__header.mustache
+#: Apps/DOCUMENT/IHM/views/document/document__header.mustache
 msgctxt "ddui"
 msgid "Editing form"
 msgstr "Formulaire en cours de modification"
 
-#: searchHTML5_edit.mustache reportHTML5_edit.mustache
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Loading criteria ..."
 msgstr "Chargement des critères..."
 
-#: searchHTML5_edit.mustache reportHTML5_edit.mustache
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Results"
 msgstr "Résultats"
 
-#: document__header-fixed.mustache
+#: Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 msgctxt "ddui"
 msgid "Revision :"
 msgstr "Révision n°"
 
-#: document__header-fixed.mustache
+#: Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Créée le"
 
-#: reportHTML5_edit.mustache
+#: vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Searching ..."
 msgstr "Recherche en cours"
 
-#: line.mustache
+#: Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Select line"
 msgstr "Sélectionner la ligne"

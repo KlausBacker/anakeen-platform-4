@@ -11,37 +11,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_attrids"
 msgstr "Attrid"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_famid"
 msgstr "Famille"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_fr_rest"
 msgstr "Famille"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_needeeds"
 msgstr "Obligatoire"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_t_contain"
 msgstr "Contenu"
 
-#: mask.struct.xml
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_visibilities"
