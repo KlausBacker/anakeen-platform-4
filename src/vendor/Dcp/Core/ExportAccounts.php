@@ -6,6 +6,7 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 
 class ExportAccounts
@@ -108,7 +109,9 @@ class ExportAccounts
                         throw new Exception("ACCT0100", $account->login, $account->id);
                 }
             }
-            $this->addDocumentNodes();
+            if ($this->exportDocument) {
+                $this->addDocumentNodes();
+            }
             $this->clearInfo();
             $this->reorderGroups();
         } catch (Exception $e) {
@@ -216,7 +219,7 @@ class ExportAccounts
             $sql = sprintf("select memberof,id from users where login in (%s)", implode(array_map(function ($s) {
                 return pg_escape_literal($s);
             }, $groupLogins), ", "));
-            simpleQuery("", $sql, $members);
+            DbManager::query($sql, $members);
             $searchGroups = array();
             foreach ($members as $parents) {
                 $memberOf = explode(',', substr($parents["memberof"], 1, -1));
@@ -234,7 +237,7 @@ class ExportAccounts
                     implode(array_map(function ($s) {
                         return pg_escape_literal($s);
                     }, $searchGroups), ", "));
-                simpleQuery("", $sql, $groupTree);
+                DbManager::query($sql, $groupTree);
 
                 if ($groupTree) {
                     foreach ($groupTree as & $groupItem) {
@@ -445,17 +448,17 @@ class ExportAccounts
         $this->writeFamilySchema("IGROUP");
         $this->writeFamilySchema("ROLE");
 
-        $family = new_doc("", "IUSER");
+        $family = SEManager::getFamily("IUSER");
         $subFams = $family->getChildFam();
         foreach ($subFams as $subFam) {
             $this->writeFamilySchema($subFam["name"]);
         }
-        $family = new_doc("", "IGROUP");
+        $family = SEManager::getFamily("IGROUP");
         $subFams = $family->getChildFam();
         foreach ($subFams as $subFam) {
             $this->writeFamilySchema($subFam["name"]);
         }
-        $family = new_doc("", "ROLE");
+        $family = SEManager::getFamily("ROLE");
         $subFams = $family->getChildFam();
         foreach ($subFams as $subFam) {
             $this->writeFamilySchema($subFam["name"]);
@@ -484,7 +487,7 @@ class ExportAccounts
             /**
              * @var \Anakeen\Core\SmartStructure $fam
              */
-            $fam = new_doc("", $familyName);
+            $fam = SEManager::getFamily($familyName);
             $output = sprintf("%s/%s.xsd", $this->exportSchemaDirectory, strtolower($fam->name));
 
             file_put_contents($output, $fam->getXmlSchema(true));
@@ -506,7 +509,7 @@ class ExportAccounts
         $excludeFilters = array();
         if (is_a($doc, SEManager::getFamilyClassName("IUSER"))) {
             if (!isset($this->families["IUSER"])) {
-                $this->families["IUSER"] = new_doc("", "IUSER");
+                $this->families["IUSER"] = SEManager::getFamily("IUSER");
             }
             $excludeFilters = array(
                 "us_lname",
@@ -539,7 +542,7 @@ class ExportAccounts
         }
         if (is_a($doc, SEManager::getFamilyClassName("Igroup"))) {
             if (!isset($this->families["IGROUP"])) {
-                $this->families["IGROUP"] = new_doc("", "IGROUP");
+                $this->families["IGROUP"] = SEManager::getFamily("IGROUP");
             }
             $excludeFilters = array(
                 "us_login",
@@ -570,7 +573,7 @@ class ExportAccounts
         }
         if (is_a($doc, SEManager::getFamilyClassName("ROLE"))) {
             if (!isset($this->families["ROLE"])) {
-                $this->families["ROLE"] = new_doc("", "ROLE");
+                $this->families["ROLE"] = SEManager::getFamily("ROLE");
             }
             $excludeFilters = array(
                 "role_login",
@@ -661,7 +664,7 @@ class ExportAccounts
         $node->appendChild($nodeInfo);
 
         if ($user->substitute) {
-            simpleQuery("", sprintf("select login from users where id = %d", $user->substitute), $substituteLogin, true, true);
+            DbManager::query(sprintf("select login from users where id = %d", $user->substitute), $substituteLogin, true, true);
             if ($substituteLogin) {
                 $nodeInfo = $this->xml->createElement("substitute");
                 $nodeInfo->setAttribute("reference", $substituteLogin);

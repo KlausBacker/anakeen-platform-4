@@ -5,6 +5,7 @@ namespace Anakeen\SmartStructures\Wdoc;
 
 
 use Anakeen\Core\Utils\Xml;
+use Dcp\Exception;
 
 class XmlGraph
 {
@@ -13,10 +14,13 @@ class XmlGraph
 
     public static function setWorkflowGraph(WDocHooks $wfl, $xmlFilePath)
     {
+        if (!is_file($xmlFilePath)) {
+            throw new Exception("WFL0009", $xmlFilePath);
+        }
         $xmlGraph = new \DOMDocument();
         $xmlGraph->load($xmlFilePath);
 
-       // print_r($xmlGraph->saveXML());
+        // print_r($xmlGraph->saveXML());
 
         $steps = $xmlGraph->getElementsByTagNameNS(self::NS, "step");
         $transitions = $xmlGraph->getElementsByTagNameNS(self::NS, "transition");
@@ -31,7 +35,7 @@ class XmlGraph
                 "t" => $transition->getAttribute("name")
             ];
 
-            $wfl->transitions[$transition->getAttribute("name")]=[];
+            $wfl->transitions[$transition->getAttribute("name")] = [];
         }
 
 

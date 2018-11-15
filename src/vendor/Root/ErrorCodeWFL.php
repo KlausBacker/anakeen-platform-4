@@ -150,10 +150,14 @@ class ErrorCodeWFL
      */
     const WFL0007 = 'workflow : missing attrPrefix definition for %s class';
     /**
-     * @errorCode
-     * the attrPrefix must be composed of just few characters
+     * @errorCode  the attrPrefix must be composed of just few characters
      */
     const WFL0008 = 'workflow : syntax error attrPrefix for %s class (limit to 15 alpha characters)';
+
+    /**
+     * @errorCode  the graph file not exists
+     */
+    const WFL0009 = 'workflow : Xml Graph "%s" not found';
     /**
      * @errorCode
      * activies label is not an array

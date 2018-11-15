@@ -93,4 +93,8 @@ class ErrorCodePRFL
      * @see \Dcp\ExportDocument::setExportAccountType
      */
     const PRFL0300 = 'Export option setExportAccountType "%s" not available. Availables are : %s';
+    /**
+     * @errorCode When cfallid is set with incorrect value
+     */
+    const PRFL0301 = 'Field Access "%s" not found. Structure "%s"';
 }
