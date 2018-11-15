@@ -39,7 +39,7 @@ SQL;
                 "accessName" => $accessName,
                 "account" => [
                     "reference" => $result["login"],
-                    "type" => Profile::getAccountType($result["accounttype"])
+                    "type" => ProfileUtils::getAccountType($result["accounttype"])
                 ]
             ];
         }

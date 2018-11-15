@@ -78,9 +78,9 @@
         </sde:route>
 
         <sde:route name="GetWorkflowData">
-            <sde:callable>\Anakeen\Routes\Devel\Config\WorkflowData</sde:callable>
+            <sde:callable>\Anakeen\Routes\Devel\Smart\WorkflowData</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/config/smart/workflows/{workflow}.json</sde:pattern>
+            <sde:pattern>/api/v2/devel/smart/workflows/{workflow}</sde:pattern>
             <sde:description>Get workflow configuration</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
