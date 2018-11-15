@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Routes\Devel\Config;
+namespace Anakeen\Routes\Devel\Security;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
@@ -8,10 +8,10 @@ use Anakeen\Router\Exception;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
- * Get configuration of smart workflow object
+ * Get all profile accesses references in a smart workflow object
  * use by route GET /api/v2/devel/config/smart/workflows/{workflow}.json
  */
-class WorkflowData
+class WorkflowAccesses
 {
     /**
      * @var WDocHooks $workflow
@@ -19,6 +19,7 @@ class WorkflowData
     protected $workflow;
     protected $workflowId = 0;
     protected $type = "structures";
+    protected $complete=false;
 
     /**
      * Return right accesses for a profil element
@@ -48,13 +49,14 @@ class WorkflowData
         if (!is_a($this->workflow, WDocHooks::class)) {
             throw new Exception(sprintf("Element \"%s\" is not a workflow", $this->workflowId));
         }
+
+        $this->complete = ($request->getQueryParam("complete") === "true");
     }
 
     public function doRequest()
     {
         $data["properties"] = $this->getProperties();
-        $data["steps"] = $this->getStepConfig();
-        $data["transitions"] = $this->getTransitionsConfig();
+        $data["steps"] = $this->getStepConfig($this->complete);
         return $data;
     }
 
@@ -79,7 +81,7 @@ class WorkflowData
         return $data;
     }
 
-    protected function getStepConfig()
+    protected function getStepConfig($complete = false)
     {
         $steps = $this->workflow->getStates();
         $stepsData = [];
@@ -88,46 +90,34 @@ class WorkflowData
             $stepData['id'] = $step;
             $stepData['label'] = $this->workflow->getStateLabel($step);
             $stepData['color'] = $this->workflow->getColor($step);
-            $stepData['mask'] = self::getElementRef($this->workflow->getStateMask($step));
-            $stepData['viewcontrol'] = self::getElementRef($this->workflow->getStateViewControl($step));
-            $stepData['profil'] = self::getElementRef($this->workflow->getStateProfil($step));
-            $stepData['fall'] = self::getElementRef($this->workflow->getStateFall($step));
-            $stepData['timer'] = self::getElementRef($this->workflow->getStateTimers($step));
+
+            $profid = $this->workflow->getStateProfil($step);
+            $fallid = $this->workflow->getStateFall($step);
+
+            if ($profid) {
+                $profil = SEManager::getDocument($profid);
+                if ($profil) {
+                    $stepData['profil'] = ProfileUtils::getProperties($profil);
+                    $stepData["profilAccess"] = ProfileUtils::getGreenAccesses($profil);
+                }
+
+                if ($complete === true) {
+                     ProfileUtils::completeGroupAccess($stepData["profilAccess"]);
+                      ProfileUtils::completeRoleAccess($stepData["profilAccess"]);
+                       ProfileUtils::getGreyAccesses($stepData["profilAccess"], $profil);
+                }
+            }
+
+            if ($fallid) {
+                $fall = SEManager::getDocument($fallid);
+                if ($fall) {
+                    $stepData['fall'] = ProfileUtils::getProperties($fall);
+                    $stepData["fallAccess"] = ProfileUtils::getGreenAccesses($fall);
+                }
+            }
             $stepsData[] = $stepData;
         }
 
         return $stepsData;
-    }
-
-    protected function getTransitionsConfig()
-    {
-        $transitionsData = [];
-        foreach ($this->workflow->transitions as $transitionName => $transitionConfig) {
-            $transitionData = [];
-            $transitionData["id"] = $transitionName;
-            $transitionData["label"] = $this->workflow->getTransitionLabel($transitionName);
-            $mails = $this->workflow->getTransitionMailTemplates($transitionName);
-            $transitionData["mailtemplates"] = [];
-            foreach ($mails as $mail) {
-                $transitionData["mailtemplates"][] = self::getElementRef($mail);
-            }
-            $timers = $this->workflow->getTransitionTimers($transitionName);
-            $transitionData["persistentTimers"] = $transitionData["unAttachTimers"] = $transitionData["volatileTimers"] = [];
-            foreach ($timers as $timer) {
-                switch ($timer["type"]) {
-                    case WDocHooks::TIMER_PERSISTENT:
-                        $transitionData["persistentTimers"][] = self::getElementRef($timer);
-                        break;
-                    case WDocHooks::TIMER_UNATTACH:
-                        $transitionData["unAttachTimers"][] = self::getElementRef($timer);
-                        break;
-                    default:
-                        $transitionData["volatileTimers"][] = self::getElementRef($timer);
-                }
-            }
-            $transitionsData[] = $transitionData;
-        }
-
-        return $transitionsData;
     }
 }
