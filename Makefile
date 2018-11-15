@@ -117,7 +117,7 @@ cleanAll: clean ## clean the local pub and the node_module
 ########################################################################################################################
 
 po: ## extract the po
-	${ANAKEEN_CLI_BIN} extractPo --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH)
+	${ANAKEEN_CLI_BIN} extractPo --sourcePath $(ADMIN_CENTER_SRC_PATH)
 
 ########################################################################################################################
 ##
