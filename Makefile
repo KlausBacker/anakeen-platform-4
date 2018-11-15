@@ -9,7 +9,6 @@ CONTROL_CONTEXT=$(ctx)
 
 ##bin
 COMPOSER=composer
-DEVTOOL_BIN=php ./anakeen-devtool.phar
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
 -include Makefile.local
@@ -31,14 +30,10 @@ autotest: install
 	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
 
 deploy:
-	rm -f workflow-1*app
-	${ANAKEEN_CLI_BIN} build --auto-release
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w  workflow-1*app
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./ -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 deploy-test:
-	rm -f workflow-test*app
-	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c "${CONTROL_CONTEXT}" -p ${CONTROL_PORT}  -w workflow-test*app
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 po:
 	${ANAKEEN_CLI_BIN} extractPo -s .

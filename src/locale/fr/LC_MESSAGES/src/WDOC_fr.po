@@ -1,0 +1,65 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart WDOC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-11-06T10:14:14.156Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "dpdoc_fam"
+msgstr "Structure (titre)"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "dpdoc_famid"
+msgstr "Structure"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "dpdoc_fr_dyn"
+msgstr "Profil dynamique"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+msgctxt "WDOC"
+msgid "fr_basic"
+msgstr ""
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "wf_desc"
+msgstr "description"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "wf_fam"
+msgstr "Structure (titre)"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "wf_famid"
+msgstr "Structure"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "wf_tab_states"
+msgstr "tapes"
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+#, fuzzy
+msgctxt "WDOC"
+msgid "wf_tab_transitions"
+msgstr "Transitions"
