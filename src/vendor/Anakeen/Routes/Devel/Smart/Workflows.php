@@ -43,11 +43,6 @@ class Workflows
         $dl=$s->search()->getDocumentList();
         $workflowData=[];
         foreach ($dl as $workflow) {
-            /**
-             * @var \Anakeen\SmartStru
-             */
-            $wfl = null;
-            $wfl->
             $workflowData[]=[
                 "id"=>intval($workflow->id),
                 "name"=>$workflow->name,
