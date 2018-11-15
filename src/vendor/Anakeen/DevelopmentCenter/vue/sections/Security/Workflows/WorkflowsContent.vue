@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "SmartStructuresContent",
+    name: "WorkflowsContent",
     data() {
       return {
         items: [
@@ -14,9 +14,8 @@
           },
           {
             name: "Security::Workflows::Access",
-            label: "Access"
+            label: "Accesses"
           }
-
         ]
       }
     }

@@ -8,13 +8,13 @@
         <div class="smart-structure-tabs">
             <div class="smart-structure-tabs-list">
                 <div v-if="hasFilter" class="smart-structure-tabs-filter">
-                    <input class="form-control k-textbox" type="search" :placeholder="translations.listFilterPlaceholder" v-model="listFilter"/>
+                    <input class="form-control k-textbox" type="search" :placeholder="filterPlaceholder" v-model="listFilter"/>
                     <span class="filter-list-clear" @click="clearFilter"><i class="material-icons">close</i></span>
                 </div>
                 <div class="smart-structure-tabs-list-nav">
-                    <router-link :to="{name: routeName, params: { [routeParamField]: tab.name }}" v-for="(tab, index) in tabs" :key="`tab-${index}`" :class="{'smart-structure-list-item': true}" :title="tab.title">
+                    <router-link :to="{name: routeName, params: { [routeParamField]: tab.name || tab.id }}" v-for="(tab, index) in tabs" :key="`tab-${index}`" :class="{'smart-structure-list-item': true}" :title="tab.title">
                         <img class="smart-structure-list-item-icon" :src='tab.icon'/>
-                        <div class="smart-structure-list-item-title">{{tab.name}}</div>
+                        <div class="smart-structure-list-item-title">{{tab.name || tab.title}}</div>
                     </router-link>
                 </div>
             </div>

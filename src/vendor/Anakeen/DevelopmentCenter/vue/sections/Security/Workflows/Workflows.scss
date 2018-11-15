@@ -1,0 +1,12 @@
+.security-workflows-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+
+  .security-workflows-section-content {
+    min-height: 0;
+    flex: 1;
+    display: flex;
+  }
+}

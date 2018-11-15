@@ -19,6 +19,15 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GetDevelWorkflows">
+            <sde:callable>\Anakeen\Routes\Devel\Smart\Workflows</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/workflows/</sde:pattern>
+            <sde:description>Get workflows</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="GetStructureInfo">
             <sde:callable>\Anakeen\Routes\Devel\Smart\StructureInfo</sde:callable>
             <sde:method>GET</sde:method>
