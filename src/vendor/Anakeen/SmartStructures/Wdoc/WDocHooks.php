@@ -191,6 +191,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         return _($state);
     }
+    public function getTransitionLabel($transitionId)
+    {
+        return _($transitionId);
+    }
 
     /**
      * get the profile id according to state
