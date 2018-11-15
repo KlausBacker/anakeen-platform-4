@@ -9,14 +9,21 @@
       return {
         items: [
           {
-            name: "Security::Workflows::Rights",
-            label: "Rights"
+            name: "Security::SmartStructures::Infos",
+            label: "Informations"
           },
           {
-            name: "Security::Workflows::Access",
-            label: "Access"
+            name: "Security::SmartStructures::Structures",
+            label: "Structure Access"
+          },
+          {
+            name: "Security::SmartStructures::Elements",
+            label: "Element Access"
+          },
+          {
+            name: "Security::SmartStructures::Fields",
+            label: "Fields Access"
           }
-
         ]
       }
     }
