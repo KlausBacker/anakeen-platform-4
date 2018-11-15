@@ -159,12 +159,6 @@ exports.po = ({ sourcePath }) => {
 
     return xmlEnum2Pot({ poGlob, info, potPath }).then(files => {
       //Concat files
-      files = files.reduce((acc, currentFiles) => {
-        if (currentFiles.length > 0) {
-          return [...acc, ...currentFiles];
-        }
-        return acc;
-      }, []);
       return Promise.all(
         files.map(element => {
           return msgmergeEnum({ element, srcPath, potPath });

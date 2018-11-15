@@ -180,40 +180,97 @@ exports.xmlEnum2Pot = ({ poGlob, info, potPath }) => {
     return Promise.all(
       allFilesFound.map(currentFilePath => {
         return new Promise((resolve, reject) => {
-          const filesCreated = [];
+          let enums = {};
           xml2js.parseString(
             fs.readFileSync(path.resolve(srcPath, currentFilePath), {
               encoding: "utf8"
             }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
             (err, result) => {
+              //Analyze all the enums and organize them
               if (err) {
                 reject(err);
                 return;
               }
               //Analyze structure configuration
               if (result.config.enumerates) {
-                result.config.enumerates.forEach(enumMainTag => {
-                  if (enumMainTag.enumconfiguration) {
-                    enumMainTag.enumconfiguration.forEach(currentConf => {
-                      let infos = currentConf.$;
-                      const fields = currentConf.enum;
-                      let poEntries = "";
-
-                      if (fields) {
-                        fields.forEach(enumItem => {
-                          poEntries += getPoEntry(
-                            enumItem.$,
-                            infos,
-                            currentFilePath
-                          );
-                        });
+                enums = result.config.enumerates.reduce((acc, enumMainTag) => {
+                  //If no enum conf, return result and go to the next
+                  if (!enumMainTag.enumconfiguration) {
+                    return acc;
+                  }
+                  return enumMainTag.enumconfiguration.reduce(
+                    (acc, currentConf) => {
+                      const enumName = currentConf.$.name;
+                      const enums = currentConf.enum.reduce(
+                        (acc, currentField) => {
+                          acc[currentField.$.name] = {
+                            enumItem: currentField.$,
+                            fileName: currentFilePath
+                          };
+                          return acc;
+                        },
+                        {}
+                      );
+                      //console.log(acc, currentEnum);
+                      if (acc[enumName]) {
+                        acc[enumName] = { ...acc[enumName], ...enums };
+                      } else {
+                        acc[enumName] = enums;
                       }
+                      return acc;
+                    },
+                    acc
+                  );
+                }, enums);
+              }
 
-                      let now = new Date().toISOString();
-                      let content = `msgid ""
+              resolve(enums);
+            }
+          );
+        });
+      })
+    )
+      .then(allEnumsFound => {
+        //Merge all enums found
+        return allEnumsFound.reduce((acc, currentEnumsDef) => {
+          const currentKeys = Object.keys(currentEnumsDef);
+          //Merge elements
+          currentKeys.forEach(currentKey => {
+            if (acc[currentKey]) {
+              acc[currentKey] = {
+                ...acc[currentKey],
+                ...currentEnumsDef[currentKey]
+              };
+            } else {
+              acc[currentKey] = currentEnumsDef[currentKey];
+            }
+          });
+          return acc;
+        }, {});
+      })
+      .then(enums => {
+        //Generate files from keys
+        const filesCreated = [];
+        Object.keys(enums).forEach(currentKey => {
+          //console.log(currentKey, enums[currentKey]);
+          const poEntries = Object.values(enums[currentKey]).reduce(
+            (acc, currentEntry) => {
+              return (
+                acc +
+                getPoEntry(
+                  currentEntry.enumItem,
+                  {name: currentKey},
+                  currentEntry.fileName
+                )
+              );
+            },
+            ""
+          );
+          let now = new Date().toISOString();
+          let content = `msgid ""
 msgstr ""
-"Project-Id-Version: Enum ${infos.name} \\n"
+"Project-Id-Version: Enum ${currentKey} \\n"
 "Report-Msgid-Bugs-To: \\n"
 "PO-Revision-Date: ${now}\\n"
 "Last-Translator: Automatically generated\\n"
@@ -225,28 +282,18 @@ msgstr ""
 
 ${poEntries}
 `;
-                      if (poEntries.length > 0) {
-                        //If there is something, we write the temp pot file
-                        const potFile = path.join(
-                          potPath,
-                          `enum${infos.name}.pot`
-                        );
-                        fs.writeFileSync(potFile, content);
-                        filesCreated.push({
-                          path: potFile,
-                          smartName: infos.name
-                        });
-                      }
-                    });
-                  }
-                });
-              }
-              resolve(filesCreated);
-            }
-          );
+          if (poEntries.length > 0) {
+            //If there is something, we write the temp pot file
+            const potFile = path.join(potPath, `enum${currentKey}.pot`);
+            fs.writeFileSync(potFile, content);
+            filesCreated.push({
+              path: potFile,
+              smartName: currentKey
+            });
+          }
         });
-      })
-    );
+        return filesCreated;
+      });
   });
 };
 
