@@ -27,7 +27,7 @@ export default {
     });
   },
   methods: {
-    getPermissions(options) {
+    getPermissions() {
       return [];
     },
     parsePermissionsData(response) {
