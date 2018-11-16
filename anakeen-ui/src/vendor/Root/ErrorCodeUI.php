@@ -59,6 +59,10 @@ class ErrorCodeUI
      */
     const UI0013 = 'Method "%s::getOptions" must return \Dcp\Ui\IRenderOptions';
     /**
+     * @errorCode A mask referenced in cvdoc doc has wrong value
+     */
+    const UI0014 = 'Mask "%s" not found in cvdoc "%s"';
+    /**
      * @errorCode the menu item not exist
      * @see       \Dcp\Ui\BarMenu::insertBefore
      */

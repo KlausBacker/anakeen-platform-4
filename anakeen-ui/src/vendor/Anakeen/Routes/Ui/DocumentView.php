@@ -383,6 +383,9 @@ class DocumentView
         if (!empty($vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid])) {
             $mskId = $vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
             $msk =  SEManager::getDocument($mskId);
+            if (! $msk) {
+                throw new \Dcp\Exception("UI0014",$mskId, $cvDoc);
+            }
             SEManager::cache()->addDocument($msk);
             return $msk;
         }
