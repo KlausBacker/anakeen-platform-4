@@ -1,10 +1,5 @@
 <template>
     <div class="steps-grid-parent">
-        <div>
-            <kendo-toolbar class="steps-grid-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="refreshSteps"></kendo-toolbar-item>
-            </kendo-toolbar>
-        </div>
         <kendo-datasource ref="stepsGrid"
                           :transport-read="getSteps"
                           :schema-data="parseStepsData">

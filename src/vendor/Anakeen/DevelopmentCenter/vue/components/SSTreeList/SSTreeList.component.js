@@ -174,10 +174,6 @@ export default {
           }
         });
       }, 1);
-    },
-    refreshTree() {
-      this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
-      this.$refs.ssTreelist.kendoWidget().dataSource.read();
     }
   }
 };

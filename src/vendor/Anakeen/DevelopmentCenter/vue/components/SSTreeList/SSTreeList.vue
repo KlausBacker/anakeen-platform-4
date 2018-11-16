@@ -1,10 +1,5 @@
 <template>
     <div class="ss-treelist">
-        <div>
-            <kendo-toolbar class="ss-treelist-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="refreshTree"></kendo-toolbar-item>
-            </kendo-toolbar>
-        </div>
         <kendo-treelist ref="ssTreelist"
                         class="ss-treelist-tree"
                         :data-source="remoteDataSource"

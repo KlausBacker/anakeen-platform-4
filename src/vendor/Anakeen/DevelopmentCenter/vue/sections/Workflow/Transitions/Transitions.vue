@@ -1,10 +1,5 @@
 <template>
     <div class="transitions-grid-parent">
-        <div>
-            <kendo-toolbar class="transitions-grid-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="refreshTransitions"></kendo-toolbar-item>
-            </kendo-toolbar>
-        </div>
         <kendo-datasource ref="transitionsGrid"
                           :transport-read="getTransitions"
                           :schema-data="parseTransitionsData">

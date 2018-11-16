@@ -47,16 +47,6 @@ export default {
       }
       return [];
     },
-    refreshViews() {
-      this.$refs.viewsGridContent.kendoWidget().dataSource.filter({});
-      this.$refs.viewsGridContent.kendoWidget().dataSource.read();
-    },
-    disabledFilter(args) {
-      args.element.kendoDropDownList({
-        valuePrimitive: true,
-        dataSource: ["true", "false"]
-      });
-    },
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");
     }
