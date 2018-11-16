@@ -53,7 +53,7 @@ class StructureWorkflow
                 "id"=> $wdoc->name ?: $wdoc->id,
                 "title" => $wdoc->title,
                 "baTitle" => $wdoc->getAttributeValue("ba_title"),
-                "icon" => $wdoc->getIcon("",32),
+                "icon" => $wdoc->getIcon("", 32),
                 "wfDesc" => $wdoc->getAttributeValue("wf_desc"),
                 "wfFamid" => $wdoc->getAttributeValue("wf_famid"),
                 "wfFam" => $wdoc->getAttributeValue("wf_fam"),
