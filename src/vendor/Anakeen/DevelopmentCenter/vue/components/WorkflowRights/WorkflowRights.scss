@@ -1,0 +1,123 @@
+.workflow-rights-tree {
+  display: flex;
+  flex: 1;
+
+  & /deep/ {
+
+    .k-grid-header {
+      background: #F5F5F5;
+
+      .k-header {
+        border-bottom: 1px solid rgba(33, 37, 41, 0.125);
+        & + .k-header {
+          border-left: 1px solid rgba(33, 37, 41, 0.125);
+        }
+
+        .k-checkbox + .k-checkbox-label {
+          margin-left: 0.75rem;
+        }
+      }
+    }
+    .account-header, .step-header {
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      .switch-container {
+        margin-left: .75rem;
+      }
+
+      .step-header-color {
+        width: 1.3333rem;
+        height: 1.3333rem;
+        border-radius: 50%;
+        margin-left: .75rem;
+      }
+
+    }
+
+    .btn-group {
+      .btn-primary {
+        color: inherit;
+        background: #a9e9a9;
+        border-color: #a9e9a9;
+      }
+
+      .btn + .btn {
+        border-left-color: rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    .switch-container {
+      margin-top: .5rem;
+      display: flex;
+      align-items: center;
+      /* The switch - the box around the slider */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 2rem;
+        height: 1rem;
+      }
+
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 0.76rem;
+        width: 0.76rem;
+        left: 0.1333rem;
+        bottom: 0.1333rem;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(0.76rem);
+        -ms-transform: translateX(0.76rem);
+        transform: translateX(0.76rem);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 1rem;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      .switch-label {
+        margin-left: .25rem;
+      }
+    }
+
+  }
+}

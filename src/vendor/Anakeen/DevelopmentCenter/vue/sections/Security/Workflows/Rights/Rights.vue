@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div>this is template body of Rights component <span v-if="msg">: {{msg}}</span></div>
+    <div class="security-workflows-rights-section">
+        <workflow-rights :wid="workflowId"></workflow-rights>
     </div>
 </template>
 <!-- CSS to this component only -->
@@ -10,4 +10,5 @@
 <!-- Global CSS -->
 <style lang="scss">
 </style>
-<script src="./Rights.controller.js"></script>
+<script src="./Rights.controller.js">
+</script>

@@ -18,7 +18,14 @@ module.exports = () => {
       setKendoAndJqueryToGlobal([
         /kendo.pdf/,
         /kendo.excel/
-      ])
+      ]),
+      {
+        resolve: {
+          alias: {
+            devComponents: path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/components")
+          }
+        }
+      }
     ]
   };
   return [
