@@ -738,13 +738,6 @@ class ExportElementConfiguration
 
     protected static function getComment($text)
     {
-        $l = mb_strlen($text);
-
-        $border = str_pad('~', $l, '~');
-
-        $nodes[] = self::$dom->createComment($border);
-        $nodes[] = self::$dom->createComment($text);
-        $nodes[] = self::$dom->createComment($border);
-        return $nodes;
+        return ExportConfiguration::getComment($text, self::$dom);
     }
 }
