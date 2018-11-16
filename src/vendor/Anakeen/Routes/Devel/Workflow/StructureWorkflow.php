@@ -50,20 +50,19 @@ class StructureWorkflow
         foreach ($wdocList as $wdoc) {
             $structure = SEManager::getFamily($wdoc->getAttributeValue("wf_famid"));
             $wfData = [
-                "id"=>intval($structure->id),
-                "name"=>$structure->name,
-                "title"=>$structure->getTitle(),
-                "icon"=>$structure->getIcon("", 32),
-                "wfl" => [
-                    "wflId" => $wdoc->name ?: $wdoc->id,
-                    "title" => $wdoc->title,
-                    "baTitle" => $wdoc->getAttributeValue("ba_title"),
-                    "wfDesc" => $wdoc->getAttributeValue("wf_desc"),
-                    "wfFamid" => $wdoc->getAttributeValue("wf_famid"),
-                    "wfFam" => $wdoc->getAttributeValue("wf_fam"),
-                    "dpdocFamid" => $wdoc->getAttributeValue("dpdoc_famid"),
-                    "dpdocFam" => $wdoc->getAttributeValue("dpdoc_fam")
-                ]
+                "id"=> $wdoc->name ?: $wdoc->id,
+                "title" => $wdoc->title,
+                "baTitle" => $wdoc->getAttributeValue("ba_title"),
+                "icon" => $wdoc->getIcon("",32),
+                "wfDesc" => $wdoc->getAttributeValue("wf_desc"),
+                "wfFamid" => $wdoc->getAttributeValue("wf_famid"),
+                "wfFam" => $wdoc->getAttributeValue("wf_fam"),
+                "dpdocFamid" => $wdoc->getAttributeValue("dpdoc_famid"),
+                "dpdocFam" => $wdoc->getAttributeValue("dpdoc_fam"),
+                "ssId"=>intval($structure->id),
+                "ssName"=>$structure->name,
+                "ssTitle"=>$structure->getTitle(),
+                "ssIcon"=>$structure->getIcon("", 32),
             ];
             $data[] = $wfData;
         }
