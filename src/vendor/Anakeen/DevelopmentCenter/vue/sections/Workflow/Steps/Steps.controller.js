@@ -45,6 +45,7 @@ export default {
     },
     parseStepsData(response) {
       if (response && response.data && response.data.data) {
+        this.ssName = response.data.data.properties.structure;
         return response.data.data.steps;
       }
       return [];
@@ -61,6 +62,30 @@ export default {
     },
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");
+    displayLink(colId) {
+      return dataItem => {
+        if (dataItem[colId] === null || dataItem === undefined) {
+          return "";
+        } else {
+          switch (colId) {
+            case "viewcontrol":
+              return `<a data-role="develRouterLink" href="/devel/ui/${
+                this.ssName
+              }/views" style="text-decoration: underline; color: #157EFB">${
+                dataItem[colId]
+              }</a>`;
+
+            case "mask":
+              return `<a data-role="develRouterLink" href="/devel/ui/${
+                this.ssName
+              }/views" style="text-decoration: underline; color: #157EFB">${
+                dataItem[colId]
+              }</a>`;
+            default:
+              return dataItem[colId];
+          }
+        }
+      };
     }
   }
 };
