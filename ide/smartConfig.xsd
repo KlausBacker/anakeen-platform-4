@@ -176,6 +176,12 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="functionNameType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A_Za-z:][a-zA-Z0-9_:]{2,}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="enumNameType">
         <xs:restriction base="xs:string">
             <xs:pattern value="[\p{L}\p{Po} 0-9_-]+"/>
@@ -459,7 +465,7 @@
     </xs:complexType>
 
     <xs:complexType name="field-callableType">
-        <xs:attribute type="xs:string" name="function"/>
+        <xs:attribute type="v1:functionNameType" name="function"/>
         <xs:attribute type="xs:string" name="external-file"/>
     </xs:complexType>
 

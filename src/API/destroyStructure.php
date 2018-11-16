@@ -10,7 +10,6 @@
  */
 /**
  */
-global $action;
 
 
 $usage = new \Anakeen\Script\ApiUsage();

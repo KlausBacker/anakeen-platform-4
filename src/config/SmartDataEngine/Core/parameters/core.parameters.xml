@@ -75,6 +75,14 @@
             <sde:access>readonly</sde:access>
         </sde:parameter>
 
+        <sde:parameter name="CORE_CONFIGDIRECTORIES">
+            <sde:category>System</sde:category>
+            <sde:description>Other routes and parameters config files</sde:description>
+            <sde:value>[]</sde:value>
+            <sde:type>json</sde:type>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+
         <sde:parameter name="CORE_MAIL_LINK">
             <sde:description>produce link for</sde:description>
             <sde:value>optimal</sde:value>

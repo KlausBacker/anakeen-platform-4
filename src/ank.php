@@ -6,7 +6,7 @@
 
 ini_set("max_execution_time", "0");
 ini_set("memory_limit", -1);
-
+chdir(__DIR__);
 
 require __DIR__ . '/vendor/Anakeen/autoload.php';
 require __DIR__ . '/vendor/Anakeen/WHAT/Lib.Prefix.php';

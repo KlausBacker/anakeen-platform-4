@@ -28,7 +28,7 @@ if ($filename && $glob) {
 }
 
 if ($glob) {
-    $configFiles = \Anakeen\Core\Utils\Glob::glob($glob);
+    $configFiles = \Anakeen\Core\Utils\Glob::glob($glob, 0, true);
 } elseif (!is_file($filename)) {
     \Anakeen\Core\ContextManager::exitError(sprintf(___("import file '%s' is not a valid file", "sde"), $filename));
 } else {

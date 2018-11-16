@@ -2,7 +2,7 @@
 
 namespace Anakeen\Router;
 
-use \Anakeen\Core\ContextManager;
+use Anakeen\Core\Utils\Glob;
 use Anakeen\Router\Config\AccessInfo;
 use \Dcp\Core\Exception;
 use \Anakeen\Router\Config\RouterInfo;
@@ -23,21 +23,25 @@ class RouterLib
      */
     const NS = "sde";
 
+
     public static function getRouterConfig()
     {
         if (self::$config) {
             return self::$config;
         }
 
-        $dir = ContextManager::getRootDirectory() . "/" . \Anakeen\Core\Settings::RouterConfigDir;
 
-        $configFiles = self::getConfigFiles($dir);
+        $paths = RouterManager::getRouterConfigPaths();
+        $configFiles = [];
+        foreach ($paths as $configDir) {
+            $configFiles = array_merge($configFiles, self::getConfigFiles($configDir));
+        }
         if (is_array($configFiles)) {
             $config = [];
             foreach ($configFiles as $configFile) {
-                $conf = self::xmlDecode($dir . "/" . $configFile);
+                $conf = self::xmlDecode($configFile);
                 if ($conf === null) {
-                    throw new Exception("CORE0019", $dir . "/" . $configFile);
+                    throw new Exception("CORE0019", $configFile);
                 }
                 $conf = self::normalizeConfig($conf, $configFile);
                 $config = array_merge_recursive($config, $conf);
@@ -47,31 +51,14 @@ class RouterLib
             self::$config = new RouterConfig($config);
             return self::$config;
         } else {
-            throw new Exception("CORE0020", $dir);
+            throw new Exception("CORE0020", "no config files");
         }
     }
 
     protected static function getConfigFiles($dir)
     {
-        $result = array();
-
-        $cdir = scandir($dir);
-        foreach ($cdir as $key => $value) {
-            if (!in_array($value, array(".", ".."))) {
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
-                    $filenames = self::getConfigFiles($dir . DIRECTORY_SEPARATOR . $value);
-                    foreach ($filenames as $filename) {
-                        $result[] = sprintf("%s/%s", $value, $filename);
-                    }
-                } else {
-                    if (preg_match("/\\.xml$/", $value)) {
-                        $result[] = $value;
-                    }
-                }
-            }
-        }
-
-        return $result;
+        $files = Glob::glob("$dir/**/*xml");
+        return $files;
     }
 
     protected static function xmlDecode($configFile)
@@ -117,12 +104,11 @@ class RouterLib
                     $rName = (string)$subNode->attributes()["ref"];
                     $rAccout = (string)$subNode->attributes()["account"];
                     if ($rName && $rAccout) {
-                        $rkey = ($ns) ? ($ns . "::" . $rName) : $rName;
-                        $rData=[];
-                        foreach ($subNode->attributes() as $rId=>$rValue) {
+                        $rData = [];
+                        foreach ($subNode->attributes() as $rId => $rValue) {
                             $rData[$rId] = (string)$rValue;
                         }
-                        $rData["aclid"]=($ns) ? ($ns . "::" . $rName) : $rName;
+                        $rData["aclid"] = ($ns) ? ($ns . "::" . $rName) : $rName;
                         $rawData[AccessInfo::ROUTEACCESSFIELD]["routeAccess"][] = $rData;
                     }
                 }
