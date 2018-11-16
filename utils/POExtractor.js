@@ -143,11 +143,16 @@ exports.xmlStructure2Pot = ({ poGlob, info, potPath }) => {
                       },
                       {}
                     );
-                    //console.log(acc, currentEnum);
                     if (acc[name]) {
                       acc[name] = { ...acc[name], ...elements };
                     } else {
                       acc[name] = elements;
+                    }
+                    if (!acc[name].title) {
+                      acc[name].title = {
+                        field: { label: "", name: "title" },
+                        fileName: currentFilePath
+                      };
                     }
                     return acc;
                   },
