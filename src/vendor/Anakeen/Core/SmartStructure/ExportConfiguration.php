@@ -17,6 +17,8 @@ use Dcp\Exception;
  */
 class ExportConfiguration
 {
+    protected static $lastStartComment=[];
+    protected static $lastStartDom=[];
     protected $data;
     const NS = "smart";
     const NSBASEURL = "https://platform.anakeen.com/4/schemas/";
@@ -111,7 +113,7 @@ class ExportConfiguration
     public function extractProps()
     {
         $structConfig = $this->structConfig;
-        $this->setComment("Structure Properties", $structConfig);
+        $this->setStartComment("Structure Properties", $structConfig);
         $structConfig->setAttribute("label", $this->sst->title);
         if ($this->sst->fromid) {
             $extendTag = $this->cel("extends");
@@ -169,6 +171,7 @@ class ExportConfiguration
                 $structConfig->appendChild($tag);
             }
         }
+        $this->setEndComment();
     }
 
     protected function extractModAttr()
@@ -279,8 +282,9 @@ class ExportConfiguration
             }
             $smartDefaults->appendChild($def);
         }
-        $this->setComment("Default values", $structConfig);
+        $this->setStartComment("Default values", $structConfig);
         $structConfig->appendChild($smartDefaults);
+        $this->setEndComment();
     }
 
     public function extractEnums()
@@ -335,8 +339,9 @@ class ExportConfiguration
                 $smartEnums->appendChild($enumConf);
             }
 
-            $this->setComment("Enums definitions");
+            $this->setStartComment("Enums definitions", $this->domConfig);
             $this->domConfig->appendChild($smartEnums);
+            $this->setEndComment();
         }
         return count($enumNames) > 0;
     }
@@ -474,12 +479,14 @@ class ExportConfiguration
             }
         }
         if ($part === "all" || $part === "fields") {
-            $this->setComment("Structure Fields", $structConfig);
+            self::setStartComment("Structure Fields", $structConfig);
             $structConfig->appendChild($smartAttributes);
+            self::setEndComment();
         }
         if ($part === "all" || $part === "parameters") {
-            $this->setComment("Structure Parameters", $structConfig);
+            self::setStartComment("Structure Parameters", $structConfig);
             $structConfig->appendChild($smartParameters);
+            self::setEndComment();
         }
     }
 
@@ -515,8 +522,9 @@ class ExportConfiguration
                 $smartHooks->appendChild($this->getComputeFunc($attr));
             }
         }
-        $this->setComment("Hooks methods", $structConfig);
+        $this->setStartComment("Hooks methods", $structConfig);
         $structConfig->appendChild($smartHooks);
+        $this->setEndComment();
     }
 
 
@@ -541,8 +549,9 @@ class ExportConfiguration
             }
         }
 
-        $this->setComment("Autocomplete methods", $structConfig);
+        $this->setStartComment("Autocomplete methods", $structConfig);
         $structConfig->appendChild($smartAuto);
+        $this->setEndComment();
     }
 
     protected function setOptions(\DOMElement $smartAttr, array $opts)
@@ -724,14 +733,35 @@ class ExportConfiguration
 
     public static function getComment($text, \DOMDocument $dom)
     {
-        $l = mb_strlen($text);
+        $l = max(mb_strlen($text), 40);
 
-        $borderBegin = str_pad('region ~', $l, '~');
-        $borderEnd = str_pad('endregion ~', $l, '~');
+        $borderBegin = str_pad('', $l, '~');
+        $borderEnd = str_pad('', $l, '~');
 
         $nodes[] = $dom->createComment($borderBegin);
         $nodes[] = $dom->createComment($text);
         $nodes[] = $dom->createComment($borderEnd);
         return $nodes;
     }
+
+    public static function setStartComment($text, \DOMElement $dom)
+    {
+        self::$lastStartComment[]=$text;
+        self::$lastStartDom[]=$dom;
+        $l = 40;
+        $region = str_pad(sprintf('region %s ', $text), $l, '=');
+        $dom->appendChild($dom->ownerDocument->createComment($region));
+    }
+    public static function setEndComment($text='', \DOMElement $dom=null)
+    {
+        $l = 40;
+        if ($text === '' && $dom === null){
+            $text=array_pop(self::$lastStartComment);
+            $dom=array_pop(self::$lastStartDom);
+        }
+
+        $region = str_pad(sprintf('endregion %s ', $text), $l, '=');
+        $dom->appendChild($dom->ownerDocument->createComment($region));
+    }
+
 }
