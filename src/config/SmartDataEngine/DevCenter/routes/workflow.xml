@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="DevelopmentCenter">
+        <sde:route name="workflowStructure">
+            <sde:callable>\Anakeen\Routes\Devel\Workflow\StructureWorkflow</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/workflow/structures/{target:vendor|all}/</sde:pattern>
+            <sde:description>Get workflow main page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>

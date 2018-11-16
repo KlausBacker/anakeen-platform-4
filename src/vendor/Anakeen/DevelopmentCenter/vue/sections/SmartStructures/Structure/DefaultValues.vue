@@ -29,7 +29,6 @@
         if (items instanceof Object) {
           Object.keys(items.toJSON()).forEach(item => {
             if (items[item] instanceof Object) {
-              console.log(items[item]);
               this.recursiveData(items[item], str);
             } else {
               str += "<li>" + items[item] + "</li>";
