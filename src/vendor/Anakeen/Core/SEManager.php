@@ -605,7 +605,7 @@ class SEManager
             throw new Exception("APIDM0101", print_r($documentName, true));
         }
 
-        if (!preg_match('/^[a-z][a-z0-9_-]{1,63}$/i', $documentName)) {
+        if (!preg_match('/^[a-z][a-z0-9_-]+$/i', $documentName)) {
             return 0;
         }
 
