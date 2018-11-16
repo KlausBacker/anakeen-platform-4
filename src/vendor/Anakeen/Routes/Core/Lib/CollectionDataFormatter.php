@@ -198,6 +198,9 @@ class CollectionDataFormatter
 
     protected function attributeHook($info, $attribute, $doc)
     {
+        if ($attribute === null) {
+            return $info;
+        }
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute
          */
