@@ -7,7 +7,7 @@ Ce paquet contient les sources du module anakeen-cli.
 Ce module met à disposition une commande permettant de faire les tâches utilitaires autour d'un module anakeen-platform
 (build, deploy, init, etc.).
 
-## Pré-requis
+## Prérequis
 
 * nodejs > 6
 * npm > 5.2
