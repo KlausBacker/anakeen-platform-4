@@ -6,7 +6,8 @@
 
 $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Import configuration file");
-$filename = $usage->addRequiredParameter("file", "the configuration file path (XML)");
+$filename = $usage->addOptionalParameter("file", "the configuration file path (XML)");
+$glob = $usage->addOptionalParameter("glob", "the configuration glob path");
 $analyze = $usage->addOptionalParameter("analyze", "analyze only", array(
     "yes",
     "no"
@@ -14,24 +15,33 @@ $analyze = $usage->addOptionalParameter("analyze", "analyze only", array(
 
 $logfile = $usage->addOptionalParameter("log", "log file output");
 $verbose = $usage->addEmptyParameter("verbose", "Verbose mode");
+$debug = $usage->addEmptyParameter("debug", "Debug mode");
 
 $usage->verify();
 
-
-if (!file_exists($filename)) {
-    \Anakeen\Core\ContextManager::exitError(sprintf(_("import file %s not found"), $filename));
+if (!$filename && !$glob) {
+    throw new \Anakeen\Script\Exception("filename or glob parameter needed");
 }
-if (!is_file($filename)) {
-    \Anakeen\Core\ContextManager::exitError(sprintf(_("import file '%s' is not a valid file"), $filename));
+
+if ($filename && $glob) {
+    throw new \Anakeen\Script\Exception("use filename OR glob");
+}
+
+if ($glob) {
+    $configFiles = \Anakeen\Core\Utils\Glob::glob($glob);
+} elseif (!is_file($filename)) {
+    \Anakeen\Core\ContextManager::exitError(sprintf(___("import file '%s' is not a valid file", "sde"), $filename));
+} else {
+    $configFiles = [$filename];
 }
 if ($logfile) {
     if (file_exists($logfile) && (!is_writable($logfile))) {
-        \Anakeen\Core\ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
+        \Anakeen\Core\ContextManager::exitError(sprintf(___("log file \"%s\" not writable", "sde"), $logfile));
     }
     if (!file_exists($logfile)) {
         $f = @fopen($logfile, 'a');
         if ($f === false) {
-            \Anakeen\Core\ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
+            \Anakeen\Core\ContextManager::exitError(sprintf(_("log file \"%s\" not writable"), $logfile));
         }
         fclose($f);
     }
@@ -39,19 +49,30 @@ if ($logfile) {
 
 $oImport = new \Anakeen\Core\Internal\ImportSmartConfiguration();
 $oImport->setOnlyAnalyze($analyze !== "no");
-$oImport->setVerbose($verbose);
+$oImport->setVerbose($debug);
 
 $point = "IMPCFG";
 \Anakeen\Core\DbManager::savePoint($point);
-$oImport->import($filename);
+
+foreach ($configFiles as $configFile) {
+    if ($verbose) {
+        printf("Importing config \"%s\".\n", $configFile);
+    }
+    $oImport->import($configFile);
+}
 
 $err = $oImport->getErrorMessage();
 
-if (! $err && class_exists(\Anakeen\Ui\ImportRenderConfiguration::class)) {
+if (!$err && class_exists(\Anakeen\Ui\ImportRenderConfiguration::class)) {
     $oUiImport = new \Anakeen\Ui\ImportRenderConfiguration();
     $oUiImport->setOnlyAnalyze($analyze !== "no");
-    $oUiImport->setVerbose($verbose);
-    $oUiImport->import($filename);
+    $oUiImport->setVerbose($debug);
+    foreach ($configFiles as $configFile) {
+        if ($verbose) {
+            printf("Importing Ui part \"%s\".\n", $configFile);
+        }
+        $oUiImport->import($configFile);
+    }
     $err = $oUiImport->getErrorMessage();
 }
 if ($err) {
@@ -60,3 +81,4 @@ if ($err) {
 } else {
     \Anakeen\Core\DbManager::commitPoint($point);
 }
+
