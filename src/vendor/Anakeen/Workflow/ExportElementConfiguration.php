@@ -72,11 +72,14 @@ class ExportElementConfiguration
         foreach ($xmls as $xml) {
             $domConfig->appendChild($xml);
         }
-        self::setComment("Field Access Layer List: Configuration", $domConfig);
+        ExportConfiguration::setStartComment("Field Access Layer List: Configuration", $domConfig);
         $xml = self::getFieldAccess($name);
         $domConfig->appendChild($xml);
-        self::setComment("Field Access Layer List: Accesses", $domConfig);
+        ExportConfiguration::setEndComment();
+        ExportConfiguration::setStartComment("Field Access Layer List: Accesses", $domConfig);
         $domConfig->appendChild(self::getAccessProfile($name));
+        ExportConfiguration::setEndComment();
+
         return self::$dom->saveXML();
     }
 
@@ -129,10 +132,13 @@ class ExportElementConfiguration
         $domConfig->setAttribute("xmlns:" . ExportWorkflowConfiguration::NSUI, ExportWorkflowConfiguration::NSUIURL);
         $xml = self::getCvdocData($name);
         $domConfig->appendChild($xml);
-        self::setComment("Cvdoc configuration: Accesses", $domConfig);
+        ExportConfiguration::setStartComment("Cvdoc configuration: Accesses", $domConfig);
         $domConfig->appendChild(self::getAccess($name, "basic"));
-        self::setComment("Cvdoc views : Accesses", $domConfig);
+        ExportConfiguration::setEndComment();
+        ExportConfiguration::setStartComment("Cvdoc views : Accesses", $domConfig);
         $domConfig->appendChild(self::getAccess($name, "extended"));
+        ExportConfiguration::setEndComment();
+
         return self::$dom->saveXML();
     }
 
@@ -342,8 +348,9 @@ class ExportElementConfiguration
                 $mask = SEManager::getDocument($primaryMask);
                 $maskDataNode = self::getMaskData($mask->id);
                 if ($maskDataNode) {
-                    self::setComment("Primary mask configuration", $domConfig);
+                    ExportConfiguration::setStartComment("Primary mask configuration", $domConfig);
                     $domConfig->appendChild($maskDataNode);
+                    ExportConfiguration::setEndComment();
                 }
             }
         }
@@ -404,8 +411,9 @@ class ExportElementConfiguration
             $viewlist->appendChild($viewtag);
         }
 
-        self::setComment("View control configuration", $domConfig);
+        ExportConfiguration::setStartComment("View control configuration", $cvtag);
         $cvtag->appendChild($viewlist);
+        ExportConfiguration::setEndComment();
 
         return $cvtag;
     }
@@ -464,7 +472,7 @@ class ExportElementConfiguration
             return self::getAccess($name);
         }
 
-        if ($e->accessControl()->isRealProfile()) {
+        if ($e->accessControl()->isRealProfile() || $e->id === $e->profid) {
             $accessControl = self::getAccess($e->id);
             return $accessControl;
         } else {
@@ -738,13 +746,6 @@ class ExportElementConfiguration
 
     protected static function getComment($text)
     {
-        $l = mb_strlen($text);
-
-        $border = str_pad('~', $l, '~');
-
-        $nodes[] = self::$dom->createComment($border);
-        $nodes[] = self::$dom->createComment($text);
-        $nodes[] = self::$dom->createComment($border);
-        return $nodes;
+        return ExportConfiguration::getComment($text, self::$dom);
     }
 }

@@ -203,32 +203,36 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
         $stepsNode = $this->celw("steps");
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
+            $hasData = false;
             $stepNode = $this->celw("step");
             $stepNode->setAttribute("ref", $step);
 
             $color = $this->workflow->getColor($step);
             if ($color) {
+                $hasData = true;
                 $colorNode = $this->celw("color");
                 $colorNode->nodeValue = $color;
                 $stepNode->appendChild($colorNode);
             }
-            $stepsNode->appendChild($stepNode);
 
             $maskId = $this->workflow->getStateMask($step);
             if ($maskId) {
+                $hasData = true;
                 $maskNode = $this->celw("mask");
                 $maskNode->setAttribute("ref", static::getLogicalName($maskId));
                 $stepNode->appendChild($maskNode);
             }
-            $stepsNode->appendChild($stepNode);
 
             $cvId = $this->workflow->getStateViewControl($step);
             if ($cvId) {
+                $hasData = true;
                 $cvNode = $this->celw("view-control");
                 $cvNode->setAttribute("ref", static::getLogicalName($cvId));
                 $stepNode->appendChild($cvNode);
             }
-            $stepsNode->appendChild($stepNode);
+            if ($hasData === true) {
+                $stepsNode->appendChild($stepNode);
+            }
         }
 
         $this->setComment("Elements (color, cvdoc, masks) user interface referenced in workflow");
@@ -249,24 +253,28 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
         $stepsNode = $this->celw("steps");
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
+            $hasData=false;
             $stepNode = $this->celw("step");
             $stepNode->setAttribute("ref", $step);
 
             $profilId = $this->workflow->getStateProfil($step);
             if ($profilId) {
+                $hasData=true;
                 $timerNode = $this->celw("element-access-configuration");
                 $timerNode->setAttribute("ref", static::getLogicalName($profilId));
                 $stepNode->appendChild($timerNode);
             }
-            $stepsNode->appendChild($stepNode);
 
             $fallId = $this->workflow->getStateFall($step);
             if ($fallId) {
+                $hasData=true;
                 $timerNode = $this->celw("field-access-configuration");
                 $timerNode->setAttribute("ref", static::getLogicalName($fallId));
                 $stepNode->appendChild($timerNode);
             }
-            $stepsNode->appendChild($stepNode);
+            if ($hasData === true) {
+                $stepsNode->appendChild($stepNode);
+            }
         }
 
         $this->setComment("Step Element Accesses of workflow: profile and field accesses reference");
@@ -293,31 +301,38 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
         $stepsNode = $this->celw("steps");
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
+            $hasData = false;
             $stepNode = $this->celw("step");
             $stepNode->setAttribute("ref", $step);
             $mails = $this->workflow->getStateMailTemplate($step);
             foreach ($mails as $mail) {
+                $hasData = true;
                 $mailNode = $this->celw("mailtemplate");
                 $mailNode->setAttribute("ref", static::getLogicalName($mail));
                 $stepNode->appendChild($mailNode);
             }
             $timer = $this->workflow->getStateTimers($step);
             if ($timer) {
+                $hasData = true;
                 $timerNode = $this->celw("timer");
                 $timerNode->setAttribute("ref", static::getLogicalName($timer));
                 $stepNode->appendChild($timerNode);
             }
-            $stepsNode->appendChild($stepNode);
+            if ($hasData) {
+                $stepsNode->appendChild($stepNode);
+            }
         }
         $config->appendChild($stepsNode);
 
 
         $transitionsNode = $this->celw("transitions");
         foreach ($this->workflow->transitions as $transitionName => $transitionConfig) {
+            $hasData = false;
             $transitionNode = $this->celw("transition");
             $transitionNode->setAttribute("ref", $transitionName);
             $mails = $this->workflow->getTransitionMailTemplates($transitionName);
             foreach ($mails as $mail) {
+                $hasData = true;
                 $mailNode = $this->celw("mailtemplate");
                 $mailNode->setAttribute("ref", static::getLogicalName($mail));
                 $transitionNode->appendChild($mailNode);
@@ -325,6 +340,7 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
             $timers = $this->workflow->getTransitionTimers($transitionName);
 
             foreach ($timers as $timer) {
+                $hasData = true;
                 $timerNode = $this->celw("timer");
                 $timerNode->setAttribute("ref", static::getLogicalName($timer["id"]));
                 switch ($timer["type"]) {
@@ -340,8 +356,9 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
                 $timerNode->setAttribute("type", $action);
                 $transitionNode->appendChild($timerNode);
             }
-
-            $transitionsNode->appendChild($transitionNode);
+            if ($hasData === true) {
+                $transitionsNode->appendChild($transitionNode);
+            }
         }
         $config->appendChild($transitionsNode);
 
