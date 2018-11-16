@@ -64,7 +64,7 @@ export default {
             "[data-uid=" +
               this.$refs.masksGrid.kendoGrid.dataSource
                 .view()
-                .find(d => d.rowData.name === e).uid +
+                .find(d => d.rowData.id === e).uid +
               "]",
             this.$el
           ).addClass("control-view-is-opened");
@@ -79,9 +79,11 @@ export default {
             name: "Ui::masks::element",
             params: {
               seIdentifier: event.data.row.name
+                ? event.data.row.name
+                : event.data.row.id
             }
           });
-          this.getSelected(event.data.row.name);
+          this.getSelected(event.data.row.id);
           break;
         }
       }
