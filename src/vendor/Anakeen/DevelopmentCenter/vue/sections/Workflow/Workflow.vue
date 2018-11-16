@@ -7,7 +7,7 @@
         <ss-list v-else
                  ref="wflSSList"
                  routeName="Wfl::name"
-                 routeParamField="ssName"
+                 routeParamField="wflName"
                  position="left"
                  listUrl="/api/v2/devel/workflow/structures/<type>/">
         </ss-list>

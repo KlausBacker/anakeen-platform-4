@@ -1,14 +1,15 @@
 <template>
     <div class="wfl-infos">
-        <span class="wfl-title"><b>{{wflIdentifier}}</b> &nbsp Overview</span>
-        <img :src="wflGraph" :alt="`${wflData.name} graph`" class="wfl-graph-card">
+        <span class="wfl-title"><b>Overview</b></span>
+        <object :data="wflGraph" type="image/svg+xml" class="wfl-graph-card"></object>
         <div class="wfl-infos-content">
             <div class="wfl-infos-card">
                 <div class="wfl-infos-card-title">Identification</div>
                 <div class="wfl-infos-card-content">
                     <div class="wfl-infos-card-content-item">
                         <span class="wfl-card-content-item-label">Name:</span>
-                        <span class="wfl-card-content-item-value">{{wflData.name}}</span>
+                        <span class="wfl-card-content-item-value" v-if="wflData.name !== null">{{wflData.name}}</span>
+                        <span class="wfl-card-content-item-value" v-else> There is currently no name property for this workflow</span>
                     </div>
                     <div class="wfl-infos-card-content-item">
                         <span class="wfl-card-content-item-label">Identification:</span>
@@ -21,7 +22,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </template>
 

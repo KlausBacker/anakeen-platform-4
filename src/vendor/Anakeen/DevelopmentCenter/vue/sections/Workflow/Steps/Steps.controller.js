@@ -14,10 +14,11 @@ export default {
   components: {
     Grid
   },
-  props: ["wflIdentifier"],
+  props: ["wflName"],
   data() {
     return {
-      stepsDataSource: ""
+      stepsDataSource: "",
+      ssName: ""
     };
   },
   mounted() {
@@ -30,7 +31,7 @@ export default {
   methods: {
     getSteps(options) {
       this.$http
-        .get(`/api/v2/devel/smart/workflows/${this.wflIdentifier}.json`, {
+        .get(`/api/v2/devel/smart/workflows/${this.wflName}`, {
           params: options.data,
           paramsSerializer: kendo.jQuery.param
         })
