@@ -93,6 +93,12 @@ class WorkflowData
             $stepData['profil'] = self::getElementRef($this->workflow->getStateProfil($step));
             $stepData['fall'] = self::getElementRef($this->workflow->getStateFall($step));
             $stepData['timer'] = self::getElementRef($this->workflow->getStateTimers($step));
+
+            $mails = $this->workflow->getStateMailTemplate($step);
+            $stepData["mailtemplates"] = [];
+            foreach ($mails as $mail) {
+                $stepData["mailtemplates"][] = self::getElementRef($mail);
+            }
             $stepsData[] = $stepData;
         }
 
