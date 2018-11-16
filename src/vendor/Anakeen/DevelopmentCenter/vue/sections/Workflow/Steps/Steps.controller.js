@@ -54,14 +54,46 @@ export default {
       this.$refs.stepsGridContent.kendoWidget().dataSource.filter({});
       this.$refs.stepsGridContent.kendoWidget().dataSource.read();
     },
-    disabledFilter(args) {
-      args.element.kendoDropDownList({
-        valuePrimitive: true,
-        dataSource: ["true", "false"]
-      });
-    },
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");
+    },
+    displayColor(colId) {
+      return dataItem => {
+        return `<div class='chip-color' style='background-color:${
+          dataItem[colId]
+        }'></div><span>&nbsp${dataItem[colId]}</span>`;
+      };
+    },
+    displayMultiple(colId) {
+      return dataItem => {
+        if (dataItem[colId] === null || dataItem[colId] === undefined) {
+          return "";
+        }
+        if (dataItem[colId] instanceof Object) {
+          if (this.columnsTabMultiple.includes(colId)) {
+            if (dataItem[colId].length > 1) {
+              let str = "";
+              return this.recursiveData(dataItem[colId], str);
+            } else {
+              return dataItem[colId][0] ? dataItem[colId][0] : "";
+            }
+          }
+        }
+        return dataItem[colId];
+      };
+    },
+    recursiveData(items, str) {
+      if (items instanceof Object) {
+        Object.keys(items.toJSON()).forEach(item => {
+          if (items[item] instanceof Object) {
+            this.recursiveData(items[item], str);
+          } else {
+            str += "<li>" + items[item] + "</li>";
+          }
+        });
+      }
+      return str;
+    },
     displayLink(colId) {
       return dataItem => {
         if (dataItem[colId] === null || dataItem === undefined) {
