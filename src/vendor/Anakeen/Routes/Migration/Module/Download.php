@@ -5,7 +5,6 @@ namespace Anakeen\Routes\Migration\Module;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Config\RouterInfo;
@@ -64,7 +63,7 @@ class Download
             $this->zipAddDirectory($path);
             $this->addStructuresConfig();
             // Not necessary already set by App migration
-           // $this->addRoutesConfig();
+            // $this->addRoutesConfig();
             $this->zip->close();
         }
 
@@ -117,14 +116,8 @@ class Download
             $this->zip->addFromString($xmlFile, $e->toXml());
         }
 
-        $e=new ExportAccounts();
-        $sAccounts=new \SearchAccount();
-        $sAccounts->setTypeFilter(\SearchAccount::roleType);
-        $e->setSearchAccount($sAccounts);
-        $e->setExportDocument(false);
-        $xmlFile = sprintf("%s/Accounts/100-Roles.xml", $this->outputPath);
-        $this->zip->addFromString($xmlFile, $e->export());
-
+        $this->addRoles();
+        $this->addGroups();
         $this->addTimersConfig($structure);
         $this->addMasksConfig($structure);
         $this->addMailTemplatesConfig($structure);
@@ -132,8 +125,30 @@ class Download
         $this->addCvdocsConfig($structure);
         $this->addFieldAccessConfig($structure);
         $this->addWorkflowConfig($structure);
+
     }
 
+    protected function addRoles()
+    {
+        $e = new ExportAccounts();
+        $sAccounts = new \SearchAccount();
+        $sAccounts->setTypeFilter(\SearchAccount::roleType);
+        $e->setSearchAccount($sAccounts);
+        $e->setExportDocument(false);
+        $xmlFile = sprintf("%s/Accounts/100-Roles.xml", $this->outputPath);
+        $this->zip->addFromString($xmlFile, $e->export());
+    }
+
+    protected function addGroups()
+    {
+        $e = new ExportAccounts();
+        $sAccounts = new \SearchAccount();
+        $sAccounts->setTypeFilter(\SearchAccount::groupType);
+        $e->setSearchAccount($sAccounts);
+        $e->setExportDocument(false);
+        $xmlFile = sprintf("%s/Accounts/110-Groups.xml", $this->outputPath);
+        $this->zip->addFromString($xmlFile, $e->export());
+    }
     protected function addTimersConfig(SmartStructure $structure)
     {
         $structName = self::camelCase($structure->name);
@@ -225,10 +240,11 @@ class Download
         $workflows = $s->search()->getResults();
 
         $structName = self::camelCase($structure->name);
-        $wFromids=[];
+        $wFromids = [];
         foreach ($workflows as $workflow) {
             /** @var WDocHooks $workflow */
-            $wFromids[$workflow->fromid]=$workflow->fromid;
+
+            $wFromids[$workflow->fromid] = $workflow->fromid;
             $e = new ExportWorkflowConfiguration($workflow);
             $e->extractWorkflow(
                 ExportWorkflowConfiguration::X_CONFIG |

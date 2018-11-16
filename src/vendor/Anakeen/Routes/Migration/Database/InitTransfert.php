@@ -25,6 +25,14 @@ class InitTransfert
 
     protected function initParameters($args)
     {
+        $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
+        $subDirName = ContextManager::getParameterValue("Migration", "MODULE");
+        if (!$vendorName) {
+            throw new Exception("Migration VENDOR parameter is not set");
+        }
+        if (!$subDirName) {
+            throw new Exception("Migration MODULE parameter is not set");
+        }
     }
 
     protected function doRequest()

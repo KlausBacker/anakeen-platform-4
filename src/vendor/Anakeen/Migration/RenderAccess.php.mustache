@@ -18,9 +18,11 @@ class {{Classname}} implements \Dcp\Ui\IRenderConfigAccess
           switch ($mode) {
               case \Dcp\Ui\RenderConfigManager::CreateMode:
               case \Dcp\Ui\RenderConfigManager::EditMode:
-                 // return new {{structureClass}}EditRender();
+                 // @FIXME return edit render config object
+                 break;
               case \Dcp\Ui\RenderConfigManager::ViewMode:
-                 // return new {{structureClass}}ViewRender();
+                 // @FIXME return view render config object
+                 break;
           }
           return null;
       }

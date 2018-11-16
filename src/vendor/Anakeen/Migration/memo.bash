@@ -1,5 +1,5 @@
 #!/bin/bash
-# create extension postgres_fdw
+# create extension postgres_fdw;
 # CREATE SERVER dynacase FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host 'ccfd-ebr.xen2.corp.anakeen.com', dbname 'dynacase');
 # CREATE USER MAPPING FOR "postgres" SERVER dynacase OPTIONS (user 'postgres');
 # CREATE USER MAPPING FOR "anakeen-platform" SERVER dynacase OPTIONS (user 'postgres');
@@ -10,7 +10,7 @@
 ./ank.php --script=generateDocumentClass
 
 
-for S in  BASE DIR PDOC PDIR SEARCH PSEARCH FILE IMAGE MAIL DSEARCH WDOC MASK PFAM REPORT CVDOC MSEARCH EXEC SSEARCH MAILTEMPLATE TIMER IGROUP IUSER GROUP ROLE HELPPAGE SENTMESSAGE
+for S in  BASE DIR PDOC PDIR SEARCH PSEARCH FILE IMAGE MAIL DSEARCH MASK PFAM REPORT CVDOC MSEARCH EXEC SSEARCH MAILTEMPLATE TIMER IGROUP IUSER GROUP ROLE HELPPAGE SENTMESSAGE
 do
     ./ank.php --route=Migration::DataElementTransfert --method=POST --structure=$S
 done
@@ -47,9 +47,12 @@ do
     ./ank.php --route=Migration::UiStructureTransfert --method=POST --structure=$S
 done
 ./ank.php --script=cleanContext --full
-
+./ank.php --script=generateDocumentClass
 ./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCFD
 ./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCDL
 ./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCFD_LOGIN
+
+
+./ank.php --route=Migration::FinalUpdates --method=POST
 
 ./ank.php --script=configureShowcase

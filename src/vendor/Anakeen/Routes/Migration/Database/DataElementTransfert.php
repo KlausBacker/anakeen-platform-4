@@ -45,11 +45,21 @@ class DataElementTransfert
 
 
         $data["count"] = count($this->transfertRequest($this->structure));
-
+        $data["seqval"] = $this->updateSequence($this->structure);
         $data["properties"] = $this->getProperties();
         return $data;
     }
 
+
+    protected function updateSequence($structure)
+    {
+        $sql = sprintf("select setval('seq_doc%d', (select count(id) from only doc%d where doctype != 'T'))", $structure->id, $structure->id);
+        DbManager::query($sql, $sqlval, true, true);
+
+        $sql = "select setval('seq_id_doc', (select max(id) from doc where doctype != 'T'));";
+        DbManager::query($sql, $sqldocval, true, true);
+        return ["seq"=>$sqlval, "sqldoc" => $sqldocval];
+    }
 
     protected function getProperties()
     {
@@ -92,7 +102,15 @@ class DataElementTransfert
             }
 
             if ($field->isMultipleInArray()) {
-                throw new Exception(sprintf("MULTIPLEx2 CONVERT NOT IMPLEMENTED YET for '%s'", $field->id));
+                switch ($field->type) {
+                    case "enum":
+                    case "account":
+                    case "docid":
+                        $propMapping[$field->id] = sprintf("text_to_array2(%s)", $field->id);
+                        break;
+                    default:
+                        throw new Exception(sprintf("MULTIPLEX2 convert for attribute %s (%s)", $field->id, $field->type));
+                }
             }
 
 
