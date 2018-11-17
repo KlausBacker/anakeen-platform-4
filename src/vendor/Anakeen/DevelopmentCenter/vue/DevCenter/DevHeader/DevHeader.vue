@@ -3,7 +3,6 @@
         <div class="header-content header-left-content">
             <!--<span class="header-app-title vendor-name">{{vendorName}}</span>-->
             <vendor-selector></vendor-selector>
-            <span>-</span>
             <div class="header-breadcrumb">
                 <span v-for="(routeItem, index) in routesSections" :key="index">
                     <span :class="{ 'header-breadcrumb-root-item': index === 0, 'header-breacrumb-item': true }">

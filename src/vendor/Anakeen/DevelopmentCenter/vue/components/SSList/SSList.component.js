@@ -142,7 +142,7 @@ export default {
         if (this.$router.currentRoute.query.filter !== filterValue) {
           this.$router.addQueryParams({ filter: filterValue });
         }
-        this.dataSource.filter({
+        let filterObject = {
           logic: "or",
           filters: [
             {
@@ -151,7 +151,17 @@ export default {
               value: filterValue
             }
           ]
-        });
+        };
+        if (this.hasFilter && typeof this.filter === "object") {
+          if (typeof this.filter.doFilter === "function") {
+            filterObject = this.filter.doFilter.call(
+              null,
+              filterValue,
+              filterObject
+            );
+          }
+        }
+        this.dataSource.filter(filterObject);
       }
     },
     readData(options) {

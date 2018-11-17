@@ -44,7 +44,9 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
         background: white;
         border: none;
         display: flex;
-        overflow-y: auto;
+        overflow-y: scroll;
+        height: 100%;
+        width: 15.4675rem;
         overflow-x: hidden;
         direction: rtl;
 
