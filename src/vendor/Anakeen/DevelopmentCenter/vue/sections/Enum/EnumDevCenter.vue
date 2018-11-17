@@ -1,10 +1,5 @@
 <template>
     <div class="enum-grid-parent">
-        <div>
-            <kendo-toolbar class="enum-grid-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="refreshEnum"></kendo-toolbar-item>
-            </kendo-toolbar>
-        </div>
         <kendo-datasource ref="enumGrid"
                           :transport-read="getEnum"
                           :server-paging="true"

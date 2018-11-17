@@ -1,6 +1,5 @@
 <template>
     <div class="ui-parent-section">
-        <h3>Ui</h3>
         <ss-list routeName="Ui::name"
                  routeParamField="ssName"
                  position="left"

@@ -34,13 +34,14 @@
     .ui-section {
         display: flex;
         flex-direction: column;
-
+        min-height: 0;
         .ui-content {
             display: flex;
             flex: 1;
             padding: 1rem;
             border: 1px solid rgba(33, 37, 41, .125);
             border-radius: .25rem;
+            min-height: 0;
         }
     }
 </style>

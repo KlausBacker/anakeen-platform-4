@@ -1,6 +1,5 @@
 <template>
     <div class="wfl-parent-section">
-        <h3>Workflow</h3>
         <div class="wfl-ss-list-empty" v-if="wflIsEmpty">
             <span class="k-icon k-i-folder-open wfl-empty-icon"></span>
             <span class="wfl-empty-text">There are currently no Workflows associated with a Smart Structure ...</span>
@@ -8,7 +7,7 @@
         <ss-list v-else
                  ref="wflSSList"
                  routeName="Wfl::name"
-                 routeParamField="ssName"
+                 routeParamField="wflName"
                  position="left"
                  listUrl="/api/v2/devel/workflow/structures/<type>/">
         </ss-list>

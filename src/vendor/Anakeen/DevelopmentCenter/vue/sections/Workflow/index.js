@@ -16,45 +16,33 @@ export default {
   children: [
     {
       name: "Wfl::name",
-      path: ":ssName",
+      path: ":wflName",
       component: WflContent,
       meta: {
-        label: ":ssName"
+        label: ":wflName"
       },
       children: [
         {
           name: "Wfl::infos",
-          path: "infos/:wflIdentifier",
-          meta: {
-            label: ":wflIdentifier"
-          },
+          path: "infos",
           component: Infos,
           props: true
         },
         {
           name: "Wfl::steps",
-          path: "steps/:wflIdentifier",
-          meta: {
-            label: ":wflIdentifier"
-          },
+          path: "steps",
           component: Steps,
           props: true
         },
         {
           name: "Wfl::transitions",
-          path: "transitions/:wflIdentifier",
-          meta: {
-            label: ":wflIdentifier"
-          },
+          path: "transitions",
           component: Transitions,
           props: true
         },
         {
           name: "Wfl::permissions",
-          path: "permissions/:wflIdentifier",
-          meta: {
-            label: ":wflIdentifier"
-          },
+          path: "permissions",
           component: Permissions,
           props: true
         }

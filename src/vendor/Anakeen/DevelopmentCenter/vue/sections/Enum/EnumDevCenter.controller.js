@@ -49,10 +49,6 @@ export default {
     parseEnumTotal(response) {
       return response.data.data.requestParameters.total;
     },
-    refreshEnum() {
-      this.$refs.enumGridContent.kendoWidget().dataSource.filter({});
-      this.$refs.enumGridContent.kendoWidget().dataSource.read();
-    },
     disabledFilter(args) {
       args.element.kendoDropDownList({
         valuePrimitive: true,

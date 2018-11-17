@@ -14,7 +14,7 @@ export default {
   components: {
     Grid
   },
-  props: ["wflIdentifier"],
+  props: ["wflName"],
   data() {
     return {
       transitionsDataSource: "",
@@ -36,7 +36,7 @@ export default {
   methods: {
     getTransitions(options) {
       this.$http
-        .get(`/api/v2/devel/smart/workflows/${this.wflIdentifier}.json`, {
+        .get(`/api/v2/devel/smart/workflows/${this.wflName}`, {
           params: options.data,
           paramsSerializer: kendo.jQuery.param
         })
@@ -50,7 +50,7 @@ export default {
     },
     parseTransitionsData(response) {
       if (response && response.data && response.data.data) {
-        return response.data.data;
+        return response.data.data.transitions;
       }
       return [];
     },
