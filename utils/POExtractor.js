@@ -22,32 +22,55 @@ const getPoEntry = (attr, info, currentFilePath) => {
   }"\nmsgstr "${label}"\n`;
 };
 
-const generatePoEntry = (field, info, currentFilePath) => {
-  return Object.keys(field).reduce((accumulator, currentKey) => {
+const extractSmartField = (fields, currentFilePath) => {
+  return Object.keys(fields).reduce((acc, currentKey) => {
     if (currentKey === "$") {
-      return accumulator + getPoEntry(field[currentKey], info, currentFilePath);
+      //We are on the properties
+      acc[fields[currentKey].name] = {
+        field: fields[currentKey],
+        fileName: currentFilePath
+      };
+      return acc;
     }
+
+    //If the current element is a fieldset, we iterate on sub element
     if (currentKey === "fieldset") {
-      return (
-        accumulator +
-        field[currentKey].reduce((accumulator, subAttr) => {
-          return accumulator + generatePoEntry(subAttr, info, currentFilePath);
-        }, "")
-      );
+      const subFields = fields[currentKey].reduce((acc, currentSubField) => {
+        const subElement = extractSmartField(currentSubField, currentFilePath);
+        return {
+          ...acc,
+          ...subElement
+        };
+      }, {});
+      return {
+        ...acc,
+        ...subFields
+      };
     }
+
+    //Suppress all non field elements
     if (!attrType[currentKey]) {
-      return accumulator;
+      return acc;
     }
-    return (
-      accumulator +
-      field[currentKey].reduce((accumulator, currentAttr) => {
-        if (!currentAttr.$) {
-          return accumulator;
-        }
-        return accumulator + getPoEntry(currentAttr.$, info, currentFilePath);
-      }, "")
-    );
-  }, "");
+
+    //If we are here, this is a non scalar field
+    const nonScalarFields = fields[currentKey].reduce((acc, currentAttr) => {
+      if (currentAttr.$) {
+        acc[currentAttr.$.name] = {
+          field: currentAttr.$,
+          fileName: currentFilePath
+        };
+      }
+      return acc;
+    }, {});
+
+    acc = {
+      ...acc,
+      ...nonScalarFields
+    };
+
+    return acc;
+  }, {});
 };
 
 exports.xmlStructure2Pot = ({ poGlob, info, potPath }) => {
@@ -83,36 +106,104 @@ exports.xmlStructure2Pot = ({ poGlob, info, potPath }) => {
     return Promise.all(
       allFilesFound.map(currentFilePath => {
         return new Promise((resolve, reject) => {
-          const filesCreated = [];
+          let values = {};
           xml2js.parseString(
-            fs.readFileSync(path.resolve(srcPath, currentFilePath)),
+            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+              encoding: "utf8"
+            }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
             (err, result) => {
+              //Analyze all the enums and organize them
               if (err) {
                 reject(err);
                 return;
               }
               //Analyze structure configuration
               if (result.config.structureconfiguration) {
-                result.config.structureconfiguration.forEach(currentConf => {
-                  let infos = currentConf.$;
-                  const fields = currentConf.fields;
-                  let poEntries = "";
-
-                  if (fields) {
-                    fields.forEach(fieldset => {
-                      poEntries += generatePoEntry(
-                        fieldset,
-                        infos,
-                        currentFilePath
-                      );
-                    });
-                  }
-
-                  let now = new Date().toISOString();
-                  let content = `msgid ""
+                values = result.config.structureconfiguration.reduce(
+                  (acc, currentConf) => {
+                    const name = currentConf.$.name;
+                    if (
+                      !currentConf.fields ||
+                      !currentConf.fields.length ||
+                      currentConf.fields.length === 0
+                    ) {
+                      return acc;
+                    }
+                    const elements = currentConf.fields.reduce(
+                      (acc, currentField) => {
+                        const fields = extractSmartField(
+                          currentField,
+                          currentFilePath
+                        );
+                        return {
+                          ...acc,
+                          ...fields
+                        };
+                      },
+                      {}
+                    );
+                    if (acc[name]) {
+                      acc[name] = { ...acc[name], ...elements };
+                    } else {
+                      acc[name] = elements;
+                    }
+                    if (!acc[name].title) {
+                      acc[name].title = {
+                        field: { label: "", name: "title" },
+                        fileName: currentFilePath
+                      };
+                    }
+                    return acc;
+                  },
+                  values
+                );
+              }
+              resolve(values);
+            }
+          );
+        });
+      })
+    )
+      .then(allElementsFound => {
+        //Merge all elements found
+        return allElementsFound.reduce((acc, currentEnumsDef) => {
+          const currentKeys = Object.keys(currentEnumsDef);
+          //Merge elements
+          currentKeys.forEach(currentKey => {
+            if (acc[currentKey]) {
+              acc[currentKey] = {
+                ...acc[currentKey],
+                ...currentEnumsDef[currentKey]
+              };
+            } else {
+              acc[currentKey] = currentEnumsDef[currentKey];
+            }
+          });
+          return acc;
+        }, {});
+      })
+      .then(elements => {
+        //Generate files from keys
+        const filesCreated = [];
+        Object.keys(elements).forEach(currentKey => {
+          const poEntries = Object.values(elements[currentKey]).reduce(
+            (acc, currentEntry) => {
+              return (
+                acc +
+                getPoEntry(
+                  currentEntry.field,
+                  { name: currentKey },
+                  currentEntry.fileName
+                )
+              );
+            },
+            ""
+          );
+          let now = new Date().toISOString();
+          let content = `msgid ""
 msgstr ""
-"Project-Id-Version: Smart ${infos.name} \\n"
+"Project-Id-Version: Smart ${currentKey} \\n"
 "Report-Msgid-Bugs-To: \\n"
 "PO-Revision-Date: ${now}\\n"
 "Last-Translator: Automatically generated\\n"
@@ -124,26 +215,18 @@ msgstr ""
 
 ${poEntries}
 `;
-                  if (poEntries.length > 0) {
-                    //If there is something, we write the temp pot file
-                    const potFile = path.join(
-                      potPath,
-                      `smart${infos.name}.pot`
-                    );
-                    fs.writeFileSync(potFile, content);
-                    filesCreated.push({
-                      path: potFile,
-                      smartName: infos.name
-                    });
-                  }
-                });
-              }
-              resolve(filesCreated);
-            }
-          );
+          if (poEntries.length > 0) {
+            //If there is something, we write the temp pot file
+            const potFile = path.join(potPath, `smart${currentKey}.pot`);
+            fs.writeFileSync(potFile, content);
+            filesCreated.push({
+              path: potFile,
+              smartName: currentKey
+            });
+          }
         });
-      })
-    );
+        return filesCreated;
+      });
   });
 };
 
@@ -180,40 +263,96 @@ exports.xmlEnum2Pot = ({ poGlob, info, potPath }) => {
     return Promise.all(
       allFilesFound.map(currentFilePath => {
         return new Promise((resolve, reject) => {
-          const filesCreated = [];
+          let enums = {};
           xml2js.parseString(
             fs.readFileSync(path.resolve(srcPath, currentFilePath), {
               encoding: "utf8"
             }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
             (err, result) => {
+              //Analyze all the enums and organize them
               if (err) {
                 reject(err);
                 return;
               }
               //Analyze structure configuration
               if (result.config.enumerates) {
-                result.config.enumerates.forEach(enumMainTag => {
-                  if (enumMainTag.enumconfiguration) {
-                    enumMainTag.enumconfiguration.forEach(currentConf => {
-                      let infos = currentConf.$;
-                      const fields = currentConf.enum;
-                      let poEntries = "";
-
-                      if (fields) {
-                        fields.forEach(enumItem => {
-                          poEntries += getPoEntry(
-                            enumItem.$,
-                            infos,
-                            currentFilePath
-                          );
-                        });
+                enums = result.config.enumerates.reduce((acc, enumMainTag) => {
+                  //If no enum conf, return result and go to the next
+                  if (!enumMainTag.enumconfiguration) {
+                    return acc;
+                  }
+                  return enumMainTag.enumconfiguration.reduce(
+                    (acc, currentConf) => {
+                      const enumName = currentConf.$.name;
+                      const enums = currentConf.enum.reduce(
+                        (acc, currentField) => {
+                          acc[currentField.$.name] = {
+                            enumItem: currentField.$,
+                            fileName: currentFilePath
+                          };
+                          return acc;
+                        },
+                        {}
+                      );
+                      if (acc[enumName]) {
+                        acc[enumName] = { ...acc[enumName], ...enums };
+                      } else {
+                        acc[enumName] = enums;
                       }
+                      return acc;
+                    },
+                    acc
+                  );
+                }, enums);
+              }
 
-                      let now = new Date().toISOString();
-                      let content = `msgid ""
+              resolve(enums);
+            }
+          );
+        });
+      })
+    )
+      .then(allEnumsFound => {
+        //Merge all enums found
+        return allEnumsFound.reduce((acc, currentEnumsDef) => {
+          const currentKeys = Object.keys(currentEnumsDef);
+          //Merge elements
+          currentKeys.forEach(currentKey => {
+            if (acc[currentKey]) {
+              acc[currentKey] = {
+                ...acc[currentKey],
+                ...currentEnumsDef[currentKey]
+              };
+            } else {
+              acc[currentKey] = currentEnumsDef[currentKey];
+            }
+          });
+          return acc;
+        }, {});
+      })
+      .then(enums => {
+        //Generate files from keys
+        const filesCreated = [];
+        Object.keys(enums).forEach(currentKey => {
+          //console.log(currentKey, enums[currentKey]);
+          const poEntries = Object.values(enums[currentKey]).reduce(
+            (acc, currentEntry) => {
+              return (
+                acc +
+                getPoEntry(
+                  currentEntry.enumItem,
+                  { name: currentKey },
+                  currentEntry.fileName
+                )
+              );
+            },
+            ""
+          );
+          let now = new Date().toISOString();
+          let content = `msgid ""
 msgstr ""
-"Project-Id-Version: Enum ${infos.name} \\n"
+"Project-Id-Version: Enum ${currentKey} \\n"
 "Report-Msgid-Bugs-To: \\n"
 "PO-Revision-Date: ${now}\\n"
 "Last-Translator: Automatically generated\\n"
@@ -225,28 +364,18 @@ msgstr ""
 
 ${poEntries}
 `;
-                      if (poEntries.length > 0) {
-                        //If there is something, we write the temp pot file
-                        const potFile = path.join(
-                          potPath,
-                          `enum${infos.name}.pot`
-                        );
-                        fs.writeFileSync(potFile, content);
-                        filesCreated.push({
-                          path: potFile,
-                          smartName: infos.name
-                        });
-                      }
-                    });
-                  }
-                });
-              }
-              resolve(filesCreated);
-            }
-          );
+          if (poEntries.length > 0) {
+            //If there is something, we write the temp pot file
+            const potFile = path.join(potPath, `enum${currentKey}.pot`);
+            fs.writeFileSync(potFile, content);
+            filesCreated.push({
+              path: potFile,
+              smartName: currentKey
+            });
+          }
         });
-      })
-    );
+        return filesCreated;
+      });
   });
 };
 
