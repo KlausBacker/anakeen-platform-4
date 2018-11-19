@@ -24,6 +24,15 @@ export default {
       type: Array,
       default: () => []
     },
+    filterable: {
+      default: () => ({
+        extra: false,
+        operators: { string: { contains: "Contains" } }
+      })
+    },
+    sortable: {
+      default: false
+    },
     url: {
       type: String,
       default: () => ""
@@ -37,10 +46,27 @@ export default {
       default: () => {
         return {};
       }
+    },
+    headerTemplate: {
+      default: () => column => column.label || column.name
+    },
+    model: {
+      default: () => ({
+        id: "id",
+        parentId: "parentId",
+        expanded: true
+      })
     }
   },
   components: {
     "kendo-treelist": TreeList
+  },
+  watch: {
+    url() {
+      if (this.remoteDataSource) {
+        this.remoteDataSource.read();
+      }
+    }
   },
   data() {
     return {
@@ -51,21 +77,25 @@ export default {
     this.remoteDataSource = new kendo.data.TreeListDataSource({
       transport: {
         read: options => {
+          kendo.ui.progress(this.$(".k-grid-content", this.$el), true);
           this.$http
             .get(this.url)
-            .then(options.success)
-            .catch(options.error);
+            .then(response => {
+              kendo.ui.progress(this.$(".k-grid-content", this.$el), false);
+              options.success(response);
+            })
+            .catch(error => {
+              kendo.ui.progress(this.$(".k-grid-content", this.$el), false);
+              console.error(error);
+              options.error(error);
+            });
         }
       },
       schema: {
         data: response => {
           return this.getValues(response.data.data);
         },
-        model: {
-          id: "id",
-          parentId: "parentId",
-          expanded: true
-        }
+        model: this.model
       }
     });
     $(window).resize(() => {
@@ -104,6 +134,7 @@ export default {
       this.removeRowClassName(tree);
       this.addRowClassName(tree);
       tree.autoFitColumn(1);
+      this.$emit("tree-list-data-bound", e);
     },
     onExpand(e) {
       let tree = e.sender;
