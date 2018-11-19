@@ -27,6 +27,37 @@ export default {
         this.$refs.stepsGridContent.kendoWidget().resize();
       }
     });
+    const onContentResize = (part, $split) => {
+      return () => {
+        window.setTimeout(() => {
+          this.$(window).trigger("resize");
+        }, 100);
+        window.localStorage.setItem(
+          "wfl.steps." + part,
+          this.$($split)
+            .data("kendoSplitter")
+            .size(".k-pane:first")
+        );
+      };
+    };
+    this.$(this.$refs.stepsSplitter).kendoSplitter({
+      orientation: "horizontal",
+      panes: [
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: window.localStorage.getItem("wfl.steps.content") || "50%"
+        },
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: "50%"
+        }
+      ],
+      resize: onContentResize("content", this.$refs.stepsSplitter)
+    });
   },
   methods: {
     getSteps(options) {
@@ -111,6 +142,14 @@ export default {
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
               }/views" style="text-decoration: underline; color: #157EFB">${
+                dataItem[colId]
+              }</a>`;
+            case "profil":
+              return `<a data-role="develRouterLink" href="/devel/wfl/${
+                this.wflName
+              }/steps/pdoc/${
+                dataItem[colId]
+              }" style="text-decoration: underline; color: #157EFB">${
                 dataItem[colId]
               }</a>`;
             default:
