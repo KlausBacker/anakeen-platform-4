@@ -85,9 +85,9 @@ class ErrorCodePRFL
     const PRFL0204 = 'user login "%s" not found in acl for  profil';
 
     /**
-     * @errorCode  dynamic profil must reference a valid family document
+     * @errorCode  dynamic profil (prf_famid) must reference a valid family document
      */
-    const PRFL0205 = 'Use of field "%s" ref and dynamic reference is set for "%s" profil';
+    const PRFL0205 = 'Use of field "%s" ref and dynamic reference is not set for "%s" profil';
     /**
      * @errorCode user must be exists for static profil
      * @see \Dcp\ExportDocument::setExportAccountType

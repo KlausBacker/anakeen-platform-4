@@ -106,6 +106,10 @@ namespace {
          * @errorCode Generate document class syntex error
          */
         const CORE0024 = 'Error generating file attributes document class file "%s" : %s';
+        /**
+         * @errorCode Try to register another pat for config files
+         */
+        const CORE0025 = 'Connot register config directory "%s" : this directory not exists';
 
     }
 }

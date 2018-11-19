@@ -2,6 +2,9 @@
 
 namespace Anakeen\Router;
 
+use Anakeen\Core\ContextManager;
+use Anakeen\Core\Internal\ContextParameterManager;
+use Anakeen\Core\Settings;
 use \Anakeen\Router\Config\RouterInfo;
 
 class RouterManager
@@ -73,6 +76,69 @@ class RouterManager
             };
         };
         return self::$app;
+    }
+
+    const CONFIGDIRECTORIES = "CORE_CONFIGDIRECTORIES";
+
+    public static function getRouterConfigPaths()
+    {
+        $otherPathes = ContextParameterManager::getValue(Settings::NsSde, self::CONFIGDIRECTORIES);
+        if ($otherPathes) {
+            $path = json_decode($otherPathes);
+            if ($path) {
+                $configPath = $path;
+            }
+        }
+        $configPath[] = \Anakeen\Core\Settings::RouterConfigDir;
+        $absConfigPath = [];
+        foreach ($configPath as $cpath) {
+            $absConfigPath[] = ContextManager::getRootDirectory() . "/" . $cpath;
+        }
+        return $absConfigPath;
+    }
+
+
+    /**
+     * add other path to defined routes aned parameters
+     * @param string $path
+     * @throws Exception
+     * @throws \Dcp\Exception
+     */
+    public static function addRouterConfigPath(string $path)
+    {
+        $absPath = ContextManager::getRootDirectory() . "/" . $path;
+        if (!is_dir($absPath)) {
+            throw new \Anakeen\Router\Exception("CORE0025", $path);
+        }
+        $otherPathes = ContextParameterManager::getValue(Settings::NsSde, self::CONFIGDIRECTORIES);
+        $configPath = [];
+        if ($otherPathes) {
+            $opath = json_decode($otherPathes);
+            if ($opath) {
+                $configPath = $opath;
+            }
+        }
+        $configPath[] = rtrim($path, "/");
+
+        ContextParameterManager::setValue(Settings::NsSde, self::CONFIGDIRECTORIES, json_encode(array_unique($configPath)));
+    }
+
+    public static function deleteRouterConfigPath(string $path)
+    {
+        $otherPathes = ContextParameterManager::getValue(Settings::NsSde, self::CONFIGDIRECTORIES);
+
+        $path = rtrim($path, "/");
+        if ($otherPathes) {
+            $opaths = json_decode($otherPathes);
+            if ($opaths) {
+                foreach ($opaths as $k => $opath) {
+                    if ($opath === $path) {
+                        unset($opaths[$k]);
+                        ContextParameterManager::setValue(Settings::NsSde, self::CONFIGDIRECTORIES, json_encode(array_unique($opaths)));
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -217,6 +283,7 @@ class RouterManager
     {
         return self::getRoutesConfig()->getRoutes();
     }
+
     public static function getMiddlewares()
     {
         return self::getRoutesConfig()->getMiddlewares();

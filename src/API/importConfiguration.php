@@ -28,7 +28,7 @@ if ($filename && $glob) {
 }
 
 if ($glob) {
-    $configFiles = \Anakeen\Core\Utils\Glob::glob($glob);
+    $configFiles = \Anakeen\Core\Utils\Glob::glob($glob, 0, true);
 } elseif (!is_file($filename)) {
     \Anakeen\Core\ContextManager::exitError(sprintf(___("import file '%s' is not a valid file", "sde"), $filename));
 } else {
@@ -54,16 +54,30 @@ $oImport->setVerbose($debug);
 $point = "IMPCFG";
 \Anakeen\Core\DbManager::savePoint($point);
 
+$hasUi=class_exists(\Anakeen\Ui\ImportRenderConfiguration::class);
+if ($hasUi) {
+    $oUiImportData = new \Anakeen\Ui\ImportRenderConfiguration();
+    $oUiImportData->setOnlyAnalyze($analyze !== "no");
+    $oUiImportData->setVerbose($debug);
+}
+
 foreach ($configFiles as $configFile) {
     if ($verbose) {
         printf("Importing config \"%s\".\n", $configFile);
     }
+    if ($hasUi) {
+        $oUiImportData->importData($configFile);
+    }
+
     $oImport->import($configFile);
+    if ($oImport->getErrorMessage()) {
+        break;
+    }
 }
 
 $err = $oImport->getErrorMessage();
 
-if (!$err && class_exists(\Anakeen\Ui\ImportRenderConfiguration::class)) {
+if (!$err && $hasUi === true) {
     $oUiImport = new \Anakeen\Ui\ImportRenderConfiguration();
     $oUiImport->setOnlyAnalyze($analyze !== "no");
     $oUiImport->setVerbose($debug);
@@ -71,7 +85,11 @@ if (!$err && class_exists(\Anakeen\Ui\ImportRenderConfiguration::class)) {
         if ($verbose) {
             printf("Importing Ui part \"%s\".\n", $configFile);
         }
-        $oUiImport->import($configFile);
+        $oUiImport->importRender($configFile);
+
+        if ($oUiImport->getErrorMessage()) {
+            break;
+        }
     }
     $err = $oUiImport->getErrorMessage();
 }

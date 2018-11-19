@@ -3,6 +3,7 @@
 
 namespace Anakeen\Core\Internal;
 
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Core\Utils\Xml;
 use Dcp\Exception;
@@ -231,8 +232,11 @@ class ImportSmartConfiguration
             if (!$prfType) {
                 $prfType = "PDOC";
             }
-            $this->profilElements[] = ["ORDER", $prfType, "", "", "ba_title", "ba_desc", "dpdoc_famid"];
-            $this->profilElements[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDEsc, $prfDynamic];
+            $dbName=SEManager::getIdFromName($prfName);
+            if (! $dbName) {
+                $this->profilElements[] = ["ORDER", $prfType, "", "", "ba_title", "ba_desc", "dpdoc_famid"];
+                $this->profilElements[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDEsc, $prfDynamic];
+            }
         } elseif ($prfName && $prfLink) {
             $data[] = ["PROFIL", $prfName, $prfLink];
         }
@@ -504,7 +508,9 @@ class ImportSmartConfiguration
 
         $nodeValue = trim($attrNode->nodeValue);
         $data[1] = $attrNode->getAttribute("field");
-        if ($nodeValue !== "") {
+        $callsNodes = $this->getNodes($attrNode, "field-callable");
+
+        if ($callsNodes->length === 0) {
             $data[2] = $nodeValue;
         } else {
             $data[2] = $this->getCallableString($attrNode);

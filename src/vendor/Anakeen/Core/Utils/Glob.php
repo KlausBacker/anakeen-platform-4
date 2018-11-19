@@ -8,9 +8,10 @@ class Glob
      * Extend glob function to use ** (double star)
      * @param string $pattern
      * @param int    $flags
+     * @param bool   $useBaseNameSort
      * @return array|false
      */
-    public static function glob(string $pattern, $flags = 0)
+    public static function glob(string $pattern, $flags = 0, $useBaseNameSort=false)
     {
         if (stripos($pattern, '**') === false) {
             $files = glob($pattern, $flags);
@@ -31,10 +32,12 @@ class Glob
                 $files = array_merge($files, self::glob($pat, $flags));
             }
         }
-        $files = array_unique($files);
-        usort($files, function ($a, $b) {
-            return strcmp(basename($a), basename($b));
-        });
+        if ($useBaseNameSort) {
+            $files = array_unique($files);
+            usort($files, function ($a, $b) {
+                return strcmp(basename($a), basename($b));
+            });
+        }
         return $files;
     }
 }
