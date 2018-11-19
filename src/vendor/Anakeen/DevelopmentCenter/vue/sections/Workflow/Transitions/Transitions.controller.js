@@ -2,6 +2,8 @@ import Vue from "vue";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
+import "@progress/kendo-ui";
+import "@progress/kendo-ui/js/kendo.splitter";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
@@ -31,6 +33,37 @@ export default {
       if (this.$refs.transitionsGridContent) {
         this.$refs.transitionsGridContent.kendoWidget().resize();
       }
+    });
+    const onContentResize = (part, $split) => {
+      return () => {
+        window.setTimeout(() => {
+          this.$(window).trigger("resize");
+        }, 100);
+        window.localStorage.setItem(
+          "wfl.transition." + part,
+          this.$($split)
+            .data("kendoSplitter")
+            .size(".k-pane:first")
+        );
+      };
+    };
+    this.$(this.$refs.transitionsSplitter).kendoSplitter({
+      orientation: "horizontal",
+      panes: [
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: window.localStorage.getItem("wfl.transition.content") || "50%"
+        },
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: "50%"
+        }
+      ],
+      resize: onContentResize("content", this.$refs.transitionsSplitter)
     });
   },
   methods: {
@@ -65,24 +98,59 @@ export default {
         }
         if (dataItem[colId] instanceof Object) {
           if (this.columnsTabMultiple.includes(colId)) {
-            if (dataItem[colId].length > 1) {
-              let str = "";
-              return this.recursiveData(dataItem[colId], str);
-            } else {
-              return dataItem[colId][0] ? dataItem[colId][0] : "";
-            }
+            let str = "";
+            return this.recursiveData(dataItem[colId], str, colId);
           }
         }
         return dataItem[colId];
       };
     },
-    recursiveData(items, str) {
+    recursiveData(items, str, colId) {
       if (items instanceof Object) {
         Object.keys(items.toJSON()).forEach(item => {
           if (items[item] instanceof Object) {
-            this.recursiveData(items[item], str);
+            this.recursiveData(items[item], str, colId);
           } else {
-            str += "<li>" + items[item] + "</li>";
+            switch (colId) {
+              case "mailtemplates":
+                str += `<a data-role="develRouterLink" href="/devel/wfl/${
+                  this.wflName
+                }/transitions/mail/${
+                  items[item]
+                }" style="text-decoration: underline; color: #157EFB">${
+                  items[item]
+                }</a>`;
+                break;
+              case "volatileTimers":
+                str += `<a data-role="develRouterLink" href="/devel/wfl/${
+                  this.wflName
+                }/transitions/timers/volatile/${
+                  items[item]
+                }" style="text-decoration: underline; color: #157EFB">${
+                  items[item]
+                }</a>`;
+                break;
+              case "persistentTimers":
+                str += `<a data-role="develRouterLink" href="/devel/wfl/${
+                  this.wflName
+                }/transitions/timers/persistent/${
+                  items[item]
+                }" style="text-decoration: underline; color: #157EFB">${
+                  items[item]
+                }</a>`;
+                break;
+              case "unattachTimers":
+                str += `<a data-role="develRouterLink" href="/devel/wfl/${
+                  this.wflName
+                }/transitions/timers/unattach/${
+                  items[item]
+                }" style="text-decoration: underline; color: #157EFB">${
+                  items[item]
+                }</a>`;
+                break;
+              default:
+                break;
+            }
           }
         });
       }
