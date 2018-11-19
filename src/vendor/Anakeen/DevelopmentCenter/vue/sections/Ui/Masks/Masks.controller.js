@@ -41,13 +41,13 @@ export default {
       panes: [
         {
           scrollable: false,
-          collapsible: false,
+          collapsible: true,
           resizable: true,
           size: window.localStorage.getItem("ui.masks.content") || "50%"
         },
         {
           scrollable: false,
-          collapsible: false,
+          collapsible: true,
           resizable: true,
           size: "50%"
         }
