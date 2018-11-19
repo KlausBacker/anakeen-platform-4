@@ -22,6 +22,15 @@ class DocumentDataXML extends DocumentData
     {
         $exportXML = new ExportXmlDocument();
         $exportXML->setDocument($this->_document);
-        return $exportXML->getXml();
+        $rawXml = $exportXML->getXml();
+
+        $d = new \DOMDocument('1.0');
+        $d->preserveWhiteSpace = false;
+        $d->formatOutput = true;
+        $d->loadXML($rawXml);
+
+
+        $formXml = $d->saveXML();
+        return $formXml ?: $rawXml;
     }
 }
