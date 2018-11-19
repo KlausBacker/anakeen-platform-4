@@ -28,9 +28,10 @@ msgstr "Label"
 
 #: vendor/Anakeen/SmartStructures/Role/role.struct.xml
 msgctxt "ROLE"
+msgid "title"
+msgstr "Role"
+
+#: vendor/Anakeen/SmartStructures/Role/role.struct.xml
+msgctxt "ROLE"
 msgid "us_whatid"
 msgstr "System id"
-
-#~ msgctxt "ROLE"
-#~ msgid "title"
-#~ msgstr "Role"

@@ -83,6 +83,12 @@ msgctxt "HELPPAGE"
 msgid "help_t_sections"
 msgstr "Rubriques"
 
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "title"
+msgstr "Aide en ligne"
+
 #, fuzzy
 #~ msgctxt "HELPPAGE"
 #~ msgid "help_fr_family"
@@ -102,8 +108,3 @@ msgstr "Rubriques"
 #~ msgctxt "HELPPAGE"
 #~ msgid "help_t_family"
 #~ msgstr "Langues"
-
-#, fuzzy
-#~ msgctxt "HELPPAGE"
-#~ msgid "title"
-#~ msgstr "Aide en ligne"

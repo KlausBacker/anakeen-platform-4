@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Dsearch
+    class Dsearch extends Search
     {
         /**
         * Conditions
@@ -96,6 +96,14 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const se_t_filters='se_t_filters';
+        /**
+        * Filtre
+        * <ul>
+        * <li> <i>access</i> None </li>
+        * <li> <i>type</i> xml </li>
+        * </ul>
+        */ 
+        const se_filter='se_filter';
         /**
         * Type
         * <ul>

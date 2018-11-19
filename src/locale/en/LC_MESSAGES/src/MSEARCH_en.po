@@ -31,10 +31,11 @@ msgctxt "MSEARCH"
 msgid "seg_t_cond"
 msgstr "Search ensemble"
 
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+msgctxt "MSEARCH"
+msgid "title"
+msgstr "Grouped search"
+
 #~ msgctxt "MSEARCH"
 #~ msgid "seg_cond"
 #~ msgstr "Search (title)"
-
-#~ msgctxt "MSEARCH"
-#~ msgid "title"
-#~ msgstr "Grouped search"

@@ -44,6 +44,12 @@ msgctxt "PDOC"
 msgid "fr_basic"
 msgstr "Basique"
 
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#, fuzzy
+msgctxt "PDOC"
+msgid "title"
+msgstr "Document profile"
+
 #~ msgctxt "PDOC"
 #~ msgid "dpdoc_fam#elabel"
 #~ msgstr "Family used for dynamic profiles"

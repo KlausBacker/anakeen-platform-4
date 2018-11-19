@@ -95,6 +95,12 @@ msgctxt "SENTMESSAGE"
 msgid "emsg_textbody"
 msgstr "Texte"
 
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "title"
+msgstr "Message envoyé"
+
 #, fuzzy
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_editcontrol"
@@ -129,8 +135,3 @@ msgstr "Texte"
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_sendtype#to"
 #~ msgstr "Pour"
-
-#, fuzzy
-#~ msgctxt "SENTMESSAGE"
-#~ msgid "title"
-#~ msgstr "Message envoyé"

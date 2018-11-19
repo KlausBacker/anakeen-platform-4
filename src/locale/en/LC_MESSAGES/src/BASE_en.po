@@ -21,6 +21,7 @@ msgctxt "BASE"
 msgid "fr_basic"
 msgstr "Basic"
 
-#~ msgctxt "BASE"
-#~ msgid "title"
-#~ msgstr "Basic"
+#: vendor/Anakeen/SmartStructures/Base/base.struct.xml
+msgctxt "BASE"
+msgid "title"
+msgstr "Basic"

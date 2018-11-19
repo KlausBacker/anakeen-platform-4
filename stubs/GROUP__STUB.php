@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Group
+    class Group extends Dir
     {
         /**
         * basique

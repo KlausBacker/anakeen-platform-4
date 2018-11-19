@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Search
+    class Search extends Base
     {
         /**
         * <ul>

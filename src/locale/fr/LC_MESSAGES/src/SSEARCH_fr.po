@@ -35,7 +35,8 @@ msgctxt "SSEARCH"
 msgid "se_phpfunc"
 msgstr "Fonction PHP"
 
+#: vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
 #, fuzzy
-#~ msgctxt "SSEARCH"
-#~ msgid "title"
-#~ msgstr "Recherche spécialisée"
+msgctxt "SSEARCH"
+msgid "title"
+msgstr "Recherche spécialisée"

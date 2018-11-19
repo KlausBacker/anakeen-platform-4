@@ -13,6 +13,11 @@ msgstr ""
 
 #: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
+msgid "title"
+msgstr "User Account"
+
+#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
 msgid "us_accexpiredate"
 msgstr "Account expiration date"
 
@@ -172,10 +177,6 @@ msgstr "System"
 msgctxt "IUSER"
 msgid "us_whatid"
 msgstr "Identifier"
-
-#~ msgctxt "IUSER"
-#~ msgid "title"
-#~ msgstr "User Account"
 
 #~ msgctxt "IUSER"
 #~ msgid "us_activateaccount"

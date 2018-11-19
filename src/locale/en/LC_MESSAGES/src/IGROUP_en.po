@@ -23,6 +23,11 @@ msgstr "Associated roles"
 
 #: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
+msgid "title"
+msgstr "Users' group"
+
+#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+msgctxt "IGROUP"
 msgid "us_login"
 msgstr "Login"
 
@@ -43,7 +48,3 @@ msgstr "Id system"
 #~ msgctxt "IGROUP"
 #~ msgid "grp_roles#showempty"
 #~ msgstr "No role"
-
-#~ msgctxt "IGROUP"
-#~ msgid "title"
-#~ msgstr "Users' group"

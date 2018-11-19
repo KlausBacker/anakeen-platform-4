@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Ssearch
+    class Ssearch extends Search
     {
         /**
         * Fonction

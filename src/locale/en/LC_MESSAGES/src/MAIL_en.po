@@ -71,6 +71,11 @@ msgctxt "MAIL"
 msgid "mail_subject"
 msgstr "Subject"
 
+#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "title"
+msgstr "Mail"
+
 #~ msgctxt "MAIL"
 #~ msgid "mail_copymode#bcc"
 #~ msgstr "Bcc"
@@ -114,7 +119,3 @@ msgstr "Subject"
 #~ msgctxt "MAIL"
 #~ msgid "mail_sendformat#link"
 #~ msgstr "Link to the document"
-
-#~ msgctxt "MAIL"
-#~ msgid "title"
-#~ msgstr "Mail"

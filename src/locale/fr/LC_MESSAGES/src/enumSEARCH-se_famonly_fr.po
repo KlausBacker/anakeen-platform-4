@@ -12,11 +12,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#, fuzzy
 msgctxt "SEARCH-se_famonly"
 msgid "no"
 msgstr "Avec les sous-structures"
 
 #: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#, fuzzy
 msgctxt "SEARCH-se_famonly"
 msgid "yes"
 msgstr "Sans les sous-structures"

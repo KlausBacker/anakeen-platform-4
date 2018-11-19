@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Dir
+    class Dir extends Base
     {
         /**
         * <ul>

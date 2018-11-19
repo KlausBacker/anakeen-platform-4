@@ -35,12 +35,13 @@ msgctxt "MSEARCH"
 msgid "seg_t_cond"
 msgstr "Ensemble de recherche"
 
+#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#, fuzzy
+msgctxt "MSEARCH"
+msgid "title"
+msgstr "Recherche groupée"
+
 #, fuzzy
 #~ msgctxt "MSEARCH"
 #~ msgid "seg_cond"
 #~ msgstr "Recherche (titre)"
-
-#, fuzzy
-#~ msgctxt "MSEARCH"
-#~ msgid "title"
-#~ msgstr "Recherche groupée"
