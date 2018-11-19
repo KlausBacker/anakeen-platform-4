@@ -49,10 +49,7 @@ export default {
   },
   data() {
     return {
-      panes: [
-        { scrollable: false, min: "33%", max: "100%" },
-        { collapsed: true, collapsible: true }
-      ],
+      panes: [{ collapsible: true, scrollable: false }, { collapsible: true }],
       viewURL: "",
       viewType: "html",
       viewRawContent: "",

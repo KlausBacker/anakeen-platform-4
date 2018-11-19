@@ -12,8 +12,8 @@ export default {
   data() {
     return {
       panes: [
-        { scrollable: false, min: "33%", max: "100%" },
-        { scrollable: false, collapsed: true, collapsible: true }
+        { scrollable: false, collapsible: true },
+        { scrollable: false, collapsible: true }
       ]
     };
   },
