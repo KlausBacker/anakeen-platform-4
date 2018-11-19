@@ -10,8 +10,8 @@ exports.builder = {
     default: ".",
     type: "string"
   },
-  withStructure: {
-    defaultDescription: "print the structure hierarchy",
+  jsonReturn: {
+    defaultDescription: "return in json",
     default: false,
     type: "boolean"
   }
@@ -19,13 +19,17 @@ exports.builder = {
 
 exports.handler = async argv => {
   try {
-    signale.time("moduleInfo");
+    if (!argv.jsonReturn) {
+      signale.time("moduleInfo");
+    }
     getModuleInfo(argv);
     const task = gulp.task("getModuleInfo");
     task()
       .then(() => {
-        signale.timeEnd("moduleInfo");
-        signale.success("moduleInfo done");
+        if (!argv.jsonReturn) {
+          signale.timeEnd("moduleInfo");
+          signale.success("moduleInfo done");
+        }
       })
       .catch(e => {
         signale.timeEnd("moduleInfo");
