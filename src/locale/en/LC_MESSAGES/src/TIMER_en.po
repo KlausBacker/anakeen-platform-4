@@ -14,6 +14,12 @@ msgstr ""
 #: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
 #, fuzzy
 msgctxt "TIMER"
+msgid "title"
+msgstr "Titre"
+
+#: vendor/Anakeen/SmartStructures/Timer/timer.struct.xml
+#, fuzzy
+msgctxt "TIMER"
 msgid "tm_delay"
 msgstr "Dlai (en jours)"
 

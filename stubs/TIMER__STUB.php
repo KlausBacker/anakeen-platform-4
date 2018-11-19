@@ -20,10 +20,6 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const tm_fr_ident='tm_fr_ident';
-        const tm_refdaydelta='';
-        const tm_refhourdelta='';
-        const tm_delay='';
-        const tm_hdelay='';
         /**
         * Titre
         * <ul>
@@ -46,7 +42,7 @@ namespace SmartStructure\Fields {
         * Famille
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>relation</i> x </li>
+        * <li> <i>relation</i> -1 </li>
         * <li> <i>type</i> docid </li>
         * </ul>
         */ 
@@ -55,11 +51,27 @@ namespace SmartStructure\Fields {
         * Famille cycle
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>relation</i> x </li>
+        * <li> <i>relation</i> -1 </li>
         * <li> <i>type</i> docid </li>
         * </ul>
         */ 
         const tm_workflow='tm_workflow';
+        /**
+        * Décalage (en jours)
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> double </li>
+        * </ul>
+        */ 
+        const tm_refdaydelta='tm_refdaydelta';
+        /**
+        * Décalage (en heures)
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> double </li>
+        * </ul>
+        */ 
+        const tm_refhourdelta='tm_refhourdelta';
         /**
         * Configuration
         * <ul>
@@ -68,6 +80,22 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const tm_t_config='tm_t_config';
+        /**
+        * Délai (en jours)
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> double </li>
+        * </ul>
+        */ 
+        const tm_delay='tm_delay';
+        /**
+        * Délai (en heures)
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> double </li>
+        * </ul>
+        */ 
+        const tm_hdelay='tm_hdelay';
         /**
         * Nombre d'itérations
         * <ul>

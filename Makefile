@@ -14,7 +14,7 @@ CBF_BIN=php ./ide/vendor/bin/phpcbf
 -include Makefile.local
 
 node_modules:
-	npm install
+	yarn install
 
 install: node_modules
 
@@ -29,10 +29,10 @@ autotest: install
 	${ANAKEEN_CLI_BIN} build --auto-release
 	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
 
-deploy:
+deploy: install
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./ -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
-deploy-test:
+deploy-test: install
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 po:

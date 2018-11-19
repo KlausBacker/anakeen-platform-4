@@ -10,9 +10,8 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Wdoc extends BASE
+    class Wdoc extends Base
     {
-        const ba_title='ba_title';
         /**
         * <ul>
         * <li> <i>extended</i> true </li>
