@@ -94,7 +94,7 @@ class RouterManager
         foreach ($configPath as $cpath) {
             $absConfigPath[] = ContextManager::getRootDirectory() . "/" . $cpath;
         }
-        return $configPath;
+        return $absConfigPath;
     }
 
 

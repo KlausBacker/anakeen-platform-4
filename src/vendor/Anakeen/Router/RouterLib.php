@@ -2,6 +2,7 @@
 
 namespace Anakeen\Router;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\Glob;
 use Anakeen\Router\Config\AccessInfo;
 use \Dcp\Core\Exception;
@@ -32,6 +33,7 @@ class RouterLib
 
 
         $paths = RouterManager::getRouterConfigPaths();
+
         $configFiles = [];
         foreach ($paths as $configDir) {
             $configFiles = array_merge($configFiles, self::getConfigFiles($configDir));
@@ -164,13 +166,13 @@ class RouterLib
 
     protected static function normalizeConfig(array $config, $configFileName)
     {
-
+        $rootDir=ContextManager::getRootDirectory();
         if (!empty($config["routes"])) {
             $routes = $config["routes"];
             $nr = [];
             foreach ($routes as $routeName => $route) {
                 $route["name"] = $routeName;
-                $route["configFile"] = $configFileName;
+                $route["configFile"] = str_replace($rootDir, '.', $configFileName);
                 if (!isset($route["priority"])) {
                     $route["priority"] = 0;
                 }
@@ -184,7 +186,7 @@ class RouterLib
             $nr = [];
             foreach ($middles as $name => $middle) {
                 $middle["name"] = $name;
-                $middle["configFile"] = $configFileName;
+                $middle["configFile"] = str_replace($rootDir, '.', $configFileName);
                 if (!isset($middle["priority"])) {
                     $middle["priority"] = 0;
                 }
@@ -199,7 +201,7 @@ class RouterLib
             $nr = [];
             foreach ($apps as $name => $app) {
                 $app["name"] = $name;
-                $app["configFile"] = $configFileName;
+                $app["configFile"] = str_replace($rootDir, '.', $configFileName);
                 $nr[] = $app;
             }
             $config["apps"] = $nr;
@@ -211,7 +213,7 @@ class RouterLib
             $nr = [];
             foreach ($acls as $name => $acl) {
                 $acl["name"] = $name;
-                $acl["configFile"] = $configFileName;
+                $acl["configFile"] = str_replace($rootDir, '.', $configFileName);
                 $nr[] = $acl;
             }
             $config["accesses"] = $nr;
@@ -223,7 +225,7 @@ class RouterLib
             $nr = [];
             foreach ($params as $name => $param) {
                 $param["name"] = $name;
-                $param["configFile"] = $configFileName;
+                $param["configFile"] = str_replace($rootDir, '.', $configFileName);
                 $nr[] = $param;
             }
             $config["parameters"] = $nr;
