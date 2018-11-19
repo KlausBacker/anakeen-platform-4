@@ -1,6 +1,14 @@
 <template>
     <div class="workflow-rights-tree">
-        <div ref="treeListEl"></div>
+        <ank-tree-list v-if="treeConfigReady"
+                       ref="ankTreeList"
+                       :url="resolvedWorkflowContent"
+                       :items="treeColumns"
+                       :filterable="false"
+                       :getValues="privateMethods.parseData"
+                       :headerTemplate="privateMethods.getHeaderTemplate"
+                       :columnTemplate="privateMethods.getCellTemplate"
+                       :model="model"></ank-tree-list>
     </div>
 </template>
 <!-- CSS to this component only -->
