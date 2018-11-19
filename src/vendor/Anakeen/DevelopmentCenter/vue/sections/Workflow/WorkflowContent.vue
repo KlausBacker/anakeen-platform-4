@@ -41,13 +41,17 @@
     .wfl-tabs {
         height: 100%;
         width: 100%;
+        min-height: 0;
+        display: flex;
     }
     .wfl-section {
+        flex: 1;
         display: flex;
         flex-direction: column;
-        height: 100%;
+        min-height: 0;
 
         .wfl-content {
+            min-height: 0;
             display: flex;
             flex: 1;
             padding: 1rem;
