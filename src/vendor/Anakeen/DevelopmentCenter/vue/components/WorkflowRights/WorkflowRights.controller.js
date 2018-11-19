@@ -103,17 +103,14 @@ export default {
         }
       },
       getHeaderTemplate: step => {
-        let templateColor = "";
-        if (step.color) {
-          templateColor = ` <span class="step-header-color" style="background: \\${
-            step.color
-          }"></span>`;
+        let stepColor = step.color;
+        if (!stepColor) {
+          stepColor = "#FFFFFF";
         }
         return `<div class="step-header step--${step.id}">
                     ${step.label}
-                    ${templateColor}
-                </div>
-`;
+                     <span class="step-header-color" style="background: \\${stepColor}"></span>
+                </div>`;
       },
       getCellTemplate: step => {
         const fieldId = step.id;
@@ -158,9 +155,13 @@ export default {
               <th class="k-header">
                 ${this.acls
                   .map(c => {
-                    return `<input type="checkbox" id="${c}" class="k-checkbox check-acl check-acl--${c}" checked="checked"/><label class="k-checkbox-label" for="${c}">${c
-                      .charAt(0)
-                      .toUpperCase()}${c.substring(1)}</label>`;
+                    return `<input type="checkbox" id="${
+                      this.wid
+                    }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" checked="checked"/><label class="k-checkbox-label" for="${
+                      this.wid
+                    }-${c}">${c.charAt(0).toUpperCase()}${c.substring(
+                      1
+                    )}</label>`;
                   })
                   .join("")}
             
@@ -170,7 +171,7 @@ export default {
         );
         this.$(this.treeList.thead).on("change", ".check-acl", event => {
           const checked = event.currentTarget.checked;
-          const acl = event.currentTarget.id;
+          const acl = event.currentTarget.dataset.acl;
           if (checked) {
             this.$("[data-acl=" + acl + "]", this.treeList.table).show();
           } else {
