@@ -11,7 +11,7 @@ ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 -include Makefile.local
 
 node_modules:
-	npm install
+	yarn install
 
 install: node_modules
 	cd src/vendor/Anakeen/lib; ${COMPOSER} install --ignore-platform-reqs
