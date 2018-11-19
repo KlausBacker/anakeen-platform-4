@@ -166,6 +166,9 @@ export default {
                     if (this.onlyExtendedAcls && currentElement.extended) {
                       return true;
                     }
+                    if (this.onlyExtendedAcls) {
+                      return false;
+                    }
                     return currentColumn === currentElement.name;
                   },
                   false

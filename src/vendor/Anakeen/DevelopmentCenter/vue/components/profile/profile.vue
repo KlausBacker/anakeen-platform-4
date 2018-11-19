@@ -42,6 +42,7 @@
     .profile-acls-view {
         display: flex;
         flex-direction: column;
+        min-height: 0;
         .k-grid-header {
             background: #F5F5F5;
             border-bottom: 1px solid rgba(33, 37, 41, 0.125);
