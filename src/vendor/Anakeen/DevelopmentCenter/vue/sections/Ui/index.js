@@ -5,6 +5,7 @@ import ViewsConf from "./ViewsConfiguration/ViewsConf.vue";
 import ControlConf from "./ControlConfiguration/ControlConf.vue";
 import Masks from "./Masks/Masks.vue";
 import { AnkSmartElement } from "@anakeen/ank-components";
+import ProfileView from "../../components/profile/profile.vue";
 
 export default {
   name: "Ui",
@@ -43,7 +44,7 @@ export default {
           children: [
             {
               name: "Ui::control::element",
-              path: ":seIdentifier",
+              path: "element/:seIdentifier",
               meta: {
                 label: ":seIdentifier"
               },
@@ -51,6 +52,17 @@ export default {
               props: route => ({
                 initid: route.params.seIdentifier.toString(),
                 viewId: "!defaultConsultation"
+              })
+            },
+            {
+              name: "Ui::control::permissions",
+              path: "permissions/:seIdentifier",
+              meta: {
+                label: ":seIdentifier"
+              },
+              component: ProfileView,
+              props: route => ({
+                profileId: route.params.seIdentifier.toString()
               })
             }
           ]
