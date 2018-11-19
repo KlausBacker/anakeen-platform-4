@@ -9,7 +9,8 @@
     <xs:complexType name="configType">
         <xs:sequence>
             <xs:element type="ns:sourceType" name="source"/>
-            <xs:element type="ns:poconfigType" name="po-config" minOccurs="0"/>
+            <xs:element type="ns:poconfigType" name="po-config" minOccurs="0" maxOccurs="1"/>
+            <xs:element type="ns:stubconfigType" name="stub-config" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -20,6 +21,12 @@
             <xs:element type="ns:poTarget" name="po-mustache" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poTarget" name="po-php" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poTarget" name="po-js" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="stubconfigType">
+        <xs:sequence>
+            <xs:element type="ns:poXML" name="stub-struct" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
