@@ -27,6 +27,7 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
 
     public function extractCvRef()
     {
+        $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
         $access = $this->celui("render");
         $access->setAttribute("ref", $this->sst->name);
         $class = RenderConfigManager::getRenderParameterAccess($this->sst->name);
@@ -48,6 +49,7 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
     public function extractDefaultCvData()
     {
         if ($this->sst->ccvid) {
+            $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
             /**
              * @var \SmartStructure\Cvdoc $cvdoc
              */

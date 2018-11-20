@@ -13,21 +13,40 @@ use SmartStructure\Fields\Mask as MaskFields;
 
 class ImportRenderConfiguration extends ImportSmartConfiguration
 {
-    protected $uiPrefix= "ui";
-    protected function importConfigurations()
+    protected $uiPrefix = "ui";
+
+
+    public function importData($xmlFile)
     {
-        $this->uiPrefix=Xml::getPrefix($this->dom, ExportRenderConfiguration::NSUIURL);
+        $this->dom = new \DOMDocument();
+        $this->dom->load($xmlFile);
+
+        $data = $this->importDataElements();
+        $this->recordSmartData($data);
+    }
+
+
+    public function importRender($xmlFile)
+    {
+        $this->dom = new \DOMDocument();
+        $this->dom->load($xmlFile);
+
+        $data = $this->importStructureRender();
+        $this->recordSmartData($data);
+    }
+
+    protected function importDataElements()
+    {
+
+        $this->uiPrefix = Xml::getPrefix($this->dom, ExportRenderConfiguration::NSUIURL);
         $data = $this->importMasks();
         $data = array_merge($data, $this->importCvDocs());
-        $data = array_merge($data, $this->importStructureRender());
-
-
-        $this->recordSmartData($data);
+        return $data;
     }
 
     protected function importStructureRender()
     {
-        $configs = $this->getNodes($this->dom->documentElement, "render");
+        $configs = $this->getUiNodes($this->dom->documentElement, "render");
 
         $data = [];
         /** @var \DOMElement $config */
@@ -45,7 +64,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 }
                 $disableEtag = $this->evaluate($config, "string({$this->uiPrefix}:render-access/@disable-etag)");
                 if ($disableEtag) {
-                    RenderConfigManager::setRenderParameter($ref, "disableEtag", $disableEtag==="true");
+                    RenderConfigManager::setRenderParameter($ref, "disableEtag", $disableEtag === "true");
                 }
             }
         }
@@ -55,7 +74,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
 
     protected function importMasks()
     {
-        $configs = $this->getNodes($this->dom->documentElement, "mask");
+        $configs = $this->getUiNodes($this->dom->documentElement, "mask");
 
         $data = [];
         foreach ($configs as $config) {
@@ -66,7 +85,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
 
     protected function importCvDocs()
     {
-        $configs = $this->getNodes($this->dom->documentElement, "view-control");
+        $configs = $this->getUiNodes($this->dom->documentElement, "view-control");
 
         $data = [];
         foreach ($configs as $config) {
@@ -74,6 +93,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
         }
         return $data;
     }
+
 
     protected function importMask(\DOMElement $maskNode)
     {
@@ -92,8 +112,8 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 $mask->setValue(MaskFields::ba_title, $label);
             }
 
-            $visibilityNodes = $this->getNodes($maskNode, "visibility");
-            $needNodes = $this->getNodes($maskNode, "need");
+            $visibilityNodes = $this->getUiNodes($maskNode, "visibility");
+            $needNodes = $this->getUiNodes($maskNode, "need");
 
             $maskData = [];
             /**
@@ -160,7 +180,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 $cvdoc->setValue(CvDocFields::cv_idcview, $createvid);
             }
 
-            $viewNodes = $this->getNodes($cvNode, "view");
+            $viewNodes = $this->getUiNodes($cvNode, "view");
             /**
              * @var \DOMElement $viewNode
              */
@@ -209,7 +229,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
      *
      * @return \DOMNodeList
      */
-    protected function getNodes(\DOMElement $e, $name)
+    protected function getUiNodes(\DOMElement $e, $name)
     {
         return $e->getElementsByTagNameNS(ExportRenderConfiguration::NSUIURL, $name);
     }

@@ -25,7 +25,7 @@ class TransitionView extends WorkflowState
     /**
      * Change state
      */
-    public function doRequest()
+    public function doRequest(&$messages = [])
     {
         $info = parent::doRequest();
         

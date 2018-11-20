@@ -13,7 +13,8 @@
 
 namespace Dcp\Ui;
 
-use Anakeen\Routes\Core\Lib\DocumentApiData;
+use Anakeen\Core\SmartStructure\BasicAttribute;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 class TransitionRender
 {
@@ -21,7 +22,7 @@ class TransitionRender
     const commentFrameAttribute = "_workflow_fr_comment_";
     const parameterFrameAttribute = "_workflow_fr_askes_";
     /**
-     * @var \WDoc
+     * @var WDocHooks
      */
     protected $workflow;
     protected $attributeCount = 0;
@@ -37,7 +38,7 @@ class TransitionRender
     protected $crudWorkflow;
 
     /**
-     * @return \WDoc
+     * @return WDocHooks
      */
     public function getWorkflow()
     {
@@ -122,7 +123,7 @@ class TransitionRender
                 self::commentFrameAttribute,
                 $this->workflow->id,
                 ___("Workflow Transition Comment", "ddui"),
-                "W",
+                BasicAttribute::READWRITE_ACCESS,
                 "N"
             );
 
@@ -135,7 +136,7 @@ class TransitionRender
                 false,
                 10,
                 "",
-                "W",
+                BasicAttribute::READWRITE_ACCESS,
                 false,
                 false,
                 false,
@@ -151,7 +152,7 @@ class TransitionRender
     }
 
     /**
-     * @param \Anakeen\Routes\Core\Lib\DocumentApiData $document
+     * @param \Anakeen\Routes\Core\Lib\DocumentApiData    $document
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $attribute
      * @return AttributeInfo
      */
