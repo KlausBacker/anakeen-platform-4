@@ -18,6 +18,7 @@ use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
+use \SmartStructure\Fields\Mailtemplate as MailFields;
 
 class MailTemplateHooks extends \Anakeen\SmartElement
 {
@@ -101,7 +102,6 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      */
     public function getMailMessage(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
-        global $action;
         $this->keys = $keys;
 
         $message = new \Dcp\Mail\Message();
@@ -114,12 +114,14 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             "bcc" => array(),
             "from" => array()
         );
-        $from = trim($this->getRawValue("tmail_from"));
+        $from = $this->getMultipleRawValues(MailFields::tmail_from);
+
         if ($from) {
+            $fromTypes = $this->getMultipleRawValues(MailFields::tmail_fromtype);
             $tdest[] = array(
                 "tmail_copymode" => "from",
-                "tmail_desttype" => $this->getRawValue("tmail_fromtype"),
-                "tmail_recip" => $from
+                "tmail_desttype" => $fromTypes[0],
+                "tmail_recip" => $from[0]
             );
         }
         $wdoc = null;
@@ -310,13 +312,16 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $bcc = implode(',', $dest['bcc']);
         $from = implode(',', $dest['from']); // only one value expected for from
         if ($from == "") {
-            $from = getMailAddr($action->user->id, true);
+            $from = getMailAddr(ContextManager::getCurrentUser()->id, true);
         }
         if ($from == "") {
             $from = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
         }
         if ($from == "") {
-            $from = $action->user->login . '@' . (isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "");
+            $err = sprintf("No from address for template \"%s\"", $this->getTitle());
+            LogManager::error($err);
+            $doc->addHistoryEntry($err, \DocHisto::ERROR);
+            $from="-?-";
         }
 
         if (trim($to . $cc . $bcc) == "") {
@@ -383,7 +388,6 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      */
     public function sendDocument(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
-        include_once("FDL/sendmail.php");
         include_once("FDL/Lib.Vault.php");
         $err = '';
         if (!$doc->isAffected()) {
