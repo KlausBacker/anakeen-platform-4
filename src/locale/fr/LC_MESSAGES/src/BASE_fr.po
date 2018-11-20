@@ -21,7 +21,7 @@ msgstr "Titre"
 #, fuzzy
 msgctxt "BASE"
 msgid "fr_basic"
-msgstr "Basique
+msgstr "Basique"
 
 #: vendor/Anakeen/SmartStructures/Base/base.struct.xml
 #, fuzzy
