@@ -1,4 +1,12 @@
+import AnkTreeList from "devComponents/SSTreeList/SSTreeList.vue";
 import { getTreeListData } from "./utils/treeUtils";
+
+const escapeColor = color => {
+  if (color) {
+    return color.replace("#", "\\#");
+  }
+  return "transparent";
+};
 
 export default {
   props: {
@@ -21,22 +29,8 @@ export default {
     onlyExtendedAcls: false,
     detachable: false
   },
-  watch: {
-    completeList() {
-      if (this.dataSource) {
-        this.dataSource.read();
-      }
-    },
-    workflowContentUrl() {
-      if (this.dataSource) {
-        this.dataSource.read();
-      }
-    },
-    wid() {
-      if (this.dataSource) {
-        this.dataSource.read();
-      }
-    }
+  components: {
+    AnkTreeList
   },
   computed: {
     resolvedWorkflowConfig() {
@@ -56,22 +50,9 @@ export default {
     },
     firstColumn() {
       return {
-        field: "account",
-        headerTemplate: `<div class="account-header">Account <div class="show-all-switch switch-container">
-                            <label class="switch">
-                                <input type="checkbox">
-                                <span class="slider round"></span>
-                            </label>
-                            <label class="switch-label" for="extendedView">
-                                <span>Show all</span>
-                            </label>
-                        </div></div>`,
-        template: e => {
-          if (e.accountType) {
-            return e.account.type;
-          }
-          return e.account.reference;
-        }
+        name: "account",
+        label: "Account",
+        hidden: false
       };
     }
   },
@@ -81,16 +62,20 @@ export default {
         if (rights) {
           return (
             "<div class='btn-group'>" +
-            this.acls
+            Object.keys(this.viewedAcls)
               .map(acl => {
+                let hide = "";
+                if (!this.viewedAcls[acl]) {
+                  hide = "style='display: none;'";
+                }
                 switch (rights[acl]) {
                   case "set":
-                    return `<button class="btn btn-primary" data-acl="${acl}">${acl
+                    return `<button class="btn btn-primary" ${hide} data-acl="${acl}">${acl
                       .charAt(0)
                       .toUpperCase()}</button>`;
                   case "inherit":
                   case undefined:
-                    return `<button class="btn btn-secondary" data-acl="${acl}">${acl
+                    return `<button class="btn btn-secondary" ${hide} data-acl="${acl}">${acl
                       .charAt(0)
                       .toUpperCase()}</button>`;
                   default:
@@ -102,28 +87,42 @@ export default {
           );
         }
       },
-      getHeaderTemplate: step => {
-        let templateColor = "";
-        if (step.color) {
-          templateColor = ` <span class="step-header-color" style="background: \\${
-            step.color
-          }"></span>`;
+      getHeaderTemplate: column => {
+        if (column.name !== "account") {
+          let stepColor = column.color;
+          return `<div class="step-header step--${column.name}">
+                    <span class="step-header-color" style="background: ${escapeColor(
+                      stepColor
+                    )}"></span>
+                    <span class="step-header-label">${column.name}</span>
+                </div>`;
+        } else {
+          return `<div class="account-header">${column.label ||
+            column.name} <div class="show-all-switch switch-container">
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                            <label class="switch-label" for="extendedView">
+                                <span>Show all</span>
+                            </label>
+                        </div></div>`;
         }
-        return `<div class="step-header step--${step.id}">
-                    ${step.label}
-                    ${templateColor}
-                </div>
-`;
       },
-      getCellTemplate: step => {
-        const fieldId = step.id;
+      getCellTemplate: columnId => {
         return dataItem => {
-          const currentValue = dataItem[fieldId];
-          let template = currentValue;
-          if (template && typeof template === "object") {
-            template = this.privateMethods.getRightsTemplate(template);
+          const currentValue = dataItem[columnId];
+          if (currentValue) {
+            if (columnId === "account") {
+              if (dataItem.accountType) {
+                return currentValue.type;
+              }
+              return currentValue.reference;
+            } else if (typeof currentValue === "object") {
+              return this.privateMethods.getRightsTemplate(currentValue);
+            }
           }
-          return template || "";
+          return "";
         };
       },
       getColumns: steps => {
@@ -131,10 +130,12 @@ export default {
           const columns = [this.firstColumn];
           steps.forEach(step => {
             const column = {
-              field: step.id,
-              title: step.label,
-              headerTemplate: this.privateMethods.getHeaderTemplate(step),
-              template: this.privateMethods.getCellTemplate(step)
+              name: step.id,
+              label: step.label,
+              color: step.color,
+              profil: step.profil,
+              fall: step.fall,
+              hidden: false
             };
             columns.push(column);
           });
@@ -142,42 +143,46 @@ export default {
         }
         return [];
       },
-      loadTree: () => {
-        this.treeList = this.$(this.$refs.treeListEl)
-          .kendoTreeList({
-            height: "100%",
-            dataSource: this.dataSource,
-            columns: this.treeColumns
-          })
-          .data("kendoTreeList");
-        this.treeList.thead.append(
+      createCheckboxHeaderRow: treeList => {
+        treeList.thead.append(
           `<tr role="row">
-              <th class="k-header">
-                <input class="k-textbox filter" placeholder="Filter..." type="text"/>
+              <th class="k-header" >
+                <div class="filter-clearable" style="position:relative;">
+                  <input class="k-textbox filter" placeholder="Filter..." type="text"/>
+                  <i class="material-icons filter-clear">close</i>
+                </div>
               </th>
               <th class="k-header">
                 ${this.acls
                   .map(c => {
-                    return `<input type="checkbox" id="${c}" class="k-checkbox check-acl check-acl--${c}" checked="checked"/><label class="k-checkbox-label" for="${c}">${c
-                      .charAt(0)
-                      .toUpperCase()}${c.substring(1)}</label>`;
+                    return `<input type="checkbox" id="${
+                      this.wid
+                    }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" checked="${
+                      this.viewedAcls[c]
+                    }"/><label class="k-checkbox-label" for="${
+                      this.wid
+                    }-${c}">${c.charAt(0).toUpperCase()}${c.substring(
+                      1
+                    )}</label>`;
                   })
                   .join("")}
-            
+
                 <button class="k-button" title="View all rights">+</button>
               </th>
             </tr>`
         );
-        this.$(this.treeList.thead).on("change", ".check-acl", event => {
+        this.$(treeList.thead).on("change", ".check-acl", event => {
           const checked = event.currentTarget.checked;
-          const acl = event.currentTarget.id;
+          const acl = event.currentTarget.dataset.acl;
           if (checked) {
-            this.$("[data-acl=" + acl + "]", this.treeList.table).show();
+            this.viewedAcls[acl] = true;
+            this.$("[data-acl=" + acl + "]", treeList.table).show();
           } else {
-            this.$("[data-acl=" + acl + "]", this.treeList.table).hide();
+            this.viewedAcls[acl] = false;
+            this.$("[data-acl=" + acl + "]", treeList.table).hide();
           }
         });
-        this.$(this.treeList.thead).on(
+        this.$(treeList.thead).on(
           "change",
           ".show-all-switch input[type=checkbox]",
           event => {
@@ -189,10 +194,11 @@ export default {
             }
           }
         );
-        this.$(this.treeList.thead).on("change", "input.filter", event => {
+        this.$(treeList.thead).on("change", "input.filter", event => {
           const value = event.currentTarget.value;
+          const dataSource = treeList.dataSource;
           if (value) {
-            this.dataSource.filter({
+            dataSource.filter({
               logic: "or",
               filters: [
                 {
@@ -203,9 +209,61 @@ export default {
               ]
             });
           } else {
-            this.dataSource.filter(null);
+            dataSource.filter(null);
           }
         });
+        this.$(treeList.thead).on("click", ".filter-clear", () => {
+          const dataSource = treeList.dataSource;
+          this.$(treeList.thead)
+            .find("input.filter")
+            .val("");
+          dataSource.filter(null);
+        });
+      },
+      createProfilesHeaderRow: treeList => {
+        const columns = this.treeColumns.filter(c => c.name !== "account");
+        treeList.thead.append(
+          `<tr role="row">
+              <th class="k-header">
+                <b>Profile</b>
+              </th>
+              ${columns
+                .map(c => {
+                  return `<th class="k-header profile-header">
+                        <a data-role="develRouterLink" href="/devel/security/profiles/${
+                          c.profil
+                        }" >${c.profil || ""}</a>
+                        </th>`;
+                })
+                .join("")}
+            </tr>`
+        );
+      },
+      createFallHeaderRow: treeList => {
+        const columns = this.treeColumns.filter(c => c.name !== "account");
+        treeList.thead.append(
+          `<tr role="row">
+              <th class="k-header">
+                <b>Field Access</b>
+              </th>
+              ${columns
+                .map(c => {
+                  return `<th class="k-header fall-header">
+                        <a data-role="develRouterLink" href="/devel/security/workflows/${
+                          this.wid
+                        }/accesses/${c.fall}" >${c.fall || ""}</a>
+                        </th>`;
+                })
+                .join("")}
+            </tr>`
+        );
+      },
+      customizeTree: () => {
+        const treeList = this.$refs.ankTreeList.$refs.ssTreelist.kendoWidget();
+        this.privateMethods.createProfilesHeaderRow(treeList);
+        this.privateMethods.createFallHeaderRow(treeList);
+        this.privateMethods.createCheckboxHeaderRow(treeList);
+        treeList.refresh();
       },
       fetchColumns: () => {
         this.$http
@@ -222,30 +280,8 @@ export default {
             throw err;
           });
       },
-      readData: options => {
-        this.$http
-          .get(this.resolvedWorkflowContent)
-          .then(response => {
-            options.success(response);
-          })
-          .catch(err => {
-            console.error(err);
-            options.error(err);
-          });
-      },
-      parseData: response => {
-        return getTreeListData(response.data.data.steps);
-      },
-      generateDataSource: () => {
-        this.dataSource = new kendo.data.TreeListDataSource({
-          transport: {
-            read: this.privateMethods.readData
-          },
-          schema: {
-            model: this.model,
-            parse: this.privateMethods.parseData
-          }
-        });
+      parseData: data => {
+        return getTreeListData(data.steps);
       }
     };
   },
@@ -253,17 +289,18 @@ export default {
     this.$on("workflow-rights-config-ready", () => {
       this.treeConfigReady = true;
     });
-    this.$on("workflow-rights-content-ready", () => {
-      this.treeContentReady = true;
-    });
     this.privateMethods.fetchColumns();
-    this.privateMethods.generateDataSource();
   },
   mounted() {
+    const prepareTree = () => {
+      this.$nextTick(() => {
+        this.privateMethods.customizeTree();
+      });
+    };
     if (this.treeConfigReady) {
-      this.privateMethods.loadTree();
+      prepareTree();
     } else {
-      this.$on("workflow-rights-config-ready", this.privateMethods.loadTree);
+      this.$once("workflow-rights-config-ready", prepareTree);
     }
   },
   data() {
@@ -274,12 +311,14 @@ export default {
         expanded: true
       },
       completeList: false,
-      dataSource: null,
-      treeList: null,
       treeColumns: [],
       treeConfigReady: false,
       treeContentReady: false,
-      acls: this.defaultAcls
+      acls: this.defaultAcls,
+      viewedAcls: this.defaultAcls.reduce((acc, curr) => {
+        acc[curr] = true;
+        return acc;
+      }, {})
     };
   }
 };

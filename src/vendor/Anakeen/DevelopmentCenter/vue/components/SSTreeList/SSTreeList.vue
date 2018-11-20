@@ -4,9 +4,9 @@
                         class="ss-treelist-tree"
                         :data-source="remoteDataSource"
                         :height="'100%'"
-                        :filterable="{ extra: false, operators: { string: { contains: 'Contains'}}}"
+                        :filterable="filterable"
                         :resizable="true"
-                        :sortable="true"
+                        :sortable="sortable"
                         :dataBound="onDataBound"
                         :expand="onExpand"
                         :collapse="onCollapse"
@@ -15,12 +15,12 @@
                         :columnMenu="true"
                         :messages="{ noRows: messages }">
             <kendo-treelist-column v-for="item in items" :key="item.name" :template="columnTemplate(`${item.name}`)"
-                                   :field="`${item.name}`" :title="`${item.label}`" :hidden="item.hidden">
+                                   :field="`${item.name}`" :title="`${item.label}`" :headerTemplate="headerTemplate(item)" :hidden="item.hidden">
             </kendo-treelist-column>
         </kendo-treelist>
     </div>
 </template>
-<style lang="scss">
+<style scoped lang="scss">
     @import "./SSTreeList.scss";
 </style>
 <script src="./SSTreeList.component.js"></script>

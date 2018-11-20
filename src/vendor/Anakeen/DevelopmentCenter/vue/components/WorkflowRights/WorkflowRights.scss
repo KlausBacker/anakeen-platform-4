@@ -8,6 +8,7 @@
       background: #F5F5F5;
 
       .k-header {
+        padding-right: 3rem;
         border-bottom: 1px solid rgba(33, 37, 41, 0.125);
         & + .k-header {
           border-left: 1px solid rgba(33, 37, 41, 0.125);
@@ -16,9 +17,37 @@
         .k-checkbox + .k-checkbox-label {
           margin-left: 0.75rem;
         }
+
+        .filter-clearable {
+          position: relative;
+          input.filter {
+            width: 100%;
+           & + .filter-clear {
+              position: absolute;
+              cursor: pointer;
+              font-size: 1rem;
+              right: 1rem;
+              top: .75rem;
+              border-radius: 50%;
+              &:hover {
+                background: #157EFB;
+                color: white;
+              }
+
+            }
+          }
+        }
       }
     }
+    .profile-header {
+      a {
+        color: #157EFB;
+        text-decoration: underline;
+      }
+    }
+
     .account-header, .step-header {
+      padding-top: .5rem;
       height: 2.5rem;
       display: flex;
       align-items: center;
@@ -27,10 +56,16 @@
       }
 
       .step-header-color {
+        flex-shrink: 0;
         width: 1.3333rem;
         height: 1.3333rem;
         border-radius: 50%;
-        margin-left: .75rem;
+        margin-right: .75rem;
+      }
+
+      .step-header-label {
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
 
     }

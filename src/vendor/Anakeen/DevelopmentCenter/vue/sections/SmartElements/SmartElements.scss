@@ -12,7 +12,6 @@
     .k-pane {
       display: flex;
       flex: 1;
-      transition: width,left .3s ease;
 
       .se-grid {
         .actionMenu {
@@ -22,6 +21,11 @@
         }
       }
     }
+  }
+
+  a[data-role=develRouterLink] {
+    color: #157EFB;
+    text-decoration: underline;
   }
 
   .smart-elements-view {

@@ -5,6 +5,7 @@
                 class="role-content"
                 collection="ROLE"
                 :reorderable="true"
+                :pageSizes="[100, 200, 500]"
                 @action-click="selectRole"
                 @grid-ready="setGridOption"
                 @grid-error="onGridError">

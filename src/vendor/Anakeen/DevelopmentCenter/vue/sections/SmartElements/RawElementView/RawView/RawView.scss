@@ -7,4 +7,12 @@
   pre {
     flex: 1;
   }
+
+  & /deep/ {
+    .hljs-attr + * {
+      &:not(:last-child):after {
+        content: "\A";
+      }
+    }
+  }
 }

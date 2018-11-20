@@ -27,7 +27,7 @@ class WorkflowGraph
         $this->wid = $args["workflow"];
         $this->size = $args["size"];
         $this->extension = $args["extension"];
-        $inlineQuery = $request->getQueryParam("inline");
+        $inlineQuery = $request->getQueryParam("inline", null);
         if ($inlineQuery) {
             $this->inline = ($inlineQuery === "yes" || $inlineQuery === "true" || $inlineQuery === "1");
         }
@@ -48,7 +48,9 @@ class WorkflowGraph
                 case "jpg":
                     $mime = "image/jpeg";
                     break;
-
+                case "svg":
+                    $mime = "image/svg+xml";
+                    break;
                 default:
                     $mime = "image/" . $this->extension;
             }
