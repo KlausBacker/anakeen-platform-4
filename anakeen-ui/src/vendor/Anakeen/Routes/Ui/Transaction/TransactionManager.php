@@ -3,7 +3,6 @@
 
 namespace Anakeen\Routes\Ui\Transaction;
 
-
 use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
 
@@ -36,7 +35,8 @@ class TransactionManager
      * @return Transaction|null
      * @throws Exception
      */
-    public static function runTransaction($transactionId, $transactionAction, $autoDone = true) {
+    public static function runTransaction($transactionId, $transactionAction, $autoDone = true)
+    {
         $transaction = self::loadTransaction($transactionId);
         if ($transaction->getStatus() !== self::TRANSACTION_CREATED) {
             $exception = new Exception("TRANS0004", $transaction->getId(), $transaction->getStatus());
@@ -57,7 +57,8 @@ class TransactionManager
      * @return Transaction|null
      * @throws Exception
      */
-    public static function transactionDone($transactionId) {
+    public static function transactionDone($transactionId)
+    {
         $transaction = self::loadTransaction($transactionId);
         if ($transaction->getStatus() !== self::TRANSACTION_PENDING) {
             return $transaction;
@@ -72,7 +73,8 @@ class TransactionManager
      * @return Transaction|null
      * @throws Exception
      */
-    public static function transactionError($transactionId, $transactionError) {
+    public static function transactionError($transactionId, $transactionError)
+    {
         $transaction = self::loadTransaction($transactionId);
         if ($transaction->getStatus() === self::TRANSACTION_ERROR) {
             return $transaction;
@@ -88,7 +90,8 @@ class TransactionManager
      * @return Transaction
      * @throws Exception
      */
-    public static function updateProgression($transactionId, $details) {
+    public static function updateProgression($transactionId, $details)
+    {
         $transaction = self::loadTransaction($transactionId);
         if ($transaction->getStatus() !== self::TRANSACTION_PENDING) {
             return $transaction;
@@ -98,7 +101,8 @@ class TransactionManager
         return $transaction;
     }
 
-    public static function getTransactionData($transactionId) {
+    public static function getTransactionData($transactionId)
+    {
         $transaction = self::loadTransaction($transactionId);
         return $transaction->getData();
     }
@@ -117,7 +121,8 @@ class TransactionManager
      * @param bool $erase
      * @throws Exception
      */
-    protected static function storeTransaction(Transaction $transaction, $erase = true) {
+    protected static function storeTransaction(Transaction $transaction, $erase = true)
+    {
         if (!$erase) {
             $alreadyExist = self::loadTransaction($transaction->getId(), false);
             if ($alreadyExist !== null) {
@@ -134,7 +139,8 @@ class TransactionManager
      * @param bool $useDefault
      * @return Transaction
      */
-    protected static function loadTransaction($transactionId, $useDefault = true) {
+    protected static function loadTransaction($transactionId, $useDefault = true)
+    {
         $defaultData = null;
         if ($useDefault) {
             $errorTransaction = new Transaction($transactionId);
@@ -144,7 +150,8 @@ class TransactionManager
         }
 
         $storedTransactionData = json_decode(ContextManager::getSession()
-            ->read($transactionId,
+            ->read(
+                $transactionId,
                 json_encode($defaultData)
             ), true);
         if (is_array($storedTransactionData)) {
@@ -160,7 +167,8 @@ class TransactionManager
      * @return Transaction|null
      * @throws Exception
      */
-    protected static function changeStatus($transactionId, $status) {
+    protected static function changeStatus($transactionId, $status)
+    {
         if (!($status === self::TRANSACTION_PENDING
             || $status === self::TRANSACTION_ERROR
             || $status === self::TRANSACTION_DONE
@@ -173,7 +181,7 @@ class TransactionManager
         $transaction = null;
         if (is_a($transactionId, "\Anakeen\Routes\Ui\Transaction\Transaction")) {
             $transaction = $transactionId;
-        } else if (is_string($transactionId)) {
+        } elseif (is_string($transactionId)) {
             $transaction = self::loadTransaction($transactionId);
         }
 
@@ -189,5 +197,4 @@ class TransactionManager
         }
         return $transaction;
     }
-
 }

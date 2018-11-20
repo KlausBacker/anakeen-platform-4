@@ -5,6 +5,7 @@
 */
 
 namespace Anakeen\SmartStructures\Image\Render;
+
 use Anakeen\Ui\DefaultConfigEditRender;
 use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Image as myAttributes;
@@ -17,5 +18,4 @@ class ImageEditRender extends DefaultConfigEditRender
 
         return $options;
     }
-
 }

@@ -3,9 +3,6 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 ## path
 STUB_PATH=stubs/
-LOCALPUB_PATH=$(MK_DIR)/localpub
-LOCALPUB_ANAKEEN_UI_PATH=$(LOCALPUB_PATH)/anakeen-ui
-LOCALPUB_TEST_PATH=$(LOCALPUB_PATH)/Tests
 VERSION_PATH=$(MK_DIR)/VERSION
 NODE_MODULE_PATH=node_modules
 JS_CONF_PATH=$(MK_DIR)
@@ -38,6 +35,8 @@ CONTROL_CONTEXT=$(ctx)
 YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 COMPOSER_BIN=composer
+CBF_BIN=php ./ide/vendor/bin/phpcbf
+CS_BIN=php ./ide/vendor/bin/phpcs
 
 -include Makefile.local
 
@@ -121,7 +120,6 @@ deploy: compilation ## deploy the project
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -rf ${LOCALPUB_PATH}
 	rm -f *app
 	make -f pojs.make clean
 
@@ -181,6 +179,23 @@ autoPublish:
 	@${PRINT_COLOR} "${DEBUG_COLOR}$@${RESET_COLOR}\n"
 	npm version $(VERSION)-$(shell find . -type f -print0 | xargs -0 stat --format '%Y' | sort -nr | cut -d: -f2- | head -1)
 	npm publish || echo "Already published"
+
+########################################################################################################################
+##
+## lint and beautify
+##
+########################################################################################################################
+
+beautify:
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php  ${MK_DIR}/anakeen-ui
+
+lint:
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}/anakeen-ui
+
 ########################################################################################################################
 ##
 ## MAKEFILE INTERNALS

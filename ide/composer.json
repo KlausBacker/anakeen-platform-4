@@ -1,0 +1,11 @@
+{
+    "name": "anakeen/smartenginedev",
+    "description": "Dev Tools",
+    "require": {
+        "friendsofphp/php-cs-fixer": "^2.9",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.9"
+    }
+}

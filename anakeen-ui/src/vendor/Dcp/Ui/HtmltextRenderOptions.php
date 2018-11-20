@@ -91,40 +91,12 @@ class HtmltextRenderOptions extends CommonRenderOptions
     /**
      * Add a html link on value (view mode only)
      * @note use only in view mode
-     * @param anchorOptions $options
+     * @param AnchorOptions $options
      * @return $this
      */
-    public function setAnchorsOptions(anchorOptions $options)
+    public function setAnchorsOptions(AnchorOptions $options)
     {
         $this->setOption(self::anchorsOptions, $options);
         return $this;
     }
-}
-
-class anchorOptions
-{
-    public function __construct($target = "_blank", $width = "300px", $height = "200px", $modal = false)
-    {
-        $this->$target = $target;
-        $this->windowWidth = $width;
-        $this->windowHeight = $height;
-        $this->$modal = $modal;
-    }
-
-    /**
-     * @var string target of window
-     */
-    public $target = "_blank";
-    /**
-     * @var string width of window
-     */
-    public $windowWidth = "300px";
-    /**
-     * @var string height of window
-     */
-    public $windowHeight = "200px";
-    /**
-     * @var bool modal window
-     */
-    public $modal = false;
 }

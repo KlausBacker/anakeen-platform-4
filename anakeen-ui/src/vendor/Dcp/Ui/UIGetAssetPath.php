@@ -4,7 +4,6 @@ namespace Dcp\Ui;
 
 use Anakeen\Core\ContextManager;
 
-
 /**
  * Class DocumentGetAssetPath
  *
@@ -21,15 +20,17 @@ class UIGetAssetPath
     protected static $inDebug = null;
     protected static $ws = null;
 
-    public static function isInDebug() {
+    public static function isInDebug()
+    {
         if (self::$inDebug === null) {
-            $modeDebug = ContextManager::getParameterValue("Ui",  "MODE_DEBUG");
+            $modeDebug = ContextManager::getParameterValue("Ui", "MODE_DEBUG");
             self::$inDebug = $modeDebug !== "FALSE";
         }
         return self::$inDebug;
     }
 
-    public static function getWs() {
+    public static function getWs()
+    {
         if (self::$ws === null) {
             self::$ws = $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         }
@@ -44,7 +45,8 @@ class UIGetAssetPath
      * @return mixed
      * @throws Exception
      */
-    public static function getElementAssets($name, $mode = "prod") {
+    public static function getElementAssets($name, $mode = "prod")
+    {
         $manifestPath = self::$anakeenManifestPath.DIRECTORY_SEPARATOR.$name.DIRECTORY_SEPARATOR.$mode.".json";
         if (!file_exists($manifestPath)) {
             throw new Exception("UI0400", $name, $manifestPath);
@@ -53,7 +55,8 @@ class UIGetAssetPath
         return $manifest;
     }
 
-    public static function getJSJqueryPath() {
+    public static function getJSJqueryPath()
+    {
         $jqueryFileName = self::isInDebug() ? 'jquery.js' : 'jquery.min.js';
         return "/".self::$assetPath.'/jquery/'.$jqueryFileName.'?ws='.self::getWs();
     }
@@ -62,12 +65,14 @@ class UIGetAssetPath
      * @return mixed
      * @throws Exception
      */
-    public static function getJSKendoPath() {
+    public static function getJSKendoPath()
+    {
         $assets = self::getElementAssets("assets", "deps");
         return $assets["KendoUI"]["js"];
     }
 
-    public static function getCssKendo() {
+    public static function getCssKendo()
+    {
         if (self::isInDebug()) {
             $paths = self::getElementAssets("theme", "dev");
         } else {
@@ -81,7 +86,8 @@ class UIGetAssetPath
      * @param $assetPath
      * @return string
      */
-    public static function getCustomAssetPath($assetPath) {
+    public static function getCustomAssetPath($assetPath)
+    {
         $baseUrl = $assetPath;
         $parsedQuery = parse_url($baseUrl, PHP_URL_QUERY);
         if (!empty($parsedQuery)) {
@@ -94,7 +100,8 @@ class UIGetAssetPath
         return $baseUrl;
     }
 
-    public static function getPolyfill() {
+    public static function getPolyfill()
+    {
         $assets = self::getElementAssets("polyfill", "deps");
         return $assets["polyfill"]["js"];
     }
@@ -104,7 +111,8 @@ class UIGetAssetPath
      * @return string - the asset path
      * @throws Exception
      */
-    public static function getSmartWebComponentsPath($legacy = false) {
+    public static function getSmartWebComponentsPath($legacy = false)
+    {
         if (self::isInDebug()) {
             $paths = self::getElementAssets("ank-components", "dev");
         } else {
@@ -113,7 +121,8 @@ class UIGetAssetPath
         return $paths["ank-components"]["js"];
     }
 
-    public static function getCssSmartWebComponents() {
+    public static function getCssSmartWebComponents()
+    {
         return self::getCss("components");
     }
 
@@ -122,7 +131,8 @@ class UIGetAssetPath
      * @return mixed
      * @throws Exception
      */
-    public static function getJSSmartElementPath($legacy = false) {
+    public static function getJSSmartElementPath($legacy = false)
+    {
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
@@ -131,7 +141,8 @@ class UIGetAssetPath
         return $paths["smartElement"]["js"];
     }
 
-    public static function getCssSmartElement() {
+    public static function getCssSmartElement()
+    {
         return self::getCss("smartElement");
     }
 
@@ -140,7 +151,8 @@ class UIGetAssetPath
      * @return mixed
      * @throws Exception
      */
-    public static function getJSSmartElementWidgetPath($legacy = false) {
+    public static function getJSSmartElementWidgetPath($legacy = false)
+    {
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
@@ -149,15 +161,18 @@ class UIGetAssetPath
         return $paths["smartElementWidget"]["js"];
     }
 
-    public static function getCssBootstrap() {
+    public static function getCssBootstrap()
+    {
         return self::getCss("bootstrap");
     }
 
-    public static function getCssCkeditor() {
+    public static function getCssCkeditor()
+    {
         return self::getCss("kendo");
     }
 
-    public static function getCss($moduleName) {
+    public static function getCss($moduleName)
+    {
         if (self::isInDebug()) {
             $paths = self::getElementAssets("theme", "dev");
         } else {
@@ -168,6 +183,4 @@ class UIGetAssetPath
         }
         return $paths[$moduleName]["css"];
     }
-
-
 }

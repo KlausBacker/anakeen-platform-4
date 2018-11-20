@@ -18,7 +18,7 @@ class TransitionView extends WorkflowState
      */
     protected $workflow;
     /**
-     * @var \Anakeen\Core\Internal\FormatCollection 
+     * @var \Anakeen\Core\Internal\FormatCollection
      */
     protected $formatCollection;
     

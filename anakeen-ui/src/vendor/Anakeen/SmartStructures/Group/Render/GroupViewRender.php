@@ -21,5 +21,4 @@ class GroupViewRender extends DefaultConfigViewRender
         );
         return $options;
     }
-
 }

@@ -111,25 +111,3 @@ class ItemMenu extends ElementMenu implements \JsonSerializable
         return $json;
     }
 }
-
-class MenuConfirmOptions extends MenuTargetOptions
-{
-    public $confirmButton = null;
-    public $cancelButton = null;
-    
-    public function __construct()
-    {
-        $this->cancelButton = ___("Cancel", "UiMenu");
-        $this->confirmButton = ___("Confirm", "UiMenu");
-    }
-}
-class MenuTargetOptions
-{
-    /**
-     * @var string title of window
-     */
-    public $title = null;
-    public $windowWidth = "300px";
-    public $windowHeight = "200px";
-    public $modal = false;
-}

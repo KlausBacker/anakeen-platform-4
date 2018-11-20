@@ -6,8 +6,6 @@
 
 namespace Dcp\Ui;
 
-
-
 class HtmlLinkOptions
 {
     public function __construct($url = null)

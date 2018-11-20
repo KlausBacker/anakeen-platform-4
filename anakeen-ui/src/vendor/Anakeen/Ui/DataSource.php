@@ -3,7 +3,6 @@
 
 namespace Anakeen\Ui;
 
-
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
@@ -228,12 +227,13 @@ class DataSource extends DocumentList
                         return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->smartElement);
                     case "S":
                         $famId = $this->smartElement->getRawValue("se_famid");
-                        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy,
-                            SmartElementManager::getFamily($famId));
+                        return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy(
+                            $orderBy,
+                            SmartElementManager::getFamily($famId)
+                        );
                     default:
                         return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy);
                 }
-
             }
         } else {
             if (!empty($this->sort)) {

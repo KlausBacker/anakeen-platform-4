@@ -34,5 +34,4 @@ class ReportViewRender extends SearchViewRender
         $css["ankcomponent"]= \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents();
         return $css;
     }
-
 }

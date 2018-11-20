@@ -35,10 +35,12 @@ class CVDocConstraint
         return "";
     }
 
-    public static function isARenderConfig($className) {
-        return self::cvIsA($className,  IRenderConfig::class);
+    public static function isARenderConfig($className)
+    {
+        return self::cvIsA($className, IRenderConfig::class);
     }
-    public static function isARenderAccess($className) {
-        return self::cvIsA($className,  IRenderConfigAccess::class);
+    public static function isARenderAccess($className)
+    {
+        return self::cvIsA($className, IRenderConfigAccess::class);
     }
 }

@@ -155,7 +155,7 @@ class Operators
             "gt" => [
                 "label" => ___("Is greater than", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("Is after than","grid-component" )
+                    "date"=>___("Is after than", "grid-component")
                 ],
                 "operands" => [":field", ":value"],
                 "type" => [
@@ -171,7 +171,7 @@ class Operators
             "gte" => [
                 "label" => ___("Is greater than or equal to", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("Is after than or equal to","grid-component" )
+                    "date"=>___("Is after than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", IsGreater::EQUAL],
                 "type" => [
@@ -189,7 +189,7 @@ class Operators
             "gt*" => [
                 "label" => ___("One of values is greater than or equal to", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("One of values is after than or equal to","grid-component" )
+                    "date"=>___("One of values is after than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneGreaterThan::EQUAL],
                 "type" => [
@@ -206,7 +206,7 @@ class Operators
             "gt**" => [
                 "label" => ___("Any values is greater than or equal to", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("Any values is after than or equal to","grid-component" )
+                    "date"=>___("Any values is after than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneGreaterThan::EQUAL | OneGreaterThan::ALL],
                 "type" => [
@@ -223,7 +223,7 @@ class Operators
             "lt" => [
                 "label" => ___("Is lesser than", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("Is earlier than","grid-component" )
+                    "date"=>___("Is earlier than", "grid-component")
                 ],
                 "operands" => [":field", ":value"],
                 "type" => [
@@ -239,7 +239,7 @@ class Operators
             "lte" => [
                 "label" => ___("Is lesser than or equal to", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("Is earlier than or equal to","grid-component" )
+                    "date"=>___("Is earlier than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", IsLesser::EQUAL],
                 "type" => [
@@ -257,7 +257,7 @@ class Operators
             "lt*" => [
                 "label" => ___("One of values is lesser than or equal to", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("One of values is earlier than or equal to","grid-component" )
+                    "date"=>___("One of values is earlier than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneLesserThan::EQUAL],
                 "type" => [
@@ -274,7 +274,7 @@ class Operators
             "lt**" => [
                 "label" => ___("Any values is lesser than or equal to", "grid-component"),
                 "typedLabels"=> [
-                    "date"=>___("Any values is earlier than or equal to","grid-component" )
+                    "date"=>___("Any values is earlier than or equal to", "grid-component")
                 ],
                 "operands" => [":field", ":value", OneLesserThan::EQUAL | OneLesserThan::ALL],
                 "type" => [
@@ -425,7 +425,6 @@ class Operators
             }
         }
         return $typeOperators;
-
     }
 
 
@@ -454,7 +453,6 @@ class Operators
              */
             $filterObject = new $class(...$operandsValue);
             return $filterObject;
-
         }
         return null;
     }

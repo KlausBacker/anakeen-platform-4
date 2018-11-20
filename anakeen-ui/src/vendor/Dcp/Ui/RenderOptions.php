@@ -452,7 +452,8 @@ class RenderOptions implements \JsonSerializable
      */
     public function setAttributeScopeOption($attrId, $optName, $optValue)
     {
-        $this->options["attributes"][$attrId][$optName] = $optValue;;
+        $this->options["attributes"][$attrId][$optName] = $optValue;
+        ;
     }
     /**
      * Apply option to a specific scope
@@ -502,9 +503,9 @@ class RenderOptions implements \JsonSerializable
     public function setOption(BaseRenderOptions $opt)
     {
         if ($opt->getScope()) {
-            $this->setAttributeScopeOption($opt->getScope() , $opt->getLocalOptionName() , $opt->getLocalOptionValue());
+            $this->setAttributeScopeOption($opt->getScope(), $opt->getLocalOptionName(), $opt->getLocalOptionValue());
         } else {
-            $this->setAttributeTypeOption($opt::type, $opt->getLocalOptionName() , $opt->getLocalOptionValue());
+            $this->setAttributeTypeOption($opt::type, $opt->getLocalOptionName(), $opt->getLocalOptionValue());
         }
     }
     /**
@@ -531,4 +532,3 @@ class RenderOptions implements \JsonSerializable
         return $this->options;
     }
 }
-

@@ -9,6 +9,7 @@ namespace Anakeen\SmartStructures\Helppage\Render;
 use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Helppage as myAttributes;
+
 class HelppageEditRender extends \Dcp\Ui\DefaultEdit
 {
     /**

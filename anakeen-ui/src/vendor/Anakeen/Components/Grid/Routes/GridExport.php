@@ -18,7 +18,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
  * @package Anakeen\Components\Grid\Routes
  * @note use by route /api/v2/grid/export/{collectionId}
  */
-class GridExport extends GridContent {
+class GridExport extends GridContent
+{
 
     protected $clientColumnsConfig = [];
     protected $selectedRows = [];
@@ -48,7 +49,8 @@ class GridExport extends GridContent {
         }
     }
 
-    protected function doExport(\Slim\Http\request $request, \Slim\Http\response $response, $args) {
+    protected function doExport(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    {
         $this->clientColumnsConfig = $request->getQueryParam("columnsConfig", []);
         $this->selectedRows = $request->getQueryParam("selectedRows", []);
         $this->unselectedRows = $request->getQueryParam("unselectedRows", []);
@@ -75,7 +77,8 @@ class GridExport extends GridContent {
         }
     }
 
-    private function writeHeaders(Worksheet $sheet) {
+    private function writeHeaders(Worksheet $sheet)
+    {
         $styleArray = [
             'font' => [
                 'bold' => true,
@@ -98,10 +101,11 @@ class GridExport extends GridContent {
             return $config["title"];
         }, $this->clientColumnsConfig);
 
-        $sheet->fromArray($columnsNames, NULL, "A1");
+        $sheet->fromArray($columnsNames, null, "A1");
     }
 
-    private function getFieldConfig($fieldId) {
+    private function getFieldConfig($fieldId)
+    {
         if (!empty($this->clientColumnsConfig)) {
             $fieldConfig = array_filter($this->clientColumnsConfig, function ($config) use ($fieldId) {
                 return $config["field"] === $fieldId;
@@ -113,12 +117,13 @@ class GridExport extends GridContent {
         return null;
     }
 
-    private function writeValues(Worksheet $sheet, $values) {
+    private function writeValues(Worksheet $sheet, $values)
+    {
         $rowIndex = 2;
         $defaultHeight = 20.0;
         $totalValues = count($values);
         $modulo = intval($totalValues/100) || 1;
-        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder() );
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         TransactionManager::updateProgression($this->transactionId, [
             "exportedRows" => 0,
             "totalRows" => $totalValues
@@ -135,13 +140,13 @@ class GridExport extends GridContent {
                 if ($fieldType === "attributes") {
                     if (is_object($datum[$fieldType][$fieldId])) {
                         $row[] = $this->getCellFieldValue($datum[$fieldType][$fieldId], $fieldConfig);
-                    } else if (is_array($datum[$fieldType][$fieldId])) {
+                    } elseif (is_array($datum[$fieldType][$fieldId])) {
                         if (count($datum[$fieldType][$fieldId]) > $maxHeightCoeff) {
                             $maxHeightCoeff = count($datum[$fieldType][$fieldId]);
                         }
                         $row[] = implode("\n", array_map(function ($item) use ($fieldConfig) {
                             return $this->getCellFieldValue($item, $fieldConfig);
-                        },$datum[$fieldType][$fieldId]));
+                        }, $datum[$fieldType][$fieldId]));
                     }
                 } else {
                     $row[] = $this->getCellPropertyValue($datum[$fieldType][$fieldId], $fieldId);
@@ -154,7 +159,7 @@ class GridExport extends GridContent {
                 $columnIndex++;
             }
             $sheet->getRowDimension($rowIndex)->setRowHeight(($maxHeightCoeff * $defaultHeight));
-            $sheet->fromArray($row, NULL, "A".$rowIndex++);
+            $sheet->fromArray($row, null, "A".$rowIndex++);
 
             if (($rowIndex - 2) % $modulo === 0) {
                 TransactionManager::updateProgression($this->transactionId, [
@@ -165,7 +170,8 @@ class GridExport extends GridContent {
         }
     }
 
-    private function getCellPropertyValue($data, $propId) {
+    private function getCellPropertyValue($data, $propId)
+    {
         if (is_array($data)) {
             switch ($propId) {
                 case "cdate":
@@ -178,7 +184,8 @@ class GridExport extends GridContent {
         return $data;
     }
 
-    private function getCellFieldValue($data, $dataConfig) {
+    private function getCellFieldValue($data, $dataConfig)
+    {
         switch ($dataConfig["smartType"]) {
             case "date":
             case "int":
@@ -191,7 +198,8 @@ class GridExport extends GridContent {
         }
     }
 
-    private function setCellFormat(Worksheet $sheet, $cellCoordinate, $format) {
+    private function setCellFormat(Worksheet $sheet, $cellCoordinate, $format)
+    {
         switch ($format) {
             case "date":
                 $sheet->getStyle($cellCoordinate)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_YYYYMMDDSLASH);
@@ -203,7 +211,8 @@ class GridExport extends GridContent {
         }
     }
 
-    private function writeFile(Spreadsheet $spreadsheet) {
+    private function writeFile(Spreadsheet $spreadsheet)
+    {
         $writer = new Xlsx($spreadsheet);
         $writer->save('export.xlsx');
     }
@@ -230,6 +239,4 @@ class GridExport extends GridContent {
 
         return $response->write(file_get_contents($filePath));
     }
-
-
 }

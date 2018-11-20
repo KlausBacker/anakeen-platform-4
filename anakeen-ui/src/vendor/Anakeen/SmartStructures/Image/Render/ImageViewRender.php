@@ -5,6 +5,7 @@
 */
 
 namespace Anakeen\SmartStructures\Image\Render;
+
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\RenderOptions;
 use \SmartStructure\Fields\Image as myAttributes;

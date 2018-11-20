@@ -1,7 +1,8 @@
 <?php
 namespace Dcp\Ui;
 
-trait TFormatRenderOption {
+trait TFormatRenderOption
+{
 
     /**
      * Format use to decorate string

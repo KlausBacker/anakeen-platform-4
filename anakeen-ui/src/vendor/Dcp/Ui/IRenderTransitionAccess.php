@@ -6,7 +6,8 @@
 
 namespace Dcp\Ui;
 
-interface IRenderTransitionAccess {
+interface IRenderTransitionAccess
+{
     /**
      * Get Transition Render object to configure transition render
      *

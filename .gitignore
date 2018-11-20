@@ -2,7 +2,7 @@
 *.webinst
 *~
 *#
-localpub/
+ide/vendor/
 node_modules/
 tmpot/
 anakeen-ui/src/public/login/dist/

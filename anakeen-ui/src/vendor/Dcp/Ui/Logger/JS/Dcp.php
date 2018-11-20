@@ -8,18 +8,19 @@
 
 namespace Dcp\Ui\Logger\JS;
 
+class Dcp extends Logger
+{
 
-class Dcp extends Logger {
-
-    public function __construct() {
+    public function __construct()
+    {
         $this->logger = new \Log(false, "CLIENT", "JS");
     }
 
-    public function writeError($message, $context, $stack) {
+    public function writeError($message, $context, $stack)
+    {
         $stack = preg_replace('!\s+!', ' ', $stack);
         $logMessage = sprintf("## Message : %s ## Context : %s ## Stack : %s", $message, $context, $stack);
         $this->logger->error($logMessage);
         error_log($logMessage);
     }
-
-} 
+}

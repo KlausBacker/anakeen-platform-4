@@ -59,9 +59,8 @@ class ReportEditRender extends SearchEditRender
             ]
         ));
         $options->int(myAttr::rep_limit)->setInputTooltip(xml_entity_encode(
-           ___("Number maximum of displayed elements", "smart report")
+            ___("Number maximum of displayed elements", "smart report")
         ));
         return $options;
     }
-
 }

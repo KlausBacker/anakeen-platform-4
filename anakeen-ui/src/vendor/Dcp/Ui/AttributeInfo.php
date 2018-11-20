@@ -256,12 +256,10 @@ class AttributeInfo implements \JsonSerializable
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
-        return array_filter(get_object_vars($this) , function ($v)
-        {
+        return array_filter(get_object_vars($this), function ($v) {
             return ($v !== null);
         });
     }
 }
-
