@@ -702,7 +702,7 @@ class DocHtmlFormat
 
         $tval = array();
         foreach ($ta as $k => $v) {
-            if (($v->mvisibility == "H") || ($v->mvisibility == "I") || ($v->mvisibility == "O")) {
+            if ($v->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS ) {
                 continue;
             }
             $talabel[] = array(
@@ -743,7 +743,8 @@ class DocHtmlFormat
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $va
                  */
                 foreach ($ta as $ka => $va) {
-                    if (($va->mvisibility == "H") || ($va->mvisibility == "I") || ($va->mvisibility == "O")) {
+
+                    if ($va->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS ) {
                         continue;
                     }
                     if (isset($tval[$ka][$k])) {
@@ -950,7 +951,6 @@ class DocHtmlFormat
      */
     public function formatOption($kvalue, $avalue)
     {
-        global $action;
         $lay = new Layout("FDL/Layout/viewdocoption.xml");
         $htmlval = "";
 

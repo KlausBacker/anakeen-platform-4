@@ -182,7 +182,7 @@ class Message
     {
         $tos=[];
         foreach ($tAddresses as $to) {
-            if ($to->address) {
+            if ($to && $to->address) {
                 if ($to->name) {
                     $tos[] = sprintf('"%s" <%s>', str_replace('"', ' ', $to->name), $to->address);
                 } else {

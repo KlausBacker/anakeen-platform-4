@@ -6,14 +6,14 @@
 /**
  * to record timer attached to documents
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: Class.DocTimer.php,v 1.7 2009/01/07 18:04:27 eric Exp $
  * @package FDL
  */
+
 /**
  */
-
-class DocTimer extends DbObj
+class DocTimer extends \Anakeen\Core\Internal\DbObj
 {
     public $fields = array(
         "timerid", // timer id
@@ -29,12 +29,12 @@ class DocTimer extends DbObj
         "actions", // actions to execute
         "result"
         // result text
-        
+
     );
     public $sup_fields = array(
         "id"
     ); // not be in fields auto computed
-    
+
     /**
      * identifier of timer
      * @public int
@@ -95,9 +95,9 @@ class DocTimer extends DbObj
     public $id_fields = array(
         "id"
     );
-    
+
     public $dbtable = "doctimer";
-    
+
     public $sqlcreate = "
 create table doctimer ( id serial,
                    timerid int not null,                  
@@ -113,27 +113,13 @@ create table doctimer ( id serial,
                    actions text,
                    result text  );
 ";
-    
-    public function preInsert()
-    {
-        $docid = intval($this->docid);
-        $timerid = intval($this->timerid);
-        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-        $q->addQuery("docid=$docid");
-        $q->addQuery("tododate is not null");
-        $q->addQuery("timerid=$timerid");
-        $c = $q->count();
-        
-        if ($c > 0) {
-            return _("timer already set");
-        }
-        return "";
-    }
+
+
     /**
      * delete all timers which comes from same origin
-     * @param int $docid initial doc identifier to detach
+     * @param int $docid    initial doc identifier to detach
      * @param int $originid initial origin id
-     * @param int &$c count of deletion
+     * @param int &$c       count of deletion
      * @return string error - empty if no error -
      */
     public function unattachFromOrigin($docid, $originid, &$c = 0)
@@ -141,11 +127,11 @@ create table doctimer ( id serial,
         $docid = intval($docid);
         $originid = intval($originid);
         $err = "";
-        if ($docid == 0) {
+        if ($docid === 0) {
             $err = _("cannot detach : document id is not set");
         }
-        if ($originid == 0) {
-            $err.= _("cannot detach : origin id is not set");
+        if ($originid === 0) {
+            $err .= _("cannot detach : origin id is not set");
         }
         if ($err == "") {
             $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
@@ -153,37 +139,39 @@ create table doctimer ( id serial,
             $q->addQuery("tododate is not null");
             $q->addQuery("originid=$originid");
             $c = $q->count();
-            
+
             $err = $this->query("delete from doctimer where docid=$docid and originid=$originid and tododate is not null");
         }
         return $err;
     }
+
     /**
      * delete all timers for a document
      * @param int $docid initial doc identifier to detach
-     * @param int &$c count of deletion
+     * @param int &$c    count of deletion
      * @return string error - empty if no error -
      */
     public function unattachAll($docid, &$c)
     {
         $docid = intval($docid);
         $err = "";
-        if ($docid == 0) {
+        if ($docid === 0) {
             $err = _("cannot detach : document id is not set");
         }
-        if ($err == "") {
+        if ($err === "") {
             $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
             $q->addQuery("docid=$docid");
             $q->addQuery("tododate is not null");
             $c = $q->count();
-            
+
             $err = $this->query("delete from doctimer where docid=$docid and tododate is not null");
         }
         return $err;
     }
+
     /**
      * delete a specific timer for a document
-     * @param int $docid initial doc identifier to detach
+     * @param int $docid   initial doc identifier to detach
      * @param int $timerid timerc identifier to detach
      * @return string error - empty if no error -
      */
@@ -203,13 +191,14 @@ create table doctimer ( id serial,
         }
         return $err;
     }
+
     /**
      * get all actions need to be executed now
      */
     public function getActionsToExecute()
     {
         $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-        $q->addQuery("tododate is not null");
+        $q->addQuery("donedate is null");
         $q->addQuery("tododate < now()");
         $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "FDL_TIMERHOURLIMIT", 2);
         if ((int)$timerhourlimit <= 0) {
@@ -222,7 +211,7 @@ create table doctimer ( id serial,
         }
         return array();
     }
-    
+
     public function executeTimerNow()
     {
         $timer = \Anakeen\Core\SEManager::getDocument($this->timerid);
@@ -232,30 +221,11 @@ create table doctimer ( id serial,
         if (!$timer || !$timer->isAlive()) {
             return sprintf(_("cannot execute timer : timer %s is not found"), $this->timerid);
         }
-        
-        $err = $timer->executeLevel($this->level, $this->docid, $msg, $gonextlevel);
-        if ($gonextlevel) {
-            $yetalivetimer = new DocTimer($this->dbaccess, $this->id);
-            if ($yetalivetimer->isAffected()) {
-                $this->donedate = $timer->getTimeDate();
-                $this->tododate = "";
-                $this->result = $msg;
-                $err = $this->modify();
-                $this->id = "";
-                $this->level++;
-                $acts = $timer->getPrevisions($this->referencedate ? $this->referencedate : $this->attachdate, false, $this->level, 1);
-                if (count($acts) == 1) {
-                    $act = current($acts);
-                    if ($act["execdate"]) {
-                        $this->donedate = '';
-                        $this->result = '';
-                        $this->tododate = $act["execdate"];
-                        $this->actions = serialize($act["actions"]);
-                        $err = $this->add();
-                    }
-                }
-            }
-        }
+        $err = $timer->executeTask(unserialize($this->actions), $this->docid, $msg);
+        $this->donedate = date('Y-m-d H:i:s');
+        $this->result = $msg;
+        $err .= $this->modify();
+
         return $err;
     }
 }

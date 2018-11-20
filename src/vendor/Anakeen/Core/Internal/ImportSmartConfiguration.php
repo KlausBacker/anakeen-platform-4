@@ -233,7 +233,7 @@ class ImportSmartConfiguration
                 $prfType = "PDOC";
             }
             $dbName=SEManager::getIdFromName($prfName);
-            if (! $dbName) {
+            if (! $dbName || $prfDynamic) {
                 $this->profilElements[] = ["ORDER", $prfType, "", "", "ba_title", "ba_desc", "dpdoc_famid"];
                 $this->profilElements[] = ["DOC", $prfType, $prfName, "-", $prfLabel, $prfDEsc, $prfDynamic];
             }

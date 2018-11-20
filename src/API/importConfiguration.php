@@ -47,36 +47,55 @@ if ($logfile) {
     }
 }
 
-$oImport = new \Anakeen\Core\Internal\ImportSmartConfiguration();
+
+$hasWorkflow=class_exists(\Anakeen\Workflow\ImportWorkflowConfiguration::class);
+$hasUi=class_exists(\Anakeen\Ui\ImportRenderConfiguration::class);
+
+if ($hasUi) {
+    if ($hasWorkflow) {
+        $oImport = new \Anakeen\Workflow\ImportWorkflowConfiguration();
+    } else {
+        $oImport = new \Anakeen\Ui\ImportRenderConfiguration();
+    }
+} else {
+    $oImport = new \Anakeen\Core\Internal\ImportSmartConfiguration();
+}
+
+
 $oImport->setOnlyAnalyze($analyze !== "no");
 $oImport->setVerbose($debug);
 
 $point = "IMPCFG";
 \Anakeen\Core\DbManager::savePoint($point);
 
-$hasUi=class_exists(\Anakeen\Ui\ImportRenderConfiguration::class);
-if ($hasUi) {
-    $oUiImportData = new \Anakeen\Ui\ImportRenderConfiguration();
-    $oUiImportData->setOnlyAnalyze($analyze !== "no");
-    $oUiImportData->setVerbose($debug);
-}
 
 foreach ($configFiles as $configFile) {
     if ($verbose) {
         printf("Importing config \"%s\".\n", $configFile);
     }
     if ($hasUi) {
-        $oUiImportData->importData($configFile);
+        $oImport->importData($configFile);
     }
 
+    if ($oImport->getErrorMessage()) {
+        break;
+    }
     $oImport->import($configFile);
+
+    if ($oImport->getErrorMessage()) {
+        break;
+    }
+
+    if ($hasUi) {
+        $oImport->importRender($configFile);
+    }
     if ($oImport->getErrorMessage()) {
         break;
     }
 }
 
 $err = $oImport->getErrorMessage();
-
+/*
 if (!$err && $hasUi === true) {
     $oUiImport = new \Anakeen\Ui\ImportRenderConfiguration();
     $oUiImport->setOnlyAnalyze($analyze !== "no");
@@ -93,6 +112,7 @@ if (!$err && $hasUi === true) {
     }
     $err = $oUiImport->getErrorMessage();
 }
+*/
 if ($err) {
     \Anakeen\Core\DbManager::rollbackPoint($point);
     \Anakeen\Core\ContextManager::exitError($err);
