@@ -38,9 +38,11 @@ class JsonHandler
         
         throw new DecodeException(static::$_messages[json_last_error() ]);
     }
+
     /**
      * @param $value
      * @param int $options
+     * @return string
      */
     public static function encodeForHTML($value, $options = 0)
     {
@@ -65,8 +67,4 @@ class JsonHandler
     {
         return self::decode($json, true);
     }
-}
-
-class DecodeException extends \RuntimeException
-{
 }

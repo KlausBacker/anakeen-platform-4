@@ -3,7 +3,6 @@
 
 namespace Anakeen\Routes\Ui\Transaction;
 
-
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -36,13 +35,14 @@ class Transactions
         }
     }
 
-    public function doTransactionAction($transactionId) {
+    public function doTransactionAction($transactionId)
+    {
         sleep(20);
-        TransactionManager::updateProgression($transactionId,  [
+        TransactionManager::updateProgression($transactionId, [
             "progress" => "Oulà ça fait 20 secondes"
         ]);
         sleep(20);
-        TransactionManager::updateProgression($transactionId,  [
+        TransactionManager::updateProgression($transactionId, [
             "progress" => "Oulà maintenant ça fait 40 secondes"
         ]);
         sleep(5);

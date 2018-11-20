@@ -8,7 +8,6 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
-
 use Anakeen\Components\Grid\Routes\GridConfig;
 use SmartStructure\Fields\Report;
 

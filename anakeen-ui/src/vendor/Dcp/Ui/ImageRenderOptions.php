@@ -43,7 +43,7 @@ class ImageRenderOptions extends FileRenderOptions
     public function setThumbnailSize($size)
     {
         if ($size !== null) {
-            if ( !preg_match("/^x?[0-9]+$/", $size)
+            if (!preg_match("/^x?[0-9]+$/", $size)
                 && !preg_match("/^[0-9]+x[0-9]+[fsc]?$/", $size)
             ) {
                 throw new Exception("UI0212", $size);

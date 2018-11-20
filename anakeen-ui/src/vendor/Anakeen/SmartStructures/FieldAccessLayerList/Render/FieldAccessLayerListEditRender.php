@@ -21,6 +21,4 @@ class FieldAccessLayerListEditRender extends DefaultConfigEditRender
         $options->arrayAttribute()->setRowMinDefault(1);
         return $options;
     }
-
-
 }

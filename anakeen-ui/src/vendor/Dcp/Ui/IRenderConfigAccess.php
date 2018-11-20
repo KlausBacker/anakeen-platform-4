@@ -6,7 +6,8 @@
 
 namespace Dcp\Ui;
 
-interface IRenderConfigAccess {
+interface IRenderConfigAccess
+{
     /**
      * @param string $mode
      * @return IRenderConfig

@@ -28,7 +28,7 @@ class TransitionRender
 
     protected $workflowData;
     /**
-     * @var \Anakeen\Core\Internal\FormatCollection 
+     * @var \Anakeen\Core\Internal\FormatCollection
      */
     protected $formatCollection;
     /**
@@ -92,7 +92,13 @@ class TransitionRender
 
         if (count($askes) > 0) {
             $transitionLabel = isset($transitionId) ? _($transitionId) : ___("Invalid transition", "ddui");
-            $askFrame = new \Anakeen\Core\SmartStructure\FieldSetAttribute(self::parameterFrameAttribute, $this->workflow->id, sprintf(___("Workflow Parameters : %s", "ddui"), $transitionLabel), "W", "N");
+            $askFrame = new \Anakeen\Core\SmartStructure\FieldSetAttribute(
+                self::parameterFrameAttribute,
+                $this->workflow->id,
+                sprintf(___("Workflow Parameters : %s", "ddui"), $transitionLabel),
+                "W",
+                "N"
+            );
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
             $this->workflow->attributes->addAttribute($askFrame);
             foreach ($askes as $ask) {
@@ -112,9 +118,32 @@ class TransitionRender
             }
         }
         if ($addComment) {
-            $frComment = new \Anakeen\Core\SmartStructure\FieldSetAttribute(self::commentFrameAttribute, $this->workflow->id, ___("Workflow Transition Comment", "ddui"), "W", "N");
+            $frComment = new \Anakeen\Core\SmartStructure\FieldSetAttribute(
+                self::commentFrameAttribute,
+                $this->workflow->id,
+                ___("Workflow Transition Comment", "ddui"),
+                "W",
+                "N"
+            );
 
-            $commentAttr = new \Anakeen\Core\SmartStructure\NormalAttribute(self::commentAttribute, $this->workflow->id, ___("Transition Comment", "ddui"), "longtext", "", false, 10, "", "W", false, false, false, $frComment, "", "", "");
+            $commentAttr = new \Anakeen\Core\SmartStructure\NormalAttribute(
+                self::commentAttribute,
+                $this->workflow->id,
+                ___("Transition Comment", "ddui"),
+                "longtext",
+                "",
+                false,
+                10,
+                "",
+                "W",
+                false,
+                false,
+                false,
+                $frComment,
+                "",
+                "",
+                ""
+            );
             $attrData[] = $this->getAttributeInfo($workflow, $frComment);
             $attrData[] = $this->getAttributeInfo($workflow, $commentAttr);
         }

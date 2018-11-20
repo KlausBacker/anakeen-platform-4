@@ -8,7 +8,6 @@
 
 namespace Anakeen\Components\Grid\Routes;
 
-
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Core\SmartStructure;
@@ -49,7 +48,8 @@ class GridConfig
         return ApiV2Response::withData($response, $this->getConfig());
     }
 
-    protected function parseRequestParams(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)  {
+    protected function parseRequestParams(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
+    {
         $this->collectionId = $args["collectionId"];
         $this->collectionDoc = SmartElementManager::getDocument($this->collectionId);
         if (!$this->collectionDoc) {
@@ -63,7 +63,8 @@ class GridConfig
         }
     }
 
-    protected function getConfig() {
+    protected function getConfig()
+    {
         return array(
             "smartFields" => $this->gridFields,
             "footer" => array(),
@@ -73,7 +74,8 @@ class GridConfig
         );
     }
 
-    protected function getUrlFields() {
+    protected function getUrlFields()
+    {
         $filteredAttributes = array_filter($this->gridFields, function ($field) {
             return ($field["type"] !== 'array' && $field["type"] !== 'tab' && $field["type"] !== 'frame' && !$field["abstract"]);
         });

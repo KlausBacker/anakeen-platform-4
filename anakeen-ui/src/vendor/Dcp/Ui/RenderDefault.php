@@ -64,11 +64,13 @@ class RenderDefault implements IRenderConfig
         return $jsRef;
     }
 
-    public function getCoreJs($legacy = false) {
+    public function getCoreJs($legacy = false)
+    {
         return UIGetAssetPath::getJSSmartElementPath($legacy);
     }
 
-    public function getEs5Polyfill() {
+    public function getEs5Polyfill()
+    {
         return UIGetAssetPath::getPolyfill();
     }
 
@@ -384,7 +386,13 @@ class RenderDefault implements IRenderConfig
 
         $item = new SeparatorMenu("EmblemLock", "");
         $item->setHtmlAttribute("class", "menu--left emblem emblem--lock" . ((abs($document->locked) == ContextManager::getCurrentUser()->id) ? " emblem-lock--my" : ""));
-        $item->setHtmlLabel('{{#document.properties.security.lock.lockedBy.id}} <span class="dcpDocument__emblem__lock {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}fa fa-lock"></span>{{/document.properties.security.lock.lockedBy.id}}');
+        $labelClass = "dcpDocument__emblem__lock fa fa-lock";
+        $labelClass .= " {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}";
+        $item->setHtmlLabel(
+            '{{#document.properties.security.lock.lockedBy.id}} 
+<span class="'.$labelClass.'"></span>
+{{/document.properties.security.lock.lockedBy.id}}'
+        );
 
         if ($document->locked == -1) {
             $item->setTooltipLabel(___("Revision", "ddui"), "", false);

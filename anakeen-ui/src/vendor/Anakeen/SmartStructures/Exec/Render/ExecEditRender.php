@@ -16,5 +16,4 @@ class ExecEditRender extends DefaultConfigEditRender
         $options = parent::getOptions($document);
         return $options;
     }
-
 }

@@ -23,4 +23,3 @@ class ErrorCodeDOCLIST
      */
     const DOCLIST0003 = 'Error, the element "%s" is not a family or a collection';
 }
-

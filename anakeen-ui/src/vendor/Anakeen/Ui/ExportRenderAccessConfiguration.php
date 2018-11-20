@@ -70,7 +70,5 @@ class ExportRenderAccessConfiguration extends ExportRenderConfiguration
                 }
             }
         }
-
     }
-
 }

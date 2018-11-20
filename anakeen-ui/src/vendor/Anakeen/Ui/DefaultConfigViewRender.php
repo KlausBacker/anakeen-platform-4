@@ -21,5 +21,4 @@ class DefaultConfigViewRender extends \Dcp\Ui\DefaultView
     {
         return parent::getCssReferences();
     }
-
 }

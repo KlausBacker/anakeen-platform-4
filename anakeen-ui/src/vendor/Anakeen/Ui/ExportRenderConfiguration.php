@@ -67,8 +67,6 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
 
         $this->extractedData[$cvdoc->id] = true;
         return ExportElementConfiguration::getCvdocData($cvdoc->id, true, $this->dom);
-
-
     }
 
     protected function extractMaskData(\SmartStructure\Mask $mask)
@@ -79,7 +77,6 @@ class ExportRenderConfiguration extends \Anakeen\Core\SmartStructure\ExportConfi
         $this->extractedData[$mask->id] = true;
 
         return ExportElementConfiguration::getMaskData($mask->id, $this->dom);
-
     }
 
     protected function celui($name)

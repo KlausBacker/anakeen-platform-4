@@ -6,4 +6,3 @@ class Exception extends \Dcp\Exception
 {
 
 }
-

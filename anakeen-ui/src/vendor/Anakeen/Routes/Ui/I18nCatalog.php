@@ -57,8 +57,7 @@ class I18nCatalog
     protected function getUserLocale()
     {
         if ($this->userLocale === null) {
-
-            $this->userLocale = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde,  "CORE_LANG");
+            $this->userLocale = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
 
             if (empty($this->userLocale)) {
                 $this->userLocale = "fr_FR";

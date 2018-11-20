@@ -20,7 +20,7 @@ class GridContent extends DataSource
         }
         $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . sprintf("grid/content/"));
 
-        if (ContextManager::getParameterValue("Ui",  "MODE_DEBUG")) {
+        if (ContextManager::getParameterValue("Ui", "MODE_DEBUG")) {
             $data["debug"]=$this->_searchDoc->getSearchInfo();
         }
         $data["requestParameters"]["pager"]=array(
@@ -35,7 +35,8 @@ class GridContent extends DataSource
         return $data;
     }
 
-    protected static function formatProperty($propertyValue, $propertyId, SmartElement $smartEl) {
+    protected static function formatProperty($propertyValue, $propertyId, SmartElement $smartEl)
+    {
         $propertyInfo = [];
         switch ($propertyId) {
             case "title":

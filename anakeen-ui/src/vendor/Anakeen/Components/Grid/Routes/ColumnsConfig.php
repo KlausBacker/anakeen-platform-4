@@ -2,7 +2,6 @@
 
 namespace Anakeen\Components\Grid\Routes;
 
-
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
@@ -185,7 +184,7 @@ class ColumnsConfig
         }
 
         $stringsOperators=[];
-        foreach ($operators as $k=>$operator) {
+        foreach ($operators as $k => $operator) {
             if (!empty($operator["typedLabels"])) {
                 $stringsOperators[$k] = $operator["typedLabels"][$type] ?? $operator["label"];
             } else {
