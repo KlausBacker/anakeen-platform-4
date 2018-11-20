@@ -49,6 +49,33 @@ export default {
     },
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");
+    },
+    displayLink(colId) {
+      return dataItem => {
+        if (dataItem[colId] === null || dataItem[colId] === undefined) {
+          return "";
+        }
+        switch (colId) {
+          case "maskId":
+            return `<a data-role="develRouterLink" href="/devel/ui/${
+              this.ssName
+            }/masks/${
+              dataItem[colId]
+            }" style="text-decoration: underline; color: #157EFB">${
+              dataItem[colId]
+            }</a>`;
+          case "cvId":
+            return `<a data-role="develRouterLink" href="/devel/ui/${
+              this.ssName
+            }/control/element/${
+              dataItem[colId]
+            }" style="text-decoration: underline; color: #157EFB">${
+              dataItem[colId]
+            }</a>`;
+          default:
+            break;
+        }
+      };
     }
   }
 };
