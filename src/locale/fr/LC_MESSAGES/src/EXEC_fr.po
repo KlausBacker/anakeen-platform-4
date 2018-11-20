@@ -167,6 +167,12 @@ msgctxt "EXEC"
 msgid "exec_valuevar"
 msgstr "Valeur"
 
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+#, fuzzy
+msgctxt "EXEC"
+msgid "title"
+msgstr "Processus"
+
 #, fuzzy
 #~ msgctxt "EXEC"
 #~ msgid "exec_bgexec"
@@ -286,8 +292,3 @@ msgstr "Valeur"
 #~ msgctxt "EXEC"
 #~ msgid "exec_user"
 #~ msgstr "Exécutant (titre)"
-
-#, fuzzy
-#~ msgctxt "EXEC"
-#~ msgid "title"
-#~ msgstr "Processus"

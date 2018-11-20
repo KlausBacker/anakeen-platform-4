@@ -35,6 +35,12 @@ msgctxt "FILE"
 msgid "fi_titlew"
 msgstr "Titre"
 
+#: vendor/Anakeen/SmartStructures/File/file.struct.xml
+#, fuzzy
+msgctxt "FILE"
+msgid "title"
+msgstr "Fichiers"
+
 #, fuzzy
 #~ msgctxt "FILE"
 #~ msgid "fi_description"
@@ -64,8 +70,3 @@ msgstr "Titre"
 #~ msgctxt "FILE"
 #~ msgid "ft_t_oformat"
 #~ msgstr "Autres"
-
-#, fuzzy
-#~ msgctxt "FILE"
-#~ msgid "title"
-#~ msgstr "Fichiers"

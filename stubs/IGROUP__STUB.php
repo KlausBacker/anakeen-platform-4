@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Igroup
+    class Igroup extends Group
     {
         /**
         * Système

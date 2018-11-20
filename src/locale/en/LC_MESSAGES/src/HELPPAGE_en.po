@@ -71,6 +71,11 @@ msgctxt "HELPPAGE"
 msgid "help_t_sections"
 msgstr "Sections"
 
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "title"
+msgstr "Online help"
+
 #~ msgctxt "HELPPAGE"
 #~ msgid "help_fr_family"
 #~ msgstr "Family parameters"
@@ -86,7 +91,3 @@ msgstr "Sections"
 #~ msgctxt "HELPPAGE"
 #~ msgid "help_t_family"
 #~ msgstr "Languages"
-
-#~ msgctxt "HELPPAGE"
-#~ msgid "title"
-#~ msgstr "Online help"

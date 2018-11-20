@@ -13,6 +13,11 @@ msgstr ""
 
 #: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 msgctxt "MAILTEMPLATE"
+msgid "title"
+msgstr "Mail template"
+
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
 msgid "tmail_attach"
 msgstr "Attachment"
 
@@ -100,10 +105,6 @@ msgstr "With links"
 msgctxt "MAILTEMPLATE"
 msgid "tmail_workflow"
 msgstr "Workflow family"
-
-#~ msgctxt "MAILTEMPLATE"
-#~ msgid "title"
-#~ msgstr "Mail template"
 
 #~ msgctxt "MAILTEMPLATE"
 #~ msgid "tmail_copymode#bcc"

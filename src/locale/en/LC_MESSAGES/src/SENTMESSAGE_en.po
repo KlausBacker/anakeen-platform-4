@@ -81,6 +81,11 @@ msgctxt "SENTMESSAGE"
 msgid "emsg_textbody"
 msgstr "Text"
 
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+msgctxt "SENTMESSAGE"
+msgid "title"
+msgstr "Sent message"
+
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_editcontrol"
 #~ msgstr "Force read-only"
@@ -108,7 +113,3 @@ msgstr "Text"
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_sendtype#to"
 #~ msgstr "To"
-
-#~ msgctxt "SENTMESSAGE"
-#~ msgid "title"
-#~ msgstr "Sent message"

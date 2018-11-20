@@ -96,6 +96,11 @@ msgctxt "SEARCH"
 msgid "se_trash"
 msgstr "In trash"
 
+#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+msgctxt "SEARCH"
+msgid "title"
+msgstr "Search"
+
 #~ msgctxt "SEARCH"
 #~ msgid "gui_color"
 #~ msgstr "Guide color"
@@ -231,7 +236,3 @@ msgstr "In trash"
 #~ msgctxt "SEARCH"
 #~ msgid "se_trash#only"
 #~ msgstr "only"
-
-#~ msgctxt "SEARCH"
-#~ msgid "title"
-#~ msgstr "Search"

@@ -28,9 +28,10 @@ msgstr "Libellé"
 
 #: vendor/Anakeen/SmartStructures/Role/role.struct.xml
 msgctxt "ROLE"
+msgid "title"
+msgstr "Rôle"
+
+#: vendor/Anakeen/SmartStructures/Role/role.struct.xml
+msgctxt "ROLE"
 msgid "us_whatid"
 msgstr "Identifiant système"
-
-#~ msgctxt "ROLE"
-#~ msgid "title"
-#~ msgstr "Rôle"

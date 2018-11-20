@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Report
+    class Report extends Dsearch
     {
         /**
         * Présentation

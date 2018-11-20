@@ -26,6 +26,11 @@ msgctxt "IMAGE"
 msgid "img_title"
 msgstr "Title"
 
+#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
+msgctxt "IMAGE"
+msgid "title"
+msgstr "Picture"
+
 #~ msgctxt "IMAGE"
 #~ msgid "img_catg"
 #~ msgstr "Category"
@@ -45,7 +50,3 @@ msgstr "Title"
 #~ msgctxt "IMAGE"
 #~ msgid "img_fr_char"
 #~ msgstr "Description"
-
-#~ msgctxt "IMAGE"
-#~ msgid "title"
-#~ msgstr "Picture"

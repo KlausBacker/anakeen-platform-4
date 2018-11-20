@@ -82,6 +82,12 @@ msgctxt "DIR"
 msgid "gui_color"
 msgstr "Couleur intercalaire"
 
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#, fuzzy
+msgctxt "DIR"
+msgid "title"
+msgstr "dossier"
+
 #, fuzzy
 #~ msgctxt "DIR"
 #~ msgid "fld_allbut#0"
@@ -156,8 +162,3 @@ msgstr "Couleur intercalaire"
 #~ msgctxt "DIR"
 #~ msgid "gui_sysrss"
 #~ msgstr "Flux RSS système"
-
-#, fuzzy
-#~ msgctxt "DIR"
-#~ msgid "title"
-#~ msgstr "dossier"

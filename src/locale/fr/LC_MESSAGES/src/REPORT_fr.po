@@ -89,6 +89,12 @@ msgctxt "REPORT"
 msgid "rep_tcols"
 msgstr "Colonnes"
 
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#, fuzzy
+msgctxt "REPORT"
+msgid "title"
+msgstr "Rapport"
+
 #, fuzzy
 #~ msgctxt "REPORT"
 #~ msgid "rep_coloreven"
@@ -238,8 +244,3 @@ msgstr "Colonnes"
 #~ msgctxt "REPORT"
 #~ msgid "rep_tcols#ltitle"
 #~ msgstr "Choisir les colonnes du rapport"
-
-#, fuzzy
-#~ msgctxt "REPORT"
-#~ msgid "title"
-#~ msgstr "Rapport"

@@ -14,6 +14,12 @@ msgstr ""
 #: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
+msgid "title"
+msgstr "Modèle de mail"
+
+#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#, fuzzy
+msgctxt "MAILTEMPLATE"
 msgid "tmail_attach"
 msgstr "Attachement"
 
@@ -118,11 +124,6 @@ msgstr "Avec liens"
 msgctxt "MAILTEMPLATE"
 msgid "tmail_workflow"
 msgstr "Famille cycle"
-
-#, fuzzy
-#~ msgctxt "MAILTEMPLATE"
-#~ msgid "title"
-#~ msgstr "Modèle de mail"
 
 #, fuzzy
 #~ msgctxt "MAILTEMPLATE"

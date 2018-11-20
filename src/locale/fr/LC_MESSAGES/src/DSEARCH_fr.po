@@ -83,6 +83,12 @@ msgctxt "DSEARCH"
 msgid "se_typefilter"
 msgstr "Type"
 
+#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#, fuzzy
+msgctxt "DSEARCH"
+msgid "title"
+msgstr "Recherche détaillée"
+
 #, fuzzy
 #~ msgctxt "DSEARCH"
 #~ msgid "se_leftp#no"
@@ -137,8 +143,3 @@ msgstr "Type"
 #~ msgctxt "DSEARCH"
 #~ msgid "se_typefilter#specified"
 #~ msgstr "Spécifié"
-
-#, fuzzy
-#~ msgctxt "DSEARCH"
-#~ msgid "title"
-#~ msgstr "Recherche détaillée"

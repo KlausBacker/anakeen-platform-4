@@ -76,6 +76,11 @@ msgctxt "REPORT"
 msgid "rep_tcols"
 msgstr "Columns"
 
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+msgctxt "REPORT"
+msgid "title"
+msgstr "Report"
+
 #~ msgctxt "REPORT"
 #~ msgid "rep_coloreven"
 #~ msgstr "Even color"
@@ -195,7 +200,3 @@ msgstr "Columns"
 #~ msgctxt "REPORT"
 #~ msgid "rep_tcols#ltitle"
 #~ msgstr "Choose report displayed columns"
-
-#~ msgctxt "REPORT"
-#~ msgid "title"
-#~ msgstr "Report"

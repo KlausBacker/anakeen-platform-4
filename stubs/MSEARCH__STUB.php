@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Msearch
+    class Msearch extends Search
     {
         /**
         * Critère

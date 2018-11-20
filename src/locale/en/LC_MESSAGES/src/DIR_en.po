@@ -71,6 +71,11 @@ msgctxt "DIR"
 msgid "gui_color"
 msgstr "Guide color"
 
+#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+msgctxt "DIR"
+msgid "title"
+msgstr "Directory"
+
 #~ msgctxt "DIR"
 #~ msgid "fld_allbut#0"
 #~ msgstr "All except"
@@ -130,7 +135,3 @@ msgstr "Guide color"
 #~ msgctxt "DIR"
 #~ msgid "gui_sysrss"
 #~ msgstr "Internal RSS"
-
-#~ msgctxt "DIR"
-#~ msgid "title"
-#~ msgstr "Directory"
