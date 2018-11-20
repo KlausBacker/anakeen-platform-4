@@ -8,7 +8,7 @@
                     <div class="ui-infos-card-content-item">
                         <span class="ui-card-content-item-label">Name:</span>
                         <span class="ui-card-content-item-value"><a data-role="develRouterLink"
-                                                                    :href="`/devel/ui/${ssName}/control/${cvdoc.name}`"
+                                                                    :href="`/devel/ui/${ssName}/control/element/${cvdoc.name}`"
                                                                     style="text-decoration: underline; color: #157EFB"> {{cvdoc.name}}</a></span>
                     </div>
                     <div class="ui-infos-card-content-item">

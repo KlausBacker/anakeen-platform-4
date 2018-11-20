@@ -1,7 +1,7 @@
 <template>
     <div class="wfl-infos">
         <span class="wfl-title"><b>Overview</b></span>
-        <object :data="wflGraph" type="image/svg+xml" class="wfl-graph-card"></object>
+        <div v-html="wflGraph"></div>
         <div class="wfl-infos-content">
             <div class="wfl-infos-card">
                 <div class="wfl-infos-card-title">Identification</div>
@@ -17,7 +17,9 @@
                     </div>
                     <div class="wfl-infos-card-content-item">
                         <span class="wfl-card-content-item-label">Smart Structure:</span>
-                        <span class="wfl-card-content-item-value">{{wflData.structure}}</span>
+                        <span class="wfl-card-content-item-value"><a data-role="develRouterLink"
+                                                                     :href="`/devel/smartStructures/${wflData.structure}/infos`"
+                                                                     style="text-decoration: underline; color: #157EFB">{{wflData.structure}}</a></span>
                     </div>
                 </div>
             </div>

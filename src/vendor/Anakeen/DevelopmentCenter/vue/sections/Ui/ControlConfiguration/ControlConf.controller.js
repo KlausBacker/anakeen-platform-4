@@ -41,13 +41,13 @@ export default {
       panes: [
         {
           scrollable: false,
-          collapsible: false,
+          collapsible: true,
           resizable: true,
           size: window.localStorage.getItem("ui.control.conf.content") || "50%"
         },
         {
           scrollable: false,
-          collapsible: false,
+          collapsible: true,
           resizable: true,
           size: "50%"
         }
@@ -74,7 +74,7 @@ export default {
     actionClick(event) {
       event.preventDefault();
       switch (event.data.type) {
-        case "consult": {
+        case "consult":
           this.$router.push({
             name: "Ui::control::element",
             params: {
@@ -83,7 +83,17 @@ export default {
           });
           this.getSelected(event.data.row.name);
           break;
-        }
+        case "permissions":
+          this.$router.push({
+            name: "Ui::control::permissions",
+            params: {
+              seIdentifier: event.data.row.name
+            }
+          });
+          this.getSelected(event.data.row.name);
+          break;
+        default:
+          break;
       }
     }
   }
