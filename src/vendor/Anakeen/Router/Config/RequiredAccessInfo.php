@@ -12,5 +12,4 @@ class RequiredAccessInfo
      * @var string[]
      */
     public $and;
-
 }

@@ -306,7 +306,7 @@ msgstr ""
             // add new entry
             $msgEntry = sprintf(
                 'msgctxt "%s"'."\n".'msgid "%s"' . "\n" . 'msgstr "%s"',
-                str_replace('"', '\\"',$enumName),
+                str_replace('"', '\\"', $enumName),
                 str_replace('"', '\\"', $enumId),
                 str_replace('"', '\\"', $label)
             );

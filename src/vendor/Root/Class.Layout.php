@@ -627,6 +627,4 @@ class Layout
         print "</body></html>\n";
         exit;
     }
-
-
 }

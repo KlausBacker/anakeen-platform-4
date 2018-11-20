@@ -99,4 +99,3 @@ if ($err) {
 } else {
     \Anakeen\Core\DbManager::commitPoint($point);
 }
-

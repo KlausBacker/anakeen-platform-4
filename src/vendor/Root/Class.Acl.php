@@ -157,7 +157,4 @@ create sequence SEQ_ID_ACL;
         }
         return '';
     }
-
-
-
 }

@@ -13,7 +13,6 @@ namespace Anakeen\SmartStructures\Helppage;
 use Anakeen\Core\ContextManager;
 
 class HelpPageHooks extends \Anakeen\SmartElement
-
 {
     /**
      *

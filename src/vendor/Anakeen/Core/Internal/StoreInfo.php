@@ -4,6 +4,7 @@
  * @package FDL
  */
 namespace Anakeen\Core\Internal;
+
 class StoreInfo
 {
     const NO_ERROR = 0;

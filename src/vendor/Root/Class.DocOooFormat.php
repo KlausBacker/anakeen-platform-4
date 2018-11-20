@@ -12,7 +12,7 @@
 class DocOooFormat
 {
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     public $doc = null;
     private $index = -1;

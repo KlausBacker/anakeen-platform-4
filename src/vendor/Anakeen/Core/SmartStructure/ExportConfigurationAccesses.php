@@ -41,7 +41,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
     }
 
 
-    public function extractProfil($part="all")
+    public function extractProfil($part = "all")
     {
         $structConfig=$this->structConfig;
         $access = $this->cel("accesses");
@@ -88,7 +88,6 @@ class ExportConfigurationAccesses extends ExportConfiguration
                 $accessControl = $this->setAccess($this->sst->cfallid);
                 $this->domConfig->appendChild($accessControl);
             }
-
         }
 
         $structConfig->appendChild($access);
@@ -126,7 +125,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
     {
         $fall = SEManager::getDocument($fallid);
         if (! $fall) {
-            $this->setComment(sprintf("Field Access %s not found",$fallid ));
+            $this->setComment(sprintf("Field Access %s not found", $fallid));
             return;
         }
         $layers = $fall->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayerlist::fall_layer);
@@ -149,7 +148,6 @@ class ExportConfigurationAccesses extends ExportConfiguration
                 $tag->appendChild($atag);
             }
             $this->domConfig->appendChild($tag);
-
         }
         foreach ($layers as $kl => $layer) {
             $eLayer = SEManager::getDocument($layer);
@@ -174,6 +172,4 @@ class ExportConfigurationAccesses extends ExportConfiguration
     {
         return ExportElementConfiguration::getAccess($profid, $returns, $this->dom);
     }
-
-
 }

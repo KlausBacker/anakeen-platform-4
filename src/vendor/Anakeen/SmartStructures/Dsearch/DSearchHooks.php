@@ -77,8 +77,19 @@ class DSearchHooks extends \SmartStructure\Search
             }
             $only = "only";
         }
-        $query = DirLib::getSqlSearchDoc($this->dbaccess, $cdirid, $famid, $filters, $distinct, $latest == "yes", $this->getRawValue("se_trash"), false, $level = 2, $join = '',
-            $only);
+        $query = DirLib::getSqlSearchDoc(
+            $this->dbaccess,
+            $cdirid,
+            $famid,
+            $filters,
+            $distinct,
+            $latest == "yes",
+            $this->getRawValue("se_trash"),
+            false,
+            $level = 2,
+            $join = '',
+            $only
+        );
 
         return $query;
     }

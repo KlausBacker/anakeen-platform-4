@@ -149,7 +149,7 @@ function xmlcontent2csv($xmlcontent, &$fcsv)
     foreach ($rows as $k => $row) {
         $cellData = array_map(function ($cell) {
             if ($cell !== '') {
-               return  '"'.str_replace('"', '""', str_replace('\\"', '\\"', $cell)).'"';
+                return  '"'.str_replace('"', '""', str_replace('\\"', '\\"', $cell)).'"';
             } else {
                 return '';
             }

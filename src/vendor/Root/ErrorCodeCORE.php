@@ -4,6 +4,7 @@
  * @package FDL
 */
 namespace {
+
     /**
      * global Error Code
      * @class ErrorCodeCORE
@@ -110,7 +111,5 @@ namespace {
          * @errorCode Try to register another pat for config files
          */
         const CORE0025 = 'Connot register config directory "%s" : this directory not exists';
-
     }
 }
-

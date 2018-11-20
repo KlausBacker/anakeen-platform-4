@@ -185,6 +185,4 @@ class ErrorCodeRoutes
      * @errorCode in route recorded image
      */
     const ROUTES0201 = 'File "%s" is not an image file';
-
-
 }

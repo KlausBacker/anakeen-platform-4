@@ -31,7 +31,7 @@ class HasUserTag extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\SearchDoc $search)
     {
         $search->join("id = docutag(id)");
-        $sql = sprintf("(docutag.uid = %s AND docutag.tag = %s)", pg_escape_literal($this->uid) , pg_escape_literal($this->value));
+        $sql = sprintf("(docutag.uid = %s AND docutag.tag = %s)", pg_escape_literal($this->uid), pg_escape_literal($this->value));
         $search->addFilter($sql);
         return $this;
     }

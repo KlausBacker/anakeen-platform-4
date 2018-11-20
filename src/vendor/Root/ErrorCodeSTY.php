@@ -47,4 +47,3 @@ class ErrorCodeSTY
      */
     const STY0010 = 'cannot copy from origin "%s" to "%s"';
 }
-

@@ -11,7 +11,7 @@ class Glob
      * @param bool   $useBaseNameSort
      * @return array|false
      */
-    public static function glob(string $pattern, $flags = 0, $useBaseNameSort=false)
+    public static function glob(string $pattern, $flags = 0, $useBaseNameSort = false)
     {
         if (stripos($pattern, '**') === false) {
             $files = glob($pattern, $flags);

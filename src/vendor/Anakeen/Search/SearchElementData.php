@@ -3,7 +3,6 @@
 
 namespace Anakeen\Search;
 
-
 class SearchElementData extends SearchElements
 {
     protected $data = [];

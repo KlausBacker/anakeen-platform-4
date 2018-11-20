@@ -56,7 +56,6 @@ function gettitle($dbaccess, $docid)
         "?",
         " "
     ); // suppress
-
 }
 
 /**
@@ -141,7 +140,6 @@ function lmail($dbaccess, $name)
             if ($usw > 0) {
                 $uid = $dest->id;
                 $type = "link"; //$type="link";  // cause it is a bool
-
             } else {
                 $type = "plain"; //$type="plain";
                 $uid = " ";
@@ -684,7 +682,6 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
     $s->overrideViewControl(false);
     $al = $s->search();
     foreach ($al as $account) {
-
         $mail = $account->mail ? (' (' . mb_substr($account->mail, 0, 40) . ')') : '';
         $tr[] = array(
             htmlspecialchars($account->lastname . " " . $account->firstname . $mail),
@@ -713,7 +710,6 @@ function lenum($val, $enum)
     // HERE HERE HERE
     $pattern_val = preg_quote($val, "/");
     foreach ($tenum as $k => $v) {
-
         if (($val == "") || (preg_match("/$pattern_val/i", $v, $reg))) {
             $tr[] = array(
                 $v,
@@ -854,7 +850,6 @@ function lmask($dbaccess, $name, $maskfamid = "")
         $chdoc = $mdoc->GetFromDoc();
         $filter[] = \Anakeen\Core\DbManager::getSqlOrCond($chdoc, "msk_famid");
         //    $filter[]="msk_famid='$maskfamid'"; // when workflow will have attribut to say the compatible families
-
     }
     return lfamily($dbaccess, "MASK", $name, 0, $filter);
 }

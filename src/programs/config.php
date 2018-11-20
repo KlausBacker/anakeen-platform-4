@@ -26,7 +26,6 @@ if ($argv[1] == "--get") {
 
 
 if ($argv[1] == "--set") {
-
     if (count($argv) !== 4) {
         throw new Exception(sprintf("Get Must have only 2 args not %d", count($argv) - 2));
     }

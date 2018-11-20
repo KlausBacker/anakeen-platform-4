@@ -19,14 +19,11 @@ include_once(__DIR__."/Lib.Util.php");
 use Anakeen\Core\SEManager;
 use Anakeen\Core\DbManager;
 
-
-
 /**
  * @deprecated use DbManager::getSqlOrCond
  * @return string
  */
 function GetSqlCond($Table, $column, $integer = false)
-// ------------------------------------------------------
 {
     return DbManager::getSqlOrCond($Table, $column, $integer);
 }
@@ -473,9 +470,9 @@ function getLatestDocIds($dbaccess, $ids)
     $sids = implode($ids, ",");
     $sql
         = sprintf(
-        "SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;",
-        $sids
-    );
+            "SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;",
+            $sids
+        );
     $result = @pg_query($dbid, $sql);
     if ($result) {
         $arr = pg_fetch_all($result);

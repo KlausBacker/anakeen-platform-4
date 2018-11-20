@@ -24,7 +24,7 @@ class Enumerate
     const ORDERBYVALUEOPTION = "label";
     const ORDERBYORDEROPTION = "none";
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $family = null;
     protected $keywordFilter = '';

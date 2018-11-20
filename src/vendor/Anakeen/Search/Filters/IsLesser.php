@@ -56,9 +56,9 @@ class IsLesser extends StandardAttributeFilter implements ElementSearchFilter
     {
         $attr = $this->verifyCompatibility($search);
         if ($attr->isMultiple()) {
-            $search->addFilter(sprintf('%s >%s %s(%s)', pg_escape_literal($this->value) , ($this->EQUAL ? '=' : '') , ($this->ALL ? 'ALL' : 'ANY') , pg_escape_identifier($attr->id)));
+            $search->addFilter(sprintf('%s >%s %s(%s)', pg_escape_literal($this->value), ($this->EQUAL ? '=' : ''), ($this->ALL ? 'ALL' : 'ANY'), pg_escape_identifier($attr->id)));
         } else {
-            $search->addFilter(sprintf('%s >%s %s', pg_escape_literal($this->value) , ($this->EQUAL ? '=' : '') , pg_escape_identifier($attr->id)));
+            $search->addFilter(sprintf('%s >%s %s', pg_escape_literal($this->value), ($this->EQUAL ? '=' : ''), pg_escape_identifier($attr->id)));
         }
         return $this;
     }

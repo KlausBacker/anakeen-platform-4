@@ -3,7 +3,6 @@
 
 namespace Anakeen\Router;
 
-
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Router\Config\RouterInfo;
@@ -100,11 +99,11 @@ class ExportRoutesConfiguration
                 }
             }
         }
-
     }
 
 
-    public function extractRouteAcl($vendor) {
+    public function extractRouteAcl($vendor)
+    {
 
 
         $sql=sprintf("select * from acl where name ~* '^%s::'", $vendor);
@@ -117,7 +116,6 @@ class ExportRoutesConfiguration
          */
         $accessesNodes=[];
         foreach ($acls as $acl) {
-
             if (preg_match("/(.*)::(.*)/", $acl["name"], $reg)) {
                 $accessNode=$this->cel("access");
                 $ns=$reg[1];
@@ -133,7 +131,6 @@ class ExportRoutesConfiguration
                 $accessNode->appendChild($descNode);
             }
         }
-
     }
 
     /**
@@ -141,9 +138,9 @@ class ExportRoutesConfiguration
      * @return string xml content of route list
      * @return string
      */
-    public function toXml() {
+    public function toXml()
+    {
         return $this->dom->saveXML();
-
     }
 
     protected function cel($name)

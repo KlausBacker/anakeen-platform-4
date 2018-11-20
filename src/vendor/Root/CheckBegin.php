@@ -12,7 +12,7 @@ class CheckBegin extends CheckData
     protected $famTitle;
     protected $famName;
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $doc;
     /**
@@ -106,13 +106,13 @@ class CheckBegin extends CheckData
             if ($this->famName == $this->parentName) {
                 $this->addError(ErrorCode::getError('FAM0101', $this->famName));
             } else {
-                $p = \Anakeen\Core\SEManager::getRawDocument( $this->parentName);
+                $p = \Anakeen\Core\SEManager::getRawDocument($this->parentName);
                 if (!$p) {
                     $this->addError(ErrorCode::getError('FAM0100', $this->parentName, $this->famName));
                 } elseif ($p["doctype"] != 'C') {
                     $this->addError(ErrorCode::getError('FAM0104', $this->parentName, $this->famName));
                 } else {
-                    $me = \Anakeen\Core\SEManager::getRawDocument( $this->famName);
+                    $me = \Anakeen\Core\SEManager::getRawDocument($this->famName);
                     if ($me) {
                         $fromId = $me['fromid'];
                         $fromName = \Anakeen\Core\SEManager::getNameFromId($fromId);

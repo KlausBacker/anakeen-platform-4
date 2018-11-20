@@ -3,9 +3,6 @@
 
 namespace Dcp\Style;
 
-
-
-
 class dcpCssConcatParser implements ICssParser
 {
     protected $_srcFiles = null;
@@ -185,4 +182,3 @@ class dcpCssCopyDirectory implements ICssParser
         }
     }
 }
-

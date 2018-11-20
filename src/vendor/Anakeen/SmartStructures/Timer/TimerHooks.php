@@ -14,7 +14,6 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
 
 class TimerHooks extends \Anakeen\SmartElement
-
 {
     private $lineActions;
 

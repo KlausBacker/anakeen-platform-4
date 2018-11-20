@@ -8,6 +8,3 @@ interface IStdio
 
     public function wstart_stderr($msg);
 }
-
-
-

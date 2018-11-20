@@ -16,5 +16,3 @@ class Sample
         $this->weight = $this->count * $weight;
     }
 }
-
-

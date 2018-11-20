@@ -193,7 +193,6 @@ function exportxmlfld(
             if ($flog) {
                 fputs($flog, sprintf("EXPORT DOC OK : <%s> [%d]\n", $doc->getTitle(), $doc->id));
             }
-
         }
     }
 

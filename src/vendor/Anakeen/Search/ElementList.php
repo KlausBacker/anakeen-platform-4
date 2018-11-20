@@ -3,7 +3,6 @@
 
 namespace Anakeen\Search;
 
-
 use Anakeen\Core\Internal\SmartElement;
 
 class ElementList implements \Iterator, \Countable

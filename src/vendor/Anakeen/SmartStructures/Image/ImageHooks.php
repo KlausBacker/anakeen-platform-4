@@ -14,7 +14,6 @@ namespace Anakeen\SmartStructures\Image;
 use Anakeen\SmartHooks;
 
 class ImageHooks extends \Anakeen\SmartElement
-
 {
     public function registerHooks()
     {

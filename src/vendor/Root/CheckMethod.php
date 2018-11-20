@@ -8,7 +8,7 @@ class CheckMethod extends CheckData
 {
     protected $methodFile;
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $doc;
     /**

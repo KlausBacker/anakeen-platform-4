@@ -19,7 +19,6 @@ class MyRouteConfig
                 "routes" => $routeConfig->getFileConfigRoutes(),
                 "middleware" => $routeConfig->getFileConfigMiddlewares()
             ]
-
         );
     }
 }

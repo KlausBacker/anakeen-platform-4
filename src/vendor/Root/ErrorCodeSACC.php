@@ -45,7 +45,4 @@ class ErrorCodeSACC
      * @see SearchAccount::filterFamily()
      */
     const SACC0006 = 'Unknow family "%s" to be use with account search filter';
-
-
 }
-

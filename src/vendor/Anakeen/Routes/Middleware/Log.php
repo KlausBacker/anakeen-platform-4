@@ -33,7 +33,6 @@ class Log
                 $json["duration(ms)"] = $duration;
                 $response = $response->withJson($json);
             }
-
         }
 
         LogManager::warning("Hello", ["duration" => $duration . "ms"]);

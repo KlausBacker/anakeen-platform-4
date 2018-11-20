@@ -2,7 +2,6 @@
 
 namespace Anakeen\Search\Filters;
 
-
 class Contains extends StandardAttributeFilter implements ElementSearchFilter
 {
     const NOT = 1;

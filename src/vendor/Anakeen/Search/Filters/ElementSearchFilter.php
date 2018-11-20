@@ -7,7 +7,8 @@
 
 namespace Anakeen\Search\Filters;
 
-interface ElementSearchFilter {
+interface ElementSearchFilter
+{
     /**
      * Generate sql part
      * @param \SearchDoc $search

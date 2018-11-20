@@ -83,7 +83,8 @@ class ContextParameterManager
      * @param string $name
      * @return string the namespace (empty if not)
      */
-    public static function getNs(string $name) {
+    public static function getNs(string $name)
+    {
         $sql=sprintf("select name from paramdef where name ~ '::%s$'", pg_escape_string($name));
         DbManager::query($sql, $results, true);
         if (count($results) === 1) {

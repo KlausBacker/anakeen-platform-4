@@ -9,7 +9,7 @@ class CheckDefault extends CheckData
     protected $defaultName;
     protected $defaultValue = '';
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $doc;
     /**

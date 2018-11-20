@@ -54,9 +54,9 @@ class Filename extends StandardAttributeFilter implements ElementSearchFilter
             $re = sprintf("E'^[^\\\\|]*\\\\|\\\\d+\\\\|.*%s'", pg_escape_string($value));
         }
         if ($attr->isMultiple()) {
-            $sql = sprintf("%s IS NOT NULL AND %s ~< ANY(%s)", pg_escape_identifier($attr->id) , $re, pg_escape_identifier($attr->id));
+            $sql = sprintf("%s IS NOT NULL AND %s ~< ANY(%s)", pg_escape_identifier($attr->id), $re, pg_escape_identifier($attr->id));
         } else {
-            $sql = sprintf("%s IS NOT NULL AND %s ~ %s", pg_escape_identifier($attr->id) , pg_escape_identifier($attr->id) , $re);
+            $sql = sprintf("%s IS NOT NULL AND %s ~ %s", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $re);
         }
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);

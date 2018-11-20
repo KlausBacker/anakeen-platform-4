@@ -203,7 +203,7 @@ class FamilyAbsoluteOrder
             $tfromid[] = $familyId;
             $childfamilyId = $familyId;
 
-            while ($childfamilyId = MiscDoc::getFamFromId( $childfamilyId)) {
+            while ($childfamilyId = MiscDoc::getFamFromId($childfamilyId)) {
                 $tfromid[] = $childfamilyId;
             }
             $inherits[$familyId] = array_reverse($tfromid);

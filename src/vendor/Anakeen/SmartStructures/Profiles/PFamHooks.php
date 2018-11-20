@@ -10,7 +10,6 @@ namespace Anakeen\SmartStructures\Profiles;
 use Anakeen\SmartHooks;
 
 class PFamHooks extends \Anakeen\Core\Internal\SmartElement
-
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------
@@ -35,5 +34,4 @@ class PFamHooks extends \Anakeen\Core\Internal\SmartElement
             return '';
         });
     }
-
 }

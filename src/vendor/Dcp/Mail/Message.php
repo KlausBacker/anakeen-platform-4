@@ -409,7 +409,7 @@ class Message
             $mail->addBCC($to->address, $to->name);
         }
         $mail->CharSet = "UTF-8";
-        $mail->XMailer = sprintf("Anakeen Platform %s", ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde,  'VERSION'));
+        $mail->XMailer = sprintf("Anakeen Platform %s", ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'VERSION'));
         $mail->MessageID = '<' . strftime("%Y%M%d%H%M%S-", time()) . rand(1, 65535) . "@%s>";
         $mail->MessageID = sprintf('<%s%s@%s>', strftime("%Y%M%d%H%M%S-", time()), rand(1, 65535), $host);
         $mail->Subject = $this->subject;

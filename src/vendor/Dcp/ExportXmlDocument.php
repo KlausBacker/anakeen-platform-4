@@ -250,8 +250,15 @@ class ExportXmlDocument
                             if ($this->writeToFile) {
                                 return sprintf('<%s vid="%s" mime="%s" title="%s">[FILE64:%s]</%s>', $attribute->id, $vid, $mime, $name, $path, $attribute->id);
                             } else {
-                                return sprintf('<%s vid="%s" mime="%s" title="%s">%s</%s>', $attribute->id, $vid, $mime, $name, base64_encode(file_get_contents($path)),
-                                    $attribute->id);
+                                return sprintf(
+                                    '<%s vid="%s" mime="%s" title="%s">%s</%s>',
+                                    $attribute->id,
+                                    $vid,
+                                    $mime,
+                                    $name,
+                                    base64_encode(file_get_contents($path)),
+                                    $attribute->id
+                                );
                             }
                         } else {
                             return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $attribute->id, $vid, $mime, $name, $attribute->id);
@@ -355,9 +362,7 @@ class ExportXmlDocument
                                 }
                             }
                         } else {
-
                             return sprintf('<%s id="%s">%s</%s>', $attribute->id, $v, _("unreferenced document"), $attribute->id);
-
                         }
                     }
                 }
@@ -429,8 +434,13 @@ class ExportXmlDocument
                                 $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
                                 if (is_file($f["path"])) {
                                     if ($this->writeToFile) {
-                                        return sprintf('%s title="%s" src="data:%s;base64,[FILE64:%s]"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]),
-                                            $f["mime_s"], $f["path"]);
+                                        return sprintf(
+                                            '%s title="%s" src="data:%s;base64,[FILE64:%s]"',
+                                            "\n" . $matches[1],
+                                            \Anakeen\Core\Utils\Strings::Unaccent($f["name"]),
+                                            $f["mime_s"],
+                                            $f["path"]
+                                        );
                                     } else {
                                         return sprintf(
                                             '%s title="%s" src="data:%s;base64,%s"',
@@ -441,8 +451,12 @@ class ExportXmlDocument
                                         );
                                     }
                                 } else {
-                                    return sprintf('%s title="%s" src="data:%s;base64,file not found"', "\n" . $matches[1], \Anakeen\Core\Utils\Strings::Unaccent($f["name"]),
-                                        $f["mime_s"]);
+                                    return sprintf(
+                                        '%s title="%s" src="data:%s;base64,file not found"',
+                                        "\n" . $matches[1],
+                                        \Anakeen\Core\Utils\Strings::Unaccent($f["name"]),
+                                        $f["mime_s"]
+                                    );
                                 }
                             },
                             $value

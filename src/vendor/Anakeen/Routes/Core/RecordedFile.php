@@ -43,5 +43,4 @@ class RecordedFile
             $this->extension = $args["extension"];
         }
     }
-
 }

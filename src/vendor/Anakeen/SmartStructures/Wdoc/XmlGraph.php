@@ -3,7 +3,6 @@
 
 namespace Anakeen\SmartStructures\Wdoc;
 
-
 use Anakeen\Core\Utils\Xml;
 use Dcp\Exception;
 
@@ -49,7 +48,6 @@ class XmlGraph
         } else {
             $wfl->attrPrefix = "wfl";
         }
-
     }
 
     protected static function evaluate(\DOMElement $e, $path)

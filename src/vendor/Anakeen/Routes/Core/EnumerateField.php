@@ -74,6 +74,4 @@ class EnumerateField extends Enumerate
         $args["enum"] = $attribute->format;
         return parent::__invoke($request, $response, $args);
     }
-
-
 }

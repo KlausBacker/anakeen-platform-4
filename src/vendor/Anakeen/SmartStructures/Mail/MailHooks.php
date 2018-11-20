@@ -10,7 +10,6 @@
 namespace Anakeen\SmartStructures\Mail;
 
 class MailHooks extends \Anakeen\SmartElement
-
 {
 
 }

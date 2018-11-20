@@ -149,5 +149,3 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
     }
     exit;
 }
-
-

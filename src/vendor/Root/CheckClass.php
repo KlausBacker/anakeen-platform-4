@@ -15,7 +15,7 @@ class CheckClass extends CheckData
      */
     protected $fileName;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $doc;
     protected $disableInheritanceCondition = false;
@@ -116,7 +116,6 @@ class CheckClass extends CheckData
                 }
                 if ($this->disableInheritanceCondition) {
                     $parentClass = \Anakeen\Core\Internal\SmartElement::class;
-
                 }
                 if (!$o->isSubclassOf($parentClass)) {
                     $this->addError(ErrorCode::getError('CLASS0006', $this->className, $this->fileName, $parentClass, $this->doc->name));

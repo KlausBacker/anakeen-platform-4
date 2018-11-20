@@ -28,7 +28,7 @@ class NameEquals extends StandardAttributeFilter implements ElementSearchFilter
      */
     public function addFilter(\SearchDoc $search)
     {
-        $sql = sprintf("%s = %s", pg_escape_identifier("name") , pg_escape_literal($this->value));
+        $sql = sprintf("%s = %s", pg_escape_identifier("name"), pg_escape_literal($this->value));
         $search->addFilter($sql);
         return $this;
     }

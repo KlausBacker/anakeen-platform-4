@@ -16,11 +16,11 @@ class DocumentLocks extends DocumentLock
 {
     protected $baseURL = "documents";
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
 

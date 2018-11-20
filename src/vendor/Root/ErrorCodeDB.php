@@ -139,5 +139,4 @@ class ErrorCodeDB
      * @errorCode pg array syntax error
      */
     const DB0209 = 'malformed postgresql array literal : invalid null char in "%s"';
-
 }
