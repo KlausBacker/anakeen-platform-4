@@ -14,6 +14,7 @@ import Workflows from "../Security/Workflows/Workflows.vue";
 import WorkflowsContent from "../Security/Workflows/WorkflowsContent.vue";
 import WorkflowsRights from "../Security/Workflows/Rights/Rights.vue";
 import WorkflowsAccesses from "../Security/Workflows/Accesses/Accesses.vue";
+import ElementView from "../SmartElements/ElementView/ElementView.vue";
 
 export default {
   label: "Security",
@@ -100,7 +101,22 @@ export default {
       meta: {
         label: "Roles"
       },
-      component: Roles
+      component: Roles,
+      children: [
+        {
+          name: "Security::Roles::element",
+          path: ":seIdentifier",
+          meta: {
+            label: ":seIdentifier"
+          },
+          component: ElementView,
+          props: route => ({
+            initid: route.params.seIdentifier.toString(),
+            viewId: "!defaultConsultation",
+            style: "width: 100%; height: 100%"
+          })
+        }
+      ]
     },
     {
       name: "Security::Workflows",
