@@ -14,7 +14,7 @@
                 <div class="smart-structure-tabs-list-nav">
                     <router-link :to="{name: routeName, params: { [routeParamField]: tab.name || tab.id }}" v-for="(tab, index) in tabs" :key="`tab-${index}`" :class="{'smart-structure-list-item': true}" :title="tab.title">
                         <img class="smart-structure-list-item-icon" :src='tab.icon'/>
-                        <div class="smart-structure-list-item-title">{{tab.name || tab.title}}</div>
+                        <div class="smart-structure-list-item-title">{{tab.name || tab.title}} ({{tab.id}})</div>
                     </router-link>
                 </div>
             </div>

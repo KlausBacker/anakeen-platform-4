@@ -23,6 +23,11 @@
     }
   }
 
+  a[data-role=develRouterLink] {
+    color: #157EFB;
+    text-decoration: underline;
+  }
+
   .smart-elements-view {
     flex: 1;
     display: flex;

@@ -5,7 +5,6 @@
                 <ank-se-grid class="se-grid" :pageSizes="[100, 200, 500]" ref="grid" :urlConfig="urlConfig" filterable="inline"
                              @before-grid-cell-render="cellRender"
                              @action-click="actionClick"
-                             @grid-data-bound="gridDataBound"
                 ></ank-se-grid>
             </div>
             <div>

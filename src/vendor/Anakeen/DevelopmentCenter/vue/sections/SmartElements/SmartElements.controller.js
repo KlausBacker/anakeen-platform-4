@@ -63,27 +63,16 @@ export default {
         if (event.data.columnConfig) {
           switch (event.data.columnConfig.field) {
             case "fromid":
-              event.data.cellRender.text(event.data.cellData.name);
+              event.data.cellRender.html(`
+                <a data-role="develRouterLink" href="/devel/smartStructures/${
+                  event.data.cellData.name
+                }/infos">${event.data.cellData.name}</a>
+              `);
               break;
           }
         }
         if (event.data.rowData.doctype && event.data.rowData.doctype === "C") {
           event.data.cellRender.addClass("structure-type-cell");
-        }
-      }
-    },
-    gridDataBound(event) {
-      if (event.data.kendoWidget.dataSource) {
-        const items = event.data.kendoWidget.dataSource.view().toJSON();
-        if (items.length) {
-          const that = this;
-          this.$(".actionMenu", this.$el).each(function(indexItem) {
-            const kendoMenu = that.$(this).data("kendoMenu");
-            const currentData = items[indexItem];
-            if (currentData.rowData && currentData.rowData.doctype !== "C") {
-              kendoMenu.remove("[data-actiontype=create]");
-            }
-          });
         }
       }
     },
@@ -137,16 +126,6 @@ export default {
               },
               query: {
                 profileId: event.data.row.profid
-              }
-            });
-          }
-          break;
-        case "create":
-          if (event.data.row.doctype === "C") {
-            this.$router.push({
-              name: "SmartElements::CreationView",
-              params: {
-                seIdentifier: event.data.row.name || event.data.row.id
               }
             });
           }

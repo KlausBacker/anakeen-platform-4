@@ -24,7 +24,7 @@
                                 <span class="slider round"></span>
                             </label>
                             <label class="switch-label" for="extendedView">
-                                <span>Show groups and role</span>
+                                <span>Show all</span>
                             </label>
                         </div>
                     </div>

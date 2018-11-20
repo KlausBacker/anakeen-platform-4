@@ -75,7 +75,7 @@ class ProfilesGridConfig extends GridConfig
         $originalConfig["actions"] = [
             "title" => "Actions",
             "actionConfigs" => [
-                [ "action" => "view", "title" => "View"]
+                [ "action" => "view", "title" => "View Permission"]
             ]
         ];
         $originalConfig["footer"] = [];

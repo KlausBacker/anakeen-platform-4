@@ -4,6 +4,7 @@
             <ank-se-grid ref="controlConfGrid"
                          :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/control/config/`"
                          filterable="inline"
+                         :pageSizes="[100, 200, 500]"
                          @action-click="actionClick">
             </ank-se-grid>
         </div>

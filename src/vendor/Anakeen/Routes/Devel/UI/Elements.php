@@ -24,6 +24,7 @@ class Elements extends GridContent
 
     protected function prepareFiltering()
     {
+        $this->_searchDoc->addFilter("doctype <> 'C'");
         if (!empty($this->filter)) {
             // First need flat filters
             $flatFilters = static::getFlatLevelFilters($this->filter);

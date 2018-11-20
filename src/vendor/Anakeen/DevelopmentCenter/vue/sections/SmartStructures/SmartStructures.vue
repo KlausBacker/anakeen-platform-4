@@ -1,6 +1,5 @@
 <template>
     <div class="smart-structure-section">
-        <h3>Smart Structures</h3>
         <ss-list routeName="SmartStructures::name"
                  routeParamField="ssName"
                  position="left"
