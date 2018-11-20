@@ -38,3 +38,20 @@
     }
   }
 }
+
+.se-splitter {
+  height: 100%;
+  width: 100%;
+  .k-pane {
+    display: flex;
+    flex: 1;
+
+    & /deep/ .se-grid {
+      .actionMenu {
+        .k-animation-container {
+          left: -9rem !important;
+        }
+      }
+    }
+  }
+}

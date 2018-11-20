@@ -1,25 +1,26 @@
 <template>
-    <div class="role-parent">
-        <ank-se-grid
-                ref="roleContent"
-                class="role-content"
-                collection="ROLE"
-                :reorderable="true"
-                :pageSizes="[100, 200, 500]"
-                @action-click="selectRole"
-                @grid-ready="setGridOption"
-                @grid-error="onGridError">
-            <ank-se-grid-column title="Title" field="title"></ank-se-grid-column>
-            <ank-se-grid-column title="Reference (login)" field="role_login"></ank-se-grid-column>
-            <ank-se-grid-column title="Logical name" field="name"></ank-se-grid-column>
-            <ank-se-grid-actions>
-                <ank-se-grid-action action="consultRole" title="consult"></ank-se-grid-action>
-            </ank-se-grid-actions>
-        </ank-se-grid>
-        <modal name="roleModal" :width="'80%'" :height="'80%'" @opened="openedModal">
-            <kendo-button @click="$modal.hide('roleModal')" style="float:right" icon="close" ></kendo-button>
-            <ank-smart-element ref="roleConsult" class="role-modal"></ank-smart-element>
-        </modal>
+    <div ref="roleSplitter" class="role-splitter">
+        <div>
+            <ank-se-grid
+                    ref="roleContent"
+                    class="role-content"
+                    collection="ROLE"
+                    :pageSizes="[100,200,500]"
+                    @action-click="selectRole"
+                    @grid-ready="setGridOption"
+                    @grid-error="onGridError">
+                <ank-se-grid-column title="Identification" field="id" hidden="true"></ank-se-grid-column>
+                <ank-se-grid-column title="Title" field="title"></ank-se-grid-column>
+                <ank-se-grid-column title="Reference (login)" field="role_login"></ank-se-grid-column>
+                <ank-se-grid-column title="Logical name" field="name"></ank-se-grid-column>
+                <ank-se-grid-actions>
+                    <ank-se-grid-action action="consultRole" title="consult"></ank-se-grid-action>
+                </ank-se-grid-actions>
+            </ank-se-grid>
+        </div>
+        <div style="display: flex; flex: 1">
+            <router-multi-view style="display:flex; flex: 1"></router-multi-view>
+        </div>
     </div>
 </template>
 <!-- CSS to this component only -->

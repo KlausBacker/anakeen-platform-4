@@ -1,49 +1,41 @@
 import Vue from "vue";
 import { AnkSEGrid } from "@anakeen/ank-components";
-import "@progress/kendo-ui";
-import "@progress/kendo-ui/js/kendo.splitter";
-import { AnkSmartElement } from "@anakeen/ank-components";
+import Splitter from "../../../components/Splitter/Splitter.vue";
 
+Vue.use(Splitter);
 Vue.use(AnkSEGrid);
-Vue.use(AnkSmartElement);
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-smart-element": AnkSmartElement
+    "ank-splitter": Splitter
   },
   props: ["ssName"],
   beforeRouteEnter(to, from, next) {
     if (to.name === "Ui::control::element") {
       next(function(vueInstance) {
+        vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
+          field: "name",
+          operator: "eq",
+          value: to.params.seIdentifier
+        });
         vueInstance.getSelected(to.params.seIdentifier);
       });
     } else {
       next();
     }
   },
-  mounted() {
-    const onContentResize = (part, $split) => {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "ui.control.conf." + part,
-          this.$($split)
-            .data("kendoSplitter")
-            .size(".k-pane:first")
-        );
-      };
-    };
-    this.$(this.$refs.controlConfSplitter).kendoSplitter({
-      orientation: "horizontal",
+  data() {
+    return {
       panes: [
         {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size: window.localStorage.getItem("ui.control.conf.content") || "50%"
+          size:
+            window.localStorage.getItem(
+              "ui.control.conf.content." + this.ssName
+            ) || "50%"
         },
         {
           scrollable: false,
@@ -51,11 +43,31 @@ export default {
           resizable: true,
           size: "50%"
         }
-      ],
-      resize: onContentResize("content", this.$refs.controlConfSplitter)
-    });
+      ]
+    };
+  },
+  mounted() {
+    this.$refs.controlSplitter.$refs.ankSplitter
+      .kendoWidget()
+      .bind(
+        "resize",
+        this.onContentResize(
+          this.$refs.controlSplitter.$refs.ankSplitter.kendoWidget()
+        )
+      );
   },
   methods: {
+    onContentResize(kendoSplitter) {
+      return () => {
+        window.setTimeout(() => {
+          this.$(window).trigger("resize");
+        }, 100);
+        window.localStorage.setItem(
+          "ui.control.conf.content." + this.ssName,
+          kendoSplitter.size(".k-pane:first")
+        );
+      };
+    },
     getSelected(e) {
       if (e !== "") {
         if (this.$refs.controlConfGrid.kendoGrid) {

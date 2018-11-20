@@ -1,17 +1,17 @@
 <template>
     <div class="smart-elements-section">
-        <kendo-splitter ref="splitter" orientation="horizontal" style="height:100%" :panes="panes">
-            <div>
-                <ank-se-grid class="se-grid" :pageSizes="[100, 200, 500]" ref="grid" :urlConfig="urlConfig" filterable="inline"
+        <ank-splitter ref="splitter" class="se-splitter" :panes="panes">
+            <template slot="left">
+                <ank-se-grid class="se-grid" :pageSizes="[100, 200, 500]" ref="grid" :urlConfig="urlConfig"
+                             filterable="inline"
                              @before-grid-cell-render="cellRender"
-                             @action-click="actionClick"
-                ></ank-se-grid>
-            </div>
-            <div>
+                             @action-click="actionClick">
+                </ank-se-grid>
+            </template>
+            <template slot="right">
                 <router-multi-view class="smart-elements-view"></router-multi-view>
-            </div>
-        </kendo-splitter>
-
+            </template>
+        </ank-splitter>
     </div>
 </template>
 <!-- CSS to this component only -->

@@ -2,8 +2,7 @@ import Vue from "vue";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
-import "@progress/kendo-ui";
-import "@progress/kendo-ui/js/kendo.splitter";
+import Splitter from "../../../components/Splitter/Splitter.vue";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
@@ -11,10 +10,12 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
 Vue.use(ButtonsInstaller);
+Vue.use(Splitter);
 
 export default {
   components: {
-    Grid
+    Grid,
+    "ank-splitter": Splitter
   },
   props: ["wflName"],
   data() {
@@ -25,36 +26,16 @@ export default {
         "volatileTimers",
         "unAttachTimers",
         "persistentTimers"
-      ]
-    };
-  },
-  mounted() {
-    $(window).resize(() => {
-      if (this.$refs.transitionsGridContent) {
-        this.$refs.transitionsGridContent.kendoWidget().resize();
-      }
-    });
-    const onContentResize = (part, $split) => {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "wfl.transition." + part,
-          this.$($split)
-            .data("kendoSplitter")
-            .size(".k-pane:first")
-        );
-      };
-    };
-    this.$(this.$refs.transitionsSplitter).kendoSplitter({
-      orientation: "horizontal",
+      ],
       panes: [
         {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size: window.localStorage.getItem("wfl.transition.content") || "50%"
+          size:
+            window.localStorage.getItem(
+              "wfl.transitions.content." + this.wflName
+            ) || "50%"
         },
         {
           scrollable: false,
@@ -62,11 +43,31 @@ export default {
           resizable: true,
           size: "50%"
         }
-      ],
-      resize: onContentResize("content", this.$refs.transitionsSplitter)
-    });
+      ]
+    };
+  },
+  mounted() {
+    this.$refs.ankSplitter.$refs.ankSplitter
+      .kendoWidget()
+      .bind(
+        "resize",
+        this.onContentResize(
+          this.$refs.ankSplitter.$refs.ankSplitter.kendoWidget()
+        )
+      );
   },
   methods: {
+    onContentResize(kendoSplitter) {
+      return () => {
+        window.setTimeout(() => {
+          this.$(window).trigger("resize");
+        }, 100);
+        window.localStorage.setItem(
+          "wfl.transitions.content." + this.wflName,
+          kendoSplitter.size(".k-pane:first")
+        );
+      };
+    },
     getTransitions(options) {
       this.$http
         .get(`/api/v2/devel/smart/workflows/${this.wflName}`, {

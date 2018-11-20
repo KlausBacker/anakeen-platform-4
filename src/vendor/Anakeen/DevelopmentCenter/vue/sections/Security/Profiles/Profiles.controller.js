@@ -1,19 +1,29 @@
 import Vue from "vue";
-import { Splitter, LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
+import Splitter from "../../../components/Splitter/Splitter.vue";
 import { AnkSEGrid } from "@anakeen/ank-components";
 
-Vue.use(LayoutInstaller);
+Vue.use(Splitter);
 Vue.use(AnkSEGrid);
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "kendo-splitter": Splitter
+    "ank-splitter": Splitter
   },
   data() {
     return {
       panes: [
-        { scrollable: false, collapsible: true },
-        { scrollable: false, collapsible: true }
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: window.localStorage.getItem("profile.content") || "50%"
+        },
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: "50%"
+        }
       ]
     };
   },
@@ -26,7 +36,28 @@ export default {
       next();
     }
   },
+  mounted() {
+    this.$refs.profileSplitter.$refs.ankSplitter
+      .kendoWidget()
+      .bind(
+        "resize",
+        this.onContentResize(
+          this.$refs.profileSplitter.$refs.ankSplitter.kendoWidget()
+        )
+      );
+  },
   methods: {
+    onContentResize(kendoSplitter) {
+      return () => {
+        window.setTimeout(() => {
+          this.$(window).trigger("resize");
+        }, 100);
+        window.localStorage.setItem(
+          "profile.content",
+          kendoSplitter.size(".k-pane:first")
+        );
+      };
+    },
     cellRender(event) {
       if (event.data && event.data.columnConfig) {
         switch (event.data.columnConfig.field) {
