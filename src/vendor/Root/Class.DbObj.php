@@ -7,4 +7,6 @@
  * inherit from this basic Class.
  * @deprecated
  */
-class DbObj extends \Anakeen\Core\Internal\DbObj{}
+class DbObj extends \Anakeen\Core\Internal\DbObj
+{
+}

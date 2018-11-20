@@ -14,7 +14,6 @@
  * @package FDL
  */
 class DocCollection extends \Anakeen\Core\Internal\SmartElement
-
 {
     /**
      * conditionnal operator compatibilities
@@ -370,17 +369,17 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
             if ($of->criteria->operator) {
                 $of->criteria = array(
                 $of->criteria
-            );
+                );
             }
             if ($of->criteria->or) {
                 $of->criteria = array(
                 $of->criteria
-            );
+                );
             }
             if ($of->criteria->and) {
                 $of->criteria = array(
                 $of->criteria
-            );
+                );
             }
         }
         $err = '';

@@ -37,5 +37,4 @@ switch ($todo) {
     case "delete":
         \Anakeen\Router\RouterManager::deleteRouterConfigPath($path);
         break;
-
 }

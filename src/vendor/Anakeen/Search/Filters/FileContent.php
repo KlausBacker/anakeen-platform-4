@@ -2,7 +2,6 @@
 
 namespace Anakeen\Search\Filters;
 
-
 use Anakeen\Core\SmartStructure\NormalAttribute;
 
 class FileContent extends StandardAttributeFilter implements ElementSearchFilter
@@ -66,9 +65,9 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
     {
         $attrVecId = sprintf("%s_vec", $attr->id);
         if ($attr->isMultiple()) {
-            $filter = sprintf("(%s IS NOT NULL) AND (to_tsquery(%s) @@ ANY (%s))", pg_escape_identifier($attrVecId) , pg_escape_literal($value) , pg_escape_identifier($attrVecId));
+            $filter = sprintf("(%s IS NOT NULL) AND (to_tsquery(%s) @@ ANY (%s))", pg_escape_identifier($attrVecId), pg_escape_literal($value), pg_escape_identifier($attrVecId));
         } else {
-            $filter = sprintf("(%s IS NOT NULL) AND (to_tsquery(%s) @@ %s)", pg_escape_identifier($attrVecId) , pg_escape_literal($value) , pg_escape_identifier($attrVecId));
+            $filter = sprintf("(%s IS NOT NULL) AND (to_tsquery(%s) @@ %s)", pg_escape_identifier($attrVecId), pg_escape_literal($value), pg_escape_identifier($attrVecId));
         }
         return $filter;
     }
@@ -84,9 +83,9 @@ class FileContent extends StandardAttributeFilter implements ElementSearchFilter
          * Escape REs with pg_escape_string() instead of pg_escape_literal(), otherwise '\x' characters would work correctly.
         */
         if ($attr->isMultiple()) {
-            $filter = sprintf("(%s IS NOT NULL) AND (E'%s' ~*< ANY (%s))", pg_escape_identifier($attrTxtId) , pg_escape_string($value) , pg_escape_identifier($attrTxtId));
+            $filter = sprintf("(%s IS NOT NULL) AND (E'%s' ~*< ANY (%s))", pg_escape_identifier($attrTxtId), pg_escape_string($value), pg_escape_identifier($attrTxtId));
         } else {
-            $filter = sprintf("(%s IS NOT NULL) AND (%s ~* E'%s')", pg_escape_identifier($attrTxtId) , pg_escape_identifier($attrTxtId) , pg_escape_string($value));
+            $filter = sprintf("(%s IS NOT NULL) AND (%s ~* E'%s')", pg_escape_identifier($attrTxtId), pg_escape_identifier($attrTxtId), pg_escape_string($value));
         }
         return $filter;
     }

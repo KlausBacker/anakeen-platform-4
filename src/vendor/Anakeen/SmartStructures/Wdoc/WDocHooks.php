@@ -1196,6 +1196,5 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     protected function useWorkflowGraph($xmlFilePath)
     {
         XmlGraph::setWorkflowGraph($this, $xmlFilePath);
-
     }
 }

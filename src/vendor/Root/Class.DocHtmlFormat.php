@@ -456,11 +456,23 @@ class DocHtmlFormat
                         } else {
                             $waiting = "<img class=\"mime\" needresize=1 src=\"Images/bullet_error.png\">";
                         }
-                        $htmlval = sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
-                            $this->doc->getFileLink($this->oattr->id, $this->index), $fileInfo->id_file, str_replace("'", "&rsquo;", _("file status")), $waiting, $textval);
+                        $htmlval = sprintf(
+                            '<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
+                            $this->doc->getFileLink($this->oattr->id, $this->index),
+                            $fileInfo->id_file,
+                            str_replace("'", "&rsquo;", _("file status")),
+                            $waiting,
+                            $textval
+                        );
                         if ($fileInfo->teng_state < 0) {
-                            $htmlval .= sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
-                                $this->doc->id, $this->oattr->id, $this->index, _("retry file conversion"), "Images/arrow_refresh.png");
+                            $htmlval .= sprintf(
+                                '<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
+                                $this->doc->id,
+                                $this->oattr->id,
+                                $this->index,
+                                _("retry file conversion"),
+                                "Images/arrow_refresh.png"
+                            );
                         }
                     } else {
                         $htmlval = $textval;
@@ -1203,13 +1215,11 @@ class DocHtmlFormat
             return sprintf("%d %s", $size, n___("unit:byte", "unit:bytes", abs($size)));
         }
         $size = $size / 1000;
-        foreach (
-            array(
+        foreach (array(
                 _("unit:kB"),
                 _("unit:MB"),
                 _("unit:GB")
-            ) as $unit
-        ) {
+            ) as $unit) {
             if (abs($size) < 1000) {
                 return sprintf("%3.2f %s", $size, $unit);
             }

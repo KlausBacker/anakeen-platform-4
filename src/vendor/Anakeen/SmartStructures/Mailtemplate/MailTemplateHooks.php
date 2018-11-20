@@ -20,7 +20,6 @@ use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
 
 class MailTemplateHooks extends \Anakeen\SmartElement
-
 {
     /**
      * always show a user notification
@@ -205,7 +204,6 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                             $vdocid = $udoc->getFamilyParameterValue($aid);
                         } else {
                             $vdocid = $udoc->getRawValue($aid); // for array of users
-
                         }
                         if ($udoc->getAttribute($aid)->isMultiple()) {
                             $tvdoc = Postgres::stringToFlatArray($vdocid);
@@ -235,7 +233,6 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                             }
                         }
                         $mail = implode(",", $tmail);
-
                     }
                     break;
 

@@ -233,10 +233,18 @@ class ExportAccounts
             if ($searchGroups) {
                 // Get tree group information
                 $sql
-                    = sprintf("select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'",
-                    implode(array_map(function ($s) {
-                        return pg_escape_literal($s);
-                    }, $searchGroups), ", "));
+                    = sprintf(
+                        "select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'",
+                        implode(
+                            array_map(
+                                function ($s) {
+                                    return pg_escape_literal($s);
+                                },
+                                $searchGroups
+                            ),
+                            ", "
+                        )
+                    );
                 DbManager::query($sql, $groupTree);
 
                 if ($groupTree) {

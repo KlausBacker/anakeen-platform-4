@@ -22,7 +22,8 @@ class AccountManager
      * @return Account|null
      * @throws \Dcp\Core\Exception
      */
-    public static function getAccount(string $login) {
+    public static function getAccount(string $login)
+    {
         $u= new Account("");
         $u->setLoginName($login);
         if ($u->isAffected()) {

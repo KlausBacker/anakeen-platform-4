@@ -92,4 +92,3 @@ class SampleAccumulator
         unset($sample);
     }
 }
-

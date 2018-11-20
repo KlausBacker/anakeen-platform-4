@@ -52,7 +52,7 @@ class IsGreater extends StandardAttributeFilter implements ElementSearchFilter
     public function addFilter(\SearchDoc $search)
     {
         $attr = $this->verifyCompatibility($search);
-        $search->addFilter(sprintf('%s <%s %s', pg_escape_literal($this->value) , ($this->EQUAL ? '=' : '') , pg_escape_identifier($attr->id)));
+        $search->addFilter(sprintf('%s <%s %s', pg_escape_literal($this->value), ($this->EQUAL ? '=' : ''), pg_escape_identifier($attr->id)));
         return $this;
     }
 }

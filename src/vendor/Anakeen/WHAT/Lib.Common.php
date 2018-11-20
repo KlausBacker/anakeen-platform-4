@@ -225,13 +225,3 @@ function getDbAccessValue($varName)
     }
     return $$varName;
 }
-
-
-
-
-
-
-
-
-
-

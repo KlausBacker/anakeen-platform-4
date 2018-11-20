@@ -144,8 +144,15 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
     public function getQuery()
     {
         if (!$this->isStaticSql()) {
-            $query = $this->computeQuery($this->getRawValue("se_key"), $this->getRawValue("se_famid"), $this->getRawValue("se_latest"), $this->getRawValue("se_case") == "yes",
-                $this->getRawValue("se_idfld"), $this->getRawValue("se_sublevel") === "", $this->getRawValue("se_case") == "full");
+            $query = $this->computeQuery(
+                $this->getRawValue("se_key"),
+                $this->getRawValue("se_famid"),
+                $this->getRawValue("se_latest"),
+                $this->getRawValue("se_case") == "yes",
+                $this->getRawValue("se_idfld"),
+                $this->getRawValue("se_sublevel") === "",
+                $this->getRawValue("se_case") == "full"
+            );
             // print "<HR>getQuery1:[$query]";
         } else {
             $query[] = $this->getRawValue("SE_SQLSELECT");
@@ -187,37 +194,37 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
 
 
             $op = ($sensitive) ? '~' : '~*';
-            if (strtolower(substr($keyword, 0, 5)) == "::get") { // only get method allowed
-                // it's method call
-                $keyword = $this->ApplyMethod($keyword);
-                $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($keyword));
-            } elseif ($keyword != "") {
-                // transform conjonction
-                $tkey = explode(" ", $keyword);
-                $ing = false;
-                $ckey = '';
-                foreach ($tkey as $k => $v) {
-                    if ($ing) {
-                        if ($v[strlen($v) - 1] == '"') {
-                            $ing = false;
-                            $ckey .= " " . substr($v, 0, -1);
-                            $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($ckey));
-                        } else {
-                            $ckey .= " " . $v;
-                        }
-                    } elseif ($v && $v[0] == '"') {
-                        if ($v[strlen($v) - 1] == '"') {
-                            $ckey = substr($v, 1, -1);
-                            $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($ckey));
-                        } else {
-                            $ing = true;
-                            $ckey = substr($v, 1);
-                        }
+        if (strtolower(substr($keyword, 0, 5)) == "::get") { // only get method allowed
+            // it's method call
+            $keyword = $this->ApplyMethod($keyword);
+            $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($keyword));
+        } elseif ($keyword != "") {
+            // transform conjonction
+            $tkey = explode(" ", $keyword);
+            $ing = false;
+            $ckey = '';
+            foreach ($tkey as $k => $v) {
+                if ($ing) {
+                    if ($v[strlen($v) - 1] == '"') {
+                        $ing = false;
+                        $ckey .= " " . substr($v, 0, -1);
+                        $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($ckey));
                     } else {
-                        $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($v));
+                        $ckey .= " " . $v;
                     }
+                } elseif ($v && $v[0] == '"') {
+                    if ($v[strlen($v) - 1] == '"') {
+                        $ckey = substr($v, 1, -1);
+                        $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($ckey));
+                    } else {
+                        $ing = true;
+                        $ckey = substr($v, 1);
+                    }
+                } else {
+                    $filters[] = sprintf("title %s '%s'", $op, pg_escape_string($v));
                 }
             }
+        }
             $this->setValue("se_orderby", " ");
 
         if ($this->getRawValue("se_sysfam") == 'no' && (!$this->getRawValue("se_famid"))) {
@@ -319,8 +326,20 @@ class SearchHooks extends \Anakeen\SmartStructures\Profiles\PSearchHooks
             $uid = 1;
         }
         $orderby = $this->getRawValue("se_orderby", "title");
-        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection($this->dbaccess, $this->initid, 0, "ALL", $filter, $uid, "TABLE", $famid, false, $orderby, true,
-            $this->getRawValue("se_trash"));
+        $tdoc = \Anakeen\SmartStructures\Dir\DirLib::internalGetDocCollection(
+            $this->dbaccess,
+            $this->initid,
+            0,
+            "ALL",
+            $filter,
+            $uid,
+            "TABLE",
+            $famid,
+            false,
+            $orderby,
+            true,
+            $this->getRawValue("se_trash")
+        );
         return $tdoc;
     }
 }

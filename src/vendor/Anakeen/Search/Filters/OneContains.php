@@ -59,7 +59,7 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
          * - http://www.postgresql.org/docs/9.1/static/functions-matching.html#POSIX-METASYNTAX
         */
         $value = '***=' . $value;
-        $sql = sprintf("%s IS NOT NULL AND %s ~%s< %s(%s)", pg_escape_identifier($attr->id) , pg_escape_literal($value) , ($this->NOCASE ? '*' : '') ,($this->ALL ? 'ALL' : 'ANY'), pg_escape_identifier($attr->id));
+        $sql = sprintf("%s IS NOT NULL AND %s ~%s< %s(%s)", pg_escape_identifier($attr->id), pg_escape_literal($value), ($this->NOCASE ? '*' : ''), ($this->ALL ? 'ALL' : 'ANY'), pg_escape_identifier($attr->id));
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }

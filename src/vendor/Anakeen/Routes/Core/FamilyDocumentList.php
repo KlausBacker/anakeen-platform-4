@@ -17,7 +17,7 @@ use Anakeen\Core\Settings;
 class FamilyDocumentList extends DocumentList
 {
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $_family = null;
 

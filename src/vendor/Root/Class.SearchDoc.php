@@ -831,7 +831,7 @@ class SearchDoc
             $fromid = "family";
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
-                $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid,  false);
+                $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid, false);
                 if (empty($this->cacheDocuments[$fromid])) {
                     throw new \Dcp\SearchDoc\Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }
@@ -874,7 +874,7 @@ class SearchDoc
                 }
                 $this->filters[] = $filter;
             }
-        }elseif (is_object($filter)) {
+        } elseif (is_object($filter)) {
             if (!is_a($filter, \Anakeen\Search\Filters\ElementSearchFilter::class)) {
                 throw new \Dcp\SearchDoc\Exception(sprintf("Filter object does not implements \"%s\" interface.", \Anakeen\Search\Filters\ElementSearchFilter::class));
             }

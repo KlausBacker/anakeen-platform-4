@@ -92,4 +92,3 @@ class ErrorCodeAPIDM
      */
     const APIDM0204 = 'Cannot access to document';
 }
-

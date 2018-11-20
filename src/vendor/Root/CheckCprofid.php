@@ -8,7 +8,7 @@ class CheckCprofid extends CheckData
 {
     protected $profilName;
     /**
-     * @var \Anakeen\Core\Internal\SmartElement 
+     * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $doc;
     

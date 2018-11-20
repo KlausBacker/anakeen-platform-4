@@ -339,7 +339,6 @@ class FamilyImport
                             }
                         }
                         if (($repeat == "false") && isset($pa[strtolower($v->frameid)])) {
-
                             if (self::getTypeMain($pa[strtolower($v->frameid)]["type"]) == "array") {
                                 $repeat = "true";
                             }
@@ -448,7 +447,6 @@ class FamilyImport
                             }
                             if ($repeat === "true") {
                                 $attrids[$v->id] .= '[]';
-
                             }
                         }
                 }
@@ -678,7 +676,6 @@ class FamilyImport
                         $tattr[$doctitle]->type = "text";
                     }
                 }
-
             }
 
             $updateView = false;

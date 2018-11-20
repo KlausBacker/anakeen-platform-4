@@ -15,7 +15,7 @@ class CheckKeys extends CheckData
      */
     protected $attrIds;
     /**
-     * @var \Anakeen\Core\SmartStructure 
+     * @var \Anakeen\Core\SmartStructure
      */
     protected $family;
 

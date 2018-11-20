@@ -102,7 +102,7 @@ class DocumentList implements Iterator, Countable
         return is_array($this->currentDoc) ? $this->currentDoc["id"] : $this->currentDoc->id;
     }
     /**
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public function current()
     {

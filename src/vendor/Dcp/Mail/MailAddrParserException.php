@@ -9,4 +9,3 @@ namespace Dcp\Mail;
 class MailAddrParserException extends \Exception
 {
 }
-

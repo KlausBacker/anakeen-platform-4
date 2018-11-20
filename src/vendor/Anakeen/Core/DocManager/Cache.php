@@ -34,7 +34,6 @@ class Cache
             if (!self::getLocalCache()->set($document->id, $document)) {
                 throw new Exception("APIDM0201", $document->getTitle(), $document->id);
             }
-
         }
 
         return $document;
@@ -52,7 +51,6 @@ class Cache
         if (!self::getLocalCache()->clear()) {
             throw new Exception("APIDM0202");
         }
-
     }
 
     /**

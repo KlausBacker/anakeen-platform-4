@@ -56,7 +56,7 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
                 $rightOperand = pg_escape_literal($value);
             }
         }
-        $sql = sprintf("docrel.type = %s AND %s %s %s", pg_escape_literal(mb_strtolower($attr->id)) , $leftOperand, $operator, $rightOperand);
+        $sql = sprintf("docrel.type = %s AND %s %s %s", pg_escape_literal(mb_strtolower($attr->id)), $leftOperand, $operator, $rightOperand);
         return $sql;
     }
 }

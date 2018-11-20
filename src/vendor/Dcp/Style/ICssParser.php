@@ -24,5 +24,3 @@ interface IParser
 interface ICssParser extends IParser
 {
 }
-
-

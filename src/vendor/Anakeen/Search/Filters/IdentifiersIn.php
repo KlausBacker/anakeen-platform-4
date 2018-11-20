@@ -41,12 +41,10 @@ class IdentifiersIn extends StandardAttributeFilter implements ElementSearchFilt
     public function addFilter(\SearchDoc $search)
     {
         $leftOperand = ($this->INITID) ? 'initid' : 'id';
-        $this->value = array_map(function ($v)
-        {
+        $this->value = array_map(function ($v) {
             return pg_escape_literal($v);
-        }
-        , $this->value);
-        $sql = sprintf("%s IN (%s)", pg_escape_identifier($leftOperand) , join(', ', $this->value));
+        }, $this->value);
+        $sql = sprintf("%s IN (%s)", pg_escape_identifier($leftOperand), join(', ', $this->value));
         $search->addFilter($sql);
         return $this;
     }

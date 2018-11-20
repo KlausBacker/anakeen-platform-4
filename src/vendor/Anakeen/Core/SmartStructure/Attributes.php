@@ -5,6 +5,7 @@
  */
 
 namespace  Anakeen\Core\SmartStructure;
+
 /**
  * Attribute Document Class
  *

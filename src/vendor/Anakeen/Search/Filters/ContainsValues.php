@@ -2,7 +2,6 @@
 
 namespace Anakeen\Search\Filters;
 
-
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure\NormalAttribute;
 
@@ -64,7 +63,7 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     protected function _filter(NormalAttribute & $attr, $value)
     {
         $pgArray = SmartElement::arrayToRawValue($value);
-        $sql = sprintf("%s IS NOT NULL AND %s @> '%s'", pg_escape_identifier($attr->id) , pg_escape_identifier($attr->id) , $pgArray);
+        $sql = sprintf("%s IS NOT NULL AND %s @> '%s'", pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), $pgArray);
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }

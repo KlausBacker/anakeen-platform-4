@@ -20,4 +20,3 @@ class MenuAttribute extends BasicAttribute
         $this->docname = $docname;
     }
 }
-

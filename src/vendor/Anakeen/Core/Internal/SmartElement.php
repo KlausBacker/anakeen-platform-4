@@ -3983,7 +3983,6 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         return $doc->getRawValue($lattrid, $def);
-
     }
 
 
@@ -4201,7 +4200,6 @@ create unique index i_docir on doc(initid, revision);";
                         $staticClass,
                         $methodName,
                     ), $args);
-
                 }
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);
@@ -7755,7 +7753,8 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
      */
-    public function getSearchMethods( $attrId,  $attrType = ''  ) {
+    public function getSearchMethods($attrId, $attrType = '')
+    {
         // Strip format strings for non-docid types
         $pType = \Dcp\FamilyImport::parseType($attrType);
         if ($pType['type'] != 'docid') {

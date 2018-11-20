@@ -41,5 +41,4 @@ class PoSmartElement
         $a[] = _("prop_confidential");
         $a[] = _("prop_ldapdn");
     }
-
 }

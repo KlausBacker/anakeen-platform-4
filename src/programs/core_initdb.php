@@ -10,4 +10,3 @@ require __DIR__ . '/../vendor/Anakeen/WHAT/Lib.Prefix.php';
 
 $p = new \Anakeen\Core\Internal\Param();
 \Anakeen\Core\DbManager::query($p->sqlcreate);
-

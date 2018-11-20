@@ -462,7 +462,7 @@ class ImportSmartConfiguration
             });
 
 
-            list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (/*\DOMElement $e*/) {
+            list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function () {
                 return true;
             });
             if ($attr->phpfile && !$attr->phpfunc) {
@@ -625,7 +625,7 @@ class ImportSmartConfiguration
             return $e->getAttribute("event") === "onPreRefresh";
         });
 
-        list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function (/*\DOMElement $e*/) {
+        list($attr->autocomplete, $attr->phpfile) = $this->extractAttrAutoComplete($attrNode, function () {
             return true;
         });
         if ($attr->phpfile && !$attr->phpfunc) {

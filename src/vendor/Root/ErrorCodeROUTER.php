@@ -38,5 +38,4 @@ class ErrorCodeROUTER
      * @see
      */
     const ROUTER0107 = 'Invalid XML file "%s"';
-
 }

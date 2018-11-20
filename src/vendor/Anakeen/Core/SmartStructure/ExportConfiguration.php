@@ -48,7 +48,6 @@ class ExportConfiguration
         $this->domConfig = $this->cel("config");
         $this->dom->appendChild($this->domConfig);
         $this->initStructureConfig();
-
     }
 
     protected function initStructureConfig()
@@ -334,7 +333,6 @@ class ExportConfiguration
             }
 
             foreach ($enumConfs as $ke => $enumConf) {
-
                 $this->setComment("Enum [$ke] definitions", $smartEnums);
                 $smartEnums->appendChild($enumConf);
             }
@@ -752,10 +750,10 @@ class ExportConfiguration
         $region = str_pad(sprintf('region %s ', $text), $l, '=');
         $dom->appendChild($dom->ownerDocument->createComment($region));
     }
-    public static function setEndComment($text='', \DOMElement $dom=null)
+    public static function setEndComment($text = '', \DOMElement $dom = null)
     {
         $l = 40;
-        if ($text === '' && $dom === null){
+        if ($text === '' && $dom === null) {
             $text=array_pop(self::$lastStartComment);
             $dom=array_pop(self::$lastStartDom);
         }
@@ -763,5 +761,4 @@ class ExportConfiguration
         $region = str_pad(sprintf('endregion %s ', $text), $l, '=');
         $dom->appendChild($dom->ownerDocument->createComment($region));
     }
-
 }

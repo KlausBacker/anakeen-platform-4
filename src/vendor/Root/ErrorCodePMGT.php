@@ -4,6 +4,7 @@
  * @package FDL
 */
 namespace {
+
     /**
      * Error codes used when manage application parameters
      * @class ErrorCodePMGT
@@ -63,6 +64,7 @@ namespace {
 }
 
 namespace Dcp\PMGT {
+
     /**
      * @errorCode
      * Account search exception

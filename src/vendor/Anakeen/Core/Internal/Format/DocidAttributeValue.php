@@ -62,7 +62,6 @@ class DocidAttributeValue extends StandardAttributeValue
         $ul = sprintf("/api/v2/documents/%s.html", $v);
 
         if ($docrev == "latest" || $docrev == "" || !$docrev) {
-
         } elseif ($docrev != "fixed") {
             // validate that docrev looks like state(xxx)
             if (preg_match('/^state\(([a-zA-Z0-9_:-]+)\)/', $docrev, $matches)) {

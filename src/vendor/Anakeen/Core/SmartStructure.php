@@ -375,7 +375,7 @@ create unique index idx_idfam on docfam(id);";
                 }
                 if (is_array($val)) {
                     $val=$tDates;
-                }  else {
+                } else {
                     $val=$tDates[0];
                 }
             } else {

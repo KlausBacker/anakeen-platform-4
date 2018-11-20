@@ -9,4 +9,3 @@ namespace Dcp\Vault;
 class VaultAnalyzerCLIException extends \Dcp\Exception
 {
 }
-

@@ -87,5 +87,4 @@ class ErrorCodeApi
      * @errorCode  in dbaccess.php
      */
     const API0109 = 'Cannot find "class" in authenticator config parameters "%s"';
-
 }

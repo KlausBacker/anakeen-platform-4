@@ -7,7 +7,6 @@
 
 namespace Anakeen\Search\Filters;
 
-
 class DocumentTitle extends StandardDocumentTitleFilter implements ElementSearchFilter
 {
     public function verifyCompatibility(\SearchDoc & $search)

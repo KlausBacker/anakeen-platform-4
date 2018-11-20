@@ -19,4 +19,3 @@ class XDOMDocumentException extends \Exception
         $this->libXMLErrors = $libXMLErrors;
     }
 }
-

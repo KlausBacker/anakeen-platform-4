@@ -75,8 +75,13 @@ if ($updateExistingTable) {
         }
     }
     /* Add SQL to load common columns data from old table */
-    $sql[] = sprintf("INSERT INTO public.%s (%s) SELECT %s FROM public.%s", pg_escape_identifier($o->dbtable), implode(", ", array_map('pg_escape_identifier', $commonColumns)),
-        implode(", ", array_map('pg_escape_identifier', $commonColumns)), pg_escape_identifier($oldTableName));
+    $sql[] = sprintf(
+        "INSERT INTO public.%s (%s) SELECT %s FROM public.%s",
+        pg_escape_identifier($o->dbtable),
+        implode(", ", array_map('pg_escape_identifier', $commonColumns)),
+        implode(", ", array_map('pg_escape_identifier', $commonColumns)),
+        pg_escape_identifier($oldTableName)
+    );
     /* Drop old table */
     $sql[] = sprintf("DROP TABLE public.%s", pg_escape_identifier($oldTableName));
 }

@@ -13,7 +13,6 @@ use Anakeen\Core\DbManager;
 use Anakeen\SmartHooks;
 
 class RoleHooks extends \Anakeen\SmartElement
-
 {
     /**
      * @var \Anakeen\Core\Account system role

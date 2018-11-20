@@ -2,7 +2,6 @@
 
 namespace Anakeen\Core\Internal;
 
-
 use Anakeen\Core\Settings;
 
 class GlobalParametersManager

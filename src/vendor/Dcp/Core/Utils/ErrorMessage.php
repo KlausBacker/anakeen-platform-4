@@ -2,7 +2,6 @@
 
 namespace Dcp\Core\Utils;
 
-
 class ErrorMessage
 {
     public static function getHtml($htmlMessage, $errId, $tooltip = "")

@@ -2,7 +2,6 @@
 
 namespace Anakeen\Search\Filters;
 
-
 class HasApplicationTag extends StandardAttributeFilter implements ElementSearchFilter
 {
     protected $value = null;
