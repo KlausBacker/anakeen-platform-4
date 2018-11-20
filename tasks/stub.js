@@ -1,34 +1,38 @@
 const gulp = require("gulp");
 const { parseStub } = require("../utils/STUBGenerator");
-const asyncCallback = require("./plugins/asyncCallback");
-const { getModuleInfo, getStructureFiles } = require("../utils/moduleInfo");
+const { getModuleInfo } = require("../utils/moduleInfo");
+const { Signale } = require("signale");
 
 exports.stub = ({ sourcePath, targetPath = "./stubs" }) => {
-  return gulp.task("stub", () => {
-    return new Promise(async (resolve, reject) => {
-      if (sourcePath === undefined) {
-        throw new Error("No source path specified.");
-      }
-      try {
-        const info = await getModuleInfo(sourcePath);
-        const buildPath = info.buildInfo.buildPath;
-        const structureFiles = await getStructureFiles({ buildPath });
-        const files = structureFiles.map(currentStruct => {
-          return currentStruct.path;
-        });
+  return gulp.task("stub", async () => {
+    if (sourcePath === undefined) {
+      throw new Error("No source path specified.");
+    }
+    try {
+      const interactive = new Signale({ scope: "stub" });
+      const log = message => {
+        interactive.info(message);
+      };
+      const info = await getModuleInfo(sourcePath);
+      const stub = info.buildInfo.build.config["stub-config"];
+      let globXML = [];
 
-        if (files.length === 0) {
-          return resolve();
-        }
-        gulp
-          .src(files)
-          .pipe(asyncCallback(parseStub, true))
-          .pipe(gulp.dest(targetPath))
-          .on("end", resolve)
-          .on("error", reject);
-      } catch (e) {
-        reject(e);
+      if (stub) {
+        globXML = stub[0]["stub-struct"];
       }
-    });
+
+      const globFile = globXML.map(currentElement => {
+        return currentElement.$.source;
+      });
+
+      if (!globFile) {
+        log("No smart element to extract");
+        return Promise.resolve();
+      }
+
+      return parseStub({ globFile, info, targetPath });
+    } catch (e) {
+      return Promise.reject(e);
+    }
   });
 };

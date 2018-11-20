@@ -1,151 +1,278 @@
 const xml2js = require("xml2js");
-const File = require("vinyl");
 const path = require("path");
+const fs = require("fs");
+const glob = require("glob");
 
 const attrType = require("./appConst").sfType;
 
-const generateDescription = (attr, type = "") => {
-  if (!attr) {
+const generateDescription = attr => {
+  const field = attr.field;
+  if (!field) {
     return "";
   }
   let desc = "        /**\n";
-  if (type && !attr.type) {
-    attr.type = type;
+  if (attr.type) {
+    field.type = attr.type;
   }
-  if (attr.label) {
-    desc += `        * ${attr.label}\n`;
+  if (field.label) {
+    desc += `        * ${field.label}\n`;
   }
   desc += `        * <ul>\n`;
-  Object.keys(attr).forEach(currentKey => {
+  Object.keys(field).forEach(currentKey => {
     if (currentKey !== "name" && currentKey !== "label") {
-      desc += `        * <li> <i>${currentKey}</i> ${attr[currentKey]} </li>\n`;
+      desc += `        * <li> <i>${currentKey}</i> ${
+        field[currentKey]
+      } </li>\n`;
     }
   });
   desc += `        * </ul>\n`;
   desc += "        */ \n";
-  desc += `        const ${attr.name}='${attr.name}';\n`;
+  desc += `        const ${field.name}='${field.name}';\n`;
   return desc;
 };
 
-const generateFields = field => {
-  return Object.keys(field).reduce((accumulator, currentKey) => {
+const extractSmartField = (fields, currentFilePath) => {
+  return Object.keys(fields).reduce((acc, currentKey) => {
     if (currentKey === "$") {
-      return accumulator + generateDescription(field[currentKey]);
+      //We are on the properties
+      acc[fields[currentKey].name] = {
+        field: fields[currentKey],
+        fileName: currentFilePath
+      };
+      return acc;
     }
+
+    //If the current element is a fieldset, we iterate on sub element
     if (currentKey === "fieldset") {
-      return (
-        accumulator +
-        field[currentKey].reduce((accumulator, subAttr) => {
-          return accumulator + generateFields(subAttr);
-        }, "")
-      );
+      const subFields = fields[currentKey].reduce((acc, currentSubField) => {
+        const subElement = extractSmartField(currentSubField, currentFilePath);
+        return {
+          ...acc,
+          ...subElement
+        };
+      }, {});
+      return {
+        ...acc,
+        ...subFields
+      };
     }
+
+    //Suppress all non field elements
     if (!attrType[currentKey]) {
-      return accumulator;
+      return acc;
     }
-    return (
-      accumulator +
-      field[currentKey].reduce((accumulator, currentAttr) => {
-        if (!currentAttr.$) {
-          return accumulator;
-        }
-        return (
-          accumulator + generateDescription(currentAttr.$, attrType[currentKey])
-        );
-      }, "")
-    );
-  }, "");
+
+    //If we are here, this is a non scalar field
+    const nonScalarFields = fields[currentKey].reduce((acc, currentAttr) => {
+      if (currentAttr.$) {
+        acc[currentAttr.$.name] = {
+          field: currentAttr.$,
+          type: attrType[currentKey],
+          fileName: currentFilePath
+        };
+      }
+      return acc;
+    }, {});
+
+    acc = {
+      ...acc,
+      ...nonScalarFields
+    };
+
+    return acc;
+  }, {});
 };
 
 const upperCaseFirstLetter = function(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
-exports.parseStub = file => {
-  return new Promise((resolve, reject) => {
-    const files = [];
+exports.parseStub = ({ globFile, info, targetPath }) => {
+  //Find all the files in glob rules
+  const srcPath = info.buildInfo.buildPath[0];
+  return Promise.all(
+    globFile.map(currentGlob => {
+      return new Promise((resolve, reject) => {
+        glob(
+          currentGlob,
+          {
+            cwd: srcPath,
+            nodir: true
+          },
+          (err, files) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(files);
+          }
+        );
+      });
+    })
+  ).then(filesList => {
+    const allFilesFound = filesList.reduce((acc, currentFilesList) => {
+      return [...acc, ...currentFilesList];
+    }, []);
+    //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
     const cleanDash = str => {
       return str.replace("-", "");
     };
-    const base = path.join(file.path, "..");
-    xml2js.parseString(
-      file.contents,
-      { tagNameProcessors: [stripPrefix, cleanDash] },
-      (err, result) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        //Analyze structure configuration
-        if (result.config.structureconfiguration) {
-          result.config.structureconfiguration.forEach(currentConf => {
-            const infos = currentConf.$;
-            const extend = currentConf.extends
-              ? currentConf.extends[0].$.ref
-              : false;
-            let currentClass =
-              currentConf.class !== undefined ? currentConf.class[0] : false;
-            const fields = currentConf.fields;
-            let fieldsString = "";
-            if (fields) {
-              fields.forEach(fieldset => {
-                fieldsString += generateFields(fieldset);
-              });
+    return Promise.all(
+      allFilesFound.map(currentFilePath => {
+        return new Promise((resolve, reject) => {
+          let values = {};
+          xml2js.parseString(
+            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+              encoding: "utf8"
+            }),
+            { tagNameProcessors: [stripPrefix, cleanDash] },
+            (err, result) => {
+              //Analyze all the enums and organize them
+              if (err) {
+                reject(err);
+                return;
+              }
+              //Analyze structure configuration
+              if (result.config.structureconfiguration) {
+                values = result.config.structureconfiguration.reduce(
+                  (acc, currentConf) => {
+                    const name = currentConf.$.name;
+                    if (
+                      !currentConf.fields ||
+                      !currentConf.fields.length ||
+                      currentConf.fields.length === 0
+                    ) {
+                      return acc;
+                    }
+                    const elements = currentConf.fields.reduce(
+                      (acc, currentField) => {
+                        const fields = extractSmartField(
+                          currentField,
+                          currentFilePath
+                        );
+                        return {
+                          ...acc,
+                          ...fields
+                        };
+                      },
+                      {}
+                    );
+                    //Enhance elements with missing properties
+                    const extend = currentConf.extends
+                      ? currentConf.extends[0].$.ref
+                      : false;
+
+                    let currentClass =
+                      currentConf.class !== undefined
+                        ? currentConf.class[0]
+                        : false;
+
+                    if (currentClass && currentClass._) {
+                      currentClass = currentClass._;
+                    }
+
+                    const smartStructure = {
+                      name,
+                      fields: elements
+                    };
+
+                    if (extend) {
+                      smartStructure.extend = extend;
+                    }
+
+                    if (currentClass) {
+                      smartStructure.currentClass = currentClass;
+                    }
+
+                    if (acc[name]) {
+                      acc[name] = { ...acc[name], ...smartStructure };
+                    } else {
+                      acc[name] = smartStructure;
+                    }
+                    return acc;
+                  },
+                  values
+                );
+              }
+              resolve(values);
             }
+          );
+        });
+      })
+    )
+      .then(allElementsFound => {
+        //Merge all elements found
+        return allElementsFound.reduce((acc, currentEnumsDef) => {
+          const currentKeys = Object.keys(currentEnumsDef);
+          //Merge elements
+          currentKeys.forEach(currentKey => {
+            if (acc[currentKey]) {
+              acc[currentKey] = {
+                ...acc[currentKey],
+                ...currentEnumsDef[currentKey]
+              };
+            } else {
+              acc[currentKey] = currentEnumsDef[currentKey];
+            }
+          });
+          return acc;
+        }, {});
+      })
+      .then(allSmartStructures => {
+        return Promise.all(
+          Object.values(allSmartStructures).map(currentSS => {
+            const fieldsString = Object.values(currentSS.fields).reduce(
+              (acc, fieldset) => {
+                return acc + generateDescription(fieldset);
+              },
+              ""
+            );
 
             //Extends for field part
-            const extendsPart = extend ? ` extends ${extend}` : "";
+            const extendsPart = currentSS.extend
+              ? ` extends ${upperCaseFirstLetter(currentSS.extend)}`
+              : "";
 
             //Extend for class part
             let extendsSSPart = "";
 
-            if (currentClass) {
-              if (currentClass._) {
-                currentClass = currentClass._;
-              }
-              extendsSSPart = currentClass;
+            if (currentSS.currentClass) {
+              extendsSSPart = currentSS.currentClass;
               //Add missing \ as first char if it's not already the case
               if (extendsSSPart[0] !== "\\") {
                 extendsSSPart = "\\" + extendsSSPart;
               }
             }
 
-            if (!extendsSSPart && extend) {
+            if (!extendsSSPart && currentSS.extend) {
               //the current structure extends another one
-              extendsSSPart = extend;
+              extendsSSPart = currentSS.extend;
             }
 
             let content = `<?php
 
 namespace SmartStructure {
 
-    class ${upperCaseFirstLetter(infos.name)} extends ${extendsSSPart ||
+    class ${upperCaseFirstLetter(currentSS.name)} extends ${extendsSSPart ||
               "\\Anakeen\\SmartElement"}
     {
-        const familyName = "${infos.name}";
+        const familyName = "${currentSS.name}";
     }
 }
 
 namespace SmartStructure\\Fields {
 
-    class ${upperCaseFirstLetter(infos.name)}${extendsPart}
+    class ${upperCaseFirstLetter(currentSS.name)}${extendsPart}
     {
 ${fieldsString}
     }
 }`;
-
-            files.push(
-              new File({
-                base: base,
-                path: path.join(base, infos.name + "__STUB.php"),
-                contents: Buffer.from(content)
-              })
+            fs.writeFileSync(
+              path.join(targetPath, currentSS.name + "__STUB.php"),
+              content
             );
-          });
-        }
-        resolve(files);
-      }
-    );
+          })
+        );
+      });
   });
 };
