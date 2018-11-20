@@ -50,6 +50,21 @@ class ProfileUtils
             "name" => $profile->name
         ];
 
+        // Add reference profil information
+        $dprofid = $profile->getPropertyValue("dprofid");
+        if (!empty($dprofid)) {
+            $refProfile = SEManager::getDocument($dprofid);
+            if (!empty($refProfile)) {
+                $props["reference"] = [
+                    "id" => $refProfile->id,
+                    "title" => $refProfile->getTitle(),
+                    "icon" => $refProfile->getIcon("", "24"),
+                    "type" => $refProfile->fromname,
+                    "name" => $refProfile->name
+                ];
+            }
+        }
+
         if ($profile->accessControl()->isRealProfile()) {
             $props["structure"] = SEManager::getNameFromId($profile->getRawValue("dpdoc_famid"));
         }

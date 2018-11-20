@@ -107,7 +107,12 @@
             </tr>
             <tr>
                 <td class="se-properties-description">Profil de référence</td>
-                <td class="se-properties-value"></td>
+                <td class="se-properties-value">
+                    <router-link v-if="elementProperties.security && elementProperties.security.profil && elementProperties.security.profil.reference"
+                                 :to="`/devel/security/profiles/${elementProperties.security.profil.reference.id}`">
+                        <img :src="elementProperties.security.profil.reference.icon">{{elementProperties.security.profil.reference.title}}
+                    </router-link>
+                </td>
             </tr>
             <tr>
                 <td class="se-properties-description">Field access</td>
