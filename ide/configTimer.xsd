@@ -8,34 +8,34 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- timer data part -->
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <xs:element name="timer" type="ns:timerType" />
+    <xs:element name="timer" type="ns:timerType"/>
     <xs:complexType name="field-date-referenceType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="ns:fieldName" name="ref" />
-                <xs:attribute type="xs:string" name="delta" />
+                <xs:attribute type="ns:fieldName" name="ref"/>
+                <xs:attribute type="xs:string" name="delta"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="sendmailType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="ns:elementName" name="ref" />
+                <xs:attribute type="ns:elementName" name="ref"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
     <xs:complexType name="taskType">
         <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="ns:sendmailType" name="sendmail" />
-            <xs:element type="ns:setstateType" name="setstate" />
-            <xs:element type="ns:processType" name="process" />
+            <xs:element type="ns:sendmailType" maxOccurs="unbounded" name="sendmail"/>
+            <xs:element type="ns:setstateType" maxOccurs="1" name="setstate"/>
+            <xs:element type="ns:processType" name="process"/>
         </xs:choice>
-        <xs:attribute type="xs:string" name="delta" />
+        <xs:attribute type="xs:string" name="delta"/>
     </xs:complexType>
     <xs:complexType name="setstateType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="state" />
+                <xs:attribute type="xs:string" name="state"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -55,24 +55,24 @@
     </xs:complexType>
     <xs:complexType name="processType">
         <xs:sequence>
-            <xs:element type="ns:process-callableType" name="process-callable" />
-            <xs:element type="ns:process-argumentType" name="process-argument" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="ns:process-callableType" name="process-callable"/>
+            <xs:element type="ns:process-argumentType" name="process-argument" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="tasksType">
         <xs:sequence>
-            <xs:element type="ns:taskType" name="task" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element type="ns:taskType" name="task" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="timerType">
         <xs:sequence>
-            <xs:element type="ns:field-date-referenceType" name="field-date-reference" />
-            <xs:element type="ns:tasksType" name="tasks" />
+            <xs:element type="ns:field-date-referenceType" name="field-date-reference"/>
+            <xs:element type="ns:tasksType" name="tasks"/>
         </xs:sequence>
         <xs:attribute type="ns:elementName" name="name" use="required"/>
-        <xs:attribute type="xs:string" name="label" />
-        <xs:attribute type="ns:elementName" name="structure" />
-        <xs:attribute type="ns:elementName" name="workflow" />
+        <xs:attribute type="xs:string" name="label"/>
+        <xs:attribute type="ns:elementName" name="structure"/>
+        <xs:attribute type="ns:elementName" name="workflow"/>
     </xs:complexType>
     <xs:simpleType name="processArgType">
         <xs:annotation>

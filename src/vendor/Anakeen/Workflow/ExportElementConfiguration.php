@@ -276,7 +276,7 @@ class ExportElementConfiguration
         $nodeSave = self::celmail("savecopy");
         $nodeSave->nodeValue = ($mail->getRawValue(MailFields::tmail_savecopy) === "yes" ? "true" : "false");
 
-        $nodeLink = self::celmail("savecopy");
+        $nodeLink = self::celmail("use-html-anchor");
         $nodeLink->nodeValue = ($mail->getRawValue(MailFields::tmail_ulink) === "yes" ? "true" : "false");
 
 
