@@ -1,6 +1,6 @@
 import SmartStructures from "./SmartStructures.vue";
 import SSContent from "./SSContent.vue";
-import Infos from "./Infos.vue";
+import Infos from "./Infos/Infos.vue";
 import Structure from "./Structure/Structure";
 import ParameterValues from "./Parameters/ParameterValues.vue";
 import DefaultsFields from "./Structure/DefaultValues.vue";
