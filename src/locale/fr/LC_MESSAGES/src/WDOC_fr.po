@@ -35,6 +35,11 @@ msgid "fr_basic"
 msgstr ""
 
 #: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
+msgctxt "WDOC"
+msgid "title"
+msgstr ""
+
+#: vendor/Anakeen/SmartStructures/Wdoc/wdoc.struct.xml
 #, fuzzy
 msgctxt "WDOC"
 msgid "wf_desc"
