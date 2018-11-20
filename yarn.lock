@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@^1.0.1-1-1542208994":
-  version "1.0.1-1-1542208994"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1-1542208994.tgz#374b2560bc2a4c7ae2ae0013fd5356ff61a19afc"
-  integrity sha512-WSUv/bFonk8V+KYCyYQ7AN17azlOW/8q5fe61cU3jutIs2/nrFkbP5iE3q4bxDwh2kJRZ9zXfWVGqCDcLD2d8A==
+"@anakeen/anakeen-cli@^1.0.1-1542648869":
+  version "1.0.1-1542648869"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1542648869.tgz#94fa4507e35c7d1da5608a61443417281665bb3e"
+  integrity sha512-3i5p2+WXKy0wTNXyNWlGJqwdAmijCcu+FeugrOK+knT8Fb+5mVCoZ3XXDtO8PQa92b7YT1T2Q4JQdOFqwYTcIQ==
   dependencies:
     form-data "^2.3.3"
     glob "^7.1.3"
@@ -17,12 +17,10 @@
     libxmljs "^0.19.5"
     mustache "^3.0.0"
     node-fetch "^2.2.1"
-    saxophone "^0.5.0"
     signale "^1.3.0"
     streamqueue "^1.1.2"
     through2 "^3.0.0"
     tmp "^0.0.33"
-    treeify "^1.1.0"
     url-join "^4.0.0"
     uuid "^3.3.2"
     vinyl-file "^3.0.0"
@@ -2455,7 +2453,7 @@ read-pkg@^1.0.0:
     normalize-package-data "^2.3.2"
     path-type "^1.0.0"
 
-"readable-stream@2 || 3", readable-stream@^3.0.3:
+"readable-stream@2 || 3":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.0.6.tgz#351302e4c68b5abd6a2ed55376a7f9a25be3057a"
   integrity sha512-9E1oLoOWfhSXHGv6QlwXJim7uNzd9EVlWK+21tCU9Ju/kR0/p2AZYPz4qSchgO8PlLIH4FpZYfzwS+rEksZjIg==
@@ -2648,14 +2646,6 @@ sax@>=0.6.0, sax@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
-
-saxophone@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/saxophone/-/saxophone-0.5.0.tgz#b5faba69509bd119b8b272a52e2edc0ce2a4c61f"
-  integrity sha512-n5CcJShLz8snkPKA7+4Oup9KsgMdSytyHV9mMAAVUyoepydmSyQtk37elZwVrXvTh2bUW4r/XHXDCj0RB10BZg==
-  dependencies:
-    readable-stream "^3.0.3"
-    string_decoder "^1.1.1"
 
 semver-greatest-satisfied-range@^1.1.0:
   version "1.1.0"
@@ -3053,11 +3043,6 @@ to-through@^2.0.0:
   integrity sha1-/JKtq6ByZHvAtn1rA2ZKoZUJOvY=
   dependencies:
     through2 "^2.0.3"
-
-treeify@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/treeify/-/treeify-1.1.0.tgz#4e31c6a463accd0943879f30667c4fdaff411bb8"
-  integrity sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==
 
 tslib@^1.9.0:
   version "1.9.3"

@@ -52,3 +52,9 @@ msgstr "Fields"
 msgctxt "FIELDACCESSLAYER"
 msgid "fal_title"
 msgstr "Title"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "title"
+msgstr "Title"

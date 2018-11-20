@@ -64,3 +64,9 @@ msgstr "Layer"
 msgctxt "FIELDACCESSLAYERLIST"
 msgid "fall_t_layers"
 msgstr "Access Layers"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayerList/fieldaccesslayerlist.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYERLIST"
+msgid "title"
+msgstr "Title"
