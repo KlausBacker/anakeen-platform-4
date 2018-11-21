@@ -1,10 +1,5 @@
 <template>
     <div class="routes-permissions-parent">
-        <div>
-            <kendo-toolbar class="routes-permissions-toolbar">
-                <kendo-toolbar-item type="button" icon="refresh" @click="refreshPermissions"></kendo-toolbar-item>
-            </kendo-toolbar>
-        </div>
         <kendo-datasource ref="routesPermissions"
                           :transport-read="getPermissions"
                           :server-paging="true"

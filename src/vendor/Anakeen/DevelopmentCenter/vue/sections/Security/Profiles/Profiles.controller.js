@@ -11,6 +11,7 @@ export default {
   },
   data() {
     return {
+      splitterProfileEmpty: true,
       panes: [
         {
           scrollable: false,
@@ -74,6 +75,7 @@ export default {
       }
     },
     actionClick(event) {
+      this.splitterProfileEmpty = false;
       switch (event.data.type) {
         case "view": {
           this.$router.push({

@@ -9,7 +9,15 @@
                 </ank-se-grid>
             </template>
             <template slot="right">
-                <router-multi-view class="smart-elements-view"></router-multi-view>
+                <div style="display: flex;">
+                    <div v-if="splitterSmartElementEmpty" class="smart-element-se-empty">
+                        <div>
+                            <span class="k-icon k-i-information smart-element-se-empty-icon"></span>
+                            <span class="smart-element-se-empty-text"> Please select an element to open </span>
+                        </div>
+                    </div>
+                    <router-multi-view v-else style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+                </div>
             </template>
         </ank-splitter>
     </div>

@@ -1,5 +1,5 @@
 <template>
-    <kendo-splitter ref="ankSplitter" orientation="horizontal" style="height:100%" :panes="panes">
+    <kendo-splitter ref="ankSplitter" orientation="horizontal" style="height:100%; background-color: #DEDEDE" :panes="panes">
         <slot name="left"></slot>
         <slot name="right"></slot>
     </kendo-splitter>

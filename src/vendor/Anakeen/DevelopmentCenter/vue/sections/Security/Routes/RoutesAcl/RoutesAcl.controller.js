@@ -1,14 +1,11 @@
 import Vue from "vue";
-import "@progress/kendo-ui/js/kendo.toolbar.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
-import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
-Vue.use(ButtonsInstaller);
 
 export default {
   components: {
@@ -66,11 +63,6 @@ export default {
     },
     parseRoutesTotal(response) {
       return response.data.data.requestParameters.total;
-    },
-    refreshRoutes() {
-      this.$refs.routesGridContent.kendoWidget().dataSource.filter({});
-      this.$refs.routesGridContent.kendoWidget().dataSource.read();
-      document.location = "/devel/security/routes/access/controls/";
     },
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");

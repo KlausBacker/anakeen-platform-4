@@ -22,7 +22,15 @@
             </div>
         </template>
         <template slot="right">
-            <router-multi-view style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+            <div style="display: flex;">
+                <div v-if="splitterTransitionEmpty" class="transitions-se-empty">
+                    <div>
+                        <span class="k-icon k-i-information transitions-se-empty-icon"></span>
+                        <span class="transitions-se-empty-text"> Please select an element to open </span>
+                    </div>
+                </div>
+                <router-multi-view v-else style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+            </div>
         </template>
     </ank-splitter>
 </template>
