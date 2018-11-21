@@ -1,17 +1,34 @@
+import InfosNav from "devComponents/SSInfoNav/SSInfoNav.vue";
+
 export default {
   name: "Infos",
   props: ["ssName"],
+  components: {
+    InfosNav
+  },
   watch: {
     ssName(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.fetchStructureInfos();
+      }
+    },
+    isReady(newValue) {
+      if (newValue) {
+        if (this.structureDetails && this.structureDetails.workflow) {
+          this.infoSections.push({
+            label: "Workflow",
+            path: `/devel/wfl/${this.structureDetails.workflow.name ||
+              this.structureDetails.workflow.id}/infos`
+          });
+        }
       }
     }
   },
   data() {
     return {
       isReady: false,
-      structureDetails: {}
+      structureDetails: {},
+      infoSections: []
     };
   },
   computed: {
@@ -32,6 +49,13 @@ export default {
   },
   mounted() {
     this.fetchStructureInfos();
+    this.infoSections = [
+      {
+        label: "Structure",
+        path: `/devel/smartStructures/${this.ssName}/infos`
+      },
+      { label: "User Interface", path: `/devel/ui/${this.ssName}/infos` }
+    ];
   },
   methods: {
     fetchStructureInfos() {
