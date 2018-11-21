@@ -406,7 +406,7 @@ class ExportElementConfiguration
             }
             $viewtag->setAttribute("menu-displayed", ($view[CvDocFields::cv_displayed] === "yes") ? "true" : "false");
             if ($view[CvDocFields::cv_menu]) {
-                $viewtag->setAttribute("submenu-label", $view[CvDocFields::cv_menu]);
+                $viewtag->setAttribute("parent-menu-id", $view[CvDocFields::cv_menu]);
             }
             $viewlist->appendChild($viewtag);
         }

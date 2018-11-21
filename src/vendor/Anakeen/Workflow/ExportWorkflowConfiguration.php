@@ -144,6 +144,7 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
 
         $config->setAttribute("name", self::getLogicalName($this->workflow->id));
         $config->setAttribute("structure", self::getLogicalName($this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_famid)));
+        $config->setAttribute("model", self::getLogicalName($this->workflow->fromid));
 
         if ($extractPart === "accesses") {
             $this->setComment("Accesses of elements (cvdoc, masks) used in workflow");
@@ -198,6 +199,7 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
 
         $config->setAttribute("name", self::getLogicalName($this->workflow->id));
         $config->setAttribute("structure", self::getLogicalName($this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_famid)));
+        $config->setAttribute("model", self::getLogicalName($this->workflow->fromid));
 
 
         $stepsNode = $this->celw("steps");
@@ -248,8 +250,8 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
 
         $config->setAttribute("name", self::getLogicalName($this->workflow->id));
         $config->setAttribute("structure", self::getLogicalName($this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_famid)));
-
-
+        $config->setAttribute("model", self::getLogicalName($this->workflow->fromid));
+                                                          
         $stepsNode = $this->celw("steps");
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
@@ -291,6 +293,7 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
         $config->setAttribute("name", self::getLogicalName($this->workflow->id));
         $config->setAttribute("label", $this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::ba_title));
         $config->setAttribute("structure", self::getLogicalName($this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_famid)));
+        $config->setAttribute("model", self::getLogicalName($this->workflow->fromid));
 
         $desc = $this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_desc);
         if ($desc) {
