@@ -18,6 +18,8 @@
         <xs:sequence>
             <xs:element type="ns:poXML" name="po-struct" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poXML" name="po-enum" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:poXML" name="po-cvdoc" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:poXML" name="po-workflow" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poTarget" name="po-mustache" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poTarget" name="po-php" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:poTarget" name="po-js" maxOccurs="unbounded" minOccurs="0"/>
