@@ -59,7 +59,7 @@ export default {
               })
             },
             {
-              name: "Wfl::steps::pdoc",
+              name: "Wfl::steps::timer",
               path: "timer/:seIdentifier",
               meta: {
                 label: ":seIdentifier"
