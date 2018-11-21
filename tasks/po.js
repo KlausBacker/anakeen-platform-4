@@ -2,11 +2,12 @@ const gulp = require("gulp");
 const {
   xmlStructure2Pot,
   xmlEnum2Pot,
+  xmlCVDOC2Pot,
+  xmlWorkflow2Pot,
   php2Po,
   js2Po,
-  msgmergeStructure,
-  msgmergeMustache,
-  msgmergeEnum
+  msgmerge,
+  msgmergeMustache
 } = require("../utils/POExtractor");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const mustache2Pot = require("../utils/POExtractorMustache");
@@ -161,7 +162,7 @@ exports.po = ({ sourcePath }) => {
       //Concat files
       return Promise.all(
         files.map(element => {
-          return msgmergeEnum({ element, srcPath, potPath });
+          return msgmerge({ element, srcPath, potPath, prefix: "enum" });
         })
       );
     });
@@ -191,7 +192,69 @@ exports.po = ({ sourcePath }) => {
     return xmlStructure2Pot({ poGlob, info, potPath }).then(files => {
       return Promise.all(
         files.map(element => {
-          return msgmergeStructure({ element, srcPath, potPath });
+          return msgmerge({ element, srcPath, potPath, prefix: "" });
+        })
+      );
+    });
+  });
+
+  /**
+   * Extract the CVDOC part
+   */
+  gulp.task("poViewControl", async () => {
+    const info = await getModuleInfo(sourcePath);
+    const srcPath = info.buildInfo.buildPath[0];
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let xmlElement = null;
+
+    if (poConfig) {
+      xmlElement = poConfig[0]["po-cvdoc"];
+    }
+    if (!xmlElement) {
+      log("No view control to extract");
+      return Promise.resolve();
+    }
+
+    log("Extract view control element");
+    const poGlob = xmlElement.map(currentElement => {
+      return currentElement.$.source;
+    });
+
+    return xmlCVDOC2Pot({ poGlob, info, potPath }).then(files => {
+      return Promise.all(
+        files.map(element => {
+          return msgmerge({ element, srcPath, potPath, prefix: "cvdoc_" });
+        })
+      );
+    });
+  });
+
+  /**
+   * Extract the Workflow part
+   */
+  gulp.task("poWorkflow", async () => {
+    const info = await getModuleInfo(sourcePath);
+    const srcPath = info.buildInfo.buildPath[0];
+    const poConfig = info.buildInfo.build.config["po-config"];
+    let xmlElement = null;
+
+    if (poConfig) {
+      xmlElement = poConfig[0]["po-workflow"];
+    }
+    if (!xmlElement) {
+      log("No workflow to extract");
+      return Promise.resolve();
+    }
+
+    log("Extract workflow element");
+    const poGlob = xmlElement.map(currentElement => {
+      return currentElement.$.source;
+    });
+
+    return xmlWorkflow2Pot({ poGlob, info, potPath }).then(files => {
+      return Promise.all(
+        files.map(element => {
+          return msgmerge({ element, srcPath, potPath, prefix: "workflow_" });
         })
       );
     });
@@ -210,6 +273,8 @@ exports.po = ({ sourcePath }) => {
       try {
         await gulp.task("poSmart")();
         await gulp.task("poEnum")();
+        await gulp.task("poViewControl")();
+        await gulp.task("poWorkflow")();
         await gulp.task("poMustache")();
         await gulp.task("poPhp")();
         await gulp.task("poJs")();

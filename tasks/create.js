@@ -13,7 +13,7 @@ const createRouteXML = namespace => {
   return {
     "sde:config": {
       $: {
-        "xmlns:sde": "http://www.anakeen.com/ns/sde/1.0"
+        "xmlns:sde": "https://platform.anakeen.com/4/schemas/sde/1.0"
       },
       "sde:routes": {
         $: {
@@ -54,12 +54,10 @@ const createBuildXML = () => {
   return {
     "acli:config": {
       $: {
-        "xmlns:acli": "http://www.anakeen.com/ns/acli/1.0"
+        "xmlns:acli": "https://platform.anakeen.com/4/schemas/module/1.0"
       },
-      "acli:sources": {
-        "acli:source": {
-          $: { path: "src" }
-        }
+      "acli:source": {
+        $: { path: "src" }
       }
     }
   };
@@ -137,7 +135,7 @@ exports.create = ({
       .then(() => {
         if (withConfig) {
           return new Promise((resolve, reject) => {
-            fs.mkdir(path.join(sourcePath, "src", "config"), err => {
+            fs.mkdir(path.join(sourcePath, "src", "vendor", "config"), err => {
               if (err) {
                 return reject(err);
               }

@@ -25,10 +25,13 @@ exports.handler = async argv => {
     getModuleInfo(argv);
     const task = gulp.task("getModuleInfo");
     task()
-      .then(() => {
+      .then(info => {
         if (!argv.jsonReturn) {
           signale.timeEnd("moduleInfo");
           signale.success("moduleInfo done");
+        } else {
+          // eslint-disable-next-line no-console
+          console.log(info);
         }
       })
       .catch(e => {
