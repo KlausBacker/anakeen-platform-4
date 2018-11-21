@@ -13,35 +13,43 @@
       return {
         items: [
           { name: "id", label: "Identification", hidden: false},
+          { name: "structure", label: "Structure", hidden: false},
           { name: "type", label: "Type", hidden: false},
           { name: "labeltext", label: "Label", hidden: false},
-          { name: "config", label: "Configuration", hidden: false},
-          { name: "value", label: "Value", hidden: false},
+          { name: "accessibility", label: "Access", hidden: false},
+          { name: "ordered", label: "Order", hidden: true},
+          { name: "isTitle", label: "is Title", hidden: true},
+          { name: "isAbstract", label: "is Abstract", hidden: true},
+          { name: "isNeeded", label: "is Needed", hidden: true},
+          { name: "phpconstraint", label: "Constraint", hidden: true},
+          { name: "phpfunc", label: "Function", hidden: true},
+          { name: "phpfile", label: "PHP File", hidden: true},
+          { name: "link", label: "Link", hidden: true},
+          { name: "optionValues", label: "Options", hidden: true},
+          { name: "properties", label: "Properties", hidden: true},
+          { name: "overrides", label: "Overrides", hidden: true},
+          { name: "declaration", label: "Declaration", hidden: true},
         ],
         url: `/api/v2/devel/smart/structures/${this.ssName}/parameters/`,
         getValues(response) {
-          const items = response.parameterValues;
-          const fields = Object.keys(items).map(item => {
-            return {
-              idVal: item,
-              config: items[item].config,
-              value: items[item].value
-            };
-          });
-          fields.forEach(items2 => {
-            Object.keys(response.parameterFields).forEach(items => {
-              if (items2.idVal === response.parameterFields[items].id) {
-                response.parameterFields[items].config = items2.config;
-                response.parameterFields[items].value = items2.value;
-              }
-            });
-          });
           return response.parameterFields;
         },
         columnTemplate(colId) {
           return dataItem => {
             if (dataItem[colId] === null || dataItem[colId] === undefined) {
               return "";
+            }
+            if (
+              dataItem[colId] &&
+              (colId === "optionValues" || colId === "properties")
+            ) {
+              let str = "";
+              Object.keys(dataItem[colId].toJSON()).forEach(item => {
+                str += `<li><span><b>${item}</b></span> : <span>${
+                  dataItem[colId][item]
+                  }</span></li>`;
+              });
+              return str;
             }
             if (dataItem[colId] instanceof Object && colId === "value") {
               if (dataItem[colId].length > 1) {
