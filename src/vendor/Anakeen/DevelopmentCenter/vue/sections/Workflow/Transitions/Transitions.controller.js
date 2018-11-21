@@ -20,7 +20,14 @@ export default {
   props: ["wflName"],
   data() {
     return {
+      splitterTransitionEmpty: true,
       transitionsDataSource: "",
+      routeTab: [
+        "Wfl::transitions::mail",
+        "Wfl::transitions::timers::volatile",
+        "Wfl::transitions::timers::unattach",
+        "Wfl::transitions::timers::persistent"
+      ],
       columnsTabMultiple: [
         "mailtemplates",
         "volatileTimers",
@@ -45,6 +52,22 @@ export default {
         }
       ]
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next(function(vueInstance) {
+      if (vueInstance.routeTab.includes(to.name)) {
+        vueInstance.splitterTransitionEmpty = false;
+      }
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (
+      this.routeTab.includes(to.name) &&
+      (from.name === "Wfl::transitions" || this.routeTab.includes(from.name))
+    ) {
+      this.splitterTransitionEmpty = false;
+    }
+    next();
   },
   mounted() {
     this.$refs.ankSplitter.$refs.ankSplitter

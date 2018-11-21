@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      splitterMasksEmpty: true,
       panes: [
         {
           scrollable: false,
@@ -98,6 +99,7 @@ export default {
     },
     actionClick(event) {
       event.preventDefault();
+      this.splitterMasksEmpty = false;
       switch (event.data.type) {
         case "consult": {
           this.$router.push({

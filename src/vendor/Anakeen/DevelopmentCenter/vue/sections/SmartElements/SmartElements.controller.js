@@ -49,6 +49,7 @@ export default {
   },
   data() {
     return {
+      splitterSmartElementEmpty: true,
       panes: [
         {
           scrollable: false,
@@ -111,6 +112,7 @@ export default {
       }
     },
     actionClick(event) {
+      this.splitterSmartElementEmpty = false;
       switch (event.data.type) {
         case "consult":
           event.preventDefault();

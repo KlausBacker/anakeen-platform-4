@@ -9,7 +9,15 @@
             </ank-se-grid>
         </template>
         <template slot="right">
-            <router-multi-view style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+            <div style="display: flex;">
+                <div v-if="splitterControlConfEmpty" class="control-conf-se-empty">
+                    <div>
+                        <span class="k-icon k-i-information control-conf-se-empty-icon"></span>
+                        <span class="control-conf-se-empty-text"> Please select an element to open </span>
+                    </div>
+                </div>
+                <router-multi-view v-else style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+            </div>
         </template>
     </ank-splitter>
 </template>
@@ -35,15 +43,34 @@
             color: white !important;
         }
     }
+
     .operator-label {
         display: none;
     }
+
     .splitter-right {
-        width : 100%;
+        width: 100%;
         height: 100%;
         .smart-element-view {
-            width : 100%;
+            width: 100%;
             height: 100%;
+        }
+    }
+    .control-conf-se-empty {
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        .control-conf-se-empty-icon {
+            display: block;
+            font-size: 10rem;
+            padding-bottom: 5rem;
+            padding-left: 6.5rem;
+            color: #A4A4A4 !important;
+        }
+        .control-conf-se-empty-text {
+            font-size: 1.5rem;
+            color: #A4A4A4 !important;
         }
     }
 </style>

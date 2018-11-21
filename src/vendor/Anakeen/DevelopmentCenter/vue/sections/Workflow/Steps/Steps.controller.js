@@ -20,8 +20,10 @@ export default {
   props: ["wflName"],
   data() {
     return {
+      splitterStepsEmpty: true,
       stepsDataSource: "",
       ssName: "",
+      routeTab: ["Wfl::steps::pdoc"],
       panes: [
         {
           scrollable: false,
@@ -39,6 +41,17 @@ export default {
         }
       ]
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next(function(vueInstance) {
+      if (vueInstance.routeTab.includes(to.name)) {
+        vueInstance.splitterStepsEmpty = false;
+      }
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.splitterStepsEmpty = false;
+    next();
   },
   mounted() {
     this.$refs.stepsSplitter.$refs.ankSplitter
