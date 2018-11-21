@@ -1,3 +1,4 @@
+import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
 import StructureHierarchy from "./StructureHierarchy.vue";
 
 const formatChildrenList = (parent, children) => {
@@ -8,10 +9,28 @@ const formatChildrenList = (parent, children) => {
   return result;
 };
 
+const URLS = {
+  json: {
+    structure: "/api/v2/families/<identifier>/views/structure",
+    element: "/api/v2/documents/<identifier>.json",
+    default: "/api/v2/documents/<identifier>.json"
+  },
+  xml: {
+    structure: "/api/v2/devel/config/smart/structures/<identifier>.xml",
+    element: "/api/v2/documents/<identifier>.xml",
+    workflow: `/api/v2/devel/config/smart/workflows/<identifier>.xml`,
+    default: "/api/v2/documents/<identifier>.xml"
+  },
+  creation: {
+    structure: "/api/v2/documents/<identifier>/views/!defaultCreation.html"
+  }
+};
+
 export default {
   name: "Infos",
   components: {
-    StructureHierarchy
+    StructureHierarchy,
+    PropertiesView
   },
   props: ["ssName"],
   watch: {
@@ -63,6 +82,18 @@ export default {
     this.fetchStructureInfos();
   },
   methods: {
+    onView(viewType) {
+      const url = URLS[viewType].structure.replace("<identifier>", this.ssName);
+      if (url) {
+        window.open(url);
+      }
+    },
+    onCreate() {
+      const url = URLS.creation.structure.replace("<identifier>", this.ssName);
+      if (url) {
+        window.open(url);
+      }
+    },
     fetchStructureInfos() {
       this.$http
         .get(this.urlInfo)

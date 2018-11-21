@@ -1,7 +1,7 @@
+import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
 import Component from "./SmartElements.vue";
 import ElementView from "./ElementView/ElementView.vue";
 import RawElementView from "./RawElementView/RawElementView.vue";
-import PropertiesView from "./PropertiesView/PropertiesView.vue";
 import ProfileGrid from "../../components/profile/profile.vue";
 
 export default {

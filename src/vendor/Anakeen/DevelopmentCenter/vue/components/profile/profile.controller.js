@@ -11,12 +11,22 @@ export default {
       default: () => ["create", "icreate", "view", "edit", "delete"]
     },
     onlyExtendedAcls: false,
-    detachable: false
+    detachable: false,
+    onRefProfileClickCallback: {
+      type: Function,
+      default: refProfile => {
+        window.open(
+          `/api/v2/devels/security/profile/${refProfile.name ||
+            refProfile.id}.html`
+        );
+      }
+    }
   },
   data: () => ({
     title: "",
     id: "",
     name: "",
+    refProfile: null,
     displayAllElements: false
   }),
   created() {
@@ -144,6 +154,7 @@ export default {
             this.title = data.properties.title;
             this.name = data.properties.name;
             this.id = data.properties.id;
+            this.refProfile = data.properties.reference;
 
             const lineRender = (column, callback) => {
               return currentLine => {
@@ -265,6 +276,11 @@ export default {
   methods: {
     updateGrid: function() {
       this.privateScope.updateDataSource();
+    },
+    onClickRefProfile() {
+      if (typeof this.onRefProfileClickCallback === "function") {
+        this.onRefProfileClickCallback.call(null, this.refProfile);
+      }
     },
     onDetachProfile() {
       if (window.open) {
