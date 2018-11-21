@@ -179,7 +179,7 @@ export default {
                   })
                   .join("")}
 
-                <button class="k-button" title="View all rights">+</button>
+                <!-- <button class="k-button" title="View all rights">+</button> -->
               </th>
             </tr>`
         );
@@ -198,7 +198,10 @@ export default {
           "click",
           ".view-graph-button > button",
           () => {
-            this.$refs.graphWindow.kendoWidget().open();
+            this.$refs.graphWindow
+              .kendoWidget()
+              .center()
+              .open();
           }
         );
         this.$(treeList.thead).on(
