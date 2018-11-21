@@ -143,7 +143,7 @@ export default {
     },
     displayLink(colId) {
       return dataItem => {
-        if (dataItem[colId] === null || dataItem === undefined) {
+        if (dataItem[colId] === null || dataItem[colId] === undefined) {
           return "";
         } else {
           switch (colId) {
@@ -168,6 +168,8 @@ export default {
               }" style="text-decoration: underline; color: #157EFB">${
                 dataItem[colId]
               }</a>`;
+            case "fall":
+              return dataItem[colId];
             default:
               return dataItem[colId];
           }

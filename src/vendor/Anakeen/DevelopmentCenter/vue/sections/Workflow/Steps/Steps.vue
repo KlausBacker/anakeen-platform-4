@@ -22,6 +22,8 @@
                                        :template="displayLink('mask')"></kendo-grid-column>
                     <kendo-grid-column :field="'profil'" :title="'<b>PDOC</b>'"
                                        :template="displayLink('profil')"></kendo-grid-column>
+                    <kendo-grid-column :field="'fall'" :title="'<b>Smart Field Access</b>'"
+                                       :template="displayLink('fall')"></kendo-grid-column>
                 </kendo-grid>
             </div>
         </template>
