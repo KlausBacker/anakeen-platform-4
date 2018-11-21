@@ -163,7 +163,7 @@ export default {
                   items[item]
                 }</a>`;
                 break;
-              case "unattachTimers":
+              case "unAttachTimers":
                 str += `<a data-role="develRouterLink" href="/devel/wfl/${
                   this.wflName
                 }/transitions/timers/unattach/${

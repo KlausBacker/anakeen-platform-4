@@ -92,7 +92,7 @@ class WorkflowData
             $stepData['viewcontrol'] = self::getElementRef($this->workflow->getStateViewControl($step));
             $stepData['profil'] = self::getElementRef($this->workflow->getStateProfil($step));
             $stepData['fall'] = self::getElementRef($this->workflow->getStateFall($step));
-            $stepData['timer'] = self::getElementRef($this->workflow->getStateTimers($step));
+            $stepData['timer'] = self::getElementRef($this->workflow->getStateTimer($step));
 
             $mails = $this->workflow->getStateMailTemplate($step);
             $stepData["mailtemplates"] = [];
@@ -122,13 +122,13 @@ class WorkflowData
             foreach ($timers as $timer) {
                 switch ($timer["type"]) {
                     case WDocHooks::TIMER_PERSISTENT:
-                        $transitionData["persistentTimers"][] = self::getElementRef($timer);
+                        $transitionData["persistentTimers"][] = self::getElementRef($timer["id"]);
                         break;
                     case WDocHooks::TIMER_UNATTACH:
-                        $transitionData["unAttachTimers"][] = self::getElementRef($timer);
+                        $transitionData["unAttachTimers"][] = self::getElementRef($timer["id"]);
                         break;
                     default:
-                        $transitionData["volatileTimers"][] = self::getElementRef($timer);
+                        $transitionData["volatileTimers"][] = self::getElementRef($timer["id"]);
                 }
             }
             $transitionsData[] = $transitionData;
