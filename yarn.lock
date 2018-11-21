@@ -26,10 +26,10 @@
     xml2js "^0.4.19"
     yargs "^11.1.0"
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1542093904"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1542093904.tgz#39303714a7440b277df5024a35aca66debde629f"
-  integrity sha512-wi0jAiGsns2xDc7j89zNm+gMyVettdbTfnsrKSGAapsyokivcDXejSX/fy97hNA0s/TwycWnpw9bOz5CRXfqvQ==
+"@anakeen/ank-components@1.0.0-1542812480":
+  version "1.0.0-1542812480"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1542812480.tgz#2b07039317818d0782088ee26d4ac237f749c219"
+  integrity sha512-06WTf+np/2TCtV9rfbHMoooKFuNJn2RKxy7tyQOKHiGPOvG7gJK1dofzVepQnILV+HbVJLvUX2+ZmSTYXVg4QA==
   dependencies:
     vue-gettext "^2.1.1"
 
