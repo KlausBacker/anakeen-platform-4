@@ -12,7 +12,9 @@
 .steps-grid-content {
   width: 100%;
   height: 100%;
-
+  tr {
+    word-break: break-word;
+  }
 }
 .k-filtercell {
   display: flex;
