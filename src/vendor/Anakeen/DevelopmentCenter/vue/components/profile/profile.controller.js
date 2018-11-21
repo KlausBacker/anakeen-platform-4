@@ -20,6 +20,10 @@ export default {
             refProfile.id}.html`
         );
       }
+    },
+    labelRotate: {
+      type: Boolean,
+      default: true
     }
   },
   data: () => ({
@@ -27,10 +31,26 @@ export default {
     id: "",
     name: "",
     refProfile: null,
-    displayAllElements: false
+    displayAllElements: false,
+    labelRotation: 300,
+    columnWidth: "3rem"
   }),
   created() {
     this.privateScope = {
+      computeTextWidth: (text, font = "12px Arial") => {
+        const tempCanvas = document.createElement("canvas");
+        const ctx = tempCanvas.getContext("2d");
+        ctx.font = font;
+        return ctx.measureText(text).width;
+      },
+      computeHeaderHeight: (longestStringWidth, labelRotation = 300) => {
+        const result =
+          Math.sin((labelRotation * Math.PI) / 180) * longestStringWidth;
+        if (result < 0) {
+          return -1 * result;
+        }
+        return result;
+      },
       initDataSource: () => {
         return new kendo.data.TreeListDataSource({
           transport: {
@@ -161,14 +181,33 @@ export default {
                 return callback(column, currentLine);
               };
             };
+            let maxLabelSize = 0;
             const columns = data.properties.acls.map(currentElement => {
+              const textWidth = this.privateScope.computeTextWidth(
+                currentElement.label,
+                this.$(this.$el).css("font")
+              );
+              if (textWidth > maxLabelSize) {
+                maxLabelSize = textWidth;
+              }
+              let headerAttributes = {};
+              if (this.labelRotate) {
+                headerAttributes = {
+                  "data-transformation": "header-rotate"
+                };
+              }
               return {
                 field: `acls.${currentElement.name}`,
                 title: `${currentElement.name}`,
                 attributes: {
                   class: "rightColumn"
                 },
-                width: "7rem",
+                headerAttributes,
+                headerTemplate: `<div class="header-acl-label">
+                       <span class="acl-label">${
+                         currentElement.label
+                       }</span></div>`,
+                width: this.columnWidth,
                 hidden: !this.defaultColumns.reduce(
                   (accumulator, currentColumn) => {
                     if (accumulator) {
@@ -261,6 +300,27 @@ export default {
                 });
               treeList.data("kendoTreeList").autoFitColumn("title");
             });
+            if (this.labelRotate) {
+              this.$(
+                ".k-header[data-transformation=header-rotate]",
+                this.$el
+              ).css(
+                "height",
+                `${this.privateScope.computeHeaderHeight(
+                  maxLabelSize,
+                  this.labelRotation
+                ) + 15}px`
+              );
+              this.$(
+                ".k-header[data-transformation=header-rotate] > .header-acl-label",
+                this.$el
+              ).css(
+                "transform",
+                `translateX(calc(${this.columnWidth} - 2.25rem)) rotate(${
+                  this.labelRotation
+                }deg)`
+              );
+            }
           })
           .catch(err => {
             console.error(err);
