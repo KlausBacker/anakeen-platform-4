@@ -195,7 +195,7 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                         CvDocFields::cv_lview => $viewNode->getAttribute("label"),
                         CvDocFields::cv_kview => $viewNode->getAttribute("display-mode") === "edition" ? "VEDIT" : "VCONS",
                         CvDocFields::cv_order => $viewNode->getAttribute("order"),
-                        CvDocFields::cv_menu => $viewNode->getAttribute("submenu-label"),
+                        CvDocFields::cv_menu => $viewNode->getAttribute("parent-menu-id"),
                         CvDocFields::cv_displayed => $viewNode->getAttribute("menu-displayed") === "false" ? "no" : "yes",
 
                         CvDocFields::cv_mskid => $mskid,
