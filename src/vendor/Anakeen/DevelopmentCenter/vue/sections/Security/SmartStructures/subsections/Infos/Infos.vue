@@ -30,8 +30,9 @@
                 </div>
             </div>
             <div class="security-infos-card">
-                <div class="infos-card-title">Workflows</div>
-                <div class="infos-card-content">
+                <div class="infos-card-title">Infos</div>
+                <div class="infos-card-content" style="display: flex; justify-content: center; align-items: center">
+                    <infos-nav :infoSections="infoSections"></infos-nav>
                 </div>
             </div>
         </div>

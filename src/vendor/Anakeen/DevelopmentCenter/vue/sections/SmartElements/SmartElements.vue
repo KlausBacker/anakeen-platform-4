@@ -1,6 +1,6 @@
 <template>
     <div class="smart-elements-section">
-        <ank-splitter ref="splitter" class="se-splitter" :panes="panes">
+        <ank-splitter ref="splitter" class="se-splitter" :panes="panes" localStorageKey="smart-elements-splitter">
             <template slot="left">
                 <ank-se-grid class="se-grid" :pageSizes="[100, 200, 500]" ref="grid" :urlConfig="urlConfig"
                              filterable="inline"

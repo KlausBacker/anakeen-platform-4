@@ -1,5 +1,5 @@
 <template>
-    <ank-splitter ref="ankSplitter" class="masks-splitter" :panes="panes">
+    <ank-splitter ref="ankSplitter" class="masks-splitter" :panes="panes" localStorageKey="workflow-transitions-splitter">
         <template slot="left">
             <div>
                 <kendo-datasource ref="transitionsGrid"

@@ -55,6 +55,12 @@
                     </div>
                 </div>
             </div>
+            <div class="ui-infos-card">
+                <div class="ui-infos-card-title">Infos</div>
+                <div class="ui-infos-card-content" style="display: flex; justify-content: center; align-items: center">
+                    <info-nav :infoSections="infoSections"></info-nav>
+                </div>
+            </div>
         </div>
     </div>
 </template>

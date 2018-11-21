@@ -133,6 +133,13 @@
   dependencies:
     jquery "<=3"
 
+"@progress/kendo-window-vue-wrapper@^2018.3.1025":
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-window-vue-wrapper/-/kendo-window-vue-wrapper-2018.3.1025.tgz#08cd8d937c8c410406554b3a7cda0308d824083b"
+  integrity sha512-tz6uxMvpYUsXfyd+APZrV41xS8VcXkCP6UCz+D2xKJ4e31D/3YLAh2GhH+TMLaSyYmdOvkOojbzFljTe8/WnmA==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
+
 "@types/node@*":
   version "10.12.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.2.tgz#d77f9faa027cadad9c912cd47f4f8b07b0fb0864"

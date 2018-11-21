@@ -1,3 +1,4 @@
+import InfoNav from "devComponents/SSInfoNav/SSInfoNav.vue";
 export default {
   name: "informations",
   props: ["ssName"],
@@ -5,8 +6,12 @@ export default {
     return {
       cvdoc: "",
       renderaccess: "",
-      mskfamid: ""
+      mskfamid: "",
+      infoSections: []
     };
+  },
+  components: {
+    InfoNav
   },
   computed: {
     url() {
@@ -24,5 +29,15 @@ export default {
         this.renderaccess = ui.render;
       }
     });
+    this.infoSections = [
+      {
+        label: "Structure",
+        path: `/devel/smartStructures/${this.ssName}/infos`
+      },
+      {
+        label: "Security",
+        path: `/devel/security/smartStructures/${this.ssName}/infos`
+      }
+    ];
   }
 };

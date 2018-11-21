@@ -1,5 +1,5 @@
 <template>
-    <ank-splitter ref="stepsSplitter" class="steps-splitter" :panes="panes">
+    <ank-splitter ref="stepsSplitter" class="steps-splitter" :panes="panes" localStorageKey="workflow-steps-splitter">
         <template slot="left">
             <div>
                 <kendo-datasource ref="stepsGrid"

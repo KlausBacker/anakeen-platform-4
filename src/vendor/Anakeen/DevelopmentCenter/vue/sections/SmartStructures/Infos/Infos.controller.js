@@ -1,4 +1,5 @@
 import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
+import InfosNav from "devComponents/SSInfoNav/SSInfoNav.vue";
 import StructureHierarchy from "./StructureHierarchy.vue";
 
 const formatChildrenList = (parent, children) => {
@@ -30,7 +31,8 @@ export default {
   name: "Infos",
   components: {
     StructureHierarchy,
-    PropertiesView
+    PropertiesView,
+    InfosNav
   },
   props: ["ssName"],
   watch: {
@@ -38,12 +40,24 @@ export default {
       if (newValue !== oldValue) {
         this.fetchStructureInfos();
       }
+    },
+    isReady(newValue) {
+      if (newValue) {
+        if (this.structureDetails && this.structureDetails.workflow) {
+          this.otherInfoSections.push({
+            label: "Workflow",
+            path: `/devel/wfl/${this.structureDetails.workflow.name ||
+              this.structureDetails.workflow.id}/infos`
+          });
+        }
+      }
     }
   },
   data() {
     return {
       isReady: false,
-      structureDetails: {}
+      structureDetails: {},
+      otherInfoSections: []
     };
   },
   computed: {
@@ -80,6 +94,13 @@ export default {
   },
   mounted() {
     this.fetchStructureInfos();
+    this.otherInfoSections = [
+      { label: "User Interface", path: `/devel/ui/${this.ssName}/infos` },
+      {
+        label: "Security",
+        path: `/devel/security/smartStructures/${this.ssName}/infos`
+      }
+    ];
   },
   methods: {
     onView(viewType) {

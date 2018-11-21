@@ -30,9 +30,7 @@ export default {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size:
-            window.localStorage.getItem("wfl.steps.content." + this.wflName) ||
-            "50%"
+          size: "50%"
         },
         {
           scrollable: false,
@@ -54,28 +52,7 @@ export default {
     this.splitterStepsEmpty = false;
     next();
   },
-  mounted() {
-    this.$refs.stepsSplitter.$refs.ankSplitter
-      .kendoWidget()
-      .bind(
-        "resize",
-        this.onContentResize(
-          this.$refs.stepsSplitter.$refs.ankSplitter.kendoWidget()
-        )
-      );
-  },
   methods: {
-    onContentResize(kendoSplitter) {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "wfl.steps.content." + this.wflName,
-          kendoSplitter.size(".k-pane:first")
-        );
-      };
-    },
     getSteps(options) {
       this.$http
         .get(`/api/v2/devel/smart/workflows/${this.wflName}`, {

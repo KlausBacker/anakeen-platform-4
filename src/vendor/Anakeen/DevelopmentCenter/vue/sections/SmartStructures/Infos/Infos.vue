@@ -51,6 +51,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="smart-structure-infos-card">
+                    <div class="infos-card-title">Infos</div>
+                    <div class="infos-card-content" style="display: flex; justify-content: center; align-items: center;">
+                        <infos-nav :infoSections="otherInfoSections"></infos-nav>
+                    </div>
+                </div>
             </div>
             <div class="smart-structure-infos-column">
                 <div class="smart-structure-infos-card">

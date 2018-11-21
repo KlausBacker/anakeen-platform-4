@@ -14,7 +14,7 @@
           },
           {
             name: "Security::Workflows::Access",
-            label: "Accesses"
+            label: "Field Access"
           }
         ]
       }

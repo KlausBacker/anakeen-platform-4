@@ -27,14 +27,13 @@ class Profiles extends GridContent
 
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new SearchDoc();
+        $this->_searchDoc = new SearchDoc("", "PDOC");
         $this->_searchDoc->setObjectReturn();
         $this->_searchDoc->excludeConfidential(true);
     }
 
     protected function prepareFiltering()
     {
-        $this->_searchDoc->addFilter("profid = id and (dprofid is null or dprofid = 0)");
         if (!empty($this->filter)) {
             // First need flat filters
             $flatFilters = static::getFlatLevelFilters($this->filter);

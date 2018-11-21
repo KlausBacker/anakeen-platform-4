@@ -1,5 +1,5 @@
 <template>
-    <ank-splitter ref="masksSplitter" class="masks-splitter" :panes="panes">
+    <ank-splitter ref="masksSplitter" class="masks-splitter" :panes="panes" localStorageKey="ui-masks-splitter">
         <template slot="left">
             <ank-se-grid ref="masksGrid"
                          :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/masks/config/`"
