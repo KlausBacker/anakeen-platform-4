@@ -17,7 +17,7 @@ export default {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size: window.localStorage.getItem("profile.content") || "50%"
+          size: "50%"
         },
         {
           scrollable: false,
@@ -28,37 +28,7 @@ export default {
       ]
     };
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.name === "Security::Profile::Access::Element") {
-      next(vueInstance => {
-        vueInstance.openView();
-      });
-    } else {
-      next();
-    }
-  },
-  mounted() {
-    this.$refs.profileSplitter.$refs.ankSplitter
-      .kendoWidget()
-      .bind(
-        "resize",
-        this.onContentResize(
-          this.$refs.profileSplitter.$refs.ankSplitter.kendoWidget()
-        )
-      );
-  },
   methods: {
-    onContentResize(kendoSplitter) {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "profile.content",
-          kendoSplitter.size(".k-pane:first")
-        );
-      };
-    },
     cellRender(event) {
       if (event.data && event.data.columnConfig) {
         switch (event.data.columnConfig.field) {
@@ -84,14 +54,9 @@ export default {
               seIdentifier: event.data.row.name || event.data.row.initid
             }
           });
-          this.openView();
           break;
         }
       }
-    },
-    openView() {
-      const splitter = this.$refs.splitter.kendoWidget();
-      splitter.expand(".k-pane:last");
     }
   }
 };

@@ -33,10 +33,7 @@ export default {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size:
-            window.localStorage.getItem(
-              "ui.control.conf.content." + this.ssName
-            ) || "50%"
+          size: "50%"
         },
         {
           scrollable: false,
@@ -47,28 +44,7 @@ export default {
       ]
     };
   },
-  mounted() {
-    this.$refs.controlSplitter.$refs.ankSplitter
-      .kendoWidget()
-      .bind(
-        "resize",
-        this.onContentResize(
-          this.$refs.controlSplitter.$refs.ankSplitter.kendoWidget()
-        )
-      );
-  },
   methods: {
-    onContentResize(kendoSplitter) {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "ui.control.conf.content." + this.ssName,
-          kendoSplitter.size(".k-pane:first")
-        );
-      };
-    },
     getSelected(e) {
       if (e !== "") {
         if (this.$refs.controlConfGrid.kendoGrid) {

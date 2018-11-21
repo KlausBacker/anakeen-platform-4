@@ -1,5 +1,5 @@
 <template>
-    <ank-splitter ref="controlSplitter" class="control-conf-splitter" :panes="panes">
+    <ank-splitter ref="controlSplitter" class="control-conf-splitter" :panes="panes" localStorageKey="ui-control-splitter">
         <template slot="left">
             <ank-se-grid ref="controlConfGrid"
                          :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/control/config/`"

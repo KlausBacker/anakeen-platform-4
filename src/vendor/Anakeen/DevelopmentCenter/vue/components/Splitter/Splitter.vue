@@ -20,6 +20,32 @@
       panes: {
         type: Array,
         default: () => []
+      },
+      localStorageKey: {
+        type: String,
+        default: ""
+      }
+    },
+    mounted() {
+      if (this.localStorageKey) {
+        const savedSize = window.localStorage.getItem(this.localStorageKey);
+        if (savedSize) {
+          this.$refs.ankSplitter.kendoWidget().size(".k-pane:first", savedSize);
+        }
+        this.$refs.ankSplitter
+          .kendoWidget()
+          .bind(
+            "resize",
+            this.onSplitterResize
+          );
+      }
+    },
+    methods: {
+      onSplitterResize() {
+        window.localStorage.setItem(
+          this.localStorageKey,
+          this.$refs.ankSplitter.kendoWidget().size(".k-pane:first")
+        );
       }
     }
   };

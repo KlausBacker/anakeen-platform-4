@@ -38,15 +38,6 @@ export default {
       return `/api/v2/devel/security/elements/config/`;
     }
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.name !== "SmartElements") {
-      next(vueInstance => {
-        vueInstance.openView();
-      });
-    } else {
-      next();
-    }
-  },
   data() {
     return {
       splitterSmartElementEmpty: true,
@@ -55,7 +46,7 @@ export default {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size: window.localStorage.getItem("se.content") || "50%"
+          size: "50%"
         },
         {
           scrollable: false,
@@ -71,28 +62,7 @@ export default {
       viewComponentProps: {}
     };
   },
-  mounted() {
-    this.$refs.splitter.$refs.ankSplitter
-      .kendoWidget()
-      .bind(
-        "resize",
-        this.onContentResize(
-          this.$refs.splitter.$refs.ankSplitter.kendoWidget()
-        )
-      );
-  },
   methods: {
-    onContentResize(kendoSplitter) {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "se.content",
-          kendoSplitter.size(".k-pane:first")
-        );
-      };
-    },
     cellRender(event) {
       if (event.data) {
         if (event.data.columnConfig) {
@@ -167,11 +137,6 @@ export default {
           }
           break;
       }
-      this.openView();
-    },
-    openView() {
-      const splitter = this.$refs.splitter.kendoWidget();
-      splitter.expand(".k-pane:last");
     }
   }
 };

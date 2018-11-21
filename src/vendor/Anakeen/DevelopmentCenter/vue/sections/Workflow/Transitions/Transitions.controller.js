@@ -39,10 +39,7 @@ export default {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size:
-            window.localStorage.getItem(
-              "wfl.transitions.content." + this.wflName
-            ) || "50%"
+          size: "50%"
         },
         {
           scrollable: false,
@@ -69,28 +66,7 @@ export default {
     }
     next();
   },
-  mounted() {
-    this.$refs.ankSplitter.$refs.ankSplitter
-      .kendoWidget()
-      .bind(
-        "resize",
-        this.onContentResize(
-          this.$refs.ankSplitter.$refs.ankSplitter.kendoWidget()
-        )
-      );
-  },
   methods: {
-    onContentResize(kendoSplitter) {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "wfl.transitions.content." + this.wflName,
-          kendoSplitter.size(".k-pane:first")
-        );
-      };
-    },
     getTransitions(options) {
       this.$http
         .get(`/api/v2/devel/smart/workflows/${this.wflName}`, {

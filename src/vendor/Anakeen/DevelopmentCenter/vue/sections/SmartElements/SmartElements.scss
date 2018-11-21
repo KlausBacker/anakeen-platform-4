@@ -5,15 +5,16 @@
   min-height: 0;
   overflow-y:hidden;
 
-  .structure-type-cell {
-    font-weight: bold;
-  }
-  .k-splitter {
-    .k-pane {
-      display: flex;
-      flex: 1;
 
+  .se-splitter {
+    height: 100%;
+    width: 100%;
+    & /deep/ {
       .se-grid {
+        a[data-role=develRouterLink] {
+          color: #157EFB;
+          text-decoration: underline;
+        }
         .actionMenu {
           .k-animation-container {
             left: -9rem !important;
@@ -21,11 +22,6 @@
         }
       }
     }
-  }
-
-  a[data-role=develRouterLink] {
-    color: #157EFB;
-    text-decoration: underline;
   }
 
   .smart-elements-view {
@@ -38,24 +34,6 @@
     }
   }
 }
-
-.se-splitter {
-  height: 100%;
-  width: 100%;
-  .k-pane {
-    display: flex;
-    flex: 1;
-
-    & /deep/ .se-grid {
-      .actionMenu {
-        .k-animation-container {
-          left: -9rem !important;
-        }
-      }
-    }
-  }
-}
-
 
 .smart-element-se-empty {
   flex: 1;
