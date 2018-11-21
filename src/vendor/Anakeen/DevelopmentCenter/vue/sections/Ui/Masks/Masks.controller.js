@@ -1,49 +1,40 @@
 import Vue from "vue";
 import { AnkSEGrid } from "@anakeen/ank-components";
-import "@progress/kendo-ui";
-import "@progress/kendo-ui/js/kendo.splitter";
-import { AnkSmartElement } from "@anakeen/ank-components";
+import Splitter from "../../../components/Splitter/Splitter.vue";
 
+Vue.use(Splitter);
 Vue.use(AnkSEGrid);
-Vue.use(AnkSmartElement);
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-smart-element": AnkSmartElement
+    "ank-splitter": Splitter
   },
   props: ["ssName"],
   beforeRouteEnter(to, from, next) {
     if (to.name === "Ui::masks::element") {
       next(function(vueInstance) {
-        vueInstance.getSelected(to.params.seIdentifier);
+        vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
+          field: "name",
+          operator: "eq",
+          value: to.params.seIdentifier
+        });
+        vueInstance.getSelected(to.params.seIdentifier, "name");
       });
     } else {
       next();
     }
   },
-  mounted() {
-    const onContentResize = (part, $split) => {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "ui.masks." + part,
-          this.$($split)
-            .data("kendoSplitter")
-            .size(".k-pane:first")
-        );
-      };
-    };
-    this.$(this.$refs.masksSplitter).kendoSplitter({
-      orientation: "horizontal",
+  data() {
+    return {
       panes: [
         {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size: window.localStorage.getItem("ui.masks.content") || "50%"
+          size:
+            window.localStorage.getItem("ui.masks.content." + this.ssName) ||
+            "50%"
         },
         {
           scrollable: false,
@@ -51,20 +42,54 @@ export default {
           resizable: true,
           size: "50%"
         }
-      ],
-      resize: onContentResize("content", this.$refs.masksSplitter)
-    });
+      ]
+    };
+  },
+  mounted() {
+    this.$refs.masksSplitter.$refs.ankSplitter
+      .kendoWidget()
+      .bind(
+        "resize",
+        this.onContentResize(
+          this.$refs.masksSplitter.$refs.ankSplitter.kendoWidget()
+        )
+      );
   },
   methods: {
-    getSelected(e) {
+    onContentResize(kendoSplitter) {
+      return () => {
+        window.setTimeout(() => {
+          this.$(window).trigger("resize");
+        }, 100);
+        window.localStorage.setItem(
+          "ui.masks.content." + this.ssName,
+          kendoSplitter.size(".k-pane:first")
+        );
+      };
+    },
+    getSelected(e, col) {
       if (e !== "") {
         if (this.$refs.masksGrid.kendoGrid) {
+          if (col === "id") {
+            this.$("[role=row]", this.$el).removeClass(
+              "control-view-is-opened"
+            );
+            this.$(
+              "[data-uid=" +
+                this.$refs.masksGrid.kendoGrid.dataSource
+                  .view()
+                  .find(d => d.rowData.id === e).uid +
+                "]",
+              this.$el
+            ).addClass("control-view-is-opened");
+          }
+        } else if (col === "name") {
           this.$("[role=row]", this.$el).removeClass("control-view-is-opened");
           this.$(
             "[data-uid=" +
               this.$refs.masksGrid.kendoGrid.dataSource
                 .view()
-                .find(d => d.rowData.id === e).uid +
+                .find(d => d.rowData.name === e).uid +
               "]",
             this.$el
           ).addClass("control-view-is-opened");
@@ -83,7 +108,7 @@ export default {
                 : event.data.row.id
             }
           });
-          this.getSelected(event.data.row.id);
+          this.getSelected(event.data.row.id, "id");
           break;
         }
       }

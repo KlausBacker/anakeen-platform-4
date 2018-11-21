@@ -2,8 +2,7 @@
     <div class="ui-parent-section">
         <ss-list routeName="Ui::name"
                  routeParamField="ssName"
-                 position="left"
-        >
+                 position="left">
         </ss-list>
     </div>
 </template>

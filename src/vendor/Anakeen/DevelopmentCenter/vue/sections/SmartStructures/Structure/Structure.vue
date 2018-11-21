@@ -12,12 +12,12 @@
     data() {
       return {
         items: [
-          { name: "id", label: "Identification", hidden: false},
+          { name: "id", label: "Identification", hidden: false, width: "20rem"},
           { name: "structure", label: "Structure", hidden: false},
-          { name: "type", label: "Type", hidden: false},
+          { name: "type", label: "Type", hidden: false, width: "8rem"},
           { name: "labeltext", label: "Label", hidden: false},
-          { name: "accessibility", label: "Access", hidden: false},
-          { name: "ordered", label: "Order", hidden: false},
+          { name: "accessibility", label: "Access", hidden: false ,width: "9rem"},
+          { name: "ordered", label: "Order", hidden: false ,width: "8rem"},
           { name: "isTitle", label: "is Title", hidden: true},
           { name: "isAbstract", label: "is Abstract", hidden: true},
           { name: "isNeeded", label: "is Needed", hidden: true},

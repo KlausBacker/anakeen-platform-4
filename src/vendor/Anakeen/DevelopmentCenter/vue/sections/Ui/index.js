@@ -4,7 +4,7 @@ import Infos from "./Infos/Infos.vue";
 import ViewsConf from "./ViewsConfiguration/ViewsConf.vue";
 import ControlConf from "./ControlConfiguration/ControlConf.vue";
 import Masks from "./Masks/Masks.vue";
-import { AnkSmartElement } from "@anakeen/ank-components";
+import ElementView from "../SmartElements/ElementView/ElementView.vue";
 import ProfileView from "../../components/profile/profile.vue";
 
 export default {
@@ -48,7 +48,7 @@ export default {
               meta: {
                 label: ":seIdentifier"
               },
-              component: AnkSmartElement,
+              component: ElementView,
               props: route => ({
                 initid: route.params.seIdentifier.toString(),
                 viewId: "!defaultConsultation"
@@ -62,7 +62,8 @@ export default {
               },
               component: ProfileView,
               props: route => ({
-                profileId: route.params.seIdentifier.toString()
+                profileId: route.params.seIdentifier.toString(),
+                detachable: true
               })
             }
           ]
@@ -79,7 +80,7 @@ export default {
               meta: {
                 label: ":seIdentifier"
               },
-              component: AnkSmartElement,
+              component: ElementView,
               props: route => ({
                 initid: route.params.seIdentifier.toString(),
                 viewId: "!defaultConsultation"

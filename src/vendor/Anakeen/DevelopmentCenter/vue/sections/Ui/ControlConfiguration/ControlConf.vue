@@ -1,22 +1,26 @@
 <template>
-    <div ref="controlConfSplitter" class="control-conf-splitter">
-        <div>
+    <ank-splitter ref="controlSplitter" class="control-conf-splitter" :panes="panes">
+        <template slot="left">
             <ank-se-grid ref="controlConfGrid"
                          :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/control/config/`"
                          filterable="inline"
                          :pageSizes="[100, 200, 500]"
                          @action-click="actionClick">
             </ank-se-grid>
-        </div>
-        <div style="display: flex; flex: 1">
-            <router-multi-view style="display:flex; flex: 1"></router-multi-view>
-        </div>
-    </div>
+        </template>
+        <template slot="right">
+            <router-multi-view style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+        </template>
+    </ank-splitter>
 </template>
 <style lang="scss">
     .control-conf-splitter {
         height: 100%;
         width: 100%;
+
+        .grid-cell--name {
+            word-break: break-all;
+        }
     }
 
     .control-conf-consult-content {
@@ -29,6 +33,17 @@
         color: white !important;
         .action-label {
             color: white !important;
+        }
+    }
+    .operator-label {
+        display: none;
+    }
+    .splitter-right {
+        width : 100%;
+        height: 100%;
+        .smart-element-view {
+            width : 100%;
+            height: 100%;
         }
     }
 </style>

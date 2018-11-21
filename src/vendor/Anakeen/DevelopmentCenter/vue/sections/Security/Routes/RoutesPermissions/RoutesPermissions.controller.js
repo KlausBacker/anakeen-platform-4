@@ -66,7 +66,6 @@ export default {
       if (response && response.data && response.data.data) {
         return response.data.data.access;
       }
-      return [];
     },
     parsePermissionsTotal(response) {
       return response.data.data.requestParameters.total;
@@ -78,13 +77,32 @@ export default {
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");
     },
-    displayLink(e) {
-      const accessName = e.accessName;
-      return `<a data-role="develRouterLink" href="/devel/security/routes/access/controls/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`;
-    },
-    displayRole(e) {
-      const ref = e.account.reference;
-      return `<a data-role="develRouterLink" href="/devel/security/roles/?role=${ref}" style="text-decoration: underline; color: #157EFB">${ref}</a>`;
+    displayLink(colId) {
+      return dataItem => {
+        if (dataItem[colId] === null || dataItem[colId] === undefined) {
+          return "";
+        }
+        switch (colId) {
+          case "accessName":
+            return `<a data-role="develRouterLink" href="/devel/security/routes/access/controls/?accesName=${
+              dataItem[colId]
+            }" style="text-decoration: underline; color: #157EFB">${
+              dataItem[colId]
+            }</a>`;
+          case "account":
+            if (dataItem[colId].type === "role") {
+              return `<a data-role="develRouterLink" href="/devel/security/roles/?role=${
+                dataItem[colId].reference
+              }" style="text-decoration: underline; color: #157EFB">${
+                dataItem[colId].reference
+              }</a>`;
+            } else {
+              return dataItem[colId].reference;
+            }
+          default:
+            break;
+        }
+      };
     }
   }
 };

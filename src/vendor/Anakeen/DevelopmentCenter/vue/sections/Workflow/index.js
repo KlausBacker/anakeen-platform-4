@@ -3,6 +3,7 @@ import WflContent from "./WorkflowContent.vue";
 import Infos from "./Infos/Infos.vue";
 import Steps from "./Steps/Steps.vue";
 import Transitions from "./Transitions/Transitions.vue";
+import Permissions from "./Permissions/Permissions.vue";
 import { AnkSmartElement } from "@anakeen/ank-components";
 import ProfileView from "../../components/profile/profile.vue";
 
@@ -107,11 +108,8 @@ export default {
         {
           name: "Wfl::permissions",
           path: "permissions",
-          component: ProfileView,
-          props: route => ({
-            profileId: route.params.wflName,
-            onlyExtendedAcls: true
-          })
+          component: Permissions,
+          props: true
         }
       ]
     }
