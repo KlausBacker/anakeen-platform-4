@@ -76,7 +76,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             foreach ($this->transitions as $k => $trans) {
                 $this->extendedAcls[$k] = array(
                     "name" => $k,
-                    "description" => _($k)
+                    "description" => $this->getTransitionLabel($k)
                 );
                 $this->acls[] = $k;
             }
@@ -191,6 +191,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         return _($state);
     }
+
     public function getTransitionLabel($transitionId)
     {
         return _($transitionId);
@@ -206,6 +207,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return $this->getRawValue($this->_aid("_id", $state));
     }
 
+    public function setStateProfil($state, $value)
+    {
+        return $this->setValue($this->_aid("_id", $state), $value);
+    }
+
     /**
      * get the field access list id according to state
      * @param string $state
@@ -214,6 +220,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function getStateFall($state)
     {
         return $this->getRawValue($this->_aid("_fallid", $state));
+    }
+
+    public function setStateFall($state, $value)
+    {
+        return $this->setValue($this->_aid("_fallid", $state), $value);
     }
 
     /**
@@ -236,6 +247,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return $this->getRawValue($this->_aid("_mskid", $state));
     }
 
+    public function setStateMask($state, $value)
+    {
+        return $this->setValue($this->_aid("_mskid", $state), $value);
+    }
+
     /**
      * get the view control id according to state
      * @param string $state
@@ -246,14 +262,24 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return $this->getRawValue($this->_aid("_cvid", $state));
     }
 
+    public function setStateViewControl($state, $value)
+    {
+        return $this->setValue($this->_aid("_cvid", $state), $value);
+    }
+
     /**
      * get the timers ids according to state
      * @param string $state
      * @return string
      */
-    public function getStateTimers($state)
+    public function getStateTimer($state)
     {
         return $this->getRawValue($this->_aid("_tmid", $state));
+    }
+
+    public function setStateTimer($state, $timerref)
+    {
+        return $this->setValue($this->_aid("_tmid", $state), $timerref);
     }
 
     /**
@@ -288,6 +314,24 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return $timers;
     }
 
+    public function setTransitionTimers($transName, $value, $type)
+    {
+        switch ($type) {
+            case self::TIMER_PERSISTENT:
+                $key = $this->_aid("_trans_pa_tmid", $transName);
+                break;
+            case self::TIMER_VOLATILE:
+                $key = $this->_aid("_trans_tmid", $transName);
+                break;
+            case self::TIMER_UNATTACH:
+                $key = $this->_aid("_trans_pu_tmid", $transName);
+                break;
+            default:
+                throw new Exception(sprintf("Invalid timer type \"%s\"", $type));
+        }
+        return $this->setValue($key, $value);
+    }
+
     /**
      * get the mail ids according to transition
      * @param string $transName transition name
@@ -298,6 +342,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         return $this->getMultipleRawValues($this->_aid("_trans_mtid", $transName));
     }
 
+    public function setTransitionMailTemplates($transName, $value)
+    {
+        return $this->setValue($this->_aid("_trans_mtid", $transName), $value);
+    }
+
     /**
      * get the mail templates ids according to state
      * @param string $state
@@ -306,6 +355,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function getStateMailTemplate($state)
     {
         return $this->getMultipleRawValues($this->_aid("_mtid", $state));
+    }
+
+    public function setStateMailTemplate($state, $mails)
+    {
+        return $this->setValue($this->_aid("_mtid", $state), $mails);
     }
 
     /**
@@ -983,6 +1037,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         //$acolor=$this->attrPrefix."_COLOR".($state);
         $acolor = $this->_aid("_COLOR", $state);
         return $this->getRawValue($acolor, $def);
+    }
+
+    public function setStateColor($state, $value)
+    {
+        return $this->setValue($this->_aid("_color", $state), $value);
     }
 
     /**
