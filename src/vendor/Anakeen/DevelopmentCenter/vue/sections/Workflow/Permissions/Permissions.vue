@@ -25,11 +25,10 @@
     props: ["wflName"],
     mounted() {
       $(window).resize(() => {
-        if (this.$refs.permGrid.$el.kendoWidget()) {
-          this.$refs.permGrid.$el.kendoWidget().resize();
+        if (this.$(this.$refs.permGrid.$refs.profileTreeList).data("kendoTreeList")) {
+          this.$(this.$refs.permGrid.$refs.profileTreeList).data("kendoTreeList").resize();
         }
       });
-      const options = this.$refs.permGrid.$el.kendoWidget().getOptions();
     }
   }
 </script>

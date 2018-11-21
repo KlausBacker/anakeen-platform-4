@@ -143,7 +143,7 @@ export default {
     },
     displayLink(colId) {
       return dataItem => {
-        if (dataItem[colId] === null || dataItem === undefined) {
+        if (dataItem[colId] === null || dataItem[colId] === undefined) {
           return "";
         } else {
           switch (colId) {
@@ -152,14 +152,14 @@ export default {
                 this.ssName
               }/views" style="text-decoration: underline; color: #157EFB">${
                 dataItem[colId]
-              }</a>`;
+              }</a>&nbsp`;
 
             case "mask":
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
               }/views" style="text-decoration: underline; color: #157EFB">${
                 dataItem[colId]
-              }</a>`;
+              }</a>&nbsp`;
             case "profil":
               return `<a data-role="develRouterLink" href="/devel/wfl/${
                 this.wflName
@@ -167,7 +167,25 @@ export default {
                 dataItem[colId]
               }" style="text-decoration: underline; color: #157EFB">${
                 dataItem[colId]
-              }</a>`;
+              }</a>&nbsp`;
+            case "fall":
+              return dataItem[colId];
+            case "mailtemplates":
+              return `<a data-role="develRouterLink" href="/devel/wfl/${
+                this.wflName
+              }/steps/mail/templates/${
+                dataItem[colId]
+              }" style="text-decoration: underline; color: #157EFB">${
+                dataItem[colId]
+              }</a>&nbsp`;
+            case "timer":
+              return `<a data-role="develRouterLink" href="/devel/wfl/${
+                this.wflName
+              }/steps/timer/${
+                dataItem[colId]
+              }" style="text-decoration: underline; color: #157EFB">${
+                dataItem[colId]
+              }</a>&nbsp`;
             default:
               return dataItem[colId];
           }

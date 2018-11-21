@@ -143,7 +143,7 @@ export default {
                   items[item]
                 }" style="text-decoration: underline; color: #157EFB">${
                   items[item]
-                }</a>`;
+                }</a>&nbsp`;
                 break;
               case "volatileTimers":
                 str += `<a data-role="develRouterLink" href="/devel/wfl/${
@@ -152,7 +152,7 @@ export default {
                   items[item]
                 }" style="text-decoration: underline; color: #157EFB">${
                   items[item]
-                }</a>`;
+                }</a>&nbsp`;
                 break;
               case "persistentTimers":
                 str += `<a data-role="develRouterLink" href="/devel/wfl/${
@@ -161,7 +161,7 @@ export default {
                   items[item]
                 }" style="text-decoration: underline; color: #157EFB">${
                   items[item]
-                }</a>`;
+                }</a>&nbsp`;
                 break;
               case "unattachTimers":
                 str += `<a data-role="develRouterLink" href="/devel/wfl/${
@@ -170,7 +170,7 @@ export default {
                   items[item]
                 }" style="text-decoration: underline; color: #157EFB">${
                   items[item]
-                }</a>`;
+                }</a>&nbsp`;
                 break;
               default:
                 break;

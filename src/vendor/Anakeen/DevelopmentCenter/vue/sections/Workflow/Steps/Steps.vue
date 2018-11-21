@@ -15,13 +15,15 @@
                     <kendo-grid-column :field="'label'" :title="'<b>Activity Label</b>'"></kendo-grid-column>
                     <kendo-grid-column :field="'mailtemplates'" :title="'<b>Mail Templates</b>'"
                                        :template="displayMultiple('mailtemplates')"></kendo-grid-column>
-                    <kendo-grid-column :field="'timer'" :title="'<b>Timers</b>'"></kendo-grid-column>
+                    <kendo-grid-column :field="'timer'" :title="'<b>Timers</b>'" :template="displayLink('timer')"></kendo-grid-column>
                     <kendo-grid-column :field="'viewcontrol'" :title="'<b>View Control</b>'"
                                        :template="displayLink('viewcontrol')"></kendo-grid-column>
                     <kendo-grid-column :field="'mask'" :title="'<b>Masks</b>'"
                                        :template="displayLink('mask')"></kendo-grid-column>
                     <kendo-grid-column :field="'profil'" :title="'<b>PDOC</b>'"
                                        :template="displayLink('profil')"></kendo-grid-column>
+                    <kendo-grid-column :field="'fall'" :title="'<b>Smart Field Access</b>'"
+                                       :template="displayLink('fall')"></kendo-grid-column>
                 </kendo-grid>
             </div>
         </template>

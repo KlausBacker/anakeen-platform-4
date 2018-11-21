@@ -14,12 +14,25 @@ export default {
   beforeRouteEnter(to, from, next) {
     if (to.name === "Ui::masks::element") {
       next(function(vueInstance) {
-        vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
-          field: "name",
-          operator: "eq",
-          value: to.params.seIdentifier
-        });
-        vueInstance.getSelected(to.params.seIdentifier, "name");
+        if (vueInstance.$refs.masksGrid.kendoGrid) {
+          vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
+            field: "name",
+            operator: "eq",
+            value: to.params.seIdentifier
+          });
+          vueInstance.splitterMasksEmpty = false;
+          vueInstance.getSelected(to.params.seIdentifier);
+        } else {
+          vueInstance.$refs.masksGrid.$on("grid-ready", () => {
+            vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
+              field: "name",
+              operator: "eq",
+              value: to.params.seIdentifier
+            });
+          });
+          vueInstance.splitterMasksEmpty = false;
+          vueInstance.getSelected(to.params.seIdentifier);
+        }
       });
     } else {
       next();
