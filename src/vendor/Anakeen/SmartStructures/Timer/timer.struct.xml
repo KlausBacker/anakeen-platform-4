@@ -19,31 +19,51 @@
                     <smart:field-option name="elabel">date d'exécution de la première action</smart:field-option>
                     <smart:field-option name="showempty">Date d'attachement du minuteur</smart:field-option>
                 </smart:field-text>
-                <smart:field-double name="tm_refdaydelta" label="Décalage (en jours)" access="ReadWrite">
-                    <smart:field-option name="cwidth">50px</smart:field-option>
+                <smart:field-double name="tm_refdaydelta" label="Décalage (en jours)Obsolète" access="None">
                 </smart:field-double>
-                <smart:field-double name="tm_refhourdelta" label="Décalage (en heures)" access="ReadWrite">
-                    <smart:field-option name="cwidth">50px</smart:field-option>
+
+                <smart:field-double name="tm_refhourdelta" label="Décalage (en heures)Obsolète" access="None">
                 </smart:field-double>
+
+                <smart:field-text name="tm_deltainterval" label="Décalage de la date de référence" access="ReadWrite"/>
+                <!-- ~~~~~~~~~~~~~~~~ -->
+                <!-- region task list -->
+                <!-- ~~~~~~~~~~~~~~~~ -->
                 <smart:field-set name="tm_t_config" type="array" label="Configuration" access="ReadWrite">
                     <smart:field-option name="vlabel">up</smart:field-option>
-                    <smart:field-double name="tm_delay" label="Délai (en jours)" access="ReadWrite">
-                        <smart:field-option name="cwidth">50px</smart:field-option>
+                    <smart:field-double name="tm_delay" label="Délai relatif (en jours) Obsolète" access="None">
+
                     </smart:field-double>
-                    <smart:field-double name="tm_hdelay" label="Délai (en heures)" access="ReadWrite">
-                        <smart:field-option name="cwidth">50px</smart:field-option>
+                    <smart:field-double name="tm_hdelay" label="Délai relatif(en heures) Obsolète" access="None">
+
                     </smart:field-double>
-                    <smart:field-int name="tm_iteration" label="Nombre d'itérations" access="ReadWrite">
-                        <smart:field-option name="cwidth">50px</smart:field-option>
+
+                    <smart:field-text name="tm_taskinterval" label="Délai" access="ReadWrite">
+
+                    </smart:field-text>
+                    <smart:field-int name="tm_iteration" label="Nombre d'itérations" access="None">
+
                     </smart:field-int>
                     <smart:field-docid name="tm_tmail" label="Modèle de mail" access="ReadWrite" relation="MAILTEMPLATE" multiple="true"/>
                     <smart:field-text name="tm_state" label="Nouvel état" access="ReadWrite"/>
                     <smart:field-text name="tm_method" label="Méthode" access="ReadWrite"/>
                 </smart:field-set>
+                <!-- endregion task list -->
             </smart:field-set>
         </smart:fields>
         <smart:parameters/>
-        <smart:hooks/>
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="tm_deltainterval">
+                <smart:field-callable function="::checkInterval"/>
+                <smart:field-argument type="field">tm_deltainterval</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="tm_taskinterval">
+                <smart:field-callable function="::checkInterval"/>
+                <smart:field-argument type="field">tm_taskinterval</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
         <smart:defaults>
             <smart:default field="tm_iteration">1</smart:default>
         </smart:defaults>

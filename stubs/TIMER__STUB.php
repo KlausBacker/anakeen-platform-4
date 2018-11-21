@@ -39,6 +39,14 @@ namespace SmartStructure\Fields {
         */ 
         const tm_dyndate='tm_dyndate';
         /**
+        * Décalage
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const tm_deltainterval='tm_deltainterval';
+        /**
         * Famille
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
@@ -59,7 +67,7 @@ namespace SmartStructure\Fields {
         /**
         * Décalage (en jours)
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
@@ -67,7 +75,7 @@ namespace SmartStructure\Fields {
         /**
         * Décalage (en heures)
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
@@ -81,21 +89,45 @@ namespace SmartStructure\Fields {
         */ 
         const tm_t_config='tm_t_config';
         /**
-        * Délai (en jours)
+        * Délai relatif (en jours) Obsolète
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
         const tm_delay='tm_delay';
         /**
-        * Délai (en heures)
+        * Délai relatif(en heures) Obsolète
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
         const tm_hdelay='tm_hdelay';
+        /**
+        * Délai
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const tm_taskinterval='tm_taskinterval';
+        /**
+        * Nouvel état
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const tm_state='tm_state';
+        /**
+        * Méthode
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const tm_method='tm_method';
         /**
         * Nombre d'itérations
         * <ul>
@@ -114,22 +146,6 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const tm_tmail='tm_tmail';
-        /**
-        * Nouvel état
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * </ul>
-        */ 
-        const tm_state='tm_state';
-        /**
-        * Méthode
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * </ul>
-        */ 
-        const tm_method='tm_method';
 
     }
 }
