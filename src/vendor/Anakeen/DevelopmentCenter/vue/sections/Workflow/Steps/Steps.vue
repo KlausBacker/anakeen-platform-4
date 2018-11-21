@@ -15,7 +15,7 @@
                     <kendo-grid-column :field="'label'" :title="'<b>Activity Label</b>'"></kendo-grid-column>
                     <kendo-grid-column :field="'mailtemplates'" :title="'<b>Mail Templates</b>'"
                                        :template="displayMultiple('mailtemplates')"></kendo-grid-column>
-                    <kendo-grid-column :field="'timer'" :title="'<b>Timers</b>'"></kendo-grid-column>
+                    <kendo-grid-column :field="'timer'" :title="'<b>Timers</b>'" :template="displayLink('timer')"></kendo-grid-column>
                     <kendo-grid-column :field="'viewcontrol'" :title="'<b>View Control</b>'"
                                        :template="displayLink('viewcontrol')"></kendo-grid-column>
                     <kendo-grid-column :field="'mask'" :title="'<b>Masks</b>'"
