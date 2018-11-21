@@ -6,7 +6,6 @@
                         :height="'100%'"
                         :filterable="filterable"
                         :resizable="true"
-                        :sortable="sortable"
                         :dataBound="onDataBound"
                         :expand="onExpand"
                         :collapse="onCollapse"
