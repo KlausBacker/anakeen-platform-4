@@ -24,6 +24,7 @@ export default {
       stepsDataSource: "",
       ssName: "",
       routeTab: ["Wfl::steps::pdoc"],
+      columnsTabMultiple: ["mailtemplates"],
       panes: [
         {
           scrollable: false,
