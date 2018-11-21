@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Cvdoc
+    class Cvdoc extends BASE
     {
         /**
         * <ul>

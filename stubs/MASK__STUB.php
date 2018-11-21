@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Mask
+    class Mask extends BASE
     {
         /**
         * Informtation
