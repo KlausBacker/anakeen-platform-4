@@ -48,7 +48,7 @@ const emptyProp = propValue => {
   if (propValue && typeof propValue === "object") {
     return propValue.id === 0;
   }
-  return !propValue;
+  return false;
 };
 
 export default {
@@ -132,7 +132,7 @@ export default {
       return result;
     },
     renderPropValue(propId, propValue) {
-      if (propValue) {
+      if (!emptyProp(propValue)) {
         if (propId === "creationDate" || propId === "lastModificationDate") {
           return this.formatDate(propValue);
         }
@@ -158,7 +158,7 @@ export default {
           }
         }
       }
-      return "";
+      return "None";
     }
   }
 };
