@@ -1,14 +1,17 @@
+#MAKEFILE dir
+MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 ## control conf
-port=80
-CONTROL_PORT=$(port)
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
 CONTROL_URL=$(host)/control/
 CONTROL_CONTEXT=$(ctx)
 
 ##bin
+COMPOSER_BIN=composer
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
+CS_BIN=php ./ide/vendor/bin/phpcs
 -include Makefile.local
 
 compile:
@@ -27,7 +30,14 @@ stub:
 	${ANAKEEN_CLI_BIN} generateStubs
 
 beautify:
-	$(CBF_BIN) --standard=./ide/anakeenPhpCs.xml --extensions=php ./src
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+
+lint:
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
 autotest:
 	rm -f *app
