@@ -1,6 +1,10 @@
+import Vue from "vue";
 import AnkTreeList from "devComponents/SSTreeList/SSTreeList.vue";
 import { getTreeListData } from "./utils/treeUtils";
+import { Window } from "@progress/kendo-window-vue-wrapper";
+import { WindowInstaller } from "@progress/kendo-window-vue-wrapper";
 
+Vue.use(WindowInstaller);
 const escapeColor = color => {
   if (color) {
     return color.replace("#", "\\#");
@@ -30,7 +34,8 @@ export default {
     detachable: false
   },
   components: {
-    AnkTreeList
+    AnkTreeList,
+    Window
   },
   computed: {
     resolvedWorkflowConfig() {
@@ -47,6 +52,9 @@ export default {
         return baseUrl;
       }
       return baseUrl.replace("<workflow>", this.wid);
+    },
+    graphUrl() {
+      return `/api/v2/devel/ui/workflows/image/${this.wid}/sizes/24x24.svg`;
     },
     firstColumn() {
       return {
@@ -106,7 +114,11 @@ export default {
                             <label class="switch-label" for="extendedView">
                                 <span>Show all</span>
                             </label>
-                        </div></div>`;
+                        </div>
+                        <div class="view-graph-button">
+                            <button class="k-button k-button-icontext"><i class="k-icon k-i-connector"></i>Graph</button>
+                        </div>
+                 </div>`;
         }
       },
       getCellTemplate: columnId => {
@@ -182,6 +194,13 @@ export default {
             this.$("[data-acl=" + acl + "]", treeList.table).hide();
           }
         });
+        this.$(treeList.thead).on(
+          "click",
+          ".view-graph-button > button",
+          () => {
+            this.$refs.graphWindow.kendoWidget().open();
+          }
+        );
         this.$(treeList.thead).on(
           "change",
           ".show-all-switch input[type=checkbox]",

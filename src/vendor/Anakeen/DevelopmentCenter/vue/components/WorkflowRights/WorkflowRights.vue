@@ -9,6 +9,7 @@
                        :headerTemplate="privateMethods.getHeaderTemplate"
                        :columnTemplate="privateMethods.getCellTemplate"
                        :model="model"></ank-tree-list>
+        <kendo-window ref="graphWindow" title="Graph" :content="graphUrl" :visible="false"></kendo-window>
     </div>
 </template>
 <!-- CSS to this component only -->
