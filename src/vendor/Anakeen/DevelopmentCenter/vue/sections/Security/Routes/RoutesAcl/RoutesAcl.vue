@@ -1,8 +1,5 @@
 <template>
     <div class="routes-acl-parent">
-        <kendo-toolbar class="routes-acl-toolbar">
-            <kendo-toolbar-item type="button" icon="refresh" @click="refreshRoutes"></kendo-toolbar-item>
-        </kendo-toolbar>
         <kendo-datasource ref="routesGrid"
                           :transport-read="getRoutes"
                           :server-paging="true"
