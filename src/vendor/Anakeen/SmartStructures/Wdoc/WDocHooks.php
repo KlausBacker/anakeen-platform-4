@@ -39,7 +39,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * state's activities labels
      * @var array
      */
-    public $stateactivity = array(); // label of states
+    public $stepLabels = array(); // label of steps
     // --------------------------------------------------------------------
     //----------------------  TRANSITION DEFINITION --------------------
     public $transitions = array(); // set by childs classes
@@ -63,10 +63,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public $doc = null;
 
+    public $graphModelName;
+
     const TIMER_PERSISTENT = "persistent";
-
     const TIMER_VOLATILE = "volatile";
-
     const TIMER_UNATTACH = "unattach";
 
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
@@ -94,12 +94,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            /**
-             * affect action label
-             */
-            foreach ($this->stateactivity as $k => $v) {
-                $this->setValue($this->_aid("_ACTIVITYLABEL", $k), $v);
-            }
+
             $this->getStates();
 
             if ($this->isChanged()) {
@@ -189,11 +184,30 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     public function getStateLabel($state)
     {
+        if ($this->graphModelName) {
+            $label= ___($state, $this->graphModelName.":state");
+            if ($label !== $state) {
+                return $label;
+            }
+        }
+        if (!empty($this->stepLabels[$state])) {
+            return $this->stepLabels[$state]["state"]?:$state;
+        }
         return _($state);
     }
 
     public function getTransitionLabel($transitionId)
     {
+        if ($this->graphModelName) {
+            $label= ___($transitionId, $this->graphModelName.":transition");
+            if ($label === $transitionId) {
+                $label=$this->transitions[$transitionId]["label"];
+                if (!$label) {
+                    $label=$transitionId;
+                }
+            }
+            return $label;
+        }
         return _($transitionId);
     }
 
@@ -559,36 +573,6 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s timer"), _($state));
-            if ($oattr->isAffected()) {
-                $oattr->Modify();
-            } else {
-                $oattr->add();
-            }
-
-            // --------------------------
-            // Label action
-            $aid = $this->_aid("_ACTIVITYLABEL", $k);
-            $oattr = new DocAttr($this->dbaccess, array(
-                $cid,
-                $aid
-            ));
-            $oattr->docid = $cid;
-
-            if (!(empty($this->stateactivity[$k]))) {
-                $oattr->accessibility = "Read";
-            } else {
-                $oattr->accessibility = "ReadWrite";
-            }
-            $oattr->type = 'text';
-            $oattr->link = "";
-            $oattr->phpfile = "";
-            $oattr->phpfunc = "";
-            $oattr->id = $aid;
-            $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
-            $oattr->frameid = $aidframe;
-            $oattr->ordered = $ordered++;
-
-            $oattr->labeltext = sprintf(_("%s activity"), _($k));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -1052,15 +1036,17 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      */
     public function getActivity($state, $def = "")
     {
-        //$acolor=$this->attrPrefix."_ACTIVITYLABEL".($state);
-        $acolor = $this->_aid("_ACTIVITYLABEL", $state);
-        $v = $this->getRawValue($acolor);
-        if ($v) {
-            return _($v);
+        if ($this->graphModelName) {
+            $label= ___($state, $this->graphModelName.":activity");
+            if ($label !== $state) {
+                return $label;
+            }
+        }
+        if (!empty($this->stepLabels[$state])) {
+            return $this->stepLabels[$state]["activity"]?:$def;
         }
         return $def;
     }
-
 
     /**
      * send associated mail of a state

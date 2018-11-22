@@ -46,6 +46,7 @@ class CheckWorkflow
      */
     private $transitionModelProperties
         = array(
+            'label',
             'm0',
             'm1',
             'm2',
@@ -147,7 +148,7 @@ class CheckWorkflow
 
     protected function checkActivities()
     {
-        $activities = $this->wdoc->stateactivity;
+        $activities = $this->wdoc->stepLabels;
         if (!is_array($activities)) {
             $this->addCodeError('WFL0051', $this->className);
         } else {
@@ -155,7 +156,7 @@ class CheckWorkflow
 
             foreach ($activities as $state => $label) {
                 if (!in_array($state, $states)) {
-                    $this->addCodeError('WFL0052', $state, $label, $this->className);
+                    $this->addCodeError('WFL0052', $state, $label["activity"], $this->className);
                 }
             }
         }

@@ -121,7 +121,7 @@ class WorkflowState
             "isCurrentState" => ($state === $this->_document->state),
             "label" => _($state),
             "activity" => $this->workflow->getActivity($state),
-            "displayValue" => ($this->workflow->getActivity($state)) ? $this->workflow->getActivity($state) : _($state),
+            "displayValue" => ($this->workflow->getActivity($state)) ? $this->workflow->getActivity($state) : $this->workflow->getStateLabel($state),
             "color" => $this->workflow->getColor($state)
         );
     }
