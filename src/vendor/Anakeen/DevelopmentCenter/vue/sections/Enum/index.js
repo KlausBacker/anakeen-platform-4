@@ -1,8 +1,8 @@
 import Enum from "./EnumDevCenter.vue";
 
 export default {
-  label: "Enums",
-  name: "Enums",
+  label: "Enumerates",
+  name: "Enumerates",
   path: "enums",
   component: Enum
 };
