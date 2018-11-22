@@ -26,7 +26,7 @@
     xml2js "^0.4.19"
     yargs "^11.1.0"
 
-"@anakeen/ank-components@1.0.0-1542812480":
+"@anakeen/ank-components@latest":
   version "1.0.0-1542812480"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1542812480.tgz#2b07039317818d0782088ee26d4ac237f749c219"
   integrity sha512-06WTf+np/2TCtV9rfbHMoooKFuNJn2RKxy7tyQOKHiGPOvG7gJK1dofzVepQnILV+HbVJLvUX2+ZmSTYXVg4QA==
