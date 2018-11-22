@@ -515,7 +515,7 @@ exports.xmlWorkflow2Pot = ({ poGlob, info, potPath }) => {
                         acc[`state-${currentView.$.name}`] = {
                           elements: {
                             name: `${currentView.$.name}`,
-                            context: `state-${graphName}`,
+                            context: `${graphName}:state`,
                             label: currentView.$["state-label"],
                             fileName: currentFilePath
                           }
@@ -525,7 +525,7 @@ exports.xmlWorkflow2Pot = ({ poGlob, info, potPath }) => {
                         acc[`activity-${currentView.$.name}`] = {
                           elements: {
                             name: `${currentView.$.name}`,
-                            context: `activity-${graphName}`,
+                            context: `${graphName}:activity`,
                             label: currentView.$["activity-label"],
                             fileName: currentFilePath
                           }
@@ -548,7 +548,7 @@ exports.xmlWorkflow2Pot = ({ poGlob, info, potPath }) => {
                         elements: {
                           name: currentView.$.name,
                           label: currentView.$.label,
-                          context: `transition-${graphName}`,
+                          context: `${graphName}:transition`,
                           fileName: currentFilePath
                         }
                       };
