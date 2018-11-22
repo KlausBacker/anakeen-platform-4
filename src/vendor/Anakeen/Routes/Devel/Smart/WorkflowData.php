@@ -87,6 +87,7 @@ class WorkflowData
             $stepData = [];
             $stepData['id'] = $step;
             $stepData['label'] = $this->workflow->getStateLabel($step);
+            $stepData['activity'] = $this->workflow->getActivity($step);
             $stepData['color'] = $this->workflow->getColor($step);
             $stepData['mask'] = self::getElementRef($this->workflow->getStateMask($step));
             $stepData['viewcontrol'] = self::getElementRef($this->workflow->getStateViewControl($step));

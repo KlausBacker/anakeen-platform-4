@@ -48,6 +48,18 @@ export default {
               })
             },
             {
+              name: "Wfl::steps::fall",
+              path: "fall/:seIdentifier",
+              meta: {
+                label: ":seIdentifier"
+              },
+              component: ElementView,
+              props: route => ({
+                initid: route.params.seIdentifier.toString(),
+                viewId: "!defaultConsultation"
+              })
+            },
+            {
               name: "Wfl::steps::mail",
               path: "mail/templates/:seIdentifier",
               meta: {
