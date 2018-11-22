@@ -59,19 +59,11 @@ export default {
           case "maskId":
             return `<a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/masks/${
-              dataItem[colId]
-            }" style="text-decoration: underline; color: #157EFB">${
-              dataItem[colId]
-            }</a>`;
+            }/masks/${dataItem[colId]}">${dataItem[colId]}</a>`;
           case "cvId":
             return `<a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/control/element/${
-              dataItem[colId]
-            }" style="text-decoration: underline; color: #157EFB">${
-              dataItem[colId]
-            }</a>`;
+            }/control/element/${dataItem[colId]}">${dataItem[colId]}</a>`;
           default:
             break;
         }

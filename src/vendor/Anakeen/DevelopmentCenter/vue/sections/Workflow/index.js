@@ -55,7 +55,8 @@ export default {
               },
               component: ElementView,
               props: route => ({
-                profileId: route.params.seIdentifier.toString()
+                initid: route.params.seIdentifier.toString(),
+                viewId: "!defaultConsultation"
               })
             },
             {
@@ -66,7 +67,8 @@ export default {
               },
               component: ElementView,
               props: route => ({
-                profileId: route.params.seIdentifier.toString()
+                initid: route.params.seIdentifier.toString(),
+                viewId: "!defaultConsultation"
               })
             }
           ]

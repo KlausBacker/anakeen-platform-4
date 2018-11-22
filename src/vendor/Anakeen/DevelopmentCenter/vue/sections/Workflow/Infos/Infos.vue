@@ -12,14 +12,14 @@
                         <span class="wfl-card-content-item-value" v-else> There is currently no name property for this workflow</span>
                     </div>
                     <div class="wfl-infos-card-content-item">
-                        <span class="wfl-card-content-item-label">Identification:</span>
+                        <span class="wfl-card-content-item-label">Id:</span>
                         <span class="wfl-card-content-item-value">{{wflData.id}}</span>
                     </div>
                     <div class="wfl-infos-card-content-item">
                         <span class="wfl-card-content-item-label">Smart Structure:</span>
                         <span class="wfl-card-content-item-value"><a data-role="develRouterLink"
                                                                      :href="`/devel/smartStructures/${wflData.structure}/infos`"
-                                                                     style="text-decoration: underline; color: #157EFB">{{wflData.structure}}</a></span>
+                                                                    >{{wflData.structure}}</a></span>
                     </div>
                 </div>
             </div>

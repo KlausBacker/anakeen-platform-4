@@ -14,7 +14,16 @@
   height: 100%;
   tr {
     word-break: break-word;
+    td > a {
+      text-decoration: underline;
+      color: #157EFB;
+    }
+    li > a {
+      text-decoration: underline;
+      color: #157EFB;
+    }
   }
+
 }
 .k-filtercell {
   display: flex;

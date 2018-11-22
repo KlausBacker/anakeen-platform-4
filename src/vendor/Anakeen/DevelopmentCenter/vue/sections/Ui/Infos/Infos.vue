@@ -9,7 +9,7 @@
                         <span class="ui-card-content-item-label">Name:</span>
                         <span class="ui-card-content-item-value"><a data-role="develRouterLink"
                                                                     :href="`/devel/ui/${ssName}/control/element/${cvdoc.name}`"
-                                                                    style="text-decoration: underline; color: #157EFB"> {{cvdoc.name}}</a></span>
+                                                                   > {{cvdoc.name}}</a></span>
                     </div>
                     <div class="ui-infos-card-content-item">
                         <span class="ui-card-content-item-label">Identification:</span>
@@ -48,7 +48,7 @@
                         <span class="ui-card-content-item-label">Name:</span>
                         <span class="ui-card-content-item-value"><a data-role="develRouterLink"
                                                                     :href="`/devel/ui/${ssName}/masks/${mskfamid}`"
-                                                                    style="text-decoration: underline; color: #157EFB">{{mskfamid}}</a></span>
+                                                                   >{{mskfamid}}</a></span>
                     </div>
                     <div class="ui-infos-card-content-item" v-else>
                         <span class="ui-card-content-item-value">No Primary Mask has been set for this View Controller...</span>
