@@ -9,6 +9,19 @@ export const getTreeListData = steps => {
   return Object.values(treeResult);
 };
 
+const getRootAccountLabel = accountType => {
+  switch (accountType) {
+    case "field":
+      return "Fields";
+    case "group":
+      return "Groups";
+    case "role":
+      return "Roles";
+    default:
+      return accountType;
+  }
+};
+
 const organizeData = steps => {
   const organizedData = {};
   if (steps && steps.length) {
@@ -43,7 +56,7 @@ const createRootNode = (accountType, resultTree) => {
       virtualId: nodeId,
       accountType: true,
       parentId: null,
-      accountLabel: accountType,
+      accountLabel: getRootAccountLabel(accountType),
       account: { type: accountType }
     };
   }

@@ -126,10 +126,7 @@ export default {
           const currentValue = dataItem[columnId];
           if (currentValue) {
             if (columnId === "account") {
-              if (dataItem.accountType) {
-                return currentValue.type;
-              }
-              return currentValue.reference;
+              return dataItem.accountLabel;
             } else if (typeof currentValue === "object") {
               return this.privateMethods.getRightsTemplate(currentValue);
             }
@@ -285,7 +282,22 @@ export default {
         this.privateMethods.createProfilesHeaderRow(treeList);
         this.privateMethods.createFallHeaderRow(treeList);
         this.privateMethods.createCheckboxHeaderRow(treeList);
-        treeList.refresh();
+        treeList.dataSource.sort({
+          field: "accountLabel",
+          dir: "asc",
+          compare: (a, b) => {
+            const labelA = a.accountLabel;
+            const labelB = b.accountLabel;
+            if (labelA === labelB) {
+              return 0;
+            }
+            if (labelA === "Fields") return -1;
+            if (labelB === "Fields") return 1;
+            if (labelA === "Groups") return 1;
+            if (labelB === "Groups") return -1;
+            return 0;
+          }
+        });
       },
       fetchColumns: () => {
         this.$http
