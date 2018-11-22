@@ -19,6 +19,7 @@
     justify-content: center;
     flex: 1;
     overflow-y: auto;
+
     .wfl-infos-card {
 
       .wfl-infos-card-title {
@@ -50,4 +51,11 @@
 
 .wfl-card-content-item-label {
   font-weight: bold;
+}
+
+.wfl-card-content-item-value {
+  a {
+    text-decoration: underline;
+    color: #157EFB;
+  }
 }

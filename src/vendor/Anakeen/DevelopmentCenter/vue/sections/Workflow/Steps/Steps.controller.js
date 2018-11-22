@@ -95,24 +95,28 @@ export default {
         }
         if (dataItem[colId] instanceof Object) {
           if (this.columnsTabMultiple.includes(colId)) {
-            if (dataItem[colId].length > 1) {
-              let str = "";
-              return this.recursiveData(dataItem[colId], str);
-            } else {
-              return dataItem[colId][0] ? dataItem[colId][0] : "";
-            }
+            let str = "";
+            return this.recursiveData(dataItem[colId], str, colId);
           }
         }
         return dataItem[colId];
       };
     },
-    recursiveData(items, str) {
+    recursiveData(items, str, colId) {
       if (items instanceof Object) {
         Object.keys(items.toJSON()).forEach(item => {
           if (items[item] instanceof Object) {
-            this.recursiveData(items[item], str);
+            this.recursiveData(items[item], str, colId);
           } else {
-            str += "<li>" + items[item] + "</li>";
+            switch (colId) {
+              case "mailtemplates":
+                str += `<li><a data-role="develRouterLink" href="/devel/wfl/${
+                  this.wflName
+                }/steps/mail/templates/${items[item]}">${items[item]}</a></li>`;
+                break;
+              default:
+                break;
+            }
           }
         });
       }
@@ -127,42 +131,22 @@ export default {
             case "viewcontrol":
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
-              }/views" style="text-decoration: underline; color: #157EFB">${
-                dataItem[colId]
-              }</a>&nbsp`;
+              }/views">${dataItem[colId]}</a>&nbsp`;
 
             case "mask":
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
-              }/views" style="text-decoration: underline; color: #157EFB">${
-                dataItem[colId]
-              }</a>&nbsp`;
+              }/views">${dataItem[colId]}</a>&nbsp`;
             case "profil":
               return `<a data-role="develRouterLink" href="/devel/wfl/${
                 this.wflName
-              }/steps/pdoc/${
-                dataItem[colId]
-              }" style="text-decoration: underline; color: #157EFB">${
-                dataItem[colId]
-              }</a>&nbsp`;
+              }/steps/pdoc/${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
             case "fall":
               return dataItem[colId];
-            case "mailtemplates":
-              return `<a data-role="develRouterLink" href="/devel/wfl/${
-                this.wflName
-              }/steps/mail/templates/${
-                dataItem[colId]
-              }" style="text-decoration: underline; color: #157EFB">${
-                dataItem[colId]
-              }</a>&nbsp`;
             case "timer":
               return `<a data-role="develRouterLink" href="/devel/wfl/${
                 this.wflName
-              }/steps/timer/${
-                dataItem[colId]
-              }" style="text-decoration: underline; color: #157EFB">${
-                dataItem[colId]
-              }</a>&nbsp`;
+              }/steps/timer/${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
             default:
               return dataItem[colId];
           }

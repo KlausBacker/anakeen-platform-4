@@ -47,3 +47,10 @@
 .ui-card-content-item-label {
   font-weight: bold;
 }
+
+.ui-card-content-item-value {
+  a {
+    text-decoration: underline;
+    color: #157EFB;
+  }
+}

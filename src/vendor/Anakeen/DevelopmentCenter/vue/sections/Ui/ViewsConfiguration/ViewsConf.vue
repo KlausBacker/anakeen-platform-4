@@ -3,7 +3,7 @@
         <kendo-datasource ref="viewsGrid"
                           :transport-read="getViews"
                           :schema-data="parseViewsData"
-                          :sort="[{ field: 'title', dir: 'asc'},{field: 'viewMode', dir:'asc'},{field: 'order', dir:'asc'}]">
+                          :sort="[{ field: 'cvId', dir: 'asc'},{field: 'viewMode', dir:'asc'},{field: 'order', dir:'asc'}]">
         </kendo-datasource>
         <kendo-grid ref="viewsGridContent" class="views-grid-content"
                     :data-source-ref="'viewsGrid'"

@@ -55,18 +55,20 @@ export default {
               },
               component: ElementView,
               props: route => ({
-                profileId: route.params.seIdentifier.toString()
+                initid: route.params.seIdentifier.toString(),
+                viewId: "!defaultConsultation"
               })
             },
             {
-              name: "Wfl::steps::pdoc",
+              name: "Wfl::steps::timer",
               path: "timer/:seIdentifier",
               meta: {
                 label: ":seIdentifier"
               },
               component: ElementView,
               props: route => ({
-                profileId: route.params.seIdentifier.toString()
+                initid: route.params.seIdentifier.toString(),
+                viewId: "!defaultConsultation"
               })
             }
           ]

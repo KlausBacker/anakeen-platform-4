@@ -47,7 +47,9 @@
     .operator-label {
         display: none;
     }
-
+    .k-dropdown-operator {
+        display: none;
+    }
     .splitter-right {
         width: 100%;
         height: 100%;

@@ -63,7 +63,8 @@ export default {
               component: ProfileView,
               props: route => ({
                 profileId: route.params.seIdentifier.toString(),
-                detachable: true
+                detachable: true,
+                onlyExtendedAcls: true
               })
             }
           ]
