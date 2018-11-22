@@ -20,7 +20,7 @@ export default {
             operator: "eq",
             value: to.params.seIdentifier
           });
-          vueInstance.splitterControlConfEmpty = false;
+          vueInstance.$refs.controlSplitter.disableEmptyContent();
           vueInstance.getSelected(to.params.seIdentifier);
         } else {
           vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
@@ -30,7 +30,7 @@ export default {
               value: to.params.seIdentifier
             });
           });
-          vueInstance.splitterControlConfEmpty = false;
+          vueInstance.$refs.controlSplitter.disableEmptyContent();
           vueInstance.getSelected(to.params.seIdentifier);
         }
       });
@@ -40,7 +40,6 @@ export default {
   },
   data() {
     return {
-      splitterControlConfEmpty: true,
       panes: [
         {
           scrollable: false,
@@ -75,7 +74,7 @@ export default {
     },
     actionClick(event) {
       event.preventDefault();
-      this.splitterControlConfEmpty = false;
+      this.$refs.controlSplitter.disableEmptyContent();
       switch (event.data.type) {
         case "consult":
           this.$router.push({

@@ -11,7 +11,6 @@ export default {
   },
   data() {
     return {
-      splitterProfileEmpty: true,
       panes: [
         {
           scrollable: false,
@@ -27,6 +26,15 @@ export default {
         }
       ]
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    if (to.name === "Security::Profile::Access::Element") {
+      next(vueInstance => {
+        vueInstance.$refs.profileSplitter.disableEmptyContent();
+      });
+    } else {
+      next();
+    }
   },
   methods: {
     cellRender(event) {
@@ -45,7 +53,6 @@ export default {
       }
     },
     actionClick(event) {
-      this.splitterProfileEmpty = false;
       switch (event.data.type) {
         case "view": {
           this.$router.push({
@@ -54,6 +61,7 @@ export default {
               seIdentifier: event.data.row.name || event.data.row.initid
             }
           });
+          this.$refs.profileSplitter.disableEmptyContent();
           break;
         }
       }

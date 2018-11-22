@@ -20,8 +20,8 @@ export default {
             operator: "eq",
             value: to.params.seIdentifier
           });
-          vueInstance.splitterMasksEmpty = false;
           vueInstance.getSelected(to.params.seIdentifier);
+          vueInstance.$refs.masksSplitter.disableEmptyContent();
         } else {
           vueInstance.$refs.masksGrid.$on("grid-ready", () => {
             vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
@@ -30,8 +30,8 @@ export default {
               value: to.params.seIdentifier
             });
           });
-          vueInstance.splitterMasksEmpty = false;
           vueInstance.getSelected(to.params.seIdentifier);
+          vueInstance.$refs.masksSplitter.disableEmptyContent();
         }
       });
     } else {
@@ -40,7 +40,6 @@ export default {
   },
   data() {
     return {
-      splitterMasksEmpty: true,
       panes: [
         {
           scrollable: false,
@@ -89,7 +88,7 @@ export default {
     },
     actionClick(event) {
       event.preventDefault();
-      this.splitterMasksEmpty = false;
+      this.$refs.masksSplitter.disableEmptyContent();
       switch (event.data.type) {
         case "consult": {
           this.$router.push({

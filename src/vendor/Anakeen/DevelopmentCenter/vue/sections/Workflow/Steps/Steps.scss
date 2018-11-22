@@ -47,22 +47,3 @@
   height: 100%;
   width: 100%;
 }
-
-.steps-se-empty {
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  background-color: #DEDEDE;
-  .steps-se-empty-icon {
-    display: block;
-    font-size: 10rem;
-    padding-bottom: 5rem;
-    padding-left: 6.5rem;
-    color: #A4A4A4 !important;
-  }
-  .steps-se-empty-text {
-    font-size: 1.5rem;
-    color: #A4A4A4 !important;
-  }
-}
