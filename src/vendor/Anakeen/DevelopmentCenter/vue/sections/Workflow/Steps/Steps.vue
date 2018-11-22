@@ -10,9 +10,10 @@
                             :data-source-ref="'stepsGrid'"
                             :sortable="true">
                     <kendo-grid-column :field="'id'" :title="'<b>Step</b>'"></kendo-grid-column>
+                    <kendo-grid-column :field="'label'" :title="'<b>Label</b>'"></kendo-grid-column>
                     <kendo-grid-column :field="'color'" :title="'<b>Color</b>'"
                                        :template="displayColor('color')"></kendo-grid-column>
-                    <kendo-grid-column :field="'label'" :title="'<b>Activity Label</b>'"></kendo-grid-column>
+                    <kendo-grid-column :field="'activity'" :title="'<b>Activity</b>'"></kendo-grid-column>
                     <kendo-grid-column :field="'mailtemplates'" :title="'<b>Mail Templates</b>'"
                                        :template="displayMultiple('mailtemplates')"></kendo-grid-column>
                     <kendo-grid-column :field="'timer'" :title="'<b>Timers</b>'" :template="displayLink('timer')"></kendo-grid-column>

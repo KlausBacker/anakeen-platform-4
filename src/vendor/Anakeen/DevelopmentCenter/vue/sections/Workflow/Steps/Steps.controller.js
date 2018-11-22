@@ -142,7 +142,9 @@ export default {
                 this.wflName
               }/steps/pdoc/${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
             case "fall":
-              return dataItem[colId];
+              return `<a data-role="develRouterLink" href="/devel/wfl/${
+                this.wflName
+              }/steps/fall/${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
             case "timer":
               return `<a data-role="develRouterLink" href="/devel/wfl/${
                 this.wflName

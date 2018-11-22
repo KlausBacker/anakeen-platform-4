@@ -10,6 +10,7 @@
                             :data-source-ref="'transitionsGrid'"
                             :sortable="true">
                     <kendo-grid-column :field="'id'" :title="'<b>Transition</b>'"></kendo-grid-column>
+                    <kendo-grid-column :field="'label'" :title="'<b>Label</b>'"></kendo-grid-column>
                     <kendo-grid-column :field="'mailtemplates'" :title="'<b>Mail Template</b>'"
                                        :template="displayMultiple('mailtemplates')"></kendo-grid-column>
                     <kendo-grid-column :field="'volatileTimers'" :title="'<b>Volatile Timers</b>'"
