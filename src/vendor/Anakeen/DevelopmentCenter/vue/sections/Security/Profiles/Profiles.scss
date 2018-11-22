@@ -4,6 +4,10 @@
   flex: 1;
   min-height: 0;
 
+  .smart-element-grid .k-grid-content .grid-cell-content {
+    overflow-wrap: break-word;
+  }
+
   .k-pane {
     display: flex;
     flex: 1;
