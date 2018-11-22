@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
+    <import schemaLocation="./xsd/configTimer.xsd" namespace="https://platform.anakeen.com/4/schemas/timer/1.0"/>
+    <import schemaLocation="./xsd/configWorkflow.xsd"  namespace="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <import schemaLocation="./xsd/configMailTemplate.xsd"  namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
+    <!--<import schemaLocation="./xsd/sdeConfig.xsd"  namespace="https://platform.anakeen.com/4/schemas/sde/1.0"/>-->
+    <import schemaLocation="./xsd/smartConfig.xsd"  namespace="https://platform.anakeen.com/4/schemas/smart/1.0"/>
+    <import schemaLocation="./xsd/uiConfig.xsd"  namespace="https://platform.anakeen.com/4/schemas/ui/1.0"/>
+    <import schemaLocation="./xsd/anakeen-cli-build.xsd"  namespace="https://platform.anakeen.com/4/schemas/module/1.0"/>
+</schema>
