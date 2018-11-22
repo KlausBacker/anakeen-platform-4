@@ -31,7 +31,11 @@ class ProfileUtils
                 }
                 foreach ($profil->acls as $aclName) {
                     if (!isset($access["acls"][$aclName])) {
-                        if (DocumentAccess::controlUserId($profil->id, $access["id"], $aclName) === "") {
+                        if ($profil->accessControl()->isExtendedAcl($aclName)) {
+                            if (\DocPermExt::isGranted($access["id"], $aclName, $profil->id)) {
+                                $access["acls"][$aclName] = "inherit";
+                            }
+                        } elseif (DocumentAccess::controlUserId($profil->id, $access["id"], $aclName) === "") {
                             $access["acls"][$aclName] = "inherit";
                         }
                     }
@@ -39,7 +43,7 @@ class ProfileUtils
             }
         }
     }
-    
+
     public static function getProperties(SmartElement $profile)
     {
         $props = [
