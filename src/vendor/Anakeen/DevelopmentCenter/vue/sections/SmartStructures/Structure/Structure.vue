@@ -1,5 +1,5 @@
 <template>
-    <ss-treelist :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate" :ssName="ssName"></ss-treelist>
+    <ss-treelist ref="structList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues" :columnTemplate="columnTemplate" :ssName="ssName"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
@@ -11,8 +11,9 @@
     props: ["ssName"],
     data() {
       return {
+        columnSizeTab: [],
         items: [
-          { name: "id", label: "Identification", hidden: false, width: "20rem"},
+          { name: "id", label: "Identification", hidden: false},
           { name: "structure", label: "Structure", hidden: false},
           { name: "type", label: "Type", hidden: false, width: "8rem"},
           { name: "labeltext", label: "Label", hidden: false},
@@ -33,6 +34,20 @@
         url: `/api/v2/devel/smart/structures/${this.ssName}/fields/`,
         getValues(response) {
           return response.fields;
+        },
+        getItems(tab) {
+          Object.keys(this.items).forEach(item => {
+            if (tab) {
+              tab.forEach(it => {
+                if (this.items[item].name === it.field && it.width) {
+                  this.items[item]["width"] = it.width + "px";
+                } else if (!this.items[item]["width"]) {
+                  this.items[item]["width"] = "10rem";
+                }
+              });
+            }
+          });
+          return this.items;
         },
         columnTemplate(colId) {
           return dataItem => {
@@ -68,6 +83,20 @@
           };
         }
       }
+    },
+    created() {
+      this.columnSizeTab = JSON.parse(
+        window.localStorage.getItem(
+          "ss-list-column-size-conf-" + this.ssName
+        ));
+    },
+    mounted() {
+      this.$refs.structList.$refs.ssTreelist.kendoWidget().bind("columnResize", (e) => {
+        window.localStorage.setItem(
+          "ss-list-column-size-conf-" + this.ssName,
+          JSON.stringify(this.$refs.structList.onColumnResize(e))
+        );
+      });
     }
   }
 </script>

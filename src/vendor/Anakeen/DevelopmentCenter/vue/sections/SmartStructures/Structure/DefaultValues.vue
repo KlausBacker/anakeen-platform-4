@@ -1,5 +1,5 @@
 <template>
-    <ss-treelist :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate"
+    <ss-treelist ref="defList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues" :columnTemplate="columnTemplate"
                  :messages="messages"></ss-treelist>
 </template>
 <script>
@@ -13,6 +13,7 @@
     props: ["ssName"],
     data() {
       return {
+        columnSizeTab: [],
         items: [
           {name: "id", label: "Identification", hidden: false},
           {name: "type", label: "Type", hidden: false},
@@ -36,6 +37,20 @@
           });
         }
         return str;
+      },
+      getItems(tab) {
+        Object.keys(this.items).forEach(item => {
+          if (tab) {
+            tab.forEach(it => {
+              if (this.items[item].name === it.field && it.width) {
+                this.items[item]["width"] = it.width + "px";
+              } else if (!this.items[item]["width"]) {
+                this.items[item]["width"] = "10rem";
+              }
+            });
+          }
+        });
+        return this.items;
       },
       columnTemplate(colId) {
         return dataItem => {
@@ -77,6 +92,20 @@
         });
         return response.fields;
       }
+    },
+    created() {
+      this.columnSizeTab = JSON.parse(
+        window.localStorage.getItem(
+          "ss-list-default-column-size-conf-" + this.ssName
+        ));
+    },
+    mounted() {
+      this.$refs.defList.$refs.ssTreelist.kendoWidget().bind("columnResize", (e) => {
+        window.localStorage.setItem(
+          "ss-list-default-column-size-conf-" + this.ssName,
+          JSON.stringify(this.$refs.defList.onColumnResize(e))
+        );
+      });
     }
   }
 </script>
