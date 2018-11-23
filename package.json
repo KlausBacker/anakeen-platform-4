@@ -19,7 +19,6 @@
     "@progress/kendo-layout-vue-wrapper": "^2018.3.1025",
     "@progress/kendo-treelist-vue-wrapper": "^2018.3.1018",
     "@progress/kendo-ui": "^2018.3.1003",
-    "@progress/kendo-window-vue-wrapper": "^2018.3.1025",
     "axios": "^0.18.0",
     "d3": "^5.7.0",
     "document-register-element": "^1.10.0",
