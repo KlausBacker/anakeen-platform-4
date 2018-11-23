@@ -1,20 +1,34 @@
 import Vue from "vue";
 import { AnkSEGrid } from "@anakeen/ank-components";
-import "@progress/kendo-ui";
-import "@progress/kendo-ui/js/kendo.splitter";
+import Splitter from "devComponents/Splitter/Splitter.vue";
 
 Vue.use(AnkSEGrid);
 export default {
   components: {
-    "ank-se-grid": AnkSEGrid
+    "ank-se-grid": AnkSEGrid,
+    "ank-splitter": Splitter
   },
   data() {
     return {
-      collection: ""
+      collection: "",
+      panes: [
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: "50%"
+        },
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: "50%"
+        }
+      ]
     };
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.role) {
+    if (to.name === "Security::Roles::element") {
       let filter = to.query.role;
       next(function(vueInstance) {
         if (filter && filter !== "") {
@@ -34,43 +48,11 @@ export default {
             });
           }
         }
+        vueInstance.$refs.rolesSplitter.disableEmptyContent();
       });
     } else {
       next();
     }
-  },
-  mounted() {
-    const onContentResize = (part, $split) => {
-      return () => {
-        window.setTimeout(() => {
-          this.$(window).trigger("resize");
-        }, 100);
-        window.localStorage.setItem(
-          "security.role." + part,
-          this.$($split)
-            .data("kendoSplitter")
-            .size(".k-pane:first")
-        );
-      };
-    };
-    this.$(this.$refs.roleSplitter).kendoSplitter({
-      orientation: "horizontal",
-      panes: [
-        {
-          scrollable: false,
-          collapsible: true,
-          resizable: true,
-          size: window.localStorage.getItem("security.role.content") || "50%"
-        },
-        {
-          scrollable: false,
-          collapsible: true,
-          resizable: true,
-          size: "50%"
-        }
-      ],
-      resize: onContentResize("content", this.$refs.roleSplitter)
-    });
   },
   methods: {
     setGridOption() {
@@ -102,6 +84,7 @@ export default {
         }
       });
       this.getSelected(e.data.row.id);
+      this.$refs.rolesSplitter.disableEmptyContent();
     },
     onGridError(event) {
       this.$store.dispatch("displayError", {

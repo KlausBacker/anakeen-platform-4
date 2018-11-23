@@ -64,6 +64,7 @@ class ProfilesGridConfig extends GridConfig
         $fromConfig["title"] = "Type";
 
         $dpdocConfig = ColumnsConfig::getColumnConfig("dpdoc_famid", SEManager::getFamily("PDOC"));
+        $dpdocConfig["smartType"] = "text";
         $dpdocConfig["title"] = "Dynamic";
         $originalConfig["smartFields"] = [
             ColumnsConfig::getColumnConfig("title"),

@@ -70,24 +70,25 @@ export default {
         if (rights) {
           return (
             "<div class='btn-group'>" +
-            Object.keys(this.viewedAcls)
+            Object.keys(this.acls)
               .map(acl => {
                 let hide = "";
-                if (!this.viewedAcls[acl]) {
+                if (!this.acls[acl].visible) {
                   hide = "style='display: none;'";
                 }
                 switch (rights[acl]) {
                   case "set":
-                    return `<button class="btn btn-primary" ${hide} data-acl="${acl}">${acl
+                    return `<button class="btn acl-set" ${hide} data-acl="${acl}">${acl
                       .charAt(0)
                       .toUpperCase()}</button>`;
                   case "inherit":
-                  case undefined:
-                    return `<button class="btn btn-secondary" ${hide} data-acl="${acl}">${acl
+                    return `<button class="btn acl-inherited" ${hide} data-acl="${acl}">${acl
                       .charAt(0)
                       .toUpperCase()}</button>`;
                   default:
-                    return "";
+                    return `<button class="btn acl-disabled" ${hide} data-acl="${acl}">${acl
+                      .charAt(0)
+                      .toUpperCase()}</button>`;
                 }
               })
               .join("") +
@@ -126,10 +127,7 @@ export default {
           const currentValue = dataItem[columnId];
           if (currentValue) {
             if (columnId === "account") {
-              if (dataItem.accountType) {
-                return currentValue.type;
-              }
-              return currentValue.reference;
+              return dataItem.accountLabel;
             } else if (typeof currentValue === "object") {
               return this.privateMethods.getRightsTemplate(currentValue);
             }
@@ -164,22 +162,51 @@ export default {
                   <i class="material-icons filter-clear">close</i>
                 </div>
               </th>
-              <th class="k-header">
-                ${this.acls
+              <th class="k-header acls-checkbox-header" colspan="${treeList
+                .columns.length - 1}">
+                ${this.defaultAcls
                   .map(c => {
+                    let checked = "";
+                    if (this.acls[c].visible) {
+                      checked = "checked='checked'";
+                    }
                     return `<input type="checkbox" id="${
                       this.wid
-                    }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" checked="${
-                      this.viewedAcls[c]
-                    }"/><label class="k-checkbox-label" for="${
+                    }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" ${checked}/><label class="k-checkbox-label" for="${
                       this.wid
-                    }-${c}">${c.charAt(0).toUpperCase()}${c.substring(
+                    }-${c}">${this.acls[c].label
+                      .charAt(0)
+                      .toUpperCase()}${this.acls[c].label.substring(
                       1
                     )}</label>`;
                   })
                   .join("")}
-
-                <!-- <button class="k-button" title="View all rights">+</button> -->
+                  <div class="secondary-acls">
+                    ${Object.values(this.acls)
+                      .filter(a => !a.default)
+                      .map(c => {
+                        let checked = "";
+                        if (c.visible) {
+                          checked = "checked='checked'";
+                        }
+                        return `<input type="checkbox" id="${this.wid}-${
+                          c.name
+                        }" class="k-checkbox check-acl check-acl--${
+                          c.name
+                        }" data-acl="${
+                          c.name
+                        }" ${checked}/><label class="k-checkbox-label" for="${
+                          this.wid
+                        }-${c.name}">${c.label
+                          .charAt(0)
+                          .toUpperCase()}${c.label.substring(1)}</label>`;
+                      })
+                      .join("")}
+                  </div>
+                    
+                 <button class="k-button k-button-icon view-all-acls" title="View all rights">
+                    <i class="k-icon k-i-plus"></i>
+                 </button>   
               </th>
             </tr>`
         );
@@ -187,10 +214,10 @@ export default {
           const checked = event.currentTarget.checked;
           const acl = event.currentTarget.dataset.acl;
           if (checked) {
-            this.viewedAcls[acl] = true;
+            this.acls[acl] = true;
             this.$("[data-acl=" + acl + "]", treeList.table).show();
           } else {
-            this.viewedAcls[acl] = false;
+            this.acls[acl] = false;
             this.$("[data-acl=" + acl + "]", treeList.table).hide();
           }
         });
@@ -204,6 +231,11 @@ export default {
               .open();
           }
         );
+        this.$(treeList.thead).on("click", "button.view-all-acls", event => {
+          const $button = this.$(event.currentTarget);
+          $button.toggleClass("all-acls-visible");
+          $button.prev(".secondary-acls").toggleClass("all-acls-visible");
+        });
         this.$(treeList.thead).on(
           "change",
           ".show-all-switch input[type=checkbox]",
@@ -285,7 +317,22 @@ export default {
         this.privateMethods.createProfilesHeaderRow(treeList);
         this.privateMethods.createFallHeaderRow(treeList);
         this.privateMethods.createCheckboxHeaderRow(treeList);
-        treeList.refresh();
+        treeList.dataSource.sort({
+          field: "accountLabel",
+          dir: "asc",
+          compare: (a, b) => {
+            const labelA = a.accountLabel;
+            const labelB = b.accountLabel;
+            if (labelA === labelB) {
+              return 0;
+            }
+            if (labelA === "Fields") return -1;
+            if (labelB === "Fields") return 1;
+            if (labelA === "Groups") return 1;
+            if (labelB === "Groups") return -1;
+            return 0;
+          }
+        });
       },
       fetchColumns: () => {
         this.$http
@@ -294,6 +341,19 @@ export default {
             if (response && response.data && response.data.data) {
               const steps = response.data.data.steps;
               this.treeColumns = this.privateMethods.getColumns(steps);
+              if (steps.length) {
+                this.acls = steps[0].acls.reduce((acc, acl) => {
+                  acc[acl.name] = acl;
+                  if (this.defaultAcls.indexOf(acl.name) > -1) {
+                    acc[acl.name].default = true;
+                    acc[acl.name].visible = true;
+                  } else {
+                    acc[acl.name].default = false;
+                    acc[acl.name].visible = false;
+                  }
+                  return acc;
+                }, {});
+              }
               this.$emit("workflow-rights-config-ready");
             }
           })
@@ -332,15 +392,12 @@ export default {
         parentId: "parentId",
         expanded: true
       },
+      profilAcls: {},
       completeList: false,
       treeColumns: [],
       treeConfigReady: false,
       treeContentReady: false,
-      acls: this.defaultAcls,
-      viewedAcls: this.defaultAcls.reduce((acc, curr) => {
-        acc[curr] = true;
-        return acc;
-      }, {})
+      acls: {}
     };
   }
 };

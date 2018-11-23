@@ -6,15 +6,7 @@
                 </ank-se-grid>
             </template>
             <template slot="right">
-                <div style="display: flex;">
-                    <div v-if="splitterProfileEmpty" class="profile-se-empty">
-                        <div>
-                            <span class="k-icon k-i-information profile-se-empty-icon"></span>
-                            <span class="profile-se-empty-text"> Please select an element to open </span>
-                        </div>
-                    </div>
-                    <router-multi-view v-else style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
-                </div>
+                <router-multi-view style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
             </template>
         </ank-splitter>
     </div>

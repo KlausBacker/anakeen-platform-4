@@ -2,9 +2,11 @@
 
 namespace Anakeen\Routes\Devel\Smart;
 
+use Anakeen\Core\Internal\DocumentAccess;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use Anakeen\Routes\Devel\Security\ProfileUtils;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
@@ -90,10 +92,31 @@ class WorkflowData
             $stepData['activity'] = $this->workflow->getActivity($step);
             $stepData['color'] = $this->workflow->getColor($step);
             $stepData['mask'] = self::getElementRef($this->workflow->getStateMask($step));
-            $stepData['viewcontrol'] = self::getElementRef($this->workflow->getStateViewControl($step));
             $stepData['profil'] = self::getElementRef($this->workflow->getStateProfil($step));
+            $stepData['viewcontrol'] = self::getElementRef($this->workflow->getStateViewControl($step));
             $stepData['fall'] = self::getElementRef($this->workflow->getStateFall($step));
             $stepData['timer'] = self::getElementRef($this->workflow->getStateTimer($step));
+
+            $profile = SEManager::getDocument($stepData["profil"]);
+            if (!empty($profile)) {
+                $acls = $profile->acls ?: [];
+                $extended = $profile->extendedAcls ?: [];
+                foreach ($acls as $acl) {
+                    if (isset($extended[$acl])) {
+                        $isExtendedAcl = true;
+                        $label = $extended[$acl]["description"];
+                    } else {
+                        $isExtendedAcl = false;
+                        $label = DocumentAccess::$dacls[$acl]["description"];
+                    }
+                    $stepData["acls"][] = [
+                        "name" => $acl,
+                        "label" => $label,
+                        "extended" => $isExtendedAcl
+
+                    ];
+                }
+            }
 
             $mails = $this->workflow->getStateMailTemplate($step);
             $stepData["mailtemplates"] = [];

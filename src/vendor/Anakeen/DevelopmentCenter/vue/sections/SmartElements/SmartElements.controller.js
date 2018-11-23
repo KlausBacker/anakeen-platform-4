@@ -38,6 +38,15 @@ export default {
       return `/api/v2/devel/security/elements/config/`;
     }
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.name !== "SmartElements") {
+      next(vueInstance => {
+        vueInstance.$refs.splitter.disableEmptyContent();
+      });
+    } else {
+      next();
+    }
+  },
   data() {
     return {
       splitterSmartElementEmpty: true,
@@ -82,7 +91,6 @@ export default {
       }
     },
     actionClick(event) {
-      this.splitterSmartElementEmpty = false;
       switch (event.data.type) {
         case "consult":
           event.preventDefault();
@@ -137,6 +145,7 @@ export default {
           }
           break;
       }
+      this.$refs.splitter.disableEmptyContent();
     }
   }
 };

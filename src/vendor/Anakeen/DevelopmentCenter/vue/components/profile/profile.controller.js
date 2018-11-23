@@ -185,7 +185,7 @@ export default {
             const columns = data.properties.acls.map(currentElement => {
               const textWidth = this.privateScope.computeTextWidth(
                 currentElement.label,
-                this.$(this.$el).css("font")
+                $(this.$el).css("font")
               );
               if (textWidth > maxLabelSize) {
                 maxLabelSize = textWidth;
@@ -301,17 +301,14 @@ export default {
               treeList.data("kendoTreeList").autoFitColumn("title");
             });
             if (this.labelRotate) {
-              this.$(
-                ".k-header[data-transformation=header-rotate]",
-                this.$el
-              ).css(
+              $(".k-header[data-transformation=header-rotate]", this.$el).css(
                 "height",
                 `${this.privateScope.computeHeaderHeight(
                   maxLabelSize,
                   this.labelRotation
                 ) + 15}px`
               );
-              this.$(
+              $(
                 ".k-header[data-transformation=header-rotate] > .header-acl-label",
                 this.$el
               ).css(

@@ -20,7 +20,6 @@ export default {
   props: ["wflName"],
   data() {
     return {
-      splitterTransitionEmpty: true,
       transitionsDataSource: "",
       routeTab: [
         "Wfl::transitions::mail",
@@ -53,7 +52,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(function(vueInstance) {
       if (vueInstance.routeTab.includes(to.name)) {
-        vueInstance.splitterTransitionEmpty = false;
+        vueInstance.$refs.ankSplitter.disableEmptyContent();
       }
     });
   },
@@ -62,7 +61,7 @@ export default {
       this.routeTab.includes(to.name) &&
       (from.name === "Wfl::transitions" || this.routeTab.includes(from.name))
     ) {
-      this.splitterTransitionEmpty = false;
+      this.$refs.ankSplitter.disableEmptyContent();
     }
     next();
   },

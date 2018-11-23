@@ -94,7 +94,10 @@ class Profiles extends GridContent
             foreach ($this->postFilterItems as $filter) {
                 $elements = array_filter($elements, function ($item) use ($filter) {
                     if (isset($item["attributes"][$filter["field"]])) {
-                        return $item["attributes"][$filter["field"]]->value === $filter["value"];
+                        if (isset($item["attributes"][$filter["field"]]->name)) {
+                            return strpos($item["attributes"][$filter["field"]]->name, "".$filter["value"]) !== false;
+                        }
+                        return strpos($item["attributes"][$filter["field"]]->value, "".$filter["value"]) !== false;
                     }
                     return false;
                 });
