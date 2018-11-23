@@ -13,7 +13,6 @@
  */
 
 header('Content-type: text/html; charset=UTF-8');
-
 set_include_path(get_include_path() . PATH_SEPARATOR . getcwd() . DIRECTORY_SEPARATOR . 'include');
 
 ini_set('display_errors', 'Off');
@@ -113,6 +112,7 @@ if (isset($_REQUEST['availVersion'])) {
         answer(null, $wiff->errorMessage);
     }
 }
+
 // Request if installer need update
 if (isset($_REQUEST['needUpdate'])) {
     $needUpdate = $wiff->needUpdate();
@@ -186,7 +186,7 @@ if (isset($_REQUEST['getParam'])) {
         answer(null, $wiff->errorMessage);
     }
 }
-// Request to change all Dynacase-control params' value
+// Request to change all Anakeen-control params' value
 if (isset($_REQUEST['changeAllParams'])) {
     $wiff->activity(sprintf("* Request changeAllParams"));
 
@@ -197,7 +197,7 @@ if (isset($_REQUEST['changeAllParams'])) {
         answer(null, $wiff->errorMessage);
     }
 }
-// Request to change Dynacase-Control params' value
+// Request to change Anakeen-Control params' value
 if (isset($_REQUEST['changeParams'])) {
     $wiff->activity(sprintf("* Request changeParams ('%s', '%s')", $_REQUEST['name'], $_REQUEST['value']));
 
@@ -208,7 +208,7 @@ if (isset($_REQUEST['changeParams'])) {
         answer(null, $wiff->errorMessage);
     }
 }
-// Request to get all Dynacase-Control params' value
+// Request to get all Anakeen-Control params' value
 if (isset($_REQUEST['getParamList'])) {
     $paramList = $wiff->getParamList();
     if (!$wiff->errorMessage) {

@@ -12,7 +12,7 @@ require_once 'lib/Lib.System.php';
 
 class UserAgent extends \WiffCommon
 {
-    const UA_NAME = 'dynacase-control';
+    const UA_NAME = 'anakeen-control';
     protected $ua_string = null;
     /**
      * @var null|Cache

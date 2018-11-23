@@ -63,7 +63,7 @@ function wiff_lock()
 {
     $wiff = WIFF::getInstance();
     if ($wiff->lock(false, $lockerPid) === false) {
-        printerr(sprintf("Error locking Dynacase-Control: %s\n", $wiff->errorMessage));
+        printerr(sprintf("Error locking Anakeen-Control: %s\n", $wiff->errorMessage));
         exit(100);
     }
 }
@@ -73,7 +73,7 @@ function wiff_unlock()
     $wiff = WIFF::getInstance();
     $ret = $wiff->unlock();
     if ($ret === false) {
-        printerr(sprintf("Warning: could not unlock Dynacase-Control!\n"));
+        printerr(sprintf("Warning: could not unlock Anakeen-Control!\n"));
     }
     return $ret;
 }
@@ -442,7 +442,7 @@ function wiff_context_shell(&$context, &$argv)
     $envs['pgservice_core'] = $context->getParamByName("core_db");
     $envs['pgservice_freedom'] = $envs['pgservice_core'];
     $envs['freedom_context'] = "default";
-    $envs['PS1'] = sprintf("Dynacase-Control(%s)\\w\\$ ", $context->name);
+    $envs['PS1'] = sprintf("Anakeen-Control(%s)\\w\\$ ", $context->name);
     $envs['USER'] = $httpuser;
     if (getenv('PATH') !== false) {
         $envs['PATH'] = getenv('PATH');
@@ -2420,8 +2420,8 @@ function wiff_context_register(&$context, &$argv) {
     $wiff = WIFF::getInstance();
     $regInfo = $wiff->getRegistrationInfo();
     if (!isset($regInfo['status']) || $regInfo['status'] != 'registered') {
-        printerr(sprintf("Error: cannot register context because dynacase-control is not registered itself.\n"));
-        printerr(sprintf("Register dynacase-control itself with `wiff register <eec-username> <eec-password>`,\n"));
+        printerr(sprintf("Error: cannot register context because anakeen-control is not registered itself.\n"));
+        printerr(sprintf("Register anakeen-control itself with `wiff register <eec-username> <eec-password>`,\n"));
         printerr(sprintf("then rerun context registration.\n"));
         return 1;
     }
@@ -2443,7 +2443,7 @@ function wiff_context_download_configuration(&$context, &$argv) {
      * Compose absolute path to output file
      */
     if (!isset($options['file'])) {
-        $options['file'] = sprintf("dynacase-context-%s-%s.zip", $context->name, date('c'));
+        $options['file'] = sprintf("anakeen-context-%s-%s.zip", $context->name, date('c'));
     }
     $fileName = basename($options['file']);
     $outputDir = dirname($options['file']);
@@ -2499,10 +2499,10 @@ function wiff_register(&$argv) {
         }
         $response = $wiff->tryRegister($regInfo['mid'], $regInfo['ctrlid'], $eecUser, $eecPass);
         if ($response === false) {
-            printerr(sprintf("Error: could not register dynacase-control: %s\n", $wiff->errorMessage));
+            printerr(sprintf("Error: could not register anakeen-control: %s\n", $wiff->errorMessage));
             return 1;
         }
-        printf("Successfully registered dynacase-control.\n");
+        printf("Successfully registered anakeen-control.\n");
     }
     return 0;
 }
