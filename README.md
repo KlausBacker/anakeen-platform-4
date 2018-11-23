@@ -1,11 +1,11 @@
-# Dynacase Control
+# Anakeen Control
 
 ## Description
 
-_Install and control update of dynacase modules._  
+_Install and control update of Anakeen Platform modules._  
 
-Dynacase Control is the official installer program needed to manage the
-installation of your Dynacase modules.
+Anakeen Control is the official installer program needed to manage the
+installation of your Anakeen Platform modules.
 
 ## Documentation
 
