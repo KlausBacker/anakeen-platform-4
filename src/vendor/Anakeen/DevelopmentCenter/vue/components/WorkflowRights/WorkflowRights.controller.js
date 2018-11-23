@@ -1,10 +1,6 @@
 import Vue from "vue";
 import AnkTreeList from "devComponents/SSTreeList/SSTreeList.vue";
 import { getTreeListData } from "./utils/treeUtils";
-import { Window } from "@progress/kendo-window-vue-wrapper";
-import { WindowInstaller } from "@progress/kendo-window-vue-wrapper";
-
-Vue.use(WindowInstaller);
 const escapeColor = color => {
   if (color) {
     return color.replace("#", "\\#");
@@ -30,8 +26,26 @@ export default {
       type: Array,
       default: () => ["view", "edit", "delete"]
     },
-    onlyExtendedAcls: false,
-    detachable: false
+    detachable: {
+      type: Boolean,
+      default: false
+    },
+    visualizeGraph: {
+      type: Boolean,
+      default: true
+    },
+    detachUrl: {
+      type: String,
+      default: "/api/v2/devels/security/workflow/<identifier>.html"
+    },
+    graphUrl: {
+      type: String,
+      default: "/api/v2/devel/ui/workflows/image/<identifier>/sizes/24x24.svg"
+    },
+    displayField: {
+      type: String,
+      default: "name"
+    }
   },
   components: {
     AnkTreeList,
@@ -53,8 +67,19 @@ export default {
       }
       return baseUrl.replace("<workflow>", this.wid);
     },
-    graphUrl() {
-      return `/api/v2/devel/ui/workflows/image/${this.wid}/sizes/24x24.svg`;
+    resolveDetachUrl() {
+      const baseUrl = this.detachUrl;
+      if (baseUrl.indexOf("<identifier>") === -1) {
+        return baseUrl;
+      }
+      return baseUrl.replace("<identifier>", this.wid);
+    },
+    resolveGraphUrl() {
+      const baseUrl = this.graphUrl;
+      if (baseUrl.indexOf("<identifier>") === -1) {
+        return baseUrl;
+      }
+      return baseUrl.replace("<identifier>", this.wid);
     },
     firstColumn() {
       return {
@@ -103,11 +128,14 @@ export default {
                     <span class="step-header-color" style="background: ${escapeColor(
                       stepColor
                     )}"></span>
-                    <span class="step-header-label">${column.name}</span>
+                    <span class="step-header-label">${this.getLabel(
+                      column
+                    )}</span>
                 </div>`;
         } else {
-          return `<div class="account-header">${column.label ||
-            column.name} <div class="show-all-switch switch-container">
+          return `<div class="account-header">${this.getLabel(
+            column
+          )} <div class="show-all-switch switch-container">
                             <label class="switch">
                                 <input type="checkbox">
                                 <span class="slider round"></span>
@@ -115,9 +143,6 @@ export default {
                             <label class="switch-label" for="extendedView">
                                 <span>Show all</span>
                             </label>
-                        </div>
-                        <div class="view-graph-button">
-                            <button class="k-button k-button-icontext"><i class="k-icon k-i-connector"></i>Graph</button>
                         </div>
                  </div>`;
         }
@@ -164,6 +189,7 @@ export default {
               </th>
               <th class="k-header acls-checkbox-header" colspan="${treeList
                 .columns.length - 1}">
+                <span>Rights to display :</span>
                 ${this.defaultAcls
                   .map(c => {
                     let checked = "";
@@ -174,11 +200,7 @@ export default {
                       this.wid
                     }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" ${checked}/><label class="k-checkbox-label" for="${
                       this.wid
-                    }-${c}">${this.acls[c].label
-                      .charAt(0)
-                      .toUpperCase()}${this.acls[c].label.substring(
-                      1
-                    )}</label>`;
+                    }-${c}">${this.getLabel(this.acls[c])}</label>`;
                   })
                   .join("")}
                   <div class="secondary-acls">
@@ -197,9 +219,7 @@ export default {
                           c.name
                         }" ${checked}/><label class="k-checkbox-label" for="${
                           this.wid
-                        }-${c.name}">${c.label
-                          .charAt(0)
-                          .toUpperCase()}${c.label.substring(1)}</label>`;
+                        }-${c.name}">${this.getLabel(c)}</label>`;
                       })
                       .join("")}
                   </div>
@@ -221,16 +241,6 @@ export default {
             this.$("[data-acl=" + acl + "]", treeList.table).hide();
           }
         });
-        this.$(treeList.thead).on(
-          "click",
-          ".view-graph-button > button",
-          () => {
-            this.$refs.graphWindow
-              .kendoWidget()
-              .center()
-              .open();
-          }
-        );
         this.$(treeList.thead).on("click", "button.view-all-acls", event => {
           const $button = this.$(event.currentTarget);
           $button.toggleClass("all-acls-visible");
@@ -317,6 +327,15 @@ export default {
         this.privateMethods.createProfilesHeaderRow(treeList);
         this.privateMethods.createFallHeaderRow(treeList);
         this.privateMethods.createCheckboxHeaderRow(treeList);
+        treeList.bind("expand", () => {
+          treeList.autoFitColumn("account");
+        });
+        treeList.bind("collapse", () => {
+          treeList.autoFitColumn("account");
+        });
+        treeList.bind("dataBound", () => {
+          treeList.autoFitColumn("account");
+        });
         treeList.dataSource.sort({
           field: "accountLabel",
           dir: "asc",
@@ -339,6 +358,7 @@ export default {
           .get(this.resolvedWorkflowConfig)
           .then(response => {
             if (response && response.data && response.data.data) {
+              this.graphProperties = response.data.data.properties;
               const steps = response.data.data.steps;
               this.treeColumns = this.privateMethods.getColumns(steps);
               if (steps.length) {
@@ -385,6 +405,32 @@ export default {
       this.$once("workflow-rights-config-ready", prepareTree);
     }
   },
+  methods: {
+    onVisualizeGraph() {
+      window.open(this.resolveGraphUrl);
+    },
+    onDetachComponent() {
+      window.open(this.resolveDetachUrl);
+    },
+    getLabel(element, capitalize = false) {
+      let label = "";
+      if (element) {
+        if (typeof element === "object") {
+          if (this.displayField) {
+            label = element[this.displayField] || element.name;
+          } else {
+            label = element.name;
+          }
+        } else {
+          label = element;
+        }
+      }
+      if (label && capitalize) {
+        label = `${label.charAt(0).toUpperCase()}${label.substring(1)}`;
+      }
+      return label;
+    }
+  },
   data() {
     return {
       model: {
@@ -395,6 +441,7 @@ export default {
       profilAcls: {},
       completeList: false,
       treeColumns: [],
+      graphProperties: null,
       treeConfigReady: false,
       treeContentReady: false,
       acls: {}
