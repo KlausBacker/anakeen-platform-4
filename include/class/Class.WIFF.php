@@ -350,7 +350,7 @@ EOF;
     {
         $vr = $this->getVersion();
         $avr = $this->getAvailVersion();
-        
+
         return $this->compareVersion($avr, $vr) > 0 ? true : false;
     }
     /**

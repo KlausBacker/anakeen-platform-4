@@ -12,6 +12,15 @@ input, textarea {
 .x-grouptabs-panel .x-tab-strip a.x-grouptabs-text {
     color: white;
 }
+
+.x-grouptabs-panel ul.x-tab-strip li.x-tab-strip-active {
+
+   
+}
+
+.x-grouptabs-panel ul.x-tab-strip li.x-tab-strip-active {
+    box-shadow: 2px 2px 5px #000;
+}
 .x-grouptabs-panel .x-tab-panel-body {
     box-shadow: 4px 4px 10px #000;
 }
