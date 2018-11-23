@@ -19,14 +19,17 @@ class XmlGraph
         $xmlGraph = new \DOMDocument();
         $xmlGraph->load($xmlFilePath);
 
+
+        self::$nsPrefix = Xml::getPrefix($xmlGraph, self::NS);
+        $nsPrefix = self::$nsPrefix;
         // print_r($xmlGraph->saveXML());
+
+        $wfl->graphModelName = self::evaluate($xmlGraph->documentElement, "string({$nsPrefix}:graph/@name)");
 
         $steps = $xmlGraph->getElementsByTagNameNS(self::NS, "step");
         $transitions = $xmlGraph->getElementsByTagNameNS(self::NS, "transition");
 
-        /**
-         * @var \DOMElement $transition
-         */
+        /**  @var \DOMElement $transition  */
         foreach ($transitions as $transition) {
             $wfl->cycle[] = [
                 "e1" => $transition->getAttribute("from"),
@@ -34,13 +37,21 @@ class XmlGraph
                 "t" => $transition->getAttribute("name")
             ];
 
-            $wfl->transitions[$transition->getAttribute("name")] = [];
+            $wfl->transitions[$transition->getAttribute("name")] = [
+                "label" => $transition->getAttribute("label")
+            ];
         }
 
 
-        self::$nsPrefix = Xml::getPrefix($xmlGraph, self::NS);
-        $nsPrefix = self::$nsPrefix;
+        /** @var \DOMElement $step */
+        foreach ($steps as $step) {
+            $stepRef=$step->getAttribute("name");
 
+            $wfl->stepLabels[$stepRef] = [
+                "state" => $step->getAttribute("state-label"),
+                "activity" => $step->getAttribute("activity-label")
+            ];
+        }
 
         $wfl->attrPrefix = self::evaluate($xmlGraph->documentElement, "string({$nsPrefix}:graph/@ns)");
         if ($wfl->attrPrefix) {
