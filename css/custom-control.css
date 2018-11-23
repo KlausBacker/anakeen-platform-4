@@ -10,7 +10,7 @@
 }
 
 .x-icon-create {
-    background-image: url('../images/icons/context-add.png') !important;
+    background-image: url('../images/icons/add.png') !important;
 }
 
 .x-icon-create-archive {
@@ -22,7 +22,7 @@
 }
 
 .x-context-modify {
-    background-image: url('../images/icons/context-modify.png') !important;
+    background-image: url('../images/icons/pencil.png') !important;
 }
 
 .x-icon-context {
@@ -30,7 +30,7 @@
 }
 
 .x-icon-delete-context {
-    background-image: url('../images/icons/context-delete.png') !important;
+    background-image: url('../images/icons/delete.png') !important;
 }
 
 .x-icon-archive {
@@ -228,7 +228,9 @@
  */
 
 #group-tab-panel > .x-tab-panel-header {
-    background: url('../images/logo/dynacase-control.png') top center !important;
+    background-image: url('../images/logo/anakeen-dark.svg');
+    background-position: top center;
+    background-size: 130px;
     background-repeat: no-repeat !important;
     padding-top: 60px;
 }
