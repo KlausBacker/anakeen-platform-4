@@ -3,7 +3,6 @@
 namespace Anakeen\Router;
 
 use Anakeen\Core\Utils\FileMime;
-use Anakeen\Router\Exception;
 
 class ApiV2Response
 {
@@ -117,7 +116,7 @@ class ApiV2Response
         }
         $fileMimeConfig = new \Dcp\FileMimeConfig();
 
-        if ($inline && !$fileMimeConfig->isInlineAllowed($mime)) {
+        if ($inline === true && !$fileMimeConfig->isInlineAllowed($mime)) {
             /* Override requested inline mode as it is forbidden */
             $inline = false;
         }

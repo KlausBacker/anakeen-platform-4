@@ -46,6 +46,10 @@ class XmlGraph
         /** @var \DOMElement $step */
         foreach ($steps as $step) {
             $stepRef=$step->getAttribute("name");
+            $isInitial=$step->getAttribute("initial");
+            if ($isInitial) {
+                $wfl->firstState=$stepRef;
+            }
 
             $wfl->stepLabels[$stepRef] = [
                 "state" => $step->getAttribute("state-label"),
