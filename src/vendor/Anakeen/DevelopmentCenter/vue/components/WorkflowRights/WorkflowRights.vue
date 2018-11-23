@@ -2,9 +2,11 @@
     <div class="workflow-rights-tree">
         <ank-tree-list v-if="treeConfigReady"
                        ref="ankTreeList"
+                       class="workflow-rights-treelist"
                        :url="resolvedWorkflowContent"
                        :items="treeColumns"
                        :filterable="false"
+                       :resizable="false"
                        :getValues="privateMethods.parseData"
                        :headerTemplate="privateMethods.getHeaderTemplate"
                        :columnTemplate="privateMethods.getCellTemplate"
