@@ -25,7 +25,7 @@ class WorkflowGraph
     protected $ratio = "auto"; // "auto", "fill", "compress", "expand"
     protected $orient = "LR"; //"LR","TB","BT","RL"
     protected $isize = 50;
-    protected $useLabel=true;
+    protected $useLabel = true;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -81,7 +81,9 @@ class WorkflowGraph
                     $mime = "image/" . $this->extension;
             }
         }
-        return ApiV2Response::withFile($response, $tmpFile, $fileName, $this->inline, $mime);
+        $response = ApiV2Response::withFile($response, $tmpFile, $fileName, $this->inline, $mime);
+        unlink($tmpFile);
+        return $response;
     }
 
     protected function dot2File($dot, $format, $outfileName)
@@ -91,6 +93,7 @@ class WorkflowGraph
         $cmd = sprintf("dot -T%s -o%s %s 2>&1", escapeshellarg($format), escapeshellarg($outfileName), escapeshellarg($tmpFile));
         exec($cmd, $out, $ret);
 
+        unlink($tmpFile);
 
         if ($ret !== 0) {
             throw new Exception(implode("\n", $out));
