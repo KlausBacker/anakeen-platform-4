@@ -2773,7 +2773,7 @@ class Context extends ContextProperties
         if ($zipFile === false) {
             $this->downloadZipEECConfigurationError(sprintf("Error generating configuration archive: %s", $this->errorMessage));
         }
-        $filename = sprintf("dynacase-context-%s-%s.zip", $this->name, date('c'));
+        $filename = sprintf("anakeen-context-%s-%s.zip", $this->name, date('c'));
         header("Content-Type: application/zip");
         header(sprintf("Content-Disposition: filename=%s", $filename));
         header("Cache-Control: no-cache");

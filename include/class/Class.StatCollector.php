@@ -140,7 +140,7 @@ class StatCollector
         $nodeList = $xp->query('/stats/wiff');
         foreach ($nodeList as $node) {
             $tables['General'][] = array(
-                "dynacase-control version",
+                "anakeen-control version",
                 htmlspecialchars($node->getAttribute('version'))
             );
         }

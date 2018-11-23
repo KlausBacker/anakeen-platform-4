@@ -97,7 +97,7 @@ class Logger
          * Send to local logfile
         */
         if (isset($this->logfile)) {
-            file_put_contents($this->logfile, sprintf("%s dynacase-control[%s]: %s %s%s", $date, $pid, $sapiPri, $msg, (substr($msg, -1, 1) != "\n" ? "\n" : "")) , FILE_APPEND | LOCK_EX);
+            file_put_contents($this->logfile, sprintf("%s anakeen-control[%s]: %s %s%s", $date, $pid, $sapiPri, $msg, (substr($msg, -1, 1) != "\n" ? "\n" : "")) , FILE_APPEND | LOCK_EX);
         }
         /*
          * Send to syslog

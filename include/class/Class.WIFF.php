@@ -23,7 +23,7 @@ require_once 'class/Class.WiffCommon.php';
 
 class WIFF extends WiffCommon
 {
-    const logIdent = 'dynacase-control';
+    const logIdent = 'anakeen-control';
     
     const contexts_filepath = 'conf/contexts.xml';
     const params_filepath = 'conf/params.xml';
@@ -216,7 +216,7 @@ class WIFF extends WiffCommon
     public function getAvailVersion()
     {
         $tmpfile = $this->downloadUrl($this->getUpdateBaseURL() . 'content.xml');
-        
+
         if ($tmpfile === false) {
             $this->errorMessage = $this->errorMessage ? ('Error when retrieving repository for wiff update :: ' . $this->errorMessage) : 'Error when retrieving repository for wiff update.';
             return false;
@@ -241,7 +241,7 @@ class WIFF extends WiffCommon
              * @var DOMElement $module
              */
             $name = $module->getAttribute('name');
-            if ($name == 'dynacase-control') {
+            if ($name == 'anakeen-control') {
                 $version = $module->getAttribute('version');
                 $release = $module->getAttribute('release');
                 $return = $version . '-' . $release;
@@ -350,6 +350,7 @@ EOF;
     {
         $vr = $this->getVersion();
         $avr = $this->getAvailVersion();
+        
         return $this->compareVersion($avr, $vr) > 0 ? true : false;
     }
     /**
@@ -434,7 +435,7 @@ EOF;
         $this->log(LOG_INFO, sprintf("Executing pre-update script with command: %s", $cmd));
         exec($cmd, $output, $ret);
         if ($ret !== 0) {
-            $message = sprintf('<p style="font-weight: bold">Pre-update verification for dynacase-control %s failed with:</p></p><pre style="font-weight: bold; color: red; white-space: pre-wrap;">%s</pre>', $newVersion, join("<br/>", array_map(function ($s)
+            $message = sprintf('<p style="font-weight: bold">Pre-update verification for anakeen-control %s failed with:</p></p><pre style="font-weight: bold; color: red; white-space: pre-wrap;">%s</pre>', $newVersion, join("<br/>", array_map(function ($s)
             {
                 return htmlspecialchars($s, ENT_QUOTES);
             }

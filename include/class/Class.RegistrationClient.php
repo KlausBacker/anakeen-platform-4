@@ -28,7 +28,7 @@ class RegistrationClient
     public function __construct()
     {
         $wiff = \WIFF::getInstance();
-        $this->ua_string = sprintf("RegistrationClient/%s dynacase-control/%s Protocol/%s", PHP_VERSION, $wiff->getVersion() , self::PROTOCOL_VERSION);
+        $this->ua_string = sprintf("RegistrationClient/%s anakeen-control/%s Protocol/%s", PHP_VERSION, $wiff->getVersion() , self::PROTOCOL_VERSION);
         return $this;
     }
     /**

@@ -395,7 +395,7 @@ class Module
                 $this->errorMessage = $err;
                 return false;
             }
-            $wiff->log(LOG_INFO, (string)new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0\">Module '%s' uses a legacy 'info.xml' without namespace declaration.</p><p style=\"margin: 0.5em 0 0.5em 0\">Support for legacy 'info.xml' format is deprecated and will be removed in future version of dynacase-control.</p><p style=\"margin: 0.5em 0 0.5em 0\">You should update this 'info.xml' definition with the correct XML Schema Definition as soon as possible.</p></div>", new \String\HTML($moduleName), new \String\HTML(self::SCHEMA_NAMESPACE))));
+            $wiff->log(LOG_INFO, (string)new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0\">Module '%s' uses a legacy 'info.xml' without namespace declaration.</p><p style=\"margin: 0.5em 0 0.5em 0\">Support for legacy 'info.xml' format is deprecated and will be removed in future version of anakeen-control.</p><p style=\"margin: 0.5em 0 0.5em 0\">You should update this 'info.xml' definition with the correct XML Schema Definition as soon as possible.</p></div>", new \String\HTML($moduleName), new \String\HTML(self::SCHEMA_NAMESPACE))));
             return $dom;
         } else {
             /*
