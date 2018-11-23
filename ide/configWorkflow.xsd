@@ -13,6 +13,7 @@
                 <xs:attribute type="ns:fieldName" name="name" use="required"/>
                 <xs:attribute type="xs:string" name="state-label" use="required"/>
                 <xs:attribute type="xs:string" name="activity-label"/>
+                <xs:attribute type="xs:boolean" name="initial"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
