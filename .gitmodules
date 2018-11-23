@@ -1,3 +1,0 @@
-[submodule "xsd"]
-	path = xsd
-	url = git@gitlab.anakeen.com:Anakeen/devtools/xml-schemas.git
