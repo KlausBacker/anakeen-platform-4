@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:dcp="https://platform.anakeen.com/4/schemas/app/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://platform.anakeen.com/4/schemas/app/1.0" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+    <xs:element name="module" type="dcp:rootModuleType"/>
+    <xs:complexType name="rootModuleType">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:choice>
+                <xs:element name="description" type="dcp:descriptionNodeType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="requires" type="dcp:requiresNodeType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="replaces" type="dcp:replacesNodeType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="parameters" type="dcp:parametersNodeType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="pre-install" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="post-install" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Post install processes</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="pre-upgrade" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Pre upgrade processes</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="post-upgrade" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Post upgrade processes</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="pre-archive" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Pre archive processes</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="post-archive" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Post archive processes</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="post-restore" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Post restore processes - from archive</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="pre-delete" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Pre delete processes</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="reconfigure" type="dcp:phaseActionListNodeType" minOccurs="0" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>Reconfigure processes - after restore process</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Module name</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="version" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Module version</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="release" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Module release (version iteration)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="basecomponent" type="dcp:Y_or_N" use="optional" default="N"/>
+        <xs:attribute name="changelog" type="xs:anyURI" use="optional" default=""/>
+        <xs:attribute name="license" type="xs:string" use="optional" default=""/>
+        <xs:attribute name="vendor" type="xs:string" use="optional" default=""/>
+    </xs:complexType>
+    <xs:simpleType name="Y_or_N" final="restriction">
+        <xs:annotation>
+            <xs:documentation>Énuméré {'Y', 'N'}.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Y"/>
+            <xs:enumeration value="N"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="text_or_enum" final="restriction">
+        <xs:annotation>
+            <xs:documentation>Enumerate {'text', 'enum'}.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="text"/>
+            <xs:enumeration value="enum"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="visibility" final="restriction">
+        <xs:annotation>
+            <xs:documentation>Enumerate {'W', 'R', 'H'}.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="W"/>
+            <xs:enumeration value="R"/>
+            <xs:enumeration value="H"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="comparison_operators" final="restriction">
+        <xs:annotation>
+            <xs:documentation>Comparaison operator</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="gt"/>
+            <xs:enumeration value="ge"/>
+            <xs:enumeration value="lt"/>
+            <xs:enumeration value="le"/>
+            <xs:enumeration value="eq"/>
+            <xs:enumeration value="ne"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="predicates" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="gt"/>
+            <xs:enumeration value="ge"/>
+            <xs:enumeration value="lt"/>
+            <xs:enumeration value="le"/>
+            <xs:enumeration value="eq"/>
+            <xs:enumeration value="ne"/>
+            <xs:enumeration value="file_exists"/>
+            <xs:enumeration value="e"/>
+            <xs:enumeration value="-e"/>
+            <xs:enumeration value="a"/>
+            <xs:enumeration value="-a"/>
+            <xs:enumeration value="is_dir"/>
+            <xs:enumeration value="d"/>
+            <xs:enumeration value="-d"/>
+            <xs:enumeration value="is_file"/>
+            <xs:enumeration value="f"/>
+            <xs:enumeration value="-f"/>
+            <xs:enumeration value="is_link"/>
+            <xs:enumeration value="L"/>
+            <xs:enumeration value="-L"/>
+            <xs:enumeration value="is_readable"/>
+            <xs:enumeration value="r"/>
+            <xs:enumeration value="-r"/>
+            <xs:enumeration value="is_writable"/>
+            <xs:enumeration value="w"/>
+            <xs:enumeration value="-w"/>
+            <xs:enumeration value="is_executable"/>
+            <xs:enumeration value="x"/>
+            <xs:enumeration value="-x"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="check_types" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="apachemodule"/>
+            <xs:enumeration value="exec"/>
+            <xs:enumeration value="file"/>
+            <xs:enumeration value="pgversion"/>
+            <xs:enumeration value="pgempty"/>
+            <xs:enumeration value="phpclass"/>
+            <xs:enumeration value="phpfunction"/>
+            <xs:enumeration value="phpversion"/>
+            <xs:enumeration value="syscommand"/>
+            <xs:enumeration value="phpbug40926"/>
+            <xs:enumeration value="phpbug45996"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="descriptionNodeType">
+        <xs:annotation>
+            <xs:documentation>Module description</xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="requiresNodeType">
+
+        <xs:annotation>
+            <xs:documentation>Requirements</xs:documentation>
+        </xs:annotation>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:choice>
+                <xs:element name="installer" type="dcp:installerNodeType"/>
+                <xs:element name="module" type="dcp:requiredModuleNodeType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="installerNodeType">
+        <xs:attribute name="comp" type="dcp:comparison_operators"/>
+        <xs:attribute name="version" type="xs:string"/>
+    </xs:complexType>
+    <xs:complexType name="replacesNodeType">
+        <xs:annotation>
+            <xs:documentation>List modules to replace with this module</xs:documentation>
+        </xs:annotation>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="module" type="dcp:replacedModuleNodeType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="parametersNodeType">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="param" type="dcp:paramNodeType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="paramNodeType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="label" type="xs:string" use="required"/>
+        <xs:attribute name="type" type="dcp:text_or_enum" use="required"/>
+        <xs:attribute name="values" type="xs:string" use="optional"/>
+        <xs:attribute name="default" type="xs:string" use="optional"/>
+        <xs:attribute name="needed" type="dcp:Y_or_N" use="optional" default="N"/>
+        <xs:attribute name="volatile" type="dcp:Y_or_N" use="optional" default="N"/>
+        <xs:attribute name="oninstall" type="dcp:visibility" use="optional" default="W"/>
+        <xs:attribute name="onupgrade" type="dcp:visibility" use="optional" default="H"/>
+        <xs:attribute name="onedit" type="dcp:visibility" use="optional" default="R"/>
+    </xs:complexType>
+    <xs:complexType name="phaseActionListNodeType">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:choice>
+                <xs:element name="check" type="dcp:checkNodeType"/>
+                <xs:element name="process" type="dcp:processNodeType"/>
+                <xs:element name="download" type="dcp:downloadNodeType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="labelNodeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="helpNodeType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="checkNodeType">
+        <xs:sequence minOccurs="0" maxOccurs="2">
+            <xs:choice>
+                <xs:element name="label" type="dcp:labelNodeType"/>
+                <xs:element name="help" type="dcp:helpNodeType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="type" type="dcp:check_types" use="required"/>
+        <xs:attribute name="file" type="xs:string"/>
+        <xs:attribute name="module" type="xs:string"/>
+        <xs:attribute name="cmd" type="xs:string"/>
+        <xs:attribute name="predicate" type="dcp:predicates"/>
+        <xs:attribute name="include" type="xs:string"/>
+        <xs:attribute name="class" type="xs:string"/>
+        <xs:attribute name="service" type="xs:string"/>
+        <xs:attribute name="version" type="xs:string"/>
+        <xs:attribute name="function" type="xs:string"/>
+        <xs:attribute name="command" type="xs:string"/>
+        <xs:attribute name="optional" type="dcp:Y_or_N" default="N"/>
+    </xs:complexType>
+    <xs:complexType name="processNodeType">
+        <xs:annotation>
+            <xs:documentation>Shell process to execute</xs:documentation>
+        </xs:annotation>
+        <xs:sequence minOccurs="0" maxOccurs="2">
+            <xs:choice>
+                <xs:element name="label" type="dcp:labelNodeType"/>
+                <xs:element name="help" type="dcp:helpNodeType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="command" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Shell command</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="downloadNodeType">
+        <xs:sequence minOccurs="0" maxOccurs="2">
+            <xs:choice>
+                <xs:element name="label" type="dcp:labelNodeType"/>
+                <xs:element name="help" type="dcp:helpNodeType"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="href" type="xs:string" use="required"/>
+        <xs:attribute name="action" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="reconfigureNodeType">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="process" type="dcp:processNodeType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="requiredModuleNodeType">
+        <xs:annotation>
+            <xs:documentation>Module requirement.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="name" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Name of the module to require</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="version" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Version of the module to require</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="comp" type="dcp:comparison_operators" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="replacedModuleNodeType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+</xs:schema>
