@@ -6,8 +6,8 @@
   </repositories>
 
   <parameters>
-    <param name="wiff-update-host" value="https://eec-integration.corp.anakeen.com" />
-    <param name="wiff-update-path" value="anakeen/repo/4.0/control/" />
+    <param name="wiff-update-host" value="http://eec-integration.corp.anakeen.com" />
+    <param name="wiff-update-path" value="/anakeen/repo/4.0/control/" />
     <param name="wiff-update-file" value="anakeen-control-current.tar.gz" />
     <param name="wiff-update-login" value="" />
     <param name="wiff-update-password" value="" />
