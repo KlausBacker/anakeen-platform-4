@@ -10,7 +10,7 @@
 
 class Module
 {
-    const SCHEMA_NAMESPACE = 'urn:dynacase:webinst:module/1.0';
+    const SCHEMA_NAMESPACE = 'https://platform.anakeen.com/4/schemas/app/1.0';
     /**
      * xml attributes
      */
