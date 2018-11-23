@@ -14,7 +14,7 @@
                         </span>
                     </div>
                     <div class="infos-card-content-item">
-                        <span class="card-content-item-label">Elements profile:</span>
+                        <span class="card-content-item-label">Default Element profile:</span>
                         <span class="card-content-item-value">
                             <router-link v-if="structureSecurity.cprofid" :to="{name: 'Security::SmartStructures::Elements', params: { ssName: ssName}}">{{structureSecurity.cprofid.name}} ({{structureSecurity.cprofid.title}})</router-link>
                             <span v-else>No profile</span>

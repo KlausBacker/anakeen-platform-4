@@ -9,8 +9,15 @@
     align-items: center;
 
     .smart-structure-toolbar {
-      .btn-group + .btn-group {
+      .k-button-group + .k-button-group {
         margin-left: .75rem;
+      }
+
+      .view-buttons-group {
+        position: relative;
+        .k-button {
+          border: 1px solid lightgray;
+        }
       }
     }
 

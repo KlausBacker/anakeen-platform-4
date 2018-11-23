@@ -11,6 +11,7 @@ module.exports = () => {
     "entry": {
       'main': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/main.js')],
       'profile': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/profile.js')],
+      'workflow': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/workflowRights.js')],
     },
     buildPath: PUBLIC_PATH,
     customParts :[

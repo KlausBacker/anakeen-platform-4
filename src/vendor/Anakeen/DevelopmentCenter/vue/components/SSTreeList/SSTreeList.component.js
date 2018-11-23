@@ -1,5 +1,6 @@
 import Vue from "vue";
-import "@progress/kendo-ui";
+import "@progress/kendo-ui/js/kendo.treelist";
+import "@progress/kendo-ui/js/kendo.columnmenu";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import {
   TreeList,
@@ -32,6 +33,9 @@ export default {
     },
     sortable: {
       default: false
+    },
+    resizable: {
+      default: true
     },
     url: {
       type: String,
@@ -246,6 +250,9 @@ export default {
           }
         });
       }, 1);
+    },
+    kendoWidget() {
+      return this.$refs.ssTreeList.kendoWidget();
     }
   }
 };

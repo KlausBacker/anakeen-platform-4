@@ -5,7 +5,7 @@
                         :data-source="remoteDataSource"
                         :height="'100%'"
                         :filterable="filterable"
-                        :resizable="true"
+                        :resizable="resizable"
                         :dataBound="onDataBound"
                         :expand="onExpand"
                         :collapse="onCollapse"

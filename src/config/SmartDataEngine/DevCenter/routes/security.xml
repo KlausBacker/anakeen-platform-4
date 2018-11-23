@@ -37,6 +37,15 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="workflow">
+            <sde:callable>\Anakeen\Routes\Devel\UI\Workflow</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devels/security/workflow/{id}.html</sde:pattern>
+            <sde:description>Get the workflow display</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="profiles">
             <sde:callable>\Anakeen\Routes\Devel\UI\Profiles</sde:callable>
             <sde:method>GET</sde:method>

@@ -1,6 +1,26 @@
 .workflow-rights-tree {
   display: flex;
   flex: 1;
+  flex-direction: column;
+
+  .workflow-rights-toolbar {
+    display: flex;
+    justify-content: space-between;
+    background: #F5F5F5;
+    border: 1px solid rgba(33, 37, 41, 0.125);
+    padding: .5rem;
+
+    .graph-infos {
+      display: flex;
+      justify-content: space-around;
+      flex: 1;
+      align-items: center;
+    }
+  }
+
+  .workflow-rights-treelist {
+    flex: 1;
+  }
 
   & /deep/ {
 

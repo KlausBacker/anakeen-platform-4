@@ -78,6 +78,7 @@ class WorkflowData
         $data["id"] = $this->workflow->id;
         $data["name"] = $this->workflow->name;
         $data["structure"] = self::getElementRef($this->workflow->getRawValue(\SmartStructure\Fields\Wdoc::wf_famid));
+        $data["title"] = $this->workflow->getTitle();
         return $data;
     }
 
