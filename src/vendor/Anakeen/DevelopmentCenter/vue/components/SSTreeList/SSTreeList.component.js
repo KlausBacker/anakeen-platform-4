@@ -60,6 +60,11 @@ export default {
         parentId: "parentId",
         expanded: true
       })
+    },
+    sort: {
+      default: () => {
+        return {};
+      }
     }
   },
   components: {
@@ -111,7 +116,8 @@ export default {
           return this.getValues(response.data.data);
         },
         model: this.model
-      }
+      },
+      sort: this.sort
     });
     $(window).resize(() => {
       if (this.$refs.ssTreelist) {
