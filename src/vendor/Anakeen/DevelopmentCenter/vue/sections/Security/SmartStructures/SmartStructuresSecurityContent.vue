@@ -18,11 +18,11 @@
           },
           {
             name: "Security::SmartStructures::Elements",
-            label: "Element Access"
+            label: "Default Element Access"
           },
           {
             name: "Security::SmartStructures::Fields",
-            label: "Fields Access"
+            label: "Default Fields Access"
           }
         ]
       }

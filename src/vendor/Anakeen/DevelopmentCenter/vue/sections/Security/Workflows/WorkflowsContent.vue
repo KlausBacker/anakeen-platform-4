@@ -10,7 +10,7 @@
         items: [
           {
             name: "Security::Workflows::Rights",
-            label: "Rights"
+            label: "Smart Element Rights"
           },
           {
             name: "Security::Workflows::Access",

@@ -64,8 +64,7 @@ export default {
             this.profid = profidValue;
           } else {
             this.noProfile = true;
-            this.profilWaitingLabel =
-              "Aucun profil pour la structure " + this.ssName;
+            this.profilWaitingLabel = "No profile for " + this.ssName;
           }
           kendo.ui.progress(this.$(this.$el), false);
         })

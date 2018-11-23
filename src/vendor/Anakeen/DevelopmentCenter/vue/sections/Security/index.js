@@ -61,7 +61,7 @@ export default {
               name: "Security::SmartStructures::Elements",
               path: "elementsProfile",
               meta: {
-                label: "Element Profile"
+                label: "Default Element Profile"
               },
               component: SmartStructuresSections.Elements,
               props: true // Set ssName as a vue component prop
@@ -69,6 +69,9 @@ export default {
             {
               name: "Security::SmartStructures::Fields",
               path: "fields",
+              meta: {
+                label: "Default Field Access"
+              },
               component: SmartStructuresSections.Fields,
               props: true // Set ssName as a vue component prop
             }

@@ -1,6 +1,6 @@
 <template>
     <div class="security-workflows-rights-section">
-        <workflow-rights :wid="workflowId"></workflow-rights>
+        <workflow-rights :wid="workflowId" :detachable="true"></workflow-rights>
     </div>
 </template>
 <!-- CSS to this component only -->

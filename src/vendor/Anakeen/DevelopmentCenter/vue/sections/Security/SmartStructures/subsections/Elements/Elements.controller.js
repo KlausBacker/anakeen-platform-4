@@ -65,16 +65,14 @@ export default {
             this.cprofid = cprofidValue;
           } else {
             this.empty = true;
-            this.profilWaitingLabel =
-              "Aucun profil pour la structure " + this.ssName;
+            this.profilWaitingLabel = "No default profile for " + this.ssName;
           }
           kendo.ui.progress(this.$(this.$el), false);
         })
         .catch(err => {
           console.error(err);
           this.empty = true;
-          this.profilWaitingLabel =
-            "Aucun profil pour la structure " + this.ssName;
+          this.profilWaitingLabel = "No default profile for " + this.ssName;
           kendo.ui.progress(this.$(this.$el), false);
         });
     }

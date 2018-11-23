@@ -3,12 +3,12 @@
         <div class="smart-structure-title">
             <h1><img class="smart-structure-icon" :src="structureProperties.icon"/> {{ssName}}</h1>
             <div class="smart-structure-toolbar">
-                <div class="btn-group create-buttons-group">
-                    <button class="btn btn-primary" @click="onCreate"><i class="k-icon k-i-plus"></i>&nbsp;Create</button>
+                <div class="k-button-group create-buttons-group">
+                    <button class="k-button k-button-icontext k-primary" @click="onCreate"><i class="k-icon k-i-plus"></i>&nbsp;Create</button>
                 </div>
-                <div class="btn-group view-buttons-group">
-                    <button class="btn" @click="onView('json')"><i class="k-icon k-i-css"></i></button>
-                    <button class="btn" @click="onView('xml')"><i class="k-icon k-i-html"></i></button>
+                <div class="k-button-group view-buttons-group">
+                    <button class="k-button k-button-icontext" @click="onView('json')"><i class="k-icon k-i-css"></i>View JSON</button>
+                    <button class="k-button k-button-icontext" @click="onView('xml')"><i class="k-icon k-i-html"></i>View XML</button>
                 </div>
             </div>
         </div>
