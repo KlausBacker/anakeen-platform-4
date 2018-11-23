@@ -70,9 +70,20 @@ export default {
   },
   data() {
     return {
-      remoteDataSource: ""
+      remoteDataSource: "",
+      columnSizeTab: []
     };
   },
+  // created() {
+  //   this.columnSizeTab = JSON.parse(
+  //     window.localStorage.getItem(
+  //       "ss-list-column-size-conf-" + this.$route.name
+  //     )
+  //   );
+  //   if (!this.columnSizeTab) {
+  //     this.columnSizeTab = [];
+  //   }
+  // },
   mounted() {
     this.remoteDataSource = new kendo.data.TreeListDataSource({
       transport: {
@@ -117,6 +128,37 @@ export default {
     }
   },
   methods: {
+    onColumnResize(e) {
+      e.preventDefault();
+      let found = undefined;
+      if (this.columnSizeTab) {
+        if (Array.isArray(e.column)) {
+          found = this.columnSizeTab.find(
+            item => item.field === e.column[0].field
+          );
+        } else {
+          found = this.columnSizeTab.find(
+            item => item.field === e.column.field
+          );
+        }
+      }
+      if (found) {
+        found.width = e.newWidth;
+      } else {
+        if (Array.isArray(e.column)) {
+          this.columnSizeTab.push({
+            field: e.column[0].field,
+            width: e.newWidth
+          });
+        } else {
+          this.columnSizeTab.push({
+            field: e.column.field,
+            width: e.newWidth
+          });
+        }
+      }
+      return this.columnSizeTab;
+    },
     onColumnHide() {
       window.localStorage.setItem(
         "ss-list-column-conf-" + this.$route.name,
@@ -133,7 +175,6 @@ export default {
       let tree = e.sender;
       this.removeRowClassName(tree);
       this.addRowClassName(tree);
-      tree.autoFitColumn(1);
       this.$emit("tree-list-data-bound", e);
     },
     onExpand(e) {

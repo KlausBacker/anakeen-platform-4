@@ -5,6 +5,11 @@
   overflow: hidden;
 
   & /deep/ {
+    .k-grid-content {
+      tr {
+        word-break: break-word;
+      }
+    }
     .k-grid-header {
       background-color: #F5F5F5;
     }
@@ -71,5 +76,6 @@
   align-items: center;
   justify-content: center;
   overflow-y: auto;
+
 }
 

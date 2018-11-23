@@ -1,5 +1,5 @@
 <template>
-    <ss-treelist :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate" :messages="messages"></ss-treelist>
+    <ss-treelist ref="paramList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues" :columnTemplate="columnTemplate" :messages="messages"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
@@ -11,6 +11,7 @@
     props: ["ssName"],
     data() {
       return {
+        columnSizeTab: [],
         items: [
           { name: "id", label: "Identification", hidden: false},
           { name: "structure", label: "Structure", hidden: false},
@@ -33,6 +34,21 @@
         url: `/api/v2/devel/smart/structures/${this.ssName}/parameters/`,
         getValues(response) {
           return response.parameterFields;
+        },
+        getItems(tab) {
+          Object.keys(this.items).forEach(item => {
+            if (tab) {
+              tab.forEach(it => {
+                if (this.items[item].name === it.field && it.width) {
+
+                  this.items[item]["width"] = it.width + "px";
+                } else if (!this.items[item]["width"]) {
+                  this.items[item]["width"] = "10rem";
+                }
+              });
+            }
+          });
+          return this.items;
         },
         columnTemplate(colId) {
           return dataItem => {
@@ -67,6 +83,20 @@
         },
         messages: "There are no parameters for this Smart Structure..."
       }
+    },
+    created() {
+      this.columnSizeTab = JSON.parse(
+        window.localStorage.getItem(
+          "param-list-column-size-conf-" + this.ssName
+        ));
+    },
+    mounted() {
+      this.$refs.paramList.$refs.ssTreelist.kendoWidget().bind("columnResize", (e) => {
+        window.localStorage.setItem(
+          "param-list-column-size-conf-" + this.ssName,
+          JSON.stringify(this.$refs.paramList.onColumnResize(e))
+        );
+      });
     }
   }
 </script>
