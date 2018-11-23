@@ -183,7 +183,7 @@ class StructureFields
             foreach ($dbModAttr as $modAttr) {
                 if ($modAttr["id"] === ":" . $oa->id && $modAttr["docid"] == $oa->structureId) {
                     $dbAttrs[$oa->id]["declaration"] = "overrided";
-                    $dbAttrs[$oa->id]["overrides"]=[];
+                    $dbAttrs[$oa->id]["overrides"] = [];
                     $types = [
                         "labeltext" => "labelText",
                         "ordered" => "ordered",
@@ -213,7 +213,7 @@ class StructureFields
                                     $after = $oa->$oType;
                             }
 
-                            if (true || $before != $after) {
+                            if ($before != $after) {
                                 $dbAttrs[$oa->id][$type] = $oa->$oType;
                                 $dbAttrs[$oa->id]["overrides"][$type] = [
                                     "before" => $parentStructure->getAttribute($oa->id)->$oType,
@@ -272,6 +272,15 @@ class StructureFields
             unset($dbAttr["elink"]);
             unset($dbAttr["docid"]);
             $result[] = $dbAttr;
+        }
+        foreach ($result as &$fieldData) {
+            if (isset($fieldData["properties"]["autocomplete"])) {
+                $fieldData["autocomplete"] = $fieldData["properties"]["autocomplete"];
+            } elseif (strlen($fieldData["phpfile"]) > 2 && $fieldData["phpfunc"]) {
+                $fieldData["autocomplete"] = sprintf("[%s] : %s", $fieldData["phpfile"], $fieldData["phpfunc"]);
+            } elseif (strlen($fieldData["phpfunc"])> 2) {
+                $fieldData["computed"]=$fieldData["phpfunc"];
+            }
         }
 
         return $result;

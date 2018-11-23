@@ -39,7 +39,7 @@ export default {
     },
     graphUrl: {
       type: String,
-      default: "/api/v2/devel/ui/workflows/image/<identifier>/sizes/24x24.svg"
+      default: "/api/v2/devel/ui/workflows/image/<identifier>.svg"
     },
     displayField: {
       type: String,
