@@ -1,4 +1,3 @@
-import Vue from "vue";
 import AnkTreeList from "devComponents/SSTreeList/SSTreeList.vue";
 import { getTreeListData } from "./utils/treeUtils";
 const escapeColor = color => {
