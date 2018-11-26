@@ -59,11 +59,19 @@ export default {
           case "maskId":
             return `<a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/masks/${dataItem[colId]}">${dataItem[colId]}</a>`;
+            }/masks/${dataItem[colId]}/?filter=${dataItem[colId]}">${
+              dataItem[colId]
+            }</a>`;
           case "cvId":
             return `<a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/control/element/${dataItem[colId]}">${dataItem[colId]}</a>`;
+            }/control/element/${dataItem[colId]}/?filter=${dataItem[colId]}">${
+              dataItem[colId]
+            }</a>`;
+          case "cvStructure":
+            return `<a data-role="develRouterLink" href="/devel/smartStructures/${
+              dataItem[colId]
+            }/infos">${dataItem[colId]}</a>`;
           default:
             break;
         }
