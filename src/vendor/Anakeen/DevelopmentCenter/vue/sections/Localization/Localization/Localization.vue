@@ -1,6 +1,6 @@
 <template>
     <div class="localization-section">
-        <kendo-grid height="100%" filterable-mode="row" filterable-operators-string-contains="Contains" sortable-mode="multiple" :sortable-show-indexes="true" :pageable="{pageSizes: [100, 200, 500], pageSize: 100}">
+        <kendo-grid ref="localizationGrid" height="100%" :column-menu-columns="true" :column-menu-filterable="false" filterable-mode="row" filterable-operators-string-contains="Contains" :sortable="false" :resizable="true" :pageable="{pageSizes: [100, 200, 500], pageSize: 100}">
             <kendo-grid-column field="msgctxt" title="Context" :filterable-cell-template="privateMethods.filterTemplate('msgctxt')"></kendo-grid-column>
             <kendo-grid-column field="msgid" title="msgid" :filterable-cell-template="privateMethods.filterTemplate('msgid')"></kendo-grid-column>
             <kendo-grid-column v-for="(lang, index) in supportedLanguages"

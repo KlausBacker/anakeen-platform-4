@@ -42,6 +42,16 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.$(window).on("resize", () => {
+      const kendoGrid = this.$refs.localizationGrid
+        ? this.$refs.localizationGrid.kendoWidget()
+        : null;
+      if (kendoGrid) {
+        kendoGrid.resize();
+      }
+    });
+  },
   beforeCreate() {
     this.privateMethods = {
       readData: options => {
