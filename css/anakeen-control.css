@@ -1,7 +1,17 @@
 :root {
     --main-bg-color: #157efb;
 }
-
+body {
+    width:100vw;
+    height:100vh;
+    margin:0;
+}
+#group-tab-panel {
+    display:flex;
+}
+#group-tab-panel > .x-tab-panel-bwrap {
+    flex:1;
+}
 input, textarea {
     background-color: white;
     color: #333;
