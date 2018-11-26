@@ -14,24 +14,26 @@ export default {
   beforeRouteEnter(to, from, next) {
     if (to.name === "Ui::masks::element") {
       next(function(vueInstance) {
-        if (vueInstance.$refs.masksGrid.kendoGrid) {
-          vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
-            field: "name",
-            operator: "eq",
-            value: to.params.seIdentifier
-          });
-          vueInstance.getSelected(to.params.seIdentifier);
-          vueInstance.$refs.masksSplitter.disableEmptyContent();
-        } else {
-          vueInstance.$refs.masksGrid.$on("grid-ready", () => {
+        if (to.query.filter) {
+          if (vueInstance.$refs.masksGrid.kendoGrid) {
             vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
               field: "name",
               operator: "eq",
-              value: to.params.seIdentifier
+              value: to.query.filter
             });
-          });
-          vueInstance.getSelected(to.params.seIdentifier);
-          vueInstance.$refs.masksSplitter.disableEmptyContent();
+            vueInstance.$refs.masksSplitter.disableEmptyContent();
+            vueInstance.getSelected(to.params.seIdentifier);
+          } else {
+            vueInstance.$refs.masksGrid.$on("grid-ready", () => {
+              vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
+                field: "name",
+                operator: "eq",
+                value: to.query.filter
+              });
+            });
+            vueInstance.$refs.masksSplitter.disableEmptyContent();
+            vueInstance.getSelected(to.params.seIdentifier);
+          }
         }
       });
     } else {
@@ -57,6 +59,15 @@ export default {
     };
   },
   methods: {
+    getFiltered() {
+      this.$refs.masksGrid.kendoGrid.dataSource.bind("change", e => {
+        if (e.sender._filter === undefined) {
+          let query = Object.assign({}, this.$route.query);
+          delete query.filter;
+          this.$router.replace({ query });
+        }
+      });
+    },
     getSelected(e, col) {
       if (e !== "") {
         if (this.$refs.masksGrid.kendoGrid) {
