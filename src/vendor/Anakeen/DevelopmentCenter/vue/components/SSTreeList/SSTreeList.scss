@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
   flex: 1;
 
   & /deep/ {
@@ -15,8 +14,8 @@
     .k-grid-content {
       display: flex;
       flex: 1;
-      overflow: hidden;
       min-height: 0;
+      overflow-y: auto;
     }
     .k-grid-header {
       background-color: #F5F5F5;
@@ -93,8 +92,7 @@
 
 .ss-treelist-tree {
   flex: 1;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
-  overflow-y: auto;
 }
