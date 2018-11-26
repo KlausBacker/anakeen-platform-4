@@ -83,16 +83,6 @@ export default {
       columnSizeTab: []
     };
   },
-  // created() {
-  //   this.columnSizeTab = JSON.parse(
-  //     window.localStorage.getItem(
-  //       "ss-list-column-size-conf-" + this.$route.name
-  //     )
-  //   );
-  //   if (!this.columnSizeTab) {
-  //     this.columnSizeTab = [];
-  //   }
-  // },
   mounted() {
     this.remoteDataSource = new kendo.data.TreeListDataSource({
       transport: {

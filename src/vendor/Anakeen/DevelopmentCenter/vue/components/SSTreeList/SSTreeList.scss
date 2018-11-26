@@ -3,12 +3,20 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+  flex: 1;
 
   & /deep/ {
-    .k-grid-content {
-      tr {
+    tbody {
+      td {
+        white-space: normal !important;
         word-break: break-word;
       }
+    }
+    .k-grid-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
     }
     .k-grid-header {
       background-color: #F5F5F5;
@@ -50,14 +58,26 @@
     }
     .attr-type--tab, .attr-type--tab:hover {
       background-color: #e7cfff !important;
+      td {
+        white-space: normal !important;
+        word-break: break-word;
+      }
     }
 
     .attr-type--frame, .attr-type--frame:hover {
       background-color: rgba(110, 167, 255, 0.52) !important;
+      td {
+        white-space: normal !important;
+        word-break: break-word;
+      }
     }
 
     .attr-type--array, .attr-type--array:hover {
       background-color: rgba(255, 184, 148, 0.43) !important;
+      td {
+        white-space: normal !important;
+        word-break: break-word;
+      }
     }
 
     .k-treelist .k-icon.k-i-collapse,
@@ -73,9 +93,8 @@
 
 .ss-treelist-tree {
   flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
   overflow-y: auto;
-
 }
-
