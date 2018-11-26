@@ -22,6 +22,7 @@
     "axios": "^0.18.0",
     "d3": "^5.7.0",
     "document-register-element": "^1.10.0",
+    "flag-icon-css": "^3.2.1",
     "highlight.js": "^9.13.1",
     "vue": "^2.5.17",
     "vue-custom-element": "^3.2.1",
