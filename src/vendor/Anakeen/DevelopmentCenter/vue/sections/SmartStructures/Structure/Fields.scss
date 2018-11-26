@@ -1,20 +1,26 @@
 .fields-parent {
-   display: flex;
-   flex-direction: column;
-   min-height: 0;
- }
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
 .fields-content {
+  min-height: 0;
   display: flex;
   flex: 1;
+  overflow: hidden;
 }
 
 .fields-nav {
   display: flex;
+
   .fields-nav-link {
     cursor: pointer;
     border-radius: .25rem .25rem 0 0;
     padding: .5rem;
     background: white;
+
     &.router-link-active {
       z-index: 10;
       margin-bottom: -1px;

@@ -20,7 +20,7 @@
                     {name: "type", label: "Type", hidden: false, width: "8rem"},
                     {name: "labeltext", label: "Label", hidden: false},
                     {name: "accessibility", label: "Access", hidden: false, width: "9rem"},
-                    {name: "ordered", label: "Order", hidden: false, width: "8rem"},
+                    {name: "ordered", label: "Order", hidden: true, width: "8rem"},
                     {name: "isTitle", label: "is Title", hidden: true},
                     {name: "isAbstract", label: "is Abstract", hidden: true},
                     {name: "isNeeded", label: "is Needed", hidden: true},

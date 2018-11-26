@@ -30,6 +30,7 @@
     .ss-section {
         display: flex;
         flex-direction: column;
+        flex: 1;
 
         .ss-content {
             display: flex;
@@ -37,6 +38,8 @@
             padding: 1rem;
             border: 1px solid rgba(33, 37, 41, .125);
             border-radius: .25rem;
+            min-height: 0;
+            flex-direction: column;
         }
 
     }
