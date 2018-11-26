@@ -118,19 +118,24 @@
 
     }
 
-    .btn-group {
-      .btn {
-        border-color: rgba(0, 0, 0, 0.25);
-      }
-      .acl-set {
-        color: inherit;
-        background: greenyellow;
-      }
+    .wfl-acl-rights-cell {
+      text-align: center;
+      .btn-group {
+        .btn {
+          font-weight: bold;
+          border-color: rgba(0, 0, 0, 0.25);
+        }
 
-      .acl-disabled {
-        background: transparent;
-      }
+        .acl-set {
+          color: inherit;
+          background: greenyellow;
+        }
 
+        .acl-disabled {
+          background: transparent;
+        }
+
+      }
     }
 
     .switch-container {

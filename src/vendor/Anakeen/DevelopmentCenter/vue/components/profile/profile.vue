@@ -13,7 +13,7 @@
                         Id : <b>{{id}}</b>
                     </div>
                     <div v-if="refProfile" class="col-sm">
-                        Reference : <a href="#" @click="onClickRefProfile"><img :src="refProfile.icon"/> {{refProfile.title || refProfile.name || refProfile.id}}</a>
+                        Computed from : <a href="#" @click="onClickRefProfile"><img :src="refProfile.icon"/> {{refProfile.title || refProfile.name || refProfile.id}}</a>
                     </div>
                     <div v-if="detachable" class="detach-button">
                         <button class="k-button k-button-icon" @click="onDetachProfile"><i class="k-icon k-i-hyperlink-open"></i></button>

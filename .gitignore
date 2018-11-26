@@ -16,7 +16,7 @@ ide/vendor/
 *app
 .php_cs.cache
 .idea/*.iml"
-src/vendor/Anakeen/lib/vendor/
+src/vendor/Anakeen/Routes/Devel/Lib/vendor/
 Makefile.local
 node_modules/
 src/public/Anakeen/

@@ -1,5 +1,6 @@
 import AnkTreeList from "devComponents/SSTreeList/SSTreeList.vue";
 import { getTreeListData } from "./utils/treeUtils";
+
 const escapeColor = color => {
   if (color) {
     return color.replace("#", "\\#");
@@ -92,9 +93,8 @@ export default {
     this.privateMethods = {
       getRightsTemplate: rights => {
         if (rights) {
-          return (
-            "<div class='btn-group'>" +
-            Object.keys(this.acls)
+          return `<div class="wfl-acl-rights-cell"><div class='btn-group'>
+            ${Object.keys(this.acls)
               .map(acl => {
                 let hide = "";
                 if (!this.acls[acl].visible) {
@@ -115,9 +115,7 @@ export default {
                       .toUpperCase()}</button>`;
                 }
               })
-              .join("") +
-            "</div>"
-          );
+              .join("")}</div></div>`;
         }
       },
       getHeaderTemplate: column => {
