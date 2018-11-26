@@ -44,24 +44,26 @@ class I18n
             if (!file_exists($tmpPo)) {
                 throw new Exception("Fail retrieve locale results");
             }
-            $parser = new \PoParser\Parser();
-            $parser->read($tmpPo);
-            $entries = $parser->getEntriesAsArrays();
+            $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($tmpPo);
+            $poParser = new \Sepia\PoParser\Parser($fileHandler);
+            $catalog = $poParser->parse();
 
-            foreach ($entries as $msgid => $entry) {
-                if (!$msgid) {
-                    continue;
-                }
-                $key = sprintf("%s-%s", $entry["msgctxt"], $msgid);
+            $entries=$catalog->getEntries();
+            foreach ($entries as $entry) {
+                $key = sprintf("%s-%s", $entry->getMsgCtxt(), $entry->getMsgId());
 
                 if (!isset($data[$key])) {
                     $data[$key] = [
-                        "msgctxt" => $entry["msgctxt"],
-                        "msgid" => $msgid
+                        "msgctxt" => $entry->getMsgCtxt(),
+                        "msgid" => $entry->getMsgId()
                     ];
                 }
 
-                $data[$key]["$lang"] = implode("\n", $entry["msgstr"]);
+                if (($entry->getMsgIdPlural())) {
+                    $data[$key]["$lang"] = implode("\n", $entry->getMsgStrPlurals());
+                } else {
+                    $data[$key]["$lang"] = $entry->getMsgStr();
+                }
             }
         }
 

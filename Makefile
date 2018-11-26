@@ -3,7 +3,7 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 MODULE_NAME=development-center
 NODE_MODULE_PATH=node_modules
-
+PHP_LIB_PATH=src/vendor/Anakeen/Routes/Devel/Lib
 ## control conf
 port=80
 CONTROL_PORT=$(port)
@@ -18,6 +18,7 @@ COMPOSER_BIN=composer
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
 CS_BIN=php ./ide/vendor/bin/phpcs
+
 -include Makefile.local
 
 
@@ -29,9 +30,10 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 $(NODE_MODULE_PATH):
 	$(YARN_BIN) install
 
+${PHP_LIB_PATH}/autoload.php:
+	cd ${PHP_LIB_PATH}; ${COMPOSER_BIN} install --ignore-platform-reqs
 
-install: src/vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php
-	cd src/vendor/Anakeen/Routes/Devel/Lib; ${COMPOSER_BIN} install --ignore-platform-reqs
+install: ${PHP_LIB_PATH}/autoload.php
 
 compile: $(NODE_MODULE_PATH) install
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
@@ -55,6 +57,7 @@ deploy: compile
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
 	rm -fr ./src/public/Anakeen/
+	rm -fr ${PHP_LIB_PATH}/vendor
 	rm -rf ${MODULE_NAME}*.app
 
 ########################################################################################################################
@@ -80,13 +83,13 @@ beautify:
 	$(YARN_BIN) run beautify
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
+	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}src
 
 lint:
 	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}/src
 
 
 ########################################################################################################################
