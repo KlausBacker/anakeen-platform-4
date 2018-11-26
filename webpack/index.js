@@ -2,7 +2,7 @@ const path = require('path');
 const {prod, prodLegacy, dev} = require("@anakeen/webpack-conf");
 const {useVueLoader, setKendoAndJqueryToGlobal} = require("@anakeen/webpack-conf/parts");
 
-const BASE_DIR = path.resolve(__dirname, "../admin-center/");
+const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
 
 const adminPluginsEntries = require('./config/pluginsEntries');

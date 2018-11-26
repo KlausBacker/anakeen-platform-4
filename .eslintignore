@@ -1,5 +1,3 @@
 node_modules/
-admin-center/src/public/
-admin-center/src/public/
-localpub/
+src/public/
 webpack/

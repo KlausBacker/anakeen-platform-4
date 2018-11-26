@@ -3,15 +3,11 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #path
 STUB_PATH=stubs/
-LOCALPUB_PATH=$(MK_DIR)/localpub
-LOCALPUB_ADMIN_CENTER_PATH=$(LOCALPUB_PATH)/admin-center
 VERSION_PATH=$(MK_DIR)/VERSION
 RELEASE_PATH=$(MK_DIR)/RELEASE
 JS_CONF_PATH=$(MK_DIR)
 NODE_MODULE_PATH=node_modules
 WEBPACK_CONF_PATH=webpack
-ADMIN_CENTER_SRC_PATH=admin-center
-JS_ADMIN_CENTER_PATH=admin-center/src/public/Anakeen/adminCenter/prod
 
 ## Version and release
 VERSION = $(shell cat VERSION)
@@ -46,7 +42,7 @@ $(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
 install: $(JS_CONF_PATH)/yarn.lock ## Install deps (js an php)
 
 stub: ## Generate stubs
-	${ANAKEEN_CLI_BIN} generateStubs --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH)
+	${ANAKEEN_CLI_BIN} generateStubs --sourcePath .
 
 ########################################################################################################################
 ##
@@ -54,28 +50,22 @@ stub: ## Generate stubs
 ##
 ########################################################################################################################
 
-$(JS_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${ADMIN_CENTER_SRC_PATH} -type f -print | sed 's/ /\\ /g') $(shell find ${WEBPACK_CONF_PATH} -type f -print | sed 's/ /\\ /g')
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(YARN_BIN) build
-	touch "$@"
 
 $(NODE_MODULE_PATH):
 	$(YARN_BIN) install
 
-$(LOCALPUB_ADMIN_CENTER_PATH): $(JS_CONF_PATH)/yarn.lock $(JS_ADMIN_CENTER_PATH) $(VERSION_PATH) $(RELEASE_PATH)
+compile: $(NODE_MODULE_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	-mkdir -p $(LOCALPUB_ADMIN_CENTER_PATH)
-	rsync --delete -azvr $(ADMIN_CENTER_SRC_PATH)/ $(LOCALPUB_ADMIN_CENTER_PATH)
-	${ANAKEEN_CLI_BIN} build --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH)
-	touch "$@"
+	$(YARN_BIN) run build
 
-
-app: $(NODE_MODULE_PATH) $(LOCALPUB_ADMIN_CENTER_PATH) $(JS_ADMIN_CENTER_PATH) ## build admin center
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+app: compile ## build admin center
+	${ANAKEEN_CLI_BIN} build
 
 deploy: app ## deploy admin center
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath $(LOCALPUB_ADMIN_CENTER_PATH) -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --source-path . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
+autotest: compile
+	${ANAKEEN_CLI_BIN} build --auto-release
 ########################################################################################################################
 ##
 ## Node
@@ -102,8 +92,9 @@ autoPublish:
 ########################################################################################################################
 
 clean: ## clean the local pub
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -rf ${LOCALPUB_PATH}
+	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
+	rm -fr ./src/public/Anakeen/ ./src/public/AdminCenter
+	rm -rf ${MODULE_NAME}*.app
 
 cleanAll: clean ## clean the local pub and the node_module
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
