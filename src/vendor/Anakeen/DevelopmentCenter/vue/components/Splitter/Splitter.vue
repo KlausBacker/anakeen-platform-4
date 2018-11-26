@@ -1,11 +1,14 @@
 <template>
-    <kendo-splitter ref="ankSplitter" class="splitter-wrapper" orientation="horizontal" style="height:100%; background-color: #DEDEDE" :panes="panes">
+    <kendo-splitter ref="ankSplitter" class="splitter-wrapper" orientation="horizontal"
+                    style="height:100%; background-color: #DEDEDE" :panes="panes">
         <slot name="left"></slot>
         <div class="splitter-wrapper-right-content">
-            <div  class="splitter-empty" v-if="splitterEmpty">
+            <div class="splitter-empty" v-if="splitterEmpty">
                 <div class="splitter-empty-content">
-                    <slot class="splitter-empty-icon" name="emptyIcon"><span class="k-icon k-i-information splitter-empty-icon"></span></slot>
-                    <slot class="splitter-empty-text" name="emptyText"><span class="splitter-empty-text"> Please select an element to open </span></slot>
+                    <slot class="splitter-empty-icon" name="emptyIcon"><span
+                            class="k-icon k-i-information splitter-empty-icon"></span></slot>
+                    <slot class="splitter-empty-text" name="emptyText"><span class="splitter-empty-text"> Please select an element to open </span>
+                    </slot>
                 </div>
             </div>
             <slot v-else name="right"></slot>
@@ -20,14 +23,18 @@
                 &:active, &.k-state-focused {
                     background: #157EFB;
                 }
+
                 width: 1.5rem;
+
                 .k-icon {
                     margin: 0;
                     font-size: 1.75rem;
+
                     &.k-collapse-prev, &.k-expand-next {
                         &::before {
                             content: "\e016";
                         }
+
                         cursor: w-resize;
                         flex: 1;
                         display: flex;
@@ -38,6 +45,7 @@
                         &::before {
                             content: "\e014";
                         }
+
                         cursor: e-resize;
                         flex: 1;
                         display: flex;
@@ -53,6 +61,7 @@
                 }
             }
         }
+
         .splitter-empty {
             width: 100%;
             height: 100%;
@@ -60,6 +69,7 @@
             justify-content: center;
             display: flex;
             background-color: #DEDEDE;
+
             .splitter-empty-icon {
                 display: block;
                 font-size: 10rem;
@@ -67,16 +77,21 @@
                 padding-left: 6.5rem;
                 color: #A4A4A4;
             }
+
             .splitter-empty-text {
                 font-size: 1.5rem;
                 color: #A4A4A4;
             }
         }
+
+        .splitter-wrapper-right-content {
+            overflow-y: auto;
+        }
     }
 </style>
 <script>
   import Vue from "vue";
-  import { Splitter, LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
+  import {Splitter, LayoutInstaller} from "@progress/kendo-layout-vue-wrapper";
 
   Vue.use(LayoutInstaller);
   export default {
