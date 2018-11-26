@@ -3,7 +3,7 @@
     <workflow:graph ns="{{properties.prefix}}" name="{{properties.name}}" label="{{properties.title}}">
         <workflow:steps>
         {{#steps}}
-            <workflow:step name="{{name}}" {{#activity-label}}activity-label="{{activity-label}}"  {{/activity-label}}state-label="{{state-label}}"/>
+            <workflow:step name="{{name}}" {{#activity-label}}activity-label="{{activity-label}}" {{/activity-label}}state-label="{{state-label}}"{{#initial}} initial="true"{{/initial}}/>
         {{/steps}}
         </workflow:steps>
         <workflow:transitions>

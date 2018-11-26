@@ -86,7 +86,14 @@ class UiStructureTransfert
                         break;
 
                     case "renderTransitionClass":
-                        $vr = sprintf("%s\\Transition%s", implode("\\", $namePath), $className);
+                        $oriVr = $vr;
+                        $accessTransitionClassName=sprintf("Transition%s", $className);
+                        $vr = sprintf("%s\\%s", implode("\\", $namePath), $accessTransitionClassName);
+                        static::writeUiTransitionAccessStub(
+                            $structure,
+                            sprintf("%s/%s/%s.php", $vendorPath, implode("/", $namePath), $accessTransitionClassName),
+                            ["Classname" => $accessTransitionClassName, "OriginalClass" => $oriVr, "Namespace"=>implode("\\", $namePath)]
+                        );
                         break;
                 }
                 RenderConfigManager::setRenderParameter($structure->name, $kr, $vr);
@@ -96,7 +103,6 @@ class UiStructureTransfert
 
         return $changes;
     }
-
     protected static function writeUiAccessStub($structure, $stubPath, $data)
     {
         $template = file_get_contents(__DIR__ . '/../../../Migration/RenderAccess.php.mustache');
@@ -112,6 +118,18 @@ class UiStructureTransfert
          * "structureName" => $structureName
          * ]);
          */
+        $mustache = new \Mustache_Engine();
+        $stubBehaviorContent = $mustache->render($template, $data);
+        Utils::writeFileContent($stubPath, $stubBehaviorContent);
+        print "$stubPath\n";
+    }
+    protected static function writeUiTransitionAccessStub($structure, $stubPath, $data)
+    {
+        $template = file_get_contents(__DIR__ . '/../../../Migration/RenderTransitionAccess.php.mustache');
+
+        $data["structureName"] = $structure->name;
+        $data["structureClass"] = ucfirst(strtolower($structure->name));
+
         $mustache = new \Mustache_Engine();
         $stubBehaviorContent = $mustache->render($template, $data);
         Utils::writeFileContent($stubPath, $stubBehaviorContent);

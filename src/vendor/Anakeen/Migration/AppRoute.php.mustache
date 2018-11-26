@@ -17,7 +17,7 @@ class {{name}}
 
     protected function initParameters($args, \Slim\Http\request $request)
     {
-        // HERE set parameters in protected fields
+        //@FIXME HERE set parameters in protected fields
     }
 
     protected function doRequest()
@@ -26,12 +26,8 @@ class {{name}}
         $layoutContent=file_get_contents($layoutFile);
         $lay=new \Layout("", $layoutContent);
 
-        // @TODO HERE The action code
+        // @FIXME HERE The action code
 
         return $lay->gen();
     }
-
-
-
-
 }

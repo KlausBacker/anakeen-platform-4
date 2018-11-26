@@ -64,6 +64,10 @@ class Download
             $this->addStructuresConfig();
             // Not necessary already set by App migration
             // $this->addRoutesConfig();
+
+            $this->addRoles();
+            $this->addGroups();
+            $this->addGlobalProfilesConfig();
             $this->zip->close();
         }
 
@@ -85,8 +89,8 @@ class Download
     {
         $structName = self::camelCase($structure->name);
         $e = new ExportRenderAccessConfiguration($structure);
-        $e->extractCvRef();
         $e->extractProfil("ref");
+        $e->extractCvRef();
         $e->insertStructConfig();
         $xmlFile = sprintf("%s/SmartStructures/%s/500-%sSetting.xml", $this->outputPath, $structName, $structName);
         $this->zip->addFromString($xmlFile, $e->toXml());
@@ -116,8 +120,6 @@ class Download
             $this->zip->addFromString($xmlFile, $e->toXml());
         }
 
-        $this->addRoles();
-        $this->addGroups();
         $this->addTimersConfig($structure);
         $this->addMasksConfig($structure);
         $this->addMailTemplatesConfig($structure);
@@ -259,6 +261,14 @@ class Download
             );
             $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/130-%sWorkflowPermissions.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
             $this->zip->addFromString($xmlFile, $e->toXml());
+
+
+            $e = new ExportWorkflowConfiguration($workflow);
+            $e->extractWorkflow(
+                ExportWorkflowConfiguration::X_WFLACCESS
+            );
+            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/140-%sWorkflowAccess.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
+            $this->zip->addFromString($xmlFile, $e->toXml());
         }
 
         /*
@@ -285,7 +295,19 @@ class Download
         }
         */
     }
+    protected function addGlobalProfilesConfig()
+    {
+        $s = new SearchElements("PDOC");
+        $s->addFilter("%s is null", \SmartStructure\Fields\Pdoc::dpdoc_famid);
+        $s->addFilter("id > 1000");
+        $profiles = $s->search()->getResults();
 
+        foreach ($profiles as $profile) {
+            $xml = ExportElementConfiguration::getProfileConfig($profile->id);
+            $xmlFile = sprintf("%s/Settings/Profiles/100-Profile%s.xml", $this->outputPath, self::getLogicalName($profile));
+            $this->zip->addFromString($xmlFile, $xml);
+        }
+    }
     protected static function getLogicalName(SmartElement $e)
     {
         if ($e->name) {
