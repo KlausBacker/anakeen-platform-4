@@ -1,8 +1,6 @@
 import Vue from "vue";
-import "@progress/kendo-ui/js/kendo.toolbar.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
-import Splitter from "../../../components/Splitter/Splitter.vue";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
@@ -10,12 +8,10 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
 Vue.use(ButtonsInstaller);
-Vue.use(Splitter);
 
 export default {
   components: {
-    Grid,
-    "ank-splitter": Splitter
+    Grid
   },
   props: ["wflName"],
   data() {
@@ -48,22 +44,6 @@ export default {
         }
       ]
     };
-  },
-  beforeRouteEnter(to, from, next) {
-    next(function(vueInstance) {
-      if (vueInstance.routeTab.includes(to.name)) {
-        vueInstance.$refs.ankSplitter.disableEmptyContent();
-      }
-    });
-  },
-  beforeRouteUpdate(to, from, next) {
-    if (
-      this.routeTab.includes(to.name) &&
-      (from.name === "Wfl::transitions" || this.routeTab.includes(from.name))
-    ) {
-      this.$refs.ankSplitter.disableEmptyContent();
-    }
-    next();
   },
   methods: {
     getTransitions(options) {
@@ -112,40 +92,24 @@ export default {
           } else {
             switch (colId) {
               case "mailtemplates":
-                str += `<a data-role="develRouterLink" href="/devel/wfl/${
-                  this.wflName
-                }/transitions/mail/${
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }" style="text-decoration: underline; color: #157EFB">${
-                  items[item]
-                }</a>&nbsp`;
+                }/view">${items[item]}</a>&nbsp`;
                 break;
               case "volatileTimers":
-                str += `<a data-role="develRouterLink" href="/devel/wfl/${
-                  this.wflName
-                }/transitions/timers/volatile/${
+                str += `<a data-role="develRouterLink" href="//devel/smartElements/${
                   items[item]
-                }" style="text-decoration: underline; color: #157EFB">${
-                  items[item]
-                }</a>&nbsp`;
+                }/view">${items[item]}</a>&nbsp`;
                 break;
               case "persistentTimers":
-                str += `<a data-role="develRouterLink" href="/devel/wfl/${
-                  this.wflName
-                }/transitions/timers/persistent/${
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }" style="text-decoration: underline; color: #157EFB">${
-                  items[item]
-                }</a>&nbsp`;
+                }/view">${items[item]}</a>&nbsp`;
                 break;
               case "unAttachTimers":
-                str += `<a data-role="develRouterLink" href="/devel/wfl/${
-                  this.wflName
-                }/transitions/timers/unattach/${
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }" style="text-decoration: underline; color: #157EFB">${
-                  items[item]
-                }</a>&nbsp`;
+                }/view">${items[item]}</a>&nbsp`;
                 break;
               default:
                 break;
@@ -154,6 +118,9 @@ export default {
         });
       }
       return str;
+    },
+    autoFilterCol(e) {
+      e.element.addClass("k-textbox filter-input");
     }
   }
 };
