@@ -6,12 +6,12 @@
   "author": "",
   "license": "",
   "scripts": {
-    "beautify": "eslint ./admin-center --fix",
+    "beautify": "eslint ./src --fix",
     "build": "webpack --config webpack/index.js"
   },
   "files": [
-    "admin-center/src/**/*.scss",
-    "admin-center/LICENSE",
+    "./src/**/*.scss",
+    "./LICENSE",
     "README.md",
     "VERSION",
     "RELEASE"
