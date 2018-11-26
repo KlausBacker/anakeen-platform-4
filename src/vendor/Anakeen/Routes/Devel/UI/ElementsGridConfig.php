@@ -61,6 +61,14 @@ class ElementsGridConfig extends GridConfig
     protected function getElementsConfig($originalConfig)
     {
         $originalConfig["toolbar"] = null;
+
+
+        $titleConfig = ColumnsConfig::getColumnConfig("title");
+        $titleConfig["title"] = "Title";
+
+        $nameConfig = ColumnsConfig::getColumnConfig("name");
+        $nameConfig["title"] = "Logical Name";
+
         $fromConfig = ColumnsConfig::getColumnConfig("fromid");
         $fromConfig["relation"] = "-1";
         $fromConfig["smartType"] = "text";
@@ -68,6 +76,7 @@ class ElementsGridConfig extends GridConfig
 
         $idConfig = ColumnsConfig::getColumnConfig("id");
         $idConfig["filterable"] = self::getFilterable("int");
+        $idConfig["title"] = "Id";
 
         $docTypeConfig = ColumnsConfig::getColumnConfig("doctype");
         $docTypeConfig["hidden"] = true;
@@ -76,8 +85,8 @@ class ElementsGridConfig extends GridConfig
         $profilIdConfig["hidden"] = true;
 
         $originalConfig["smartFields"] = [
-            ColumnsConfig::getColumnConfig("title"),
-            ColumnsConfig::getColumnConfig("name"),
+            $titleConfig,
+            $nameConfig,
             $idConfig,
             $fromConfig,
             $docTypeConfig,
