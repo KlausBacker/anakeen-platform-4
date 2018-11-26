@@ -7,4 +7,5 @@
     <import schemaLocation="./xsd/smartConfig.xsd"  namespace="https://platform.anakeen.com/4/schemas/smart/1.0"/>
     <import schemaLocation="./xsd/uiConfig.xsd"  namespace="https://platform.anakeen.com/4/schemas/ui/1.0"/>
     <import schemaLocation="./xsd/anakeen-cli-build.xsd"  namespace="https://platform.anakeen.com/4/schemas/module/1.0"/>
+    <import schemaLocation="./xsd/appConfig.xsd"  namespace="https://platform.anakeen.com/4/schemas/app/1.0"/>
 </schema>

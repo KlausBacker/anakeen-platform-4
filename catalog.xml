@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <system systemId="https://platform.anakeen.com/4/schemas/app/1.0" uri="./xsd/appConfig.xsd"/>
+    <system uri="./xsd/configTimer.xsd" systemId="https://platform.anakeen.com/4/schemas/timer/1.0"/>
+    <system uri="./xsd/configWorkflow.xsd" systemId="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <system uri="./xsd/configMailTemplate.xsd" systemId="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
+    <system uri="./xsd/sdeConfig.xsd" systemId="https://platform.anakeen.com/4/schemas/sde/1.0"/>
+    <system uri="./xsd/smartConfig.xsd" systemId="https://platform.anakeen.com/4/schemas/smart/1.0"/>
+    <system uri="./xsd/uiConfig.xsd" systemId="https://platform.anakeen.com/4/schemas/ui/1.0"/>
+    <system uri="./xsd/anakeen-cli-build.xsd" systemId="https://platform.anakeen.com/4/schemas/module/1.0"/>
+</catalog>
