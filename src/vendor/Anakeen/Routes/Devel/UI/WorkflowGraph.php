@@ -19,7 +19,6 @@ class WorkflowGraph
 
     protected $extension = "svg";
     protected $wid = null;
-    protected $size;
     protected $inline = 1;
     protected $type = "simple";  //"complet","activity","justactivity","simple","cluster"
     protected $ratio = "auto"; // "auto", "fill", "compress", "expand"
@@ -36,7 +35,6 @@ class WorkflowGraph
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->wid = $args["workflow"];
-        $this->size = $args["size"];
         $this->extension = $args["extension"];
         $inlineQuery = $request->getQueryParam("inline", null);
         if ($inlineQuery) {
