@@ -184,7 +184,7 @@ export default {
             let maxLabelSize = 0;
             const columns = data.properties.acls.map(currentElement => {
               const textWidth = this.privateScope.computeTextWidth(
-                currentElement.label,
+                currentElement.name,
                 $(this.$el).css("font")
               );
               if (textWidth > maxLabelSize) {
@@ -204,9 +204,8 @@ export default {
                 },
                 headerAttributes,
                 headerTemplate: `<div class="header-acl-label">
-                       <span class="acl-label">${
-                         currentElement.label
-                       }</span></div>`,
+                       <span class="acl-label">${currentElement.name ||
+                         currentElement.label}</span></div>`,
                 width: this.columnWidth,
                 hidden: !this.defaultColumns.reduce(
                   (accumulator, currentColumn) => {
@@ -326,6 +325,13 @@ export default {
       }
     };
   },
+  computed: {
+    detachPropOptions() {
+      return {
+        onlyExtendedAcls: this.onlyExtendedAcls
+      };
+    }
+  },
   mounted() {
     this.dataSource = this.privateScope.initDataSource();
     this.privateScope.initTreeView();
@@ -341,7 +347,11 @@ export default {
     },
     onDetachProfile() {
       if (window.open) {
-        window.open(`/api/v2/devels/security/profile/${this.profileId}.html`);
+        window.open(
+          `/api/v2/devels/security/profile/${this.profileId}.html?${$.param({
+            options: this.detachPropOptions
+          })}`
+        );
       }
     }
   }
