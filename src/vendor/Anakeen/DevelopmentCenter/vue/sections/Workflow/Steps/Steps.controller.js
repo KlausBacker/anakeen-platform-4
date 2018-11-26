@@ -1,8 +1,6 @@
 import Vue from "vue";
-import "@progress/kendo-ui/js/kendo.toolbar.js";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.filtercell.js";
-import Splitter from "../../../components/Splitter/Splitter.vue";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
@@ -10,12 +8,10 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 Vue.use(GridInstaller);
 Vue.use(DataSourceInstaller);
 Vue.use(ButtonsInstaller);
-Vue.use(Splitter);
 
 export default {
   components: {
-    Grid,
-    "ank-splitter": Splitter
+    Grid
   },
   props: ["wflName"],
   data() {
@@ -40,17 +36,6 @@ export default {
       ]
     };
   },
-  beforeRouteEnter(to, from, next) {
-    next(function(vueInstance) {
-      if (vueInstance.routeTab.includes(to.name)) {
-        vueInstance.$refs.stepsSplitter.disableEmptyContent();
-      }
-    });
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.$refs.stepsSplitter.disableEmptyContent();
-    next();
-  },
   methods: {
     getSteps(options) {
       this.$http
@@ -69,6 +54,8 @@ export default {
     parseStepsData(response) {
       if (response && response.data && response.data.data) {
         this.ssName = response.data.data.properties.structure;
+        this.$refs.stepsGridContent.kendoWidget().autoFitColumn(0);
+        this.$refs.stepsGridContent.kendoWidget().autoFitColumn(1);
         return response.data.data.steps;
       }
       return [];
@@ -109,9 +96,9 @@ export default {
           } else {
             switch (colId) {
               case "mailtemplates":
-                str += `<li><a data-role="develRouterLink" href="/devel/wfl/${
-                  this.wflName
-                }/steps/mail/templates/${items[item]}">${items[item]}</a></li>`;
+                str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${
+                  items[item]
+                }/view">${items[item]}</a></li>`;
                 break;
               default:
                 break;
@@ -137,17 +124,17 @@ export default {
                 this.ssName
               }/views">${dataItem[colId]}</a>&nbsp`;
             case "profil":
-              return `<a data-role="develRouterLink" href="/devel/wfl/${
-                this.wflName
-              }/steps/pdoc/${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
+              return `<a data-role="develRouterLink" href="/devel/security/profiles/${
+                dataItem[colId]
+              }">${dataItem[colId]}</a>&nbsp`;
             case "fall":
-              return `<a data-role="develRouterLink" href="/devel/wfl/${
-                this.wflName
-              }/steps/fall/${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
+              return `<a data-role="develRouterLink" href="/devel/security/workflows/${
+                dataItem[colId]
+              }/accesses">${dataItem[colId]}</a>&nbsp`;
             case "timer":
-              return `<a data-role="develRouterLink" href="/devel/wfl/${
-                this.wflName
-              }/steps/timer/${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
+              return `<a data-role="develRouterLink" href="/devel/smartElements/${
+                dataItem[colId]
+              }/view">${dataItem[colId]}</a>&nbsp`;
             default:
               return dataItem[colId];
           }
