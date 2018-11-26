@@ -29,7 +29,11 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 $(NODE_MODULE_PATH):
 	$(YARN_BIN) install
 
-compile: $(NODE_MODULE_PATH)
+
+install: src/vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php
+	cd src/vendor/Anakeen/Routes/Devel/Lib; ${COMPOSER_BIN} install --ignore-platform-reqs
+
+compile: $(NODE_MODULE_PATH) install
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	$(YARN_BIN) run buildJs
 
@@ -49,7 +53,7 @@ deploy: compile
 ########################################################################################################################
 
 clean: ## clean the local pub
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
 	rm -fr ./src/public/Anakeen/
 	rm -rf ${MODULE_NAME}*.app
 
