@@ -31,10 +31,13 @@ if (checkInitServer($errors) === false) {
 require_once ('class/Class.WIFF.php');
 require_once ('class/Class.JSONAnswer.php');
 // Autoload required classes
-function __autoload($class_name)
+
+
+spl_autoload_register(function ($class_name)
 {
     require_once sprintf('class/Class.%s.php', $class_name);
-}
+}) ;
+
 // Disabling magic quotes at runtime
 // http://fr3.php.net/manual/en/security.magicquotes.disabling.php
 if (get_magic_quotes_gpc()) {
