@@ -9,6 +9,7 @@
                  routeName="Wfl::name"
                  routeParamField="wflName"
                  position="left"
+                 :filter="{ placeholder: 'Search a workflow'}"
                  listUrl="/api/v2/devel/workflow/structures/<type>/">
         </ss-list>
     </div>

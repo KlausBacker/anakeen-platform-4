@@ -24,6 +24,18 @@
       AnkSmartElement
     },
     props: ["initid", "viewId"],
+    watch: {
+      initid(newValue) {
+        if (this.$refs.smartElement) {
+          this.$refs.smartElement.fetchSmartElement({ initid: newValue, viewId: this.viewId });
+        }
+      },
+      viewId() {
+        if (this.$refs.smartElement) {
+          this.$refs.smartElement.fetchSmartElement({ initid: newValue, viewId: this.viewId });
+        }
+      }
+    },
     data() {
       return {
         element: null
@@ -50,6 +62,7 @@
       onReady(event, element) {
         this.element = element;
         this.element.name = this.$refs.smartElement.getProperty("name");
+        this.$(event.target).find("nav.dcpDocument__menu").css("display", "none");
         kendo.ui.progress(this.$(this.$el), false);
       }
     }

@@ -61,7 +61,6 @@ export default {
       return [];
     },
     refreshSteps() {
-      this.$refs.stepsGridContent.kendoWidget().dataSource.filter({});
       this.$refs.stepsGridContent.kendoWidget().dataSource.read();
     },
     autoFilterCol(e) {

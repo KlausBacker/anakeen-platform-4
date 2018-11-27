@@ -59,14 +59,18 @@ export default {
   },
   methods: {
     fetchStructureInfos() {
+      kendo.ui.progress(this.$(".security-infos-section", this.$el), true);
       this.$http
         .get(this.urlInfo)
         .then(response => {
+          kendo.ui.progress(this.$(".security-infos-section", this.$el), false);
           this.structureDetails = response.data.data;
           this.isReady = true;
         })
         .catch(err => {
+          kendo.ui.progress(this.$(".security-infos-section", this.$el), false);
           console.error(err);
+          throw err;
         });
     },
     formatTags(tags) {

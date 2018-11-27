@@ -26,6 +26,11 @@ export default {
       default: true
     }
   },
+  watch: {
+    profileId() {
+      this.privateScope.updateDataSource();
+    }
+  },
   data: () => ({
     title: "",
     id: "",
@@ -55,9 +60,11 @@ export default {
         return new kendo.data.TreeListDataSource({
           transport: {
             read: options => {
+              kendo.ui.progress(this.$(".k-grid-content", this.$el), true);
               this.$http
                 .get(this.privateScope.getCurrentUrl())
                 .then(content => {
+                  kendo.ui.progress(this.$(".k-grid-content", this.$el), false);
                   if (!content.data.success) {
                     this.$emit("error", content.data.messages.join(" "));
                     throw Error(content.data.messages.join(" "));
@@ -140,6 +147,7 @@ export default {
                   ]);
                 })
                 .catch(err => {
+                  kendo.ui.progress(this.$(".k-grid-content", this.$el), false);
                   console.error(err);
                   //this.emit("error", err);
                   options.error(err);

@@ -20,7 +20,7 @@
                 </ank-se-grid>
             </template>
             <template slot="right">
-                <router-multi-view style="display:flex; flex: 1; height: 100%;"></router-multi-view>
+                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1; height: 100%;"></router-multi-view>
             </template>
         </ank-splitter>
     </div>

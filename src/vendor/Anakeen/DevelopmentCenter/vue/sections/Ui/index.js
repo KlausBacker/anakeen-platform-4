@@ -28,12 +28,18 @@ export default {
           name: "Ui::infos",
           path: "infos/",
           component: Infos,
+          meta: {
+            label: "Infos"
+          },
           props: true
         },
         {
           name: "Ui::views",
           path: "views/",
           component: ViewsConf,
+          meta: {
+            label: "View Configuration"
+          },
           props: true
         },
         {
@@ -41,6 +47,9 @@ export default {
           path: "control",
           component: ControlConf,
           props: true,
+          meta: {
+            label: "Control Configuration"
+          },
           children: [
             {
               name: "Ui::control::element",
