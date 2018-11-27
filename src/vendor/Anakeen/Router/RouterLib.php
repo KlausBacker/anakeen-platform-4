@@ -101,6 +101,7 @@ class RouterLib
                     }
                 }
                 $key = ($ns) ? ($ns . "::" . $name) : $name;
+                $rawData[$key]["tagName"]=$subNode->getName();
 
                 if ($subTagName === "route-access") {
                     $rName = (string)$subNode->attributes()["ref"];
@@ -171,6 +172,9 @@ class RouterLib
             $routes = $config["routes"];
             $nr = [];
             foreach ($routes as $routeName => $route) {
+                if ($route["tagName"] === "route-override") {
+                    $route["override"] = "partial";
+                }
                 $route["name"] = $routeName;
                 $route["configFile"] = str_replace($rootDir, '.', $configFileName);
                 if (!isset($route["priority"])) {

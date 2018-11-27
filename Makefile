@@ -2,7 +2,6 @@
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 ## control conf
-CONTROL_PROTOCOL=http
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
 CONTROL_URL=$(host)/control/

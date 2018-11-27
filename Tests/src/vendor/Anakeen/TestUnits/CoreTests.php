@@ -7,6 +7,7 @@
 namespace Anakeen\TestUnits;
 
 use Anakeen\Core\Utils\Gettext;
+use Anakeen\Pu\Config\SuiteConfig;
 use Anakeen\Pu\Routes\SuiteRoutes;
 use Dcp\Pu\FrameworkDcp;
 use Dcp\Pu\SuiteDcp;
@@ -35,6 +36,8 @@ class CoreTests
         $suite = new FrameworkDcp('Project');
 
         Gettext::___(""); // Include ___
+
+        $suite->addTest((new SuiteConfig())());
         $suite->addTest((new SuiteRoutes)());
         $suite->addTest(SuiteDcp::suite());
         $suite->addTest(SuiteDcpAttribute::suite());

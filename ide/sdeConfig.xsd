@@ -60,10 +60,8 @@
 
     <xs:complexType name="routesType">
         <xs:sequence maxOccurs="unbounded">
-            <xs:element name="route" type="rout:routeCompleteType">
-                <xs:alternative test="@override != 'partial'" type="rout:routePartialType"/>
-                <xs:alternative test="@override = 'complete'" type="rout:routeCompleteType"/>
-            </xs:element>
+            <xs:element name="route" type="rout:routeCompleteType" minOccurs="0"/>
+            <xs:element name="route-override" type="rout:routePartialType" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:token" name="namespace" use="required"/>
     </xs:complexType>
@@ -163,13 +161,12 @@
             <xs:element type="xs:boolean" name="authenticated" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="rout:overrideType" name="override"/>
     </xs:complexType>
     <xs:complexType name="routePartialType">
         <xs:sequence maxOccurs="unbounded">
             <xs:element type="xs:int" name="priority" minOccurs="0" default="0"/>
             <xs:element type="xs:string" name="callable" minOccurs="0"/>
-            <xs:element type="rout:methodType" name="method" maxOccurs="unbounded">
+            <xs:element type="rout:methodType" name="method" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>HTTP method</xs:documentation>
                 </xs:annotation>
@@ -180,7 +177,6 @@
             <xs:element type="xs:boolean" name="authenticated" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="name" use="required"/>
-        <xs:attribute type="rout:overrideType" name="override"/>
     </xs:complexType>
     <xs:complexType name="accessesType">
         <xs:sequence>
