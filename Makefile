@@ -66,10 +66,10 @@ clean: ## clean the local pub
 ##
 ########################################################################################################################
 
-po:
+po: $(NODE_MODULE_PATH)
 	${ANAKEEN_CLI_BIN} extractPo -s .
 
-stub:
+stub: $(NODE_MODULE_PATH)
 	${ANAKEEN_CLI_BIN} generateStubs
 
 ########################################################################################################################
@@ -78,19 +78,21 @@ stub:
 ##
 ########################################################################################################################
 
-beautify:
+beautify: $(NODE_MODULE_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
 	$(YARN_BIN) run beautify
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}src
 
-lint:
+lint: $(NODE_MODULE_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}/src
 
+checkXML: $(NODE_MODULE_PATH)
+	${ANAKEEN_CLI_BIN} check -s .
 
 ########################################################################################################################
 ##

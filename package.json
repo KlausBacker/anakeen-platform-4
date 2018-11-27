@@ -10,7 +10,7 @@
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-cli": "1.0.1-1-1542211380",
+    "@anakeen/anakeen-cli": "latest",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-buttons-vue-wrapper": "^2018.3.911",

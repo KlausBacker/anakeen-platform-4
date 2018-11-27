@@ -2,11 +2,12 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@1.0.1-1-1542211380":
-  version "1.0.1-1-1542211380"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1-1542211380.tgz#4f8884ee2dbe68bdadfd2334b3f6ab2431e737db"
-  integrity sha512-QHldRO6htBg9LsYJBDXz/n1ezkOagC19si24PuKvzAHPPpjk7dlr6GYLPIZN5CmRfWTChuDEBRael8CpCAjgOw==
+"@anakeen/anakeen-cli@latest":
+  version "1.0.1-1543327457"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543327457.tgz#9b2abfea81e507f233ef85db8f352b15e9dfed92"
+  integrity sha512-SWvYxVaguHaLz7VLIXGvfQTBNHiw0Mum436b+3nF3VAvsCAqDAeQ0J1F+OUKmjZrB5VHy1OfVIC9J5flCJpmxg==
   dependencies:
+    "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
     glob "^7.1.3"
     gulp "^4.0.0"
@@ -14,22 +15,26 @@
     gulp-replace "^1.0.0"
     gulp-tar "^2.1.0"
     inquirer "^6.0.0"
-    libxmljs "^0.19.5"
-    mustache "^3.0.0"
-    node-fetch "^2.2.1"
-    saxophone "^0.5.0"
+    mustache "^3.0.1"
+    node-fetch "^2.3.0"
     signale "^1.3.0"
     streamqueue "^1.1.2"
     through2 "^3.0.0"
     tmp "^0.0.33"
-    treeify "^1.1.0"
     url-join "^4.0.0"
     uuid "^3.3.2"
     vinyl-file "^3.0.0"
     xml2js "^0.4.19"
-    yargs "^12.0.2"
+    yargs "^12.0.5"
 
-"@anakeen/ank-components@1.0.0-1543240027":
+"@anakeen/anakeen-module-validation@latest":
+  version "1.0.0-1543326794"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.0-1543326794.tgz#10c11ad6325e4ccff89be1622a6e992cf6634923"
+  integrity sha512-zczu1Tx5Fcv8vzRqnJSL604LZ7jmRRbGbCOespewjj7T1IuZ+UvhEhPkJds2zwFj8WkYdy3ZCwfsD7Q9PwICiQ==
+  dependencies:
+    libxmljs "^0.19.5"
+
+"@anakeen/ank-components@latest":
   version "1.0.0-1543240027"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1543240027.tgz#66170dfe8f9b679bb68e897ef7667e575fb2bcc6"
   integrity sha512-y2z+1/lo95Rb+c9167jqCj/kZtwOEf6qPTnlmeXcU6q91Pwk8MBx/0aFvkheFAw+3fdUn22hS8tiOpcuK9qHww==
@@ -4702,7 +4707,7 @@ ms@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
 
-mustache@^3.0.0:
+mustache@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/mustache/-/mustache-3.0.1.tgz#873855f23aa8a95b150fb96d9836edbc5a1d248a"
   integrity sha512-jFI/4UVRsRYdUbuDTKT7KzfOp7FiD5WzYmmwNwXyUVypC0xjoTL78Fqc0jHUPIvvGD+6DQSPHIt1NE7D1ArsqA==
@@ -4776,7 +4781,7 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
-node-fetch@^2.2.1:
+node-fetch@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
   integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
@@ -5871,7 +5876,7 @@ readable-stream@1.0:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-"readable-stream@2 || 3", readable-stream@^3.0.3, readable-stream@^3.0.6:
+"readable-stream@2 || 3", readable-stream@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.0.6.tgz#351302e4c68b5abd6a2ed55376a7f9a25be3057a"
   integrity sha512-9E1oLoOWfhSXHGv6QlwXJim7uNzd9EVlWK+21tCU9Ju/kR0/p2AZYPz4qSchgO8PlLIH4FpZYfzwS+rEksZjIg==
@@ -6213,14 +6218,6 @@ sass-loader@^7.1.0:
 sax@>=0.6.0, sax@^1.2.4, sax@~1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
-
-saxophone@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/saxophone/-/saxophone-0.5.0.tgz#b5faba69509bd119b8b272a52e2edc0ce2a4c61f"
-  integrity sha512-n5CcJShLz8snkPKA7+4Oup9KsgMdSytyHV9mMAAVUyoepydmSyQtk37elZwVrXvTh2bUW4r/XHXDCj0RB10BZg==
-  dependencies:
-    readable-stream "^3.0.3"
-    string_decoder "^1.1.1"
 
 schema-utils@^0.4.4, schema-utils@^0.4.5:
   version "0.4.7"
@@ -6860,11 +6857,6 @@ tough-cookie@~2.4.3:
     psl "^1.1.24"
     punycode "^1.4.1"
 
-treeify@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/treeify/-/treeify-1.1.0.tgz#4e31c6a463accd0943879f30667c4fdaff411bb8"
-  integrity sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==
-
 trim-newlines@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-1.0.0.tgz#5887966bb582a4503a41eb524f7d35011815a613"
@@ -7420,7 +7412,7 @@ yargs-parser@^5.0.0:
   dependencies:
     camelcase "^3.0.0"
 
-yargs@^12.0.2:
+yargs@^12.0.2, yargs@^12.0.5:
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.5.tgz#05f5997b609647b64f66b81e3b4b10a368e7ad13"
   integrity sha512-Lhz8TLaYnxq/2ObqHDql8dX8CJi97oHxrjUcYtzKbbykPtVW9WB+poxI+NM2UIzsMgNCZTIf0AQwsjK5yMAqZw==
