@@ -196,6 +196,10 @@ lint:
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}/anakeen-ui
 
+checkXML: node_modules
+	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}/anakeen-ui
+	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}/Tests
+
 ########################################################################################################################
 ##
 ## MAKEFILE INTERNALS
