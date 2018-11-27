@@ -80,7 +80,8 @@ export default {
   data() {
     return {
       remoteDataSource: "",
-      columnSizeTab: []
+      columnSizeTab: [],
+      filterRow: ""
     };
   },
   mounted() {
@@ -108,6 +109,9 @@ export default {
         model: this.model
       },
       sort: this.sort
+    });
+    this.$nextTick(() => {
+      this.createFilterRow();
     });
     $(window).resize(() => {
       if (this.$refs.ssTreelist) {
@@ -159,17 +163,20 @@ export default {
       }
       return this.columnSizeTab;
     },
-    onColumnHide() {
+    onColumnHide(e) {
       window.localStorage.setItem(
         "ss-list-column-conf-" + this.$route.name,
         JSON.stringify(this.$refs.ssTreelist.kendoWidget().columns)
       );
+      console.log(e);
+      this.filterShow(e.column.field, false);
     },
-    onColumnShow() {
+    onColumnShow(e) {
       window.localStorage.setItem(
         "ss-list-column-conf-" + this.$route.name,
         JSON.stringify(this.$refs.ssTreelist.kendoWidget().columns)
       );
+      this.filterShow(e.column.field);
     },
     onDataBound(e) {
       let tree = e.sender;
@@ -248,7 +255,59 @@ export default {
       }, 1);
     },
     kendoWidget() {
-      return this.$refs.ssTreeList.kendoWidget();
+      return this.$refs.ssTreelist.kendoWidget();
+    },
+    createFilterRow() {
+      if (this.$refs.ssTreelist) {
+        const tree = this.kendoWidget();
+        const columns = tree.columns.filter(c => !c.hidden);
+        columns.forEach(col => {
+          this.filterRow += `<th class="k-header" >
+                <div class="filter-clearable" style="position:relative;">
+                  <input class="k-textbox filter ${
+                    col.field
+                  }-filter" type="text"/>
+                </div>
+              </th>`;
+          this.$(this.$refs.ssTreelist.kendoWidget().thead).on(
+            "change",
+            "input.filter",
+            event => {
+              const value = event.currentTarget.value;
+              if (value) {
+                const colId = event.target.className
+                  .split(" ")[2]
+                  .split("-")[0];
+                this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+                  field: colId,
+                  operator: "contains",
+                  value: value
+                });
+              } else {
+                this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+              }
+            }
+          );
+        });
+        tree.thead.append(
+          `<tr role="row" class="filter-row">${this.filterRow}</tr>`
+        );
+      }
+    },
+    filterShow(id, show = true) {
+      if (show) {
+        this.$(".filter-row").append(`<th class="k-header" >
+                <div class="filter-clearable" style="position:relative;">
+                  <input class="k-textbox filter ${id}-filter" type="text"/>
+                </div>
+              </th>`);
+      } else {
+        this.$nextTick(() => {
+          this.$(`.${id}-filter`)
+            .closest("th")
+            .remove();
+        });
+      }
     }
   }
 };
