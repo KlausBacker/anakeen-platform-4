@@ -54,6 +54,11 @@ export default {
       next();
     }
   },
+  devCenterRefreshData() {
+    if (this.$refs.roleContent && this.$refs.roleContent.dataSource) {
+      this.$refs.roleContent.dataSource.read();
+    }
+  },
   methods: {
     setGridOption() {
       const options = this.$refs.roleContent.kendoGrid.getOptions();

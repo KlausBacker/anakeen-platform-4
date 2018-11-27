@@ -45,6 +45,9 @@ export default {
       ]
     };
   },
+  devCenterRefreshData() {
+    this.refreshTransitions();
+  },
   methods: {
     getTransitions(options) {
       this.$http
@@ -67,7 +70,6 @@ export default {
       return [];
     },
     refreshTransitions() {
-      this.$refs.transitionsGridContent.kendoWidget().dataSource.filter({});
       this.$refs.transitionsGridContent.kendoWidget().dataSource.read();
     },
     displayMultiple(colId) {

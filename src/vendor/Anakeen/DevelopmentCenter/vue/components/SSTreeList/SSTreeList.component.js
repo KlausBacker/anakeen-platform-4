@@ -84,6 +84,11 @@ export default {
       filterRow: ""
     };
   },
+  devCenterRefreshData() {
+    if (this.remoteDataSource) {
+      this.remoteDataSource.read();
+    }
+  },
   mounted() {
     this.remoteDataSource = new kendo.data.TreeListDataSource({
       transport: {

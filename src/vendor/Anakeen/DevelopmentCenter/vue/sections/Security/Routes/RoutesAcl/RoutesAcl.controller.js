@@ -41,6 +41,11 @@ export default {
       });
     }
   },
+  devCenterRefreshData() {
+    if (this.$refs.routesGrid) {
+      this.$refs.routesGrid.kendoWidget().read();
+    }
+  },
   methods: {
     getRoutes(options) {
       this.$http

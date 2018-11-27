@@ -27,6 +27,11 @@ export default {
       }
     });
   },
+  devCenterRefreshData() {
+    if (this.$refs.viewsGrid) {
+      this.$refs.viewsGrid.kendoWidget().read();
+    }
+  },
   methods: {
     getViews(options) {
       this.$http

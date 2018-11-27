@@ -36,6 +36,11 @@ export default {
       next();
     }
   },
+  devCenterRefreshData() {
+    if (this.$refs.profilesGrid && this.$refs.profilesGrid.dataSource) {
+      this.$refs.profilesGrid.dataSource.read();
+    }
+  },
   methods: {
     cellRender(event) {
       if (event.data && event.data.columnConfig) {

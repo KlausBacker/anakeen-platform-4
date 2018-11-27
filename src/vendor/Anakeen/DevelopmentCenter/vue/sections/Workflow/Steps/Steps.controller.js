@@ -36,6 +36,9 @@ export default {
       ]
     };
   },
+  devCenterRefreshData() {
+    this.refreshSteps();
+  },
   methods: {
     getSteps(options) {
       this.$http

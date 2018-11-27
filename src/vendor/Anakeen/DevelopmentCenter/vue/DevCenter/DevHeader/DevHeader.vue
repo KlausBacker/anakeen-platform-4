@@ -15,6 +15,7 @@
             <!--<span v-if="rootPlugin">></span> <span v-if="rootPlugin" class="header-app-title">{{rootPlugin.title||''}}</span>-->
         </div>
         <div class="header-content header-right-content">
+            <dev-center-refresh-button class="k-primary"></dev-center-refresh-button>
         </div>
     </header>
 </template>

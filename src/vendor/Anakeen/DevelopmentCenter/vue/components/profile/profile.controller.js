@@ -40,6 +40,9 @@ export default {
     labelRotation: 300,
     columnWidth: "3rem"
   }),
+  devCenterRefreshData() {
+    this.privateScope.updateDataSource();
+  },
   created() {
     this.privateScope = {
       computeTextWidth: (text, font = "12px Arial") => {

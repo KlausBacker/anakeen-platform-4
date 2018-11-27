@@ -47,6 +47,9 @@ export default {
       return this.structureDetails ? this.structureDetails.info || {} : {};
     }
   },
+  devCenterRefreshData() {
+    this.fetchStructureInfos();
+  },
   mounted() {
     this.fetchStructureInfos();
     this.infoSections = [

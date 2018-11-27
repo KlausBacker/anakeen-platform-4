@@ -71,6 +71,11 @@ export default {
       viewComponentProps: {}
     };
   },
+  devCenterRefreshData() {
+    if (this.$refs.grid && this.$refs.grid.dataSource) {
+      this.$refs.grid.dataSource.read();
+    }
+  },
   methods: {
     cellRender(event) {
       if (event.data) {

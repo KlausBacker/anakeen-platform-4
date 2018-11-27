@@ -19,6 +19,11 @@ export default {
       enumDataSource: ""
     };
   },
+  devCenterRefreshData() {
+    if (this.$refs.enumGrid) {
+      this.$refs.enumGrid.kendoWidget().read();
+    }
+  },
   mounted() {
     $(window).resize(() => {
       if (this.$refs.enumGridContent) {

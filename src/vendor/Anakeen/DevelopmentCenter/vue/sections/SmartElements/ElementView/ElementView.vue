@@ -49,6 +49,11 @@
         return !!this.element;
       }
     },
+    devCenterRefreshData() {
+      if (this.$refs.smartElement) {
+        this.$refs.smartElement.fetchSmartElement(this.$refs.smartElement.getInitialData);
+      }
+    },
     methods: {
       onDetachElement() {
         if (window.open) {
