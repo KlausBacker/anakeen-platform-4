@@ -14,8 +14,23 @@ use Dcp\Ui\UIGetAssetPath;
 
 class Profile
 {
+    protected $componentProps = null;
+
+    protected function initParameters(\Slim\Http\request $request, $args)
+    {
+        $this->componentProps = $request->getParam("options", null);
+        if (!empty($this->componentProps)) {
+            if ($this->componentProps["onlyExtendedAcls"] == "true") {
+                $this->componentProps["onlyExtendedAcls"] = true;
+            } else {
+                $this->componentProps["onlyExtendedAcls"] = false;
+            }
+        }
+    }
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
+        $this->initParameters($request, $args);
         $page = __DIR__ . "/Layout/profile.html.mustache";
         $id = $args["id"];
         $se = SmartElementManager::getDocument($id);
@@ -61,6 +76,9 @@ class Profile
                 ]
             ]
         ];
+        if (!empty($this->componentProps)) {
+            $data["profileOptions"] = json_encode($this->componentProps);
+        }
         $template = file_get_contents($page);
         return $response->write($mustache->render($template, $data));
     }

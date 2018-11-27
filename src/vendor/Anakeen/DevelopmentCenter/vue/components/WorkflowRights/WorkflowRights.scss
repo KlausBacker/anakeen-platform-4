@@ -69,18 +69,21 @@
             }
           }
         }
+        .acls-checkbox {
+          display: inline-flex;
+          flex-direction: column;
+          .secondary-acls {
+            vertical-align: middle;
+            display: inline-block;
+            visibility: hidden;
+            overflow:hidden;
 
-        .secondary-acls {
-          vertical-align: middle;
-          display: inline-block;
-          width: 0;
-          overflow:hidden;
-          transition: width .2s ease;
-
-          &.all-acls-visible {
-            width: auto;
+            &.all-acls-visible {
+              visibility: visible;
+            }
           }
         }
+
       }
     }
     .profile-header {
@@ -95,6 +98,8 @@
       height: 2.5rem;
       display: flex;
       align-items: center;
+      word-break: break-all;
+      word-break: break-word;
       .switch-container {
         margin-left: .75rem;
       }
@@ -108,8 +113,8 @@
       }
 
       .step-header-label {
-        text-overflow: ellipsis;
         overflow: hidden;
+        white-space: normal;
       }
 
       .view-graph-button {

@@ -7,7 +7,9 @@
     justify-content: space-between;
     align-items: flex-end;
     background: #424142;
-    padding: 0 0 2rem 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 .5rem 2rem 0;
     min-width: 6rem;
   }
 

@@ -30,8 +30,8 @@ export default {
               value: to.params.seIdentifier
             });
           });
-          vueInstance.$refs.controlSplitter.disableEmptyContent();
           vueInstance.getSelected(to.params.seIdentifier);
+          vueInstance.$refs.controlSplitter.disableEmptyContent();
         }
       });
     } else {

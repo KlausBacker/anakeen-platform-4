@@ -11,6 +11,7 @@
     {{/CSS}}
     <script>
         window.profileId = {{profileId}};
+        window.profileOptions = JSON.parse(decodeURI('{{{profileOptions}}}'));
     </script>
     {{#JS_DEPS}}
         <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>

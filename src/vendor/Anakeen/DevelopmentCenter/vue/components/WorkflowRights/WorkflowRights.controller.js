@@ -187,40 +187,47 @@ export default {
               <th class="k-header acls-checkbox-header" colspan="${treeList
                 .columns.length - 1}">
                 <span>Rights to display :</span>
-                ${this.defaultAcls
-                  .map(c => {
-                    let checked = "";
-                    if (this.acls[c].visible) {
-                      checked = "checked='checked'";
-                    }
-                    return `<input type="checkbox" id="${
-                      this.wid
-                    }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" ${checked}/><label class="k-checkbox-label" for="${
-                      this.wid
-                    }-${c}">${this.getLabel(this.acls[c])}</label>`;
-                  })
-                  .join("")}
-                  <div class="secondary-acls">
-                    ${Object.values(this.acls)
-                      .filter(a => !a.default)
-                      .map(c => {
-                        let checked = "";
-                        if (c.visible) {
-                          checked = "checked='checked'";
-                        }
-                        return `<input type="checkbox" id="${this.wid}-${
-                          c.name
-                        }" class="k-checkbox check-acl check-acl--${
-                          c.name
-                        }" data-acl="${
-                          c.name
-                        }" ${checked}/><label class="k-checkbox-label" for="${
-                          this.wid
-                        }-${c.name}">${this.getLabel(c)}</label>`;
-                      })
-                      .join("")}
+                <div class="acls-checkbox">
+                    <div class="primary-acls">
+                      ${this.defaultAcls
+                        .map(c => {
+                          let checked = "";
+                          if (this.acls[c].visible) {
+                            checked = "checked='checked'";
+                          }
+                          return `<input type="checkbox" id="${
+                            this.wid
+                          }-${c}" class="k-checkbox check-acl check-acl--${c}" data-acl="${c}" ${checked}/><label class="k-checkbox-label" for="${
+                            this.wid
+                          }-${c}">${this.getLabel(
+                            this.acls[c],
+                            true,
+                            true
+                          )}</label>`;
+                        })
+                        .join("")}
+                    </div>
+                    <div class="secondary-acls">
+                      ${Object.values(this.acls)
+                        .filter(a => !a.default)
+                        .map(c => {
+                          let checked = "";
+                          if (c.visible) {
+                            checked = "checked='checked'";
+                          }
+                          return `<input type="checkbox" id="${this.wid}-${
+                            c.name
+                          }" class="k-checkbox check-acl check-acl--${
+                            c.name
+                          }" data-acl="${
+                            c.name
+                          }" ${checked}/><label class="k-checkbox-label" for="${
+                            this.wid
+                          }-${c.name}">${this.getLabel(c, true, true)}</label>`;
+                        })
+                        .join("")}
+                    </div>
                   </div>
-                    
                  <button class="k-button k-button-icon view-all-acls" title="View all rights">
                     <i class="k-icon k-i-plus"></i>
                  </button>   
@@ -241,7 +248,10 @@ export default {
         this.$(treeList.thead).on("click", "button.view-all-acls", event => {
           const $button = this.$(event.currentTarget);
           $button.toggleClass("all-acls-visible");
-          $button.prev(".secondary-acls").toggleClass("all-acls-visible");
+          $button
+            .prev()
+            .find(".secondary-acls")
+            .toggleClass("all-acls-visible");
         });
         this.$(treeList.thead).on(
           "change",
@@ -409,7 +419,7 @@ export default {
     onDetachComponent() {
       window.open(this.resolveDetachUrl);
     },
-    getLabel(element, capitalize = false) {
+    getLabel(element, capitalize = false, firstBold = false) {
       let label = "";
       if (element) {
         if (typeof element === "object") {
@@ -424,6 +434,9 @@ export default {
       }
       if (label && capitalize) {
         label = `${label.charAt(0).toUpperCase()}${label.substring(1)}`;
+      }
+      if (label && firstBold) {
+        label = `${label.charAt(0).bold()}${label.substring(1)}`;
       }
       return label;
     }
