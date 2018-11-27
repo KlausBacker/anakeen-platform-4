@@ -14,24 +14,26 @@ export default {
   beforeRouteEnter(to, from, next) {
     if (to.name === "Ui::control::element") {
       next(function(vueInstance) {
-        if (vueInstance.$refs.controlConfGrid.kendoGrid) {
-          vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
-            field: "name",
-            operator: "eq",
-            value: to.params.seIdentifier
-          });
-          vueInstance.$refs.controlSplitter.disableEmptyContent();
-          vueInstance.getSelected(to.params.seIdentifier);
-        } else {
-          vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
+        if (to.query.filter) {
+          if (vueInstance.$refs.controlConfGrid.kendoGrid) {
             vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
               field: "name",
               operator: "eq",
-              value: to.params.seIdentifier
+              value: to.query.filter
             });
-          });
-          vueInstance.getSelected(to.params.seIdentifier);
-          vueInstance.$refs.controlSplitter.disableEmptyContent();
+            vueInstance.$refs.controlSplitter.disableEmptyContent();
+            vueInstance.getSelected(to.params.seIdentifier);
+          } else {
+            vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
+              vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
+                field: "name",
+                operator: "eq",
+                value: to.query.filter
+              });
+            });
+            vueInstance.$refs.controlSplitter.disableEmptyContent();
+            vueInstance.getSelected(to.params.seIdentifier);
+          }
         }
       });
     } else {
@@ -57,20 +59,33 @@ export default {
     };
   },
   methods: {
-    getSelected(e) {
-      if (e !== "") {
-        if (this.$refs.controlConfGrid.kendoGrid) {
-          this.$("[role=row]", this.$el).removeClass(" control-view-is-opened");
-          this.$(
-            "[data-uid=" +
-              this.$refs.controlConfGrid.kendoGrid.dataSource
-                .view()
-                .find(d => d.rowData.name === e).uid +
-              "]",
-            this.$el
-          ).addClass(" control-view-is-opened");
+    getFiltered() {
+      this.$refs.controlConfGrid.kendoGrid.dataSource.bind("change", e => {
+        if (e.sender._filter === undefined) {
+          let query = Object.assign({}, this.$route.query);
+          delete query.filter;
+          this.$router.replace({ query });
         }
-      }
+      });
+    },
+    getSelected(e) {
+      this.$nextTick(() => {
+        if (e !== "") {
+          if (this.$refs.controlConfGrid.kendoGrid) {
+            this.$("[role=row]", this.$el).removeClass(
+              " control-view-is-opened"
+            );
+            this.$(
+              "[data-uid=" +
+                this.$refs.controlConfGrid.kendoGrid.dataSource
+                  .view()
+                  .find(d => d.rowData.name === e).uid +
+                "]",
+              this.$el
+            ).addClass(" control-view-is-opened");
+          }
+        }
+      });
     },
     actionClick(event) {
       event.preventDefault();

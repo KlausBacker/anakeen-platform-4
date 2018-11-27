@@ -18,8 +18,12 @@
             label: "Parameters Fields"
           },
           {
-            name: "SmartStructures::parameters::defaultParamFields",
+            name: "SmartStructures::parameters::parametersFields",
             label: "Parameters Values"
+          },
+          {
+            name: "SmartStructures::parameters::defaultParamValues",
+            label: "Default Parameters Values"
           }
         ]
       }

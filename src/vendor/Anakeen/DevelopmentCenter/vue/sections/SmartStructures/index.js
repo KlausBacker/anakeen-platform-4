@@ -4,7 +4,8 @@ import Infos from "./Infos/Infos.vue";
 import Structure from "./Structure/Structure";
 import ParameterValues from "./Parameters/ParametersFields.vue";
 import DefaultsFields from "./Structure/DefaultValues.vue";
-import DefaultsParamFields from "./Parameters/ParametersValues.vue";
+import ParametersFields from "./Parameters/ParametersValues.vue";
+import DefaultParametersValues from "./Parameters/ParametersDefaultValue.vue";
 import Parameters from "./Parameters/Parameters.vue";
 import Fields from "./Structure/Fields.vue";
 
@@ -67,9 +68,15 @@ export default {
               props: true
             },
             {
-              name: "SmartStructures::parameters::defaultParamFields",
+              name: "SmartStructures::parameters::parametersFields",
               path: "parameters/fields/",
-              component: DefaultsParamFields,
+              component: ParametersFields,
+              props: true
+            },
+            {
+              name: "SmartStructures::parameters::defaultParamValues",
+              path: "parameters/defaults/",
+              component: DefaultParametersValues,
               props: true
             }
           ]

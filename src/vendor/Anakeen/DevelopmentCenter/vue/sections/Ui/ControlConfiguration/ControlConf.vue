@@ -5,7 +5,9 @@
                          :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/control/config/`"
                          filterable="inline"
                          :pageSizes="[100, 200, 500]"
-                         @action-click="actionClick">
+                         :sortable="'false'"
+                         @action-click="actionClick"
+                         @grid-ready="getFiltered">
             </ank-se-grid>
         </template>
         <template slot="right">

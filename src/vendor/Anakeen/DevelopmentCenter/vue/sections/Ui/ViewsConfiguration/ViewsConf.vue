@@ -19,7 +19,7 @@
                                                 </div>
                                             </div>`}">
             <kendo-grid-column :field="'cvId'" :title="'<b>Logical Name</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayLink('cvId')"></kendo-grid-column>
-            <kendo-grid-column :field="'cvStructure'" :title="'<b>Structure</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
+            <kendo-grid-column :field="'cvStructure'" :title="'<b>Structure</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayLink('cvStructure')"></kendo-grid-column>
             <kendo-grid-column :field="'viewId'" :title="'<b>View Name</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'viewLabel'" :title="'<b>View Label</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'maskId'" :title="'<b>Mask</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol" :template="displayLink('maskId')"></kendo-grid-column>
