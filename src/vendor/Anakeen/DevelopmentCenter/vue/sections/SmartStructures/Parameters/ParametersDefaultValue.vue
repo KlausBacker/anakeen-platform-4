@@ -1,5 +1,5 @@
 <template>
-    <ss-treelist ref="paramDefVamList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues"
+    <ss-treelist ref="paramDefValList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues"
                  :columnTemplate="columnTemplate" :messages="messages"></ss-treelist>
 </template>
 <script>
