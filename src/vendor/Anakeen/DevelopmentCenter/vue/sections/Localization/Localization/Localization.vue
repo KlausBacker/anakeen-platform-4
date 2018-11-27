@@ -1,6 +1,6 @@
 <template>
     <div class="localization-section">
-        <kendo-grid ref="localizationGrid" height="100%" :column-menu-columns="true" :column-menu-filterable="false" filterable-mode="row" filterable-operators-string-contains="Contains" :sortable="false" :resizable="true" :pageable="{pageSizes: [100, 200, 500], pageSize: 100}">
+        <kendo-grid ref="localizationGrid" height="100%" :column-menu-columns="true" :column-menu-filterable="false" filterable-mode="row" filterable-operators-string-contains="Contains" :sortable="false" :resizable="true" :pageable="{pageSizes: [100, 500, 1000]}">
             <kendo-grid-column field="msgctxt" title="Context" :filterable-cell-template="privateMethods.filterTemplate('msgctxt')"></kendo-grid-column>
             <kendo-grid-column field="msgid" title="msgid" :filterable-cell-template="privateMethods.filterTemplate('msgid')"></kendo-grid-column>
             <kendo-grid-column v-for="(lang, index) in supportedLanguages"
@@ -10,11 +10,12 @@
                                :header-template="privateMethods.countryHeaderTemplate(lang)"
                                :filterable-cell-template="privateMethods.filterTemplate(lang.field)"
                                v-bind="lang"></kendo-grid-column>
+            <kendo-grid-column field="files" title="Origin Files" :filterable-cell-template="privateMethods.filterTemplate('files')"  :template="privateMethods.filesTemplate()"></kendo-grid-column>
             <kendo-datasource slot="kendo-datasource"
                               :transport-read="privateMethods.readData"
                               :schema-parse="privateMethods.parseData"
                               :schema-model="listModel"
-                              :pageSize="100"
+                              :pageSize="500"
             ></kendo-datasource>
         </kendo-grid>
     </div>

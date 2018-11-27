@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Devel;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\Utils\Glob;
 use Anakeen\Router\ApiV2Response;
 use Dcp\Exception;
 
@@ -29,6 +30,47 @@ class I18n
 
     public function doRequest()
     {
+        $data = $this->getRecordedTranslations();
+        $this->addPoOriginFiles($data);
+
+
+        usort($data, function ($a, $b) {
+            $cmp = strcmp($a["msgctxt"], $b["msgctxt"]);
+            if ($cmp !== 0) {
+                return $cmp;
+            } else {
+                return strcmp($a["msgid"], $b["msgid"]);
+            }
+        });
+        return $data;
+    }
+
+    protected function addPoOriginFiles(&$data)
+    {
+        $poPattern = sprintf("%s/locale/**/*po", ContextManager::getRootDirectory());
+        $poFiles = Glob::glob($poPattern);
+        $rootPathLength = strlen(ContextManager::getRootDirectory());
+
+        foreach ($poFiles as $poFile) {
+            $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($poFile);
+            $poParser = new \Sepia\PoParser\Parser($fileHandler);
+            $catalog = $poParser->parse();
+            $entries = $catalog->getEntries();
+            foreach ($entries as $entry) {
+                $key = sprintf("%s-%s", $entry->getMsgCtxt(), $entry->getMsgId());
+
+                if ($entry->isFuzzy() || $entry->isObsolete()) {
+                    continue;
+                }
+                if (isset($data[$key])) {
+                    $data[$key]["files"][] = '.' . substr($poFile, $rootPathLength);
+                }
+            }
+        }
+    }
+
+    protected function getRecordedTranslations()
+    {
         $data = [];
 
         $langs = ["fr", "en"];
@@ -48,7 +90,7 @@ class I18n
             $poParser = new \Sepia\PoParser\Parser($fileHandler);
             $catalog = $poParser->parse();
 
-            $entries=$catalog->getEntries();
+            $entries = $catalog->getEntries();
             foreach ($entries as $entry) {
                 $key = sprintf("%s-%s", $entry->getMsgCtxt(), $entry->getMsgId());
 
@@ -67,15 +109,7 @@ class I18n
             }
         }
 
-        usort($data, function ($a, $b) {
-            $cmp = strcmp($a["msgctxt"], $b["msgctxt"]);
-            if ($cmp !== 0) {
-                return $cmp;
-            } else {
-                return strcmp($a["msgid"], $b["msgid"]);
-            }
-        });
 
-        return array_values($data);
+        return $data;
     }
 }
