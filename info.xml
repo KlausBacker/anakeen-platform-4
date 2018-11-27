@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
-<module name="smart-data-engine" version="1.0.0" release="0" vendor="Anakeen"
-        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="yes">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
+        name="smart-data-engine" version="1.0.0" release="0" vendor="Anakeen"
+        license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="Y">
 
-    <description lang="en">Smart Data Engine</description>
-
-
+    <description>Smart Data Engine</description>
 
     <requires>
         <installer version="1.4.0" comp="ge"/>
@@ -15,9 +14,8 @@
         <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y"/>
         <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html"
                needed="Y"/>
-
         <param name="core_tmpdir" label="temporary folder" default="./var/tmp" type="text" needed="Y"/>
-        <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="yes"
+        <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y"
                oninstall="W" onupgrade="H" onedit="H"/>
         <param name="mod_deflate" label="Enable compression (requires Apache mod_deflate)" default="yes" type="enum"
                values="yes|no" needed="Y"/>
@@ -25,66 +23,61 @@
 
     <pre-install>
         <check type="phpversion" predicate="ge" version="7.1.0">
-            <label lang="en">Minimum PHP version is 7.1</label>
+            <label>Minimum PHP version is 7.1</label>
         </check>
         <check type="phpversion" predicate="lt" version="7.3.0">
-            <label lang="en">Maximum PHP version is 7.2</label>
+            <label>Maximum PHP version is 7.2</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.5.0">
-            <label lang="en">Minimum database version is 9.5</label>
+            <label>Minimum database version is 9.5</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="lt" version="11.0.0">
-            <label lang="en">Maximum database version is 10.0</label>
+            <label>Maximum database version is 10.0</label>
         </check>
-
-        <check type="pgempty" service="@core_db" optional="yes">
-            <label lang="en">Check database empty</label>
+        <check type="pgempty" service="@core_db" optional="Y">
+            <label>Check database empty</label>
         </check>
-
         <check type="syscommand" command="rm">
-            <label lang="en">Check "rm". To delete some working files</label>
+            <label>Check "rm". To delete some working files</label>
         </check>
         <check type="syscommand" command="file">
-            <label lang="en">Check "file". To detect mime file type</label>
+            <label>Check "file". To detect mime file type</label>
         </check>
         <check type="syscommand" command="mkdir">
-            <label lang="en">Check "mkdir". To create directory</label>
+            <label>Check "mkdir". To create directory</label>
         </check>
         <check type="syscommand" command="tar">
-            <label lang="en">Check "Tar". To import document's archive</label>
+            <label>Check "Tar". To import document's archive</label>
         </check>
         <check type="syscommand" command="zip">
-            <label lang="en">Check "Zip". To import/export archive</label>
+            <label>Check "Zip". To import/export archive</label>
         </check>
         <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
-            <label lang="en">Check zip support for -Z store flag. Use for openDocument writting</label>
+            <label>Check zip support for -Z store flag. Use for openDocument writting</label>
             <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
         </check>
         <check type="syscommand" command="unzip">
-            <label lang="en">Check "unzip". To import archive and openDocument</label>
+            <label>Check "unzip". To import archive and openDocument</label>
         </check>
-
         <check type="syscommand" command="convert">
-            <label lang="en">Check "convert". To resize images</label>
+            <label>Check "convert". To resize images</label>
         </check>
         <check type="syscommand" command="recode">
-            <label lang="en">Check "recode". For send pdf email</label>
+            <label>Check "recode". For send pdf email</label>
         </check>
         <check type="syscommand" command="php">
-            <label lang="en">Check "php". Core language</label>
+            <label>Check "php". Core language</label>
         </check>
         <check type="syscommand" command="psql">
-            <label lang="en">Check "psql". Postgresql Client</label>
+            <label>Check "psql". Postgresql Client</label>
         </check>
         <check type="syscommand" command="pg_dump">
-            <label lang="en">Check "pg_dump". To archive database</label>
+            <label>Check "pg_dump". To archive database</label>
         </check>
         <check type="syscommand" command="msgcat">
-            <label lang="en">Check "msgcat". To construct language catalogue</label>
+            <label>Check "msgcat". To construct language catalogue</label>
         </check>
-
         <!-- Check PHP functions/extensions -->
-
         <check type="phpfunction" function="openssl_random_pseudo_bytes">
             <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL
                 support in PHP.
@@ -92,7 +85,7 @@
         </check>
         <check type="exec"
                cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
-            <label lang="en">Check for cryptographically strong random bytes from openssl</label>
+            <label>Check for cryptographically strong random bytes from openssl</label>
             <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
                 old.
             </help>
@@ -123,31 +116,31 @@
                 PHP.
             </help>
         </check>
-        <check type="phpfunction" function="pspell_new" optional="yes">
+        <check type="phpfunction" function="pspell_new" optional="Y">
             <help>You might need to install a php-pspell package from your distribution in order to have spelling
                 support in PHP.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
-            <label lang="en">Check english spelling dictionary</label>
+            <label>Check english spelling dictionary</label>
             <help>English spelling dictionary not found: you might need to install a aspell-en package from your
                 distribution in order to have english spelling support.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
-            <label lang="en">Check french spelling dictionary</label>
+            <label>Check french spelling dictionary</label>
             <help>French spelling dictionary not found: you might need to install a aspell-fr package from your
                 distribution in order to have french spelling support.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
-            <label lang="en">Check required "en_US.UTF-8" locale</label>
+            <label>Check required "en_US.UTF-8" locale</label>
             <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the
                 required "en_US.UTF-8" locale on your operating system.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;fr_FR.UTF-8&quot;)!==false?0:1);'">
-            <label lang="en">Check required "fr_FR.UTF-8" locale</label>
+            <label>Check required "fr_FR.UTF-8" locale</label>
             <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the
                 required "fr_FR.UTF-8" locale on your operating system.
             </help>
@@ -159,7 +152,7 @@
         </check>
         <check type="exec"
                cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
-            <label lang="en">Check iconv in libc</label>
+            <label>Check iconv in libc</label>
             <help>Your PHP iconv extension is compiled with a non-GLIBC implementation of iconv, and it might not work
                 as expected.
             </help>
@@ -186,13 +179,13 @@
             <help>You might need to install a php-simplexml package in order to have SimpleXML support in PHP.</help>
         </check>
         <check type="exec" cmd="php -r 'exit(extension_loaded(&quot;suhosin&quot;)?1:0);'">
-            <label lang="en">Check suhosin is not active</label>
+            <label>Check suhosin is not active</label>
             <help>The PHP suhosin extension MUST NOT be active! Please deactivate the PHP suhosin extension (as
                 unconfigured suhosin can cause silent corruption of form data).
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(function_exists(&quot;posix_getuid&quot;)?0:1);'">
-            <label lang="en">Check POSIX extension is available in PHP CLI</label>
+            <label>Check POSIX extension is available in PHP CLI</label>
             <help>You might need to install a php-posix package in order to have POSIX support in PHP CLI.</help>
         </check>
 
@@ -206,9 +199,7 @@
                 Internationalization (Collator class) support in PHP.
             </help>
         </check>
-
         <!-- Check Apache modules -->
-
         <check type="apachemodule" module="mod_expires">
             <help>You might need to install and/or activate the Apache mod_expires module.</help>
         </check>
@@ -223,25 +214,20 @@
 
     <post-install>
         <process command="programs/core_initialize">
-            <label lang="en">Initialize system database</label>
+            <label>Initialize system database</label>
         </process>
-
-
         <process command="programs/init_admin_passwd">
-            <label lang="en">Initialize admin password</label>
+            <label>Initialize admin password</label>
         </process>
-
         <process command="./ank.php --system --localeGen">
-            <label lang="en">Generate traduction catalog</label>
+            <label>Generate traduction catalog</label>
         </process>
         <process command="programs/set_param CORE_CLIENT client_name">
-            <label lang="en">Register client name</label>
+            <label>Register client name</label>
         </process>
-
         <process command="programs/set_param CORE_TMPDIR core_tmpdir">
-            <label lang="en">Register temporary folder</label>
+            <label>Register temporary folder</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Family</label>
         </process>
@@ -254,7 +240,6 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Dir/dir.data.csv">
             <label>Import Root dir</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
             <label>Add Mail form family</label>
         </process>
@@ -264,35 +249,27 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml">
             <label>Add Processus family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml">
             <label>Add Helpage family</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.param.xml">
             <label>Config Helpage family</label>
         </process>
-
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
             <label>Add Grouped searches family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
             <label>Add Detailled searches family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
             <label>Add Specialized searches family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
@@ -302,8 +279,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File family</label>
         </process>
-
-
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.init.csv">
             <label>Add IUSER folder</label>
         </process>
@@ -319,84 +294,73 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE family</label>
         </process>
-
         <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account documents</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.init.csv">
             <label>Create system groups</label>
         </process>
-
-
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.data.csv">
             <label>Help Documents</label>
         </process>
-
         <process command="./ank.php --script=vault_init"/>
-
         <process command="./ank.php --script=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
-
         <process command="./ank.php --system --localeGen"/>
     </post-install>
 
     <pre-upgrade>
-
         <check type="phpversion" predicate="ge" version="7.1.0">
-            <label lang="en">Minimum PHP version is 7.1</label>
+            <label>Minimum PHP version is 7.1</label>
         </check>
         <check type="phpversion" predicate="lt" version="7.3.0">
-            <label lang="en">Maximum PHP version is 7.2</label>
+            <label>Maximum PHP version is 7.2</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="ge" version="9.5.0">
-            <label lang="en">Minimum database version is 9.5</label>
+            <label>Minimum database version is 9.5</label>
         </check>
         <check type="pgversion" service="@core_db" predicate="lt" version="11.0.0">
-            <label lang="en">Maximum database version is 10.0</label>
+            <label>Maximum database version is 10.0</label>
         </check>
-
         <check type="syscommand" command="rm">
-            <label lang="en">Check "rm". To delete some working files</label>
+            <label>Check "rm". To delete some working files</label>
         </check>
         <check type="syscommand" command="file">
-            <label lang="en">Check "file". To detect mime file type</label>
+            <label>Check "file". To detect mime file type</label>
         </check>
         <check type="syscommand" command="mkdir">
-            <label lang="en">Check "mkdir". To create directory</label>
+            <label>Check "mkdir". To create directory</label>
         </check>
         <check type="syscommand" command="tar">
-            <label lang="en">Check "Tar". To import document's archive</label>
+            <label>Check "Tar". To import document's archive</label>
         </check>
         <check type="syscommand" command="zip">
-            <label lang="en">Check "Zip". To import/export archive</label>
+            <label>Check "Zip". To import/export archive</label>
         </check>
         <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
-            <label lang="en">Check zip support for -Z store flag. Use for openDocument writting</label>
+            <label>Check zip support for -Z store flag. Use for openDocument writting</label>
             <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
         </check>
         <check type="syscommand" command="unzip">
-            <label lang="en">Check "unzip". To import archive and openDocument</label>
+            <label>Check "unzip". To import archive and openDocument</label>
         </check>
-
         <check type="syscommand" command="convert">
-            <label lang="en">Check "convert". To resize images</label>
+            <label>Check "convert". To resize images</label>
         </check>
         <check type="syscommand" command="recode">
-            <label lang="en">Check "recode". For send pdf email</label>
+            <label>Check "recode". For send pdf email</label>
         </check>
         <check type="syscommand" command="php">
-            <label lang="en">Check "php". Core language</label>
+            <label>Check "php". Core language</label>
         </check>
         <check type="syscommand" command="psql">
-            <label lang="en">Check "psql". Postgresql Client</label>
+            <label>Check "psql". Postgresql Client</label>
         </check>
         <check type="syscommand" command="pg_dump">
-            <label lang="en">Check "pg_dump". To archive database</label>
+            <label>Check "pg_dump". To archive database</label>
         </check>
         <check type="syscommand" command="msgcat">
-            <label lang="en">Check "msgcat". To construct language catalogue</label>
+            <label>Check "msgcat". To construct language catalogue</label>
         </check>
-
-
         <check type="phpfunction" function="openssl_random_pseudo_bytes">
             <help>You might need to install a php-openssl package from your distribution in order to have OpenSSL
                 support in PHP.
@@ -404,7 +368,7 @@
         </check>
         <check type="exec"
                cmd="php -r '$s=false;$r=openssl_random_pseudo_bytes(16,$s);exit(($r!==false&amp;&amp;$s!==false)?0:1);'">
-            <label lang="en">Check for cryptographically strong random bytes from openssl</label>
+            <label>Check for cryptographically strong random bytes from openssl</label>
             <help>Unable to get cryptographically strong random bytes from openssl: your system might be broken or too
                 old.
             </help>
@@ -431,37 +395,36 @@
                 PHP.
             </help>
         </check>
-        <!--<check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>-->
         <check type="phpfunction" function="ldap_connect">
             <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
                 PHP.
             </help>
         </check>
-        <check type="phpfunction" function="pspell_new" optional="yes">
+        <check type="phpfunction" function="pspell_new" optional="Y">
             <help>You might need to install a php-pspell package from your distribution in order to have spelling
                 support in PHP.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
-            <label lang="en">Check english spelling dictionary</label>
+            <label>Check english spelling dictionary</label>
             <help>English spelling dictionary not found: you might need to install a aspell-en package from your
                 distribution in order to have english spelling support.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
-            <label lang="en">Check french spelling dictionary</label>
+            <label>Check french spelling dictionary</label>
             <help>French spelling dictionary not found: you might need to install a aspell-fr package from your
                 distribution in order to have french spelling support.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
-            <label lang="en">Check required "en_US.UTF-8" locale</label>
+            <label>Check required "en_US.UTF-8" locale</label>
             <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the
                 required "en_US.UTF-8" locale on your operating system.
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;fr_FR.UTF-8&quot;)!==false?0:1);'">
-            <label lang="en">Check required "fr_FR.UTF-8" locale</label>
+            <label>Check required "fr_FR.UTF-8" locale</label>
             <help>The required "fr_FR.UTF-8" locale is missing. You must install or generate (using locale-gen) the
                 required "fr_FR.UTF-8" locale on your operating system.
             </help>
@@ -473,7 +436,7 @@
         </check>
         <check type="exec"
                cmd="php -r 'if(function_exists(&quot;iconv&quot;) &amp;&amp; ICONV_IMPL == &quot;glibc&quot;){exit(0);}exit(1);'">
-            <label lang="en">Check iconv in libc</label>
+            <label>Check iconv in libc</label>
             <help>Iconv might not work as you want</help>
         </check>
         <check type="phpfunction" function="mb_get_info">
@@ -495,16 +458,15 @@
             <help>You might need to install a php-json package in order to have JSON support in PHP.</help>
         </check>
         <check type="exec" cmd="php -r 'exit(extension_loaded(&quot;suhosin&quot;)?1:0);'">
-            <label lang="en">Check suhosin is not active</label>
+            <label>Check suhosin is not active</label>
             <help>The PHP suhosin extension MUST NOT be active! Please deactivate the PHP suhosin extension (as
                 unconfigured suhosin can cause silent corruption of form data).
             </help>
         </check>
         <check type="exec" cmd="php -r 'exit(function_exists(&quot;posix_getuid&quot;)?0:1);'">
-            <label lang="en">Check POSIX extension is available in PHP CLI</label>
+            <label>Check POSIX extension is available in PHP CLI</label>
             <help>You might need to install a php-posix package in order to have POSIX support in PHP CLI.</help>
         </check>
-
         <check type="phpclass" class="XSLTProcessor">
             <help>You might need to install a php-xsl package from your distribution in order to have XSLT support in
                 PHP.
@@ -515,9 +477,7 @@
                 Internationalization (Collator class) support in PHP.
             </help>
         </check>
-
         <!-- Check Apache modules -->
-
         <check type="apachemodule" module="mod_expires">
             <help>You might need to install and/or activate the Apache mod_expires module.</help>
         </check>
@@ -527,21 +487,16 @@
         <check type="apachemodule" module="mod_headers">
             <help>You might need to install and/or load the mod_headers Apache module.</help>
         </check>
-
     </pre-upgrade>
 
     <post-upgrade>
         <process command="programs/core_sanitize">
-            <label lang="en">Sanitize core database</label>
+            <label>Sanitize core database</label>
         </process>
         <process command="programs/core_accessUpdate">
-            <label lang="en">Resync dbaccess config</label>
+            <label>Resync dbaccess config</label>
         </process>
-
         <process command="programs/app_post CORE U"/>
-
-
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Family</label>
         </process>
@@ -551,42 +506,33 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.struct.xml">
             <label>Import DIR Family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mail/mail.struct.xml">
             <label>Add Mail form family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml">
             <label>Add Mail Template form family</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml">
             <label>Add Processus family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml">
             <label>Add Helpage family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Search/search.struct.xml">
             <label>Add Search family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml">
             <label>Add Grouped searches family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml">
             <label>Add Detailled searches family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml">
             <label>Add Specialized searches family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Report/report.struct.xml">
             <label>Add Report family</label>
         </process>
@@ -596,7 +542,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File family</label>
         </process>
-
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
             <label>Add IUSER family</label>
         </process>
@@ -609,7 +554,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE family</label>
         </process>
-
         <process command="./ank.php --system --localeGen"/>
     </post-upgrade>
 

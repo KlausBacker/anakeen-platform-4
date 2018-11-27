@@ -4,9 +4,12 @@
     <module:po-config>
         <module:po-struct source="**/*struct.xml"/>
         <module:po-enum source="**/*struct.xml"/>
+        <module:po-workflow source="**/*Graph.xml"/>
         <module:po-php source="**/*.php" target="smart-data-engine"/>
     </module:po-config>
     <module:stub-config>
-        <module:stub-struct source="**/*struct.xml"/>
+        <module:stub-struct source="src/config/**/*.xml"/>
+        <module:stub-struct source="src/vendor/Anakeen/SmartStructures/**/*.xml"/>
+        <module:stub-struct source="Tests/src/vendor/Anakeen/TestUnits/Data/**/*.xml"/>
     </module:stub-config>
 </module:config>
