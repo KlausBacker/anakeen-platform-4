@@ -168,7 +168,6 @@ export default {
         "ss-list-column-conf-" + this.$route.name,
         JSON.stringify(this.$refs.ssTreelist.kendoWidget().columns)
       );
-      console.log(e);
       this.filterShow(e.column.field, false);
     },
     onColumnShow(e) {
