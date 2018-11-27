@@ -75,8 +75,8 @@ class WTestBadImp12 extends \SmartStructure\Wdoc
         )
     );
     
-    public $stateactivity = array(
-        'zou' => 'not correct state'
+    public $stepLabels = array(
+        'zou' => ["activity"=>'not correct state']
     );
     
     function SendMailToVeto($newstate)

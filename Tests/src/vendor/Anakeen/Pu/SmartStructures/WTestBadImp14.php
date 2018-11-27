@@ -13,5 +13,5 @@ class WTestBadImp14 extends \SmartStructure\Wdoc
     
     var $cycle = "must be an array";
     
-    public $stateactivity = "must be an array";
+    public $stepLabels = "must be an array";
 }

@@ -71,8 +71,8 @@ class WTestImp4 extends \SmartStructure\Wdoc
         )
     );
     
-    public $stateactivity = array(
-        self::alive => 'live his life'
+    public $stepLabels = array(
+        self::alive => ["activity"=>'live his life']
     );
     function SendMailToVeto($newstate)
     {

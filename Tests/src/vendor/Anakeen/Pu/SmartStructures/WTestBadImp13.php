@@ -73,7 +73,7 @@ class WTestBadImp13 extends \Anakeen\Core\Internal\SmartElement
         )
     );
     
-    public $stateactivity = array(
+    public $stepLabels = array(
         'zou' => 'not correct state'
     );
     
