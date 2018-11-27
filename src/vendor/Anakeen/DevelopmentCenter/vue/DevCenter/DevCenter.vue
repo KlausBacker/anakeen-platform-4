@@ -37,6 +37,11 @@
                 display: flex;
                 flex: 1;
                 min-height: 0;
+
+                a[data-role=develRouterLink] {
+                    color: #157EFB;
+                    text-decoration: underline;
+                }
             }
         }
     }

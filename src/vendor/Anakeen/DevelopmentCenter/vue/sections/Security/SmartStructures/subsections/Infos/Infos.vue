@@ -27,6 +27,7 @@
                             <span v-else>No profile</span>
                         </span>
                     </div>
+                    <button class="dynamic-profiles-button k-button k-button-icontext k-primary" @click="onDynamicProfilesClick"><span class="k-icon"><i class="material-icons">navigation</i></span>Dynamic Profiles</button>
                 </div>
             </div>
             <div class="security-infos-card">

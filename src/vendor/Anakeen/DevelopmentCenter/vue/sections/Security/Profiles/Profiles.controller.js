@@ -33,12 +33,57 @@ export default {
         vueInstance.$refs.profileSplitter.disableEmptyContent();
       });
     } else {
-      next();
+      next(vueInstance => {
+        const filterAction = () => {
+          const filter = to.query;
+          if (filter) {
+            const filterObject = { logic: "and", filters: [] };
+            filterObject.filters = Object.entries(filter).map(entry => {
+              return {
+                field: entry[0],
+                operator: "contains",
+                value: entry[1]
+              };
+            });
+            if (filterObject.filters.length) {
+              vueInstance.$refs.profilesGrid.dataSource.filter(filterObject);
+            }
+          }
+        };
+        if (vueInstance.$refs.profilesGrid.kendoGrid) {
+          filterAction();
+        } else {
+          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction);
+        }
+      });
     }
   },
   devCenterRefreshData() {
     if (this.$refs.profilesGrid && this.$refs.profilesGrid.dataSource) {
       this.$refs.profilesGrid.dataSource.read();
+    }
+  },
+  mounted() {
+    const bindFilter = grid => {
+      grid.bind("filter", event => {
+        const filter = event.filter ? event.filter.filters[0] || null : null;
+        if (filter) {
+          this.$router.addQueryParams({
+            [filter.field]: filter.value
+          });
+        } else {
+          const query = Object.assign({}, this.$route.query);
+          delete query[event.field];
+          this.$router.push({ query: query });
+        }
+      });
+    };
+    if (this.$refs.profilesGrid.kendoGrid) {
+      bindFilter(this.$refs.profilesGrid.kendoGrid);
+    } else {
+      this.$refs.profilesGrid.$once("grid-ready", () => {
+        bindFilter(this.$refs.profilesGrid.kendoGrid);
+      });
     }
   },
   methods: {
@@ -52,7 +97,22 @@ export default {
             event.data.cellRender.text(event.data.cellData.name);
             break;
           case "dpdoc_famid":
-            event.data.cellRender.text(event.data.cellData.name);
+            if (event.data.cellData.name) {
+              event.data.cellRender.html(
+                `<a data-role="develRouterLink" href="/devel/smartStructures/${
+                  event.data.cellData.name
+                }/infos">${event.data.cellData.name}</a>`
+              );
+            } else {
+              event.data.cellRender.text("");
+            }
+            break;
+          case "title":
+            event.data.cellRender.html(
+              `<a data-role="develRouterLink" href="/devel/smartElements?id=${
+                event.data.rowData.id
+              }">${event.data.cellRender.html()}</a>`
+            );
             break;
         }
       }

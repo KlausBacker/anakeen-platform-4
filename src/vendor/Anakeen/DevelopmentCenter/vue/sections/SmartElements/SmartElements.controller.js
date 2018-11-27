@@ -44,7 +44,30 @@ export default {
         vueInstance.$refs.splitter.disableEmptyContent();
       });
     } else {
-      next();
+      next(vueInstance => {
+        const filterAction = () => {
+          const filter = to.query;
+          if (filter) {
+            const filterObject = { logic: "and", filters: [] };
+            filterObject.filters = Object.entries(filter).map(entry => {
+              const filterOperator = entry[0] === "id" ? "eq" : "contains";
+              return {
+                field: entry[0],
+                operator: filterOperator,
+                value: entry[1]
+              };
+            });
+            if (filterObject.filters.length) {
+              vueInstance.$refs.grid.dataSource.filter(filterObject);
+            }
+          }
+        };
+        if (vueInstance.$refs.grid.kendoGrid) {
+          filterAction();
+        } else {
+          vueInstance.$refs.grid.$once("grid-ready", filterAction);
+        }
+      });
     }
   },
   data() {
@@ -74,6 +97,29 @@ export default {
   devCenterRefreshData() {
     if (this.$refs.grid && this.$refs.grid.dataSource) {
       this.$refs.grid.dataSource.read();
+    }
+  },
+  mounted() {
+    const bindFilter = grid => {
+      grid.bind("filter", event => {
+        const filter = event.filter ? event.filter.filters[0] || null : null;
+        if (filter) {
+          this.$router.addQueryParams({
+            [filter.field]: filter.value
+          });
+        } else {
+          const query = Object.assign({}, this.$route.query);
+          delete query[event.field];
+          this.$router.push({ query: query });
+        }
+      });
+    };
+    if (this.$refs.grid.kendoGrid) {
+      bindFilter(this.$refs.grid.kendoGrid);
+    } else {
+      this.$refs.grid.$once("grid-ready", () => {
+        bindFilter(this.$refs.grid.kendoGrid);
+      });
     }
   },
   methods: {

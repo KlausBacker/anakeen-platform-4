@@ -17,6 +17,18 @@
     justify-content: center;
     flex: 1;
     overflow-y: auto;
+
+    .dynamic-profiles-button {
+      margin-top: 1rem;
+      .k-icon {
+        .material-icons {
+          transform: rotate(90deg);
+          font-size:1rem;
+        }
+      }
+
+    }
+
     .security-infos-card {
 
       .infos-card-title {
