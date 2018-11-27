@@ -136,6 +136,11 @@ export default {
       }
     });
   },
+  devCenterRefreshData() {
+    if (this.dataSource) {
+      this.dataSource.read();
+    }
+  },
   methods: {
     filterList(filterValue) {
       if (this.dataSource) {

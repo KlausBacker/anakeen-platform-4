@@ -39,12 +39,40 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
+    const filterAction = vueInstance => () => {
+      const filter = to.query;
+      if (filter) {
+        const filterObject = { logic: "and", filters: [] };
+        filterObject.filters = Object.entries(filter).map(entry => {
+          const filterOperator = entry[0] === "id" ? "eq" : "contains";
+          return {
+            field: entry[0],
+            operator: filterOperator,
+            value: entry[1]
+          };
+        });
+        if (filterObject.filters.length) {
+          vueInstance.$refs.grid.dataSource.filter(filterObject);
+        }
+      }
+    };
     if (to.name !== "SmartElements") {
       next(vueInstance => {
         vueInstance.$refs.splitter.disableEmptyContent();
+        if (vueInstance.$refs.grid.kendoGrid) {
+          filterAction(vueInstance)();
+        } else {
+          vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
+        }
       });
     } else {
-      next();
+      next(vueInstance => {
+        if (vueInstance.$refs.grid.kendoGrid) {
+          filterAction(vueInstance)();
+        } else {
+          vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
+        }
+      });
     }
   },
   data() {
@@ -70,6 +98,34 @@ export default {
       viewComponent: null,
       viewComponentProps: {}
     };
+  },
+  devCenterRefreshData() {
+    if (this.$refs.grid && this.$refs.grid.dataSource) {
+      this.$refs.grid.dataSource.read();
+    }
+  },
+  mounted() {
+    const bindFilter = grid => {
+      grid.bind("filter", event => {
+        const filter = event.filter ? event.filter.filters[0] || null : null;
+        if (filter) {
+          this.$router.addQueryParams({
+            [filter.field]: filter.value
+          });
+        } else {
+          const query = Object.assign({}, this.$route.query);
+          delete query[event.field];
+          this.$router.push({ query: query });
+        }
+      });
+    };
+    if (this.$refs.grid.kendoGrid) {
+      bindFilter(this.$refs.grid.kendoGrid);
+    } else {
+      this.$refs.grid.$once("grid-ready", () => {
+        bindFilter(this.$refs.grid.kendoGrid);
+      });
+    }
   },
   methods: {
     cellRender(event) {

@@ -58,6 +58,11 @@ export default {
       ]
     };
   },
+  devCenterRefreshData() {
+    if (this.$refs.masksGrid && this.$refs.masksGrid.dataSource) {
+      this.$refs.masksGrid.dataSource.read();
+    }
+  },
   methods: {
     getFiltered() {
       this.$refs.masksGrid.kendoGrid.dataSource.bind("change", e => {

@@ -58,6 +58,11 @@ export default {
       ]
     };
   },
+  devCenterRefreshData() {
+    if (this.$refs.controlConfGrid && this.$refs.controlConfGrid.dataSource) {
+      this.$refs.controlConfGrid.dataSource.read();
+    }
+  },
   methods: {
     getFiltered() {
       this.$refs.controlConfGrid.kendoGrid.dataSource.bind("change", e => {

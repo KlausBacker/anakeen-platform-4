@@ -36,6 +36,9 @@ export default {
       ]
     };
   },
+  devCenterRefreshData() {
+    this.refreshSteps();
+  },
   methods: {
     getSteps(options) {
       this.$http
@@ -61,7 +64,6 @@ export default {
       return [];
     },
     refreshSteps() {
-      this.$refs.stepsGridContent.kendoWidget().dataSource.filter({});
       this.$refs.stepsGridContent.kendoWidget().dataSource.read();
     },
     autoFilterCol(e) {

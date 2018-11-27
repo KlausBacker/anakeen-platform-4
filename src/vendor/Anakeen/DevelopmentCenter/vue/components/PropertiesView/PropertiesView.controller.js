@@ -86,6 +86,9 @@ export default {
   mounted() {
     this.fetchProperties(this.elementId);
   },
+  devCenterRefreshData() {
+    this.fetchProperties(this.elementId);
+  },
   methods: {
     fetchProperties(eId) {
       this.$http
@@ -99,6 +102,7 @@ export default {
         })
         .catch(err => {
           console.error(err);
+          throw err;
         });
     },
     formatDate(date) {

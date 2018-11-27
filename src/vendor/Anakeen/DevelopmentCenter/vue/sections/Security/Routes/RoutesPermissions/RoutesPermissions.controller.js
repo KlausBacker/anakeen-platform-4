@@ -45,6 +45,11 @@ export default {
       });
     }
   },
+  devCenterRefreshData() {
+    if (this.$refs.routesPermissions) {
+      this.$refs.routesPermissions.kendoWidget().read();
+    }
+  },
   methods: {
     getPermissions(options) {
       this.$http

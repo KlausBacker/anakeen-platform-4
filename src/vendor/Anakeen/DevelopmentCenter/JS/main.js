@@ -12,6 +12,7 @@ import RouterConfig from "../vue/router";
 import * as RouterUtils from "../vue/router/utils";
 import RouterTabs from "../vue/components/RouterTabs/RouterTabs.vue";
 import SSList from "../vue/components/SSList/SSList.vue";
+import { RefreshDataPlugin } from "../vue/mixins/GlobalMixins/globalMixins";
 
 const axios = Axios.create();
 Vue.prototype.$http = axios;
@@ -19,6 +20,7 @@ Vue.prototype.$http = axios;
 Vue.use(DevelRouterMultiView, { forceMultiViews: true });
 Vue.use(Vuex);
 Vue.use(VueRouter);
+Vue.use(RefreshDataPlugin);
 
 VueRouter.prototype.addQueryParams = function(queryParams) {
   const currentQuery = this.currentRoute ? this.currentRoute.query || {} : {};

@@ -36,6 +36,14 @@ export default {
       });
     }
   },
+  devCenterRefreshData() {
+    this.$http
+      .get(`/api/v2/devel/smart/workflows/${this.wflName}`)
+      .then(response => {
+        this.wflData = response.data.data.properties;
+      });
+    this.displayGraph();
+  },
   mounted() {
     this.$http
       .get(`/api/v2/devel/smart/workflows/${this.wflName}`)

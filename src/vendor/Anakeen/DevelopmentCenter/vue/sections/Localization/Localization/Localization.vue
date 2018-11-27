@@ -12,6 +12,7 @@
                                v-bind="lang"></kendo-grid-column>
             <kendo-grid-column field="files" title="Origin Files" :filterable-cell-template="privateMethods.filterTemplate('files')"  :template="privateMethods.filesTemplate()"></kendo-grid-column>
             <kendo-datasource slot="kendo-datasource"
+                              ref="dataSource"
                               :transport-read="privateMethods.readData"
                               :schema-parse="privateMethods.parseData"
                               :schema-model="listModel"

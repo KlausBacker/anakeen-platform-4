@@ -1,5 +1,10 @@
 @import "~flag-icon-css/css/flag-icon.min.css";
 .localization-section {
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 100%;
+
   & /deep/ {
     .k-grid-header {
       background: #f5f5f5;

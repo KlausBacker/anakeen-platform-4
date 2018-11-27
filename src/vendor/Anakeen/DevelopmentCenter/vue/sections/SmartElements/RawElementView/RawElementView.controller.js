@@ -47,6 +47,9 @@ export default {
   mounted() {
     this.displayRawContent();
   },
+  devCenterRefreshData() {
+    this.displayRawContent();
+  },
   methods: {
     displayRawContent() {
       kendo.ui.progress(this.$(this.$el), true);
