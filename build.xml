@@ -12,4 +12,7 @@
         <module:stub-struct source="src/vendor/Anakeen/SmartStructures/**/*.xml"/>
         <module:stub-struct source="Tests/src/vendor/Anakeen/TestUnits/Data/**/*.xml"/>
     </module:stub-config>
+    <module:check-config>
+        <module:config-xml source="**/*.xml"/>
+    </module:check-config>
 </module:config>
