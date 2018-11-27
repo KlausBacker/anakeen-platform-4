@@ -69,19 +69,23 @@ export default {
       });
     },
     getSelected(e) {
-      if (e !== "") {
-        if (this.$refs.controlConfGrid.kendoGrid) {
-          this.$("[role=row]", this.$el).removeClass(" control-view-is-opened");
-          this.$(
-            "[data-uid=" +
-              this.$refs.controlConfGrid.kendoGrid.dataSource
-                .view()
-                .find(d => d.rowData.name === e).uid +
-              "]",
-            this.$el
-          ).addClass(" control-view-is-opened");
+      this.$nextTick(() => {
+        if (e !== "") {
+          if (this.$refs.controlConfGrid.kendoGrid) {
+            this.$("[role=row]", this.$el).removeClass(
+              " control-view-is-opened"
+            );
+            this.$(
+              "[data-uid=" +
+                this.$refs.controlConfGrid.kendoGrid.dataSource
+                  .view()
+                  .find(d => d.rowData.name === e).uid +
+                "]",
+              this.$el
+            ).addClass(" control-view-is-opened");
+          }
         }
-      }
+      });
     },
     actionClick(event) {
       event.preventDefault();
