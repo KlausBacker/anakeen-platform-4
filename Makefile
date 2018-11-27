@@ -17,16 +17,16 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 compile:
 	yarn install
 
-app:	compile
+app: compile
 	${ANAKEEN_CLI_BIN} build
 
-po:
+po: compile
 	${ANAKEEN_CLI_BIN} extractPo -s .
 
 deploy:	compile
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./ -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
-stub:
+stub: compile
 	${ANAKEEN_CLI_BIN} generateStubs
 
 beautify:
@@ -39,6 +39,9 @@ lint:
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
-autotest:
+autotest: compile
 	rm -f *app
 	${ANAKEEN_CLI_BIN} build --auto-release
+
+checkXML: compile
+	${ANAKEEN_CLI_BIN} check -s .
