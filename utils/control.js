@@ -136,7 +136,7 @@ exports.postModule = ({
     })
     .then(result => {
       if (result.error) {
-        throw new Error(result.error + " " + result.data.join("\n"));
+        throw new Error(JSON.stringify(result));
       }
       return result;
     });

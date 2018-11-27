@@ -5,13 +5,13 @@ const { getModuleInfo } = require("../tasks/moduleInfo");
 exports.desc = "Analyze the module content";
 exports.builder = {
   sourcePath: {
-    defaultDescription: "path of the info.xml",
+    description: "path of the info.xml",
     alias: "s",
     default: ".",
     type: "string"
   },
   jsonReturn: {
-    defaultDescription: "return in json",
+    description: "return in json",
     default: false,
     type: "boolean"
   }

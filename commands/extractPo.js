@@ -10,7 +10,7 @@ signale.config({
 exports.desc = "Extract the po of the module";
 exports.builder = {
   sourcePath: {
-    defaultDescription: "path of the info.xml",
+    description: "path of the info.xml",
     alias: "s",
     default: ".",
     type: "string"

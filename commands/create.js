@@ -17,7 +17,7 @@ signale.config({
 
 const builder = {
   sourcePath: {
-    defaultDescription: "path to the module",
+    description: "path to the module",
     alias: "s",
     default: ".",
     type: "string",
@@ -29,7 +29,7 @@ const builder = {
     }
   },
   moduleName: {
-    defaultDescription: "name of the module",
+    description: "name of the module",
     alias: "m",
     type: "string",
     coerce: arg => {
@@ -43,7 +43,7 @@ const builder = {
     }
   },
   vendorName: {
-    defaultDescription: "vendor name of the module",
+    description: "vendor name of the module",
     alias: "v",
     type: "string",
     coerce: arg => {
@@ -57,8 +57,7 @@ const builder = {
     }
   },
   namespace: {
-    defaultDescription:
-      "namespace (if void the namespace is equal to the vendorName)",
+    description: "namespace (if void the namespace is equal to the vendorName)",
     alias: "n",
     type: "string",
     coerce: arg => {
@@ -72,17 +71,17 @@ const builder = {
     }
   },
   withSmartStructure: {
-    defaultDescription: "add path for smart structure",
+    description: "add path for smart structure",
     default: true,
     type: "boolean"
   },
   withConfig: {
-    defaultDescription: "add path and file for route",
+    description: "add path and file for route",
     default: true,
     type: "boolean"
   },
   withPublic: {
-    defaultDescription: "add public path",
+    description: "add public path",
     alias: "p",
     default: true,
     type: "boolean"
@@ -101,7 +100,7 @@ exports.handler = async argv => {
         return {
           type: currentParam.type === "boolean" ? "confirm" : "input",
           name: currentKey,
-          message: `${currentParam.defaultDescription} : `,
+          message: `${currentParam.description} : `,
           default: currentParam.default,
           validate: currentParam.coerce
             ? arg => {

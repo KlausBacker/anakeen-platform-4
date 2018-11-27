@@ -3,6 +3,7 @@ const { deploy, buildAndDeploy } = require("../tasks/deploy");
 const signale = require("signale");
 const { controlArguments } = require("../utils/control");
 const fs = require("fs");
+const check = require("./check");
 
 signale.config({
   displayTimestamp: true,
@@ -12,7 +13,7 @@ signale.config({
 exports.desc = "Deploy the app file";
 exports.builder = controlArguments({
   appPath: {
-    defaultDescription: "application file path",
+    description: "application file path",
     alias: "t",
     type: "string",
     coerce: arg => {
@@ -23,7 +24,7 @@ exports.builder = controlArguments({
     }
   },
   sourcePath: {
-    defaultDescription: "path of the info.xml for the autorelease mode",
+    description: "path of the info.xml for the autorelease mode",
     alias: "s",
     type: "string",
     coerce: arg => {
@@ -34,35 +35,44 @@ exports.builder = controlArguments({
     }
   },
   force: {
-    defaultDescription: "force deployment",
+    description: "force deployment",
     alias: "f",
     default: false,
     type: "boolean"
   },
   autoRelease: {
-    defaultDescription: "add current timestamp to the release",
+    description: "add current timestamp to the release",
     default: false,
     type: "boolean",
     implies: "sourcePath"
   },
   action: {
-    defaultDescription: "action to execute (install|upgrade)",
+    description: "action to execute (install|upgrade)",
     default: "",
     type: "string"
   },
   context: {
-    defaultDescription: "context to deploy",
+    description: "context to deploy",
     default: "a4",
     type: "string"
+  },
+  noCheck: {
+    description: "add check of XML inside the module",
+    default: false,
+    type: "boolean"
   }
 });
 
 exports.handler = function(argv) {
   try {
+    let checkPromise = Promise.resolve();
     signale.time("deploy");
     let task;
     if (argv.sourcePath) {
       signale.info("source mode");
+      if (!argv.noCheck) {
+        checkPromise = check.handler(argv, true);
+      }
       buildAndDeploy(argv);
       task = gulp.task("buildAndDeploy");
     } else {
@@ -70,10 +80,12 @@ exports.handler = function(argv) {
       deploy(argv);
       task = gulp.task("deploy");
     }
-    task()
+    checkPromise
       .then(() => {
-        signale.timeEnd("deploy");
-        signale.success("deploy done");
+        task().then(() => {
+          signale.timeEnd("deploy");
+          signale.success("deploy done");
+        });
       })
       .catch(e => {
         signale.timeEnd("deploy");

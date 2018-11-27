@@ -2,9 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const appConst = require("./appConst");
 const xml2js = require("xml2js");
-const libxml = require("libxmljs");
-
-const buildXSD = path.resolve(__dirname, "../xsd/anakeen-cli-build.xsd");
+const { checkFile } = require("@anakeen/anakeen-module-validation");
 
 exports.getModuleInfo = async sourcePath => {
   let existsSourcePath = fs.existsSync(sourcePath);
@@ -32,14 +30,17 @@ exports.getModuleInfo = async sourcePath => {
       )}"`
     );
   }
-  //Check build path against xsd
-  const xsd = libxml.parseXml(fs.readFileSync(buildXSD));
-  const buildXML = libxml.parseXml(
-    fs.readFileSync(path.join(sourcePath, appConst.buildPath))
-  );
 
-  if (buildXML.validate(xsd) === false) {
-    return Promise.reject(buildXML.validationErrors);
+  const checkBuild = checkFile(path.join(sourcePath, appConst.buildPath));
+
+  if (checkBuild !== true) {
+    return Promise.reject(checkBuild);
+  }
+
+  const checkInfo = checkFile(path.join(sourcePath, appConst.infoPath));
+
+  if (checkInfo !== true) {
+    return Promise.reject(checkInfo);
   }
 
   return Promise.all([

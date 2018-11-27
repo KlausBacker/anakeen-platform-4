@@ -18,7 +18,7 @@ signale.config({
 exports.desc = "Create a smart structure";
 const builder = {
   name: {
-    defaultDescription: "name of the smart structure",
+    description: "name of the smart structure",
     alias: "n",
     type: "string",
     coerce: arg => {
@@ -32,7 +32,7 @@ const builder = {
     }
   },
   sourcePath: {
-    defaultDescription: "path to the module",
+    description: "path to the module",
     alias: "s",
     default: ".",
     type: "string",
@@ -44,7 +44,7 @@ const builder = {
     }
   },
   vendorName: {
-    defaultDescription: "vendor name of the module",
+    description: "vendor name of the module",
     alias: "v",
     default: () => {
       if (moduleData.moduleInfo) {
@@ -65,7 +65,7 @@ const builder = {
     }
   },
   parentName: {
-    defaultDescription: "parent name of the smartStructure",
+    description: "parent name of the smartStructure",
     alias: "p",
     type: "string",
     default: "",
@@ -83,7 +83,7 @@ const builder = {
     }
   },
   smartStructurePath: {
-    defaultDescription: "path where the smart structure will be added",
+    description: "path where the smart structure will be added",
     type: "string",
     default: "",
     coerce: arg => {
@@ -97,23 +97,23 @@ const builder = {
     }
   },
   inSelfDirectory: {
-    defaultDescription:
+    description:
       "add a directory for the new smart structure (not compatible with smartStructurePath)",
     default: true,
     type: "boolean"
   },
   withRender: {
-    defaultDescription: "add renders class",
+    description: "add renders class",
     default: true,
     type: "boolean"
   },
   withClass: {
-    defaultDescription: "add a class",
+    description: "add a class",
     default: true,
     type: "boolean"
   },
   insertIntoInfo: {
-    defaultDescription: "Insert into info.xml",
+    description: "Insert into info.xml",
     default: true,
     type: "boolean"
   }
@@ -130,7 +130,7 @@ exports.handler = async argv => {
         return {
           type: currentParam.type === "boolean" ? "confirm" : "input",
           name: currentKey,
-          message: `${currentParam.defaultDescription} : `,
+          message: `${currentParam.description} : `,
           default: currentParam.default,
           validate: currentParam.coerce
             ? arg => {
