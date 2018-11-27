@@ -118,7 +118,6 @@ export default {
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
               }/views">${dataItem[colId]}</a>&nbsp`;
-
             case "mask":
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
