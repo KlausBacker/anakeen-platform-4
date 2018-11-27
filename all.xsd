@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema">
-    <import schemaLocation="./xsd/timer/config.xsd" namespace="https://platform.anakeen.com/4/schemas/timer/1.0"/>
-    <import schemaLocation="./xsd/workflow/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-    <import schemaLocation="./xsd/mailtemplate/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
-    <import schemaLocation="./xsd/sde/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/sde/1.0"/>
-    <import schemaLocation="./xsd/smart/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/smart/1.0"/>
-    <import schemaLocation="./xsd/ui/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/ui/1.0"/>
-    <import schemaLocation="./xsd/module/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/module/1.0"/>
-    <import schemaLocation="./xsd/app/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/app/1.0"/>
+    <import schemaLocation="./xsd/timer/1.0/config.xsd" namespace="https://platform.anakeen.com/4/schemas/timer/1.0"/>
+    <import schemaLocation="./xsd/workflow/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <import schemaLocation="./xsd/mailtemplate/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
+    <import schemaLocation="./xsd/sde/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/sde/1.0"/>
+    <import schemaLocation="./xsd/smart/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/smart/1.0"/>
+    <import schemaLocation="./xsd/ui/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/ui/1.0"/>
+    <import schemaLocation="./xsd/module/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/module/1.0"/>
+    <import schemaLocation="./xsd/app/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/app/1.0"/>
 </schema>
