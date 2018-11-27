@@ -10,13 +10,13 @@ signale.config({
 exports.desc = "Generate the stubs";
 exports.builder = {
   sourcePath: {
-    defaultDescription: "path of the info.xml",
+    description: "path of the info.xml",
     alias: "s",
     default: ".",
     type: "string"
   },
   targetPath: {
-    defaultDescription: "target path of stubs",
+    description: "target path of stubs",
     alias: "t",
     default: "./stubs",
     type: "string"

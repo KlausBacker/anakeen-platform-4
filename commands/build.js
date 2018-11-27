@@ -1,6 +1,7 @@
 const gulp = require("gulp");
 const signale = require("signale");
 const { build } = require("../tasks/build");
+const check = require("./check");
 
 signale.config({
   displayTimestamp: true,
@@ -10,19 +11,24 @@ signale.config({
 exports.desc = "Build the app file";
 exports.builder = {
   sourcePath: {
-    defaultDescription: "path of the info.xml",
+    description: "path of the info.xml",
     alias: "s",
     default: ".",
     type: "string"
   },
   targetPath: {
-    defaultDescription: "target path",
+    description: "target path",
     alias: "t",
     default: ".",
     type: "string"
   },
   autoRelease: {
-    defaultDescription: "add current timestamp to the release",
+    description: "add current timestamp to the release",
+    default: false,
+    type: "boolean"
+  },
+  noCheck: {
+    description: "add check of XML inside the module",
     default: false,
     type: "boolean"
   }
@@ -30,20 +36,25 @@ exports.builder = {
 
 exports.handler = function(argv) {
   try {
+    let checkPromise = Promise.resolve();
+    if (!argv.noCheck) {
+      checkPromise = check.handler(argv, true);
+    }
     signale.time("build");
-    build(argv);
-    const task = gulp.task("build");
-    task()
+    checkPromise
       .then(() => {
-        signale.timeEnd("build");
-        signale.success("build done");
+        build(argv);
+        const task = gulp.task("build");
+        task().then(() => {
+          signale.timeEnd("build");
+          signale.success("build done");
+        });
       })
       .catch(e => {
         signale.timeEnd("build");
         signale.error(e);
       });
   } catch (e) {
-    signale.timeEnd("build");
     signale.error(e);
   }
 };

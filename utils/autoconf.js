@@ -1,23 +1,13 @@
 const fs = require("fs");
 const xml2js = require("xml2js");
-const libxml = require("libxmljs");
-const path = require("path");
 
 const CONF_NAME = "./.anakeen-cli.xml";
-const XSD_NAME = path.resolve(__dirname, "../xsd/.anakeen-cli.xsd");
 
 exports.autoconf = () => {
   return new Promise((resolve, reject) => {
     //read file
     if (!fs.existsSync(CONF_NAME)) {
       return resolve({});
-    }
-
-    const xsdDoc = libxml.parseXml(fs.readFileSync(XSD_NAME));
-    const xmlFileToCheck = libxml.parseXml(fs.readFileSync(CONF_NAME));
-
-    if (xmlFileToCheck.validate(xsdDoc) !== false) {
-      console.error(xmlFileToCheck.validationErrors);
     }
 
     fs.readFile(CONF_NAME, { encoding: "utf-8" }, (err, content) => {
