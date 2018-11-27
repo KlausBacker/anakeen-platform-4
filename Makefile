@@ -18,6 +18,7 @@ all:
 
 tarball:
 	mkdir -p tmp/$(TAR_DIST_DIR)
+	sed -e "s/{{VR}}/$(VERSION)-$(RELEASE)/g" index-tpl.html > index.html
 	tar -cf - \
 		--exclude Makefile \
 		--exclude tmp \
