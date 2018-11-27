@@ -23,7 +23,7 @@ install: node_modules
 app: install
 	${ANAKEEN_CLI_BIN} build
 
-app-test:
+app-test: node_modules
 	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests
 
 autotest: install
@@ -37,7 +37,7 @@ deploy: install
 deploy-test: install
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
-po:
+po: node_modules
 	${ANAKEEN_CLI_BIN} extractPo -s .
 
 beautify:
@@ -50,7 +50,10 @@ lint:
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
-stub:
+checkXML: node_modules
+	${ANAKEEN_CLI_BIN} check -s .
+
+stub: node_modules
 	${ANAKEEN_CLI_BIN} generateStubs
 
 .PHONY: app app-test deploy deploy-test po stub install
