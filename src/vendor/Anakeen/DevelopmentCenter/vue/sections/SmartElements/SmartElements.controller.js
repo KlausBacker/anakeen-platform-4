@@ -39,33 +39,38 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
+    const filterAction = vueInstance => () => {
+      const filter = to.query;
+      if (filter) {
+        const filterObject = { logic: "and", filters: [] };
+        filterObject.filters = Object.entries(filter).map(entry => {
+          const filterOperator = entry[0] === "id" ? "eq" : "contains";
+          return {
+            field: entry[0],
+            operator: filterOperator,
+            value: entry[1]
+          };
+        });
+        if (filterObject.filters.length) {
+          vueInstance.$refs.grid.dataSource.filter(filterObject);
+        }
+      }
+    };
     if (to.name !== "SmartElements") {
       next(vueInstance => {
         vueInstance.$refs.splitter.disableEmptyContent();
+        if (vueInstance.$refs.grid.kendoGrid) {
+          filterAction(vueInstance)();
+        } else {
+          vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
+        }
       });
     } else {
       next(vueInstance => {
-        const filterAction = () => {
-          const filter = to.query;
-          if (filter) {
-            const filterObject = { logic: "and", filters: [] };
-            filterObject.filters = Object.entries(filter).map(entry => {
-              const filterOperator = entry[0] === "id" ? "eq" : "contains";
-              return {
-                field: entry[0],
-                operator: filterOperator,
-                value: entry[1]
-              };
-            });
-            if (filterObject.filters.length) {
-              vueInstance.$refs.grid.dataSource.filter(filterObject);
-            }
-          }
-        };
         if (vueInstance.$refs.grid.kendoGrid) {
-          filterAction();
+          filterAction(vueInstance)();
         } else {
-          vueInstance.$refs.grid.$once("grid-ready", filterAction);
+          vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
         }
       });
     }

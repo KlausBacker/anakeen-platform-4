@@ -109,7 +109,9 @@ export default {
             break;
           case "title":
             event.data.cellRender.html(
-              `<a data-role="develRouterLink" href="/devel/smartElements?id=${
+              `<a data-role="develRouterLink" href="/devel/smartElements/${
+                event.data.rowData.id
+              }/view?id=${
                 event.data.rowData.id
               }">${event.data.cellRender.html()}</a>`
             );
