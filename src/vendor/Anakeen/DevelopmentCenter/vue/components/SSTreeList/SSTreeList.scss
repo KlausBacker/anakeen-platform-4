@@ -14,6 +14,17 @@
     .k-grid-content {
       height: 100%;
       width: 100%;
+      tr {
+        word-break: break-word;
+        td > a {
+          text-decoration: underline;
+          color: #157EFB;
+        }
+        li > a {
+          text-decoration: underline;
+          color: #157EFB;
+        }
+      }
     }
 
     .k-grid-header {

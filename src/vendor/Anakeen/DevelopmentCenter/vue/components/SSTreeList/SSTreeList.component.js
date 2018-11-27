@@ -81,7 +81,7 @@ export default {
     return {
       remoteDataSource: "",
       columnSizeTab: [],
-      filterRow: ""
+      filters: ""
     };
   },
   mounted() {
@@ -197,28 +197,30 @@ export default {
         const that = this;
         items.each(function addTypeClass() {
           let dataItem = tree.dataItem(this);
-          if (dataItem.type) {
-            $(this).addClass(" attr-type--" + dataItem.type);
-          }
-          if (
-            dataItem.structure !== that.ssName &&
-            that.$route.name === "SmartStructures::fields::structure"
-          ) {
-            $(this).addClass(" is-herited");
-          }
-          if (
-            dataItem.declaration === "overrided" &&
-            that.$route.name === "SmartStructures::fields::structure"
-          ) {
-            $(this).addClass(" is-overrided");
-          }
-          if (dataItem.parentId) {
+          if (dataItem) {
+            if (dataItem.type) {
+              $(this).addClass(" attr-type--" + dataItem.type);
+            }
             if (
-              that.$refs.ssTreelist
-                .kendoWidget()
-                .dataSource.get(dataItem.parentId).type === "array"
+              dataItem.structure !== that.ssName &&
+              that.$route.name === "SmartStructures::fields::structure"
             ) {
-              $(this).addClass(" is-array-children");
+              $(this).addClass(" is-herited");
+            }
+            if (
+              dataItem.declaration === "overrided" &&
+              that.$route.name === "SmartStructures::fields::structure"
+            ) {
+              $(this).addClass(" is-overrided");
+            }
+            if (dataItem.parentId) {
+              if (
+                that.$refs.ssTreelist
+                  .kendoWidget()
+                  .dataSource.get(dataItem.parentId).type === "array"
+              ) {
+                $(this).addClass(" is-array-children");
+              }
             }
           }
         });
@@ -261,35 +263,17 @@ export default {
         const tree = this.kendoWidget();
         const columns = tree.columns.filter(c => !c.hidden);
         columns.forEach(col => {
-          this.filterRow += `<th class="k-header" >
+          this.filters += `<th class="k-header" >
                 <div class="filter-clearable" style="position:relative;">
                   <input class="k-textbox filter ${
                     col.field
                   }-filter" type="text"/>
                 </div>
               </th>`;
-          this.$(this.$refs.ssTreelist.kendoWidget().thead).on(
-            "change",
-            "input.filter",
-            event => {
-              const value = event.currentTarget.value;
-              if (value) {
-                const colId = event.target.className
-                  .split(" ")[2]
-                  .split("-")[0];
-                this.$refs.ssTreelist.kendoWidget().dataSource.filter({
-                  field: colId,
-                  operator: "contains",
-                  value: value
-                });
-              } else {
-                this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
-              }
-            }
-          );
+          this.filterRow();
         });
         tree.thead.append(
-          `<tr role="row" class="filter-row">${this.filterRow}</tr>`
+          `<tr role="row" class="filter-row">${this.filters}</tr>`
         );
       }
     },
@@ -307,6 +291,25 @@ export default {
             .remove();
         });
       }
+    },
+    filterRow() {
+      this.$(this.$refs.ssTreelist.kendoWidget().thead).on(
+        "change",
+        "input.filter",
+        event => {
+          const value = event.currentTarget.value;
+          if (value) {
+            const colId = event.target.className.split(" ")[2].split("-")[0];
+            this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+              field: colId,
+              operator: "contains",
+              value: value
+            });
+          } else {
+            this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+          }
+        }
+      );
     }
   }
 };
