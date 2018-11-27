@@ -18,9 +18,10 @@ msgid "mail_cm"
 msgstr "Commentaire"
 
 #: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
 msgctxt "MAIL"
 msgid "mail_copymode"
-msgstr ""
+msgstr "Cc"
 
 #: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
@@ -92,11 +93,6 @@ msgstr "Mail"
 #~ msgctxt "MAIL"
 #~ msgid "mail_copymode#bcc"
 #~ msgstr "Bcc"
-
-#, fuzzy
-#~ msgctxt "MAIL"
-#~ msgid "mail_copymode#cc"
-#~ msgstr "Cc"
 
 #, fuzzy
 #~ msgctxt "MAIL"

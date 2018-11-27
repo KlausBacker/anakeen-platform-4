@@ -28,6 +28,11 @@ msgstr "Délai d'expiration en jours"
 
 #: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
+msgid "us_defaultgroup"
+msgstr "Groupe par défaut"
+
+#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
 msgid "us_expires"
 msgstr "Date d'expiration epoch"
 
@@ -50,6 +55,11 @@ msgstr "Mail principal"
 msgctxt "IUSER"
 msgid "us_fname"
 msgstr "Prénom"
+
+#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_default"
+msgstr "Paramètre"
 
 #: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
@@ -191,20 +201,12 @@ msgstr "Identifiant"
 #~ msgstr "mettre -1 pour annuler l'expiration"
 
 #~ msgctxt "IUSER"
-#~ msgid "us_defaultgroup"
-#~ msgstr "Groupe par défaut"
-
-#~ msgctxt "IUSER"
 #~ msgid "us_desactivateaccount"
 #~ msgstr "Désactiver le compte"
 
 #~ msgctxt "IUSER"
 #~ msgid "us_desactivateaccount#submenu"
 #~ msgstr "Gestion du compte"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_fr_default"
-#~ msgstr "Paramètre"
 
 #~ msgctxt "IUSER"
 #~ msgid "us_fr_privacy"

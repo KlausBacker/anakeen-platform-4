@@ -38,6 +38,12 @@ msgstr "Pied de tableau"
 #: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
+msgid "rep_fr_param"
+msgstr "Paramètres"
+
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#, fuzzy
+msgctxt "REPORT"
 msgid "rep_fr_presentation"
 msgstr "Présentation"
 
@@ -64,6 +70,18 @@ msgstr "Label"
 msgctxt "REPORT"
 msgid "rep_limit"
 msgstr "Limite"
+
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#, fuzzy
+msgctxt "REPORT"
+msgid "rep_maxdisplaylimit"
+msgstr "Limite d'affichage pour le nombre de rangées"
+
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#, fuzzy
+msgctxt "REPORT"
+msgid "rep_noaccesstext"
+msgstr "Texte à afficher pour les valeurs protégées"
 
 #: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
@@ -152,11 +170,6 @@ msgstr "Rapport"
 
 #, fuzzy
 #~ msgctxt "REPORT"
-#~ msgid "rep_fr_param"
-#~ msgstr "Paramètres"
-
-#, fuzzy
-#~ msgctxt "REPORT"
 #~ msgid "rep_imp"
 #~ msgstr "Version imprimable"
 
@@ -164,16 +177,6 @@ msgstr "Rapport"
 #~ msgctxt "REPORT"
 #~ msgid "rep_limit#elabel"
 #~ msgstr "nombre maximum de documents retournés"
-
-#, fuzzy
-#~ msgctxt "REPORT"
-#~ msgid "rep_maxdisplaylimit"
-#~ msgstr "Limite d'affichage pour le nombre de rangées"
-
-#, fuzzy
-#~ msgctxt "REPORT"
-#~ msgid "rep_noaccesstext"
-#~ msgstr "Texte à afficher pour les valeurs protégées"
 
 #, fuzzy
 #~ msgctxt "REPORT"

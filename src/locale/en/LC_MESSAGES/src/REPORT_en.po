@@ -33,6 +33,11 @@ msgstr "Footer"
 
 #: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 msgctxt "REPORT"
+msgid "rep_fr_param"
+msgstr "Parameters"
+
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+msgctxt "REPORT"
 msgid "rep_fr_presentation"
 msgstr "Presentation"
 
@@ -55,6 +60,16 @@ msgstr "Label"
 msgctxt "REPORT"
 msgid "rep_limit"
 msgstr "Limit"
+
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+msgctxt "REPORT"
+msgid "rep_maxdisplaylimit"
+msgstr "Maximum number of displayed rows"
+
+#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+msgctxt "REPORT"
+msgid "rep_noaccesstext"
+msgstr "Text displayed when the value is protected"
 
 #: vendor/Anakeen/SmartStructures/Report/report.struct.xml
 msgctxt "REPORT"
@@ -126,24 +141,12 @@ msgstr "Report"
 #~ msgstr "Sum"
 
 #~ msgctxt "REPORT"
-#~ msgid "rep_fr_param"
-#~ msgstr "Parameters"
-
-#~ msgctxt "REPORT"
 #~ msgid "rep_imp"
 #~ msgstr "Printable version"
 
 #~ msgctxt "REPORT"
 #~ msgid "rep_limit#elabel"
 #~ msgstr "Maximum number of displayed documents"
-
-#~ msgctxt "REPORT"
-#~ msgid "rep_maxdisplaylimit"
-#~ msgstr "Maximum number of displayed rows"
-
-#~ msgctxt "REPORT"
-#~ msgid "rep_noaccesstext"
-#~ msgstr "Text displayed when the value is protected"
 
 #~ msgctxt "REPORT"
 #~ msgid "rep_noaccesstext#elabel"

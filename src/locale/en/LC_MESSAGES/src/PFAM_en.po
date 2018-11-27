@@ -11,6 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#~ msgctxt "PFAM"
-#~ msgid "title"
-#~ msgstr "Family profile"
+#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+msgctxt "PFAM"
+msgid "title"
+msgstr "Family profile"

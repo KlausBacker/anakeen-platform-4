@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 18:08+0100\n"
+"POT-Creation-Date: 2018-11-26 16:15+0100\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -902,9 +902,6 @@ msgctxt "smart iuser"
 msgid "The email address is not valid"
 msgstr ""
 
-msgid "Timer infinity date"
-msgstr ""
-
 msgid "Unallocate aborded"
 msgstr ""
 
@@ -1061,10 +1058,6 @@ msgstr ""
 msgid "and add in %s folder "
 msgstr ""
 
-#, php-format
-msgid "apply method %s"
-msgstr ""
-
 msgid "assigned workflow is not alive"
 msgstr ""
 
@@ -1192,10 +1185,6 @@ msgid "cannot detach : timer id is not set"
 msgstr ""
 
 #, php-format
-msgid "cannot execute : document %s is not found"
-msgstr ""
-
-#, php-format
 msgid "cannot execute timer : timer %s is not found"
 msgstr ""
 
@@ -1285,10 +1274,6 @@ msgstr ""
 
 #, php-format
 msgid "change state : %s to %s"
-msgstr ""
-
-#, php-format
-msgid "change state to %s"
 msgstr ""
 
 #, php-format
@@ -1458,10 +1443,6 @@ msgid "error storing configuration property (%s, %s, %s)"
 msgstr ""
 
 #, php-format
-msgid "execute timer %s (level %d) : %s"
-msgstr ""
-
-#, php-format
 msgid "execution by %s done %s"
 msgstr ""
 
@@ -1559,6 +1540,11 @@ msgstr ""
 msgid "import file '%s' is not a valid file"
 msgstr ""
 
+#, php-format
+msgctxt "sde"
+msgid "import file '%s' is not a valid file"
+msgstr ""
+
 msgid "impossible conversion"
 msgstr ""
 
@@ -1581,6 +1567,15 @@ msgid "local config for timestamp not found"
 msgstr ""
 
 msgid "locked"
+msgstr ""
+
+#, php-format
+msgid "log file \"%s\" not writable"
+msgstr ""
+
+#, php-format
+msgctxt "sde"
+msgid "log file \"%s\" not writable"
 msgstr ""
 
 #, php-format
@@ -1670,10 +1665,6 @@ msgid "no freedom DB access"
 msgstr "No access to Dynacase database"
 
 #, php-format
-msgid "no level 0 specified in timer %s [%d]"
-msgstr ""
-
-#, php-format
 msgid "no operator detected"
 msgstr ""
 
@@ -1683,10 +1674,6 @@ msgstr ""
 
 #, php-format
 msgid "no privilege %s for document with id %d"
-msgstr ""
-
-#, php-format
-msgid "no processes specified in timer %s [%d]"
 msgstr ""
 
 msgid "no state specified"
@@ -1911,10 +1898,6 @@ msgid "send mail %s with template %s"
 msgstr ""
 
 #, php-format
-msgid "send mail with template %s [%d]"
-msgstr ""
-
-#, php-format
 msgid "sendmailbcc %s"
 msgstr ""
 
@@ -2027,9 +2010,6 @@ msgid "this login exists"
 msgstr ""
 
 msgid "this system user cannot be deleted"
-msgstr ""
-
-msgid "timer already set"
 msgstr ""
 
 #, php-format

@@ -80,8 +80,20 @@ msgstr "Identification"
 #: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 #, fuzzy
 msgctxt "EXEC"
+msgid "exec_fr_param"
+msgstr "Paramètre"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+#, fuzzy
+msgctxt "EXEC"
 msgid "exec_handnextdate"
 msgstr "À exécuter le"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+#, fuzzy
+msgctxt "EXEC"
+msgid "exec_idadmin"
+msgstr "Administrateur"
 
 #: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
 #, fuzzy
@@ -177,16 +189,6 @@ msgstr "Processus"
 #~ msgctxt "EXEC"
 #~ msgid "exec_bgexec"
 #~ msgstr "Exécuter maintenant"
-
-#, fuzzy
-#~ msgctxt "EXEC"
-#~ msgid "exec_fr_param"
-#~ msgstr "Paramètre"
-
-#, fuzzy
-#~ msgctxt "EXEC"
-#~ msgid "exec_idadmin"
-#~ msgstr "Administrateur"
 
 #, fuzzy
 #~ msgctxt "EXEC"

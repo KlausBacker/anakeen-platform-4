@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 18:08+0100\n"
+"POT-Creation-Date: 2018-11-26 16:15+0100\n"
 "PO-Revision-Date: 2018-01-12 15:56+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
@@ -967,9 +967,6 @@ msgctxt "smart iuser"
 msgid "The email address is not valid"
 msgstr "absence d'adresse couriel"
 
-msgid "Timer infinity date"
-msgstr "Date non définie"
-
 msgid "Unallocate aborded"
 msgstr "Suppression de l'affectation abandonnée"
 
@@ -1130,10 +1127,6 @@ msgstr "déjà supprimé"
 msgid "and add in %s folder "
 msgstr "et ajout dans dossier %s"
 
-#, php-format
-msgid "apply method %s"
-msgstr "appel de la méthode %s"
-
 msgid "assigned workflow is not alive"
 msgstr "Le cycle de vie associé n'est pas vivant"
 
@@ -1273,10 +1266,6 @@ msgid "cannot detach : timer id is not set"
 msgstr "ne peut détaché : minuteur id n'est pas défini"
 
 #, php-format
-msgid "cannot execute : document %s is not found"
-msgstr "ne peut exécuter : document %s non trouvé"
-
-#, php-format
 msgid "cannot execute timer : timer %s is not found"
 msgstr "ne peut exécuter le minuteur : %s non trouvé"
 
@@ -1367,10 +1356,6 @@ msgstr "affecte l'utilisation spéciale à '%s'"
 #, php-format
 msgid "change state : %s to %s"
 msgstr "changement d'état de %s vers %s"
-
-#, php-format
-msgid "change state to %s"
-msgstr "changement d'état vers %s"
 
 #, php-format
 msgid "change tagable parameter to '%s'"
@@ -1543,10 +1528,6 @@ msgstr ""
 "Erreur lors de l'enregistrement des propriétés de configuration (%s, %s, %s)"
 
 #, php-format
-msgid "execute timer %s (level %d) : %s"
-msgstr "exécution du minuteur %s (niveau %d) : %s"
-
-#, php-format
 msgid "execution by %s done %s"
 msgstr "execution faite par %s a donné %s"
 
@@ -1650,6 +1631,11 @@ msgstr "fichier d'importation %s non trouvé"
 msgid "import file '%s' is not a valid file"
 msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
 
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "import file '%s' is not a valid file"
+msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
+
 msgid "impossible conversion"
 msgstr "conversion impossible"
 
@@ -1673,6 +1659,15 @@ msgstr "Configuration du timestamp local introuvable"
 
 msgid "locked"
 msgstr "verrouillé"
+
+#, fuzzy, php-format
+msgid "log file \"%s\" not writable"
+msgstr "Le fichier de log %s n'est pas être modifié"
+
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "log file \"%s\" not writable"
+msgstr "Le fichier de log %s n'est pas être modifié"
 
 #, php-format
 msgid "log file %s not writable"
@@ -1764,10 +1759,6 @@ msgid "no freedom DB access"
 msgstr "pas d'accès à la base de données DYNACASE"
 
 #, php-format
-msgid "no level 0 specified in timer %s [%d]"
-msgstr "pas de niveau 0 spécifié dans le minuteur %s [%d]"
-
-#, php-format
 msgid "no operator detected"
 msgstr "pas d'opérateur détecté"
 
@@ -1778,10 +1769,6 @@ msgstr "pas de privilège %s pour le document %s [%d]"
 #, php-format
 msgid "no privilege %s for document with id %d"
 msgstr "Pas de privilège %s pour le document %d"
-
-#, php-format
-msgid "no processes specified in timer %s [%d]"
-msgstr "pas de processus spécifié pour le minuteur %s [%d]"
 
 msgid "no state specified"
 msgstr "pas d'état spécifié"
@@ -2005,10 +1992,6 @@ msgid "send mail %s with template %s"
 msgstr "envoi courriel %s avec le modèle %s"
 
 #, php-format
-msgid "send mail with template %s [%d]"
-msgstr "envoi courriel avec le modèle %s [%d]"
-
-#, php-format
 msgid "sendmailbcc %s"
 msgstr "copie cachée à %s"
 
@@ -2131,9 +2114,6 @@ msgstr "Cet identifiant de connexion existe"
 
 msgid "this system user cannot be deleted"
 msgstr "Cet utilisateur système n epeut être supprimé"
-
-msgid "timer already set"
-msgstr "minuteur déjà attaché"
 
 #, php-format
 msgid "to be update %s [%d] "
@@ -5946,6 +5926,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Thursday"
 #~ msgstr "Jeudi"
 
+#~ msgid "Timer infinity date"
+#~ msgstr "Date non définie"
+
 #~ msgid "Timer result"
 #~ msgstr "Résultat"
 
@@ -6529,6 +6512,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "apply a method to a document"
 #~ msgstr "appliquer une méthode sur un document"
 
+#~ msgid "apply method %s"
+#~ msgstr "appel de la méthode %s"
+
 #~ msgid "archieve status must be open to modify content"
 #~ msgstr ""
 #~ "Le statut de l'archive doit être ouvert pour y insérer des documents"
@@ -6701,6 +6687,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "cannot delete family"
 #~ msgstr "Les familles ne peuvent être supprimées"
 
+#~ msgid "cannot execute : document %s is not found"
+#~ msgstr "ne peut exécuter : document %s non trouvé"
+
 #~ msgid "cannot extract archive file %s"
 #~ msgstr "L'archive %s n'a pas pu être extraite"
 
@@ -6806,6 +6795,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "change root folder"
 #~ msgstr "changer le dossier racine"
+
+#~ msgid "change state to %s"
+#~ msgstr "changement d'état vers %s"
 
 #~ msgid "change state to %s : %s"
 #~ msgstr "changement d'état vers %s : %s"
@@ -7492,6 +7484,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "execute search"
 #~ msgstr "executer une recheche"
+
+#~ msgid "execute timer %s (level %d) : %s"
+#~ msgstr "exécution du minuteur %s (niveau %d) : %s"
 
 #~ msgid "existing key item %s"
 #~ msgstr "clef dèjà existante : %s"
@@ -8393,6 +8388,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "no label"
 #~ msgstr "pas de désignation"
 
+#~ msgid "no level 0 specified in timer %s [%d]"
+#~ msgstr "pas de niveau 0 spécifié dans le minuteur %s [%d]"
+
 #~ msgid "no login : passwd unchanged"
 #~ msgstr "pas de login : mot de passe inchangé"
 
@@ -8418,6 +8416,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "no privilege view for %d"
 #~ msgstr "Pas de privilège voir pour %d"
+
+#~ msgid "no processes specified in timer %s [%d]"
+#~ msgstr "pas de processus spécifié pour le minuteur %s [%d]"
 
 #~ msgid "no profile"
 #~ msgstr "Pas de profil"
@@ -8940,6 +8941,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "send mail copy"
 #~ msgstr "copie envoi de mail"
 
+#~ msgid "send mail with template %s [%d]"
+#~ msgstr "envoi courriel avec le modèle %s [%d]"
+
 #~ msgid "send search"
 #~ msgstr "Lancer la recherche"
 
@@ -9201,6 +9205,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "timer"
 #~ msgstr "minuteur"
+
+#~ msgid "timer already set"
+#~ msgstr "minuteur déjà attaché"
 
 #~ msgid "timeraction"
 #~ msgstr "actions"
