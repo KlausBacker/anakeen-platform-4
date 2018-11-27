@@ -23,6 +23,11 @@ msgstr "Date"
 
 #: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
+msgid "emsg_editcontrol"
+msgstr "Force read-only"
+
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Message body"
 
@@ -30,6 +35,11 @@ msgstr "Message body"
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_ident"
 msgstr "Identification"
+
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_parameters"
+msgstr "Parameters"
 
 #: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
@@ -87,20 +97,12 @@ msgid "title"
 msgstr "Sent message"
 
 #~ msgctxt "SENTMESSAGE"
-#~ msgid "emsg_editcontrol"
-#~ msgstr "Force read-only"
-
-#~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_editcontrol#freeedit"
 #~ msgstr "Free edit right"
 
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_editcontrol#lockedit"
 #~ msgstr "Locked edit right"
-
-#~ msgctxt "SENTMESSAGE"
-#~ msgid "emsg_fr_parameters"
-#~ msgstr "Parameters"
 
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_sendtype#bcc"

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="PRF_TST_F2" label="Profil document mail">
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="view" account="fachewie"/>
+        <smart:element-access access="edit" account="all"/>
+        <smart:element-access access="delete" account="all"/>
+    </smart:access-configuration>
     <smart:structure-configuration name="TST_FIELDACCESS" label="Accès contrôlé">
         <smart:usefor>N</smart:usefor>
         <smart:fields>
@@ -84,10 +90,4 @@
             <smart:element-access-configuration ref="PRF_TST_F2"/>
         </smart:accesses>
     </smart:structure-configuration>
-    <smart:access-configuration name="PRF_TST_F2" label="Profil document mail">
-        <smart:element-access access="view" account="all"/>
-        <smart:element-access access="view" account="fachewie"/>
-        <smart:element-access access="edit" account="all"/>
-        <smart:element-access access="delete" account="all"/>
-    </smart:access-configuration>
 </smart:config>

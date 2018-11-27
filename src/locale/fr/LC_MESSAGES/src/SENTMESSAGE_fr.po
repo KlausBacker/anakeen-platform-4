@@ -26,6 +26,12 @@ msgstr "Date"
 #: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE"
+msgid "emsg_editcontrol"
+msgstr "Force la lecture seule"
+
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Corps de messages"
 
@@ -34,6 +40,12 @@ msgstr "Corps de messages"
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_ident"
 msgstr "Identification"
+
+#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_parameters"
+msgstr "Paramètres"
 
 #: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 #, fuzzy
@@ -103,11 +115,6 @@ msgstr "Message envoyé"
 
 #, fuzzy
 #~ msgctxt "SENTMESSAGE"
-#~ msgid "emsg_editcontrol"
-#~ msgstr "Force la lecture seule"
-
-#, fuzzy
-#~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_editcontrol#freeedit"
 #~ msgstr "Droit édit libre"
 
@@ -115,11 +122,6 @@ msgstr "Message envoyé"
 #~ msgctxt "SENTMESSAGE"
 #~ msgid "emsg_editcontrol#lockedit"
 #~ msgstr "Droit édit verrouillé"
-
-#, fuzzy
-#~ msgctxt "SENTMESSAGE"
-#~ msgid "emsg_fr_parameters"
-#~ msgstr "Paramètres"
 
 #, fuzzy
 #~ msgctxt "SENTMESSAGE"

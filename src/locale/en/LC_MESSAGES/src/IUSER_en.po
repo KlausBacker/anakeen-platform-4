@@ -28,6 +28,11 @@ msgstr "Expiration deadline in day"
 
 #: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
+msgid "us_defaultgroup"
+msgstr "Default group"
+
+#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
 msgid "us_expires"
 msgstr "Expiration date epoch"
 
@@ -50,6 +55,11 @@ msgstr "Main mail"
 msgctxt "IUSER"
 msgid "us_fname"
 msgstr "First name"
+
+#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_default"
+msgstr "Parameter"
 
 #: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
@@ -191,20 +201,12 @@ msgstr "Identifier"
 #~ msgstr "enter -1 to cancel expiration"
 
 #~ msgctxt "IUSER"
-#~ msgid "us_defaultgroup"
-#~ msgstr "Default group"
-
-#~ msgctxt "IUSER"
 #~ msgid "us_desactivateaccount"
 #~ msgstr "Deactivate account"
 
 #~ msgctxt "IUSER"
 #~ msgid "us_desactivateaccount#submenu"
 #~ msgstr "Manage account"
-
-#~ msgctxt "IUSER"
-#~ msgid "us_fr_default"
-#~ msgstr "Parameter"
 
 #~ msgctxt "IUSER"
 #~ msgid "us_fr_privacy"

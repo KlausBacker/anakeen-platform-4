@@ -26,6 +26,12 @@ msgstr "Famille"
 #: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
+msgid "help_fr_family"
+msgstr "Paramètres de famille"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
 msgid "help_fr_identification"
 msgstr "Aide"
 
@@ -40,6 +46,18 @@ msgstr "Langue du libellé"
 msgctxt "HELPPAGE"
 msgid "help_name"
 msgstr "Libellé"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_p_lang_key"
+msgstr "Langue"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_p_lang_name"
+msgstr "Libellé de la langue"
 
 #: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
@@ -74,6 +92,12 @@ msgstr "Texte"
 #: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 #, fuzzy
 msgctxt "HELPPAGE"
+msgid "help_t_family"
+msgstr "Langues"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
 msgid "help_t_help"
 msgstr "Description"
 
@@ -88,23 +112,3 @@ msgstr "Rubriques"
 msgctxt "HELPPAGE"
 msgid "title"
 msgstr "Aide en ligne"
-
-#, fuzzy
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_fr_family"
-#~ msgstr "Paramètres de famille"
-
-#, fuzzy
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_p_lang_key"
-#~ msgstr "Langue"
-
-#, fuzzy
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_p_lang_name"
-#~ msgstr "Libellé de la langue"
-
-#, fuzzy
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_t_family"
-#~ msgstr "Langues"

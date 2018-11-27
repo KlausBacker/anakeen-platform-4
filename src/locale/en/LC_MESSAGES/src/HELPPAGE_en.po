@@ -23,6 +23,11 @@ msgstr "Family"
 
 #: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
+msgid "help_fr_family"
+msgstr "Family parameters"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
 msgid "help_fr_identification"
 msgstr "Help"
 
@@ -35,6 +40,16 @@ msgstr "Label language"
 msgctxt "HELPPAGE"
 msgid "help_name"
 msgstr "Label"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_p_lang_key"
+msgstr "Language"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_p_lang_name"
+msgstr "Language label"
 
 #: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
@@ -63,6 +78,11 @@ msgstr "Text"
 
 #: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
 msgctxt "HELPPAGE"
+msgid "help_t_family"
+msgstr "Languages"
+
+#: vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
 msgid "help_t_help"
 msgstr "Description"
 
@@ -75,19 +95,3 @@ msgstr "Sections"
 msgctxt "HELPPAGE"
 msgid "title"
 msgstr "Online help"
-
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_fr_family"
-#~ msgstr "Family parameters"
-
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_p_lang_key"
-#~ msgstr "Language"
-
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_p_lang_name"
-#~ msgstr "Language label"
-
-#~ msgctxt "HELPPAGE"
-#~ msgid "help_t_family"
-#~ msgstr "Languages"
