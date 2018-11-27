@@ -34,8 +34,8 @@
             ],
             "pattern": "/tests/routes/over2/",
             "requiredAccess": null,
-            "configFile": "./config/SmartDataEngine/Test/testCoreOverride.xml",
-            "override": "complete"
+            "configFile": "./config/SmartDataEngine/Test/testCore.xml, ./config/SmartDataEngine/Test/testCoreOverride.xml",
+            "override": "partial"
         }
 
     }
