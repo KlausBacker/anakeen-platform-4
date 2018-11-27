@@ -93,6 +93,17 @@ export default {
           .html(
             `<input data-bind="value: value" data-field="${colId}" class="k-textbox filter-input">`
           );
+      },
+      filesTemplate: () => args => {
+        let cellData = "";
+        if (args.files) {
+          let eFiles = args.files.map(file => kendo.htmlEncode(file));
+          cellData = "<ul><li>";
+          cellData += eFiles.join("</li><li>");
+          cellData += "</li></ul>";
+          return cellData;
+        }
+        return cellData;
       }
     };
   }
