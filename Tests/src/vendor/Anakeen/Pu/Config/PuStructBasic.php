@@ -113,6 +113,9 @@ class PuStructBasic extends TestCaseConfig
                 case "schar":
                     $this->assertEquals($expectedProp, $structure->schar);
                     break;
+                case "maxrev":
+                    $this->assertEquals($expectedProp, $structure->maxrev);
+                    break;
                 case "tags":
                     foreach ($expectedProp as $tag => $value) {
                         $structure->getATag($tag, $aValue);
@@ -186,7 +189,8 @@ class PuStructBasic extends TestCaseConfig
                     "icon" => null,
                     "dfldid" => null,
                     "extend" => "TST_003",
-                    "schar" => "S",
+                    "schar" => null,
+                    "maxrev" => 10,
                     "tags" => [
                         "vendor" => null,
                         "testExtended" => "From Test 3"
