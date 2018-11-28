@@ -19,7 +19,7 @@
           {name: "type", label: "Type", hidden: false},
           {name: "labeltext", label: "Label", hidden: false},
           {name: "config", label: "Configuration", hidden: false},
-          {name: "value", label: "Resulting Value", hidden: false},
+          {name: "value", label: "Resulting Values", hidden: false},
         ],
         url: `/api/v2/devel/smart/structures/${this.ssName}/defaults/`,
         messages: "There are no default values for this Smart Structure..."
