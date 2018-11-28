@@ -33,14 +33,14 @@ exports.getModuleInfo = async sourcePath => {
 
   const checkBuild = checkFile(path.join(sourcePath, appConst.buildPath));
 
-  if (checkBuild !== true) {
-    return Promise.reject(checkBuild);
+  if (checkBuild.error) {
+    return Promise.reject(checkBuild.error);
   }
 
   const checkInfo = checkFile(path.join(sourcePath, appConst.infoPath));
 
-  if (checkInfo !== true) {
-    return Promise.reject(checkInfo);
+  if (checkInfo.error) {
+    return Promise.reject(checkInfo.error);
   }
 
   return Promise.all([

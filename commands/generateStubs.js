@@ -20,6 +20,12 @@ exports.builder = {
     alias: "t",
     default: "./stubs",
     type: "string"
+  },
+  verbose: {
+    description: "verbose mode",
+    alias: "v",
+    default: false,
+    type: "boolean"
   }
 };
 

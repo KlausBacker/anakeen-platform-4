@@ -14,6 +14,12 @@ exports.builder = {
     alias: "s",
     default: ".",
     type: "string"
+  },
+  verbose: {
+    description: "verbose mode",
+    alias: "v",
+    default: false,
+    type: "boolean"
   }
 };
 

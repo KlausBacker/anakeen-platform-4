@@ -1,7 +1,6 @@
-const path = require("path");
 const fs = require("fs");
 const Mustache = require("mustache");
-const glob = require("glob");
+const { parseAndConcatGlob } = require("../utils/globAnalyze");
 
 const PO_LANGS = require("./appConst").po_langs;
 
@@ -39,54 +38,41 @@ const getMustachei18n = (token, fileName) => {
   return keys;
 };
 
-module.exports = (globInputs, targetName, info, potPath) => {
-  const promises = [];
+module.exports = ({ globFile, targetName, info, potPath, verbose, log }) => {
+  const srcPath = info.sourcePath;
 
-  const srcPath = info.buildInfo.buildPath[0];
+  return parseAndConcatGlob({ globFile, srcPath }).then(files => {
+    return Promise.all(
+      PO_LANGS.map(lang => {
+        const tmpPot = `${potPath}/mustache_${targetName}_${lang}.pot`;
+        const tmpPo = `${potPath}/mustache_${targetName}_${lang}.po`;
+        //Analyze files
+        if (verbose) {
+          files.ignoredFiles.forEach(currentFile => {
+            log(`Analyze : ${currentFile} : in ignore conf`);
+          });
+        }
+        const keys = files.filesToAnalyze.reduce((acc, currentFile) => {
+          if (verbose) {
+            log(`Analyze : ${currentFile} : ✓`);
+          }
+          const tokens = Mustache.parse(
+            fs.readFileSync(currentFile, { encoding: "utf8" }),
+            ["[[", "]]"]
+          );
+          const concatKeys = tokens.reduce((acc, token) => {
+            const lkeys = getMustachei18n(token, currentFile);
+            return { ...acc, ...lkeys };
+          }, {});
+          return { ...acc, ...concatKeys };
+        }, {});
 
-  PO_LANGS.forEach(lang => {
-    promises.push(
-      new Promise((resolve, reject) => {
-        try {
-          const tmpPot = `${potPath}/mustache_${targetName}_${lang}.pot`;
-          const tmpPo = `${potPath}/mustache_${targetName}_${lang}.po`;
+        const poEntries = Object.values(keys).reduce((acc, currentKey) => {
+          return acc + getPoEntry(currentKey);
+        }, "");
 
-          //Find all the files in src
-          glob(
-            globInputs,
-            {
-              cwd: srcPath,
-              nodir: true
-            },
-            (err, files) => {
-              if (err) {
-                return reject(err);
-              }
-
-              //Analyze files
-              const keys = files.reduce((acc, currentFile) => {
-                const currentPath = path.resolve(srcPath, currentFile);
-                const tokens = Mustache.parse(
-                  fs.readFileSync(currentPath, { encoding: "utf8" }),
-                  ["[[", "]]"]
-                );
-                const concatKeys = tokens.reduce((acc, token) => {
-                  const lkeys = getMustachei18n(token, currentFile);
-                  return { ...acc, ...lkeys };
-                }, {});
-                return { ...acc, ...concatKeys };
-              }, {});
-
-              const poEntries = Object.values(keys).reduce(
-                (acc, currentKey) => {
-                  return acc + getPoEntry(currentKey);
-                },
-                ""
-              );
-
-              //console.log(uniqueKeys);
-              let now = new Date().toISOString();
-              let content = `msgid ""
+        let now = new Date().toISOString();
+        let content = `msgid ""
 msgstr ""
 "Project-Id-Version: Mustache ${info.moduleInfo.name} \\n"
 "Report-Msgid-Bugs-To: \\n"
@@ -99,24 +85,14 @@ msgstr ""
 
 ${poEntries}
 `;
-              if (poEntries.length > 0) {
-                //If there is something, we write the temp pot file
-                return fs.writeFile(tmpPot, content, err => {
-                  if (err) {
-                    return reject(err);
-                  }
-                  resolve({ path: tmpPot, targetName, lang, tmpPo });
-                });
-              }
-              //Nothing to do here
-              resolve(false);
-            }
-          );
-        } catch (e) {
-          reject(e);
+        if (poEntries.length > 0) {
+          //If there is something, we write the temp pot file
+          fs.writeFileSync(tmpPot, content);
+          return { path: tmpPot, targetName, lang, tmpPo };
         }
+        //Nothing to do here
+        return false;
       })
     );
   });
-  return Promise.all(promises);
 };
