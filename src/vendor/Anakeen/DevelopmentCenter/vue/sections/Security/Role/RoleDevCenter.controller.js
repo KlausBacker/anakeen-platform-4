@@ -49,9 +49,14 @@ export default {
           }
         }
         vueInstance.$refs.rolesSplitter.disableEmptyContent();
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
       });
     } else {
-      next();
+      next(vueInstance => {
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
+      });
     }
   },
   devCenterRefreshData() {
