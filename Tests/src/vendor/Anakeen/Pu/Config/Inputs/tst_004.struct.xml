@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:structure-configuration name="TST_004" label="Test n°4">
-        <smart:extends ref="TST_003"/>
-        <smart:revisable max="10">default</smart:revisable>
-        <smart:tag name="testExtended">From Test 3</smart:tag>
+<hello:config xmlns:hello="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <hello:structure-configuration name="TST_004" label="Test n°4">
+        <hello:extends ref="TST_003"/>
+        <hello:revisable max="10">default</hello:revisable>
+        <hello:tag name="testExtended">From Test 3</hello:tag>
 
-        <smart:field-override field="tst_account" access="Read" fieldset="tst_f_n3" insert-after="tst_three" />
-    </smart:structure-configuration>
-</smart:config>
+        <hello:field-override field="tst_account" access="Read" fieldset="tst_f_n3" insert-after="tst_three" />
+    </hello:structure-configuration>
+</hello:config>
