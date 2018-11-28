@@ -5,7 +5,7 @@
                          :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/masks/config/`"
                          filterable="inline"
                          :pageSizes="[100,200,500]"
-                         :sortable="'false'"
+                         :sortable="''"
                          @action-click="actionClick"
                          @grid-ready="getFiltered">
             </ank-se-grid>

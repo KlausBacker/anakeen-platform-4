@@ -5,7 +5,7 @@
                          :urlConfig="`/api/v2/devel/ui/smart/structures/${ssName}/control/config/`"
                          filterable="inline"
                          :pageSizes="[100, 200, 500]"
-                         :sortable="'false'"
+                         :sortable="''"
                          @action-click="actionClick"
                          @grid-ready="getFiltered">
             </ank-se-grid>
@@ -50,6 +50,7 @@
         .smart-element-view {
             width: 100%;
             height: 100%;
+            overflow: auto;
         }
     }
 </style>
