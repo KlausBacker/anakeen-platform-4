@@ -52,6 +52,7 @@
         <xs:complexContent>
             <xs:extension base="v1:field-propsStandardType">
                 <xs:attribute type="v1:fieldNameType" name="field" use="required"/>
+                <xs:attribute type="v1:fieldNameType" name="fieldset" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -157,7 +158,7 @@
         </xs:attribute>
         <xs:attribute type="xs:boolean" name="is-abstract" default="false"/>
         <xs:attribute type="xs:boolean" name="is-title" default="false"/>
-        <xs:attribute type="v1:fieldNameType" name="insert-after"/>
+        <xs:attribute type="v1:fieldOrderType" name="insert-after"/>
         <xs:attribute type="xs:string" name="link"/>
         <xs:attribute type="xs:boolean" name="multiple"/>
     </xs:complexType>
@@ -175,6 +176,16 @@
             <xs:pattern value="[a-z][a-z0-9_]+"/>
         </xs:restriction>
     </xs:simpleType>
+
+
+    <xs:simpleType name="fieldOrderType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-z][a-z0-9_]+"/>
+            <xs:pattern value="::first"/>
+            <xs:pattern value="::auto"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 
     <xs:simpleType name="functionNameType">
         <xs:restriction base="xs:string">
@@ -488,11 +499,7 @@
     </xs:complexType>
 
     <xs:complexType name="iconType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute type="xs:string" name="file"/>
-            </xs:extension>
-        </xs:simpleContent>
+        <xs:attribute type="xs:string" name="file" use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="revisableEnum">
@@ -569,5 +576,6 @@
         <xs:attribute type="xs:string" name="multiple"/>
         <xs:attribute type="xs:string" name="is-abstract"/>
         <xs:attribute type="xs:string" name="link"/>
+        <xs:attribute type="v1:fieldOrderType" name="insert-after"/>
     </xs:complexType>
 </xs:schema>
