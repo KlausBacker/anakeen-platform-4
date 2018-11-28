@@ -43,10 +43,12 @@
         }
 
         .filter-clearable {
+          display: flex;
+          flex-direction: row;
           position: relative;
 
           input.filter {
-            width: 100%;
+            flex: 1;
 
             & + .filter-clear {
               position: absolute;
@@ -62,6 +64,13 @@
               }
 
             }
+          }
+          .filter-drop {
+            width: 2em;
+            height: 2.5em;
+          }
+          .k-textbox {
+            flex: 1;
           }
         }
       }
