@@ -3,7 +3,7 @@ const { getModuleInfo } = require("../utils/moduleInfo");
 const { checkGlobElements } = require("../utils/check");
 const { Signale } = require("signale");
 
-exports.check = ({ sourcePath }) => {
+exports.check = ({ sourcePath, verbose }) => {
   return gulp.task("check", async () => {
     if (sourcePath === undefined) {
       throw new Error("No source path specified.");
@@ -14,23 +14,23 @@ exports.check = ({ sourcePath }) => {
         interactive.info(message);
       };
       const info = await getModuleInfo(sourcePath);
-      const stub = info.buildInfo.build.config["stub-config"];
+      const stub = info.buildInfo.build.config["check-config"];
       let globXML = [];
 
       if (stub) {
-        globXML = stub[0]["stub-struct"];
+        globXML = stub[0]["config-xml"];
       }
 
       const globFile = globXML.map(currentElement => {
         return currentElement.$.source;
       });
 
-      if (!globFile) {
+      if (!globFile || globFile.length === 0) {
         log("No glob xml to check");
         return Promise.resolve();
       }
 
-      return checkGlobElements({ globFile, srcPath: info.sourcePath });
+      return checkGlobElements({ globFile, srcPath: info.sourcePath, verbose, log });
     } catch (e) {
       return Promise.reject(e);
     }

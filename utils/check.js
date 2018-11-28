@@ -40,11 +40,14 @@ const parseAndConcatGlob = ({ globFile, srcPath }) => {
     });
 };
 
-exports.checkGlobElements = ({ globFile, srcPath }) => {
+exports.checkGlobElements = ({ globFile, srcPath, verbose, log }) => {
   return parseAndConcatGlob({ globFile, srcPath })
     .then(files => {
       return files.reduce((acc, currentFile) => {
         const checkResult = checkFile(currentFile);
+        if (verbose) {
+          log(`Analyze : ${currentFile}`);
+        }
         if (checkResult !== true) {
           acc = acc + checkResult;
         }
