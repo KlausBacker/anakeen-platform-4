@@ -16,7 +16,7 @@ class SuiteConfig
     {
         $suite = new FrameworkDcp();
 
-        $suite->addTestSuite(\Anakeen\Pu\Config\PuStructWorkflow::class);
+        $suite->addTestSuite(\Anakeen\Pu\Config\PuStructBasic::class);
 
         return $suite;
     }
