@@ -3,14 +3,10 @@ import InfosNav from "devComponents/SSInfoNav/SSInfoNav.vue";
 import StructureHierarchy from "./StructureHierarchy.vue";
 
 const formatChildrenList = (parent, children) => {
-  const result = children.filter(
-    c =>
-      c.parent ===
-      parent.map(c => ({
-        name: c.name,
-        children: formatChildrenList(c.name, children)
-      }))
-  );
+  const result = children.filter(c => c.parent === parent).map(c => ({
+    name: c.name,
+    children: formatChildrenList(c.name, children)
+  }));
   return result;
 };
 
