@@ -58,5 +58,6 @@ lint:
 
 checkXML: node_modules
 	${ANAKEEN_CLI_BIN} check -s .
+	${ANAKEEN_CLI_BIN} check -s Tests
 
 .PHONY: app app-test deploy deploy-test po stub install

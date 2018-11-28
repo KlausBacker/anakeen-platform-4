@@ -12,6 +12,7 @@ ide/vendor/
 .idea/vcs.xml
 .idea/modules.xml
 .idea/vcs.xml
+.idea/smart-data-engine.iml
 
 smart-data-engine*app
 .php_cs.cache

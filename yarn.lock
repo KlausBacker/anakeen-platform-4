@@ -7,7 +7,7 @@
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543416556.tgz#b60bd816c2e529886a61669dc90e090ae9216cae"
   integrity sha512-orkHfJmIGd1XRVdiQP4SVKPtfirlfASeFZLJIj5geIj2aIN2SxYSh6Cn2d2B5T6/Oy/6+WiHUZcBHCqA9g/04Q==
   dependencies:
-    "@anakeen/anakeen-module-validation" "1.0.0-1543415654"
+    "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
     glob "^7.1.3"
     gulp "^4.0.0"
