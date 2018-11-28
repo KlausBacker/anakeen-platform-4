@@ -32,6 +32,34 @@ export default {
       this.$refs.viewsGrid.kendoWidget().read();
     }
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.col && to.query.filter) {
+      next(function(vueInstance) {
+        if (vueInstance.$refs.viewsGridContent.kendoWidget()) {
+          vueInstance.$refs.viewsGridContent.kendoWidget().dataSource.filter({
+            field: to.query.col,
+            operator: "eq",
+            value: to.query.filter
+          });
+        } else {
+          vueInstance.$refs.viewsGridContent.$on("grid-ready", () => {
+            vueInstance.$refs.viewsGridContent.kendoWidget().dataSource.filter({
+              field: to.query.col,
+              operator: "eq",
+              value: to.query.filter
+            });
+          });
+        }
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
+      });
+    } else {
+      next(vueInstance => {
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
+      });
+    }
+  },
   methods: {
     getViews(options) {
       this.$http

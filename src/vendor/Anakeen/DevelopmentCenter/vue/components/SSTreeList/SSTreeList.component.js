@@ -65,6 +65,10 @@ export default {
       default: () => {
         return {};
       }
+    },
+    inlineFilters: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -81,7 +85,9 @@ export default {
     return {
       remoteDataSource: "",
       columnSizeTab: [],
-      filters: ""
+      filters: "",
+      operatorconfig: "contains",
+      operatorvalue: "contains"
     };
   },
   devCenterRefreshData() {
@@ -116,7 +122,9 @@ export default {
       sort: this.sort
     });
     this.$nextTick(() => {
-      this.createFilterRow();
+      if (this.inlineFilters) {
+        this.createFilterRow();
+      }
     });
     $(window).resize(() => {
       if (this.$refs.ssTreelist) {
@@ -268,18 +276,49 @@ export default {
         const tree = this.kendoWidget();
         const columns = tree.columns.filter(c => !c.hidden);
         columns.forEach(col => {
-          this.filters += `<th class="k-header" >
+          switch (col.field) {
+            case "config":
+              this.filters += `<th class="k-header" >
+                <div class="filter-clearable" style="position:relative;">
+                  <input class="k-textbox filter ${
+                    col.field
+                  }-filter" type="text"/>
+                  <button class="filter-drop filter-drop-config">
+                    <span class="k-icon k-i-filter"></span>
+                  </button>
+                </div>
+              </th>`;
+              this.filterRow();
+              break;
+            case "value":
+              this.filters += `<th class="k-header" >
+                <div class="filter-clearable" style="position:relative;">
+                  <input class="k-textbox filter ${
+                    col.field
+                  }-filter" type="text"/>
+                  <button class="filter-drop filter-drop-value">
+                    <span class="k-icon k-i-filter"></span>
+                  </button>
+                </div>
+              </th>`;
+              this.filterRow();
+              break;
+            default:
+              this.filters += `<th class="k-header" >
                 <div class="filter-clearable" style="position:relative;">
                   <input class="k-textbox filter ${
                     col.field
                   }-filter" type="text"/>
                 </div>
               </th>`;
-          this.filterRow();
+              this.filterRow();
+              break;
+          }
         });
         tree.thead.append(
           `<tr role="row" class="filter-row">${this.filters}</tr>`
         );
+        this.filterButton();
       }
     },
     filterShow(id, show = true) {
@@ -297,6 +336,82 @@ export default {
         });
       }
     },
+    filterButton() {
+      this.$(".filter-drop-config").kendoButton({
+        click: e => {
+          let result = "";
+          switch (this.operatorconfig) {
+            case "contains":
+              result = e.sender.element[0].firstElementChild.className.replace(
+                / k-i-filter/g,
+                " k-i-filter-clear"
+              );
+              e.sender.element[0].firstElementChild.className = result;
+              this.operatorconfig = "isnotnull";
+              this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+                field: "config",
+                operator: "isnotnull"
+              });
+              break;
+            case "isnotnull":
+              result = e.sender.element[0].firstElementChild.className.replace(
+                / k-i-filter-clear/g,
+                " k-i-filter"
+              );
+              e.sender.element[0].firstElementChild.className = result;
+              this.operatorconfig = "contains";
+              this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+              break;
+            default:
+              result = e.sender.element[0].firstElementChild.className.replace(
+                / k-i-filter-clear/g,
+                " k-i-filter"
+              );
+              e.sender.element[0].firstElementChild.className = result;
+              this.operatorconfig = "contains";
+              this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+              break;
+          }
+        }
+      });
+      this.$(".filter-drop-value").kendoButton({
+        click: e => {
+          let result = "";
+          switch (this.operatorvalue) {
+            case "contains":
+              result = e.sender.element[0].firstElementChild.className.replace(
+                / k-i-filter/g,
+                " k-i-filter-clear"
+              );
+              e.sender.element[0].firstElementChild.className = result;
+              this.operatorvalue = "isnotnull";
+              this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+                field: "value",
+                operator: "isnotnull"
+              });
+              break;
+            case "isnotnull":
+              result = e.sender.element[0].firstElementChild.className.replace(
+                / k-i-filter-clear/g,
+                " k-i-filter"
+              );
+              e.sender.element[0].firstElementChild.className = result;
+              this.operatorvalue = "contains";
+              this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+              break;
+            default:
+              result = e.sender.element[0].firstElementChild.className.replace(
+                / k-i-filter-clear/g,
+                " k-i-filter"
+              );
+              e.sender.element[0].firstElementChild.className = result;
+              this.operatorvalue = "contains";
+              this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+              break;
+          }
+        }
+      });
+    },
     filterRow() {
       this.$(this.$refs.ssTreelist.kendoWidget().thead).on(
         "change",
@@ -305,16 +420,46 @@ export default {
           const value = event.currentTarget.value;
           if (value) {
             const colId = event.target.className.split(" ")[2].split("-")[0];
-            this.$refs.ssTreelist.kendoWidget().dataSource.filter({
-              field: colId,
-              operator: "contains",
-              value: value
-            });
+            switch (colId) {
+              case "config":
+                this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+                  field: colId,
+                  operator: "contains",
+                  value: value
+                });
+                this.removeEmptyFilter(event);
+                this.operatorconfig = "contains";
+                break;
+              case "value":
+                this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+                  field: colId,
+                  operator: this.operatorvalue,
+                  value: value
+                });
+                this.removeEmptyFilter(event);
+                this.operatorvalue = "contains";
+                break;
+              default:
+                this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+                  field: colId,
+                  operator: "contains",
+                  value: value
+                });
+                break;
+            }
           } else {
             this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
           }
         }
       );
+    },
+    removeEmptyFilter(event) {
+      let result = "";
+      result = event.target.nextElementSibling.className.replace(
+        / k-filter-clear/g,
+        ""
+      );
+      event.target.nextElementSibling.className = result;
     }
   }
 };

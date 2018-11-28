@@ -100,7 +100,7 @@ export default {
               case "mailtemplates":
                 str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }/view">${items[item]}</a></li>`;
+                }/view/?name=${items[item]}">${items[item]}</a></li>`;
                 break;
               default:
                 break;
@@ -119,13 +119,17 @@ export default {
             case "viewcontrol":
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
-              }/views">${dataItem[colId]}</a>&nbsp`;
+              }/views/?col=cvId&filter=${dataItem[colId]}">${
+                dataItem[colId]
+              }</a>&nbsp`;
             case "mask":
               return `<a data-role="develRouterLink" href="/devel/ui/${
                 this.ssName
-              }/views">${dataItem[colId]}</a>&nbsp`;
+              }/views/?col=maskId&filter=${dataItem[colId]}">${
+                dataItem[colId]
+              }</a>&nbsp`;
             case "profil":
-              return `<a data-role="develRouterLink" href="/devel/security/profiles/${
+              return `<a data-role="develRouterLink" href="/devel/security/profiles/?name=${
                 dataItem[colId]
               }">${dataItem[colId]}</a>&nbsp`;
             case "fall":
@@ -135,7 +139,7 @@ export default {
             case "timer":
               return `<a data-role="develRouterLink" href="/devel/smartElements/${
                 dataItem[colId]
-              }/view">${dataItem[colId]}</a>&nbsp`;
+              }/view/?name=${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
             default:
               return dataItem[colId];
           }

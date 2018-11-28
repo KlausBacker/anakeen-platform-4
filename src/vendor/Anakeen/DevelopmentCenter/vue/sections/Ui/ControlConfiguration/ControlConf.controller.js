@@ -22,7 +22,6 @@ export default {
               value: to.query.filter
             });
             vueInstance.$refs.controlSplitter.disableEmptyContent();
-            vueInstance.getSelected(to.params.seIdentifier);
           } else {
             vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
               vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
@@ -32,7 +31,6 @@ export default {
               });
             });
             vueInstance.$refs.controlSplitter.disableEmptyContent();
-            vueInstance.getSelected(to.params.seIdentifier);
           }
         }
         // Trigger resize to resize the splitter

@@ -1,5 +1,5 @@
 <template>
-    <ss-treelist ref="paramDefList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues" :columnTemplate="columnTemplate" :messages="messages"></ss-treelist>
+    <ss-treelist ref="paramDefList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues" :columnTemplate="columnTemplate" :messages="messages" :inlineFilters="true"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
@@ -17,7 +17,7 @@
           { name: "type", label: "Type", hidden: false},
           { name: "labeltext", label: "Label", hidden: false},
           { name: "config", label: "Configuration", hidden: false, width: "15rem"},
-          { name: "value", label: "Value", hidden: false, width: "15rem"},
+          { name: "value", label: "Resulting Values", hidden: false, width: "15rem"},
         ],
         url: `/api/v2/devel/smart/structures/${this.ssName}/parameters/`,
         getValues(response) {
