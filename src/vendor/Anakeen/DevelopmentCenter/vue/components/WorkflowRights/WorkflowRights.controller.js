@@ -32,7 +32,7 @@ export default {
     },
     visualizeGraph: {
       type: Boolean,
-      default: true
+      default: false
     },
     detachUrl: {
       type: String,
@@ -93,29 +93,46 @@ export default {
     this.privateMethods = {
       getRightsTemplate: rights => {
         if (rights) {
-          return `<div class="wfl-acl-rights-cell"><div class='btn-group'>
-            ${Object.keys(this.acls)
-              .map(acl => {
-                let hide = "";
-                if (!this.acls[acl].visible) {
-                  hide = "style='display: none;'";
-                }
-                switch (rights[acl]) {
-                  case "set":
-                    return `<button class="btn acl-set" ${hide} data-acl="${acl}">${acl
-                      .charAt(0)
-                      .toUpperCase()}</button>`;
-                  case "inherit":
-                    return `<button class="btn acl-inherited" ${hide} data-acl="${acl}">${acl
-                      .charAt(0)
-                      .toUpperCase()}</button>`;
-                  default:
-                    return `<button class="btn acl-disabled" ${hide} data-acl="${acl}">${acl
-                      .charAt(0)
-                      .toUpperCase()}</button>`;
-                }
-              })
-              .join("")}</div></div>`;
+          const primaryAcls = [];
+          const secondaryAcls = [];
+          Object.keys(this.acls).forEach(acl => {
+            let hide = "";
+            if (!this.acls[acl].visible) {
+              hide = "style='display: none;'";
+            }
+            let template;
+            switch (rights[acl]) {
+              case "set":
+                template = `<button class="btn acl-set" ${hide} data-acl="${acl}">${acl
+                  .charAt(0)
+                  .toUpperCase()}</button>`;
+                break;
+              case "inherit":
+                template = `<button class="btn acl-inherited" ${hide} data-acl="${acl}">${acl
+                  .charAt(0)
+                  .toUpperCase()}</button>`;
+                break;
+              default:
+                template = `<button class="btn acl-disabled" ${hide} data-acl="${acl}">${acl
+                  .charAt(0)
+                  .toUpperCase()}</button>`;
+                break;
+            }
+            if (this.acls[acl].default) {
+              primaryAcls.push(template);
+            } else {
+              secondaryAcls.push(template);
+            }
+          });
+
+          return `<div class="wfl-acl-rights-cell">
+                <div class="btn-group primary-acls">
+                    ${primaryAcls.join("")}
+                </div>
+                <div class="btn-group secondary-acls">
+                    ${secondaryAcls.join("")}
+                </div>
+            </div>`;
         }
       },
       getHeaderTemplate: column => {
@@ -130,9 +147,8 @@ export default {
                     )}</span>
                 </div>`;
         } else {
-          return `<div class="account-header">${this.getLabel(
-            column
-          )} <div class="show-all-switch switch-container">
+          return `<div class="account-header">
+                <div class="show-all-switch switch-container">
                             <label class="switch">
                                 <input type="checkbox">
                                 <span class="slider round"></span>

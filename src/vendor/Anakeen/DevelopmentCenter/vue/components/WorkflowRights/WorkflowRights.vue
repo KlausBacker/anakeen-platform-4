@@ -23,6 +23,7 @@
                        :getValues="privateMethods.parseData"
                        :headerTemplate="privateMethods.getHeaderTemplate"
                        :columnTemplate="privateMethods.getCellTemplate"
+                       :inlineFilters="false"
                        :model="model"></ank-tree-list>
     </div>
 </template>
