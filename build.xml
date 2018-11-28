@@ -2,6 +2,6 @@
 <module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
     <module:source path="src" />
     <module:check-config>
-        <module:config-xml source="**/*.xml"/>
+        <module:config-xml source="src/**/*.xml"/>
     </module:check-config>
 </module:config>
