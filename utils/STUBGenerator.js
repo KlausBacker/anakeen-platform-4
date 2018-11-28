@@ -120,7 +120,7 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
                 return;
               }
               //Analyze structure configuration
-              if (result.config.structureconfiguration) {
+              if (result.config && result.config.structureconfiguration) {
                 values = result.config.structureconfiguration.reduce(
                   (acc, currentConf) => {
                     const name = currentConf.$.name;
