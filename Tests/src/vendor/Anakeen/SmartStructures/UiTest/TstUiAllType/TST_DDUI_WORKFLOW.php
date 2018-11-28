@@ -34,13 +34,13 @@ class WflAlltype extends \SmartStructure\WDoc
     //endregion
 
     //activité
-    public $stateactivity = array(
-        self::etat_created    => "tst_activite_etat_cree",
-        self::etat_redacted   => "tst_activite_etat_redige",
-        self::etat_verified   => "tst_activite_etat_verifie",
-        self::etat_diffused   => "tst_activite_etat_diffuse",
-        self::etat_archived   => "tst_activite_etat_archive",
-        self::etat_abandonned => "tst_activite_etat_abandonne"
+    public $stepLabels = array(
+        self::etat_created    => ["activity" => "tst_activite_etat_cree"],
+        self::etat_redacted   => ["activity" =>"tst_activite_etat_redige"],
+        self::etat_verified   => ["activity" =>"tst_activite_etat_verifie"],
+        self::etat_diffused   => ["activity" =>"tst_activite_etat_diffuse"],
+        self::etat_archived   => ["activity" =>"tst_activite_etat_archive"],
+        self::etat_abandonned => ["activity" =>"tst_activite_etat_abandonne"]
     );
 
 
