@@ -13,6 +13,7 @@
                 <xs:attribute type="ns:fieldName" name="name" use="required"/>
                 <xs:attribute type="xs:string" name="state-label" use="required"/>
                 <xs:attribute type="xs:string" name="activity-label"/>
+                <xs:attribute type="xs:boolean" name="initial"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -85,7 +86,7 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="ns:elementName" name="ref" use="required"/>
-                <xs:attribute type="ns:timerType" name="type" default="volatile"/>
+                <xs:attribute type="ns:timerType" name="type"  use="required"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -152,6 +153,7 @@
         </xs:sequence>
         <xs:attribute type="ns:elementName" name="name" use="required"/>
         <xs:attribute type="ns:elementName" name="structure" />
+        <xs:attribute type="ns:elementName" name="model" use="required"/>
         <xs:attribute type="xs:string" name="label" />
     </xs:complexType>
 

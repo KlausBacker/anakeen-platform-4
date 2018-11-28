@@ -34,7 +34,7 @@
             <xs:element type="xs:string" name="description" minOccurs="0"/>
             <xs:element type="uif:standardRefType" name="primary-mask" minOccurs="0"/>
             <xs:element type="uif:standardRefType" name="creation-view" minOccurs="0"/>
-            <xs:element type="uif:viewListType" name="view-list" minOccurs="0"/>
+            <xs:element type="uif:viewListType" name="view-list" minOccurs="0" maxOccurs="2"/>
         </xs:sequence>
         <xs:attribute type="uif:logicalNameType" name="name" use="required"/>
         <xs:attribute type="uif:logicalNameType" name="structure"/>
@@ -72,7 +72,7 @@
             <xs:element type="uif:needListType" name="need-list" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="uif:logicalNameType" name="structure" use="required"/>
-        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="uif:logicalNameType" name="name"/>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
 
@@ -104,7 +104,7 @@
         <xs:attribute type="xs:int" name="order"/>
         <xs:attribute type="xs:string" name="label" use="required"/>
         <xs:attribute type="uif:displatModeType" name="display-mode" use="required"/>
-        <xs:attribute type="xs:string" name="submenu-label"/>
+        <xs:attribute type="xs:string" name="parent-menu-id"/>
         <xs:attribute type="xs:boolean" name="menu-displayed" default="true"/>
     </xs:complexType>
 
