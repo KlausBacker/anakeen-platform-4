@@ -123,7 +123,9 @@ class TimerHooks extends \Anakeen\SmartElement
                 $dt->tododate = $todoDate->format('Y-m-d H:i:s');
                 $dt->actions = serialize([
                     "state" => $task[TimerField::tm_state],
-                    "tmail" => $task[TimerField::tm_tmail],
+                    "tmail" => array_filter($task[TimerField::tm_tmail], function ($mail) {
+                        return !empty($mail);
+                    }),
                     "method" => $task[TimerField::tm_method]
                 ]);
                 $dt->id = '';

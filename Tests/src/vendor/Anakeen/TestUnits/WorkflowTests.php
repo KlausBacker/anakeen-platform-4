@@ -7,6 +7,7 @@
 namespace Anakeen\TestUnits;
 
 use Anakeen\Core\Utils\Gettext;
+use Anakeen\Pu\Config\SuiteWorkflowConfig;
 use Dcp\Pu\FrameworkDcp;
 use Dcp\Pu\SuiteWorkflow;
 
@@ -27,6 +28,7 @@ class WorkflowTests
 
         Gettext::___("Hello"); // Include ___
            $suite->addTest(SuiteWorkflow::suite());
+        $suite->addTest(SuiteWorkflowConfig::suite());
         // ...
 
         return $suite;
