@@ -48,6 +48,12 @@ class ImportSmartConfiguration
         $this->importConfigurations();
     }
 
+    public function importAll($xmlFile)
+    {
+        $this->import($xmlFile);
+    }
+
+
     /**
      * @param bool $verbose
      *

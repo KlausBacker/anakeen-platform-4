@@ -83,6 +83,14 @@
             <sde:access>readonly</sde:access>
         </sde:parameter>
 
+        <sde:parameter name="CORE_TIMERHOURLIMIT">
+            <sde:category>System</sde:category>
+            <sde:description>Hour delay where timer can be execute until date is reached. After this delay the timer is ignored.</sde:description>
+            <sde:value>10</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
         <sde:parameter name="CORE_MAIL_LINK">
             <sde:description>produce link for</sde:description>
             <sde:value>optimal</sde:value>
@@ -99,7 +107,7 @@
             <sde:description>Session lifetime (in seconds) - 0 means until web browser quit</sde:description>
 
             <sde:value>0</sde:value>
-             <sde:type>integer</sde:type>
+            <sde:type>integer</sde:type>
             <sde:access>admin</sde:access>
         </sde:parameter>
         <sde:parameter name="CORE_GUEST_SESSIONTTL">
@@ -131,12 +139,12 @@
             <sde:access>admin</sde:access>
         </sde:parameter>
         <sde:parameter name="AUTHENT_FAILURECOUNT">
-        <sde:category>Authent</sde:category>
-        <sde:description>Number of consecutive connection attemps failure (0 means infinite)</sde:description>
-        <sde:value>0</sde:value>
-        <sde:type>integer</sde:type>
-        <sde:access>admin</sde:access>
-    </sde:parameter>
+            <sde:category>Authent</sde:category>
+            <sde:description>Number of consecutive connection attemps failure (0 means infinite)</sde:description>
+            <sde:value>0</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
         <sde:parameter name="CORE_ALLOW_GUEST">
             <sde:description>Allow guest access</sde:description>
             <sde:value>yes</sde:value>
