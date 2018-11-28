@@ -1,6 +1,6 @@
 <template>
     <div class="profile-acls-view">
-        <div ref="profileContent">
+        <div ref="profileContent" class="profile-content">
             <div ref="profileDescribe" class="profile-describe container-fluid">
                 <div class="row profile-infos">
                     <div class="col-sm">
