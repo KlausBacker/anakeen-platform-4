@@ -4,6 +4,7 @@
   height: 100%;
   width: 100%;
   flex-direction: column;
+  overflow-y:hidden;
   min-height: 0;
   & /deep/ {
     .k-grid-header {

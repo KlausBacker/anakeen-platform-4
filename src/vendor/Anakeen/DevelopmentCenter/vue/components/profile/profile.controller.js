@@ -45,6 +45,19 @@ export default {
   },
   created() {
     this.privateScope = {
+      onResizeContent: () => {
+        // this.$(".k-grid-content", this.$refs.profileTreeList);
+        const wrapper = this.$(this.$el);
+        const wrapperHeight = wrapper.height();
+        const headerHeight = wrapper.find(".profile-content").height();
+        const contentSize = wrapperHeight - headerHeight;
+        const content = this.$(this.$refs.profileTreeList);
+        content.height(contentSize);
+
+        const treeHeaderHeight = content.find(".k-grid-header").height();
+        const treeContent = content.find(".k-grid-content");
+        treeContent.height(contentSize - treeHeaderHeight - 5);
+      },
       computeTextWidth: (text, font = "12px Arial") => {
         const tempCanvas = document.createElement("canvas");
         const ctx = tempCanvas.getContext("2d");
@@ -256,7 +269,6 @@ export default {
             });
             const treeList = $(this.$refs.profileTreeList).kendoTreeList({
               columnMenu: true,
-              height: "100%",
               columns: [
                 {
                   field: "title",
@@ -346,6 +358,8 @@ export default {
   mounted() {
     this.dataSource = this.privateScope.initDataSource();
     this.privateScope.initTreeView();
+    this.privateScope.onResizeContent();
+    this.$(window).resize(this.privateScope.onResizeContent);
   },
   methods: {
     updateGrid: function() {

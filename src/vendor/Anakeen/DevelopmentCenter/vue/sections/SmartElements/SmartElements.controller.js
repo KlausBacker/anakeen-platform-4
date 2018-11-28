@@ -64,6 +64,8 @@ export default {
         } else {
           vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
         }
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
       });
     } else {
       next(vueInstance => {
@@ -72,6 +74,8 @@ export default {
         } else {
           vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
         }
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
       });
     }
   },

@@ -31,6 +31,8 @@ export default {
     if (to.name === "Security::Profile::Access::Element") {
       next(vueInstance => {
         vueInstance.$refs.profileSplitter.disableEmptyContent();
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
       });
     } else {
       next(vueInstance => {
@@ -55,6 +57,8 @@ export default {
         } else {
           vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction);
         }
+        // Trigger resize to resize the splitter
+        vueInstance.$(window).trigger("resize");
       });
     }
   },
