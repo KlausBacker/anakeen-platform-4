@@ -1,9 +1,9 @@
 const xml2js = require("xml2js");
 const path = require("path");
 const fs = require("fs");
-const glob = require("glob");
 
 const cp = require("child_process");
+const { parseAndConcatGlob } = require("../utils/globAnalyze");
 
 const PO_LANGS = require("./appConst").po_langs;
 
@@ -87,39 +87,6 @@ const extractSmartField = (fields, currentFilePath) => {
 
     return acc;
   }, {});
-};
-
-/**
- * Analyze the glob array and return a flat list of files
- *
- * @param poGlob
- * @param srcPath
- * @returns {Promise<[any , any , any , any , any , any , any , any , any , any] | never>}
- */
-const parseAndConcatGlob = ({ poGlob, srcPath }) => {
-  return Promise.all(
-    poGlob.map(currentGlob => {
-      return new Promise((resolve, reject) => {
-        glob(
-          currentGlob,
-          {
-            cwd: srcPath,
-            nodir: true
-          },
-          (err, files) => {
-            if (err) {
-              return reject(err);
-            }
-            resolve(files);
-          }
-        );
-      });
-    })
-  ).then(filesList => {
-    return filesList.reduce((acc, currentFilesList) => {
-      return [...acc, ...currentFilesList];
-    }, []);
-  });
 };
 
 /**
@@ -210,21 +177,29 @@ const mergeAllKeysFound = elements => {
  * @param potPath
  * @returns {Promise<Array | never>}
  */
-exports.xmlStructure2Pot = ({ poGlob, info, potPath }) => {
+exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
   //Find all the files in glob rules
   const srcPath = info.buildInfo.buildPath[0];
-  return parseAndConcatGlob({ poGlob, srcPath }).then(allFilesFound => {
+  return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
+    if (verbose) {
+      allFilesFound.ignoredFiles.forEach(currentFile => {
+        log(`Analyze : ${currentFile} : in ignore conf`);
+      });
+    }
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
     const cleanDash = str => {
       return str.replace("-", "");
     };
     return Promise.all(
-      allFilesFound.map(currentFilePath => {
+      allFilesFound.filesToAnalyze.map(currentFilePath => {
         return new Promise((resolve, reject) => {
+          if (verbose) {
+            log(`Analyze : ${currentFilePath} : ✓`);
+          }
           let values = {};
           xml2js.parseString(
-            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+            fs.readFileSync(currentFilePath, {
               encoding: "utf8"
             }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
@@ -315,21 +290,29 @@ exports.xmlStructure2Pot = ({ poGlob, info, potPath }) => {
  * @param potPath
  * @returns {Promise<Array | never>}
  */
-exports.xmlEnum2Pot = ({ poGlob, info, potPath }) => {
+exports.xmlEnum2Pot = ({ globFile, info, potPath, verbose, log }) => {
   //Find all the files in glob rules
-  const srcPath = info.buildInfo.buildPath[0];
-  return parseAndConcatGlob({ poGlob, srcPath }).then(allFilesFound => {
+  const srcPath = info.sourcePath;
+  return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
     const cleanDash = str => {
       return str.replace("-", "");
     };
+    if (verbose) {
+      allFilesFound.ignoredFiles.forEach(currentFile => {
+        log(`Analyze : ${currentFile} : in ignore conf`);
+      });
+    }
     return Promise.all(
-      allFilesFound.map(currentFilePath => {
+      allFilesFound.filesToAnalyze.map(currentFilePath => {
         return new Promise((resolve, reject) => {
+          if (verbose) {
+            log(`Analyze : ${currentFilePath} : ✓`);
+          }
           let enums = {};
           xml2js.parseString(
-            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+            fs.readFileSync(currentFilePath, {
               encoding: "utf8"
             }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
@@ -392,21 +375,29 @@ exports.xmlEnum2Pot = ({ poGlob, info, potPath }) => {
  * @param potPath
  * @returns {Promise<Array | never>}
  */
-exports.xmlCVDOC2Pot = ({ poGlob, info, potPath }) => {
+exports.xmlCVDOC2Pot = ({ globFile, info, potPath, verbose, log }) => {
   //Find all the files in glob rules
-  const srcPath = info.buildInfo.buildPath[0];
-  return parseAndConcatGlob({ poGlob, srcPath }).then(allFilesFound => {
+  const srcPath = info.sourcePath;
+  return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
+    if (verbose) {
+      allFilesFound.ignoredFiles.forEach(currentFile => {
+        log(`Analyze : ${currentFile} : in ignore conf`);
+      });
+    }
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
     const cleanDash = str => {
       return str.replace("-", "");
     };
     return Promise.all(
-      allFilesFound.map(currentFilePath => {
+      allFilesFound.filesToAnalyze.map(currentFilePath => {
         return new Promise((resolve, reject) => {
+          if (verbose) {
+            log(`Analyze : ${currentFilePath} : ✓`);
+          }
           let views = {};
           xml2js.parseString(
-            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+            fs.readFileSync(currentFilePath, {
               encoding: "utf8"
             }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
@@ -476,21 +467,29 @@ exports.xmlCVDOC2Pot = ({ poGlob, info, potPath }) => {
  * @param potPath
  * @returns {Promise<Array | never>}
  */
-exports.xmlWorkflow2Pot = ({ poGlob, info, potPath }) => {
+exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
   //Find all the files in glob rules
-  const srcPath = info.buildInfo.buildPath[0];
-  return parseAndConcatGlob({ poGlob, srcPath }).then(allFilesFound => {
+  const srcPath = info.sourcePath;
+  return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
+    if (verbose) {
+      allFilesFound.ignoredFiles.forEach(currentFile => {
+        log(`Analyze : ${currentFile} : in ignore conf`);
+      });
+    }
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
     const cleanDash = str => {
       return str.replace("-", "");
     };
     return Promise.all(
-      allFilesFound.map(currentFilePath => {
+      allFilesFound.filesToAnalyze.map(currentFilePath => {
+        if (verbose) {
+          log(`Analyze : ${currentFilePath} : ✓`);
+        }
         return new Promise((resolve, reject) => {
           let views = {};
           xml2js.parseString(
-            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+            fs.readFileSync(currentFilePath, {
               encoding: "utf8"
             }),
             { tagNameProcessors: [stripPrefix, cleanDash] },
@@ -661,92 +660,72 @@ exports.msgmergeMustache = ({ element, srcPath }) => {
  * @param target
  * @returns {Promise<[any , any , any , any , any , any , any , any , any , any]>}
  */
-exports.php2Po = ({ info, phpGlob, potPath, target }) => {
-  const promises = [];
+exports.php2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
+  const srcPath = info.sourcePath;
 
-  const srcPath = info.buildInfo.buildPath[0];
-
-  PO_LANGS.forEach(lang => {
-    promises.push(
-      new Promise((resolve, reject) => {
-        try {
+  return parseAndConcatGlob({ globFile, srcPath }).then(files => {
+    return Promise.all(
+      PO_LANGS.map(lang => {
+        return new Promise((resolve, reject) => {
           const basePo = path.resolve(
-            `${srcPath}/locale/${lang}/LC_MESSAGES/src/${target}_${lang}.po`
+            `${
+              info.buildInfo.buildPath[0]
+            }/locale/${lang}/LC_MESSAGES/src/${targetName}_${lang}.po`
           );
-          const tmpPot = path.resolve(`${potPath}/${target}_${lang}.pot`);
-          const tmpPo = path.resolve(`${potPath}/${target}_${lang}.po`);
-
-          //Find all the php files in glob
-
-          new Promise((resolve, reject) => {
-            glob(
-              phpGlob,
-              {
-                cwd: srcPath,
-                nodir: true
-              },
-              (err, files) => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve(files);
+          const tmpPot = path.resolve(`${potPath}/${targetName}_${lang}.pot`);
+          const tmpPo = path.resolve(`${potPath}/${targetName}_${lang}.po`);
+          if (verbose) {
+            files.ignoredFiles.forEach(currentFile => {
+              log(`Analyze : ${currentFile} : in ignore conf`);
+            });
+            files.filesToAnalyze.forEach(currentFile => {
+              log(`Analyze : ${currentFile} : ✓`);
+            });
+          }
+          //join files
+          const fileList = files.filesToAnalyze.reduce((acc, currentValue) => {
+            return acc + " " + currentValue;
+          }, "");
+          if (fileList.length === 0) {
+            return resolve();
+          }
+          cp.exec(
+            `xgettext --no-location --from-code=utf-8 --language=PHP --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${fileList}`,
+            err => {
+              if (err) {
+                return reject(err);
               }
-            );
-          })
-            .then(filesList => {
-              //Convert the file list in string
-              const filesString = filesList.reduce((acc, currentValue) => {
-                return acc + " " + path.resolve(srcPath, currentValue);
-              }, "");
-              //Extract all the keys with gettext
-              cp.exec(
-                `xgettext --no-location --from-code=utf-8 --language=PHP --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${filesString}`,
-                err => {
-                  if (err) {
-                    return reject(err);
-                  }
-                  //Do nothing if nothing is found
-                  if (!fs.existsSync(tmpPot)) {
-                    //no element found by tmpPot
+              if (!fs.existsSync(tmpPot)) {
+                resolve();
+              }
+              if (!fs.existsSync(basePo)) {
+                cp.exec(
+                  `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
+                  err => {
+                    if (err) {
+                      return reject(err);
+                    }
                     resolve();
                   }
-                  //If the file not exist init it
-                  if (!fs.existsSync(basePo)) {
-                    cp.exec(
-                      `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
-                      err => {
-                        if (err) {
-                          return reject(err);
-                        }
-                        resolve();
-                      }
-                    );
-                  } else {
-                    //Or complete it
-                    cp.exec(
-                      `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
-                      err => {
-                        if (err) {
-                          return reject(err);
-                        }
-                        fs.copyFileSync(tmpPo, basePo);
-                        resolve();
-                      }
-                    );
+                );
+              } else {
+                cp.exec(
+                  `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
+                  err => {
+                    if (err) {
+                      return reject(err);
+                    }
+                    fs.copyFileSync(tmpPo, basePo);
+                    resolve();
                   }
-                }
-              );
-            })
-            .catch(reject);
-        } catch (e) {
-          console.error(e);
-          reject(e);
-        }
+                );
+              }
+            }
+          );
+        });
       })
     );
   });
-
-  return Promise.all(promises);
 };
 /**
  * Extract and merge js files
@@ -757,76 +736,68 @@ exports.php2Po = ({ info, phpGlob, potPath, target }) => {
  * @param potPath
  * @returns {Promise<[any , any , any , any , any , any , any , any , any , any]>}
  */
-exports.js2Po = (globInputs, targetName, info, potPath) => {
-  const promises = [];
+exports.js2Po = ({ globFile, targetName, info, potPath, verbose, log }) => {
+  const srcPath = info.sourcePath;
 
-  const srcPath = info.buildInfo.buildPath[0];
-
-  PO_LANGS.forEach(lang => {
-    promises.push(
-      new Promise((resolve, reject) => {
-        try {
-          const basePo = `${srcPath}/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
+  return parseAndConcatGlob({ globFile, srcPath }).then(files => {
+    return Promise.all(
+      PO_LANGS.map(lang => {
+        return new Promise((resolve, reject) => {
+          const basePo = `${
+            info.buildInfo.buildPath[0]
+          }/locale/${lang}/js/src/js_${targetName}_${lang}.po`;
           const tmpPot = `${potPath}/js_${targetName}_${lang}.pot`;
           const tmpPo = `${potPath}/js_${targetName}_${lang}.po`;
-
-          //Find all the php files in src
-          glob(
-            globInputs,
-            {
-              cwd: srcPath,
-              nodir: true
-            },
-            (err, files) => {
+          if (verbose) {
+            files.ignoredFiles.forEach(currentFile => {
+              log(`Analyze : ${currentFile} : in ignore conf`);
+            });
+            files.filesToAnalyze.forEach(currentFile => {
+              log(`Analyze : ${currentFile} : ✓`);
+            });
+          }
+          //join files
+          const fileList = files.filesToAnalyze.reduce((acc, currentValue) => {
+            return acc + " " + currentValue;
+          }, "");
+          if (fileList.length === 0) {
+            return resolve();
+          }
+          cp.exec(
+            `xgettext --no-location --from-code=utf-8 --language=javascript --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${fileList}`,
+            err => {
               if (err) {
                 return reject(err);
               }
-              //join files
-              const fileList = files.reduce((acc, currentValue) => {
-                return acc + " " + path.resolve(srcPath, currentValue);
-              }, "");
-              cp.exec(
-                `xgettext --no-location --from-code=utf-8 --language=javascript --keyword=___:1,2c --keyword=n___:1,2,4c -o "${tmpPot}" ${fileList}`,
-                err => {
-                  if (err) {
-                    return reject(err);
-                  }
-                  if (!fs.existsSync(tmpPot)) {
+              if (!fs.existsSync(tmpPot)) {
+                resolve();
+              }
+              if (!fs.existsSync(basePo)) {
+                cp.exec(
+                  `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
+                  err => {
+                    if (err) {
+                      return reject(err);
+                    }
                     resolve();
                   }
-                  if (!fs.existsSync(basePo)) {
-                    cp.exec(
-                      `msginit  -o "${basePo}" -i "${tmpPot}" --no-translator --locale=${lang}`,
-                      err => {
-                        if (err) {
-                          return reject(err);
-                        }
-                        resolve();
-                      }
-                    );
-                  } else {
-                    cp.exec(
-                      `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
-                      err => {
-                        if (err) {
-                          return reject(err);
-                        }
-                        fs.copyFileSync(tmpPo, basePo);
-                        resolve();
-                      }
-                    );
+                );
+              } else {
+                cp.exec(
+                  `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${tmpPot}"`,
+                  err => {
+                    if (err) {
+                      return reject(err);
+                    }
+                    fs.copyFileSync(tmpPo, basePo);
+                    resolve();
                   }
-                }
-              );
+                );
+              }
             }
           );
-        } catch (e) {
-          console.error(e);
-          reject(e);
-        }
+        });
       })
     );
   });
-
-  return Promise.all(promises);
 };

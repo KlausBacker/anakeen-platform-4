@@ -1,7 +1,7 @@
 const xml2js = require("xml2js");
 const path = require("path");
 const fs = require("fs");
-const glob = require("glob");
+const { parseAndConcatGlob } = require("../utils/globAnalyze");
 
 const attrType = require("./appConst").sfType;
 
@@ -87,42 +87,29 @@ const upperCaseFirstLetter = function(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
-exports.parseStub = ({ globFile, info, targetPath }) => {
+exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
   //Find all the files in glob rules
-  const srcPath = info.buildInfo.buildPath[0];
-  return Promise.all(
-    globFile.map(currentGlob => {
-      return new Promise((resolve, reject) => {
-        glob(
-          currentGlob,
-          {
-            cwd: srcPath,
-            nodir: true
-          },
-          (err, files) => {
-            if (err) {
-              return reject(err);
-            }
-            resolve(files);
-          }
-        );
+  const srcPath = info.sourcePath;
+  return parseAndConcatGlob({ globFile, srcPath }).then(files => {
+    if (verbose) {
+      files.ignoredFiles.forEach(currentFile => {
+        log(`Analyze : ${currentFile} : in ignore conf`);
       });
-    })
-  ).then(filesList => {
-    const allFilesFound = filesList.reduce((acc, currentFilesList) => {
-      return [...acc, ...currentFilesList];
-    }, []);
+    }
     //Analyze all the files
     const stripPrefix = xml2js.processors.stripPrefix;
     const cleanDash = str => {
       return str.replace("-", "");
     };
     return Promise.all(
-      allFilesFound.map(currentFilePath => {
+      files.filesToAnalyze.map(currentFilePath => {
         return new Promise((resolve, reject) => {
+          if (verbose) {
+            log(`Analyze : ${currentFilePath} : ✓`);
+          }
           let values = {};
           xml2js.parseString(
-            fs.readFileSync(path.resolve(srcPath, currentFilePath), {
+            fs.readFileSync(currentFilePath, {
               encoding: "utf8"
             }),
             { tagNameProcessors: [stripPrefix, cleanDash] },

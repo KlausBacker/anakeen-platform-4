@@ -10,6 +10,7 @@ const {
   msgmergeMustache
 } = require("../utils/POExtractor");
 const { getModuleInfo } = require("../utils/moduleInfo");
+const { analyzeXML } = require("../utils/globAnalyze");
 const mustache2Pot = require("../utils/POExtractorMustache");
 const { Signale } = require("signale");
 const signale = require("signale");
@@ -38,7 +39,7 @@ const deleteFolderRecursive = path => {
   }
 };
 
-exports.po = ({ sourcePath }) => {
+exports.po = ({ sourcePath, verbose }) => {
   const potPath = path.join(sourcePath, TMPPO);
   const interactive = new Signale({ scope: "po" });
   const log = message => {
@@ -57,15 +58,31 @@ exports.po = ({ sourcePath }) => {
     if (poConfig) {
       poEntry = poConfig[0]["po-mustache"];
     }
-    if (!poEntry) {
+    if (!poEntry || poEntry.length === 0) {
       log("No mustache template to extract");
       return Promise.resolve();
     }
 
+    //Order glob by target
+    const globByTargets = poEntry.reduce((acc, currentElement) => {
+      if (!acc[currentElement.$.target]) {
+        acc[currentElement.$.target] = [];
+      }
+      acc[currentElement.$.target].push(currentElement);
+      return acc;
+    }, {});
+
     log("Extract Mustache template");
     return Promise.all(
-      poEntry.map(item => {
-        return mustache2Pot(item.$.source, item.$.target, info, potPath);
+      Object.keys(globByTargets).map(currentKey => {
+        return mustache2Pot({
+          globFile: analyzeXML(globByTargets[currentKey]),
+          targetName: currentKey,
+          info,
+          potPath,
+          verbose,
+          log
+        });
       })
     ).then(files => {
       //Flat files element
@@ -90,20 +107,36 @@ exports.po = ({ sourcePath }) => {
   gulp.task("poJs", async () => {
     const info = await getModuleInfo(sourcePath);
     const poConfig = info.buildInfo.build.config["po-config"];
-    let poJs = null;
+    let poEntry = null;
 
     if (poConfig) {
-      poJs = poConfig[0]["po-js"];
+      poEntry = poConfig[0]["po-js"];
     }
-    if (!poJs) {
-      log("No JS to extract");
+    if (!poEntry || poEntry.length === 0) {
+      log("No JS glob");
       return Promise.resolve();
     }
 
+    //Order glob by target
+    const globByTargets = poEntry.reduce((acc, currentElement) => {
+      if (!acc[currentElement.$.target]) {
+        acc[currentElement.$.target] = [];
+      }
+      acc[currentElement.$.target].push(currentElement);
+      return acc;
+    }, {});
+
     log("Extract JS");
     return Promise.all(
-      poJs.map(jsItem => {
-        return js2Po(jsItem.$.source, jsItem.$.target, info, potPath);
+      Object.keys(globByTargets).map(currentKey => {
+        return js2Po({
+          globFile: analyzeXML(globByTargets[currentKey]),
+          targetName: currentKey,
+          info,
+          potPath,
+          verbose,
+          log
+        });
       })
     );
   });
@@ -113,25 +146,36 @@ exports.po = ({ sourcePath }) => {
   gulp.task("poPhp", async () => {
     const info = await getModuleInfo(sourcePath);
     const poConfig = info.buildInfo.build.config["po-config"];
-    let poPhp = null;
+    let poEntry = null;
 
     if (poConfig) {
-      poPhp = poConfig[0]["po-php"];
+      poEntry = poConfig[0]["po-php"];
     }
-    if (!poPhp) {
-      log("No PHP to extract");
+    if (!poEntry || poEntry.length === 0) {
+      log("No JS glob");
       return Promise.resolve();
     }
+
+    //Order glob by target
+    const globByTargets = poEntry.reduce((acc, currentElement) => {
+      if (!acc[currentElement.$.target]) {
+        acc[currentElement.$.target] = [];
+      }
+      acc[currentElement.$.target].push(currentElement);
+      return acc;
+    }, {});
 
     log("Extract PHP");
 
     return Promise.all(
-      poPhp.map(jsItem => {
+      Object.keys(globByTargets).map(currentKey => {
         return php2Po({
-          phpGlob: jsItem.$.source,
-          target: jsItem.$.target,
+          globFile: analyzeXML(globByTargets[currentKey]),
+          targetName: currentKey,
           info,
-          potPath
+          potPath,
+          verbose,
+          log
         });
       })
     );
@@ -148,24 +192,24 @@ exports.po = ({ sourcePath }) => {
     if (poConfig) {
       globXML = poConfig[0]["po-enum"];
     }
-    if (!globXML) {
+    if (!globXML || globXML.length === 0) {
       log("No enum to extract");
       return Promise.resolve();
     }
 
     log("Extract enum");
-    const poGlob = globXML.map(currentElement => {
-      return currentElement.$.source;
-    });
+    const globFile = analyzeXML(globXML);
 
-    return xmlEnum2Pot({ poGlob, info, potPath }).then(files => {
-      //Concat files
-      return Promise.all(
-        files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "enum" });
-        })
-      );
-    });
+    return xmlEnum2Pot({ globFile, info, potPath, verbose, log }).then(
+      files => {
+        //Concat files
+        return Promise.all(
+          files.map(element => {
+            return msgmerge({ element, srcPath, potPath, prefix: "enum" });
+          })
+        );
+      }
+    );
   });
   /**
    * Extract the smart structure part
@@ -174,28 +218,28 @@ exports.po = ({ sourcePath }) => {
     const info = await getModuleInfo(sourcePath);
     const srcPath = info.buildInfo.buildPath[0];
     const poConfig = info.buildInfo.build.config["po-config"];
-    let poStruct = null;
+    let globXML = null;
 
     if (poConfig) {
-      poStruct = poConfig[0]["po-struct"];
+      globXML = poConfig[0]["po-struct"];
     }
-    if (!poStruct) {
+    if (!globXML || globXML.length === 0) {
       log("No smart element to extract");
       return Promise.resolve();
     }
 
     log("Extract smart element");
-    const poGlob = poStruct.map(currentElement => {
-      return currentElement.$.source;
-    });
+    const globFile = analyzeXML(globXML);
 
-    return xmlStructure2Pot({ poGlob, info, potPath }).then(files => {
-      return Promise.all(
-        files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "" });
-        })
-      );
-    });
+    return xmlStructure2Pot({ globFile, info, potPath, verbose, log }).then(
+      files => {
+        return Promise.all(
+          files.map(element => {
+            return msgmerge({ element, srcPath, potPath, prefix: "" });
+          })
+        );
+      }
+    );
   });
 
   /**
@@ -205,28 +249,28 @@ exports.po = ({ sourcePath }) => {
     const info = await getModuleInfo(sourcePath);
     const srcPath = info.buildInfo.buildPath[0];
     const poConfig = info.buildInfo.build.config["po-config"];
-    let xmlElement = null;
+    let globXML = null;
 
     if (poConfig) {
-      xmlElement = poConfig[0]["po-cvdoc"];
+      globXML = poConfig[0]["po-cvdoc"];
     }
-    if (!xmlElement) {
+    if (!globXML || globXML.length === 0) {
       log("No view control to extract");
       return Promise.resolve();
     }
 
     log("Extract view control element");
-    const poGlob = xmlElement.map(currentElement => {
-      return currentElement.$.source;
-    });
+    const globFile = analyzeXML(globXML);
 
-    return xmlCVDOC2Pot({ poGlob, info, potPath }).then(files => {
-      return Promise.all(
-        files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "cvdoc_" });
-        })
-      );
-    });
+    return xmlCVDOC2Pot({ globFile, info, potPath, verbose, log }).then(
+      files => {
+        return Promise.all(
+          files.map(element => {
+            return msgmerge({ element, srcPath, potPath, prefix: "cvdoc_" });
+          })
+        );
+      }
+    );
   });
 
   /**
@@ -236,28 +280,28 @@ exports.po = ({ sourcePath }) => {
     const info = await getModuleInfo(sourcePath);
     const srcPath = info.buildInfo.buildPath[0];
     const poConfig = info.buildInfo.build.config["po-config"];
-    let xmlElement = null;
+    let globXML = null;
 
     if (poConfig) {
-      xmlElement = poConfig[0]["po-workflow"];
+      globXML = poConfig[0]["po-workflow"];
     }
-    if (!xmlElement) {
+    if (!globXML || globXML.length === 0) {
       log("No workflow to extract");
       return Promise.resolve();
     }
 
     log("Extract workflow element");
-    const poGlob = xmlElement.map(currentElement => {
-      return currentElement.$.source;
-    });
+    const globFile = analyzeXML(globXML);
 
-    return xmlWorkflow2Pot({ poGlob, info, potPath }).then(files => {
-      return Promise.all(
-        files.map(element => {
-          return msgmerge({ element, srcPath, potPath, prefix: "workflow_" });
-        })
-      );
-    });
+    return xmlWorkflow2Pot({ globFile, info, potPath, verbose, log }).then(
+      files => {
+        return Promise.all(
+          files.map(element => {
+            return msgmerge({ element, srcPath, potPath, prefix: "workflow_" });
+          })
+        );
+      }
+    );
   });
 
   gulp.task("extractPo", async () => {

@@ -1,6 +1,7 @@
 const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const { checkGlobElements } = require("../utils/check");
+const { analyzeXML } = require("../utils/globAnalyze");
 const { Signale } = require("signale");
 
 exports.check = ({ sourcePath, verbose }) => {
@@ -21,16 +22,19 @@ exports.check = ({ sourcePath, verbose }) => {
         globXML = stub[0]["config-xml"];
       }
 
-      const globFile = globXML.map(currentElement => {
-        return currentElement.$.source;
-      });
+      const globFile = analyzeXML(globXML);
 
-      if (!globFile || globFile.length === 0) {
+      if (globFile.addGlob === 0) {
         log("No glob xml to check");
         return Promise.resolve();
       }
 
-      return checkGlobElements({ globFile, srcPath: info.sourcePath, verbose, log });
+      return checkGlobElements({
+        globFile,
+        srcPath: info.sourcePath,
+        verbose,
+        log
+      });
     } catch (e) {
       return Promise.reject(e);
     }
