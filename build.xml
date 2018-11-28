@@ -1,15 +1,15 @@
 <?xml version="1.0" ?>
 <module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
     <module:source path="src" />
-        <module:po-config>
-        <module:po-struct source="**/*struct.xml"/>
-        <module:po-enum source="**/*struct.xml"/>
-        <module:po-php source="**/*.php" target="workflow"/>
+    <module:po-config>
+        <module:po-struct source="src/**/*struct.xml"/>
+        <module:po-enum source="src/**/*struct.xml"/>
+        <module:po-php source="src/**/*.php" target="workflow"/>
     </module:po-config>
     <module:stub-config>
-        <module:stub-struct source="**/*struct.xml"/>
+        <module:stub-struct source="src/**/*struct.xml"/>
     </module:stub-config>
     <module:check-config>
-        <module:config-xml source="**/*.xml"/>
+        <module:config-xml source="src/**/*.xml"/>
     </module:check-config>
 </module:config>
