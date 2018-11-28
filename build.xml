@@ -9,4 +9,7 @@
     <module:stub-config>
         <module:stub-struct source="**/*struct.xml"/>
     </module:stub-config>
+    <module:check-config>
+        <module:config-xml source="**/*.xml"/>
+    </module:check-config>
 </module:config>
