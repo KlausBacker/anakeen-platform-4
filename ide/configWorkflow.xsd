@@ -86,7 +86,7 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="ns:elementName" name="ref" use="required"/>
-                <xs:attribute type="ns:timerType" name="type" default="volatile" use="required"/>
+                <xs:attribute type="ns:timerType" name="type"  use="required"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
