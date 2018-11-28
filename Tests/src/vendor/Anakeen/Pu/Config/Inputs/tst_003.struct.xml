@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_003" label="Test n°3">
+        <smart:extends ref="TST_001"/>
+        <smart:icon file="N3.png"/>
+        <smart:revisable>false</smart:revisable>
+        <smart:tag name="testExtended">From Test 2</smart:tag>
+        <smart:fields>
+
+            <smart:field-set name="tst_f_n3" type="frame" label="Level 3" access="ReadWrite" insert-after="::first">
+                <smart:field-text name="tst_three" label="Three" access="Read" />
+            </smart:field-set>
+
+        </smart:fields>
+
+        <smart:field-override field="tst_account" access="None"/>
+    </smart:structure-configuration>
+</smart:config>

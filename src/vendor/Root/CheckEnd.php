@@ -264,7 +264,21 @@ class CheckEnd extends CheckData
              * it has been defined or updated in the current import session.
             */
             if (is_object($this->importer)) {
-                $oa = $this->importer->getImportedAttribute($this->doc->id, $attrid);
+                /** @var \Anakeen\Core\SmartStructure\DocAttr $dbattr */
+                $dbattr = $this->importer->getImportedAttribute($this->doc->id, $attrid);
+                if ($dbattr) {
+                    $oa = new \Anakeen\Core\SmartStructure\NormalAttribute(
+                        $dbattr->id,
+                        $dbattr->docid,
+                        $dbattr->labeltext,
+                        $dbattr->type,
+                        "",
+                        false,
+                        0,
+                        "",
+                        \Anakeen\Core\SmartStructure\BasicAttribute::READWRITE_ACCESS
+                    );
+                }
             }
             /*
              * Otherwise, try to get the attribute from the family's class

@@ -6,10 +6,17 @@ class Date
 {
     public static function getNow(bool $useMicrosecond = false): string
     {
-        $isoDate = date("d-m-Y H:i:s");
+        $isoDate = date("Y-m-d H:i:s");
         if ($useMicrosecond === true) {
             $isoDate .= substr(microtime(), 1, 8);
         }
+        return $isoDate;
+    }
+
+
+    public static function getDate(): string
+    {
+        $isoDate = date("Y-m-d");
         return $isoDate;
     }
 

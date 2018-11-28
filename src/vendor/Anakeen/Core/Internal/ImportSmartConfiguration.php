@@ -730,6 +730,8 @@ class ImportSmartConfiguration
                 $data[] = ["SCHAR", "S"];
             } elseif ($node->nodeValue === "auto") {
                 $data[] = ["SCHAR", "R"];
+            } else {
+                $data[] = ["SCHAR", ""];
             }
             if ($node->getAttribute("max")) {
                 $data[] = ["MAXREV", $node->getAttribute("max")];
@@ -752,6 +754,12 @@ class ImportSmartConfiguration
         if ($node) {
             $data[] = ["ICON", $node->getAttribute("file")];
         }
+
+        $node = $this->getNode($config, "default-folder");
+        if ($node) {
+            $data[] = ["DFLDID", $node->nodeValue];
+        }
+
         $nodes = $this->getNodes($config, "tag");
 
         foreach ($nodes as $node) {
