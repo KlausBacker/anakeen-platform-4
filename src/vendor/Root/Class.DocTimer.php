@@ -192,25 +192,7 @@ create table doctimer ( id serial,
         return $err;
     }
 
-    /**
-     * get all actions need to be executed now
-     */
-    public function getActionsToExecute()
-    {
-        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
-        $q->addQuery("donedate is null");
-        $q->addQuery("tododate < now()");
-        $timerhourlimit = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "FDL_TIMERHOURLIMIT", 2);
-        if ((int)$timerhourlimit <= 0) {
-            $timerhourlimit = 2;
-        }
-        $q->addQuery(sprintf("tododate > now() - interval '%d hour'", $timerhourlimit));
-        $l = $q->Query(0, 0, "TABLE");
-        if ($q->nb > 0) {
-            return $l;
-        }
-        return array();
-    }
+
 
     public function executeTimerNow()
     {

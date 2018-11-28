@@ -156,18 +156,16 @@ class processExecuteAPI
 
     public static function verifyTimerDocuments()
     {
-        // Verify EXEC document
-        $dt = new DocTimer("");
-        $ate = $dt->getActionsToExecute();
+        $ate = \Anakeen\Core\TimerManager::getTaskToExecute();
 
         self::debug(__METHOD__ . " " . sprintf("Found %d doctimers.", count($ate)));
-        foreach ($ate as $k => $v) {
+        foreach ($ate as $task) {
             try {
                 $tmpfile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), __METHOD__);
                 if ($tmpfile === false) {
                     throw new \Exception("Error: could not create temporary file.");
                 }
-                $cmd = sprintf("%s/ank.php --script=processExecute --doctimer-id=%s > %s 2>&1", DEFAULT_PUBDIR, escapeshellarg($v['id']), escapeshellarg($tmpfile));
+                $cmd = sprintf("%s/ank.php --script=processExecute --doctimer-id=%s > %s 2>&1", DEFAULT_PUBDIR, escapeshellarg($task->id), escapeshellarg($tmpfile));
                 self::debug(__METHOD__ . " " . sprintf("Running '%s'", $cmd));
                 system($cmd, $ret);
                 $out = file_get_contents($tmpfile);

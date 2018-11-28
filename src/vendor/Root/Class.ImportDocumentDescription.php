@@ -2386,6 +2386,11 @@ class ImportDocumentDescription
         $this->importedAttribute[$famId][$oa->id] = $oa;
     }
 
+    /**
+     * @param $famId
+     * @param $attrId
+     * @return bool|DocAttr
+     */
     public function getImportedAttribute($famId, $attrId)
     {
         if (isset($this->importedAttribute[$famId][$attrId])) {

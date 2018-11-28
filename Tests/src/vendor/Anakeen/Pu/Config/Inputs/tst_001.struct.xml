@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:structure-configuration name="TST_001" label="Test tout type">
+    <smart:structure-configuration name="TST_001" label="Test n°1">
+        <smart:default-folder>9</smart:default-folder>
+        <smart:icon file="N1.png"/>
         <smart:usefor>N</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
                 <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true" is-abstract="true"/>
