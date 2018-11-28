@@ -7,6 +7,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 
 use Anakeen\Core\Utils\Xml;
+use Dcp\Exception;
 use Dcp\Ui\RenderConfigManager;
 use SmartStructure\Fields\Cvdoc as CvDocFields;
 use SmartStructure\Fields\Mask as MaskFields;
@@ -33,6 +34,14 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
 
         $data = $this->importStructureRender();
         $this->recordSmartData($data);
+    }
+
+
+    public function importAll($xmlFile)
+    {
+        $this->importData($xmlFile);
+        parent::importAll($xmlFile);
+        $this->importRender($xmlFile);
     }
 
     protected function importDataElements()
@@ -188,6 +197,9 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
                 $mskid = $this->evaluate($viewNode, "string({$this->uiPrefix}:mask/@ref)");
                 $rcClass = $this->evaluate($viewNode, "string({$this->uiPrefix}:render-config/@class)");
 
+                if ($mskid && !\CheckDoc::isWellformedLogicalName($mskid)) {
+                    throw new Exception(sprintf("Mask ref \"%s\" is not valid", $mskid));
+                }
                 $cvdoc->addArrayRow(
                     CvDocFields::cv_t_views,
                     [
