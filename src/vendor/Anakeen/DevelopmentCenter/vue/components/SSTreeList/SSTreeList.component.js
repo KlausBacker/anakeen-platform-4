@@ -65,6 +65,10 @@ export default {
       default: () => {
         return {};
       }
+    },
+    inlineFilters: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -118,7 +122,9 @@ export default {
       sort: this.sort
     });
     this.$nextTick(() => {
-      this.createFilterRow();
+      if (this.inlineFilters) {
+        this.createFilterRow();
+      }
     });
     $(window).resize(() => {
       if (this.$refs.ssTreelist) {

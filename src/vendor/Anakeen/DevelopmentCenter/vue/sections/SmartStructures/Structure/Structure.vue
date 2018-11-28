@@ -1,6 +1,6 @@
 <template>
     <ss-treelist ref="structList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues"
-                 :columnTemplate="columnTemplate" :ssName="ssName"></ss-treelist>
+                 :columnTemplate="columnTemplate" :ssName="ssName" :inlineFilters="true"></ss-treelist>
 </template>
 <script>
     import Vue from "vue";

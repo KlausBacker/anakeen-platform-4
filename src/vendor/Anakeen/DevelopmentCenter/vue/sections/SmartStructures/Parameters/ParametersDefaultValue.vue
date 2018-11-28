@@ -1,6 +1,6 @@
 <template>
     <ss-treelist ref="paramDefValList" :items="getItems(this.columnSizeTab)" :url="url" :getValues="getValues"
-                 :columnTemplate="columnTemplate" :messages="messages"></ss-treelist>
+                 :columnTemplate="columnTemplate" :messages="messages" :inlineFilters="true"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
