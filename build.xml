@@ -2,10 +2,10 @@
 <module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
     <module:source path="src" />
     <module:po-config>
-        <module:po-struct source="**/*struct.xml"/>
-        <module:po-enum source="**/*struct.xml"/>
-        <module:po-workflow source="**/*Graph.xml"/>
-        <module:po-php source="**/*.php" target="smart-data-engine"/>
+        <module:po-struct source="src/**/*struct.xml"/>
+        <module:po-enum source="src/**/*struct.xml"/>
+        <module:po-workflow source="src/**/*Graph.xml"/>
+        <module:po-php source="src/**/*.php" target="smart-data-engine"/>
     </module:po-config>
     <module:stub-config>
         <module:stub-struct source="src/config/**/*.xml"/>
@@ -13,6 +13,9 @@
         <module:stub-struct source="Tests/src/vendor/Anakeen/TestUnits/Data/**/*.xml"/>
     </module:stub-config>
     <module:check-config>
-        <module:config-xml source="**/*.xml"/>
+        <module:config-xml source="src/**/*.xml"/>
+        <module:config-xml source="src/vendor/Anakeen/Core/Layout/*.xml" ignore="true"/>
+        <module:config-xml source="src/vendor/Anakeen/lib/vendor/**/*.xml" ignore="true"/>
+        <module:config-xml source="src/config/file-mime.xml" ignore="true"/>
     </module:check-config>
 </module:config>
