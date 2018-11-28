@@ -46,9 +46,11 @@
     <xs:complexType name="poTarget">
         <xs:attribute type="xs:string" name="target" use="required"/>
         <xs:attribute type="xs:string" name="source" use="required"/>
+        <xs:attribute type="xs:boolean" name="ignore" />
     </xs:complexType>
 
     <xs:complexType name="poXML">
         <xs:attribute type="xs:string" name="source" use="required"/>
+        <xs:attribute type="xs:boolean" name="ignore" />
     </xs:complexType>
 </xs:schema>
