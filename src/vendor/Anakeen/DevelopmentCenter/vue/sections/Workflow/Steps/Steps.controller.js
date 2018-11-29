@@ -129,9 +129,9 @@ export default {
                 dataItem[colId]
               }</a>&nbsp`;
             case "profil":
-              return `<a data-role="develRouterLink" href="/devel/security/profiles/?name=${
+              return `<a data-role="develRouterLink" href="/devel/security/profiles/${
                 dataItem[colId]
-              }">${dataItem[colId]}</a>&nbsp`;
+              }/?name=${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
             case "fall":
               return `<a data-role="develRouterLink" href="/devel/security/workflows/${
                 dataItem[colId]
