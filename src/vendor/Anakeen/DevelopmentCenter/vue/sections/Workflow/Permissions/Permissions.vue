@@ -1,6 +1,6 @@
 <template>
     <div class="permissions-grid-parent">
-        <profile-view ref="permGrid" :profileId="wflName" onlyExtendedAcls="true" class="permissions-grid-content"></profile-view>
+        <profile-view ref="permGrid" :profileId="wflName" onlyExtendedAcls="true" class="permissions-grid-content" :detachable="true"></profile-view>
     </div>
 </template>
 <style lang="scss">
