@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      cprofid: 0,
+      cfallid: 0,
       profilWaitingLabel: "",
       empty: false,
       noContentIcon: "security",
@@ -50,19 +50,19 @@ export default {
   methods: {
     loadProfil() {
       kendo.ui.progress(this.$(this.$el), true);
-      this.cprofid = 0;
+      this.cfallid = 0;
       this.$http
         .get(this.profilUrl)
         .then(response => {
-          let cprofid;
+          let cfallid;
           if (typeof this.profilData === "string") {
-            cprofid = response.data.data[this.profilData];
+            cfallid = response.data.data[this.profilData];
           } else if (typeof this.profilData === "function") {
-            cprofid = this.profilData(response);
+            cfallid = this.profilData(response);
           }
-          const cprofidValue = parseInt(cprofid);
-          if (cprofidValue) {
-            this.cprofid = cprofidValue;
+          const cfallidValue = parseInt(cfallid);
+          if (cfallidValue) {
+            this.cfallid = cfallidValue;
           } else {
             this.empty = true;
             this.profilWaitingLabel =

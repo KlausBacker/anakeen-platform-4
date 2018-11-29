@@ -7,8 +7,8 @@
             </div>
             <div class="security-fieldaccess-profile-nocontent-text" :data-text="profilWaitingLabel">{{profilWaitingLabel}}</div>
         </div>
-        <div class="security-fieldaccess-profile-content" v-else-if="cprofid">
-            <profile-grid class="security-fieldaccess-profile-grid" :profileId="cprofid" :defaultColumns="['view', 'edit', 'delete']"></profile-grid>
+        <div class="security-fieldaccess-profile-content" v-else-if="cfallid">
+            <profile-grid class="security-fieldaccess-profile-grid" :profileId="cfallid" :onlyExtendedAcls="true"></profile-grid>
         </div>
     </div>
 </template>
