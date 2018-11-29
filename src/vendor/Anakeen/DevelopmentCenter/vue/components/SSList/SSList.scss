@@ -10,6 +10,7 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
     .smart-structure-tabs-list {
       display: flex;
       flex-direction: column;
+      position: relative;
 
       .smart-structure-tabs-filter {
         z-index: 20;
