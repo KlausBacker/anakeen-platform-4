@@ -10,6 +10,15 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GetFallData">
+            <sde:callable>\Anakeen\Routes\Devel\Security\FallData</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/fall/{id}</sde:pattern>
+            <sde:description>Get definition </sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
         <sde:route name="GetRouteAccesses">
             <sde:callable>\Anakeen\Routes\Devel\Security\RoleRouteAccesses</sde:callable>
             <sde:method>GET</sde:method>
