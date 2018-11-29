@@ -28,32 +28,37 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next) {
+    const filterAction = vueInstance => {
+      const filter = to.query;
+      if (filter) {
+        const filterObject = { logic: "and", filters: [] };
+        filterObject.filters = Object.entries(filter).map(entry => {
+          return {
+            field: entry[0],
+            operator: "contains",
+            value: entry[1]
+          };
+        });
+        if (filterObject.filters.length) {
+          vueInstance.$refs.profilesGrid.dataSource.filter(filterObject);
+        }
+      }
+    };
     if (to.name === "Security::Profile::Access::Element") {
       next(vueInstance => {
         vueInstance.$refs.profileSplitter.disableEmptyContent();
+        if (vueInstance.$refs.profilesGrid.kendoGrid) {
+          filterAction(vueInstance);
+        } else {
+          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction);
+        }
         // Trigger resize to resize the splitter
         vueInstance.$(window).trigger("resize");
       });
     } else {
       next(vueInstance => {
-        const filterAction = () => {
-          const filter = to.query;
-          if (filter) {
-            const filterObject = { logic: "and", filters: [] };
-            filterObject.filters = Object.entries(filter).map(entry => {
-              return {
-                field: entry[0],
-                operator: "contains",
-                value: entry[1]
-              };
-            });
-            if (filterObject.filters.length) {
-              vueInstance.$refs.profilesGrid.dataSource.filter(filterObject);
-            }
-          }
-        };
         if (vueInstance.$refs.profilesGrid.kendoGrid) {
-          filterAction();
+          filterAction(vueInstance);
         } else {
           vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction);
         }
