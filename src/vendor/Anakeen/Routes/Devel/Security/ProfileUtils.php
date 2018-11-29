@@ -44,7 +44,7 @@ class ProfileUtils
         }
     }
 
-    public static function getProperties(SmartElement $profile)
+    public static function getProperties(SmartElement $profile, $withAcl = true)
     {
         $props = [
             "id" => $profile->id,
@@ -69,28 +69,30 @@ class ProfileUtils
             }
         }
 
-        if ($profile->accessControl()->isRealProfile()) {
-            $props["structure"] = SEManager::getNameFromId($profile->getRawValue("dpdoc_famid"));
-        }
-
-        $acls = array_values($profile->acls);
-
-        $extended = $profile->extendedAcls;
-
-        foreach ($acls as $acl) {
-            if (isset($extended[$acl])) {
-                $isExtendedAcl = true;
-                $label = $extended[$acl]["description"];
-            } else {
-                $isExtendedAcl = false;
-                $label = DocumentAccess::$dacls[$acl]["description"];
+        if ($withAcl === true) {
+            if ($profile->accessControl()->isRealProfile()) {
+                $props["structure"] = SEManager::getNameFromId($profile->getRawValue("dpdoc_famid"));
             }
-            $props["acls"][] = [
-                "name" => $acl,
-                "label" => $label,
-                "extended" => $isExtendedAcl
 
-            ];
+            $acls = array_values($profile->acls);
+
+            $extended = $profile->extendedAcls;
+
+            foreach ($acls as $acl) {
+                if (isset($extended[$acl])) {
+                    $isExtendedAcl = true;
+                    $label = $extended[$acl]["description"];
+                } else {
+                    $isExtendedAcl = false;
+                    $label = DocumentAccess::$dacls[$acl]["description"];
+                }
+                $props["acls"][] = [
+                    "name" => $acl,
+                    "label" => $label,
+                    "extended" => $isExtendedAcl
+
+                ];
+            }
         }
 
         return $props;
