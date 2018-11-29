@@ -46,14 +46,18 @@ export default {
   created() {
     this.privateScope = {
       onResizeContent: () => {
-        // this.$(".k-grid-content", this.$refs.profileTreeList);
-        const wrapper = this.$(this.$el);
+        const wrapper = $(this.$el);
         const wrapperHeight = wrapper.height();
         const headerHeight = wrapper.find(".profile-content").height();
-        const contentSize = wrapperHeight - headerHeight;
-        const content = this.$(this.$refs.profileTreeList);
-        content.height(contentSize);
+        let contentSize = wrapperHeight - headerHeight;
+        const content = $(this.$refs.profileTreeList);
+        if (!contentSize) {
+          content.height("100%");
+        } else {
+          content.height(contentSize);
+        }
 
+        contentSize = content.height();
         const treeHeaderHeight = content.find(".k-grid-header").height();
         const treeContent = content.find(".k-grid-content");
         treeContent.height(contentSize - treeHeaderHeight - 5);
@@ -76,11 +80,11 @@ export default {
         return new kendo.data.TreeListDataSource({
           transport: {
             read: options => {
-              kendo.ui.progress(this.$(".k-grid-content", this.$el), true);
+              kendo.ui.progress($(".k-grid-content", this.$el), true);
               this.$http
                 .get(this.privateScope.getCurrentUrl())
                 .then(content => {
-                  kendo.ui.progress(this.$(".k-grid-content", this.$el), false);
+                  kendo.ui.progress($(".k-grid-content", this.$el), false);
                   if (!content.data.success) {
                     this.$emit("error", content.data.messages.join(" "));
                     throw Error(content.data.messages.join(" "));
@@ -163,7 +167,7 @@ export default {
                   ]);
                 })
                 .catch(err => {
-                  kendo.ui.progress(this.$(".k-grid-content", this.$el), false);
+                  kendo.ui.progress($(".k-grid-content", this.$el), false);
                   console.error(err);
                   //this.emit("error", err);
                   options.error(err);
@@ -351,7 +355,7 @@ export default {
   computed: {
     detachPropOptions() {
       return {
-        onlyExtendedAcls: this.onlyExtendedAcls
+        onlyExtendedAcls: !!this.onlyExtendedAcls
       };
     }
   },
@@ -359,7 +363,7 @@ export default {
     this.dataSource = this.privateScope.initDataSource();
     this.privateScope.initTreeView();
     this.privateScope.onResizeContent();
-    this.$(window).resize(this.privateScope.onResizeContent);
+    $(window).resize(this.privateScope.onResizeContent);
   },
   methods: {
     updateGrid: function() {
