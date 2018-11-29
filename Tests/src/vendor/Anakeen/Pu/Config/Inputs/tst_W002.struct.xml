@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_W002" label="Test worflow n°2">
+        <smart:extends ref="WDOC"/>
+        <smart:class>Anakeen\Pu\Config\Workflow002Behavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+    </smart:structure-configuration>
+</smart:config>

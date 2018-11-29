@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0">
+    <mail:mailtemplate xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" name="TST_M002_E2E1" label="Demande de modification - E2 - E1" structure="TST_I002">
+
+        <mail:recipients>
+            <mail:recipient dest="to">
+                <mail:address>test@example.net</mail:address>
+            </mail:recipient>
+        </mail:recipients>
+        <mail:subject>Demande de modification</mail:subject>
+        <mail:body content-type="html"><![CDATA[<p> Hello </p>]]></mail:body>
+    </mail:mailtemplate>
+
+    <mail:mailtemplate xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" name="TST_M002_E2E3" label="Yeah - E2 - E3" structure="TST_I002">
+        <mail:recipients>
+            <mail:recipient dest="to">
+                <mail:address>test@example.net</mail:address>
+            </mail:recipient>
+        </mail:recipients>
+        <mail:subject>Hop E2 E3</mail:subject>
+        <mail:body content-type="html"><![CDATA[<p> Hello </p>]]></mail:body>
+    </mail:mailtemplate>
+</smart:config>

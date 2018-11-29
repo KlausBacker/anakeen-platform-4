@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0">
+    <timer:timer xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0" name="TST_T002" label="Test minute" structure="TST_I002" workflow="TST_W002">
+        <timer:field-date-reference ref="tst_datehour" delta="2 days 3 hours"/>
+        <timer:tasks>
+            <timer:task delta="2 days 2 hours">
+                <timer:sendmail ref="TST_M002_E2E1"/>
+                <timer:sendmail ref="TST_M002_E2E3"/>
+            </timer:task>
+            <timer:task delta="8 days 9 hours">
+                <timer:setstate state="e3"/>
+                <timer:process>
+                    <timer:process-callable function="::Hello"/>
+                </timer:process>
+            </timer:task>
+        </timer:tasks>
+    </timer:timer>
+
+    <timer:timer xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0" name="TST_T002Bis" label="Minute papillon" structure="TST_I002" workflow="TST_W002">
+        <timer:field-date-reference ref="tst_date" delta="10 days"/>
+        <timer:tasks>
+            <timer:task delta="24 hours">
+                <timer:sendmail ref="TST_M002_E2E1"/>
+                <timer:sendmail ref="TST_M002_E2E3"/>
+            </timer:task>
+
+            <timer:task delta="0">
+                <timer:sendmail ref="TST_M002_E2E1"/>
+            </timer:task>
+            <timer:task delta="1 month">
+                <timer:setstate state="e2"/>
+                <timer:sendmail ref="TST_M002_E2E3"/>
+                <timer:sendmail ref="TST_M002_E2E1"/>
+                <timer:process>
+                    <timer:process-callable function="::Hello"/>
+                    <timer:process-argument type="string">World</timer:process-argument>
+                    <timer:process-argument type="field">tst_desc</timer:process-argument>
+                </timer:process>
+            </timer:task>
+        </timer:tasks>
+    </timer:timer>
+</smart:config>
