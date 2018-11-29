@@ -2494,8 +2494,10 @@ function download_success(module, operation, responseObject)
   if (responseObject) {
     var response = eval('(' + responseObject.responseText + ')');
     if (response.error) {
-      Ext.Msg.alert('Server Error', response.error);
       mask.hide();
+      Ext.Msg.alert('Server Error', response.error);
+      // Need display twice tio has good width
+      Ext.Msg.alert('Server Error', response.error);
       return;
     }
   }

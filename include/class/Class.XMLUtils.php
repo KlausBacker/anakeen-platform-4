@@ -119,6 +119,10 @@ class XMLUtils
             $err = sprintf("Missing attribute 'name' in 'module' node.");
             return false;
         }
+        if ($dom->documentElement->hasAttribute('xmlns')) {
+            $err = sprintf("Erroneous namespace \"%s\" in info.xml.", $dom->documentElement->getAttribute("xmlns"));
+            return false;
+        }
         return true;
     }
 }
