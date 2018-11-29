@@ -5,6 +5,24 @@ import { AnkSEGrid } from "@anakeen/ank-components";
 Vue.use(AnkSEGrid);
 Vue.use(Splitter);
 
+const filterAction = (to, vueInstance) => () => {
+  const filter = to.query;
+  if (filter) {
+    const filterObject = { logic: "and", filters: [] };
+    filterObject.filters = Object.entries(filter).map(entry => {
+      const filterOperator = entry[0] === "id" ? "eq" : "contains";
+      return {
+        field: entry[0],
+        operator: filterOperator,
+        value: entry[1]
+      };
+    });
+    if (filterObject.filters.length) {
+      vueInstance.$refs.grid.dataSource.filter(filterObject);
+    }
+  }
+};
+
 const docTypeString = doctype => {
   switch (doctype) {
     case "F":
@@ -39,30 +57,16 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    const filterAction = vueInstance => () => {
-      const filter = to.query;
-      if (filter) {
-        const filterObject = { logic: "and", filters: [] };
-        filterObject.filters = Object.entries(filter).map(entry => {
-          const filterOperator = entry[0] === "id" ? "eq" : "contains";
-          return {
-            field: entry[0],
-            operator: filterOperator,
-            value: entry[1]
-          };
-        });
-        if (filterObject.filters.length) {
-          vueInstance.$refs.grid.dataSource.filter(filterObject);
-        }
-      }
-    };
     if (to.name !== "SmartElements") {
       next(vueInstance => {
         vueInstance.$refs.splitter.disableEmptyContent();
         if (vueInstance.$refs.grid.kendoGrid) {
-          filterAction(vueInstance)();
+          filterAction(to, vueInstance)();
         } else {
-          vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
+          vueInstance.$refs.grid.$once(
+            "grid-ready",
+            filterAction(to, vueInstance)
+          );
         }
         // Trigger resize to resize the splitter
         vueInstance.$(window).trigger("resize");
@@ -70,14 +74,25 @@ export default {
     } else {
       next(vueInstance => {
         if (vueInstance.$refs.grid.kendoGrid) {
-          filterAction(vueInstance)();
+          filterAction(to, vueInstance)();
         } else {
-          vueInstance.$refs.grid.$once("grid-ready", filterAction(vueInstance));
+          vueInstance.$refs.grid.$once(
+            "grid-ready",
+            filterAction(to, vueInstance)
+          );
         }
         // Trigger resize to resize the splitter
         vueInstance.$(window).trigger("resize");
       });
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (this.$refs.grid.kendoGrid) {
+      filterAction(to, this)();
+    } else {
+      this.$refs.grid.$once("grid-ready", filterAction(to, this));
+    }
+    next();
   },
   data() {
     return {

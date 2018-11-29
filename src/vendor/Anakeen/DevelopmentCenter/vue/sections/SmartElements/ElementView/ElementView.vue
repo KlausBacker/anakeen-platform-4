@@ -12,7 +12,7 @@
             </button>
 
         </div>
-        <ank-smart-element ref="smartElement" @ready="onReady" class="smart-element" :initid="initid" :viewId="viewId"></ank-smart-element>
+        <ank-smart-element ref="smartElement" @ready="onReady" @actionClick="onActionClick" class="smart-element" :initid="initid" :viewId="viewId"></ank-smart-element>
     </div>
 </template>
 
@@ -69,6 +69,12 @@
         this.element.name = this.$refs.smartElement.getProperty("name");
         this.$(event.target).find("nav.dcpDocument__menu").css("display", "none");
         kendo.ui.progress(this.$(this.$el), false);
+      },
+      onActionClick(jqueryEvent, element, actionEvent) {
+        const id = actionEvent.options[0];
+        if (id) {
+          this.$router.push(`/devel/smartElements/${id}/view?id=${id}`);
+        }
       }
     }
   }
