@@ -278,7 +278,9 @@ export default {
         columns.forEach(col => {
           switch (col.field) {
             case "config":
-              this.filters += `<th class="k-header" >
+              this.filters += `<th class="k-header" data-field="${
+                col.field
+              }" data-title="${col.title}" role="columnheader" >
                 <div class="filter-clearable" style="position:relative;">
                   <input class="k-textbox filter ${
                     col.field
@@ -291,7 +293,9 @@ export default {
               this.filterRow();
               break;
             case "value":
-              this.filters += `<th class="k-header" >
+              this.filters += `<th class="k-header" data-field="${
+                col.field
+              }" data-title="${col.title}" role="columnheader" >
                 <div class="filter-clearable" style="position:relative;">
                   <input class="k-textbox filter ${
                     col.field
@@ -304,7 +308,9 @@ export default {
               this.filterRow();
               break;
             default:
-              this.filters += `<th class="k-header" >
+              this.filters += `<th class="k-header" data-field="${
+                col.field
+              }" data-title="${col.title}" role="columnheader" >
                 <div class="filter-clearable" style="position:relative;">
                   <input class="k-textbox filter ${
                     col.field
