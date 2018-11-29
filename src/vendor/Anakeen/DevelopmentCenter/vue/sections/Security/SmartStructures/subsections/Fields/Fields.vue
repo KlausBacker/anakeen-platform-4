@@ -1,6 +1,15 @@
 <template>
-    <div>
-        <div>this is template body of Fields component <span v-if="msg">: {{msg}}</span></div>
+    <div class="security-fieldaccess-profile">
+        <div class="security-fieldaccess-profile-nocontent" v-if="empty">
+            <div class="security-fieldaccess-profile-nocontent-icon">
+                <i class="material-icons">{{noContentIcon}}</i>
+                <i class="material-icons disable">not_interested</i>
+            </div>
+            <div class="security-fieldaccess-profile-nocontent-text" :data-text="profilWaitingLabel">{{profilWaitingLabel}}</div>
+        </div>
+        <div class="security-fieldaccess-profile-content" v-else-if="cprofid">
+            <profile-grid class="security-fieldaccess-profile-grid" :profileId="cprofid" :defaultColumns="['view', 'edit', 'delete']"></profile-grid>
+        </div>
     </div>
 </template>
 <!-- CSS to this component only -->
