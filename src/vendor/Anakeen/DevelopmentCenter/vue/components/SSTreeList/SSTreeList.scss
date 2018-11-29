@@ -48,7 +48,7 @@
           position: relative;
 
           input.filter {
-            flex: 1;
+            width: 100%;
 
             & + .filter-clear {
               position: absolute;
@@ -66,11 +66,9 @@
             }
           }
           .filter-drop {
-            width: 2em;
-            height: 2.5em;
-          }
-          .k-textbox {
-            flex: 1;
+            padding: 0.45rem 0.3rem;
+            background-color: transparent;
+            border-color: transparent;
           }
         }
       }

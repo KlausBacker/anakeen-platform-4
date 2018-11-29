@@ -354,6 +354,7 @@ export default {
               );
               e.sender.element[0].firstElementChild.className = result;
               this.operatorconfig = "isnotnull";
+              e.sender.element[0].previousElementSibling.value = "is not null:";
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                 field: "config",
                 operator: "isnotnull"
@@ -366,16 +367,10 @@ export default {
               );
               e.sender.element[0].firstElementChild.className = result;
               this.operatorconfig = "contains";
+              e.sender.element[0].previousElementSibling.value = "";
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
               break;
             default:
-              result = e.sender.element[0].firstElementChild.className.replace(
-                / k-i-filter-clear/g,
-                " k-i-filter"
-              );
-              e.sender.element[0].firstElementChild.className = result;
-              this.operatorconfig = "contains";
-              this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
               break;
           }
         }
@@ -391,6 +386,7 @@ export default {
               );
               e.sender.element[0].firstElementChild.className = result;
               this.operatorvalue = "isnotnull";
+              e.sender.element[0].previousElementSibling.value = "is not null:";
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                 field: "value",
                 operator: "isnotnull"
@@ -403,16 +399,10 @@ export default {
               );
               e.sender.element[0].firstElementChild.className = result;
               this.operatorvalue = "contains";
+              e.sender.element[0].previousElementSibling.value = "";
               this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
               break;
             default:
-              result = e.sender.element[0].firstElementChild.className.replace(
-                / k-i-filter-clear/g,
-                " k-i-filter"
-              );
-              e.sender.element[0].firstElementChild.className = result;
-              this.operatorvalue = "contains";
-              this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
               break;
           }
         }
@@ -423,11 +413,13 @@ export default {
         "change",
         "input.filter",
         event => {
-          const value = event.currentTarget.value;
+          let value = this.getFilterValue(event.currentTarget.value);
+          value = value.replace(" ", "");
           if (value) {
             const colId = event.target.className.split(" ")[2].split("-")[0];
             switch (colId) {
               case "config":
+                event.target.value = value;
                 this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                   field: colId,
                   operator: "contains",
@@ -437,20 +429,37 @@ export default {
                 this.operatorconfig = "contains";
                 break;
               case "value":
+                event.target.value = value;
                 this.$refs.ssTreelist.kendoWidget().dataSource.filter({
                   field: colId,
-                  operator: this.operatorvalue,
+                  operator: (item, val) => {
+                    if (!item) {
+                      return false;
+                    }
+                    if (item instanceof String) {
+                      return val.includes(item);
+                    }
+                    if (item instanceof Object) {
+                      const realArray = item.toJSON();
+                      if (Array.isArray(realArray)) {
+                        let result = false;
+                        let i = 0;
+                        while (i < realArray.length && !result) {
+                          const currentValue = realArray[i];
+                          result = currentValue.indexOf(val) > -1;
+                          i++;
+                        }
+                        return result;
+                      }
+                      return false;
+                    }
+                  },
                   value: value
                 });
                 this.removeEmptyFilter(event);
                 this.operatorvalue = "contains";
                 break;
               default:
-                this.$refs.ssTreelist.kendoWidget().dataSource.filter({
-                  field: colId,
-                  operator: "contains",
-                  value: value
-                });
                 break;
             }
           } else {
@@ -461,11 +470,20 @@ export default {
     },
     removeEmptyFilter(event) {
       let result = "";
-      result = event.target.nextElementSibling.className.replace(
-        / k-filter-clear/g,
-        ""
+      result = event.target.nextElementSibling.firstElementChild.className.replace(
+        / k-i-filter-clear/g,
+        " k-i-filter"
       );
-      event.target.nextElementSibling.className = result;
+      event.target.nextElementSibling.firstElementChild.className = result;
+    },
+    getFilterValue(value) {
+      if (value.match(/[\s\S]+:[\s\S]/g)) {
+        return value.split(":")[1];
+      } else if (value.match(/[\s\S]+:/g)) {
+        return "";
+      } else {
+        return value;
+      }
     }
   }
 };
