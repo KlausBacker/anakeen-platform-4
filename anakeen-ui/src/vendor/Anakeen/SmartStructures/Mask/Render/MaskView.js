@@ -1,6 +1,7 @@
 import "./MaskView.css";
 import $ from "jquery";
 import "@progress/kendo-ui/js/kendo.treelist";
+import "@progress/kendo-ui/js/kendo.columnmenu";
 
 {
   const fitMaskGridToBottom = $tree => {
@@ -80,6 +81,7 @@ import "@progress/kendo-ui/js/kendo.treelist";
             }
           }
         },
+        columnMenu: { columns: true },
         filterable: {
           extra: false,
           operators: {
