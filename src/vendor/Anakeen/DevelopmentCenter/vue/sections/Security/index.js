@@ -1,3 +1,5 @@
+import RightsGrid from "devComponents/profile/profile.vue";
+
 import Security from "./SecurityDevCenter";
 import Routes from "../Security/Routes/RoutesDevCenter";
 import Roles from "../Security/Role/RoleDevCenter";
@@ -9,6 +11,8 @@ import SmartStructuresSections from "../Security/SmartStructures/subsections/exp
 
 import Profiles from "../Security/Profiles/Profiles.vue";
 import ProfileView from "../Security/Profiles/ProfileVisualizer/ProfileVisualizerContent.vue";
+
+import FieldAccess from "../Security/FieldAccess/FieldAccess.vue";
 
 import Workflows from "../Security/Workflows/Workflows.vue";
 import WorkflowsContent from "../Security/Workflows/WorkflowsContent.vue";
@@ -95,6 +99,30 @@ export default {
           },
           component: ProfileView,
           props: true
+        }
+      ]
+    },
+    {
+      name: "Security::FieldAccess",
+      path: "fieldAccess",
+      meta: {
+        label: "Field Access"
+      },
+      component: FieldAccess,
+      children: [
+        {
+          name: "Security::FieldAccess::Access",
+          path: ":fallIdentifier/rights",
+          meta: {
+            label: ":fallIdentifier Rights"
+          },
+          component: RightsGrid,
+          props: route => {
+            return {
+              onlyExtendedAcls: true,
+              profileId: route.params.fallIdentifier
+            };
+          }
         }
       ]
     },
