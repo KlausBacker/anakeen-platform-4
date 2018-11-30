@@ -184,14 +184,17 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     public function getStateLabel($state)
     {
+        if (!$state) {
+            return $state;
+        }
         if ($this->graphModelName) {
-            $label= ___($state, $this->graphModelName.":state");
+            $label = ___($state, $this->graphModelName . ":state");
             if ($label !== $state) {
                 return $label;
             }
         }
         if (!empty($this->stepLabels[$state])) {
-            return $this->stepLabels[$state]["state"]?:$state;
+            return $this->stepLabels[$state]["state"] ?: $state;
         }
         return _($state);
     }
@@ -199,11 +202,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function getTransitionLabel($transitionId)
     {
         if ($this->graphModelName) {
-            $label= ___($transitionId, $this->graphModelName.":transition");
+            $label = ___($transitionId, $this->graphModelName . ":transition");
             if ($label === $transitionId) {
-                $label=$this->transitions[$transitionId]["label"];
+                $label = $this->transitions[$transitionId]["label"];
                 if (!$label) {
-                    $label=$transitionId;
+                    $label = $transitionId;
                 }
             }
             return $label;
@@ -409,7 +412,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_states";
-            $oattr->labeltext = sprintf(_("parameters for %s step"), _($state));
+            $oattr->labeltext = sprintf(_("parameters for %s step"), $this->getStateLabel($state));
             $oattr->link = "";
             $oattr->phpfunc = "";
             $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
@@ -431,7 +434,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("PROFIL")';
             $oattr->id = $aidprofilid;
-            $oattr->labeltext = sprintf(_("%s profile"), _($state));
+            $oattr->labeltext = sprintf(_("%s profile"), $this->getStateLabel($state));
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
@@ -453,7 +456,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("FIELDACCESSLAYERLIST")';
             $oattr->id = $aidprofilid;
-            $oattr->labeltext = sprintf(_("%s field access list"), _($state));
+            $oattr->labeltext = sprintf(_("%s field access list"), $this->getStateLabel($state));
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
@@ -477,7 +480,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->accessibility = "ReadWrite";
             $oattr->type = 'docid("MASK")';
             $oattr->id = $aid;
-            $oattr->labeltext = sprintf(_("%s mask"), _($state));
+            $oattr->labeltext = sprintf(_("%s mask"), $this->getStateLabel($state));
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->elink = '';
@@ -505,7 +508,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->ordered = $ordered++;
             $oattr->phpfunc = "";
             $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
-            $oattr->labeltext = sprintf(_("%s color"), _($state));
+            $oattr->labeltext = sprintf(_("%s color"), $this->getStateLabel($state));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -528,7 +531,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
 
-            $oattr->labeltext = sprintf(_("%s cv"), _($state));
+            $oattr->labeltext = sprintf(_("%s cv"), $this->getStateLabel($state));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -550,7 +553,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->elink = '';
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s mail template"), _($state));
+            $oattr->labeltext = sprintf(_("%s mail template"), $this->getStateLabel($state));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -572,7 +575,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s timer"), _($state));
+            $oattr->labeltext = sprintf(_("%s timer"), $this->getStateLabel($state));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -593,7 +596,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->type = "frame";
             $oattr->id = $aidframe;
             $oattr->frameid = "wf_tab_transitions";
-            $oattr->labeltext = sprintf(_("parameters for %s transition"), _($k));
+            $oattr->labeltext = sprintf(_("parameters for %s transition"), $this->getTransitionLabel($k));
             $oattr->link = "";
             $oattr->phpfunc = "";
             $oattr->options = "autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
@@ -620,7 +623,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->ordered = $ordered++;
             $oattr->options = "autocreated=yes|multiple=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
 
-            $oattr->labeltext = sprintf(_("%s mail template"), _($k));
+            $oattr->labeltext = sprintf(_("%s mail template"), $this->getTransitionLabel($k));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -643,7 +646,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s timer"), _($k));
+            $oattr->labeltext = sprintf(_("%s timer"), $this->getTransitionLabel($k));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -666,7 +669,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s persistent timer"), _($k));
+            $oattr->labeltext = sprintf(_("%s persistent timer"), $this->getTransitionLabel($k));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -688,7 +691,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             $oattr->options = "multiple=yes|autocreated=yes|relativeOrder=" . FamilyAbsoluteOrder::autoOrder;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
-            $oattr->labeltext = sprintf(_("%s unattach timer"), _($k));
+            $oattr->labeltext = sprintf(_("%s unattach timer"), $this->getTransitionLabel($k));
             if ($oattr->isAffected()) {
                 $oattr->Modify();
             } else {
@@ -737,10 +740,14 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
         if (ContextManager::getCurrentUser()->id != 1) { // admin can go to any states
             if (!$foundTo) {
-                return (sprintf(_("ChangeState :: the new \state '%s' is not known or is not allowed from %s"), _($newstate), _($this->doc->state)));
+                return (sprintf(
+                    ___("ChangeState :: the new state '%s' is not known or is not allowed from %s", "sde"),
+                    $this->getStateLabel($newstate),
+                    $this->getStateLabel($this->doc->state)
+                ));
             }
             if (!$foundFrom) {
-                return (sprintf(_("ChangeState :: the initial state '%s' is not known"), _($this->doc->state)));
+                return (sprintf(___("ChangeState :: the initial state '%s' is not known", "sde"), $this->getStateLabel($this->doc->state)));
             }
             if ($this->doc->isLocked()) {
                 $lockUserId = abs($this->doc->locked);
@@ -836,7 +843,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             return $err;
         }
 
-        $revcomment = sprintf(_("change state : %s to %s"), _($oldstate), _($newstate));
+        $revcomment = sprintf(_("change state : %s to %s"), $this->getStateLabel($oldstate), $this->getStateLabel($newstate));
         if ($addcomment != "") {
             $this->doc->addHistoryEntry($addcomment);
         }
@@ -884,7 +891,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             return $err . $err2;
         }
 
-        LogManager::notice(sprintf(_("%s new \state %s"), $this->doc->title, _($newstate)));
+        LogManager::notice(sprintf(_("%s new \state %s"), $this->doc->title, $this->getStateLabel($newstate)));
         $this->doc->restoreAccessControl();
         // post action
         $msg2 = '';
@@ -1037,13 +1044,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function getActivity($state, $def = "")
     {
         if ($this->graphModelName) {
-            $label= ___($state, $this->graphModelName.":activity");
+            $label = ___($state, $this->graphModelName . ":activity");
             if ($label !== $state) {
                 return $label;
             }
         }
         if (!empty($this->stepLabels[$state])) {
-            return $this->stepLabels[$state]["activity"]?:$def;
+            return $this->stepLabels[$state]["activity"] ?: $def;
         }
         return $def;
     }

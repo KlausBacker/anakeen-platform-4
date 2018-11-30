@@ -6860,7 +6860,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($target == 'ooo') {
             $this->lay->Set("V_TITLE", $this->lay->get("TITLE"));
         } else {
-            $this->lay->Set("V_TITLE", $this->getDocAnchor($this->id, $target, $ulink, false, false));
+            $this->lay->Set("V_TITLE", $this->getDocAnchor($this->id, $target, $ulink, $this->getTitle()));
         }
     }
 
