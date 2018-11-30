@@ -142,7 +142,7 @@ class DefaultView extends RenderDefault
                 $workflowMenu->setHtmlLabel(sprintf(
                     '<i style="color:%s" class="menu--workflow-color fa fa-square" /> %s',
                     $document->getStateColor("transparent"),
-                    htmlspecialchars(_($document->getStateActivity($document->getState())))
+                    htmlspecialchars($document->getStepLabel())
                 ));
                 $workflowMenu->setContent(function (ListMenu & $menu) use ($document) {
                     $this->getWorkflowMenu($document, $menu);
@@ -155,7 +155,7 @@ class DefaultView extends RenderDefault
                 $workflowMenu->setImportant(true);
                 $menu->appendElement($workflowMenu);
             } else {
-                $workflowMenu = new SeparatorMenu("workflow", _($document->getState()));
+                $workflowMenu = new SeparatorMenu("workflow", $document->getStepLabel());
 
                 $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
                 $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--right");
@@ -241,13 +241,13 @@ class DefaultView extends RenderDefault
             foreach ($fstate as $v) {
                 $tr = $wdoc->getTransition($doc->state, $v);
 
-                $label = $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, Strings::mb_ucfirst(_($v)));
+                $label = $tr['id'] ? $wdoc->getStateLabel($tr['id']) : $wdoc->getActivity($v, Strings::mb_ucfirst($wdoc->getStateLabel($v)));
                 $itemMenu = new ItemMenu($v, $label);
 
                 $itemMenu->setUrl(sprintf("#action/document.transition:%s:%s", urlencode($tr['id']), urlencode($v)));
                 $itemMenu->setTarget("_dialog"); // alternative to data-popup
                 $visibility = $itemMenu::VisibilityVisible;
-                $tooltip = $wdoc->getActivity($v, Strings::mb_ucfirst(_($v)));
+                $tooltip = $wdoc->getActivity($v, Strings::mb_ucfirst($wdoc->getStateLabel($v)));
                 //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
                 $icon = '';
                 if (!$tr) {
