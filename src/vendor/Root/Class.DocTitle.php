@@ -218,7 +218,7 @@ class DocTitle
      * @return bool|null
      * @throws \Dcp\Db\Exception
      */
-    public static function getTitle($docid, $latest = true, $docrevOption = "latest", array & $info = array())
+    public static function getTitle($docid, $latest = true, $docrevOption = "", array & $info = array())
     {
         if ($latest || $docrevOption === "latest") {
             $sql = sprintf(
