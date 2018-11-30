@@ -85,12 +85,15 @@ class FallData
     protected function getLayers(&$fields)
     {
         $layers = $this->_document->getMultipleRawValues(FallFields::fall_layer);
+        $acl = $this->_document->getMultipleRawValues(FallFields::fall_aclname);
 
         $data = [];
-        foreach ($layers as $layerId) {
+        foreach ($layers as $k => $layerId) {
             $layer = SEManager::getDocument($layerId);
             if ($layer) {
-                $data[] = ProfileUtils::getProperties($layer, false);
+                $prop = ProfileUtils::getProperties($layer, false);
+                $prop["aclName"] = $acl[$k];
+                $data[] = $prop;
                 $fieldLayers = $layer->getArrayRawValues(FalFields::fal_t_fields);
 
                 foreach ($fieldLayers as $fieldLayer) {
