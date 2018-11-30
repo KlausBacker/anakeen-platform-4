@@ -788,6 +788,10 @@ class ImportSmartConfiguration
         if ($node && $node->getAttribute("ref")) {
             $data[] = ["CFALLID", $node->getAttribute("ref")];
         }
+        $node = $this->getNode($config, "default-workflow");
+        if ($node && $node->getAttribute("ref")) {
+            $data[] = ["WID", $node->getAttribute("ref")];
+        }
 
         return $data;
     }
