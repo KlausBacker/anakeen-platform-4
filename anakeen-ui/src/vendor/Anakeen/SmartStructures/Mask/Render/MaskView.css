@@ -62,3 +62,30 @@
 .mask-grid td[role=gridcell] .k-i-collapse {
     cursor: pointer;
 }
+
+.k-grid-content tr[role=row] {
+    word-break: break-word;
+}
+
+.k-grid .attr-type--tab td {
+    white-space: normal !important;
+    word-break: break-word;
+}
+.k-grid .attr-type--frame td {
+    white-space: normal !important;
+    word-break: break-word;
+}
+.k-grid .attr-type--array td {
+    white-space: normal !important;
+    word-break: break-word;
+}
+
+.k-grid .attr-type--text td {
+    white-space: normal !important;
+    word-break: break-word;
+}
+
+.k-grid .k-grid-content tr td {
+    white-space: normal !important;
+    word-break: break-word;
+}
