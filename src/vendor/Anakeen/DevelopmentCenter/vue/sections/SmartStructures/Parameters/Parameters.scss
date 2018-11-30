@@ -3,10 +3,12 @@
   flex-direction: column;
   min-height: 0;
   flex: 1;
+  overflow: hidden;
 }
 .parameters-content {
   display: flex;
   flex: 1;
+  overflow: hidden;
 }
 
 .parameters-nav {
