@@ -16,12 +16,12 @@ class AllRoutes
             $allRoutes = new \Anakeen\Router\RouterManager();
             $tabRoutes = $allRoutes->getRoutes();
             $result = [];
-            foreach ($tabRoutes as $route) {
-                $formatedRoute = $this->formatRoute($route);
-                if ($formatedRoute !== null) {
-                    $result[] = $formatedRoute;
-                }
+        foreach ($tabRoutes as $route) {
+            $formatedRoute = $this->formatRoute($route);
+            if ($formatedRoute !== null) {
+                $result[] = $formatedRoute;
             }
+        }
             return ApiV2Response::withData($response, $this->formatTreeDataSource($result));
     }
     /**
@@ -35,16 +35,16 @@ class AllRoutes
             $formatedRoute = [];
             $nsName = explode('::', $route->name, 2);
 
-            if(!empty($nsName[1])) {
-                $formatedRoute['nameSpace'] = $nsName[0];
-                $formatedRoute['name'] = $nsName[1];
-            } else {
-                $formatedRoute['name'] = $nsName[0];
-            }
+        if (!empty($nsName[1])) {
+            $formatedRoute['nameSpace'] = $nsName[0];
+            $formatedRoute['name'] = $nsName[1];
+        } else {
+            $formatedRoute['name'] = $nsName[0];
+        }
             $formatedRoute['description'] = $route->description;
 
             $formatedRoute['method'] = $route->methods[0];
-            $formatedRoute['pattern'] = is_array($route->pattern) ? implode("\n",$route->pattern) : $route->pattern;
+            $formatedRoute['pattern'] = is_array($route->pattern) ? implode("\n", $route->pattern) : $route->pattern;
             $formatedRoute['priority'] = $route->priority;
             $formatedRoute['override'] = $route->override;
             $formatedRoute['active'] = $route->isActive();
@@ -57,10 +57,10 @@ class AllRoutes
      * @return array
      * reformat treeDataSource to correspond treeList content
      */
-    private function formatTreeDataSource($routes) {
+    private function formatTreeDataSource($routes)
+    {
         $route = $routes;
-        uasort($route, function ($a, $b)
-        {
+        uasort($route, function ($a, $b) {
             if ($a['name'] && !$b['name']) {
                 return -1;
             } elseif (!$a['name'] && $b['name']) {
@@ -74,20 +74,29 @@ class AllRoutes
         $nameSpaceTab = [];
         $nameTab = [];
 
-        foreach($route as $item){
+        foreach ($route as $item) {
             $item['id'] = $currentId++;
             $currentNameSpace = $nameSpaceTab[$item['nameSpace']];
-            if($currentNameSpace === null && $item['nameSpace'] !== null) {
+            if ($currentNameSpace === null && $item['nameSpace'] !== null) {
                 $newId = $currentId++;
                 array_push($tree, ['id' => $newId, 'parentId' => null, 'name' => $item['nameSpace'], 'rowLevel' => 1, 'active' => $item['active']]);
                 $nameSpaceTab[$item['nameSpace']] = $newId;
                 $currentNameSpace = $newId;
             }
-            if($item['name']) {
+            if ($item['name']) {
                 $currentName = $nameTab[$item['nameSpace']][$item['name']];
-                if($currentName === null){
+                if ($currentName === null) {
                     $newId = $currentId++;
-                    array_push($tree,['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],'description' => $item['description'], 'priority' => $item['priority'], 'method' => $item['method'], 'pattern' => $item['pattern'], 'override' => $item['override'], 'rowLevel' => 2, 'active' => $item['active']]);
+                    array_push($tree, ['id' => $newId,
+                     'parentId' => $currentNameSpace,
+                     'name' => $item['name'],
+                     'description' => $item['description'],
+                     'priority' => $item['priority'],
+                     'method' => $item['method'],
+                     'pattern' => $item['pattern'],
+                     'override' => $item['override'],
+                     'rowLevel' => 2,
+                     'active' => $item['active']]);
                     $nameTab[$item['nameSpace']][$item['name']] = $newId;
                 }
             } else {

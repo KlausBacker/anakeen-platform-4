@@ -33,7 +33,8 @@ class Plugins
     /**
      * @throws Exception
      */
-    public function getAdminPluginsConfig() {
+    public function getAdminPluginsConfig()
+    {
         $dir = ContextManager::getRootDirectory() . "/" . self::PluginsConfigDir;
         $config = [];
         if (file_exists($dir)) {
@@ -61,7 +62,8 @@ class Plugins
         return self::sortPlugins($config);
     }
 
-    protected static function insertBefore(array & $result, $pluginName, $new) {
+    protected static function insertBefore(array & $result, $pluginName, $new)
+    {
         foreach ($result as $k => & $v) {
             if ($v["name"] === $pluginName) {
                 if ($k === 0) {
@@ -75,7 +77,8 @@ class Plugins
         return false;
     }
 
-    protected static function insertAfter(array & $result, $pluginName, $new) {
+    protected static function insertAfter(array & $result, $pluginName, $new)
+    {
         foreach ($result as $k => & $v) {
             if ($v["name"] == $pluginName) {
                 array_splice($result, $k + 1, 0, [$new]);
@@ -85,11 +88,14 @@ class Plugins
         return false;
     }
 
-    protected static function getPluginByName(array $plugins, $pluginName) {
-        $filter = array_filter($plugins,
+    protected static function getPluginByName(array $plugins, $pluginName)
+    {
+        $filter = array_filter(
+            $plugins,
             function ($plugin) use ($pluginName) {
                 return ($plugin['name'] === $pluginName);
-            });
+            }
+        );
         if (empty($filter)) {
             return null;
         } else {
@@ -97,7 +103,8 @@ class Plugins
         }
     }
 
-    protected static function updatePluginsItem(array & $result, $pluginName, $orders) {
+    protected static function updatePluginsItem(array & $result, $pluginName, $orders)
+    {
 
         $alreadyAdded = self::getPluginByName($result, $pluginName);
 
@@ -148,7 +155,8 @@ class Plugins
      * @return array sorted plugins
      * @throws Exception
      */
-    protected static function sortPlugins(array $config) {
+    protected static function sortPlugins(array $config)
+    {
         $result = [];
         if (!empty($config)) {
             foreach ($config as $plugin) {
@@ -158,7 +166,8 @@ class Plugins
         return $result;
     }
 
-    protected static function normalizeXMLPlugins(\SimpleXMLElement $xmlObject, $parentPluginPath = "") {
+    protected static function normalizeXMLPlugins(\SimpleXMLElement $xmlObject, $parentPluginPath = "")
+    {
         $result = [];
         $wsVersion = ContextManager::getParameterValue(Settings::NsSde, "WVERSION");
         $generatedJs = UIGetAssetPath::getElementAssets(
@@ -224,14 +233,15 @@ class Plugins
     }
 
 
-    protected static function mergePlugins(array $plugins) {
+    protected static function mergePlugins(array $plugins)
+    {
         $result = [];
         foreach ($plugins as $pluginName => $overrides) {
             $completeOverrides = array_filter($overrides, function ($override) {
-               return isset($override['override']) && ($override['override'] === 'complete');
+                return isset($override['override']) && ($override['override'] === 'complete');
             });
             $baseOverrides = array_filter($overrides, function ($override) {
-               return !isset($override['override'])
+                return !isset($override['override'])
                    || ($override['override'] !== 'partial' && $override['override'] !== 'complete');
             });
             switch (count($baseOverrides)) {

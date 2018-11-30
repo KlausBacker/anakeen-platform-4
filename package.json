@@ -17,6 +17,7 @@
     "RELEASE"
   ],
   "devDependencies": {
+    "@anakeen/anakeen-cli": "latest",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
@@ -36,8 +37,5 @@
     "vue-router": "^3.0.1",
     "vue-router-multi-view": "^0.0.4",
     "vuex": "^3.0.1"
-  },
-  "dependencies": {
-    "@anakeen/anakeen-cli": "^1.0.1-1542872455"
   }
 }

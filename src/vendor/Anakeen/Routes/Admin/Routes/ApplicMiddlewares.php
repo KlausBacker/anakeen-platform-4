@@ -2,7 +2,6 @@
 
 namespace Anakeen\Routes\Admin\Routes;
 
-
 use Anakeen\Router\ApiV2Response;
 
 class ApplicMiddlewares
@@ -89,4 +88,3 @@ class ApplicMiddlewares
         return $formatedRoute;
     }
 }
-

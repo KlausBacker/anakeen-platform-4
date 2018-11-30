@@ -7,12 +7,4 @@
     <requires>
         <module name="user-interfaces"/>
     </requires>
-
-    <post-install>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/AdminCenter/Config/adminAccess.xml">
-        <label>DIR Structure view</label>
-    </process>
-    </post-install>
-    <post-upgrade>
-    </post-upgrade>
 </module>
