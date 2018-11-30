@@ -2,10 +2,10 @@
 
 set -eo pipefail
 
-find . -type f -name "build.json" -exec autorelease {} \;
-
 make autotest
 
 mv -v *.app /var/www/html/repo
 
 mkwebinstrepo /var/www/html/repo
+ls -al /var/www/html/repo/
+more /var/www/html/repo/content.xml
