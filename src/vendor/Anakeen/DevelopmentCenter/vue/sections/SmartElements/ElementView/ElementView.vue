@@ -91,7 +91,7 @@
         event.preventDefault();
         const id = action.options[0];
         if (id) {
-          this.$router.push(`/devel/smartElements/${id}/view?id=${id}`);
+          this.$router.push(`/devel/smartElements/${id}/view?filters=${this.$.param( { id })}`);
         }
       },
       onShowError(event, element, error) {

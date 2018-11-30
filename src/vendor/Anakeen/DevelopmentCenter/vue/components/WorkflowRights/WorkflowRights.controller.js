@@ -48,8 +48,7 @@ export default {
     }
   },
   components: {
-    AnkTreeList,
-    Window
+    AnkTreeList
   },
   computed: {
     resolvedWorkflowConfig() {

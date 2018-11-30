@@ -110,9 +110,9 @@ export default {
             event.data.cellRender.html(
               `<a data-role="develRouterLink" href="/devel/smartElements/${
                 event.data.rowData.id
-              }/view?id=${
-                event.data.rowData.id
-              }">${event.data.cellRender.html()}</a>`
+              }/view?filters=${this.$.param({
+                id: event.data.rowData.id
+              })}">${event.data.cellRender.html()}</a>`
             );
             break;
         }
