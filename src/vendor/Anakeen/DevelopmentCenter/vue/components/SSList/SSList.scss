@@ -6,6 +6,7 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
   .smart-structure-tabs {
     display: flex;
     flex: 1;
+    overflow: auto;
 
     .smart-structure-tabs-list {
       display: flex;
@@ -99,6 +100,7 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
       display: flex;
       border: 1px solid $smart-structure-list-border-color;
       border-radius: .25rem;
+      overflow: auto;
 
     }
   }

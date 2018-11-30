@@ -31,6 +31,7 @@
         display: flex;
         flex-direction: column;
         flex: 1;
+        overflow: hidden;
 
         .ss-content {
             display: flex;
@@ -40,6 +41,7 @@
             border-radius: .25rem;
             min-height: 0;
             flex-direction: column;
+            overflow: hidden;
         }
 
     }

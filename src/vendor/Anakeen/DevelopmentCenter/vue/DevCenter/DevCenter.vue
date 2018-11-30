@@ -27,16 +27,19 @@
         flex-direction: column;
         flex:1;
         min-height: 0;
+        overflow: hidden;
 
         .dev-center-content {
             display: flex;
             flex: 1;
             min-height: 0;
+            overflow: hidden;
 
             .dev-center-content-view {
                 display: flex;
                 flex: 1;
                 min-height: 0;
+                overflow: hidden;
 
                 a[data-role=develRouterLink] {
                     color: #157EFB;
