@@ -6,38 +6,36 @@
   overflow-y:hidden;
 
 
-
-  .se-splitter {
-    height: 100%;
-    width: 100%;
-    & /deep/ {
-      .se-grid {
-        a[data-role=develRouterLink] {
-          color: #157EFB;
-          text-decoration: underline;
-        }
-        .actionMenu {
-          .k-animation-container {
-            left: -9rem !important;
-          }
-        }
-      }
-    }
-  }
-
   & /deep/ {
     .smart-element-grid {
       .grid-cell-content {
         word-break: break-all;
         word-break: break-word;
       }
+
+      a[data-role=develRouterLink] {
+        color: #157EFB;
+        text-decoration: underline;
+      }
+      .actionMenu {
+        .k-animation-container {
+          left: -9rem !important;
+        }
+      }
+
+      th .filter-input {
+        margin-top:0.7rem;
+      }
+      .smart-element-grid .k-filtercell .k-dropdown-operator + button {
+        top: 0.6rem;
+      }
     }
-    th .filter-input {
-      margin-top:0.7rem;
-    }
-    .smart-element-grid .k-filtercell .k-dropdown-operator + button {
-      top: 0.6rem;
-    }
+  }
+
+  .se-splitter {
+    height: 100%;
+    width: 100%;
+
   }
 
   .smart-elements-view {

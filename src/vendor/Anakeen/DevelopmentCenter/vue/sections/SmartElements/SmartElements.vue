@@ -14,12 +14,8 @@
         </ank-splitter>
     </div>
 </template>
-<!-- CSS to this component only -->
-<style lang="scss">
-    @import "./SmartElements.scss";
-</style>
 <!-- Global CSS -->
 <style scoped lang="scss">
-    @import "~highlight.js/styles/github.css";
+    @import "./SmartElements.scss";
 </style>
 <script src="./SmartElements.controller.js"></script>
