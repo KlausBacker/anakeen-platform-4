@@ -468,6 +468,11 @@ export default {
                 this.operatorvalue = "contains";
                 break;
               default:
+                this.$refs.ssTreelist.kendoWidget().dataSource.filter({
+                  field: colId,
+                  operator: "contains",
+                  value: value
+                });
                 break;
             }
           } else {
