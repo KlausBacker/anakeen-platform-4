@@ -21,7 +21,8 @@ class Config
      * @param \Slim\Http\response $response
      * @throws DocManager\Exception
      */
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response) {
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
+    {
 
         $result = [
             "user"=> [],
@@ -52,7 +53,8 @@ class Config
         return $response->withJson($result);
     }
 
-    public function getChildrenFamilies(\Anakeen\Core\Internal\SmartElement $smartElement, &$result = []) {
+    public function getChildrenFamilies(\Anakeen\Core\Internal\SmartElement $smartElement, &$result = [])
+    {
         $search = new \SearchDoc("", -1);
         $search->setObjectReturn();
         $search->addFilter("fromid = %d", $smartElement->id);

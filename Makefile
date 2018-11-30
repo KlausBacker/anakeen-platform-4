@@ -26,6 +26,8 @@ YARN_BIN=yarn
 
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 COMPOSER_BIN=composer
+CBF_BIN=php ./ide/vendor/bin/phpcbf
+CS_BIN=php ./ide/vendor/bin/phpcs
 
 -include Makefile.local
 
@@ -109,6 +111,28 @@ cleanAll: clean ## clean the local pub and the node_module
 
 po: ## extract the po
 	${ANAKEEN_CLI_BIN} extractPo --sourcePath $(ADMIN_CENTER_SRC_PATH)
+
+########################################################################################################################
+##
+## Beautify TARGET
+##
+########################################################################################################################
+
+beautify: $(NODE_MODULE_PATH)
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
+	$(YARN_BIN) run beautify
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
+
+lint: $(NODE_MODULE_PATH)
+	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+
+checkXML: $(NODE_MODULE_PATH)
+	${ANAKEEN_CLI_BIN} check -s .
 
 ########################################################################################################################
 ##

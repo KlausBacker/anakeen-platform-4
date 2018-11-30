@@ -22,7 +22,7 @@ class AllMiddlewares
                 $result[] = $formatedMiddleware;
             }
         }
-        return ApiV2Response::withData($response,$this->formatTreeDataSource($result));
+        return ApiV2Response::withData($response, $this->formatTreeDataSource($result));
     }
 
     /**
@@ -36,7 +36,7 @@ class AllMiddlewares
         $formatedMiddleware = [];
         $nsName = explode('::', $middleware->name, 2);
 
-        if(!empty($nsName[1])) {
+        if (!empty($nsName[1])) {
             $formatedMiddleware['nameSpace'] = $nsName[0];
             $formatedMiddleware['name'] = $nsName[1];
         } else {
@@ -55,16 +55,16 @@ class AllMiddlewares
      * @return array
      * reformat dataSource to correspond treeList content
      */
-    private function formatTreeDataSource($middlewares) {
+    private function formatTreeDataSource($middlewares)
+    {
         $middleware = $middlewares;
-        uasort($middleware, function ($a, $b)
-        {
+        uasort($middleware, function ($a, $b) {
             if ($a['name'] && !$b['name']) {
                 return -1;
             } elseif (!$a['name'] && $b['name']) {
                 return 1;
             } else {
-                return (strcmp($a['nameSpace'] ,$b['nameSpace'])) ? -1 : 1;
+                return (strcmp($a['nameSpace'], $b['nameSpace'])) ? -1 : 1;
             }
         });
         $currentId = 1;
@@ -72,20 +72,28 @@ class AllMiddlewares
         $nameSpaceTab = [];
         $nameTab = [];
 
-        foreach($middleware as $item){
+        foreach ($middleware as $item) {
             $item['id'] = $currentId++;
             $currentNameSpace = $nameSpaceTab[$item['nameSpace']];
-            if($currentNameSpace === null && $item['nameSpace'] !== null) {
+            if ($currentNameSpace === null && $item['nameSpace'] !== null) {
                 $newId = $currentId++;
                 array_push($tree, ['id' => $newId, 'parentId' => null, 'name' => $item['nameSpace'], 'rowLevel' => 1]);
                 $nameSpaceTab[$item['nameSpace']] = $newId;
                 $currentNameSpace = $newId;
             }
-            if($item['name']) {
+            if ($item['name']) {
                 $currentName = $nameTab[$item['nameSpace']][$item['name']];
-                if($currentName === null){
+                if ($currentName === null) {
                     $newId = $currentId++;
-                    array_push($tree,['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],'description' => $item['description'], 'priority' => $item['priority'], 'method' => $item['method'], 'pattern' => $item['pattern'], 'rowLevel' => 2]);
+                    array_push(
+                        $tree,
+                        ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $item['name'],
+                        'description' => $item['description'],
+                        'priority' => $item['priority'],
+                        'method' => $item['method'],
+                        'pattern' => $item['pattern'],
+                        'rowLevel' => 2]
+                    );
                     $nameTab[$item['nameSpace']][$item['name']] = $newId;
                 }
             } else {
@@ -95,6 +103,4 @@ class AllMiddlewares
         }
         return $tree;
     }
-
-
 }

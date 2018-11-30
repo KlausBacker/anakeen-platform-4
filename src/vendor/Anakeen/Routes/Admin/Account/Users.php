@@ -8,7 +8,6 @@
 
 namespace Anakeen\Routes\Admin\Account;
 
-
 use Anakeen\Core\DbManager;
 use Dcp\Sacc\Exception;
 
@@ -22,7 +21,8 @@ class Users
      * @throws Exception
      * @throws \Dcp\Db\Exception
      */
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response) {
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
+    {
         $result = [];
         $filter = $request->getQueryParam("filter");
         $skip = $request->getQueryParam("skip");
@@ -56,7 +56,7 @@ class Users
         if ($skip !== null) {
             $searchAccount->setStart($skip);
         }
-        if($take !== null) {
+        if ($take !== null) {
             $searchAccount->setSlice($take);
         }
 
@@ -78,6 +78,5 @@ class Users
             "total"=> $nResult,
             "data"=> array_values($result)
         ]);
-
     }
 }

@@ -23,5 +23,4 @@ class Disable
         }
         return $response->withStatus(200);
     }
-
 }

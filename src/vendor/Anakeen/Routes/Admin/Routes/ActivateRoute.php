@@ -19,9 +19,9 @@ class ActivateRoute
         $route = \Anakeen\Router\RouterLib::getRouteInfo($args['routeName']);
         try {
             $route->setActive(true);
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             return ApiV2Response::withData($response, $e)->write($e);
         }
-        return ApiV2Response::withData($response,$route);
+        return ApiV2Response::withData($response, $route);
     }
 }
