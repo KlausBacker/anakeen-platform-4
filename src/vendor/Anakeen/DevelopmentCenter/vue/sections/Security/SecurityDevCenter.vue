@@ -22,6 +22,10 @@
               label: "Profiles"
             },
             {
+              name: "Security::FieldAccess",
+              label: "Field Access"
+            },
+            {
               name: "Security::Roles",
               label: "Roles"
             },

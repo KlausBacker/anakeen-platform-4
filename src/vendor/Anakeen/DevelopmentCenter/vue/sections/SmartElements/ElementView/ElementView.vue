@@ -1,6 +1,6 @@
 <template>
     <div class="smart-element-view">
-        <div v-if="isReady" class="smart-element-view-toolbar">
+        <div v-if="isReady && !errorMessage" class="smart-element-view-toolbar">
             <div>
                 Title : <b>{{element.title}}</b>
             </div>
@@ -12,7 +12,13 @@
             </button>
 
         </div>
-        <ank-smart-element ref="smartElement" @ready="onReady" class="smart-element" :initid="initid" :viewId="viewId"></ank-smart-element>
+        <ank-smart-element v-show="!errorMessage" ref="smartElement" @ready="onReady" @displayError="onShowError" @internalComponentError="onShowError" @actionClick="onActionClick" class="smart-element" :initid="initid" :viewId="viewId"></ank-smart-element>
+        <div v-show="errorMessage" class="smart-element-error-view">
+            <div class="smart-element-error-content">
+                <i class="material-icons smart-element-error-icon">error_outline</i>
+                <span class="smart-element-error-text">{{errorMessage}}</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -38,7 +44,8 @@
     },
     data() {
       return {
-        element: null
+        element: null,
+        errorMessage: ""
       }
     },
     mounted() {
@@ -48,6 +55,15 @@
       isReady() {
         return !!this.element;
       }
+    },
+    beforeRouteEnter(to, from, next) {
+      next(vueInstance => {
+        vueInstance.errorMessage = "";
+      })
+    },
+    beforeRouteUpdate(to, from, next) {
+      this.errorMessage = "";
+      next();
     },
     devCenterRefreshData() {
       if (this.$refs.smartElement) {
@@ -65,9 +81,21 @@
         }
       },
       onReady(event, element) {
+        this.errorMessage = "";
         this.element = element;
         this.element.name = this.$refs.smartElement.getProperty("name");
         this.$(event.target).find("nav.dcpDocument__menu").css("display", "none");
+        kendo.ui.progress(this.$(this.$el), false);
+      },
+      onActionClick(event, element, action) {
+        event.preventDefault();
+        const id = action.options[0];
+        if (id) {
+          this.$router.push(`/devel/smartElements/${id}/view?id=${id}`);
+        }
+      },
+      onShowError(event, element, error) {
+        this.errorMessage = error.message;
         kendo.ui.progress(this.$(this.$el), false);
       }
     }
@@ -87,6 +115,29 @@
             align-items: center;
             justify-content: space-between;
             background: #FAFAFA;
+        }
+
+        .smart-element-error-view {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .smart-element-error-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: #555;
+                max-width: 75%;
+
+                .smart-element-error-icon {
+                    font-size: 13rem;
+                }
+
+                .smart-element-error-text {
+                    font-size: 2rem;
+                }
+            }
         }
     }
 </style>

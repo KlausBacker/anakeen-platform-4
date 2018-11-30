@@ -6,7 +6,7 @@
             :schema-model="listModel"
         ></kendo-datasource>
         <div class="smart-structure-tabs">
-            <div class="smart-structure-tabs-list">
+            <div class="smart-structure-tabs-list" ref="ssTabsList">
                 <div v-if="hasFilter" class="smart-structure-tabs-filter">
                     <input class="form-control k-textbox" type="search" :placeholder="filterPlaceholder" v-model="listFilter"/>
                     <span class="filter-list-clear" @click="clearFilter"><i class="material-icons">close</i></span>

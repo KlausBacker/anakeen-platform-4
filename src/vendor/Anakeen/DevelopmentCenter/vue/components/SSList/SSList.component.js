@@ -170,9 +170,11 @@ export default {
       }
     },
     readData(options) {
+      kendo.ui.progress(this.$(this.$refs.ssTabsList), true);
       this.$http
         .get(this.resolveListUrl)
         .then(response => {
+          kendo.ui.progress(this.$(this.$refs.ssTabsList), false);
           options.success(response);
           this.$nextTick(() => {
             const active = this.$(".router-link-active", this.$el);
@@ -182,6 +184,7 @@ export default {
           });
         })
         .catch(error => {
+          kendo.ui.progress(this.$(this.$refs.ssTabsList), false);
           options.error(error);
         });
     },
