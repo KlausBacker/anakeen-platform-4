@@ -6,6 +6,7 @@
   overflow-y:hidden;
 
 
+
   .se-splitter {
     height: 100%;
     width: 100%;
@@ -30,6 +31,12 @@
         word-break: break-all;
         word-break: break-word;
       }
+    }
+    th .filter-input {
+      margin-top:0.7rem;
+    }
+    .smart-element-grid .k-filtercell .k-dropdown-operator + button {
+      top: 0.6rem;
     }
   }
 
