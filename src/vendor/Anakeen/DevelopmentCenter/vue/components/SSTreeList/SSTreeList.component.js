@@ -84,7 +84,15 @@ export default {
   data() {
     return {
       remoteDataSource: "",
-      columnSizeTab: [],
+      columnSizeTab: window.localStorage.getItem(
+        "ss-list-column-size-conf-" + this.ssName
+      )
+        ? JSON.parse(
+            window.localStorage.getItem(
+              "ss-list-column-size-conf-" + this.ssName
+            )
+          )
+        : [],
       filters: "",
       operatorconfig: "contains",
       operatorvalue: "contains"
@@ -148,7 +156,7 @@ export default {
     onColumnResize(e) {
       e.preventDefault();
       let found = undefined;
-      if (this.columnSizeTab) {
+      if (this.columnSizeTab.length > 0) {
         if (Array.isArray(e.column)) {
           found = this.columnSizeTab.find(
             item => item.field === e.column[0].field

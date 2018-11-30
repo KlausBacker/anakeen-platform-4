@@ -13,7 +13,10 @@
         props: ["ssName"],
         data() {
             return {
-                columnSizeTab: [],
+                columnSizeTab: window.localStorage.getItem(
+                  "ss-list-column-size-conf-" + this.ssName
+                ) ? JSON.parse(window.localStorage.getItem(
+                  "ss-list-column-size-conf-" + this.ssName)) : [],
                 items: [
                     {name: "id", label: "Identification", hidden: false},
                     {name: "structure", label: "Structure", hidden: true},
@@ -86,19 +89,15 @@
                 }
             }
         },
-        created() {
-            this.columnSizeTab = JSON.parse(
-                window.localStorage.getItem(
-                    "ss-list-column-size-conf-" + this.ssName
-                ));
-        },
         mounted() {
+          if (this.$refs.structList) {
             this.$refs.structList.$refs.ssTreelist.kendoWidget().bind("columnResize", (e) => {
-                window.localStorage.setItem(
-                    "ss-list-column-size-conf-" + this.ssName,
-                    JSON.stringify(this.$refs.structList.onColumnResize(e))
-                );
+              window.localStorage.setItem(
+                "ss-list-column-size-conf-" + this.ssName,
+                JSON.stringify(this.$refs.structList.onColumnResize(e))
+              );
             });
+          }
         }
     }
 </script>

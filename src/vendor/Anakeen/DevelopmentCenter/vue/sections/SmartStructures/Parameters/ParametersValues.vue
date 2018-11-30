@@ -11,7 +11,10 @@
     props: ["ssName"],
     data() {
       return {
-        columnSizeTab: [],
+        columnSizeTab: window.localStorage.getItem(
+          "param-list-values-column-size-conf-" + this.ssName
+        ) ? JSON.parse(window.localStorage.getItem(
+          "param-list-values-column-size-conf-" + this.ssName)) : [],
         items: [
           { name: "id", label: "Identification", hidden: false},
           { name: "type", label: "Type", hidden: false},
@@ -76,19 +79,15 @@
         messages: "There are no default parameter values for this Smart Structure..."
       }
     },
-    created() {
-      this.columnSizeTab = JSON.parse(
-        window.localStorage.getItem(
-          "param-list-default-column-size-conf-" + this.ssName
-        ));
-    },
     mounted() {
-      this.$refs.paramDefList.$refs.ssTreelist.kendoWidget().bind("columnResize", (e) => {
-        window.localStorage.setItem(
-          "param-list-default-column-size-conf-" + this.ssName,
-          JSON.stringify(this.$refs.paramDefList.onColumnResize(e))
-        );
-      });
+      if (this.$refs.paramDefList) {
+        this.$refs.paramDefList.$refs.ssTreelist.kendoWidget().bind("columnResize", (e) => {
+          window.localStorage.setItem(
+            "param-list-values-column-size-conf-" + this.ssName,
+            JSON.stringify(this.$refs.paramDefList.onColumnResize(e))
+          );
+        });
+      }
     }
   }
 </script>
