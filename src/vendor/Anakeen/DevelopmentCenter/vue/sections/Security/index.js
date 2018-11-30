@@ -1,4 +1,5 @@
 import RightsGrid from "devComponents/profile/profile.vue";
+import FallConfig from "devComponents/FieldAccessConfig/FieldAccessConfig.vue";
 
 import Security from "./SecurityDevCenter";
 import Routes from "../Security/Routes/RoutesDevCenter";
@@ -17,7 +18,6 @@ import FieldAccess from "../Security/FieldAccess/FieldAccess.vue";
 import Workflows from "../Security/Workflows/Workflows.vue";
 import WorkflowsContent from "../Security/Workflows/WorkflowsContent.vue";
 import WorkflowsRights from "../Security/Workflows/Rights/Rights.vue";
-import WorkflowsAccesses from "../Security/Workflows/Accesses/Accesses.vue";
 import ElementView from "../SmartElements/ElementView/ElementView.vue";
 
 export default {
@@ -123,6 +123,19 @@ export default {
               profileId: route.params.fallIdentifier
             };
           }
+        },
+        {
+          name: "Security::FieldAccess::Config",
+          path: ":fallIdentifier/config",
+          meta: {
+            label: ":fallIdentifier Config"
+          },
+          component: FallConfig,
+          props: route => {
+            return {
+              fallid: route.params.fallIdentifier
+            };
+          }
         }
       ]
     },
@@ -172,15 +185,6 @@ export default {
                 label: "Rights"
               },
               component: WorkflowsRights,
-              props: true // Set ssName as a vue component prop
-            },
-            {
-              name: "Security::Workflows::Access",
-              path: "accesses",
-              meta: {
-                label: "Accesses"
-              },
-              component: WorkflowsAccesses,
               props: true // Set ssName as a vue component prop
             }
           ]
