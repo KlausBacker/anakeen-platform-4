@@ -28,7 +28,7 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next) {
-    const filterAction = vueInstance => {
+    const filterAction = vueInstance => () => {
       const filter = to.query;
       if (filter) {
         const filterObject = { logic: "and", filters: [] };
@@ -48,9 +48,9 @@ export default {
       next(vueInstance => {
         vueInstance.$refs.profileSplitter.disableEmptyContent();
         if (vueInstance.$refs.profilesGrid.kendoGrid) {
-          filterAction(vueInstance);
+          filterAction(vueInstance)();
         } else {
-          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction);
+          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction(vueInstance));
         }
         // Trigger resize to resize the splitter
         vueInstance.$(window).trigger("resize");
@@ -58,9 +58,9 @@ export default {
     } else {
       next(vueInstance => {
         if (vueInstance.$refs.profilesGrid.kendoGrid) {
-          filterAction(vueInstance);
+          filterAction(vueInstance)();
         } else {
-          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction);
+          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction(vueInstance));
         }
         // Trigger resize to resize the splitter
         vueInstance.$(window).trigger("resize");
