@@ -50,7 +50,10 @@ export default {
         if (vueInstance.$refs.profilesGrid.kendoGrid) {
           filterAction(vueInstance)();
         } else {
-          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction(vueInstance));
+          vueInstance.$refs.profilesGrid.$once(
+            "grid-ready",
+            filterAction(vueInstance)
+          );
         }
         // Trigger resize to resize the splitter
         vueInstance.$(window).trigger("resize");
@@ -60,7 +63,10 @@ export default {
         if (vueInstance.$refs.profilesGrid.kendoGrid) {
           filterAction(vueInstance)();
         } else {
-          vueInstance.$refs.profilesGrid.$once("grid-ready", filterAction(vueInstance));
+          vueInstance.$refs.profilesGrid.$once(
+            "grid-ready",
+            filterAction(vueInstance)
+          );
         }
         // Trigger resize to resize the splitter
         vueInstance.$(window).trigger("resize");
