@@ -96,22 +96,30 @@ export default {
               case "mailtemplates":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>&nbsp`;
+                }/view/?filters=${this.$.param({ name: items[item] })}">${
+                  items[item]
+                }</a>&nbsp`;
                 break;
               case "volatileTimers":
-                str += `<a data-role="develRouterLink" href="//devel/smartElements/${
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>&nbsp`;
+                }/view/?filters=${this.$.param({
+                  name: items[item]
+                })}</a>&nbsp`;
                 break;
               case "persistentTimers":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>&nbsp`;
+                }/view/?filters=${this.$.param({
+                  name: items[item]
+                })}</a>&nbsp`;
                 break;
               case "unAttachTimers":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>&nbsp`;
+                }/view/?filters=${this.$.param({
+                  name: items[item]
+                })}</a>&nbsp`;
                 break;
               default:
                 break;

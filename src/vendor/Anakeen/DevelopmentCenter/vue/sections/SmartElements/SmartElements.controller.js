@@ -5,8 +5,25 @@ import { AnkSEGrid } from "@anakeen/ank-components";
 Vue.use(AnkSEGrid);
 Vue.use(Splitter);
 
+const parseFilters = filters => {
+  const result = {};
+  if (filters) {
+    filters.split("&").forEach(filter => {
+      const entry = filter.split("=");
+      if (entry && entry.length) {
+        const key = entry[0];
+        const value = entry[1];
+        result[key] = value;
+      }
+    });
+    return result;
+  } else {
+    return null;
+  }
+};
+
 const filterAction = (to, vueInstance) => () => {
-  const filter = to.query;
+  let filter = to.query ? parseFilters(to.query.filters) || null : null;
   if (filter) {
     const filterObject = { logic: "and", filters: [] };
     filterObject.filters = Object.entries(filter).map(entry => {
@@ -129,11 +146,27 @@ export default {
         const filter = event.filter ? event.filter.filters[0] || null : null;
         if (filter) {
           this.$router.addQueryParams({
-            [filter.field]: filter.value
+            filters: this.$.param(
+              Object.assign(
+                {},
+                this.$route.query.filters
+                  ? parseFilters(this.$route.query.filters)
+                  : {},
+                { [filter.field]: filter.value }
+              )
+            )
           });
         } else {
           const query = Object.assign({}, this.$route.query);
-          delete query[event.field];
+          if (query.filters) {
+            query.filters = parseFilters(query.filters);
+            delete query.filters[event.field];
+            if (!Object.keys(query.filters).length) {
+              delete query.filters;
+            } else {
+              query.filters = this.$.param(query.filters);
+            }
+          }
           this.$router.push({ query: query });
         }
       });
@@ -171,7 +204,8 @@ export default {
           event.preventDefault();
           this.$router.push({
             name: "SmartElements::ElementView",
-            params: { seIdentifier: event.data.row.name || event.data.row.id }
+            params: { seIdentifier: event.data.row.name || event.data.row.id },
+            query: this.$route.query
           });
           break;
         case "viewJSON":
@@ -182,6 +216,7 @@ export default {
               seType: docTypeString(event.data.row.doctype)
             },
             query: {
+              ...this.$route.query,
               formatType: "json"
             }
           });
@@ -194,6 +229,7 @@ export default {
               seType: docTypeString(event.data.row.doctype)
             },
             query: {
+              ...this.$route.query,
               formatType: "xml"
             }
           });
@@ -203,7 +239,8 @@ export default {
             name: "SmartElements::PropertiesView",
             params: {
               seIdentifier: event.data.row.name || event.data.row.id
-            }
+            },
+            query: this.$route.query
           });
           break;
         case "security":
@@ -214,6 +251,7 @@ export default {
                 seIdentifier: event.data.row.name || event.data.row.id
               },
               query: {
+                ...this.$route.query,
                 profileId: event.data.row.profid
               }
             });

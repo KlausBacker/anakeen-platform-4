@@ -100,7 +100,9 @@ export default {
               case "mailtemplates":
                 str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
-                }/view/?name=${items[item]}">${items[item]}</a></li>`;
+                }/view/?filters=${this.$.param({ name: items[item] })}">${
+                  items[item]
+                }</a></li>`;
                 break;
               default:
                 break;
@@ -139,7 +141,9 @@ export default {
             case "timer":
               return `<a data-role="develRouterLink" href="/devel/smartElements/${
                 dataItem[colId]
-              }/view/?name=${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
+              }/view/?filters=${this.$.param({ name: dataItem[colId] })}">${
+                dataItem[colId]
+              }</a>&nbsp`;
             default:
               return dataItem[colId];
           }
