@@ -1,0 +1,10 @@
+{
+  "name": "transformation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Charles Bonnissent <charles.bonnissent@anakeen.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@anakeen/anakeen-cli": "^1.0.1-1543428775"
+  }
+}
