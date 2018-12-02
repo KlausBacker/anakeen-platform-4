@@ -11,10 +11,6 @@
           {
             name: "Security::Workflows::Rights",
             label: "Smart Element Rights"
-          },
-          {
-            name: "Security::Workflows::Access",
-            label: "Field Access"
           }
         ]
       }

@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div ref="profileTreeList"></div>
+        <div v-if="profileTreeReady" ref="profileTreeList"></div>
     </div>
 </template>
 

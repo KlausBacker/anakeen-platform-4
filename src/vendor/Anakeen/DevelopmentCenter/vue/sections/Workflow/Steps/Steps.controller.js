@@ -135,9 +135,9 @@ export default {
                 dataItem[colId]
               }/?name=${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
             case "fall":
-              return `<a data-role="develRouterLink" href="/devel/security/workflows/${
+              return `<a data-role="develRouterLink" href="/devel/security/fieldAccess/${
                 dataItem[colId]
-              }/accesses">${dataItem[colId]}</a>&nbsp`;
+              }/config">${dataItem[colId]}</a>&nbsp`;
             case "timer":
               return `<a data-role="develRouterLink" href="/devel/smartElements/${
                 dataItem[colId]

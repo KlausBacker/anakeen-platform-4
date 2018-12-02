@@ -335,9 +335,9 @@ export default {
               ${columns
                 .map(c => {
                   return `<th class="k-header fall-header">
-                        <a data-role="develRouterLink" href="/devel/security/workflows/${
-                          this.wid
-                        }/accesses/${c.fall}" >${c.fall || ""}</a>
+                        <a data-role="develRouterLink" href="/devel/security/fieldAccess/${
+                          c.fall
+                        }/config" >${c.fall || ""}</a>
                         </th>`;
                 })
                 .join("")}

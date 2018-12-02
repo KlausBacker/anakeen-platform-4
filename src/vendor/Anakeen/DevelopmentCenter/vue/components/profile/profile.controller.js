@@ -28,7 +28,9 @@ export default {
   },
   watch: {
     profileId() {
-      this.privateScope.updateDataSource();
+      this.profileTreeReady = false;
+      this.displayAllElements = false;
+      this.privateScope.initProfileComponent();
     }
   },
   data: () => ({
@@ -38,10 +40,13 @@ export default {
     refProfile: null,
     displayAllElements: false,
     labelRotation: 300,
-    columnWidth: "3rem"
+    columnWidth: "3rem",
+    profileTreeReady: false
   }),
   devCenterRefreshData() {
-    this.privateScope.updateDataSource();
+    this.profileTreeReady = false;
+    this.displayAllElements = false;
+    this.privateScope.initProfileComponent();
   },
   created() {
     this.privateScope = {
@@ -187,7 +192,7 @@ export default {
       updateDataSource: () => {
         this.dataSource.read();
       },
-      initTreeView: () => {
+      fetchTreeConfig: () => {
         this.$http
           .get(
             `/api/v2/devel/security/profile/${
@@ -203,152 +208,161 @@ export default {
             this.name = data.properties.name;
             this.id = data.properties.id;
             this.refProfile = data.properties.reference;
+            this.profileTreeReady = true;
 
-            const lineRender = (column, callback) => {
-              return currentLine => {
-                return callback(column, currentLine);
-              };
-            };
-            let maxLabelSize = 0;
-            const columns = data.properties.acls.map(currentElement => {
-              const textWidth = this.privateScope.computeTextWidth(
-                currentElement.name,
-                $(this.$el).css("font")
-              );
-              if (textWidth > maxLabelSize) {
-                maxLabelSize = textWidth;
-              }
-              let headerAttributes = {};
-              if (this.labelRotate) {
-                headerAttributes = {
-                  "data-transformation": "header-rotate"
-                };
-              }
-              return {
-                field: `acls.${currentElement.name}`,
-                title: `${currentElement.name}`,
-                attributes: {
-                  class: "rightColumn"
-                },
-                headerAttributes,
-                headerTemplate: `<div class="header-acl-label">
-                       <span class="acl-label">${currentElement.name ||
-                         currentElement.label}</span></div>`,
-                width: this.columnWidth,
-                hidden: !this.defaultColumns.reduce(
-                  (accumulator, currentColumn) => {
-                    if (accumulator) {
-                      return true;
-                    }
-                    if (this.onlyExtendedAcls && currentElement.extended) {
-                      return true;
-                    }
-                    if (this.onlyExtendedAcls) {
-                      return false;
-                    }
-                    return currentColumn === currentElement.name;
-                  },
-                  false
-                ),
-                template: lineRender(
-                  currentElement.name,
-                  (column, currentLine) => {
-                    if (!currentLine.acls) {
-                      return "";
-                    }
-                    switch (currentLine.acls[column]) {
-                      case "set":
-                        return `<span class="k-icon k-i-kpi-status-open right-set"></span>`;
-                      case "inherit":
-                        return `<span class="k-icon k-i-kpi-status-open right-inherited"></span>`;
-                      default:
-                        return "";
-                    }
-                  }
-                )
-              };
+            this.$nextTick(() => {
+              this.privateScope.initTreeView(data);
             });
-            this.dataSource.bind("change", () => {
-              treeList.data("kendoTreeList").autoFitColumn("title");
-            });
-            const treeList = $(this.$refs.profileTreeList).kendoTreeList({
-              columnMenu: true,
-              columns: [
-                {
-                  field: "title",
-                  title: "Refs",
-                  template: currentElement => {
-                    if (currentElement.title) {
-                      return currentElement.title;
-                    }
-                    return `<span title="${
-                      currentElement.accountId
-                    }" class="account-type-${currentElement.account.type}">${
-                      currentElement.account.reference
-                    }</span>`;
-                  }
-                },
-                {
-                  field: "Acls",
-                  columns
-                }
-              ],
-              expand: () => {
-                treeList.data("kendoTreeList").autoFitColumn("title");
-              },
-              collapse: () => {
-                treeList.data("kendoTreeList").autoFitColumn("title");
-              },
-              dataBound: () => {
-                treeList.data("kendoTreeList").autoFitColumn("title");
-              },
-              dataSource: this.dataSource
-            });
-            treeList.on("click", ".foldGroups", () => {
-              treeList
-                .find(".account-type-group")
-                .toArray()
-                .forEach(currentElement => {
-                  treeList
-                    .data("kendoTreeList")
-                    .collapse($(currentElement).closest(`[role="row"]`));
-                });
-              treeList.data("kendoTreeList").autoFitColumn("title");
-            });
-            treeList.on("click", ".unfoldGroups", () => {
-              treeList
-                .find(".account-type-group")
-                .toArray()
-                .forEach(currentElement => {
-                  treeList
-                    .data("kendoTreeList")
-                    .expand($(currentElement).closest(`[role="row"]`));
-                });
-              treeList.data("kendoTreeList").autoFitColumn("title");
-            });
-            if (this.labelRotate) {
-              $(".k-header[data-transformation=header-rotate]", this.$el).css(
-                "height",
-                `${this.privateScope.computeHeaderHeight(
-                  maxLabelSize,
-                  this.labelRotation
-                ) + 15}px`
-              );
-              $(
-                ".k-header[data-transformation=header-rotate] > .header-acl-label",
-                this.$el
-              ).css(
-                "transform",
-                `translateX(calc(${this.columnWidth} - 2.25rem)) rotate(${
-                  this.labelRotation
-                }deg)`
-              );
-            }
           })
           .catch(err => {
             console.error(err);
             this.$emit("error", err);
           });
+      },
+      initTreeView: data => {
+        const lineRender = (column, callback) => {
+          return currentLine => {
+            return callback(column, currentLine);
+          };
+        };
+        let maxLabelSize = 0;
+        const columns = data.properties.acls.map(currentElement => {
+          const textWidth = this.privateScope.computeTextWidth(
+            currentElement.name,
+            $(this.$el).css("font")
+          );
+          if (textWidth > maxLabelSize) {
+            maxLabelSize = textWidth;
+          }
+          let headerAttributes = {};
+          if (this.labelRotate) {
+            headerAttributes = {
+              "data-transformation": "header-rotate"
+            };
+          }
+          return {
+            field: `acls.${currentElement.name}`,
+            title: `${currentElement.name}`,
+            attributes: {
+              class: "rightColumn"
+            },
+            headerAttributes,
+            headerTemplate: `<div class="header-acl-label">
+                       <span class="acl-label">${currentElement.name ||
+                         currentElement.label}</span></div>`,
+            width: this.columnWidth,
+            hidden: !this.defaultColumns.reduce(
+              (accumulator, currentColumn) => {
+                if (accumulator) {
+                  return true;
+                }
+                if (this.onlyExtendedAcls && currentElement.extended) {
+                  return true;
+                }
+                if (this.onlyExtendedAcls) {
+                  return false;
+                }
+                return currentColumn === currentElement.name;
+              },
+              false
+            ),
+            template: lineRender(currentElement.name, (column, currentLine) => {
+              if (!currentLine.acls) {
+                return "";
+              }
+              switch (currentLine.acls[column]) {
+                case "set":
+                  return `<span class="k-icon k-i-kpi-status-open right-set"></span>`;
+                case "inherit":
+                  return `<span class="k-icon k-i-kpi-status-open right-inherited"></span>`;
+                default:
+                  return "";
+              }
+            })
+          };
+        });
+        this.dataSource.bind("change", () => {
+          treeList.data("kendoTreeList").autoFitColumn("title");
+        });
+        const treeList = $(this.$refs.profileTreeList).kendoTreeList({
+          columnMenu: true,
+          columns: [
+            {
+              field: "title",
+              title: "Refs",
+              template: currentElement => {
+                if (currentElement.title) {
+                  return currentElement.title;
+                }
+                return `<span title="${
+                  currentElement.accountId
+                }" class="account-type-${currentElement.account.type}">${
+                  currentElement.account.reference
+                }</span>`;
+              }
+            },
+            {
+              field: "Acls",
+              columns
+            }
+          ],
+          expand: () => {
+            treeList.data("kendoTreeList").autoFitColumn("title");
+          },
+          collapse: () => {
+            treeList.data("kendoTreeList").autoFitColumn("title");
+          },
+          dataBound: () => {
+            treeList.data("kendoTreeList").autoFitColumn("title");
+          },
+          dataSource: this.dataSource
+        });
+        treeList.on("click", ".foldGroups", () => {
+          treeList
+            .find(".account-type-group")
+            .toArray()
+            .forEach(currentElement => {
+              treeList
+                .data("kendoTreeList")
+                .collapse($(currentElement).closest(`[role="row"]`));
+            });
+          treeList.data("kendoTreeList").autoFitColumn("title");
+        });
+        treeList.on("click", ".unfoldGroups", () => {
+          treeList
+            .find(".account-type-group")
+            .toArray()
+            .forEach(currentElement => {
+              treeList
+                .data("kendoTreeList")
+                .expand($(currentElement).closest(`[role="row"]`));
+            });
+          treeList.data("kendoTreeList").autoFitColumn("title");
+        });
+        if (this.labelRotate) {
+          $(".k-header[data-transformation=header-rotate]", this.$el).css(
+            "height",
+            `${this.privateScope.computeHeaderHeight(
+              maxLabelSize,
+              this.labelRotation
+            ) + 15}px`
+          );
+          $(
+            ".k-header[data-transformation=header-rotate] > .header-acl-label",
+            this.$el
+          ).css(
+            "transform",
+            `translateX(calc(${this.columnWidth} - 2.25rem)) rotate(${
+              this.labelRotation
+            }deg)`
+          );
+        }
+      },
+      initProfileComponent: () => {
+        this.dataSource = this.privateScope.initDataSource();
+        this.privateScope.fetchTreeConfig();
+        this.privateScope.onResizeContent();
+        $(window).resize(this.privateScope.onResizeContent);
       }
     };
   },
@@ -360,10 +374,7 @@ export default {
     }
   },
   mounted() {
-    this.dataSource = this.privateScope.initDataSource();
-    this.privateScope.initTreeView();
-    this.privateScope.onResizeContent();
-    $(window).resize(this.privateScope.onResizeContent);
+    this.privateScope.initProfileComponent();
   },
   methods: {
     updateGrid: function() {

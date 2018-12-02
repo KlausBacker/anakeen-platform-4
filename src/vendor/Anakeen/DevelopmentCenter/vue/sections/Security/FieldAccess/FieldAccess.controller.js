@@ -28,7 +28,10 @@ export default {
     };
   },
   beforeRouteEnter(to, from, next) {
-    if (to.name === "Security::FieldAccess::Access") {
+    if (
+      to.name === "Security::FieldAccess::Access" ||
+      to.name === "Security::FieldAccess::Config"
+    ) {
       next(vueInstance => {
         vueInstance.$refs.fallSplitter.disableEmptyContent();
         // Trigger resize to resize the splitter
@@ -120,17 +123,24 @@ export default {
     },
     actionClick(event) {
       switch (event.data.type) {
-        case "rights": {
+        case "rights":
           this.$router.push({
             name: "Security::FieldAccess::Access",
             params: {
               fallIdentifier: event.data.row.name || event.data.row.initid
             }
           });
-          this.$refs.fallSplitter.disableEmptyContent();
           break;
-        }
+        case "config":
+          this.$router.push({
+            name: "Security::FieldAccess::Config",
+            params: {
+              fallIdentifier: event.data.row.name || event.data.row.initid
+            }
+          });
+          break;
       }
+      this.$refs.fallSplitter.disableEmptyContent();
     }
   }
 };
