@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf8"?>
-<module name="@moduleName@" version="@version@" release="@release@"
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
+        name="transformation" version="1.0.0" release="0"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
-    <description lang="en">Transformation Engine Client Library</description>
+    <description >Transformation Engine Client Library</description>
   <requires>
     <module name="admin-center" />
   </requires>
@@ -10,22 +11,22 @@
   </replaces>
   <post-install>
     <process command="programs/record_application TENGINE_CLIENT I">
-      <label lang="en">Record application TENGINE_CLIENT in database</label>
+      <label>Record application TENGINE_CLIENT in database</label>
     </process>
     <process command="programs/record_application TENGINE_MONITOR I">
-      <label lang="en">Record application TENGINE monitoring</label>
+      <label>Record application TENGINE monitoring</label>
     </process>
     <process command="programs/update_catalog"/>
   </post-install>
   <post-upgrade>
     <process command="programs/pre_migration TENGINE_CLIENT"/>
     <process command="programs/record_application TENGINE_CLIENT U">
-      <label lang="en">Update application TENGINE_CLIENT in database</label>
+      <label>Update application TENGINE_CLIENT in database</label>
     </process>
     <process command="programs/post_migration TENGINE_CLIENT"/>
 
     <process command="programs/record_application TENGINE_MONITOR U">
-      <label lang="en">Update application TENGINE monitoring</label>
+      <label>Update application TENGINE monitoring</label>
     </process>
     <process command="programs/update_catalog"/>
   </post-upgrade>
