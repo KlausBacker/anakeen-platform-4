@@ -2,6 +2,7 @@ const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const { checkGlobElements } = require("../utils/check");
 const { analyzeXML } = require("../utils/globAnalyze");
+const { checkFile } = require("@anakeen/anakeen-module-validation");
 const { Signale } = require("signale");
 
 exports.check = ({ sourcePath, verbose }) => {
@@ -35,6 +36,36 @@ exports.check = ({ sourcePath, verbose }) => {
         verbose,
         log
       });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  });
+};
+
+exports.checkConfigFile = ({ sourcePath, verbose }) => {
+  return gulp.task("checkConfigFile", async () => {
+    let result = "";
+    if (sourcePath === undefined) {
+      throw new Error("No source path specified.");
+    }
+    try {
+      const interactive = new Signale({ scope: "checkConfigFile" });
+      const log = message => {
+        interactive.info(message);
+      };
+      const checkResult = checkFile(sourcePath);
+      if (verbose) {
+        result = checkResult.ok
+          ? "✓"
+          : checkResult.ignore
+          ? "ignored"
+          : checkResult.error;
+        log(`Analyze : ${sourcePath} : ${result}`);
+      }
+      if (checkResult.error) {
+        result += checkResult.error;
+      }
+      return result;
     } catch (e) {
       return Promise.reject(e);
     }
