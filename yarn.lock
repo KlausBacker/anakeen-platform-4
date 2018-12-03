@@ -41,7 +41,7 @@
   dependencies:
     vue-gettext "^2.1.1"
 
-"@anakeen/webpack-conf@1.0.0-1543824981":
+"@anakeen/webpack-conf@latest":
   version "1.0.0-1543824981"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1543824981.tgz#78ff63fd8532cede3d3c8c04e0efa0fb710d28b1"
   integrity sha512-SxJ2+l9OP58p27g3ViZE8fzk1dmMGARNEDuMoJ6zL1seJXljrhJhSRVgazRZWMFSGH9rGYxNgRtn+28ME42Qew==
