@@ -79,7 +79,7 @@ exports.deployConfiguration = ({
   return gulp.task("importConfiguration", () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const interactive = new Signale({ interactive: true, scope: "deploy" });
+        const interactive = new Signale({ scope: "deploy" });
         const log = message => {
           interactive.info(message);
         };
