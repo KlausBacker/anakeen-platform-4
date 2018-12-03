@@ -25,7 +25,6 @@ class Routes
                     $this->regExpMiddleware = \Anakeen\Router\RouterLib::parseInfoToRegExp($middlewareInfos);
                 }
             }
-            $result = [];
             foreach ($tabRoutes as $route) {
                 if (is_array($route->pattern)) {
                     foreach ($route->pattern as $item) {
