@@ -22,8 +22,7 @@ const postFile = ({
   username,
   password,
   verbose,
-  dryRun,
-  log
+  dryRun
 }) => {
   const formData = new FormData();
   formData.append("file", fs.createReadStream(sourcePath));
