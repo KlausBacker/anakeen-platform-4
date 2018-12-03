@@ -29,7 +29,7 @@
                   {name: "isNeeded", label: "is Needed", hidden: true},
                   {name: "phpconstraint", label: "Constraint", hidden: false},
                   {name: "computed", label: "Computed Method", hidden: false},
-                  {name: "autocomplete", label: "Auto Complete Method", hidden: true},
+                  {name: "autocomplete", label: "Auto Complete Method", hidden: false},
                   {name: "link", label: "Link", hidden: true},
                   {name: "optionValues", label: "Options", hidden: false},
                   {name: "properties", label: "Properties", hidden: true},
