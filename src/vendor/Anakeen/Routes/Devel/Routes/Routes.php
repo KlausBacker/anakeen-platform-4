@@ -9,15 +9,46 @@ class Routes
 {
     protected $currentNameSpace = null;
     protected $currentName = null;
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
+    protected $regExpMiddleware = null;
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $allRoutes = new \Anakeen\Router\RouterManager();
         $tabRoutes = $allRoutes->getRoutes();
         $result = [];
-        foreach ($tabRoutes as $route) {
-            $formatedRoute = $this->formatRoute($route);
-            if ($formatedRoute !== null) {
-                $result[] = $formatedRoute;
+        if (isset($args['name'])) {
+            $routeParser = new \FastRoute\RouteParser\Std();
+            $allMiddlewares = new \Anakeen\Router\RoutesConfig();
+            $tabMiddlewares= $allMiddlewares->getMiddlewares();
+            foreach ($tabMiddlewares as $middleware) {
+                if ($middleware->name === $args['name']) {
+                    $middlewareInfos = $routeParser->parse($middleware->pattern);
+                    $this->regExpMiddleware = \Anakeen\Router\RouterLib::parseInfoToRegExp($middlewareInfos);
+                }
+            }
+            $result = [];
+            foreach ($tabRoutes as $route) {
+                if (is_array($route->pattern)) {
+                    foreach ($route->pattern as $item) {
+                        foreach ($this->regExpMiddleware as $regExp) {
+                            if (preg_match_all($regExp, $item) === 1) {
+                                array_push($result, $this->formatRoute($route));
+                            }
+                        }
+                    }
+                } else {
+                    foreach ($this->regExpMiddleware as $regExp) {
+                        if (preg_match_all($regExp, $route->pattern) === 1) {
+                            array_push($result, $this->formatRoute($route));
+                        }
+                    }
+                }
+            }
+        } else {
+            foreach ($tabRoutes as $route) {
+                $formatedRoute = $this->formatRoute($route);
+                if ($formatedRoute !== null) {
+                    $result[] = $formatedRoute;
+                }
             }
         }
         return ApiV2Response::withData($response, $this->formatTreeDataSource($result));

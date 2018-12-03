@@ -4,7 +4,7 @@
         <sde:route name="getAllRoutes">
             <sde:callable>\Anakeen\Routes\Devel\Routes\Routes</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/routes/all/</sde:pattern>
+            <sde:pattern>/api/v2/devel/routes/all/[{name}]</sde:pattern>
             <sde:description>Get All Routes</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
@@ -13,17 +13,8 @@
         <sde:route name="getAllMiddlewares">
             <sde:callable>\Anakeen\Routes\Devel\Routes\Middlewares</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/routes/middlewares/</sde:pattern>
+            <sde:pattern>/api/v2/devel/routes/middlewares/[{name}]</sde:pattern>
             <sde:description>Get All Middlewares</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="DevCenter">DevelAccess</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
-        <sde:route name="getAllApplicableMiddlewares">
-            <sde:callable>\Anakeen\Routes\Devel\Routes\ApplicMiddlewares</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/devel/routes/middlewares/applicable/{name}</sde:pattern>
-            <sde:description>Get All Applicable Middlewares</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>

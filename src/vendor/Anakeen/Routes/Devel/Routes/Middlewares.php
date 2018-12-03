@@ -9,15 +9,36 @@ class Middlewares
 {
     protected $currentNameSpace = null;
     protected $currentName = null;
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
+    protected $currentRoutePattern = null;
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $allMiddlewares = new \Anakeen\Router\RoutesConfig();
         $tabMiddlewares = $allMiddlewares->getMiddlewares();
         $result = [];
-        foreach ($tabMiddlewares as $middleware) {
-            $formatedMiddleware = $this->formatMiddleware($middleware);
-            if ($formatedMiddleware !== null) {
-                $result[] = $formatedMiddleware;
+        if (isset($args['name'])) {
+            $routeParser = new \FastRoute\RouteParser\Std();
+            $allRoutes = new \Anakeen\Router\RouterManager();
+            $tabRoutes = $allRoutes->getRoutes();
+            foreach ($tabRoutes as $route) {
+                if ($route->name === $args['name']) {
+                    $this->currentRoutePattern = $route->pattern;
+                }
+            }
+            foreach ($tabMiddlewares as $middleware) {
+                $middlewareInfos = $routeParser->parse($middleware->pattern);
+                $regExpMiddle = \Anakeen\Router\RouterLib::parseInfoToRegExp($middlewareInfos);
+                foreach ($regExpMiddle as $regExp) {
+                    if (preg_match_all($regExp, $this->currentRoutePattern) === 1) {
+                        array_push($result, $this->formatMiddleware($middleware));
+                    }
+                }
+            }
+        } else {
+            foreach ($tabMiddlewares as $middleware) {
+                $formatedMiddleware = $this->formatMiddleware($middleware);
+                if ($formatedMiddleware !== null) {
+                    $result[] = $formatedMiddleware;
+                }
             }
         }
         return ApiV2Response::withData($response, $this->formatTreeDataSource($result));
@@ -88,7 +109,7 @@ class Middlewares
                     $newId = $currentId++;
                     array_push($tree, ['id' => $newId, 'parentId' => $this->currentNameSpace, 'name' => $item['name'],
                         'description' => $item['description'], 'priority' => $item['priority'],
-                        'method' => $item['method'], 'pattern' => $item['pattern'], 'rowLevel' => 2]);
+                        'method' => $item['method'], 'pattern' => $item['pattern'], 'rowLevel' => 2, 'parentName' => $item["nameSpace"]]);
                     $nameTab[$item['nameSpace']][$item['name']] = $newId;
                 }
             } else {

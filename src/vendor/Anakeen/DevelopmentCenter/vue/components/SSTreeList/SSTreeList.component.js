@@ -477,6 +477,10 @@ export default {
             }
           } else {
             this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
+            let query = Object.assign({}, this.$route.query);
+            delete query.pattern;
+            delete query.name;
+            this.$router.replace({ query });
           }
         }
       );
