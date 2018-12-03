@@ -314,7 +314,7 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
                 $mailNode->setAttribute("ref", static::getLogicalName($mail));
                 $stepNode->appendChild($mailNode);
             }
-            $timer = $this->workflow->getStateTimers($step);
+            $timer = $this->workflow->getStateTimer($step);
             if ($timer) {
                 $hasData = true;
                 $timerNode = $this->celw("timer");
@@ -431,7 +431,7 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
 
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
-            $timer = $this->workflow->getStateTimers($step);
+            $timer = $this->workflow->getStateTimer($step);
             if ($timer) {
                 if (empty($this->dataSet[$timer])) {
                     $structConfig->appendChild(ExportElementConfiguration::getTimerData($timer, $this->dom));
@@ -459,7 +459,7 @@ class ExportWorkflowConfiguration extends ExportRenderAccessConfiguration
 
         $steps = $this->workflow->getStates();
         foreach ($steps as $step) {
-            $timer = $this->workflow->getStateTimers($step);
+            $timer = $this->workflow->getStateTimer($step);
             if ($timer) {
                 $elt = SEManager::getDocument($timer);
                 if ($elt) {
