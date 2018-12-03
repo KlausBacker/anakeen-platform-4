@@ -22,7 +22,8 @@ const postFile = ({
   username,
   password,
   verbose,
-  dryRun
+  dryRun,
+  log
 }) => {
   const formData = new FormData();
   formData.append("file", fs.createReadStream(sourcePath));
@@ -59,6 +60,9 @@ const postFile = ({
     .then(result => {
       if (!result.success) {
         throw new Error(JSON.stringify(result));
+      }
+      if (verbose) {
+        log(result.messages.join("\n"));
       }
       return result;
     });
