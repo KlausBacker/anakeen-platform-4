@@ -1,6 +1,6 @@
 <template>
     <ss-treelist ref="routesList" :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate"
-                 :ssName="''" :sort="sort"></ss-treelist>
+                 :ssName="''" :sort="sort" :inlineFilters="true"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
@@ -11,6 +11,26 @@
   export default {
     components: {SsTreelist},
     props: ["ssName"],
+    beforeRouteEnter(to, from, next) {
+      next(function (vueInstance) {
+        if (to.name === "routes" && to.query.name) {
+          vueInstance.url = `/api/v2/devel/routes/all/${to.query.name}`;
+          vueInstance.$nextTick(() => {
+            vueInstance.$refs.routesList.$refs.ssTreelist.$(".pattern-filter", vueInstance.$refs.routesList.$refs.ssTreelist.$el)[0].value = to.query.pattern;
+          });
+        } else {
+          vueInstance.url = `/api/v2/devel/routes/all/`;
+        }
+      });
+    },
+    beforeRouteUpdate(to, from, next) {
+      if (!to.query.name) {
+          this.url = `/api/v2/devel/routes/all/`;
+      } else {
+          this.url = `/api/v2/devel/routes/all/${to.query.name}`;
+      }
+      next();
+    },
     data() {
       return {
         columnSizeTab: [],
@@ -37,24 +57,22 @@
               case "pattern":
                 const data = dataItem[colId].split(",");
                 let str = "";
-                let name;
+                const name = `${dataItem["parentName"]}::${dataItem["name"]}`;
                 if (dataItem["rowLevel"] === 2) {
                   if (data.length > 1) {
-                    name = `${dataItem["parentName"]}::${dataItem["name"]}`;
                     data.forEach(d => {
-                      str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?filter=${d}&name=${name}">${d}</a></li>`;
+                      str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${d}&name=${name}">${d}</a></li>`;
                     });
                   } else {
-                    name = `${dataItem["parentName"]}::${dataItem["name"]}`;
-                    str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?filter=${dataItem[colId]}&name=${name}">${dataItem[colId]}</a>`;
+                    str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${dataItem[colId]}&name=${name}">${dataItem[colId]}</a>`;
                   }
                 } else {
                   if (data.length > 1) {
                     data.forEach(d => {
-                      str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?filter=${d}&name=${dataItem["name"]}">${d}</a></li>`;
+                      str += `<li><a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${d}&name=${name}">${d}</a></li>`;
                     });
                   } else {
-                    str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?filter=${dataItem[colId]}&name=${dataItem["name"]}">${dataItem[colId]}</a>`;
+                    str = `<a data-role="develRouterLink" href="/devel/routes/middlewares/?pattern=${dataItem[colId]}&name=${name}">${dataItem[colId]}</a>`;
                   }
                 }
                 return str;

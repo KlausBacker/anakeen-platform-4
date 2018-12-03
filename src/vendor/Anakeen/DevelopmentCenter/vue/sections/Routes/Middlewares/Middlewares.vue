@@ -1,6 +1,6 @@
 <template>
     <ss-treelist ref="middlewaresList" :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate"
-                 :ssName="''" :sort="sort"></ss-treelist>
+                 :ssName="''" :sort="sort" :inlineFilters="true"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
@@ -13,13 +13,23 @@
     props: ["ssName"],
     beforeRouteEnter(to, from, next) {
       next(function (vueInstance) {
-        console.log(from);
-        if (from.name === "routes" && to.query.filter) {
-          vueInstance.url = `/api/v2/devel/routes/middlewares/applicable/${to.query.name}`;
+        if (to.name === "middlewares" && to.query.name) {
+          vueInstance.url = `/api/v2/devel/routes/middlewares/${to.query.name}`;
+          vueInstance.$nextTick(() => {
+            vueInstance.$refs.middlewaresList.$refs.ssTreelist.$(".pattern-filter", vueInstance.$refs.middlewaresList.$refs.ssTreelist.$el)[0].value = to.query.pattern;
+          });
         } else {
           vueInstance.url = `/api/v2/devel/routes/middlewares/`;
         }
       });
+    },
+    beforeRouteUpdate(to, from, next) {
+      if (!to.query.name) {
+        this.url = `/api/v2/devel/routes/middlewares/`;
+      } else {
+        this.url = `/api/v2/devel/routes/middlewares/${to.query.name}`;
+      }
+      next();
     },
     data() {
       return {
@@ -46,12 +56,13 @@
               case "pattern":
                 const data = dataItem[colId].split(",");
                 let str = "";
+                const name = `${dataItem["parentName"]}::${dataItem["name"]}`;
                 if (data.length > 1) {
                   data.forEach(d => {
-                    str += `<li><a data-role="develRouterLink" href="/devel/routes/routes/?filter=${d}">${d}</a></li>`;
+                    str += `<li><a data-role="develRouterLink" href="/devel/routes/routes/?pattern=${d}&name=${name}">${d}</a></li>`;
                   });
                 } else {
-                  str = `<a data-role="develRouterLink" href="/devel/routes/routes/?filter=${dataItem[colId]}">${dataItem[colId]}</a>`;
+                  str = `<a data-role="develRouterLink" href="/devel/routes/routes/?pattern=${dataItem[colId]}&name=${name}">${dataItem[colId]}</a>`;
                 }
                 return str;
               default:
