@@ -3,7 +3,7 @@
         name="development-center" version="1.0.0" release="0" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
-    <description lang="en">Developement Center</description>
+    <description>Developement Center</description>
 
     <requires>
         <module name="user-interfaces"/>
