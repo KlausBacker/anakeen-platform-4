@@ -42,9 +42,9 @@ export default {
       type: String,
       default: "/api/v2/devel/ui/workflows/image/<identifier>.svg"
     },
-    displayField: {
-      type: String,
-      default: "name"
+    displayLabel: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -178,7 +178,7 @@ export default {
           steps.forEach(step => {
             const column = {
               name: step.id,
-              label: step.label,
+              label: this.showLabel ? step.label : step.id,
               color: step.color,
               profil: step.profil,
               fall: step.fall,
@@ -386,6 +386,7 @@ export default {
               if (steps.length) {
                 this.acls = steps[0].acls.reduce((acc, acl) => {
                   acc[acl.name] = acl;
+                  acc[acl.name].label = this.showLabel ? acl.label : acl.name;
                   if (this.defaultAcls.indexOf(acl.name) > -1) {
                     acc[acl.name].default = true;
                     acc[acl.name].visible = true;
@@ -406,6 +407,11 @@ export default {
       },
       parseData: data => {
         return getTreeListData(data.steps);
+      },
+      onSwitchDisplay: event => {
+        this.treeConfigReady = false;
+        this.showLabel = !!event.currentTarget.checked;
+        this.privateMethods.fetchColumns();
       }
     };
   },
@@ -423,9 +429,8 @@ export default {
     };
     if (this.treeConfigReady) {
       prepareTree();
-    } else {
-      this.$once("workflow-rights-config-ready", prepareTree);
     }
+    this.$on("workflow-rights-config-ready", prepareTree);
   },
   methods: {
     onVisualizeGraph() {
@@ -435,18 +440,8 @@ export default {
       window.open(this.resolveDetachUrl);
     },
     getLabel(element, capitalize = false, firstBold = false) {
-      let label = "";
-      if (element) {
-        if (typeof element === "object") {
-          if (this.displayField) {
-            label = element[this.displayField] || element.name;
-          } else {
-            label = element.name;
-          }
-        } else {
-          label = element;
-        }
-      }
+      let label = element.label;
+
       if (label && capitalize) {
         label = `${label.charAt(0).toUpperCase()}${label.substring(1)}`;
       }
@@ -469,7 +464,8 @@ export default {
       graphProperties: null,
       treeConfigReady: false,
       treeContentReady: false,
-      acls: {}
+      acls: {},
+      showLabel: this.displayLabel
     };
   }
 };

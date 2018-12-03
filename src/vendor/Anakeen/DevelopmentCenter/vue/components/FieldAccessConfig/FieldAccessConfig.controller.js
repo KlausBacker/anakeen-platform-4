@@ -95,13 +95,13 @@ export default {
           }
           return `
             <div class="fall-layer-header">
-                <span class="fall-layer-header-aclName">${column.aclName}</span>
+                <span class="fall-layer-header-aclName">${column.label}</span>
                 <a data-role="develRouterLink" 
-                href="/devel/smartElements/${column.name ||
+                href="/devel/smartElements/${column.refName ||
                   column.id}/view/?filters=${this.$.param({
-            name: column.name
+            name: column.refName
           })}" 
-                class="fall-layer-header-label">${column.name}</a>
+                class="fall-layer-header-label">${column.refName}</a>
                 <div class="show-all-switch switch-container">
                     <label class="switch">
                         <input class="switch-button" ${checked} type="checkbox" data-layer="${
@@ -131,10 +131,10 @@ export default {
         columns = columns.concat(
           layers.map(l => {
             return {
-              name: l.name,
-              label: l.name || l.title || l.id,
+              name: l.name || l.id,
+              label: l.aclName,
               id: l.id,
-              aclName: l.aclName
+              refName: l.name
             };
           })
         );

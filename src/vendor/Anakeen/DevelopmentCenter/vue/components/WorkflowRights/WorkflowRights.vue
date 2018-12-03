@@ -4,6 +4,15 @@
             <div v-if="visualizeGraph" class="visualize-graph">
                 <button @click="onVisualizeGraph" class="k-button k-button-icontext"><i class="k-icon k-i-connector"></i>Graph</button>
             </div>
+            <div class="show-all-switch switch-container" style="margin-left: 1rem">
+                <label class="switch">
+                    <input type="checkbox" @change="privateMethods.onSwitchDisplay">
+                    <span class="slider round"></span>
+                </label>
+                <label class="switch-label">
+                    <span>Show labels</span>
+                </label>
+            </div>
             <div class="graph-infos">
                 <div class="graph-title"><b>Title: </b> {{graphProperties ? graphProperties.title : ""}}</div>
                 <div class="graph-name"><b>Logical Name: </b> {{graphProperties ? graphProperties.name : ""}}</div>
