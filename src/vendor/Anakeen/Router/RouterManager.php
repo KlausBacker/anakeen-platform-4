@@ -192,9 +192,6 @@ class RouterManager
                 if ($currentRoute) {
                     $sParser = new \FastRoute\RouteParser\Std;
 
-                    // @TODO to delete : used to debug for the moment
-                    error_log($request->getMethod() . " " . $currentRoute->getName() . " "
-                        . $currentRoute->getPattern());
                     $request = $request->withAttribute("container", $c);
 
                     $uri = $request->getUri()->getPath();
