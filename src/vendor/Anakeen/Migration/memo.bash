@@ -51,8 +51,10 @@ done
 ./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCFD
 ./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCDL
 ./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCFD_LOGIN
+./ank.php --route=Migration::RoutesV1Transfert --method=POST
 
 
 ./ank.php --route=Migration::FinalUpdates --method=POST
 
 ./ank.php --script=configureShowcase
+# curl -u admin:anakeen http://localhost:10081/api/v2/migration/modules/Ccfd.zip --output ~/Bureau/Ccfd.zip

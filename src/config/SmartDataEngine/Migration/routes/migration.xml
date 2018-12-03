@@ -50,6 +50,13 @@
             <sde:description>Database transfert app acl and parameters data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
+        <sde:route name="RoutesV1Transfert">
+            <sde:callable>\Anakeen\Routes\Migration\Database\ConfigRoutesV1Transfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/routesv1</sde:pattern>
+            <sde:description>Database transfert route v1 and create stuc</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
         <sde:route name="FinalUpdates">
             <sde:callable>\Anakeen\Routes\Migration\Database\FinalUpdates</sde:callable>
             <sde:method>POST</sde:method>
