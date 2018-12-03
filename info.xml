@@ -7,27 +7,10 @@
     <module name="admin-center" />
   </requires>
   <replaces>
-    <module name="anakeen-te" />
   </replaces>
   <post-install>
-    <process command="programs/record_application TENGINE_CLIENT I">
-      <label>Record application TENGINE_CLIENT in database</label>
-    </process>
-    <process command="programs/record_application TENGINE_MONITOR I">
-      <label>Record application TENGINE monitoring</label>
-    </process>
-    <process command="programs/update_catalog"/>
+
   </post-install>
   <post-upgrade>
-    <process command="programs/pre_migration TENGINE_CLIENT"/>
-    <process command="programs/record_application TENGINE_CLIENT U">
-      <label>Update application TENGINE_CLIENT in database</label>
-    </process>
-    <process command="programs/post_migration TENGINE_CLIENT"/>
-
-    <process command="programs/record_application TENGINE_MONITOR U">
-      <label>Update application TENGINE monitoring</label>
-    </process>
-    <process command="programs/update_catalog"/>
   </post-upgrade>
 </module>
