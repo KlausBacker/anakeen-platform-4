@@ -72,7 +72,7 @@ exports.deploy = ({
   return gulp.task("deploy", () => {
     try {
       return new Promise((resolve, reject) => {
-        const interactive = new Signale({ interactive: true, scope: "deploy" });
+        const interactive = new Signale({ scope: "deploy" });
         const log = message => {
           interactive.await(message);
         };
@@ -118,7 +118,7 @@ exports.buildAndDeploy = ({
   return gulp.task("buildAndDeploy", () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const interactive = new Signale({ interactive: true, scope: "deploy" });
+        const interactive = new Signale({ scope: "deploy" });
         const log = message => {
           interactive.info(message);
         };
