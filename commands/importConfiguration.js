@@ -1,5 +1,8 @@
 const gulp = require("gulp");
-const { deployConfiguration } = require("../tasks/deployConfiguration");
+const {
+  deployConfiguration,
+  deployGlobConfiguration
+} = require("../tasks/deployConfiguration");
 const signale = require("signale");
 const fs = require("fs");
 const checkConfigFile = require("./checkConfigFile");
@@ -15,6 +18,21 @@ exports.builder = {
     description: "add check of XML inside the module",
     default: false,
     type: "boolean"
+  },
+  glob: {
+    description: "glob instruction for the configuration files to import",
+    alias: "g",
+    conflicts: "sourcePath"
+  },
+  sourceDir: {
+    description: "source directory path for the glob configuration",
+    implies: "glob",
+    coerce: arg => {
+      if (!fs.statSync(arg).isDirectory()) {
+        throw new Error("Unable to find the source directory " + arg);
+      }
+      return arg;
+    }
   },
   verbose: {
     description: "verbose display",
@@ -32,6 +50,7 @@ exports.builder = {
     description: "path of the xml configuration to import",
     alias: "s",
     type: "string",
+    conflicts: "glob",
     coerce: arg => {
       if (!fs.statSync(arg).isFile()) {
         throw new Error("Unable to find the source file " + arg);
@@ -67,11 +86,23 @@ exports.handler = function(argv) {
     if (argv.verbose) {
       signale.info("Verbose mode");
     }
-    if (!argv.noCheck) {
-      checkPromise = checkConfigFile.handler(argv, true);
+    let task;
+    if (argv.sourcePath) {
+      signale.info("Source file mode");
+
+      if (!argv.noCheck) {
+        checkPromise = checkConfigFile.handler(argv, true);
+      }
+      deployConfiguration(argv);
+      task = gulp.task("importConfiguration");
+    } else if (argv.glob) {
+      signale.info("Glob file mode");
+      if (!argv.noCheck) {
+        checkPromise = checkConfigFile.handler(argv, true);
+      }
+      deployGlobConfiguration(argv);
+      task = gulp.task("importGlobConfiguration");
     }
-    deployConfiguration(argv);
-    const task = gulp.task("importConfiguration");
     checkPromise
       .then(() => {
         return task().then(() => {

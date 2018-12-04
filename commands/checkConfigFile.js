@@ -7,13 +7,20 @@ signale.config({
   displayDate: true
 });
 
-exports.desc = "Check the xml of the module";
+exports.desc = "Check the xml of a configuration file";
 exports.builder = {
   sourcePath: {
-    description: "path of the info.xml",
+    description: "path of the configuration file",
     alias: "s",
     default: ".",
-    type: "string"
+    type: "string",
+    conflicts: "glob"
+  },
+  glob: {
+    description: "glob instruction for the configuration files",
+    alias: "g",
+    type: "string",
+    conflicts: "sourcePath"
   },
   verbose: {
     description: "verbose mode",

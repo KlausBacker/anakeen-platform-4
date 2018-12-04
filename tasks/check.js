@@ -4,6 +4,8 @@ const { checkGlobElements } = require("../utils/check");
 const { analyzeXML } = require("../utils/globAnalyze");
 const { checkFile } = require("@anakeen/anakeen-module-validation");
 const { Signale } = require("signale");
+const globFunction = require("glob");
+const path = require("path");
 
 exports.check = ({ sourcePath, verbose }) => {
   return gulp.task("check", async () => {
@@ -42,32 +44,62 @@ exports.check = ({ sourcePath, verbose }) => {
   });
 };
 
-exports.checkConfigFile = ({ sourcePath, verbose }) => {
-  return gulp.task("checkConfigFile", async () => {
-    let result = "";
-    if (sourcePath === undefined) {
-      throw new Error("No source path specified.");
-    }
-    try {
-      const interactive = new Signale({ scope: "checkConfigFile" });
-      const log = message => {
-        interactive.info(message);
-      };
-      const checkResult = checkFile(sourcePath);
-      if (verbose) {
-        result = checkResult.ok
-          ? "✓"
-          : checkResult.ignore
-          ? "ignored"
-          : checkResult.error;
-        log(`Analyze : ${sourcePath} : ${result}`);
-      }
-      if (checkResult.error) {
-        result += checkResult.error;
-      }
-      return result;
-    } catch (e) {
-      return Promise.reject(e);
-    }
-  });
+exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
+  return gulp.task(
+    "checkConfigFile",
+    async () =>
+      new Promise((resolve, reject) => {
+        let result = "";
+        if (sourcePath === undefined && glob === undefined) {
+          throw new Error("No source path specified.");
+        }
+        try {
+          const interactive = new Signale({ scope: "checkConfigFile" });
+          const log = message => {
+            interactive.info(message);
+          };
+          if (sourcePath) {
+            const checkResult = checkFile(sourcePath);
+            if (verbose) {
+              result = checkResult.ok
+                ? "✓"
+                : checkResult.ignore
+                ? "ignored"
+                : checkResult.error;
+              log(`Analyze : ${sourcePath} : ${result}`);
+            }
+            if (checkResult.error) {
+              result += checkResult.error;
+            }
+            resolve(result);
+          } else if (glob) {
+            const globOpts = {
+              nodir: true,
+              cwd: sourceDir || process.cwd()
+            };
+            globFunction(glob, globOpts, (err, files) => {
+              if (err) {
+                reject(err);
+              } else {
+                files.forEach(file => {
+                  const filepath = path.resolve(globOpts.cwd, file);
+                  const checkResult = checkFile(filepath);
+                  if (verbose) {
+                    result = checkResult.ok
+                      ? "✓"
+                      : checkResult.ignore
+                      ? "ignored"
+                      : checkResult.error;
+                    log(`Analyze : ${filepath} : ${result}`);
+                  }
+                });
+                resolve(result);
+              }
+            });
+          }
+        } catch (e) {
+          reject(e);
+        }
+      })
+  );
 };
