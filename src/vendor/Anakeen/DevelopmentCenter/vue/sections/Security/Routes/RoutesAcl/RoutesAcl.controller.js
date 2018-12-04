@@ -89,7 +89,7 @@ export default {
           elt.map(e => {
             let accessName = e.split("::")[1];
             this.tabMultiple.push(
-              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/??filters=${this.$.param(
+              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/?filters=${this.$.param(
                 { accessName: accessName }
               )}">${accessName}</a>`
             );
