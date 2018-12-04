@@ -222,10 +222,10 @@
         <process command="./ank.php --system --localeGen">
             <label>Generate traduction catalog</label>
         </process>
-        <process command="programs/set_param CORE_CLIENT client_name">
+        <process command="programs/set_param Core::CORE_CLIENT client_name">
             <label>Register client name</label>
         </process>
-        <process command="programs/set_param CORE_TMPDIR core_tmpdir">
+        <process command="programs/set_param Core::CORE_TMPDIR core_tmpdir">
             <label>Register temporary folder</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">

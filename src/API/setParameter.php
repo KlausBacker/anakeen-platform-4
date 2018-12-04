@@ -13,8 +13,8 @@
  */
 $usage = new \Anakeen\Script\ApiUsage();
 
-$usage->setDefinitionText("set applicative parameter value");
-$parname = $usage->addRequiredParameter("param", "parameter name"); // parameter name
+$usage->setDefinitionText("set context parameter value");
+$parname = $usage->addRequiredParameter("param", "parameter name with its namespace (<NS>::<NAME>)"); // parameter name
 $parval = $usage->addOptionalParameter("value", "parameter value to set"); // parameter value (option)
 $paruser = $usage->addOptionalParameter("userid", "user system id"); // parameter user id (option)
 $usage->verify();
