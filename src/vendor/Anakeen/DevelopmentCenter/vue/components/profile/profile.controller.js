@@ -31,6 +31,12 @@ export default {
       this.profileTreeReady = false;
       this.displayAllElements = false;
       this.privateScope.initProfileComponent();
+    },
+    showLabels(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.profileTreeReady = false;
+        this.privateScope.initProfileComponent();
+      }
     }
   },
   data: () => ({
@@ -41,7 +47,8 @@ export default {
     displayAllElements: false,
     labelRotation: 300,
     columnWidth: "3rem",
-    profileTreeReady: false
+    profileTreeReady: false,
+    showLabels: false
   }),
   devCenterRefreshData() {
     this.profileTreeReady = false;
@@ -227,8 +234,11 @@ export default {
         };
         let maxLabelSize = 0;
         const columns = data.properties.acls.map(currentElement => {
+          const label = this.showLabels
+            ? currentElement.label
+            : currentElement.name;
           const textWidth = this.privateScope.computeTextWidth(
-            currentElement.name,
+            label,
             $(this.$el).css("font")
           );
           if (textWidth > maxLabelSize) {
@@ -242,14 +252,19 @@ export default {
           }
           return {
             field: `acls.${currentElement.name}`,
-            title: `${currentElement.name}`,
+            title: this.showLabels
+              ? `${currentElement.label}`
+              : `${currentElement.name}`,
             attributes: {
               class: "rightColumn"
             },
             headerAttributes,
             headerTemplate: `<div class="header-acl-label">
-                       <span class="acl-label">${currentElement.name ||
-                         currentElement.label}</span></div>`,
+                       <span class="acl-label">${
+                         this.showLabels
+                           ? currentElement.label
+                           : currentElement.name
+                       }</span></div>`,
             width: this.columnWidth,
             hidden: !this.defaultColumns.reduce(
               (accumulator, currentColumn) => {

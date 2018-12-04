@@ -30,6 +30,15 @@
                                 <span>Show all</span>
                             </label>
                         </div>
+                        <div class="show-all-switch switch-container" style="margin-left: 1rem">
+                            <label class="switch">
+                                <input type="checkbox" v-model="showLabels">
+                                <span class="slider round"></span>
+                            </label>
+                            <label class="switch-label">
+                                <span>Show labels</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

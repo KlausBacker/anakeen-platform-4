@@ -1,7 +1,7 @@
 <?php
 namespace Anakeen\Routes\Devel\Import;
 
-use Anakeen\Core\Internal\ImportSmartConfiguration;
+//use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -34,7 +34,7 @@ class Configuration
             throw $e;
         }
 
-        $import = new ImportSmartConfiguration();
+        $import = new ImportConfiguration();
         $import->setVerbose($this->verbose);
         $import->setOnlyAnalyze($this->dryRun);
         foreach ($files as $currentFile) {
@@ -48,7 +48,7 @@ class Configuration
             $e->setHttpStatus('500', 'Internal error');
             throw $e;
         }
-        return ["Import configuration done"];
+        return $import->getVerboseMessages();
     }
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
