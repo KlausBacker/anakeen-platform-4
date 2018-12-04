@@ -2,9 +2,11 @@
 
 namespace Anakeen\Routes\Migration\Database;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
+use Dcp\Exception;
 
 /**
  * Class StructureTransfert
@@ -18,12 +20,12 @@ class InitTransfert
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $this->initParameters($args);
+        $this->initParameters();
         $data = $this->doRequest();
         return ApiV2Response::withData($response, $data);
     }
 
-    protected function initParameters($args)
+    protected function initParameters()
     {
         $vendorName = ContextManager::getParameterValue("Migration", "VENDOR");
         $subDirName = ContextManager::getParameterValue("Migration", "MODULE");

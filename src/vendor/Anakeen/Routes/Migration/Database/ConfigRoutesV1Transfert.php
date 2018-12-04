@@ -38,8 +38,6 @@ class ConfigRoutesV1Transfert
 
         $sql = sprintf("select val from dynacase.paramv where name='CRUD_CLASS' and appid = (select id from dynacase.application where name = 'HTTPAPI_V1')");
 
-
-        $sql = sprintf("select val from paramv where name='CRUD_CLASS'");
         DbManager::query($sql, $rawRoutes, true, true);
         if (!$rawRoutes) {
             throw new Exception(sprintf("CRUD_CLASS  not found"));
@@ -51,7 +49,6 @@ class ConfigRoutesV1Transfert
             }
         }
 
-
         self::transfertRoutes($routeData);
 
         return $data;
@@ -59,7 +56,6 @@ class ConfigRoutesV1Transfert
 
     protected static function transfertRoutes($routesData)
     {
-
         $template = file_get_contents(__DIR__ . '/../../../Migration/RouteV1.xml.mustache');
         foreach ($routesData as &$routesDatum) {
             $paths = explode("\\", $routesDatum["class"]);
@@ -127,8 +123,6 @@ class ConfigRoutesV1Transfert
                 //print_r($match);
                 return '{' . $match[1] . '}';
             } elseif (preg_match('/^\?P<([^>]*)>(.*)/', $var[1], $match)) {
-                print_r([$regexp, $var, $match]);
-
                 return sprintf('{%s:%s}', $match[1], $match[2]);
             }
             return $var[0];

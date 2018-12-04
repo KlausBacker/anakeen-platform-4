@@ -53,12 +53,15 @@ class DataElementTransfert
 
     protected function updateSequence($structure)
     {
-        $sql = sprintf("select setval('seq_doc%d', (select count(id) from only doc%d where doctype != 'T'))", $structure->id, $structure->id);
+        $sql = sprintf("create sequence if not exists seq_doc%d", $structure->id);
+        DbManager::query($sql);
+
+        $sql = sprintf("select setval('seq_doc%d', (select count(id) + 1 from only doc%d where doctype != 'T'))", $structure->id, $structure->id);
         DbManager::query($sql, $sqlval, true, true);
 
         $sql = "select setval('seq_id_doc', (select max(id) from doc where doctype != 'T'));";
         DbManager::query($sql, $sqldocval, true, true);
-        return ["seq"=>$sqlval, "sqldoc" => $sqldocval];
+        return ["seq" => $sqlval, "sqldoc" => $sqldocval];
     }
 
     protected function getProperties()
@@ -152,14 +155,18 @@ class DataElementTransfert
             $propMapping["ba_desc"] = "cv_desc";
             unset($propMapping["cv_primarymask"]);
         }
+        if ($structure->name === "TIMER") {
+            unset($propMapping["tm_deltainterval"]);
+            unset($propMapping["tm_taskinterval"]);
+        }
 
-        if ($structure->usefor === "W") {
+        if (strpos($structure->usefor, "W") !== false) {
             // Delete fall because not exists in 3.2
             /** @var WDocHooks $iWorkflow */
             $iWorkflow = SEManager::initializeDocument($structure->id);
             $prefix = $iWorkflow->attrPrefix;
             foreach ($propMapping as $k => $v) {
-                if (preg_match("/^${prefix}_fallid/", $k)) {
+                if (preg_match("/^${prefix}_fallid/i", $k)) {
                     unset($propMapping[$k]);
                 }
             }

@@ -21,7 +21,7 @@ begin
 end;
 $$ language 'plpgsql';
 
-
+-- To cast multiple of multiple
 create or replace function text_to_array2(text)
 returns text[][] as $$
 declare
@@ -35,13 +35,13 @@ declare
 begin
   x:=null;
   IF svalues is not null THEN
-    -- first need to know dimensional
+    -- first need to know dimensional : dimX / dimY
     r:=  regexp_split_to_array(svalues, E'\n');
     dimX=array_length(r, 1);
     dimY=0;
     FOR i IN array_lower(r, 1) .. array_upper(r, 1) LOOP
        IF r[i] = '' or r[i] = null THEN
-         ;
+          r[i]=null;
        ELSE
           r2 := regexp_split_to_array(r[i], E'<BR>');
           dimY=greatest(dimY, array_length(r2, 1));
@@ -70,6 +70,7 @@ begin
 end;
 $$ language 'plpgsql';
 
+-- To cast single multiple values
 create or replace function text_to_array(text)
 returns text[] as $$
 declare
