@@ -16,7 +16,7 @@ export default {
   props: ["wflName"],
   data() {
     return {
-      transitionsDataSource: "",
+      transitionsDataSource: ""
     };
   },
   devCenterRefreshData() {

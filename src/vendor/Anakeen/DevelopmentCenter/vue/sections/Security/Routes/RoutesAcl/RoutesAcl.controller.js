@@ -49,7 +49,6 @@ export default {
   methods: {
     bindFilters() {
       this.$refs.routesGridContent.kendoWidget().bind("filter", e => {
-        console.log(e);
         if (e.filter === null) {
           let query = Object.assign({}, this.$route.query);
           delete query.filters;
