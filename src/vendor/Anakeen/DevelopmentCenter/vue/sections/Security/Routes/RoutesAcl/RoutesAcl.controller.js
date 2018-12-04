@@ -24,14 +24,14 @@ export default {
     });
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.accesName) {
-      let filter = to.query.accesName;
+    if (to.query.filters) {
+      let filter = to.query.filters.split("=");
       next(function(vueInstance) {
         if (filter && filter !== "") {
           vueInstance.$refs.routesGridContent.kendoWidget().dataSource.filter({
-            field: "requiredAccess",
+            field: filter[0],
             operator: "contains",
-            value: filter
+            value: filter[1]
           });
         }
       });
@@ -47,6 +47,15 @@ export default {
     }
   },
   methods: {
+    bindFilters() {
+      this.$refs.routesGridContent.kendoWidget().bind("filter", e => {
+        if (e.filter === null) {
+          let query = Object.assign({}, this.$route.query);
+          delete query.filters;
+          this.$router.replace({ query });
+        }
+      });
+    },
     getRoutes(options) {
       this.$http
         .get("/api/v2/devel/security/routes/", {
@@ -80,7 +89,9 @@ export default {
           elt.map(e => {
             let accessName = e.split("::")[1];
             this.tabMultiple.push(
-              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/?accesName=${accessName}" style="text-decoration: underline; color: #157EFB">${accessName}</a>`
+              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/?filters=${this.$.param(
+                { accessName: accessName }
+              )}">${accessName}</a>`
             );
           });
         });

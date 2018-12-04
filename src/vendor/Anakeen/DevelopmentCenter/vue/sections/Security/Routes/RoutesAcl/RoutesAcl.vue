@@ -15,7 +15,8 @@
                     :pageable="{ pageSizes: [100,200,500]}"
                     :filterable-mode="'row'"
                     :filterable-extra="false"
-                    :sortable="true">
+                    :sortable="true"
+                    @hook:mounted="bindFilters">
             <kendo-grid-column :field="'nameSpace'" :title="'<b>Namespace</b>'" :filterable-cell-operator="'contains'"
                                :filterable-cell-show-operators="false"
                                :filterable-cell-template="autoFilterCol"></kendo-grid-column>

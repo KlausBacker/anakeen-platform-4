@@ -17,23 +17,7 @@ export default {
   data() {
     return {
       stepsDataSource: "",
-      ssName: "",
-      routeTab: ["Wfl::steps::pdoc"],
-      columnsTabMultiple: ["mailtemplates"],
-      panes: [
-        {
-          scrollable: false,
-          collapsible: true,
-          resizable: true,
-          size: "50%"
-        },
-        {
-          scrollable: false,
-          collapsible: true,
-          resizable: true,
-          size: "50%"
-        }
-      ]
+      ssName: ""
     };
   },
   devCenterRefreshData() {
@@ -57,8 +41,6 @@ export default {
     parseStepsData(response) {
       if (response && response.data && response.data.data) {
         this.ssName = response.data.data.properties.structure;
-        this.$refs.stepsGridContent.kendoWidget().autoFitColumn(0);
-        this.$refs.stepsGridContent.kendoWidget().autoFitColumn(1);
         return response.data.data.steps;
       }
       return [];
@@ -69,44 +51,24 @@ export default {
     autoFilterCol(e) {
       e.element.addClass("k-textbox filter-input");
     },
-    displayColor(colId) {
-      return dataItem => {
-        return `<div class='chip-color' style='background-color:${
-          dataItem[colId]
-        }'></div><span>&nbsp${dataItem[colId]}</span>`;
-      };
+    displayMultiple(item) {
+      if (item instanceof Object) {
+        let str = "";
+        return this.recursiveData(item, str);
+      }
+      return item;
     },
-    displayMultiple(colId) {
-      return dataItem => {
-        if (dataItem[colId] === null || dataItem[colId] === undefined) {
-          return "";
-        }
-        if (dataItem[colId] instanceof Object) {
-          if (this.columnsTabMultiple.includes(colId)) {
-            let str = "";
-            return this.recursiveData(dataItem[colId], str, colId);
-          }
-        }
-        return dataItem[colId];
-      };
-    },
-    recursiveData(items, str, colId) {
+    recursiveData(items, str) {
       if (items instanceof Object) {
         Object.keys(items.toJSON()).forEach(item => {
           if (items[item] instanceof Object) {
-            this.recursiveData(items[item], str, colId);
+            this.recursiveData(items[item], str);
           } else {
-            switch (colId) {
-              case "mailtemplates":
-                str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${
-                  items[item]
-                }/view/?filters=${this.$.param({ name: items[item] })}">${
-                  items[item]
-                }</a></li>`;
-                break;
-              default:
-                break;
-            }
+            str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${
+              items[item]
+            }/view/?filters=${this.$.param({ name: items[item] })}">${
+              items[item]
+            }</a></li>`;
           }
         });
       }
@@ -114,41 +76,68 @@ export default {
     },
     displayLink(colId) {
       return dataItem => {
-        if (dataItem[colId] === null || dataItem[colId] === undefined) {
-          return "";
-        } else {
-          switch (colId) {
-            case "viewcontrol":
-              return `<a data-role="develRouterLink" href="/devel/ui/${
-                this.ssName
-              }/views/?col=cvId&filter=${dataItem[colId]}">${
-                dataItem[colId]
-              }</a>&nbsp`;
-            case "mask":
-              return `<a data-role="develRouterLink" href="/devel/ui/${
-                this.ssName
-              }/views/?col=maskId&filter=${dataItem[colId]}">${
-                dataItem[colId]
-              }</a>&nbsp`;
-            case "profil":
-              return `<a data-role="develRouterLink" href="/devel/security/profiles/${
-                dataItem[colId]
-              }/?name=${dataItem[colId]}">${dataItem[colId]}</a>&nbsp`;
-            case "fall":
-              return `<a data-role="develRouterLink" href="/devel/security/fieldAccess/${
-                dataItem[colId]
-              }/config">${dataItem[colId]}</a>&nbsp`;
-            case "timer":
-              return `<a data-role="develRouterLink" href="/devel/smartElements/${
-                dataItem[colId]
-              }/view/?filters=${this.$.param({ name: dataItem[colId] })}">${
-                dataItem[colId]
-              }</a>&nbsp`;
-            default:
-              return dataItem[colId];
-          }
+        switch (colId) {
+          case "UI":
+            return `<ul><li><b>View control :&nbsp</b><a data-role="develRouterLink" href="/devel/ui/${
+              this.ssName
+            }/views/?filters=${this.$.param({
+              cvId: this.checkIsValid(dataItem["viewcontrol"])
+            })}">${this.checkIsValid(
+              dataItem["viewcontrol"]
+            )}</a></li><li><b>Mask :&nbsp</b><a data-role="develRouterLink" href="/devel/ui/${
+              this.ssName
+            }/views/?filters=${this.$.param({
+              maskId: this.checkIsValid(dataItem["mask"])
+            })}">${this.checkIsValid(dataItem["mask"])}</a></li></ul>`;
+          case "security":
+            return `<ul><li><b>Profil&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/security/profiles/${this.checkIsValid(
+              dataItem["profil"]
+            )}/?name=${this.checkIsValid(
+              dataItem["profil"]
+            )}">${this.checkIsValid(
+              dataItem["profil"]
+            )}</a></li><li><b>Smart field access&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/security/fieldAccess/${this.checkIsValid(
+              dataItem["fall"]
+            )}/config">${this.checkIsValid(dataItem["fall"])}</a></li></ul>`;
+          case "settings":
+            return `<div><b>Mail Templates&nbsp:&nbsp</b>${this.displayMultiple(
+              dataItem["mailtemplates"]
+            )}</div><ul><li><b>Timer&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/smartElements/${this.checkIsValid(
+              dataItem["timer"]
+            )}/view/?filters=${this.$.param({
+              name: this.checkIsValid(dataItem["timer"])
+            })}">${this.checkIsValid(dataItem["timer"])}</a></li></ul></div>`;
+          default:
+            return this.checkIsValid(dataItem[colId]);
         }
       };
+    },
+    displayData(colId) {
+      return dataItem => {
+        let str = "";
+        switch (colId) {
+          case "step":
+            str = `<ul><li><b>Name :&nbsp</b>${this.checkIsValid(
+              dataItem["id"]
+            )}</li><li><b>Label :&nbsp</b>${this.checkIsValid(
+              dataItem["label"]
+            )}</li><li><b>Color :&nbsp</b><div class='chip-color' style='background-color:${this.checkIsValid(
+              dataItem["color"]
+            )}'></div><span>&nbsp${this.checkIsValid(
+              dataItem["color"]
+            )}</span></li><li><b>Activity :&nbsp</b>${this.checkIsValid(
+              dataItem["activity"]
+            )}</li></ul>`;
+            return str;
+        }
+      };
+    },
+    checkIsValid(item) {
+      if (item === null || item === undefined) {
+        return "";
+      } else {
+        return item;
+      }
     }
   }
 };

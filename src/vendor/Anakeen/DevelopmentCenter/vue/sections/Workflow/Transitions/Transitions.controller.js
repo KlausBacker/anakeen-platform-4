@@ -16,33 +16,7 @@ export default {
   props: ["wflName"],
   data() {
     return {
-      transitionsDataSource: "",
-      routeTab: [
-        "Wfl::transitions::mail",
-        "Wfl::transitions::timers::volatile",
-        "Wfl::transitions::timers::unattach",
-        "Wfl::transitions::timers::persistent"
-      ],
-      columnsTabMultiple: [
-        "mailtemplates",
-        "volatileTimers",
-        "unAttachTimers",
-        "persistentTimers"
-      ],
-      panes: [
-        {
-          scrollable: false,
-          collapsible: true,
-          resizable: true,
-          size: "50%"
-        },
-        {
-          scrollable: false,
-          collapsible: true,
-          resizable: true,
-          size: "50%"
-        }
-      ]
+      transitionsDataSource: ""
     };
   },
   devCenterRefreshData() {
@@ -72,19 +46,12 @@ export default {
     refreshTransitions() {
       this.$refs.transitionsGridContent.kendoWidget().dataSource.read();
     },
-    displayMultiple(colId) {
-      return dataItem => {
-        if (dataItem[colId] === null || dataItem[colId] === undefined) {
-          return "";
-        }
-        if (dataItem[colId] instanceof Object) {
-          if (this.columnsTabMultiple.includes(colId)) {
-            let str = "";
-            return this.recursiveData(dataItem[colId], str, colId);
-          }
-        }
-        return dataItem[colId];
-      };
+    displayMultiple(item, colId) {
+      if (item instanceof Object) {
+        let str = "";
+        return this.recursiveData(item, str, colId);
+      }
+      return item;
     },
     recursiveData(items, str, colId) {
       if (items instanceof Object) {
@@ -98,28 +65,28 @@ export default {
                   items[item]
                 }/view/?filters=${this.$.param({ name: items[item] })}">${
                   items[item]
-                }</a>&nbsp`;
+                }</a>`;
                 break;
               case "volatileTimers":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
                 }/view/?filters=${this.$.param({
                   name: items[item]
-                })}</a>&nbsp`;
+                })}">>${items[item]}</a>`;
                 break;
               case "persistentTimers":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
                 }/view/?filters=${this.$.param({
                   name: items[item]
-                })}</a>&nbsp`;
+                })}">>${items[item]}</a>`;
                 break;
               case "unAttachTimers":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
                 }/view/?filters=${this.$.param({
                   name: items[item]
-                })}</a>&nbsp`;
+                })}">>${items[item]}</a>`;
                 break;
               default:
                 break;
@@ -129,8 +96,48 @@ export default {
       }
       return str;
     },
-    autoFilterCol(e) {
-      e.element.addClass("k-textbox filter-input");
+    displayData(colId) {
+      return dataItem => {
+        let str = "";
+        switch (colId) {
+          case "transition":
+            str = `<div class="transitions-infos"><ul><li><b>Name :&nbsp</b>${this.checkIsValid(
+              dataItem["id"]
+            )}</li><li><b>Label :&nbsp</b>${this.checkIsValid(
+              dataItem["label"]
+            )}</li></ul></div>`;
+            return str;
+        }
+      };
+    },
+    checkIsValid(item) {
+      if (item === null || item === undefined) {
+        return "";
+      } else {
+        return item;
+      }
+    },
+    displayLink(colId) {
+      return dataItem => {
+        switch (colId) {
+          case "timers":
+            return `<div><b>Volatile timers&nbsp:&nbsp</b>${this.displayMultiple(
+              this.checkIsValid(dataItem["volatileTimers"]),
+              "volatileTimers"
+            )}</div><div><b>Persistent timers&nbsp:&nbsp</b>${this.displayMultiple(
+              this.checkIsValid(dataItem["persistentTimers"]),
+              "persistentTimers"
+            )}</div><div><b>Unattach timers&nbsp:&nbsp</b>${this.displayMultiple(
+              this.checkIsValid(dataItem["unAttachTimers"]),
+              "unAttachTimers"
+            )}</div>`;
+          case "mailtemplates":
+            return `${this.displayMultiple(
+              this.checkIsValid(dataItem["mailtemplates"]),
+              "mailtemplates"
+            )}`;
+        }
+      };
     }
   }
 };

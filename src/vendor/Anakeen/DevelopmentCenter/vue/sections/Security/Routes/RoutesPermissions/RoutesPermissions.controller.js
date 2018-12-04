@@ -24,16 +24,16 @@ export default {
     });
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.accesName) {
-      let filter = to.query.accesName;
+    if (to.query.filters) {
+      let filter = to.query.filters.split("=");
       next(function(vueInstance) {
         if (filter && filter !== "") {
           vueInstance.$refs.routesPermissionsContent
             .kendoWidget()
             .dataSource.filter({
-              field: "accessName",
+              field: filter[0],
               operator: "contains",
-              value: filter
+              value: filter[1]
             });
         }
       });
@@ -51,6 +51,15 @@ export default {
     }
   },
   methods: {
+    bindFilters() {
+      this.$refs.routesPermissionsContent.kendoWidget().bind("filter", e => {
+        if (e.filter === null) {
+          let query = Object.assign({}, this.$route.query);
+          delete query.filters;
+          this.$router.replace({ query });
+        }
+      });
+    },
     getPermissions(options) {
       this.$http
         .get("/api/v2/devel/security/routes/accesses/", {
@@ -82,18 +91,14 @@ export default {
         }
         switch (colId) {
           case "accessName":
-            return `<a data-role="develRouterLink" href="/devel/security/routes/access/controls/?accesName=${
-              dataItem[colId]
-            }" style="text-decoration: underline; color: #157EFB">${
-              dataItem[colId]
-            }</a>`;
+            return `<a data-role="develRouterLink" href="/devel/security/routes/access/controls/?filters=${this.$.param(
+              { requiredAccess: dataItem[colId] }
+            )}">${dataItem[colId]}</a>`;
           case "account":
             if (dataItem[colId].type === "role") {
               return `<a data-role="develRouterLink" href="/devel/security/roles/?role=${
                 dataItem[colId].reference
-              }" style="text-decoration: underline; color: #157EFB">${
-                dataItem[colId].reference
-              }</a>`;
+              }">${dataItem[colId].reference}</a>`;
             } else {
               return dataItem[colId].reference;
             }

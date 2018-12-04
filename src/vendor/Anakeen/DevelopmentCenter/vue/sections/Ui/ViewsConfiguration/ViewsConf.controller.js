@@ -33,20 +33,20 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    if (to.query.col && to.query.filter) {
+    if (to.query.filters) {
       next(function(vueInstance) {
         if (vueInstance.$refs.viewsGridContent.kendoWidget()) {
           vueInstance.$refs.viewsGridContent.kendoWidget().dataSource.filter({
-            field: to.query.col,
+            field: to.query.filters.split("=")[0],
             operator: "eq",
-            value: to.query.filter
+            value: to.query.filters.split("=")[1]
           });
         } else {
           vueInstance.$refs.viewsGridContent.$on("grid-ready", () => {
             vueInstance.$refs.viewsGridContent.kendoWidget().dataSource.filter({
-              field: to.query.col,
+              field: to.query.filters.split("=")[0],
               operator: "eq",
-              value: to.query.filter
+              value: to.query.filters.split("=")[1]
             });
           });
         }
@@ -61,6 +61,15 @@ export default {
     }
   },
   methods: {
+    bindFilters() {
+      this.$refs.viewsGridContent.kendoWidget().bind("filter", e => {
+        if (e.filter === null) {
+          let query = Object.assign({}, this.$route.query);
+          delete query.filters;
+          this.$router.replace({ query });
+        }
+      });
+    },
     getViews(options) {
       this.$http
         .get(`/api/v2/devel/ui/smart/structures/${this.ssName}/views/`, {
