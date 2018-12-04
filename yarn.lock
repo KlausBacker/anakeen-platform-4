@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@1.0.1-1543859225":
-  version "1.0.1-1543859225"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543859225.tgz#7b3647eb435bcdbb10636ba7447d68f9e51e4e36"
-  integrity sha512-yfk/sWei8OjRpsuNmGuIg4+aC9l/1nvMNKunzYIhi8mv4NC4dkqX/eLyOmZhtSEpiWr22aWK0xh5HTISP+eqkQ==
+"@anakeen/anakeen-cli@latest":
+  version "1.0.1-1543889384"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543889384.tgz#92be3623d941de63543eed9d43f24b489af1619a"
+  integrity sha512-s+u+RYIcUFLtk5LCvPEeez3v8UtIT9Yys0rTibTxnZyiROdwGiJVQfvn9aW41wgoR51bfWmGc3Hw9KibUf4BIw==
   dependencies:
     "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
@@ -41,7 +41,7 @@
   dependencies:
     vue-gettext "^2.1.1"
 
-"@anakeen/webpack-conf@1.0.0-1543853095":
+"@anakeen/webpack-conf@latest":
   version "1.0.0-1543853095"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1543853095.tgz#94d0bf7cff78ad1b952de69876f42e0ede615354"
   integrity sha512-F+KKDh5goHCWopYpWfowFgzskX0AD5/AIQeD1Axn8ayGuByBaR4NgEQa0q6q9Yp1SCDr4F0R6qLUgnLvtPKQ9g==
