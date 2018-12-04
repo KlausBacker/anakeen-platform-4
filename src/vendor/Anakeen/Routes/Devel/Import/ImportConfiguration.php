@@ -24,5 +24,4 @@ class ImportConfiguration extends \Anakeen\Core\Internal\ImportSmartConfiguratio
     {
         return $this->verboseMessages;
     }
-
 }
