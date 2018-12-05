@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:field-access-layer-list name="FALL_IGROUP" label="Group Field Access">
+    <smart:field-access-layer-list name="FALL_IGROUP" label="Group Field Access" structure="IGROUP">
         <smart:description>Admin settings.</smart:description>
         <smart:field-access-layer name="FAL_IGROUP_ADMIN" label="Admin Group Access" access-name="Admin">
             <smart:description>Technical information access</smart:description>
