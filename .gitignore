@@ -1,6 +1,7 @@
 *~
 *#*
 /.cibuild/targets/*/outputs/*
+.anakeen-cli.xml
 ide/vendor/
 .idea/workspace.xml
 .idea/deployment.xml
