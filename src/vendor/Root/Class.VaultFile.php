@@ -25,7 +25,6 @@ class VaultFile
 
     public function __construct($access = "", $vaultname = "Sample", $idf = -1)
     {
-
         $this->idf = $idf;
         $this->name = $vaultname;
 
@@ -34,7 +33,7 @@ class VaultFile
         $this->type = "fs";
         switch ($this->type) {
             case "fs":
-                $this->storage = new VaultDiskStorage();
+                $this->storage = new VaultDiskStorage($access);
                 break;
 
             default:
@@ -51,13 +50,7 @@ class VaultFile
      */
     public function show($id_file, &$infos, $teng_lname = "")
     {
-
-        $msg = $this->storage->Show($id_file, $infos, $teng_lname);
-        if ($msg != '') {
-            LogManager::error(sprintf("File #%s : %s", $id_file, $msg));
-        }
-
-        return ($msg);
+        return $this->storage->Show($id_file, $infos, $teng_lname);
     }
 
     /**
@@ -160,7 +153,6 @@ class VaultFile
                 $newname = $nn;
             }
 
-            include_once("WHAT/Lib.FileMime.php");
             $infile = $this->storage->getPath();
             $oldname = $this->storage->name;
             $this->storage->Show($id_file, $infos);

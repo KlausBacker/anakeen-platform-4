@@ -7,6 +7,14 @@ use Anakeen\Core\Internal\DocumentAccess;
 
 class SmartElementManager extends \Anakeen\Core\SEManager
 {
+    /**
+     * @param int|string $documentIdentifier
+     * @param bool       $latest
+     * @param bool       $useCache
+     * @return SmartElement
+     * @throws Core\DocManager\Exception
+     * @throws Exception
+     */
     public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
     {
         $doc = parent::getDocument($documentIdentifier, $latest, $useCache);

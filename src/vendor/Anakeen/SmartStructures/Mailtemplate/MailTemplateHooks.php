@@ -388,7 +388,6 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      */
     public function sendDocument(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
-        include_once("FDL/Lib.Vault.php");
         $err = '';
         if (!$doc->isAffected()) {
             return $err;

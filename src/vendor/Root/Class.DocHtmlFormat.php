@@ -321,7 +321,7 @@ class DocHtmlFormat
         } else {
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
                 $fileInfo = new VaultFileInfo();
-                $vf = newFreeVaultFile($this->doc->dbaccess);
+                $vf = new \VaultFile();
                 if ($vf->Show($reg[2], $fileInfo) == "") {
                     if (!file_exists($fileInfo->path)) {
                         if (!$vf->storage->fs->isAvailable()) {
@@ -370,7 +370,7 @@ class DocHtmlFormat
         static $vf = null;
 
         if (!$vf) {
-            $vf = newFreeVaultFile($this->doc->dbaccess);
+            $vf = new \VaultFile();
         }
         $vid = "";
         $fileInfo = false;
@@ -420,25 +420,25 @@ class DocHtmlFormat
             if ($fileInfo) {
                 if ($fileInfo->teng_state < 0 || $fileInfo->teng_state > 1) {
                     $htmlval = "";
-                    if (\Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
+                    if (\Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Client')) {
                         switch (intval($fileInfo->teng_state)) {
-                            case \Dcp\TransformationEngine\Client::error_convert: // convert fail
+                            case \Anakeen\TransformationEngine\Client::error_convert: // convert fail
                                 $textval = _("file conversion failed");
                                 break;
 
-                            case \Dcp\TransformationEngine\Client::error_noengine: // no compatible engine
+                            case \Anakeen\TransformationEngine\Client::error_noengine: // no compatible engine
                                 $textval = _("file conversion not supported");
                                 break;
 
-                            case \Dcp\TransformationEngine\Client::error_connect: // no compatible engine
+                            case \Anakeen\TransformationEngine\Client::error_connect: // no compatible engine
                                 $textval = _("cannot contact server");
                                 break;
 
-                            case \Dcp\TransformationEngine\Client::status_waiting: // waiting
+                            case \Anakeen\TransformationEngine\Client::status_waiting: // waiting
                                 $textval = _("waiting conversion file");
                                 break;
 
-                            case \Dcp\TransformationEngine\Client::status_inprogress: // in progress
+                            case \Anakeen\TransformationEngine\Client::status_inprogress: // in progress
                                 $textval = _("generating file");
                                 break;
 
@@ -503,10 +503,10 @@ class DocHtmlFormat
                         } else {
                             $infopdf = new VaultFileInfo();
                             $err = $vf->Show($vid, $infopdf, 'pdf');
-                            if ($err == "" && \Anakeen\Core\Internal\Autoloader::classExists('Dcp\TransformationEngine\Client')) {
-                                if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_done
-                                    || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting
-                                    || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
+                            if ($err == "" && \Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Client')) {
+                                if ($infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_done
+                                    || $infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_waiting
+                                    || $infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_inprogress) {
                                     $imageview = true;
                                     if ($viewfiletype == 'image') {
                                         $viewfiletype = 'png';
@@ -515,8 +515,8 @@ class DocHtmlFormat
                                     }
 
                                     $pages = getPdfNumberOfPages($infopdf->path);
-                                    if ($infopdf->teng_state == \Dcp\TransformationEngine\Client::status_waiting
-                                        || $infopdf->teng_state == \Dcp\TransformationEngine\Client::status_inprogress) {
+                                    if ($infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_waiting
+                                        || $infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_inprogress) {
                                         $waiting = true;
                                     }
                                 }
