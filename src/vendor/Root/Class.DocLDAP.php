@@ -286,7 +286,7 @@ class DocLDAP extends DbObj
                                 switch ($oa->type) {
                                     case "image":
                                         if (preg_match(PREGEXPFILE, $value, $reg)) {
-                                            $vf = newFreeVaultFile($this->dbaccess);
+                                            $vf = new \VaultFile($this->dbaccess);
                                             $info = null;
                                             if ($vf->Retrieve($reg[2], $info) == "") {
                                                 $fd = fopen($info->path, "r");

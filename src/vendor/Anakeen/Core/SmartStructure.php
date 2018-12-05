@@ -705,7 +705,7 @@ create unique index idx_idfam on docfam(id);";
             }
             fclose($tmpstream);
             if (!$err) {
-                $vf = newFreeVaultFile($this->dbaccess);
+                $vf = new \VaultFile();
                 $info = null;
                 $err = $vf->Retrieve($vid, $info);
                 if ($err == "") {

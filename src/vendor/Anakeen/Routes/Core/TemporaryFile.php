@@ -43,7 +43,6 @@ class TemporaryFile
             throw new Exception("CRUD0303", $this->getUploadErrorMessage($file["error"]));
         }
 
-        include_once('FDL/Lib.Vault.php');
         try {
             $vaultid = VaultManager::storeTemporaryFile($file["tmp_name"], $file["name"]);
             $info = VaultManager::getFileInfo($vaultid);
