@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.0.1-1543424005",
+  "version": "1.0.1-1543424005-1544026372",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
   "bin": {
