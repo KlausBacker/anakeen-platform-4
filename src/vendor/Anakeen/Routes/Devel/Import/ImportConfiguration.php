@@ -2,9 +2,10 @@
 
 namespace Anakeen\Routes\Devel\Import;
 
-class ImportConfiguration extends \Anakeen\Core\Internal\ImportSmartConfiguration
+class ImportConfiguration extends \Anakeen\Workflow\ImportWorkflowConfiguration
 {
     protected $verboseMessages = [];
+
     public function print($data)
     {
         $textData = "\n";

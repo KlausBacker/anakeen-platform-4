@@ -29,7 +29,7 @@ class Configuration
     {
         foreach ($files as $fileItem) {
             if (is_a($fileItem, \Slim\Http\UploadedFile::class)) {
-                $import->import($fileItem->file);
+                $import->importAll($fileItem->file);
             } elseif (is_array($fileItem)) {
                 self::importFiles($import, $fileItem);
             }
