@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="TE">
+        <sde:route name="InsertFile">
+            <sde:callable>Anakeen\TransformationEngine\InsertFile</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/transformationengine/{vidin}/{vidout}/{elementid}</sde:pattern>
+        </sde:route>
+    </sde:routes>
+</sde:config>
