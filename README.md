@@ -23,3 +23,27 @@ Pour commencer un nouveau projet avec @anakeen/anakeen-cli, la démarche est sim
 * ensuite les commandes sont accessibles de deux manières :
  * via un outil en cli ```npx anakeen-cli```
  * via des tâches gulp en créant un fichier ```gulpfile.js``` et ajouter les tâches dans ce fichier
+ 
+ ## Déploiement
+ 
+ On peut configurer les paramètres de déploiement dans le fichier `.anakeen-cli.xml`
+ 
+ Exemple :
+ 
+```xml
+    <?xml version="1.0" encoding="utf-8" ?>
+    <config>
+        <contextConfig>
+            <contextUrl>http://localhost:10080</contextUrl>
+            <contextUsername>admin</contextUsername>
+            <contextPassword>anakeen</contextPassword>
+        </contextConfig>
+        <controlConfig>
+            <controlUrl>http://localhost:10080/control</controlUrl>
+            <controlUsername>admin</controlUsername>
+            <controlPassword>anakeen</controlPassword>
+            <controlContext>anakeen-platform</controlContext>
+        </controlConfig>
+    </config>*
+```
+ 

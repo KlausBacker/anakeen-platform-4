@@ -53,6 +53,22 @@ exports.autoconf = () => {
             if (control.controlPassword) {
               conf.controlPassword = control.controlPassword[0];
             }
+            if (control.controlContext) {
+              conf.context = control.controlContext[0];
+            }
+          }
+
+          if (data.config.contextConfig) {
+            const context = data.config.contextConfig[0];
+            if (context.contextUrl) {
+              conf.contextUrl = context.contextUrl[0];
+            }
+            if (context.contextUsername) {
+              conf.contextUsername = context.contextUsername[0];
+            }
+            if (context.contextPassword) {
+              conf.contextPassword = context.contextPassword[0];
+            }
           }
 
           resolve(conf);
