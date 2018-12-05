@@ -76,7 +76,7 @@ const builder = {
     type: "boolean"
   },
   withConfig: {
-    description: "add path and file for route",
+    description: "add config path and xml files for routes",
     default: true,
     type: "boolean"
   },
@@ -84,6 +84,32 @@ const builder = {
     description: "add public path",
     alias: "p",
     default: true,
+    type: "boolean"
+  },
+  withAccount: {
+    description: "add path and files for accounts",
+    default: true,
+    type: "boolean"
+  },
+  withAutocompletion: {
+    description: "add path and php file for autocompletion",
+    default: true,
+    type: "boolean"
+  },
+  withEnumerates: {
+    description: "add path and files for enumerates",
+    default: true,
+    type: "boolean"
+  },
+  withSettings: {
+    description: "add path and files for settings",
+    default: true,
+    type: "boolean"
+  },
+  withRoutes: {
+    description: "add php file example for route",
+    default: true,
+    implies: "withConfig",
     type: "boolean"
   }
 };

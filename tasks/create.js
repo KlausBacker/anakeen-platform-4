@@ -3,38 +3,20 @@ const fs = require("fs");
 const path = require("path");
 const xml2js = require("xml2js");
 
+const fsUtils = require("./plugins/files");
+const createTemplates = require("./createTemplates");
+
 const {
   checkModuleName,
   checkVendorName,
   checkNamespace
 } = require("../utils/checkName");
 
-const createRouteXML = namespace => {
-  return {
-    "sde:config": {
-      $: {
-        "xmlns:sde": "https://platform.anakeen.com/4/schemas/sde/1.0"
-      },
-      "sde:routes": {
-        $: {
-          namespace: namespace
-        }
-      },
-      "sde:accesses": {
-        $: {
-          namespace: namespace
-        }
-      },
-      "sde:parameters": {
-        $: {
-          namespace: namespace
-        }
-      }
-    }
-  };
-};
-
-const createInfoXML = ({ moduleName, vendorName }) => {
+const createInfoXML = (
+  { moduleName, vendorName },
+  postInstall = {},
+  postUpgrade = {}
+) => {
   return {
     module: {
       $: {
@@ -44,8 +26,8 @@ const createInfoXML = ({ moduleName, vendorName }) => {
         version: "1.0.0",
         release: "0"
       },
-      "post-install": {},
-      "post-upgrade": {}
+      "post-install": postInstall,
+      "post-upgrade": postUpgrade
     }
   };
 };
@@ -63,15 +45,35 @@ const createBuildXML = () => {
   };
 };
 
-exports.create = ({
-  sourcePath,
-  moduleName,
-  vendorName,
-  namespace,
-  withSmartStructure,
-  withConfig,
-  withPublic
-}) => {
+const createCommand = command => {
+  return {
+    process: {
+      $: {
+        command: command
+      }
+    }
+  };
+};
+
+exports.create = options => {
+  const {
+    sourcePath,
+    moduleName,
+    vendorName,
+    namespace,
+    withSmartStructure,
+    withConfig,
+    withPublic,
+    withAccount,
+    withAutocompletion,
+    withRoutes,
+    withEnumerates,
+    withSettings
+  } = options;
+  let postUpgrade = {
+    process: []
+  };
+  let postInstall = { process: [] };
   return gulp.task("create", () => {
     //Create the vendor dir
     return new Promise((resolve, reject) => {
@@ -85,84 +87,88 @@ exports.create = ({
       if (!checkNamespace(namespace)) {
         reject("The namespace is invalid " + namespace);
       }
-      fs.mkdir(path.join(sourcePath, "src"), err => {
+      let completePath = path.join(
+        sourcePath,
+        "src",
+        "vendor",
+        vendorName,
+        moduleName
+      );
+      if (withSmartStructure) {
+        completePath = path.join(completePath, "SmartStructures");
+      }
+      fsUtils.mkpdir(completePath, err => {
         if (err) {
           return reject(err);
         }
-        fs.mkdir(path.join(sourcePath, "src", "vendor"), err => {
-          if (err) {
-            return reject(err);
-          }
-          fs.mkdir(path.join(sourcePath, "src", "vendor", vendorName), err => {
-            if (err) {
-              return reject(err);
-            }
-            if (!withSmartStructure) {
-              return resolve();
-            }
-            fs.mkdir(
-              path.join(
-                sourcePath,
-                "src",
-                "vendor",
-                vendorName,
-                "SmartStructures"
-              ),
-              err => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve();
-              }
-            );
-          });
-        });
+        resolve();
       });
     }) // Create the public (if needed)
       .then(() => {
         if (withPublic) {
-          return new Promise((resolve, reject) => {
-            fs.mkdir(path.join(sourcePath, "src", "public"), err => {
-              if (err) {
-                return reject(err);
-              }
-              resolve();
-            });
-          });
+          return createTemplates.public.writeTemplate(options);
         }
         return Promise.resolve();
       })
       .then(() => {
         if (withConfig) {
-          return new Promise((resolve, reject) => {
-            fs.mkdir(path.join(sourcePath, "src", "vendor", "config"), err => {
-              if (err) {
-                return reject(err);
-              }
-              if (err) {
-                return reject(err);
-              }
-              const builder = new xml2js.Builder();
-              const xml = builder.buildObject(createRouteXML(namespace));
-              fs.writeFile(
-                path.join(sourcePath, "src", "config", moduleName + ".xml"),
-                xml,
-                err => {
-                  if (err) {
-                    return reject(err);
-                  }
-                  resolve();
-                }
+          return createTemplates.config
+            .writeTemplate(options)
+            .then(toImport => {
+              const command = createCommand(
+                `./ank.php --script=importConfiguration --file=./${toImport}`
               );
+              postUpgrade.process.push(command.process);
+              postInstall.process.push(command.process);
+              return Promise.resolve();
             });
-          });
         }
+        return Promise.resolve();
+      })
+      .then(() => {
+        if (withAccount) {
+          return createTemplates.accounts.writeTemplate(options);
+        }
+        return Promise.resolve();
+      })
+      .then(() => {
+        if (withAutocompletion) {
+          return createTemplates.autocompletion.writeTemplate(options);
+        }
+        return Promise.resolve();
+      })
+      .then(() => {
+        if (withEnumerates) {
+          return createTemplates.enumerates
+            .writeTemplate(options)
+            .then(toImport => {
+              const command = createCommand(
+                `./ank.php --script=importConfiguration --file=./${toImport}`
+              );
+              postUpgrade.process.push(command.process);
+              postInstall.process.push(command.process);
+              return Promise.resolve();
+            });
+        }
+        return Promise.resolve();
+      })
+      .then(() => {
+        if (withSettings) {
+          return createTemplates.settings.writeTemplate(options);
+        }
+        return Promise.resolve();
+      })
+      .then(() => {
+        if (withRoutes) {
+          return createTemplates.routes.writeTemplate(options);
+        }
+        return Promise.resolve();
       })
       .then(() => {
         return new Promise((resolve, reject) => {
           const builder = new xml2js.Builder();
           const xml = builder.buildObject(
-            createInfoXML({ moduleName, vendorName })
+            createInfoXML({ moduleName, vendorName }, postInstall, postUpgrade)
           );
           fs.writeFile(path.join(sourcePath, "info.xml"), xml, err => {
             if (err) {
