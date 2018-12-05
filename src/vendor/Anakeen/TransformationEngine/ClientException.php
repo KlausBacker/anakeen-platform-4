@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\TransformationEngine;
+namespace Anakeen\TransformationEngine;
 
 class ClientException extends \Exception
 {

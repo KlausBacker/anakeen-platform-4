@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\TransformationEngine;
+namespace Anakeen\TransformationEngine;
 
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Utils\FileMime;
@@ -45,11 +45,14 @@ class Client
      * @param int    $port port number
      *
      */
-    public function __construct($host, $port)
+    public function __construct(string $host = '', int $port = 0)
     {
-        $this->host = $host;
-        $this->port = $port;
-
+        if ($host === '') {
+            $this->host = ContextParameterManager::getValue(Manager::Ns, "TE_HOST");
+        }
+        if ($port === 0) {
+            $this->port = ContextParameterManager::getValue(Manager::Ns, "TE_PORT");
+        }
         $this->timeout = floatval(ContextParameterManager::getValue(Manager::Ns, "TE_TIMEOUT", 3));
     }
 
