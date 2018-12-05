@@ -45,12 +45,12 @@ exports.builder = {
     type: "string",
     required: true
   },
-  username: {
+  contextUsername: {
     alias: "u",
     type: "string",
     required: true
   },
-  password: {
+  contextPassword: {
     alias: "p",
     type: "string",
     required: true

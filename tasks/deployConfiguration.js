@@ -19,8 +19,8 @@ const getBaseAutorisation = (exports.getBaseAutorisation = (
 const postFile = ({
   sourcePath,
   contextUrl,
-  username,
-  password,
+  contextUsername,
+  contextPassword,
   verbose,
   dryRun,
   log
@@ -33,7 +33,7 @@ const postFile = ({
   )}?verbose=${verbose}&dryRun=${dryRun}`;
   return fetch(url, {
     headers: {
-      Authorization: getBaseAutorisation(username, password)
+      Authorization: getBaseAutorisation(contextUsername, contextPassword)
     },
     method: "POST",
     body: formData
@@ -71,8 +71,8 @@ const postFile = ({
 exports.deployConfiguration = ({
   sourcePath,
   contextUrl,
-  username,
-  password,
+  contextUsername,
+  contextPassword,
   verbose,
   dryRun
 }) => {
@@ -86,8 +86,8 @@ exports.deployConfiguration = ({
         return postFile({
           sourcePath,
           contextUrl,
-          username,
-          password,
+          contextUsername,
+          contextPassword,
           log,
           verbose,
           dryRun
