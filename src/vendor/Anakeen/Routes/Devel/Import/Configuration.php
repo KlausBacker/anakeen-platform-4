@@ -2,6 +2,7 @@
 namespace Anakeen\Routes\Devel\Import;
 
 //use Anakeen\Core\Internal\ImportSmartConfiguration;
+use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
@@ -24,6 +25,17 @@ class Configuration
         $this->dryRun = ($dryRun == "true" || $dryRun == "yes" || $dryRun == "1");
     }
 
+    protected static function importFiles(ImportSmartConfiguration $import, $files)
+    {
+        foreach ($files as $fileItem) {
+            if (is_a($fileItem, \Slim\Http\UploadedFile::class)) {
+                $import->import($fileItem->file);
+            } elseif (is_array($fileItem)) {
+                self::importFiles($import, $fileItem);
+            }
+        }
+    }
+
     protected function doRequest(\Slim\Http\request $request)
     {
         $files = $request->getUploadedFiles();
@@ -37,9 +49,7 @@ class Configuration
         $import = new ImportConfiguration();
         $import->setVerbose($this->verbose);
         $import->setOnlyAnalyze($this->dryRun);
-        foreach ($files as $currentFile) {
-            $import->import($currentFile->file);
-        }
+        self::importFiles($import, $files);
 
         $err = $import->getErrorMessage();
 
