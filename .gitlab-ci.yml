@@ -22,7 +22,6 @@ autotest:
     when: always
   only:
     - branches
-    - tags
 
 package:
   stage: package
