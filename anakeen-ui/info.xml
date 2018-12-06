@@ -17,8 +17,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
             <label>CVDOC Structure</label>
         </process>
-        <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
-        <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
@@ -95,8 +93,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
             <label>CVDOC Structure</label>
         </process>
-        <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/Render/CVDOC__IUSER.csv"/>
-        <process command="./ank.php  --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Group/Render/CVDOC__GROUP.csv"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --system --resetRouteConfig"/>
         <process command="./ank.php --system --resetRouteConfig"/>
