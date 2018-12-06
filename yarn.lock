@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@1.0.1-1543424005-1543975771":
-  version "1.0.1-1543424005-1543975771"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543424005-1543975771.tgz#63790e809a0cecf1d1d80f849b2ba132dc57226a"
-  integrity sha512-vJxusoq3UQkQDjFkogMXiguLvFvMVnTJBAOrq2t+6Vzc8uWhj9a+uTkK2DnKa3YMr8P4GxYeTq07jBiak02mQg==
+"@anakeen/anakeen-cli@latest":
+  version "1.0.1-1543424005-1544026372"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543424005-1544026372.tgz#836848284890187a3eb9ea383fb04472dccfc5db"
+  integrity sha512-VY3XzJnImdGgdNEMuIeac5hmivU9N11mzizVR++4TntI/DcALcmQ81dS55ET28QUqMDEw9FpXYHzajnaLY/+VQ==
   dependencies:
-    "@anakeen/anakeen-module-validation" latest
+    "@anakeen/anakeen-module-validation" "1.0.0-1543423715-1543947921"
     form-data "^2.3.3"
     glob "^7.1.3"
     gulp "^4.0.0"
@@ -27,10 +27,10 @@
     xml2js "^0.4.19"
     yargs "^12.0.5"
 
-"@anakeen/anakeen-module-validation@latest":
-  version "1.0.0-1543423715"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.0-1543423715.tgz#fdf4459c40f633c1351c9cbf42d04f3d4ba6454c"
-  integrity sha512-gI8LVbKWxulDJRPj5Xao6aAiRSDESEhoBtR1VVhjT6p/I+caiPys35IhUCF0JCDkHhBP6xbl5Q5M5l1Oihb5hA==
+"@anakeen/anakeen-module-validation@1.0.0-1543423715-1543947921":
+  version "1.0.0-1543423715-1543947921"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.0-1543423715-1543947921.tgz#45d38d5a0e14781ba36347056e7e194f627f8dce"
+  integrity sha512-xcczyStKSkyP7ScZ/Rbqf2VeHl3cdOhUgb/NFwJ+ADZ+sNBEYQEvYbsoriT2P4W/mXf515aMonsaMR3Z596Z6g==
   dependencies:
     libxmljs "^0.19.5"
 
