@@ -77,7 +77,7 @@ class GridConfig
     protected function getUrlFields()
     {
         $filteredAttributes = array_filter($this->gridFields, function ($field) {
-            return ($field["type"] !== 'array' && $field["type"] !== 'tab' && $field["type"] !== 'frame' && !$field["abstract"]);
+            return ($field["type"] !== 'array' && $field["type"] !== 'tab' && $field["type"] !== 'frame' && empty($field["abstract"]));
         });
         $result = implode(',', array_map(function ($field) {
             if ($field["property"]) {
