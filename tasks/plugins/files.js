@@ -41,8 +41,32 @@ exports.mkpdir = (dirPath, callback) => {
 };
 
 /**
+ * Create multiple dirs asynchronously.
+ * @param {...string} dirpaths
+ * @return {Promise<any>[]}
+ */
+exports.mkdirs = (...dirpaths) => {
+  if (dirpaths && dirpaths.length) {
+    return Promise.all(
+      dirpaths.map(dirpath => {
+        return new Promise((resolve, reject) => {
+          fs.mkdir(dirpath, err => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
+        });
+      })
+    );
+  }
+  return Promise.resolve();
+};
+
+/**
  * Write multiple files asynchronously.
- * @param {Array<{path: string, content: string}>}files
+ * @param {...{path: string, content: string}}files
  * @return {Promise<any>[]}
  */
 exports.writeFiles = (...files) => {
