@@ -57,7 +57,14 @@ const postFile = ({
           );
         });
       }
-      return response.json();
+
+      return response.text().then(result => {
+        try {
+          return JSON.parse(result);
+        } catch (e) {
+          throw new Error(result);
+        }
+      });
     })
     .then(result => {
       if (!result.success) {
