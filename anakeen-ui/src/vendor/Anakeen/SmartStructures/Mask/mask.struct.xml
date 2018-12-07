@@ -8,7 +8,7 @@
         <smart:usefor>S</smart:usefor>
         <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
-            <smart:field-set name="msk_fr_rest" type="frame" label="Informtation" access="ReadWrite">
+            <smart:field-set name="msk_fr_rest" type="frame" label="Information" access="ReadWrite">
                 <smart:field-docid name="msk_famid" label="Structure" access="ReadWrite" needed="true" relation="-1"/>
                 <smart:field-set name="msk_t_contain" type="array" label="Fields" access="ReadWrite">
                     <smart:field-text name="msk_attrids" label="Field" access="ReadWrite"/>

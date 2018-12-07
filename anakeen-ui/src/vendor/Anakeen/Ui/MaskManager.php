@@ -32,8 +32,8 @@ class MaskManager
 
     /**
      * set visibility mask
-     *
-     * @param int $mid mask ident
+     * Apply primary mask first if is set in view control of element
+     * @param int $mid Mask identifier
      *
      * @return void
      */
@@ -44,6 +44,19 @@ class MaskManager
     }
 
     /**
+     * Apply a mask over current visibilities
+     * @param string|int $mid Mask identifier
+     * @throws Exception
+     */
+    public function addUiMask($mid)
+    {
+        if (!$this->mVisibilities) {
+            $this->initVisibilities();
+        }
+        $this->overrideMask($mid);
+    }
+
+    /**
      * @param SmartElement $smartElement
      * @return MaskManager
      */
@@ -51,6 +64,43 @@ class MaskManager
     {
         $this->smartElement = $smartElement;
         return $this;
+    }
+
+    /**
+     * Return the primary mask refrerenced in associated primary control
+     * @return int|string the primary mask id (0 if not found)
+     * @throws \Anakeen\Core\DocManager\Exception
+     */
+    public function getPrimaryMask()
+    {
+        if ($this->smartElement->cvid) {
+            $cvdoc = SEManager::getDocument($this->smartElement->cvid);
+            $primaryMask = $cvdoc->getRawValue(CvdocFields::cv_primarymask);
+            if ($primaryMask) {
+                return $primaryMask;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Init visibilities with access field control
+     * @throws Exception
+     */
+    protected function initVisibilities()
+    {
+        $oas = $this->smartElement->getAttributes();
+        if (is_array($oas)) {
+            foreach ($oas as $k => $v) {
+                if ($oas[$k]) {
+                    $this->mVisibilities[$v->id] = self::propagateVisibility(
+                        $this->getDefaultVisibility($v),
+                        (empty($v->fieldSet->id)) ? '' : $this->mVisibilities[$v->fieldSet->id],
+                        (!empty($v->fieldSet->fieldSet->id)) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
+                    );
+                }
+            }
+        }
     }
 
     /**
@@ -65,19 +115,7 @@ class MaskManager
     {
         // copy default visibilities
         $err = '';
-        $oas = $this->smartElement->getAttributes();
-        if (is_array($oas)) {
-            foreach ($oas as $k => $v) {
-                if ($oas[$k]) {
-                    $this->mVisibilities[$v->id] = self::propagateVisibility(
-                        $this->getDefaultVisibility($v),
-                        (empty($v->fieldSet->id)) ? '' : $this->mVisibilities[$v->fieldSet->id],
-                        (!empty($v->fieldSet->fieldSet->id)) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
-                    );
-                }
-            }
-        }
-
+        $this->initVisibilities();
 
         $argMid = $mid;
         if ((!$force) && (($this->smartElement->doctype == 'C') || (($this->smartElement->doctype == 'T') && ($mid == 0)))) {
@@ -134,96 +172,14 @@ class MaskManager
                 }
             }
         }
-        if ($mid == 0) {
-            // Use primary mask if no one is defined
-            if ($this->smartElement->cvid) {
-                if (!$cvdoc) {
-                    $cvdoc = SEManager::getDocument($this->smartElement->cvid);
-                }
-                $primaryMask = $cvdoc->getRawValue(CvdocFields::cv_primarymask);
-                if ($primaryMask) {
-                    $mid = $primaryMask;
-                }
-            }
+
+        $primaryMaskId = $this->getPrimaryMask();
+        // Use primary mask if first if is defined
+        if ($primaryMaskId) {
+            $this->overrideMask($primaryMaskId);
         }
         if ($mid) {
-            if (!$argMid) {
-                $argMid = $mid;
-            }
-            /**
-             * @var \SmartStructure\MASK $mdoc
-             */
-            $mdoc = SEManager::getDocument($mid);
-            if ($mdoc && $mdoc->isAlive()) {
-                if (is_a($mdoc, \SmartStructure\Mask::class)) {
-                    $maskFam = $mdoc->getRawValue("msk_famid");
-                    if (!in_array($maskFam, $this->smartElement->getFromDoc())) {
-                        $err = \ErrorCode::getError(
-                            'DOC1002',
-                            $argMid,
-                            $this->smartElement->getTitle(),
-                            SEManager::getNameFromId($maskFam)
-                        );
-                    } else {
-                        $tvis = $mdoc->getVisibilities();
-                        foreach ($tvis as $k => $v) {
-                            if (isset($oas[$k])) {
-                                if ($v != "-") {
-                                    $this->mVisibilities[$oas[$k]->id] = $v;
-                                }
-                            }
-                        }
-                        $tdiff = array_diff(array_keys($oas), array_keys($tvis));
-                        // compute frame before because has no order
-                        foreach ($tdiff as $k) {
-                            $v = $oas[$k];
-                            if ($v->type == "frame") {
-                                $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
-                                    $this->getDefaultVisibility($v),
-                                    isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
-                                    ''
-                                );
-                            }
-                        }
-                        foreach ($tdiff as $k) {
-                            $v = $oas[$k];
-                            if ($v->type == "array") {
-                                $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
-                                    $this->getDefaultVisibility($v),
-                                    isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
-                                    isset($v->fieldSet->fieldSet) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
-                                );
-                            }
-                        }
-                        // recompute loosed attributes
-                        foreach ($tdiff as $k) {
-                            $v = $oas[$k];
-                            if ($v->type != "frame") {
-                                $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
-                                    $this->getDefaultVisibility($v),
-                                    isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
-                                    isset($v->fieldSet->fieldSet) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
-                                );
-                            }
-                        }
-                        // modify needed attribute also
-                        $tneed = $mdoc->getNeedeeds();
-                        foreach ($tneed as $k => $v) {
-                            if (isset($oas[$k])) {
-                                if ($v == "Y") {
-                                    $oas[$k]->needed = true;
-                                } elseif ($v == "N") {
-                                    $oas[$k]->needed = false;
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    $err = \ErrorCode::getError('DOC1001', $argMid, $mdoc->fromname, $this->smartElement->getTitle());
-                }
-            } else {
-                $err = \ErrorCode::getError('DOC1000', $argMid, $this->smartElement->getTitle());
-            }
+            $this->overrideMask($mid);
         }
         if (!empty($this->smartElement->attributes->attr)) {
             $this->smartElement->attributes->orderAttributes();
@@ -234,6 +190,94 @@ class MaskManager
         }
     }
 
+    protected function overrideMask($mid)
+    {
+        /**
+         * @var \SmartStructure\MASK $mdoc
+         */
+        $mdoc = SEManager::getDocument($mid);
+        $err = "";
+        if ($mdoc && $mdoc->isAlive()) {
+            if (is_a($mdoc, \SmartStructure\Mask::class)) {
+                $oas = $this->smartElement->getAttributes();
+                $maskFam = $mdoc->getRawValue("msk_famid");
+                if (!in_array($maskFam, $this->smartElement->getFromDoc())) {
+                    $err = \ErrorCode::getError(
+                        'DOC1002',
+                        $mid,
+                        $this->smartElement->getTitle(),
+                        SEManager::getNameFromId($maskFam)
+                    );
+                } else {
+                    $tvis = $mdoc->getVisibilities();
+                    foreach ($tvis as $k => $v) {
+                        if (isset($oas[$k])) {
+                            if ($v != "-") {
+                                $this->mVisibilities[$oas[$k]->id] = $v;
+                            }
+                        }
+                    }
+                    $tdiff = array_diff(array_keys($oas), array_keys($tvis));
+                    // compute frame before because has no order
+                    foreach ($tdiff as $k) {
+                        $v = $oas[$k];
+                        if ($v->type === "frame") {
+                            $fid = $oas[$k]->id;
+
+                            $this->mVisibilities[$fid] = self::propagateVisibility(
+                                $this->mVisibilities[$fid] ?: $this->getDefaultVisibility($v),
+                                isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
+                                ''
+                            );
+                        }
+                    }
+                    foreach ($tdiff as $k) {
+                        $v = $oas[$k];
+                        if ($v->type === "array") {
+                            $fid = $oas[$k]->id;
+
+                            $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
+                                $this->mVisibilities[$fid] ?: $this->getDefaultVisibility($v),
+                                isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
+                                isset($v->fieldSet->fieldSet) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
+                            );
+                        }
+                    }
+                    // recompute loosed attributes
+                    foreach ($tdiff as $k) {
+                        $v = $oas[$k];
+                        if ($v->type !== "frame") {
+                            $fid = $oas[$k]->id;
+                            $this->mVisibilities[$oas[$k]->id] = self::propagateVisibility(
+                                $this->mVisibilities[$fid] ?: $this->getDefaultVisibility($v),
+                                isset($v->fieldSet) ? $this->mVisibilities[$v->fieldSet->id] : '',
+                                isset($v->fieldSet->fieldSet) ? $this->mVisibilities[$v->fieldSet->fieldSet->id] : ''
+                            );
+                        }
+                    }
+
+                    // modify needed attribute also
+                    $tneed = $mdoc->getNeedeeds();
+                    foreach ($tneed as $k => $v) {
+                        if (isset($oas[$k])) {
+                            if ($v == "Y") {
+                                $oas[$k]->needed = true;
+                            } elseif ($v == "N") {
+                                $oas[$k]->needed = false;
+                            }
+                        }
+                    }
+                }
+            } else {
+                $err = \ErrorCode::getError('DOC1001', $mid, $mdoc->fromname, $this->smartElement->getTitle());
+            }
+        } else {
+            $err = \ErrorCode::getError('DOC1000', $mid, $this->smartElement->getTitle());
+        }
+        if ($err) {
+            throw new Exception($err);
+        }
+    }
 
     /**
      * Get default visibility from access
