@@ -1602,7 +1602,7 @@ class ImportDocumentDescription
         $ownDef = $this->doc->getOwnDefValues();
         if ((!empty($ownDef[$attrid])) && (!$force)) {
             // reset default
-            $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $ownDef[$attrid], $data[2]);
+            $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, print_r($ownDef[$attrid], true), $data[2]);
         } else {
             $this->doc->setDefValue($attrid, $defv, false);
             if ($force || (!$this->doc->getParameterRawValue($attrid))) {
