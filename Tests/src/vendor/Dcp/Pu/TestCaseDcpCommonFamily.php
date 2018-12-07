@@ -75,7 +75,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
     public static function importConfigurationFile($f)
     {
         try {
-            self::importConfiguration($f);
+            static::importConfiguration($f);
         } catch (\Dcp\Exception $e) {
             self::rollbackTransaction();
             throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
