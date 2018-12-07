@@ -72,21 +72,21 @@ export default {
                   items[item]
                 }/view/?filters=${this.$.param({
                   name: items[item]
-                })}">>${items[item]}</a>`;
+                })}">${items[item]}</a>`;
                 break;
               case "persistentTimers":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
                 }/view/?filters=${this.$.param({
                   name: items[item]
-                })}">>${items[item]}</a>`;
+                })}">${items[item]}</a>`;
                 break;
               case "unAttachTimers":
                 str += `<a data-role="develRouterLink" href="/devel/smartElements/${
                   items[item]
                 }/view/?filters=${this.$.param({
                   name: items[item]
-                })}">>${items[item]}</a>`;
+                })}">${items[item]}</a>`;
                 break;
               default:
                 break;
