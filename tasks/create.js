@@ -115,8 +115,17 @@ exports.create = options => {
           return createTemplates.config
             .writeTemplate(options)
             .then(toImport => {
+              postInstall.process.push(
+                createCommand(
+                  `./ank.php --script=registerConfigDir --path=./${
+                    toImport.configDir
+                  }`
+                ).process
+              );
               const command = createCommand(
-                `./ank.php --script=importConfiguration --file=./${toImport}`
+                `./ank.php --script=importConfiguration --file=./${
+                  toImport.parameters
+                }`
               );
               postUpgrade.process.push(command.process);
               postInstall.process.push(command.process);

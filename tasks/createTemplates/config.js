@@ -78,12 +78,13 @@ exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
           }
         )
         .then(() => {
-          resolve(
-            path.relative(
+          resolve({
+            parameters: path.relative(
               path.join(sourcePath, "src"),
               path.join(configPath, `100-${moduleName}Parameters.xml`)
-            )
-          );
+            ),
+            configDir: path.relative(path.join(sourcePath, "src"), configPath)
+          });
         })
         .catch(reject);
     });
