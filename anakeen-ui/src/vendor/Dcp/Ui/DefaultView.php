@@ -296,16 +296,6 @@ class DefaultView extends RenderDefault
                 $itemMenu->setVisibility($itemMenu::VisibilityDisabled);
             }
             $menu->appendElement($itemMenu);
-
-            $itemMenu = new ItemMenu('workflowGraph', ___("View workflow graph", "UiMenu"));
-            $targetOption = new MenuTargetOptions();
-            $targetOption->title = $wdoc->getTitle();
-            $targetOption->windowHeight = "80%";
-            $targetOption->windowWidth = "480px";
-            $targetOption->modal = true;
-            $itemMenu->setTarget("_dialog", $targetOption);
-            $itemMenu->setUrl(sprintf("?app=FDL&action=VIEW_WORKFLOW_GRAPH&type=justactivity&format=png&orient=TB&size=11.88%%2C12.73&tool=dot&id=%d", $wdoc->id));
-            $menu->appendElement($itemMenu);
         }
     }
 

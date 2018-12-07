@@ -204,7 +204,7 @@ class MaskManager
                 if (!in_array($maskFam, $this->smartElement->getFromDoc())) {
                     $err = \ErrorCode::getError(
                         'DOC1002',
-                        $mid,
+                        $mdoc->name ?? $mdoc->id,
                         $this->smartElement->getTitle(),
                         SEManager::getNameFromId($maskFam)
                     );
@@ -269,7 +269,7 @@ class MaskManager
                     }
                 }
             } else {
-                $err = \ErrorCode::getError('DOC1001', $mid, $mdoc->fromname, $this->smartElement->getTitle());
+                $err = \ErrorCode::getError('DOC1001', $mdoc->name ?? $mdoc->id, $mdoc->fromname, $this->smartElement->getTitle());
             }
         } else {
             $err = \ErrorCode::getError('DOC1000', $mid, $this->smartElement->getTitle());

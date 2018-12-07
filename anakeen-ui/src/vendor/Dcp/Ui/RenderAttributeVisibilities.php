@@ -20,14 +20,21 @@ class RenderAttributeVisibilities implements \JsonSerializable
     protected $visibilities = array();
     protected $finalVisibilities = array();
     /**
-     * @var \SmartStructure\Mask
+     * @var \SmartStructure\Mask[]
      */
-    protected $mask;
+    protected $masks=[];
 
     public function __construct(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
         $this->document = $document;
-        $this->mask = $mask;
+        if ($mask !== null) {
+            $this->masks[] = $mask;
+        }
+    }
+
+    public function withMask(\SmartStructure\Mask $mask)
+    {
+        $this->masks[] = $mask;
     }
 
     /**
@@ -79,10 +86,12 @@ class RenderAttributeVisibilities implements \JsonSerializable
     {
         $oas = $this->document->getAttributes();
         $mskMgt = new MaskManager($this->document);
-        if ($this->mask) {
-            $mskMgt->setUiMask($this->mask->id);
-        } else {
-            $mskMgt->setUiMask();
+
+        $mskMgt->setUiMask();
+        if ($this->masks) {
+            foreach ($this->masks as $mask) {
+                $mskMgt->addUiMask($mask->id);
+            }
         }
         foreach ($oas as $v) {
             if ($v->usefor === "Q") {

@@ -177,7 +177,6 @@ class DocumentView
         if ($controlView) {
             SEManager::cache()->addDocument($controlView);
         }
-
         $vid = $this->viewIdentifier;
         $messages = [];
         $info["view"] = $this->getViewInformation($vid, $messages);
