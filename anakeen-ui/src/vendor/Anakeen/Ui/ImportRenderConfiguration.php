@@ -182,6 +182,8 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
 
             $masterMask = $this->evaluate($cvNode, "string({$this->uiPrefix}:primary-mask/@ref)");
             if ($masterMask) {
+                // Very subtil : Need to change type on the fly to not try to resolve logicalname
+                $cvdoc->getAttribute(CvDocFields::cv_primarymask)->type="text";
                 $cvdoc->setValue(CvDocFields::cv_primarymask, $masterMask);
             }
             $createvid = $this->evaluate($cvNode, "string({$this->uiPrefix}:creation-view/@ref)");
@@ -190,6 +192,9 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
             }
 
             $viewNodes = $this->getUiNodes($cvNode, "view");
+
+            // Very subtil : Need to change type on the fly to not try to resolve logicalname
+            $cvdoc->getAttribute(CvDocFields::cv_mskid)->type="text";
             /**
              * @var \DOMElement $viewNode
              */

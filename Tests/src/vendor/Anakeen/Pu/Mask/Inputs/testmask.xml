@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_PMASK" label="Test massque">
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_fr_rw" type="frame" access="ReadWrite">
+                <smart:field-date name="tst_rw_rw" access="ReadWrite"/>
+                <smart:field-date name="tst_rw_r" access="Read"/>
+                <smart:field-date name="tst_rw_w" access="Write"/>
+                <smart:field-date name="tst_rw_n" access="None"/>
+            </smart:field-set>
+
+            <smart:field-set name="tst_fr_r" type="frame" access="Read">
+                <smart:field-int name="tst_r_rw" access="ReadWrite"/>
+                <smart:field-int name="tst_r_r" access="Read"/>
+                <smart:field-int name="tst_r_w" access="Write"/>
+                <smart:field-int name="tst_r_n" access="None"/>
+            </smart:field-set>
+
+            <smart:field-set name="tst_fr_n" type="frame" access="None">
+                <smart:field-double name="tst_n_rw" access="ReadWrite"/>
+                <smart:field-double name="tst_n_r" access="Read"/>
+                <smart:field-double name="tst_n_w" access="Write"/>
+                <smart:field-double name="tst_n_n" access="None"/>
+            </smart:field-set>
+
+            <smart:field-set name="tst_fr_w" type="frame" access="Write">
+                <smart:field-text name="tst_w_rw" access="ReadWrite"/>
+                <smart:field-text name="tst_w_r" access="Read"/>
+                <smart:field-text name="tst_w_w" access="Write"/>
+                <smart:field-text name="tst_w_n" access="None"/>
+            </smart:field-set>
+
+            <smart:field-set name="tst_tab_n" type="tab" access="None">
+                <smart:field-set name="tst_fr2_r" type="frame" access="Read">
+                    <smart:field-text name="tst_n_r_r" access="Read"/>
+                    <smart:field-text name="tst_n_r_n" access="None"/>
+                    <smart:field-password name="tst_n_r_rw" access="ReadWrite"/>
+                    <smart:field-password name="tst_n_r_w" access="Write"/>
+                </smart:field-set>
+                <smart:field-set name="tst_fr3_n" type="frame" access="None">
+                    <smart:field-password name="tst_n_n_n" access="None"/>
+                    <smart:field-password name="tst_n_n_r" access="Read"/>
+                    <smart:field-password name="tst_n_n_rw" access="ReadWrite"/>
+                    <smart:field-password name="tst_n_n_w" access="Write"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+    </smart:structure-configuration>
+    <smart:structure-configuration name="TST_PMASKBIS" label="Test massque">
+        <smart:extends ref="TST_PMASK"/>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+    </smart:structure-configuration>
+
+</smart:config>

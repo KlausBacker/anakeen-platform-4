@@ -17,6 +17,7 @@ class SuiteUi
         $suite = new FrameworkDcp();
 
         $suite->addTestSuite(\Anakeen\Pu\Mask\TestMask::class);
+        $suite->addTestSuite(\Anakeen\Pu\Mask\TestMaskPrimary::class);
         $suite->addTestSuite(\Anakeen\Pu\TestSearchFamilies::class);
         $suite->addTestSuite(\Anakeen\Pu\TestImportCVDOC::class);
 
