@@ -12,35 +12,10 @@ const convertPathInPhpNamespace = ({ vendorPath, smartStructurePath }) => {
     .join("\\");
 };
 
-const generateSmartRenderXML = ({ name, namespace }) => {
-  const ssNAME = name.toUpperCase();
-  const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  const structureConf = {
-    "smart:config": {
-      $: {
-        "xmlns:smart": "https://platform.anakeen.com/4/schemas/smart/1.0",
-        "xmlns:ui": "https://platform.anakeen.com/4/schemas/ui/1.0"
-      },
-      "ui:render": {
-        $: {
-          ref: ssNAME
-        }
-      }
-    }
-  };
-
-  structureConf["smart:config"]["ui:render"]["ui:render-access"] = {
-    $: {
-      class: namespace + "\\Render\\" + ssName + "Access"
-    }
-  };
-  return structureConf;
-};
-
 const generateSmartStructureXML = ({
   name,
   parentName,
-  withClass,
+  withBehavior,
   namespace
 }) => {
   const ssNAME = name.toUpperCase();
@@ -68,7 +43,7 @@ const generateSmartStructureXML = ({
       "$"
     ].extends = parentName;
   }
-  if (withClass) {
+  if (withBehavior) {
     structureConf["smart:config"]["smart:structure-configuration"][
       "smart:class"
     ] = `${namespace}\\${ssName}Behavior`;
@@ -84,6 +59,73 @@ const generateSmartStructureXML = ({
   ] = {};
   return structureConf;
 };
+
+const generateSmartStructureParametersXML = ({ name }) => {
+  const ssNAME = name.toUpperCase();
+  const structureConf = {
+    "smart:config": {
+      $: {
+        "xmlns:smart": "https://platform.anakeen.com/4/schemas/smart/1.0"
+      },
+      "smart:structure-configuration": {
+        $: {
+          name: ssNAME
+        }
+      }
+    }
+  };
+  structureConf["smart:config"]["smart:structure-configuration"][
+    "smart:parameters"
+  ] = {};
+  structureConf["smart:config"]["smart:structure-configuration"][
+    "smart:defaults"
+  ] = {};
+  return structureConf;
+};
+
+const generateSmartStructureSettingsXML = ({
+  name,
+  workflow,
+  withRender,
+  namespace
+}) => {
+  const ssNAME = name.toUpperCase();
+  const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  const structureConf = {
+    "smart:config": {
+      $: {
+        "xmlns:smart": "https://platform.anakeen.com/4/schemas/smart/1.0",
+        "xmlns:ui": "https://platform.anakeen.com/4/schemas/ui/1.0"
+      }
+    }
+  };
+  if (withRender) {
+    structureConf["smart:config"]["ui:render"] = {
+      $: {
+        ref: ssNAME
+      },
+      "ui:render-access": {
+        $: {
+          class: namespace + "\\Render\\" + ssName + "Access"
+        }
+      }
+    };
+  }
+  if (workflow) {
+    structureConf["smart:config"]["smart:structure-configuration"] = {
+      $: {
+        name: ssNAME
+      },
+      "smart:default-workflow": {
+        $: {
+          ref: workflow
+        }
+      }
+    };
+  }
+  return structureConf;
+};
+
 const generateStructurePhp = ({ name, namespace, parentName }) => {
   let extend = "\\Anakeen\\SmartElement";
   const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
@@ -151,32 +193,41 @@ class ${ssName}${type}Render extends \\Anakeen\\Ui\\DefaultConfig${type}Render
 
 exports.createSmartStructure = ({
   sourcePath,
+  smartStructurePath,
+  vendorName,
+  moduleName,
   name,
   inSelfDirectory = true,
   withRender = true,
-  withClass = true,
+  withBehavior = true,
+  withSettings = true,
+  withParameters = true,
+  withAutocompletion = true,
+  workflow,
   parentName = false,
-  insertIntoInfo = true,
-  smartStructurePath,
-  vendorName
+  insertIntoInfo = true
 }) => {
   return gulp.task("createSmartStructure", async () => {
     //Get module info
     const moduleInfo = await getModuleInfo(sourcePath);
     //Check the path for the xml file
     if (!vendorName) {
-      vendorName = moduleInfo.vendorName;
+      vendorName = moduleInfo.moduleInfo.vendor;
+    }
+    if (!moduleName) {
+      moduleName = moduleInfo.moduleInfo.name;
     }
     let srcPath;
     let vendorPath;
     let xmlStructPath;
-    let xmlRenderPath;
+    let xmlSettingsPath;
+    let xmlParametersPath;
     if (!smartStructurePath && !vendorName) {
       throw new Error(
         "You need to specify a vendor name or smartStructurePath"
       );
     }
-    if (!smartStructurePath && vendorName) {
+    if (!smartStructurePath && vendorName && moduleName) {
       //Compute and test the smartStructurePath for the vendor name
       srcPath = moduleInfo.buildInfo.buildPath.find(currentPath => {
         //Check current path
@@ -184,6 +235,7 @@ exports.createSmartStructure = ({
           currentPath,
           "vendor",
           vendorName,
+          moduleName,
           "SmartStructures"
         );
         try {
@@ -201,6 +253,7 @@ exports.createSmartStructure = ({
         srcPath,
         "vendor",
         vendorName,
+        moduleName,
         "SmartStructures"
       );
       vendorPath = path.join(srcPath, "vendor");
@@ -228,7 +281,7 @@ exports.createSmartStructure = ({
             generateSmartStructureXML({
               name,
               parentName,
-              withClass,
+              withBehavior,
               namespace: convertPathInPhpNamespace({
                 vendorPath,
                 smartStructurePath: currentPath
@@ -236,7 +289,7 @@ exports.createSmartStructure = ({
             })
           );
           //Write the xml
-          xmlStructPath = path.join(currentPath, `${Name}.structure.xml`);
+          xmlStructPath = path.join(currentPath, `100-${Name}Structure.xml`);
           fs.writeFile(xmlStructPath, xmlStruct, err => {
             if (err) {
               return reject(err);
@@ -246,15 +299,15 @@ exports.createSmartStructure = ({
         });
       })
       .then(currentPath => {
-        if (withRender) {
+        if (withParameters) {
           return new Promise((resolve, reject) => {
             //Build the xml
             const builder = new xml2js.Builder();
-            const xmlData = builder.buildObject(
-              generateSmartRenderXML({
+            const xmlStruct = builder.buildObject(
+              generateSmartStructureParametersXML({
                 name,
                 parentName,
-                withClass,
+                withBehavior,
                 namespace: convertPathInPhpNamespace({
                   vendorPath,
                   smartStructurePath: currentPath
@@ -262,8 +315,11 @@ exports.createSmartStructure = ({
               })
             );
             //Write the xml
-            xmlRenderPath = path.join(currentPath, `${Name}.render.xml`);
-            fs.writeFile(xmlRenderPath, xmlData, err => {
+            xmlParametersPath = path.join(
+              currentPath,
+              `110-${Name}Parameters.xml`
+            );
+            fs.writeFile(xmlParametersPath, xmlStruct, err => {
               if (err) {
                 return reject(err);
               }
@@ -274,7 +330,7 @@ exports.createSmartStructure = ({
       })
       .then(currentPath => {
         //Write the php if needed
-        if (withClass) {
+        if (withBehavior) {
           return new Promise((resolve, reject) => {
             const structurePHP = generateStructurePhp({
               name,
@@ -294,6 +350,44 @@ exports.createSmartStructure = ({
                 resolve(currentPath);
               }
             );
+          });
+        }
+      })
+      .then(currentPath => {
+        // With settings
+        if (withSettings) {
+          return new Promise((resolve, reject) => {
+            const settingsPath = path.join(currentPath, `${Name}Settings`);
+            fs.mkdir(settingsPath, err => {
+              if (err) {
+                reject(err);
+              } else {
+                //Build the xml
+                const builder = new xml2js.Builder();
+                const xmlData = builder.buildObject(
+                  generateSmartStructureSettingsXML({
+                    name,
+                    workflow,
+                    withRender,
+                    namespace: convertPathInPhpNamespace({
+                      vendorPath,
+                      smartStructurePath: currentPath
+                    })
+                  })
+                );
+                //Write the xml
+                xmlSettingsPath = path.join(
+                  currentPath,
+                  `500-${Name}Settings.xml`
+                );
+                fs.writeFile(xmlSettingsPath, xmlData, err => {
+                  if (err) {
+                    return reject(err);
+                  }
+                  resolve(currentPath);
+                });
+              }
+            });
           });
         }
       })
@@ -318,7 +412,7 @@ exports.createSmartStructure = ({
                   if (err) {
                     return reject(err);
                   }
-                  resolve();
+                  resolve(currentPath);
                 });
               });
             }
@@ -368,7 +462,7 @@ exports.createSmartStructure = ({
                           }
                           //Add or update json
 
-                          resolve();
+                          resolve(currentPath);
                         }
                       );
                     }
@@ -379,7 +473,25 @@ exports.createSmartStructure = ({
           });
         }
       })
-      .then(() => {
+      .then(currentPath => {
+        // With autocompletion
+        if (withAutocompletion) {
+          return new Promise((resolve, reject) => {
+            const autocompletionPath = path.join(
+              currentPath,
+              `${Name}Autocompletion`
+            );
+            fs.mkdir(autocompletionPath, err => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(currentPath);
+              }
+            });
+          });
+        }
+      })
+      .then(currentPath => {
         //Complete the info.xml if needed
         if (insertIntoInfo) {
           const infoXMLPath = path.join(sourcePath, appConst.infoPath);
@@ -416,8 +528,8 @@ exports.createSmartStructure = ({
                   $: {
                     command: `./ank.php --script=importConfiguration --file=./${path.relative(
                       srcPath,
-                      xmlStructPath
-                    )}`
+                      currentPath
+                    )}/**/*.xml`
                   }
                 });
 
@@ -425,29 +537,10 @@ exports.createSmartStructure = ({
                   $: {
                     command: `./ank.php --script=importConfiguration --file=./${path.relative(
                       srcPath,
-                      xmlStructPath
-                    )}`
+                      currentPath
+                    )}/**/*.xml`
                   }
                 });
-                if (withRender) {
-                  postInstall[0].process.push({
-                    $: {
-                      command: `./ank.php --script=importConfiguration --file=./${path.relative(
-                        srcPath,
-                        xmlRenderPath
-                      )}`
-                    }
-                  });
-
-                  postUpgrade[0].process.push({
-                    $: {
-                      command: `./ank.php --script=importConfiguration --file=./${path.relative(
-                        srcPath,
-                        xmlRenderPath
-                      )}`
-                    }
-                  });
-                }
                 const builder = new xml2js.Builder();
                 fs.writeFile(infoXMLPath, builder.buildObject(data), err => {
                   if (err) {

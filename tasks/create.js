@@ -20,7 +20,7 @@ const createInfoXML = (
   return {
     module: {
       $: {
-        xmlns: "urn:dynacase:webinst:module/1.0",
+        xmlns: "https://platform.anakeen.com/4/schemas/app/1.0",
         name: moduleName,
         vendor: vendorName,
         version: "1.0.0",

@@ -6,7 +6,8 @@ const inquirer = require("inquirer");
 const { createSmartStructure } = require("../tasks/createSmartStructure");
 const {
   checkVendorName,
-  checkSmartStructureName
+  checkSmartStructureName,
+  checkModuleName
 } = require("../utils/checkName");
 
 let moduleData = {};
@@ -17,6 +18,18 @@ signale.config({
 
 exports.desc = "Create a smart structure";
 const builder = {
+  sourcePath: {
+    description: "path to the module",
+    alias: "s",
+    default: ".",
+    type: "string",
+    coerce: arg => {
+      if (!fs.statSync(arg).isDirectory()) {
+        throw new Error("Unable to find the source directory " + arg);
+      }
+      return arg;
+    }
+  },
   name: {
     description: "name of the smart structure",
     alias: "n",
@@ -27,18 +40,6 @@ const builder = {
           "SmartStructure name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
             arg
         );
-      }
-      return arg;
-    }
-  },
-  sourcePath: {
-    description: "path to the module",
-    alias: "s",
-    default: ".",
-    type: "string",
-    coerce: arg => {
-      if (!fs.statSync(arg).isDirectory()) {
-        throw new Error("Unable to find the source directory " + arg);
       }
       return arg;
     }
@@ -58,6 +59,27 @@ const builder = {
       if (!checkVendorName(arg)) {
         throw new Error(
           "Vendor name must be only a-zA-Z0-9_ , the current value is not valid : " +
+            arg
+        );
+      }
+      return arg;
+    }
+  },
+  moduleName: {
+    description: "name of the module",
+    alias: "m",
+    type: "string",
+    default: () => {
+      if (moduleData.moduleInfo) {
+        return moduleData.moduleInfo.name;
+      } else {
+        return undefined;
+      }
+    },
+    coerce: arg => {
+      if (!checkModuleName(arg)) {
+        throw new Error(
+          "Module name must be only a-zA-Z0-9_ , the current value is not valid : " +
             arg
         );
       }
@@ -107,10 +129,29 @@ const builder = {
     default: true,
     type: "boolean"
   },
-  withClass: {
-    description: "add a class",
+  withParameters: {
+    description: "add parameters",
     default: true,
     type: "boolean"
+  },
+  withBehavior: {
+    description: "add a class behavior",
+    default: true,
+    type: "boolean"
+  },
+  withSettings: {
+    description: "add settings",
+    default: true,
+    type: "boolean"
+  },
+  workflow: {
+    description: "workflow logical name",
+    type: "string"
+  },
+  withAutocompletion: {
+    description: "add an autocompletion",
+    type: "boolean",
+    default: true
   },
   insertIntoInfo: {
     description: "Insert into info.xml",
@@ -121,27 +162,49 @@ const builder = {
 exports.builder = builder;
 
 exports.handler = async argv => {
-  if (!argv.name) {
+  if (
+    process.argv.indexOf("createSmartStructure") ===
+    process.argv.length - 1
+  ) {
     // Mode question
-    moduleData = await getModuleInfo(argv.sourcePath);
     argv = await inquirer.prompt(
       Object.keys(builder).map(currentKey => {
         const currentParam = builder[currentKey];
+        let validateFunction = () => true;
+        if (currentKey === "sourcePath") {
+          validateFunction = arg =>
+            new Promise(resolve => {
+              try {
+                currentParam.coerce(arg);
+                // Fetch module infos
+                getModuleInfo(arg)
+                  .then(result => {
+                    moduleData = result;
+                    resolve(true);
+                  })
+                  .catch(() => {
+                    resolve(false);
+                  });
+              } catch (e) {
+                resolve(e.message);
+              }
+            });
+        } else if (currentParam.coerce) {
+          validateFunction = arg => {
+            try {
+              currentParam.coerce(arg);
+            } catch (e) {
+              return e.message;
+            }
+            return true;
+          };
+        }
         return {
           type: currentParam.type === "boolean" ? "confirm" : "input",
           name: currentKey,
           message: `${currentParam.description} : `,
           default: currentParam.default,
-          validate: currentParam.coerce
-            ? arg => {
-                try {
-                  currentParam.coerce(arg);
-                } catch (e) {
-                  return e.message;
-                }
-                return true;
-              }
-            : () => true
+          validate: validateFunction
         };
       })
     );
