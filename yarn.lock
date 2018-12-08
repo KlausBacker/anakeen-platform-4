@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@1.0.1-1543424005-1544026372-1544148599":
+"@anakeen/anakeen-cli@latest":
   version "1.0.1-1543424005-1544026372-1544148599"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543424005-1544026372-1544148599.tgz#168dea7b95be532fd02c7bcbe2febc6cec79a82a"
   integrity sha512-hKj+axlqCnf4PjYHM5q/o3YGMqjHnWxZ4zK3EXCRDV2vKxFao0JfGThYYVGBRZGDvNPUIu70iqAo9KEcoY9arQ==
