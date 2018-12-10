@@ -22,7 +22,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
     /**
      * @var \SmartStructure\Mask[]
      */
-    protected $masks=[];
+    protected $masks = [];
 
     public function __construct(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null)
     {
@@ -32,6 +32,14 @@ class RenderAttributeVisibilities implements \JsonSerializable
         }
     }
 
+    /**
+     * Apply a mask on current visibilities
+     * Several masks can be applyed
+     * If smart element has a view control with a primary mask, the primary mask is applyied first
+     * @note Mask is applyed before setVibility() , setVisibility overrides mask visibilities
+     * @see  RenderAttributeVisibilities::setVisibility()
+     * @param \SmartStructure\Mask $mask
+     */
     public function withMask(\SmartStructure\Mask $mask)
     {
         $this->masks[] = $mask;

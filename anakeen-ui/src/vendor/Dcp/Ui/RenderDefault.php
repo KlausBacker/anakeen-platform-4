@@ -337,6 +337,7 @@ class RenderDefault implements IRenderConfig
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
+     * @param \SmartStructure\Mask|null           $mask The mask referenced in view control when use a specific view
      * @return RenderAttributeVisibilities new attribute visibilities
      */
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
@@ -390,7 +391,7 @@ class RenderDefault implements IRenderConfig
         $labelClass .= " {{#document.properties.security.lock.temporary}} dcpDocument__emblem__lock--temporary {{/document.properties.security.lock.temporary}}";
         $item->setHtmlLabel(
             '{{#document.properties.security.lock.lockedBy.id}} 
-<span class="'.$labelClass.'"></span>
+<span class="' . $labelClass . '"></span>
 {{/document.properties.security.lock.lockedBy.id}}'
         );
 
