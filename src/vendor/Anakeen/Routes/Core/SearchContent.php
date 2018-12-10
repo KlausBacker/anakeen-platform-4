@@ -41,7 +41,7 @@ class SearchContent extends DocumentList
             throw $exception;
         }
 
-        if ($this->_search->control("exec")) {
+        if ($this->_search->control("execute")) {
             $exception = new Exception("CRUD0201", $folderId, "Exec not granted");
             $exception->setHttpStatus("403", "Cannot exec search");
             throw $exception;
