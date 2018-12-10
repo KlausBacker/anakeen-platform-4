@@ -19,7 +19,7 @@ signale.config({
 exports.desc = "Create a smart structure";
 const builder = {
   sourcePath: {
-    description: "path to the module",
+    description: "path to the info.xml directory",
     alias: "s",
     default: ".",
     type: "string",
