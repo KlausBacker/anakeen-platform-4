@@ -1,5 +1,4 @@
 const gulp = require("gulp");
-const { getModuleInfo } = require("../utils/moduleInfo");
 const xml2js = require("xml2js");
 const fs = require("fs");
 
