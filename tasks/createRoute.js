@@ -165,12 +165,10 @@ exports.createRoute = ({
   description,
   access,
   accessNameSpace,
-  sourcePath,
   routeConfigPath,
   type
 }) => {
   return gulp.task("createRoute", async () => {
-    const moduleInfo = await getModuleInfo(sourcePath);
     //Get xml content
     const parser = new xml2js.Parser();
     return new Promise((resolve, reject) => {
