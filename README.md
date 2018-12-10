@@ -1,10 +1,10 @@
 # Guide d'utilisation des outils de migration
 
-## Initialiser un nouveau context
+## Initialiser un nouveau contexte
 
-Sur le contexte "Anakeen Platform", importer le module  `migration-tools`. Ce module apporte des outils de migration qui sont décrit ci-dessous.
+Sur un contexte "Anakeen Platform" vierge, importer le module  `migration-tools`. Ce module apporte des outils de migration qui sont décrits ci-dessous.
 
-Sur le context Dynacase, importer le module `dynacase-migration-4`. Ce module ajoute des routes qui servent à récupérer des données pour la migration.
+Sur le contexte Dynacase, importer le module `dynacase-migration-4`. Ce module ajoute des routes qui servent à récupérer des données pour la migration.
 
 ## Préparation des bases de données
 
@@ -44,7 +44,8 @@ Pour exécuter des routes sur le serveur distant en étant "admin":
 
 En plus le paramètre "VENDOR" utilisé pour les stubs. Les fichiers générés seront dans le répertoire "VENDOR"
 
-* `VENDOR` : Nom du venor (CamelCase suggéré)
+* `VENDOR` : Nom du vendor (CamelCase suggéré)
+* `MODULE` : Nom du module : utilisé comme sous-répertoire de vendor.
 
 ## Outils de migration
 
@@ -98,10 +99,22 @@ done
 4.  Transfert de la configuration ui (render parameters, stub render access)    
     `Migration::UiStructureTransfert`
 
-Exemple : 
+
+Les familles systèmes (juste le transfert de données) :
+
 
 ```bash
-for S in LDAPGROUP LDAPUSER 
+for S in  BASE DIR PDOC PDIR SEARCH PSEARCH FILE IMAGE MAIL DSEARCH MASK PFAM REPORT CVDOC MSEARCH EXEC SSEARCH MAILTEMPLATE TIMER IGROUP IUSER GROUP ROLE HELPPAGE SENTMESSAGE
+do
+    ./ank.php --route=Migration::DataElementTransfert --method=POST --structure=$S
+done
+```
+
+
+Les familles du projet dans l'ordre d'héritage (hors famille de workflow): 
+
+```bash
+for S in MYFAM1 MYFAM2 
 do
     ./ank.php --route=Migration::ConfigStructureTransfert --method=POST --structure=$S && \
     ./ank.php --script=generateDocumentClass --docid=$S && \
@@ -140,7 +153,35 @@ Ensuite chaque action entraine la génération d'une route "`/apps/<APPNAME>/<AC
 ./ank.php --route=Migration::ApplicationTransfert --method=POST --application=CCFD
 ```
 
-### Snapshot
+
+### Transfert routes V1
+
+Les routes V1 doivent être réécrite avec le nouveau routeur.
+La commande suivante, crée un bouchon php pour chaque route en conservant ces paramètres de configurations. Les paramètres sont enregistrées dans un fichier xml (`apiv1.xml`) de route.
+
+```bash
+./ank.php --route=Migration::RoutesV1Transfert --method=POST
+```
+
+### Finalisation de la migration de données
+
+Cette commande restore la securité liès aux smaty fields des utilisateurs et groupes.
+Elle finalise aussi les données sur les workflows.
+
+```bash
+./ank.php --route=Migration::FinalUpdates --method=POST
+```
+
+
+## Récupération de la configuration d'un vendor
+
+Une fois les données migrés d'une base à l'autre, il est possible de récupérer toutes la configuration avec la commande suivant :
+
+```bash
+curl -u admin:anakeen http://<MYCONTEXT_URL>/api/v2/migration/modules/<VENDOR>.zip --output ~/Bureau/MyConfig.zip
+```
+
+## Utilitaire : Snapshot
 
 First time :
 
