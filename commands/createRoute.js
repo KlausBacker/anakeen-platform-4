@@ -2,7 +2,6 @@ const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const signale = require("signale");
 const fs = require("fs");
-const inquirer = require("inquirer");
 const { createRoute } = require("../tasks/createRoute");
 
 let moduleData = {};
@@ -84,15 +83,47 @@ const builder = {
       return arg;
     }
   },
-  middleware: {
-    description: "route is a middleware",
-    type: "boolean",
-    default: false
+  routeConfigPath: {
+    description: "path of the file where the route will be added",
+    type: "string",
+    default: "",
+    coerce: arg => {
+      if (!arg) {
+        return arg;
+      }
+      if (!fs.statSync(arg).isDirectory()) {
+        throw new Error("Unable to find the smart structure directory " + arg);
+      }
+      return arg;
+    }
   },
-  overrides: {
-    description: "route is route-override",
-    type: "boolean",
-    default: false
+  type: {
+    description: "type of the route [ routes || middleware || overrides ]",
+    type: "string",
+    default: "routes",
+    required: true,
+    choices: ["routes", "middleware", "overrides"]
   }
 };
 exports.builder = builder;
+
+exports.handler = async argv => {
+  moduleData = await getModuleInfo(argv.sourcePath);
+  try {
+    signale.time("createRoute");
+    createRoute(argv);
+    const task = gulp.task("createRoute");
+    task()
+      .then(() => {
+        signale.timeEnd("createRoute");
+        signale.success("createRoute done");
+      })
+      .catch(e => {
+        signale.timeEnd("createRoute");
+        signale.error(e);
+      });
+  } catch (e) {
+    signale.timeEnd("createRoute");
+    signale.error(e);
+  }
+};
