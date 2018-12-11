@@ -14,10 +14,12 @@
 /**
  * When save error
  */
-.dcpFrame__label.has-error,
-.dcpArray__label.has-error,
-.dcpDocument__tabs .dcpDocument__tabs__list > .dcpTab__label.has-error {
-  background-color: $error;
+.dcpFrame__label.dcpLabel.has-error,
+.dcpArray__label.dcpLabel.has-error,
+.dcpAttribute__content.has-error,
+.dcpDocument__tabs .dcpDocument__tabs__list > .dcpLabel.dcpTab__label.has-error {
+  outline:solid 2px $error;
+  border-color:transparent;
 }
 
 .dcpFrame__content--close {
