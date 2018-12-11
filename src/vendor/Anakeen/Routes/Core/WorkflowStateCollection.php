@@ -75,7 +75,12 @@ class WorkflowStateCollection
 
         $info = array();
 
-        $baseUrl = URLUtils::generateURL(sprintf("%s/%s/workflows/", Settings::ApiV2, $this->baseURL, $this->_document->name ? $this->_document->name : $this->_document->initid));
+        $baseUrl = URLUtils::generateURL(sprintf(
+            "%s/%s/workflows/%s/",
+            Settings::ApiV2,
+            $this->baseURL,
+            $this->_document->name ? $this->_document->name : $this->_document->initid
+        ));
         $info["uri"] = $baseUrl . "states/";
 
         $states = array();
@@ -180,7 +185,7 @@ class WorkflowStateCollection
         }
         return array(
             "id" => $state,
-            "label" => _($state),
+            "label" => $this->workflow->getStateLabel($state),
             "activity" => $this->workflow->getActivity($state),
             "displayValue" => ($this->workflow->getActivity($state)) ? $this->workflow->getActivity($state) : $this->workflow->getStateLabel($state),
             "color" => $this->workflow->getColor($state)
