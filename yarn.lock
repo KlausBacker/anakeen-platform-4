@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@1.0.1-1544234979":
-  version "1.0.1-1544234979"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1544234979.tgz#605ea91966ac55412dcd6d88ae6880b06a7537b8"
-  integrity sha512-kQwclYGH4mKYWJuO3sgOQ5JIDTHIKNlT2+qyCZUJBqRIQTnsqyhXh9k3irt0SVDR/NU2ThbzUCa+QWc54UGScg==
+"@anakeen/anakeen-cli@1.0.1-1544448482":
+  version "1.0.1-1544448482"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1544448482.tgz#533f0c9eccb44f730c1de5df85893e3df5547388"
+  integrity sha512-pUZRInTCyR3jzPs/XVWCjWW4BBuevtww1VETNwjn1lp68EQhHYgejcW2dHXnRscgFM/zcxuF4nf2emAWTafSug==
   dependencies:
     "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
