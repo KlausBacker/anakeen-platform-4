@@ -10,6 +10,7 @@ use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use SmartStructure\Dsearch;
 use SmartStructure\Fields\Dir;
 use SmartStructure\Fields\Search;
 use SmartStructure\Report;
@@ -122,6 +123,8 @@ class ColumnsConfig
     {
         if (is_a($collection, Report::class)) {
             return self::getReportColumns($collection, $structRef, $returnsOnly);
+        } elseif (is_a($collection, Dsearch::class)) {
+            return [self::getColumnConfig("title")];
         }
         $return = [];
         return $return;
@@ -183,7 +186,7 @@ class ColumnsConfig
             return false;
         }
 
-        $stringsOperators=[];
+        $stringsOperators = [];
         foreach ($operators as $k => $operator) {
             if (!empty($operator["typedLabels"])) {
                 $stringsOperators[$k] = $operator["typedLabels"][$type] ?? $operator["label"];

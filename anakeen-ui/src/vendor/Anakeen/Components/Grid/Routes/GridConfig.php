@@ -70,20 +70,21 @@ class GridConfig
             "footer" => array(),
             "toolbar" => [],
             "actions" => [],
-            "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=".$this->getUrlFields())
+            "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=" . $this->getUrlFields())
         );
     }
 
     protected function getUrlFields()
     {
         $filteredAttributes = array_filter($this->gridFields, function ($field) {
-            return ($field["type"] !== 'array' && $field["type"] !== 'tab' && $field["type"] !== 'frame' && empty($field["abstract"]));
+            $type = $field["smartType"] ?: $field["type"];
+            return ($type !== 'array' && $type !== 'tab' && $type !== 'frame' && empty($field["abstract"]));
         });
         $result = implode(',', array_map(function ($field) {
-            if ($field["property"]) {
-                return "document.properties.".$field["field"];
+            if (!empty($field["property"])) {
+                return "document.properties." . $field["field"];
             }
-            return "document.attributes.".$field["field"];
+            return "document.attributes." . $field["field"];
         }, $filteredAttributes));
         return $result;
     }
