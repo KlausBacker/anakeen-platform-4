@@ -113,7 +113,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         if ((!isset($this->doc)) || ($this->doc->id != $doc->id) || $force) {
             $this->doc = &$doc;
-            if (($doc->doctype != 'C') && ($doc->state == "")) {
+            if (($doc->doctype !== 'C') && ($doc->state == "")) {
                 $doc->state = $this->getFirstState();
                 $this->changeProfil($doc->state);
                 $this->changeCv($doc->state);
