@@ -179,7 +179,7 @@ const mergeAllKeysFound = elements => {
  */
 exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
   //Find all the files in glob rules
-  const srcPath = info.buildInfo.buildPath[0];
+  const srcPath = info.sourcePath;
   return parseAndConcatGlob({ globFile, srcPath }).then(allFilesFound => {
     if (verbose) {
       allFilesFound.ignoredFiles.forEach(currentFile => {
@@ -210,7 +210,7 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
                 return;
               }
               //Analyze structure configuration
-              if (result.config.structureconfiguration) {
+              if (result.config && result.config.structureconfiguration) {
                 values = result.config.structureconfiguration.reduce(
                   (acc, currentConf) => {
                     const name = currentConf.$.name;
