@@ -1,8 +1,7 @@
 const gulp = require("gulp");
-const DELETE_SMARTSTRUCTURE_API = "/api/v2/devel/smart/structure/delete";
 const fetch = require("node-fetch");
 const urlJoin = require("url-join");
-
+const signale = require("signale");
 //Generate the basic header for control connexion
 const getBaseAutorisation = (exports.getBaseAutorisation = (
   username,
@@ -13,10 +12,8 @@ const getBaseAutorisation = (exports.getBaseAutorisation = (
 
 exports.deleteSmartStructure = ({ name, username, password, contextUrl }) => {
   return gulp.task("deleteSmartStructure", async () => {
-    const url = `${urlJoin(
-      contextUrl,
-      DELETE_SMARTSTRUCTURE_API
-    )}?name=${name}`;
+    const DELETE_SMARTSTRUCTURE_API = `/api/v2/devel/smart/structures/${name}`;
+    const url = `${urlJoin(contextUrl, DELETE_SMARTSTRUCTURE_API)}`;
     return fetch(url, {
       headers: {
         Authorization: getBaseAutorisation(username, password)
@@ -24,6 +21,7 @@ exports.deleteSmartStructure = ({ name, username, password, contextUrl }) => {
       method: "DELETE"
     })
       .then(response => {
+        signale.info(response);
         if (!response.ok) {
           return response.text().then(contentText => {
             if (response.status === 401 || response.status === 403) {
