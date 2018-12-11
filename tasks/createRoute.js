@@ -1,14 +1,15 @@
 const gulp = require("gulp");
 const xml2js = require("xml2js");
 const fs = require("fs");
+const { getModuleInfo } = require("../utils/moduleInfo");
 
-const convertPathInPhpPath = callable => {
-  let path = callable.split("\\");
-  return path.join("/");
+const phpPathDirectory = (callable, moduleData) => {
+  let path = callable.split("/");
+  path.pop();
+  return moduleData.buildInfo.buildPath[0] + "/vendor" + path.join("/");
 };
-
 const convertPathInPhpNamespace = callable => {
-  let path = callable.split("\\");
+  let path = callable.split("/");
   path.pop();
   return path.join("\\");
 };
@@ -19,17 +20,10 @@ const middlewareConf = (
   pattern,
   description,
   access,
-  accessNameSpace
+  accessNameSpace,
+  priority
 ) => {
-  let methods = "";
   let accesses = "";
-  if (Array.isArray(method)) {
-    method.forEach(item => {
-      methods.concat(`<sde:method>${item}</sde:method>\n`);
-    });
-  } else {
-    methods = `<sde:method>${method}</sde:method>\n`;
-  }
   if (access && accessNameSpace) {
     accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
@@ -38,15 +32,17 @@ const middlewareConf = (
     accesses = `<sde:requiredAccess/>`;
   }
 
-  return `<sde:middleware name="${name}">
-            <sde:priority />
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+        <sde:middleware name="${name}">
+            <sde:priority>${priority}</sde:priority>
             <sde:callable>${callable}</sde:callable>
-            ${methods}
+            <sde:method>${method}</sde:method>
             <sde:pattern>${pattern}</sde:pattern>
             <sde:description>${description}</sde:description>
             ${accesses}
         </sde:middleware>
-`;
+  </sde:config>`;
 };
 
 const overridesConf = (
@@ -65,11 +61,14 @@ const overridesConf = (
     accesses = `<sde:requiredAccess/>`;
   }
 
-  return ` <sde:route-override name="${name}">
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+        <sde:route-override name="${name}">
             <sde:callable>${callable}</sde:callable>
             <sde:description>${description}</sde:description>
             ${accesses}
-        </sde:route-override>`;
+        </sde:route-override>
+  </sde:config>`;
 };
 
 const routesConf = (
@@ -81,15 +80,7 @@ const routesConf = (
   access,
   accessNameSpace
 ) => {
-  let methods = "";
   let accesses = "";
-  if (Array.isArray(method)) {
-    method.forEach(item => {
-      methods.concat(`<sde:method>${item}</sde:method>\n`);
-    });
-  } else {
-    methods = `<sde:method>${method}</sde:method>\n`;
-  }
   if (access && accessNameSpace) {
     accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
@@ -97,14 +88,16 @@ const routesConf = (
   } else {
     accesses = `<sde:requiredAccess/>`;
   }
-
-  return `<sde:route name="${name}">
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+        <sde:route name="${name}">
             <sde:callable>${callable}</sde:callable>
-            ${methods}
+            <sde:method>${method}</sde:method>
             <sde:pattern>${pattern}</sde:pattern>
             <sde:description>${description}</sde:description>
             ${accesses}
-        </sde:route>`;
+        </sde:route>
+  </sde:config>`;
 };
 const generatePhpFile = ({ name, namespace }) => {
   const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
@@ -163,108 +156,300 @@ exports.createRoute = ({
   pattern,
   description,
   access,
+  priority,
   accessNameSpace,
   routeConfigPath,
-  type
+  type,
+  sourcePath
 }) => {
   return gulp.task("createRoute", async () => {
+    let moduleData = await getModuleInfo(sourcePath);
     //Get xml content
     const parser = new xml2js.Parser();
     return new Promise((resolve, reject) => {
-      fs.readFile(routeConfigPath, { encoding: "utf8" }, (err, content) => {
-        if (err) {
-          return reject(err);
+      if (!fs.existsSync(routeConfigPath)) {
+        let myData = null;
+        switch (type) {
+          case "middleware":
+            myData = middlewareConf(
+              name,
+              callable,
+              method,
+              pattern,
+              description,
+              access,
+              accessNameSpace,
+              priority
+            );
+            break;
+          case "routes":
+            myData = routesConf(
+              name,
+              callable,
+              method,
+              pattern,
+              description,
+              access,
+              accessNameSpace
+            );
+            break;
+          case "overrides":
+            myData = overridesConf(
+              name,
+              callable,
+              description,
+              access,
+              accessNameSpace
+            );
+            break;
         }
-        parser.parseString(content, (err, data) => {
+        fs.writeFile(routeConfigPath, myData, err => {
+          if (err) {
+            reject(err);
+          }
+          resolve();
+        });
+      } else {
+        fs.readFile(routeConfigPath, { encoding: "utf8" }, (err, content) => {
           if (err) {
             return reject(err);
           }
-          let middlewareTag = null;
-          let routesTag = null;
-          let overridesTag = null;
-          switch (type) {
-            case "middleware":
-              middlewareTag = data.module["middlewares"];
-              if (middlewareTag["namespace"] === namespace) {
-                middlewareTag[0] = middlewareConf(
-                  name,
-                  callable,
-                  method,
-                  pattern,
-                  description,
-                  access,
-                  accessNameSpace
-                );
-              }
-              break;
-            case "routes":
-              routesTag = data.module["routes"];
-              if (routesTag["namespace"] === namespace) {
-                routesTag[0] = routesConf(
-                  name,
-                  callable,
-                  method,
-                  method,
-                  pattern,
-                  description,
-                  access,
-                  accessNameSpace
-                );
-              }
-              break;
-            case "overrides":
-              overridesTag = data.module["routes"];
-              if (overridesTag["namespace"] === namespace) {
-                overridesTag[0] = overridesConf(
-                  name,
-                  callable,
-                  description,
-                  access,
-                  accessNameSpace
-                );
-              }
-              break;
-          }
-          const builder = new xml2js.Builder();
-          fs.writeFile(routeConfigPath, builder.buildObject(data), err => {
+          parser.parseString(content, (err, data) => {
             if (err) {
-              reject(err);
+              return reject(err);
             }
-            resolve();
-          }).then(() => {
-            const phpFileDirectory = convertPathInPhpNamespace(callable);
-            let directoryPromise = new Promise((resolve, reject) => {
-              fs.mkdir(phpFileDirectory, err => {
-                if (err) {
-                  reject(err);
-                }
-                resolve(phpFileDirectory);
-              });
-            });
-            return directoryPromise.then(currentPath => {
-              return new Promise((resolve, reject) => {
-                //Build the xml
-                const builder = new xml2js.Builder();
-                const phpStruct = builder.buildObject(
-                  generatePhpFile({
-                    name,
-                    namespace: convertPathInPhpNamespace(callable)
-                  })
-                );
-                fs.writeFile(
-                  convertPathInPhpPath(callable) + ".php",
-                  phpStruct,
-                  err => {
-                    if (err) {
-                      return reject(err);
+            let middlewareTag = null;
+            let routesTag = null;
+            let overridesTag = null;
+            let configTag = data["sde:config"];
+            switch (type) {
+              case "middleware":
+                middlewareTag = configTag["sde:middlewares"];
+                if (middlewareTag) {
+                  let myRoute = null;
+                  middlewareTag.forEach(item => {
+                    if (item.$.namespace === namespace) {
+                      myRoute = item;
                     }
-                    resolve(currentPath);
+                  });
+                  if (myRoute !== null) {
+                    myRoute["sde:middleware"].push({
+                      $: { name: name },
+                      "sde:priority": priority,
+                      "sde:callable": callable,
+                      "sde:method": method,
+                      "sde:pattern": pattern,
+                      "sde:description": description,
+                      "sde:requiredAccess": {
+                        $: {},
+                        "sde:access": {
+                          $: { ns: accessNameSpace },
+                          _: access
+                        }
+                      }
+                    });
+                  } else {
+                    configTag["sde:middlewares"].push({
+                      $: { namespace: namespace },
+                      "sde:middleware": {
+                        $: { name: name },
+                        "sde:priority": priority,
+                        "sde:callable": callable,
+                        "sde:method": method,
+                        "sde:pattern": pattern,
+                        "sde:description": description,
+                        "sde:requiredAccess": {
+                          $: {},
+                          "sde:access": {
+                            $: { ns: accessNameSpace },
+                            _: access
+                          }
+                        }
+                      }
+                    });
                   }
-                );
-              });
+                } else {
+                  configTag["sde:middlewares"] = [];
+                  configTag["sde:middlewares"].push({
+                    $: { namespace: namespace },
+                    "sde:middleware": {
+                      $: { name: name },
+                      "sde:priority": priority,
+                      "sde:callable": callable,
+                      "sde:method": method,
+                      "sde:pattern": pattern,
+                      "sde:description": description,
+                      "sde:requiredAccess": {
+                        $: {},
+                        "sde:access": {
+                          $: { ns: accessNameSpace },
+                          _: access
+                        }
+                      }
+                    }
+                  });
+                }
+                break;
+              case "routes":
+                routesTag = configTag["sde:routes"];
+                if (routesTag) {
+                  let myRoute = null;
+                  routesTag.forEach(item => {
+                    if (item.$.namespace === namespace) {
+                      myRoute = item;
+                    }
+                  });
+                  if (myRoute !== null) {
+                    myRoute["sde:route"].push({
+                      $: { name: name },
+                      "sde:callable": callable,
+                      "sde:method": method,
+                      "sde:pattern": pattern,
+                      "sde:description": description,
+                      "sde:requiredAccess": {
+                        $: {},
+                        "sde:access": {
+                          $: { ns: accessNameSpace },
+                          _: access
+                        }
+                      }
+                    });
+                  } else {
+                    configTag["sde:routes"].push({
+                      $: { namespace: namespace },
+                      "sde:route": {
+                        $: { name: name },
+                        "sde:callable": callable,
+                        "sde:method": method,
+                        "sde:pattern": pattern,
+                        "sde:description": description,
+                        "sde:requiredAccess": {
+                          $: {},
+                          "sde:access": {
+                            $: { ns: accessNameSpace },
+                            _: access
+                          }
+                        }
+                      }
+                    });
+                  }
+                } else {
+                  configTag["sde:routes"] = [];
+                  configTag["sde:routes"].push({
+                    $: { namespace: namespace },
+                    "sde:route": {
+                      $: { name: name },
+                      "sde:callable": callable,
+                      "sde:method": method,
+                      "sde:pattern": pattern,
+                      "sde:description": description,
+                      "sde:requiredAccess": {
+                        $: {},
+                        "sde:access": {
+                          $: { ns: accessNameSpace },
+                          _: access
+                        }
+                      }
+                    }
+                  });
+                }
+                break;
+              case "overrides":
+                overridesTag = configTag["sde:routes"];
+                if (overridesTag) {
+                  let myRoute = null;
+                  overridesTag.forEach(item => {
+                    if (item.$.namespace === namespace) {
+                      myRoute = item;
+                    }
+                  });
+                  if (myRoute !== null) {
+                    myRoute["sde:route-override"].push({
+                      $: { name: name },
+                      "sde:callable": callable,
+                      "sde:description": description,
+                      "sde:requiredAccess": {
+                        $: {},
+                        "sde:access": {
+                          $: { ns: accessNameSpace },
+                          _: access
+                        }
+                      }
+                    });
+                  } else {
+                    configTag["sde:routes"].push({
+                      $: { namespace: namespace },
+                      "sde:route-override": {
+                        $: { name: name },
+                        "sde:callable": callable,
+                        "sde:description": description,
+                        "sde:requiredAccess": {
+                          $: {},
+                          "sde:access": {
+                            $: { ns: accessNameSpace },
+                            _: access
+                          }
+                        }
+                      }
+                    });
+                  }
+                } else {
+                  configTag["sde:routes"] = [];
+                  configTag["sde:routes"].push({
+                    $: { namespace: namespace },
+                    "sde:route-override": {
+                      $: { name: name },
+                      "sde:callable": callable,
+                      "sde:description": description,
+                      "sde:requiredAccess": {
+                        $: {},
+                        "sde:access": {
+                          $: { ns: accessNameSpace },
+                          _: access
+                        }
+                      }
+                    }
+                  });
+                }
+                break;
+            }
+            const builder = new xml2js.Builder();
+            fs.writeFile(routeConfigPath, builder.buildObject(data), err => {
+              if (err) {
+                reject(err);
+              }
+              resolve();
             });
           });
         });
+      }
+      const phpFileDirectory = phpPathDirectory(callable, moduleData);
+      new Promise((resolve, reject) => {
+        if (!fs.existsSync(phpFileDirectory)) {
+          fs.mkdir(phpFileDirectory, err => {
+            if (err) {
+              reject(err);
+            }
+            resolve(phpFileDirectory);
+          });
+        } else {
+          resolve(phpFileDirectory);
+        }
+      }).then(currentPath => {
+        const phpStruct = generatePhpFile({
+          name,
+          namespace: convertPathInPhpNamespace(callable)
+        });
+        fs.writeFile(
+          moduleData.buildInfo.buildPath[0] + "/vendor" + callable + ".php",
+          phpStruct,
+          err => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(currentPath);
+          }
+        );
       });
     });
   });

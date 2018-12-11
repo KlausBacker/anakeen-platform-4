@@ -86,16 +86,7 @@ const builder = {
   routeConfigPath: {
     description: "path of the file where the route will be added",
     type: "string",
-    default: "",
-    coerce: arg => {
-      if (!arg) {
-        return arg;
-      }
-      if (!fs.statSync(arg).isDirectory()) {
-        throw new Error("Unable to find the smart structure directory " + arg);
-      }
-      return arg;
-    }
+    required: true
   },
   type: {
     description: "type of the route [ routes || middleware || overrides ]",
@@ -103,6 +94,11 @@ const builder = {
     default: "routes",
     required: true,
     choices: ["routes", "middleware", "overrides"]
+  },
+  priority: {
+    description: "priority used by middlewares",
+    type: "number",
+    default: 1
   }
 };
 exports.builder = builder;
