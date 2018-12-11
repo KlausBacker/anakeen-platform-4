@@ -88,7 +88,7 @@ class DataSource extends DocumentList
             $this->filter = $queryParams['filter'];
         }
 
-        if (!$queryParams['fields']) {
+        if (empty($queryParams['fields'])) {
             $this->returnFields = $this->defaultFields;
         } else {
             $this->returnFields = array_map("trim", explode(",", $queryParams['fields']));

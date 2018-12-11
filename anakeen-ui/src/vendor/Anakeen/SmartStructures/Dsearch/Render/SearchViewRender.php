@@ -64,7 +64,9 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
         /**
          * @var \Anakeen\SmartStructures\Wdoc\WDocHooks $workflow
          */
-        $workflow = SEManager::getDocument($document->wid);
+        if ($family->wid) {
+            $workflow = SEManager::getDocument($family->wid);
+        }
 
         foreach ($attributes as $index => $attribute) {
             $operand = $document->getAttributeValue("se_ols")[$index];
@@ -191,20 +193,20 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
                         }
                     } else {
                         if ($attribute == "state") {
-                            $key = _($key);
-                            $attr = _("state");
+                            $key = $workflow?$workflow->getStateLabel($key):$key;
+                            $attr = ___("state", "dsearch");
                         } else {
                             if ($attribute == "activity") {
-                                $key = $workflow->getStateActivity($key);
-                                $attr = _("activity");
+                                $key = $workflow?$workflow->getStateActivity($key):$key;
+                                $attr = ___("activity", "dsearch");
                             } else {
                                 if ($attribute == "step") {
-                                    if ($workflow->getStateActivity($key) != "") {
-                                        $key = _($key) . "/" . $workflow->getStateActivity($key);
+                                    if ($workflow && $workflow->getStateActivity($key) != "") {
+                                        $key =  $workflow->getStateLabel($key) . "/" . $workflow->getStateActivity($key);
                                     } else {
-                                        $key = _($key);
+                                        $key =  $workflow->getStateLabel($key);
                                     }
-                                    $attr = _("step");
+                                    $attr = ___("step", "dsearch");
                                 }
                             }
                         }
