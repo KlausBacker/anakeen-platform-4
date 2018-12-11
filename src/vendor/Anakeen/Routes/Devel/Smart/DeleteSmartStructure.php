@@ -19,7 +19,7 @@ class DeleteSmartStructure
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
-        $this->name = $request->getParam("name");
+        $this->name = $args["name"];
     }
 
     protected function doRequest(\Slim\Http\request $request)
