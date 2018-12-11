@@ -5,6 +5,7 @@ namespace Anakeen\Routes\Ui;
 use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Dcp\Ui\RenderOptions;
 use SmartStructure\Fields\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
@@ -368,6 +369,12 @@ class DocumentView
         return $viewInfo;
     }
 
+    /**
+     * @param $viewId
+     * @return \SmartStructure\Mask
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Dcp\Exception
+     */
     protected function getMask($viewId)
     {
         if (!$viewId || $viewId[0] === "!" || !$this->document->cvid) {
@@ -381,8 +388,9 @@ class DocumentView
 
         if (!empty($vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid])) {
             $mskId = $vInfo[\SmartStructure\Fields\Cvdoc::cv_mskid];
-            $msk =  SEManager::getDocument($mskId);
-            if (! $msk) {
+            /** @var \SmartStructure\Mask $msk */
+            $msk = SEManager::getDocument($mskId);
+            if (!$msk) {
                 throw new \Dcp\Exception("UI0014", $mskId, $cvDoc);
             }
             SEManager::cache()->addDocument($msk);
@@ -540,6 +548,14 @@ class DocumentView
             ___("%s Creation", "ddui"),
             $this->document->getFamilyDocument()->getTitle()
         );
+        if ($this->document->wid) {
+            /** @var WDocHooks $wdoc */
+            $wdoc = SEManager::getDocument($this->document->wid);
+            if ($wdoc) {
+                SEManager::cache()->addDocument($wdoc);
+                $wdoc->set($this->document);
+            }
+        }
         return $this->document;
     }
 
@@ -627,6 +643,7 @@ class DocumentView
                 $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
                 $vid = '!none';
             }
+
             if (($vid === "!none" || $this->document->cvid == 0) && $this->document->doctype !== "C") {
                 $config = \Dcp\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $this->document);
                 $vid = '';
