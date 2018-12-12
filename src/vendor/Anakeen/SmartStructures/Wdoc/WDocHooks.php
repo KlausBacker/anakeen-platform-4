@@ -822,7 +822,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
             if ($err != "") {
                 $this->doc->unlock(true);
-                return (sprintf(_("Error : %s"), $err));
+                return $err;
             }
         }
         // verify if completed doc

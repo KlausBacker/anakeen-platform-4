@@ -3,10 +3,11 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Errors code used to checking workflows
  * @class ErrorCodeWFL
- * @see ErrorCode
+ * @see   ErrorCode
  * @brief List all error code for workflows class definition
  */
 class ErrorCodeWFL
@@ -36,14 +37,14 @@ class ErrorCodeWFL
      * transition are declared in a an array
      * @code
      * public $transitions = array(
-     self::T1 => array(
-     "m1" => "SendMailToVeto",
-     "ask" => array(
-     "wan_idveto",
-     "wan_veto"
-     ) ,
-     "nr" => true
-     ) ,
+     * self::T1 => array(
+     * "m1" => "SendMailToVeto",
+     * "ask" => array(
+     * "wan_idveto",
+     * "wan_veto"
+     * ) ,
+     * "nr" => true
+     * ) ,
      * @endcode
      */
     const WFL0100 = 'workflow transition model is not an array for class %s';
@@ -65,12 +66,12 @@ class ErrorCodeWFL
      * declaration of ask must be in an array
      * @code
      * public $transitions = array(
-     self::T1 => array(
-     "ask" => array(
-     "wan_idveto",
-     "wan_veto"
-     )
-     ) ,
+     * self::T1 => array(
+     * "ask" => array(
+     * "wan_idveto",
+     * "wan_veto"
+     * )
+     * ) ,
      * @endcode
      */
     const WFL0103 = 'workflow transition ask is not an array for transition model %s in class %s';
@@ -164,8 +165,15 @@ class ErrorCodeWFL
      */
     const WFL0051 = 'workflow activies labels is not an array for class %s';
     /**
-     * @errorCode
-     * activies label not match any state
+     * @errorCode activies label not match any state
      */
     const WFL0052 = 'unknow state %s for the activity %s for class %s';
+    /**
+     * @errorCode Need transition acl
+     */
+    const WFL0300 = 'Cannot use transition "%s"';
+    /**
+     * @errorCode The transition is not valid in the workflow
+     */
+    const WFL0301 = 'Destination state is not defined for workflow "%s" (%d)';
 }
