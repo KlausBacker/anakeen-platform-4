@@ -64,7 +64,7 @@ class WorkflowSetTransition extends WorkflowTransition
             $message
         );
         if ($err) {
-            $exception = new Exception("CRUD0230", $err);
+            $exception = new Exception("WFL0300", $err);
             $exception->setHttpStatus("403", "Forbidden");
             $exception->setUserMessage($err);
             throw $exception;
