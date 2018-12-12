@@ -241,6 +241,13 @@ define([
                     errorTxt
                   ) {
                     if (response.responseJSON) {
+                      let userMessage = response.responseJSON.userMessage;
+
+                      response.responseJSON.messages =
+                        response.responseJSON.messages || [];
+                      response.responseJSON.messages.push({
+                        contentText: userMessage
+                      });
                       _.each(
                         response.responseJSON.messages,
                         function vTransition_clickOnOk_displayError(aMessage) {
@@ -337,6 +344,13 @@ define([
               errorTxt
             ) {
               if (response.responseJSON) {
+                let userMessage = response.responseJSON.userMessage;
+
+                response.responseJSON.messages =
+                  response.responseJSON.messages || [];
+                response.responseJSON.messages.push({
+                  contentText: userMessage
+                });
                 _.each(
                   response.responseJSON.messages,
                   function vTransition_clickOnOk_displayError(aMessage) {
