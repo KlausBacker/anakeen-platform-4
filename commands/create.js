@@ -10,6 +10,7 @@ const {
   checkNamespace
 } = require("../utils/checkName");
 
+const moduleOptions = {};
 signale.config({
   displayTimestamp: true,
   displayDate: true
@@ -17,27 +18,13 @@ signale.config({
 
 const builder = {
   sourcePath: {
-    description: "path to the module",
+    description: "path to the package",
     alias: "s",
     default: ".",
     type: "string",
     coerce: arg => {
       if (!fs.statSync(arg).isDirectory()) {
         throw new Error("Unable to find the source directory " + arg);
-      }
-      return arg;
-    }
-  },
-  moduleName: {
-    description: "name of the module",
-    alias: "m",
-    type: "string",
-    coerce: arg => {
-      if (!checkModuleName(arg)) {
-        throw new Error(
-          "Module name must be only a-zA-Z0-9_ , the current value is not valid : " +
-            arg
-        );
       }
       return arg;
     }
@@ -53,6 +40,7 @@ const builder = {
             arg
         );
       }
+      moduleOptions.vendorName = arg;
       return arg;
     }
   },
@@ -69,6 +57,37 @@ const builder = {
       }
       return arg;
     }
+  },
+  moduleName: {
+    description: "name of the module",
+    alias: "m",
+    type: "string",
+    coerce: arg => {
+      if (!checkModuleName(arg)) {
+        throw new Error(
+          "Module name must be only a-zA-Z0-9_ , the current value is not valid : " +
+            arg
+        );
+      }
+      moduleOptions.moduleName = arg;
+      return arg;
+    }
+  },
+  createPackage: {
+    description: "create the package directory",
+    alias: "c",
+    default: false,
+    type: "boolean"
+  },
+  packageName: {
+    description: "package name",
+    default: () => {
+      if (moduleOptions && moduleOptions.moduleName && moduleOptions.vendorName) {
+        return `${moduleOptions.vendorName.toLowerCase()}-${moduleOptions.moduleName.toLowerCase()}`;
+      }
+      return "";
+    },
+    implies: "createPackage"
   },
   withSmartStructure: {
     description: "add path for smart structure",
@@ -117,28 +136,39 @@ const builder = {
 exports.desc = "Create a module";
 exports.builder = builder;
 
+const getInquirerQuestion = (currentKey, currentParam, argv) => {
+  const question = {
+    type: currentParam.type === "boolean" ? "confirm" : "input",
+    name: currentKey,
+    message: `${currentParam.description} : `,
+    default: currentParam.default,
+    validate: currentParam.coerce
+      ? arg => {
+          try {
+            currentParam.coerce(arg);
+          } catch (e) {
+            return e.message;
+          }
+          return true;
+        }
+      : () => true
+  };
+  switch (currentKey) {
+    case "packageName":
+      // Ask the question only if create package option is true
+      question.when = answers => !!answers.createPackage;
+      break;
+  }
+  return question;
+};
+
 exports.handler = async argv => {
   if (!argv.moduleName || !argv.vendorName) {
     // Mode question
     argv = await inquirer.prompt(
       Object.keys(builder).map(currentKey => {
         const currentParam = builder[currentKey];
-        return {
-          type: currentParam.type === "boolean" ? "confirm" : "input",
-          name: currentKey,
-          message: `${currentParam.description} : `,
-          default: currentParam.default,
-          validate: currentParam.coerce
-            ? arg => {
-                try {
-                  currentParam.coerce(arg);
-                } catch (e) {
-                  return e.message;
-                }
-                return true;
-              }
-            : () => true
-        };
+        return getInquirerQuestion(currentKey, currentParam, argv);
       })
     );
   }

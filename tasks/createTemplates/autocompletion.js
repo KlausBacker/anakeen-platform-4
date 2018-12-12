@@ -10,10 +10,13 @@ const createAutocompletePHP = options => {
   return mustache.render(template, options);
 };
 
-exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
+exports.writeTemplate = (
+  packagePath,
+  { vendorName, moduleName, namespace }
+) => {
   return new Promise((resolve, reject) => {
     const autocompleteDir = path.join(
-      sourcePath,
+      packagePath,
       "src",
       "vendor",
       vendorName,

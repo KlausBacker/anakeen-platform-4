@@ -45,9 +45,12 @@ const createConfigParametersXML = namespace => {
   };
 };
 
-exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
+exports.writeTemplate = (
+  packagePath,
+  { sourcePath, vendorName, moduleName, namespace }
+) => {
   const configPath = path.join(
-    sourcePath,
+    packagePath,
     "src",
     "vendor",
     vendorName,
@@ -78,13 +81,7 @@ exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
           }
         )
         .then(() => {
-          resolve({
-            parameters: path.relative(
-              path.join(sourcePath, "src"),
-              path.join(configPath, `100-${moduleName}Parameters.xml`)
-            ),
-            configDir: path.relative(path.join(sourcePath, "src"), configPath)
-          });
+          resolve(path.relative(path.join(packagePath, "src"), configPath));
         })
         .catch(reject);
     });
