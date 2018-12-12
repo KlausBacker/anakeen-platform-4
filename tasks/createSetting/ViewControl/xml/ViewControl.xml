@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <ui:view-control xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
+        <!--region View control configuration ======-->
+        <ui:view-list>
+            <!--
+            <ui:view name="CONSULT_DEF" label="Modifier" display-mode="consultation" order="10" menu-displayed="false">
+                <ui:mask ref="MASK_NAME_REF"/>
+            </ui:view>
+            <ui:view name="EDIT_DEF" label="Modifier" display-mode="edition" order="20" menu-displayed="false">
+                <ui:mask ref="MASK_NAME_REF"/>
+            </ui:view>
+            -->
+        </ui:view-list>
+        <!--endregion View control configuration ===-->
+    </ui:view-control>
+</smart:config>

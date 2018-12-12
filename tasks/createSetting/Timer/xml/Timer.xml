@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0">
+    <timer:timer xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0" name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}} {{#associatedWorkflow}}workflow="{{WFL}}"{{/associatedWorkflow}}>
+        <!--
+        <timer:field-date-reference ref="field_date_creation"/>
+        -->
+        <timer:tasks>
+            <!--
+            <timer:task delta="0 days 0 hours">
+                <timer:sendmail ref="MAILTEMPLATE_NAME"/>
+            </timer:task>
+            <timer:task delta="0 days 0 hours">
+                <timer:process>
+                    <timer:process-callable function="::Hello"/>
+                </timer:process>
+            </timer:task>
+            -->
+        </timer:tasks>
+    </timer:timer>
+</smart:config>

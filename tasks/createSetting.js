@@ -1,17 +1,8 @@
 const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
-const xml2js = require("xml2js");
 const fs = require("fs");
 const path = require("path");
-const appConst = require("../utils/appConst");
 const { generateSetting } = require("./createSetting/index.js");
-
-const convertPathInPhpNamespace = ({ vendorPath, smartStructurePath }) => {
-  return path
-    .relative(vendorPath, smartStructurePath)
-    .split(path.sep)
-    .join("\\");
-};
 
 exports.createSetting = ({
   sourcePath,

@@ -64,17 +64,48 @@ const defaultPath = () => {
   return path.join(srcPath, basePath);
 };
 
-const SETTING_TYPES = [
-  "Masks",
-  "ViewControl",
-  "FieldAccess",
-  "Profile",
-  "MailTemplate",
-  "Timer",
-  "Exec",
-  "HelpPage",
-  "Enumerate"
-];
+const SETTING_TYPES = {
+  Masks: {
+    name: "Masks",
+    value: "Masks",
+    onlySS: true
+  },
+  ViewControl: {
+    name: "View Control",
+    value: "ViewControl"
+  },
+  FieldAccess: {
+    name: "Field Access",
+    value: "FieldAccess",
+    onlySS: true
+  },
+  Profile: {
+    name: "Profile",
+    value: "Profile"
+  },
+  MailTemplate: {
+    name: "Mail Template",
+    value: "MailTemplate"
+  },
+  Timer: {
+    name: "Timer",
+    value: "Timer"
+  },
+  Exec: {
+    name: "Exec",
+    value: "Exec"
+  },
+  HelpPage: {
+    name: "Help Page",
+    value: "HelpPage",
+    onlySS: true
+  },
+  Enumerate: {
+    name: "Enumerate",
+    value: "Enumerate"
+  }
+};
+
 signale.config({
   displayTimestamp: true,
   displayDate: true
@@ -103,10 +134,12 @@ const builder = {
         throw new Error("At least one setting type must be specified");
       }
       let error = "";
-      if (SETTING_TYPES.indexOf(arg) === -1) {
-        error = `Invalid type ${arg}. Setting type must be one of those : [${SETTING_TYPES.join(
-          ", "
-        )}]`;
+      if (!SETTING_TYPES[arg]) {
+        error = `Invalid type ${arg}. Setting type must be one of those : [${Object.values(
+          SETTING_TYPES
+        )
+          .map(t => t.name)
+          .join(", ")}]`;
       }
       if (error) {
         throw new Error(error);
@@ -124,12 +157,25 @@ const builder = {
     coerce: arg => {
       if (arg) {
         settingOptions.associatedSS = arg;
+      } else {
+        if (settingOptions.type) {
+          if (
+            SETTING_TYPES[settingOptions.type] &&
+            SETTING_TYPES[settingOptions.type].onlySS
+          ) {
+            throw new Error(
+              `Setting type ${
+                settingOptions.type
+              } must be associated to a smart structure`
+            );
+          }
+        }
       }
       return arg;
     }
   },
   associatedWorkflow: {
-    description: "name of the associated workflow",
+    description: "name of the associated workflow (empty if setting is global)",
     alias: "W",
     type: "string",
     conflicts: "associatedSmartStructure",
@@ -268,13 +314,7 @@ const getInquirerQuestion = (paramKey, paramValue) => {
       break;
     case "type":
       question.type = "list";
-      question.choices = SETTING_TYPES.map(c => {
-        return {
-          name: c.replace(/([A-Z][a-z]+)([A-Z][a-z]+)?/g, "$1 $2").trim(),
-          value: c,
-          short: c
-        };
-      });
+      question.choices = Object.values(SETTING_TYPES);
       question.filter = arg => {
         question.validate(arg);
         return arg;

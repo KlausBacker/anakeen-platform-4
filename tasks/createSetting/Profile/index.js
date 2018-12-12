@@ -9,8 +9,8 @@ exports.writeTemplate = (installPath, argv) => {
     } else {
       fsUtils
         .writeTemplate(
-          path.resolve(installPath, `250-MailTemplate${argv.name}.xml`),
-          path.resolve(__dirname, "xml", "MailTemplate.xml"),
+          path.resolve(installPath, `240-Profile${argv.name}.xml`),
+          path.resolve(__dirname, "xml", "Profile.xml"),
           Object.assign({}, argv, {
             nameLabel: argv.name.replace(/([A-Z])/g, " $1").trim(),
             NAME: argv.name.toUpperCase(),

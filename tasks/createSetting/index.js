@@ -13,7 +13,9 @@ if (files && files.length) {
         exportObject[file.replace(/\.js$/, "")] = require(`./${file}`);
       }
     } else if (statFile.isDirectory()) {
-      exportObject[file] = require(`./${file}`);
+      if (fs.existsSync(path.resolve(__dirname, file, "index.js"))) {
+        exportObject[file] = require(`./${file}`);
+      }
     }
   });
 }
