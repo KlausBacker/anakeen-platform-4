@@ -40,8 +40,8 @@ const generateSmartStructureXML = ({
   };
   if (parentName) {
     structureConf["smart:config"]["smart:structure-configuration"][
-      "$"
-    ].extends = parentName;
+      "smart:extends"
+    ] = { $: { ref: parentName } };
   }
   if (withBehavior) {
     structureConf["smart:config"]["smart:structure-configuration"][
@@ -130,7 +130,7 @@ const generateStructurePhp = ({ name, namespace, parentName }) => {
   let extend = "\\Anakeen\\SmartElement";
   const ssName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   if (parentName) {
-    extend = `\\SmartStructure\\${ssName}`;
+    extend = `\\SmartStructures\\${ssName}`;
   }
   return `<?php
 
@@ -207,6 +207,8 @@ exports.createSmartStructure = ({
   parentName = false,
   insertIntoInfo = true
 }) => {
+  let srcPath = path.join(sourcePath, "src");
+  let vendorPath = path.join(srcPath, "vendor");
   return gulp.task("createSmartStructure", async () => {
     //Get module info
     const moduleInfo = await getModuleInfo(sourcePath);
@@ -217,8 +219,6 @@ exports.createSmartStructure = ({
     if (!moduleName) {
       moduleName = moduleInfo.moduleInfo.name;
     }
-    let srcPath;
-    let vendorPath;
     let xmlStructPath;
     let xmlSettingsPath;
     let xmlParametersPath;
@@ -327,6 +327,7 @@ exports.createSmartStructure = ({
             });
           });
         }
+        return currentPath;
       })
       .then(currentPath => {
         //Write the php if needed
@@ -352,6 +353,7 @@ exports.createSmartStructure = ({
             );
           });
         }
+        return currentPath;
       })
       .then(currentPath => {
         // With settings
@@ -390,6 +392,7 @@ exports.createSmartStructure = ({
             });
           });
         }
+        return currentPath;
       })
       .then(currentPath => {
         //with render
@@ -472,6 +475,7 @@ exports.createSmartStructure = ({
             });
           });
         }
+        return currentPath;
       })
       .then(currentPath => {
         // With autocompletion
@@ -490,6 +494,7 @@ exports.createSmartStructure = ({
             });
           });
         }
+        return currentPath;
       })
       .then(currentPath => {
         //Complete the info.xml if needed
@@ -526,7 +531,7 @@ exports.createSmartStructure = ({
 
                 postInstall[0].process.push({
                   $: {
-                    command: `./ank.php --script=importConfiguration --file=./${path.relative(
+                    command: `./ank.php --script=importConfiguration --glob=./${path.relative(
                       srcPath,
                       currentPath
                     )}/**/*.xml`
@@ -535,7 +540,7 @@ exports.createSmartStructure = ({
 
                 postUpgrade[0].process.push({
                   $: {
-                    command: `./ank.php --script=importConfiguration --file=./${path.relative(
+                    command: `./ank.php --script=importConfiguration --glob=./${path.relative(
                       srcPath,
                       currentPath
                     )}/**/*.xml`
