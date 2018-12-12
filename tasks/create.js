@@ -139,7 +139,8 @@ exports.create = options => {
       })
       .then(() => {
         if (withAccount) {
-          return createTemplates.accounts.writeTemplate(packagePath, options)
+          return createTemplates.accounts
+            .writeTemplate(packagePath, options)
             .then(toImport => {
               const command = createCommand(
                 `./ank.php --script=importConfiguration --glob=./${toImport}`
@@ -147,7 +148,7 @@ exports.create = options => {
               postInstall.process.push(command.process);
               postUpgrade.process.push(command.process);
               return Promise.resolve();
-            });;
+            });
         }
         return Promise.resolve();
       })

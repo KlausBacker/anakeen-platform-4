@@ -82,7 +82,11 @@ const builder = {
   packageName: {
     description: "package name",
     default: () => {
-      if (moduleOptions && moduleOptions.moduleName && moduleOptions.vendorName) {
+      if (
+        moduleOptions &&
+        moduleOptions.moduleName &&
+        moduleOptions.vendorName
+      ) {
         return `${moduleOptions.vendorName.toLowerCase()}-${moduleOptions.moduleName.toLowerCase()}`;
       }
       return "";
@@ -136,7 +140,7 @@ const builder = {
 exports.desc = "Create a module";
 exports.builder = builder;
 
-const getInquirerQuestion = (currentKey, currentParam, argv) => {
+const getInquirerQuestion = (currentKey, currentParam) => {
   const question = {
     type: currentParam.type === "boolean" ? "confirm" : "input",
     name: currentKey,

@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-module-validation@1.0.0-1543423715-1543947921":
+"@anakeen/anakeen-module-validation@latest":
   version "1.0.0-1543423715-1543947921"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.0-1543423715-1543947921.tgz#45d38d5a0e14781ba36347056e7e194f627f8dce"
   integrity sha512-xcczyStKSkyP7ScZ/Rbqf2VeHl3cdOhUgb/NFwJ+ADZ+sNBEYQEvYbsoriT2P4W/mXf515aMonsaMR3Z596Z6g==
