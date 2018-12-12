@@ -600,7 +600,7 @@ msgstr "Retirer le document de la poubelle"
 
 msgctxt "ddui"
 msgid "Retry transition"
-msgstr "Confirmer"
+msgstr "Recommencer"
 
 msgctxt "ddui"
 msgid "Revision"
