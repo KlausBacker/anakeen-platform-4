@@ -65,7 +65,7 @@ body {
     flex-grow:1;
     padding-right: 1rem;
 }
-.admin a {
+.access a {
     background-color: #007aff;
     border-radius: 0.2rem;
     border: solid 1px #007aff;
@@ -79,6 +79,10 @@ body {
     cursor: pointer;
 }
 
+.devel a {
+    background-color: #92c83e;
+    border-color: #92c83e;
+}
 
 .admin a:hover {
 

@@ -53,7 +53,8 @@
 <section class="right">
     <div class="top">
         <p class="welcome">Congratulations ! Anakeen Platform is up and running</p>
-        {{#isAdmin}}<p class="admin"><a href="admin/">Access to Anakeen Admin Center</a></p>{{/isAdmin}}
+        {{#hasAdmin}}<p class="access admin"><a href="admin/">Access to Anakeen Admin Center</a></p>{{/hasAdmin}}
+        {{#hasDevel}}<p class="access devel"><a href="devel/">Access to Anakeen Devel Center</a></p>{{/hasDevel}}
         <p class="admin logout" title="Logout"><a id="logout"><i class="material-icons">power_settings_new</i></a></p>
     </div>
     <div class="bottom">
