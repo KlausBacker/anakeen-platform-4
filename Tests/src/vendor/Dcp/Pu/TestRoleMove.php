@@ -145,10 +145,18 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         $currentRoles = array_map(function ($role) {
             return $role["login"];
         }, $currentRoles);
-        $this->assertEmpty(array_diff($user["roles"], $currentRoles), sprintf("User %s have not all needed roles (%s instead of %s)",
-            $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
-        $this->assertEmpty(array_diff($currentRoles, $user["roles"]), sprintf("User %s have more than all needed roles (%s instead of %s)",
-            $user["name"], var_export($currentRoles, true), var_export($user["roles"], true)));
+        $this->assertEmpty(array_diff($user["roles"], $currentRoles), sprintf(
+            "User %s have not all needed roles (%s instead of %s)",
+            $user["name"],
+            var_export($currentRoles, true),
+            var_export($user["roles"], true)
+        ));
+        $this->assertEmpty(array_diff($currentRoles, $user["roles"]), sprintf(
+            "User %s have more than all needed roles (%s instead of %s)",
+            $user["name"],
+            var_export($currentRoles, true),
+            var_export($user["roles"], true)
+        ));
         $groups = $user["groups"];
         $groups = array_map(function ($groupName) use ($dbaccess) {
             return array("name" => $groupName, "id" => \Anakeen\Core\SEManager::getIdFromName($groupName));
@@ -172,8 +180,12 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         $currentRoles = array_map(function ($role) {
             return $role["login"];
         }, $currentRoles);
-        $this->assertEmpty(array_diff($group["roles"], $currentRoles), sprintf("Group %s have not all needed roles (%s instead of %s)",
-            $group["name"], var_export($currentRoles, true), var_export($group["roles"], true)));
+        $this->assertEmpty(array_diff($group["roles"], $currentRoles), sprintf(
+            "Group %s have not all needed roles (%s instead of %s)",
+            $group["name"],
+            var_export($currentRoles, true),
+            var_export($group["roles"], true)
+        ));
         $this->assertEmpty(
             array_diff($currentRoles, $group["roles"]),
             sprintf(
@@ -410,6 +422,4 @@ JSON;
 JSON;
         return json_decode($users, true);
     }
-
-
 }

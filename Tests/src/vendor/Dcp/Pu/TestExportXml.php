@@ -166,7 +166,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
      * @param        $needles
      * @param        $type
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      * @dataProvider dataExportImage
      */
     public function testExportImageXmlZip($archiveFile, $needles, $type)
@@ -178,10 +178,10 @@ class TestExportXml extends TestCaseDcpCommonFamily
 
         $this->clearSetHttpVar();
         $oImport = new \ImportDocument();
-        $oImport->importDocuments( $archiveFile, false, true);
+        $oImport->importDocuments($archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) {
-            throw new \Dcp\Exception($err);
+            throw new \Anakeen\Exception($err);
         }
 
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE_XML";
@@ -197,7 +197,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         }
         SetHttpVar("wfile", "Y");
 
-        exportxmlfld( $folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
+        exportxmlfld($folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
 
         if ($type == "X") {
             $err = extractTar($testarchivefile, $testExtractFolder);

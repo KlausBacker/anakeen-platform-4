@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -30,7 +31,9 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
      */
     private function countErrors($err)
     {
-        if (!$err) return 0;
+        if (!$err) {
+            return 0;
+        }
         return count(explode("]\n[", $err));
     }
     /**
@@ -44,15 +47,14 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $err = '';
         try {
             $this->importDocument($documentFile);
-        }
-        catch(\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err);
-        $this->assertEquals($nbError, $this->countErrors($err) , sprintf('status error : "%s"', $err));
+        $this->assertEquals($nbError, $this->countErrors($err), sprintf('status error : "%s"', $err));
         
         $s = new \SearchDoc("", "TST_FAMIMP1");
-        $this->assertEquals(0, $s->onlyCount() , "document is created and must be not");
+        $this->assertEquals(0, $s->onlyCount(), "document is created and must be not");
     }
     /**
      * @dataProvider dataIuserFiles
@@ -63,8 +65,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $err = '';
         try {
             $this->importDocument($documentFile);
-        }
-        catch(\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err);
@@ -80,17 +81,16 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $err = '';
         try {
             $this->importDocument($documentFile);
-        }
-        catch(\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, sprintf("Error : $err"));
         $doc = new_doc("", $docName);
-        $this->assertTrue($doc->isAlive() , sprintf("cannot import %s document", $docName));
+        $this->assertTrue($doc->isAlive(), sprintf("cannot import %s document", $docName));
         $folders = $doc->getParentFolderIds();
         foreach ($folderNames as $folder) {
             $fid = \Anakeen\Core\SEManager::getIdFromName($folder);
-            $this->assertTrue(in_array($fid, $folders) , sprintf("folder %s not found in %s", $folder, print_r($folders, true)));
+            $this->assertTrue(in_array($fid, $folders), sprintf("folder %s not found in %s", $folder, print_r($folders, true)));
         }
     }
     /**
@@ -104,13 +104,12 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $err = '';
         try {
             $this->importDocument($documentFile);
-        }
-        catch(\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, sprintf("Error : $err"));
         $doc = new_doc("", $docName);
-        $this->assertTrue($doc->isAlive() , sprintf("cannot import %s document", $docName));
+        $this->assertTrue($doc->isAlive(), sprintf("cannot import %s document", $docName));
         $tColK = $doc->getMultipleRawValues("tst_extrakey");
         $tColv = $doc->getMultipleRawValues("tst_extraval");
         $tExtra = array();
@@ -118,7 +117,6 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
             $tExtra[$v] = $tColv[$k];
         }
         foreach ($extraValues as $expKey => $expVal) {
-            
             $this->assertEquals($expVal, $tExtra[$expKey], sprintf("not correct extra : %s", print_r($tExtra, true)));
         }
     }
@@ -197,4 +195,3 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

@@ -18,8 +18,8 @@ class TestStaticDefault
         return implode(':', $tx);
     }
 
-    public static function stringOne() {
+    public static function stringOne()
+    {
         return "one";
     }
 }
-

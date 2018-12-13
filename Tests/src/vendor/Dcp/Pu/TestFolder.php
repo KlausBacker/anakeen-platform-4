@@ -29,7 +29,7 @@ class TestFolder extends TestCaseDcpCommonFamily
     public function testAlive($a)
     {
         $d = new_doc(self::$dbaccess, $a);
-        $this->assertTrue($d->isAlive() , sprintf("document %d not alive", $a));
+        $this->assertTrue($d->isAlive(), sprintf("document %d not alive", $a));
         return $d;
     }
     /**
@@ -44,14 +44,14 @@ class TestFolder extends TestCaseDcpCommonFamily
             $val = "testing " . time();
             $err = $d->setValue("ba_desc", $val);
             $this->assertEquals("", $err, sprintf("cannot object update", $a));
-            $this->assertEquals($val, $d->getRawValue("ba_desc") , sprintf("document not updated", $a));
+            $this->assertEquals($val, $d->getRawValue("ba_desc"), sprintf("document not updated", $a));
             $err = $d->modify();
             $this->assertEquals("", $err, sprintf("cannot database update", $a));
             
             $sval = $this->_DBGetValue(sprintf("select ba_desc from doc2 where id=%d", $d->id));
             $this->assertEquals($val, $sval, sprintf("document %d not locked", $a));
         } else {
-            $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $a));
+            $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $a));
         }
     }
     /**
@@ -64,9 +64,9 @@ class TestFolder extends TestCaseDcpCommonFamily
         if ($d->isAlive()) {
             $val = "testing " . time();
             $err = $d->setValue("ba_desc", $val);
-            $this->assertFalse($err == "", sprintf(_("cannot object update %s") , $a));
+            $this->assertFalse($err == "", sprintf(_("cannot object update %s"), $a));
         } else {
-            $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $a));
+            $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $a));
         }
     }
     /**
@@ -82,18 +82,17 @@ class TestFolder extends TestCaseDcpCommonFamily
         $da = new_doc(self::$dbaccess, $a, true);
         $db = new_doc(self::$dbaccess, $b, true);
         if ($da->isAlive() && $db->isAlive()) {
-            
             $err = $da->insertDocument($db->initid);
             if ($err == "") {
-                $this->assertEquals("", $err, sprintf(_("error ::addFile %s %s") , $a, $err));
+                $this->assertEquals("", $err, sprintf(_("error ::addFile %s %s"), $a, $err));
                 $sval = $this->_DBGetValue(sprintf("select childid from fld where dirid=%d and childid=%d", $da->initid, $db->initid));
                 
                 $this->assertEquals($db->initid, $sval, sprintf("not inserted %s", $a));
             } else {
-                $this->markTestIncomplete(sprintf(_('Cannot insert : %s.') , $err));
+                $this->markTestIncomplete(sprintf(_('Cannot insert : %s.'), $err));
             }
         } else {
-            $this->markTestIncomplete(sprintf(_('Document %d not alive.') , $a));
+            $this->markTestIncomplete(sprintf(_('Document %d not alive.'), $a));
         }
     }
     /**
@@ -115,12 +114,12 @@ class TestFolder extends TestCaseDcpCommonFamily
             //$err=simpleQuery(self::$dbaccess,sprintf("select childid from fld where dirid=%d and childid=%d",$da->initid,$dc->initid),$sval,true,true);
             //$this->assertEquals("",$err,sprintf("database select error",$a));
             if ($dc->initid != $sval) {
-                $this->markTestSkipped(sprintf(_("not present %s in %s") , $c, $a));
+                $this->markTestSkipped(sprintf(_("not present %s in %s"), $c, $a));
             }
             $this->assertEquals($dc->initid, $sval, sprintf("not present %s in %s", $c, $a));
             $err = $da->moveDocument($dc->initid, $db->initid);
             if ($err == "") {
-                $this->assertEquals("", $err, sprintf(_("error ::moveDocument %s %s") , $a, $err));
+                $this->assertEquals("", $err, sprintf(_("error ::moveDocument %s %s"), $a, $err));
                 $sval = $this->_DBGetValue(sprintf("select childid from fld where dirid=%d and childid=%d", $da->initid, $dc->initid));
                 $this->assertFalse($sval, sprintf("not unlinked %s", $a));
                 $sval = $this->_DBGetValue(sprintf("select childid from fld where dirid=%d and childid=%d", $db->initid, $dc->initid));
@@ -128,10 +127,10 @@ class TestFolder extends TestCaseDcpCommonFamily
                 $sval = $this->_DBGetValue(sprintf("select prelid from docread where initid=%d and locked != -1", $dc->initid));
                 $this->assertEquals($db->initid, $sval, sprintf("primary relation not updated %s", $c));
             } else {
-                $this->markTestIncomplete(sprintf(_('Cannot move : %s.') , $err));
+                $this->markTestIncomplete(sprintf(_('Cannot move : %s.'), $err));
             }
         } else {
-            $this->markTestIncomplete(sprintf(_('One of these documents %s not alive.') , $a . "," . $b . ',' . $c));
+            $this->markTestIncomplete(sprintf(_('One of these documents %s not alive.'), $a . "," . $b . ',' . $c));
         }
     }
     
@@ -203,4 +202,3 @@ class TestFolder extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

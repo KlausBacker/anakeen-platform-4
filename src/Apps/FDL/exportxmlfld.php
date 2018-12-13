@@ -30,7 +30,7 @@ include_once("FDL/exportfld.php");
  * @throws \Anakeen\Core\DocManager\Exception
  * @throws \Dcp\Core\Exception
  * @throws \Dcp\Db\Exception
- * @throws \Dcp\Exception
+ * @throws \Anakeen\Exception
  * @throws \Dcp\SearchDoc\Exception
  * @global string   $fldid      Http var : folder identifier to export
  * @global string   $wfile      Http var : (Y|N) if Y export attached file export format will be tgz
@@ -293,5 +293,5 @@ EOF;
 
 function exportExit($err)
 {
-    throw new \Dcp\Exception($err);
+    throw new \Anakeen\Exception($err);
 }

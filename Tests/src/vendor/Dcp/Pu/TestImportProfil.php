@@ -19,14 +19,15 @@ class TestImportProfil extends TestCaseDcpDocument
         $err = '';
         try {
             $this->importDocument($familyFile);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err, "no import error detected");
-        if (!is_array($expectedErrors)) $expectedErrors = array(
+        if (!is_array($expectedErrors)) {
+            $expectedErrors = array(
             $expectedErrors
-        );
+            );
+        }
         
         foreach ($expectedErrors as $expectedError) {
             $this->assertContains($expectedError, $err, sprintf("not the correct error reporting"));
@@ -40,8 +41,7 @@ class TestImportProfil extends TestCaseDcpDocument
         $err = '';
         try {
             $this->importDocument($familyFile);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, sprintf("profil error detected : %s", $err));
@@ -114,4 +114,3 @@ class TestImportProfil extends TestCaseDcpDocument
         );
     }
 }
-?>

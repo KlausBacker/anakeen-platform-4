@@ -5,7 +5,7 @@
  */
 /**
  * The JSONCodec class simplify JSON encoding/decoding errors handling
- * by throwing Dcp\Exceptions, with corresponding JSON error constant,
+ * by throwing Anakeen\Exceptions, with corresponding JSON error constant,
  * instead of returning null on errors (which could be mistaken with
  * valid JSON null values for example).
  */
@@ -19,7 +19,7 @@ class JSONCodec
      * @param bool $assoc see $assoc from PHP's json_decode()
      * @param int $depth see $depth from PHP's json_decode()
      * @return mixed|null returns the resulting PHP structure
-     * @throws Dcp\Exception Exception is throwned on error
+     * @throws \Anakeen\Exception Exception is throwned on error
      */
     public function decode($json, $assoc = false, $depth = 512)
     {
@@ -33,7 +33,7 @@ class JSONCodec
             if ($errCode == JSON_ERROR_NONE) {
                 return null;
             }
-            throw new Dcp\Exception($this->getErrorMsg($errCode));
+            throw new \Anakeen\Exception($this->getErrorMsg($errCode));
         }
         return $o;
     }
@@ -43,14 +43,14 @@ class JSONCodec
      * @param mixed $value see $value from PHP's json_encode()
      * @param int $options see $options from PHP's json_encode()
      * @return string returnes the resulting JSON string
-     * @throws Dcp\Exception Exception is throwned on error
+     * @throws \Anakeen\Exception Exception is throwned on error
      */
     public function encode($value, $options = 0)
     {
         $str = json_encode($value, $options);
         if ($str === false) {
             $errCode = json_last_error();
-            throw new Dcp\Exception($this->getErrorMsg($errCode));
+            throw new \Anakeen\Exception($this->getErrorMsg($errCode));
         }
         return $str;
     }

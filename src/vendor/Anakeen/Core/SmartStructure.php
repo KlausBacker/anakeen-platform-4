@@ -107,7 +107,7 @@ create unique index idx_idfam on docfam(id);";
         // specials characteristics R : revised on each modification
         parent::__construct($dbaccess, $id, $res, $dbid);
         if ($this->id && $this->doctype !== 'C') {
-            throw new \Dcp\Exception(sprintf("Cannot use this identifier \"%d\" as Smart Structure", $this->id));
+            throw new \Anakeen\Exception(sprintf("Cannot use this identifier \"%d\" as Smart Structure", $this->id));
         }
 
         if ($include && ($this->id > 0) && ($this->isAffected())) {
@@ -119,7 +119,7 @@ create unique index idx_idfam on docfam(id);";
                     /** @noinspection PhpIncludeInspection */
                     require_once($attFileClass);
                 } else {
-                    throw new \Dcp\Exception(sprintf("Cannot access fields definition for %s (#%s) structure", $this->name, $this->id));
+                    throw new \Anakeen\Exception(sprintf("Cannot access fields definition for %s (#%s) structure", $this->name, $this->id));
                 }
             }
             $this->attributes = new $adoc();

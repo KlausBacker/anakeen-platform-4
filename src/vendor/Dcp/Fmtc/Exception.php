@@ -2,7 +2,7 @@
 
 namespace Dcp\Fmtc;
 
-class Exception extends \Dcp\Exception
+class Exception extends \Anakeen\Exception
 {
 
 }

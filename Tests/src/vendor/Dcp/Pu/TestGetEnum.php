@@ -103,8 +103,10 @@ class TestGetEnum extends TestCaseDcpCommonFamily
             $attr = $fam->getAttribute($attrId);
             $enum = $attr->getEnum();
             $this->assertTrue(is_array($enum), sprintf("getEnum() on '%s' from '%s' is not an array (found type '%s').", $attrId, $fam->name, gettype($enum)));
-            $this->assertTrue(count($expectedEnum) === count($enum),
-                sprintf("Count mismatch for getEnum() on '%s' from '%s': found '%d' while expecting '%d'.", $attrId, $fam->name, count($enum), count($expectedEnum)));
+            $this->assertTrue(
+                count($expectedEnum) === count($enum),
+                sprintf("Count mismatch for getEnum() on '%s' from '%s': found '%d' while expecting '%d'.", $attrId, $fam->name, count($enum), count($expectedEnum))
+            );
             $diff = array_diff_key($expectedEnum, $enum);
             $this->assertTrue(count($diff) === 0, sprintf("getEnum() on '%s' from '%s' returned unexpected keys.", $attrId, $fam->name));
         }
@@ -138,8 +140,10 @@ class TestGetEnum extends TestCaseDcpCommonFamily
                 $attr = $fam->getAttribute($attrId);
                 $enum = $attr->getEnum();
                 $this->assertTrue(is_array($enum), sprintf("getEnum() on '%s' from '%s' is not an array (found type '%s').", $attrId, $fam->name, gettype($enum)));
-                $this->assertTrue(count($expectedEnum) === count($enum),
-                    sprintf("Count mismatch for getEnum() on '%s' from '%s': found '%d' while expecting '%d'.", $attrId, $fam->name, count($enum), count($expectedEnum)));
+                $this->assertTrue(
+                    count($expectedEnum) === count($enum),
+                    sprintf("Count mismatch for getEnum() on '%s' from '%s': found '%d' while expecting '%d'.", $attrId, $fam->name, count($enum), count($expectedEnum))
+                );
                 $diff = array_diff_key($expectedEnum, $enum);
                 $this->assertTrue(count($diff) === 0, sprintf("getEnum() on '%s' from '%s' returned unexpected keys.", $attrId, $fam->name));
             }
@@ -540,5 +544,3 @@ class TestGetEnum extends TestCaseDcpCommonFamily
         );
     }
 }
-
-?>

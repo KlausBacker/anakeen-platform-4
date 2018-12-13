@@ -141,7 +141,6 @@ class TestNewDoc extends TestCaseDcpCommonFamily
         $this->assertTrue($d->isAlive(), "document $docName not last revision\n" . print_r(self::$ids[$docName], true));
         $this->assertEquals($expectedTitle, $d->getTitle(), "wrong title for $docName\n" . print_r(self::$ids[$docName], true));
         // print_r("test".print_r(self::$ids[$docName], true) );
-
     }
 
     /**

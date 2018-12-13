@@ -105,7 +105,7 @@ class UserToken extends DbObj
         $strong = false;
         $bytes = openssl_random_pseudo_bytes($this->tokenByteLength, $strong);
         if ($bytes === false || $strong === false) {
-            throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+            throw new \Anakeen\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
         }
         return bin2hex($bytes);
     }

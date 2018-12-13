@@ -26,7 +26,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
      * Test that exported documents have no param columns
      * @param string $archiveFile
      * @param        $needles
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      * @dataProvider dataExportImage
      */
     public function testExportImage($archiveFile, $needles)
@@ -38,7 +38,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $oImport->importDocuments($archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) {
-            throw new \Dcp\Exception($err);
+            throw new \Anakeen\Exception($err);
         }
 
         $folderId = "TEXT_FOLDER_EXPORT_IMAGE";
@@ -110,7 +110,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
                 }
             }
             if (isset($data[0]) && $data[0] === "PROFIL") {
-
                 $docName = $data[1];
                 if (isset($expectedProfil[$docName])) {
                     $prof = $expectedProfil[$docName];
@@ -125,7 +124,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
 
         $this->assertEquals(array_keys($expectDoc), $exportDocName, "No same exported documents: See $exportOutput");
         //unlink($exportOutput);
-
     }
 
     /**

@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -16,13 +17,13 @@ class TestMultipleAlive extends TestCaseDcp
 {
     /**
      * @param string $a
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public function testFixed()
     {
         $d = createDoc(self::$dbaccess, "BASE");
         $d->setValue("ba_title", "Initial");
-        $this->assertTrue(is_object($d) , sprintf("cannot create BASE document"));
+        $this->assertTrue(is_object($d), sprintf("cannot create BASE document"));
         $err = $d->add();
         $this->assertEmpty($err, sprintf("add error : $err"));
         $id0 = $d->id;
@@ -56,14 +57,14 @@ class TestMultipleAlive extends TestCaseDcp
         $nd1->locked = 0;
         $err = $nd1->modify(true, array(
             "locked"
-        ) , true);
+        ), true);
         $this->assertEmpty($err, sprintf("modify lock rev.1 error : $err"));
         // two documents are alive now $nd1 /$nd2
         clearCacheDoc();
-        simpleQuery(self::$dbaccess, sprintf("select id, title, revision, locked from only doc%d where initid=%d  order by id", $nd1->fromid, $nd1->initid) , $r);
+        simpleQuery(self::$dbaccess, sprintf("select id, title, revision, locked from only doc%d where initid=%d  order by id", $nd1->fromid, $nd1->initid), $r);
         
         $nd1 = new_doc(self::$dbaccess, $id1);
-        $this->assertTrue($nd1->isAlive() , "nd1 is not alive");
+        $this->assertTrue($nd1->isAlive(), "nd1 is not alive");
         $nd1->setValue("ba_title", "c");
         $err = $nd1->store(); // cannot modify fixed document
         error_log($err);
@@ -77,19 +78,19 @@ class TestMultipleAlive extends TestCaseDcp
         $nd0->locked = 0;
         $err = $nd0->modify(true, array(
             "locked"
-        ) , true);
+        ), true);
         $this->assertEmpty($err, sprintf("modify lock rev.0 error : $err"));
         // corrupt again integraty => $nd1 becomes alives
         $nd1->locked = 0;
         $err = $nd1->modify(true, array(
             "locked"
-        ) , true);
+        ), true);
         $this->assertEmpty($err, sprintf("modify lock rev.1 error : $err"));
         
         clearCacheDoc();
         
         $nd2 = new_doc(self::$dbaccess, $id2);
-        $this->assertTrue($nd1->isAlive() , "nd2 is not alive");
+        $this->assertTrue($nd1->isAlive(), "nd2 is not alive");
         $nd2->setValue("ba_title", "e");
         $err = $nd2->store(); // clean and modify can modify clean document
         $this->assertEmpty($err, sprintf("modify rev.1 error : $err"));
@@ -97,4 +98,3 @@ class TestMultipleAlive extends TestCaseDcp
         return $d;
     }
 }
-?>

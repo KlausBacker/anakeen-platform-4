@@ -132,7 +132,7 @@ class TestRole extends TestCaseDcpCommonFamily
      * @param       $login
      * @param array $expectedAccesses
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function testAccessByRole($docid, $login, array $expectedAccesses)
     {

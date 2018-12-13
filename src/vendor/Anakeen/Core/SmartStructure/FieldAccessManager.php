@@ -8,7 +8,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use SmartStructure\Fields\Fieldaccesslayerlist as FallFields;
 use SmartStructure\Fields\Fieldaccesslayer as FalFields;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 class FieldAccessManager
 {

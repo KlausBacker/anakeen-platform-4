@@ -202,7 +202,7 @@ create unique index i_docenum on docenum(name,  key);
             $enumStruct->key
         ));
         if ($enum->isAffected()) {
-            throw new \Dcp\Exception(sprintf("Enum %s:%s already exists", $name, $enumStruct->key));
+            throw new \Anakeen\Exception(sprintf("Enum %s:%s already exists", $name, $enumStruct->key));
         }
 
         $enum->name = $name;
@@ -218,7 +218,7 @@ create unique index i_docenum on docenum(name,  key);
         }
         $err = $enum->add();
         if ($err) {
-            throw new \Dcp\Exception(sprintf("Cannot add enum %s:%s : %s", $name, $enumStruct->key, $err));
+            throw new \Anakeen\Exception(sprintf("Cannot add enum %s:%s : %s", $name, $enumStruct->key, $err));
         }
 
         if ($enumStruct->localeLabel) {
@@ -236,7 +236,7 @@ create unique index i_docenum on docenum(name,  key);
             $enumStruct->key
         ));
         if (!$enum->isAffected()) {
-            throw new \Dcp\Exception(sprintf("Enum %s:%s not found", $name, $enumStruct->key));
+            throw new \Anakeen\Exception(sprintf("Enum %s:%s not found", $name, $enumStruct->key));
         }
 
         $enum->label = $enumStruct->label;
@@ -251,7 +251,7 @@ create unique index i_docenum on docenum(name,  key);
 
         $err = $enum->modify();
         if ($err) {
-            throw new \Dcp\Exception(sprintf("Cannot modify enum %s:%s : %s", $name, $enumStruct->key, $err));
+            throw new \Anakeen\Exception(sprintf("Cannot modify enum %s:%s : %s", $name, $enumStruct->key, $err));
         }
         if ($enumStruct->localeLabel) {
             foreach ($enumStruct->localeLabel as $lLabel) {
@@ -273,7 +273,7 @@ create unique index i_docenum on docenum(name,  key);
         \Anakeen\Core\ContextManager::setLanguage($lang);
         $docenum = new DocEnum("", [$enumName, $enumId]);
         if (!$docenum->isAffected()) {
-            throw new \Dcp\Exception(sprintf("Locale : Enum %s:%s not found", $enumName, $enumId));
+            throw new \Anakeen\Exception(sprintf("Locale : Enum %s:%s not found", $enumName, $enumId));
         }
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
@@ -298,7 +298,7 @@ msgstr ""
 
                 exec($cmd, $output, $ret);
                 if ($ret) {
-                    throw new \Dcp\Exception(sprintf("Locale : Enum %s:%s error : %s", $enumName, $enumId, implode(',', $output)));
+                    throw new \Anakeen\Exception(sprintf("Locale : Enum %s:%s error : %s", $enumName, $enumId, implode(',', $output)));
                 }
             } else {
                 file_put_contents($poFile, $msgInit);
@@ -322,7 +322,7 @@ msgstr ""
             exec($cmd, $output, $ret);
             if ($ret) {
                 print $cmd;
-                throw new \Dcp\Exception(sprintf("Locale : Enum %s:%s error : %s", $enumName, $enumId, implode(',', $output)));
+                throw new \Anakeen\Exception(sprintf("Locale : Enum %s:%s error : %s", $enumName, $enumId, implode(',', $output)));
             }
         }
     }

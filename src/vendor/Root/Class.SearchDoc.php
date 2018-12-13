@@ -345,7 +345,7 @@ class SearchDoc
      * $result= $s->search();
      * @endcode
      * @param string $jointure
-     * @throws Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function join($jointure)
     {

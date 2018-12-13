@@ -6,9 +6,9 @@
 
 namespace Anakeen\Core\Internal;
 
-use \Anakeen\Core\SEManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 /**
  * Format document list to be easily used in
@@ -969,7 +969,7 @@ class FormatCollection
                     break;
 
                 case 'longtext':
-                    $info = new Format\LongtextAttributeValue($oa, $value, $this->longtextMultipleBrToCr);
+                    $info = new Format\LongtextAttributeValue($oa, $value);
                     break;
 
                 case 'int':

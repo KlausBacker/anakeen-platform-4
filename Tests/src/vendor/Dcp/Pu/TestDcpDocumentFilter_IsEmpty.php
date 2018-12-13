@@ -2,7 +2,6 @@
 
 namespace Dcp\Pu;
 
-
 class TestDcpDocumentFilter_IsEmpty extends TestCaseDcpCommonFamily
 {
     protected static function getCommonImportFile()

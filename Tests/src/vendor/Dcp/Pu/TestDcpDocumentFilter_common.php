@@ -20,9 +20,9 @@ class TestDcpDocumentFilter_common extends TestCaseDcpCommonFamily
         unset($r);
         
         $missing = array_diff($expected, $found);
-        $this->assertEmpty($missing, sprintf("Missing elements in result: %s (query=[%s])", join(", ", $missing) , $s->getOriginalQuery()));
+        $this->assertEmpty($missing, sprintf("Missing elements in result: %s (query=[%s])", join(", ", $missing), $s->getOriginalQuery()));
         
         $spurious = array_diff($found, $expected);
-        $this->assertEmpty($spurious, sprintf("Spurious elements in result: %s (query=[%s])", join(", ", $spurious) , $s->getOriginalQuery()));
+        $this->assertEmpty($spurious, sprintf("Spurious elements in result: %s (query=[%s])", join(", ", $spurious), $s->getOriginalQuery()));
     }
 }

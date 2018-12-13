@@ -51,7 +51,7 @@ class TestDocEnum extends TestCaseDcpCommonFamily
     public function testDocEnumAdd($attrid, $key, $label, $absOrder, $expectedOrder)
     {
         //print_r(EnumManager::getEnum($attrid));exit;
-       $enums= EnumManager::getEnums($attrid);
+        $enums= EnumManager::getEnums($attrid);
         $s = new EnumStructure();
         $s->key = $key;
         $s->label = $label;

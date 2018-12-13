@@ -51,7 +51,6 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
 
         $htmlImage->setValue("tst_html", str_replace("1234567", $imgInfo["id_file"], $htmlImage->getRawValue("tst_html")));
         $htmlImage->modify();
-
     }
 
     public static function tearDownAfterClass()

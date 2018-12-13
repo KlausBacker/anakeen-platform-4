@@ -141,7 +141,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         try {
             $d = createDoc(self::$dbaccess, $famid);
             $this->assertNotEmpty($err, sprintf(" no error returned, must have %s", $errorCode));
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $err = $e->getDcpCode();
             $this->assertEquals($errorCode, $err, sprintf("not the good error code : %s", $e->getMessage()));
         }
@@ -155,8 +155,11 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         $d = createDoc(self::$dbaccess, $famid);
         $value = $d->getFamilyParameterValue($attrid);
         $f = $d->getFamilyDocument();
-        $this->assertEquals($expectedValue, $value,
-            sprintf("parameter %s has not correct initial value, family has \"%s\"", $attrid, $f->param . $f->getParameterRawValue($attrid)));
+        $this->assertEquals(
+            $expectedValue,
+            $value,
+            sprintf("parameter %s has not correct initial value, family has \"%s\"", $attrid, $f->param . $f->getParameterRawValue($attrid))
+        );
         $err = $f->setParam($attrid, '');
         $this->assertEmpty($err, "parameter set error : $err");
         $f->modify();
@@ -553,4 +556,3 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         );
     }
 }
-

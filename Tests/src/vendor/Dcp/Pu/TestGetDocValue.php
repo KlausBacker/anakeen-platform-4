@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -30,7 +31,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     public function testDirectGetDocValue($docName, $attrid, $expectValue)
     {
         $d = createDoc(self::$dbaccess, $this->famName);
-        $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
+        $this->assertTrue(is_object($d), sprintf("cannot create %s document", $this->famName));
         $docid = \Anakeen\Core\SEManager::getIdFromName($docName);
         $value = $d->getDocValue($docid, $attrid);
         
@@ -42,7 +43,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     public function testDirectGetDocValueLogicalName($docName, $attrid, $expectValue)
     {
         $d = createDoc(self::$dbaccess, $this->famName);
-        $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
+        $this->assertTrue(is_object($d), sprintf("cannot create %s document", $this->famName));
         $value = $d->getDocValue($docName, $attrid);
         
         $this->assertEquals($expectValue, $value, "getDocValue $attrid wrong value");
@@ -53,7 +54,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     public function testLatestGetDocValue($docName, $attrid, $expectValue)
     {
         $d = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($d->isAlive() , sprintf("cannot find %s document", $docName));
+        $this->assertTrue($d->isAlive(), sprintf("cannot find %s document", $docName));
         $d->revise('test');
         $d->setValue($attrid, $expectValue);
         $d->store();
@@ -72,7 +73,7 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
     public function testFirstGetDocValue($docName, $attrid, $newvalue, $expectValue)
     {
         $d = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($d->isAlive() , sprintf("cannot find %s document", $docName));
+        $this->assertTrue($d->isAlive(), sprintf("cannot find %s document", $docName));
         $d->revise('test');
         $d->setValue($attrid, $newvalue);
         $d->store();
@@ -149,4 +150,3 @@ class TestGetDocValue extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

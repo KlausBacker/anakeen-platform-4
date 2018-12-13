@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -29,12 +30,12 @@ class TestDoubleInherit extends TestCaseDcpCommonFamily
      * @dataProvider dataRefresh
      * @param string $docName
      * @param string $expectValue
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public function testRefresh($docName, $expectValue)
     {
         $d = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($d->isAlive() , sprintf("document %s not alive", $docName));
+        $this->assertTrue($d->isAlive(), sprintf("document %s not alive", $docName));
         
         $this->assertEquals($expectValue, $d->refresh());
     }
@@ -56,7 +57,7 @@ class TestDoubleInherit extends TestCaseDcpCommonFamily
      * @dataProvider dataGetAReference
      * @param string $docName
      * @param string $expectValue
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public function testGetAReference($docName, $expectValue)
     {
@@ -64,7 +65,7 @@ class TestDoubleInherit extends TestCaseDcpCommonFamily
          * @var \_TSTCOMMONINHERIT $d
          */
         $d = new_doc(self::$dbaccess, $docName);
-        $this->assertTrue($d->isAlive() , sprintf("document %s not alive", $docName));
+        $this->assertTrue($d->isAlive(), sprintf("document %s not alive", $docName));
         $this->assertEquals($expectValue, $d->getAReference());
     }
     
@@ -82,4 +83,3 @@ class TestDoubleInherit extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

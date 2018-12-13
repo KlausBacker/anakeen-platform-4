@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -43,13 +44,12 @@ class TestReviseDocument extends TestCaseDcpCommonFamily
         $revisions=$d->getRevisions("TABLE");
         $this->assertEquals($expectRevisionNumber, count($revisions));
 
-        foreach ($expectedTitles as $revisionNumber=>$title) {
+        foreach ($expectedTitles as $revisionNumber => $title) {
             $id=SEManager::getRevisedDocumentId($d->initid, $revisionNumber);
             $rev=SEManager::getDocument($id, false);
-            $this->assertNotEmpty( $rev, "Revision {$d->initid}/$id/$revisionNumber");
-            $this->assertEquals( $title, $rev->getTitle());
+            $this->assertNotEmpty($rev, "Revision {$d->initid}/$id/$revisionNumber");
+            $this->assertEquals($title, $rev->getTitle());
         }
-
     }
 
     public function dataRevise()
@@ -70,5 +70,4 @@ class TestReviseDocument extends TestCaseDcpCommonFamily
 
         );
     }
-
 }

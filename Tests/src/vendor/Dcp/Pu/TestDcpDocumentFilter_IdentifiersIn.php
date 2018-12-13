@@ -2,7 +2,6 @@
 
 namespace Dcp\Pu;
 
-
 use Anakeen\Core\SEManager;
 
 class TestDcpDocumentFilter_IdentifiersIn extends TestDcpDocumentFilter_common
@@ -41,7 +40,7 @@ class TestDcpDocumentFilter_IdentifiersIn extends TestDcpDocumentFilter_common
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IdentifiersIn($test["value"], (isset($test["flags"]) ? $test["flags"] : 0)) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IdentifiersIn($test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
     public function data_IdentifiersIn()

@@ -37,10 +37,10 @@ abstract class Authenticator
     {
         
         if ($authtype == "") {
-            throw new \Dcp\Exception(__METHOD__ . " " . "Error: authentication mode not set");
+            throw new \Anakeen\Exception(__METHOD__ . " " . "Error: authentication mode not set");
         }
         if ($authprovider == "") {
-            throw new \Dcp\Exception(__METHOD__ . " " . "Error: authentication provider not set");
+            throw new \Anakeen\Exception(__METHOD__ . " " . "Error: authentication provider not set");
         }
         
         $tx = array(
@@ -53,18 +53,18 @@ abstract class Authenticator
             $this->parms = array_merge($tx, $ta, $tp);
             
             if (!array_key_exists('AuthentProvider', $this->parms)) {
-                throw new \Dcp\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
+                throw new \Anakeen\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
             }
 
             if (empty($tp["class"])) {
-                throw new \Dcp\Exception(__METHOD__ . " " . "Error: \"class\" parameter must be defined in provider config not found");
+                throw new \Anakeen\Exception(__METHOD__ . " " . "Error: \"class\" parameter must be defined in provider config not found");
             }
             $providerClass = $tp["class"];
 
             //     error_log("Using authentication provider [".$providerClass."]");
             $this->provider = new $providerClass($authprovider, $this->parms);
             if (!is_a($this->provider, \Anakeen\Core\Internal\AuthentProvider::class)) {
-                throw new \Dcp\Exception(__METHOD__ . " " . sprintf("Error: provider with class '%s' does not inherits from class 'Provider'.", $providerClass));
+                throw new \Anakeen\Exception(__METHOD__ . " " . sprintf("Error: provider with class '%s' does not inherits from class 'Provider'.", $providerClass));
             }
         } else {
             $this->parms = array_merge($tx, $ta);

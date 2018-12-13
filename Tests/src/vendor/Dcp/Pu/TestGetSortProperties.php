@@ -29,7 +29,7 @@ class TestGetSortProperties extends TestCaseDcpCommonFamily
         $famdoc = new \Anakeen\Core\SmartStructure(self::$dbaccess, $data['famid']);
         $properties = $famdoc->getSortProperties();
         $count = count($properties);
-        $this->assertTrue(($count == $data['expected']['count']) , sprintf("Got '%d' properties while expecting '%d': %s", $count, $data['expected']['count'], print_r($properties, true)));
+        $this->assertTrue(($count == $data['expected']['count']), sprintf("Got '%d' properties while expecting '%d': %s", $count, $data['expected']['count'], print_r($properties, true)));
         
         foreach ($data['expected']['check'] as $check) {
             $found = false;
@@ -40,7 +40,7 @@ class TestGetSortProperties extends TestCaseDcpCommonFamily
                 }
             }
             $this->assertTrue($found, sprintf("Expected property '%s' not found.", $check['id']));
-            $this->assertTrue(($parameters['sort'] == $check['sort']) , sprintf("Property '%s' has sort '%s' while expecting '%s'.", $propName, $parameters['sort'], $check['sort']));
+            $this->assertTrue(($parameters['sort'] == $check['sort']), sprintf("Property '%s' has sort '%s' while expecting '%s'.", $propName, $parameters['sort'], $check['sort']));
         }
     }
     /**

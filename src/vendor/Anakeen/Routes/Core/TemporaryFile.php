@@ -50,7 +50,7 @@ class TemporaryFile
                 $exception = new Exception("CRUD0301", $file["name"]);
                 throw $exception;
             }
-        } catch (\Dcp\Exception $exception) {
+        } catch (\Anakeen\Exception $exception) {
             $newException = new Exception("CRUD0300", $exception->getDcpMessage());
             switch ($exception->getDcpCode()) {
                 case "VAULT0002":

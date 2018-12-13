@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -30,7 +31,7 @@ class TestDir extends TestCaseDcpCommonFamily
          * @var \SmartStructure\Dir $dir
          */
         $dir = new_Doc('', $dirId, true);
-        $this->assertTrue($dir->isAlive() , sprintf("Could not get dir with id '%s'.", $dirId));
+        $this->assertTrue($dir->isAlive(), sprintf("Could not get dir with id '%s'.", $dirId));
         $err = $dir->Clear();
         $this->assertEmpty($err, sprintf("Clear() on dir with id '%s' returned unexpected error message: %s", $dirId, $err));
         $content = $dir->getContent(false);

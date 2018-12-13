@@ -82,7 +82,7 @@ class ImportDocumentDescription
     /**
      * @param string $importFile
      *
-     * @throws Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function __construct($importFile = "")
     {
@@ -94,7 +94,7 @@ class ImportDocumentDescription
                 $this->fdoc = fopen($importFile, "r");
             }
             if (!$this->fdoc) {
-                throw new Dcp\Exception(sprintf("no import file found : %s", $importFile));
+                throw new \Anakeen\Exception(sprintf("no import file found : %s", $importFile));
             }
             $this->importFileName = $importFile;
         }
@@ -169,7 +169,7 @@ class ImportDocumentDescription
      * @param string &$enclosure need to set to 'auto' to detect
      *
      * @return array associaive array "enclosure", "separator" keys
-     * @throws Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public static function detectAutoCsvOptions($csvFileName, &$separator = 'auto', &$enclosure = 'auto')
     {
@@ -178,7 +178,7 @@ class ImportDocumentDescription
             $detector = new \Dcp\Utils\CSVFormatDetector\Detector();
             $detected = $detector->detect($content);
             if (!isset($detected['separator']['char']) || $detected['separator']['char'] === null) {
-                throw new Dcp\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
+                throw new \Anakeen\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
             }
             $separator = $detected['separator']['char'];
         }
@@ -729,7 +729,7 @@ class ImportDocumentDescription
                                     \Dcp\FamilyImport::createDocFile($this->dbaccess, $famInfo);
                                 }
                             }
-                        } catch (\Dcp\Exception $e) {
+                        } catch (\Anakeen\Exception $e) {
                             $this->tcr[$this->nLine]["err"] .= $e->getMessage();
                         }
                     }
@@ -1896,7 +1896,7 @@ class ImportDocumentDescription
         if (!isset($this->userIds[$login])) {
             \Anakeen\Core\DbManager::query(sprintf("select id from users where login='%s'", pg_escape_string($login)), $uid, true, true);
             if (!$uid) {
-                throw new \Dcp\Exception("PRFL0204", $login);
+                throw new \Anakeen\Exception("PRFL0204", $login);
             }
             $this->userIds[$login] = $uid;
         }

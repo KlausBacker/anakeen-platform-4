@@ -48,7 +48,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $this->assertTrue($d->isAlive(), sprintf("cannot access %s document", $docName));
         try {
             $d->getAttributeValue($attrid);
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $this->assertEquals($expectedErrorCode, $e->getDcpCode(), sprintf('"not correct code: %s"', $e->getMessage()));
         }
     }
@@ -63,7 +63,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         try {
             $d->setAttributeValue($attrid, $value);
             $this->assertTrue(false, "no error detected need $expectedErrorCode");
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $this->assertEquals($expectedErrorCode, $e->getDcpCode(), sprintf('"not correct code : %s"', $e->getMessage()));
             $this->log($e->getMessage());
         }
@@ -109,9 +109,16 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     break;
             }
             // convert docName to docId
-            $this->assertTrue($stringDates === $expectedValue,
-                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedValue, true), $this->getDump($stringDates),
-                    $d->getRawValue($attrid)));
+            $this->assertTrue(
+                $stringDates === $expectedValue,
+                sprintf(
+                    'wrong value "%s" : expected %s, has %s \nRaw is :"%s"',
+                    $attrid,
+                    $this->getDump($expectedValue, true),
+                    $this->getDump($stringDates),
+                    $d->getRawValue($attrid)
+                )
+            );
         }
     }
 
@@ -123,7 +130,6 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         $d = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($d->isAlive(), sprintf("cannot access %s document", $docName));
         foreach ($expectedValues as $attrid => $newValue) {
-
             $d->setAttributeValue($attrid, $newValue);
         }
         foreach ($expectedValues as $attrid => $expectedValue) {
@@ -131,8 +137,10 @@ class TestTypedValue extends TestCaseDcpCommonFamily
             // convert docName to docId
             $expectedDocId = $this->docNames2docIds($expectedValue);
 
-            $this->assertTrue($expectedDocId === $value,
-                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId), $this->getDump($value, true), $d->getRawValue($attrid)));
+            $this->assertTrue(
+                $expectedDocId === $value,
+                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedDocId), $this->getDump($value, true), $d->getRawValue($attrid))
+            );
         }
     }
 
@@ -161,8 +169,10 @@ class TestTypedValue extends TestCaseDcpCommonFamily
                     break;
             }
 
-            $this->assertTrue($expectedValue === $value,
-                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedValue), $this->getDump($value, true), $this->getDump($oriValue)));
+            $this->assertTrue(
+                $expectedValue === $value,
+                sprintf('wrong value "%s" : expected %s, has %s \nRaw is :"%s"', $attrid, $this->getDump($expectedValue), $this->getDump($value, true), $this->getDump($oriValue))
+            );
         }
     }
 

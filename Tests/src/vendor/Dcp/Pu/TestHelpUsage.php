@@ -4,7 +4,6 @@ namespace Dcp\Pu;
 
 use Anakeen\Script\ShellManager;
 
-
 class TestHelpUsage extends TestCaseDcp
 {
     /**

@@ -59,14 +59,14 @@ class ImportXml
      * @param string $xmlFile file path
      *
      * @return array log infortmations about import
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function importSingleXmlFile($xmlFile)
     {
         $splitdir = uniqid(ContextManager::getTmpDir() . "/xmlsplit");
         @mkdir($splitdir);
         if (!is_dir($splitdir)) {
-            throw new \Dcp\Exception("IMPC0002", $splitdir);
+            throw new \Anakeen\Exception("IMPC0002", $splitdir);
         }
         self::splitXmlDocument($xmlFile, $splitdir);
 
@@ -83,7 +83,7 @@ class ImportXml
         $splitdir = uniqid(ContextManager::getTmpDir() . "/xmlsplit");
         @mkdir($splitdir);
         if (!is_dir($splitdir)) {
-            throw new \Dcp\Exception("IMPC0003", $splitdir);
+            throw new \Anakeen\Exception("IMPC0003", $splitdir);
         }
         self::unZipXmlDocument($zipFile, $splitdir);
         //print "Split OK in $splitdir";
@@ -101,7 +101,7 @@ class ImportXml
         $zipfiles = realpath($zipfiles);
         $ll = exec(sprintf("cd %s && unzip %s", $splitdir, $zipfiles), $out, $retval);
         if ($retval != 0) {
-            throw new \Dcp\Exception("IMPC0004", $zipfiles, $ll);
+            throw new \Anakeen\Exception("IMPC0004", $zipfiles, $ll);
         }
         return $err;
     }
@@ -377,7 +377,7 @@ class ImportXml
             $metadata = stream_get_meta_data($fd);
             $filename = ((is_array($metadata) && isset($metadata['uri'])) ? $metadata['uri'] : '*unknown*file*');
             fclose($fd);
-            throw new \Dcp\Exception("IMPC0012", $filename);
+            throw new \Anakeen\Exception("IMPC0012", $filename);
         }
         return $len;
     }
@@ -388,14 +388,14 @@ class ImportXml
      *
      * @param $file
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public static function extractFileFromXmlDocument($file)
     {
         static $mediaindex = 0;
         $dir = dirname($file);
         if (!file_exists($file)) {
-            throw new \Dcp\Exception("IMPC0001", $file);
+            throw new \Anakeen\Exception("IMPC0001", $file);
         }
         $mediadir = "media";
         if (!is_dir("$dir/$mediadir")) {
@@ -403,11 +403,11 @@ class ImportXml
         }
         $f = fopen($file, "r");
         if ($f === false) {
-            throw new \Dcp\Exception("IMPC0009", $file);
+            throw new \Anakeen\Exception("IMPC0009", $file);
         }
         $nf = fopen($file . ".new", "w");
         if ($nf === false) {
-            throw new \Dcp\Exception("IMPC0010", $file . ".new");
+            throw new \Anakeen\Exception("IMPC0010", $file . ".new");
         }
         try {
             while (!feof($f)) {
@@ -424,22 +424,22 @@ class ImportXml
                             $title = "noname";
                         }
                         if (strpos($title, DIRECTORY_SEPARATOR) !== false) {
-                            throw new \Dcp\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
+                            throw new \Anakeen\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
                         }
                         $mediaIndexDir = sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex);
                         if (!file_exists($mediaIndexDir)) {
                             if (mkdir($mediaIndexDir) === false) {
-                                throw new \Dcp\Exception("IMPC0006", $mediaIndexDir);
+                                throw new \Anakeen\Exception("IMPC0006", $mediaIndexDir);
                             }
                         }
                         if (!is_dir($mediaIndexDir)) {
-                            throw new \Dcp\Exception("IMPC0007", $mediaIndexDir);
+                            throw new \Anakeen\Exception("IMPC0007", $mediaIndexDir);
                         }
                         $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
                         $fin = sprintf("%s/%s", $dir, $rfin);
                         $fi = fopen($fin, "w");
                         if ($fi === false) {
-                            throw new \Dcp\Exception("IMPC0008", $fi);
+                            throw new \Anakeen\Exception("IMPC0008", $fi);
                         }
                         if (preg_match("/(.*)(<$tag [^>]*)>/", $buffer, $regend)) {
                             self::fputsError($nf, $regend[1] . $regend[2] . ' href="' . \XMLSplitter::escapeEntities($rfin) . '">');
@@ -479,22 +479,22 @@ class ImportXml
                         $title = "noname";
                     }
                     if (strpos($title, DIRECTORY_SEPARATOR) !== false) {
-                        throw new \Dcp\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
+                        throw new \Anakeen\Exception("IMPC0005", DIRECTORY_SEPARATOR, $title);
                     }
                     $mediaIndexDir = sprintf("%s/%s/%d", $dir, $mediadir, $mediaindex);
                     if (!file_exists($mediaIndexDir)) {
                         if (mkdir($mediaIndexDir) === false) {
-                            throw new \Dcp\Exception("IMPC0006", $mediaIndexDir);
+                            throw new \Anakeen\Exception("IMPC0006", $mediaIndexDir);
                         }
                     }
                     if (!is_dir($mediaIndexDir)) {
-                        throw new \Dcp\Exception("IMPC0007", $mediaIndexDir);
+                        throw new \Anakeen\Exception("IMPC0007", $mediaIndexDir);
                     }
                     $rfin = sprintf("%s/%d/%s", $mediadir, $mediaindex, $title);
                     $fin = sprintf("%s/%s", $dir, $rfin);
                     $fi = fopen($fin, "w");
                     if ($fi === false) {
-                        throw new \Dcp\Exception("IMPC0008", $fi);
+                        throw new \Anakeen\Exception("IMPC0008", $fi);
                     }
                     if (preg_match("/(.*)(&lt;img.*?)src=\"data:[^;]*;base64,/", $buffer, $regend)) {
                         $chaintoput = $regend[1] . $regend[2] . ' src="file://' . $rfin . '"';
@@ -533,7 +533,7 @@ class ImportXml
         fclose($f);
         fclose($nf);
         if (rename($file . ".new", $file) === false) {
-            throw new \Dcp\Exception("IMPC0011", $file . ".new", $file);
+            throw new \Anakeen\Exception("IMPC0011", $file . ".new", $file);
         }
     }
 

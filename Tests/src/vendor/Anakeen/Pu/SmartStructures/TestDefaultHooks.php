@@ -5,7 +5,6 @@ namespace Anakeen\Pu\SmartStructures;
 use Anakeen\Core\Utils\Postgres;
 
 class TestDefaultHooks extends \Anakeen\SmartElement
-
 {
     public function isOne()
     {

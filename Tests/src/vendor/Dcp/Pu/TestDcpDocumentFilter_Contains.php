@@ -19,7 +19,7 @@ class TestDcpDocumentFilter_Contains extends TestDcpDocumentFilter_common
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\Contains($test["attr"], $test["value"]) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\Contains($test["attr"], $test["value"]), $test["expected"]);
     }
     
     public function data_Contains()
@@ -66,7 +66,7 @@ class TestDcpDocumentFilter_Contains extends TestDcpDocumentFilter_common
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\Contains($test["attr"], $test["value"], \Anakeen\Search\Filters\Contains::NOCASE) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\Contains($test["attr"], $test["value"], \Anakeen\Search\Filters\Contains::NOCASE), $test["expected"]);
     }
     public function data_ContainsNoCase()
     {

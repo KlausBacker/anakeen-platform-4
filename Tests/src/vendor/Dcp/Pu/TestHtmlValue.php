@@ -44,9 +44,16 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
             $oriValue = $d->getrawValue($attrid);
             $value = $d->getHtmlAttrValue($attrid);
 
-            $this->assertTrue($expectedValue === $value,
-                sprintf("wrong value \"%s\" : \n\texpected \"%s\", \n\thas \"%s\" \n\tRaw is :\"%s\"", $attrid, print_r($expectedValue, true), print_r($value, true),
-                    print_r($oriValue, true)));
+            $this->assertTrue(
+                $expectedValue === $value,
+                sprintf(
+                    "wrong value \"%s\" : \n\texpected \"%s\", \n\thas \"%s\" \n\tRaw is :\"%s\"",
+                    $attrid,
+                    print_r($expectedValue, true),
+                    print_r($value, true),
+                    print_r($oriValue, true)
+                )
+            );
         }
     }
 
@@ -70,8 +77,10 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
                 $exceptionMessage = $e->getMessage();
             }
 
-            $this->assertTrue((preg_match($expectedExceptionMatchRE, $exceptionMessage) === 1),
-                sprintf("Exception '%s' does not match expected exception message '%s'.", $exceptionMessage, $expectedExceptionMatchRE));
+            $this->assertTrue(
+                (preg_match($expectedExceptionMatchRE, $exceptionMessage) === 1),
+                sprintf("Exception '%s' does not match expected exception message '%s'.", $exceptionMessage, $expectedExceptionMatchRE)
+            );
         }
     }
 
@@ -109,9 +118,16 @@ class TestHtmlValue extends TestCaseDcpCommonFamily
             }
             $value = $ht->getHtmlValue($oa, $oriValue, $target, $htmllink, $index, $useEntitities, $abstractMode);
 
-            $this->assertTrue($expectedValue === $value,
-                sprintf("wrong value \"%s\" : \n\texpected \"%s\", \n\thas \"%s\" \n\tRaw is :\"%s\"", $attrid, print_r($expectedValue, true), print_r($value, true),
-                    print_r($oriValue, true)));
+            $this->assertTrue(
+                $expectedValue === $value,
+                sprintf(
+                    "wrong value \"%s\" : \n\texpected \"%s\", \n\thas \"%s\" \n\tRaw is :\"%s\"",
+                    $attrid,
+                    print_r($expectedValue, true),
+                    print_r($value, true),
+                    print_r($oriValue, true)
+                )
+            );
         }
     }
 

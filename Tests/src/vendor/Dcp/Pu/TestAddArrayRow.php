@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -30,7 +31,7 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
     public function testExecuteAddArrayRow($data)
     {
         $doc = createDoc(self::$dbaccess, $data['fam'], false);
-        $this->assertTrue(is_object($doc) , sprintf("Could not create new document from family '%s'.", $data['fam']));
+        $this->assertTrue(is_object($doc), sprintf("Could not create new document from family '%s'.", $data['fam']));
         
         $err = $doc->add();
         $this->assertEmpty($err, sprintf("Error adding new document in database: %s", $err));
@@ -40,29 +41,29 @@ class TestAddArrayRow extends TestCaseDcpCommonFamily
         
         foreach ($data['rows'] as & $row) {
             $err = $doc->addArrayRow($data['array_attr_name'], $row['data'], $row['index']);
-            $this->assertEmpty($err, sprintf("Error adding row {%s} to '%s': %s", join(', ', $row['data']) , $data['name'], $err));
+            $this->assertEmpty($err, sprintf("Error adding row {%s} to '%s': %s", join(', ', $row['data']), $data['name'], $err));
         }
         unset($row);
-        $this->assertTrue($doc->isChanged() , sprintf("no changed value detected"));
+        $this->assertTrue($doc->isChanged(), sprintf("no changed value detected"));
         $err = $doc->store();
         $this->assertEmpty($err, sprintf("modify() on '%s' returned with error: %s", $data['name'], $err));
         
         self::resetDocumentCache();
         
         $doc = new_Doc(self::$dbaccess, $data['name'], true);
-        $this->assertTrue(is_object($doc) , sprintf("Error retrieving document '%s': %s", $data['name'], $err));
+        $this->assertTrue(is_object($doc), sprintf("Error retrieving document '%s': %s", $data['name'], $err));
         
         foreach ($data['expected_tvalues'] as $colName => & $colData) {
             $tvalue = $doc->getMultipleRawValues($colName);
-            $this->assertTrue(is_array($tvalue) , sprintf("getMultipleRawValues(%s) on document '%s' did not returned an array.", $colName, $data['name']));
+            $this->assertTrue(is_array($tvalue), sprintf("getMultipleRawValues(%s) on document '%s' did not returned an array.", $colName, $data['name']));
             
             $tvalueCount = count($tvalue);
             $expectedCount = count($colData);
-            $this->assertTrue(($tvalueCount == $expectedCount) , sprintf("Column size mismatch on column '%s' from document '%s' (actual size is '%s', while expecting '%s').", $colName, $data['name'], $tvalueCount, $expectedCount));
+            $this->assertTrue(($tvalueCount == $expectedCount), sprintf("Column size mismatch on column '%s' from document '%s' (actual size is '%s', while expecting '%s').", $colName, $data['name'], $tvalueCount, $expectedCount));
             
             foreach ($colData as $i => $expectedCellContent) {
                 $tvalueCellContent = $tvalue[$i];
-                $this->assertTrue(($tvalueCellContent == $expectedCellContent) , sprintf("Cell content '%s' did not matched expected content '%s' (document '%s' / column '%s' / line '%s' / column cells {%s})", $tvalueCellContent, $expectedCellContent, $data['name'], $colName, $i, join(', ', $tvalue)));
+                $this->assertTrue(($tvalueCellContent == $expectedCellContent), sprintf("Cell content '%s' did not matched expected content '%s' (document '%s' / column '%s' / line '%s' / column cells {%s})", $tvalueCellContent, $expectedCellContent, $data['name'], $colName, $i, join(', ', $tvalue)));
             }
         }
         unset($colData);

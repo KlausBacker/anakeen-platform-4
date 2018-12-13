@@ -2,8 +2,6 @@
 
 namespace Anakeen\Core\Internal\Format;
 
-use \Anakeen\Core\SEManager;
-
 class FormatAttributeValue extends StandardAttributeValue
 {
     public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v)

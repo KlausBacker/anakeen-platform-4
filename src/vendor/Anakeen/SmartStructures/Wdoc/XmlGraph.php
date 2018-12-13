@@ -4,7 +4,7 @@
 namespace Anakeen\SmartStructures\Wdoc;
 
 use Anakeen\Core\Utils\Xml;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 class XmlGraph
 {

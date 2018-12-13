@@ -25,12 +25,12 @@ class TestGetTextualValue extends TestCaseDcpCommonFamily
         if (isset($data['set'])) {
             foreach ($data['set'] as $attrName => $value) {
                 $err = $doc->setValue($attrName, $value);
-                $this->assertTrue(($err == '') , sprintf("Unexpected error setting value '%s' for attribute '%s' on document '%s': %s", var_export($value, true) , $attrName, $doc->name, $err));
+                $this->assertTrue(($err == ''), sprintf("Unexpected error setting value '%s' for attribute '%s' on document '%s': %s", var_export($value, true), $attrName, $doc->name, $err));
             }
         }
         foreach ($data['get'] as $attrName => $expectedValue) {
             $value = $doc->getTextualAttrValue($attrName, -1, $configuration);
-            $this->assertTrue(($value == $expectedValue) , sprintf("Unexpected value '%s' for attribute '%s' on document '%s': expected value = '%s'", $value, $attrName, $data['docid'], $expectedValue));
+            $this->assertTrue(($value == $expectedValue), sprintf("Unexpected value '%s' for attribute '%s' on document '%s': expected value = '%s'", $value, $attrName, $data['docid'], $expectedValue));
         }
     }
     public function data_getTextualValue()

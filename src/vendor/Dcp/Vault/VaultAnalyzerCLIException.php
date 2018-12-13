@@ -6,6 +6,6 @@
 
 namespace Dcp\Vault;
 
-class VaultAnalyzerCLIException extends \Dcp\Exception
+class VaultAnalyzerCLIException extends \Anakeen\Exception
 {
 }

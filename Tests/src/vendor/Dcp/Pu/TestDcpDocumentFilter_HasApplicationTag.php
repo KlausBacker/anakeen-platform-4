@@ -7,7 +7,6 @@
 
 namespace Dcp\Pu;
 
-
 use Anakeen\Core\SEManager;
 
 class TestDcpDocumentFilter_HasApplicationTag extends TestDcpDocumentFilter_common
@@ -42,7 +41,7 @@ class TestDcpDocumentFilter_HasApplicationTag extends TestDcpDocumentFilter_comm
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\HasApplicationTag($test["value"]) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\HasApplicationTag($test["value"]), $test["expected"]);
     }
     
     public function data_HasApplicationTag()

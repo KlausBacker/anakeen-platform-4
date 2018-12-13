@@ -37,7 +37,7 @@ function PU_data_dcp_getResPhpFunc_getTitle_fam_title($dbaccess, $famId, $title)
     $s->search();
     $ret = array();
     while ($doc = $s->getNextDoc()) {
-        if (strlen($title) > 0 && strpos($doc->getTitle() , $title) === false) {
+        if (strlen($title) > 0 && strpos($doc->getTitle(), $title) === false) {
             continue;
         }
         $ret[] = array(
@@ -71,8 +71,11 @@ function PU_data_dcp_getResPhpFunc_mirror_args()
 function PU_data_dcp_getResPhpFunc_latin1($a)
 {
     $data = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $a);
-    if (\Anakeen\Core\Utils\Strings::seemsUTF8($data)) $data2 = 'utf8';
-    else $data2 = 'other';
+    if (\Anakeen\Core\Utils\Strings::seemsUTF8($data)) {
+        $data2 = 'utf8';
+    } else {
+        $data2 = 'other';
+    }
     return array(
         array(
             $data,
@@ -89,4 +92,3 @@ function PU_data_dcp_getResPhpFunc_wrongArray($a)
         $data
     );
 }
-?>

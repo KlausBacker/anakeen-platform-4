@@ -383,7 +383,7 @@ class ExportAccounts
     /**
      * Add document node for each recorded account
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     protected function addDocumentNodes()
     {

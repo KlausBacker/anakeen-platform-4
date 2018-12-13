@@ -2,7 +2,7 @@
 
 namespace Dcp\Db {
 
-    class Exception extends \Dcp\Exception
+    class Exception extends \Anakeen\Exception
     {
 
     }

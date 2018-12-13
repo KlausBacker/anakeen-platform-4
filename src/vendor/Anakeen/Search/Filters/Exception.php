@@ -7,6 +7,7 @@
 
 namespace Anakeen\Search\Filters;
 
-class Exception extends \Dcp\Exception
+class Exception extends \Anakeen\Exception
+
 {
 };

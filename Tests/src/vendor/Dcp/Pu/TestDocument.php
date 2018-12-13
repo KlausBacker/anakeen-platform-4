@@ -32,7 +32,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     /**
      * @dataProvider provider
      * @param string $a
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public function testAlive($a)
     {
@@ -119,7 +119,6 @@ class TestDocument extends TestCaseDcpCommonFamily
                 $slock = intval($slock);
                 if (ContextManager::getCurrentUser()->id == 1) {
                     //$this->markTestIncomplete(sprintf(_('Admin cannot auto lock.')));
-
                 } else {
                     $this->assertEquals(-(ContextManager::getCurrentUser()->id), ($slock), sprintf("document %d not locked", $a));
                 }

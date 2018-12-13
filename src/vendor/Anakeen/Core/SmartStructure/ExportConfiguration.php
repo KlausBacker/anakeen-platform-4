@@ -7,7 +7,7 @@ use Anakeen\Core\Internal\QueryDb;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 /**
  * Class ExportConfiguration

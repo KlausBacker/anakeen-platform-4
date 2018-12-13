@@ -203,7 +203,7 @@ function logDebugStack($slice = 1, $msg = "")
  * @param string $varName
  * @deprecated
  * @return string|null
- * @throws Dcp\Exception
+ * @throws \Anakeen\Exception
  */
 function getDbAccessValue($varName)
 {
@@ -217,7 +217,7 @@ function getDbAccessValue($varName)
     }
     if (!$included) {
         fprintf(STDERR, "Error: %s", $filename);
-        throw new Dcp\Exception("FILE0005", $filename);
+        throw new \Anakeen\Exception("FILE0005", $filename);
     }
 
     if (!isset($$varName)) {

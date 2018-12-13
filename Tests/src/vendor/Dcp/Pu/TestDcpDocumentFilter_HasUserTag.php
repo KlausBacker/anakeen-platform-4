@@ -2,7 +2,6 @@
 
 namespace Dcp\Pu;
 
-
 use Anakeen\Core\Account;
 use Anakeen\Core\SEManager;
 
@@ -62,7 +61,7 @@ class TestDcpDocumentFilter_HasUserTag extends TestDcpDocumentFilter_common
             $test["value"] = $test["value"]->value;
         }
         $uid = $this->_uid($test["user"]);
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\HasUserTag($uid, $test["value"]) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\HasUserTag($uid, $test["value"]), $test["expected"]);
     }
     
     public function data_HasApplicationTag()

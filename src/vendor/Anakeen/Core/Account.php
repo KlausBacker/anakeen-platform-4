@@ -1025,7 +1025,7 @@ union
      * @param int $uid if not set it is the current account object else use another account identifier
      *
      * @return array
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     public function getStrictMemberOf($uid = -1)
     {
@@ -1052,7 +1052,7 @@ union
      * @param bool $updateSubstitute also update substitute by default
      *
      * @return array of memberof identificators
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     public function updateMemberOf($updateSubstitute = true)
     {
@@ -1076,7 +1076,7 @@ union
             'memberof'
         ), true);
         if ($err) {
-            throw new \Dcp\Exception($err);
+            throw new \Anakeen\Exception($err);
         }
         if ($updateSubstitute && $this->substitute) {
             $u = new Account($this->dbaccess, $this->substitute);
@@ -1122,7 +1122,7 @@ union
      * @param bool $strict if true no use delegation
      * @return array|null
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     public static function getUserMemberOf($uid, $strict = false)
     {
@@ -1246,7 +1246,7 @@ union
      * @param bool     $forceCreate set to true to always return a new token
      *
      * @return string
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     public function getUserToken(
         $expireDelay = -1,
@@ -1265,7 +1265,7 @@ union
         }
 
         if (!$this->isAffected()) {
-            throw new \Dcp\Exception(sprintf("User token : account must be affected"));
+            throw new \Anakeen\Exception(sprintf("User token : account must be affected"));
         }
 
         $expireDate = \UserToken::getExpirationDate($expireDelay);
@@ -1292,13 +1292,13 @@ union
             $uk->type = "CORE";
             $uk->expire = $uk->setExpiration($expireDelay);
             if ($uk->expire === false) {
-                throw new \Dcp\Exception(sprintf("User token : Invalid date. Expire must be a delay in seconds"));
+                throw new \Anakeen\Exception(sprintf("User token : Invalid date. Expire must be a delay in seconds"));
             }
             $uk->expendable = $oneshot;
             $uk->context = $scontext;
             $err = $uk->add();
             if ($err) {
-                throw new \Dcp\Exception($err);
+                throw new \Anakeen\Exception($err);
             }
             $token = $uk->token;
         } else {

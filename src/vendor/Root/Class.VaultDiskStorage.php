@@ -131,7 +131,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
      * - if architecture int size is not supported.
      *
      * @return int The new id (bigint)
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function getNewVaultId()
     {
@@ -139,14 +139,14 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
         while (empty($newId)) {
             $bytes = openssl_random_pseudo_bytes(PHP_INT_SIZE);
             if ($bytes === false) {
-                throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+                throw new \Anakeen\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
             }
             /*
              * We are going to perform a bitmask operation, so we should ensure
              * that the correct number of requested bytes have been returned.
             */
             if (strlen($bytes) !== PHP_INT_SIZE) {
-                throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+                throw new \Anakeen\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
             }
             /*
              * Set leftmost bit to 0 to prevent having negative values
@@ -166,14 +166,14 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
                 $lower_int = unpack("Nint4", substr($bytes, 4, 4));
                 $int = ($upper_int['int4'] << 32) + $lower_int['int4'];
             } else {
-                throw new \Dcp\Exception(sprintf("Unsupported PHP_INT_SIZE '%d'.", PHP_INT_SIZE));
+                throw new \Anakeen\Exception(sprintf("Unsupported PHP_INT_SIZE '%d'.", PHP_INT_SIZE));
             }
             /*
              * If the integer is negative, then something is wrong
              * with this code...
             */
             if ($int < 0) {
-                throw new \Dcp\Exception(sprintf("Unexpected negative integer value with PHP_INT_SIZE '%d' and binary data '0x%s'.", PHP_INT_SIZE, bin2hex($bytes)));
+                throw new \Anakeen\Exception(sprintf("Unexpected negative integer value with PHP_INT_SIZE '%d' and binary data '0x%s'.", PHP_INT_SIZE, bin2hex($bytes)));
             }
             /*
              * Check if this id is already in use

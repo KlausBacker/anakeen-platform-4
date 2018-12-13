@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -31,11 +32,10 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
     {
         $err = '';
         $d = createDoc(self::$dbaccess, "TST_GOODFAMIMPDOC");
-        $this->assertTrue(is_object($d) , "cannot create TST_GOODFAMIMPDOC document");
+        $this->assertTrue(is_object($d), "cannot create TST_GOODFAMIMPDOC document");
         try {
             $this->importDocument($documentFile);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, "import error detected $err");
@@ -46,7 +46,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             $this->assertArrayHasKey('id', $t, sprintf("cannot find %s document", $name));
             foreach ($docNames["expectValue"] as $aid => $expVal) {
                 if ($expVal[0] === "*") {
-                    $this->assertContains(substr($expVal, 1) , $t[$aid]);
+                    $this->assertContains(substr($expVal, 1), $t[$aid]);
                 } else {
                     $this->assertEquals($expVal, $t[$aid]);
                 }
@@ -64,14 +64,15 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
         $err = '';
         try {
             $this->importDocument($familyFile);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err, "no import error detected");
-        if (!is_array($expectedErrors)) $expectedErrors = array(
+        if (!is_array($expectedErrors)) {
+            $expectedErrors = array(
             $expectedErrors
-        );
+            );
+        }
         
         foreach ($expectedErrors as $expectedError) {
             $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
@@ -88,8 +89,7 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
         $cr = array();
         try {
             $cr = $this->importDocument($data['file']);
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, sprintf("Import of '%s' returned with unexpected errors: %s", $data['file'], $err));

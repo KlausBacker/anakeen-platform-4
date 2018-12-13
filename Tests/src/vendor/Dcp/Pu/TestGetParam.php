@@ -20,7 +20,7 @@ class TestGetParam extends TestCaseDcp
         $sameType = (gettype($value) == gettype($data['expected']));
         $sameValue = ($value == $data['expected']);
         
-        $this->assertTrue($sameType, sprintf("Result type mismatch: found type '%s' while expecting type '%s'.", gettype($value) , gettype($data['expected'])));
+        $this->assertTrue($sameType, sprintf("Result type mismatch: found type '%s' while expecting type '%s'.", gettype($value), gettype($data['expected'])));
         $this->assertTrue($sameValue, sprintf("Unexpected result: found '%s' while expecting '%s'.", $value, $data['expected']));
     }
     /**
@@ -33,7 +33,7 @@ class TestGetParam extends TestCaseDcp
         $sameType = (gettype($value) == gettype($data['expected']));
         $sameValue = ($value == $data['expected']);
         
-        $this->assertTrue($sameType, sprintf("Result type mismatch: found type '%s' while expecting type '%s'.", gettype($value) , gettype($data['expected'])));
+        $this->assertTrue($sameType, sprintf("Result type mismatch: found type '%s' while expecting type '%s'.", gettype($value), gettype($data['expected'])));
         $this->assertTrue($sameValue, sprintf("Unexpected result: found '%s' while expecting '%s'.", $value, $data['expected']));
     }
     /**
@@ -43,7 +43,7 @@ class TestGetParam extends TestCaseDcp
     {
         $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], null);
         
-        $this->assertTrue(($value !== null) , "Returned value is not set.");
+        $this->assertTrue(($value !== null), "Returned value is not set.");
     }
     /**
      * @dataProvider dataGetCoreParamIsSet
@@ -52,7 +52,7 @@ class TestGetParam extends TestCaseDcp
     {
         $value = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $data['name'], null);
         
-        $this->assertTrue(($value !== null) , "Returned value is not set.");
+        $this->assertTrue(($value !== null), "Returned value is not set.");
     }
 
     
@@ -162,4 +162,3 @@ class TestGetParam extends TestCaseDcp
         );
     }
 }
-?>

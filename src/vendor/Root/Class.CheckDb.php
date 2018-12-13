@@ -462,7 +462,7 @@ class CheckDb
      * detected sql type inconsistence with declaration
      * @param                                              $famid
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $aoa if wan't test only one attribute
-     * @throws Dcp\Exception
+     * @throws \Anakeen\Exception 
      * @return array empty array if no error, else an item string by error detected
      */
     public static function verifyDbFamily($famid, \Anakeen\Core\SmartStructure\NormalAttribute $aoa = null)
@@ -514,7 +514,7 @@ class CheckDb
                 }
             }
         } else {
-            throw new Dcp\Exception("no family $famid");
+            throw new \Anakeen\Exception("no family $famid");
         }
         return $cr;
     }

@@ -2,8 +2,6 @@
 
 namespace Dcp\Pu;
 
-
-
 class TestSearchJoin extends TestCaseDcpCommonFamily
 {
     /**

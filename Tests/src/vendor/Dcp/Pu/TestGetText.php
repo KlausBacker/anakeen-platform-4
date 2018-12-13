@@ -22,7 +22,7 @@ class TestGetText extends TestCaseDcp
     public function test3Underscore($text, $textp, $lang, $num, $expectedText)
     {
         \Anakeen\Core\ContextManager::setLanguage($lang);
-        $this->assertEquals($expectedText, sprintf(n___($text, $textp, $num,""), $num));
+        $this->assertEquals($expectedText, sprintf(n___($text, $textp, $num, ""), $num));
     }
 
     /**
@@ -408,5 +408,3 @@ class TestGetText extends TestCaseDcp
         );
     }
 }
-
-?>

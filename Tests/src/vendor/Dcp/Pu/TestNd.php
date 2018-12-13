@@ -11,7 +11,6 @@ use Anakeen\Core\SEManager;
 use Anakeen\SmartHooks;
 
 class TestNd extends \Anakeen\SmartElement
-
 {
     public function registerHooks()
     {

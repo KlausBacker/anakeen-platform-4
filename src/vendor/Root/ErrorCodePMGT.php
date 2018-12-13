@@ -69,7 +69,8 @@ namespace Dcp\PMGT {
      * @errorCode
      * Account search exception
      */
-    class Exception extends \Dcp\Exception
+    class Exception extends \Anakeen\Exception
+
     {
         /**
          * for beautifier

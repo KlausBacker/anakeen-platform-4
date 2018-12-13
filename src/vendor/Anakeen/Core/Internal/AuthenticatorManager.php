@@ -116,7 +116,7 @@ class AuthenticatorManager
                     $login,
                     $_SERVER["HTTP_USER_AGENT"]
                 );
-                throw new \Dcp\Exception("Authent Session Error");
+                throw new \Anakeen\Exception("Authent Session Error");
             }
         }
 
@@ -161,12 +161,12 @@ class AuthenticatorManager
             $authtype = static::getAuthType();
         }
         if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype)) {
-            throw new \Dcp\Exception(sprintf("Invalid authtype '%s'", $authtype));
+            throw new \Anakeen\Exception(sprintf("Invalid authtype '%s'", $authtype));
         }
 
         $authClass = ucfirst(strtolower($authtype)) . "Authenticator";
         if (!\Anakeen\Core\Internal\Autoloader::classExists($authClass)) {
-            throw new \Dcp\Exception(sprintf("Cannot find authenticator '%s'", $authClass));
+            throw new \Anakeen\Exception(sprintf("Cannot find authenticator '%s'", $authClass));
         }
         return new $authClass($authtype, $provider);
     }
@@ -197,7 +197,7 @@ class AuthenticatorManager
     {
         if (array_key_exists('authtype', $_GET)) {
             if ($_GET['authtype'] === "apache") {
-                throw new \Dcp\Exception(sprintf("apache authtype not allowed.\n"));
+                throw new \Anakeen\Exception(sprintf("apache authtype not allowed.\n"));
             }
             return $_GET['authtype'];
         }
@@ -230,7 +230,7 @@ class AuthenticatorManager
     {
         $authModeConfig = GlobalParametersManager::getDbAccessValue('authentModeConfig');
         if (!is_array($authModeConfig)) {
-            throw new \Dcp\Exception('FILE0006');
+            throw new \Anakeen\Exception('FILE0006');
         }
 
         if (!array_key_exists(self::getAuthType(), $authModeConfig)) {
@@ -286,7 +286,7 @@ class AuthenticatorManager
             return;
         }
 
-        throw new \Dcp\Exception(sprintf("logout method not supported by authtype '%s'", static::getAuthType()));
+        throw new \Anakeen\Exception(sprintf("logout method not supported by authtype '%s'", static::getAuthType()));
     }
 
     /**
@@ -361,7 +361,7 @@ class AuthenticatorManager
      * Main authorization check entry point
      *
      * @return int
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected static function checkAuthorization()
     {
@@ -387,7 +387,7 @@ class AuthenticatorManager
 
         $protoVersion = self::_getProviderProtocolVersion(self::$auth->provider);
         if (!is_integer($protoVersion)) {
-            throw new \Dcp\Exception(sprintf(
+            throw new \Anakeen\Exception(sprintf(
                 "Invalid provider protocol version '%s' for provider '%s'.",
                 $protoVersion,
                 get_class(self::$auth->provider)
@@ -402,7 +402,7 @@ class AuthenticatorManager
                 ));
                 break;
         }
-        throw new \Dcp\Exception(sprintf(
+        throw new \Anakeen\Exception(sprintf(
             "Unsupported provider protocol version '%s' for provider '%s'.",
             $protoVersion,
             get_class(self::$auth->provider)
@@ -446,7 +446,7 @@ class AuthenticatorManager
      *
      * @param array $opt
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      * @return int
      */
     private static function checkInternalAuthorization($opt)

@@ -102,7 +102,7 @@ class RouterManager
      * add other path to defined routes aned parameters
      * @param string $path
      * @throws Exception
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public static function addRouterConfigPath(string $path)
     {

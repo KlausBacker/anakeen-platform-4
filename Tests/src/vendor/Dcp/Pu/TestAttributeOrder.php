@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -27,7 +28,7 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataOrderAttribute
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
     public function testOrderAttribute($family, $expectedOrders)
     {
@@ -35,7 +36,7 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
          * @var \Anakeen\Core\SmartStructure $fam
          */
         $fam = new_doc(self::$dbaccess, $family);
-        $this->assertTrue($fam->isAlive() , sprintf("family %s not alive", $family));
+        $this->assertTrue($fam->isAlive(), sprintf("family %s not alive", $family));
 
         $attributes = $fam->getAttributes();
         $orders = [];
@@ -52,31 +53,38 @@ class TestAttributeOrder extends TestCaseDcpCommonFamily
         $prevAttr = null;
         $k = 0;
         foreach ($orders as $attrid) {
-            $this->assertEquals(strtolower($expectedOrders[$k]) , $attrid, sprintf("Not good found %s > %s : %s", $attrid, $expectedOrders[$k], print_r($orders, true)));
+            $this->assertEquals(strtolower($expectedOrders[$k]), $attrid, sprintf("Not good found %s > %s : %s", $attrid, $expectedOrders[$k], print_r($orders, true)));
             $k++;
         }
     }
     /**
      * @dataProvider dataOptAttribute
-     * @return \Anakeen\Core\Internal\SmartElement 
+     * @return \Anakeen\Core\Internal\SmartElement
      */
-    public function testOptAttribute($family, $expectedOpts) {
+    public function testOptAttribute($family, $expectedOpts)
+    {
         /**
          * @var \Anakeen\Core\SmartStructure $fam
          */
         $fam = new_doc(self::$dbaccess, $family);
-        $this->assertTrue($fam->isAlive() , sprintf("family %s not alive", $family));
+        $this->assertTrue($fam->isAlive(), sprintf("family %s not alive", $family));
 
-        foreach ($expectedOpts as $attrid=>$opts) {
+        foreach ($expectedOpts as $attrid => $opts) {
             $attr=$fam->getAttribute($attrid);
             $this->assertNotEmpty($attr, "Attribute $attrid not exists");
-            foreach ($opts as $kopt=>$opt) {
-                $this->assertEquals($opt, $attr->getOption($kopt),
-                    sprintf("Verify \"%s\" on \"%s\". Has : %s", $kopt, $attrid,
-                        print_r($attr->getOptions(), true)));
+            foreach ($opts as $kopt => $opt) {
+                $this->assertEquals(
+                    $opt,
+                    $attr->getOption($kopt),
+                    sprintf(
+                        "Verify \"%s\" on \"%s\". Has : %s",
+                        $kopt,
+                        $attrid,
+                        print_r($attr->getOptions(), true)
+                    )
+                );
             }
         }
-
     }
 
     public function dataOrderAttribute()
