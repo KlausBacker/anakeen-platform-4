@@ -4,7 +4,7 @@ const path = require("path");
 const xml2js = require("xml2js");
 
 const fsUtils = require("./plugins/files");
-const createTemplates = require("./createTemplates");
+const createTemplates = require("./create");
 
 const {
   checkModuleName,

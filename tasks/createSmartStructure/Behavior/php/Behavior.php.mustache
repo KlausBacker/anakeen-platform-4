@@ -1,0 +1,12 @@
+<?php
+namespace {{namespace}};
+
+use SmartStructure\Fields\{{ssName}} as {{ssName}}Fields;
+
+class {{ssName}}Behavior extends {{#parentName}}\SmartStructures\{{Parentname}}{{/parentName}}{{^parentName}}\Anakeen\SmartElement{{/parentName}}
+{
+    public function registerHooks()
+    {
+        parent::registerHooks();
+    }
+}

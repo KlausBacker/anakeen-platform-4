@@ -92,7 +92,7 @@ exports.writeFiles = (...files) => {
 /**
  * Write template
  */
-exports.writeTemplate = (destinationPath, templateFile, templateData = {}) => {
+const writeTemplate = (destinationPath, templateFile, templateData = {}) => {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(path.dirname(destinationPath))) {
       reject(`The destination path "${destinationPath}" does not exist`);
@@ -118,4 +118,30 @@ exports.writeTemplate = (destinationPath, templateFile, templateData = {}) => {
       });
     }
   });
+};
+exports.writeTemplate = writeTemplate;
+/**
+ *
+ * @param {...{ destinationPath: string, templateFile: string, templateData: object }} configs
+ */
+exports.writeTemplates = (...configs) => {
+  const promises = [];
+  configs.forEach(config => {
+    if (!(config.destinationPath && config.templateFile)) {
+      promises.push(
+        Promise.reject(
+          "The given configuration for writing the template is invalid"
+        )
+      );
+    } else {
+      promises.push(
+        writeTemplate(
+          config.destinationPath,
+          config.templateFile,
+          config.templateData || {}
+        )
+      );
+    }
+  });
+  return Promise.all(promises);
 };
