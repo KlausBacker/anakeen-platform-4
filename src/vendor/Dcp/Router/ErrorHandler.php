@@ -7,7 +7,6 @@ use Dcp\Core\Utils\ErrorMessage;
 
 class ErrorHandler
 {
-
     /**
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
@@ -17,33 +16,35 @@ class ErrorHandler
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $exception)
     {
-
-        if (is_a($exception, "\\Anakeen\\Router\\Exception")) {
+        if (is_a($exception, \Anakeen\Router\Exception::class)) {
             /**
              * @var \Anakeen\Router\Exception $exception
              */
             return self::getFailApiResponse($request, $response, $exception);
         } else {
-            $exceptionMsg = \Anakeen\Core\LogException::logMessage($exception, $errId);
-            $response = $response->withStatus(500);
-            return self::getResponsePage($request, $response, $exceptionMsg, $errId);
+            if (is_a($exception, \Anakeen\Exception::class)) {
+                /** @var \Anakeen\Exception $exception */
+                $response = $response->withStatus($exception->getHttpStatus(), $exception->getHttpMessage());
+            } else {
+                $response = $response->withStatus(500);
+            }
+            return self::getResponsePage($request, $response, $exception);
         }
     }
 
     /**
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param                     $exceptionMsg
-     * @param string              $errId
+     * @param \Exception          $exception
      *
      * @return \Slim\Http\response
      */
     protected static function getResponsePage(
         \Slim\Http\request $request,
         \Slim\Http\response $response,
-        $exceptionMsg,
-        $errId = ""
+        $exception
     ) {
+        $exceptionMsg = \Anakeen\Core\LogException::logMessage($exception, $errId);
         $accept = $request->getHeaderLine("HTTP_ACCEPT");
 
         $useHtml = (preg_match("@\\btext/html\\b@", $accept));
@@ -57,7 +58,7 @@ class ErrorHandler
             if ($useJSON) {
                 return $response
                     ->withHeader('Content-Type', 'application/json')
-                    ->write(ErrorMessage::getJson($exceptionMsg, $errId));
+                    ->write(ErrorMessage::getJson($exceptionMsg, $errId, $exception));
             } else {
                 return $response
                     ->withHeader('Content-Type', 'text/plain')
@@ -82,11 +83,11 @@ class ErrorHandler
         $accept = $request->getHeaderLine("HTTP_ACCEPT");
 
         $useHtml = (preg_match("@\\btext/html\\b@", $accept));
-        $errId="";
-        $response = $response->withStatus($exception->getHttpStatus());
-        $userMsg=$exception->getUserMessage();
+        $errId = "";
+        $response = $response->withStatus($exception->getHttpStatus(), $exception->getHttpMessage());
+        $userMsg = $exception->getUserMessage();
         if (!$userMsg) {
-            $userMsg=LogException::logMessage($exception, $errId);
+            $userMsg = LogException::logMessage($exception, $errId);
         }
 
         if ($useHtml) {
