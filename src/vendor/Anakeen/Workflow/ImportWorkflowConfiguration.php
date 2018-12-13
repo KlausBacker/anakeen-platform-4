@@ -8,7 +8,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Xml;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Anakeen\Ui\ImportRenderConfiguration;
-use Dcp\Exception;
+use Anakeen\Exception;
 use SmartStructure\Fields\Mailtemplate as MailFields;
 use SmartStructure\Fields\Timer as TimerFields;
 use SmartStructure\Fields\Wdoc as WdocFields;

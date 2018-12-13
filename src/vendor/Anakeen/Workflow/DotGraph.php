@@ -50,7 +50,7 @@ class DotGraph
     public function generate()
     {
         if (!$this->wdoc) {
-            throw new \Dcp\Exception('need workflow');
+            throw new \Anakeen\Exception('need workflow');
         }
         $ft = $this->wdoc->firstState;
 
