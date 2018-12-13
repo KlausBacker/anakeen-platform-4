@@ -36,7 +36,8 @@ class WelcomePage
         $data["version"]= \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "VERSION");
         $data["userRealName"]= ContextManager::getCurrentUser()->getAccountName();
         $data["userDomain"]= \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT");
-        $data["isAdmin"]= is_dir(sprintf("%s/AdminCenter", PUBLIC_DIR)); //Test to detect admin center
+        $data["hasAdmin"]= class_exists("Anakeen\\Routes\\Admin\\MainPage"); //Test to detect admin center
+        $data["hasDevel"]= class_exists("Anakeen\\Routes\\Devel\\UI\\Main"); //Test to detect admin center
 
         $out=$mustache->render(file_get_contents($templateFile), $data);
         return $response->write($out);

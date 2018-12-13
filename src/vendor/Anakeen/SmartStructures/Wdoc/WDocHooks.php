@@ -13,7 +13,7 @@ use Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\LogManager;
 use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Timer\TimerHooks;
-use Dcp\Exception;
+use Anakeen\Exception;
 use Dcp\FamilyAbsoluteOrder;
 
 class WDocHooks extends \Anakeen\Core\Internal\SmartElement

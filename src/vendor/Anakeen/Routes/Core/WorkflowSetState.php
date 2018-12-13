@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Router\Exception;
+use Anakeen\Exception;
 
 /**
  * Class WorkflowState

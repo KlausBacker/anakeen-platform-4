@@ -25,9 +25,16 @@ class ErrorMessage
         }
     }
 
-    public static function getJson($htmlMessage, $errId)
+    public static function getJson($htmlMessage, $errId, $exception = null)
     {
-        $error = ["success" => false, "exceptionMessage" => self::getText($htmlMessage, $errId)];
+        if ($exception !== null && is_a($exception, \Anakeen\Exception::class)) {
+            $error = json_decode(json_encode($exception), true);
+            $error["exceptionMessage"] = self::getText($htmlMessage, $errId);
+            $error["message"] = $error["userMessage"] ?: $error["exceptionMessage"];
+        } else {
+            $error = ["success" => false];
+            $error["exceptionMessage"] = self::getText($htmlMessage, $errId);
+        }
         return json_encode($error);
     }
 

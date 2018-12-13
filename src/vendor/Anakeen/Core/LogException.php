@@ -130,7 +130,7 @@ class LogException
             $logMessage = sprintf("%s in %s on line %s", $e["message"], $e["file"], $e["line"]);
             $logMessage .= "\n" . self::getUserInfo();
         } else {
-            if (is_a($e, "\\Anakeen\\Router\\Exception")) {
+            if (is_a($e, \Anakeen\Exception::class)) {
                 /**
                  * @var \Anakeen\Router\Exception $e
                  */

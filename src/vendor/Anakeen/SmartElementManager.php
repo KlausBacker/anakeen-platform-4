@@ -2,7 +2,6 @@
 
 namespace Anakeen;
 
-use Anakeen\Router\Exception;
 use Anakeen\Core\Internal\DocumentAccess;
 
 class SmartElementManager extends \Anakeen\Core\SEManager

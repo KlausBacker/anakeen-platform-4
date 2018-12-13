@@ -2249,7 +2249,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string                                       $idAttr attribute identifier
      * @param \Anakeen\Core\SmartStructure\BasicAttribute &$oa     object reference use this if want to modify attribute
      *
-     * @return \Anakeen\Core\SmartStructure\BasicAttribute|bool|\Anakeen\Core\SmartStructure\NormalAttribute
+     * @return \Anakeen\Core\SmartStructure\BasicAttribute|false|\Anakeen\Core\SmartStructure\NormalAttribute
      */
     final public function &getAttribute($idAttr, &$oa = null)
     {
