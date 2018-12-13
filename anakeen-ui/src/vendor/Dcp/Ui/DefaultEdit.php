@@ -29,7 +29,7 @@ class DefaultEdit extends RenderDefault
         $this->setEmblemMenu($document, $menu);
 
         if ($document->wid > 0) {
-            $workflowMenu = new SeparatorMenu("workflow", $document->getStateActivity($document->getState()));
+            $workflowMenu = new SeparatorMenu("workflow", $document->getStepLabel());
             $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--left");
             $workflowMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square" />', $document->getStateColor("transparent")));
 
