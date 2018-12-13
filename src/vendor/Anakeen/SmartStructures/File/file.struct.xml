@@ -3,7 +3,6 @@
   <smart:structure-configuration name="FILE" id="7" label="Fichier">
     <smart:icon file="se-file.png"/>
     <smart:class>Anakeen\SmartStructures\File\FileHooks</smart:class>
-    <smart:revisable>auto</smart:revisable>
     <smart:usefor>N</smart:usefor>
     <smart:tag name="vendor">Anakeen</smart:tag>
     <smart:fields>
