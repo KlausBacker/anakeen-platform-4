@@ -107,5 +107,14 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="deleteSmartStructure">
+            <sde:callable>\Anakeen\Routes\Devel\Smart\DeleteSmartStructure</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{name}</sde:pattern>
+            <sde:description>Delete smart structure</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>
