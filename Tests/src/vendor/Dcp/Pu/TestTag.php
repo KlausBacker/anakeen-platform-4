@@ -192,12 +192,12 @@ class TestTag extends TestCaseDcpDocument
 
         $df = SEManager::getDocument($docName);
         $this->assertTrue($df && $df->isAlive(), "document $docName is not alive");
-        foreach ($tags as $tag=>$value) {
+        foreach ($tags as $tag => $value) {
             $err = $df->addATag($tag, $value);
             $this->assertEmpty($err, sprintf("atag error: $err"));
         }
 
-        foreach ($tags as $tag=>$value) {
+        foreach ($tags as $tag => $value) {
             $atag = $df->getATag($tag, $tagValue);
 
             $this->assertTrue($atag, sprintf("atag %s not retrieved : \n found [%s]", $tag, $df->atags));
@@ -269,7 +269,7 @@ class TestTag extends TestCaseDcpDocument
         }
         $tags = [];
         if ($df->atags) {
-            $tags = json_decode($df->atags,true);
+            $tags = json_decode($df->atags, true);
         }
         $this->assertEquals(count($tags), count($expectedTags), sprintf("wrong count for [%s]", $df->atags));
     }
@@ -523,5 +523,3 @@ class TestTag extends TestCaseDcpDocument
         );
     }
 }
-
-?>

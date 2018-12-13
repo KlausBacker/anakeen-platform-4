@@ -253,7 +253,7 @@ class OOoLayout extends Layout
     /**
      * Top level parse condition
      * @param string|null $out
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     protected function parseIf(&$out = null)
     {
@@ -272,7 +272,7 @@ class OOoLayout extends Layout
         // restore user fields
         if (!$this->dom->loadXML($this->template)) {
             print $this->template;
-            throw new Dcp\Exception("Error in parse condition");
+            throw new \Anakeen\Exception("Error in parse condition");
         }
         //header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "user-field-get");
@@ -869,7 +869,7 @@ class OOoLayout extends Layout
      * @param DomNode $objNode
      * @param string  $strOldContent
      * @param string  $strNewContent
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     protected function replaceNodeText(DOMNode & $objNode, $strOldContent, $strNewContent)
     {
@@ -877,7 +877,7 @@ class OOoLayout extends Layout
             return;
         }
         if (is_array($strNewContent)) {
-            throw new Dcp\Exception("node replacement must be a string : array found");
+            throw new \Anakeen\Exception("node replacement must be a string : array found");
         }
         $objNodeListNested = &$objNode->childNodes;
         foreach ($objNodeListNested as $objNodeNested) {
@@ -1530,7 +1530,7 @@ class OOoLayout extends Layout
     protected function setArray($key, array $t)
     {
         if (!$key) {
-            throw new Dcp\Exception('Key must not be empty');
+            throw new \Anakeen\Exception('Key must not be empty');
         }
         $this->arrayKeys[$key] = $t;
     }

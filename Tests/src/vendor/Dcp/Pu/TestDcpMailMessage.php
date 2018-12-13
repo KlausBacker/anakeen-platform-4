@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -24,8 +25,7 @@ class TestDcpMailMessage extends TestCaseDcp
         $err = '';
         try {
             $addrList = $p->parse($str);
-        }
-        catch(\Dcp\Mail\MailAddrParserException $e) {
+        } catch (\Dcp\Mail\MailAddrParserException $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, sprintf("Unexpected parse error: %s", $err));

@@ -52,7 +52,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $this->sudo($login);
         $this->resetDocumentCache();
         $df = \new_Doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
         $df->accessControl()->setProfil($prfName);
         foreach ($aclAttendees as $acl => $expect) {
             $result = ($df->Control($acl) == "");
@@ -72,7 +72,7 @@ class TestProfil extends TestCaseDcpCommonFamily
     {
         
         $df = \new_Doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
         $df->accessControl()->setProfil($prfName);
         $this->importDocument($newPrfAcl);
         $this->sudo($login);
@@ -98,7 +98,7 @@ class TestProfil extends TestCaseDcpCommonFamily
     {
         
         $df = \new_Doc(self::$dbaccess, $docName);
-        $this->assertTrue($df->isAlive() , "document $docName is not alive");
+        $this->assertTrue($df->isAlive(), "document $docName is not alive");
         $df->accessControl()->setProfil($prfName);
         
         $this->importDocument($newPrfAcl);
@@ -131,7 +131,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $s = new \SearchDoc(self::$dbaccess, $famName);
         $s->search();
         
-        $this->assertEquals($expectNumber, $s->count() , sprintf("query:%s: %s", print_r($s->getSearchInfo() , true) , print_r($this->getViews($famName) , true)));
+        $this->assertEquals($expectNumber, $s->count(), sprintf("query:%s: %s", print_r($s->getSearchInfo(), true), print_r($this->getViews($famName), true)));
         $this->exitSudo();
     }
     /**

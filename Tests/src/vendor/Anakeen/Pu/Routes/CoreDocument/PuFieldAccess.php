@@ -31,7 +31,7 @@ class PuFieldAccess extends \Anakeen\Pu\Routes\TestCaseRoutes
      * @param $expectedJsonFile
      *
      * @throws \Anakeen\Router\Exception
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      * @throws \Slim\Exception\MethodNotAllowedException
      * @throws \Slim\Exception\NotFoundException
      */

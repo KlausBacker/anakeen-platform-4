@@ -2,7 +2,6 @@
 
 namespace Dcp\Pu;
 
-
 class TestDcpDocumentFilter_IsGreater extends TestDcpDocumentFilter_common
 {
     protected static function getCommonImportFile()
@@ -20,7 +19,7 @@ class TestDcpDocumentFilter_IsGreater extends TestDcpDocumentFilter_common
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IsGreater($test["attr"], $test["value"]) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IsGreater($test["attr"], $test["value"]), $test["expected"]);
     }
     
     public function data_IsGreater()
@@ -87,7 +86,7 @@ class TestDcpDocumentFilter_IsGreater extends TestDcpDocumentFilter_common
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IsGreater($test["attr"], $test["value"], \Anakeen\Search\Filters\IsGreater::EQUAL) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\IsGreater($test["attr"], $test["value"], \Anakeen\Search\Filters\IsGreater::EQUAL), $test["expected"]);
     }
     
     public function data_IsGreaterOrEqual()

@@ -4,7 +4,7 @@ namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 /**
  * Manage context parameters

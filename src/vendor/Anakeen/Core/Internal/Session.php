@@ -338,14 +338,14 @@ class Session extends DbObj
      *
      * @param int $byteLength The number of bytes to get from the CSPRNG
      * @return string The random bytes in hexadecimal representation (e.g. "a7d1f43b")
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     private static function randomId($byteLength)
     {
         $strong = false;
         $bytes = openssl_random_pseudo_bytes($byteLength, $strong);
         if ($bytes === false || $strong === false) {
-            throw new \Dcp\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
+            throw new \Anakeen\Exception(sprintf("Unable to get cryptographically strong random bytes from openssl: your system might be broken or too old."));
         }
         return bin2hex($bytes);
     }

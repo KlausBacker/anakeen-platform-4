@@ -223,10 +223,16 @@ class TestSearch extends TestCaseDcpCommonFamily
         $returnTitles = $this->getReturnTitles($s);
         sort($returnTitles);
         sort($expectTitles);
-        $this->assertEquals(count($expectTitles), $s->count(),
-            sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles), print_r($s->getSearchInfo(), true)));
-        $this->assertEquals($expectTitles, $returnTitles,
-            sprintf("Not expected result %s %s \nFound : %s %s", $criteria, $arg, implode(", ", $returnTitles), print_r($s->getSearchInfo(), true)));
+        $this->assertEquals(
+            count($expectTitles),
+            $s->count(),
+            sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles), print_r($s->getSearchInfo(), true))
+        );
+        $this->assertEquals(
+            $expectTitles,
+            $returnTitles,
+            sprintf("Not expected result %s %s \nFound : %s %s", $criteria, $arg, implode(", ", $returnTitles), print_r($s->getSearchInfo(), true))
+        );
     }
 
     /**
@@ -257,10 +263,16 @@ class TestSearch extends TestCaseDcpCommonFamily
         $returnTitles = $this->getReturnElementTitles($s);
         sort($returnTitles);
         sort($expectTitles);
-        $this->assertEquals(count($expectTitles), $s->count(),
-            sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles), print_r($s->getSearchInfo(), true)));
-        $this->assertEquals($expectTitles, $returnTitles,
-            sprintf("Not expected result %s %s \nFound : %s %s", $criteria, $arg, implode(", ", $returnTitles), print_r($s->getSearchInfo(), true)));
+        $this->assertEquals(
+            count($expectTitles),
+            $s->count(),
+            sprintf("Count error %s %s \nFound: %s %s", $criteria, $arg, implode(",", $returnTitles), print_r($s->getSearchInfo(), true))
+        );
+        $this->assertEquals(
+            $expectTitles,
+            $returnTitles,
+            sprintf("Not expected result %s %s \nFound : %s %s", $criteria, $arg, implode(", ", $returnTitles), print_r($s->getSearchInfo(), true))
+        );
     }
 
     private function getReturnElementTitles(SearchElements $s)

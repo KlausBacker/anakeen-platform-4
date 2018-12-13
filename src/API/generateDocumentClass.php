@@ -88,7 +88,7 @@ function updateDoc($v)
         if ($err) {
             error_log($err);
         }
-    } catch (\Dcp\Exception $e) {
+    } catch (\Anakeen\Exception $e) {
         print "\nERROR:" . $v["id"] . "[" . $v["title"] . "(" . $v["name"] . ")]\n";
         error_log($e->getMessage());
     }

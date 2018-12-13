@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -41,4 +42,3 @@ class SuiteDcpAttribute
         return $suite;
     }
 }
-

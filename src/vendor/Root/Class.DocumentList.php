@@ -51,7 +51,7 @@ class DocumentList implements Iterator, Countable
                     $this->search->search();
                 }
                 if ($this->search->getError()) {
-                    throw new Dcp\Exception($this->search->getError());
+                    throw new \Anakeen\Exception($this->search->getError());
                 }
                 $this->length = $this->search->count();
                 $this->init = true;

@@ -8,7 +8,6 @@ namespace Dcp\Pu;
 use Anakeen\SmartHooks;
 
 class TstExportCollection extends \Anakeen\SmartElement
-
 {
     public function registerHooks()
     {
@@ -25,4 +24,3 @@ class TstExportCollection extends \Anakeen\SmartElement
         });
     }
 }
-

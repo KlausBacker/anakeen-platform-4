@@ -40,7 +40,6 @@ class TestParseMethod extends TestCaseDcp
                 $this->assertEquals($expectedValue, $struct->$key);
             }
             //$this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
-            
         }
     }
     /**
@@ -56,7 +55,6 @@ class TestParseMethod extends TestCaseDcp
         
         $this->assertNotEmpty($err, sprintf("function struct no error detected :%s", print_r($struct, true)));
         foreach ($expectedErrors as $expectedError) {
-            
             $this->assertContains($expectedError, $err, sprintf('not the correct error reporting : "%s" : %s', $err, print_r($struct, true)));
         }
     }
@@ -177,4 +175,3 @@ class TestParseMethod extends TestCaseDcp
         );
     }
 }
-?>

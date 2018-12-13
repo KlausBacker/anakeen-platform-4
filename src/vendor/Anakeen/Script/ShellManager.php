@@ -117,7 +117,7 @@ class ShellManager
                 self::exceptionHandler($e, false);
                 exit(1);
             } /** @noinspection PhpRedundantCatchClauseInspection */
-            catch (\Dcp\Exception $e) {
+            catch (\Anakeen\Exception $e) {
                 self::exceptionHandler($e);
             } catch (\Exception $e) {
                 self::exceptionHandler($e);
@@ -148,7 +148,7 @@ class ShellManager
         $login = self::getArg("login");
         if ($login) {
             if (!$user->setLoginName($login)) {
-                throw new \Dcp\Exception(sprintf("Unknow user %s", $login));
+                throw new \Anakeen\Exception(sprintf("Unknow user %s", $login));
             }
         }
 

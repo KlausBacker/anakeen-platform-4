@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -29,7 +30,7 @@ class TestAutoloader extends TestCaseDcpCommonFamily
     public function testAutoloadFamily($className)
     {
         
-        $this->assertTrue(class_exists($className) , sprintf("class not found %s", $className));
+        $this->assertTrue(class_exists($className), sprintf("class not found %s", $className));
     }
     
     public function dataDAutoloadFamily()

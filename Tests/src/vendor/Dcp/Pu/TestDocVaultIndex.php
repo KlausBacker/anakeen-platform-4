@@ -204,8 +204,10 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
             }
             $where = sprintf("AND (%s)", join(' OR ', $where));
         }
-        $q = sprintf("SELECT dvi.docid, doc.name AS docname, dvi.vaultid, vds.name AS filename FROM docvaultindex AS dvi, doc, vaultdiskstorage AS vds WHERE dvi.docid = doc.id AND dvi.vaultid = vds.id_file %s ORDER BY dvi.docid, dvi.vaultid",
-            $where);
+        $q = sprintf(
+            "SELECT dvi.docid, doc.name AS docname, dvi.vaultid, vds.name AS filename FROM docvaultindex AS dvi, doc, vaultdiskstorage AS vds WHERE dvi.docid = doc.id AND dvi.vaultid = vds.id_file %s ORDER BY dvi.docid, dvi.vaultid",
+            $where
+        );
         simpleQuery(self::$dbaccess, $q, $res, false, false, true);
         return $res;
     }

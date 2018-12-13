@@ -40,8 +40,8 @@ class TestAffect extends TestCaseDcpCommonFamily
          * @var TestAffect1 $doc
          */
         foreach ($dl as $doc) {
-            $this->assertEquals($one[$k],$doc->getOne(), sprintf("index %d => %s", $k, $doc->getOne()));
-            $this->assertEquals($two[$k],$doc->getTwo(), sprintf("index %d => %s", $k, $doc->getTwo()));
+            $this->assertEquals($one[$k], $doc->getOne(), sprintf("index %d => %s", $k, $doc->getOne()));
+            $this->assertEquals($two[$k], $doc->getTwo(), sprintf("index %d => %s", $k, $doc->getTwo()));
             $k++;
         }
     }

@@ -9,6 +9,6 @@ namespace Dcp\Vault;
 use Dcp\ConsoleProgressOMeter;
 use Dcp\PgFetchArrayIterator;
 
-class VaultAnalyzerException extends \Dcp\Exception
+class VaultAnalyzerException extends \Anakeen\Exception
 {
 }

@@ -116,13 +116,13 @@ class HtmlAuthenticator extends Authenticator
      *
      * @param array $extendedArg
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      * @return string
      */
     public function getAuthUrl(array $extendedArg = array())
     {
         if (empty($this->parms['auth']['app'])) {
-            throw new \Dcp\Exception("Missing html/auth/app config.");
+            throw new \Anakeen\Exception("Missing html/auth/app config.");
         }
         $hasArgs = false;
         $location = \Anakeen\Core\Internal\Session::getWebRootPath();

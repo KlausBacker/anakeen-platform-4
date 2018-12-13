@@ -101,7 +101,6 @@ class TestOooLayout extends TestCaseDcpDocument
             $this->saveFileResult($file, sprintf("%s_%s.odt", str_replace('.odt', '', $template), $lname));
         }
         //print_r($instance->getValues());
-
     }
 
     /**

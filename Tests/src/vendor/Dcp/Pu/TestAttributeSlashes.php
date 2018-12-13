@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -33,7 +34,7 @@ class TestAttributeSlashes extends TestCaseDcpCommonFamily
         static $d = null;
         if ($d === null) {
             $d = createDoc(self::$dbaccess, $this->famName);
-            $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
+            $this->assertTrue(is_object($d), sprintf("cannot create %s document", $this->famName));
         }
         $oa = $d->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $this->famName));
@@ -50,7 +51,7 @@ class TestAttributeSlashes extends TestCaseDcpCommonFamily
         static $d = null;
         if ($d === null) {
             $d = createDoc(self::$dbaccess, $this->famName);
-            $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
+            $this->assertTrue(is_object($d), sprintf("cannot create %s document", $this->famName));
         }
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
@@ -122,4 +123,3 @@ class TestAttributeSlashes extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

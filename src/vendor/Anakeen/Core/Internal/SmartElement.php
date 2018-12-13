@@ -2894,7 +2894,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $idAttr attribute identifier
      *
-     * @throws \Dcp\Exception DOC0114 code
+     * @throws \Anakeen\Exception DOC0114 code
      * @see ErrorCodeDoc::DOC0114
      * @return mixed the typed value
      */
@@ -2905,13 +2905,13 @@ create unique index i_docir on doc(initid, revision);";
          */
         $oa = $this->getAttribute($idAttr);
         if (!$oa) {
-            throw new \Dcp\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
+            throw new \Anakeen\Exception('DOC0114', $idAttr, $this->title, $this->fromname);
         }
         if ($this->isUnderControl() && FieldAccessManager::hasReadAccess($this, $oa) === false) {
-            throw new \Dcp\Exception('DOC0133', $idAttr, $this->title, $this->fromname);
+            throw new \Anakeen\Exception('DOC0133', $idAttr, $this->title, $this->fromname);
         }
         if (empty($oa->isNormal)) {
-            throw new \Dcp\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
+            throw new \Anakeen\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
         }
         return \Dcp\AttributeValue::getTypedValue($this, $oa);
     }
@@ -2926,7 +2926,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $idAttr attribute identifier
      * @param mixed  $value  the new \value - value format must be compatible with type
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      * @see ErrorCodeDoc::DOC0115
      * @see ErrorCodeDoc::DOC0117
      * @return void
@@ -2936,10 +2936,10 @@ create unique index i_docir on doc(initid, revision);";
         $localRecord = array();
         $oa = $this->getAttribute($idAttr);
         if (!$oa) {
-            throw new \Dcp\Exception('DOC0115', $idAttr, $this->title, $this->fromname);
+            throw new \Anakeen\Exception('DOC0115', $idAttr, $this->title, $this->fromname);
         }
         if (empty($oa->isNormal)) {
-            throw new \Dcp\Exception('DOC0117', $idAttr, $this->title, $this->fromname);
+            throw new \Anakeen\Exception('DOC0117', $idAttr, $this->title, $this->fromname);
         }
         /**
          * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
@@ -4957,7 +4957,7 @@ create unique index i_docir on doc(initid, revision);";
         try {
             $wdoc->set($this);
             $err = $wdoc->changeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             $err = sprintf(
                 _("Unexpected transition error on workflow %s [%d] : %s"),
                 $wdoc->title,
@@ -5072,12 +5072,12 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $copyfile  if true duplicate files of the document
      *
      * @return \Anakeen\Core\Internal\SmartElement |string in case of error return a string that indicate the error
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     final public function duplicate($temporary = false, $linkfld = false, $copyfile = false)
     {
         if ($this->fromid == '') {
-            throw new \Dcp\Exception(\ErrorCode::getError('DOC0203'));
+            throw new \Anakeen\Exception(\ErrorCode::getError('DOC0203'));
         }
         try {
             if ($this->isUnderControl()) {
@@ -5085,7 +5085,7 @@ create unique index i_docir on doc(initid, revision);";
 
                 $err = $family->controlAccess('create');
                 if ($err != "") {
-                    throw new \Dcp\Exception("DOC0131", $family->name);
+                    throw new \Anakeen\Exception("DOC0131", $family->name);
                 }
             }
             $copy = SEManager::createDocument($this->fromid);
@@ -5578,14 +5578,14 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $callMethod Method to apply
      *
      * @return string Error message or empty string on succcess
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     protected function specRefreshGenAttribute($attrId, $callMethod)
     {
         $err = '';
         $oAttr = $this->getAttribute($attrId);
         if (!$oAttr) {
-            throw new \Dcp\Exception(\ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
+            throw new \Anakeen\Exception(\ErrorCode::getError('ATTR1212', $callMethod, $this->fromname));
         }
 
         if ($oAttr->inArray()) {
@@ -6082,7 +6082,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool   $abstract
      *
      * @return string
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     final public function getHtmlAttrValue(
         $attrid,
@@ -6094,7 +6094,7 @@ create unique index i_docir on doc(initid, revision);";
     ) {
         $oattr = $this->getAttribute($attrid);
         if (!$oattr) {
-            throw new \Dcp\Exception('DOC0130', $attrid, $this->id, $this->fromid);
+            throw new \Anakeen\Exception('DOC0130', $attrid, $this->id, $this->fromid);
         }
 
         if ($index != -1) {
@@ -6458,7 +6458,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool  $method       set to false if don't want interpreted values
      * @param bool  $forcedefault force default values
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     final public function setDefaultValues($tdefval, $method = true, $forcedefault = false)
     {
@@ -6494,11 +6494,11 @@ create unique index i_docir on doc(initid, revision);";
                             if (is_string($values) && $values[0] === ':') {
                                 $values = $this->applyMethod($dval, null);
                                 if ($values === null) {
-                                    throw new \Dcp\Exception("DFLT0007", $aid, $dval, $this->fromname);
+                                    throw new \Anakeen\Exception("DFLT0007", $aid, $dval, $this->fromname);
                                 }
                             }
                             if (!is_array($values)) {
-                                throw new \Dcp\Exception("DFLT0008", $aid, $dval, $values, $this->fromname);
+                                throw new \Anakeen\Exception("DFLT0008", $aid, $dval, $values, $this->fromname);
                             }
                             $terr = [];
                             foreach ($values as $row) {
@@ -6508,7 +6508,7 @@ create unique index i_docir on doc(initid, revision);";
                                 }
                             }
                             if ($terr) {
-                                throw new \Dcp\Exception(
+                                throw new \Anakeen\Exception(
                                     "DFLT0009",
                                     $aid,
                                     $dval,
@@ -7101,7 +7101,7 @@ create unique index i_docir on doc(initid, revision);";
             } else {
                 $xml = $exd->getXml();
             }
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             \Anakeen\Core\LogException::writeLog($e);
             return $e->getMessage();
         }

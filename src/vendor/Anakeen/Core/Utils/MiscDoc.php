@@ -4,7 +4,7 @@ namespace Anakeen\Core\Utils;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 class MiscDoc
 {

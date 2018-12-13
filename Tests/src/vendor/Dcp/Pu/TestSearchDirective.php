@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -43,7 +44,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
     {
 
         $dir = SEManager::getDocument($dirId);
-        $this->assertTrue($dir->isAlive() , sprintf("Could not get search with id '%s'.", $dirId));
+        $this->assertTrue($dir->isAlive(), sprintf("Could not get search with id '%s'.", $dirId));
         
         $search = new \SearchDoc(self::$dbaccess, 0);
         $search->setObjectReturn();
@@ -58,13 +59,13 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         
         if (count($existsNameList) > 0) {
             foreach ($existsNameList as $name) {
-                $this->assertTrue(in_array($name, $res) , sprintf("Missing document with name '%s' in search with collection '%s': returned documents name = {%s}", $name, $dir->name, join(', ', $res)));
+                $this->assertTrue(in_array($name, $res), sprintf("Missing document with name '%s' in search with collection '%s': returned documents name = {%s}", $name, $dir->name, join(', ', $res)));
             }
         }
         
         if (count($notExistsNameList) > 0) {
             foreach ($notExistsNameList as $name) {
-                $this->assertTrue(!in_array($name, $res) , sprintf("Found unexpected document with name '%s' in search with collection '%s': returned documents name = {%s}", $name, $dir->name, join(', ', $res)));
+                $this->assertTrue(!in_array($name, $res), sprintf("Found unexpected document with name '%s' in search with collection '%s': returned documents name = {%s}", $name, $dir->name, join(', ', $res)));
             }
         }
     }
@@ -213,7 +214,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         }
         $count = $search->onlyCount();
         
-        $this->assertTrue(($count == $expectedCount) , sprintf("onlyCount() returned '%s' while expecting '%s' (query = [%s]).", $count, $expectedCount, $search->getOriginalQuery()));
+        $this->assertTrue(($count == $expectedCount), sprintf("onlyCount() returned '%s' while expecting '%s' (query = [%s]).", $count, $expectedCount, $search->getOriginalQuery()));
     }
     
     public function dataSearchDocOnlyCount()
@@ -312,7 +313,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $search->search();
         
         $count = $search->count();
-        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true) , $count, $expectedCount));
+        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true), var_export($orderbyLabel, true), $count, $expectedCount));
         
         $titles = array();
         while ($doc = $search->getNextDoc()) {
@@ -453,7 +454,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $search->search();
         
         $count = $search->count();
-        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true) , var_export($orderbyLabel, true) , $count, $expectedCount));
+        $this->assertTrue($count == $expectedCount, sprintf("search with setOrder(%s, %s) returned '%s' elements while expecting '%s'.", var_export($orderby, true), var_export($orderbyLabel, true), $count, $expectedCount));
         
         $titles = array();
         while ($doc = $search->getNextDoc()) {
@@ -614,6 +615,4 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             )
         );
     }
-
-
 }

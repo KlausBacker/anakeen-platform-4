@@ -413,7 +413,7 @@ class DirLib
                     $fromid = $fld->getRawValue("se_famid");
                     $fdoc = SEManager::getFamily(abs($fromid), true);
                     if (!$fdoc || !$fdoc->isAlive()) {
-                        throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
+                        throw new \Anakeen\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                     }
                     unset($fdoc);
                 }
@@ -424,7 +424,7 @@ class DirLib
                 $fromid = $fld->getRawValue("se_famid");
                 $fdoc = SEManager::getFamily(abs($fromid), true);
                 if (!$fdoc || !$fdoc->isAlive()) {
-                    throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
+                    throw new \Anakeen\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                 }
                 unset($fdoc);
             }
@@ -455,7 +455,7 @@ class DirLib
                         } else {
                             $fdoc = SEManager::createDocument(abs($fromid), false);
                             if ($fdoc === false) {
-                                throw new \Dcp\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
+                                throw new \Anakeen\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                             }
                         }
                     } else {

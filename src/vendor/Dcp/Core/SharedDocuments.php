@@ -27,12 +27,12 @@ class SharedDocuments
     }
     /**
      * @param int $limit
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public static function setLimit($limit)
     {
         if (!is_int($limit)) {
-            throw new \Dcp\Exception("SharedDocuments limit must be a integer");
+            throw new \Anakeen\Exception("SharedDocuments limit must be a integer");
         }
         self::$limit = $limit;
     }

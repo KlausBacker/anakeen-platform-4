@@ -28,14 +28,14 @@ class ExportXmlFolder
     /**
      * export format xml or zip
      * @param string $xy
-     * @throws Dcp\Exception
+     * @throws Anakeen\Exception
      */
     public function setOutputFormat($xy)
     {
         if ($xy == self::zipFormat || $xy == self::xmlFormat) {
             $this->format = $xy;
         } else {
-            throw new Dcp\Exception(sprintf("format must be %s or %s"), self::zipFormat, self::xmlFormat);
+            throw new Anakeen\Exception(sprintf("format must be %s or %s"), self::zipFormat, self::xmlFormat);
         }
     }
     /**
@@ -72,15 +72,15 @@ class ExportXmlFolder
     /**
      * return content of xml file to be use only with xml format
      * @return string
-     * @throws Dcp\Exception
+     * @throws Anakeen\Exception
      */
     public function getXmlContent()
     {
         if (!$this->exported) {
-            throw new Dcp\Exception(sprintf(_("nothing to export. Do export before")));
+            throw new Anakeen\Exception(sprintf(_("nothing to export. Do export before")));
         }
         if ($this->format != self::xmlFormat) {
-            throw new Dcp\Exception(sprintf(_("not in XML format")));
+            throw new Anakeen\Exception(sprintf(_("not in XML format")));
         }
         return file_get_contents($this->outputFile);
     }

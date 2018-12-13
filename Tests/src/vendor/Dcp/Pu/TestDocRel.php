@@ -145,8 +145,11 @@ class TestDocRel extends TestCaseDcpCommonFamily
         $this->assertEquals(count($expectValues), count($rels), sprintf("Not correct relations %s", print_r($rels, true)));
         foreach ($expectValues as $expectProps) {
             $aid = $expectProps["aid"];
-            $this->assertEquals($expectProps["title"], $this->getRelTitle($rels, $aid, $expectProps["title"]),
-                sprintf("not correct title $aid expect %s : %s", $expectProps["title"], print_r($rels, true)));
+            $this->assertEquals(
+                $expectProps["title"],
+                $this->getRelTitle($rels, $aid, $expectProps["title"]),
+                sprintf("not correct title $aid expect %s : %s", $expectProps["title"], print_r($rels, true))
+            );
             $this->assertEquals($this->translateName($expectProps["id"]), $this->getRelId($rels, $aid, $this->translateName($expectProps["id"])), "not correct id $aid");
         }
     }

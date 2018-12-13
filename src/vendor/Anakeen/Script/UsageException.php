@@ -2,7 +2,7 @@
 
 namespace Anakeen\Script;
 
-class UsageException extends \Dcp\Exception
+class UsageException extends \Anakeen\Exception
 {
     private $usage = '';
 

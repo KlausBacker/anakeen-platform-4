@@ -81,16 +81,16 @@ class TestGetResPhpFunc extends TestCaseDcp
         $doc = false;
         if (isset($data['document'])) {
             $doc = new_Doc(self::$dbaccess, $data['document']);
-            $this->assertTrue(is_object($doc) , sprintf("Error retrieving document '%s'.", $data['document']));
+            $this->assertTrue(is_object($doc), sprintf("Error retrieving document '%s'.", $data['document']));
         } else {
             $doc = createDoc(self::$dbaccess, $data['fam']);
-            $this->assertTrue(is_object($doc) , sprintf("Could not create new document from family '%s'.", $data['fam']));
+            $this->assertTrue(is_object($doc), sprintf("Could not create new document from family '%s'.", $data['fam']));
             $err = $doc->add();
             $this->assertEmpty($err, sprintf("Could not add new document to database: %s", $err));
         }
         
         $oattr = $doc->getAttribute($data['attr']);
-        $this->assertTrue(is_object($oattr) , sprintf("Could not get attribute '%s' on document '%s' (id=%s).", $data['attr'], $doc->name, $doc->id));
+        $this->assertTrue(is_object($oattr), sprintf("Could not get attribute '%s' on document '%s' (id=%s).", $data['attr'], $doc->name, $doc->id));
         
         if (isset($data['http:vars'])) {
             foreach ($data['http:vars'] as $name => $value) {
@@ -102,7 +102,7 @@ class TestGetResPhpFunc extends TestCaseDcp
         $tselect = array();
         $tval = array();
         $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval);
-        $this->assertTrue(is_array($res) , sprintf("getResPhpFunc did not returned an array."));
+        $this->assertTrue(is_array($res), sprintf("getResPhpFunc did not returned an array."));
         
         if (isset($data['expected:results'])) {
             $err = $this->checkResult($data['expected:results'], $res);
@@ -123,12 +123,12 @@ class TestGetResPhpFunc extends TestCaseDcp
         $ZONE_ARGS = array();
         
         $doc = createDoc(self::$dbaccess, $family);
-        $this->assertTrue(is_object($doc) , sprintf("Could not create new document from family '%s'.", $family));
+        $this->assertTrue(is_object($doc), sprintf("Could not create new document from family '%s'.", $family));
         $err = $doc->add();
         $this->assertEmpty($err, sprintf("Could not add new document to database: %s", $err));
         
         $oattr = $doc->getAttribute($attrid);
-        $this->assertTrue(is_object($oattr) , sprintf("Could not get attribute '%s' on document '%s' (id=%s).", $attrid, $doc->name, $doc->id));
+        $this->assertTrue(is_object($oattr), sprintf("Could not get attribute '%s' on document '%s' (id=%s).", $attrid, $doc->name, $doc->id));
         
         foreach ($inputs as $name => $value) {
             SetHttpVar($name, $value);
@@ -138,7 +138,7 @@ class TestGetResPhpFunc extends TestCaseDcp
         $tselect = array();
         $tval = array();
         $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval);
-        $this->assertTrue(is_string($res) , sprintf("getResPhpFunc mist return errors."));
+        $this->assertTrue(is_string($res), sprintf("getResPhpFunc mist return errors."));
         //error_log($res);
         foreach ($expectedErrors as $error) {
             $this->assertContains($error, $res, "getResPhpFunc not the expected error");
@@ -330,4 +330,3 @@ class TestGetResPhpFunc extends TestCaseDcp
         );
     }
 }
-?>

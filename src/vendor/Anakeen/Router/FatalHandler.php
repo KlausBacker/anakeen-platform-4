@@ -43,7 +43,7 @@ class FatalHandler
         if (php_sapi_name() !== "cli") {
             if (method_exists($e, "addHttpHeader")) {
                 /**
-                 * @var \Dcp\Exception $e
+                 * @var \Anakeen\Exception $e
                  */
                 if ($e->getHttpHeader()) {
                     header($e->getHttpHeader());

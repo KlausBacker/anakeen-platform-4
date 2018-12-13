@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -33,21 +34,21 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $doc = createDoc(self::$dbaccess, "BASE");
         $err = $doc->add();
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
-        $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
+        $this->assertTrue($doc->isAlive(), sprintf("document %s not alive", $doc->id));
         
         $err = $doc->setLogicalName($oldname);
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $oldname, $doc->id, $err));
         clearCacheDoc();
         
         $new_doc = new_Doc(self::$dbaccess, $oldname);
-        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $oldname));
+        $this->assertTrue($new_doc->isAlive(), sprintf("document %s not alive", $oldname));
         
         $err = $doc->setLogicalName($newname, true);
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $newname, $oldname, $err));
         clearCacheDoc();
         
         $new_doc = new_Doc(self::$dbaccess, $newname);
-        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $newname));
+        $this->assertTrue($new_doc->isAlive(), sprintf("document %s not alive", $newname));
         $this->assertEquals($doc->id, $new_doc->id, sprintf("New logical name is not set to document"));
     }
     /**
@@ -61,14 +62,14 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $logicalName, $doc->id, $err));
         $err = $doc->add();
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
-        $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
+        $this->assertTrue($doc->isAlive(), sprintf("document %s not alive", $doc->id));
         
         $this->assertEquals($logicalName, $doc->name, sprintf("New logical name is not set to document"));
         
         clearCacheDoc();
         
         $new_doc = new_Doc(self::$dbaccess, $logicalName);
-        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $logicalName));
+        $this->assertTrue($new_doc->isAlive(), sprintf("document %s not alive", $logicalName));
     }
     /**
      * @dataProvider dataBeforeAddSetLogicalName
@@ -82,7 +83,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         $err = $doc1->add();
         $this->assertEquals($oldname, $doc1->name, sprintf("New logical name is not set to document"));
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
-        $this->assertTrue($doc1->isAlive() , sprintf("document %s not alive", $doc1->id));
+        $this->assertTrue($doc1->isAlive(), sprintf("document %s not alive", $doc1->id));
         
         $doc2 = createDoc(self::$dbaccess, "BASE");
         $err = $doc2->setLogicalName($oldname);
@@ -116,7 +117,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         
         $idRev0 = $doc->id;
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
-        $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
+        $this->assertTrue($doc->isAlive(), sprintf("document %s not alive", $doc->id));
         
         $err = $doc->revise();
         $this->assertEmpty($err, sprintf("Error when revised document %s", $err));
@@ -130,7 +131,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         clearCacheDoc();
         
         $new_doc = new_Doc(self::$dbaccess, $oldname);
-        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $oldname));
+        $this->assertTrue($new_doc->isAlive(), sprintf("document %s not alive", $oldname));
         
         $new_doc = new_Doc(self::$dbaccess, $idRev0);
         $this->assertEquals($oldname, $new_doc->name, sprintf("no good revised name #0"));
@@ -142,7 +143,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
         clearCacheDoc();
         
         $new_doc = new_Doc(self::$dbaccess, $newname);
-        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $newname));
+        $this->assertTrue($new_doc->isAlive(), sprintf("document %s not alive", $newname));
         $this->assertEquals($doc->id, $new_doc->id, sprintf("New logical name is not set to document"));
         
         $new_doc = new_Doc(self::$dbaccess, $idRev0);

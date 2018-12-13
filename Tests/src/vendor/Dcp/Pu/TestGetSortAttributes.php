@@ -29,11 +29,9 @@ class TestGetSortAttributes extends TestCaseDcpCommonFamily
         $famdoc = new \Anakeen\Core\SmartStructure(self::$dbaccess, $data['famid']);
         $attributes = $famdoc->getSortAttributes();
         $count = count($attributes);
-        $this->assertTrue(($count == $data['expected']['count']) , sprintf("Got %d attributes while expecting %s: %s", $count, $data['expected']['count'], print_r(array_map(function ($e)
-        {
+        $this->assertTrue(($count == $data['expected']['count']), sprintf("Got %d attributes while expecting %s: %s", $count, $data['expected']['count'], print_r(array_map(function ($e) {
             return $e->id;
-        }
-        , $attributes) , true)));
+        }, $attributes), true)));
         
         foreach ($data['expected']['check'] as $check) {
             $found = false;
@@ -44,7 +42,7 @@ class TestGetSortAttributes extends TestCaseDcpCommonFamily
                 }
             }
             $this->assertTrue($found, sprintf("Expected attribute '%s' not found.", $check['id']));
-            $this->assertTrue(($attr->getOption('sortable') == $check['sortable']) , sprintf("Attribute '%s' has sortable '%s' while expecting '%s'.", $attr->id, $attr->getOption('sortable') , $check['sortable']));
+            $this->assertTrue(($attr->getOption('sortable') == $check['sortable']), sprintf("Attribute '%s' has sortable '%s' while expecting '%s'.", $attr->id, $attr->getOption('sortable'), $check['sortable']));
         }
     }
     /**

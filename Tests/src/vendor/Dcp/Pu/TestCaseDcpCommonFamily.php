@@ -17,7 +17,6 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
         $this->logTest();
         DbManager::savePoint('testunit');
     }
-
     /**
      * return file to import before run test
      * could be an array if several files
@@ -53,9 +52,9 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
             foreach ($cf as $f) {
                 try {
                     self::importDocument($f);
-                } catch (\Dcp\Exception $e) {
+                } catch (\Anakeen\Exception $e) {
                     self::rollbackTransaction();
-                    throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
+                    throw new \Anakeen\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
                 }
             }
         }
@@ -76,9 +75,9 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
     {
         try {
             static::importConfiguration($f);
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             self::rollbackTransaction();
-            throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
+            throw new \Anakeen\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
         }
     }
 
@@ -89,9 +88,9 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
             $import = new \Dcp\Core\ImportAccounts();
             $import->setFile($f);
             $import->import();
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             self::rollbackTransaction();
-            throw new \Dcp\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
+            throw new \Anakeen\Exception(sprintf("Exception while importing file '%s': %s", $f, $e->getMessage()));
         }
     }
 

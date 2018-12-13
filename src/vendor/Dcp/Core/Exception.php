@@ -2,7 +2,7 @@
 
 namespace Dcp\Core;
 
-class Exception extends \Dcp\Exception
+class Exception extends \Anakeen\Exception
 {
 
 }

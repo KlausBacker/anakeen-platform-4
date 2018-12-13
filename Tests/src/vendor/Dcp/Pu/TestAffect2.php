@@ -20,6 +20,4 @@ class TestAffect2 extends \SmartStructure\Tst_Affect1
             $this->two++;
         });
     }
-
-
 }

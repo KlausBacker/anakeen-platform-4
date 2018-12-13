@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -28,13 +29,13 @@ class TestDSearch extends TestCaseDcpCommonFamily
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
         
         $doc = new_Doc(self::$dbaccess, $data['doc']);
-        $this->assertTrue(($doc !== null && $doc->isAlive()) , sprintf("Could not find document with id '%s'.", $data['doc']));
+        $this->assertTrue(($doc !== null && $doc->isAlive()), sprintf("Could not find document with id '%s'.", $data['doc']));
         $info = array();
         $err = $doc->store($info);
         $this->assertNotEmpty($err, "Store of document with id '%s' did not returned an expected error message.", $data['doc']);
         foreach ($data['expect'] as $re) {
             $match = preg_match($re, $err);
-            $this->assertTrue(($match !== false && $match > 0) , sprintf("Error message '%s' did not matched expected '%s'.", $err, $re));
+            $this->assertTrue(($match !== false && $match > 0), sprintf("Error message '%s' did not matched expected '%s'.", $err, $re));
         }
     }
     

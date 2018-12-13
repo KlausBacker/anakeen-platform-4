@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -28,7 +29,7 @@ class TestHtmlclean extends TestCaseDcp
             /* We do not expect errors */
             $this->assertEmpty($error, sprintf("Unexpected error '%s' when converting '%s'.", $error, $data['html']));
         } else {
-            $this->assertTrue((preg_match($data['errorMatch'], $error) === 1) , sprintf("Error '%s' did not matched expected error match '%s'.", $error, $data['errorMatch']));
+            $this->assertTrue((preg_match($data['errorMatch'], $error) === 1), sprintf("Error '%s' did not matched expected error match '%s'.", $error, $data['errorMatch']));
         }
     }
     

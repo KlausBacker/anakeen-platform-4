@@ -138,13 +138,13 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      * @param string $login
      *
      * @return \Anakeen\Core\Account
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected static function sudo($login)
     {
         $u = new \Anakeen\Core\Account(self::$dbaccess);
         if (!$u->setLoginName($login)) {
-            throw new \Dcp\Exception("login $login not exist");
+            throw new \Anakeen\Exception("login $login not exist");
         }
 
         self::$user = ContextManager::getCurrentUser();
@@ -171,7 +171,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      * @param string|string[] $file file path
      *
      * @return array
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected static function importDocument($file)
     {
@@ -184,7 +184,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             $realfile = static::$testDataDirectory . "/" . $file;
         }
         if (!file_exists($realfile)) {
-            throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
+            throw new \Anakeen\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new \ImportDocument();
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
@@ -193,7 +193,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         $cr = $oImport->importDocuments($realfile);
         $err = $oImport->getErrorMessage();
         if ($err) {
-            throw new \Dcp\Exception($err);
+            throw new \Anakeen\Exception($err);
         }
         return $cr;
     }
@@ -204,7 +204,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      *
      * @param string|string[] $file file path
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected static function importConfiguration($file)
     {
@@ -213,13 +213,13 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             $realfile = static::$testDataDirectory . "/" . $file;
         }
         if (!file_exists($realfile)) {
-            throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
+            throw new \Anakeen\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new ImportSmartConfiguration();
         $oImport->import($realfile);
         $err = $oImport->getErrorMessage();
         if ($err) {
-            throw new \Dcp\Exception($err);
+            throw new \Anakeen\Exception($err);
         }
     }
 
@@ -249,22 +249,22 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      *
      * @param string $data CSV data
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function importCsvData($data)
     {
         $tmpFile = tempnam(ContextManager::getTmpDir(), "importData");
         if ($tmpFile === false) {
-            throw new \Dcp\Exception(sprintf("Error creating temporary file in '%s'.", ContextManager::getTmpDir()));
+            throw new \Anakeen\Exception(sprintf("Error creating temporary file in '%s'.", ContextManager::getTmpDir()));
         }
         $ret = rename($tmpFile, $tmpFile . '.csv');
         if ($ret === false) {
-            throw new \Dcp\Exception(sprintf("Error renaming '%s' to '%s'.", $tmpFile, $tmpFile . '.csv'));
+            throw new \Anakeen\Exception(sprintf("Error renaming '%s' to '%s'.", $tmpFile, $tmpFile . '.csv'));
         }
         $tmpFile = $tmpFile . '.csv';
         $ret = file_put_contents($tmpFile, $data);
         if ($ret === false) {
-            throw new \Dcp\Exception(sprintf("Error writing to file '%s'.", $tmpFile));
+            throw new \Anakeen\Exception(sprintf("Error writing to file '%s'.", $tmpFile));
         }
         $this->importDocument($tmpFile);
         unlink($tmpFile);

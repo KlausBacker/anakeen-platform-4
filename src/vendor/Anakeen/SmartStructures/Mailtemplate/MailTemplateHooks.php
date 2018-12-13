@@ -98,7 +98,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      * @param array                               $keys extra keys to complete mail body or subject
      *
      * @return \Dcp\Mail\Message (return null if no recipients)
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception 
      */
     public function getMailMessage(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
@@ -147,7 +147,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                     if ($err) {
                         LogManager::error($err);
                         $doc->addHistoryEntry($err);
-                        throw new \Dcp\Exception($err);
+                        throw new \Anakeen\Exception($err);
                     }
                     $mail = $doc->getRValue($aid);
                     break;
@@ -159,7 +159,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                         if ($err) {
                             LogManager::error($err);
                             $wdoc->addHistoryEntry($err);
-                            throw new \Dcp\Exception($err);
+                            throw new \Anakeen\Exception($err);
                         }
                         $mail = $wdoc->getRValue($aid);
                     }
@@ -170,7 +170,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                     if (!$doc->getAttribute($aid)) {
                         LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
-                        throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        throw new \Anakeen\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
                     $mail = $doc->getFamilyParameterValue($aid);
                     break;
@@ -181,7 +181,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                         if (!$wdoc->getAttribute($aid)) {
                             LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                             $wdoc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
-                            throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                            throw new \Anakeen\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         }
                         $mail = $wdoc->getFamilyParameterValue($aid);
                     }
@@ -200,7 +200,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                         if (!$udoc->getAttribute($aid) && !array_key_exists(strtolower($aid), $udoc->getParamAttributes())) {
                             LogManager::error(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                             $doc->addHistoryEntry(sprintf(_("Send mail error : Attribute %s not found"), $aid));
-                            throw new \Dcp\Exception(sprintf(_("Send mail error : Attribute %s not found"), $aid));
+                            throw new \Anakeen\Exception(sprintf(_("Send mail error : Attribute %s not found"), $aid));
                         }
                         if ($type == 'DE') {
                             $vdocid = $udoc->getFamilyParameterValue($aid);
@@ -251,7 +251,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                     if (!$mail) {
                         LogManager::error(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                         $doc->addHistoryEntry(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
-                        throw new \Dcp\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
+                        throw new \Anakeen\Exception(sprintf(_("Send mail error : Parameter %s doesn't exists"), $aid));
                     }
                     break;
 
@@ -271,13 +271,13 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                         $err = sprintf(_("Send mail error: recipient document '%s' does not exists."), $recipDocId);
                         LogManager::error($err);
                         $doc->addHistoryEntry($err);
-                        throw new \Dcp\Exception($err);
+                        throw new \Anakeen\Exception($err);
                     }
                     if (!is_a($recipientDoc, IMailRecipient::class)) {
                         $err = sprintf(_("Send mail error: recipient document '%s' does not implements IMailRecipient interface."), $recipDocId);
                         LogManager::error($err);
                         $doc->addHistoryEntry($err);
-                        throw new \Dcp\Exception($err);
+                        throw new \Anakeen\Exception($err);
                     }
                     $mail = $recipientDoc->getMail();
                     break;
@@ -354,7 +354,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             if ($err) {
                 LogManager::error($err);
                 $doc->addHistoryEntry($err);
-                throw new \Dcp\Exception($err);
+                throw new \Anakeen\Exception($err);
             }
             $vf = $doc->getRValue(strtok($v, " "));
             if ($vf) {

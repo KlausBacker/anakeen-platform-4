@@ -150,11 +150,17 @@ class TestExportRevision extends TestCaseDcpCommonFamily
                 }
 
                 if (strpos($value, "*") === false) {
-                    $this->assertEquals($value, $resultData[$docName][$index],
-                        sprintf("%s  (index %s : %s) : %s \n %s \n %s", $docName, $index, $docValues[$index], print_r($revName, true), print_r($resultData, true), $outFile));
+                    $this->assertEquals(
+                        $value,
+                        $resultData[$docName][$index],
+                        sprintf("%s  (index %s : %s) : %s \n %s \n %s", $docName, $index, $docValues[$index], print_r($revName, true), print_r($resultData, true), $outFile)
+                    );
                 } else {
-                    $this->assertEquals(preg_match('/' . $value . '/', $resultData[$docName][$index]), 1,
-                        sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $docValues[$index], $docName, $index, print_r($resultData, true), $outFile));
+                    $this->assertEquals(
+                        preg_match('/' . $value . '/', $resultData[$docName][$index]),
+                        1,
+                        sprintf("expected \"%s\" %s  (index %s) : %s \n %s", $docValues[$index], $docName, $index, print_r($resultData, true), $outFile)
+                    );
                 }
             }
         }
@@ -252,5 +258,3 @@ class TestExportRevision extends TestCaseDcpCommonFamily
         );
     }
 }
-
-?>

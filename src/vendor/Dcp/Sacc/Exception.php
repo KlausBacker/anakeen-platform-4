@@ -7,7 +7,7 @@ namespace Dcp\Sacc;
  * Exception used to checking manage user/group/role
  * @see \SearchAccount
  */
-class Exception extends \Dcp\Exception
+class Exception extends \Anakeen\Exception
 {
 
 

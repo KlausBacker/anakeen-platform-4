@@ -2,7 +2,6 @@
 
 namespace Dcp\Pu;
 
-
 class TestDcpDocumentFilter_IsEqual extends TestDcpDocumentFilter_common
 {
     protected static function getCommonImportFile()

@@ -6,7 +6,7 @@ namespace Anakeen\Core\Internal;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Core\Utils\Xml;
-use Dcp\Exception;
+use Anakeen\Exception;
 use SmartStructure\Fields\Fieldaccesslayer as FalFields;
 use SmartStructure\Fields\Fieldaccesslayerlist as FallFields;
 

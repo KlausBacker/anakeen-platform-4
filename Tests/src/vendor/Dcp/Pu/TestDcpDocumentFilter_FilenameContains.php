@@ -2,7 +2,6 @@
 
 namespace Dcp\Pu;
 
-
 use Anakeen\Core\SEManager;
 
 class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_common
@@ -73,7 +72,7 @@ class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_commo
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\FilenameContains($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\FilenameContains($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
     public function data_FilenameContains()
@@ -182,7 +181,7 @@ class TestDcpDocumentFilter_FilenameContains extends TestDcpDocumentFilter_commo
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\FilenameEquals($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\FilenameEquals($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
 
     public function data_FilenameEquals()

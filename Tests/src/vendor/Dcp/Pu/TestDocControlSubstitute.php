@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -46,7 +47,9 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         foreach ($incumbents as $aIncumbent) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($aIncumbent);
-            if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
+            if (!$u->isAffected()) {
+                $this->markTestIncomplete("cannot find $aIncumbent account");
+            }
             $err = $u->setSubstitute($nu->id);
             $this->assertEmpty($err, "substitute error: $err");
         }
@@ -60,9 +63,9 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         
         $names = $this->getSearchName($s);
         
-        $this->assertEquals(count($expectedDocNames) , $s->count() , sprintf("not expected items:\n\tfound  : %s \n\texpect : %s", implode(',', $names) , implode(',', $expectedDocNames)));
+        $this->assertEquals(count($expectedDocNames), $s->count(), sprintf("not expected items:\n\tfound  : %s \n\texpect : %s", implode(',', $names), implode(',', $expectedDocNames)));
         
-        $this->assertEquals(count($expectedDocNames) , count(array_intersect($names, $expectedDocNames)) , sprintf("not expected items.\n\t found  : %s\n\t expect : %s", implode(',', $names) , implode(',', $expectedDocNames)));
+        $this->assertEquals(count($expectedDocNames), count(array_intersect($names, $expectedDocNames)), sprintf("not expected items.\n\t found  : %s\n\t expect : %s", implode(',', $names), implode(',', $expectedDocNames)));
         $this->exitSudo();
     }
     /**
@@ -74,7 +77,9 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         foreach ($substituts as $incumbent => $aSubstitute) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($incumbent);
-            if (!$u->isAffected()) $this->markTestIncomplete("cannot find $incumbent account");
+            if (!$u->isAffected()) {
+                $this->markTestIncomplete("cannot find $incumbent account");
+            }
             $err = $u->setSubstitute($aSubstitute);
             $this->assertEmpty($err, "substitute error : $err");
         }
@@ -88,9 +93,9 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             
             $names = $this->getSearchName($s);
             
-            $this->assertEquals(count($expectNames) , $s->count() , sprintf("not expected items:\n\tfound  : %s \n\texpect : %s", implode(',', $names) , implode(',', $expectNames)));
+            $this->assertEquals(count($expectNames), $s->count(), sprintf("not expected items:\n\tfound  : %s \n\texpect : %s", implode(',', $names), implode(',', $expectNames)));
             
-            $this->assertEquals(count($expectNames) , count(array_intersect($names, $expectNames)) , sprintf("not expected items.\n\t found  : %s\n\t expect : %s", implode(',', $names) , implode(',', $expectNames)));
+            $this->assertEquals(count($expectNames), count(array_intersect($names, $expectNames)), sprintf("not expected items.\n\t found  : %s\n\t expect : %s", implode(',', $names), implode(',', $expectNames)));
             $this->exitSudo();
         }
     }
@@ -103,7 +108,9 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         foreach ($previousSubstitues as $incumbent => $aSubstitute) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($incumbent);
-            if (!$u->isAffected()) $this->markTestIncomplete("cannot find $incumbent account");
+            if (!$u->isAffected()) {
+                $this->markTestIncomplete("cannot find $incumbent account");
+            }
             $err = $u->setSubstitute($aSubstitute);
             $this->assertEmpty($err, "substitute error : $err");
         }
@@ -119,7 +126,9 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         foreach ($incumbents as $aIncumbent) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($aIncumbent);
-            if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
+            if (!$u->isAffected()) {
+                $this->markTestIncomplete("cannot find $aIncumbent account");
+            }
             $err = $u->setSubstitute($nu->id);
             $this->assertEmpty($err, "substitute error : $err");
         }

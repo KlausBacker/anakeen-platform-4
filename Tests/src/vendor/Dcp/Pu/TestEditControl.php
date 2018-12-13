@@ -29,7 +29,7 @@ class TestEditControl extends TestCaseDcpCommonFamily
      * Test withoutControl=true is retained after revise/modify
      *
      * @param $data
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      *
      * @dataProvider dataEditControlAfterReviseModify
      */

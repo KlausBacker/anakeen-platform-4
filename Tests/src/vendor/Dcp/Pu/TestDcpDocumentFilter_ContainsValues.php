@@ -7,7 +7,6 @@
 
 namespace Dcp\Pu;
 
-
 class TestDcpDocumentFilter_ContainsValues extends TestDcpDocumentFilter_common
 {
     const FAM = 'TEST_DCP_DOCUMENTFILTER_CONTAINSVALUES';
@@ -26,7 +25,7 @@ class TestDcpDocumentFilter_ContainsValues extends TestDcpDocumentFilter_common
         if (is_a($test["value"], LateNameResolver::class)) {
             $test["value"] = $test["value"]->value;
         }
-        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\ContainsValues($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)) , $test["expected"]);
+        $this->common_testFilter($test["fam"], new \Anakeen\Search\Filters\ContainsValues($test["attr"], $test["value"], (isset($test["flags"]) ? $test["flags"] : 0)), $test["expected"]);
     }
     
     public function data_ContainsValues()

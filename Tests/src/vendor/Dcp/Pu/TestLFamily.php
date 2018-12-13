@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -24,17 +25,17 @@ class TestLFamily extends TestCaseDcpCommonFamily
      */
     public function testWithoutDiacriticLFamily($searchKey, $expectedResultCount)
     {
-        $r = lfamily(self::$dbaccess, "TST_LFAMILY", $searchKey, 0, array() , "id", false);
-        $this->assertEquals($expectedResultCount, count($r) , sprintf("Return %s", print_r($r, true)));
+        $r = lfamily(self::$dbaccess, "TST_LFAMILY", $searchKey, 0, array(), "id", false);
+        $this->assertEquals($expectedResultCount, count($r), sprintf("Return %s", print_r($r, true)));
     }
     /**
      * @dataProvider dataTitleLFamily
      */
     public function testTitleLFamily($searchKey, array $expectedTitles)
     {
-        $r = lfamily(self::$dbaccess, "TST_LFAMILY", $searchKey, 0, array() , "id", false);
+        $r = lfamily(self::$dbaccess, "TST_LFAMILY", $searchKey, 0, array(), "id", false);
         $titles = array();
-        $this->assertTrue(is_array($r) , sprintf("Return %s", print_r($r, true)));
+        $this->assertTrue(is_array($r), sprintf("Return %s", print_r($r, true)));
         foreach ($r as $k => $possibilities) {
             $titles[] = $possibilities[2];
             $this->assertTrue(in_array($possibilities[2], $expectedTitles));
@@ -177,4 +178,3 @@ class TestLFamily extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

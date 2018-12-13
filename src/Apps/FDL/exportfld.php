@@ -22,7 +22,7 @@
  * @param string                        $outputPath                  where put export, if wfile outputPath is a directory
  * @param bool                          $exportInvisibleVisibilities set to true to export invisible attribute also
  *
- * @throws Dcp\Exception
+ * @throws \Anakeen\Exception
  * @throws Exception
  * @global string                       $fldid                       Http var : folder identifier to export
  * @global string                       $wprof                       Http var : (Y|N) if Y export associated profil also
@@ -147,7 +147,7 @@ function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvi
                 Http_DownloadFile($foutname, $fname, $fileMime, false, false, true);
             }
         }
-    } catch (Dcp\Exception $e) {
+    } catch (\Anakeen\Exception $e) {
         throw $e;
     }
 }

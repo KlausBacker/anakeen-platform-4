@@ -41,7 +41,7 @@ class GlobalParametersManager
      * @param string $varName
      *
      * @return string|null
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public static function getDbAccessValue($varName)
     {
@@ -57,7 +57,7 @@ class GlobalParametersManager
         }
         if (!$included) {
             fprintf(STDERR, "Error: %s", $filename);
-            throw new \Dcp\Exception("FILE0005", $filename);
+            throw new \Anakeen\Exception("FILE0005", $filename);
         }
 
         if (!isset($$varName)) {

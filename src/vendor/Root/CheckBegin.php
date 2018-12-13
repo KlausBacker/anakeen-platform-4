@@ -117,7 +117,7 @@ class CheckBegin extends CheckData
                         $fromId = $me['fromid'];
                         $fromName = \Anakeen\Core\SEManager::getNameFromId($fromId);
                         if ($fromName == '') {
-                            throw new \Dcp\Exception("FAM0603", $fromId, $this->famName);
+                            throw new \Anakeen\Exception("FAM0603", $fromId, $this->famName);
                         }
                         if (($fromName != $this->parentName) && ($fromId != $this->parentName)) {
                             //print_r($p);

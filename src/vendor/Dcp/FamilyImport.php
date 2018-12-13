@@ -88,7 +88,7 @@ class FamilyImport
         if ($tdoc["fromid"] > 0) {
             $fromName = \Anakeen\Core\SEManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
-                throw new \Dcp\Exception("FAM0601", $tdoc["fromid"], $tdoc["name"]);
+                throw new \Anakeen\Exception("FAM0601", $tdoc["fromid"], $tdoc["name"]);
             }
             $tdoc["fromname"] = $fromName;
             $phpAdoc->Set("fromFile", ucfirst(strtolower($fromName)));
@@ -110,7 +110,7 @@ class FamilyImport
         } else {
             $parentFile = sprintf("%s/%s/SmartStructure/Smart%d.php", DEFAULT_PUBDIR, Settings::DocumentGenDirectory, $tdoc["fromid"]);
             if ((!file_exists($parentFile)) || filesize($parentFile) == 0) {
-                throw new \Dcp\Exception("FAM0600", $parentFile, $tdoc["name"]);
+                throw new \Anakeen\Exception("FAM0600", $parentFile, $tdoc["name"]);
             }
             $phpAdoc->Set("fromid", $tdoc["fromid"]);
             if ($tdoc["classname"] != "Doc" . $tdoc["fromid"]) {
@@ -358,7 +358,7 @@ class FamilyImport
                             $pM->parse($v->phpfunc);
                             $error = $pM->getError();
                             if ($error) {
-                                throw new \Dcp\Exception($error);
+                                throw new \Anakeen\Exception($error);
                             }
                             if (!$pM->outputString) {
                                 $oAid = $v->id;
@@ -556,7 +556,7 @@ class FamilyImport
             $err = self::__phpLintWriteFile($dfile, $phpAdoc->gen());
 
             if ($err != '') {
-                throw new \Dcp\Exception("CORE0023", $dfile, $err);
+                throw new \Anakeen\Exception("CORE0023", $dfile, $err);
             }
         }
     }
@@ -570,7 +570,7 @@ class FamilyImport
         } else {
             $fromName = \Anakeen\Core\SEManager::getNameFromId($tdoc["fromid"]);
             if ($fromName == '') {
-                throw new \Dcp\Exception("FAM0602", $tdoc["fromid"], $tdoc["name"]);
+                throw new \Anakeen\Exception("FAM0602", $tdoc["fromid"], $tdoc["name"]);
             }
             $phpAdoc->Set("extend", ucwords(strtolower(str_replace(array(
                 ":",
@@ -831,7 +831,7 @@ class FamilyImport
 
         $err = self::__phpLintWriteFile($attrfile, self::AttrIdtoPhp($dbaccess, $tdoc));
         if ($err != '') {
-            throw new \Dcp\Exception("CORE0024", $attrfile, $err);
+            throw new \Anakeen\Exception("CORE0024", $attrfile, $err);
         }
 
         return $dfile;

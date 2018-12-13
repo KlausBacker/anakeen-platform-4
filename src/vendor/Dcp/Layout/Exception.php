@@ -2,7 +2,7 @@
 
 namespace Dcp\Layout;
 
-class Exception extends \Dcp\Exception
+class Exception extends \Anakeen\Exception
 {
     /**
      * @var string corrupted file which content generation

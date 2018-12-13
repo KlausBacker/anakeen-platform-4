@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -30,10 +31,10 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
     public function testDateTransfert($docid, array $expectedValues)
     {
         $origin = new_doc(self::$dbaccess, $docid);
-        $this->assertTrue($origin->isAlive() , "cannot find $docid document");
+        $this->assertTrue($origin->isAlive(), "cannot find $docid document");
         
         $target = createDoc(self::$dbaccess, self::testFamily);
-        $this->assertTrue(is_object($target) , sprintf("cannot create %s ", self::testFamily));
+        $this->assertTrue(is_object($target), sprintf("cannot create %s ", self::testFamily));
         
         $err = $target->transfertValuesFrom($origin);
         $this->assertEmpty($err, sprintf("cannot transfert values from %s", self::testFamily));
@@ -52,7 +53,7 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
     public function testDateCopy($docid, array $expectedValues)
     {
         $origin = new_doc(self::$dbaccess, $docid);
-        $this->assertTrue($origin->isAlive() , "cannot find $docid document");
+        $this->assertTrue($origin->isAlive(), "cannot find $docid document");
         $target = $origin->duplicate();
         $target->transfertValuesFrom($origin);
         $this->verifyValues($target, $expectedValues);
@@ -62,8 +63,11 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
     private function verifyValues(\Anakeen\Core\Internal\SmartElement $test, array $expectedValues)
     {
         foreach ($expectedValues as $k => $expectValue) {
-            if (is_array($expectValue)) $targetValue = $test->getMultipleRawValues($k);
-            else $targetValue = $test->getRawValue($k);
+            if (is_array($expectValue)) {
+                $targetValue = $test->getMultipleRawValues($k);
+            } else {
+                $targetValue = $test->getRawValue($k);
+            }
             $this->assertEquals($expectValue, $targetValue, sprintf("wrong value %s", $k));
         }
     }
@@ -98,4 +102,3 @@ class TestAttributeDate extends TestCaseDcpCommonFamily
         );
     }
 }
-?>

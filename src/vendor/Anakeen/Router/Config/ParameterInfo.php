@@ -51,7 +51,7 @@ class ParameterInfo
         }
 
         if ($err) {
-            throw new \Dcp\Exception($err);
+            throw new \Anakeen\Exception($err);
         }
 
         $pval = new  Param();

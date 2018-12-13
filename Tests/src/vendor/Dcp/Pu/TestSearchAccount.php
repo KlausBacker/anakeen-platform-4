@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -32,8 +33,12 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     public function testSearchByRole($roleFilter, $groupFilter, array $expectedAccounts)
     {
         $s = new \SearchAccount();
-        if ($roleFilter) $s->addRoleFilter($roleFilter);
-        if ($groupFilter) $s->addGroupFilter($groupFilter);
+        if ($roleFilter) {
+            $s->addRoleFilter($roleFilter);
+        }
+        if ($groupFilter) {
+            $s->addGroupFilter($groupFilter);
+        }
         $s->setReturnType($s::returnAccount);
         /**
          * @var \AccountList $al
@@ -49,12 +54,12 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
          */
         foreach ($al as $account) {
             $login = $account->login;
-            $this->assertTrue(in_array($login, $expectedAccounts) , sprintf("login <%s> must not be present : %s", $login, $lLogin));
+            $this->assertTrue(in_array($login, $expectedAccounts), sprintf("login <%s> must not be present : %s", $login, $lLogin));
             $loginFounds[] = $login;
         }
         
         foreach ($expectedAccounts as $expectLogin) {
-            $this->assertTrue(in_array($expectLogin, $loginFounds) , sprintf("login <%s> must be present", $expectLogin));
+            $this->assertTrue(in_array($expectLogin, $loginFounds), sprintf("login <%s> must be present", $expectLogin));
         }
     }
     
@@ -75,8 +80,12 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     public function testSearchByRoleDocument($roleFilter, $groupFilter, array $expectedAccounts)
     {
         $s = new \SearchAccount();
-        if ($roleFilter) $s->addRoleFilter($roleFilter);
-        if ($groupFilter) $s->addGroupFilter($groupFilter);
+        if ($roleFilter) {
+            $s->addRoleFilter($roleFilter);
+        }
+        if ($groupFilter) {
+            $s->addGroupFilter($groupFilter);
+        }
         $s->setReturnType($s::returnDocument);
         /**
          * @var \DocumentList $al
@@ -90,14 +99,17 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
          */
         foreach ($al as $doc) {
             $login = '';
-            if ($doc->getAttribute("us_login")) $login = $doc->getRawValue("us_login");
-            elseif ($doc->getAttribute("role_login")) $login = $doc->getRawValue("role_login");
-            $this->assertTrue(in_array($login, $expectedAccounts) , sprintf("login <%s> #%s must not be present", $login, $doc->id));
+            if ($doc->getAttribute("us_login")) {
+                $login = $doc->getRawValue("us_login");
+            } elseif ($doc->getAttribute("role_login")) {
+                $login = $doc->getRawValue("role_login");
+            }
+            $this->assertTrue(in_array($login, $expectedAccounts), sprintf("login <%s> #%s must not be present", $login, $doc->id));
             $loginFounds[] = $login;
         }
         
         foreach ($expectedAccounts as $expectLogin) {
-            $this->assertTrue(in_array($expectLogin, $loginFounds) , sprintf("login <%s> must be present", $expectLogin));
+            $this->assertTrue(in_array($expectLogin, $loginFounds), sprintf("login <%s> must be present", $expectLogin));
         }
     }
     /**
@@ -134,7 +146,9 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     {
         $s = new \SearchAccount();
         $s->addFilter($filter, $filterArg);
-        if ($accountType) $s->setTypeFilter($accountType);
+        if ($accountType) {
+            $s->setTypeFilter($accountType);
+        }
         $s->setOrder("login");
         $s->setReturnType($s::returnAccount);
         /**
@@ -153,7 +167,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             $this->assertEquals($expectedAccounts[$k], $login, sprintf("%s login must not be present : found %s", $login, $ll));
             $k++;
         }
-        $this->assertEquals(count($expectedAccounts) , count($al) , sprintf("not same count expected %d : %s", count($expectedAccounts) , $ll));
+        $this->assertEquals(count($expectedAccounts), count($al), sprintf("not same count expected %d : %s", count($expectedAccounts), $ll));
     }
     /**
      * @dataProvider dataFilterViewControl
@@ -183,7 +197,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             $k++;
         }
         
-        $this->assertEquals(count($expectedAccounts) , count($al) , sprintf("not same count expected %d : %s", count($expectedAccounts) , $ll));
+        $this->assertEquals(count($expectedAccounts), count($al), sprintf("not same count expected %d : %s", count($expectedAccounts), $ll));
         $this->exitSudo();
     }
     /**
@@ -191,7 +205,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testDocName2Login($docName, $login)
     {
-        $this->assertEquals(mb_strtolower($login) , \SearchAccount::getLoginFromDocName($docName) , "logical name convert to login failed");
+        $this->assertEquals(mb_strtolower($login), \SearchAccount::getLoginFromDocName($docName), "logical name convert to login failed");
     }
     /**
      * @dataProvider dataFilterByFamily
@@ -212,7 +226,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         
         $ll = $this->getAccounlLogin($al);
         
-        $this->assertEquals($expectedCount, count($al) , sprintf("not same count expected %d : %s", $expectedCount, $ll));
+        $this->assertEquals($expectedCount, count($al), sprintf("not same count expected %d : %s", $expectedCount, $ll));
         $this->exitSudo();
     }
     /**
@@ -233,7 +247,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         
         $ll = $this->getAccounlLogin($al);
         
-        $this->assertEquals($expectedCount, count($al) , sprintf("not same count expected %d : %s", $expectedCount, $ll));
+        $this->assertEquals($expectedCount, count($al), sprintf("not same count expected %d : %s", $expectedCount, $ll));
     }
     
     public function dataFilterByFamily()

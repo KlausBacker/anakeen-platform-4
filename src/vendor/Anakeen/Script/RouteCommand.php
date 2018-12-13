@@ -27,7 +27,7 @@ class RouteCommand
      *
      * @return string
      * @throws \Anakeen\Router\Exception
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function requestRoute($routeId, $args)
     {

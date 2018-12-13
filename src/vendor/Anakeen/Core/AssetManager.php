@@ -10,7 +10,7 @@ class AssetManager
     {
         $wversion = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         if (!is_file($file)) {
-            throw new \Dcp\Exception("Asset File $file not found");
+            throw new \Anakeen\Exception("Asset File $file not found");
         }
         $path = realpath($file);
 
@@ -23,7 +23,7 @@ class AssetManager
         }
         if (!is_link($dest)) {
             if (!symlink($path, $dest)) {
-                 throw new \Dcp\Exception(sprintf("Asset : Cannot link [%s] -> [%s]", $path, $dest));
+                 throw new \Anakeen\Exception(sprintf("Asset : Cannot link [%s] -> [%s]", $path, $dest));
             }
         }
         return sprintf("/assets/%s.%s", $encodedEntry, $fileExtension);

@@ -5,6 +5,7 @@
 */
 
 namespace Dcp\Pu;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -36,7 +37,7 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
     public function testRecurisveSearch($dirId, $famId, $sublevel, $expectedName)
     {
         $dir = new_Doc(self::$dbaccess, $dirId);
-        $this->assertTrue($dir->isAlive() , sprintf("Could not get search with id '%s'.", $dirId));
+        $this->assertTrue($dir->isAlive(), sprintf("Could not get search with id '%s'.", $dirId));
         
         $search = new \SearchDoc(self::$dbaccess, $famId);
         $search->setObjectReturn();
@@ -48,10 +49,10 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
             $res[] = $doc->name;
         }
         
-        $this->assertEquals(count($expectedName) , $search->count() , sprintf("returns %s\n expected %s", print_r($res, true) , print_r($expectedName, true)));
+        $this->assertEquals(count($expectedName), $search->count(), sprintf("returns %s\n expected %s", print_r($res, true), print_r($expectedName, true)));
         
         foreach ($expectedName as $name) {
-            $this->assertTrue(in_array($name, $res) , sprintf("%s not found, returns %s\n expected %s", $name, print_r($res, true) , print_r($expectedName, true)));
+            $this->assertTrue(in_array($name, $res), sprintf("%s not found, returns %s\n expected %s", $name, print_r($res, true), print_r($expectedName, true)));
         }
     }
     /**
@@ -65,7 +66,7 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
     public function testCountRecurisveSearch($dirId, $famId, $sublevel, $expectedName)
     {
         $dir = new_Doc(self::$dbaccess, $dirId);
-        $this->assertTrue($dir->isAlive() , sprintf("Could not get search with id '%s'.", $dirId));
+        $this->assertTrue($dir->isAlive(), sprintf("Could not get search with id '%s'.", $dirId));
         
         $search = new \SearchDoc(self::$dbaccess, $famId);
         $search->setObjectReturn();
@@ -73,7 +74,7 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
         $search->setRecursiveSearch(true, $sublevel);
         $c = $search->onlyCount();
         
-        $this->assertEquals(count($expectedName) , $c, sprintf("not expected cound"));
+        $this->assertEquals(count($expectedName), $c, sprintf("not expected cound"));
     }
     public function dataRecurisveSearch()
     {
@@ -223,4 +224,3 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
         );
     }
 }
-?>
