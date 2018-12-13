@@ -7,7 +7,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 
 use Anakeen\Core\Utils\Xml;
-use Dcp\Exception;
+use Anakeen\Exception;
 use Dcp\Ui\RenderConfigManager;
 use SmartStructure\Fields\Cvdoc as CvDocFields;
 use SmartStructure\Fields\Mask as MaskFields;

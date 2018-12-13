@@ -80,7 +80,7 @@ class TestMask extends TestCaseDcpCommonFamily
         try {
             self::importDocument($file);
             $this->assertTrue(false, "Mask import errors must not be empty");
-        } catch (\Dcp\Exception $e) {
+        } catch (\Anakeen\Exception $e) {
             foreach ($expectedErrors as $error) {
                 $this->assertContains($error, $e->getMessage(), sprintf("mask apply not correct error %s", $e->getMessage()));
             }

@@ -267,7 +267,7 @@ class Autocomplete
                 }
             }
         }
-        throw new \Dcp\Exception(sprintf("No find attribute argument \"%s\" for autocomplete", $name));
+        throw new \Anakeen\Exception(sprintf("No find attribute argument \"%s\" for autocomplete", $name));
     }
 
     protected function legacyAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)

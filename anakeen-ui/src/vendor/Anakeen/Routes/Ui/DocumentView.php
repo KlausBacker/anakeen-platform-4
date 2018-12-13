@@ -373,7 +373,7 @@ class DocumentView
      * @param $viewId
      * @return \SmartStructure\Mask
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected function getMask($viewId)
     {
@@ -391,7 +391,7 @@ class DocumentView
             /** @var \SmartStructure\Mask $msk */
             $msk = SEManager::getDocument($mskId);
             if (!$msk) {
-                throw new \Dcp\Exception("UI0014", $mskId, $cvDoc);
+                throw new \Anakeen\Exception("UI0014", $mskId, $cvDoc);
             }
             SEManager::cache()->addDocument($msk);
             return $msk;
