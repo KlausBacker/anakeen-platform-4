@@ -44,6 +44,7 @@ beautify:
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
+	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}Tests
 
 lint:
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs

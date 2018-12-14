@@ -11,7 +11,7 @@ class TestCaseWorkflowConfig extends TestCaseConfig
      *
      * @param string|string[] $file file path
      *
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected static function importWorkflowConfiguration($file)
     {
@@ -20,13 +20,13 @@ class TestCaseWorkflowConfig extends TestCaseConfig
             $realfile = static::$testDataDirectory . "/" . $file;
         }
         if (!file_exists($realfile)) {
-            throw new \Dcp\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
+            throw new \Anakeen\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new ImportWorkflowConfiguration();
         $oImport->importAll($realfile);
         $err = $oImport->getErrorMessage();
         if ($err) {
-            throw new \Dcp\Exception($err);
+            throw new \Anakeen\Exception($err);
         }
     }
 }
