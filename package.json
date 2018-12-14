@@ -35,6 +35,8 @@
   "devDependencies": {
     "eslint": "^5.9.0",
     "eslint-plugin-prettier": "^3.0.0",
-    "prettier": "^1.15.2"
+    "opn": "^5.4.0",
+    "prettier": "^1.15.2",
+    "sax": "^1.2.4"
   }
 }
