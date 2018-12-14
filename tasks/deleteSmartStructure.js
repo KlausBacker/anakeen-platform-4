@@ -10,13 +10,18 @@ const getBaseAutorisation = (exports.getBaseAutorisation = (
   return "Basic " + Buffer.from(username + ":" + password).toString("base64");
 });
 
-exports.deleteSmartStructure = ({ name, username, password, contextUrl }) => {
+exports.deleteSmartStructure = ({
+  name,
+  contextUsername,
+  contextPassword,
+  contextUrl
+}) => {
   return gulp.task("deleteSmartStructure", async () => {
     const DELETE_SMARTSTRUCTURE_API = `/api/v2/devel/smart/structures/${name}`;
     const url = `${urlJoin(contextUrl, DELETE_SMARTSTRUCTURE_API)}`;
     return fetch(url, {
       headers: {
-        Authorization: getBaseAutorisation(username, password)
+        Authorization: getBaseAutorisation(contextUsername, contextPassword)
       },
       method: "DELETE"
     })
