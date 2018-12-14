@@ -13,7 +13,8 @@
                     :data-source-ref="'enumGrid'"
                     :pageable="{ pageSizes: [10,20,40,50]}"
                     :filterable-mode="'row'"
-                    :filterable-extra="false">
+                    :filterable-extra="false"
+                    @hook:mounted="bindFilters">
             <kendo-grid-column :field="'name'" :title="'<b>Set name</b>'":filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'key'" :title="'<b>Key</b>'"  :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'label'" :title="'<b>Label</b>'"  :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
