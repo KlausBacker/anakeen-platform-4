@@ -5,9 +5,4 @@
         <ui:render-access class="{{namespace}}\Render\{{ssName}}Access"/>
     </ui:render>
     {{/withRender}}
-    {{#workflow}}
-    <smart:structure-configuration ref="{{SSNAME}}">
-        <smart:default-workflow ref="{{WFL}}"></smart:default-workflow>
-    </smart:structure-configuration>
-    {{/workflow}}
 </smart:config>

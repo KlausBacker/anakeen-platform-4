@@ -178,10 +178,6 @@ const builder = {
     default: true,
     type: "boolean"
   },
-  workflow: {
-    description: "workflow logical name",
-    type: "string"
-  },
   withAutocompletion: {
     description: "add an autocompletion",
     type: "boolean",
