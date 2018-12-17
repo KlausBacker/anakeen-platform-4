@@ -86,6 +86,12 @@ beautify: $(NODE_MODULE_PATH)
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
 
+lint: $(NODE_MODULE_PATH)
+	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+
 ########################################################################################################################
 ##
 ## MAKEFILE INTERNALS

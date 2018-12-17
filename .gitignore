@@ -3,3 +3,8 @@ src/public/
 Makefile.local
 .idea/
 ide/vendor/
+/Tests/autotest/autotest.override.sh
+/Tests/autotest/outputs/*
+*app
+.php_cs.cache
+yarn-error.log
