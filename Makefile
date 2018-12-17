@@ -92,6 +92,9 @@ lint: $(NODE_MODULE_PATH)
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
+checkXML: $(NODE_MODULE_PATH)
+	${ANAKEEN_CLI_BIN} check -s .
+
 ########################################################################################################################
 ##
 ## MAKEFILE INTERNALS
