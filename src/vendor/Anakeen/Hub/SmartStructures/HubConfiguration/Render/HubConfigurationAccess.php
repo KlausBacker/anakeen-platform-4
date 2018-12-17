@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfiguration\Render;
+namespace Anakeen\Hub\SmartStructures\HubConfiguration\Render;
 
 class HubConfigurationAccess implements \Dcp\Ui\IRenderConfigAccess
 {

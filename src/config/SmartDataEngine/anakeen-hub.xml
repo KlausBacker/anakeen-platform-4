@@ -2,7 +2,7 @@
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes namespace="Anakeen">
         <sde:route name="hub">
-            <sde:callable>\Anakeen\Hub\IHM\Hub</sde:callable>
+            <sde:callable>\Anakeen\Hub\Routes\Hub</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/</sde:pattern>
             <sde:description>Get Hub page</sde:description>
@@ -11,7 +11,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubAdmin">
-            <sde:callable>\Anakeen\Hub\IHM\HubAdmin</sde:callable>
+            <sde:callable>\Anakeen\Hub\Routes\HubAdmin</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/admin/</sde:pattern>
             <sde:description>Get Hub administration page</sde:description>
@@ -20,7 +20,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubAdmConfigStruct">
-            <sde:callable>\Anakeen\Hub\IHM\Routes\HubAdmConfigStruct</sde:callable>
+            <sde:callable>\Anakeen\Hub\Routes\HubAdmConfigStruct</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/admin/configurationStructures/</sde:pattern>
             <sde:description>Get inherited Smart Structures of the hub config smart structures </sde:description>
@@ -29,7 +29,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubConfig">
-            <sde:callable>\Anakeen\Hub\IHM\Routes\MainConfiguration</sde:callable>
+            <sde:callable>\Anakeen\Hub\Routes\MainConfiguration</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/config/</sde:pattern>
             <sde:description>Get initial config of the hub</sde:description>
@@ -38,7 +38,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubElement">
-            <sde:callable>\Anakeen\Hub\IHM\Routes\HubElements</sde:callable>
+            <sde:callable>\Anakeen\Hub\Routes\HubElements</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/elements/</sde:pattern>
             <sde:description>Get elements hub activities and visibilities content</sde:description>

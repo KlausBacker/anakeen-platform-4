@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Hub\IHM;
+namespace Anakeen\Hub\Routes;
 
 use Anakeen\Core\SEManager;
 use Dcp\Ui\UIGetAssetPath;

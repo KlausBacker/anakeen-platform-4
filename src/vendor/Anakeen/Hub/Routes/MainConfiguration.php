@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\Hub\IHM\Routes;
+namespace Anakeen\Hub\Routes\HubAdmin;
 
 use Anakeen\Core\ContextManager;
 
