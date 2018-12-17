@@ -17,28 +17,12 @@ CONTROL_CONTEXT=$(ctx)
 
 ##bin
 YARN_BIN=yarn
-DEVTOOL_BIN=php ./anakeen-devtool.phar
-ANAKEEN_CLI=node ./node_modules/@anakeen/anakeen-cli
+ANAKEEN_CLI_BIN=node ./node_modules/@anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
+CS_BIN=php ./ide/vendor/bin/phpcs
 COMPOSER_BIN=composer
 
 -include Makefile.local
-
-########################################################################################################################
-##
-## devtools
-##
-########################################################################################################################
-
-$(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
-	$(YARN_BIN) install
-	touch "$@"
-
-install: $(JS_CONF_PATH)/yarn.lock ## Install deps (js an php)
-
-stub: ## Generate stubs
-	$(ANAKEEN_CLI) generateStubs
-
 ########################################################################################################################
 ##
 ## BUILD TARGET
@@ -47,14 +31,27 @@ stub: ## Generate stubs
 $(NODE_MODULE_PATH):
 	$(YARN_BIN) install
 
-app: $(NODE_MODULE_PATH) $(JS_CONF_PATH)/yarn.lock
+$(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
+	$(YARN_BIN) install
+	touch "$@"
+
+install: $(NODE_MODULE_PATH) $(JS_CONF_PATH)/yarn.lock ## Install deps (js an php)
+
+compile: $(NODE_MODULE_PATH) install
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	$(YARN_BIN) run buildJs
-	$(YARN_BIN) run build
 
-deploy: app ## deploy sample
-	${DEVTOOL_BIN} deploy -u $(CONTROL_PROTOCOL)://${CONTROL_USER}:${CONTROL_PASSWORD}@${CONTROL_URL} -c ${CONTROL_CONTEXT} -p ${CONTROL_PORT} -w ${MODULE_NAME}*.app -- --force
-	make clean
+app: compile
+	${ANAKEEN_CLI_BIN} build
+
+autotest: compile
+	${ANAKEEN_CLI_BIN} build --auto-release
+
+deploy: compile
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./ -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
+stub: ## Generate stubs
+	$(ANAKEEN_CLI) generateStubs
 
 ########################################################################################################################
 ##
@@ -63,7 +60,8 @@ deploy: app ## deploy sample
 ########################################################################################################################
 
 clean: ## clean the local pub
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
+	rm -fr ./src/public/Anakeen/
 	rm -rf ${MODULE_NAME}*.app
 
 ########################################################################################################################
@@ -72,8 +70,8 @@ clean: ## clean the local pub
 ##
 ########################################################################################################################
 
-po: ## extract the po
-	${DEVTOOL_BIN} extractPo -s $(SAMPLE_SRC_PATH)/ -o $(MK_DIR)/$(SAMPLE_SRC_PATH)/src/
+po: $(NODE_MODULE_PATH)
+	${ANAKEEN_CLI_BIN} extractPo -s .
 
 ########################################################################################################################
 ##
@@ -81,9 +79,11 @@ po: ## extract the po
 ##
 ########################################################################################################################
 
-beautify:
+beautify: $(NODE_MODULE_PATH)
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
 	$(YARN_BIN) run beautify
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
 
 ########################################################################################################################
