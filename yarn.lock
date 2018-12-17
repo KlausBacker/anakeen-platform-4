@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@^1.0.1-1544839770":
+"@anakeen/anakeen-cli@latest":
   version "1.0.1-1544839770"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1544839770.tgz#eac11f84658fb8d69d6110e8d5be7cf4bbbfa19f"
   integrity sha512-klIDzqgvExGxffGWu8cMHrd+1Fs4bZ6HhmHztFKArR/koCQ45ekvXlgCUIqybKzecboHODeDQ0XOjxvwfxAbGQ==
@@ -34,14 +34,14 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@1.0.0-1544534556":
+"@anakeen/ank-components@latest":
   version "1.0.0-1544534556"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1544534556.tgz#b1bf59438dfc690d845dcdf69df2a955982bcd0f"
   integrity sha512-0Qmj/FUXQXrvrQtstHDVndPTYT+v1ypJGt3PotKR+KcBUfo75tJeNBdZ08S6s1F2AQ8J+aahJlrVzgyQJsglkg==
   dependencies:
     vue-gettext "^2.1.1"
 
-"@anakeen/webpack-conf@1.0.0-1543853095":
+"@anakeen/webpack-conf@latest":
   version "1.0.0-1543853095"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1543853095.tgz#94d0bf7cff78ad1b952de69876f42e0ede615354"
   integrity sha512-F+KKDh5goHCWopYpWfowFgzskX0AD5/AIQeD1Axn8ayGuByBaR4NgEQa0q6q9Yp1SCDr4F0R6qLUgnLvtPKQ9g==

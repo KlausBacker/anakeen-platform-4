@@ -20,9 +20,9 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.0.1-1544839770",
-    "@anakeen/ank-components": "1.0.0-1544534556",
-    "@anakeen/webpack-conf": "1.0.0-1543853095",
+    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/ank-components": "latest",
+    "@anakeen/webpack-conf": "latest",
     "@progress/kendo-ui": "^2018.2.806",
     "axios": "^0.18.0",
     "document-register-element": "^1.8.1",
