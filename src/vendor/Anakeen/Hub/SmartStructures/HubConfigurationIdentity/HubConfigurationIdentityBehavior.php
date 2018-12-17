@@ -1,11 +1,11 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfigurationIdentity;
+namespace Anakeen\Hub\SmartStructures\HubConfigurationIdentity;
 
 use SmartStructure\Fields\Hubconfigurationidentity as HubConfigurationIdentityFields;
 use \Anakeen\SmartStructures\HubConfigurationSlot\HubConfigurationSlotSmartStructure;
 
-class HubConfigurationIdentitySmartStructure extends \SmartStructure\Hubconfigurationslot
+class HubConfigurationIdentityBehavior extends \SmartStructure\Hubconfigurationslot
 {
 
     public function registerHooks()

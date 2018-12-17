@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HUBCONFIGURATIONIDENTITY" label="Identity badge configuration">
         <smart:extends ref="HUBCONFIGURATIONSLOT"/>
         <smart:icon file="HubConfigurationIdentity.png"/>
-        <smart:class>Anakeen\SmartStructures\HubConfigurationIdentity\HubConfigurationIdentitySmartStructure</smart:class>
+        <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationIdentity\HubConfigurationIdentityBehavior</smart:class>
 
         <smart:fields>
             <smart:field-set name="identity_parameters" type="frame" label="Identity component parameters" access="ReadWrite">

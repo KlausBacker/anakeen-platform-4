@@ -1,10 +1,10 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfigurationSlot;
+namespace Anakeen\Hub\SmartStructures\HubConfigurationSlot;
 
 use SmartStructure\Fields\Hubconfigurationslot as HubConfigurationSlotFields;
 
-class HubConfigurationSlotSmartStructure extends \SmartStructure\Hubconfiguration
+class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
 {
     public function registerHooks()
     {

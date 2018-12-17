@@ -1,11 +1,11 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfigurationLogout;
+namespace Anakeen\Hub\SmartStructures\HubConfigurationLogout;
 
 use SmartStructure\Fields\Hubconfigurationlogout as HubConfigurationLogoutFields;
 use \Anakeen\SmartStructures\HubConfigurationSlot\HubConfigurationSlotSmartStructure;
 
-class HubConfigurationLogoutSmartStructure extends \SmartStructure\Hubconfigurationslot
+class HubConfigurationLogoutBehavior extends \SmartStructure\Hubconfigurationslot
 {
 
     public function registerHooks()

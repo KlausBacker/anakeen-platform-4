@@ -1,12 +1,12 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfiguration;
+namespace Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationAutocompletion;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\SmartAutocompleteRequest;
 use Anakeen\SmartAutocompleteResponse;
 
-class HubConfigurationAutocomplete
+class HubConfigurationAutocompletion
 {
     public static function getLanguages(SmartAutoCompleteRequest $request, SmartAutocompleteResponse $response, $args) : SmartAutocompleteResponse
     {

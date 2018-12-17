@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HUBCONFIGURATIONLOGOUT" label="Logout component configuration">
         <smart:extends ref="HUBCONFIGURATIONSLOT"/>
         <smart:icon file="HubConfigurationLogout.png"/>
-        <smart:class>Anakeen\SmartStructures\HubConfigurationLogout\HubConfigurationLogoutSmartStructure</smart:class>
+        <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationLogout\HubConfigurationLogoutBehavior</smart:class>
 
         <smart:fields>
             <smart:field-set name="logout_parameters" type="frame" label="Logout component parameters" access="ReadWrite">

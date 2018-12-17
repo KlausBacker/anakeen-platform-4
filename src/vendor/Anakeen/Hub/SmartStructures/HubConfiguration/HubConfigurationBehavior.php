@@ -1,11 +1,11 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubConfiguration;
+namespace Anakeen\Hub\SmartStructures\HubConfiguration;
 
 use Anakeen\Core\ContextManager;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
-class HubConfigurationSmartStructure extends \Anakeen\SmartElement
+class HubConfigurationBehavior extends \Anakeen\SmartElement
 {
     public function registerHooks()
     {
