@@ -23,15 +23,21 @@ function parseXML(data, lineNumber, columnNumber, contextUrl, rules) {
     return {};
   };
   let tagTab = [];
+  let tagAttributeName = "";
   let tagName = "";
   let url = "";
 
   parser.onopentag = function(node) {
     tagTab.push(node);
-    if (node.name.split(":")[1] in rules.rules) {
-      tagName = node.attributes.name.value;
+    tagName = node.name.split(":")[1];
+    if (tagName in rules.rules) {
+      if (tagName === "accesses") {
+        tagAttributeName = node.attributes.namespace.value;
+      } else {
+        tagAttributeName = node.attributes.name.value;
+      }
       url = rules.rules[node.name.split(":")[1]].url;
-      url = url.replace(/(<identifier>)+/g, tagName);
+      url = url.replace(/(<identifier>)+/g, tagAttributeName);
     }
     if (parser.line === lineNumber) {
       opn(`${urlJoin(contextUrl, url)}`);
