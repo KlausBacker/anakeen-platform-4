@@ -13,7 +13,8 @@ module.exports = () => {
       Helppage: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Helppage/Render/helppage.js')],
       Mask: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Mask/Render/MaskView.js')],
       IuserGroup: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/changeGroupView.js')],
-      Iuser: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/mainIuser.js')]
+      Iuser: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Iuser/Render/mainIuser.js')],
+      Task: [path.resolve(__dirname, '../anakeen-ui/src/vendor/Anakeen/SmartStructures/Task/Render/task.js')]
     },
     buildPath: PUBLIC_PATH,
     customParts: [

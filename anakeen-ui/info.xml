@@ -75,8 +75,8 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.views.xml">
             <label>DIR Structure view</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.views.xml">
-            <label>EXEC Structure view</label>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.views.xml">
+            <label>TASK Structure view</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.views.xml">
             <label>IMAGE Structure view</label>
@@ -147,8 +147,8 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Dir/dir.views.xml">
             <label>DIR Structure view</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.views.xml">
-            <label>EXEC Structure view</label>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.views.xml">
+            <label>TASK Structure view</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Image/image.views.xml">
             <label>IMAGE Structure view</label>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="Ui">
+    <sde:route name="Ui:Smart:Task:CrontabCheck">
+      <sde:priority>1</sde:priority>
+      <sde:callable>\Anakeen\SmartStructures\Task\Routes\CrontabCheck</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/admin/task/crontab/[{crontab:.*}]</sde:pattern>
+      <sde:description>Check crontab expression</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+</sde:config>
