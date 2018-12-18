@@ -34,10 +34,10 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1544534556"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1544534556.tgz#b1bf59438dfc690d845dcdf69df2a955982bcd0f"
-  integrity sha512-0Qmj/FUXQXrvrQtstHDVndPTYT+v1ypJGt3PotKR+KcBUfo75tJeNBdZ08S6s1F2AQ8J+aahJlrVzgyQJsglkg==
+"@anakeen/ank-components@^1.0.0-1544534556":
+  version "1.0.0-1545131196"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1545131196.tgz#d5d8403e69b6601e7bceba69319be7d8b1e05460"
+  integrity sha512-FpKCqcpyqrAD2dT4uC82s1eM4SVaDKUjjzNf4TGKgKiqvt7LyE00tfXIhZEBBgJ41f04wBsq0vjHXGEF7LvM4A==
   dependencies:
     vue-gettext "^2.1.1"
 
@@ -92,6 +92,18 @@
     chalk "^2.0.0"
     esutils "^2.0.2"
     js-tokens "^4.0.0"
+
+"@progress/kendo-base-components-vue-wrapper@2018.3.1025":
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.3.1025.tgz#17072b6b7d4fd569e85aa5692978daf0bd992496"
+  integrity sha512-UlmfSpplyS94rKlETgfbMD0Bzu8YeAPVrWqsxgOC9+yvLwyRb4P8dTbkltjqYRdul1jMUiXaHCVlaLw1sRyEIQ==
+
+"@progress/kendo-layout-vue-wrapper@^2018.3.1025":
+  version "2018.3.1025"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-layout-vue-wrapper/-/kendo-layout-vue-wrapper-2018.3.1025.tgz#17e033b803a66a523ffbe83de63c127835251b02"
+  integrity sha512-ndAVFjrh4rNUA2wKKkR1+FhW14joKHLVjAW6jBdwNHAxnZsrbxlALCDL9fQlWKrbFINACeTdc9VRCUGRlfNPsw==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
 "@progress/kendo-ui@^2018.2.806":
   version "2018.2.806"
@@ -8726,11 +8738,7 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
 
-vue-js-modal@^1.3.26:
-  version "1.3.26"
-  resolved "https://registry.yarnpkg.com/vue-js-modal/-/vue-js-modal-1.3.26.tgz#00c8b9d4765e034c6b6535a2d6373117519f343f"
-
-vue-loader@^15.3.0:
+vue-loader@^15.0.11, vue-loader@^15.3.0:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.4.2.tgz#812bb26e447dd3b84c485eb634190d914ce125e2"
   dependencies:
