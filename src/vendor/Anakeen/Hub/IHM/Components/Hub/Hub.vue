@@ -17,7 +17,7 @@
 
 <!-- CSS to this component only -->
 <style lang="scss">
-    @import "Hub";
+    @import "./Hub.scss";
 </style>
 <!-- Global CSS -->
 <style lang="scss">

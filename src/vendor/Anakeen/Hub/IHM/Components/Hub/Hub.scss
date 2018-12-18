@@ -45,6 +45,10 @@ body, html {
   border-width: 3px;
 }
 
+.expanded-dock, .expanded-dock > *{
+  width: 15rem !important;
+  heigth: 100%;
+}
 .hub-content {
   display: flex;
   flex-direction: column;

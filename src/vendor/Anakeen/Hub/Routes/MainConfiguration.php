@@ -1,21 +1,25 @@
 <?php
 
-namespace Anakeen\Hub\Routes\HubAdmin;
+namespace Anakeen\Hub\Routes;
 
-use Anakeen\Core\ContextManager;
+use Anakeen\Router\ApiV2Response;
 
-class MainConfiguration
+class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $search = new \SearchDoc("", "HUBCONFIGURATION");
         $search->setObjectReturn(true);
+        $search->overrideViewControl();
         $search->search();
-        $documentList = $search->getDocumentList();
+        $hubConfigurations = $search->getDocumentList();
         $return = [];
-        foreach ($documentList as $document) {
-            $return[] = $document->getConfiguration();
+        /**
+         * @var $hubConfig \SmartStructure\Hubconfiguration
+         */
+        foreach ($hubConfigurations as $hubConfig) {
+            $return[] = $hubConfig->getConfiguration();
         }
-        return $response->withJson($return);
+        return ApiV2Response::withData($response, $return);
     }
 }
