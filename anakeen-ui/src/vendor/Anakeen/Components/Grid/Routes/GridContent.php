@@ -39,6 +39,10 @@ class GridContent extends DataSource
     {
         $propertyInfo = [];
         switch ($propertyId) {
+            case "id":
+            case "initid":
+            case "icon":
+                return $propertyValue;
             case "title":
                 $propertyInfo["value"] = $propertyValue;
                 $propertyInfo["displayValue"] = $propertyValue;
@@ -60,7 +64,10 @@ class GridContent extends DataSource
                 }
                 break;
             default:
-                return $propertyValue;
+                return [
+                    "value" => $propertyValue,
+                    "displayValue" => $propertyValue
+                ];
         }
         return $propertyInfo;
     }
