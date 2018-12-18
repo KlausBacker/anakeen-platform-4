@@ -283,6 +283,13 @@ thead.tableFloatingHeaderOriginal th {
     margin: 1rem;
 }
 
+.dsearch-result-window .k-window-content,
+.dsearch-result-window .k-window-content .dsearch-result-grid {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 @media screen and (max-width: 600px) {
     .dcpSearch-desc {
     flex-direction: column;

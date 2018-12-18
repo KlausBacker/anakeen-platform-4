@@ -52,14 +52,22 @@ Research result in consult mode
                 title: $documentController.documentController("getProperties")
                   .title,
                 content: {
-                  url:
-                    "?app=SEARCH_UI_HTML5&action=RESULT&id=" +
-                    $documentController.documentController("getProperties").id,
-                  iframe: true
+                  template: `
+                    <ank-se-grid url-config="/api/v2/smartstructures/dsearch/gridConfig/<collection>" 
+                                 collection="${
+                                   $documentController.documentController(
+                                     "getProperties"
+                                   ).id
+                                 }" 
+                                 class="dsearch-result-grid">
+                    </ank-se-grid>`
                 },
                 position: {
                   top: 0,
                   left: 0
+                },
+                open: function openWindow(event) {
+                  event.sender.wrapper.addClass("dsearch-result-window");
                 },
                 pinned: false,
                 width: "90%",
