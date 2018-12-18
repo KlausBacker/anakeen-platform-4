@@ -2,11 +2,13 @@
 
 Api to manage documents and applications.
 
-[![pipeline status](https://gitlab.anakeen.com/Anakeen/Platform-4/anakeen-core/badges/master/pipeline.svg)](https://gitlab.anakeen.com/Anakeen/Platform-4/anakeen-core/commits/master)
+[![pipeline status](https://gitlab.anakeen.com/Anakeen/Platform-4/smart-data-engine/badges/master/build.svg)](https://gitlab.anakeen.com/Anakeen/Platform-4/anakeen-core/commits/master)
 
-## Init anakeen-cli
+## The commands
 
-`npm install`
+### Build the package
+
+`make app`
 
 ## Use anakeen-cli
 

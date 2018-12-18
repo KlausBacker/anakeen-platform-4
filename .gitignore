@@ -16,6 +16,7 @@ ide/vendor/
 .idea/smart-data-engine.iml
 
 smart-data-engine*app
+smart-data-engine*src
 .php_cs.cache
 .idea/*.iml"
 src/vendor/Anakeen/lib/vendor/
