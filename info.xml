@@ -1,36 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<module xmlns="urn:dynacase:webinst:module/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.0" release="0">
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.0" release="0" >
   <post-install>
     <process command="programs/update_catalog"/>
-    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Accounts/hub.role.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.view.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.view.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.view.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.view.xml"/>
+    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
+
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
   </post-install>
   <post-upgrade>
     <process command="programs/update_catalog"/>
-    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Accounts/hub.role.xml"/>
+    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
 
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.profile.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfiguration/HubConfigurationSmartStructure.view.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationSlot/HubConfigurationSlotSmartStructure.view.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationIdentity/HubConfigurationIdentitySmartStructure.view.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.xml"/>
-    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/HubConfigurationLogout/HubConfigurationLogoutSmartStructure.view.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
   </post-upgrade>
 </module>
