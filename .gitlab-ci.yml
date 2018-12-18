@@ -8,6 +8,7 @@ before_script:
 stages:
   - autotest
   - package
+  - integration
 
 autotest:
   stage: autotest
@@ -23,6 +24,21 @@ autotest:
   only:
     - branches
     - tags
+
+integration:
+  stage: integration
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target integration
+  artifacts:
+    paths:
+      - outputs/
+    expire_in: 1 week
+    when: always
+  only:
+    - master@Anakeen/Platform-4/smart-data-engine
+    - web
 
 package:
   stage: package
