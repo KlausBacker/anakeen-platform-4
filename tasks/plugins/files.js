@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const mustache = require("mustache");
 
 /**
  * Create a dir asynchronously (and parents dir if they not exist)
@@ -86,4 +87,61 @@ exports.writeFiles = (...files) => {
     );
   }
   return Promise.resolve();
+};
+
+/**
+ * Write template
+ */
+const writeTemplate = (destinationPath, templateFile, templateData = {}) => {
+  return new Promise((resolve, reject) => {
+    if (!fs.existsSync(path.dirname(destinationPath))) {
+      reject(`The destination path "${destinationPath}" does not exist`);
+    } else if (!fs.existsSync(templateFile)) {
+      reject(`The template file "${templateFile}" does not exist`);
+    } else {
+      fs.readFile(templateFile, "utf8", (err, content) => {
+        if (err) {
+          reject(err);
+        } else {
+          fs.writeFile(
+            destinationPath,
+            mustache.render(content, templateData),
+            err => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(destinationPath);
+              }
+            }
+          );
+        }
+      });
+    }
+  });
+};
+exports.writeTemplate = writeTemplate;
+/**
+ *
+ * @param {...{ destinationPath: string, templateFile: string, templateData: object }} configs
+ */
+exports.writeTemplates = (...configs) => {
+  const promises = [];
+  configs.forEach(config => {
+    if (!(config.destinationPath && config.templateFile)) {
+      promises.push(
+        Promise.reject(
+          "The given configuration for writing the template is invalid"
+        )
+      );
+    } else {
+      promises.push(
+        writeTemplate(
+          config.destinationPath,
+          config.templateFile,
+          config.templateData || {}
+        )
+      );
+    }
+  });
+  return Promise.all(promises);
 };

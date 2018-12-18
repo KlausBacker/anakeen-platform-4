@@ -2,6 +2,7 @@ const gulp = require("gulp");
 const { getModuleInfo } = require("../utils/moduleInfo");
 const signale = require("signale");
 const fs = require("fs");
+const path = require("path");
 const inquirer = require("inquirer");
 const { createSmartStructure } = require("../tasks/createSmartStructure");
 const {
@@ -11,6 +12,32 @@ const {
 } = require("../utils/checkName");
 
 let moduleData = {};
+const structureOptions = {};
+const defaultPath = () => {
+  let srcPath = "";
+  let basePath = path.join(
+    "vendor",
+    structureOptions.vendorName,
+    structureOptions.moduleName,
+    "SmartStructures"
+  );
+  if (moduleData.buildInfo) {
+    //Compute and test the settingPath for the vendor name
+    srcPath = moduleData.buildInfo.buildPath.find(currentPath => {
+      //Check current path
+      const smartPath = path.join(currentPath, basePath);
+      try {
+        return fs.statSync(smartPath).isDirectory();
+      } catch (e) {
+        return false;
+      }
+    });
+  }
+  if (!srcPath) {
+    return "";
+  }
+  return path.join(srcPath, basePath);
+};
 signale.config({
   displayTimestamp: true,
   displayDate: true
@@ -19,7 +46,7 @@ signale.config({
 exports.desc = "Create a smart structure";
 const builder = {
   sourcePath: {
-    description: "path to the module",
+    description: "path to the info.xml directory",
     alias: "s",
     default: ".",
     type: "string",
@@ -62,6 +89,7 @@ const builder = {
             arg
         );
       }
+      structureOptions.vendorName = arg;
       return arg;
     }
   },
@@ -83,6 +111,7 @@ const builder = {
             arg
         );
       }
+      structureOptions.moduleName = arg;
       return arg;
     }
   },
@@ -107,7 +136,12 @@ const builder = {
   smartStructurePath: {
     description: "path where the smart structure will be added",
     type: "string",
-    default: "",
+    default: () => {
+      if (moduleData.buildInfo) {
+        return defaultPath();
+      }
+      return "";
+    },
     coerce: arg => {
       if (!arg) {
         return arg;
@@ -143,10 +177,6 @@ const builder = {
     description: "add settings",
     default: true,
     type: "boolean"
-  },
-  workflow: {
-    description: "workflow logical name",
-    type: "string"
   },
   withAutocompletion: {
     description: "add an autocompletion",

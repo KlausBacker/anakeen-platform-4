@@ -1,10 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
-exports.writeTemplate = ({ sourcePath, vendorName, moduleName }) => {
+exports.writeTemplate = (packagePath, { vendorName, moduleName }) => {
   return new Promise((resolve, reject) => {
     const settingsDir = path.join(
-      sourcePath,
+      packagePath,
       "src",
       "vendor",
       vendorName,

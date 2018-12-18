@@ -39,10 +39,13 @@ const createUsersXML = namespace => {
   };
 };
 
-exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
+exports.writeTemplate = (
+  packagePath,
+  { vendorName, moduleName, namespace }
+) => {
   return new Promise((resolve, reject) => {
     const accountsDir = path.join(
-      sourcePath,
+      packagePath,
       "src",
       "vendor",
       vendorName,
@@ -72,7 +75,15 @@ exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
             content: usersXml
           }
         )
-        .then(resolve)
+        .then(() => {
+          resolve(
+            path.join(
+              path.relative(path.join(packagePath, "src"), accountsDir),
+              "**",
+              "*.xml"
+            )
+          );
+        })
         .catch(reject);
     });
   });

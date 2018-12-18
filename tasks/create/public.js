@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
-exports.writeTemplate = ({ sourcePath }) =>
+exports.writeTemplate = (packagePath /*, options */) =>
   new Promise((resolve, reject) => {
-    fs.mkdir(path.join(sourcePath, "src", "public"), err => {
+    fs.mkdir(path.join(packagePath, "src", "public"), err => {
       if (err) {
         return reject(err);
       }

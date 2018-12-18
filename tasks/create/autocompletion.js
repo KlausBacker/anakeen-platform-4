@@ -2,35 +2,38 @@ const fs = require("fs");
 const path = require("path");
 const mustache = require("mustache");
 
-const createRoutePHP = options => {
+const createAutocompletePHP = options => {
   const template = fs.readFileSync(
-    path.join(__dirname, "php", "routes.php.mustache"),
+    path.join(__dirname, "php", "autocompletion.php.mustache"),
     "utf8"
   );
   return mustache.render(template, options);
 };
 
-exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
+exports.writeTemplate = (
+  packagePath,
+  { vendorName, moduleName, namespace }
+) => {
   return new Promise((resolve, reject) => {
     const autocompleteDir = path.join(
-      sourcePath,
+      packagePath,
       "src",
       "vendor",
       vendorName,
       moduleName,
-      "Routes"
+      "Autocompletion"
     );
     fs.mkdir(autocompleteDir, err => {
       if (err) {
         reject(err);
       } else {
-        const autocompletePHP = createRoutePHP({
+        const autocompletePHP = createAutocompletePHP({
           vendorName,
           moduleName,
           namespace
         });
         fs.writeFile(
-          path.join(autocompleteDir, `Main.php`),
+          path.join(autocompleteDir, `${moduleName}Autocompletion.php`),
           autocompletePHP,
           err => {
             if (err) {

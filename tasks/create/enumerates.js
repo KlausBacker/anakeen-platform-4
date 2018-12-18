@@ -17,10 +17,13 @@ const createEnumeratesXML = namespace => {
   };
 };
 
-exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
+exports.writeTemplate = (
+  packagePath,
+  { vendorName, moduleName, namespace }
+) => {
   return new Promise((resolve, reject) => {
     const enumeratesDir = path.join(
-      sourcePath,
+      packagePath,
       "src",
       "vendor",
       vendorName,
@@ -44,8 +47,8 @@ exports.writeTemplate = ({ sourcePath, vendorName, moduleName, namespace }) => {
             } else {
               resolve(
                 path.relative(
-                  path.join(sourcePath, "src"),
-                  path.join(enumeratesDir, `100-${moduleName}Enumerates.xml`)
+                  path.join(packagePath, "src"),
+                  path.join(enumeratesDir, "**", "*.xml")
                 )
               );
             }
