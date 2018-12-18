@@ -34,10 +34,10 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1544534556"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1544534556.tgz#b1bf59438dfc690d845dcdf69df2a955982bcd0f"
-  integrity sha512-0Qmj/FUXQXrvrQtstHDVndPTYT+v1ypJGt3PotKR+KcBUfo75tJeNBdZ08S6s1F2AQ8J+aahJlrVzgyQJsglkg==
+"@anakeen/ank-components@1.0.0-1545131196":
+  version "1.0.0-1545131196"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1545131196.tgz#d5d8403e69b6601e7bceba69319be7d8b1e05460"
+  integrity sha512-FpKCqcpyqrAD2dT4uC82s1eM4SVaDKUjjzNf4TGKgKiqvt7LyE00tfXIhZEBBgJ41f04wBsq0vjHXGEF7LvM4A==
   dependencies:
     vue-gettext "^2.1.1"
 
