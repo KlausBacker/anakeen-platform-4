@@ -25,6 +25,14 @@
       <sde:description>Get css/js asset from Layout directory</sde:description>
       <sde:requiredAccess/>
     </sde:route>
+    <sde:route name="CleanContext">
+      <sde:callable>\Anakeen\Routes\Core\CleanContext</sde:callable>
+      <sde:method>PATCH</sde:method>
+      <!-- Cannot be executed by standard url -->
+      <sde:pattern>-</sde:pattern>
+      <sde:description>Clean temporary data in database</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
   </sde:routes>
   <sde:accesses namespace="Core">
     <sde:access name="Admin">

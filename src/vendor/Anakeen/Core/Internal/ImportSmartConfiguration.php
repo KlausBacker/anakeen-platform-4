@@ -3,12 +3,14 @@
 
 namespace Anakeen\Core\Internal;
 
+use Anakeen\Core\AccountManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Core\Utils\Xml;
 use Anakeen\Exception;
 use SmartStructure\Fields\Fieldaccesslayer as FalFields;
 use SmartStructure\Fields\Fieldaccesslayerlist as FallFields;
+use SmartStructure\Fields\Task as TaskFields;
 
 class ImportSmartConfiguration
 {
@@ -19,7 +21,13 @@ class ImportSmartConfiguration
     protected $verbose = false;
     protected $profilElements = [];
     protected $smartPrefix = "smart";
+    protected $taskPrefix = "task";
 
+    protected $attrToOptions = [
+        "match" => "match",
+        "group" => "group",
+        "role" => "role"
+    ];
 
     /**
      * @var array report
@@ -51,8 +59,115 @@ class ImportSmartConfiguration
     public function importAll($xmlFile)
     {
         $this->import($xmlFile);
+        $data = $this->importTasks();
+        $this->recordSmartData($data);
     }
 
+    protected function importTasks()
+    {
+
+        $this->taskPrefix = Xml::getPrefix($this->dom, ExportConfiguration::NSTASKURL);
+        $configs = $this->getTaskNodes($this->dom->documentElement, "task");
+        $data = [];
+        foreach ($configs as $config) {
+            $data = array_merge($data, $this->importTask($config));
+        }
+        return $data;
+    }
+
+    /**
+     * @param string      $name
+     * @param \DOMElement $e
+     *
+     * @return \DOMNodeList
+     */
+    protected function getTaskNodes(\DOMElement $e, $name)
+    {
+        return $e->getElementsByTagNameNS(ExportConfiguration::NSTASKURL, $name);
+    }
+
+    protected function importTask(\DOMElement $taskNode)
+    {
+        $task = SEManager::createDocument("TASK");
+
+        $name = $taskNode->getAttribute("name");
+        if ($name) {
+            $task->name = $name;
+
+            $this->setEltValue($task, $taskNode->getAttribute("label"), TaskFields::task_title);
+            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:description)"), TaskFields::task_desc);
+            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:crontab)"), TaskFields::task_crontab);
+            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:status)"), TaskFields::task_status);
+
+
+            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ns)"), TaskFields::task_route_ns);
+            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@ref)"), TaskFields::task_route_name);
+            $this->setEltValue($task, $this->evaluate($taskNode, "string({$this->taskPrefix}:route/@method)"), TaskFields::task_route_method);
+
+            $args = $this->evaluate($taskNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:argument)");
+            /** @var \DOMElement $arg */
+            foreach ($args as $arg) {
+                $task->addArrayRow(
+                    TaskFields::task_t_args,
+                    [
+                        TaskFields::task_arg_name => $arg->getAttribute("name"),
+                        TaskFields::task_arg_value => $arg->nodeValue
+                    ]
+                );
+            }
+
+            $args = $this->evaluate($taskNode, "({$this->taskPrefix}:route/{$this->taskPrefix}:query-field)");
+            /** @var \DOMElement $arg */
+            foreach ($args as $arg) {
+                $task->addArrayRow(
+                    TaskFields::task_t_queryfield,
+                    [
+                        TaskFields::task_queryfield_name => $arg->getAttribute("name"),
+                        TaskFields::task_queryfield_value => $arg->nodeValue
+                    ]
+                );
+            }
+
+            $userLogin = $this->evaluate($taskNode, "string({$this->taskPrefix}:user/@login)");
+            if ($userLogin) {
+                $user = AccountManager::getAccount($userLogin);
+                if (!$user) {
+                    throw new Exception(sprintf("Task user:login \"%s\" not exists", $userLogin));
+                }
+                $task->setValue(TaskFields::task_iduser, $user->fid);
+            }
+
+            return $this->getElementdata($task);
+        }
+        return [];
+    }
+
+    protected function getElementdata(SmartElement $elt)
+    {
+        $values = $elt->getValues();
+        $order = ["ORDER", $elt->fromname, "", ""];
+        $data = ["DOC", $elt->fromname, $elt->name, ""];
+        foreach ($values as $aid => $value) {
+            if ($value !== "") {
+                $order[] = $aid;
+                $data[] = $value;
+            }
+        }
+        return ([$order, $data]);
+    }
+
+    protected function evaluate(\DOMElement $e, $path)
+    {
+        $xpath = new \DOMXpath($this->dom);
+        return $xpath->evaluate($path, $e);
+    }
+
+    protected function setEltValue(SmartElement $elt, $value, $fieldName)
+    {
+        if ($value) {
+            $elt->setValue($fieldName, $value);
+        }
+    }
 
     /**
      * @param bool $verbose
@@ -309,7 +424,7 @@ class ImportSmartConfiguration
         $import = new \ImportDocumentDescription();
         $import->analyzeOnly($this->onlyAnalyze);
 
-        $this->cr = $import->importData($data);
+        $this->cr = array_merge($this->cr, $import->importData($data));
     }
 
     protected function extractBegin(\DOMElement $config)
@@ -703,6 +818,12 @@ class ImportSmartConfiguration
         $optRaw = [];
         if ($attrNode->getAttribute("multiple")) {
             $optRaw[] = sprintf("multiple=%s", ($attrNode->getAttribute("multiple") === "true") ? "yes" : "no");
+        }
+
+        foreach ($this->attrToOptions as $attrName => $optName) {
+            if ($attrNode->getAttribute($attrName)) {
+                $optRaw[] = sprintf("%s=%s", $optName, $attrNode->getAttribute($attrName));
+            }
         }
 
         foreach ($attrNode->childNodes as $optNode) {

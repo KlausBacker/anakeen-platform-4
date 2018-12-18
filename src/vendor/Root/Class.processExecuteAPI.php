@@ -1,5 +1,6 @@
 <?php
 
+use SmartStructure\Fields\Task as TaskFields;
 class processExecuteAPIException extends \Exception
 {
 }
@@ -114,13 +115,13 @@ class processExecuteAPI
 
     public static function verifyExecDocuments()
     {
-        // Verify EXEC document
+        // Verify Task document
         $now = \Anakeen\Core\Internal\SmartElement::getTimeDate();
 
-        $s = new SearchDoc("", "EXEC");
+        $s = new SearchDoc("", "TASK");
         $s->setObjectReturn();
-        $s->addFilter(sprintf("exec_nextdate < %s", pg_escape_literal($now)));
-        $s->addFilter("exec_status is null or exec_status = 'none'");
+        $s->addFilter(sprintf("%s < %s", TaskFields::task_nextdate, pg_escape_literal($now)));
+        $s->addFilter("%s = 'active'", TaskFields::task_status);
         //  $s->setDebugMode();
         $s->search();
 

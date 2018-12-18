@@ -17,6 +17,7 @@ class SuiteConfig
         $suite = new FrameworkDcp();
 
         $suite->addTestSuite(\Anakeen\Pu\Config\PuStructBasic::class);
+        $suite->addTestSuite(\Anakeen\Pu\Config\PuTask::class);
 
         return $suite;
     }

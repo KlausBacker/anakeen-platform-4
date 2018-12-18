@@ -3,7 +3,6 @@
   <smart:structure-configuration name="IMAGE" id="8" label="Image">
     <smart:icon file="se-image.png"/>
     <smart:class>Anakeen\SmartStructures\Image\ImageHooks</smart:class>
-    <smart:revisable>auto</smart:revisable>
     <smart:usefor>N</smart:usefor>
         <smart:tag name="vendor">Anakeen</smart:tag>
     <smart:fields>

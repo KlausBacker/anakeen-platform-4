@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:task="https://platform.anakeen.com/4/schemas/task/1.0">
+    <task:task name="CORE_TASKCLEANCONTEXT" label="Ma lourde tâche">
+        <task:user login="admin"/>
+
+        <task:description>Quelque chose à faire...</task:description>
+
+        <task:route ns="Core" ref="CleanContext" method="PATCH">
+            <task:query-field name="complete">true</task:query-field>
+        </task:route>
+
+        <task:crontab>4,30 6 * * 1-5</task:crontab>
+        <task:status>active</task:status>
+    </task:task>
+</smart:config>

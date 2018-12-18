@@ -23,6 +23,7 @@ class ExportConfiguration
     const NS = "smart";
     const NSBASEURL = "https://platform.anakeen.com/4/schemas/";
     const NSURL = self::NSBASEURL . "smart/1.0";
+    const NSTASKURL = self::NSBASEURL . "task/1.0";
     /**
      * @var SmartStructure|null
      */

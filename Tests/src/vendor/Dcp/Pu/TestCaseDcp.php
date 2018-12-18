@@ -216,7 +216,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
             throw new \Anakeen\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new ImportSmartConfiguration();
-        $oImport->import($realfile);
+        $oImport->importAll($realfile);
         $err = $oImport->getErrorMessage();
         if ($err) {
             throw new \Anakeen\Exception($err);
