@@ -8,7 +8,18 @@
     flex:1;
     min-height: 0;
 }
-.dcpDocument--view.dcpDocument {
+
+.dcpDocument--edit.dcpDocument,
+.dcpDocument--edit .dcpDsearch__body,
+.dcpDocument--edit .dcpDsearch__body > .k-tabstrip-wrapper,
+.dcpDocument--edit .dcpDsearch__body > .k-tabstrip-wrapper > .dcpDocument__tabs {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
+
+.dcpDocument--view.dcpDocument, .dcpDocument--edit.dcpDocument {
     max-height: 100vh;
     height: 100vh;
 }
