@@ -51,7 +51,7 @@ deploy: compile
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./ -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 stub: ## Generate stubs
-	$(ANAKEEN_CLI) generateStubs
+	$(ANAKEEN_CLI_BIN) generateStubs
 
 ########################################################################################################################
 ##
