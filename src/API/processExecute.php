@@ -1,20 +1,28 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
- *  Execute Freedom Processes when needed
+ *  Execute Schedule Processes (task and timers) when needed
  *
- * @author Anakeen
- * @version $Id: processExecute.php,v 1.4 2008/12/31 14:39:52 eric Exp $
- * @package FDL
- * @subpackage
  */
-/**
- */
-// refreah for a classname
-// use this only if you have changed title attributes
 
+$usage = new \Anakeen\Script\ApiUsage();
+$usage->setDefinitionText("Execute Processes when needed");
+$doctimerId = $usage->addOptionalParameter('doctimer-id', 'Doctimer identifier', null, null);
+$taskId = $usage->addOptionalParameter('task-id', 'Exec identifier', null, null);
+\Anakeen\Core\Cron\ProcessExecuteAPI::$debug = ($usage->addEmptyParameter('debug', 'Enable debugging verbose output') !== false);
+$usage->verify();
 
-processExecuteAPI::run();
+if ($doctimerId !== null && $taskId !== null) {
+    throw new \Anakeen\Core\Cron\ProcessExecuteAPIException("Error: only one of '--doctimer-id' or '--exec-id'' should be used.\n");
+}
+
+if ($doctimerId !== null) {
+    \Anakeen\Core\Cron\ProcessExecuteAPI::executeSingleTimer($doctimerId);
+} elseif ($taskId !== null) {
+    \Anakeen\Core\Cron\ProcessExecuteAPI::executeSingleTask($taskId);
+} else {
+    try {
+        \Anakeen\Core\Cron\ProcessExecuteAPI::executeAll();
+    } catch (\Anakeen\Core\Cron\ProcessExecuteAPIAlreadyRunningException $e) {
+        /* Skip execution and silently ignore already running processes */
+    }
+}

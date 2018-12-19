@@ -1,44 +1,13 @@
 <?php
 
+namespace Anakeen\Core\Cron;
+
 use SmartStructure\Fields\Task as TaskFields;
-class processExecuteAPIException extends \Exception
-{
-}
 
-class processExecuteAPIAlreadyRunningException extends processExecuteAPIException
-{
-}
-
-class processExecuteAPI
+class ProcessExecuteAPI
 {
     public static $debug = false;
 
-    public static function run()
-    {
-
-        $usage = new \Anakeen\Script\ApiUsage();
-        $usage->setDefinitionText("Execute Dynacase Processes when needed");
-        $doctimerId = $usage->addOptionalParameter('doctimer-id', 'Doctimer identifier', null, null);
-        $execId = $usage->addOptionalParameter('exec-id', 'Exec identifier', null, null);
-        self::$debug = ($usage->addEmptyParameter('debug', 'Enable debugging verbose output') !== false);
-        $usage->verify();
-
-        if ($doctimerId !== null && $execId !== null) {
-            throw new processExecuteAPIException("Error: only one of '--doctimer-id' or '--exec-id'' should be used.\n");
-        }
-
-        if ($doctimerId !== null) {
-            self::execute_doctimer($doctimerId);
-        } elseif ($execId !== null) {
-            self::execute_exec($execId);
-        } else {
-            try {
-                self::execute_all();
-            } catch (processExecuteAPIAlreadyRunningException $e) {
-                /* Skip execution and silently ignore already running processes */
-            }
-        }
-    }
 
     protected static function lock()
     {
@@ -67,12 +36,12 @@ class processExecuteAPI
         }
     }
 
-    public static function execute_all()
+    public static function executeAll()
     {
         $lock = self::lock();
         try {
-            self::verifyExecDocuments();
-            self::verifyTimerDocuments();
+            self::verifyTaskElements();
+            self::verifyRecordedTimers();
         } catch (\Exception $e) {
             self::unlock($lock);
             throw $e;
@@ -80,9 +49,9 @@ class processExecuteAPI
         self::unlock($lock);
     }
 
-    public static function execute_doctimer($doctimerId)
+    public static function executeSingleTimer($doctimerId)
     {
-        $dt = new DocTimer("", $doctimerId);
+        $dt = new \DocTimer("", $doctimerId);
         $time_start = microtime(true);
         $err = $dt->executeTimerNow();
         $time_end = microtime(true);
@@ -97,28 +66,28 @@ class processExecuteAPI
     }
 
     /**
-     * @param \SmartStructure\Exec|string $exec
+     * @param \SmartStructure\Task|string $exec
      */
-    public static function execute_exec($exec)
+    public static function executeSingleTask($exec)
     {
         if (is_scalar($exec)) {
             /**
-             * @var \SmartStructure\Exec $exec
+             * @var \SmartStructure\Task $exec
              */
-            $exec = Anakeen\Core\SEManager::getDocument($exec);
+            $exec = \Anakeen\Core\SEManager::getDocument($exec);
         }
-        if (!is_object($exec) || !is_a($exec, '\SmartStructure\ExecHooks') || !$exec->isAlive()) {
+        if (!is_object($exec) || !is_a($exec, \SmartStructure\Task::class) || !$exec->isAlive()) {
             return;
         }
-        $exec->executeNow();
+        $exec->execute();
     }
 
-    public static function verifyExecDocuments()
+    public static function verifyTaskElements()
     {
         // Verify Task document
         $now = \Anakeen\Core\Internal\SmartElement::getTimeDate();
 
-        $s = new SearchDoc("", "TASK");
+        $s = new \SearchDoc("", "TASK");
         $s->setObjectReturn();
         $s->addFilter(sprintf("%s < %s", TaskFields::task_nextdate, pg_escape_literal($now)));
         $s->addFilter("%s = 'active'", TaskFields::task_status);
@@ -132,30 +101,30 @@ class processExecuteAPI
             ), true);
         }
 
-        $s = new SearchDoc("", "EXEC");
+        $s = new \SearchDoc("", "TASK");
         $s->setObjectReturn();
         $s->addFilter(sprintf("exec_nextdate < %s", pg_escape_literal($now)));
         $s->addFilter("exec_status != 'progressing'");
         //$s->setDebugMode();
         $s->search();
         //print_r2($s->getDebugInfo());
-        self::debug(__METHOD__ . " " . sprintf("Found %d documents to execute.", $s->count()));
+        self::debug(__METHOD__ . " " . sprintf("Found %d tasks to execute.", $s->count()));
         if ($s->count() <= 0) {
             return;
         }
 
         while ($de = $s->getNextDoc()) {
             /**
-             * @var \SmartStructure\Exec $de
+             * @var \SmartStructure\Task $de
              */
-            self::debug(__METHOD__ . " " . sprintf("Executing document '%s' (%d).", $de->getTitle(), $de->id));
-            self::execute_exec($de);
+            self::debug(__METHOD__ . " " . sprintf("Executing task '%s' (%d).", $de->getTitle(), $de->id));
+            self::executeSingleTask($de);
         }
         unset($exec);
         return;
     }
 
-    public static function verifyTimerDocuments()
+    public static function verifyRecordedTimers()
     {
         $ate = \Anakeen\Core\TimerManager::getTaskToExecute();
 
