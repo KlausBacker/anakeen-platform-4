@@ -12,7 +12,7 @@
     "yaml": "^1.0.3"
   },
   "devDependencies": {
-    "@anakeen/anakeen-cli": "^1.0.1-1543428775",
+    "@anakeen/anakeen-cli": "latest",
     "prettier": "^1.15.3"
   },
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/smart-data-engine.git",
