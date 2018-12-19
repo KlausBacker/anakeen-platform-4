@@ -5,7 +5,7 @@ const path = require("path");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const writeFile = util.promisify(fs.writeFile);
-const rename = util.promisify(fs.rename);
+const copyFile = util.promisify(fs.copyFile);
 const { getModuleInfo } = require("@anakeen/anakeen-cli/utils/moduleInfo");
 
 const getFileName = moduleInfo => {
@@ -27,7 +27,7 @@ const produceAndUpload = async (srcPath = "./", testPath = "./Tests") => {
     await exec(
       `tar -czf ${moduleInfo.name}-${moduleInfo.version}-${
         moduleInfo.release
-      }.src ./src ./stubs`
+      }.src ${srcPath} ./stubs`
     );
     console.log("Make app json");
     const modules = [
@@ -63,15 +63,15 @@ const produceAndUpload = async (srcPath = "./", testPath = "./Tests") => {
     ];
     await writeFile(path.join(outputPath, "app.json"), JSON.stringify(modules));
     console.log("Move files");
-    await rename(
+    await copyFile(
       getFileName(moduleInfo) + ".app",
       path.join(outputPath, getFileName(moduleInfo) + ".app")
     );
-    await rename(
+    await copyFile(
       getFileName(moduleInfo) + ".src",
       path.join(outputPath, getFileName(moduleInfo) + ".src")
     );
-    await rename(
+    await copyFile(
       getFileName(moduleTest.moduleInfo) + ".app",
       path.join(outputPath, getFileName(moduleTest.moduleInfo) + ".app")
     );
@@ -82,10 +82,10 @@ const produceAndUpload = async (srcPath = "./", testPath = "./Tests") => {
   return true;
 };
 
-return produceAndUpload("./anakeen-ui/src/")
+return produceAndUpload("./anakeen-ui/")
   .then(() => {
     console.log("OK");
   })
   .catch(err => {
-    throw new Error(err);
+    process.exit(42);
   });
