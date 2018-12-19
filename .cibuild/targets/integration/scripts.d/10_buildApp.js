@@ -27,7 +27,7 @@ const produceAndUpload = async (srcPath = "./", testPath = "./Tests") => {
     await exec(
       `tar -czf ${moduleInfo.name}-${moduleInfo.version}-${
         moduleInfo.release
-      }.src ${srcPath} ./stubs`
+      }.src ${srcPath}/src/ ./stubs`
     );
     console.log("Make app json");
     const modules = [
