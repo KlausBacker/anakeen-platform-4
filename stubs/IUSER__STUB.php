@@ -21,7 +21,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_fr_ident='us_fr_ident';
         /**
-        * nom
+        * Nom
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>needed</i> true </li>
@@ -31,7 +31,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_lname='us_lname';
         /**
-        * prénom
+        * Prénom
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>needed</i> true </li>
@@ -41,7 +41,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_fname='us_fname';
         /**
-        * mail
+        * Mail
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>link</i> mailto:%US_MAIL% </li>
@@ -51,7 +51,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_mail='us_mail';
         /**
-        * mail principal
+        * Mail principal
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> text </li>
@@ -75,7 +75,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_fr_sysident='us_fr_sysident';
         /**
-        * login
+        * Login
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>needed</i> true </li>
@@ -84,7 +84,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_login='us_login';
         /**
-        * identifiant
+        * Identifiant
         * <ul>
         * <li> <i>access</i> None </li>
         * <li> <i>type</i> text </li>
@@ -116,7 +116,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_fr_intranet='us_fr_intranet';
         /**
-        * utilisateur id
+        * Utilisateur id
         * <ul>
         * <li> <i>access</i> None </li>
         * <li> <i>type</i> account </li>
@@ -182,7 +182,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_idgroup='us_idgroup';
         /**
-        * délai d'expiration en jours
+        * Délai d'expiration en jours
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> int </li>
@@ -190,7 +190,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_daydelay='us_daydelay';
         /**
-        * date d'expiration epoch
+        * Date d'expiration epoch
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>type</i> int </li>
@@ -198,7 +198,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_expires='us_expires';
         /**
-        * délai d'expiration epoch
+        * Délai d'expiration epoch
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>type</i> int </li>
@@ -206,7 +206,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_passdelay='us_passdelay';
         /**
-        * date d'expiration
+        * Date d'expiration
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>type</i> date </li>
@@ -214,7 +214,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_expiresd='us_expiresd';
         /**
-        * heure d'expiration
+        * Heure d'expiration
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>type</i> time </li>
@@ -255,7 +255,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_fr_security='us_fr_security';
         /**
-        * état du compte
+        * État du compte
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>relation</i> IUSER-us_status </li>
@@ -264,7 +264,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_status='us_status';
         /**
-        * échecs de connexion
+        * Échecs de connexion
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> int </li>

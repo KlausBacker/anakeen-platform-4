@@ -21,7 +21,7 @@ namespace SmartStructure\Fields {
         */ 
         const grp_fr_intranet='grp_fr_intranet';
         /**
-        * identifiant
+        * Identifiant
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>needed</i> true </li>
@@ -30,7 +30,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_login='us_login';
         /**
-        * identifiant système
+        * Identifiant système
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>type</i> int </li>
@@ -38,7 +38,7 @@ namespace SmartStructure\Fields {
         */ 
         const us_whatid='us_whatid';
         /**
-        * groupe id
+        * Groupe id
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>type</i> account </li>
