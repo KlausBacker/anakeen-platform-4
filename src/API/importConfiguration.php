@@ -73,46 +73,16 @@ foreach ($configFiles as $configFile) {
     if ($verbose) {
         printf("Importing config \"%s\".\n", $configFile);
     }
-    if ($hasUi) {
-        $oImport->importData($configFile);
-    }
 
-    if ($oImport->getErrorMessage()) {
-        break;
-    }
-    $oImport->import($configFile);
+    $oImport->importAll($configFile);
 
-    if ($oImport->getErrorMessage()) {
-        break;
-    }
-
-    if ($hasUi) {
-        $oImport->importRender($configFile);
-    }
     if ($oImport->getErrorMessage()) {
         break;
     }
 }
 
 $err = $oImport->getErrorMessage();
-/*
-if (!$err && $hasUi === true) {
-    $oUiImport = new \Anakeen\Ui\ImportRenderConfiguration();
-    $oUiImport->setOnlyAnalyze($analyze !== "no");
-    $oUiImport->setVerbose($debug);
-    foreach ($configFiles as $configFile) {
-        if ($verbose) {
-            printf("Importing Ui part \"%s\".\n", $configFile);
-        }
-        $oUiImport->importRender($configFile);
 
-        if ($oUiImport->getErrorMessage()) {
-            break;
-        }
-    }
-    $err = $oUiImport->getErrorMessage();
-}
-*/
 if ($err) {
     \Anakeen\Core\DbManager::rollbackPoint($point);
     \Anakeen\Core\ContextManager::exitError($err);

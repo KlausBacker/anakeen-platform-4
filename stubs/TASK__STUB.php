@@ -21,16 +21,6 @@ namespace SmartStructure\Fields {
         */ 
         const task_fr_ident='task_fr_ident';
         /**
-        * Executed by
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>match</i> user </li>
-        * <li> <i>needed</i> true </li>
-        * <li> <i>type</i> account </li>
-        * </ul>
-        */ 
-        const task_iduser='task_iduser';
-        /**
         * Title
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
@@ -41,23 +31,33 @@ namespace SmartStructure\Fields {
         */ 
         const task_title='task_title';
         /**
-        * Description
+        * Executed by
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
+        * <li> <i>match</i> user </li>
+        * <li> <i>needed</i> true </li>
+        * <li> <i>type</i> account </li>
         * </ul>
         */ 
-        const task_desc='task_desc';
+        const task_iduser='task_iduser';
         /**
         * Status
         * <ul>
-        * <li> <i>access</i> Read </li>
+        * <li> <i>access</i> ReadWrite </li>
         * <li> <i>relation</i> TASK-task_status </li>
         * <li> <i>needed</i> true </li>
         * <li> <i>type</i> enum </li>
         * </ul>
         */ 
         const task_status='task_status';
+        /**
+        * Description
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> longtext </li>
+        * </ul>
+        */ 
+        const task_desc='task_desc';
         /**
         * Route to execute
         * <ul>

@@ -8,12 +8,14 @@ class ShellManager
 {
     const SCRIPTDIR = "API";
     protected static $opts = [];
-    protected static $programName = "ank.php";
+    const ScriptBasename = "ank.php";
+    protected static $programName = self::ScriptBasename;
+    protected static $absProgramName='';
 
-    public static function recordArgs(array $argv, $programeName = null)
+    public static function recordArgs(array $argv, $programName = null)
     {
-        if ($programeName) {
-            self::$programName = $programeName;
+        if ($programName) {
+            self::$absProgramName = $programName;
         }
         self::$opts = [];
         foreach ($argv as $k => $v) {
@@ -35,6 +37,15 @@ class ShellManager
         }
     }
 
+    protected static function getProgramName()
+    {
+        if (!self::$absProgramName) {
+            self::$absProgramName = DEFAULT_PUBDIR . '/'. self::ScriptBasename;
+        }
+
+        return self::$absProgramName;
+    }
+
     public static function getArg($argName)
     {
         if (isset(self::$opts[$argName])) {
@@ -42,7 +53,6 @@ class ShellManager
         }
         return null;
     }
-
 
     public static function getArgs()
     {
@@ -285,7 +295,7 @@ EOF;
         if ($sudo) {
             $ash .= "sudo ";
         }
-        $ash .= escapeshellarg(DEFAULT_PUBDIR) . "/" . self::$programName . " ";
+        $ash .= escapeshellarg(self::getProgramName()) . " ";
 
         if ($userlogin !== "admin") {
             $u = new \Anakeen\Core\Account("");

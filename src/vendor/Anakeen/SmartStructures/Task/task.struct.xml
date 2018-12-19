@@ -65,10 +65,10 @@
         <smart:enum-configuration name="TASK-task_status">
             <smart:enum name="active" label="Active"/>
             <smart:enum name="disabled" label="Disabled"/>
-            <smart:enum name="waiting" label="In progress"/>
         </smart:enum-configuration>
         <smart:enum-configuration name="TASK-task_result-status">
             <smart:enum name="success" label="Succeed"/>
+            <smart:enum name="inprogress" label="Processing"/>
             <smart:enum name="fail" label="Failed"/>
         </smart:enum-configuration>
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Anakeen\SmartStructures\Task;
 
 /*
@@ -331,7 +332,9 @@ class CronSchedule
         if ($arrDt === false) {
             return false;
         }
-        return $arrDt[4] . '-' . (strlen($arrDt[3]) == 1 ? '0' : '') . $arrDt[3] . '-' . (strlen($arrDt[2]) == 1 ? '0' : '') . $arrDt[2] . ' ' . (strlen($arrDt[1]) == 1 ? '0' : '') . $arrDt[1] . ':' . (strlen($arrDt[0]) == 1 ? '0' : '') . $arrDt[0] . ':00';
+        return $arrDt[4] . '-' . (strlen($arrDt[3]) == 1 ? '0' : '') . $arrDt[3] . '-' .
+            (strlen($arrDt[2]) == 1 ? '0' : '') . $arrDt[2] . ' ' .
+            (strlen($arrDt[1]) == 1 ? '0' : '') . $arrDt[1] . ':' . (strlen($arrDt[0]) == 1 ? '0' : '') . $arrDt[0] . ':00';
     }
 
 
@@ -414,7 +417,6 @@ class CronSchedule
         $arrDT = $this->dtFromParameters($time);
 
         while (1) {
-
             // Verify the current date is in range. If not, move into range and consider this the next position
 
             if (!array_key_exists($arrDT[4], $this->_years)) {
@@ -598,7 +600,6 @@ class CronSchedule
         $arrDT = $this->dtFromParameters($time);
 
         while (1) {
-
             // Verify the current date is in range. If not, move into range and consider this the previous position
 
             if (!array_key_exists($arrDT[4], $this->_years)) {
@@ -1143,8 +1144,11 @@ class CronSchedule
 
         $txt = $this->natlangApply('elemMin: every_consecutive_minute' . ($elem['interval'] == 1 ? '' : '_plural'), $elem['interval']);
         if (($elem['number1'] != $this->_cronMinutes['rangeMin']) || ($elem['number2'] != $this->_cronMinutes['rangeMax'])) {
-            $txt .= ' (' . $this->natlangApply('elemMin: between_X_and_Y', $this->natlangApply('ordinal: ' . $elem['number1']),
-                    $this->natlangApply('ordinal: ' . $elem['number2'])) . ')';
+            $txt .= ' (' . $this->natlangApply(
+                'elemMin: between_X_and_Y',
+                $this->natlangApply('ordinal: ' . $elem['number1']),
+                $this->natlangApply('ordinal: ' . $elem['number2'])
+            ) . ')';
         }
         return $txt;
     }
@@ -1193,8 +1197,11 @@ class CronSchedule
 
         $txt = $this->natlangApply('elemDOM: every_consecutive_day' . ($elem['interval'] == 1 ? '' : '_plural'), $elem['interval']);
         if (($elem['number1'] != $this->_cronHours['rangeMin']) || ($elem['number2'] != $this->_cronHours['rangeMax'])) {
-            $txt .= ' (' . $this->natlangApply('elemDOM: between_the_Xth_and_Yth', $this->natlangApply('ordinal: ' . $elem['number1']),
-                    $this->natlangApply('ordinal: ' . $elem['number2'])) . ')';
+            $txt .= ' (' . $this->natlangApply(
+                'elemDOM: between_the_Xth_and_Yth',
+                $this->natlangApply('ordinal: ' . $elem['number1']),
+                $this->natlangApply('ordinal: ' . $elem['number2'])
+            ) . ')';
         }
         return $txt;
     }
@@ -1214,8 +1221,11 @@ class CronSchedule
 
         $txt = $this->natlangApply('elemMonth: every_consecutive_month' . ($elem['interval'] == 1 ? '' : '_plural'), $elem['interval']);
         if (($elem['number1'] != $this->_cronMonths['rangeMin']) || ($elem['number2'] != $this->_cronMonths['rangeMax'])) {
-            $txt .= ' (' . $this->natlangApply('elemMonth: between_X_and_Y', $this->natlangApply('month: ' . $elem['number1']),
-                    $this->natlangApply('month: ' . $elem['number2'])) . ')';
+            $txt .= ' (' . $this->natlangApply(
+                'elemMonth: between_X_and_Y',
+                $this->natlangApply('month: ' . $elem['number1']),
+                $this->natlangApply('month: ' . $elem['number2'])
+            ) . ')';
         }
         return $txt;
     }
@@ -1277,7 +1287,6 @@ class CronSchedule
         $classHours = $this->getClass($this->_cronHours);
 
         switch ($classMinutes . $classHours) {
-
             // Special case: Unspecified date + Unspecified month
             //
             // Rule: The language for unspecified fields is omitted if a more detailed field has already been explained.
@@ -1299,8 +1308,11 @@ class CronSchedule
             //
 
             case '11':
-                $txtTime = $this->natlangApply('elemMin: at_X:Y', $this->natlangPad2($this->_cronHours['elements'][0]['number1']),
-                    $this->natlangPad2($this->_cronMinutes['elements'][0]['number1']));
+                $txtTime = $this->natlangApply(
+                    'elemMin: at_X:Y',
+                    $this->natlangPad2($this->_cronHours['elements'][0]['number1']),
+                    $this->natlangPad2($this->_cronMinutes['elements'][0]['number1'])
+                );
                 $switchForceDateExplaination = true;
                 break;
 
@@ -1362,7 +1374,6 @@ class CronSchedule
         }
 
         switch ($classDaysOfMonth . $classMonths) {
-
             // Special case: Unspecified date + Unspecified month
             //
             // Rule: The language for unspecified fields is omitted if a more detailed field has already been explained.
@@ -1409,8 +1420,7 @@ class CronSchedule
                 $collectDays |= pow(2, $elem['number1']);
             }
         }
-        if ($collectDays == 127)    // * all days
-        {
+        if ($collectDays == 127) {    // * all days
             if (!$switchDaysOfWeekAreExcluding) {
                 $txtDays = ' ' . $this->natlangApply('elemDOM: on_every_day');
             } else {
@@ -1425,7 +1435,9 @@ class CronSchedule
             }
             $txtDays = '';
             for ($index = 0; $index < count($arrDays); $index++) {
-                $txtDays .= ($index == 0 ? '' : ($index == (count($arrDays) - 1) ? ' ' . $this->natlangApply($switchDaysOfWeekAreExcluding ? 'separator_or' : 'separator_and') . ' ' : ', ')) . $this->natlangApply('day: ' . $arrDays[$index] . '_plural');
+                $txtDays .= ($index == 0 ? '' : ($index == (count($arrDays) - 1) ? ' ' .
+                        $this->natlangApply($switchDaysOfWeekAreExcluding ? 'separator_or' : 'separator_and') . ' ' : ', ')) .
+                    $this->natlangApply('day: ' . $arrDays[$index] . '_plural');
             }
             if ($switchDaysOfWeekAreExcluding) {
                 $txtDays = ' ' . $this->natlangApply('elemDOW: but_only_on_X', $txtDays);

@@ -1,4 +1,2 @@
-# Every days
-02 5 * * * [ -f "$CONTEXT_ROOT"/ank.php ] && [ ! -f "$CONTEXT_ROOT"/maintenance.lock ] && cd "$CONTEXT_ROOT" && ./ank.php --script=cleanContext --real=yes > /dev/null
 # Every 5 minutes
 */5 * * * * [ -f "$CONTEXT_ROOT"/ank.php ] && [ ! -f "$CONTEXT_ROOT"/maintenance.lock ] && cd "$CONTEXT_ROOT" && ./ank.php --script=processExecute > /dev/null
