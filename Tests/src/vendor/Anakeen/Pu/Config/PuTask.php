@@ -15,15 +15,15 @@ class PuTask extends TestCaseConfig
     }
 
     /**
-     * Test Mask definition import
+     * Test Task definition import
      *
-     * @dataProvider dataMaskImport
+     * @dataProvider dataTaskImport
      *
      * @param string $taskName
      * @param array  $expectedFields
      * @throws \Anakeen\Core\DocManager\Exception
      */
-    public function testMaskImport($taskName, array $expectedFields)
+    public function testTaskImport($taskName, array $expectedFields)
     {
         $task = SEManager::getDocument($taskName);
         $this->assertNotEmpty($task, "Task $taskName not found");
@@ -46,7 +46,7 @@ class PuTask extends TestCaseConfig
         }
     }
 
-    public function dataMaskImport()
+    public function dataTaskImport()
     {
         return [
             [
