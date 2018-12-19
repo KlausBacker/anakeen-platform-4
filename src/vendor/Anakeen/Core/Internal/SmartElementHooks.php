@@ -73,7 +73,7 @@ class SmartElementHooks
      * Call all registered callback for the hook name
      * @param string $hookName
      * @param mixed  ...$data
-     * @return string
+     * @return string error message
      */
     public function trigger(string $hookName, ...$data)
     {
@@ -85,7 +85,10 @@ class SmartElementHooks
         if (!empty($this->document->hooks[$hookName])) {
             $this->document->disableAccessControl();
             foreach ($this->document->hooks[$hookName] as $ft) {
-                $outs[] = $ft(...$data);
+                $err = $ft(...$data);
+                if ($err) {
+                    $outs[] = $err;
+                }
             }
             $this->document->restoreAccessControl();
         }
