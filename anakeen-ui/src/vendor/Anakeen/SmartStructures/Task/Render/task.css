@@ -20,7 +20,28 @@
 .dcpAttribute[data-attrid=task_crontab].has-error .task-crontab-box {
     border-color:var(--danger);
 }
+.task-waiting {
+    text-align: center;
+}
+.dcpAttribute__content__value[data-key=success],
+.dcpAttribute__content__value[data-key=active] {
+    background-color: darkseagreen;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
 
+.dcpAttribute__content__value[data-key=fail] {
+    background-color: var(--danger);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.dcpAttribute__content__value[data-key=inprogress],
+.dcpAttribute__content__value[data-key=disabled] {
+    background-color: var(--warning);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
 
 .dcpAttribute__content[data-attrid=task_humancrontab] .dcpAttribute__value {
     font-style: italic;

@@ -8,7 +8,7 @@ class MenuTargetOptions
      * @var string title of window
      */
     public $title = null;
-    public $windowWidth = "300px";
-    public $windowHeight = "200px";
+    public $windowWidth = "32rem";
+    public $windowHeight = "18rem";
     public $modal = false;
 }

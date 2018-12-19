@@ -2,13 +2,10 @@
 
 namespace Anakeen\SmartStructures\Task\Render;
 
-use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Routes\Core\Lib\ApiMessage;
-use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\SmartStructures\Task\CrontabManager;
 use Anakeen\Ui\DefaultConfigViewRender;
 use Dcp\Ui\BarMenu;
-use Dcp\Ui\CallableMenu;
+use Dcp\Ui\ItemMenu;
 use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
 use Dcp\Ui\TextRenderOptions;
@@ -64,6 +61,7 @@ HTML;
             $options->text(TaskFields::task_crontab)->setTemplate($mustache->render($tpl, $dc));
         }
         $options->text(TaskFields::task_humancrontab)->setLabelPosition(TextRenderOptions::nonePosition);
+        $options->text(TaskFields::task_status)->setLabelPosition(TextRenderOptions::leftPosition);
 
 
         $tplHuman = <<<HTML
@@ -79,6 +77,15 @@ HTML;
 HTML;
         $follow["followDates"]=CrontabManager::getNextDates($crontab, 6, "l, F d Y, H:i");
         $options->text(TaskFields::task_humancrontab)->setTemplate($tplHuman, $follow);
+        if ($document->isFixed()) {
+            $options->frame(TaskFields::task_fr_route)->setCollapse(true);
+            $options->frame(TaskFields::task_fr_ident)->setCollapse(true);
+            $options->frame(TaskFields::task_fr_result)->setResponsiveColumns(
+                [
+                    ["number" => 3, "minWidth" => "50rem", "grow" => true]
+                ]
+            );
+        }
         return $options;
     }
 
@@ -89,26 +96,19 @@ HTML;
         /**
          * @var \SmartStructure\Task $document
          */
-        $item = new CallableMenu("bgExecute", ___("Execute now", "smart exec"));
-        $item->setCallable(
-            function () use ($document) : CallMenuResponse {
-                $status = $document->bgExecute();
-
-                $msg = new ApiMessage();
-                if ($status !== 0) {
-                    $msg->type = ApiMessage::ERROR;
-                    $msg->contentText = sprintf(___("Execution failed", "smart exec"));
-                } else {
-                    $msg->type = ApiMessage::SUCCESS;
-                    $msg->contentText = sprintf(___("Execution succeeded", "smart exec"));
-                }
-                $response = new CallMenuResponse();
-                $response->setReload(true);
-
-                return $response->setMessage($msg);
-            }
-        );
-        $menu->appendElement($item);
+        if ($document->revision > 0) {
+            $item = new ItemMenu("viewLast", ___("View previous results", "smart exec"));
+            $item->setUrl(sprintf("#action/document.load:%d:%s:%d", $document->initid, \Anakeen\Routes\Ui\DocumentView::defaultViewConsultationId, $document->revision - 1));
+            $item->setBeforeContent('<div class="fa fa-eye" />');
+            $menu->appendElement($item);
+        }
+        if ($document->canExecuteRoute()) {
+            $item = new ItemMenu("executeNow", ___("Execute now", "smart exec"));
+            $item->setUrl("#action/task:executeNow");
+            $item->useConfirm(sprintf(___("Execute now the task %s", "smart exec"), $document->getTitle()));
+            $item->setBeforeContent('<div class="fa fa-cog" />');
+            $menu->appendElement($item);
+        }
         return $menu;
     }
 
@@ -117,6 +117,10 @@ HTML;
     {
         $vis= parent::getVisibilities($document, $mask);
         $vis->setVisibility(TaskFields::task_title, RenderAttributeVisibilities::HiddenVisibility);
+        if ($document->isFixed()) {
+            $vis->setVisibility(TaskFields::task_fr_schedule, RenderAttributeVisibilities::HiddenVisibility);
+            $vis->setVisibility(TaskFields::task_status, RenderAttributeVisibilities::HiddenVisibility);
+        }
         return $vis;
     }
 }
