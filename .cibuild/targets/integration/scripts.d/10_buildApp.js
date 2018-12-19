@@ -5,7 +5,7 @@ const path = require("path");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 const writeFile = util.promisify(fs.writeFile);
-const rename = util.promisify(fs.rename);
+const copyFile = util.promisify(fs.copyFile);
 const { getModuleInfo } = require("@anakeen/anakeen-cli/utils/moduleInfo");
 
 const getFileName = moduleInfo => {
@@ -16,11 +16,8 @@ const produceAndUpload = async (srcPath = "./") => {
   try {
     const outputPath = process.env.CIBUILD_OUTPUTS;
     const { moduleInfo } = await getModuleInfo(srcPath);
-    const moduleTest = await getModuleInfo(path.join(srcPath, "/Tests"));
     console.log("Make app");
     await exec("make app");
-    console.log("Make app-test");
-    await exec("make app-test");
     console.log("Make stubs");
     await exec("make stub");
     console.log("tar src and stubs");
@@ -45,35 +42,17 @@ const produceAndUpload = async (srcPath = "./") => {
             title: process.env.CI_COMMIT_TITLE
           }
         }
-      },
-      {
-        name: moduleTest.moduleInfo.name,
-        version: moduleTest.moduleInfo.version,
-        resources: {
-          app: getFileName(moduleTest.moduleInfo) + ".app"
-        },
-        data: {
-          date: new Date().toISOString(),
-          commit: {
-            sha: process.env.CI_COMMIT_SHA,
-            title: process.env.CI_COMMIT_TITLE
-          }
-        }
       }
     ];
     await writeFile(path.join(outputPath, "app.json"), JSON.stringify(modules));
     console.log("Move files");
-    await rename(
+    await copyFile(
       getFileName(moduleInfo) + ".app",
       path.join(outputPath, getFileName(moduleInfo) + ".app")
     );
-    await rename(
+    await copyFile(
       getFileName(moduleInfo) + ".src",
       path.join(outputPath, getFileName(moduleInfo) + ".src")
-    );
-    await rename(
-      getFileName(moduleTest.moduleInfo) + ".app",
-      path.join(outputPath, getFileName(moduleTest.moduleInfo) + ".app")
     );
   } catch (error) {
     console.error(error);
@@ -87,5 +66,5 @@ return produceAndUpload()
     console.log("OK");
   })
   .catch(err => {
-    throw new Error(err);
+    process.exit(42);
   });
