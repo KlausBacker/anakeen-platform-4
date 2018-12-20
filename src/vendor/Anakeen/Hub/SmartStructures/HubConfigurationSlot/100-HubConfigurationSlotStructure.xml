@@ -6,14 +6,11 @@
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationSlot\HubConfigurationSlotBehavior</smart:class>
 
         <smart:fields>
-            <smart:field-set name="hub_slot_parameters" type="frame" label="Slot component parameters" access="ReadWrite">
-                <smart:field-enum name="hub_slot_position" label="Position in dock" relation="Top_bottom_enum" access="ReadWrite"/>
+            <smart:field-set name="hub_slot_parameters" extended="true">
+                <smart:field-enum name="hub_slot_position" label="Position in dock" relation="Top_bottom_enum"
+                                  access="ReadWrite"/>
             </smart:field-set>
         </smart:fields>
-
-        <smart:parameters>
-
-        </smart:parameters>
 
         <smart:hooks/>
 
@@ -26,6 +23,7 @@
         <smart:enum-configuration name="Top_bottom_enum">
             <smart:enum name="TOP" label="Top"/>
             <smart:enum name="BOTTOM" label="Bottom"/>
+            <smart:enum name="CENTER" label="Center"/>
         </smart:enum-configuration>
     </smart:enumerates>
 </smart:config>
