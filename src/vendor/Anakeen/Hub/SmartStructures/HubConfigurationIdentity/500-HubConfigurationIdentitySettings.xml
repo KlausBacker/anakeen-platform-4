@@ -6,4 +6,7 @@
             <smart:element-access-configuration ref="PRF_HUB_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
+    <ui:render ref="HUBCONFIGURATIONIDENTITY">
+        <ui:render-access class="Anakeen\Hub\SmartStructures\HubConfiguration\Render\HubConfigurationAccess"/>
+    </ui:render>
 </smart:config>
