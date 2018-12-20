@@ -37,8 +37,9 @@ class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
     {
         return parent::getComponentConfiguration();
     }
-    protected function setPosition($position){
-        switch($position) {
+    protected function setPosition($position)
+    {
+        switch ($position) {
             case "TOP":
                 return "header";
                 break;
@@ -48,7 +49,8 @@ class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
             case "BOTTOM":
                 return "footer";
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 }
