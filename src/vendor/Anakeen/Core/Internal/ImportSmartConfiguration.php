@@ -609,6 +609,11 @@ class ImportSmartConfiguration
         $data = [];
         $nodeAttributes = $this->getNode($config, "fields");
         if ($nodeAttributes) {
+
+            $reset=$nodeAttributes->getAttribute("reset");
+            if ($reset === "true") {
+                $data[]=["RESET", "structure"];
+            }
             foreach ($nodeAttributes->childNodes as $attrNode) {
                 if (!is_a($attrNode, \DOMElement::class)) {
                     continue;

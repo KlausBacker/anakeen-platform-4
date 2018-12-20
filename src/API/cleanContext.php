@@ -26,7 +26,6 @@ if ($full !== true) {
 $usage->verify();
 
 
-
 // default 60 day
 $duration = intval(\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LOGDURATION", 60));
 $logdelete = sprintf("DELETE FROM doclog where date < '%s'", \Anakeen\Core\Internal\SmartElement::getDate(-($duration)));
@@ -112,7 +111,12 @@ function execSqlFile($sqlFile)
 PGSERVICE=%s psql --set ON_ERROR_STOP=1 -c '\timing' -a -f %s 2>&1 | logger -s -t %s
 exit ${PIPESTATUS[0]}
 EOF;
-    $script = sprintf($script, escapeshellarg($pgService), escapeshellarg($sqlFile), escapeshellarg("cleanContext(" . \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT") . ")"));
+    $script = sprintf(
+        $script,
+        escapeshellarg($pgService),
+        escapeshellarg($sqlFile),
+        escapeshellarg("cleanContext(" . \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT") . ")")
+    );
     $tmpScript = mkTmpScript($script, 'basicDbClean');
     $out = array();
     $ret = 0;

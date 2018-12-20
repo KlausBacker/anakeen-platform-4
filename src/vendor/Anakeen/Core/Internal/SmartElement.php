@@ -1755,7 +1755,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($err == "") {
             $dvi = new \DocVaultIndex($this->dbaccess);
             $err = $dvi->DeleteDoc($this->id);
-            if ($this->name != '') {
+            if ($this->name != '' && $this->locked != -1) {
                 $this->query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
             }
             $this->query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
