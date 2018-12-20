@@ -46,7 +46,7 @@ class UserParameters
     private function initParameters($args)
     {
         $this->userLogin = $args['user'];
-        $this->userId = "U".AccountManager::getIdFromLogin($this->userLogin);
+        $this->userId = "U" . AccountManager::getIdFromLogin($this->userLogin);
     }
 
     /**
@@ -128,7 +128,7 @@ class UserParameters
             $formatedParameter['initialValue'] = $parameter['initialValue'];
 
             $formatedParameter['isUser'] = ($parameter['isuser'] === 'Y');
-            $formatedParameter['isGlobal'] = ($parameter['isglob'] === 'Y');
+            $formatedParameter['isGlobal'] = ($parameter['isglob'] ?? '' === 'Y');
             $formatedParameter['forUser'] = $parameter['forUser'];
 
             $formatedParameter['isStatic'] = ($parameter['kind'] === 'static');
@@ -188,10 +188,9 @@ class UserParameters
         $nameSpaceIds = [];
         $categoryIds = [];
 
-
         foreach ($params as $param) {
             $param['id'] = $currentId++;
-            $currentNameSpace = $nameSpaceIds[$param['nameSpace']];
+            $currentNameSpace = $nameSpaceIds[$param['nameSpace']] ?? null;
             if ($currentNameSpace === null) {
                 $newId = $currentId++;
                 $data[] = ['id' => $newId, 'parentId' => null, 'name' => $param['nameSpace'], 'rowLevel' => 1];
@@ -200,8 +199,8 @@ class UserParameters
                 $currentNameSpace = $newId;
             }
 
-            if ($param['category']) {
-                $currentCategory = $categoryIds[$param['nameSpace']][$param['category']];
+            if (!empty($param['category'])) {
+                $currentCategory = $categoryIds[$param['nameSpace']][$param['category']] ?? null;
                 if ($currentCategory === null) {
                     $newId = $currentId++;
                     $data[] = ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2];
