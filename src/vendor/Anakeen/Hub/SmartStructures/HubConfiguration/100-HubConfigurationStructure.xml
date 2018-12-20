@@ -4,34 +4,39 @@
         <smart:icon file="HubConfiguration.png"/>
 
         <smart:class>Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationBehavior</smart:class>
-
         <smart:fields>
-            <smart:field-set name="hub_config" type="frame" label="Hub configuration" access="ReadWrite">
-                <smart:field-text name="hub_title" label="title" is-title="true" access="ReadWrite"/>
-                <smart:field-set name="hub_titles" type="array" label="Titles"
-                                 access="ReadWrite">
-                    <smart:field-text name="hub_title" label="Title" access="ReadWrite"/>
-                    <smart:field-text name="hub_language" label="Language"
+            <smart:field-set name="hub_structure" type="tab" label="Structure" access="ReadWrite">
+                <smart:field-set name="hub_config" type="frame" label="Configuration" access="ReadWrite">
+                    <smart:field-set name="hub_titles" type="array" label="Element Titles"
+                                     access="ReadWrite">
+                        <smart:field-text name="hub_title" label="Title" access="ReadWrite"/>
+                        <smart:field-text name="hub_language" label="Language"
+                                          access="ReadWrite"/>
+                        <smart:field-text name="hub_language_code" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-htmltext name="hub_icon" label="Icon" access="ReadWrite"/>
+                    <smart:field-enum name="hub_mono_element" label="Mono element" relation="Yes_no_enum"
                                       access="ReadWrite"/>
-                    <smart:field-text name="hub_language_code" access="ReadWrite"/>
+                    <smart:field-enum name="hub_activated" label="Element activated" relation="Yes_no_enum"
+                                      access="ReadWrite"/>
+                    <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-text name="hub_icon" label="Icon" access="ReadWrite"/>
-                <smart:field-text name="hub_font_name" access="ReadWrite"/>
-                <smart:field-text name="hub_icon_name" access="ReadWrite"/>
-                <smart:field-set name="hub_roles" type="array" label="Roles" access="ReadWrite">
-                    <smart:field-account name="hub_role" label="Role" access="ReadWrite">
-                        <smart:field-option name="match">role</smart:field-option>
-                    </smart:field-account>
+                <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Element location">
+                    <smart:field-enum name="hub_docker_position" label="Position in hub" relation="Docker_pos_enum"
+                                      access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-enum name="hub_mono_element" label="Mono element" relation="Yes_no_enum"
-                                  access="ReadWrite"/>
-                <smart:field-enum name="hub_activated" label="Element activated" relation="Yes_no_enum"
-                                  access="ReadWrite"/>
-                <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
-                <smart:field-text name="hub_id" label="Element id in the hub" access="ReadWrite"/>
+                <smart:field-set name="hub_component_parameters" type="frame" access="ReadWrite" label="Parameters"/>
+            </smart:field-set>
+            <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
+                <smart:field-set name="hub_security_frame" type="frame" access="ReadWrite">
+                    <smart:field-set name="hub_roles" type="array" access="ReadWrite">
+                        <smart:field-account name="hub_role" label="Role" access="ReadWrite">
+                            <smart:field-option name="match">role</smart:field-option>
+                        </smart:field-account>
+                    </smart:field-set>
+                </smart:field-set>
             </smart:field-set>
         </smart:fields>
-
 
         <smart:parameters>
             <smart:field-set name="hub_fr_assets" type="frame" label="Hub asset parameters" access="ReadWrite">

@@ -6,7 +6,7 @@
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationLogout\HubConfigurationLogoutBehavior</smart:class>
 
         <smart:fields>
-            <smart:field-set name="logout_parameters" type="frame" label="Logout component parameters" access="ReadWrite">
+            <smart:field-set name="hub_component_parameters" extended="true">
                 <smart:field-text name="logout_title" label="Title" access="ReadWrite"/>
             </smart:field-set>
         </smart:fields>
