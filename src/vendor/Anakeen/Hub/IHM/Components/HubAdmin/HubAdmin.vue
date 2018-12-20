@@ -40,8 +40,7 @@
                     </div>
                 </template>
                 <template slot="right">
-                    <smartElem ref="smartConfig" class="hub-modal"></smartElem> <!-- TO DO : switch to router multiview config when router is merged and add index js config -->
-                    <!--<router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
+                    <smartElem ref="smartConfig" class="hub-modal"></smartElem>
                 </template>
             </ank-splitter>
         </div>

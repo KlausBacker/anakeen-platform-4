@@ -57,21 +57,23 @@ export default {
         dataValueField: "value",
         dataSource: this.hubConfig,
         valueTemplate: "Create",
-        change: e => {
+        select: e => {
           this.selectConfig(e);
         }
       });
     },
     selectConfig(e) {
-      this.collection = e.sender.value();
+      this.collection = e.dataItem.value;
       this.$refs.hubAdminSplitter.disableEmptyContent();
-      if (this.$refs.smartConfig.isLoaded()) {
-        this.createConfig(this.collection);
-      } else {
-        this.$refs.smartConfig.$once("documentLoaded", () => {
+      this.$nextTick(() => {
+        if (this.$refs.smartConfig.isLoaded()) {
           this.createConfig(this.collection);
-        });
-      }
+        } else {
+          this.$refs.smartConfig.$once("documentLoaded", () => {
+            this.createConfig(this.collection);
+          });
+        }
+      });
     },
     createConfig(e) {
       this.$refs.hubAdminSplitter.disableEmptyContent();
@@ -95,19 +97,8 @@ export default {
     actionClick(e) {
       e.preventDefault();
       this.$refs.hubAdminSplitter.disableEmptyContent();
-      if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
-        switch (e.data.type) {
-          case "consult":
-            this.openConfig(e.data.row.id);
-            break;
-          case "edit":
-            this.modifyConfig(e.data.row.id);
-            break;
-          default:
-            break;
-        }
-      } else {
-        this.$refs.smartConfig.$once("documentLoaded", () => {
+      this.$nextTick(() => {
+        if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
           switch (e.data.type) {
             case "consult":
               this.openConfig(e.data.row.id);
@@ -118,8 +109,21 @@ export default {
             default:
               break;
           }
-        });
-      }
+        } else {
+          this.$refs.smartConfig.$once("documentLoaded", () => {
+            switch (e.data.type) {
+              case "consult":
+                this.openConfig(e.data.row.id);
+                break;
+              case "edit":
+                this.modifyConfig(e.data.row.id);
+                break;
+              default:
+                break;
+            }
+          });
+        }
+      });
     }
   }
 };
