@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@1.0.1-1545131213":
-  version "1.0.1-1545131213"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1545131213.tgz#26a145fed59d500d13923572374b33fc327b44c6"
-  integrity sha512-0lEjfnVuvJgkILfH92ZPK4CsAxSY5isb2XnQxplSaxX9gEbmQ8fE3mFH73OHG/AoQDImbVPlJcZSuhVloAgpNQ==
+"@anakeen/anakeen-cli@1.0.1-1545232896":
+  version "1.0.1-1545232896"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1545232896.tgz#97c2d0cee96222b8ad79e5d4bafa2e45de483253"
+  integrity sha512-/MtKyeB6pMIvc4dU5b9Bc6RccVV1eQFqosNyYTBVVAWPqreXyWk0/UNsNbu4s3HMeYPGFU6iTyItLLGL2GXVfQ==
   dependencies:
     "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
@@ -17,6 +17,8 @@
     inquirer "^6.0.0"
     mustache "^3.0.1"
     node-fetch "^2.3.0"
+    opn "^5.4.0"
+    sax "^1.2.4"
     signale "^1.3.0"
     streamqueue "^1.1.2"
     through2 "^3.0.0"
@@ -4397,6 +4399,11 @@ is-windows@^1.0.1, is-windows@^1.0.2:
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
   integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
 
+is-wsl@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-1.1.0.tgz#1f16e4aa22b04d1336b66188a66af3c600c3a66d"
+  integrity sha1-HxbkqiKwTRM2tmGIpmrzxgDDpm0=
+
 isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
@@ -5452,6 +5459,13 @@ onetime@^2.0.0:
   integrity sha1-BnQoIw/WdEOyeUsiu6UotoZ5YtQ=
   dependencies:
     mimic-fn "^1.0.0"
+
+opn@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/opn/-/opn-5.4.0.tgz#cb545e7aab78562beb11aa3bfabc7042e1761035"
+  integrity sha512-YF9MNdVy/0qvJvDtunAOzFw9iasOQHpVthTCvGzxt61Il64AYSGdK+rYwld7NAfk9qJ7dt+hymBNSc9LNYS+Sw==
+  dependencies:
+    is-wsl "^1.1.0"
 
 optimize-css-assets-webpack-plugin@^5.0.1:
   version "5.0.1"
