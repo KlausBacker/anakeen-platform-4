@@ -5,6 +5,7 @@ namespace Anakeen\SmartStructures\Task;
 
 use Anakeen\Core\Account;
 use Anakeen\Core\AccountManager;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Exception;
 use Anakeen\Script\ShellManager;
@@ -48,25 +49,37 @@ class TaskBehavior extends \Anakeen\SmartElement
         }
     }
 
+    /**
+     * Change run date based on now
+     * @throws Exception
+     */
+    public function updateRunDate()
+    {
+        $this->setValue(TaskFields::task_nextdate, $this->getNextExecDate());
+        $this->modify();
+    }
+
     protected function executeNow()
     {
+        DbManager::savePoint("_taskExec");
+        DbManager::lockPoint($this->initid);
+
+        $this->select($this->getLatestId(false, true));
         $cmd = $this->getAnkCmd();
         $this->setValue(TaskFields::task_exec_state_result, "inprogress");
-
         $this->setValue(TaskFields::task_exec_date, Date::getNow());
         $this->modify();
 
-        $d1=new \DateTime();
+        $d1 = new \DateTime();
         exec($cmd . " 2>&1", $output, $return);
 
 
-        $d2=new \DateTime();
-        $diff=$d2->diff($d1);
+        $d2 = new \DateTime();
+        $diff = $d2->diff($d1);
 
         $this->setValue(TaskFields::task_exec_output, implode("\n", $output));
         $this->setValue(TaskFields::task_exec_duration, $diff->format("%H:%I:%S"));
         $this->setValue(TaskFields::task_exec_state_result, $return === 0 ? "success" : "fail");
-
 
 
         $this->revise();
@@ -75,6 +88,8 @@ class TaskBehavior extends \Anakeen\SmartElement
         $this->clearValue(TaskFields::task_exec_duration);
         $this->clearValue(TaskFields::task_exec_date);
         $this->modify();
+
+        DbManager::commitPoint("_taskExec");
         return $return;
     }
 
@@ -141,8 +156,10 @@ class TaskBehavior extends \Anakeen\SmartElement
             } catch (\Exception $e) {
                 throw new Exception("Invalid crontab :" . $e->getMessage());
             }
-
-            return $cron->getNextRunDate()->format('Y-m-d H:i:s');
+            // Add One minute to be sure to change next run date after execution
+            $oneMinuteAfter = new \DateTime();
+            $oneMinuteAfter->add(new \DateInterval('PT1M'));
+            return $cron->getNextRunDate($oneMinuteAfter)->format('Y-m-d H:i:s');
         }
 
         return false;

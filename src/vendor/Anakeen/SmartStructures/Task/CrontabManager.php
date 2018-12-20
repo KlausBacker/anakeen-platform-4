@@ -4,7 +4,6 @@
 namespace Anakeen\SmartStructures\Task;
 
 use Anakeen\Core\ContextManager;
-use Anakeen\Exception;
 
 class CrontabManager
 {

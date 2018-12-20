@@ -2,11 +2,16 @@
 
 namespace Anakeen\Core\Cron;
 
-use SmartStructure\Fields\Task as TaskFields;
+use Anakeen\Core\Utils\System;
+use Anakeen\Exception;
+use Anakeen\Script\ShellManager;
+use Anakeen\SmartStructures\Task\TaskManager;
 
 class ProcessExecuteAPI
 {
     public static $debug = false;
+    /** @var \Exception[] */
+    protected static $recordError=[];
 
 
     protected static function lock()
@@ -40,8 +45,15 @@ class ProcessExecuteAPI
     {
         $lock = self::lock();
         try {
-            self::verifyTaskElements();
-            self::verifyRecordedTimers();
+            self::bgExecTaskElements();
+            self::bgExecRecordedTimers();
+            if (self::$recordError) {
+                $msg=[];
+                foreach (self::$recordError as $e) {
+                    $msg[]=$e->getMessage();
+                }
+                throw new Exception(implode("\n", $msg));
+            }
         } catch (\Exception $e) {
             self::unlock($lock);
             throw $e;
@@ -82,78 +94,59 @@ class ProcessExecuteAPI
         $exec->execute();
     }
 
-    public static function verifyTaskElements()
+    protected static function bgExecTaskElements()
     {
-        // Verify Task document
-        $now = \Anakeen\Core\Internal\SmartElement::getTimeDate();
+        // Verify Task elements
 
-        $s = new \SearchDoc("", "TASK");
-        $s->setObjectReturn();
-        $s->addFilter(sprintf("%s < %s", TaskFields::task_nextdate, pg_escape_literal($now)));
-        $s->addFilter("%s = 'active'", TaskFields::task_status);
-        //  $s->setDebugMode();
-        $s->search();
-
-        while ($de = $s->getNextDoc()) {
-            $de->setValue("exec_status", "waiting");
-            $de->modify(true, array(
-                "exec_status"
-            ), true);
-        }
-
-        $s = new \SearchDoc("", "TASK");
-        $s->setObjectReturn();
-        $s->addFilter(sprintf("exec_nextdate < %s", pg_escape_literal($now)));
-        $s->addFilter("exec_status != 'progressing'");
-        //$s->setDebugMode();
-        $s->search();
-        //print_r2($s->getDebugInfo());
-        self::debug(__METHOD__ . " " . sprintf("Found %d tasks to execute.", $s->count()));
-        if ($s->count() <= 0) {
-            return;
-        }
-
-        while ($de = $s->getNextDoc()) {
+        $tasks = TaskManager::getTaskToExecute();
+        self::debug(sprintf("%d task detected.", $tasks->count()));
+        foreach ($tasks as $task) {
             /**
-             * @var \SmartStructure\Task $de
+             * @var \SmartStructure\Task $task
              */
-            self::debug(__METHOD__ . " " . sprintf("Executing task '%s' (%d).", $de->getTitle(), $de->id));
-            self::executeSingleTask($de);
-        }
-        unset($exec);
-        return;
-    }
-
-    public static function verifyRecordedTimers()
-    {
-        $ate = \Anakeen\Core\TimerManager::getTaskToExecute();
-
-        self::debug(__METHOD__ . " " . sprintf("Found %d doctimers.", count($ate)));
-        foreach ($ate as $task) {
             try {
-                $tmpfile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), __METHOD__);
-                if ($tmpfile === false) {
-                    throw new \Exception("Error: could not create temporary file.");
-                }
-                $cmd = sprintf("%s/ank.php --script=processExecute --doctimer-id=%s > %s 2>&1", DEFAULT_PUBDIR, escapeshellarg($task->id), escapeshellarg($tmpfile));
-                self::debug(__METHOD__ . " " . sprintf("Running '%s'", $cmd));
-                system($cmd, $ret);
-                $out = file_get_contents($tmpfile);
-                unlink($tmpfile);
-                if ($ret !== 0) {
-                    throw new \Exception(sprintf("Process '%s' returned with error (%d): %s", $cmd, $ret, $out));
-                }
+                self::bgExecuteProcess(["task-id" => $task->id]);
+                $task->updateRunDate();
             } catch (\Exception $e) {
-                $errMsg = \Anakeen\Core\LogException::formatErrorLogException($e);
-
-                error_log($errMsg);
-                if (!\Anakeen\Script\ShellManager::isInteractiveCLI()) {
-                    $expand = array(
-                        'm' => preg_replace('/^([^\n]*).*/s', '\1', $e->getMessage())
-                    );
-                    \Anakeen\Script\ShellManager::sendEmailError($errMsg, $expand);
-                }
+                self::$recordError[]=$e;
             }
         }
+    }
+
+    protected static function bgExecRecordedTimers()
+    {
+        $timerTasks = \Anakeen\Core\TimerManager::getTaskToExecute();
+
+        self::debug(sprintf("%d timer detected.", count($timerTasks)));
+        foreach ($timerTasks as $task) {
+            try {
+                self::bgExecuteProcess(["timer-id" => $task->id]);
+            } catch (\Exception $e) {
+                self::$recordError[]=$e;
+            }
+        }
+    }
+
+
+
+    protected static function bgExecuteProcess(array $args)
+    {
+        $tmpfile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), "bgExec");
+        if ($tmpfile === false) {
+            throw new \Anakeen\Exception("Error: could not create temporary file.");
+        }
+        $sarg = '';
+        foreach ($args as $k => $arg) {
+            $sarg .= sprintf(" --%s=%s", $k, escapeshellarg($arg));
+        }
+        $cmd = sprintf(
+            "%s --script=processExecute %s > %s 2>&1",
+            ShellManager::getAnkCmd(),
+            $sarg,
+            escapeshellarg($tmpfile)
+        );
+
+        print "> $cmd\n";
+        System::bgExec([$cmd]);
     }
 }

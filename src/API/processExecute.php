@@ -6,8 +6,8 @@
 
 $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("Execute Processes when needed");
-$doctimerId = $usage->addOptionalParameter('doctimer-id', 'Doctimer identifier', null, null);
-$taskId = $usage->addOptionalParameter('task-id', 'Exec identifier', null, null);
+$doctimerId = $usage->addOptionalParameter('timer-id', 'Timer identifier', null, null);
+$taskId = $usage->addOptionalParameter('task-id', 'Task identifier', null, null);
 \Anakeen\Core\Cron\ProcessExecuteAPI::$debug = ($usage->addEmptyParameter('debug', 'Enable debugging verbose output') !== false);
 $usage->verify();
 

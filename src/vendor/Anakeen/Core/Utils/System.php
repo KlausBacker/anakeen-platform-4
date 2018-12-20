@@ -2,7 +2,7 @@
 
 namespace Anakeen\Core\Utils;
 
-use Anakeen\Core\ContextManager;
+use Anakeen\Exception;
 use Anakeen\LogManager;
 
 class System
@@ -33,6 +33,7 @@ class System
     {
         LogManager::notice($msg);
     }
+
     /**
      * record warning message to session
      *
@@ -50,7 +51,7 @@ class System
      * @param       $result
      * @param       $err
      */
-    public static function bgExec($tcmd, &$result, &$err)
+    public static function bgExec(array $tcmd, &$result = "")
     {
         $foutname = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/bgexec");
         $fout = fopen($foutname, "w+");
@@ -61,7 +62,12 @@ class System
         fclose($fout);
         chmod($foutname, 0700);
         //  if (session_id()) session_write_close(); // necessary to close if not background cmd
-        exec("exec nohup $foutname > /dev/null 2>&1 &", $result, $err);
+        exec("exec nohup $foutname > /dev/null 2>&1 &", $result, $status);
         //if (session_id()) @session_start();
+        if ($status !== 0) {
+            $e = new Exception("BgExec Script Error");
+            $e->setData($result);
+            throw $e;
+        }
     }
 }

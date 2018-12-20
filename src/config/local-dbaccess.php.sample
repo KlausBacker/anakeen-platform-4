@@ -9,7 +9,10 @@ if ($_SERVER['HTTP_HOST'] == 'admin.example.net') {
     /* Access to http://admin.example.net/ are authenticated against local accounts only */
     $authentMode = 'internal';
 } else {
-    /* While everything else is authenticated with networkuser accounts only */
-    $authentMode = 'freedomNu';
-    $freedom_providers['freedomNu'] = array();
+    /* While everything else is authenticated with custom authentification accounts only */
+    $authentMode = 'MyAuthent';
+
+    $authentProvidersConfig = ["MyAuthent" => [
+        "class" => "MyCompany\\Authent\\MyAuthentProvider"
+    ]];
 }

@@ -12,11 +12,8 @@ class ShellManager
     protected static $programName = self::ScriptBasename;
     protected static $absProgramName='';
 
-    public static function recordArgs(array $argv, $programName = null)
+    public static function recordArgs(array $argv)
     {
-        if ($programName) {
-            self::$absProgramName = $programName;
-        }
         self::$opts = [];
         foreach ($argv as $k => $v) {
             if (preg_match("/--([^=]+)=(.*)/", $v, $reg)) {

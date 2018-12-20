@@ -29,7 +29,7 @@
       <sde:callable>\Anakeen\Routes\Core\CleanContext</sde:callable>
       <sde:method>PATCH</sde:method>
       <!-- Cannot be executed by standard url -->
-      <sde:pattern>-</sde:pattern>
+      <sde:pattern/>
       <sde:description>Clean temporary data in database</sde:description>
       <sde:requiredAccess/>
     </sde:route>
