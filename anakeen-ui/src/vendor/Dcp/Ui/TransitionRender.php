@@ -97,7 +97,7 @@ class TransitionRender
                 self::parameterFrameAttribute,
                 $this->workflow->id,
                 sprintf(___("Workflow Parameters : %s", "ddui"), $transitionLabel),
-                "W",
+                BasicAttribute::READWRITE_ACCESS,
                 "N"
             );
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
