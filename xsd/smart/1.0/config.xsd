@@ -245,7 +245,7 @@
     <xs:complexType name="field-enumType">
         <xs:complexContent>
             <xs:extension base="v1:field-multipleType">
-                <xs:attribute type="xs:token" name="relation"/>
+                <xs:attribute type="xs:token" name="relation" use="required"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -426,6 +426,14 @@
                 </xs:annotation>
             </xs:element>
         </xs:choice>
+        <xs:attribute type="xs:boolean" name="reset" default="false">
+            <xs:annotation>
+                <xs:documentation>
+                    <h1>Delete all fields definition</h1>
+                    <h2>The values are not deleted - only the previous field specification is deleted</h2>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="defaultsType">
