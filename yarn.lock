@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-cli@latest":
-  version "1.0.1-1543424005-1544026372-1544148599"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543424005-1544026372-1544148599.tgz#168dea7b95be532fd02c7bcbe2febc6cec79a82a"
-  integrity sha512-hKj+axlqCnf4PjYHM5q/o3YGMqjHnWxZ4zK3EXCRDV2vKxFao0JfGThYYVGBRZGDvNPUIu70iqAo9KEcoY9arQ==
+"@anakeen/anakeen-cli@1.0.1-1545232896-1545358155":
+  version "1.0.1-1545232896-1545358155"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1545232896-1545358155.tgz#b59c34b13cf729ada234d9247511aaba5fca8dc7"
+  integrity sha512-+GjWYPmHnkGUp/1WI9ByIIcSzPHIYVcxagaBOWragrQAJZx4HUI/p9wp3pdNjQjZ5YKhPdX/GgYvui423iB/Jw==
   dependencies:
-    "@anakeen/anakeen-module-validation" "1.0.0-1543423715-1543947921"
+    "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
     glob "^7.1.3"
     gulp "^4.0.0"
@@ -17,6 +17,8 @@
     inquirer "^6.0.0"
     mustache "^3.0.1"
     node-fetch "^2.3.0"
+    opn "^5.4.0"
+    sax "^1.2.4"
     signale "^1.3.0"
     streamqueue "^1.1.2"
     through2 "^3.0.0"
@@ -27,10 +29,10 @@
     xml2js "^0.4.19"
     yargs "^12.0.5"
 
-"@anakeen/anakeen-module-validation@1.0.0-1543423715-1543947921":
-  version "1.0.0-1543423715-1543947921"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.0-1543423715-1543947921.tgz#45d38d5a0e14781ba36347056e7e194f627f8dce"
-  integrity sha512-xcczyStKSkyP7ScZ/Rbqf2VeHl3cdOhUgb/NFwJ+ADZ+sNBEYQEvYbsoriT2P4W/mXf515aMonsaMR3Z596Z6g==
+"@anakeen/anakeen-module-validation@latest":
+  version "1.0.1"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.1.tgz#7c1a99d3bb8d7016f4a0195e024083cb0638a724"
+  integrity sha512-F6oxLZ2LoTi97b3dCTDs3A+AgYb0fEiUrAJ8EEzTyMMWDlNj07EtSHVqEIUyPUJNwOSSr0ZPpf5aPJY7d1BC8A==
   dependencies:
     libxmljs "^0.19.5"
 
@@ -4424,6 +4426,11 @@ is-windows@^1.0.1, is-windows@^1.0.2:
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
   integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
 
+is-wsl@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-1.1.0.tgz#1f16e4aa22b04d1336b66188a66af3c600c3a66d"
+  integrity sha1-HxbkqiKwTRM2tmGIpmrzxgDDpm0=
+
 isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
@@ -5531,6 +5538,13 @@ onetime@^2.0.0:
   integrity sha1-BnQoIw/WdEOyeUsiu6UotoZ5YtQ=
   dependencies:
     mimic-fn "^1.0.0"
+
+opn@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/opn/-/opn-5.4.0.tgz#cb545e7aab78562beb11aa3bfabc7042e1761035"
+  integrity sha512-YF9MNdVy/0qvJvDtunAOzFw9iasOQHpVthTCvGzxt61Il64AYSGdK+rYwld7NAfk9qJ7dt+hymBNSc9LNYS+Sw==
+  dependencies:
+    is-wsl "^1.1.0"
 
 optimize-css-assets-webpack-plugin@^5.0.1:
   version "5.0.1"
