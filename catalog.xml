@@ -8,4 +8,5 @@
     <system uri="./xsd/ui/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/ui/1.0"/>
     <system uri="./xsd/module/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/module/1.0"/>
     <system uri="./xsd/app/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/app/1.0"/>
+    <system uri="./xsd/task/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/task/1.0"/>
 </catalog>

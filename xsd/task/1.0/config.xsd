@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/task/1.0"
+           xmlns:ns="https://platform.anakeen.com/4/schemas/task/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- task data part -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xs:element name="task" type="ns:taskType"/>
+
+    <xs:complexType name="taskType">
+        <xs:sequence>
+            <xs:element type="ns:userType" name="user" />
+            <xs:element type="xs:string" name="description" minOccurs="0"/>
+            <xs:element type="ns:routeType" name="route" />
+            <xs:element type="xs:string" name="crontab"/>
+            <xs:element type="ns:statusType" name="status" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="ns:elementName" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="label"/>
+    </xs:complexType>
+
+    <xs:complexType name="routeType">
+        <xs:sequence>
+            <xs:element type="ns:argumentType" name="argument" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="ns:argumentType" name="query-field" minOccurs="0" maxOccurs="unbounded"/>
+
+        </xs:sequence>
+        <xs:attribute type="xs:token" name="ref" use="required"/>
+        <xs:attribute type="xs:token" name="ns"/>
+        <xs:attribute type="ns:methodType" name="method"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="argumentType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="name" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="userType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="login" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="statusType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Task state</h1>
+                <ul>
+                    <li>
+                        <code>active</code>
+                        : the task is recorded to scheduler (this is the default)
+                    </li>
+                    <li>
+                        <code>disabled</code>
+                        : the task is ignored from scheduler
+                    </li>
+                </ul>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="active"/>
+            <xs:enumeration value="disabled"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="methodType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Http method for request</h1>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GET"/>
+            <xs:enumeration value="POST"/>
+            <xs:enumeration value="PUT"/>
+            <xs:enumeration value="PATCH"/>
+            <xs:enumeration value="DELETE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- ~~~~~~~~~~~~~~~~~ -->
+    <!--    Basic type     -->
+    <!-- ~~~~~~~~~~~~~~~~~ -->
+    <xs:simpleType name="fieldName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="elementName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-zA-Z][A-Za-z0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

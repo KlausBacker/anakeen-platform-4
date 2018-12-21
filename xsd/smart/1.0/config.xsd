@@ -5,11 +5,13 @@
            xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0"
            xmlns:wfl="https://platform.anakeen.com/4/schemas/workflow/1.0"
            xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"
+           xmlns:task="https://platform.anakeen.com/4/schemas/task/1.0"
            xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0"
            xmlns:v1="https://platform.anakeen.com/4/schemas/smart/1.0">
     <xs:import namespace="https://platform.anakeen.com/4/schemas/ui/1.0"/>
     <xs:import namespace="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
     <xs:import namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/task/1.0"/>
     <xs:import namespace="https://platform.anakeen.com/4/schemas/timer/1.0"/>
     <xs:element name="config" type="v1:configType">
         <xs:annotation>
@@ -24,6 +26,7 @@
         <xs:sequence>
             <xs:element ref="mail:mailtemplate" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="timer:timer" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="task:task" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="wfl:graph" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="wfl:config" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
@@ -160,13 +163,21 @@
         <xs:attribute type="xs:boolean" name="is-title" default="false"/>
         <xs:attribute type="v1:fieldOrderType" name="insert-after"/>
         <xs:attribute type="xs:string" name="link"/>
-        <xs:attribute type="xs:boolean" name="multiple"/>
     </xs:complexType>
 
     <xs:complexType name="field-standardType">
         <xs:complexContent>
             <xs:extension base="v1:field-propsStandardType">
                 <xs:attribute type="v1:fieldNameType" name="name" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="field-multipleType">
+        <xs:complexContent>
+            <xs:extension base="v1:field-standardType">
+                <xs:attribute type="xs:boolean" name="multiple" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -205,24 +216,35 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:complexType name="field-formatType">
-        <xs:complexContent>
-            <xs:extension base="v1:field-standardType">
-                <xs:attribute type="xs:string" name="format"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
 
     <xs:complexType name="field-relationType">
         <xs:complexContent>
-            <xs:extension base="v1:field-standardType">
+            <xs:extension base="v1:field-multipleType">
                 <xs:attribute type="xs:token" name="relation"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="field-accountType">
+        <xs:complexContent>
+            <xs:extension base="v1:field-relationType">
+                <xs:attribute name="match">
+                    <xs:simpleType >
+                        <xs:restriction base="xs:token">
+                            <xs:enumeration value="user"/>
+                            <xs:enumeration value="group"/>
+                            <xs:enumeration value="role"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+
+                <xs:attribute type="xs:token" name="group"/>
+                <xs:attribute type="xs:token" name="role"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="field-enumType">
         <xs:complexContent>
-            <xs:extension base="v1:field-standardType">
+            <xs:extension base="v1:field-multipleType">
                 <xs:attribute type="xs:token" name="relation"/>
             </xs:extension>
         </xs:complexContent>
@@ -243,7 +265,7 @@
             </xs:element>
         </xs:sequence>
         <xs:attribute type="v1:logicalNameType" name="name" use="required"/>
-        <xs:attribute type="v1:logicalNameType" name="structure"/>
+        <xs:attribute type="v1:logicalNameType" name="structure" use="required"/>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
 
@@ -336,19 +358,6 @@
         <xs:attribute type="v1:logicalNameType" name="profil-type" default="PDOC"/>
     </xs:complexType>
 
-    <xs:complexType name="field-accountType" mixed="true">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:field-standardType" name="field-text"/>
-            <xs:element type="v1:field-standardType" name="field-enum"/>
-            <xs:element type="v1:field-standardType" name="field-docid"/>
-            <xs:element type="v1:field-standardType" name="field-int"/>
-        </xs:choice>
-        <xs:attribute type="xs:string" name="name"/>
-        <xs:attribute type="xs:string" name="label"/>
-        <xs:attribute type="v1:fieldAccessType" name="access"/>
-        <xs:attribute type="xs:string" name="extended"/>
-        <xs:attribute type="xs:string" name="type"/>
-    </xs:complexType>
     <xs:complexType name="field-argumentType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
@@ -393,7 +402,20 @@
             <xs:element type="v1:accessesType" name="accesses" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="v1:logicalNameType" name="name"/>
-        <xs:attribute type="xs:int" name="id"/>
+        <xs:attribute name="id">
+            <xs:simpleType>
+                <xs:annotation>
+                    <xs:documentation>
+                        <h1>To use a specific system database id.</h1>
+                        <p>Use only for system purpose. The id must be lesser than 1000</p>
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:restriction base="xs:integer">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="999"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
         <xs:attribute type="xs:string" name="label"/>
     </xs:complexType>
     <xs:complexType name="attributesType">
@@ -506,7 +528,6 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="default"/>
             <xs:enumeration value="false"/>
-            <xs:enumeration value="auto"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -548,21 +569,21 @@
         <xs:choice maxOccurs="unbounded" minOccurs="0">
             <xs:element type="v1:field-setType" name="field-set"/>
             <xs:element type="v1:field-standardType" name="field-date"/>
-            <xs:element type="v1:field-formatType" name="field-time"/>
-            <xs:element type="v1:field-formatType" name="field-int"/>
-            <xs:element type="v1:field-formatType" name="field-double"/>
-            <xs:element type="v1:field-formatType" name="field-money"/>
+            <xs:element type="v1:field-standardType" name="field-time"/>
+            <xs:element type="v1:field-standardType" name="field-int"/>
+            <xs:element type="v1:field-standardType" name="field-double"/>
+            <xs:element type="v1:field-standardType" name="field-money"/>
             <xs:element type="v1:field-standardType" name="field-color"/>
-            <xs:element type="v1:field-formatType" name="field-timestamp"/>
+            <xs:element type="v1:field-standardType" name="field-timestamp"/>
             <xs:element type="v1:field-standardType" name="field-password"/>
-            <xs:element type="v1:field-formatType" name="field-text"/>
+            <xs:element type="v1:field-standardType" name="field-text"/>
             <xs:element type="v1:field-standardType" name="field-longtext"/>
             <xs:element type="v1:field-standardType" name="field-htmltext"/>
             <xs:element type="v1:field-standardType" name="field-file"/>
             <xs:element type="v1:field-standardType" name="field-image"/>
             <xs:element type="v1:field-enumType" name="field-enum"/>
             <xs:element type="v1:field-relationType" name="field-docid"/>
-            <xs:element type="v1:field-relationType" name="field-account"/>
+            <xs:element type="v1:field-accountType" name="field-account"/>
             <xs:element type="v1:field-standardType" name="field-xml"/>
             <xs:element type="v1:field-standardType" name="field-json"/>
             <xs:element type="v1:field-optionType" name="field-option"/>
@@ -572,10 +593,6 @@
         <xs:attribute type="v1:fieldsetType" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="v1:fieldAccessType" name="access"/>
-        <xs:attribute type="xs:string" name="relation"/>
-        <xs:attribute type="xs:string" name="multiple"/>
-        <xs:attribute type="xs:string" name="is-abstract"/>
-        <xs:attribute type="xs:string" name="link"/>
         <xs:attribute type="v1:fieldOrderType" name="insert-after"/>
     </xs:complexType>
 </xs:schema>
