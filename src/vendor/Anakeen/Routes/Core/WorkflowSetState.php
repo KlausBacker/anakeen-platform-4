@@ -77,7 +77,7 @@ class WorkflowSetState extends WorkflowState
         parent::initParameters($request, $args);
         $content = $request->getParsedBody();
 
-        $this->comment = $content["comment"];
-        $this->parameters = $content["parameters"];
+        $this->comment = $content["comment"]??"";
+        $this->parameters = $content["parameters"]??[];
     }
 }
