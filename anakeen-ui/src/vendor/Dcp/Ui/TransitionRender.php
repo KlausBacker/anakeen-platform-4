@@ -92,12 +92,12 @@ class TransitionRender
         $attrData = array();
 
         if (count($askes) > 0) {
-            $transitionLabel = isset($transitionId) ? _($transitionId) : ___("Invalid transition", "ddui");
+            $transitionLabel = isset($transitionId) ? $this->workflow->getTransitionLabel($transitionId) : ___("Invalid transition", "ddui");
             $askFrame = new \Anakeen\Core\SmartStructure\FieldSetAttribute(
                 self::parameterFrameAttribute,
                 $this->workflow->id,
                 sprintf(___("Workflow Parameters : %s", "ddui"), $transitionLabel),
-                "W",
+                BasicAttribute::READWRITE_ACCESS,
                 "N"
             );
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
