@@ -44,6 +44,12 @@ class FinalUpdates
         // update fieldvalues column for workflows
         DbManager::query("update family.wdoc set id=id;");
 
+        DbManager::query("select setval('seq_id_users', (select max(id) from users))");
+        DbManager::query("select setval('seq_id_acl', (select max(id) from acl))");
+        DbManager::query("select setval('seq_id_docvgroup', (select max(num) from vgroup))");
+        DbManager::query("select setval('seq_id_vaultdiskdirstorage', (select max(id_dir) from vaultdiskdirstorage))");
+        DbManager::query("select setval('seq_id_vaultdiskfsstorage', (select max(id_fs) from vaultdiskfsstorage))");
+
 
         return $data;
     }
