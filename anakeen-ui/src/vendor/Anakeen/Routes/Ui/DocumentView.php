@@ -720,7 +720,7 @@ class DocumentView
 
         $refreshMsg = $this->setRefresh();
 
-        $disableEtag = \Dcp\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "disableEtag");
+        $disableEtag = \Dcp\Ui\RenderConfigManager::getRenderParameter(($this->document->doctype === "C") ? $this->document->name : $this->document->fromname, "disableEtag");
 
         if ($disableEtag) {
             return null;
