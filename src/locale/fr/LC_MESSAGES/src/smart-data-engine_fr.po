@@ -1012,7 +1012,7 @@ msgstr "Valeurs mise à jour"
 
 msgctxt "authent"
 msgid "Username and/or password is incorrect"
-msgstr ""
+msgstr "L'identifiant ou le mot de passe est incorrect"
 
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "

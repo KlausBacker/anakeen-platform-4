@@ -29,32 +29,27 @@ class HtmlAuthenticator extends Authenticator
         $this->username = $session->read('username');
 
         if ($this->username != "") {
-            return Authenticator::AUTH_OK;
+            // Identified by cookie session
+             return Authenticator::AUTH_OK;
         }
 
-        if (!array_key_exists($this->parms['username'], $_POST)) {
-            return Authenticator::AUTH_ASK;
-        }
-        if (!array_key_exists($this->parms['password'], $_POST)) {
-            return Authenticator::AUTH_ASK;
+        $this->username = $_SERVER["PHP_AUTH_USER"]??"";
+        if ($this->username == "") {
+             return Authenticator::AUTH_ASK;
         }
 
-        $this->username = getHttpVars($this->parms['username']);
-        if (is_callable(array(
-            $this->provider,
-            'validateCredential'
-        ))) {
-            if (!$this->provider->validateCredential(getHttpVars($this->parms['username']), getHttpVars($this->parms{'password'}))) {
+        if (is_callable(array($this->provider, 'validateCredential'))) {
+            if (!$this->provider->validateCredential($this->username, $_SERVER["PHP_AUTH_PW"]??"")) {
                 return Authenticator::AUTH_NOK;
             }
 
-            if (!$this->documentUserExists(getHttpVars($this->parms['username']))) {
-                if (!$this->tryInitializeUser(getHttpVars($this->parms['username']))) {
+            if (!$this->documentUserExists($this->username)) {
+                if (!$this->tryInitializeUser($this->username)) {
                     return Authenticator::AUTH_NOK;
                 }
             }
-            $session->register('username', getHttpVars($this->parms['username']));
-            $session->setuid(getHttpVars($this->parms['username']));
+            $session->register('username', $this->username);
+            $session->setuid($this->username);
             return Authenticator::AUTH_OK;
         }
 
@@ -121,9 +116,7 @@ class HtmlAuthenticator extends Authenticator
      */
     public function getAuthUrl(array $extendedArg = array())
     {
-        if (empty($this->parms['auth']['app'])) {
-            throw new \Anakeen\Exception("Missing html/auth/app config.");
-        }
+
         $hasArgs = false;
         $location = \Anakeen\Core\Internal\Session::getWebRootPath();
         $location .= "./login/";

@@ -512,7 +512,6 @@ class Session extends DbObj
             trigger_error(sprintf("Session directory '%s' is not writable.", $sessionDir));
             return false;
         }
-
         return true;
     }
 

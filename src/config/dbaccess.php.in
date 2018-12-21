@@ -12,15 +12,7 @@ $pgservice_core = "@CORE_DB@";
 
 $authentMode = '@AUTHTYPE@';
 $authentModeConfig = array(
-    'html' => array(
-        'auth' => array(
-            'app' => 'AUTHENT',
-            'action' => 'LOGINFORM',
-            'args' => ''
-        ),
-        'username' => 'auth_user',
-        'password' => 'auth_pass',
-    ),
+    'html' => array(),
     'open' => array(),
     'basic' => array(),
 );
