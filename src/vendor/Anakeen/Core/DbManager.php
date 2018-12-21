@@ -6,7 +6,7 @@ class DbManager
 {
     protected static $inTransition = false;
     protected static $savepoint;
-    protected static $masterLock;
+    protected static $masterLock=false;
     protected static $lockpoint;
     protected static $pgConnection=null;
     protected static $dbRessource;

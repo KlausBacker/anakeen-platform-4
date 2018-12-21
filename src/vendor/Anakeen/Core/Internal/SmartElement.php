@@ -1755,7 +1755,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($err == "") {
             $dvi = new \DocVaultIndex($this->dbaccess);
             $err = $dvi->DeleteDoc($this->id);
-            if ($this->name != '') {
+            if ($this->name != '' && $this->locked != -1) {
                 $this->query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
             }
             $this->query(sprintf("delete from docfrom where id='%s'", pg_escape_string($this->id)));
@@ -4134,12 +4134,14 @@ create unique index i_docir on doc(initid, revision);";
             }
             $methodName = $parseMethod->methodName;
             if (method_exists($staticClass, $methodName)) {
+                if ($methodName==="__invoke") {
+                    $callable = new $staticClass();
+                } else {
+                    $callable = [$staticClass, $methodName];
+                }
                 if ((count($parseMethod->inputs) == 0) && (empty($bargs))) {
                     // without argument
-                    $value = call_user_func(array(
-                        $staticClass,
-                        $methodName
-                    ));
+                        $value = call_user_func($callable);
                 } else {
                     // with argument
                     $args = array();
@@ -4195,10 +4197,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         }
                     }
-                    $value = call_user_func_array(array(
-                        $staticClass,
-                        $methodName,
-                    ), $args);
+                    $value = call_user_func_array($callable, $args);
                 }
             } else {
                 $err = sprintf(_("Method [%s] not exists"), $method);

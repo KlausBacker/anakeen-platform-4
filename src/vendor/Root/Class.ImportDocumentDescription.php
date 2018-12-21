@@ -2089,6 +2089,7 @@ class ImportDocumentDescription
         $iAttr->phpfunc = $oattr->phpfunc;
         $iAttr->elink = $oattr->elink;
         $iAttr->constraint = ($structAttr->constraint) ?: '';
+        $iAttr->autocomplete=$structAttr->autocomplete;
 
 
         $this->doAttr($iAttr->getData("ATTR"), true);

@@ -1,534 +1,539 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-  <smart:structure-configuration name="TST_002" label="Test n°2">
-    <!--region Structure Properties ============-->
-    <smart:icon file="TEST.png"/>
-    <smart:class>Anakeen\Pu\Config\DefaultBehavior</smart:class>
-    <smart:usefor>N</smart:usefor>
-    <smart:tag name="vendor">Anakeen</smart:tag>
-    <smart:tag name="Hello">World is spheric</smart:tag>
-    <smart:tag name="ItsTrue"/>
-    <!--endregion Structure Properties =========-->
-    <!--region Structure Fields ================-->
-    <smart:fields>
-      <smart:field-set name="tst_notification" type="frame" access="ReadWrite">
-        <smart:field-text name="tst_titre" label="Titre" access="ReadWrite" is-title="true" is-abstract="true"/>
-        <smart:field-text name="tst_notification_montants" label="Notification" access="ReadWrite">
-          <smart:field-option name="viewtemplate">TEST:csl_notification_montants.xml</smart:field-option>
-        </smart:field-text>
-        <smart:field-enum name="tst_notification_statut" label="Statut" access="ReadWrite" is-abstract="true" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_notification_statut">
-          <smart:field-option name="viewtemplate">TEST:csl_notification_statut.xml</smart:field-option>
-        </smart:field-enum>
-        <smart:field-enum name="tst_statut_valide_rs_2" label="Validé RS 2" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_rs_2">
-          <smart:field-option name="system">yes</smart:field-option>
-          <smart:field-option name="eformat">hcheck</smart:field-option>
-          <smart:field-option name="bmenu">no</smart:field-option>
-        </smart:field-enum>
-      </smart:field-set>
-      <smart:field-set name="tst_identification_tab" type="tab" label="Identification" access="ReadWrite">
-        <smart:field-set name="tst_identification_frm" type="frame" label="Identification" access="ReadWrite">
-          <smart:field-enum name="tst_type_soutien" label="Type de soutien" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_type_soutien">
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="viewtemplate">TEST:csl_type_soutien.xml</smart:field-option>
-          </smart:field-enum>
-          <smart:field-enum name="tst_territorialite_don" label="Territorialité du don" access="ReadWrite" needed="true" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_territorialite_don" multiple="true"/>
-          <smart:field-enum name="tst_reprise" label="Reprise" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_reprise">
-            <smart:field-option name="bmenu">no</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-          </smart:field-enum>
-          <smart:field-text name="tst_num_action" label="Numéro action" access="ReadWrite"/>
-          <smart:field-text name="tst_ancien_num_projet" label="Ancien n° projet" access="ReadWrite"/>
-          <smart:field-docid name="tst_phase_prec" label="Phase précédente" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="searchcriteria">hidden</smart:field-option>
-          </smart:field-docid>
-          <smart:field-docid name="tst_phase_suiv" label="Phase suivante" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="searchcriteria">hidden</smart:field-option>
-          </smart:field-docid>
-          <smart:field-enum name="tst_action_cofinancee" label="Action gérée par le service AFI" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_action_cofinancee">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-docid name="tst_cofinancements" label="Cofinancements" access="ReadWrite" relation="TEST_GEP_COFINANCEMENT">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-          </smart:field-docid>
-          <smart:field-docid name="tst_type_action_soutenue" label="Type d'action soutenue" access="ReadWrite" relation="TEST_GEP_TYPE_ACTION_SOUTENUE">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-          </smart:field-docid>
-          <smart:field-text name="tst_code_cpt_anal_domaine" label="Code comptable analytique domaine" access="ReadWrite"/>
-          <smart:field-docid name="tst_zone_geo" label="Zone géographique" access="ReadWrite" needed="true" relation="TEST_GEP_ZONE_GEOGRAPHIQUE">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="sortable">asc</smart:field-option>
-          </smart:field-docid>
-          <smart:field-docid name="tst_description_spa" label="Stratégie &amp; plans d'action" access="ReadWrite" relation="TEST_GEP_STRATEGIE_PLAN_ACTION">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-          </smart:field-docid>
-          <smart:field-text name="tst_zone_geo_search" label="Zone géographique pour recherche" access="ReadWrite"/>
-          <smart:field-text name="tst_code_cpt_anal_geo" label="Code comptable analytique géographique" access="ReadWrite"/>
-          <smart:field-account name="tst_service_geo" label="Service géographique" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-            <smart:field-option name="sortable">asc</smart:field-option>
-          </smart:field-account>
-          <smart:field-text name="tst_code_cpt_anal_fonc" label="Code comptable analytique fonctionnel" access="ReadWrite"/>
-          <smart:field-enum name="tst_region_pador" label="Région PADOR" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_region_pador"/>
-          <smart:field-longtext name="tst_localisation" label="Localisation" access="ReadWrite"/>
-          <smart:field-text name="tst_alerte_acteur" label="Notification" access="ReadWrite">
-            <smart:field-option name="viewtemplate">TEST:csl_alerte_acteur.xml</smart:field-option>
-          </smart:field-text>
-          <smart:field-docid name="tst_acteur_principal" label="Acteur principal" access="ReadWrite" relation="TEST_GEP_PERSONNE_MORALE">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="sortable">asc</smart:field-option>
-          </smart:field-docid>
-          <smart:field-docid name="tst_autres_acteurs" label="Autres acteurs concernés" access="ReadWrite" relation="TEST_GEP_PERSONNE_MORALE" multiple="true">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-          </smart:field-docid>
-          <smart:field-enum name="tst_secteur_cidse" label="Secteur CIDSE" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_secteur_cidse"/>
-          <smart:field-enum name="tst_secteur_pador" label="Secteur d'activité PADOR" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_secteur_pador">
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-docid name="tst_theme_ro_princ" label="Thématique RO principale" access="ReadWrite" relation="TEST_GEP_STRATEGIE_PARTENARIALE">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="sortable">asc</smart:field-option>
-          </smart:field-docid>
-          <smart:field-docid name="tst_theme_ro_sec" label="Thématique RO secondaire" access="ReadWrite" relation="TEST_GEP_STRATEGIE_PARTENARIALE" multiple="true">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-          </smart:field-docid>
-          <smart:field-text name="tst_intitule_action" label="Intitulé action" access="ReadWrite" needed="true"/>
-          <smart:field-text name="tst_traduction_fr" label="Traduction en français (si nécessaire)" access="ReadWrite"/>
-          <smart:field-enum name="tst_langue" label="Langue" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_langue">
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-date name="tst_date_creation" label="Date de création" access="ReadWrite"/>
-          <smart:field-date name="tst_date_presentation_cpf" label="Date CTP du service" access="ReadWrite" needed="true">
-            <smart:field-option name="sortable">asc</smart:field-option>
-          </smart:field-date>
-          <smart:field-account name="tst_createur" label="Créateur" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-          </smart:field-account>
-          <smart:field-enum name="tst_confidentiel" label="Confidentiel" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_confidentiel">
-            <smart:field-option name="eformat">bool</smart:field-option>
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-text name="tst_phase_prec_title" label="Phase précédente (titre)" access="ReadWrite" insert-after="tst_phase_prec">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_phase_suiv_title" label="Phase suivante (titre)" access="ReadWrite" insert-after="tst_phase_suiv">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_cofinancements_title" label="Cofinancements (titre)" access="ReadWrite" insert-after="tst_cofinancements">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_type_action_soutenue_title" label="Type d'action soutenue (titre)" access="ReadWrite" insert-after="tst_type_action_soutenue">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_zone_geo_title" label="Zone géographique (titre)" access="ReadWrite" insert-after="tst_zone_geo">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_description_spa_title" label="Stratégie &amp; plans d'action (titre)" access="ReadWrite" insert-after="tst_description_spa">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_service_geo_title" label="Service géographique (titre)" access="ReadWrite" insert-after="tst_service_geo">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_acteur_principal_title" label="Acteur principal (titre)" access="ReadWrite" insert-after="tst_acteur_principal">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_autres_acteurs_title" label="Autres acteurs concernés (titre)" access="ReadWrite" insert-after="tst_autres_acteurs">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_theme_ro_princ_title" label="Thématique RO principale (titre)" access="ReadWrite" insert-after="tst_theme_ro_princ">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_theme_ro_sec_title" label="Thématique RO secondaire (titre)" access="ReadWrite" insert-after="tst_theme_ro_sec">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_createur_title" label="Créateur (titre)" access="ReadWrite" insert-after="tst_createur">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-        </smart:field-set>
-      </smart:field-set>
-      <smart:field-set name="tst_description_tab" type="tab" label="Description de l'action" access="ReadWrite">
-        <smart:field-set name="tst_description_frm" type="frame" label="Description de l'action" access="ReadWrite">
-          <smart:field-enum name="tst_groupe_cible" label="Groupe cible" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_groupe_cible" multiple="true">
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-enum name="tst_vulnerables" label="Vulnérables" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_vulnerables">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-longtext name="tst_comm_groupe_vulnerables" label="Commentaires Groupes Vulnérables" access="ReadWrite"/>
-          <smart:field-longtext name="tst_risque" label="Risque" access="ReadWrite"/>
-          <smart:field-longtext name="tst_notes_repris" label="Notes et documents repris" access="ReadWrite"/>
-          <smart:field-set name="tst_notes_array" type="array" label="Note et documents" access="ReadWrite">
-            <smart:field-file name="tst_notes" label="Fichiers" access="ReadWrite"/>
-          </smart:field-set>
-          <smart:field-set name="tst_dossier_projet_array" type="array" label="Dossier projet" access="ReadWrite">
-            <smart:field-file name="tst_dossier_projet" label="Fichiers" access="ReadWrite"/>
-          </smart:field-set>
-          <smart:field-enum name="tst_position_episcopat" label="Position de l'Episcopat local" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_position_episcopat">
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-enum name="tst_relation_eglise" label="Relation avec l'Eglise" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_relation_eglise">
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-text name="tst_commentare_relation_eglise" label="Commentaires sur la relation avec l'Eglise" access="ReadWrite"/>
-          <smart:field-enum name="tst_typologie_action" label="Typologie de l'action" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_typologie_action">
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-htmltext name="tst_contexte" label="Contexte de l'action" access="ReadWrite">
-            <smart:field-option name="toolbar">Basic</smart:field-option>
-          </smart:field-htmltext>
-          <smart:field-htmltext name="tst_benef" label="Bénéficiaires" access="ReadWrite">
-            <smart:field-option name="toolbar">Basic</smart:field-option>
-          </smart:field-htmltext>
-          <smart:field-int name="tst_nb_benef_directs" label="Nombre de bénéficiaires directs" access="ReadWrite"/>
-          <smart:field-int name="tst_nb_benef_indirects" label="Nombre de bénéficiaires indirects" access="ReadWrite"/>
-          <smart:field-htmltext name="tst_objectifs" label="Objectifs" access="ReadWrite">
-            <smart:field-option name="toolbar">Basic</smart:field-option>
-          </smart:field-htmltext>
-          <smart:field-htmltext name="tst_activites" label="Activités" access="ReadWrite">
-            <smart:field-option name="toolbar">Basic</smart:field-option>
-          </smart:field-htmltext>
-          <smart:field-htmltext name="tst_resultats_attendus" label="Résultats attendus" access="ReadWrite">
-            <smart:field-option name="toolbar">Basic</smart:field-option>
-          </smart:field-htmltext>
-          <smart:field-htmltext name="tst_moyens" label="Moyens" access="ReadWrite">
-            <smart:field-option name="toolbar">Basic</smart:field-option>
-          </smart:field-htmltext>
-          <smart:field-longtext name="tst_histoire" label="Histoire" access="ReadWrite"/>
-          <smart:field-enum name="tst_init_nouvelle" label="Initiative nouvelle" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_init_nouvelle">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-enum name="tst_init_pluriannu" label="Initiative pluriannuelle" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_init_pluriannu">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-int name="tst_duree_prev_action" label="Durée prévue de l'action (mois)" access="ReadWrite" format="%d mois"/>
-          <smart:field-date name="tst_rapport_soutien_prec_date" label="Rapport du soutien fourni le" access="ReadWrite"/>
-          <smart:field-set name="tst_rapport_soutien_prec_array" type="array" label="Rapports du soutien - fichiers" access="ReadWrite">
-            <smart:field-file name="tst_rapport_soutien_prec_fichier" label="Rapport du soutien" access="ReadWrite"/>
-          </smart:field-set>
-          <smart:field-enum name="tst_amplitude_action" label="Amplitude de l'action" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_amplitude_action">
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-date name="tst_date_debut_action" label="Date de début de l'action" access="ReadWrite"/>
-          <smart:field-date name="tst_date_fin_action" label="Date de fin de l'action" access="ReadWrite"/>
-          <smart:field-longtext name="tst_resume" label="Résumé (5 l. maxi pour CA)" access="ReadWrite"/>
-          <smart:field-date name="tst_date_prochain_ca" label="Prochaine instruction complète" access="ReadWrite"/>
-        </smart:field-set>
-      </smart:field-set>
-      <smart:field-set name="tst_financement_tab" type="tab" label="Statut &amp; Financement" access="ReadWrite">
-        <smart:field-set name="tst_financement_frm" type="frame" label="Financement" access="ReadWrite">
-          <smart:field-set name="tst_budget_action" type="array" label="Budget de l'action" access="ReadWrite">
-            <smart:field-text name="tst_budget_type_depense" label="Type de dépense" access="ReadWrite"/>
-            <smart:field-money name="tst_budget_montant" label="Montant" access="ReadWrite" format="%s €"/>
-          </smart:field-set>
-          <smart:field-money name="tst_fin_total" label="Total" access="ReadWrite" format="%s €"/>
-          <smart:field-money name="tst_fin_montant_demande" label="Montant demandé par le partenaire" access="ReadWrite" format="%s €"/>
-          <smart:field-money name="tst_fin_montant_propose" label="Montant proposé par le CM" access="ReadWrite" format="%s €">
-            <smart:field-option name="elabel">ne doit pas être modifié après le CA</smart:field-option>
-          </smart:field-money>
-          <smart:field-money name="tst_fin_montant_a_payer_cm" label="Montant à payer CM" access="ReadWrite" format="%s €">
-            <smart:field-option name="elabel">à renseigner pour mise en paiement</smart:field-option>
-          </smart:field-money>
-          <smart:field-longtext name="tst_fin_commentaire_cm" label="Commentaires CM" access="ReadWrite"/>
-          <smart:field-money name="tst_budget_montant_an_2" label="Estimation budget total année 2" access="ReadWrite" format="%s €"/>
-          <smart:field-money name="tst_budget_estimation_ccfd_an_2" label="Estimation contribution TEST année 2" access="ReadWrite" format="%s €"/>
-          <smart:field-money name="tst_budget_montant_an_3" label="Estimation budget total année 3" access="ReadWrite" format="%s €"/>
-          <smart:field-money name="tst_budget_estimation_ccfd_an_3" label="Estimation contribution TEST année 3" access="ReadWrite" format="%s €"/>
-          <smart:field-set name="tst_plan_financement" type="array" label="Plan de financement" access="ReadWrite">
-            <smart:field-text name="tst_plan_fin_lib_bailleur" label="Libellé bailleur" access="ReadWrite"/>
-            <smart:field-docid name="tst_plan_fin_bailleur" label="Bailleur" access="ReadWrite" relation="TEST_GEP_PERSONNE_MORALE"/>
-            <smart:field-money name="tst_plan_fin_montant" label="Montant" access="ReadWrite" format="%s €"/>
-          </smart:field-set>
-          <smart:field-money name="tst_plan_fin_total" label="Total plan de financement" access="ReadWrite" format="%s €"/>
-          <smart:field-int name="tst_plan_fin_annee" label="Année ?" access="ReadWrite"/>
-        </smart:field-set>
-        <smart:field-set name="tst_statut_frm" type="frame" label="Statut dans les process internes" access="ReadWrite">
-          <smart:field-enum name="tst_statut_valide_rs" label="Validé RS" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_rs">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-enum name="tst_statut_bon_a_payer" label="Bon à Payer" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_bon_a_payer">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-money name="tst_statut_montant_bap" label="Montant bon à payer" access="ReadWrite" format="%s €"/>
-          <smart:field-date name="tst_statut_date_ca_2" label="Date Bon à payer" access="ReadWrite"/>
-          <smart:field-longtext name="tst_statut_demande_maj_directeur" label="Demande de modification" access="ReadWrite"/>
-          <smart:field-longtext name="tst_statut_commentaire_directeur" label="Commentaire validation Directeur" access="ReadWrite"/>
-          <smart:field-enum name="tst_statut_valide_directeur" label="Validé directeur" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_directeur">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">hcheck</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-longtext name="tst_statut_raison_abandon_createur" label="Raison d'abandon par le créateur" access="ReadWrite"/>
-          <smart:field-longtext name="tst_statut_raison_abandon_ca" label="Raison d'abandon par le CA" access="ReadWrite"/>
-          <smart:field-date name="tst_statut_date_pres_cmp" label="Date présentation à la CTP" access="ReadWrite"/>
-          <smart:field-enum name="tst_statut_decision_cmp" label="Décision CTP" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_decision_cmp">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-money name="tst_statut_montant_decide_cmp" label="Montant CTP" access="ReadWrite" format="%s €"/>
-          <smart:field-longtext name="tst_statut_commentaire_cmp" label="Commentaire CTP" access="ReadWrite"/>
-          <smart:field-set name="tst_montant_tranche_tb" type="array" label="Montant par tranche" access="ReadWrite">
-            <smart:field-date name="tst_statut_date_valeur_banque" label="Date de valeur banque" access="ReadWrite"/>
-            <smart:field-text name="tst_statut_num_enregistrement" label="Numéro d'enregistrement" access="ReadWrite"/>
-            <smart:field-money name="tst_statut_montant_tranche" label="Montant tranche" access="ReadWrite" format="%s €"/>
-            <smart:field-text name="tst_statut_beneficiaire_tranche" label="Bénéficiaire" access="ReadWrite"/>
-          </smart:field-set>
-          <smart:field-file name="tst_statut_contrat_pdf" label="Contrat PDF" access="ReadWrite"/>
-          <smart:field-file name="tst_statut_contrat_pdf_ar" label="Contrat PDF (AR)" access="ReadWrite"/>
-          <smart:field-enum name="tst_statut_type_reglement" label="Type de règlement" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_type_reglement">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-file name="tst_statut_contrat_signe" label="Contrat ou convention signé" access="ReadWrite"/>
-          <smart:field-file name="tst_statut_dossier_compta" label="Dossier compta (Transfert)" access="ReadWrite"/>
-          <smart:field-file name="tst_statut_dossier_compta_ar" label="Dossier compta (AR)" access="ReadWrite"/>
-          <smart:field-file name="tst_statut_dossier_compta_demande_regl" label="Dossier compta (Demande R.)" access="ReadWrite"/>
-          <smart:field-date name="tst_statut_date_reception_ar" label="Date réception AR" access="ReadWrite"/>
-          <smart:field-file name="tst_statut_ar" label="Accusé de réception" access="ReadWrite"/>
-          <smart:field-set name="tst_unused_attr_array" type="array" label="Ancien champ" access="ReadWrite">
-            <smart:field-date name="tst_statut_date_tranche" label="Ancienne Date tranche (unused)" access="ReadWrite">
-              <smart:field-option name="searchcriteria">hidden</smart:field-option>
-            </smart:field-date>
-          </smart:field-set>
-          <smart:field-text name="tst_num_ordre_tranche" label="Ancien numéro (unused)" access="ReadWrite">
-            <smart:field-option name="searchcriteria">hidden</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_beneficiaire_tranche" label="Ancien bénéficiaire (unused)" access="ReadWrite">
-            <smart:field-option name="searchcriteria">hidden</smart:field-option>
-          </smart:field-text>
-        </smart:field-set>
-        <smart:field-set name="tst_ancien_process_frm" type="frame" label="Ancien process" access="ReadWrite">
-          <smart:field-enum name="tst_statut_avis_cpf" label="Avis ancienne CMP" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_avis_cpf">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-longtext name="tst_statut_commentaire_cpf" label="Commentaire ancienne CMP" access="ReadWrite"/>
-          <smart:field-money name="tst_statut_montant_propose_cpf" label="Montant proposé par l'ancienne CMP" access="ReadWrite" format="%s €"/>
-          <smart:field-date name="tst_statut_date_pres_ca" label="Date présentation à la CA" access="ReadWrite"/>
-          <smart:field-enum name="tst_statut_decision_ca" label="Décision CA" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_decision_ca">
-            <smart:field-option name="system">yes</smart:field-option>
-            <smart:field-option name="eformat">auto</smart:field-option>
-            <smart:field-option name="bmenu">no</smart:field-option>
-          </smart:field-enum>
-          <smart:field-money name="tst_statut_montant_decide_ca" label="Montant CA" access="ReadWrite" format="%s €"/>
-          <smart:field-longtext name="tst_statut_commentaire_ca" label="Commentaire CA" access="ReadWrite"/>
-        </smart:field-set>
-      </smart:field-set>
-      <smart:field-set name="tst_eval_tab" type="tab" label="Evaluation" access="ReadWrite">
-        <smart:field-set name="tst_eval_frm" type="frame" label="Evaluation" access="ReadWrite">
-          <smart:field-set name="tst_eval_rapports" type="array" label="Rapports" access="ReadWrite">
-            <smart:field-file name="tst_eval_rapport" label="Rapport" access="ReadWrite"/>
-          </smart:field-set>
-          <smart:field-set name="tst_eval_results" type="array" label="Résultats" access="ReadWrite">
-            <smart:field-longtext name="tst_eval_indic_1" label="Résultat" access="ReadWrite"/>
-            <smart:field-longtext name="tst_eval_indic_2" label="Indicateur 1" access="ReadWrite"/>
-            <smart:field-longtext name="tst_eval_indic_3" label="Indicateur 2" access="ReadWrite"/>
-          </smart:field-set>
-          <smart:field-longtext name="tst_eval_eval" label="Evaluation" access="ReadWrite"/>
-          <smart:field-longtext name="tst_eval_impact" label="Impact" access="ReadWrite"/>
-        </smart:field-set>
-      </smart:field-set>
-      <smart:field-set name="tst_info_tech_tab" type="tab" label="Informations Techniques" access="ReadWrite">
-        <smart:field-set name="tst_info_tech" type="frame" label="Informations Techniques" access="ReadWrite">
-          <smart:field-text name="tst_annee" label="Année" access="ReadWrite"/>
-          <smart:field-int name="tst_dern_modif_acteur" label="Date de dernière modification de l'acteur" access="ReadWrite"/>
-          <smart:field-text name="tst_acteur_principal_old" label="Ancien acteur principal" access="ReadWrite"/>
-          <smart:field-account name="tst_groupe_compta" label="Groupe Compa" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_charge_partenariat" label="Chargé de partenariat international" access="ReadWrite" multiple="true">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-          </smart:field-account>
-          <smart:field-int name="tst_cpt_zg" label="Numéro lié à a la zone géographique" access="ReadWrite"/>
-          <smart:field-int name="tst_cpt_csl" label="Numéro lié à l'année" access="ReadWrite"/>
-          <smart:field-account name="tst_rs_dpi_szg" label="RS DPI du service choisi" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_assistant_dpi_szg" label="Assistant DPI du service choisi" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_cm_dpi_szg" label="CM DPI du service choisi" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_groupe_dir_dpi" label="Groupe Directeur DPI" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_groupe_decis_cpf" label="Groupe Décisionnaire CTP" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_groupe_decis_ca" label="Groupe Décisionnaire CA" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_groupe_autir_44b" label="Groupe autorisé E2 - E3" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_groupe_autir_24b" label="Groupe autorisé E2 - E4bis" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-account name="tst_groupe_autir_21" label="Groupe autorisé E2 - E1" access="ReadWrite">
-            <smart:field-option name="doctitle">auto</smart:field-option>
-            <smart:field-option name="match">group</smart:field-option>
-          </smart:field-account>
-          <smart:field-text name="tst_groupe_compta_title" label="Groupe Compa (titre)" access="ReadWrite" insert-after="tst_groupe_compta">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_charge_partenariat_title" label="Chargé de partenariat international (titre)" access="ReadWrite" insert-after="tst_charge_partenariat">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_rs_dpi_szg_title" label="RS DPI du service choisi (titre)" access="ReadWrite" insert-after="tst_rs_dpi_szg">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_assistant_dpi_szg_title" label="Assistant DPI du service choisi (titre)" access="ReadWrite" insert-after="tst_assistant_dpi_szg">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_cm_dpi_szg_title" label="CM DPI du service choisi (titre)" access="ReadWrite" insert-after="tst_cm_dpi_szg">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_groupe_dir_dpi_title" label="Groupe Directeur DPI (titre)" access="ReadWrite" insert-after="tst_groupe_dir_dpi">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_groupe_decis_cpf_title" label="Groupe Décisionnaire CTP (titre)" access="ReadWrite" insert-after="tst_groupe_decis_cpf">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_groupe_decis_ca_title" label="Groupe Décisionnaire CA (titre)" access="ReadWrite" insert-after="tst_groupe_decis_ca">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_groupe_autir_44b_title" label="Groupe autorisé E2 - E3 (titre)" access="ReadWrite" insert-after="tst_groupe_autir_44b">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_groupe_autir_24b_title" label="Groupe autorisé E2 - E4bis (titre)" access="ReadWrite" insert-after="tst_groupe_autir_24b">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-          <smart:field-text name="tst_groupe_autir_21_title" label="Groupe autorisé E2 - E1 (titre)" access="ReadWrite" insert-after="tst_groupe_autir_21">
-            <smart:field-option name="autotitle">yes</smart:field-option>
-          </smart:field-text>
-        </smart:field-set>
-        <smart:field-set name="tst_info_mod" type="frame" label="Modeles de documents" access="ReadWrite">
-          <smart:field-file name="tst_tpl_ar_vierge" label="Modèle AR vierge" access="ReadWrite"/>
-          <smart:field-file name="tst_tpl_demande_r" label="Modèle Demande de règlement" access="ReadWrite"/>
-          <smart:field-file name="tst_tpl_transfert" label="Modèles transfert de fond" access="ReadWrite"/>
-          <smart:field-file name="tst_tpl_contrat" label="Contrat" access="ReadWrite"/>
-          <smart:field-file name="tst_tpl_ar" label="AR" access="ReadWrite"/>
-          <smart:field-file name="tst_tpl_fiche_cpf" label="Fiche CPF" access="ReadWrite"/>
-        </smart:field-set>
-      </smart:field-set>
-      <smart:field-set name="cls_flags" type="frame" label="Flags" access="ReadWrite">
-        <smart:field-int name="tst_in_copy" label="Flag de copie" access="ReadWrite"/>
-      </smart:field-set>
-    </smart:fields>
-    <!--endregion Structure Fields =============-->
-    <smart:parameters>
-      <smart:field-set name="tst_mod_param" type="frame" label="Modeles de documents" access="ReadWrite">
-        <smart:field-int name="tst_param_n0" label="Zéro" access="ReadWrite" />
-        <smart:field-int name="tst_param_n1" label="Un" access="ReadWrite" />
-        <smart:field-int name="tst_param_n2" label="Un" access="ReadWrite" />
-        <smart:field-docid name="tst_mod_ar_vierge" label="Modèle AR vierge" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_demande_r" label="Modèle Demande de règlement" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_transfert_fr" label="Modèles transfert de fond (francais)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_transfert_en" label="Modèles transfert de fond (anglais)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_transfert_po" label="Modèles transfert de fond (portugais)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_transfert_es" label="Modèles transfert de fond (espagnol)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_contrat_fr" label="Modèles contrat (francais)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_contrat_en" label="Modèles contrat (anglais)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_contrat_po" label="Modèles contrat (portugais)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_contrat_es" label="Modèles contrat (espagnol)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_header_liasse" label="Page de garde pour les liasses" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_zonegeo_liasse" label="Page de section zone géographique pour les liasses" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_ar" label="AR" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_fiche_cpf" label="Fiche CPF" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-int name="tst_nb_jour_control_acteur" label="Nombre de jours avant notification d'un acteur non modifié" access="ReadWrite"/>
-        <smart:field-docid name="tst_mt_envoyer_rs" label="Alerte à envoyer au rs" access="ReadWrite" relation="MAILTEMPLATE"/>
-        <smart:field-docid name="tst_mt_validation_rs" label="Alerte validation RS - directeur dpi" access="ReadWrite" relation="MAILTEMPLATE"/>
-        <smart:field-docid name="tst_mt_validation_bap_vers_autres" label="Alerte validation BAP - vers autres destinataires" access="ReadWrite" relation="MAILTEMPLATE"/>
-        <smart:field-account name="tst_grp_autres_dest_bap" label="Autre Groupe Destinataire BAP (cm dpi cofinancement, ...)" access="ReadWrite">
-          <smart:field-option name="doctitle">auto</smart:field-option>
-          <smart:field-option name="match">group</smart:field-option>
-        </smart:field-account>
-        <smart:field-docid name="tst_mod_fichier_concat" label="Fichier à concaténer (traitement par lot)" access="ReadWrite" relation="TEST_MODELES"/>
-        <smart:field-docid name="tst_mod_fichier_init" label="Fichier d'initialisation (traitement par lot)" access="ReadWrite" relation="TEST_MODELES"/>
-      </smart:field-set>
-    </smart:parameters>
+    <smart:structure-configuration name="TST_002" label="Test n°2">
+        <!--region Structure Properties ============-->
+        <smart:icon file="TEST.png"/>
+        <smart:class>Anakeen\Pu\Config\DefaultBehavior</smart:class>
+        <smart:usefor>N</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:tag name="Hello">World is spheric</smart:tag>
+        <smart:tag name="ItsTrue"/>
+        <!--endregion Structure Properties =========-->
+        <!--region Structure Fields ================-->
+        <smart:fields>
+            <smart:field-set name="tst_notification" type="frame" access="ReadWrite">
+                <smart:field-text name="tst_titre" label="Titre" access="ReadWrite" is-title="true" is-abstract="true"/>
+                <smart:field-text name="tst_notification_montants" label="Notification" access="ReadWrite">
+                    <smart:field-option name="viewtemplate">TEST:csl_notification_montants.xml</smart:field-option>
+                </smart:field-text>
+                <smart:field-enum name="tst_notification_statut" label="Statut" access="ReadWrite" is-abstract="true" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_notification_statut">
+                    <smart:field-option name="viewtemplate">TEST:csl_notification_statut.xml</smart:field-option>
+                </smart:field-enum>
+                <smart:field-enum name="tst_statut_valide_rs_2" label="Validé RS 2" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_rs_2">
+                    <smart:field-option name="system">yes</smart:field-option>
+                    <smart:field-option name="eformat">hcheck</smart:field-option>
+                    <smart:field-option name="bmenu">no</smart:field-option>
+                </smart:field-enum>
+            </smart:field-set>
+            <smart:field-set name="tst_identification_tab" type="tab" label="Identification" access="ReadWrite">
+                <smart:field-set name="tst_identification_frm" type="frame" label="Identification" access="ReadWrite">
+                    <smart:field-enum name="tst_type_soutien" label="Type de soutien" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_type_soutien">
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="viewtemplate">TEST:csl_type_soutien.xml</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_territorialite_don" label="Territorialité du don" access="ReadWrite" needed="true"
+                                      relation="TEST_GEP_SOUTIEN_CIRLONG-csl_territorialite_don" multiple="true"/>
+                    <smart:field-enum name="tst_reprise" label="Reprise" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_reprise">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-text name="tst_num_action" label="Numéro action" access="ReadWrite"/>
+                    <smart:field-text name="tst_ancien_num_projet" label="Ancien n° projet" access="ReadWrite"/>
+                    <smart:field-docid name="tst_phase_prec" label="Phase précédente" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="searchcriteria">hidden</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-docid name="tst_phase_suiv" label="Phase suivante" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="searchcriteria">hidden</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-enum name="tst_action_cofinancee" label="Action gérée par le service AFI" access="ReadWrite"
+                                      relation="TEST_GEP_SOUTIEN_CIRLONG-csl_action_cofinancee">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-docid name="tst_cofinancements" label="Cofinancements" access="ReadWrite" relation="TEST_GEP_COFINANCEMENT">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-docid name="tst_type_action_soutenue" label="Type d'action soutenue" access="ReadWrite" relation="TEST_GEP_TYPE_ACTION_SOUTENUE">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-text name="tst_code_cpt_anal_domaine" label="Code comptable analytique domaine" access="ReadWrite"/>
+                    <smart:field-docid name="tst_zone_geo" label="Zone géographique" access="ReadWrite" needed="true" relation="TEST_GEP_ZONE_GEOGRAPHIQUE">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="sortable">asc</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-docid name="tst_description_spa" label="Stratégie &amp; plans d'action" access="ReadWrite" relation="TEST_GEP_STRATEGIE_PLAN_ACTION">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-text name="tst_zone_geo_search" label="Zone géographique pour recherche" access="ReadWrite"/>
+                    <smart:field-text name="tst_code_cpt_anal_geo" label="Code comptable analytique géographique" access="ReadWrite"/>
+                    <smart:field-account name="tst_service_geo" label="Service géographique" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                        <smart:field-option name="sortable">asc</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-text name="tst_code_cpt_anal_fonc" label="Code comptable analytique fonctionnel" access="ReadWrite"/>
+                    <smart:field-enum name="tst_region_pador" label="Région PADOR" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_region_pador"/>
+                    <smart:field-longtext name="tst_localisation" label="Localisation" access="ReadWrite"/>
+                    <smart:field-text name="tst_alerte_acteur" label="Notification" access="ReadWrite">
+                        <smart:field-option name="viewtemplate">TEST:csl_alerte_acteur.xml</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-docid name="tst_acteur_principal" label="Acteur principal" access="ReadWrite" relation="TEST_GEP_PERSONNE_MORALE">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="sortable">asc</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-docid name="tst_autres_acteurs" label="Autres acteurs concernés" access="ReadWrite" relation="TEST_GEP_PERSONNE_MORALE" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-enum name="tst_secteur_cidse" label="Secteur CIDSE" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_secteur_cidse"/>
+                    <smart:field-enum name="tst_secteur_pador" label="Secteur d'activité PADOR" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_secteur_pador">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-docid name="tst_theme_ro_princ" label="Thématique RO principale" access="ReadWrite" relation="TEST_GEP_STRATEGIE_PARTENARIALE">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="sortable">asc</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-docid name="tst_theme_ro_sec" label="Thématique RO secondaire" access="ReadWrite" relation="TEST_GEP_STRATEGIE_PARTENARIALE" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-docid>
+                    <smart:field-text name="tst_intitule_action" label="Intitulé action" access="ReadWrite" needed="true"/>
+                    <smart:field-text name="tst_traduction_fr" label="Traduction en français (si nécessaire)" access="ReadWrite"/>
+                    <smart:field-enum name="tst_langue" label="Langue" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_langue">
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-date name="tst_date_creation" label="Date de création" access="ReadWrite"/>
+                    <smart:field-date name="tst_date_presentation_cpf" label="Date CTP du service" access="ReadWrite" needed="true">
+                        <smart:field-option name="sortable">asc</smart:field-option>
+                    </smart:field-date>
+                    <smart:field-account name="tst_createur" label="Créateur" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-enum name="tst_confidentiel" label="Confidentiel" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_confidentiel">
+                        <smart:field-option name="eformat">bool</smart:field-option>
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-text name="tst_phase_prec_title" label="Phase précédente (titre)" access="ReadWrite" insert-after="tst_phase_prec">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_phase_suiv_title" label="Phase suivante (titre)" access="ReadWrite" insert-after="tst_phase_suiv">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_cofinancements_title" label="Cofinancements (titre)" access="ReadWrite" insert-after="tst_cofinancements">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_type_action_soutenue_title" label="Type d'action soutenue (titre)" access="ReadWrite" insert-after="tst_type_action_soutenue">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_zone_geo_title" label="Zone géographique (titre)" access="ReadWrite" insert-after="tst_zone_geo">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_description_spa_title" label="Stratégie &amp; plans d'action (titre)" access="ReadWrite" insert-after="tst_description_spa">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_service_geo_title" label="Service géographique (titre)" access="ReadWrite" insert-after="tst_service_geo">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_acteur_principal_title" label="Acteur principal (titre)" access="ReadWrite" insert-after="tst_acteur_principal">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_autres_acteurs_title" label="Autres acteurs concernés (titre)" access="ReadWrite" insert-after="tst_autres_acteurs">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_theme_ro_princ_title" label="Thématique RO principale (titre)" access="ReadWrite" insert-after="tst_theme_ro_princ">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_theme_ro_sec_title" label="Thématique RO secondaire (titre)" access="ReadWrite" insert-after="tst_theme_ro_sec">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_createur_title" label="Créateur (titre)" access="ReadWrite" insert-after="tst_createur">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_description_tab" type="tab" label="Description de l'action" access="ReadWrite">
+                <smart:field-set name="tst_description_frm" type="frame" label="Description de l'action" access="ReadWrite">
+                    <smart:field-enum name="tst_groupe_cible" label="Groupe cible" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_groupe_cible" multiple="true">
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_vulnerables" label="Vulnérables" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_vulnerables">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-longtext name="tst_comm_groupe_vulnerables" label="Commentaires Groupes Vulnérables" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_risque" label="Risque" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_notes_repris" label="Notes et documents repris" access="ReadWrite"/>
+                    <smart:field-set name="tst_notes_array" type="array" label="Note et documents" access="ReadWrite">
+                        <smart:field-file name="tst_notes" label="Fichiers" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst_dossier_projet_array" type="array" label="Dossier projet" access="ReadWrite">
+                        <smart:field-file name="tst_dossier_projet" label="Fichiers" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-enum name="tst_position_episcopat" label="Position de l'Episcopat local" access="ReadWrite"
+                                      relation="TEST_GEP_SOUTIEN_CIRLONG-csl_position_episcopat">
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_relation_eglise" label="Relation avec l'Eglise" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_relation_eglise">
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-text name="tst_commentare_relation_eglise" label="Commentaires sur la relation avec l'Eglise" access="ReadWrite"/>
+                    <smart:field-enum name="tst_typologie_action" label="Typologie de l'action" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_typologie_action">
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-htmltext name="tst_contexte" label="Contexte de l'action" access="ReadWrite">
+                        <smart:field-option name="toolbar">Basic</smart:field-option>
+                    </smart:field-htmltext>
+                    <smart:field-htmltext name="tst_benef" label="Bénéficiaires" access="ReadWrite">
+                        <smart:field-option name="toolbar">Basic</smart:field-option>
+                    </smart:field-htmltext>
+                    <smart:field-int name="tst_nb_benef_directs" label="Nombre de bénéficiaires directs" access="ReadWrite"/>
+                    <smart:field-int name="tst_nb_benef_indirects" label="Nombre de bénéficiaires indirects" access="ReadWrite"/>
+                    <smart:field-htmltext name="tst_objectifs" label="Objectifs" access="ReadWrite">
+                        <smart:field-option name="toolbar">Basic</smart:field-option>
+                    </smart:field-htmltext>
+                    <smart:field-htmltext name="tst_activites" label="Activités" access="ReadWrite">
+                        <smart:field-option name="toolbar">Basic</smart:field-option>
+                    </smart:field-htmltext>
+                    <smart:field-htmltext name="tst_resultats_attendus" label="Résultats attendus" access="ReadWrite">
+                        <smart:field-option name="toolbar">Basic</smart:field-option>
+                    </smart:field-htmltext>
+                    <smart:field-htmltext name="tst_moyens" label="Moyens" access="ReadWrite">
+                        <smart:field-option name="toolbar">Basic</smart:field-option>
+                    </smart:field-htmltext>
+                    <smart:field-longtext name="tst_histoire" label="Histoire" access="ReadWrite"/>
+                    <smart:field-enum name="tst_init_nouvelle" label="Initiative nouvelle" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_init_nouvelle">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_init_pluriannu" label="Initiative pluriannuelle" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_init_pluriannu">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-int name="tst_duree_prev_action" label="Durée prévue de l'action (mois)" access="ReadWrite"/>
+                    <smart:field-date name="tst_rapport_soutien_prec_date" label="Rapport du soutien fourni le" access="ReadWrite"/>
+                    <smart:field-set name="tst_rapport_soutien_prec_array" type="array" label="Rapports du soutien - fichiers" access="ReadWrite">
+                        <smart:field-file name="tst_rapport_soutien_prec_fichier" label="Rapport du soutien" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-enum name="tst_amplitude_action" label="Amplitude de l'action" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_amplitude_action">
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-date name="tst_date_debut_action" label="Date de début de l'action" access="ReadWrite"/>
+                    <smart:field-date name="tst_date_fin_action" label="Date de fin de l'action" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_resume" label="Résumé (5 l. maxi pour CA)" access="ReadWrite"/>
+                    <smart:field-date name="tst_date_prochain_ca" label="Prochaine instruction complète" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_financement_tab" type="tab" label="Statut &amp; Financement" access="ReadWrite">
+                <smart:field-set name="tst_financement_frm" type="frame" label="Financement" access="ReadWrite">
+                    <smart:field-set name="tst_budget_action" type="array" label="Budget de l'action" access="ReadWrite">
+                        <smart:field-text name="tst_budget_type_depense" label="Type de dépense" access="ReadWrite"/>
+                        <smart:field-money name="tst_budget_montant" label="Montant" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-money name="tst_fin_total" label="Total" access="ReadWrite"/>
+                    <smart:field-money name="tst_fin_montant_demande" label="Montant demandé par le partenaire" access="ReadWrite"/>
+                    <smart:field-money name="tst_fin_montant_propose" label="Montant proposé par le CM" access="ReadWrite">
+                        <smart:field-option name="elabel">ne doit pas être modifié après le CA</smart:field-option>
+                    </smart:field-money>
+                    <smart:field-money name="tst_fin_montant_a_payer_cm" label="Montant à payer CM" access="ReadWrite">
+                        <smart:field-option name="elabel">à renseigner pour mise en paiement</smart:field-option>
+                    </smart:field-money>
+                    <smart:field-longtext name="tst_fin_commentaire_cm" label="Commentaires CM" access="ReadWrite"/>
+                    <smart:field-money name="tst_budget_montant_an_2" label="Estimation budget total année 2" access="ReadWrite"/>
+                    <smart:field-money name="tst_budget_estimation_ccfd_an_2" label="Estimation contribution TEST année 2" access="ReadWrite"/>
+                    <smart:field-money name="tst_budget_montant_an_3" label="Estimation budget total année 3" access="ReadWrite"/>
+                    <smart:field-money name="tst_budget_estimation_ccfd_an_3" label="Estimation contribution TEST année 3" access="ReadWrite"/>
+                    <smart:field-set name="tst_plan_financement" type="array" label="Plan de financement" access="ReadWrite">
+                        <smart:field-text name="tst_plan_fin_lib_bailleur" label="Libellé bailleur" access="ReadWrite"/>
+                        <smart:field-docid name="tst_plan_fin_bailleur" label="Bailleur" access="ReadWrite" relation="TEST_GEP_PERSONNE_MORALE"/>
+                        <smart:field-money name="tst_plan_fin_montant" label="Montant" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-money name="tst_plan_fin_total" label="Total plan de financement" access="ReadWrite"/>
+                    <smart:field-int name="tst_plan_fin_annee" label="Année ?" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_statut_frm" type="frame" label="Statut dans les process internes" access="ReadWrite">
+                    <smart:field-enum name="tst_statut_valide_rs" label="Validé RS" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_rs">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_statut_bon_a_payer" label="Bon à Payer" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_bon_a_payer">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-money name="tst_statut_montant_bap" label="Montant bon à payer" access="ReadWrite"/>
+                    <smart:field-date name="tst_statut_date_ca_2" label="Date Bon à payer" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_statut_demande_maj_directeur" label="Demande de modification" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_statut_commentaire_directeur" label="Commentaire validation Directeur" access="ReadWrite"/>
+                    <smart:field-enum name="tst_statut_valide_directeur" label="Validé directeur" access="ReadWrite"
+                                      relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_valide_directeur">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">hcheck</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-longtext name="tst_statut_raison_abandon_createur" label="Raison d'abandon par le créateur" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_statut_raison_abandon_ca" label="Raison d'abandon par le CA" access="ReadWrite"/>
+                    <smart:field-date name="tst_statut_date_pres_cmp" label="Date présentation à la CTP" access="ReadWrite"/>
+                    <smart:field-enum name="tst_statut_decision_cmp" label="Décision CTP" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_decision_cmp">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-money name="tst_statut_montant_decide_cmp" label="Montant CTP" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_statut_commentaire_cmp" label="Commentaire CTP" access="ReadWrite"/>
+                    <smart:field-set name="tst_montant_tranche_tb" type="array" label="Montant par tranche" access="ReadWrite">
+                        <smart:field-date name="tst_statut_date_valeur_banque" label="Date de valeur banque" access="ReadWrite"/>
+                        <smart:field-text name="tst_statut_num_enregistrement" label="Numéro d'enregistrement" access="ReadWrite"/>
+                        <smart:field-money name="tst_statut_montant_tranche" label="Montant tranche" access="ReadWrite"/>
+                        <smart:field-text name="tst_statut_beneficiaire_tranche" label="Bénéficiaire" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-file name="tst_statut_contrat_pdf" label="Contrat PDF" access="ReadWrite"/>
+                    <smart:field-file name="tst_statut_contrat_pdf_ar" label="Contrat PDF (AR)" access="ReadWrite"/>
+                    <smart:field-enum name="tst_statut_type_reglement" label="Type de règlement" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_type_reglement">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-file name="tst_statut_contrat_signe" label="Contrat ou convention signé" access="ReadWrite"/>
+                    <smart:field-file name="tst_statut_dossier_compta" label="Dossier compta (Transfert)" access="ReadWrite"/>
+                    <smart:field-file name="tst_statut_dossier_compta_ar" label="Dossier compta (AR)" access="ReadWrite"/>
+                    <smart:field-file name="tst_statut_dossier_compta_demande_regl" label="Dossier compta (Demande R.)" access="ReadWrite"/>
+                    <smart:field-date name="tst_statut_date_reception_ar" label="Date réception AR" access="ReadWrite"/>
+                    <smart:field-file name="tst_statut_ar" label="Accusé de réception" access="ReadWrite"/>
+                    <smart:field-set name="tst_unused_attr_array" type="array" label="Ancien champ" access="ReadWrite">
+                        <smart:field-date name="tst_statut_date_tranche" label="Ancienne Date tranche (unused)" access="ReadWrite">
+                            <smart:field-option name="searchcriteria">hidden</smart:field-option>
+                        </smart:field-date>
+                    </smart:field-set>
+                    <smart:field-text name="tst_num_ordre_tranche" label="Ancien numéro (unused)" access="ReadWrite">
+                        <smart:field-option name="searchcriteria">hidden</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_beneficiaire_tranche" label="Ancien bénéficiaire (unused)" access="ReadWrite">
+                        <smart:field-option name="searchcriteria">hidden</smart:field-option>
+                    </smart:field-text>
+                </smart:field-set>
+                <smart:field-set name="tst_ancien_process_frm" type="frame" label="Ancien process" access="ReadWrite">
+                    <smart:field-enum name="tst_statut_avis_cpf" label="Avis ancienne CMP" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_avis_cpf">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-longtext name="tst_statut_commentaire_cpf" label="Commentaire ancienne CMP" access="ReadWrite"/>
+                    <smart:field-money name="tst_statut_montant_propose_cpf" label="Montant proposé par l'ancienne CMP" access="ReadWrite"/>
+                    <smart:field-date name="tst_statut_date_pres_ca" label="Date présentation à la CA" access="ReadWrite"/>
+                    <smart:field-enum name="tst_statut_decision_ca" label="Décision CA" access="ReadWrite" relation="TEST_GEP_SOUTIEN_CIRLONG-csl_statut_decision_ca">
+                        <smart:field-option name="system">yes</smart:field-option>
+                        <smart:field-option name="eformat">auto</smart:field-option>
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-money name="tst_statut_montant_decide_ca" label="Montant CA" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_statut_commentaire_ca" label="Commentaire CA" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_eval_tab" type="tab" label="Evaluation" access="ReadWrite">
+                <smart:field-set name="tst_eval_frm" type="frame" label="Evaluation" access="ReadWrite">
+                    <smart:field-set name="tst_eval_rapports" type="array" label="Rapports" access="ReadWrite">
+                        <smart:field-file name="tst_eval_rapport" label="Rapport" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst_eval_results" type="array" label="Résultats" access="ReadWrite">
+                        <smart:field-longtext name="tst_eval_indic_1" label="Résultat" access="ReadWrite"/>
+                        <smart:field-longtext name="tst_eval_indic_2" label="Indicateur 1" access="ReadWrite"/>
+                        <smart:field-longtext name="tst_eval_indic_3" label="Indicateur 2" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-longtext name="tst_eval_eval" label="Evaluation" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_eval_impact" label="Impact" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_info_tech_tab" type="tab" label="Informations Techniques" access="ReadWrite">
+                <smart:field-set name="tst_info_tech" type="frame" label="Informations Techniques" access="ReadWrite">
+                    <smart:field-text name="tst_annee" label="Année" access="ReadWrite"/>
+                    <smart:field-int name="tst_dern_modif_acteur" label="Date de dernière modification de l'acteur" access="ReadWrite"/>
+                    <smart:field-text name="tst_acteur_principal_old" label="Ancien acteur principal" access="ReadWrite"/>
+                    <smart:field-account name="tst_groupe_compta" label="Groupe Compa" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_charge_partenariat" label="Chargé de partenariat international" access="ReadWrite" multiple="true">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-int name="tst_cpt_zg" label="Numéro lié à a la zone géographique" access="ReadWrite"/>
+                    <smart:field-int name="tst_cpt_csl" label="Numéro lié à l'année" access="ReadWrite"/>
+                    <smart:field-account name="tst_rs_dpi_szg" label="RS DPI du service choisi" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_assistant_dpi_szg" label="Assistant DPI du service choisi" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_cm_dpi_szg" label="CM DPI du service choisi" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_groupe_dir_dpi" label="Groupe Directeur DPI" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_groupe_decis_cpf" label="Groupe Décisionnaire CTP" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_groupe_decis_ca" label="Groupe Décisionnaire CA" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_groupe_autir_44b" label="Groupe autorisé E2 - E3" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_groupe_autir_24b" label="Groupe autorisé E2 - E4bis" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-account name="tst_groupe_autir_21" label="Groupe autorisé E2 - E1" access="ReadWrite">
+                        <smart:field-option name="doctitle">auto</smart:field-option>
+                        <smart:field-option name="match">group</smart:field-option>
+                    </smart:field-account>
+                    <smart:field-text name="tst_groupe_compta_title" label="Groupe Compa (titre)" access="ReadWrite" insert-after="tst_groupe_compta">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_charge_partenariat_title" label="Chargé de partenariat international (titre)" access="ReadWrite"
+                                      insert-after="tst_charge_partenariat">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_rs_dpi_szg_title" label="RS DPI du service choisi (titre)" access="ReadWrite" insert-after="tst_rs_dpi_szg">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_assistant_dpi_szg_title" label="Assistant DPI du service choisi (titre)" access="ReadWrite" insert-after="tst_assistant_dpi_szg">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_cm_dpi_szg_title" label="CM DPI du service choisi (titre)" access="ReadWrite" insert-after="tst_cm_dpi_szg">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_groupe_dir_dpi_title" label="Groupe Directeur DPI (titre)" access="ReadWrite" insert-after="tst_groupe_dir_dpi">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_groupe_decis_cpf_title" label="Groupe Décisionnaire CTP (titre)" access="ReadWrite" insert-after="tst_groupe_decis_cpf">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_groupe_decis_ca_title" label="Groupe Décisionnaire CA (titre)" access="ReadWrite" insert-after="tst_groupe_decis_ca">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_groupe_autir_44b_title" label="Groupe autorisé E2 - E3 (titre)" access="ReadWrite" insert-after="tst_groupe_autir_44b">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_groupe_autir_24b_title" label="Groupe autorisé E2 - E4bis (titre)" access="ReadWrite" insert-after="tst_groupe_autir_24b">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                    <smart:field-text name="tst_groupe_autir_21_title" label="Groupe autorisé E2 - E1 (titre)" access="ReadWrite" insert-after="tst_groupe_autir_21">
+                        <smart:field-option name="autotitle">yes</smart:field-option>
+                    </smart:field-text>
+                </smart:field-set>
+                <smart:field-set name="tst_info_mod" type="frame" label="Modeles de documents" access="ReadWrite">
+                    <smart:field-file name="tst_tpl_ar_vierge" label="Modèle AR vierge" access="ReadWrite"/>
+                    <smart:field-file name="tst_tpl_demande_r" label="Modèle Demande de règlement" access="ReadWrite"/>
+                    <smart:field-file name="tst_tpl_transfert" label="Modèles transfert de fond" access="ReadWrite"/>
+                    <smart:field-file name="tst_tpl_contrat" label="Contrat" access="ReadWrite"/>
+                    <smart:field-file name="tst_tpl_ar" label="AR" access="ReadWrite"/>
+                    <smart:field-file name="tst_tpl_fiche_cpf" label="Fiche CPF" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="cls_flags" type="frame" label="Flags" access="ReadWrite">
+                <smart:field-int name="tst_in_copy" label="Flag de copie" access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+        <!--endregion Structure Fields =============-->
+        <smart:parameters>
+            <smart:field-set name="tst_mod_param" type="frame" label="Modeles de documents" access="ReadWrite">
+                <smart:field-int name="tst_param_n0" label="Zéro" access="ReadWrite"/>
+                <smart:field-int name="tst_param_n1" label="Un" access="ReadWrite"/>
+                <smart:field-int name="tst_param_n2" label="Un" access="ReadWrite"/>
+                <smart:field-docid name="tst_mod_ar_vierge" label="Modèle AR vierge" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_demande_r" label="Modèle Demande de règlement" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_transfert_fr" label="Modèles transfert de fond (francais)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_transfert_en" label="Modèles transfert de fond (anglais)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_transfert_po" label="Modèles transfert de fond (portugais)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_transfert_es" label="Modèles transfert de fond (espagnol)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_contrat_fr" label="Modèles contrat (francais)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_contrat_en" label="Modèles contrat (anglais)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_contrat_po" label="Modèles contrat (portugais)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_contrat_es" label="Modèles contrat (espagnol)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_header_liasse" label="Page de garde pour les liasses" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_zonegeo_liasse" label="Page de section zone géographique pour les liasses" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_ar" label="AR" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_fiche_cpf" label="Fiche CPF" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-int name="tst_nb_jour_control_acteur" label="Nombre de jours avant notification d'un acteur non modifié" access="ReadWrite"/>
+                <smart:field-docid name="tst_mt_envoyer_rs" label="Alerte à envoyer au rs" access="ReadWrite" relation="MAILTEMPLATE"/>
+                <smart:field-docid name="tst_mt_validation_rs" label="Alerte validation RS - directeur dpi" access="ReadWrite" relation="MAILTEMPLATE"/>
+                <smart:field-docid name="tst_mt_validation_bap_vers_autres" label="Alerte validation BAP - vers autres destinataires" access="ReadWrite" relation="MAILTEMPLATE"/>
+                <smart:field-account name="tst_grp_autres_dest_bap" label="Autre Groupe Destinataire BAP (cm dpi cofinancement, ...)" access="ReadWrite">
+                    <smart:field-option name="doctitle">auto</smart:field-option>
+                    <smart:field-option name="match">group</smart:field-option>
+                </smart:field-account>
+                <smart:field-docid name="tst_mod_fichier_concat" label="Fichier à concaténer (traitement par lot)" access="ReadWrite" relation="TEST_MODELES"/>
+                <smart:field-docid name="tst_mod_fichier_init" label="Fichier d'initialisation (traitement par lot)" access="ReadWrite" relation="TEST_MODELES"/>
+            </smart:field-set>
+        </smart:parameters>
 
-    <!--region Default values ==================-->
-    <smart:defaults>
+        <!--region Default values ==================-->
+        <smart:defaults>
 
-      <smart:default field="tst_langue">francais</smart:default>
-      <smart:default field="tst_reprise">Non</smart:default>
+            <smart:default field="tst_langue">francais</smart:default>
+            <smart:default field="tst_reprise">Non</smart:default>
 
-      <smart:default field="tst_vulnerables">
-        <smart:field-callable function="::three"/>
-      </smart:default>
-      <smart:default field="tst_confidentiel">Non</smart:default>
-      <smart:default field="tst_region_pador">afrique_australe</smart:default>
-      <smart:default field="tst_type_soutien">circuitlong</smart:default>
-      <smart:default field="tst_date_creation">
-        <smart:field-callable function="Anakeen\Core\Utils\Date::getDate"/>
-      </smart:default>
-      <smart:default field="tst_groupe_compta">8097</smart:default>
-      <smart:default field="tst_init_nouvelle">non</smart:default>
-      <smart:default field="tst_secteur_cidse">agriculture</smart:default>
-      <smart:default field="tst_secteur_pador">education</smart:default>
-      <smart:default field="tst_groupe_dir_dpi">directeurdpi</smart:default>
-      <smart:default field="tst_init_pluriannu">non</smart:default>
-      <smart:default field="tst_groupe_decis_ca">decisionnaireca</smart:default>
-      <smart:default field="tst_relation_eglise">projet_lie_a_leglise</smart:default>
-      <smart:default field="tst_statut_avis_cpf">2</smart:default>
-      <smart:default field="tst_amplitude_action">mondiale</smart:default>
-      <smart:default field="tst_groupe_decis_cpf">decisionnairecpf</smart:default>
-      <smart:default field="tst_typologie_action">appui_structure</smart:default>
-      <smart:default field="tst_action_cofinancee">0</smart:default>
-      <smart:default field="tst_position_episcopat">non_opposition</smart:default>
-      <smart:default field="tst_statut_decision_ca">
-        <smart:field-callable function="::addingNumbers"/>
-        <smart:field-argument type="string">42</smart:field-argument>
-        <smart:field-argument type="string">83</smart:field-argument>
-        <smart:field-argument type="string">-5</smart:field-argument>
-      </smart:default>
-      <smart:default field="tst_notification_statut">brouillon</smart:default>
-      <smart:default field="tst_statut_type_reglement">automatique</smart:default>
-      <smart:default field="tst_statut_valide_directeur">0</smart:default>
-      <smart:initial field="tst_param_n0">0</smart:initial>
-      <smart:initial field="tst_param_n1">1</smart:initial>
-      <smart:initial field="tst_param_n2">
-        <smart:field-callable function="Anakeen\Pu\Config\DefaultBehavior::addingNumbers"/>
-        <smart:field-argument type="string">342</smart:field-argument>
-        <smart:field-argument type="string">30</smart:field-argument>
-        <smart:field-argument type="string">-57</smart:field-argument>
-      </smart:initial>
-    </smart:defaults>
+            <smart:default field="tst_vulnerables">
+                <smart:field-callable function="::three"/>
+            </smart:default>
+            <smart:default field="tst_confidentiel">Non</smart:default>
+            <smart:default field="tst_region_pador">afrique_australe</smart:default>
+            <smart:default field="tst_type_soutien">circuitlong</smart:default>
+            <smart:default field="tst_date_creation">
+                <smart:field-callable function="Anakeen\Core\Utils\Date::getDate"/>
+            </smart:default>
+            <smart:default field="tst_groupe_compta">8097</smart:default>
+            <smart:default field="tst_init_nouvelle">non</smart:default>
+            <smart:default field="tst_secteur_cidse">agriculture</smart:default>
+            <smart:default field="tst_secteur_pador">education</smart:default>
+            <smart:default field="tst_groupe_dir_dpi">directeurdpi</smart:default>
+            <smart:default field="tst_init_pluriannu">non</smart:default>
+            <smart:default field="tst_groupe_decis_ca">decisionnaireca</smart:default>
+            <smart:default field="tst_relation_eglise">projet_lie_a_leglise</smart:default>
+            <smart:default field="tst_statut_avis_cpf">2</smart:default>
+            <smart:default field="tst_amplitude_action">mondiale</smart:default>
+            <smart:default field="tst_groupe_decis_cpf">decisionnairecpf</smart:default>
+            <smart:default field="tst_typologie_action">appui_structure</smart:default>
+            <smart:default field="tst_action_cofinancee">0</smart:default>
+            <smart:default field="tst_position_episcopat">non_opposition</smart:default>
+            <smart:default field="tst_statut_decision_ca">
+                <smart:field-callable function="::addingNumbers"/>
+                <smart:field-argument type="string">42</smart:field-argument>
+                <smart:field-argument type="string">83</smart:field-argument>
+                <smart:field-argument type="string">-5</smart:field-argument>
+            </smart:default>
+            <smart:default field="tst_notification_statut">brouillon</smart:default>
+            <smart:default field="tst_statut_type_reglement">automatique</smart:default>
+            <smart:default field="tst_statut_valide_directeur">0</smart:default>
+            <smart:initial field="tst_param_n0">0</smart:initial>
+            <smart:initial field="tst_param_n1">1</smart:initial>
+            <smart:initial field="tst_param_n2">
+                <smart:field-callable function="Anakeen\Pu\Config\DefaultBehavior::addingNumbers"/>
+                <smart:field-argument type="string">342</smart:field-argument>
+                <smart:field-argument type="string">30</smart:field-argument>
+                <smart:field-argument type="string">-57</smart:field-argument>
+            </smart:initial>
+        </smart:defaults>
 
-    <!--endregion Default values ===============-->
-  </smart:structure-configuration>
+        <!--endregion Default values ===============-->
+    </smart:structure-configuration>
 </smart:config>

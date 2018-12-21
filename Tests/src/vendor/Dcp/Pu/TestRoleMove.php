@@ -109,7 +109,7 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         /* @var $gGroup \SmartStructure\IGROUP */
         $eGroup->insertDocument($gGroup->getPropertyValue("id"));
         $eTogGroup = new \Group(self::$dbaccess, array($eGroup->getRawValue("us_whatid")));
-        $eTogGroup->resetAccountMemberOf(true);
+        $eTogGroup->resetAccountMemberOf();
         $this->analyzeUserGroupAndRole($user);
         $this->analyzeGroupUserAndRole($group);
     }
@@ -125,7 +125,7 @@ class TestRoleMove extends TestCaseDcpCommonFamily
         /* @var $aGroup \SmartStructure\IGROUP */
         $aGroup->removeDocument($cGroup->getPropertyValue("id"));
         $cInternalGroup = new \Group(self::$dbaccess, array($cGroup->getRawValue("us_whatid")));
-        $cInternalGroup->resetAccountMemberOf(true);
+        $cInternalGroup->resetAccountMemberOf();
         $this->analyzeUserGroupAndRole($user);
         $this->analyzeGroupUserAndRole($group);
     }

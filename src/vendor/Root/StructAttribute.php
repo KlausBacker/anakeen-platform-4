@@ -18,6 +18,7 @@ class StructAttribute
     public $elink;
     public $constraint;
     public $options;
+    public $autocomplete;
     public $rawType;
     private $dataOrder = array(
         "id",
@@ -46,7 +47,7 @@ class StructAttribute
 
     public function set(array $data)
     {
-        $this->format="";
+        $this->format = "";
         $cid = 1;
         foreach ($this->dataOrder as $key) {
             if ($key == 'phpfunc') {
@@ -55,15 +56,17 @@ class StructAttribute
                 $this->$key = isset($data[$cid]) ? trim($data[$cid]) : '';
             }
             if ($key == 'type') {
-                $this->rawType=$this->type;
+                $this->rawType = $this->type;
                 $this->type = strtok($this->type, "(");
                 if (preg_match('/^([a-z]+)\(["\'](.+)["\']\)$/i', $this->rawType, $reg)) {
                     $this->format = $reg[2];
                 }
             }
 
-
             $cid++;
+        }
+        if (!empty($data["props"]["autocomplete"])) {
+            $this->autocomplete = $data["props"]["autocomplete"];
         }
     }
 }

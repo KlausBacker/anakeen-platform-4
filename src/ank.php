@@ -18,7 +18,7 @@ require __DIR__ . "/vendor/Anakeen/WHAT/Lib.Common.php";
 
 
 $programName = array_shift($argv);
-Anakeen\Script\ShellManager::recordArgs($argv, $programName);
+Anakeen\Script\ShellManager::recordArgs($argv);
 
 if (Anakeen\Script\ShellManager::getArg("help") && !Anakeen\Script\ShellManager::getArg("script")) {
     print Anakeen\Script\ShellManager::getUsage();

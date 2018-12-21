@@ -86,11 +86,11 @@ class CrontabSectionElement extends CrontabElement
     public function __toString()
     {
         $lines = array();
-        $lines[] = sprintf("# BEGIN:FREEDOM_CRONTAB:%s:%s", $this->contextRoot, $this->file);
+        $lines[] = sprintf("# BEGIN:ANAKEEN_CRONTAB:%s:%s", $this->contextRoot, $this->file);
         foreach ($this->childs as & $child) {
             $lines[] = (string)$child;
         }
-        $lines[] = sprintf("# END:FREEDOM_CRONTAB:%s:%s", $this->contextRoot, $this->file);
+        $lines[] = sprintf("# END:ANAKEEN_CRONTAB:%s:%s", $this->contextRoot, $this->file);
         return implode("\n", $lines);
     }
 }

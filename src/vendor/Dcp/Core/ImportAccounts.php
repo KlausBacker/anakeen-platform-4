@@ -78,7 +78,7 @@ class ImportAccounts
                 if ($this->needSyncAccounts) {
                     $g = new \Group();
                     // send order to recompute memberOf
-                    $g->resetAccountMemberOf(false);
+                    $g->resetAccountMemberOf();
                 }
             }
             $this->setSessionMessage(___("Import end", "fuserimport"));

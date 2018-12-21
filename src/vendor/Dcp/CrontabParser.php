@@ -4,8 +4,8 @@ namespace Dcp;
 
 class CrontabParser
 {
-    const REGEXP_SECTION_BEGIN = '/^#\s+BEGIN:FREEDOM_CRONTAB:(?P<contextRoot>[^:]+):(?P<file>.*)$/';
-    const REGEXP_SECTION_END = '/^#\s+END:FREEDOM_CRONTAB:(?P<contextRoot>[^:]+):(?P<file>.*)$/';
+    const REGEXP_SECTION_BEGIN = '/^#\s+BEGIN:ANAKEEN_CRONTAB:(?P<contextRoot>[^:]+):(?P<file>.*)$/';
+    const REGEXP_SECTION_END = '/^#\s+END:ANAKEEN_CRONTAB:(?P<contextRoot>[^:]+):(?P<file>.*)$/';
 
     /**
      * Parse a crontab into Text and Section elements

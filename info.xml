@@ -249,8 +249,11 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml">
-            <label>Add Processus Structure</label>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.struct.xml">
+            <label>Add Task Structure</label>
+        </process>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/taskCleanContext.xml">
+            <label>Add Task Clean Context</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml">
             <label>Add Helpage Structure</label>
@@ -515,8 +518,8 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml">
             <label>Add Sent message Structure</label>
         </process>
-        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Exec/exec.struct.xml">
-            <label>Add Processus Structure</label>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Task/task.struct.xml">
+            <label>Add Task Structure</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml">
             <label>Add Helpage Structure</label>

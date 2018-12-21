@@ -232,14 +232,20 @@ class DocumentHistory
         $id = $this->documentId;
         $id = SEManager::getIdentifier($id, true);
         $sql = sprintf("select id, date, comment from dochisto where id = %d order by date desc limit 1", $id);
-
         DbManager::query($sql, $result, false, true);
+
+
+        $sql = sprintf("select mdate from docread where id = %d", $id);
+        DbManager::query($sql, $mdate, true, true);
+
+        $result[] = $mdate;
         $user = ContextManager::getCurrentUser();
         $result[] = $user->id;
         $result[] = $user->memberof;
         // Necessary for localized state label
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
+
         return join("", $result);
     }
 

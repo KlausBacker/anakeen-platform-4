@@ -59,9 +59,9 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         $query->AddQuery("iduser='{$this->iduser}'");
         $sql
             = sprintf(
-                "SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d order by accounttype, lastname",
-                $this->iduser
-            );
+            "SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d order by accounttype, lastname",
+            $this->iduser
+        );
 
         \Anakeen\Core\DbManager::query($sql, $groupIds, true, false);
         $this->groups = $groupIds;
@@ -182,27 +182,19 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     /**
      * recompute all memberof properties of user accounts
      */
-    public function resetAccountMemberOf($synchro = false)
+    public function resetAccountMemberOf()
     {
         if ($this->syncAccount) {
             $this->query(sprintf("delete from sessions where userid=%d", $this->iduser));
             $this->query("delete from permission where computed");
 
-            if ($synchro) {
-                \Anakeen\Core\DbManager::query("select * from users order by id", $tusers);
-                $u = new \Anakeen\Core\Account($this->dbaccess);
-                foreach ($tusers as $tu) {
-                    $u->affect($tu);
-                    $u->updateMemberOf();
-                }
-            } else {
-                $wsh = \Anakeen\Script\ShellManager::getAnkCmd();
-                $cmd = $wsh . " --script=initViewPrivileges --reset-account=yes";
-
-                \Anakeen\Core\Utils\System::bgExec(array(
-                    $cmd
-                ), $result, $err);
+            \Anakeen\Core\DbManager::query("select * from users order by id", $tusers);
+            $u = new \Anakeen\Core\Account($this->dbaccess);
+            foreach ($tusers as $tu) {
+                $u->affect($tu);
+                $u->updateMemberOf();
             }
+
         }
     }
 
