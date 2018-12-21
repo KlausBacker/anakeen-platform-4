@@ -3,7 +3,6 @@
 namespace Anakeen\Ui;
 
 use Anakeen\Core\Internal\ImportSmartConfiguration;
-use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 
 use Anakeen\Core\Utils\Xml;
@@ -46,7 +45,6 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
 
     protected function importDataElements()
     {
-
         $this->uiPrefix = Xml::getPrefix($this->dom, ExportRenderConfiguration::NSUIURL);
         $data = $this->importMasks();
         $data = array_merge($data, $this->importCvDocs());
@@ -224,20 +222,6 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
             return $this->getElementdata($cvdoc);
         }
         return [];
-    }
-
-    protected function getElementdata(SmartElement $elt)
-    {
-        $values = $elt->getValues();
-        $order = ["ORDER", $elt->fromname, "", ""];
-        $data = ["DOC", $elt->fromname, $elt->name, ""];
-        foreach ($values as $aid => $value) {
-            if ($value !== "") {
-                $order[] = $aid;
-                $data[] = $value;
-            }
-        }
-        return ([$order, $data]);
     }
 
     /**

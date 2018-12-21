@@ -715,7 +715,7 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "View current revision"
-msgstr "Voir la révision courante"
+msgstr "Voir la version actuelle"
 
 msgctxt "UiMenu"
 msgid "View transition graph"

@@ -12,6 +12,7 @@ anakeen-ui/src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
 Tests/src/public/Anakeen/
 anakeen-ui/src/public/uiAssets/
 Makefile.local
+.anakeen-cli.xml
 /.idea/deployment.xml
 /.idea/dictionaries/charles.xml
 /.idea/modules.xml

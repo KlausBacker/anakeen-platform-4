@@ -189,12 +189,12 @@ autoPublish:
 beautify:
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php  ${MK_DIR}/anakeen-ui
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${MK_DIR}/anakeen-ui
 
 lint:
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}/anakeen-ui
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${MK_DIR}/anakeen-ui
 
 checkXML: node_modules
 	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}/anakeen-ui
