@@ -84,6 +84,13 @@
             <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
         </smart:accesses>
     </smart:structure-configuration>
+
+    <smart:structure-configuration name="TASK">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_ACCESS"/>
+        </smart:accesses>
+    </smart:structure-configuration>
     <smart:structure-configuration name="DIR">
         <smart:accesses>
             <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
