@@ -1,8 +1,8 @@
 <?php
 namespace Anakeen\Routes\Ui;
 
-use Anakeen\Routes\Core\Lib\DocumentApiData;
 use Anakeen\Routes\Core\WorkflowState;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
  * Class TransitionView
@@ -14,16 +14,20 @@ class TransitionView extends WorkflowState
     protected $attributeCount = 0;
     protected $workflowData;
     /**
-     * @var \WDoc|\Dcp\Ui\IRenderTransitionAccess
+     * @var WDocHooks|\Dcp\Ui\IRenderTransitionAccess
      */
     protected $workflow;
     /**
      * @var \Anakeen\Core\Internal\FormatCollection
      */
     protected $formatCollection;
-    
+
     /**
      * Change state
+     * @param array $messages
+     * @return array
+     * @throws \Anakeen\Router\Exception
+     * @throws \Dcp\Ui\Exception
      */
     public function doRequest(&$messages = [])
     {
@@ -43,7 +47,7 @@ class TransitionView extends WorkflowState
             "id" => ($transitionId !== null) ? $transitionId : null,
             "beginState" => $this->getStateInfo($this->_document->state) ,
             "endState" => $this->getStateInfo($this->state) ,
-            "label" => isset($transitionId) ? _($transitionId) : ___("Invalid transition", "ddui") ,
+            "label" => isset($transitionId) ? $this->workflow->getTransitionLabel($transitionId) : ___("Invalid transition", "ddui") ,
             "askComment" => empty($transition["nr"]) ,
             "askAttributes" => $render->getTransitionParameters($transitionId)
         );
