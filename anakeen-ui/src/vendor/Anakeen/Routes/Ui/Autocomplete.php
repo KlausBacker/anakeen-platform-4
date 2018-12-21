@@ -165,7 +165,12 @@ class Autocomplete
         );
 
         try {
-            $callable = sprintf("%s::%s", $parse->className, $parse->methodName);
+            if ($parse->methodName === "__invoke") {
+                $className=$parse->className;
+                $callable= new $className();
+            } else {
+                $callable = sprintf("%s::%s", $parse->className, $parse->methodName);
+            }
 
             $request = new SmartAutocompleteRequest();
             $request->setHttpRequest($this->httpRequest);
