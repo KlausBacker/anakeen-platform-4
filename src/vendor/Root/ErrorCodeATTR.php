@@ -3,10 +3,11 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Error codes used to checking family attribute structure
  * @class ErrorCodeATTR
- * @see ErrorCode
+ * @see   ErrorCode
  * @brief List all error code for document's attribute errors
  * It is triggered by 'ATTR', 'PARAM', 'MODATTR' keywords
  */
@@ -50,7 +51,7 @@ class ErrorCodeATTR
     const ATTR0203 = 'attribute structure reference is not an attribute for "%s", family "%s"';
     /**
      * @errorCode  Attribute structure must compatible with level hierarchy
-     * @note a tab has no parent,
+     * @note       a tab has no parent,
      * a frame must have only tab parent,
      * another attribute must have only frame parent or array parent
      */
@@ -73,7 +74,7 @@ class ErrorCodeATTR
     const ATTR0208 = 'param structure reference is not a parameter for "%s", family "%s"';
     /**
      * @errorCode  Parameter structure must compatible with level hierarchy
-     * @note a tab has no parent,
+     * @note       a tab has no parent,
      * a frame must have only tab parent,
      * another parameter must have only frame parent or array parent
      */
@@ -192,10 +193,10 @@ class ErrorCodeATTR
     const ATTR1000 = 'method syntax error in link "%s" for attribute "%s":%s';
     /**
      * @errorCode  call method in link property must be defined in file method or in another class if precised
-     * @see ATTR1260
-     * @see ATTR1261
-     * @see ATTR1262
-     * @see ATTR1263
+     * @see        ATTR1260
+     * @see        ATTR1261
+     * @see        ATTR1262
+     * @see        ATTR1263
      */
     const ATTR1001 = 'link method error in "%s" family : %s';
     /**
@@ -216,7 +217,7 @@ class ErrorCodeATTR
     const ATTR1500 = 'the option name "%s" is not valid in attribute "%s"';
     /**
      * @errorCode  The syntax option is : optname=optvalue
-     * @note example : elabel=enter a value
+     * @note       example : elabel=enter a value
      */
     const ATTR1501 = 'the option "%s" must have = sign, in attribute "%s"';
     /**
@@ -258,7 +259,7 @@ class ErrorCodeATTR
     const ATTR1207 = 'outputs in function "%s" can be only alphanum characters ';
     /**
      * @errorCode  appname must be only alphanum characters
-     * @note when use special help as help input
+     * @note       when use special help as help input
      */
     const ATTR1208 = 'appname in special help can be only alphanum characters';
     /**
@@ -275,17 +276,17 @@ class ErrorCodeATTR
     const ATTR1211 = 'not enough argument call to use function "%s" (need %d arguments)';
     /**
      * @errorCode  the method use for computed must declarer an existed attribute
-     * @note triggered in \Anakeen\Core\Internal\SmartElement::specRefreshGen()
+     * @note       triggered in \Anakeen\Core\Internal\SmartElement::specRefreshGen()
      */
     const ATTR1212 = 'unknow output attribut for method "%s" in family "%s"';
     /**
      * @errorCode  declaration of call method is not correct
-     * @note example : ::test()  or myClass::test()
+     * @note       example : ::test()  or myClass::test()
      */
     const ATTR1250 = 'syntax error in method call (phpfunc) for attribute "%s" : %s';
     /**
      * @errorCode  call of a method mudt contains '::' characters
-     * @note example : ::test()  or myClass::test()
+     * @note       example : ::test()  or myClass::test()
      */
     const ATTR1251 = 'no "::" delimiter in method call "%s"';
     /**
@@ -298,13 +299,17 @@ class ErrorCodeATTR
     const ATTR1253 = 'syntax error in class name in method call: "%s"';
     /**
      * @errorCode  call method can be return only one value
-     * @note example : ::test():MY_RET
+     * @note       example : ::test():MY_RET
      */
     const ATTR1254 = 'only one output is possible in method "%s"';
     /**
      * @errorCode  generally when it is in constraint attribute
      */
     const ATTR1255 = 'no output is possible in method "%s"';
+    /**
+     * @errorCode  call of a class mudt must have __invoke
+     */
+    const ATTR1256 = 'no "__invoke" in class call "%s"';
     /**
      * @errorCode  call method in phpfunc property must be defined in file method or in another class if precised
      */
@@ -319,15 +324,15 @@ class ErrorCodeATTR
     const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute : %s';
     /**
      * @errorCode  the phpfunc method must be static if a classname is set
-     * @note example : myClass::myStaticMethod()
+     * @note       example : myClass::myStaticMethod()
      */
     const ATTR1263 = 'method "%s" (context : "%s") is not static phpfunc for "%s" attribute';
     /**
      * @errorCode  call method in phpfunc property must be defined in file method or in another class if precised
-     * @see ATTR1260
-     * @see ATTR1261
-     * @see ATTR1262
-     * @see ATTR1263
+     * @see        ATTR1260
+     * @see        ATTR1261
+     * @see        ATTR1262
+     * @see        ATTR1263
      */
     const ATTR1265 = 'phpfunc method error in "%s" family : %s';
     /**
@@ -336,22 +341,22 @@ class ErrorCodeATTR
     const ATTR1266 = 'method  "%s" (context "%s" defined in parent family "%s") is not found for "%s" attribute';
     /**
      * @errorCode  enum declaration must be a set of key value
-     * @note example : yellow|Yellow color,red|Red color
+     * @note       example : yellow|Yellow color,red|Red color
      */
     const ATTR1270 = 'syntax error in enum declaration near "%s"  for "%s" attribute';
     /**
      * @errorCode  the enum key must be a simple word without accent
-     * @note example : yellow|Yellow color,red|Red color
+     * @note       example : yellow|Yellow color,red|Red color
      */
     const ATTR1271 = 'key must not have accent characters in enum declaration "%s"  for "%s" attribute';
     /**
      * @errorCode  the enum key is required
-     * @note example : yellow|Yellow color,red|Red color
+     * @note       example : yellow|Yellow color,red|Red color
      */
     const ATTR1272 = 'key must not be empty in enum declaration "%s"  for "%s" attribute';
     /**
      * @errorCode  declaration of call constraint is not correct
-     * @note example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
+     * @note       example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
      */
     const ATTR1400 = 'syntax error in constraint call for attribute "%s" : %s';
     /**
@@ -364,7 +369,7 @@ class ErrorCodeATTR
     const ATTR1402 = 'constraint method "%s" is not found for "%s" attribute';
     /**
      * @errorCode  the phpfunc method must be static if a classname is set
-     * @note example : myClass::myStaticMethod()
+     * @note       example : myClass::myStaticMethod()
      */
     const ATTR1403 = 'method "%s" is not static phpfunc for "%s" attribute';
     /**
@@ -377,7 +382,7 @@ class ErrorCodeATTR
     const ATTR1700 = 'database document column are erronous : %s';
     /**
      * @errorCode  due to postgresql limit, sql column number is limited
-     * @note declaration for an attribute can create more than one sql column
+     * @note       declaration for an attribute can create more than one sql column
      */
     const ATTR1701 = 'too many attributes : %d (maximum sql column is %d)';
     /**

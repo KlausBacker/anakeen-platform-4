@@ -20,27 +20,35 @@ class ParseFamilyMethod extends ParseFamilyFunction
         $methodName = trim(substr($methCall, 0, $this->firstParenthesis));
         if ($this->checkParenthesis()) {
             if (strpos($methodName, '::') === false) {
-                $this->setError(\ErrorCode::getError('ATTR1251', $methCall));
-            } else {
-                list($className, $methodName) = explode('::', $methodName, 2);
-                $this->methodName = $methodName;
-                $this->className = $className;
-
-                if (!$this->isPHPName($methodName)) {
-                    $this->setError(\ErrorCode::getError('ATTR1252', $methodName));
-                } elseif ($className && (!$this->isPHPClassName($className))) {
-                    $this->setError(\ErrorCode::getError('ATTR1253', $className));
-                } else {
-                    $inputString = substr($methCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
-                    $this->inputString = $inputString;
-
-                    $this->parseArguments();
-                    $this->parseOutput();
-                    if ($noOut) {
-                        $this->limitOutputToZero();
+                if (class_exists($methodName)) {
+                    if (method_exists(new $methodName(), "__invoke")) {
+                        $this->className = $methodName;
+                        $this->methodName = "__invoke";
                     } else {
-                        $this->limitOutputToOne();
+                        $this->setError(\ErrorCode::getError('ATTR1256', $methCall));
+                        return $this;
                     }
+                } else {
+                    $this->setError(\ErrorCode::getError('ATTR1251', $methCall));
+                    return $this;
+                }
+            } else {
+                list($this->className, $this->methodName) = explode('::', $methodName, 2);
+            }
+            if (!$this->isPHPName($this->methodName)) {
+                $this->setError(\ErrorCode::getError('ATTR1252', $this->methodName));
+            } elseif ($this->className && (!$this->isPHPClassName($this->className))) {
+                $this->setError(\ErrorCode::getError('ATTR1253', $this->className));
+            } else {
+                $inputString = substr($methCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
+                $this->inputString = $inputString;
+
+                $this->parseArguments();
+                $this->parseOutput();
+                if ($noOut) {
+                    $this->limitOutputToZero();
+                } else {
+                    $this->limitOutputToOne();
                 }
             }
         }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\AccountManager;
@@ -609,7 +608,6 @@ class ImportSmartConfiguration
         $data = [];
         $nodeAttributes = $this->getNode($config, "fields");
         if ($nodeAttributes) {
-
             $reset=$nodeAttributes->getAttribute("reset");
             if ($reset === "true") {
                 $data[]=["RESET", "structure"];
