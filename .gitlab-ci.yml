@@ -37,7 +37,7 @@ integration:
     expire_in: 1 week
     when: always
   only:
-    - master@Anakeen/Platform-4/smart-data-engine
+    - master@Anakeen/Platform-4/user-interfaces
     - web
 
 package:
