@@ -6,7 +6,7 @@
         <smart:revisable max="100">default</smart:revisable>
         <smart:usefor>S</smart:usefor>
         <smart:tag name="vendor">Anakeen</smart:tag>
-        <smart:fields reset="true">
+        <smart:fields>
 
             <smart:field-set name="task_fr_ident" type="frame" label="Identification" access="ReadWrite">
                 <smart:field-text name="task_title" label="Title" access="ReadWrite" is-title="true" needed="true"/>
