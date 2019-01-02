@@ -257,12 +257,12 @@ define(function attributeTemplate(require /*, exports, module*/) {
             originalView = $(this).data("originalview") === true;
 
           if (currentAttributeModel) {
-            if (_.isFunction(callBackView)) {
-              // When called from vColumn to render widget in a cell
-              callBackView.apply($(this));
-              attrContent = "";
-            } else {
-              try {
+            try {
+              if (_.isFunction(callBackView)) {
+                // When called from vColumn to render widget in a cell
+                callBackView.apply($(this));
+                attrContent = "";
+              } else {
                 switch (currentAttributeModel.get("type")) {
                   case "array":
                     BackView = require("dcpDocument/views/attributes/array/vArray");
@@ -305,11 +305,11 @@ define(function attributeTemplate(require /*, exports, module*/) {
                 });
                 renderElementPromises.push(view.render());
                 attrContent = view.$el;
-              } catch (e) {
-                attrContent = $("<div/>")
-                  .addClass("bg-danger")
-                  .text(e.message);
               }
+            } catch (e) {
+              attrContent = $("<div/>")
+                .addClass("bg-danger")
+                .text(e.message);
             }
           }
           $(this).append(attrContent);
