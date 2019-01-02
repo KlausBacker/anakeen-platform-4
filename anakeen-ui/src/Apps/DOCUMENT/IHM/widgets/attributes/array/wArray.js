@@ -910,8 +910,7 @@
                 "<div>" +
                 '<span title="' +
                 scope.options.labels.closeErrorMessage +
-                '" class="btn fa fa-times button-close-error"> XY &nbsp;</span>' +
-                scope.options.id +
+                '" class="btn fa fa-times button-close-error"> &nbsp;</span>' +
                 rawMessage +
                 "</div>"
               );
