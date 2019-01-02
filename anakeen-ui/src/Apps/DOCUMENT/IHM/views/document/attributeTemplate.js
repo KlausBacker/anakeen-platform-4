@@ -93,6 +93,8 @@ define(function attributeTemplate(require /*, exports, module*/) {
             currentAttributeModel.get("mode") === "read";
           templateInfo.attributes[attributeId].isWriteMode =
             currentAttributeModel.get("mode") === "write";
+          templateInfo.attributes[attributeId].isVisible =
+            currentAttributeModel.get("mode") === "hidden";
           templateInfo.attributes[
             attributeId
           ].renderOptions = currentAttributeModel.getOptions();
@@ -446,6 +448,9 @@ define(function attributeTemplate(require /*, exports, module*/) {
       displayLabel,
       originalView
     ) {
+      if (attributeModel.get("mode") === "hidden") {
+        return "";
+      }
       return (
         '<div class="dcpCustomTemplate--content ' +
         (displayLabel
