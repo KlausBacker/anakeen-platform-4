@@ -113,12 +113,18 @@
             <xs:element type="v1:enum-configurationType" name="enum-configuration" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
+
     <xs:complexType name="field-optionType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:string" name="name"/>
             </xs:extension>
         </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="enum-callableType">
+        <xs:attribute type="v1:functionNameType" name="function"/>
     </xs:complexType>
 
     <xs:complexType name="enumType">
@@ -130,8 +136,22 @@
     </xs:complexType>
 
     <xs:complexType name="enum-configurationType">
-        <xs:choice maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="v1:enumType" name="enum"/>
+        <xs:choice >
+            <xs:element type="v1:enumType" name="enum" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="v1:enum-callableType" name="enum-callable"  minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>
+                            <b>Method reference to use when enum items are defined by code</b>
+                        </p>
+                        <p>
+                            Can reference a static method or a class with <code>__invoke</code> method.
+                            The method must return an array of <code>Anakeen\EnumItem</code> objects.
+                        </p>
+
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:choice>
         <xs:attribute type="xs:token" name="name"/>
         <xs:attribute type="xs:boolean" name="extendable" default="false"/>
