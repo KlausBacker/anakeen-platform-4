@@ -1,16 +1,14 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Exception;
 
 class VaultManager
 {
     protected static $vault = null;
+
     /**
      * @return \VaultFile
      */
@@ -21,25 +19,27 @@ class VaultManager
         }
         return self::$vault;
     }
+
     /**
      * return various informations for a file stored in VAULT
-     * @param int $idfile vault file identifier
+     * @param int    $idfile    vault file identifier
      * @param string $teng_name transformation engine name
      * @return \VaultFileInfo
      */
     public static function getFileInfo($idfile, $teng_name = "")
     {
-        self::getVault()->Show($idfile, $info, $teng_name);
+        self::getVault()->show($idfile, $info, $teng_name);
         if (!$info) {
             return null;
         }
         return $info;
     }
+
     /**
      * return various informations for a file stored in VAULT
      * @param string $filepath
      * @param string $ftitle
-     * @param bool $public_access set to true to store uncontrolled files like icons
+     * @param bool   $public_access set to true to store uncontrolled files like icons
      * @return int
      * @throws Exception
      */
@@ -54,6 +54,7 @@ class VaultManager
         }
         return $vid;
     }
+
     /**
      * return various informations for a file stored in VAULT
      * @param string $filepath
@@ -67,7 +68,7 @@ class VaultManager
             throw new Exception("VAULT0003");
         }
         $err = self::getVault()->store($filepath, false, $vid, $fsname = '', $te = "", 0, $tmp = \Anakeen\Router\AuthenticatorManager::$session->id);
-        
+
         if ($err) {
             throw new Exception("VAULT0002", $err);
         }
@@ -76,6 +77,7 @@ class VaultManager
         }
         return $vid;
     }
+
     /**
      * Delete id_tmp propertty of identified files
      * @param array $vids vault identifiers list
@@ -90,6 +92,7 @@ class VaultManager
             DbManager::query($sql);
         }
     }
+
     /**
      * Destroy file from vault
      * The file is physicaly deleted
@@ -102,9 +105,10 @@ class VaultManager
         if ($info === null) {
             throw new Exception("VAULT0004", $vid);
         }
-        
+
         self::getVault()->destroy($vid);
     }
+
     /**
      * Delete vault temporary files where create date is less than interval
      * @param int $dayInterval number of day
@@ -118,6 +122,7 @@ class VaultManager
             self::destroyFile($vid);
         }
     }
+
     /**
      * Set access date to now
      * @param  int $idfile vault file identifier
@@ -125,5 +130,17 @@ class VaultManager
     public static function updateAccessDate($idfile)
     {
         self::getVault()->updateAccessDate($idfile);
+    }
+
+    /**
+     * Recompute directory file size from database informations
+     * @throws Db\Exception
+     */
+    public static function recomputeDirectorySize()
+    {
+        $sql = "update vaultdiskdirstorage set size=(select sum(size) from vaultdiskstorage where id_dir=vaultdiskdirstorage.id_dir) where isfull;";
+        DbManager::query($sql);
+        $sql = "update vaultdiskdirstorage set size=0 where isfull and size is null;";
+        DbManager::query($sql);
     }
 }
