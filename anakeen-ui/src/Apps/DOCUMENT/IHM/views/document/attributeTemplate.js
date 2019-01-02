@@ -94,7 +94,7 @@ define(function attributeTemplate(require /*, exports, module*/) {
           templateInfo.attributes[attributeId].isWriteMode =
             currentAttributeModel.get("mode") === "write";
           templateInfo.attributes[attributeId].isVisible =
-            currentAttributeModel.get("mode") === "hidden";
+            currentAttributeModel.get("mode") !== "hidden";
           templateInfo.attributes[
             attributeId
           ].renderOptions = currentAttributeModel.getOptions();
