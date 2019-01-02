@@ -2,6 +2,8 @@
 
 namespace Dcp\Vault;
 
+use Dcp\VaultManager;
+
 class VaultAnalyzerCLI
 {
     public static function main()
@@ -139,8 +141,7 @@ class VaultAnalyzerCLI
         $pom->finish();
 
         printf("* Reset sizes...\n");
-        $fs = new \VaultDiskFsStorage();
-        $fs->recomputeDirectorySize();
+        VaultManager::recomputeDirectorySize();
 
         printf("\nDone.\n");
         printf("\n");

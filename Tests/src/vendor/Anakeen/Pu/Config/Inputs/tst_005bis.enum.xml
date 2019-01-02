@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+
+    <smart:enumerates>
+        <smart:enum-configuration name="TST_005-numbers">
+            <smart:enum name="1" label="One"/>
+            <smart:enum name="2" label="Two"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="TST_005-note">
+            <smart:enum name="A" label="La"/>
+            <smart:enum name="B" label="Si"/>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
+</smart:config>

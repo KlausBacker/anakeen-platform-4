@@ -4,7 +4,7 @@
  * @package FDL
 */
 /**
- * @author Anakeen
+ * @author  Anakeen
  * @package FDL
  */
 // ---------------------------------------------------------------
@@ -34,8 +34,8 @@ class VaultDiskFsStorage extends \Anakeen\Core\Internal\DbObj
            create sequence seq_id_vaultdiskfsstorage start 10;
 
 SQL;
-    
-    
+
+
     /**
      * @var int file system id (10 is the first)
      */
@@ -56,9 +56,10 @@ Order Allow,Deny
 Deny from all
 
 EOF;
+
     // --------------------------------------------------------------------
 
-    
+
     public function createArch($maxsize, $path, $fsname = "-")
     {
         if (!is_dir($path)) {
@@ -75,6 +76,7 @@ EOF;
         $this->r_path = $path;
         return $this->add();
     }
+
     /**
      * verify if fs is availlable (file system is mounted)
      * @return bool
@@ -90,6 +92,7 @@ EOF;
         }
         return false;
     }
+
     // --------------------------------------------------------------------
     public function PreInsert()
     {
@@ -102,6 +105,7 @@ EOF;
         $this->id_fs = $arr["nextval"];
         return '';
     }
+
     // --------------------------------------------------------------------
     public function Exists($path)
     {
@@ -113,20 +117,21 @@ EOF;
         $query->Query(0, 0, "TABLE");
         return ($query->nb > 0);
     }
+
     // --------------------------------------------------------------------
     public function SetFreeFs($f_size, &$id_fs, &$id_dir, &$f_path, $fsname)
     {
         // --------------------------------------------------------------------
-        $id_fs = $id_dir = - 1;
+        $id_fs = $id_dir = -1;
         $f_path = "";
-        
+
         $freeFs = $this->findFreeFS($f_size, $fsname);
         if ($freeFs) {
             $ifs = $this->getValues();
-            
+
             $this->sd = new VaultDiskDirStorage($this->dbaccess);
             $err = $this->sd->SetFreeDir($ifs);
-            
+
             if (!$err) {
                 $id_fs = $this->id_fs;
                 $id_dir = $this->sd->id_dir;
@@ -145,12 +150,12 @@ EOF;
         }
         return "";
     }
-    
+
     public function closeCurrentDir()
     {
         return $this->sd->closeDir();
     }
-    
+
     public function findFreeFS($size, $specificFs = "")
     {
         $sql = <<<SQL
@@ -172,20 +177,20 @@ from vaultdiskfsstorage, (
  order by vaultdiskfsstorage.id_fs
  ;
 SQL;
-        
+
         if ($specificFs) {
             $sqlName = sprintf("and vaultdiskfsstorage.fsname='%s'", pg_escape_string($specificFs));
         } else {
             $sqlName = '';
         }
-        
+
         $sql = sprintf(str_replace(":SQLFSNAME:", $sqlName, $sql), $size);
         $this->query($sql);
         if ($this->numrows() > 0) {
             $result = $this->fetchArray(0);
             if ($result) {
                 $this->affect($result);
-                
+
                 return $result["id_fs"];
             }
         } else {
@@ -196,14 +201,14 @@ SQL;
                 $result = $this->fetchArray(0);
                 if ($result) {
                     $this->affect($result);
-                    
+
                     return $result["id_fs"];
                 }
             }
         }
         return false;
     }
-    
+
     public function getSize()
     {
         $sql = <<<SQL
@@ -224,31 +229,23 @@ from vaultdiskfsstorage, (
  and vaultdiskfsstorage.id_fs = %d
  ;
 SQL;
-        
+
         $sql = sprintf($sql, $this->id_fs);
         $this->query($sql);
         if ($this->numrows() > 0) {
             $result = $this->fetchArray(0);
             if ($result) {
                 $this->affect($result);
-                
+
                 return intval($result["size"]);
             }
         }
         return -1;
     }
-    
-    public function recomputeDirectorySize()
+
+
+    public function show($id_fs, $id_dir, &$f_path)
     {
-        $sql = "update vaultdiskdirstorage set size=(select sum(size) from vaultdiskstorage where id_dir=vaultdiskdirstorage.id_dir) where isfull;";
-        $this->query($sql);
-        $sql = "update vaultdiskdirstorage set size=0 where isfull and size is null;";
-        $this->query($sql);
-    }
-    // --------------------------------------------------------------------
-    public function Show($id_fs, $id_dir, &$f_path)
-    {
-        // --------------------------------------------------------------------
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $query->basic_elem->sup_where = array(
             sprintf("id_fs=%d", $id_fs)
@@ -266,10 +263,9 @@ SQL;
         }
         return '';
     }
-    // --------------------------------------------------------------------
+
     public function delEntry($id_fs, $id_dir, $fs)
     {
-        // --------------------------------------------------------------------
         $this->select($id_fs);
         if ($this->IsAffected()) {
             $sd = new VaultDiskDirStorage($this->dbaccess, $id_dir);
@@ -283,7 +279,7 @@ SQL;
         }
         return '';
     }
-    // --------------------------------------------------------------------
+
     private function setHtaccess($path)
     {
         $htaccess = sprintf("%s/.htaccess", $path);

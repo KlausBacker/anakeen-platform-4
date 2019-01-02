@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="TST_005" label="Test n°5">
+        <smart:default-folder>9</smart:default-folder>
+        <smart:icon file="N1.png"/>
+        <smart:usefor>N</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true" is-abstract="true"/>
+                <smart:field-enum name="tst_ecolor" label="Le titre" access="ReadWrite" relation="TST_005-colors"/>
+            </smart:field-set>
+
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:autocompletion/>
+        <smart:defaults/>
+        <smart:accesses/>
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="TST_005-colors">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="yellow" label="Jaune"/>
+            <smart:enum name="green" label="Vert"/>
+            <smart:enum name="blue" label="Bleu">
+                <smart:enum name="lightblue" label="Bleu ciel"/>
+                <smart:enum name="navyblue" label="Bleu marine"/>
+            </smart:enum>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
+</smart:config>

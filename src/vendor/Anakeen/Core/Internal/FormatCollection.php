@@ -9,6 +9,7 @@ namespace Anakeen\Core\Internal;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Exception;
+use SmartStructure\Wdoc;
 
 /**
  * Format document list to be easily used in
@@ -867,20 +868,19 @@ class FormatCollection
         $s = new Format\StatePropertyValue();
         if ($doc->state) {
             $s->reference = $doc->state;
-            $s->stateLabel = _($doc->state);
 
-            if ($doc->locked != -1) {
-                $s->activity = $doc->getStateActivity();
-                if ($s->activity) {
-                    $s->displayValue = $s->activity;
-                } else {
-                    $s->displayValue = $s->stateLabel;
+            $wdoc = SEManager::getDocument($doc->wid);
+            if ($wdoc) {
+                /** @var Wdoc $wdoc */
+                SEManager::cache()->addDocument($wdoc);
+                $s->stateLabel = $wdoc->getStateLabel($doc->state);
+                if ($doc->locked != -1) {
+                    $s->activity = $doc->getStateActivity();
                 }
-            } else {
-                $s->displayValue = $s->stateLabel;
-            }
 
-            $s->color = $doc->getStateColor();
+                $s->displayValue = $doc->getStepLabel();
+                $s->color = $doc->getStateColor();
+            }
         }
         return $s;
     }
