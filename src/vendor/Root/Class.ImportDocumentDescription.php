@@ -837,9 +837,6 @@ class ImportDocumentDescription
      */
     protected function doReset(array $data)
     {
-        if (!$this->doc) {
-            return;
-        }
         $err = "";
         $data = array_map("trim", $data);
         $check = new CheckReset();
@@ -849,6 +846,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "warning";
             return;
         }
+
         if (!$this->tcr[$this->nLine]["err"]) {
             switch (strtolower($data[1])) {
                 case 'attributes':
@@ -876,9 +874,8 @@ class ImportDocumentDescription
                 case 'enums':
                     $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("Reset enums definition"));
                     $enumName = $data[2];
-                    $sql = sprintf("delete from docenum where name='%s'", $enumName);
+                    $sql = sprintf("delete from docenum where name='%s'", pg_escape_string($enumName));
                     \Anakeen\Core\DbManager::query($sql);
-
                     break;
 
                 case 'properties':

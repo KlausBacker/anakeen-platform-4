@@ -355,6 +355,11 @@ class ErrorCodeATTR
      */
     const ATTR1272 = 'key must not be empty in enum declaration "%s"  for "%s" attribute';
     /**
+     * @errorCode  the enum callable is not found
+     * @note       example : Test\One::myItems
+     */
+    const ATTR1273 = 'Enum callable "%s" not found';
+    /**
      * @errorCode  declaration of call constraint is not correct
      * @note       example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
      */

@@ -3,11 +3,14 @@
 namespace Anakeen\Core;
 
 use Anakeen\Core\SmartStructure\DocEnum;
+use Anakeen\EnumItem;
+use Anakeen\Exception;
 
 class EnumManager
 {
     const _cEnum = "_CACHE_ENUM";
     const _cParent = "_CACHE_PARENT";
+    const CALLABLEKEY = '::function::';
     private static $_cache = array();
 
     /**
@@ -40,6 +43,10 @@ class EnumManager
 
         DbManager::query($sql, $dbEnums);
 
+        if (count($dbEnums) === 1 && $dbEnums[0]["parentkey"] === self::CALLABLEKEY) {
+            return self::getCallableEnums($dbEnums[0]["key"]);
+        }
+
         foreach ($dbEnums as $k => $item) {
             $dbEnums[$k]["keyPath"] = str_replace('.', '\\.', $item["key"]);
         }
@@ -47,7 +54,7 @@ class EnumManager
             $enumKey = $item["key"];
             $translatedEnumValue = ___($enumKey, $name);
 
-            if ($translatedEnumValue !==  $enumKey) {
+            if ($translatedEnumValue !== $enumKey) {
                 $enumLabel = $translatedEnumValue;
             } else {
                 $enumLabel = $item["label"];
@@ -64,7 +71,7 @@ class EnumManager
                 $enums[$enumKey]["path"] = self::getCompleteEnumKey($item["keyPath"], $dbEnums);
                 $enums[$enumKey]["longLabel"] = self::getCompleteEnumlabel($enumKey, $dbEnums, $br);
             } else {
-                 $enums[$enumKey]["path"] = $item["keyPath"];
+                $enums[$enumKey]["path"] = $item["keyPath"];
             }
         }
         self::_cacheStore(self::_cEnum, $name, $enums);
@@ -73,6 +80,64 @@ class EnumManager
             return self::_cacheFetch(self::_cEnum, $name, null, $returnDisabled);
         }
         return $enums;
+    }
+
+    protected static function getCallableEnums(string $callableString)
+    {
+        $parseMethod = new \Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod();
+        $parseMethod->parse($callableString . '()');
+        $err = $parseMethod->getError();
+        if ($err) {
+            throw new Exception($err);
+        }
+
+        $staticClass = $parseMethod->className;
+        $methodName = $parseMethod->methodName;
+        if (method_exists($staticClass, $methodName)) {
+            if ($methodName === "__invoke") {
+                $callable = new $staticClass();
+            } else {
+                $callable = [$staticClass, $methodName];
+            }
+        } else {
+            throw new Exception("ATTR1273", $callableString);
+        }
+        $rawItems = call_user_func($callable);
+        return self::formatItems($rawItems);
+    }
+
+    /**
+     * @param EnumItem[] $enumItems
+     * @param EnumItem[] $parents
+     * @return array
+     */
+    private static function formatItems(array $enumItems, $parents = [])
+    {
+        $items = [];
+        foreach ($enumItems as $item) {
+            $fmtItem = [
+                "key" => $item->key,
+                "label" => $item->label,
+                "originalLabel" => $item->label,
+                "parentkey" => null
+            ];
+            if ($parents) {
+                $path = $label = [];
+                foreach ($parents as $parent) {
+                    $path[] = $parent->key;
+                    $label[] = $parent->label;
+                }
+                $path[] = $item->key;
+                $label[] = $item->label;
+                $fmtItem["path"] = implode(".", $path);
+                $fmtItem["longLabel"] = implode("/", $label);
+            }
+            $items[$item->key] = $fmtItem;
+            if ($item->childs) {
+                $items = array_merge($items, self::formatItems($item->childs, array_merge($parents, [$item])));
+            }
+        }
+        return $items;
     }
 
     private static function getCompleteEnumKey($key, array & $enums)
@@ -114,8 +179,8 @@ class EnumManager
      * the array'skeys are the enum single key and the values are the complete labels
      *
      * @param string $enumName       enum set reference
-     * @param string  $enumid         the key of enumerate (if no parameter all labels are returned
-     * @param bool    $returnDisabled if false disabled enum are not returned
+     * @param string $enumid         the key of enumerate (if no parameter all labels are returned
+     * @param bool   $returnDisabled if false disabled enum are not returned
      * @return array|string|null
      * @throws \Dcp\Db\Exception
      */
@@ -135,8 +200,8 @@ class EnumManager
      * add new \item in enum list items
      *
      * @param string $enumName enum set reference
-     * @param string  $key      database key
-     * @param string  $label    human label
+     * @param string $key      database key
+     * @param string $label    human label
      *
      * @return string error message (empty means ok)
      */

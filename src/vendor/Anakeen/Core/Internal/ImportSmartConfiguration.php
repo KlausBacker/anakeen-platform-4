@@ -3,6 +3,7 @@
 namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\AccountManager;
+use Anakeen\Core\EnumManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\ExportConfiguration;
 use Anakeen\Core\Utils\Xml;
@@ -608,9 +609,9 @@ class ImportSmartConfiguration
         $data = [];
         $nodeAttributes = $this->getNode($config, "fields");
         if ($nodeAttributes) {
-            $reset=$nodeAttributes->getAttribute("reset");
+            $reset = $nodeAttributes->getAttribute("reset");
             if ($reset === "true") {
-                $data[]=["RESET", "structure"];
+                $data[] = ["RESET", "structure"];
             }
             foreach ($nodeAttributes->childNodes as $attrNode) {
                 if (!is_a($attrNode, \DOMElement::class)) {
@@ -673,13 +674,17 @@ class ImportSmartConfiguration
     {
         $data = [];
 
-        foreach ($enumConfig->childNodes as $enumNode) {
+        $enumCall = $this->evaluate($enumConfig, "{$this->smartPrefix}:enum-callable");
+        /** @var \DOMNodeList $enumCall */
+        if ($enumCall->length === 1) {
+            return $this->extractEnumCallable($enumCall->item(0), $enumName);
+        }
+        $enumItems = $this->evaluate($enumConfig, "{$this->smartPrefix}:enum");
+        foreach ($enumItems as $enumNode) {
             /**
              * @var \DOMElement $enumNode
              */
-            if (!is_a($enumNode, \DOMElement::class) || $enumNode->tagName !== "{$this->smartPrefix}:enum") {
-                continue;
-            }
+
             $data[] = [
                 0 => "ENUM",
                 "name" => $enumName,
@@ -690,6 +695,20 @@ class ImportSmartConfiguration
             ];
             $data = array_merge($data, $this->extractEnum($enumNode, $enumName, $enumNode->getAttribute("name")));
         }
+
+        return $data;
+    }
+
+    protected function extractEnumCallable(\DOMElement $attrNode, $enumName)
+    {
+        $data = [];
+        $data[] = [
+            0 => "ENUM",
+            "name" => $enumName,
+            "key" => $attrNode->getAttribute("function"),
+            "label" => "",
+            "parentKey" => EnumManager::CALLABLEKEY
+        ];
 
         return $data;
     }
