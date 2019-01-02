@@ -3,7 +3,7 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 NODE_MODULE_PATH=node_modules
 JS_CONF_PATH=$(MK_DIR)
 JS_BUILD_PATH=dist
-VERSION=$(shell node -p "require('./package.json').version")
+VERSION=$(shell node -p "require('./package.json').version" | cut -f1 -d"-" )
 ########################################################################################################################
 ##
 ## Node
