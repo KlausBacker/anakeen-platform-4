@@ -9,7 +9,6 @@
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "yaml": "^1.0.3"
   },
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0-first",
