@@ -10,13 +10,6 @@ VERSION=$(shell node -p "require('./package.json').version" | cut -f1 -d"-" )
 ##
 ########################################################################################################################
 
-autorelease:
-	@${PRINT_COLOR} "${DEBUG_COLOR}autorelease $@${RESET_COLOR}\n"
-	npm version $(shell node -p "require('./package.json').version")-$(shell date +%s)
-
-nodePublish: autorelease
-	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
-	npm publish
 
 autoPublish: 
 	@${PRINT_COLOR} "${DEBUG_COLOR}$@${RESET_COLOR}\n"
