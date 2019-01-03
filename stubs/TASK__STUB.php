@@ -87,9 +87,10 @@ namespace SmartStructure\Fields {
         /**
         * Method
         * <ul>
+        * <li> <i>relation</i> TASK-task_method </li>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>needed</i> true </li>
-        * <li> <i>type</i> text </li>
+        * <li> <i>type</i> enum </li>
         * </ul>
         */ 
         const task_route_method='task_route_method';

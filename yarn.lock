@@ -4,13 +4,13 @@
 
 "@anakeen/anakeen-ci@^1.0.0-first":
   version "1.0.0-first"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.0-first.tgz#33e2858a541230e2555d957549ee82a7ec5cacc2"
-  integrity sha512-7OzFrDKvC0dlip5TjDFMjIgv1mv5MH40tok54rYDIQybKZFU3mDr3LOZ7DweGMsCm8yt5L7lNtryYM77KvuVNw==
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.0-first.tgz#2a611e5a6ff9f090dd3a710f1a49c5d6ead43a10"
+  integrity sha512-XuoaF8lkNazPwYwLOQZrSieReOlhG1mUQmlPC0fIzPYX73oqb8rWJbT+KzQ4Xmr2g3/R2mR05nspN+svu9saww==
 
-"@anakeen/anakeen-cli@latest":
-  version "1.0.1-1546446328"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1546446328.tgz#3af9480ee047974a2e881f43e6c6bef86e70a54b"
-  integrity sha512-JCC0oOg74PH9c1fxUeFhOeMnHqEhVr2fIkIkz8dsSQmhKRCPPzHeZ7zeZIv+2Ggzh/IGyooLlaFaMlc7NXhLJg==
+"@anakeen/anakeen-cli@1.0.2-1546520804":
+  version "1.0.2-1546520804"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.2-1546520804.tgz#df251eed56fab6e5c3d5fdb2970e216f7d44aafc"
+  integrity sha512-K781lQG/aA3HRfnQrhNHqpIxEI6whg5iRLZzdXqlCv6jngTc0HExlZV1bXCKZPhqaK9Xjmi93tyUIGoG+HRvew==
   dependencies:
     "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
@@ -3317,11 +3317,6 @@ yallist@^3.0.0, yallist@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.0.2.tgz#8452b4bb7e83c7c188d8041c1a837c773d6d8bb9"
   integrity sha1-hFK0u36Dx8GI2AQcGoN8dz1ti7k=
-
-yaml@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.0.3.tgz#6eed55f60edb3ac1402283fba94c91b6a0a026f7"
-  integrity sha512-GDYiMkQRa1894pgIQTIK5CGEpcjbozJb0IcSJ3WYoGyA9kZupfpRQxpSYFYfFHFKxlkaN4GgnhEF88J/VelC5A==
 
 yargs-parser@^11.1.1:
   version "11.1.1"
