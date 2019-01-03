@@ -150,7 +150,7 @@ class Manager
             } else {
                 $scheme = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
                 if ($scheme == "") {
-                    throw new \Dcp\Exception("Need configure TE_URLINDEX");
+                    throw new \Anakeen\Exception("Need configure TE_URLINDEX");
                 }
             }
         }
