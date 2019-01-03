@@ -31,7 +31,7 @@ integration:
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target integration
+    - ./.cibuild/cibuild.sh --target integration --publish --no-tag 
   artifacts:
     paths:
       - outputs/
@@ -46,6 +46,6 @@ package:
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target package
+    - ./.cibuild/cibuild.sh --target package --publish 
   only:
     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/smart-data-engine
