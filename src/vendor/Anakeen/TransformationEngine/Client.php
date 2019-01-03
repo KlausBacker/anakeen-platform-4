@@ -49,9 +49,13 @@ class Client
     {
         if ($host === '') {
             $this->host = ContextParameterManager::getValue(Manager::Ns, "TE_HOST");
+        } else {
+            $this->host = $host;
         }
         if ($port === 0) {
             $this->port = ContextParameterManager::getValue(Manager::Ns, "TE_PORT");
+        } else {
+            $this->port = $port;
         }
         $this->timeout = floatval(ContextParameterManager::getValue(Manager::Ns, "TE_TIMEOUT", 3));
     }

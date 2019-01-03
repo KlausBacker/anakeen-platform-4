@@ -7,7 +7,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Router\ApiV2Response;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 /**
  * Class InsertFile
