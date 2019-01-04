@@ -37,7 +37,6 @@ class PoSmartElement
         $a[] = _("prop_dprofid");
         $a[] = _("prop_atags");
         $a[] = _("prop_prelid");
-        $a[] = _("prop_lockdomainid");
         $a[] = _("prop_confidential");
         $a[] = _("prop_ldapdn");
     }

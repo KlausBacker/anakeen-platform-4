@@ -48,8 +48,6 @@ create index docty_docread on docread(doctype);";
         "state",
         "wid",
         "postitid",
-        "domainid",
-        "lockdomainid",
         "cvid",
         "name",
         "dprofid",

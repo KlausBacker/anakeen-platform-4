@@ -60,8 +60,6 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "state",
             "wid",
             "postitid",
-            "domainid",
-            "lockdomainid",
             "cvid",
             "fallid",
             "name",
@@ -262,20 +260,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "filterable" => false,
                 "label" => "prop_prelid"
             ), # N_("prop_prelid")
-            "lockdomainid" => array(
-                "type" => "docid",
-                "displayable" => true,
-                "sortable" => true,
-                "filterable" => false,
-                "label" => "prop_lockdomainid"
-            ), # N_("prop_lockdomainid")
-            "domainid" => array(
-                "type" => "docid",
-                "displayable" => false,
-                "sortable" => false,
-                "filterable" => false,
-                "label" => "prop_domainid"
-            ), # N_("prop_domainid")
+
             "confidential" => array(
                 "type" => "integer",
                 "displayable" => false,
@@ -335,18 +320,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var int
      */
     public $fromid;
-    /**
-     * domain where document is lock
-     *
-     * @var int
-     */
-    public $lockdomainid;
-    /**
-     * domain where document is attached
-     *
-     * @var string
-     */
-    public $domainid;
+
     /**
      * the type of document
      *
@@ -668,8 +642,6 @@ create table doc ( id int not null,
                    wid int DEFAULT 0,
                    fieldvalues jsonb,
                    postitid text,
-                   domainid text,
-                   lockdomainid int,
                    fallid int,
                    cvid int,
                    name text,
@@ -1400,50 +1372,52 @@ create unique index i_docir on doc(initid, revision);";
      * test if the document can be modified by the current user
      * the document is not need to be locked
      *
-     * @param bool $verifyDomain
+     * @param bool $forceVerifyWithControl uset to true to verify even object is not under control
      *
      * @return string empty means user can update else message of the raison
      */
-    public function canEdit($verifyDomain = true)
+    public function canEdit($forceVerifyWithControl = false)
     {
         if ($this->locked == -1) {
             $err = sprintf(
-                _("cannot update file %s (rev %d) : fixed. Get the latest version"),
+                ___("Cannot update element \"%s\" (rev %d) : is fixed. Get the latest version", "sde"),
                 $this->title,
                 $this->revision
             );
             return ($err);
         }
 
-        if (!$this->isUnderControl()) {
+        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
             return "";
         } // admin can do anything but not modify fixed doc
-        if ($verifyDomain && ($this->lockdomainid > 0)) {
-            $err = sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
-        } else {
-            if (!$this->isUnderControl()) {
-                return "";
-            } // no more test if disableAccessControl activated
-            if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
-                $user = new \Anakeen\Core\Account("", abs($this->locked));
-                if ($this->locked < -1) {
-                    $err = sprintf(
-                        _("Document %s is in edition by %s."),
-                        $this->getTitle(),
-                        $user->firstname . " " . $user->lastname
-                    );
-                } else {
-                    $err = sprintf(
-                        _("you are not allowed to update the file %s (rev %d) is locked by %s."),
-                        $this->getTitle(),
-                        $this->revision,
-                        $user->firstname . " " . $user->lastname
-                    );
-                }
+
+        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
+            return "";
+        } // no more test if disableAccessControl activated
+        if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
+            $user = new \Anakeen\Core\Account("", abs($this->locked));
+            if ($this->locked < -1) {
+                $err = sprintf(
+                    ___("Element %s is in edition by %s.", "sde"),
+                    $this->getTitle(),
+                    $user->firstname . " " . $user->lastname
+                );
             } else {
+                $err = sprintf(
+                    ___("You are not allowed to update the element \"%s\" (# %d) is locked by \"%s\".", "sde"),
+                    $this->getTitle(),
+                    $this->initid,
+                    $user->firstname . " " . $user->lastname
+                );
+            }
+        } else {
+            if ($forceVerifyWithControl === false) {
                 $err = $this->controlAccess("edit");
+            } else {
+                $err = $this->control("edit");
             }
         }
+
         return ($err);
     }
 
@@ -1733,9 +1707,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->isLocked(true)) {
             return _("locked");
         }
-        if ($this->lockdomainid > 0) {
-            return sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
-        }
+
         $err = $this->controlAccess("delete");
 
         return $err;
@@ -2926,7 +2898,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $idAttr attribute identifier
      * @param mixed  $value  the new \value - value format must be compatible with type
      *
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      * @see ErrorCodeDoc::DOC0115
      * @see ErrorCodeDoc::DOC0117
      * @return void
@@ -4134,14 +4106,14 @@ create unique index i_docir on doc(initid, revision);";
             }
             $methodName = $parseMethod->methodName;
             if (method_exists($staticClass, $methodName)) {
-                if ($methodName==="__invoke") {
+                if ($methodName === "__invoke") {
                     $callable = new $staticClass();
                 } else {
                     $callable = [$staticClass, $methodName];
                 }
                 if ((count($parseMethod->inputs) == 0) && (empty($bargs))) {
                     // without argument
-                        $value = call_user_func($callable);
+                    $value = call_user_func($callable);
                 } else {
                     // with argument
                     $args = array();
@@ -5071,7 +5043,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool $copyfile  if true duplicate files of the document
      *
      * @return \Anakeen\Core\Internal\SmartElement |string in case of error return a string that indicate the error
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     final public function duplicate($temporary = false, $linkfld = false, $copyfile = false)
     {
@@ -5200,7 +5172,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            if (($this->locked != $userid) || ($this->lockdomainid)) {
+            if ($this->locked != $userid) {
                 $this->locked = $userid;
                 $err = $this->modify(false, array(
                     "locked"
@@ -5254,10 +5226,8 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             if ($this->locked != -1) {
                 $this->locked = "0";
-                $this->lockdomainid = '';
                 $this->modify(false, array(
                     "locked",
-                    "lockdomainid"
                 ));
                 if (!$err) {
                     $this->addLog('unlock');
@@ -5577,7 +5547,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $callMethod Method to apply
      *
      * @return string Error message or empty string on succcess
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     protected function specRefreshGenAttribute($attrId, $callMethod)
     {
@@ -5615,9 +5585,7 @@ create unique index i_docir on doc(initid, revision);";
         if (($this->doctype == 'C') || ($this->doctype == 'Z')) {
             return '';
         } // no refresh for family  and zombie document
-        if ($this->lockdomainid > 0) {
-            return '';
-        }
+
         $changed = $this->hasChanged;
         if (!$changed) {
             $this->disableAccessControl();
@@ -6081,7 +6049,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool   $abstract
      *
      * @return string
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     final public function getHtmlAttrValue(
         $attrid,
@@ -6457,7 +6425,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool  $method       set to false if don't want interpreted values
      * @param bool  $forcedefault force default values
      *
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     final public function setDefaultValues($tdefval, $method = true, $forcedefault = false)
     {

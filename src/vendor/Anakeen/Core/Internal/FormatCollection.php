@@ -747,7 +747,7 @@ class FormatCollection
             );
         }
 
-        $info["readOnly"] = ($doc->canEdit() != "");
+        $info["readOnly"] = ($doc->canEdit(true) != "");
         $info["fixed"] = ($doc->locked == -1);
         if ($doc->profid != 0) {
             if ($doc->profid == $doc->id) {

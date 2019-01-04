@@ -190,7 +190,7 @@ class EnumManager
 
         $cached = self::_cacheFetch(self::_cEnum, $enumName, null, $returnDisabled);
 
-        if (array_key_exists($enumid, $cached)) {
+        if ($cached !== null && array_key_exists($enumid, $cached)) {
             return $cached[$enumid];
         }
         return null;
