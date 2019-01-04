@@ -60,8 +60,6 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
             "state",
             "wid",
             "postitid",
-            "domainid",
-            "lockdomainid",
             "cvid",
             "fallid",
             "name",
@@ -262,20 +260,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
                 "filterable" => false,
                 "label" => "prop_prelid"
             ), # N_("prop_prelid")
-            "lockdomainid" => array(
-                "type" => "docid",
-                "displayable" => true,
-                "sortable" => true,
-                "filterable" => false,
-                "label" => "prop_lockdomainid"
-            ), # N_("prop_lockdomainid")
-            "domainid" => array(
-                "type" => "docid",
-                "displayable" => false,
-                "sortable" => false,
-                "filterable" => false,
-                "label" => "prop_domainid"
-            ), # N_("prop_domainid")
+
             "confidential" => array(
                 "type" => "integer",
                 "displayable" => false,
@@ -335,18 +320,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
      * @var int
      */
     public $fromid;
-    /**
-     * domain where document is lock
-     *
-     * @var int
-     */
-    public $lockdomainid;
-    /**
-     * domain where document is attached
-     *
-     * @var string
-     */
-    public $domainid;
+
     /**
      * the type of document
      *
@@ -668,8 +642,6 @@ create table doc ( id int not null,
                    wid int DEFAULT 0,
                    fieldvalues jsonb,
                    postitid text,
-                   domainid text,
-                   lockdomainid int,
                    fallid int,
                    cvid int,
                    name text,
@@ -1733,9 +1705,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->isLocked(true)) {
             return _("locked");
         }
-        if ($this->lockdomainid > 0) {
-            return sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
-        }
+
         $err = $this->controlAccess("delete");
 
         return $err;
@@ -5200,7 +5170,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
         } else {
-            if (($this->locked != $userid) || ($this->lockdomainid)) {
+            if ($this->locked != $userid) {
                 $this->locked = $userid;
                 $err = $this->modify(false, array(
                     "locked"
@@ -5254,10 +5224,8 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             if ($this->locked != -1) {
                 $this->locked = "0";
-                $this->lockdomainid = '';
                 $this->modify(false, array(
                     "locked",
-                    "lockdomainid"
                 ));
                 if (!$err) {
                     $this->addLog('unlock');
@@ -5615,9 +5583,7 @@ create unique index i_docir on doc(initid, revision);";
         if (($this->doctype == 'C') || ($this->doctype == 'Z')) {
             return '';
         } // no refresh for family  and zombie document
-        if ($this->lockdomainid > 0) {
-            return '';
-        }
+
         $changed = $this->hasChanged;
         if (!$changed) {
             $this->disableAccessControl();

@@ -25,8 +25,6 @@ class CollectionDataFormatter
     const APIURL = Settings::ApiV2;
     protected static $uselessProperties
         = array(
-            "lockdomainid",
-            "domainid",
             "ldapdn",
             "comment",
             "classname"
