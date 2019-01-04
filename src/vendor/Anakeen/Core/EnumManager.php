@@ -44,7 +44,9 @@ class EnumManager
         DbManager::query($sql, $dbEnums);
 
         if (count($dbEnums) === 1 && $dbEnums[0]["parentkey"] === self::CALLABLEKEY) {
-            return self::getCallableEnums($dbEnums[0]["key"]);
+            $enums = self::getCallableEnums($dbEnums[0]["key"]);
+            self::_cacheStore(self::_cEnum, $name, $enums);
+            return $enums;
         }
 
         foreach ($dbEnums as $k => $item) {
