@@ -165,7 +165,7 @@ from vaultdiskfsstorage, (
     select sum(c) as size, id_fs from (
                 (select sum(vaultdiskstorage.size) as c, vaultdiskdirstorage.id_fs 
                 from vaultdiskstorage, vaultdiskdirstorage 
-                where vaultdiskdirstorage.id_dir = vaultdiskstorage.id_dir and not isfull 
+                where vaultdiskdirstorage.id_dir = vaultdiskstorage.id_dir and (not isfull or isfull is null)
                 group by vaultdiskdirstorage.id_fs )
             union
                 (select sum(size) as c, vaultdiskdirstorage.id_fs 

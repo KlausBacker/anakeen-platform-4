@@ -106,14 +106,10 @@ SQL;
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
         $id_fs = $fs["id_fs"];
-        $query->basic_elem->sup_where = array(
-            "id_fs=" . $id_fs,
-            "not isfull or isfull is null"
-        );
-        $query->order_by = "id_dir";
+
         // Lock directory : force each process to use its proper dir
         $sql = sprintf(
-            "select * from %s where id_fs=%d and not isfull and pg_try_advisory_xact_lock(id_dir, %d) order by id_fs limit 1 for update;",
+            "select * from %s where id_fs=%d and (not isfull or isfull is null) and pg_try_advisory_xact_lock(id_dir, %d) order by id_fs limit 1 for update;",
             pg_escape_identifier($this->dbtable),
             $id_fs,
             unpack("i", "VLCK") [1]
