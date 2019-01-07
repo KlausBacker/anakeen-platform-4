@@ -8,10 +8,9 @@
   },
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first",
+    "@anakeen/anakeen-ci": "^1.0.0-first1",
     "@anakeen/anakeen-cli": "latest",
     "prettier": "^1.15.3"
   },

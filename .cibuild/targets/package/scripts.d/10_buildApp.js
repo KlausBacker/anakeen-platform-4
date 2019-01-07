@@ -1,11 +1,40 @@
 #!/usr/bin/env node
 
-const {produceAndUpload} = require("@anakeen/anakeen-ci");
-const {
-  getModuleInfo
-} = require("@anakeen/anakeen-cli/utils/moduleInfo");
+const { produceApp } = require("@anakeen/anakeen-ci");
+const { getModuleInfo } = require("@anakeen/anakeen-cli/utils/moduleInfo");
 
-return produceAndUpload({getModuleInfo})
+return produceApp({
+  apps: [
+    {
+      app: {
+        command: "make",
+        args: ["app"]
+      },
+      path: {
+        infoXML: "./",
+        src: "./src/"
+      },
+      stubs : {
+        command: "make",
+        args: ["stubs"],
+        path: "./stubs/"
+      },
+      src: true
+    },
+    {
+      app: {
+        command: "make",
+        args: ["app-test"]
+      },
+      path: {
+        infoXML: "./Tests",
+        src: "./Tests/src/"
+      },
+      src: true
+    }
+  ],
+  getModuleInfo
+})
   .then(() => {
     console.log("OK");
   })
