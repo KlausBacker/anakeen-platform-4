@@ -34,7 +34,7 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@^1.0.0-1544534556":
+"@anakeen/ank-components@latest":
   version "1.0.0-1545131196"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1545131196.tgz#d5d8403e69b6601e7bceba69319be7d8b1e05460"
   integrity sha512-FpKCqcpyqrAD2dT4uC82s1eM4SVaDKUjjzNf4TGKgKiqvt7LyE00tfXIhZEBBgJ41f04wBsq0vjHXGEF7LvM4A==
@@ -8738,7 +8738,7 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
 
-vue-loader@^15.0.11, vue-loader@^15.3.0:
+vue-loader@^15.3.0:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.4.2.tgz#812bb26e447dd3b84c485eb634190d914ce125e2"
   dependencies:
