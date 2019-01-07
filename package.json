@@ -10,7 +10,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {},
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first2",
+    "@anakeen/anakeen-ci": "^1.0.0-first3",
     "@anakeen/anakeen-cli": "latest",
     "prettier": "^1.15.3"
   },
