@@ -6,7 +6,7 @@
   "scripts": {
     "beautify": "./node_modules/eslint/bin/eslint.js ./ --fix",
     "lint": "./node_modules/eslint/bin/eslint.js ./",
-    "buildJs": "webpack --config webpack/index.js"
+    "buildJs": "node --max_old_space_size=4096 ./node_modules/.bin/webpack --config webpack/index.js"
   },
   "repository": {
     "type": "git",
