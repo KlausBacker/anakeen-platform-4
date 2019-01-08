@@ -1,0 +1,55 @@
+.card-default[data-attrid="hub_slot_parameters"] {
+    width: 47% !important;
+    float: left;
+}
+
+.card-body[data-attrid="hub_slot_parameters"] {
+    justify-content: center;
+    align-content: center;
+}
+
+.card-default[data-attrid="hub_component_parameters"] {
+    width: 47% !important;
+    float: right;
+}
+
+.card-body[data-attrid="hub_component_parameters"] {
+    justify-content: center;
+    align-content: center;
+}
+
+.icons-selector .selected-icon i, .icons-selector .fip-box[data-fip-value] i {
+    font-family: FontAwesome !important;
+}
+
+.card-body[data-attrid="hub_config"] {
+
+}
+
+.card-default[data-attrid="hub_titles"] {
+    width: 100% !important;
+    height: 50% !important;
+}
+
+.dcpAttribute[data-attrid="hub_icon"] {
+    float: left;
+}
+
+.dcpAttribute[data-attrid="hub_mono_element"] {
+    float: right;
+}
+
+.dcpAttribute[data-attrid="hub_activated"] {
+    float: right;
+}
+
+.dcpAttribute[data-attrid="hub_order"] {
+    width: 48% !important;
+    float: left;
+}
+
+.dcpAttribute[data-attrid="hub_order"], .dcpAttribute[data-attrid="hub_mono_element"], .dcpAttribute[data-attrid="hub_activated"], .dcpAttribute[data-attrid="hub_icon"] {
+    display: inline-block;
+    width: 50%;
+    height: 50%;
+}
