@@ -1,5 +1,5 @@
 import "./HubConfiguration.css";
-const fip = require("@fonticonpicker/fonticonpicker")($);
+require("@fonticonpicker/fonticonpicker")($);
 import "@fonticonpicker/fonticonpicker/dist/css/base/jquery.fonticonpicker.min.css";
 import "@fonticonpicker/fonticonpicker/dist/css/themes/bootstrap-theme/jquery.fonticonpicker.bootstrap.min.css";
 
@@ -34,19 +34,14 @@ window.dcp.document.documentController(
     }
   },
   function(event, documentObject, attributeObject, $el) {
-    $el
-      .find(".iconPicker")
-      .fontIconPicker({
-        theme: "fip-bootstrap",
-        useAttribute: true,
-        iconGenerator: icon => {
-          return `<i class="fa fa-${icon}"></i>`;
-        },
-        convertToHex: false
-      });
-    $el.find(".iconPicker").on("change", () => {
-      console.log("ojoezg");
+    $el.find(".iconPicker").fontIconPicker({
+      theme: "fip-bootstrap",
+      useAttribute: true,
+      iconGenerator: icon => {
+        return `<i class="fa fa-${icon}"></i>`;
+      },
+      convertToHex: false
     });
-    // $picker.setIcon()
+    $el.find(".iconPicker").on("change", () => {});
   }
 );
