@@ -33,57 +33,78 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 
 ########################################################################################################################
 ##
-## devtools
+## Deps
 ##
 ########################################################################################################################
-
-$(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
-	$(YARN_BIN) install
-	touch "$@"
-
-install: $(JS_CONF_PATH)/yarn.lock ## Install deps (js an php)
-
-stub: ## Generate stubs
-	${ANAKEEN_CLI_BIN} generateStubs --sourcePath .
-
-########################################################################################################################
-##
-## BUILD TARGET
-##
-########################################################################################################################
-
-
-$(NODE_MODULE_PATH):
+install-deps:
 	$(YARN_BIN) install
 
-compile: $(NODE_MODULE_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+########################################################################################################################
+##
+## Static analyze
+##
+########################################################################################################################
+
+checkXML: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} check -s .
+
+lint: checkXML
+	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+
+beautify:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+
+########################################################################################################################
+##
+## Po and stub
+##
+########################################################################################################################
+po: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} extractPo -s .
+
+stub: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} generateStubs
+
+########################################################################################################################
+##
+## Build
+##
+########################################################################################################################
+app: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
 	$(YARN_BIN) run build
-
-app: compile ## build admin center
 	${ANAKEEN_CLI_BIN} build
 
-deploy: app ## deploy admin center
-	${ANAKEEN_CLI_BIN} deploy --auto-release --source-path . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+app-all: app
 
-autotest: compile
+app-autorelease: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autorelease${RESET_COLOR}\n"
+	$(YARN_BIN) run build
 	${ANAKEEN_CLI_BIN} build --auto-release
+
+app-all-autorelease: app-autorelease
+
 ########################################################################################################################
 ##
-## Node
+## publishNpm
 ##
 ########################################################################################################################
 
-autorelease:
-	@${PRINT_COLOR} "${DEBUG_COLOR}autorelease $@${RESET_COLOR}\n"
-	npm version $(VERSION)-$(shell date +%s)
-
-nodePublish:
-	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
+publishNpm:
+	@${PRINT_COLOR} "${DEBUG_COLOR}publishNpm $@${RESET_COLOR}\n"
 	npm publish
 
-autoPublish:
-	@${PRINT_COLOR} "${DEBUG_COLOR}$@${RESET_COLOR}\n"
+publishNpm--autorelease:
+	@${PRINT_COLOR} "${DEBUG_COLOR} publishNpm--autorelase $@${RESET_COLOR}\n"
 	npm version $(VERSION)-$(shell find . -type f -print0 | xargs -0 stat --format '%Y' | sort -nr | cut -d: -f2- | head -1)
 	npm publish || echo "Already published"
 
@@ -97,42 +118,7 @@ clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
 	rm -fr ./src/public/Anakeen/ ./src/public/AdminCenter
 	rm -rf ${MODULE_NAME}*.app
-
-cleanAll: clean ## clean the local pub and the node_module
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -rf $(NODE_MODULE_PATH)
-	touch $(JS_CONF_PATH)/package.json
-
-########################################################################################################################
-##
-## PO TARGET
-##
-########################################################################################################################
-
-po: ## extract the po
-	${ANAKEEN_CLI_BIN} extractPo --sourcePath $(ADMIN_CENTER_SRC_PATH)
-
-########################################################################################################################
-##
-## Beautify TARGET
-##
-########################################################################################################################
-
-beautify: $(NODE_MODULE_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
-	$(YARN_BIN) run beautify
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
-
-lint: $(NODE_MODULE_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
-
-checkXML: $(NODE_MODULE_PATH)
-	${ANAKEEN_CLI_BIN} check -s .
+	rm -rf ${MODULE_NAME}*.src
 
 ########################################################################################################################
 ##
