@@ -92,7 +92,7 @@
 <script>
   import Vue from "vue";
   import {Splitter, LayoutInstaller} from "@progress/kendo-layout-vue-wrapper";
-  import "@progress/kendo-ui";
+  import "@progress/kendo-ui/js/kendo.splitter";
 
   Vue.use(LayoutInstaller);
   export default {
