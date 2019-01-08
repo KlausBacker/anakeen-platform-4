@@ -93,6 +93,11 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
+"@fonticonpicker/fonticonpicker@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@fonticonpicker/fonticonpicker/-/fonticonpicker-3.1.1.tgz#9dd48822a76ca6684e39c0b701b040a904bf102d"
+  integrity sha512-UJiBjng4UpOlUC6R5RQY7BWxO1zd2wf9D2yF8XNzI0n8PqbovEoIbfa2BnTtQaxELikp3rH7giwxTbD04lDWhQ==
+
 "@progress/kendo-base-components-vue-wrapper@2018.3.1025":
   version "2018.3.1025"
   resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.3.1025.tgz#17072b6b7d4fd569e85aa5692978daf0bd992496"
@@ -105,9 +110,10 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2018.3.1025"
 
-"@progress/kendo-ui@^2018.2.806":
+"@progress/kendo-ui@2018.2.806":
   version "2018.2.806"
   resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.2.806.tgz#501071f02e93812b0400ba5103b91ddad65f03d2"
+  integrity sha512-xmmN+r3WNLRarJTfwTRHB/ENuukR56Uuj2onzPn9LsptwD9VnfC6wM+LgzZAVPw458dkaVBQbxqPfgMG2U1+Rg==
   dependencies:
     jquery "<=3"
 
@@ -4896,6 +4902,7 @@ jmespath@0.15.0:
 jquery@<=3:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+  integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
 
 js-base64@^2.1.8:
   version "2.4.9"
