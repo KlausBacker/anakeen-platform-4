@@ -3,5 +3,6 @@
 .idea
 Makefile.local
 security-*.app
+security-*.src
 node_modules/
 ide/vendor/
