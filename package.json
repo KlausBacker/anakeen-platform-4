@@ -5,6 +5,7 @@
   "author": "Charles Bonnissent <charles.bonnissent@anakeen.com>",
   "license": "MIT",
   "devDependencies": {
+    "@anakeen/anakeen-ci": "^1.0.0-first3",
     "@anakeen/anakeen-cli": "^1.0.1-1543428775"
   }
 }
