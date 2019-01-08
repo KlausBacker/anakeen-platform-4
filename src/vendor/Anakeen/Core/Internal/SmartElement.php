@@ -5016,7 +5016,7 @@ create unique index i_docir on doc(initid, revision);";
              */
             $wdoc = SEManager::getDocument($this->wid);
             if ($wdoc) {
-                if ($this->locked == -1) {
+                if ($this->locked != -1) {
                     $label = $wdoc->getActivity($this->state);
                 }
                 if (!$label) {

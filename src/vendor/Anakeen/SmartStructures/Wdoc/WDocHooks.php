@@ -194,7 +194,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
         if (!empty($this->stepLabels[$state])) {
-            return $this->stepLabels[$state]["state"] ?: $state;
+            return $this->stepLabels[$state]["state"] ?? $state;
         }
         return _($state);
     }
