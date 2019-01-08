@@ -12,7 +12,7 @@
                         <smart:field-text name="hub_title" label="Title" access="ReadWrite"/>
                         <smart:field-text name="hub_language" label="Language"
                                           access="ReadWrite"/>
-                        <smart:field-text name="hub_language_code" access="ReadWrite"/>
+                        <smart:field-text name="hub_language_code" label="Language code" access="ReadWrite"/>
                     </smart:field-set>
                     <smart:field-htmltext name="hub_icon" label="Icon" access="ReadWrite"/>
                     <smart:field-enum name="hub_mono_element" label="Mono element" relation="Yes_no_enum"
@@ -22,7 +22,7 @@
                     <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
                 </smart:field-set>
                 <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Element location">
-                    <smart:field-enum name="hub_docker_position" label="Position in hub" relation="Docker_pos_enum"
+                    <smart:field-enum name="hub_docker_position" label="Dock position" relation="Docker_pos_enum"
                                       access="ReadWrite"/>
                 </smart:field-set>
                 <smart:field-set name="hub_component_parameters" type="frame" access="ReadWrite" label="Parameters"/>
