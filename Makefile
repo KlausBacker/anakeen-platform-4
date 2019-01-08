@@ -14,7 +14,7 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 -include Makefile.local
 
-install:
+install-dev:
 	yarn install
 
 ########################################################################################################################
@@ -23,14 +23,19 @@ install:
 ##
 ########################################################################################################################
 
-app: install
+app: install-dev
 	${ANAKEEN_CLI_BIN} build
 
-autotest: install
+app-autorelease: install-dev
 	rm -f *app
 	${ANAKEEN_CLI_BIN} build --auto-release
 
-deploy: install
+########################################################################################################################
+##
+## Deploy
+##
+########################################################################################################################
+deploy: install-dev
 	rm -f smart-data-engine-1*app
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
@@ -40,10 +45,10 @@ deploy: install
 ##
 ########################################################################################################################
 
-po: install
+po: install-dev
 	${ANAKEEN_CLI_BIN} extractPo -s .
 
-stub: install
+stub: install-dev
 	${ANAKEEN_CLI_BIN} generateStubs
 
 ########################################################################################################################
@@ -62,9 +67,15 @@ lint:
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml ${MK_DIR}/src
 
-checkXML: node_modules
-	${ANAKEEN_CLI_BIN} check -s .
-	${ANAKEEN_CLI_BIN} check -s Tests
+########################################################################################################################
+##
+## Clean
+##
+########################################################################################################################
+clean:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Clean${RESET_COLOR}\n"
+	rm -f *.src
+	rm -f *.app
 
 ########################################################################################################################
 ##
