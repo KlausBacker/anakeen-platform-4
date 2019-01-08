@@ -39,7 +39,7 @@ namespace SmartStructure\Fields {
         */ 
         const tm_dyndate='tm_dyndate';
         /**
-        * Décalage
+        * Décalage de la date de référence
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> text </li>
@@ -65,17 +65,17 @@ namespace SmartStructure\Fields {
         */ 
         const tm_workflow='tm_workflow';
         /**
-        * Décalage (en jours)
+        * Décalage (en jours)Obsolète
         * <ul>
-        * <li> <i>access</i> Read </li>
+        * <li> <i>access</i> None </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
         const tm_refdaydelta='tm_refdaydelta';
         /**
-        * Décalage (en heures)
+        * Décalage (en heures)Obsolète
         * <ul>
-        * <li> <i>access</i> Read </li>
+        * <li> <i>access</i> None </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
@@ -91,7 +91,7 @@ namespace SmartStructure\Fields {
         /**
         * Délai relatif (en jours) Obsolète
         * <ul>
-        * <li> <i>access</i> Read </li>
+        * <li> <i>access</i> None </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
@@ -99,7 +99,7 @@ namespace SmartStructure\Fields {
         /**
         * Délai relatif(en heures) Obsolète
         * <ul>
-        * <li> <i>access</i> Read </li>
+        * <li> <i>access</i> None </li>
         * <li> <i>type</i> double </li>
         * </ul>
         */ 
@@ -131,7 +131,7 @@ namespace SmartStructure\Fields {
         /**
         * Nombre d'itérations
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> None </li>
         * <li> <i>type</i> int </li>
         * </ul>
         */ 
