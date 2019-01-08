@@ -455,6 +455,10 @@ class ImportSmartConfiguration
         $data = [];
         $nodeAttributes = $this->getNode($config, "parameters");
         if ($nodeAttributes) {
+            $reset = $nodeAttributes->getAttribute("reset");
+            if ($reset === "true") {
+                $data[] = ["RESET", "parameters"];
+            }
             foreach ($nodeAttributes->childNodes as $attrNode) {
                 if (!is_a($attrNode, \DOMElement::class)) {
                     continue;
@@ -521,9 +525,6 @@ class ImportSmartConfiguration
                 $attr->phpfunc = $this->getCallableString($hookNode);
             }
 
-            if ($hookNode->getAttribute("event") === "onPreRefresh") {
-                $attr->phpfunc = $this->getCallableString($hookNode);
-            }
 
             $data[] = $attr->getData("UPDTATTR");
         }
