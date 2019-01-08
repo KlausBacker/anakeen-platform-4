@@ -4,6 +4,7 @@ namespace Anakeen\Hub\SmartStructures\HubConfiguration\Render;
 
 use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
+use Dcp\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
@@ -13,8 +14,10 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $options = parent::getOptions($document);
 
         $break2 = "33%";
-        $break3 = "50%";
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinLimit(1);
+        $options->arrayAttribute(HubConfigurationFields::hub_titles)->setCollapse("none");
+        $options->text(HubConfigurationFields::hub_title)->setMaxLength(50);
+        $options->text(HubConfigurationFields::hub_language)->setMaxLength(15);
         $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break2, "grow" => false],
@@ -27,16 +30,15 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
                 ["number" => 3, "minWidth" => $break2, "grow" => false]
             ]
         );
-        $options->frame(HubConfigurationFields::hub_config)->setResponsiveColumns(
-            [
-                ["number" => 2, "minWidth" => $break2, "grow" => false]
-            ]
-        );
-        $options->frame(HubConfigurationFields::hub_titles)->setResponsiveColumns(
-            [
-                ["number" => 2, "minWidth" => $break3, "grow" => true]
-            ]
-        );
+        $tpl = <<< HTML
+        <select class="iconPicker" name="iconPicker">
+    <option>circle</option>
+    <option>plus</option>
+    <option>heart</option>
+    <option>minus</option>
+</select>
+HTML;
+        $options->htmltext(HubConfigurationFields::hub_icon)->setTemplate($tpl);
         return $options;
     }
 
@@ -47,10 +49,16 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         return $visibilities;
     }
 
-    public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    /**
+     * @param \Anakeen\Core\Internal\SmartElement|null $document
+     * @return array|string[]
+     * @throws \Dcp\Ui\Exception
+     */
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
-        $parent = parent::getCssReferences($document);
-        $parent["hubConfiguration"] = __DIR__."/References/HubConfiguration.css";
+        $parent = parent::getJsReferences();
+        $path = UIGetAssetPath::getElementAssets("hub", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $parent["hubConfiguration"] = $path["hubConfiguration"]["js"];
         return $parent;
     }
 }

@@ -4,6 +4,7 @@ namespace Anakeen\Hub\SmartStructures\HubConfiguration\Render;
 
 use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
+use Dcp\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
@@ -11,7 +12,6 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
-        $visibilities->setVisibility("hub_language_code", \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
     }
 
@@ -19,10 +19,10 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
     {
         $options = parent::getOptions($document);
 
-
         $break2 = "33%";
         $break3 = "50%";
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinLimit(1);
+        $options->arrayAttribute(HubConfigurationFields::hub_titles)->setCollapse("none");
         $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
@@ -35,11 +35,24 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
                 ["number" => 3, "minWidth" => $break2, "grow" => false]
             ]
         );
-        $options->frame(HubConfigurationFields::hub_config)->setResponsiveColumns(
-            [
-                ["number" => 2, "minWidth" => $break2, "grow" => false]
-            ]
-        );
+//        $options->frame(HubConfigurationFields::hub_config)->setResponsiveColumns(
+//            [
+//                ["number" => 2, "minWidth" => $break2, "grow" => false]
+//            ]
+//        );
         return $options;
+    }
+
+    /**
+     * @param \Anakeen\Core\Internal\SmartElement|null $document
+     * @return array|string[]
+     * @throws \Dcp\Ui\Exception
+     */
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
+        $parent = parent::getJsReferences();
+        $path = UIGetAssetPath::getElementAssets("hub", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $parent["hubConfiguration"] = $path["hubConfiguration"]["js"];
+        return $parent;
     }
 }
