@@ -22,8 +22,7 @@ autotest:
     expire_in: 1 week
     when: always
   only:
-    - branches
-    - tags
+    - merge_requests
 
 integration:
   stage: integration
