@@ -31,6 +31,11 @@ class SmartElementHooks
         return $this;
     }
 
+    /**
+     * Return all recorded callables functions indexed by hook name
+     * @param $hookName
+     * @return array
+     */
     public function getListeners($hookName)
     {
         if (isset($this->document->hooks[$hookName])) {
