@@ -7,6 +7,7 @@ before_script:
 
 stages:
   - autotest
+  - integration
   - package
 
 autotest:
@@ -24,6 +25,20 @@ autotest:
     - branches
     - tags
 
+integration:
+  stage: integration
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target integration --publish --no-tag --bucket integration
+  artifacts:
+    paths:
+      - outputs/
+    expire_in: 1 week
+    when: always
+  only:
+    - master@Anakeen/Platform-4/admin-center
+
 package:
   stage: package
   tags:
@@ -31,4 +46,4 @@ package:
   script:
     - ./.cibuild/cibuild.sh --target package
   only:
-    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/development-center
+    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/admin-center
