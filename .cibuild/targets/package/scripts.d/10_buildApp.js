@@ -15,13 +15,6 @@ return produceApp({
         src: "./src/"
       },
       src: true
-    },
-    {
-      app: {
-        command: "make",
-        args: ["app-test"]
-      },
-      src: true
     }
   ],
   getModuleInfo
