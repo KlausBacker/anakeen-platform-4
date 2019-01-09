@@ -6,6 +6,7 @@ before_script:
   - GIT_DIR=.cibuild.tmp/.git git archive --format=tar master | tar -C .cibuild -xvf -
 
 stages:
+  - integration
   - autotest
   - package
 
@@ -21,8 +22,22 @@ autotest:
     expire_in: 1 week
     when: always
   only:
-    - branches
-    - tags
+    - merge_requests
+
+integration:
+  stage: integration
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target integration
+  artifacts:
+    paths:
+      - outputs/
+    expire_in: 1 week
+    when: always
+  only:
+    - master@Anakeen/Platform-4/anakeen-hub --publish --no-tag --bucket integration
+    - web
 
 package:
   stage: package

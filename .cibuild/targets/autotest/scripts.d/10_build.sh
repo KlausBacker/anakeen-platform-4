@@ -2,4 +2,4 @@
 
 set -eo pipefail
 
-make app
+make app-all

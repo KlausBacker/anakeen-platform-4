@@ -1,3 +1,0 @@
-#!/bin/bash
-
-php -r 'array_shift($argv); fputcsv(STDOUT, $argv);' "$@"
