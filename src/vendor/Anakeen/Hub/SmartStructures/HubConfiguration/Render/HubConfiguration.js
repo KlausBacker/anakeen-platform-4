@@ -1,4 +1,5 @@
 import "./HubConfiguration.css";
+
 require("@fonticonpicker/fonticonpicker")($);
 import "@fonticonpicker/fonticonpicker/dist/css/base/jquery.fonticonpicker.min.css";
 import "@fonticonpicker/fonticonpicker/dist/css/themes/bootstrap-theme/jquery.fonticonpicker.bootstrap.min.css";
@@ -43,5 +44,22 @@ window.dcp.document.documentController(
       convertToHex: false
     });
     $el.find(".iconPicker").on("change", () => {});
+  }
+);
+
+window.dcp.document.documentController(
+  "addEventListener",
+  "afterSave",
+  {
+    name: "passToView",
+    documentCheck: documentObject => {
+      return documentObject.renderMode === "edit";
+    }
+  },
+  function reloadInConsultation(event, currentDocumentObject) {
+    this.documentController("fetchDocument", {
+      initid: currentDocumentObject.id,
+      viewId: "!defaultConsultation"
+    });
   }
 );
