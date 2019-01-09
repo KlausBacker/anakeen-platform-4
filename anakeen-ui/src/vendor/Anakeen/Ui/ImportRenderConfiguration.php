@@ -138,7 +138,12 @@ class ImportRenderConfiguration extends ImportSmartConfiguration
             foreach ($needNodes as $needNode) {
                 $field = $needNode->getAttribute("field");
                 if ($field) {
-                    $maskData[$field]['need'] = $needNode->getAttribute("value");
+                    $needValue=$needNode->getAttribute("value");
+                    if ($needValue === "true") {
+                         $maskData[$field]['need'] = 'Y';
+                    } elseif ($needValue === "false") {
+                        $maskData[$field]['need'] = 'N';
+                    }
                 }
             }
             foreach ($maskData as $aid => $maskDatum) {

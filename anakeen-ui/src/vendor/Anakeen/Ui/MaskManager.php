@@ -260,9 +260,9 @@ class MaskManager
                     $tneed = $mdoc->getNeedeeds();
                     foreach ($tneed as $k => $v) {
                         if (isset($oas[$k])) {
-                            if ($v == "Y") {
+                            if ($v === "Y") {
                                 $oas[$k]->needed = true;
-                            } elseif ($v == "N") {
+                            } elseif ($v === "N") {
                                 $oas[$k]->needed = false;
                             }
                         }
