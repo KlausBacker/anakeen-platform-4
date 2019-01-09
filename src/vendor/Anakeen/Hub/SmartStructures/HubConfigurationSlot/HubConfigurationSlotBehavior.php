@@ -20,11 +20,7 @@ class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
 
         // Get position from field and add corresponding area in configuration
         $position = $this->getAttributeValue(HubConfigurationSlotFields::hub_slot_position);
-        if ($position == "TOP") {
-            $configuration["area"] = "header";
-        } else {
-            $configuration["area"] = "footer";
-        }
+        $configuration["area"] = $this->setPosition($position);
 
         // Slot element of the Hub are not selectable, and not selected
         $configuration["tab"]["selectable"] = false;
@@ -40,5 +36,21 @@ class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
     protected function getComponentConfiguration()
     {
         return parent::getComponentConfiguration();
+    }
+    protected function setPosition($position)
+    {
+        switch ($position) {
+            case "TOP":
+                return "header";
+                break;
+            case "CENTER":
+                return "body";
+                break;
+            case "BOTTOM":
+                return "footer";
+                break;
+            default:
+                break;
+        }
     }
 }

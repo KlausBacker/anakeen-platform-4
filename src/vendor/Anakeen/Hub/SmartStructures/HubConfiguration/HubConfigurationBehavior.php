@@ -20,6 +20,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         $configuration["tab"] = [];
         $configuration["tab"]["expanded"] = "<span>".$this->getHubConfigurationTitle()."</span>";
         $configuration["position"] = $this->getAttributeValue(HubConfigurationFields::hub_order);
+        //$DockerPosition = $this->getAttributeValue(HubConfigurationSlotFields::hub_docker_position);
 
         // Default configuration : Elements are in the body, and selectable
         $configuration["area"] = "body";

@@ -71,7 +71,7 @@ class HubAdmin
             ]
         ];
         $template = file_get_contents($page);
-        $data["CHILDFAM"] = json_encode(SEManager::getFamily("HUBCONFIGURATION")->getChildFam());
+        $data["CHILDFAM"] = json_encode(SEManager::getFamily("HUBCONFIGURATIONSLOT")->getChildFam());
         return $response->write($mustache->render($template, $data));
     }
 }

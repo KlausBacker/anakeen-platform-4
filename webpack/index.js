@@ -10,10 +10,28 @@ module.exports = () => {
         "moduleName": "hub",
         "entry": {
             "hub" : [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")],
-            "hubAdmin": [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")]
+            "hubAdmin": [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")],
+            "hubConfiguration": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/SmartStructures/HubConfiguration/Render/HubConfiguration.js")]
         },
       buildPath: PUBLIC_PATH,
-      customParts: [useVueLoader()]
+      customParts: [useVueLoader(),
+        {
+          module: {
+            rules: [
+              {
+                test: /\.(ttf|eot|woff|woff2)$/,
+                use: {
+                  loader: "file-loader",
+                  // options: {
+                  //   name: "fonts/[name].[ext]",
+                  //   publicPath: "./" // Take the directory into account
+                  // }
+                }
+              },
+            ]
+          }
+        }
+      ]
     };
     return [
       prod(conf),

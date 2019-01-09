@@ -54,11 +54,35 @@ body {
 .hub-admin-content {
   display: flex;
   flex-direction: column;
-  height: $content-height;
+  height: $content-height !important;
+  tr {
+    word-break: break-word;
+  }
+  .k-grid-consult,.k-grid-edit {
+    padding: 0.5rem 2.25rem !important;
+  }
+}
+.hub-admin-splitter {
+  height: $content-height !important;
 }
 
 .hub-modal {
-  height: 100% !important;
-  width: 100% !important;
+  height: 100%;
+  width: 100%;
   visibility: visible !important;
+}
+
+.hub-config-list {
+  width: 200px !important;
+  .k-select::before {
+    height: 100%;
+    width: 1px;
+    background: rgba(255,255, 255, 0.7);
+    content: " ";
+    margin-right: .5rem;
+  }
+  .k-dropdown-wrap {
+    color: white;
+    background-color: #157EFB;
+  }
 }

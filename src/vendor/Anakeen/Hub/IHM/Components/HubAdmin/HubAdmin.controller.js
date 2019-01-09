@@ -3,29 +3,39 @@ import { AnkSEGrid } from "@anakeen/ank-components";
 import { AnkLogout } from "@anakeen/ank-components";
 import { AnkIdentity } from "@anakeen/ank-components";
 import { AnkSmartElement } from "@anakeen/ank-components";
-import VModal from "vue-js-modal";
+import Splitter from "../Splitter/Splitter.vue";
 
-const grid = AnkSEGrid;
-const identity = AnkIdentity;
-const logout = AnkLogout;
-const smartElem = AnkSmartElement;
-
-Vue.use(VModal);
+Vue.use(Splitter);
 
 export default {
   name: "ank-hub-admin",
   components: {
-    grid,
-    identity,
-    logout,
-    smartElem
+    grid: AnkSEGrid,
+    identity: AnkIdentity,
+    logout: AnkLogout,
+    smartElem: AnkSmartElement,
+    "ank-splitter": Splitter
   },
   data() {
     return {
       // eslint-disable-next-line no-undef
       childFam: window.ankChildFam,
       collection: "",
-      hubConfig: []
+      hubConfig: [],
+      panes: [
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: "50%"
+        },
+        {
+          scrollable: false,
+          collapsible: true,
+          resizable: true,
+          size: "50%"
+        }
+      ]
     };
   },
   mounted() {
@@ -39,7 +49,7 @@ export default {
       const options = this.$refs.hubGrid.kendoGrid.getOptions();
       options.toolbar.push({
         name: "Create",
-        template: "<select class='hub-config-list' style='width:20%;'/>"
+        template: "<select class='hub-config-list'/>"
       });
       this.$refs.hubGrid.kendoGrid.setOptions(options);
       this.$(".hub-config-list").kendoDropDownList({
@@ -53,25 +63,66 @@ export default {
       });
     },
     selectConfig(e) {
-      this.$modal.show("hubConfigModal");
-      this.collection = e.sender.value();
-    },
-    openedModal() {
-      if (this.$refs.smartConfig.isLoaded()) {
-        this.createConfig(this.collection);
-      } else {
-        this.$refs.smartConfig.$once("documentLoaded", () => {
+      this.collection = e.dataItem.value;
+      this.$refs.hubAdminSplitter.disableEmptyContent();
+      this.$nextTick(() => {
+        if (this.$refs.smartConfig.isLoaded()) {
           this.createConfig(this.collection);
-        });
-      }
+        } else {
+          this.$refs.smartConfig.$once("documentLoaded", () => {
+            this.createConfig(this.collection);
+          });
+        }
+      });
     },
     createConfig(e) {
+      this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$refs.smartConfig.fetchSmartElement({
         initid: e,
         viewId: "!defaultCreation"
       });
-      this.$refs.smartConfig.addEventListener("beforeSave", () => {
-        this.$modal.hide("hubConfigModal");
+    },
+    openConfig(e) {
+      this.$refs.smartConfig.fetchSmartElement({
+        initid: e,
+        viewId: "!defaultConsultation"
+      });
+    },
+    modifyConfig(e) {
+      this.$refs.smartConfig.fetchSmartElement({
+        initid: e,
+        viewId: "!defaultEdition"
+      });
+    },
+    actionClick(e) {
+      e.preventDefault();
+      this.$refs.hubAdminSplitter.disableEmptyContent();
+      this.$nextTick(() => {
+        if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
+          switch (e.data.type) {
+            case "consult":
+              this.openConfig(e.data.row.id);
+              break;
+            case "edit":
+              this.modifyConfig(e.data.row.id);
+              break;
+            default:
+              break;
+          }
+        } else {
+          this.$refs.smartConfig.$once("documentLoaded", () => {
+            switch (e.data.type) {
+              case "consult":
+                this.openConfig(e.data.row.id);
+                break;
+              case "edit":
+                this.modifyConfig(e.data.row.id);
+                break;
+              default:
+                break;
+            }
+          });
+        }
       });
     }
   }
