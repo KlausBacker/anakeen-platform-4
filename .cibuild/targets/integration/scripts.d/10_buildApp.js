@@ -19,7 +19,7 @@ return produceApp({
         args: ["stubs"],
         path: "./stubs/"
       },
-      stability: "dev",
+      stability: "beta",
       src: true
     },
     {
@@ -31,7 +31,7 @@ return produceApp({
         infoXML: "./Tests",
         src: "./Tests/src/"
       },
-      stability: "dev",
+      stability: "beta",
       src: true
     }
   ],
