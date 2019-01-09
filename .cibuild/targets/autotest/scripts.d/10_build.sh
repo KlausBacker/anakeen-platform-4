@@ -4,7 +4,8 @@ set -eo pipefail
 
 npm config set @anakeen:registry http://npm.corp.anakeen.com:4873
 
-make autotest
+make clean
+make app-all-autotest
 
 mv -v *.app /var/www/html/repo
 
