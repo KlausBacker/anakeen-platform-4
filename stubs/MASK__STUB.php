@@ -10,10 +10,10 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Mask extends BASE
+    class Mask extends Base
     {
         /**
-        * Informtation
+        * Information
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
