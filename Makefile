@@ -142,11 +142,11 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ########################################################################################################################
 deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH} -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 deploy-test: install-deps buildJS-test
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${TEST_SRC_PATH} -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 deploy-all: deploy deploy-test
 
@@ -157,7 +157,7 @@ deploy-all: deploy deploy-test
 ########################################################################################################################
 
 clean: ## clean the local pub
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
+	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
 	rm -f *.app
 	rm -f *.src
 	make -f pojs.make clean

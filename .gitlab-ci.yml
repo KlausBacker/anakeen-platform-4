@@ -22,15 +22,14 @@ autotest:
     expire_in: 1 week
     when: always
   only:
-    - branches
-    - tags
+    - merge_requests
 
 integration:
   stage: integration
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target integration
+    - ./.cibuild/cibuild.sh --target integration --publish --no-tag --bucket integration
   artifacts:
     paths:
       - outputs/
