@@ -19,6 +19,7 @@ return produceApp({
         args: ["stubs"],
         path: "./stubs/"
       },
+      stability: "dev",
       src: true
     },
     {
@@ -30,6 +31,7 @@ return produceApp({
         infoXML: "./Tests",
         src: "./Tests/src/"
       },
+      stability: "dev",
       src: true
     }
   ],
@@ -39,5 +41,6 @@ return produceApp({
     console.log("OK");
   })
   .catch(err => {
-    throw new Error(err);
+    console.error(err);
+    process.exit(42);
   });
