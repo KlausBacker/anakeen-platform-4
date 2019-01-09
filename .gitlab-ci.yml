@@ -36,7 +36,7 @@ integration:
     expire_in: 1 week
     when: always
   only:
-    - master@Anakeen/Platform-4/anakeen-hub
+    - master@Anakeen/Platform-4/Modules/anakeen-hub
     - web
 
 package:
@@ -46,4 +46,4 @@ package:
   script:
     - ./.cibuild/cibuild.sh --target package
   only:
-    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-hub
+    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/Modules/anakeen-hub
