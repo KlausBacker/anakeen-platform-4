@@ -42,75 +42,113 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 
 ########################################################################################################################
 ##
-## devtools
+## Deps
 ##
 ########################################################################################################################
 
-
-$(JS_CONF_PATH)/node_modules:
-	$(YARN_BIN) install
-
-$(JS_CONF_PATH)/yarn.lock: $(JS_CONF_PATH)/package.json
-	$(YARN_BIN) install
-	touch "$@"
-
-$(PHP_LIB_PATH)/composer.lock: $(PHP_LIB_PATH)/composer.json
+install-deps:
 	cd anakeen-ui/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; $(COMPOSER_BIN) install
-
-install: $(JS_CONF_PATH)/yarn.lock $(PHP_LIB_PATH)/composer.lock ## Install deps (js and php)
-
-stub: ## Generate stubs
-	${ANAKEEN_CLI_BIN} generateStubs -s anakeen-ui
+	$(YARN_BIN) install
 
 ########################################################################################################################
 ##
-## BUILD TARGET
+## Static analyze
 ##
 ########################################################################################################################
 
-$(JS_ASSET_PATH): $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/assets.js
+checkXML: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} check -s ${ANAKEEN_UI_SRC_PATH}
+	${ANAKEEN_CLI_BIN} check -s ${TEST_SRC_PATH}
+
+lint: checkXML
+	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${MK_DIR}/anakeen-ui
+
+beautify:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${MK_DIR}/anakeen-ui
+
+########################################################################################################################
+##
+## Po and stub
+##
+########################################################################################################################
+po: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} extractPo --sourcePath ${ANAKEEN_UI_SRC_PATH}
+
+stub: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} generateStubs -s ${ANAKEEN_UI_SRC_PATH}
+
+########################################################################################################################
+##
+## BUILD JS
+##
+########################################################################################################################
+
+buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildAsset
-	touch "$@"
-
-$(JS_DDUI_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_DDUI_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/smartElement.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"
 	make -f pojs.make compile
 	$(YARN_BIN) buildSmartElement
-	touch "$@"
-
-$(JS_COMPONENT_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_COMPONENT_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/components.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildComponent
-	touch "$@"
-
-$(JS_FAMILY_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_FAMILY_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(WEBPACK_CONF_PATH)/smartStructures.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildSmartStructures
-	touch "$@"
-
-$(JS_POLYFILL_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/polyfill.js
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build polyfill $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildPolyfill
-	touch "$@"
 
-
-compilation: $(JS_CONF_PATH)/node_modules $(JS_ASSET_PATH) $(JS_POLYFILL_BUILD_PATH) $(JS_COMPONENT_BUILD_PATH) $(JS_DDUI_BUILD_PATH) $(JS_FAMILY_BUILD_PATH)
-
-app: compilation
+buildJS-test: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --sourcePath ./anakeen-ui
+	make -f pojs.make compile
+	$(YARN_BIN) buildTest
 
-autotest: compilation
-	rm -f *app
-	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./anakeen-ui
-	${ANAKEEN_CLI_BIN} build --auto-release --sourcePath ./Tests
+########################################################################################################################
+##
+## Build
+##
+########################################################################################################################
+app: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build -s ${ANAKEEN_UI_SRC_PATH}
 
-deploy: compilation ## deploy the project
-	rm -f user-interfaces-1*app
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./anakeen-ui -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
-	make clean
+app-test: install-deps buildJS-test
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build -s ${TEST_SRC_PATH}
+
+app-all: app app-test
+
+app-autorelease: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build -s ${ANAKEEN_UI_SRC_PATH} --auto-release
+
+app-test-autorelease: install-deps buildJS-test
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test autotrelease${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build -s ${TEST_SRC_PATH} --auto-release
+
+app-all-autorelease: app-autorelease app-test-autorelease
+
+########################################################################################################################
+##
+## Deploy
+##
+########################################################################################################################
+deploy: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
+deploy-test: install-deps buildJS-test
+	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
+deploy-all: deploy deploy-test
 
 ########################################################################################################################
 ##
@@ -120,85 +158,23 @@ deploy: compilation ## deploy the project
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -f *app
+	rm -f *.app
+	rm -f *.src
 	make -f pojs.make clean
 
-cleanAll: clean ## clean the local pub and the node_module
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -rf $(NODE_MODULE_PATH)
-	touch $(JS_CONF_PATH)/package.json
-
 ########################################################################################################################
 ##
-## PO TARGET
+## publishNpm
 ##
 ########################################################################################################################
-
-po:
-	${ANAKEEN_CLI_BIN} extractPo --sourcePath ./anakeen-ui
-
-########################################################################################################################
-##
-## TEST TARGET
-##
-########################################################################################################################
-
-$(JS_TEST_BUILD_PATH): $(JS_CONF_PATH)/yarn.lock $(shell find ${JS_TEST_SOURCE_PATH} -type f -print | sed 's/ /\\ /g') $(JS_CONF_PATH)/yarn.lock $(WEBPACK_CONF_PATH)/test.js
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	make -f pojs.make compile
-	$(YARN_BIN) buildTest
-	touch "$@"
-
-compilation-test: $(JS_CONF_PATH)/node_modules $(TEST_SRC_PATH) $(JS_TEST_BUILD_PATH)
-
-app-test: compilation-test ## Build the test package
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -f user-interfaces*test*app
-	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests
-
-deploy-test: compilation-test ## Deploy the test package
-	rm -f user-interfaces-test*app
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
-
-########################################################################################################################
-##
-## Node
-##
-########################################################################################################################
-
-autorelease:
-	@${PRINT_COLOR} "${DEBUG_COLOR}autorelease $@${RESET_COLOR}\n"
-	npm version $(shell cat "VERSION")-$(shell date +%s)
-
-nodePublish:
-	@${PRINT_COLOR} "${DEBUG_COLOR}nodePublish $@${RESET_COLOR}\n"
+publishNpm:
+	@${PRINT_COLOR} "${DEBUG_COLOR}publishNpm $@${RESET_COLOR}\n"
 	npm publish
 
-autoPublish:
-	@${PRINT_COLOR} "${DEBUG_COLOR}$@${RESET_COLOR}\n"
+publishNpm-autorelease:
+	@${PRINT_COLOR} "${DEBUG_COLOR}publishNpm autorelease $@${RESET_COLOR}\n"
 	npm version $(VERSION)-$(shell find . -type f -print0 | xargs -0 stat --format '%Y' | sort -nr | cut -d: -f2- | head -1)
 	npm publish || echo "Already published"
-
-########################################################################################################################
-##
-## lint and beautify
-##
-########################################################################################################################
-
-beautify:
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${MK_DIR}/anakeen-ui
-
-lint:
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${MK_DIR}/anakeen-ui
-
-checkXML: node_modules
-	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}/anakeen-ui
-	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}/Tests
 
 ########################################################################################################################
 ##
