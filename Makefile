@@ -63,13 +63,13 @@ checkXML: install-deps
 
 lint: checkXML
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${MK_DIR}/anakeen-ui
 
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${MK_DIR}/anakeen-ui
 
