@@ -29,14 +29,14 @@ integration:
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target integration
+    - ./.cibuild/cibuild.sh --target integration --publish --no-tag --bucket integration
   artifacts:
     paths:
       - outputs/
     expire_in: 1 week
     when: always
   only:
-    - master@Anakeen/Platform-4/anakeen-hub --publish --no-tag --bucket integration
+    - master@Anakeen/Platform-4/anakeen-hub
     - web
 
 package:
