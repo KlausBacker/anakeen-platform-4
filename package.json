@@ -14,5 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@anakeen/anakeen-cli": "^1.0.1-1543416556"
+  },
+  "devDependencies": {
+    "@anakeen/anakeen-ci": "^1.0.0-first3"
   }
 }
