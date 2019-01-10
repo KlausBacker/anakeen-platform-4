@@ -103,6 +103,9 @@ class AlterParameter
         $paramType = $output[0]['kind'];
 
         switch ($paramType) {
+            case "password":
+                return is_string($newValue);
+                break;
             case "text":
                 return is_string($newValue);
                 break;
