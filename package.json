@@ -20,8 +20,8 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first4",
-    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/anakeen-ci": "^1.0.0-first6",
+    "@anakeen/anakeen-cli": "1.0.1-1547202545",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-ui": "^2018.2.806",
