@@ -2,18 +2,18 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-ci@^1.0.0-first4":
-  version "1.0.0-first4"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.0-first4.tgz#086c371ef88b4b3f502b3636fd71b08ab0e0afa2"
-  integrity sha512-a8WqHW8HpBRcBg6nlVUOUXJRzPNC6tjTr8yf1YAuSbE2C/KQTQGFjsilfCbZ7lPsz1T257celff1QVXhNnaqCA==
+"@anakeen/anakeen-ci@^1.0.0-first6":
+  version "1.0.0-first6"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.0-first6.tgz#e910c25b2b30c51aa25e5d88e9c4d85dc7c9cabd"
+  integrity sha512-iHIjm1sZv2DV9CuXorSav1cu4CGclvwVeuh+5LSacOekSsonjPDqWzWz6LbGr9vRWav1ZOuFA5bCJk3u28RDpg==
   dependencies:
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@latest":
-  version "1.0.1-1544839770"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1544839770.tgz#eac11f84658fb8d69d6110e8d5be7cf4bbbfa19f"
-  integrity sha512-klIDzqgvExGxffGWu8cMHrd+1Fs4bZ6HhmHztFKArR/koCQ45ekvXlgCUIqybKzecboHODeDQ0XOjxvwfxAbGQ==
+"@anakeen/anakeen-cli@1.0.1-1547202545":
+  version "1.0.1-1547202545"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1547202545.tgz#3d0102bf78247dd66a3c71882f6281cd23789a3c"
+  integrity sha512-qRfVYGgQT6koqaxoAdvdzrBKW2rxpk9B9Vh+Todkpyb22W6MDl7Rd09TvipSioagWJSEUHEme2gBsIVbWxNhiQ==
   dependencies:
     "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
