@@ -10,8 +10,8 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {},
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first5",
-    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/anakeen-ci": "^1.0.0-first6",
+    "@anakeen/anakeen-cli": "1.0.1-1547202545",
     "prettier": "^1.15.3"
   },
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/smart-data-engine.git",
