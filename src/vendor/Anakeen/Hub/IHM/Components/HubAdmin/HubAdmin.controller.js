@@ -99,6 +99,16 @@ export default {
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
         if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
+          this.$refs.smartConfig.addEventListener("afterSave", () => {
+            if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+              this.$refs.hubGrid.kendoGrid.dataSource.read();
+            }
+          });
+          this.$refs.smartConfig.addEventListener("afterDelete", () => {
+            if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+              this.$refs.hubGrid.kendoGrid.dataSource.read();
+            }
+          });
           switch (e.data.type) {
             case "consult":
               this.openConfig(e.data.row.id);
@@ -111,6 +121,16 @@ export default {
           }
         } else {
           this.$refs.smartConfig.$once("documentLoaded", () => {
+            this.$refs.smartConfig.addEventListener("afterSave", () => {
+              if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+                this.$refs.hubGrid.kendoGrid.dataSource.read();
+              }
+            });
+            this.$refs.smartConfig.addEventListener("afterDelete", () => {
+              if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+                this.$refs.hubGrid.kendoGrid.dataSource.read();
+              }
+            });
             switch (e.data.type) {
               case "consult":
                 this.openConfig(e.data.row.id);
@@ -127,3 +147,4 @@ export default {
     }
   }
 };
+
