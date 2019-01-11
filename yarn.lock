@@ -2,20 +2,20 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-ci@^1.0.0-first3":
-  version "1.0.0-first3"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.0-first3.tgz#c18ddac5a43e9f3f2fa21f4b26675261cc26d9f2"
-  integrity sha512-Irn0G43FyHBicRfYIU+N4XoBOakBOVpWLaZZcknAbSnaPu4sfBIQtcTkHTtKGMIkEE/6vBL1542gK1m0XDC3ug==
+"@anakeen/anakeen-ci@^1.0.0-first6":
+  version "1.0.0-first6"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.0-first6.tgz#e910c25b2b30c51aa25e5d88e9c4d85dc7c9cabd"
+  integrity sha512-iHIjm1sZv2DV9CuXorSav1cu4CGclvwVeuh+5LSacOekSsonjPDqWzWz6LbGr9vRWav1ZOuFA5bCJk3u28RDpg==
   dependencies:
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@^1.0.1-1543416556":
-  version "1.0.1-1543416556"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1543416556.tgz#b60bd816c2e529886a61669dc90e090ae9216cae"
-  integrity sha512-orkHfJmIGd1XRVdiQP4SVKPtfirlfASeFZLJIj5geIj2aIN2SxYSh6Cn2d2B5T6/Oy/6+WiHUZcBHCqA9g/04Q==
+"@anakeen/anakeen-cli@^1.0.1-1547202545":
+  version "1.0.1-1547202545"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1547202545.tgz#3d0102bf78247dd66a3c71882f6281cd23789a3c"
+  integrity sha512-qRfVYGgQT6koqaxoAdvdzrBKW2rxpk9B9Vh+Todkpyb22W6MDl7Rd09TvipSioagWJSEUHEme2gBsIVbWxNhiQ==
   dependencies:
-    "@anakeen/anakeen-module-validation" "1.0.0-1543415654"
+    "@anakeen/anakeen-module-validation" latest
     form-data "^2.3.3"
     glob "^7.1.3"
     gulp "^4.0.0"
@@ -35,10 +35,10 @@
     xml2js "^0.4.19"
     yargs "^12.0.5"
 
-"@anakeen/anakeen-module-validation@1.0.0-1543415654":
-  version "1.0.0-1543415654"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.0-1543415654.tgz#4af5286b3d9da907e28cb17d3147f5fb0e870892"
-  integrity sha512-l9wwYXYmoj9raQkii6PVwphmPLVyJFRF/ZaT8JbOtbEziocTghrSLOh9JgiqEjUtCWnhUO6pWrhgrVVlQqDw+g==
+"@anakeen/anakeen-module-validation@latest":
+  version "1.0.3"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.3.tgz#8f7b4f0e1e4b802ea4390c1e5fe01aeef3cdb535"
+  integrity sha512-SmJEl9v7lm1x0dawHP7tWAk6iiL7V8/qw/YDltdhXt/3P+8Kr5BozXdC6f6xgO0beOxfuk0a2DcBa/3QisYvJw==
   dependencies:
     libxmljs "^0.19.5"
 
