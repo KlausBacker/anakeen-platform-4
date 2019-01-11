@@ -17,10 +17,12 @@ const buildPipe = (exports.buildPipe = async ({
   let release = moduleInfo.moduleInfo.release;
   if (autoRelease) {
     let dNow = new Date();
-    release += dNow
-      .toISOString()
-      .replace(/[^0-9]/g, "")
-      .substr(0, 14);
+    release +=
+      "dev" +
+      dNow
+        .toISOString()
+        .replace(/[^0-9]/g, "")
+        .substr(0, 14);
   }
   let moduleFileName = `${moduleInfo.moduleInfo.name}-${
     moduleInfo.moduleInfo.version
