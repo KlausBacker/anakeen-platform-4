@@ -2,6 +2,7 @@
 
 namespace Anakeen\Hub\SmartStructures\HubConfiguration\Render;
 
+use Dcp\Ui\CommonRenderOptions;
 use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
 use Dcp\Ui\UIGetAssetPath;
@@ -16,8 +17,19 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $break2 = "33%";
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinLimit(1);
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setCollapse("none");
+        $options->arrayAttribute(HubConfigurationFields::hub_roles)->setCollapse("none");
+        $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
         $options->text(HubConfigurationFields::hub_title)->setMaxLength(50);
         $options->text(HubConfigurationFields::hub_language)->setMaxLength(15);
+        $options->frame(HubConfigurationFields::hub_security_frame)->setLabelPosition(CommonRenderOptions::nonePosition);
+        $options->htmltext(HubConfigurationFields::hub_icon_text)->setToolbar("Full");
+        $options->image(HubConfigurationFields::hub_icon_image)->setThumbnailSize(14);
+        $options->frame(HubConfigurationFields::hub_activated_frame)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => $break2, "grow" => false],
+                ["number" => 3, "minWidth" => $break2, "grow" => false]
+            ]
+        );
         $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break2, "grow" => false],
@@ -30,15 +42,6 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
                 ["number" => 3, "minWidth" => $break2, "grow" => false]
             ]
         );
-        $tpl = <<< HTML
-        <select class="iconPicker" name="iconPicker">
-    <option>circle</option>
-    <option>plus</option>
-    <option>heart</option>
-    <option>minus</option>
-</select>
-HTML;
-        $options->htmltext(HubConfigurationFields::hub_icon)->setTemplate($tpl);
         return $options;
     }
 

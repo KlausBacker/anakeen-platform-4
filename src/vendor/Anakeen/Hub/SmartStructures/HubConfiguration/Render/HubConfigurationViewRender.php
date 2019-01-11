@@ -23,6 +23,8 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
         $break3 = "50%";
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinLimit(1);
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setCollapse("none");
+        $options->arrayAttribute(HubConfigurationFields::hub_roles)->setCollapse("none");
+        $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
         $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(
             [
                 ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
@@ -35,11 +37,12 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
                 ["number" => 3, "minWidth" => $break2, "grow" => false]
             ]
         );
-//        $options->frame(HubConfigurationFields::hub_config)->setResponsiveColumns(
-//            [
-//                ["number" => 2, "minWidth" => $break2, "grow" => false]
-//            ]
-//        );
+        $options->frame(HubConfigurationFields::hub_activated_frame)->setResponsiveColumns(
+            [
+                ["number" => 2, "minWidth" => $break2, "grow" => false],
+                ["number" => 3, "minWidth" => $break2, "grow" => false]
+            ]
+        );
         return $options;
     }
 

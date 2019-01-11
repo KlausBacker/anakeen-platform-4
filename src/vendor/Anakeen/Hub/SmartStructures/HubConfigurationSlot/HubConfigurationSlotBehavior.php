@@ -19,7 +19,7 @@ class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
         $configuration["tab"]["expanded"] = "<span>".$this->getHubConfigurationTitle()."</span>";
 
         // Get position from field and add corresponding area in configuration
-        $position = $this->getAttributeValue(HubConfigurationSlotFields::hub_slot_position);
+        $position = $this->getAttributeValue(HubConfigurationSlotFields::hub_docker_position);
         $configuration["area"] = $this->setPosition($position);
 
         // Slot element of the Hub are not selectable, and not selected
