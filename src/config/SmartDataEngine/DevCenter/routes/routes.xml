@@ -2,7 +2,7 @@
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes namespace="DevelopmentCenter">
         <sde:route name="getAllRoutes">
-            <sde:callable>\Anakeen\Routes\Devel\Routes\Routes</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\Routes\Routes</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/routes/all/[{name}]</sde:pattern>
             <sde:description>Get All Routes</sde:description>
@@ -11,7 +11,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="getAllMiddlewares">
-            <sde:callable>\Anakeen\Routes\Devel\Routes\Middlewares</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\Routes\Middlewares</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/routes/middlewares/[{name}]</sde:pattern>
             <sde:description>Get All Middlewares</sde:description>
