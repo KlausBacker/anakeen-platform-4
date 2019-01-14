@@ -20,8 +20,9 @@
         <xs:attribute type="ac:referenceType" name="ref" use="required">
             <xs:annotation>
                 <xs:documentation>
-                    <h1>User login identifier </h1>
-                    <b>Uppercase letters are not allowed</b></xs:documentation>
+                    <h1>User login identifier</h1>
+                    <b>Uppercase letters are not allowed</b>
+                </xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -125,12 +126,13 @@
                     <xs:documentation>User first name</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:string" name="lastname">
+            <xs:element type="ac:notEmptyString" name="lastname">
                 <xs:annotation>
                     <xs:documentation>User last name</xs:documentation>
                 </xs:annotation>
+
             </xs:element>
-            <xs:element type="xs:string" name="mail" minOccurs="0">
+            <xs:element type="ac:emailAddress" name="mail" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>User mail address</xs:documentation>
                 </xs:annotation>
@@ -167,7 +169,7 @@
 
     <xs:complexType name="groupType">
         <xs:sequence>
-            <xs:element name="displayName" type="xs:string"/>
+            <xs:element name="displayName" type="ac:notEmptyString"/>
             <xs:element type="ac:rolesRefType" name="associatedRoles" minOccurs="0"/>
             <xs:element type="ac:groupsRefType" name="parentGroups" minOccurs="0"/>
             <xs:element type="ac:structureType" name="structure" minOccurs="0"/>
@@ -196,7 +198,7 @@
             <xs:documentation>Role definition to be referenced by group or user</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element type="xs:string" name="displayName" minOccurs="0"/>
+            <xs:element type="ac:notEmptyString" name="displayName" minOccurs="0"/>
             <xs:element type="ac:structureType" name="structure" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="ac:referenceType" name="name" use="required"/>
@@ -212,11 +214,12 @@
                 <xs:documentation>
                     <h1>Reference to smart structure to use when create account.</h1>
                     <p>By default use :
-                    <ul>
-                        <li>ROLE : for roles</li>
-                        <li>IGROUP : for groups</li>
-                        <li>IUSER : for users</li>
-                    </ul></p>
+                        <ul>
+                            <li>ROLE : for roles</li>
+                            <li>IGROUP : for groups</li>
+                            <li>IUSER : for users</li>
+                        </ul>
+                    </p>
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
@@ -233,7 +236,7 @@
         <xs:annotation>
             <xs:documentation>
                 Unique reference for an account
-            <b>Uppercase letters are not allowed</b>
+                <b>Uppercase letters are not allowed</b>
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:normalizedString">
@@ -241,6 +244,14 @@
             <xs:pattern value="[\p{Ll} \p{P}\p{N}\p{S}]+"/>
         </xs:restriction>
     </xs:simpleType>
-
-
+    <xs:simpleType name="emailAddress">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[^@]+@[^.]+\..+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="notEmptyString">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
