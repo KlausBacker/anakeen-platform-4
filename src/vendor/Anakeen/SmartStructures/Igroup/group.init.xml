@@ -18,13 +18,13 @@
     <accounts:users>
         <!-- update accounts to affect logical name -->
         <accounts:user login="admin">
-            <accounts:lastname>Master</accounts:lastname>
             <accounts:firstname>Anakeen Platform</accounts:firstname>
+            <accounts:lastname>Master</accounts:lastname>
             <accounts:structure name="USER_ADMIN"/>
         </accounts:user>
         <accounts:user login="anonymous">
-            <accounts:lastname>Anonymous</accounts:lastname>
             <accounts:firstname>Guest</accounts:firstname>
+            <accounts:lastname>Anonymous</accounts:lastname>
             <accounts:structure name="USER_GUEST"/>
         </accounts:user>
     </accounts:users>

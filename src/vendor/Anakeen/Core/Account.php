@@ -285,7 +285,9 @@ create sequence seq_id_users start 10;";
         if ($this->accounttype === self::USER_TYPE && !$this->status) {
             $this->status = "A";
         }
-        $this->login = mb_strtolower($this->login);
+        if (!$this->lastname && !$this->firstname) {
+            $this->lastname = $this->login;
+        }
 
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);

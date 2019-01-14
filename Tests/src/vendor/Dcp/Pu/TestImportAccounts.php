@@ -300,7 +300,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
                     array(
                         "login" => "jedi master",
                         "expectValues" => array(
-                            "lastname" => "",
+                            "lastname" => "jedi master",
                             "mail" => "",
                             "password" => "-"
                         ),
@@ -388,6 +388,18 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
                         )
                     ),
                     // ============= USERS ===========
+
+                    array(
+                        "login" => "yoda",
+                        "expectValues" => array(
+                            "lastname" => "yoda",
+                            "mail" => "",
+                            "status" => "A",
+                            "password" => "-"
+                        ),
+                        "expectedRoles" => array(),
+                        "expectedGroups" => array()
+                    ),
                     array(
                         "login" => "chewie",
                         "expectValues" => array(

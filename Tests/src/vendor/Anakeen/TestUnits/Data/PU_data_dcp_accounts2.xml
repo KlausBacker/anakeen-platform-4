@@ -23,14 +23,12 @@
             <accounts:structure name="TST_GRP_ROOFSUPERVISOR"/>
         </accounts:group>
 
-
         <accounts:group name="levelsupervisor">
             <accounts:displayName>Sécurité de l'étage</accounts:displayName>
             <accounts:parentGroups>
                 <accounts:parentGroup ref="topsupervisor"/>
             </accounts:parentGroups>
         </accounts:group>
-
 
         <accounts:group name="supervisor bottom">
             <accounts:displayName>Sécurité du bas</accounts:displayName>
@@ -42,6 +40,7 @@
     </accounts:groups>
 
     <accounts:users>
+        <accounts:user login="yoda"/>
         <accounts:user login="chewie">
             <accounts:lastname>Chewbacca</accounts:lastname>
             <accounts:mail>chewie@starwars.com</accounts:mail>
