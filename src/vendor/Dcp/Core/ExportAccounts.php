@@ -49,6 +49,7 @@ class ExportAccounts
 
     const ABORTORDER = "::ABORT::";
     const XSDDIR = "XSD";
+    const NSURI = "https://platform.anakeen.com/4/schemas/account/1.0";
     protected $exportGroupParent = false;
     protected $exportRoleParent = false;
     protected $exportDocument = false;
@@ -234,7 +235,8 @@ class ExportAccounts
                 // Get tree group information
                 $sql
                     = sprintf(
-                        "select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'",
+                        "select groups.iduser as groupid, groups.idgroup as parentid, users.login as grouplogin " .
+                        "from groups, users where groups.iduser in (%s) and groups.iduser=users.id and users.accounttype='G'",
                         implode(
                             array_map(
                                 function ($s) {
@@ -383,7 +385,7 @@ class ExportAccounts
     /**
      * Add document node for each recorded account
      *
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     protected function addDocumentNodes()
     {

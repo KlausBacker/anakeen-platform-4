@@ -291,6 +291,180 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
                         "password" => "Falcon Millenium"
                     )
                 )
+            ),
+
+            array(
+                "file" => "PU_data_dcp_accounts2.xml",
+                array(
+                    // ============= ROLES ===========
+                    array(
+                        "login" => "jedi master",
+                        "expectValues" => array(
+                            "lastname" => "",
+                            "mail" => "",
+                            "password" => "-"
+                        ),
+                        "expectedRoles" => array(),
+                        "expectedGroups" => array()
+                    ),
+                    array(
+                        "login" => "fat force",
+                        "expectValues" => array(
+                            "lastname" => "Grosse force",
+                            "mail" => "",
+                            "password" => "-"
+                        ),
+                        "docName" => "TST_FORCE1",
+                        "expectedRoles" => array(),
+                        "expectedGroups" => array()
+                    ),
+                    array(
+                        "login" => "big force",
+                        "expectValues" => array(
+                            "lastname" => "Grande force",
+                            "mail" => "",
+                            "password" => "-"
+                        ),
+                        "docName" => "TST_FORCE2",
+                        "expectedDocValue" => array(
+                            "role_login" => "big force",
+                            "role_name" => "Grande force"
+                        ),
+                        "expectedRoles" => array(),
+                        "expectedGroups" => array()
+                    ),
+                    // ============= GROUPS ===========
+                    array(
+                        "login" => "topsupervisor",
+                        "expectValues" => array(
+                            "lastname" => "Sécurité du toit",
+                            "mail" => "",
+                            "password" => "-"
+                        ),
+                        "docName" => "TST_GRP_ROOFSUPERVISOR",
+                        "expectedDocValue" => array(
+                            "us_login" => "topsupervisor",
+                            "grp_name" => "Sécurité du toit"
+                        ),
+                        "expectedRoles" => array(
+                            "fat force"
+                        ),
+                        "expectedGroups" => array()
+                    ),
+                    array(
+                        "login" => "levelsupervisor",
+                        "expectValues" => array(
+                            "lastname" => "Sécurité de l'étage",
+                            "mail" => "",
+                            "password" => "-"
+                        ),
+                        "expectedDocValue" => array(
+                            "us_login" => "levelsupervisor",
+                            "grp_name" => "Sécurité de l'étage"
+                        ),
+                        "expectedRoles" => array(
+                            "fat force"
+                        ),
+                        "expectedGroups" => array(
+                            "topsupervisor"
+                        )
+                    ),
+                    array(
+                        "login" => "supervisor bottom",
+                        "expectValues" => array(
+                            "lastname" => "Sécurité du bas",
+                            "mail" => "",
+                            "password" => "-"
+                        ),
+                        "expectedDocValue" => array(
+                            "us_login" => "supervisor bottom",
+                            "grp_name" => "Sécurité du bas"
+                        ),
+                        "expectedRoles" => array(
+                            "fat force"
+                        ),
+                        "expectedGroups" => array(
+                            "levelsupervisor"
+                        )
+                    ),
+                    // ============= USERS ===========
+                    array(
+                        "login" => "chewie",
+                        "expectValues" => array(
+                            "lastname" => "Chewbacca",
+                            "mail" => "chewie@starwars.com",
+                            "status" => "A",
+                            "password" => "-"
+                        ),
+                        "expectedRoles" => array(),
+                        "expectedGroups" => array()
+                    ),
+
+                    array(
+                        "login" => "luke",
+                        "expectValues" => array(
+                            "firstname" => "Luke",
+                            "lastname" => "Skywalker",
+                            "mail" => "luke@starwars.com",
+                            "status" => "A"
+                        ),
+                        "docName" => "TST_AGENT_L",
+                        "expectedDocValue" => array(
+                            "us_group" => '{"Sécurité de l\'étage"}'
+                        ),
+                        "expectedRoles" => array(
+                            "big force",
+                            "fat force"
+                        ),
+                        "expectedGroups" => array(
+                            "levelsupervisor"
+                        ),
+                        "password" => "May the force be with you"
+                    ),
+
+                    array(
+                        "login" => "leia",
+                        "expectValues" => array(
+                            "firstname" => "Leia",
+                            "lastname" => "Skywalker",
+                            "mail" => "leia@starwars.com",
+                            "status" => "A"
+                        ),
+                        "expectedDocValue" => array(
+                            "us_group" => '{"Sécurité de l\'étage"}'
+                        ),
+                        "expectedRoles" => array(
+                            "big force",
+                            "fat force"
+                        ),
+                        "expectedGroups" => array(
+                            "levelsupervisor"
+                        ),
+                        "password" => "May the force be with you"
+                    ),
+
+                    array(
+                        "login" => "solo",
+                        "expectValues" => array(
+                            "firstname" => "Han",
+                            "lastname" => "Solo",
+                            "mail" => "solo@starwars.com",
+                            "status" => "D"
+                        ),
+                        "docName" => "TST_AGENT_H",
+                        "expectedDocValue" => array(
+                            "us_group" => '{"Sécurité de l\'étage","Sécurité du toit"}'
+                        ),
+                        "expectedRoles" => array(
+                            "fat force"
+                        ),
+                        "expectedGroups" => array(
+                            "levelsupervisor",
+                            "topsupervisor"
+                        ),
+                        "password" => "Falcon Millenium"
+                    )
+                )
             )
         );
     }

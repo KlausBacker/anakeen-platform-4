@@ -6,10 +6,10 @@
 
 namespace Dcp\Core;
 
+use Anakeen\Core\Account;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
-
-include_once("FDL/LegacyDocManager.php");
+use Anakeen\Core\Utils\Xml;
 
 class ImportAccounts
 {
@@ -44,6 +44,7 @@ class ImportAccounts
     const ABORTORDER = "::ABORT::";
 
     protected $sessionKey = '';
+    protected $nsPrefix;
 
     private $needSyncAccounts = false;
     /**
@@ -61,7 +62,9 @@ class ImportAccounts
         $this->xpath = new \DOMXPath($this->xml);
 
         try {
-            $this->validateShema();
+            if (!$this->hasXsdNamespace()) {
+                $this->validateShema();
+            }
             $this->workAccount = new \Anakeen\Core\Account();
 
             if ($this->transactionMode || $this->analyzeOnly) {
@@ -165,7 +168,7 @@ class ImportAccounts
         return null;
     }
 
-    protected function libxml_display_error($error)
+    protected function libxmlDisplayError($error)
     {
         $return = "";
         switch ($error->level) {
@@ -195,10 +198,23 @@ class ImportAccounts
         $errors = libxml_get_errors();
         $humanError = "";
         foreach ($errors as $error) {
-            $humanError .= $this->libxml_display_error($error);
+            $humanError .= $this->libxmlDisplayError($error);
         }
         libxml_clear_errors();
         return $humanError;
+    }
+
+    protected function hasXsdNamespace()
+    {
+        $xmlWithoutDocument = new \DOMDocument();
+
+        $xmlWithoutDocument->load($this->file);
+        $accounts = $xmlWithoutDocument->getElementsByTagNameNS(ExportAccounts::NSURI, "accounts");
+        if ($accounts->length > 0) {
+            $this->xpath->registerNamespace("ac", ExportAccounts::NSURI);
+            $this->nsPrefix = Xml::getPrefix($xmlWithoutDocument, ExportAccounts::NSURI);
+        }
+        return $accounts->length > 0;
     }
 
     /**
@@ -214,6 +230,8 @@ class ImportAccounts
 
         $xmlWithoutDocument->load($this->file);
         $xmlWithoutDocument->preserveWhiteSpace = false;
+
+
         $xpath = new \DOMXPath($xmlWithoutDocument);
         // Delete document tag childs because if not a direct part of accounts xsd
         $documents = $xpath->query("//document");
@@ -277,7 +295,7 @@ class ImportAccounts
 
     protected function importRoles()
     {
-        $roles = $this->xpath->query("/accounts/roles/role");
+        $roles = $this->xpathQuery("/accounts/roles/role");
         $count = $roles->length;
         foreach ($roles as $k => $role) {
             $this->setSessionMessage(sprintf(___("Import role (%d/%d)", "fuserimport"), $k, $count));
@@ -287,7 +305,7 @@ class ImportAccounts
 
     protected function importGroups()
     {
-        $groups = $this->xpath->query("/accounts/groups/group");
+        $groups = $this->xpathQuery("/accounts/groups/group");
         $count = $groups->length;
         foreach ($groups as $k => $group) {
             $this->setSessionMessage(sprintf(___("Import group (%d/%d)", "fuserimport"), $k, $count));
@@ -297,7 +315,7 @@ class ImportAccounts
 
     protected function importUsers()
     {
-        $users = $this->xpath->query("/accounts/users/user");
+        $users = $this->xpathQuery("/accounts/users/user");
 
         $count = $users->length;
         foreach ($users as $k => $user) {
@@ -315,23 +333,28 @@ class ImportAccounts
     {
         $values = array();
         $matchings = array(
-            "login" => "login",
-            "firstname" => "firstname",
-            "lastname" => "lastname",
-            "mail" => "mail",
-            "substitute" => "substitute",
-            "password" => "password",
-            "status" => "status"
+            "string(@login)" => "login",
+            "string(login)" => "login",
+            "string(firstname)" => "firstname",
+            "string(lastname)" => "lastname",
+            "string(mail)" => "mail",
+            "string(substitute/@ref)" => "substitute",
+            "string(substitute/@reference)" => "substitute",
+            "(password)[1]" => "password",
+            "string(status/@activated)" => "status"
         );
         foreach ($matchings as $xmlTag => $varId) {
             /**
-             * @var \DOMElement $nodeInfo
+             * @var string|\DOMNodeList $nodeInfo
              */
-            $nodeInfo = $this->xpath->query($xmlTag, $node)->item(0);
+            $nodeInfo = $this->xpathQuery($xmlTag, $node);
+            if (is_a($nodeInfo, \DOMNodeList::class) && $nodeInfo->length === 0) {
+                continue;
+            }
             if ($nodeInfo) {
                 switch ($varId) {
                     case "substitute":
-                        $substituteLogin = $nodeInfo->getAttribute("reference");
+                        $substituteLogin = $nodeInfo;
 
                         $subs = $this->getWorkingAccount();
                         $subs->setLoginName($substituteLogin);
@@ -343,7 +366,7 @@ class ImportAccounts
                         break;
 
                     case "status":
-                        $status = $nodeInfo->getAttribute("activated");
+                        $status = $nodeInfo;
                         if ($status === "true") {
                             $values[$varId] = "A";
                         } elseif ($status === "false") {
@@ -353,32 +376,42 @@ class ImportAccounts
                         break;
 
                     case "password":
-                        $crypted = $nodeInfo->getAttribute("crypted") === "true";
+                        /** @var \DOMNodeList $nodeInfo */
+                        $nodeElt=$nodeInfo->item(0);
+                        $crypted = $nodeElt->getAttribute("crypted") === "true";
                         if ($crypted) {
-                            if (substr($nodeInfo->nodeValue, 0, 3) !== '$5$') {
+                            if (substr($nodeElt->nodeValue, 0, 3) !== '$5$') {
                                 $this->addToReport($values["login"], "changePassword", "Not a SHA256 crypt", "", $nodeInfo);
                             } else {
-                                $values["password"] = $nodeInfo->nodeValue;
+                                $values["password"] = $nodeElt->nodeValue;
                             }
                         } else {
-                            $values["password_new"] = $nodeInfo->nodeValue;
-                            $this->addToReport($values["login"], "changePassword", "", "", $nodeInfo);
+                            $values["password_new"] = $nodeElt->nodeValue;
+                            $this->addToReport($values["login"], "changePassword", "", "", $nodeElt);
                         }
                         break;
 
                     case "login":
-                        if (mb_strtolower($nodeInfo->nodeValue) !== $nodeInfo->nodeValue) {
-                            $this->addToReport($nodeInfo->nodeValue, "users update", "Login must not contains uppercase characters", "", $nodeInfo);
+                        if (mb_strtolower($nodeInfo) !== $nodeInfo) {
+                            $this->addToReport($nodeInfo, "users update", "Login must not contains uppercase characters", "", $nodeInfo);
                         }
-                        $values[$varId] = $nodeInfo->nodeValue;
+                        $values[$varId] = $nodeInfo;
                         break;
 
                     default:
-                        $values[$varId] = $nodeInfo->nodeValue;
+                        $values[$varId] = $nodeInfo;
                 }
             }
         }
-        $account = $this->importAccount($node, "user", "IUSER", $values);
+        $structureName = $this->xpathQuery("string(structure/@ref)", $node);
+        if (!$structureName) {
+            $structureName = "IUSER";
+        }
+        $account = $this->importAccount($node, "user", $structureName, $values);
+        $logicalName = $this->xpathQuery("string(structure/@name)", $node);
+        if ($logicalName) {
+            $this->setLogicalName($logicalName, $account);
+        }
         if (isset($subs) && $subs->id) {
             $account->setSubstitute($subs->id);
         }
@@ -393,21 +426,32 @@ class ImportAccounts
     {
         $values = array();
         $matchings = array(
-            "reference" => "login",
-            "displayName" => "lastname"
+            "string(@name)" => "login",
+            "string(reference)" => "login",
+            "string(displayName)" => "lastname"
         );
         foreach ($matchings as $xmlTag => $varId) {
             /**
              * @var \DOMNodeList $value
              */
-            $value = $this->xpath->query($xmlTag, $node);
-            $values[$varId] = $value->item(0)->nodeValue;
-            if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
-                $this->addToReport($values[$varId], "group update", "Reference must not contains uppercase characters", "", $value->item(0));
+            $value = $this->xpathQuery($xmlTag, $node);
+            if ($value !== "") {
+                $values[$varId] = $value;
+
+                if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
+                    $this->addToReport($values[$varId], "group update", "Reference must not contains uppercase characters", "", $value);
+                }
             }
         }
-
-        $account = $this->importAccount($node, "group", "IGROUP", $values);
+        $structureName = $this->xpathQuery("string(structure/@ref)", $node);
+        if (!$structureName) {
+            $structureName = "IGROUP";
+        }
+        $account = $this->importAccount($node, "group", $structureName, $values);
+        $logicalName = $this->xpathQuery("string(structure/@name)", $node);
+        if ($logicalName) {
+            $this->setLogicalName($logicalName, $account);
+        }
         $this->importParent($node, "associatedRole", $account);
         $this->importParent($node, "parentGroup", $account);
     }
@@ -419,9 +463,9 @@ class ImportAccounts
      */
     protected function importParent($node, $tagName, \Anakeen\Core\Account $account)
     {
-        $listNode = $this->xpath->query(sprintf("%ss", $tagName), $node);
+        $listNode = $this->xpathQuery(sprintf("%ss", $tagName), $node);
         if ($listNode->length > 0) {
-            $parents = $this->xpath->query(sprintf("%ss/%s", $tagName, $tagName), $node);
+            $parents = $this->xpathQuery(sprintf("%ss/%s", $tagName, $tagName), $node);
             /**
              * @var \DOMElement $listNodeItem
              */
@@ -449,6 +493,9 @@ class ImportAccounts
              */
             foreach ($parents as $parentNode) {
                 $parentLogin = $parentNode->getAttribute("reference");
+                if (!$parentLogin) {
+                    $parentLogin = $parentNode->getAttribute("ref");
+                }
                 $groupAccount = $this->getWorkingAccount();
 
                 if ($groupAccount->setLoginName($parentLogin)) {
@@ -498,20 +545,48 @@ class ImportAccounts
     {
         $values = array();
         $matchings = array(
-            "reference" => "login",
-            "displayName" => "lastname"
+            "string(@name)" => "login",
+            "string(reference)" => "login",
+            "string(displayName)" => "lastname"
         );
         foreach ($matchings as $xmlTag => $varId) {
             /**
              * @var \DOMNodeList $value
              */
-            $value = $this->xpath->query($xmlTag, $node);
-            $values[$varId] = $value->item(0)->nodeValue;
-            if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
-                $this->addToReport($values[$varId], "role update", "Reference must not contains uppercase characters", "", $value->item(0));
+            $value = $this->xpathQuery($xmlTag, $node);
+
+            if ($value !== "") {
+                $values[$varId] = $value;
+                if ($varId === "login" && mb_strtolower($values[$varId]) !== $values[$varId]) {
+                    $this->addToReport($values[$varId], "role update", "Reference must not contains uppercase characters", "", $value);
+                }
             }
         }
-        $this->importAccount($node, "role", "ROLE", $values);
+        $structureName = $this->xpathQuery("string(structure/@ref)", $node);
+        if (!$structureName) {
+            $structureName = "ROLE";
+        }
+        $role = $this->importAccount($node, "role", $structureName, $values);
+        $logicalName = $this->xpathQuery("string(structure/@name)", $node);
+        if ($logicalName) {
+            $this->setLogicalName($logicalName, $role);
+        }
+    }
+
+
+    protected function setLogicalName(string $logicalName, Account $account)
+    {
+        if ($logicalName) {
+            $roleElt = SEManager::getDocument($account->fid);
+
+            if ($roleElt->name !== $logicalName) {
+                $roleElt->setLogicalName($logicalName);
+                $err = $roleElt->modify();
+                if ($err) {
+                    throw new Exception($err);
+                }
+            }
+        }
     }
 
     /**
@@ -721,7 +796,7 @@ class ImportAccounts
             "action" => $actionType,
             "error" => $error,
             "message" => $msgType,
-            "node" => ($node) ? $this->xml->saveXML($node) : ""
+            "node" => (is_a($node, \DOMNode::class) )? $this->xml->saveXML($node) : $node
         );
 
         if ($error && $this->stopOnError) {
@@ -746,10 +821,10 @@ class ImportAccounts
 
     public function getErrors()
     {
-        $errors=[];
+        $errors = [];
         foreach ($this->report as $report) {
             if ($report["error"]) {
-                $errors[]=$report["error"];
+                $errors[] = $report["error"];
             }
         }
         return $errors;
@@ -765,5 +840,19 @@ class ImportAccounts
         }
         $this->workAccount->isset = false;
         return $this->workAccount;
+    }
+
+    private function xpathQuery($rule, $node = null)
+    {
+        if ($this->nsPrefix) {
+            if (substr($rule, 0, 7) !== "string(" && $rule[0] !== '/' && $rule[0] !== '(') {
+                $rule = "ac:" . $rule;
+            }
+            $rule = str_replace("/", "/ac:", $rule);
+            $rule = str_replace("(", "(ac:", $rule);
+            $rule = str_replace("ac:@", "@", $rule);
+        }
+
+        return $this->xpath->evaluate($rule, $node);
     }
 }

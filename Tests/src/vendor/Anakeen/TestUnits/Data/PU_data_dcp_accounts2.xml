@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+
+    <accounts:roles>
+        <accounts:role name="jedi master"/>
+        <accounts:role name="fat force">
+            <accounts:displayName>Grosse force</accounts:displayName>
+            <accounts:structure ref="ROLE" name="TST_FORCE1"/>
+        </accounts:role>
+
+        <accounts:role name="big force">
+            <accounts:displayName>Grande force</accounts:displayName>
+            <accounts:structure name="TST_FORCE2"/>
+        </accounts:role>
+    </accounts:roles>
+
+    <accounts:groups>
+        <accounts:group name="topsupervisor">
+            <accounts:displayName>Sécurité du toit</accounts:displayName>
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="fat force"/>
+            </accounts:associatedRoles>
+            <accounts:structure name="TST_GRP_ROOFSUPERVISOR"/>
+        </accounts:group>
+
+
+        <accounts:group name="levelsupervisor">
+            <accounts:displayName>Sécurité de l'étage</accounts:displayName>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="topsupervisor"/>
+            </accounts:parentGroups>
+        </accounts:group>
+
+
+        <accounts:group name="supervisor bottom">
+            <accounts:displayName>Sécurité du bas</accounts:displayName>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="levelsupervisor"/>
+            </accounts:parentGroups>
+        </accounts:group>
+
+    </accounts:groups>
+
+    <accounts:users>
+        <accounts:user login="chewie">
+            <accounts:lastname>Chewbacca</accounts:lastname>
+            <accounts:mail>chewie@starwars.com</accounts:mail>
+        </accounts:user>
+        <accounts:user login="luke">
+            <accounts:firstname>Luke</accounts:firstname>
+            <accounts:lastname>Skywalker</accounts:lastname>
+            <accounts:mail>luke@starwars.com</accounts:mail>
+            <accounts:password crypted="false">May the force be with you</accounts:password>
+            <accounts:status activated="true"/>
+            <accounts:associatedRoles reset="true">
+                <accounts:associatedRole ref="big force"/>
+            </accounts:associatedRoles>
+            <accounts:parentGroups reset="true">
+                <accounts:parentGroup ref="levelsupervisor"/>
+            </accounts:parentGroups>
+            <accounts:structure name="TST_AGENT_L" />
+
+        </accounts:user>
+        <accounts:user login="leia">
+            <accounts:firstname>Leia</accounts:firstname>
+            <accounts:lastname>Skywalker</accounts:lastname>
+            <accounts:mail>leia@starwars.com</accounts:mail>
+            <accounts:password crypted="false">May the force be with you</accounts:password>
+            <accounts:status activated="true"/>
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="big force"/>
+            </accounts:associatedRoles>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="levelsupervisor"/>
+            </accounts:parentGroups>
+
+        </accounts:user>
+        <accounts:user login="solo">
+            <accounts:firstname>Han</accounts:firstname>
+            <accounts:lastname>Solo</accounts:lastname>
+            <accounts:mail>solo@starwars.com</accounts:mail>
+            <!-- Falcon Millenium : is the crypted password -->
+            <accounts:password crypted="true">$5$u9ap7nzr0tIClII4$EuUVVB0YOMFuWN1y2DH.Yc7flwgSCEVezzhGwgKUAW/</accounts:password>
+
+            <accounts:status activated="false"/>
+            <accounts:substitute ref="leia"/>
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="fat force"/>
+            </accounts:associatedRoles>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="levelsupervisor"/>
+                <accounts:parentGroup ref="topsupervisor"/>
+            </accounts:parentGroups>
+            <accounts:structure name="TST_AGENT_H" />
+
+        </accounts:user>
+    </accounts:users>
+</accounts:accounts>
