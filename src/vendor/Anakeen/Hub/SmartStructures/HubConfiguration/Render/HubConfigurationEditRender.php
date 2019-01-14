@@ -42,6 +42,10 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
                 ["number" => 3, "minWidth" => $break2, "grow" => false]
             ]
         );
+        $tpl = <<<HTML
+<select class="icon-picker">
+HTML;
+        $options->enum(HubConfigurationFields::hub_icon_font)->setTemplate($tpl);
         return $options;
     }
 

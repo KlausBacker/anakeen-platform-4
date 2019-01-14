@@ -64,8 +64,22 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
      */
     protected function getHubConfigurationIcon()
     {
-        return $this->icon;
-        //        return "<i class=\"material-icons\">favorite</i>";
+        $iconEnum = $this->getRawValue("hub_icon_enum");
+        $finalIcon = $this->icon;
+        switch($iconEnum) {
+            case "IMAGE":
+                $finalIcon = $this->getRawValue("hub_icon_image");
+                break;
+            case "HTML":
+                $finalIcon = $this->getRawValue("hub_icon_text");
+                break;
+            case "FONT":
+                $finalIcon = $this->getRawValue("hub_icon_font");
+                break;
+            default:
+                break;
+        }
+        return $finalIcon;
     }
 
     /**
@@ -91,6 +105,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
                 $finalTitle = $finalTitle . $title["hub_title"]."/";
             }
         }
+        $finalTitle = preg_replace("/\/$/", '', $finalTitle );
         return $finalTitle;
     }
 }

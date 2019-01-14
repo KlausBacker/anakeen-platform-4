@@ -1,39 +1,7 @@
 import "./HubConfiguration.css";
+import axios from "axios";
 
-window.dcp.document.documentController(
-  "addEventListener",
-  "attributeReady",
-  {
-    name: "hub:configuration:view:ready",
-    documentCheck: documentObject => {
-      return documentObject.renderMode === "view";
-    },
-    attributeCheck: attributeObject => {
-      return attributeObject.id === "hub_icon_enum";
-    }
-  },
-  function() {
-    switch ($(this).documentController("getValue", "hub_icon_enum").value) {
-      case "HTML":
-        console.log(
-          $(this).documentController("getValue", "hub_icon_text").value
-        );
-        break;
-      case "IMAGE":
-        console.log(
-          $(this).documentController("getValue", "hub_icon_image").value
-        );
-        break;
-      case "FONT":
-        console.log(
-          $(this).documentController("getValue", "hub_icon_font").value
-        );
-        break;
-      default:
-        break;
-    }
-  }
-);
+axios.create();
 
 window.dcp.document.documentController(
   "addEventListener",
@@ -170,6 +138,78 @@ window.dcp.document.documentController(
       $el[0].style.display = "none";
     } else {
       $el[0].style.display = "inline";
+    }
+  }
+);
+
+window.dcp.document.documentController(
+  "addEventListener",
+  "attributeReady",
+  {
+    name: "icon:font:enum:ready",
+    documentCheck: documentObject => {
+      return documentObject.renderMode === "edit";
+    },
+    attributeCheck: attributeObject => {
+      return attributeObject.id === "hub_icon_font";
+    }
+  },
+  function(event, documentObject, attributeObject, $el) {
+    axios.get("/hub/font/icons/").then(response => {
+      $(".icon-picker").kendoDropDownList({
+        select: e => {
+          $(this).documentController("setValue", "hub_icon_font", {
+            value: e.dataItem.value
+          });
+        }
+      });
+      const picker = $el.find("select").data("kendoDropDownList");
+      picker.select(function(dataItem) {
+        return (
+          dataItem.value ===
+          $(this).documentController("getValue", "hub_icon_font").value
+        );
+      });
+      const options = picker.options;
+      picker.setOptions(
+        Object.assign({}, options, {
+          template: "<i class='fa fa-#:value#'>#:value#</i>",
+          valueTemplate: "<i class='fa fa-#:value#'></i>"
+        })
+      );
+      picker.setDataSource(
+        response.data.data.map(fa => {
+          return {
+            value: fa,
+            displayValue: fa
+          };
+        })
+      );
+    });
+  }
+);
+
+window.dcp.document.documentController(
+  "addEventListener",
+  "attributeReady",
+  {
+    name: "icon:font:picker:ready",
+    documentCheck: documentObject => {
+      return documentObject.renderMode === "view";
+    },
+    attributeCheck: attributeObject => {
+      return attributeObject.id === "hub_icon_font";
+    }
+  },
+  function(event, documentObject, attributeObject, $el) {
+    if (
+      $(this).documentController("getValue", "hub_icon_enum").value === "FONT"
+    ) {
+      $el.html(
+        `<i class='fa fa-${
+          $(this).documentController("getValue", "hub_icon_font").value
+        }'></i>`
+      );
     }
   }
 );

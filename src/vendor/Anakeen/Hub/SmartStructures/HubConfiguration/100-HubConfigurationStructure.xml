@@ -16,8 +16,8 @@
                     </smart:field-set>
                 </smart:field-set>
                 <smart:field-set name="hub_icon_frame" type="frame" label="Icon" access="ReadWrite">
-                    <smart:field-enum name="hub_icon_enum" label="Mode" access="ReadWrite" relation="Icon_mode_enum"/>
-                    <smart:field-enum name="hub_icon_font" label="Icon picker" access="ReadWrite" relation="Icon_font_enum"/>
+                    <smart:field-enum name="hub_icon_enum" label="Mode" access="ReadWrite" relation="Icon_mode_enum" />
+                    <smart:field-text name="hub_icon_font" label="Icon picker" access="ReadWrite"/>
                     <smart:field-image name="hub_icon_image" label="Image" access="ReadWrite"/>
                     <smart:field-htmltext name="hub_icon_text" label="Html icon" access="ReadWrite"/>
                 </smart:field-set>
@@ -103,9 +103,6 @@
             <smart:enum name="RIGHTTOP" label="Right Top"/>
             <smart:enum name="RIGHTCENTER" label="Right Center"/>
             <smart:enum name="RIGHTBOTTOM" label="Right Bottom"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="Icon_font_enum">
-
         </smart:enum-configuration>
     </smart:enumerates>
 </smart:config>

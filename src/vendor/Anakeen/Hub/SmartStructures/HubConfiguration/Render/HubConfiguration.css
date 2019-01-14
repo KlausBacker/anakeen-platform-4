@@ -1,6 +1,3 @@
-.icons-selector .selected-icon i, .icons-selector .fip-box[data-fip-value] i {
-    font-family: FontAwesome !important;
-}
 
 .card-default[data-attrid="hub_titles"] {
     width: 100% !important;

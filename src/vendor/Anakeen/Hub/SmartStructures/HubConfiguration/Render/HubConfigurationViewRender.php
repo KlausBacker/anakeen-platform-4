@@ -12,6 +12,7 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
+        $visibilities->setVisibility(HubConfigurationFields::hub_icon_enum, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
     }
 
