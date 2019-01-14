@@ -74,7 +74,7 @@
 
         <smart:defaults>
             <smart:default field="hub_activated">TRUE</smart:default>
-            <smart:default field="hub_docker_position" reset="true">LEFTTOP</smart:default>
+            <smart:default field="hub_docker_position" reset="true">LEFT_TOP</smart:default>
             <smart:default field="hub_icon_enum" reset="true">FONT</smart:default>
         </smart:defaults>
 
@@ -91,18 +91,21 @@
             <smart:enum name="FALSE" label="No"/>
         </smart:enum-configuration>
         <smart:enum-configuration name="Docker_pos_enum">
-            <smart:enum name="TOPLEFT" label="Top Left"/>
-            <smart:enum name="TOPCENTER" label="Top Center"/>
-            <smart:enum name="TOPRIGHT" label="Top Right"/>
-            <smart:enum name="BOTTOMLEFT" label="Bottom Left"/>
-            <smart:enum name="BOTTOMCENTER" label="Bottom Center"/>
-            <smart:enum name="BOTTOMRIGHT" label="Bottom Right"/>
-            <smart:enum name="LEFTTOP" label="Left Top"/>
-            <smart:enum name="LEFTCENTER" label="Left Center"/>
-            <smart:enum name="LEFTBOTTOM" label="Left Bottom"/>
-            <smart:enum name="RIGHTTOP" label="Right Top"/>
-            <smart:enum name="RIGHTCENTER" label="Right Center"/>
-            <smart:enum name="RIGHTBOTTOM" label="Right Bottom"/>
+            <smart:enum name="TOP_LEFT" label="Top Left"/>
+            <smart:enum name="TOP_CENTER" label="Top Center"/>
+            <smart:enum name="TOP_RIGHT" label="Top Right"/>
+            <smart:enum name="BOTTOM_LEFT" label="Bottom Left"/>
+            <smart:enum name="BOTTOM_CENTER" label="Bottom Center"/>
+            <smart:enum name="BOTTOM_RIGHT" label="Bottom Right"/>
+            <smart:enum name="LEFT_TOP" label="Left Top"/>
+            <smart:enum name="LEFT_CENTER" label="Left Center"/>
+            <smart:enum name="LEFT_BOTTOM" label="Left Bottom"/>
+            <smart:enum name="RIGHT_TOP" label="Right Top"/>
+            <smart:enum name="RIGHT_CENTER" label="Right Center"/>
+            <smart:enum name="RIGHT_BOTTOM" label="Right Bottom"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="Icon_font_enum">
+
         </smart:enum-configuration>
     </smart:enumerates>
 </smart:config>

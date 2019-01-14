@@ -14,3 +14,28 @@
 .dcpAttribute[data-attrid='hub_icon_font'] > div {
     width: 33% !important;
 }
+
+.dock-position-chooser {
+    margin-left: 0;
+    width: 9rem;
+}
+
+.dock-position-chooser .dock-area {
+    border: 1px solid #666666;
+    width: 3rem;
+    height :3rem;
+    margin: .1rem;
+    border-radius: .2rem;
+    cursor:pointer;
+    transition: transform .1s ease;
+}
+
+.dock-position-chooser .dock-area.dock-position-selected {
+    background: #157EFB;
+}
+
+.dock-position-chooser .dock-area:hover {
+    transform: scale(1.05);
+    border-color: black;
+}
+

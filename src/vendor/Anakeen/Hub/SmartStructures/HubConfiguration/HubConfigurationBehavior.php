@@ -3,6 +3,7 @@
 namespace Anakeen\Hub\SmartStructures\HubConfiguration;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\SEManager;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationBehavior extends \Anakeen\SmartElement
@@ -17,13 +18,15 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         // Config to return
         $configuration = [];
 
+        $configuration["dock"] = $this->getAttributeValue(HubConfigurationFields::hub_docker_position);
+        $configuration["assets"] = $this->getAssets();
         $configuration["tab"] = [];
         $configuration["tab"]["expanded"] = "<span>".$this->getHubConfigurationTitle()."</span>";
         $configuration["position"] = $this->getAttributeValue(HubConfigurationFields::hub_order);
         //$DockerPosition = $this->getAttributeValue(HubConfigurationSlotFields::hub_docker_position);
 
         // Default configuration : Elements are in the body, and selectable
-        $configuration["area"] = "body";
+        $configuration["area"] = $this->getHubPosition($this->getAttributeValue(HubConfigurationFields::hub_docker_position));
         $configuration["tab"]["selectable"] = true;
         $configuration["tab"]["selected"] = false;
 
@@ -55,6 +58,14 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         }
 
         return $defaultTitle;
+    }
+
+    protected function getAssets()
+    {
+        $assets = [];
+        $assets["js"] = SEManager::getFamily($this->fromname)->getFamilyParameterValue("hub_jsasset", []);
+        $assets["css"] = SEManager::getFamily($this->fromname)->getFamilyParameterValue("hub_cssasset", []);
+        return $assets;
     }
 
     /**
@@ -107,5 +118,28 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         }
         $finalTitle = preg_replace("/\/$/", '', $finalTitle);
         return $finalTitle;
+    }
+
+    protected function getHubPosition($position)
+    {
+        switch ($position) {
+            case "LEFT_TOP":
+            case "RIGHT_TOP":
+            case "TOP_LEFT":
+            case "BOTTOM_LEFT":
+                return "header";
+            case "LEFT_CENTER":
+            case "RIGHT_CENTER":
+            case "BOTTOM_CENTER":
+            case "TOP_CENTER":
+                return "body";
+            case "LEFT_BOTTOM":
+            case "RIGHT_BOTTOM":
+            case "BOTTOM_RIGHT":
+            case "TOP_RIGHT":
+                return "footer";
+            default:
+                break;
+        }
     }
 }

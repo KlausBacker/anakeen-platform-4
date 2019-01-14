@@ -13,8 +13,9 @@ class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
 
     public function getConfiguration()
     {
-        $configuration = [];
+        $configuration = parent::getConfiguration();
 
+        $configuration["dock"] = $this->getAttributeValue(HubConfigurationSlotFields::hub_docker_position);
         $configuration["tab"] = [];
         $configuration["tab"]["expanded"] = "<span>".$this->getHubConfigurationTitle()."</span>";
 
