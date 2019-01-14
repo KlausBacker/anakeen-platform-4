@@ -781,9 +781,7 @@ union
         $groupAdmin->login = "gadmin";
         $groupAdmin->accounttype = self::GROUP_TYPE;
         $groupAdmin->add(true);
-        $group->idgroup = Account::GALL_ID;
-        $group->iduser = Account::GADMIN_ID;
-        $group->add(true);
+
         // Store error messages
     }
 

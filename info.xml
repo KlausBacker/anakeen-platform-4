@@ -294,6 +294,10 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE Structure</label>
         </process>
+
+        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/SmartStructures/Igroup/group.init.xml">
+            <label>Create system group</label>
+        </process>
         <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account documents</label>
         </process>
