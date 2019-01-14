@@ -66,7 +66,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     {
         $iconEnum = $this->getRawValue("hub_icon_enum");
         $finalIcon = $this->icon;
-        switch($iconEnum) {
+        switch ($iconEnum) {
             case "IMAGE":
                 $finalIcon = $this->getRawValue("hub_icon_image");
                 break;
@@ -105,7 +105,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
                 $finalTitle = $finalTitle . $title["hub_title"]."/";
             }
         }
-        $finalTitle = preg_replace("/\/$/", '', $finalTitle );
+        $finalTitle = preg_replace("/\/$/", '', $finalTitle);
         return $finalTitle;
     }
 }
