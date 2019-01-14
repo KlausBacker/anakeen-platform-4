@@ -68,7 +68,7 @@
     <xs:complexType name="middlewareType">
         <xs:sequence>
             <xs:element type="xs:int" name="priority" default="0"/>
-            <xs:element type="xs:string" name="callable"/>
+            <xs:element type="rout:callableType" name="callable"/>
             <xs:element type="xs:string" name="method"/>
             <xs:element type="xs:string" name="pattern"/>
             <xs:element type="xs:string" name="description"/>
@@ -149,7 +149,7 @@
     <xs:complexType name="routeCompleteType">
         <xs:sequence maxOccurs="unbounded">
             <xs:element type="xs:int" name="priority" minOccurs="0" default="0"/>
-            <xs:element type="xs:string" name="callable"/>
+            <xs:element type="rout:callableType" name="callable"/>
             <xs:element type="rout:methodType" name="method" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>HTTP method</xs:documentation>
@@ -165,7 +165,7 @@
     <xs:complexType name="routePartialType">
         <xs:sequence maxOccurs="unbounded">
             <xs:element type="xs:int" name="priority" minOccurs="0" default="0"/>
-            <xs:element type="xs:string" name="callable" minOccurs="0"/>
+            <xs:element type="rout:callableType" name="callable" minOccurs="0"/>
             <xs:element type="rout:methodType" name="method" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>HTTP method</xs:documentation>
@@ -185,4 +185,10 @@
         </xs:sequence>
         <xs:attribute type="xs:token" name="namespace" use="required"/>
     </xs:complexType>
+
+    <xs:simpleType name="callableType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Za-z][a-zA-Z0-9_\\]{2,}"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>

@@ -55,7 +55,8 @@
         <xs:complexContent>
             <xs:extension base="v1:field-propsStandardType">
                 <xs:attribute type="v1:fieldNameType" name="field" use="required"/>
-                <xs:attribute type="v1:fieldNameType" name="fieldset" />
+                <xs:attribute type="v1:fieldAccessType" name="access"/>
+                <xs:attribute type="v1:fieldNameType" name="fieldset"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -136,9 +137,9 @@
     </xs:complexType>
 
     <xs:complexType name="enum-configurationType">
-        <xs:choice >
+        <xs:choice>
             <xs:element type="v1:enumType" name="enum" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="v1:enum-callableType" name="enum-callable"  minOccurs="0">
+            <xs:element type="v1:enum-callableType" name="enum-callable" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         <p>
@@ -163,22 +164,6 @@
         </xs:sequence>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="xs:boolean" name="needed"/>
-        <xs:attribute type="v1:fieldAccessType" name="access" use="required">
-            <xs:annotation>
-                <xs:documentation>
-                    <p>
-                        <b>Field Access</b>
-                    </p>
-                    <hr/>
-                    <ul>
-                        <li>ReadWrite : For Read Write</li>
-                        <li>Read : For ReadOnly</li>
-                        <li>Write : For Write only</li>
-                        <li>None : For no access</li>
-                    </ul>
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
         <xs:attribute type="xs:boolean" name="is-abstract" default="false"/>
         <xs:attribute type="xs:boolean" name="is-title" default="false"/>
         <xs:attribute type="v1:fieldOrderType" name="insert-after"/>
@@ -188,6 +173,22 @@
     <xs:complexType name="field-standardType">
         <xs:complexContent>
             <xs:extension base="v1:field-propsStandardType">
+                <xs:attribute type="v1:fieldAccessType" name="access" use="required">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <p>
+                                <b>Field Access</b>
+                            </p>
+                            <hr/>
+                            <ul>
+                                <li>ReadWrite : For Read Write</li>
+                                <li>Read : For ReadOnly</li>
+                                <li>Write : For Write only</li>
+                                <li>None : For no access</li>
+                            </ul>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
                 <xs:attribute type="v1:fieldNameType" name="name" use="required"/>
             </xs:extension>
         </xs:complexContent>
@@ -197,7 +198,7 @@
     <xs:complexType name="field-multipleType">
         <xs:complexContent>
             <xs:extension base="v1:field-standardType">
-                <xs:attribute type="xs:boolean" name="multiple" />
+                <xs:attribute type="xs:boolean" name="multiple"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -248,7 +249,7 @@
         <xs:complexContent>
             <xs:extension base="v1:field-relationType">
                 <xs:attribute name="match">
-                    <xs:simpleType >
+                    <xs:simpleType>
                         <xs:restriction base="xs:token">
                             <xs:enumeration value="user"/>
                             <xs:enumeration value="group"/>
@@ -584,9 +585,36 @@
             <xs:element type="v1:field-argumentType" name="field-argument" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:field-returnType" name="field-return" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="event"/>
+        <xs:attribute name="event">
+            <xs:annotation>
+                <xs:documentation>
+                    <p>
+                        <b>Declare hooks :  only for compatibility for constraint and computed fields on refresh</b>
+                    </p>
+                    <hr/>
+                    <ul>
+                        <li>onPreRefresh : Method to use for compute field</li>
+                        <li>onPreStore : (with type "constraint") to add constraint</li>
+                    </ul>
+                </xs:documentation>
+            </xs:annotation>
+
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="onPreStore"/>
+                    <xs:enumeration value="onPreRefresh"/>
+                </xs:restriction>
+            </xs:simpleType>
+
+        </xs:attribute>
         <xs:attribute type="v1:fieldNameType" name="field"/>
-        <xs:attribute type="xs:string" name="type"/>
+        <xs:attribute name="type">
+            <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="constraint"/>
+            </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="hooksType">
         <xs:sequence>
@@ -620,6 +648,7 @@
         <xs:attribute type="xs:boolean" name="extended"/>
         <xs:attribute type="v1:fieldsetType" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
+        <!-- not required because can be extended -->
         <xs:attribute type="v1:fieldAccessType" name="access"/>
         <xs:attribute type="v1:fieldOrderType" name="insert-after"/>
     </xs:complexType>

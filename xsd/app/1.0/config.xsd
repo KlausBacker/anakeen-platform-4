@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:dcp="https://platform.anakeen.com/4/schemas/app/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xs:schema xmlns:dcp="https://platform.anakeen.com/4/schemas/app/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
            targetNamespace="https://platform.anakeen.com/4/schemas/app/1.0" attributeFormDefault="unqualified"
            elementFormDefault="qualified">
     <xs:element name="module" type="dcp:rootModuleType"/>
