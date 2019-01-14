@@ -5,52 +5,22 @@ body, html {
   height: 100vh;
 }
 
-.hub {
-  height: 100%;
-  width: 100%;
-}
-
-.hub-header {
-  height: 3.4rem;
-  display: flex;
-  font-size: 1.1667rem;
-  justify-content: space-between;
-  align-items: center;
-  color: rgba(255, 255, 255, 0.7);
-  padding: .5rem 1rem;
-  background: #424142;
-}
-
-.hub-header__content {
-  display: flex;
-  align-items: center;
-  > * + * {
-    margin-left: 1rem;
-  }
-}
-
-.logout-button {
-  background: transparent;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  .fa {
-    font-size: 2rem;
-  }
-}
-
-.dock {
-  width: 100%;
-  height: 100%;
-  border-width: 3px;
-}
-
-.expanded-dock, .expanded-dock > *{
-  width: 15rem !important;
-  heigth: 100%;
-}
-.hub-content {
+.hub-station-main {
   display: flex;
   flex-direction: column;
-  height: $content-height;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  .hub-station-center-area {
+    .hub-station-content {
+      display: flex;
+      flex: 1;
+      .hub-station-content-view {
+        flex: 1;
+      }
+    }
+    display: flex;
+    flex: 1;
+  }
 }

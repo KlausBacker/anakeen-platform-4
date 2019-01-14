@@ -18,7 +18,6 @@
                     <div class="hub-admin-content">
                         <div class="hub-admin-grid">
                             <grid collection="HUBCONFIGURATION"
-                                  :checkable="true"
                                   :reorderable="true"
                                   class="hub-admin"
                                   ref="hubGrid"
