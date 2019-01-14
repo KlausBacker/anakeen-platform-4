@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-module-validation@latest":
-  version "1.0.3"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.3.tgz#8f7b4f0e1e4b802ea4390c1e5fe01aeef3cdb535"
-  integrity sha512-SmJEl9v7lm1x0dawHP7tWAk6iiL7V8/qw/YDltdhXt/3P+8Kr5BozXdC6f6xgO0beOxfuk0a2DcBa/3QisYvJw==
+"@anakeen/anakeen-module-validation@1.0.5":
+  version "1.0.5"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.5.tgz#b6dce0113c352a2886284ef21c80a5cc4e61762a"
+  integrity sha512-P97nLfhnm+ML9DvBsbweLO3AObPwkRQOZbl97AlLn0/B0/HATmb0OFC6orZcre564todHB0E4R0FlcC3aK9MKA==
   dependencies:
     libxmljs "^0.19.5"
 
