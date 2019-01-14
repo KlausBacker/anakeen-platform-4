@@ -585,7 +585,7 @@
             <xs:element type="v1:field-argumentType" name="field-argument" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:field-returnType" name="field-return" minOccurs="0"/>
         </xs:sequence>
-        <xs:attribute type="xs:string" name="event">
+        <xs:attribute name="event">
             <xs:annotation>
                 <xs:documentation>
                     <p>
@@ -598,6 +598,7 @@
                     </ul>
                 </xs:documentation>
             </xs:annotation>
+
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="onPreStore"/>
