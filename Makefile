@@ -21,32 +21,88 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 
 -include Makefile.local
 
+########################################################################################################################
+##
+## Deps
+##
+########################################################################################################################
 
-########################################################################################################################
-##
-## BUILD TARGET
-##
-########################################################################################################################
-$(NODE_MODULE_PATH):
+install-deps:
+	cd $(PHP_LIB_PATH); rm -rf ./vendor; $(COMPOSER_BIN) install
 	$(YARN_BIN) install
 
-${PHP_LIB_PATH}/autoload.php:
-	cd ${PHP_LIB_PATH}; ${COMPOSER_BIN} install --ignore-platform-reqs
+########################################################################################################################
+##
+## Static analyze
+##
+########################################################################################################################
 
-install: ${PHP_LIB_PATH}/autoload.php
+beautify: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
+	$(YARN_BIN) run beautify
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}src
 
-compile: $(NODE_MODULE_PATH) install
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	$(YARN_BIN) run buildJs
+lint: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}/src
 
-app: compile
-	${ANAKEEN_CLI_BIN} build
+checkXML: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}
 
-autotest: compile
-	${ANAKEEN_CLI_BIN} build --auto-release
+########################################################################################################################
+##
+## Po and stub
+##
+########################################################################################################################
+po: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} extractPo --sourcePath ${MK_DIR}
 
-deploy: compile
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./ -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+stub: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} generateStubs -s ${MK_DIR}
+
+########################################################################################################################
+##
+## BUILD JS
+##
+########################################################################################################################
+
+buildJS: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build js $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildJs
+
+
+########################################################################################################################
+##
+## Build
+##
+########################################################################################################################
+app: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build -s ${MK_DIR}
+
+app-all: app
+
+app-autorelease: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build -s ${MK_DIR} --auto-release
+
+app-all-autorelease: app-autorelease
+
+########################################################################################################################
+##
+## Deploy
+##
+########################################################################################################################
+deploy: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${MK_DIR} -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 ########################################################################################################################
 ##
@@ -59,40 +115,7 @@ clean: ## clean the local pub
 	rm -fr ./src/public/Anakeen/
 	rm -fr ${PHP_LIB_PATH}/vendor
 	rm -rf ${MODULE_NAME}*.app
-
-########################################################################################################################
-##
-## PO TARGET
-##
-########################################################################################################################
-
-po: $(NODE_MODULE_PATH)
-	${ANAKEEN_CLI_BIN} extractPo -s .
-
-stub: $(NODE_MODULE_PATH)
-	${ANAKEEN_CLI_BIN} generateStubs
-
-########################################################################################################################
-##
-## Beautify TARGET
-##
-########################################################################################################################
-
-beautify: $(NODE_MODULE_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
-	$(YARN_BIN) run beautify
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}src
-
-lint: $(NODE_MODULE_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ${MK_DIR}/src
-
-checkXML: $(NODE_MODULE_PATH)
-	${ANAKEEN_CLI_BIN} check -s .
+	rm -rf ${MODULE_NAME}*.src
 
 ########################################################################################################################
 ##

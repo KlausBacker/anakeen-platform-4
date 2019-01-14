@@ -2,7 +2,7 @@
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes namespace="DevelopmentCenter">
         <sde:route name="main">
-            <sde:callable>\Anakeen\Routes\Devel\UI\Main</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\UI\Main</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/devel[/{args:.*}]</sde:pattern>
             <sde:description>Get development center main page</sde:description>
@@ -11,7 +11,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="GetStructureViews">
-            <sde:callable>\Anakeen\Routes\Devel\UI\StructureViews</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\UI\StructureViews</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/views/</sde:pattern>
             <sde:description>Get all views from view control elements compatible with structure</sde:description>
@@ -20,7 +20,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="GetMasks">
-            <sde:callable>\Anakeen\Routes\Devel\UI\Masks</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\UI\Masks</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/masks/</sde:pattern>
             <sde:description>Get masks</sde:description>
@@ -29,7 +29,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="GetMasksConfig">
-            <sde:callable>\Anakeen\Routes\Devel\UI\MasksGridConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\UI\MasksGridConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/masks/config/</sde:pattern>
             <sde:description>Get masks</sde:description>
@@ -38,7 +38,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="GetViewControls">
-            <sde:callable>\Anakeen\Routes\Devel\UI\Control</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\UI\Control</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/control/</sde:pattern>
             <sde:description>Get Control </sde:description>
@@ -47,7 +47,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="GetControlConfig">
-            <sde:callable>\Anakeen\Routes\Devel\UI\ControlGridConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\UI\ControlGridConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/ui/smart/structures/{structure}/control/config/</sde:pattern>
             <sde:description>Get Control configuration</sde:description>
@@ -56,7 +56,7 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="GetWorkflowGraph">
-            <sde:callable>\Anakeen\Routes\Devel\UI\WorkflowGraph</sde:callable>
+            <sde:callable>Anakeen\Routes\Devel\UI\WorkflowGraph</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/devel/ui/workflows/image/{workflow:[a-zA-Z0-9_]+}[.{extension:png|svg|dot}]</sde:pattern>
             <sde:description>Get Control configuration</sde:description>
