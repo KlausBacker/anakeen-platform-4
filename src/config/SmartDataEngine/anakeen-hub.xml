@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
-    <sde:routes namespace="Anakeen">
-        <sde:route name="hub">
+    <sde:routes namespace="Core">
+        <sde:route-override name="Root">
             <sde:callable>\Anakeen\Hub\Routes\Hub</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/hub/</sde:pattern>
+            <sde:pattern>/</sde:pattern>
+            <sde:pattern>/hub/station/[{args:.*}]</sde:pattern>
             <sde:description>Get Hub page</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="Anakeen">HubUser</sde:access>
             </sde:requiredAccess>
-        </sde:route>
+        </sde:route-override>
+    </sde:routes>
+    <sde:routes namespace="Anakeen">
         <sde:route name="hubAdmin">
             <sde:callable>\Anakeen\Hub\Routes\HubAdmin</sde:callable>
             <sde:method>GET</sde:method>

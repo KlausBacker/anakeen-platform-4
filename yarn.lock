@@ -5131,6 +5131,11 @@ lightercollective@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.1.0.tgz#70df102c530dcb8d0ccabfe6175a8d00d5f61300"
 
+load-css-file@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/load-css-file/-/load-css-file-1.0.0.tgz#dac097ead6470f4c3f23d4bc5b9ff2c3decb212f"
+  integrity sha1-2sCX6tZHD0w/I9S8W5/yw97LIS8=
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -8758,17 +8763,19 @@ vue-loader@^15.3.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-plugin-load-script@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vue-plugin-load-script/-/vue-plugin-load-script-1.1.0.tgz#51a1ad26d9e1774453cee173fdd596994d6d5840"
+vue-m-loader@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue-m-loader/-/vue-m-loader-1.0.1.tgz#7af7cb81b1ebda934708c990e2b082eb480ed4d0"
+  integrity sha512-a0h8H5cdarwrf/r3JJAB6n0NkW+7Wdfh/PhktYeCeeC8jN6aFkCyxQNz1fYmyMfmuO7FmYM/JW6EFyIR9beImg==
 
 vue-router-multi-view@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/vue-router-multi-view/-/vue-router-multi-view-0.0.4.tgz#6e609f5ce948b26f6727ca01f39d03afd8941a0f"
 
-vue-router@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
+vue-router@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.2.tgz#dedc67afe6c4e2bc25682c8b1c2a8c0d7c7e56be"
+  integrity sha512-opKtsxjp9eOcFWdp6xLQPLmRGgfM932Tl56U9chYTnoWqKxQ8M20N7AkdEbM5beUh6wICoFGYugAX9vQjyJLFg==
 
 vue-style-loader@^4.1.0:
   version "4.1.1"
