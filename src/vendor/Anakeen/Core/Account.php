@@ -984,7 +984,8 @@ union
 
         $sort = 'lastname';
         $sql = sprintf(
-            "SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and accounttype='U' order by %s",
+            "SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid ".
+            "from users, groups where %s and (groups.iduser=users.id) %s and accounttype='U' order by %s",
             $sort,
             $cond,
             $condname,
@@ -1025,7 +1026,7 @@ union
      * @param int $uid if not set it is the current account object else use another account identifier
      *
      * @return array
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     public function getStrictMemberOf($uid = -1)
     {
@@ -1052,7 +1053,7 @@ union
      * @param bool $updateSubstitute also update substitute by default
      *
      * @return array of memberof identificators
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     public function updateMemberOf($updateSubstitute = true)
     {
@@ -1122,7 +1123,7 @@ union
      * @param bool $strict if true no use delegation
      * @return array|null
      * @throws \Dcp\Core\Exception
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     public static function getUserMemberOf($uid, $strict = false)
     {
@@ -1246,7 +1247,7 @@ union
      * @param bool     $forceCreate set to true to always return a new token
      *
      * @return string
-     * @throws \Anakeen\Exception 
+     * @throws \Anakeen\Exception
      */
     public function getUserToken(
         $expireDelay = -1,
