@@ -3,7 +3,7 @@
   <sde:routes namespace="Core">
     <sde:route name="Core:Authent:Session:Login">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Authent\Session</sde:callable>
+      <sde:callable>Anakeen\Routes\Authent\Session</sde:callable>
       <sde:method>POST</sde:method>
       <sde:pattern>/api/v2/authent/sessions/{login}</sde:pattern>
       <sde:description>Create user session</sde:description>
@@ -12,7 +12,7 @@
     </sde:route>
     <sde:route name="Core:Authent:Session:Logout">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Authent\Logout</sde:callable>
+      <sde:callable>Anakeen\Routes\Authent\Logout</sde:callable>
       <sde:method>DELETE</sde:method>
       <sde:pattern>/api/v2/authent/sessions/current</sde:pattern>
       <sde:description>Destroy current user session</sde:description>
