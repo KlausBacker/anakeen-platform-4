@@ -9,4 +9,5 @@
     <import schemaLocation="./xsd/module/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/module/1.0"/>
     <import schemaLocation="./xsd/app/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/app/1.0"/>
     <import schemaLocation="./xsd/task/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/task/1.0"/>
+    <import schemaLocation="./xsd/account/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/account/1.0"/>
 </schema>
