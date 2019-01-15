@@ -1,0 +1,82 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ANAKEEN-UI\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-28 10:26+0200\n"
+"PO-Revision-Date: 2018-10-05 10:13+0200\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: French <distrib@anakeen.com>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache
+msgctxt "ddui"
+msgid "Add new line"
+msgstr "Ajouter une nouvelle ligne"
+
+#: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Conditions"
+msgstr "Conditions"
+
+#: src/Apps/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache
+msgctxt "ddui"
+msgid "Delete : "
+msgstr "Suppression de : "
+
+#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
+msgctxt "ddui"
+msgid "Delete line"
+msgstr "Supprimer la ligne"
+
+#: src/Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
+msgctxt "ddui"
+msgid "DocumentDeleted"
+msgstr "Supprimée le"
+
+#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
+msgctxt "ddui"
+msgid "Drag to move line"
+msgstr "Cliquer pour déplacer la ligne"
+
+#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache
+msgctxt "ddui"
+msgid "Duplicate selected row"
+msgstr "Dupliquer la ligne sélectionnée"
+
+#: src/Apps/DOCUMENT/IHM/views/document/document__header.mustache
+msgctxt "ddui"
+msgid "Editing form"
+msgstr "Formulaire en cours de modification"
+
+#: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Loading criteria ..."
+msgstr "Chargement des critères..."
+
+#: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Results"
+msgstr "Résultats"
+
+#: src/Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
+msgctxt "ddui"
+msgid "Revision :"
+msgstr "Révision n°"
+
+#: src/Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
+msgctxt "ddui"
+msgid "RevisionCreated"
+msgstr "Créée le"
+
+#: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
+msgctxt "dsearch"
+msgid "Searching ..."
+msgstr "Recherche en cours"
+
+#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
+msgctxt "ddui"
+msgid "Select line"
+msgstr "Sélectionner la ligne"

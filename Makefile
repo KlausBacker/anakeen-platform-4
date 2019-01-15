@@ -7,19 +7,19 @@ VERSION_PATH=$(MK_DIR)/VERSION
 NODE_MODULE_PATH=node_modules
 JS_CONF_PATH=$(MK_DIR)
 WEBPACK_CONF_PATH=webpackConfig/
-PHP_LIB_PATH=anakeen-ui/src/vendor/Anakeen/Ui/PhpLib
-JS_ASSET_PATH=anakeen-ui/src/public/uiAssets/externals/
-JS_COMPONENT_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Components
-JS_COMPONENT_BUILD_PATH=anakeen-ui/src/public/Anakeen/ank-components/
-JS_DDUI_BUILD_PATH=anakeen-ui/src/public/Anakeen/smartElement/
-JS_DDUI_SOURCE_PATH=anakeen-ui/src/Apps/DOCUMENT/IHM/
-JS_ROUTE_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/Routes/Ui
-JS_FAMILY_BUILD_PATH=anakeen-ui/src/public/Anakeen/smartStructures/
-JS_FAMILY_SOURCE_PATH=anakeen-ui/src/vendor/Anakeen/SmartStructures/
+PHP_LIB_PATH=./src/vendor/Anakeen/Ui/PhpLib
+JS_ASSET_PATH=./src/public/uiAssets/externals/
+JS_COMPONENT_SOURCE_PATH=./src/vendor/Anakeen/Components
+JS_COMPONENT_BUILD_PATH=./src/public/Anakeen/ank-components/
+JS_DDUI_BUILD_PATH=./src/public/Anakeen/smartElement/
+JS_DDUI_SOURCE_PATH=./src/Apps/DOCUMENT/IHM/
+JS_ROUTE_SOURCE_PATH=./src/vendor/Anakeen/Routes/Ui
+JS_FAMILY_BUILD_PATH=./src/public/Anakeen/smartStructures/
+JS_FAMILY_SOURCE_PATH=./src/vendor/Anakeen/SmartStructures/
 JS_TEST_BUILD_PATH=Tests/src/public/
 JS_TEST_SOURCE_PATH=Tests/src/vendor/Anakeen/
-JS_POLYFILL_BUILD_PATH=anakeen-ui/src/public/Anakeen/polyfill/
-ANAKEEN_UI_SRC_PATH=anakeen-ui/
+JS_POLYFILL_BUILD_PATH=./src/public/Anakeen/polyfill/
+ANAKEEN_UI_SRC_PATH=./
 TEST_SRC_PATH=Tests/
 
 ## Version and release
@@ -47,7 +47,7 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 ########################################################################################################################
 
 install-deps:
-	cd anakeen-ui/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; $(COMPOSER_BIN) install
+	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; $(COMPOSER_BIN) install
 	$(YARN_BIN) install
 
 ########################################################################################################################
@@ -65,13 +65,13 @@ lint: checkXML
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${MK_DIR}/anakeen-ui
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${ANAKEEN_UI_SRC_PATH}/src
 
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
 	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${MK_DIR}/anakeen-ui
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${ANAKEEN_UI_SRC_PATH}/src
 
 ########################################################################################################################
 ##

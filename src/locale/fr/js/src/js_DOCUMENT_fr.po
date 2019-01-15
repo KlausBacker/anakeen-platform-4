@@ -1,0 +1,377 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DDUI\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-01-15 12:34+0100\n"
+"PO-Revision-Date: 2017-12-14 17:43+0100\n"
+"Last-Translator: Anakeen\n"
+"Language-Team: French Team\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "ddui"
+msgid "Abord modification"
+msgstr "Abandonner les modifications en cours"
+
+msgctxt "ddui"
+msgid "Abort modification"
+msgstr "Abandonner les modifications en cours"
+
+msgctxt "historyUi"
+msgid "Activity"
+msgstr "Activité"
+
+msgctxt "propertyUi"
+msgid "Activity"
+msgstr "Activité"
+
+msgctxt "historyDiffUi"
+msgid "Attribute id"
+msgstr "Id attribut"
+
+msgctxt "historyDiffUi"
+msgid "Attribute label"
+msgstr "Attribut"
+
+msgctxt "historyUi"
+msgid "Code"
+msgstr "Code"
+
+msgctxt "propertyUi"
+msgid "Confidential"
+msgstr "Confidentiel"
+
+msgctxt "ddui"
+msgid "Confirm close document"
+msgstr "Confirmer la fermeture du document"
+
+msgctxt "ddui"
+msgid "Confirm close form \"{{title}}\""
+msgstr "Confirmation de la fermeture du formulaire \"{{title}}\""
+
+msgctxt "propertyUi"
+msgid "Created by"
+msgstr "Créé par"
+
+msgctxt "propertyUi"
+msgid "Creation date"
+msgstr "Date de création"
+
+msgctxt "ddui"
+msgid "Current workflow activity"
+msgstr "Étape actuelle"
+
+msgctxt "historyUi"
+msgid "Date"
+msgstr "Date"
+
+msgctxt "historyUi"
+msgid "Diff"
+msgstr "Diff"
+
+msgctxt "historyDiffUi"
+msgid "Difference between two revisions"
+msgstr "Différences entre deux révisions"
+
+msgctxt "ddui"
+msgid "Displaying"
+msgstr "Affichage en cours"
+
+msgctxt "ddui"
+msgid "Document Created"
+msgstr "Le document a été créé"
+
+msgctxt "historyUi"
+msgid "Document History"
+msgstr "Historique du document"
+
+msgctxt "ddui"
+msgid "Document Recorded"
+msgstr "Le document a été enregistré"
+
+msgctxt "ddui"
+msgid "Document has been locked by someone else."
+msgstr "Le document est en cours de modification par une autre personne."
+
+msgctxt "propertyUi"
+msgid "Document properties"
+msgstr "Propriétés du document"
+
+msgctxt "ddui"
+msgid "Empty value not allowed"
+msgstr "Les valeurs vides ne sont pas autorisées"
+
+msgctxt "propertyUi"
+msgid "Family"
+msgstr "Famille"
+
+msgctxt "historyDiffUi"
+msgid "Filter data"
+msgstr "Filtrer les données"
+
+msgctxt "historyUi"
+msgid "Filter messages"
+msgstr "Filtrer les messages"
+
+msgctxt "historyDiffUi"
+msgid "First document"
+msgstr "Premier document"
+
+msgctxt "historyUi"
+msgid "Hide details"
+msgstr "Cacher les messages"
+
+msgctxt "historyUi"
+msgid "Hide notices"
+msgstr "Cacher les détails"
+
+msgctxt "historyUi"
+msgid "History for {{title}}"
+msgstr "Historique de \"{{title}}\""
+
+msgctxt "propertyUi"
+msgid "Identifier"
+msgstr "Identifiant"
+
+msgctxt "ddui"
+msgid "Info"
+msgstr "Info"
+
+msgctxt "propertyUi"
+msgid "Last modification date"
+msgstr "Date de dernière modification"
+
+msgctxt "historyUi"
+msgid "Level"
+msgstr "Niveau"
+
+msgctxt "ddui"
+msgid "Loading"
+msgstr "Chargement"
+
+msgctxt "historyUi"
+msgid "Loading ..."
+msgstr "Chargement de l'historique"
+
+msgctxt "propertyUi"
+msgid "Locked by"
+msgstr "Verrouillé par"
+
+msgctxt "propertyUi"
+msgid "Logical name"
+msgstr "Nom logique"
+
+msgctxt "historyUi"
+msgid "Message"
+msgstr "Message"
+
+msgctxt "ddui"
+msgid "Next step. Apply transition {{label}}"
+msgstr ""
+"Étape suivante.<br/>Cliquer pour appliquer la transition<br/> <b>"
+"\"{{label}}\"</b>"
+
+msgctxt "historyUi"
+msgid "No one notices"
+msgstr "Aucun détail"
+
+msgctxt "propertyUi"
+msgid "Not confidential"
+msgstr "Non confidentiel"
+
+msgctxt "propertyUi"
+msgid "Not locked"
+msgstr "Aucun verrou"
+
+msgctxt "UImenu"
+msgid "Other"
+msgstr "Autre"
+
+msgctxt "historyUi"
+msgid "Owner"
+msgstr "Auteur"
+
+msgctxt "propertyUi"
+msgid "Profil"
+msgstr "Profil"
+
+msgctxt "propertyUi"
+msgid "Profil reference"
+msgstr "Profil de référence"
+
+msgctxt "propertyUi"
+msgid "Properties for {{title}}"
+msgstr "Propriétés de \"{{title}}\""
+
+msgctxt "propertyUi"
+msgid "Property"
+msgstr "Propriété"
+
+msgctxt "ddui"
+msgid "Recording"
+msgstr "Enregistrement"
+
+msgctxt "ddui"
+msgid "Recording files in progress"
+msgstr "Enregistrement des fichiers en cours"
+
+msgctxt "ddui"
+msgid "Rendering"
+msgstr "Affichage"
+
+msgctxt "historyUi"
+msgid "Rev"
+msgstr "Rév"
+
+msgctxt "propertyUi"
+msgid "Revision number"
+msgstr "Révision"
+
+msgctxt "ddui"
+msgid "Row #"
+msgstr "Rangée n°"
+
+msgctxt "historyDiffUi"
+msgid "Second document"
+msgstr "Deuxième document"
+
+msgctxt "historyUi"
+msgid "See revision number #"
+msgstr "Voir la révision n°#"
+
+msgctxt "ddui"
+msgid "Server return unreadable"
+msgstr "Retour du serveur illisible"
+
+msgctxt "historyDiffUi"
+msgid "Show all"
+msgstr "Montrer tout"
+
+msgctxt "historyUi"
+msgid "Show details"
+msgstr "Montrer les messages"
+
+msgctxt "historyUi"
+msgid "Show notices"
+msgstr "Montrer les détails"
+
+msgctxt "historyDiffUi"
+msgid "Show only differences"
+msgstr "Montrer seulement les différences"
+
+msgctxt "historyUi"
+msgid "State"
+msgstr "État"
+
+msgctxt "ddui"
+msgid "Stay on the form"
+msgstr "Rester sur le formulaire"
+
+msgctxt "ddui"
+msgid "The field must not be empty"
+msgstr "Le champ ne doit pas être vide"
+
+msgctxt "ddui"
+msgid "The form has been modified and is is not saved"
+msgstr "Le formulaire a été modifié et il n'a pas été enregistré"
+
+msgctxt "ddui"
+msgid "The form has been modified without saving"
+msgstr "Le formulaire a été modifié sans être enregistré"
+
+msgctxt "ddui"
+msgid "The form has been modified without saving, do you want to close it ?"
+msgstr ""
+"Le formulaire a été modifié sans être enregistré\n"
+"Voulez-vous le fermer ?"
+
+msgctxt "propertyUi"
+msgid "Title"
+msgstr "Titre"
+
+msgctxt "ddui"
+msgid "Transition Graph"
+msgstr "Graphique des prochaines étapes du processus"
+
+msgctxt "ddui"
+msgid "Unable to close the document"
+msgstr "Impossible de fermer le document"
+
+msgctxt "ddui"
+msgid "Unable to save"
+msgstr "Enregistrement impossible"
+
+msgctxt "ddui"
+msgid "Unexpected error "
+msgstr "Erreur inattendue"
+
+msgctxt "ddui"
+msgid "User has cancelled the action."
+msgstr "L'action a été annulée par l'utilisateur"
+
+msgctxt "propertyUi"
+msgid "Value"
+msgstr "Valeur"
+
+msgctxt "historyUi"
+msgid "Version"
+msgstr "Version"
+
+msgctxt "propertyUi"
+msgid "Version"
+msgstr "Version"
+
+msgctxt "propertyUi"
+msgid "View controller"
+msgstr "Contrôle de vue"
+
+msgctxt "ddui"
+msgid "Waiting uploads in progress"
+msgstr "Attente des enregistrements des fichiers qui sont en cours"
+
+msgctxt "propertyUi"
+msgid "Workflow"
+msgstr "Cycle de vie"
+
+msgctxt "ddui"
+msgid "Your navigator seems offline, try later"
+msgstr "Votre navigateur semble déconnecté, veuillez ré-essayer plus tard."
+
+msgctxt "historyUi"
+msgid "past Revision"
+msgstr "&nbsp; "
+
+msgctxt "ddui"
+msgid "{{parentLabel}} / {{label}} (row # {{index}}) is needed"
+msgstr "{{parentLabel}} / {{label}} (rangée n°{{index}}) est requis"
+
+msgctxt "ddui"
+msgid "{{parentLabel}} / {{label}} is needed"
+msgstr "{{parentLabel}} / {{label}} est requis"
+
+msgctxt "historyDiffUi"
+msgid ""
+"{{title}}  (Revision : {{revision}}). <br/>Created on <em>{{mdate}}</em>"
+msgstr "{{title}}  (Révision : {{revision}}). <br/>Créé le <em>{{mdate}}</em>"
+
+#~ msgctxt "propertyUi"
+#~ msgid "Last access date"
+#~ msgstr "Date de dernier accès"
+
+#~ msgctxt "ddui"
+#~ msgid "Unable to get the structure your navigator seems offline, try later"
+#~ msgstr ""
+#~ "Impossible de télécharger la structure, votre navigateur semble "
+#~ "déconnecté, veuillez ré-essayer plus tard."
+
+#~ msgctxt "ddui"
+#~ msgid "Unable to set the lock your navigator seems offline, try later"
+#~ msgstr ""
+#~ "Impossible de déposer le verrou, votre navigateur semble déconnecté, "
+#~ "veuillez ré-essayer plus tard."

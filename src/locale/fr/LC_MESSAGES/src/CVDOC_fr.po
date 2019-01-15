@@ -1,0 +1,206 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: CVDOC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:33+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "ba_desc"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_displayed"
+msgstr "Affichable"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_famid"
+msgstr "Famille (id)"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_fr_default"
+msgstr "Vues par défauts"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_idcview"
+msgstr "Id création vues par défaut"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_idview"
+msgstr "Identifiant de la vue"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_kview"
+msgstr "Type"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_lcview"
+msgstr "Création vue"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_lview"
+msgstr "Label"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_menu"
+msgstr "Menu"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_mskid"
+msgstr "Masque"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_order"
+msgstr "Ordre de sélection"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_primarymask"
+msgstr "Masque primaire"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_renderaccessclass"
+msgstr "Classe d'accès au rendu"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_renderconfigclass"
+msgstr "Classe de configuration de rendu (HTML5)"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "cv_t_views"
+msgstr "Vues"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "dpdoc_famid"
+msgstr "Famille pour le profil"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "dpdoc_fr_dyn"
+msgstr "Profil dynamique"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "fr_basic"
+msgstr ""
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+#, fuzzy
+msgctxt "CVDOC"
+msgid "title"
+msgstr "Contrôle de vues"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_displayed#[bool]no"
+#~ msgstr "non"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_displayed#yes"
+#~ msgstr "oui"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_fam"
+#~ msgstr "Famille"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_kview#VCONS"
+#~ msgstr "Consultation"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_kview#VEDIT"
+#~ msgstr "Edition"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_menu#elabel"
+#~ msgstr "nom du sous menu"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_menu#showempty"
+#~ msgstr "&lt;aucun>"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_msk"
+#~ msgstr "Masque(titre)"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_mskid#showempty"
+#~ msgstr "&lt;aucun>"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_order#elabel"
+#~ msgstr "ordre d'accès pour le profilage"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_order#showempty"
+#~ msgstr "&lt;aucun>"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_zview"
+#~ msgstr "Zone (Layout)"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "cv_zview#showempty"
+#~ msgstr "&lt;aucun>"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "dpdoc_fam"
+#~ msgstr "Famille pour le profil (titre)"
+
+#, fuzzy
+#~ msgctxt "CVDOC"
+#~ msgid "dpdoc_famid#elabel"
+#~ msgstr "famille utilisée pour les profils dynamiques"

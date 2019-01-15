@@ -3,20 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "beautify": "npx eslint ./anakeen-ui --fix",
+    "beautify": "npx eslint ./src --fix",
     "buildPolyfill": "./node_modules/webpack/bin/webpack.js --config ./webpackConfig/polyfill.js",
     "buildTest": "./node_modules/webpack/bin/webpack.js --config ./webpackConfig/test.js",
     "buildSmartElement": "./node_modules/webpack/bin/webpack.js --config ./webpackConfig/smartElement.js",
     "buildSmartStructures": "./node_modules/webpack/bin/webpack.js --config ./webpackConfig/smartStructures.js",
     "buildComponent": "./node_modules/webpack/bin/webpack.js --config ./webpackConfig/components.js",
     "buildAsset": " ./node_modules/webpack/bin/webpack.js --config ./webpackConfig/assets.js",
-    "lint": "npx eslint ./anakeen-ui"
+    "lint": "npx eslint ./src"
   },
   "files": [
-    "anakeen-ui/src/**/*.scss",
-    "anakeen-ui/src/Apps/DOCUMENT/IHM/document.js",
-    "anakeen-ui/src/Apps/DOCUMENT/IHM/widgets/widget.js",
-    "anakeen-ui/LICENSE",
+    "src/**/*.scss",
+    "src/Apps/DOCUMENT/IHM/document.js",
+    "src/Apps/DOCUMENT/IHM/widgets/widget.js",
+    "LICENSE",
     "README.md",
     "RELEASE",
     "VERSION"
@@ -26,7 +26,7 @@
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0-first4",
-    "@anakeen/anakeen-cli": "1.0.2-1546520804",
+    "@anakeen/anakeen-cli": "latest",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "1.0.0-1543853095",
     "@progress/kendo-ui": "^2018.3.1129",
