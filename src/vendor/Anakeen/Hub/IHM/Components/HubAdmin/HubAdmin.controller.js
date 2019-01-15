@@ -1,4 +1,7 @@
 import Vue from "vue";
+import "@progress/kendo-ui/js/kendo.popup";
+import "@progress/kendo-ui/js/kendo.grid";
+
 import { AnkSEGrid } from "@anakeen/ank-components";
 import { AnkLogout } from "@anakeen/ank-components";
 import { AnkIdentity } from "@anakeen/ank-components";
@@ -46,13 +49,7 @@ export default {
   },
   methods: {
     toolbarConfig() {
-      const options = this.$refs.hubGrid.kendoGrid.getOptions();
-      options.toolbar.push({
-        name: "Create",
-        template: "<select class='hub-config-list'/>"
-      });
-      this.$refs.hubGrid.kendoGrid.setOptions(options);
-      this.$(".hub-config-list").kendoDropDownList({
+      this.$(".grid-toolbar-create-action").kendoDropDownList({
         dataTextField: "text",
         dataValueField: "value",
         dataSource: this.hubConfig,
@@ -93,6 +90,12 @@ export default {
         initid: e,
         viewId: "!defaultEdition"
       });
+    },
+    toolbarActionClick(e) {
+      switch (e.data.type) {
+        case "config":
+          break;
+      }
     },
     actionClick(e) {
       e.preventDefault();
