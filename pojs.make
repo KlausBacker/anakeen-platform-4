@@ -1,7 +1,6 @@
 
 LOCALES=en fr
-#OUTPUT_DIR=anakeen-ui/src/vendor/Anakeen/Components/Authent
-OUTPUT_DIR=anakeen-ui/src/vendor/Anakeen/Components
+OUTPUT_DIR=src/vendor/Anakeen/Components
 COMPONENTS_DIRS= $(shell find $(OUTPUT_DIR)/* -maxdepth 0 -type d)
 COMPONENTS_NAME= $(notdir $(COMPONENTS_DIRS))
 TEMPLATES= $(COMPONENTS_NAME:%=./tmpot/%/template.pot)

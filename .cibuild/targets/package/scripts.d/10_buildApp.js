@@ -11,8 +11,8 @@ return produceApp({
         args: ["app"]
       },
       path: {
-        infoXML: "./anakeen-ui/",
-        src: "./anakeen-ui/src/"
+        infoXML: "./",
+        src: "./src/"
       },
       stubs: {
         command: "make",
