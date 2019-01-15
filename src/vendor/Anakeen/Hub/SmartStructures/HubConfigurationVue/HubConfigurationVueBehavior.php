@@ -3,6 +3,7 @@
 namespace Anakeen\Hub\SmartStructures\HubConfigurationVue;
 
 use SmartStructure\Fields\Hubconfigurationvue as HubConfigurationVueFields;
+
 class HubConfigurationVueBehavior extends \SmartStructure\Hubconfiguration
 {
     public function getConfiguration()

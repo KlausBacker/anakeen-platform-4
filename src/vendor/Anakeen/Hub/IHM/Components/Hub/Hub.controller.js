@@ -46,7 +46,9 @@ export default {
     },
     isFooterEnabled() {
       if (this.config && this.config.length) {
-        return this.config.findIndex(c => c.dock.split("_")[0] === "BOTTOM") > -1;
+        return (
+          this.config.findIndex(c => c.dock.split("_")[0] === "BOTTOM") > -1
+        );
       }
       return false;
     },
@@ -58,7 +60,9 @@ export default {
     },
     isRightEnabled() {
       if (this.config && this.config.length) {
-        return this.config.findIndex(c => c.dock.split("_")[0] === "RIGHT") > -1;
+        return (
+          this.config.findIndex(c => c.dock.split("_")[0] === "RIGHT") > -1
+        );
       }
       return false;
     }
@@ -72,7 +76,9 @@ export default {
     onDockLoaded(dockPosition) {
       if (dockPosition) {
         const POS = dockPosition.toUpperCase();
-        const dockContents = this.config.filter(c => c.dock.split("_")[0] === POS);
+        const dockContents = this.config.filter(
+          c => c.dock.split("_")[0] === POS
+        );
         if (dockContents && dockContents.length) {
           this.hubEntries.contents = dockContents;
           this.hubEntries
