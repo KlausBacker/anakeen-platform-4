@@ -3,7 +3,7 @@
     <sde:routes namespace="AdminCenter">
         <sde:route name="AdminAccount:GroupList">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Account\Groups</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Account\Groups</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/account/groups/</sde:pattern>
             <sde:description>Get list of group</sde:description>
@@ -13,7 +13,7 @@
         </sde:route>
         <sde:route name="AdminAccount:UserList">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Account\Users</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Account\Users</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/account/users/</sde:pattern>
             <sde:description>Get list of users</sde:description>
@@ -23,7 +23,7 @@
         </sde:route>
         <sde:route name="AdminAccount:Info">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Account\Config</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Account\Config</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/account/config/</sde:pattern>
             <sde:description>Get list of users</sde:description>
@@ -33,7 +33,7 @@
         </sde:route>
         <sde:route name="AdminAccount:disable">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Account\User\Disable</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Account\User\Disable</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/account/users/{userSmartId}/disable</sde:pattern>
             <sde:description>Disable account</sde:description>
@@ -43,7 +43,7 @@
         </sde:route>
         <sde:route name="AdminAccount:enable">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Account\User\Enable</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Account\User\Enable</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/account/users/{userSmartId}/enable</sde:pattern>
             <sde:description>Enable account</sde:description>
@@ -53,7 +53,7 @@
         </sde:route>
         <sde:route name="AdminAccount:resetLogin">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Account\User\ResetLogin</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Account\User\ResetLogin</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/account/users/{userSmartId}/resetLogin</sde:pattern>
             <sde:description>Reset login</sde:description>

@@ -3,7 +3,7 @@
     <sde:routes  namespace="AdminCenter">
         <sde:route name="AdminRoutes:AllRoutes">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Routes\AllRoutes</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Routes\AllRoutes</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/routes/</sde:pattern>
             <sde:description>Get all routes</sde:description>
@@ -13,7 +13,7 @@
         </sde:route>
         <sde:route name="AdminRoutes:ActivateRoute">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Routes\ActivateRoute</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Routes\ActivateRoute</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/routes/{routeName}/activate/</sde:pattern>
             <sde:description>Activate route</sde:description>
@@ -23,7 +23,7 @@
         </sde:route>
         <sde:route name="AdminRoutes:DeactivateRoute">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Routes\DeactivateRoute</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Routes\DeactivateRoute</sde:callable>
             <sde:method>DELETE</sde:method>
             <sde:pattern>/api/v2/admin/routes/{routeName}/deactivate/</sde:pattern>
             <sde:description>Deactivate route</sde:description>
@@ -33,7 +33,7 @@
         </sde:route>
         <sde:route name="AdminRoutes:AllMiddlewares">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Routes\AllMiddlewares</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Routes\AllMiddlewares</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/middlewares/</sde:pattern>
             <sde:description>Get all middlewares</sde:description>
@@ -43,7 +43,7 @@
         </sde:route>
         <sde:route name="AdminRoutes:ApplicMiddlewares">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Admin\Routes\ApplicMiddlewares</sde:callable>
+            <sde:callable>Anakeen\Routes\Admin\Routes\ApplicMiddlewares</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/routes/{routeName}/applicMiddlewares/</sde:pattern>
             <sde:description>Retrieve applicable middlewares</sde:description>
