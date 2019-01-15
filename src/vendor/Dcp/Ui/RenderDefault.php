@@ -74,157 +74,157 @@ class RenderDefault implements IRenderConfig
     {
         return array(
             "body" => array(
-                "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document.mustache"
+                "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/document/document.mustache"
             ),
             "sections" => array(
                 "header" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__header.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/document/document__header.mustache"
                 ),
                 "menu" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__menu.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/document/document__menu.mustache"
                 ),
                 "content" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__content.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/document/document__content.mustache"
                 ),
                 "footer" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/document/document__footer.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/document/document__footer.mustache"
                 )
             ),
             "menu" => array(
                 "menu" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/menu.mustache",
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/menu/menu.mustache",
                 ),
                 "itemMenu" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/itemMenu.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/menu/itemMenu.mustache"
                 ),
                 "listMenu" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/listMenu.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/menu/listMenu.mustache"
                 ),
                 "dynamicMenu" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/dynamicMenu.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/menu/dynamicMenu.mustache"
                 ),
                 "callableMenu" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/callableMenu.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/menu/callableMenu.mustache"
                 ),
                 "separatorMenu" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/menu/separatorMenu.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/menu/separatorMenu.mustache"
                 )
             ),
             "attribute" => array(
                 "simpleWrapper" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/singleWrapper.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/attributes/singleWrapper.mustache"
                 ),
                 "description" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/attributeDescription.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/attributes/attributeDescription.mustache"
                 ),
 
                 "default" => array( // use it when no type is defined
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/default/write.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/default/write.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ),
                 "label" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/label/label.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/label/label.mustache"
                 ),
                 "longtext" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/default/read.mustache"
                     )
                 ),
                 "file" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/file/fileWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/file/fileWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/file/fileRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/file/fileRead.mustache"
                     )
                 ),
                 "enum" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/enum/enumWrite.mustache"
                     ),
                     "writeRadio" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/enum/enumWriteRadio.mustache"
                     ),
                     "writeToggle" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumWriteToggle.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/enum/enumWriteToggle.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/enum/enumRead.mustache"
                     )
                 ),
                 "htmltext" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/htmltext/htmltextRead.mustache"
                     )
                 ),
                 "docid" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ),
                 "account" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ),
                 "thesaurus" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/docid/docidWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/docid/docidRead.mustache"
                     )
                 ),
                 "image" => array(
                     "write" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/image/imageWrite.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/image/imageWrite.mustache"
                     ),
                     "read" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/image/imageRead.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/image/imageRead.mustache"
                     )
                 ),
                 "frame" => array(
                     "label" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/frame/label.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/attributes/frame/label.mustache"
                     ),
                     "content" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/attributes/frame/content.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/attributes/frame/content.mustache"
                     )
                 ),
                 "array" => array(
                     "label" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/label.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/label.mustache"
                     ),
                     "content" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/content.mustache"
                     ),
                     "line" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache"
                     ),
                     "responsive" => array(
-                        "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/widgets/attributes/array/responsive.mustache"
+                        "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/responsive.mustache"
                     )
                 )
             ),
             "window" => array(
                 "confirm" => array(
-                    "file" => DEFAULT_PUBDIR . "/Apps/DOCUMENT/IHM/views/window/confirm.mustache"
+                    "file" => DEFAULT_PUBDIR . "/vendor/Anakeen/DOCUMENT/IHM/views/window/confirm.mustache"
                 )
             )
         );
