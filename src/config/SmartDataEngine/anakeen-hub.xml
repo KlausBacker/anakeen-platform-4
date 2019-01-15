@@ -46,6 +46,15 @@
                 <sde:access ns="Anakeen">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="FAIcon">
+            <sde:callable>\Anakeen\Hub\Routes\FontAwesomeIcon</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/font/icons/</sde:pattern>
+            <sde:description>Get font awesome icons</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubUser</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
     <sde:accesses namespace="Anakeen">
         <sde:access name="HubUser">

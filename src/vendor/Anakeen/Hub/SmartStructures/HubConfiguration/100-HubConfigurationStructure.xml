@@ -5,8 +5,8 @@
 
         <smart:class>Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationBehavior</smart:class>
         <smart:fields>
-            <smart:field-set name="hub_structure" type="tab" label="Structure" access="ReadWrite">
-                <smart:field-set name="hub_config" type="frame" label="Configuration" access="ReadWrite">
+            <smart:field-set name="hub_config" type="tab" label="Configuration" access="ReadWrite">
+                <smart:field-set name="hub_label_frame" type="frame" label="Label" access="ReadWrite">
                     <smart:field-set name="hub_titles" type="array" label="Element Titles"
                                      access="ReadWrite">
                         <smart:field-text name="hub_title" label="Title" access="ReadWrite"/>
@@ -14,22 +14,30 @@
                                           access="ReadWrite"/>
                         <smart:field-text name="hub_language_code" label="Language code" access="ReadWrite"/>
                     </smart:field-set>
-                    <smart:field-htmltext name="hub_icon" label="Icon" access="ReadWrite"/>
-                    <smart:field-enum name="hub_mono_element" label="Mono element" relation="Yes_no_enum"
-                                      access="ReadWrite"/>
-                    <smart:field-enum name="hub_activated" label="Element activated" relation="Yes_no_enum"
-                                      access="ReadWrite"/>
-                    <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="hub_icon_frame" type="frame" label="Icon" access="ReadWrite">
+                    <smart:field-enum name="hub_icon_enum" label="Mode" access="ReadWrite" relation="Icon_mode_enum" />
+                    <smart:field-text name="hub_icon_font" label="Icon picker" access="ReadWrite"/>
+                    <smart:field-image name="hub_icon_image" label="Image" access="ReadWrite"/>
+                    <smart:field-htmltext name="hub_icon_text" label="Html icon" access="ReadWrite"/>
                 </smart:field-set>
                 <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Element location">
+                    <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
                     <smart:field-enum name="hub_docker_position" label="Dock position" relation="Docker_pos_enum"
                                       access="ReadWrite"/>
                 </smart:field-set>
+                <smart:field-set name="hub_activated_frame" type="frame" label="Element activation" access="ReadWrite">
+                    <smart:field-enum name="hub_activated" label="Element is activated" relation="Yes_no_enum"
+                                      access="ReadWrite"/>
+                    <smart:field-int name="hub_activated_order" label="Priority" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_component_tab" type="tab" label="Element parameters" access="ReadWrite">
                 <smart:field-set name="hub_component_parameters" type="frame" access="ReadWrite" label="Parameters"/>
             </smart:field-set>
             <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
                 <smart:field-set name="hub_security_frame" type="frame" access="ReadWrite">
-                    <smart:field-set name="hub_roles" type="array" access="ReadWrite">
+                    <smart:field-set name="hub_roles" type="array" label="Roles" access="ReadWrite">
                         <smart:field-account name="hub_role" label="Role" access="ReadWrite">
                             <smart:field-option name="match">role</smart:field-option>
                         </smart:field-account>
@@ -65,23 +73,36 @@
         </smart:autocompletion>
 
         <smart:defaults>
-            <smart:default field="hub_mono_element">FALSE</smart:default>
             <smart:default field="hub_activated">TRUE</smart:default>
-            <smart:default field="hub_docker_position">LEFT</smart:default>
+            <smart:default field="hub_docker_position" reset="true">LEFTTOP</smart:default>
+            <smart:default field="hub_icon_enum" reset="true">FONT</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>
 
     <smart:enumerates>
+        <smart:enum-configuration name="Icon_mode_enum">
+            <smart:enum name="FONT" label="Font"/>
+            <smart:enum name="IMAGE" label="Image"/>
+            <smart:enum name="HTML" label="Html"/>
+        </smart:enum-configuration>
         <smart:enum-configuration name="Yes_no_enum">
             <smart:enum name="TRUE" label="Yes"/>
             <smart:enum name="FALSE" label="No"/>
         </smart:enum-configuration>
         <smart:enum-configuration name="Docker_pos_enum">
-            <smart:enum name="TOP" label="Top"/>
-            <smart:enum name="BOTTOM" label="Bottom"/>
-            <smart:enum name="LEFT" label="Left"/>
-            <smart:enum name="RIGHT" label="Right"/>
+            <smart:enum name="TOPLEFT" label="Top Left"/>
+            <smart:enum name="TOPCENTER" label="Top Center"/>
+            <smart:enum name="TOPRIGHT" label="Top Right"/>
+            <smart:enum name="BOTTOMLEFT" label="Bottom Left"/>
+            <smart:enum name="BOTTOMCENTER" label="Bottom Center"/>
+            <smart:enum name="BOTTOMRIGHT" label="Bottom Right"/>
+            <smart:enum name="LEFTTOP" label="Left Top"/>
+            <smart:enum name="LEFTCENTER" label="Left Center"/>
+            <smart:enum name="LEFTBOTTOM" label="Left Bottom"/>
+            <smart:enum name="RIGHTTOP" label="Right Top"/>
+            <smart:enum name="RIGHTCENTER" label="Right Center"/>
+            <smart:enum name="RIGHTBOTTOM" label="Right Bottom"/>
         </smart:enum-configuration>
     </smart:enumerates>
 </smart:config>

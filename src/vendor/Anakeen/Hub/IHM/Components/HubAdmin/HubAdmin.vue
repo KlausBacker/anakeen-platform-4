@@ -23,17 +23,18 @@
                                   class="hub-admin"
                                   ref="hubGrid"
                                   @grid-ready="toolbarConfig"
-                                  @action-click="actionClick">
+                                  @action-click="actionClick"
+                                  :contextTitles="false">
+                                <grid-column title="Element position" field="hub_docker_position"></grid-column>
+                                <grid-column title="Order" field="hub_order"></grid-column>
                                 <grid-column title="Icon" field="icon"></grid-column>
                                 <grid-column title="Title" field="title"></grid-column>
-                                <grid-column title="Smart field title" field="hub_title"></grid-column>
-                                <grid-column title="Language" field="hub_language"></grid-column>
                                 <grid-actions>
                                     <grid-action action="consult" iconClass="k-icon k-i-folder-open"></grid-action>
                                     <grid-action action="edit"></grid-action>
                                 </grid-actions>
                                 <grid-toolbar>
-                                    <grid-toolbar-action action="export" title="Export"></grid-toolbar-action>
+                                    <grid-toolbar-action action="create"></grid-toolbar-action>
                                 </grid-toolbar>
                             </grid>
                         </div>

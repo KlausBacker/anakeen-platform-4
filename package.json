@@ -24,7 +24,6 @@
     "@anakeen/anakeen-cli": "1.0.1-1547202545",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
-    "@fonticonpicker/fonticonpicker": "^3.1.1",
     "@progress/kendo-layout-vue-wrapper": "^2018.3.1025",
     "@progress/kendo-ui": "2018.2.806",
     "axios": "^0.18.0",

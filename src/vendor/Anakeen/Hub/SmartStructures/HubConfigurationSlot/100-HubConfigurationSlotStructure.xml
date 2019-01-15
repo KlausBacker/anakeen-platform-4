@@ -7,23 +7,17 @@
 
         <smart:fields>
             <smart:field-set name="hub_slot_parameters" extended="true">
-                <smart:field-enum name="hub_slot_position" label="Position in dock" relation="Top_bottom_enum"
-                                  access="ReadWrite"/>
             </smart:field-set>
+
         </smart:fields>
 
         <smart:hooks/>
 
         <smart:defaults>
-            <smart:default field="hub_slot_position">TOP</smart:default>
         </smart:defaults>
     </smart:structure-configuration>
 
     <smart:enumerates>
-        <smart:enum-configuration name="Top_bottom_enum">
-            <smart:enum name="TOP" label="Top"/>
-            <smart:enum name="BOTTOM" label="Bottom"/>
-            <smart:enum name="CENTER" label="Center"/>
-        </smart:enum-configuration>
+
     </smart:enumerates>
 </smart:config>
