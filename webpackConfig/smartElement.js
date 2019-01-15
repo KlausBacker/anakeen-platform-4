@@ -18,13 +18,13 @@ module.exports = () => {
       smartElement: [
         path.resolve(
           __dirname,
-          "../src/Apps/DOCUMENT/IHM/mainDocument.js"
+          "../src/vendor/Anakeen/DOCUMENT/IHM/mainDocument.js"
         )
       ],
       smartElementWidget: [
         path.resolve(
           __dirname,
-          "../src/Apps/DOCUMENT/IHM/smartElement.js"
+          "../src/vendor/Anakeen/DOCUMENT/IHM/smartElement.js"
         )
       ]
     },
@@ -38,7 +38,7 @@ module.exports = () => {
             dcpContextRoot: "",
             dcpDocument: path.resolve(
               __dirname,
-              "../src/Apps/DOCUMENT/IHM/"
+              "../src/vendor/Anakeen/DOCUMENT/IHM/"
             ),
             dcpExternals: path.resolve(
               __dirname,
@@ -65,7 +65,7 @@ module.exports = () => {
             ),
             template: path.resolve(
               __dirname,
-              "../src/Apps/DOCUMENT/IHM/document-view.html.mustache"
+              "../src/vendor/Anakeen/DOCUMENT/IHM/document-view.html.mustache"
             ),
             inject: false
           }),

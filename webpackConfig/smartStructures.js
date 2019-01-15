@@ -55,7 +55,7 @@ module.exports = () => {
             dcpContextRoot: "",
             dcpDocument: path.resolve(
               __dirname,
-              "../src/Apps/DOCUMENT/IHM/"
+              "../src/vendor/Anakeen/DOCUMENT/IHM/"
             ),
             dcpExternals: path.resolve(
               __dirname,

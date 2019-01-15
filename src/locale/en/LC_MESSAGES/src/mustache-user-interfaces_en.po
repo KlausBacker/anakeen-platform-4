@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/content.mustache
 msgctxt "ddui"
 msgid "Add new line"
 msgstr ""
@@ -22,32 +22,32 @@ msgctxt "dsearch"
 msgid "Conditions"
 msgstr ""
 
-#: src/Apps/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/longtext/longtextWrite.mustache
 msgctxt "ddui"
 msgid "Delete : "
 msgstr ""
 
-#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Delete line"
 msgstr ""
 
-#: src/Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 msgctxt "ddui"
 msgid "DocumentDeleted"
 msgstr "Document deleted at"
 
-#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Drag to move line"
 msgstr ""
 
-#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/content.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/content.mustache
 msgctxt "ddui"
 msgid "Duplicate selected row"
 msgstr ""
 
-#: src/Apps/DOCUMENT/IHM/views/document/document__header.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/views/document/document__header.mustache
 msgctxt "ddui"
 msgid "Editing form"
 msgstr "Form is under modification"
@@ -62,13 +62,13 @@ msgctxt "dsearch"
 msgid "Results"
 msgstr ""
 
-#: src/Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 #, fuzzy
 msgctxt "ddui"
 msgid "Revision :"
 msgstr "Revision created at"
 
-#: src/Apps/DOCUMENT/IHM/views/document/document__header-fixed.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Revision created at"
@@ -78,7 +78,7 @@ msgctxt "dsearch"
 msgid "Searching ..."
 msgstr ""
 
-#: src/Apps/DOCUMENT/IHM/widgets/attributes/array/line.mustache
+#: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Select line"
 msgstr ""

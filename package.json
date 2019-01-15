@@ -14,8 +14,8 @@
   },
   "files": [
     "src/**/*.scss",
-    "src/Apps/DOCUMENT/IHM/document.js",
-    "src/Apps/DOCUMENT/IHM/widgets/widget.js",
+    "src/vendor/Anakeen/DOCUMENT/IHM/document.js",
+    "src/vendor/Anakeen/DOCUMENT/IHM/widgets/widget.js",
     "LICENSE",
     "README.md",
     "RELEASE",
