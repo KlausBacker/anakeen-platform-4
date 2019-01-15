@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.0.2-1546520804",
+  "version": "1.0.2-1547477775",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
   "bin": {
@@ -12,7 +12,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@anakeen/anakeen-module-validation": "latest",
+    "@anakeen/anakeen-module-validation": "^1.0.6",
     "form-data": "^2.3.3",
     "glob": "^7.1.3",
     "gulp": "^4.0.0",
@@ -22,6 +22,8 @@
     "inquirer": "^6.0.0",
     "mustache": "^3.0.1",
     "node-fetch": "^2.3.0",
+    "opn": "^5.4.0",
+    "sax": "^1.2.4",
     "signale": "^1.3.0",
     "streamqueue": "^1.1.2",
     "through2": "^3.0.0",
@@ -30,8 +32,6 @@
     "uuid": "^3.3.2",
     "vinyl-file": "^3.0.0",
     "xml2js": "^0.4.19",
-    "opn": "^5.4.0",
-    "sax": "^1.2.4",
     "yargs": "^12.0.5"
   },
   "devDependencies": {
