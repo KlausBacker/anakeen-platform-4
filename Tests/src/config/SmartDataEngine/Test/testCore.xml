@@ -3,7 +3,7 @@
     <sde:routes namespace="CoreTest">
         <sde:route name="Routes">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/tests/routes/</sde:pattern>
             <sde:description>Route config</sde:description>
@@ -11,7 +11,7 @@
         </sde:route>
         <sde:route name="RouteSecurit">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/tests/routes/securit/</sde:pattern>
             <sde:description>Route config</sde:description>
@@ -21,7 +21,7 @@
         </sde:route>
         <sde:route name="RouteVerySecurit">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/tests/routes/userguest/</sde:pattern>
             <sde:description>Route config</sde:description>
@@ -32,7 +32,7 @@
         </sde:route>
         <sde:route name="RouteForAll">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/tests/routes/forall/</sde:pattern>
             <sde:description>Route config</sde:description>
@@ -44,7 +44,7 @@
         </sde:route>
         <sde:route name="Routes:Over1">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/tests/routes/over1/</sde:pattern>
             <sde:description>Route config</sde:description>
@@ -52,7 +52,7 @@
         </sde:route>
         <sde:route name="Routes:Over2">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/tests/routes/over2/</sde:pattern>
             <sde:description>Route config</sde:description>
@@ -60,7 +60,7 @@
         </sde:route>
         <sde:route name="Global">
             <sde:priority>0</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/tests/routes/global/</sde:pattern>
             <sde:description>Route config</sde:description>

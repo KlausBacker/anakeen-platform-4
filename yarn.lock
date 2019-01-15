@@ -10,12 +10,12 @@
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@1.0.1-1547202545":
-  version "1.0.1-1547202545"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.1-1547202545.tgz#3d0102bf78247dd66a3c71882f6281cd23789a3c"
-  integrity sha512-qRfVYGgQT6koqaxoAdvdzrBKW2rxpk9B9Vh+Todkpyb22W6MDl7Rd09TvipSioagWJSEUHEme2gBsIVbWxNhiQ==
+"@anakeen/anakeen-cli@1.0.2-1547477775":
+  version "1.0.2-1547477775"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.2-1547477775.tgz#ce54c497c24f958e113c30b481cddb30dc1c77c1"
+  integrity sha512-it44EPe6uhwANQFhgjVClIISuMX2IvE/T3n5uYrwWo0OZOJJXrH82xrlLxBfZaPJKJV9nwuA3tAyguzntSxoMA==
   dependencies:
-    "@anakeen/anakeen-module-validation" latest
+    "@anakeen/anakeen-module-validation" "1.0.6"
     form-data "^2.3.3"
     glob "^7.1.3"
     gulp "^4.0.0"
@@ -25,6 +25,8 @@
     inquirer "^6.0.0"
     mustache "^3.0.1"
     node-fetch "^2.3.0"
+    opn "^5.4.0"
+    sax "^1.2.4"
     signale "^1.3.0"
     streamqueue "^1.1.2"
     through2 "^3.0.0"
@@ -35,10 +37,10 @@
     xml2js "^0.4.19"
     yargs "^12.0.5"
 
-"@anakeen/anakeen-module-validation@latest":
-  version "1.0.3"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.3.tgz#8f7b4f0e1e4b802ea4390c1e5fe01aeef3cdb535"
-  integrity sha512-SmJEl9v7lm1x0dawHP7tWAk6iiL7V8/qw/YDltdhXt/3P+8Kr5BozXdC6f6xgO0beOxfuk0a2DcBa/3QisYvJw==
+"@anakeen/anakeen-module-validation@1.0.6":
+  version "1.0.6"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.6.tgz#17d8ccdeef2824489e9834731b5f945829f7714d"
+  integrity sha512-Pf4bpN4111RkW73LZemV6czouAx5yc1LgaZuW96OhbDgyqXL4lAYh6ppmwRr4HiprapvajiTnA+LTzhyIaYOZQ==
   dependencies:
     libxmljs "^0.19.5"
 
@@ -1601,6 +1603,11 @@ is-windows@^1.0.1, is-windows@^1.0.2:
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
   integrity sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==
 
+is-wsl@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-1.1.0.tgz#1f16e4aa22b04d1336b66188a66af3c600c3a66d"
+  integrity sha1-HxbkqiKwTRM2tmGIpmrzxgDDpm0=
+
 isarray@1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
@@ -2167,6 +2174,13 @@ onetime@^2.0.0:
   integrity sha1-BnQoIw/WdEOyeUsiu6UotoZ5YtQ=
   dependencies:
     mimic-fn "^1.0.0"
+
+opn@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/opn/-/opn-5.4.0.tgz#cb545e7aab78562beb11aa3bfabc7042e1761035"
+  integrity sha512-YF9MNdVy/0qvJvDtunAOzFw9iasOQHpVthTCvGzxt61Il64AYSGdK+rYwld7NAfk9qJ7dt+hymBNSc9LNYS+Sw==
+  dependencies:
+    is-wsl "^1.1.0"
 
 ordered-read-streams@^1.0.0:
   version "1.0.1"

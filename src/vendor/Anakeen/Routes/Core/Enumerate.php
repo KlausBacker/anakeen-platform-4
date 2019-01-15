@@ -60,7 +60,7 @@ class Enumerate
          */
         $enums =  EnumManager::getEnums($this->enumid, false);
         $info = array(
-            "uri" => $this->generateEnumUrl($this->family->name, $this->enumid)
+            "uri" => $this->generateEnumUrl($this->enumid)
         );
 
         $filterKeyword = $this->getFilterKeyword();
@@ -192,15 +192,14 @@ class Enumerate
 
 
 
-    protected function generateEnumUrl($famId, $enumId = "")
+    protected function generateEnumUrl($enumId = "")
     {
         if ($enumId !== "") {
             $enumId .= ".json";
         }
         return URLUtils::generateURL(sprintf(
-            "%s/families/%s/families/%s",
+            "%senumerates/%s",
             Settings::ApiV2,
-            $famId,
             $enumId
         ));
     }

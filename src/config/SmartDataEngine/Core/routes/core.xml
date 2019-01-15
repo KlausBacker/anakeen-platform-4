@@ -3,7 +3,7 @@
   <sde:routes namespace="Core">
     <sde:route name="GetDocument">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentData</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentData</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</sde:pattern>
@@ -12,7 +12,7 @@
     </sde:route>
     <sde:route name="GetDocumentXML">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentDataXML</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentDataXML</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid:[^/.]+}.xml</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}.xml</sde:pattern>
@@ -21,7 +21,7 @@
     </sde:route>
     <sde:route name="GetDocumentCSV">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentDataCSV</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentDataCSV</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid:[^/.]+}.csv</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}.csv</sde:pattern>
@@ -30,7 +30,7 @@
     </sde:route>
     <sde:route name="ModifyDocument">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentUpdateData</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentUpdateData</sde:callable>
       <sde:method>PUT</sde:method>
       <sde:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</sde:pattern>
@@ -39,7 +39,7 @@
     </sde:route>
     <sde:route name="CreateDocument">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\FamilyDocumentCreation</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\FamilyDocumentCreation</sde:callable>
       <sde:method>POST</sde:method>
       <sde:pattern>/api/v2/families/{family}/documents/</sde:pattern>
       <sde:description>Create document of family</sde:description>
@@ -47,7 +47,7 @@
     </sde:route>
     <sde:route name="DeleteDocument">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentDeleteData</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentDeleteData</sde:callable>
       <sde:method>DELETE</sde:method>
       <sde:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</sde:pattern>
@@ -56,7 +56,7 @@
     </sde:route>
     <sde:route name="LockDocument">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentLock</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentLock</sde:callable>
       <sde:method>DELETE</sde:method>
       <sde:method>GET</sde:method>
       <sde:method>POST</sde:method>
@@ -68,7 +68,7 @@
     </sde:route>
     <sde:route name="Document:Locks">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentLocks</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentLocks</sde:callable>
       <sde:method>GET</sde:method>
       <sde:method>DELETE</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/locks/</sde:pattern>
@@ -78,7 +78,7 @@
     </sde:route>
     <sde:route name="DocumentUserTag">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentUserTag</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentUserTag</sde:callable>
       <sde:method>DELETE</sde:method>
       <sde:method>GET</sde:method>
       <sde:method>POST</sde:method>
@@ -90,7 +90,7 @@
     </sde:route>
     <sde:route name="DocumentUserTags">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentUserTags</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentUserTags</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/usertags/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/usertags/</sde:pattern>
@@ -99,7 +99,7 @@
     </sde:route>
     <sde:route name="ListDocuments">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentList</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentList</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/</sde:pattern>
       <sde:description>List all documents</sde:description>
@@ -107,7 +107,7 @@
     </sde:route>
     <sde:route name="GetFamily">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\FamilyData</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\FamilyData</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/families/{family:[^/.]+}[.json]</sde:pattern>
       <sde:description>Get data for a family</sde:description>
@@ -115,7 +115,7 @@
     </sde:route>
     <sde:route name="ListFamilyDocuments">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\FamilyDocumentList</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\FamilyDocumentList</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/families/{family}/documents/</sde:pattern>
       <sde:description>List all documents of a family</sde:description>
@@ -123,7 +123,7 @@
     </sde:route>
     <sde:route name="RevisionData">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\RevisionData</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\RevisionData</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]</sde:pattern>
@@ -132,7 +132,7 @@
     </sde:route>
     <sde:route name="RevisionList">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\RevisionList</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\RevisionList</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/revisions/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/revisions/</sde:pattern>
@@ -141,7 +141,7 @@
     </sde:route>
     <sde:route name="GetDeletedDocument">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentDeletedData</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentDeletedData</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/trash/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:description>Get deleted data for a document</sde:description>
@@ -149,7 +149,7 @@
     </sde:route>
     <sde:route name="Folder:List">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\Folders</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\Folders</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/folders/</sde:pattern>
       <sde:description>List all folders</sde:description>
@@ -157,7 +157,7 @@
     </sde:route>
     <sde:route name="Folder:Content">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\FolderContent</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\FolderContent</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/folders/{folder}/documents/</sde:pattern>
       <sde:description>List all documents included in a folder</sde:description>
@@ -165,7 +165,7 @@
     </sde:route>
     <sde:route name="Searches:List">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\Searches</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\Searches</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/searches/</sde:pattern>
       <sde:description>List all searches</sde:description>
@@ -173,7 +173,7 @@
     </sde:route>
     <sde:route name="Searches:Content">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\SearchContent</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\SearchContent</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/searches/{search}/documents/</sde:pattern>
       <sde:description>List all documents found in a search</sde:description>
@@ -181,7 +181,7 @@
     </sde:route>
     <sde:route name="UndeleteDocument">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentUndeleteData</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentUndeleteData</sde:callable>
       <sde:method>PUT</sde:method>
       <sde:pattern>/api/v2/trash/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:description>Undelete document</sde:description>
@@ -189,7 +189,7 @@
     </sde:route>
     <sde:route name="Trash:Content">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\TrashContent</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\TrashContent</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/trash/</sde:pattern>
       <sde:description>Trash content</sde:description>
@@ -197,7 +197,7 @@
     </sde:route>
     <sde:route name="File:OriginalImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\ImageAsset</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\ImageAsset</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/images/assets/original/{image:.+}</sde:pattern>
       <sde:description>Download file image</sde:description>
@@ -205,7 +205,7 @@
     </sde:route>
     <sde:route name="File:resizeImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\ImageAsset</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\ImageAsset</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/images/assets/sizes/{size:[0-9x]+[cfs]?}/{image:.+}</sde:pattern>
       <sde:description>Download file image</sde:description>
@@ -213,7 +213,7 @@
     </sde:route>
     <sde:route name="File:fileAttributeImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\FileAttribute</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\FileAttribute</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/files/{attrid}/{index}/{fileName}</sde:pattern>
       <sde:description>Download file from document</sde:description>
@@ -221,7 +221,7 @@
     </sde:route>
     <sde:route name="File:revisedFileAttributeImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\FileAttribute</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\FileAttribute</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}</sde:pattern>
       <sde:description>Download file from document</sde:description>
@@ -229,7 +229,7 @@
     </sde:route>
     <sde:route name="File:ResizeAttributeImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\ImageAttribute</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\ImageAttribute</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</sde:pattern>
       <sde:description>Download file image from document</sde:description>
@@ -237,7 +237,7 @@
     </sde:route>
     <sde:route name="File:ResizeRevisedAttributeImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\ImageAttribute</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\ImageAttribute</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</sde:pattern>
       <sde:description>Download file image from document</sde:description>
@@ -245,7 +245,7 @@
     </sde:route>
     <sde:route name="File:ResizeRecordedImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\RecordedImage</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\RecordedImage</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/images/recorded/sizes/{size:[0-9x]+[cfs]?}/{image:[^\.]+}[.{extension}]</sde:pattern>
       <sde:description>Download resized file image (temporary file)</sde:description>
@@ -253,7 +253,7 @@
     </sde:route>
     <sde:route name="File:RecordedImage">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\RecordedImage</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\RecordedImage</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/images/recorded/original/{image:[^\.]+}[.{extension}]</sde:pattern>
       <sde:description>Download resized file image (temporary file)</sde:description>
@@ -261,7 +261,7 @@
     </sde:route>
     <sde:route name="File:RecordedFile">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\RecordedFile</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\RecordedFile</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/files/recorded/temporary/{file:[0-9]+}[.{extension}]</sde:pattern>
       <sde:description>Download temporary file</sde:description>
@@ -269,7 +269,7 @@
     </sde:route>
     <sde:route name="Family:Enum">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\EnumerateField</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\EnumerateField</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/families/{family}/enumerates/{enum}</sde:pattern>
       <sde:description>Content of the enumerate &lt;attributeIdentifier&gt; of the family &lt;familyId&gt;</sde:description>
@@ -277,7 +277,7 @@
     </sde:route>
     <sde:route name="Field:Enum">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\Enumerate</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\Enumerate</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/enumerates/{enum}/</sde:pattern>
       <sde:description>Content of the enumerate identified by its reference</sde:description>
@@ -285,7 +285,7 @@
     </sde:route>
     <sde:route name="Workflow:StateList">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\WorkflowStateCollection</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\WorkflowStateCollection</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/workflows/states/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/states/</sde:pattern>
@@ -294,7 +294,7 @@
     </sde:route>
     <sde:route name="Workflow:State">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\WorkflowState</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\WorkflowState</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/workflows/states/{state}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/states/{state}</sde:pattern>
@@ -303,7 +303,7 @@
     </sde:route>
     <sde:route name="Workflow:SetState">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\WorkflowSetState</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\WorkflowSetState</sde:callable>
       <sde:method>POST</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/workflows/states/{state}</sde:pattern>
       <sde:description>Document go to a new state</sde:description>
@@ -311,7 +311,7 @@
     </sde:route>
     <sde:route name="Workflow:TransitionList">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\WorkflowTransitionCollection</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\WorkflowTransitionCollection</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/workflows/transitions/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/</sde:pattern>
@@ -320,7 +320,7 @@
     </sde:route>
     <sde:route name="Workflow:Transition">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\WorkflowTransition</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\WorkflowTransition</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
@@ -329,7 +329,7 @@
     </sde:route>
     <sde:route name="Workflow:SetTransition">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\WorkflowSetTransition</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\WorkflowSetTransition</sde:callable>
       <sde:method>POST</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
@@ -338,7 +338,7 @@
     </sde:route>
     <sde:route name="Document:History">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\DocumentHistory</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\DocumentHistory</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/api/v2/documents/{docid}/history/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/history/</sde:pattern>
@@ -347,7 +347,7 @@
     </sde:route>
     <sde:route name="File:Temporary">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Core\TemporaryFile</sde:callable>
+      <sde:callable>Anakeen\Routes\Core\TemporaryFile</sde:callable>
       <sde:method>POST</sde:method>
       <sde:pattern>/api/v2/temporaryFiles/</sde:pattern>
       <sde:description>Get document history information</sde:description>
@@ -357,7 +357,7 @@
   <sde:middlewares namespace="Core">
     <sde:middleware name="Middleware:ApiAuthent">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Routes\Middleware\Authent::Authenticate</sde:callable>
+      <sde:callable>Anakeen\Routes\Middleware\Authent::Authenticate</sde:callable>
       <sde:method>ANY</sde:method>
       <sde:pattern>[/{args:.*}]</sde:pattern>
       <sde:description>Verify authentication</sde:description>

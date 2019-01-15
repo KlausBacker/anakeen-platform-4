@@ -7,7 +7,7 @@
         </sde:route-override>
         <sde:route-override name="Routes:Over2">
             <sde:priority>3</sde:priority>
-            <sde:callable>\Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
             <sde:method>PUT</sde:method>
             <sde:pattern>/tests/routes/over2/</sde:pattern>
             <sde:requiredAccess/>

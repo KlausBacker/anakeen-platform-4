@@ -162,9 +162,4 @@ if ($query->nb > 0) {
             unset($u);
         }
     }
-
-    $doc->query("update family.igroup set name='GADMIN'     where us_whatid='4'");
-    $doc->query("update family.igroup set name='GDEFAULT'   where us_whatid='2'");
-    $doc->query("update family.iuser set name='USER_ADMIN' where us_whatid='1'");
-    $doc->query("update family.iuser set name='USER_GUEST' where us_whatid='3'");
 }

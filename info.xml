@@ -282,9 +282,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/File/file.struct.xml">
             <label>Add File Structure</label>
         </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.init.csv">
-            <label>Add IUSER folder</label>
-        </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml">
             <label>Add IUSER Structure</label>
         </process>
@@ -297,11 +294,12 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.struct.xml">
             <label>Add ROLE Structure</label>
         </process>
+
+        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/SmartStructures/Igroup/group.init.xml">
+            <label>Create system group</label>
+        </process>
         <process command="./ank.php --script=refreshUserAccount">
             <label>Update user account documents</label>
-        </process>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Igroup/igroup.init.csv">
-            <label>Create system groups</label>
         </process>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/Helppage/helppage.data.csv">
             <label>Help Documents</label>
