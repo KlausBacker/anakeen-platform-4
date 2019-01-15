@@ -25,9 +25,9 @@
                                   @action-click="actionClick"
                                   @toolbar-action-click="toolbarActionClick"
                                   :contextTitles="false">
-                                <grid-column title="Element position" field="hub_docker_position"></grid-column>
-                                <grid-column title="Order" field="hub_order"></grid-column>
-                                <grid-column title="Icon" field="icon"></grid-column>
+                                <grid-column title="Element position" field="hub_docker_position" :width="'10rem'"></grid-column>
+                                <grid-column title="Order" field="hub_order" :width="'6rem'"></grid-column>
+                                <grid-column title="Icon" field="hub_final_icon" :width="'10rem'" :encoded="'false'"></grid-column>
                                 <grid-column title="Title" field="title"></grid-column>
                                 <grid-actions>
                                     <grid-action action="consult" iconClass="k-icon k-i-folder-open"></grid-action>
