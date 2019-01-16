@@ -5,17 +5,21 @@
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
 
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
   </post-install>
   <post-upgrade>
     <process command="programs/update_catalog"/>
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
 
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
   </post-upgrade>
 </module>

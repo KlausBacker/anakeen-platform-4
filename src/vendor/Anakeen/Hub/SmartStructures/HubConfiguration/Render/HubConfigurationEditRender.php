@@ -15,6 +15,8 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $options = parent::getOptions($document);
 
         $break2 = "33%";
+        $template = file_get_contents(__DIR__."/template/hub_docker_position.template.mustache");
+        $options->enum(HubConfigurationFields::hub_docker_position)->setTemplate($template);
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinLimit(1);
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setCollapse("none");
         $options->arrayAttribute(HubConfigurationFields::hub_roles)->setCollapse("none");

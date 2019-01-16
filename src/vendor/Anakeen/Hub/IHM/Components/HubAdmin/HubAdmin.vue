@@ -18,12 +18,12 @@
                     <div class="hub-admin-content">
                         <div class="hub-admin-grid">
                             <grid collection="HUBCONFIGURATION"
-                                  :checkable="true"
                                   :reorderable="true"
                                   class="hub-admin"
                                   ref="hubGrid"
                                   @grid-ready="toolbarConfig"
                                   @action-click="actionClick"
+                                  @toolbar-action-click="toolbarActionClick"
                                   :contextTitles="false">
                                 <grid-column title="Element position" field="hub_docker_position"></grid-column>
                                 <grid-column title="Order" field="hub_order"></grid-column>
@@ -34,6 +34,7 @@
                                     <grid-action action="edit"></grid-action>
                                 </grid-actions>
                                 <grid-toolbar>
+                                    <grid-toolbar-action action="config" title="Configuration" iconClass="k-icon k-i-gear"></grid-toolbar-action>
                                     <grid-toolbar-action action="create"></grid-toolbar-action>
                                 </grid-toolbar>
                             </grid>

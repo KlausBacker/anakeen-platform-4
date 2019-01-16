@@ -72,21 +72,24 @@ body {
   visibility: visible !important;
 }
 
-.hub-config-list {
+.grid-toolbar-create-action {
   width: 200px !important;
-  .k-select::before {
-    height: 100%;
-    width: 1px;
-    background: rgba(255,255, 255, 0.7);
-    content: " ";
-    margin-right: .5rem;
+  padding: 0;
+  .k-select {
+    &::before {
+      height: 100%;
+      width: 1px;
+      background: rgba(255,255, 255, 0.7);
+      content: " ";
+      margin-right: .5rem;
+    }
+
+    .k-icon {
+      margin: 0;
+    }
   }
   .k-dropdown-wrap {
     color: white;
     background-color: #157EFB;
   }
-}
-
-.grid-toolbar-create-action {
-  display: none;
 }
