@@ -17,68 +17,93 @@ ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
 -include Makefile.local
 
+########################################################################################################################
+##
+## Deps
+##
+########################################################################################################################
+install-deps:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
+	yarn install
 
 ########################################################################################################################
 ##
-## BUILD TARGET
-##
-########################################################################################################################
-$(NODE_MODULE_PATH):
-	$(YARN_BIN) install
-
-compile: $(NODE_MODULE_PATH)
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-
-app: compile
-	${ANAKEEN_CLI_BIN} build
-
-autotest: compile
-	${ANAKEEN_CLI_BIN} build --auto-release
-
-deploy:
-	rm -f ${MODULE_NAME}*app
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
-
-
-########################################################################################################################
-##
-## CLEAN TARGET
+## Static analyze
 ##
 ########################################################################################################################
 
-clean: ## clean the local pub
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
-	rm -rf ${MODULE_NAME}*.app
+checkXML: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} check -s .
+
+lint: checkXML
+	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+
+beautify:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
+	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}
+	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
 ########################################################################################################################
 ##
-## PO TARGET
+## Po and stub
 ##
 ########################################################################################################################
-
-po:
+po: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} extractPo -s .
 
-stub:
+stub: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} generateStubs
 
 ########################################################################################################################
 ##
-## Beautify TARGET
+## Build
 ##
 ########################################################################################################################
+app: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build
 
-beautify:
-	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
-	$(YARN_BIN) run beautify
-	$(CBF_BIN) --standard=${MK_DIR}ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}src
+app-all: app
+
+app-autorelease: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} build --auto-release
+
+app-all-autorelease: app-autorelease
+
+########################################################################################################################
+##
+## Deploy
+##
+########################################################################################################################
+deploy: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
+deploy-all: deploy
+
+########################################################################################################################
+##
+## Clean
+##
+########################################################################################################################
+clean:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Clean${RESET_COLOR}\n"
+	rm -f *.src
+	rm -f *.app
 
 ########################################################################################################################
 ##
 ## MAKEFILE INTERNALS
 ##
 ########################################################################################################################
-
 .PHONY: app po deploy install pojs clean cleanAll stub nodePublish
 
 PRINT_COLOR = printf
