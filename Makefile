@@ -79,11 +79,11 @@ app-all: app app-test
 
 app-autorelease: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --auto-release
+	${ANAKEEN_CLI_BIN} build --autoRelease
 
 app-test-autorelease: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests --auto-release
+	${ANAKEEN_CLI_BIN} build --sourcePath ./Tests --autoRelease
 
 app-all-autorelease: app-autorelease app-test-autorelease
 
