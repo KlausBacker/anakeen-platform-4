@@ -82,8 +82,8 @@ const postGlobFile = ({
   glob,
   sourceDir = process.cwd(),
   contextUrl,
-  username,
-  password,
+  contextUsername,
+  contextPassword,
   verbose,
   dryRun,
   log
@@ -112,10 +112,9 @@ const postGlobFile = ({
             fs.createReadStream(path.resolve(sourceDir, file))
           );
         });
-
         fetch(url, {
           headers: {
-            Authorization: getBaseAutorisation(username, password)
+            Authorization: getBaseAutorisation(contextUsername, contextPassword)
           },
           method: "POST",
           body: formData
@@ -198,8 +197,8 @@ exports.deployGlobConfiguration = ({
   glob,
   sourceDir,
   contextUrl,
-  username,
-  password,
+  contextUsername,
+  contextPassword,
   verbose,
   dryRun
 }) => {
@@ -214,8 +213,8 @@ exports.deployGlobConfiguration = ({
           glob,
           sourceDir,
           contextUrl,
-          username,
-          password,
+          contextUsername,
+          contextPassword,
           log,
           verbose,
           dryRun
