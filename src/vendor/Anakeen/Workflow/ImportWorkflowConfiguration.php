@@ -2,7 +2,6 @@
 
 namespace Anakeen\Workflow;
 
-use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 
 use Anakeen\Core\Utils\Xml;
@@ -382,13 +381,6 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
             }
         }
         return $values;
-    }
-
-    protected function setEltValue(SmartElement $elt, $value, $fieldName)
-    {
-        if ($value) {
-            $elt->setValue($fieldName, $value);
-        }
     }
 
     /**
