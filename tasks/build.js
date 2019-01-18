@@ -7,6 +7,9 @@ const { getModuleInfo } = require("../utils/moduleInfo");
 const path = require("path");
 const fs = require("fs");
 const appConst = require("../utils/appConst");
+const { Signale } = require("signale");
+
+const interactiveLog = new Signale({ scope: "build" });
 
 const buildPipe = (exports.buildPipe = async ({
   sourcePath,
@@ -14,17 +17,21 @@ const buildPipe = (exports.buildPipe = async ({
   localName = false
 }) => {
   const moduleInfo = await getModuleInfo(sourcePath);
-  let release = moduleInfo.moduleInfo.release;
+  let version = moduleInfo.moduleInfo.version;
+  let release = "";
+
+  if (autoRelease === "") {
+    autoRelease = "dev";
+  }
   if (autoRelease) {
     let dNow = new Date()
       .toISOString()
       .replace(/[^0-9]/g, "")
       .substr(0, 14);
-    release = `dev${release}${dNow}`;
+    version =
+      moduleInfo.moduleInfo.version + `-${autoRelease}${release}${dNow}`;
   }
-  let moduleFileName = `${moduleInfo.moduleInfo.name}-${
-    moduleInfo.moduleInfo.version
-  }-${release}`;
+  let moduleFileName = `${moduleInfo.moduleInfo.name}-${version}`;
   if (localName) {
     moduleFileName = localName;
   }
@@ -35,14 +42,23 @@ const buildPipe = (exports.buildPipe = async ({
     .pipe(tar("content"))
     .pipe(gzip({ extension: "tar.gz" }));
   let infoXML = gulp.src(path.join(sourcePath, appConst.infoPath));
+
+  const originalVersion = moduleInfo.moduleInfo.version;
   if (autoRelease) {
+    let autoDone = false;
+    // Only replace the first version attribute - Not the best algo
     infoXML = infoXML.pipe(
-      replace(
-        `release="${moduleInfo.moduleInfo.release}"`,
-        `release="${release}"`
-      )
+      replace(`version="${originalVersion}"`, match => {
+        if (autoDone === false) {
+          autoDone = true;
+          return `version="${version}"`;
+        } else {
+          return match;
+        }
+      })
     );
   }
+
   let gulpElements = streamqueue({ objectMode: true }, mainFiles, infoXML);
   if (fs.existsSync(path.join(sourcePath, appConst.license))) {
     gulpElements = streamqueue(
@@ -51,6 +67,9 @@ const buildPipe = (exports.buildPipe = async ({
       gulp.src(path.join(sourcePath, appConst.license))
     );
   }
+
+  interactiveLog.info(`Generate  ${moduleInfo.moduleInfo.name}-${version}.app`);
+  interactiveLog.info("Version " + version);
   return gulpElements
     .pipe(tar(moduleFileName))
     .pipe(gzip({ extension: "app" }));

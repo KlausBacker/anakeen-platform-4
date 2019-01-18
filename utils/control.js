@@ -2,6 +2,8 @@ const fetch = require("node-fetch");
 const urljoin = require("url-join");
 const fs = require("fs");
 const FormData = require("form-data");
+const { Signale } = require("signale");
+const controlLog = new Signale({ scope: "control" });
 
 const CONTROL_API_BASE = (exports.CONTROL_API_BASE = "/wiff.php");
 
@@ -132,11 +134,15 @@ exports.postModule = ({
           );
         });
       }
+
       return response.json();
     })
     .then(result => {
       if (result.error) {
-        throw new Error(JSON.stringify(result));
+        if (result.data) {
+          controlLog.error(result.data.join(","));
+        }
+        throw new Error(result.error);
       }
       return result;
     });

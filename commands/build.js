@@ -23,9 +23,9 @@ exports.builder = {
     type: "string"
   },
   autoRelease: {
-    description: "add current timestamp to the release",
+    description: "prefix for version minor part. Add current timestamp",
     default: false,
-    type: "boolean"
+    type: "string"
   },
   noCheck: {
     description: "add check of XML inside the module",
