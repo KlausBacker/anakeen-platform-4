@@ -236,6 +236,12 @@
             <xs:pattern value="[A-Za-z][A-Za-z 0-9_-]+"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="accountRefType">
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+            <xs:pattern value="[\p{Ll} \p{P}\p{N}\p{S}]+"/>
+        </xs:restriction>
+    </xs:simpleType>
 
 
     <xs:complexType name="field-relationType">
@@ -249,6 +255,18 @@
         <xs:complexContent>
             <xs:extension base="v1:field-relationType">
                 <xs:attribute name="match">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h1>Account type</h1>
+                            <p>The autocomplete returns account according to type.</p>
+                            <hr/>
+                            <ul>
+                                <li>user : return only users</li>
+                                <li>group : return only groups</li>
+                                <li>role : return only roles</li>
+                            </ul>
+                        </xs:documentation>
+                    </xs:annotation>
                     <xs:simpleType>
                         <xs:restriction base="xs:token">
                             <xs:enumeration value="user"/>
@@ -258,8 +276,23 @@
                     </xs:simpleType>
                 </xs:attribute>
 
-                <xs:attribute type="xs:token" name="group"/>
-                <xs:attribute type="xs:token" name="role"/>
+                <xs:attribute type="v1:accountRefType" name="group">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h1>Group reference (system reference)</h1>
+                            <p>The autocomplete returns members (can be subgroups also) of referenced group.</p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+
+                <xs:attribute type="v1:accountRefType" name="role">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h1>Role reference (system reference)</h1>
+                            <p>The autocomplete returns accounts (users and groups) which has referenced role.</p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -348,7 +381,6 @@
             </xs:element>
         </xs:sequence>
         <xs:attribute type="v1:logicalNameType" name="name"/>
-        <xs:attribute type="xs:token" name="type"/>
         <xs:attribute type="xs:string" name="label"/>
         <xs:attribute type="v1:profilPolicyType" name="policy" default="ADD">
             <xs:annotation>
@@ -551,6 +583,17 @@
 
     <xs:complexType name="iconType">
         <xs:attribute type="xs:string" name="file" use="required"/>
+        <xs:attribute type="xs:boolean" name="reset" default="false">
+            <xs:annotation>
+                <xs:documentation>
+                    <h1>Reset icon file</h1>
+                    <p>
+                        Set to true to change icon file if is already set
+                    </p>
+
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
     <xs:simpleType name="revisableEnum">
@@ -589,7 +632,7 @@
             <xs:annotation>
                 <xs:documentation>
                     <p>
-                        <b>Declare hooks :  only for compatibility for constraint and computed fields on refresh</b>
+                        <b>Declare hooks : only for compatibility for constraint and computed fields on refresh</b>
                     </p>
                     <hr/>
                     <ul>
@@ -610,9 +653,9 @@
         <xs:attribute type="v1:fieldNameType" name="field"/>
         <xs:attribute name="type">
             <xs:simpleType>
-            <xs:restriction base="xs:string">
-                <xs:enumeration value="constraint"/>
-            </xs:restriction>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="constraint"/>
+                </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
     </xs:complexType>
