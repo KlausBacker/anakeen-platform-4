@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="development-center" version="1.0.0" release="0" vendor="Anakeen"
+        name="development-center" version="1.0.0" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Developement Center</description>
 
     <requires>
-        <module name="user-interfaces"/>
-        <module name="security"/>
-        <module name="workflow"/>
+        <module name="user-interfaces" version="1.0.x"/>
+        <module name="security" version="1.0.x"/>
+        <module name="workflow" version="1.0.x"/>
     </requires>
 
     <parameters>

@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Devel\Import;
 //use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\Core\Internal\ImportSmartConfiguration;
 use Anakeen\Router\ApiV2Response;
-use Anakeen\Router\Exception;
+use Anakeen\Exception;
 
 /**
  * Class Configuration
@@ -55,7 +55,8 @@ class Configuration
 
         if ($err) {
             $e = new Exception('DEV0103', $err);
-            $e->setHttpStatus('500', 'Internal error');
+            $e->setHttpStatus(400, 'Importation error');
+            $e->setUserMessage($err);
             throw $e;
         }
         return $import->getVerboseMessages();

@@ -11,7 +11,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0-first6",
-    "@anakeen/anakeen-cli": "1.0.2-1547477775",
+    "@anakeen/anakeen-cli": "1.0.3",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-buttons-vue-wrapper": "^2018.3.911",
