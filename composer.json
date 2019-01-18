@@ -1,0 +1,13 @@
+{
+    "name": "anakeen/anakeen-control",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Anakeen",
+            "email": "labs@anakeen.com"
+        }
+    ],
+    "require": {
+        "vierbergenlars/php-semver": "^3.0"
+    }
+}

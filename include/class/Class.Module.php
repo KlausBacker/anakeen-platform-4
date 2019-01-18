@@ -141,7 +141,12 @@ class Module
         ) as $attrName) {
             $this->$attrName = $xmlNode->getAttribute($attrName);
         }
-        $this->versionrelease = $this->version . '-' . $this->release;
+
+        if ($this->release) {
+            $this->version  .= '-' . $this->release;
+            $this->release='';
+        }
+        $this->versionrelease = $this->version ;
         // Load xmlNode <description> elements
         $descriptionNodeList = $xmlNode->getElementsByTagName('description');
         if ($descriptionNodeList->length > 0) {

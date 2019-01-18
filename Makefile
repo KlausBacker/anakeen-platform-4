@@ -17,6 +17,7 @@ all:
 	@echo ""
 
 tarball:
+	composer install
 	mkdir -p tmp/$(TAR_DIST_DIR)
 	sed -e "s/{{VR}}/$(VERSION)-$(RELEASE)/g" index-tpl.html > index.html
 	tar -cf - \
