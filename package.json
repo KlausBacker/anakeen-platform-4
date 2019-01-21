@@ -10,7 +10,7 @@
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first6",
+    "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.0.0",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
