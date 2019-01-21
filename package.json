@@ -21,7 +21,7 @@
   "dependencies": {},
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0-first6",
-    "@anakeen/anakeen-cli": "^1.0.6",
+    "@anakeen/anakeen-cli": "^1.0.0",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@commitlint/config-conventional": "^7.3.1",
