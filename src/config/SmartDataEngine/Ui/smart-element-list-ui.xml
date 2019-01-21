@@ -3,7 +3,7 @@
   <sde:routes namespace="Ui">
     <sde:route name="Ui:Document:Pager">
       <sde:priority>1</sde:priority>
-      <sde:callable>\Anakeen\Components\SEList\Routes\DocumentsPager</sde:callable>
+      <sde:callable>Anakeen\Components\SEList\Routes\DocumentsPager</sde:callable>
       <sde:method>GET</sde:method>
       <sde:pattern>/components/selist/pager/{collection}/pages/{page}</sde:pattern>
       <sde:description>Document list page by page</sde:description>

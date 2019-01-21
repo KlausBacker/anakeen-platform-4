@@ -3,7 +3,7 @@
     <sde:routes namespace="Ui">
         <sde:route name="i18n">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\I18nCatalog</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\I18nCatalog</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/i18n/{catalog}</sde:pattern>
             <sde:description>Get translation catalog</sde:description>
@@ -11,7 +11,7 @@
         </sde:route>
         <sde:route name="Document:View">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentView</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentView</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/{view}</sde:pattern>
             <sde:description>Get render view data</sde:description>
@@ -19,7 +19,7 @@
         </sde:route>
         <sde:route name="Document:Views">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentViewCollection</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentViewCollection</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/</sde:pattern>
             <sde:description>Get render view list</sde:description>
@@ -27,7 +27,7 @@
         </sde:route>
         <sde:route name="Document:CreationView">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\CreationView</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\CreationView</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/families/{family}/documentsViews/</sde:pattern>
             <sde:description>Get render view data</sde:description>
@@ -35,7 +35,7 @@
         </sde:route>
         <sde:route name="Revision:ViewUpdate">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentViewUpdate</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentViewUpdate</sde:callable>
             <sde:method>PUT</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
             <sde:description>Modify document data</sde:description>
@@ -43,7 +43,7 @@
         </sde:route>
         <sde:route name="Document:Delete">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentViewDelete</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentViewDelete</sde:callable>
             <sde:method>DELETE</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/{view}</sde:pattern>
             <sde:description>Delete document data</sde:description>
@@ -51,7 +51,7 @@
         </sde:route>
         <sde:route name="Revision:View">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentView</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentView</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
             <sde:description>Get render view data</sde:description>
@@ -59,7 +59,7 @@
         </sde:route>
         <sde:route name="Transition:View">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\TransitionView</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\TransitionView</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/states/{state}</sde:pattern>
             <sde:description>Document Workflow Transition View</sde:description>
@@ -67,7 +67,7 @@
         </sde:route>
         <sde:route name="Transition:Set">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\TransitionSet</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\TransitionSet</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/states/{state}</sde:pattern>
             <sde:description>Change state for a document</sde:description>
@@ -75,7 +75,7 @@
         </sde:route>
         <sde:route name="Family:Structure">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\FamilyStructure</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\FamilyStructure</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/families/{family}/views/structure</sde:pattern>
             <sde:description>Get attributes structure of family</sde:description>
@@ -83,7 +83,7 @@
         </sde:route>
         <sde:route name="Document:HtmlPage">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}.html</sde:pattern>
             <sde:description>Html page to view document</sde:description>
@@ -91,7 +91,7 @@
         </sde:route>
         <sde:route name="Revision:HtmlPage">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}.html</sde:pattern>
             <sde:description>Html page to view revision</sde:description>
@@ -99,7 +99,7 @@
         </sde:route>
         <sde:route name="Document:HtmlViewPage">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/{view}.html</sde:pattern>
             <sde:description>Html page to view document with specific view</sde:description>
@@ -107,7 +107,7 @@
         </sde:route>
         <sde:route name="Revision:HtmlViewPage">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\DocumentHtml</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}.html</sde:pattern>
             <sde:description>Html page to view revision with specific view</sde:description>
@@ -115,7 +115,7 @@
         </sde:route>
         <sde:route name="Document:Lock">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\LockView</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\LockView</sde:callable>
             <sde:method>DELETE</sde:method>
             <sde:method>GET</sde:method>
             <sde:method>POST</sde:method>
@@ -126,7 +126,7 @@
         </sde:route>
         <sde:route name="Document:AutoComplete">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\Autocomplete</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\Autocomplete</sde:callable>
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/autocomplete/{attrid}</sde:pattern>
             <sde:description>Get Autocomplete suggestion for an attribute</sde:description>
@@ -134,7 +134,7 @@
         </sde:route>
         <sde:route name="Document:SubMenu">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\SubMenu</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\SubMenu</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}</sde:pattern>
             <sde:description>Get submenu items</sde:description>
@@ -142,7 +142,7 @@
         </sde:route>
         <sde:route name="Document:CallMenu">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\Ui\CallMenu</sde:callable>
+            <sde:callable>Anakeen\Routes\Ui\CallMenu</sde:callable>
             <sde:method>ANY</sde:method>
             <sde:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}/call</sde:pattern>
             <sde:description>Call callable menu items</sde:description>
