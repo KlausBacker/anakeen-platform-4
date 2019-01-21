@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first6",
+    "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.0.6",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "1.0.0-1543853095",
