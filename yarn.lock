@@ -11,11 +11,11 @@
     xml2js "^0.4.19"
 
 "@anakeen/anakeen-cli@~1.0.0 || >=1.0.2-1 < 1.0.2":
-  version "1.0.2-1547477775"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.2-1547477775.tgz#ce54c497c24f958e113c30b481cddb30dc1c77c1"
-  integrity sha512-it44EPe6uhwANQFhgjVClIISuMX2IvE/T3n5uYrwWo0OZOJJXrH82xrlLxBfZaPJKJV9nwuA3tAyguzntSxoMA==
+  version "1.0.4"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.4.tgz#3283b9d4c374c5c2003b3620783bbf74c1d42007"
+  integrity sha512-OtwEIxnkjHvEhQS4ZHMvSKje9gdHyNmfbdYUjnSSmlqHR39SKhRgU04/HWjy2E+BFwaBmL98bTCKLCSsygpyCw==
   dependencies:
-    "@anakeen/anakeen-module-validation" "1.0.6"
+    "@anakeen/anakeen-module-validation" "^1.0.7"
     form-data "^2.3.3"
     glob "^7.1.3"
     gulp "^4.0.0"
@@ -37,10 +37,10 @@
     xml2js "^0.4.19"
     yargs "^12.0.5"
 
-"@anakeen/anakeen-module-validation@1.0.6":
-  version "1.0.6"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.6.tgz#17d8ccdeef2824489e9834731b5f945829f7714d"
-  integrity sha512-Pf4bpN4111RkW73LZemV6czouAx5yc1LgaZuW96OhbDgyqXL4lAYh6ppmwRr4HiprapvajiTnA+LTzhyIaYOZQ==
+"@anakeen/anakeen-module-validation@^1.0.7":
+  version "1.0.7"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.7.tgz#3f6e4692502e7685d15ed002795b1bc9099efc52"
+  integrity sha512-2pJlh0WPhVi+Xsau2LcbDrxYhUrBhfEeEmJHDg7vP+NLduB06ayha9DY1gwqDVWgd1RJBxE8KcYNlfxwvxfVxA==
   dependencies:
     libxmljs "^0.19.5"
 
@@ -1166,9 +1166,9 @@ error-ex@^1.2.0, error-ex@^1.3.1:
     is-arrayish "^0.2.1"
 
 es5-ext@^0.10.14, es5-ext@^0.10.35, es5-ext@^0.10.9, es5-ext@~0.10.14:
-  version "0.10.46"
-  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.46.tgz#efd99f67c5a7ec789baa3daa7f79870388f7f572"
-  integrity sha512-24XxRvJXNFwEMpJb3nOkiRJKRoupmjYmOPVlI65Qy2SrtxwOTB+g6ODjBKOtwEHbYrhWRty9xxOWLNdClT2djw==
+  version "0.10.47"
+  resolved "https://registry.yarnpkg.com/es5-ext/-/es5-ext-0.10.47.tgz#d24232e1380daad5449a817be19bde9729024a11"
+  integrity sha512-/1TItLfj+TTfWoeRcDn/0FbGV6SNo4R+On2GGVucPU/j3BWnXE2Co8h8CTo4Tu34gFJtnmwS9xiScKs4EjZhdw==
   dependencies:
     es6-iterator "~2.0.3"
     es6-symbol "~3.1.1"
@@ -1438,9 +1438,9 @@ fs.realpath@^1.0.0:
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
 fsevents@^1.2.2:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.4.tgz#f41dcb1af2582af3692da36fc55cbd8e1041c426"
-  integrity sha512-z8H8/diyk76B7q5wg+Ud0+CqzcAF3mBBI/bA5ne5zrRUUIvNkJY//D3BqyH571KuAC4Nr7Rw7CjWX4r0y9DvNg==
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.7.tgz#4851b664a3783e52003b3c66eb0eee1074933aa4"
+  integrity sha512-Pxm6sI2MeBD7RdD12RYsqaP0nMiwx8eZBXCa6z2L+mRHm2DYrOYwihmhjpkdjUHwQhslWQjRpEgNq4XvBmaAuw==
   dependencies:
     nan "^2.9.2"
     node-pre-gyp "^0.10.0"

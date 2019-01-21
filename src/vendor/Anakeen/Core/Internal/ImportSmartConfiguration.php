@@ -902,7 +902,11 @@ class ImportSmartConfiguration
         }
         $node = $this->getNode($config, "icon");
         if ($node) {
-            $data[] = ["ICON", $node->getAttribute("file")];
+            $iconData = ["ICON", $node->getAttribute("file")];
+            if ($node->getAttribute("reset") === "true") {
+                $iconData[] = "force=yes";
+            }
+            $data[] = $iconData;
         }
 
         $node = $this->getNode($config, "default-folder");

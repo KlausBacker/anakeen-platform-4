@@ -164,7 +164,7 @@ class ImportDocumentDescription
     /**
      * Detect csv options - separator and enclosure arguments are modified if set to auto
      *
-     * @param        $csvFileName
+     * @param         $csvFileName
      * @param string &$separator need to set to 'auto' to detect
      * @param string &$enclosure need to set to 'auto' to detect
      *
@@ -519,9 +519,9 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $value = $data[2]??true;
+        $value = $data[2] ?? true;
         if ($value === "") {
-            $value=true;
+            $value = true;
         }
         $err = $this->doc->addATag($data[1], $value);
         if (!$err) {
@@ -1153,7 +1153,7 @@ class ImportDocumentDescription
     {
         if (empty($data[1])) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("No Icon specified"));
-        } elseif ($this->doc->icon == "") {
+        } elseif ($this->doc->icon == "" || $data[2] === "force=yes") {
             $this->familyIcon = $data[1]; // reported to end section
             $this->tcr[$this->nLine]["msg"] = sprintf(_("set icon to '%s'"), $data[1]);
         } else {
@@ -1432,6 +1432,7 @@ class ImportDocumentDescription
             $this->tcr[$this->nLine]["action"] = "ignored";
         }
     }
+
     /**
      * analyze CFALLID
      *
@@ -1462,6 +1463,7 @@ class ImportDocumentDescription
         $this->doc->cfallid = $pid;
         $this->tcr[$this->nLine]["msg"] = sprintf(_("change default creation profile id  to '%s'"), $data[1]);
     }
+
     /**
      * analyze CPROFID
      *
@@ -1636,7 +1638,7 @@ class ImportDocumentDescription
             $tdoc = \Anakeen\Core\SEManager::getRawData($pid, ["us_whatid"]);
             $wid = $tdoc["us_whatid"];
         }
-        $ns=$data[2];
+        $ns = $data[2];
 
         $this->tcr[$this->nLine]["msg"] = "user #$wid";
         array_shift($data);
@@ -1667,7 +1669,7 @@ class ImportDocumentDescription
                     $aclneg = false;
                 }
                 // Add namespace
-                $v=$ns.'::'.$v;
+                $v = $ns . '::' . $v;
 
                 if (isset($tacl[$v])) {
                     $p->id_acl = $tacl[$v];
@@ -2086,7 +2088,7 @@ class ImportDocumentDescription
         $iAttr->phpfunc = $oattr->phpfunc;
         $iAttr->elink = $oattr->elink;
         $iAttr->constraint = ($structAttr->constraint) ?: '';
-        $iAttr->autocomplete=$structAttr->autocomplete;
+        $iAttr->autocomplete = $structAttr->autocomplete;
 
 
         $this->doAttr($iAttr->getData("ATTR"), true);
@@ -2106,7 +2108,7 @@ class ImportDocumentDescription
         }
         // Temporary deprecated visibility : used RW acccess instead if cvs file used
         if ($this->importFileName && isset($data[8]) && strlen($data[8]) === 1) {
-            $data[8]= 'ReadWrite';
+            $data[8] = 'ReadWrite';
         }
 
         $check = new CheckAttr();

@@ -1,18 +1,14 @@
 <?xml version="1.0"?>
-<module
-        name="smart-data-engine-test" disabled="no"
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
+        name="smart-data-engine-test"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
-        version="1.0.0" release="0" vendor="Anakeen"
-        basecomponent="no">
+        version="1.0.0" vendor="Anakeen">
     <description>Test case for Smart Data Engine.</description>
 
     <requires>
-        <module name="smart-data-engine"/>
+        <module name="smart-data-engine" version="1.0.x"/>
     </requires>
-
-    <replaces>
-        <module name="anakeen-core-test"/>
-    </replaces>
+    
     <pre-install>
         <check type="syscommand" command="xmllint">
             <label>Check "xmllint". To check xml files</label>
