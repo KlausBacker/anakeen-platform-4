@@ -23,5 +23,6 @@ return produceApp({
     console.log("OK");
   })
   .catch(err => {
-    throw new Error(err);
+    console.error(err);
+    process.exit(42);
   });

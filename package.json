@@ -9,7 +9,7 @@
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-ci": "~1.0.0 || >=1.0.0-first < 1.0.1",
+    "@anakeen/anakeen-ci": "~1.0.0",
     "@anakeen/anakeen-cli": "~1.0.0",
     "@commitlint/config-conventional": "^7.3.1",
     "commitlint": "^7.3.2",
