@@ -21,7 +21,7 @@
   "dependencies": {},
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0-first6",
-    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/anakeen-cli": "^1.0.6",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
     "@progress/kendo-layout-vue-wrapper": "^2018.3.1025",
