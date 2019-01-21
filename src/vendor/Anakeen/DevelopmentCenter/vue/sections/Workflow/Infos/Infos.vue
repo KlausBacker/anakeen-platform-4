@@ -22,7 +22,7 @@
         </div>
         <div class="wfl-button-graph">
 
-            <button title="Toggle references / label" v-on:click="toggleUseLabel" class="btn btn-primary"><i class="k-icon k-i-arrows-swap"></i></button>
+            <button title="Toggle display labels : state / activity / raw" v-on:click="toggleUseLabel" class="btn btn-primary"><i class="k-icon k-i-arrows-swap"></i></button>
             <button title="Download graph" v-on:click="downloadGraph" class="btn btn-primary"><i class="k-icon k-i-download"></i></button>
             <button title="Rotate graph" v-on:click="rotateGraph" class="btn btn-primary"><i class="k-icon k-i-rotate"></i></button>
         </div>

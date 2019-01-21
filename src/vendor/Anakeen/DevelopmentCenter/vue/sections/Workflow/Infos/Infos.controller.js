@@ -6,7 +6,7 @@ export default {
       wflData: {},
       wflGraph: "",
       wflOrient: "LR",
-      wflUseLabel: true
+      wflUseLabel: "activity"
     };
   },
   methods: {
@@ -19,7 +19,9 @@ export default {
       this.displayGraph();
     },
     toggleUseLabel: function() {
-      this.wflUseLabel = !this.wflUseLabel;
+      let labelsMode = ["state", "activity", "raw"];
+      let pos = labelsMode.indexOf(this.wflUseLabel);
+      this.wflUseLabel = labelsMode[(pos + 1) % 3];
       this.displayGraph();
     },
     downloadGraph: function() {

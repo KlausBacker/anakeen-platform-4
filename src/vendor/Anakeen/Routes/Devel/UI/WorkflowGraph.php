@@ -42,7 +42,7 @@ class WorkflowGraph
         }
 
         $this->orient = $request->getQueryParam("orientation", "LR");
-        $this->useLabel = $request->getQueryParam("useLabel", "true") !== "false";
+        $this->useLabel = $request->getQueryParam("useLabel", "state");
     }
 
     protected function doRequest(\Slim\Http\request $request, \Slim\Http\response $response)
@@ -108,6 +108,7 @@ class WorkflowGraph
         $dw->setType($this->type);
         $dw->setWorkflow($workflow);
         $dot = $dw->generate();
+
         return $dot;
     }
 }
