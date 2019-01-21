@@ -12,11 +12,9 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@anakeen/anakeen-cli": "^1.0.6"
-  },
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first6",
+    "@anakeen/anakeen-cli": "^1.0.6",
+    "@anakeen/anakeen-ci": "^1.0.0",
     "@commitlint/config-conventional": "^7.3.1",
     "commitlint": "^7.3.2",
     "husky": "^1.3.1"
