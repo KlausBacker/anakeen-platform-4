@@ -17,7 +17,7 @@
     "RELEASE"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first3",
+    "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.0.6",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
