@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<accounts date="2016-01-29T11:49:17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:noNamespaceSchemaLocation="xsd/accounts.xsd">
-    <roles>
-        <role>
-            <reference>hub-user-role</reference>
-            <displayName>Hub users</displayName>
-        </role>
-        <role>
-            <reference>hub-admin-role</reference>
-            <displayName>Hub admin</displayName>
-        </role>
-    </roles>
-    <groups>
-        <group>
-            <reference>all</reference>
-            <displayName>Main Group</displayName>
-            <associatedRoles reset="false">
-                <associatedRole reference="hub-user-role"/>
-            </associatedRoles>
-        </group>
-        <group>
-            <reference>gadmin</reference>
-            <displayName>Administrators</displayName>
-            <associatedRoles reset="false">
-                <associatedRole reference="hub-admin-role"/>
-            </associatedRoles>
-        </group>
-    </groups>
-</accounts>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+    <accounts:roles>
+        <accounts:role name="hub-user-role">
+            <accounts:displayName>Hub users</accounts:displayName>
+        </accounts:role>
+
+        <accounts:role name="hub-admin-role">
+            <accounts:displayName>Hub admin</accounts:displayName>
+        </accounts:role>
+    </accounts:roles>
+
+    <accounts:groups>
+        <accounts:group name="all">
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="hub-user-role"/>
+            </accounts:associatedRoles>
+        </accounts:group>
+
+        <accounts:group name="gadmin">
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="hub-admin-role"/>
+            </accounts:associatedRoles>
+        </accounts:group>
+    </accounts:groups>
+</accounts:accounts>
