@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.0">
-    <requires>
-        <module name="user-interfaces" version="1.0.x"/>
-    </requires>
     <post-install>
+        <process command="programs/update_catalog"/>
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
 
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
     </post-install>
     <post-upgrade>
+        <process command="programs/update_catalog"/>
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
 
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
-        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
     </post-upgrade>
 </module>
