@@ -1,23 +1,14 @@
 <?xml version="1.0"?>
-<module name="migration-tools" version="1.0.0" release="0" vendor="Anakeen"
+<module  xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
+        name="migration-tools" version="1.0.0" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
-    <description lang="en">Migration tools</description>
+    <description>Migration tools</description>
 
     <requires>
-        <module name="user-interfaces"/>
-        <module name="security"/>
-        <module name="workflow"/>
+        <module name="user-interfaces" version="1.0.x"/>
+        <module name="security" version="1.0.x"/>
+        <module name="workflow" version="1.0.x"/>
     </requires>
-
-    <parameters>
-    </parameters>
-
-    <post-install>
-    </post-install>
-
-    <post-upgrade>
-    </post-upgrade>
-
 
 </module>

@@ -10,7 +10,12 @@
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-ci": "~1.0.0 || >=1.0.0-first < 1.0.1",
-    "@anakeen/anakeen-cli": "~1.0.0 || >=1.0.2-1 < 1.0.2"
+    "@anakeen/anakeen-cli": "~1.0.0",
+    "@commitlint/config-conventional": "^7.3.1",
+    "commitlint": "^7.3.2",
+    "eslint": "^5.12.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "husky": "^1.3.1"
   },
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/migration-tools.git",
   "keywords": [
