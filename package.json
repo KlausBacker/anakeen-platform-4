@@ -2,10 +2,15 @@
   "name": "transformation",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Charles Bonnissent <charles.bonnissent@anakeen.com>",
-  "license": "MIT",
+  "author": "Anakeen",
+  "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0-first6",
     "@anakeen/anakeen-cli": "^1.0.1-1547202545"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
