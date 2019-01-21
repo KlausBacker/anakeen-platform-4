@@ -3,9 +3,9 @@
 
 
 "@anakeen/anakeen-ci@^1.0.0":
-  version "1.0.4"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.4.tgz#8824336f51245e9dc6c43979faa68cbd4bd8a1cf"
-  integrity sha512-KnjPAOVO2UG9XEmMUPEf+BGHINhpd3z4n07SNjwiJ8h2Eaquj/MPrHSKKQkj/bvaDmwGA1aDtzkJy3Rud6mGjA==
+  version "1.0.6"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.6.tgz#96822e1982df4bc6995a407cb7a97464247b6eb7"
+  integrity sha512-d9yMvEHviNeU8G9YVmrJygozNuDc6n/h+tRzASKJefPkteGUA2Xnw1eZmBOR1wpVLrYNv5ETV0rHzT0DcgwKOQ==
   dependencies:
     glob "^7.1.3"
     xml2js "^0.4.19"
