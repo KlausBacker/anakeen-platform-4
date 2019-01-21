@@ -2,7 +2,7 @@
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
   <sde:routes namespace="Ui:Component">
     <sde:route name="Identity:Email">
-      <sde:callable>\Anakeen\Components\Identity\Routes\Email</sde:callable>
+      <sde:callable>Anakeen\Components\Identity\Routes\Email</sde:callable>
       <sde:method>PUT</sde:method>
       <sde:pattern>/components/identity/email</sde:pattern>
       <sde:description>Modify user's email</sde:description>
@@ -10,7 +10,7 @@
       <sde:authenticated>true</sde:authenticated>
     </sde:route>
     <sde:route name="Identity:Password">
-      <sde:callable>\Anakeen\Components\Identity\Routes\Password</sde:callable>
+      <sde:callable>Anakeen\Components\Identity\Routes\Password</sde:callable>
       <sde:method>PUT</sde:method>
       <sde:pattern>/components/identity/password</sde:pattern>
       <sde:description>Modify user's password</sde:description>

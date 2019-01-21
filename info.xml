@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="user-interfaces" release="0" version="1.0.0" vendor="Anakeen"
+        name="user-interfaces" version="1.0.0" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Anakeen Platform : User interfaces</description>
     <requires>
-        <module name="smart-data-engine"/>
-        <module name="anakeen-theme"/>
+        <module name="smart-data-engine" version="1.0.x"/>
+        <module name="anakeen-theme" version="1.0.x"/>
     </requires>
     <replaces>
     </replaces>
