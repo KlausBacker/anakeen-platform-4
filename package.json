@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
   "bin": {
@@ -12,7 +12,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@anakeen/anakeen-module-validation": "^1.0.7",
+    "@anakeen/anakeen-module-validation": "^1.0.8",
     "form-data": "^2.3.3",
     "glob": "^7.1.3",
     "gulp": "^4.0.0",
