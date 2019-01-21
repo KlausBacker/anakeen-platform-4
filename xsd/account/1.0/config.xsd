@@ -119,31 +119,29 @@
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="userType">
-        <xs:all>
-
+        <xs:sequence>
             <xs:element type="xs:string" name="firstname" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>User first name</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ac:notEmptyString" name="lastname">
+            <xs:element type="ac:notEmptyString" name="lastname" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>User last name</xs:documentation>
                 </xs:annotation>
-
             </xs:element>
             <xs:element type="ac:emailAddress" name="mail" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>User mail address</xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element type="ac:passwordType" name="password" minOccurs="0"/>
             <xs:element type="ac:statusType" name="status" minOccurs="0"/>
             <xs:element type="ac:substituteType" name="substitute" minOccurs="0"/>
             <xs:element type="ac:rolesRefType" name="associatedRoles" minOccurs="0"/>
             <xs:element type="ac:groupsRefType" name="parentGroups" minOccurs="0"/>
-            <xs:element type="ac:passwordType" name="password" minOccurs="0"/>
             <xs:element type="ac:structureType" name="structure" minOccurs="0"/>
-        </xs:all>
+        </xs:sequence>
         <xs:attribute type="ac:referenceType" name="login" use="required">
 
             <xs:annotation>
@@ -169,7 +167,7 @@
 
     <xs:complexType name="groupType">
         <xs:sequence>
-            <xs:element name="displayName" type="ac:notEmptyString"/>
+            <xs:element name="displayName" type="ac:notEmptyString"  minOccurs="0"/>
             <xs:element type="ac:rolesRefType" name="associatedRoles" minOccurs="0"/>
             <xs:element type="ac:groupsRefType" name="parentGroups" minOccurs="0"/>
             <xs:element type="ac:structureType" name="structure" minOccurs="0"/>
