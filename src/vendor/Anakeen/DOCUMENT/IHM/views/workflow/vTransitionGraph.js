@@ -170,12 +170,7 @@ define([
               item.id +
               "]"
           );
-          currentView.connect(
-            $from.get(0),
-            $to.get(0),
-            2,
-            item
-          );
+          currentView.connect($from.get(0), $to.get(0), 2, item);
         }
       });
     },
