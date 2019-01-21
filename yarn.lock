@@ -3,9 +3,9 @@
 
 
 "@anakeen/anakeen-module-validation@^1.0.8":
-  version "1.0.8"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.8.tgz#ba37031ad570d3ce80b1d512c855fbc51a8e058b"
-  integrity sha512-Xf8nZVAI+08T2i4hA06KyZkufHN6/pxZMcMT8BiigURNTf7gDV/c04klgmMB++/xJhF7Tr1VA9qin52tqw5uCA==
+  version "1.0.9"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.9.tgz#7cf3fcf6c48beaeb4b3bcbb9b3fd8e5cec85c516"
+  integrity sha512-jprSrCUoXJ6F7yRZpaT0St36R5LFy9vwv0vYf7ay0iEZmWcLecG5vJ3/dQzSZb0FSOzJQHa3v4qoSLfVfbF8jA==
   dependencies:
     libxmljs "^0.19.5"
 
