@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf8"?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="transformation" version="1.0.0" release="0"
+        name="transformation" version="1.0.0"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description >Transformation Engine Client Library</description>
   <requires>
-    <module name="admin-center" />
+    <module name="admin-center" version="1.0.x"/>
   </requires>
   <replaces>
   </replaces>
