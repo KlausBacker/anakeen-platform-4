@@ -3,4 +3,8 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
+  <component name="ProjectResources">
+    <resource url="https://platform.anakeen.com/4/schemas/app/1.0" location="$PROJECT_DIR$/node_modules/@anakeen/anakeen-module-validation/xsd/app/1.0/config.xsd" />
+    <resource url="https://platform.anakeen.com/4/schemas/sde/1.0" location="$PROJECT_DIR$/node_modules/@anakeen/anakeen-module-validation/xsd/sde/1.0/config.xsd" />
+  </component>
 </project>

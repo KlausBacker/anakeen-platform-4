@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/user-interfaces",
-  "version": "1.0.0",
+  "version": "1.0.0-1547646392",
   "description": "",
   "scripts": {
     "beautify": "npx eslint ./src --fix",
@@ -25,16 +25,18 @@
   "license": "MIT",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0-first4",
-    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/anakeen-ci": "^1.0.0-first6",
+    "@anakeen/anakeen-cli": "^1.0.6",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "1.0.0-1543853095",
+    "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-ui": "^2018.3.1129",
     "@webcomponents/webcomponentsjs": "2.2.1",
     "axios": "^0.18.0",
     "backbone": "^1.3.3",
     "bootstrap": "^4.1.3",
     "ckeditor": "^4.11.1",
+    "commitlint": "^7.3.2",
     "copy-webpack-plugin": "^4.5.2",
     "core-js": "^2.6.1",
     "datatables.net": "^1.10.16",
@@ -43,6 +45,7 @@
     "easygettext": "^2.4.0",
     "eslint": "^5.12.0",
     "eslint-plugin-prettier": "^3.0.1",
+    "husky": "^1.3.1",
     "jquery": "^3.3.1",
     "little-loader": "^0.2.0",
     "mustache": "^3.0.1",
@@ -57,5 +60,10 @@
     "vue-gettext": "^2.1.0",
     "whatwg-fetch": "^3.0.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
 }
