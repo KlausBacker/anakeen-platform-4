@@ -91,7 +91,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
             <label>CVDOC Structure</label>
         </process>
-        <process command="./ank.php --script=migrationUpdateAccountUI"/>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
             <label>FIELDACCESSLAYER Structure view</label>
