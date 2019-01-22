@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
     <module:source path="src"/>
+    <module:stub-config>
+        <module:stub-struct source="src/vendor/Anakeen/Hub/SmartStructures/**/*Structure.xml"/>
+    </module:stub-config>
     <module:check-config>
         <module:config-xml source="src/**/*.xml"/>
     </module:check-config>
+
 </module:config>
