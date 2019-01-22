@@ -31,7 +31,7 @@ integration:
   script:
     - ./.cibuild/cibuild.sh --target integration
   only:
-    - master@Anakeen/Platform-4/Modules/anakeen-cli
+    - master@Anakeen/Platform-4/npm/anakeen-module-validation
 
 stable:
   stage: stable
@@ -40,4 +40,4 @@ stable:
   script:
     - ./.cibuild/cibuild.sh --target stable
   only:
-    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/Modules/anakeen-cli
+    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/npm/anakeen-module-validation
