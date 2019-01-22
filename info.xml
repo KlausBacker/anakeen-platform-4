@@ -17,7 +17,7 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
             <label>CVDOC Structure</label>
         </process>
-        <process command="./ank.php --system --resetRouteConfig"/>
+        <process command="./ank.php --system --reloadConfig"/>
         <process command="programs/ui_setHtmlAuthentMode"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Components/Authent/AuthentMail.csv"/>
         <process command="./ank.php --script=migrationUpdateAccountUI"/>
@@ -91,7 +91,6 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml">
             <label>CVDOC Structure</label>
         </process>
-        <process command="./ank.php --script=migrationUpdateAccountUI"/>
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.views.xml">
             <label>FIELDACCESSLAYER Structure view</label>
