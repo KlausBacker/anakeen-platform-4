@@ -98,8 +98,8 @@ if ($isSystem) {
         $system->stop();
     } elseif (Anakeen\Script\ShellManager::getArg("unstop")) {
         $system->unstop();
-    } elseif (Anakeen\Script\ShellManager::getArg("resetRouteConfig")) {
-        $system->resetRouteConfig();
+    } elseif (Anakeen\Script\ShellManager::getArg("reloadConfig")) {
+        $system->reloadConfig();
     } elseif (Anakeen\Script\ShellManager::getArg("upgradeVersion")) {
         $system->refreshJsVersion();
     } elseif (Anakeen\Script\ShellManager::getArg("clearFile")) {

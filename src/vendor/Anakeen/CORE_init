@@ -159,7 +159,7 @@ if [ "$1" = "I" ] ; then
 
     "$wpub"/ank.php --script=updateclass  --class=Group
 
-    "$wpub"/ank.php --system --resetRouteConfig
+    "$wpub"/ank.php --system --reloadConfig
 
     "$wpub"/ank.php --script=fdl_trigger --docid=-1 | PGSERVICE="$pgservice_core" psql
     "$wpub"/ank.php --script=fdl_trigger --trigger=Y --docid=-1 | PGSERVICE="$pgservice_core" psql
