@@ -1,7 +1,7 @@
 {
   "name": "@anakeen/anakeen-module-validation",
-  "version": "1.0.9",
-  "description": "",
+  "version": "1.0.10",
+  "description": "Xsd and validation code",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,8 +12,16 @@
     "libxmljs": "^0.19.5"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^7.3.1",
+    "commitlint": "^7.3.2",
     "eslint": "^5.9.0",
     "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.3.1",
     "prettier": "^1.15.2"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
