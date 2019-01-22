@@ -79,7 +79,7 @@ class ShellManager
         $lines[] = sprintf("\t--stop\t\t\tDisable Http access");
         $lines[] = sprintf("\t--verbose\t\tVerbose mode");
         $lines[] = sprintf("\t--unstop\t\tEnable Http access");
-        $lines[] = sprintf("\t--resetRouteConfig\tReload route configuration");
+        $lines[] = sprintf("\t--reloadConfig\tReload route configuration");
         $lines[] = sprintf("\t--upgradeVersion\tReset WVERSION");
         $lines[] = sprintf("\t--localeGen\t\tGenerate locale catalog");
         $lines[] = sprintf("\t--style\t\t\tReset Css generation");

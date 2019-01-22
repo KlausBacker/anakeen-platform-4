@@ -29,7 +29,7 @@ class System
         $this->imageAndDocsLinks();
         $this->clearFileCache();
         $this->refreshJsVersion();
-        $this->resetRouteConfig();
+        $this->reloadConfig();
         $this->localeGen();
         $this->unStop();
     }
@@ -395,7 +395,7 @@ class System
     }
 
 
-    public function resetRouteConfig()
+    public function reloadConfig()
     {
         $this->verbose(1, sprintf("[+] Update global route access definition.\n"));
 
