@@ -7,7 +7,8 @@ before_script:
 
 stages:
   - autotest
-  - package
+  - integration
+  - stable
 
 autotest:
   stage: autotest
@@ -21,5 +22,22 @@ autotest:
     expire_in: 1 week
     when: always
   only:
-    - branches
-    - tags
+    - merge_requests
+
+integration:
+  stage: integration
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target integration
+  only:
+    - master@Anakeen/Platform-4/anakeen-cli
+
+stable:
+  stage: stable
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target stable
+  only:
+    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-cli
