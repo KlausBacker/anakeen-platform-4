@@ -52,6 +52,11 @@ package:
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target package --publish 
+    - ./.cibuild/cibuild.sh --target package --publish
+  artifacts:
+    paths:
+      - outputs/
+    expire_in: 1 week
+    when: always
   only:
     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/smart-data-engine
