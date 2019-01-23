@@ -4,7 +4,6 @@ const signale = require("signale");
 const fs = require("fs");
 const { createRoute } = require("../tasks/createRoute");
 
-let moduleData = {};
 signale.config({
   displayTimestamp: true,
   displayDate: true
@@ -82,7 +81,6 @@ const builder = {
 exports.builder = builder;
 
 exports.handler = async argv => {
-  moduleData = await getModuleInfo(argv.sourcePath);
   try {
     signale.time("createRoute");
     createRoute(argv);
