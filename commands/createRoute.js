@@ -12,18 +12,6 @@ signale.config({
 
 exports.desc = "Create a route";
 const builder = {
-  namespace: {
-    description: "namespace of the route",
-    alias: "N",
-    type: "string",
-    default: () => {
-      if (moduleData.moduleInfo) {
-        return moduleData.moduleInfo.vendor;
-      } else {
-        return undefined;
-      }
-    }
-  },
   name: {
     description: "name of the route",
     alias: "n",
@@ -34,29 +22,17 @@ const builder = {
     description: "path to php file",
     alias: "c",
     type: "string",
-    default: arg => {
-      if (moduleData.moduleInfo) {
-        return `${moduleData.moduleInfo.vendor}\\${
-          moduleData.moduleInfo.name
-        }\\Routes\\${arg}`;
-      } else {
-        return undefined;
-      }
-    }
+    required: true
   },
   method: {
     description: "method used by the route",
     alias: "m",
-    type: "array",
-    required: true,
-    conflicts: "overrides"
+    type: "array"
   },
   pattern: {
     description: "pattern which validate the route",
     type: "string",
-    alias: "p",
-    required: true,
-    conflicts: "overrides"
+    alias: "p"
   },
   description: {
     type: "string"
@@ -64,12 +40,14 @@ const builder = {
   access: {
     description: "name of the access right",
     type: "string",
-    implies: "accessNameSpace"
+    implies: "accessNameSpace",
+    required: true
   },
   accessNameSpace: {
     description: "namespace of the access right",
     type: "string",
-    implies: "access"
+    implies: "access",
+    required: true
   },
   sourcePath: {
     description: "path to the module",

@@ -11,9 +11,10 @@ const phpPathDirectory = (callable, moduleData) => {
 const convertPathInPhpNamespace = callable => {
   let path = callable.split("/");
   path.pop();
-  return path.join("\\");
+  return path.join("\\").replace("\\", "");
 };
 const middlewareConf = (
+  namespace,
   name,
   callable,
   method,
@@ -23,55 +24,51 @@ const middlewareConf = (
   accessNameSpace,
   priority
 ) => {
-  let accesses = "";
-  if (access && accessNameSpace) {
-    accesses = `<sde:requiredAccess>
+  let accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
                 </sde:requiredAccess>`;
-  } else {
-    accesses = `<sde:requiredAccess/>`;
-  }
 
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
-        <sde:middleware name="${name}">
-            <sde:priority>${priority}</sde:priority>
-            <sde:callable>${callable}</sde:callable>
-            <sde:method>${method}</sde:method>
-            <sde:pattern>${pattern}</sde:pattern>
-            <sde:description>${description}</sde:description>
-            ${accesses}
-        </sde:middleware>
+        <sde:middlewares namespace="${namespace}">
+          <sde:middleware name="${name}">
+              <sde:priority>${priority}</sde:priority>
+              <sde:callable>${callable}</sde:callable>
+              <sde:method>${method}</sde:method>
+              <sde:pattern>${pattern}</sde:pattern>
+              <sde:description>${description}</sde:description>
+              ${accesses}
+          </sde:middleware>
+        </sde:middlewares>
   </sde:config>`;
 };
 
 const overridesConf = (
+  namespace,
   name,
   callable,
   description,
   access,
   accessNameSpace
 ) => {
-  let accesses = "";
-  if (access && accessNameSpace) {
-    accesses = `<sde:requiredAccess>
+  let accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
                 </sde:requiredAccess>`;
-  } else {
-    accesses = `<sde:requiredAccess/>`;
-  }
 
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
-        <sde:route-override name="${name}">
-            <sde:callable>${callable}</sde:callable>
-            <sde:description>${description}</sde:description>
-            ${accesses}
-        </sde:route-override>
+    <sde:routes namespace="${namespace}">
+          <sde:route-override name="${name}">
+              <sde:callable>${callable}</sde:callable>
+              <sde:description>${description}</sde:description>
+              ${accesses}
+          </sde:route-override>
+    </sde:routes>
   </sde:config>`;
 };
 
 const routesConf = (
+  namespace,
   name,
   callable,
   method,
@@ -80,23 +77,20 @@ const routesConf = (
   access,
   accessNameSpace
 ) => {
-  let accesses = "";
-  if (access && accessNameSpace) {
-    accesses = `<sde:requiredAccess>
+  let accesses = `<sde:requiredAccess>
                     <sde:access ns="${accessNameSpace}">${access}</sde:access>
                 </sde:requiredAccess>`;
-  } else {
-    accesses = `<sde:requiredAccess/>`;
-  }
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
-        <sde:route name="${name}">
-            <sde:callable>${callable}</sde:callable>
-            <sde:method>${method}</sde:method>
-            <sde:pattern>${pattern}</sde:pattern>
-            <sde:description>${description}</sde:description>
-            ${accesses}
-        </sde:route>
+        <sde:routes namespace="${namespace}">
+          <sde:route name="${name}">
+              <sde:callable>${callable}</sde:callable>
+              <sde:method>${method}</sde:method>
+              <sde:pattern>${pattern}</sde:pattern>
+              <sde:description>${description}</sde:description>
+              ${accesses}
+          </sde:route>
+        </sde:routes>
   </sde:config>`;
 };
 const generatePhpFile = ({ name, namespace }) => {
@@ -149,7 +143,6 @@ class ${ssName}
 };
 
 exports.createRoute = ({
-  namespace,
   name,
   callable,
   method,
@@ -164,14 +157,24 @@ exports.createRoute = ({
 }) => {
   return gulp.task("createRoute", async () => {
     let moduleData = await getModuleInfo(sourcePath);
+    const namespace = moduleData.moduleInfo
+      ? moduleData.moduleInfo.vendor
+      : undefined;
     //Get xml content
     const parser = new xml2js.Parser();
     return new Promise((resolve, reject) => {
+      if (type === "routes" || type === "middleware") {
+        if (!pattern || !method) {
+          return reject("Missing parameters Pattern or Method");
+        }
+      }
+      // sourcePath doesn't exist and needs to be created
       if (!fs.existsSync(routeConfigPath)) {
         let myData = null;
         switch (type) {
           case "middleware":
             myData = middlewareConf(
+              namespace,
               name,
               callable,
               method,
@@ -184,6 +187,7 @@ exports.createRoute = ({
             break;
           case "routes":
             myData = routesConf(
+              namespace,
               name,
               callable,
               method,
@@ -195,6 +199,7 @@ exports.createRoute = ({
             break;
           case "overrides":
             myData = overridesConf(
+              namespace,
               name,
               callable,
               description,
@@ -210,6 +215,7 @@ exports.createRoute = ({
           resolve();
         });
       } else {
+        // sourcePath exists and route needs to be merged with it
         fs.readFile(routeConfigPath, { encoding: "utf8" }, (err, content) => {
           if (err) {
             return reject(err);
@@ -218,13 +224,23 @@ exports.createRoute = ({
             if (err) {
               return reject(err);
             }
+            callable = callable
+              .split("/")
+              .join("\\")
+              .replace("\\", "");
             let middlewareTag = null;
             let routesTag = null;
             let overridesTag = null;
-            let configTag = data["sde:config"];
+            let prefix = "";
+            Object.getOwnPropertyNames(data).forEach(item => {
+              if (item.includes(":config")) {
+                prefix = item.split(":")[0];
+              }
+            });
+            let configTag = data[prefix + ":config"];
             switch (type) {
               case "middleware":
-                middlewareTag = configTag["sde:middlewares"];
+                middlewareTag = configTag[prefix + ":middlewares"];
                 if (middlewareTag) {
                   let myRoute = null;
                   middlewareTag.forEach(item => {
@@ -232,56 +248,42 @@ exports.createRoute = ({
                       myRoute = item;
                     }
                   });
-                  if (myRoute !== null) {
-                    myRoute["sde:middleware"].push({
-                      $: { name: name },
-                      "sde:priority": priority,
-                      "sde:callable": callable,
-                      "sde:method": method,
-                      "sde:pattern": pattern,
-                      "sde:description": description,
-                      "sde:requiredAccess": {
-                        $: {},
-                        "sde:access": {
-                          $: { ns: accessNameSpace },
-                          _: access
-                        }
-                      }
-                    });
-                  } else {
-                    configTag["sde:middlewares"].push({
-                      $: { namespace: namespace },
-                      "sde:middleware": {
-                        $: { name: name },
-                        "sde:priority": priority,
-                        "sde:callable": callable,
-                        "sde:method": method,
-                        "sde:pattern": pattern,
-                        "sde:description": description,
-                        "sde:requiredAccess": {
-                          $: {},
-                          "sde:access": {
-                            $: { ns: accessNameSpace },
-                            _: access
-                          }
-                        }
-                      }
-                    });
+                  if (!myRoute[prefix + ":middleware"]) {
+                    myRoute[prefix + ":middleware"] = [];
                   }
+                  let tag =
+                    myRoute !== null
+                      ? myRoute[prefix + ":middleware"]
+                      : configTag[prefix + ":middlewares"];
+                  tag.push({
+                    $: { name: name },
+                    [prefix + ":priority"]: priority,
+                    [prefix + ":callable"]: callable,
+                    [prefix + ":method"]: method,
+                    [prefix + ":pattern"]: pattern,
+                    [prefix + ":description"]: description,
+                    [prefix + ":requiredAccess"]: {
+                      $: {},
+                      [prefix + ":access"]: {
+                        $: { ns: accessNameSpace },
+                        _: access
+                      }
+                    }
+                  });
                 } else {
-                  configTag["sde:middlewares"] = [];
-                  configTag["sde:middlewares"].push({
+                  configTag[prefix + ":middlewares"] = [];
+                  configTag[prefix + ":middlewares"].push({
                     $: { namespace: namespace },
-                    "sde:middleware": {
+                    [prefix + ":middleware"]: {
                       $: { name: name },
-                      "sde:priority": priority,
-                      "sde:callable": callable,
-                      "sde:method": method,
-                      "sde:pattern": pattern,
-                      "sde:description": description,
-                      "sde:requiredAccess": {
+                      [prefix + ":priority"]: priority,
+                      [prefix + ":callable"]: callable,
+                      [prefix + ":method"]: method,
+                      [prefix + ":pattern"]: pattern,
+                      [prefix + ":description"]: description,
+                      [prefix + ":requiredAccess"]: {
                         $: {},
-                        "sde:access": {
+                        [prefix + ":access"]: {
                           $: { ns: accessNameSpace },
                           _: access
                         }
@@ -291,7 +293,7 @@ exports.createRoute = ({
                 }
                 break;
               case "routes":
-                routesTag = configTag["sde:routes"];
+                routesTag = configTag[prefix + ":routes"];
                 if (routesTag) {
                   let myRoute = null;
                   routesTag.forEach(item => {
@@ -299,53 +301,40 @@ exports.createRoute = ({
                       myRoute = item;
                     }
                   });
-                  if (myRoute !== null) {
-                    myRoute["sde:route"].push({
-                      $: { name: name },
-                      "sde:callable": callable,
-                      "sde:method": method,
-                      "sde:pattern": pattern,
-                      "sde:description": description,
-                      "sde:requiredAccess": {
-                        $: {},
-                        "sde:access": {
-                          $: { ns: accessNameSpace },
-                          _: access
-                        }
-                      }
-                    });
-                  } else {
-                    configTag["sde:routes"].push({
-                      $: { namespace: namespace },
-                      "sde:route": {
-                        $: { name: name },
-                        "sde:callable": callable,
-                        "sde:method": method,
-                        "sde:pattern": pattern,
-                        "sde:description": description,
-                        "sde:requiredAccess": {
-                          $: {},
-                          "sde:access": {
-                            $: { ns: accessNameSpace },
-                            _: access
-                          }
-                        }
-                      }
-                    });
+                  if (!myRoute[prefix + ":route"]) {
+                    myRoute[prefix + ":route"] = [];
                   }
+                  let tag =
+                    myRoute !== null
+                      ? myRoute[prefix + ":route"]
+                      : configTag[prefix + ":routes"];
+                  tag.push({
+                    $: { name: name },
+                    [prefix + ":callable"]: callable,
+                    [prefix + ":method"]: method,
+                    [prefix + ":pattern"]: pattern,
+                    [prefix + ":description"]: description,
+                    [prefix + ":requiredAccess"]: {
+                      $: {},
+                      [prefix + ":access"]: {
+                        $: { ns: accessNameSpace },
+                        _: access
+                      }
+                    }
+                  });
                 } else {
-                  configTag["sde:routes"] = [];
-                  configTag["sde:routes"].push({
+                  configTag[prefix + ":routes"] = [];
+                  configTag[prefix + ":routes"].push({
                     $: { namespace: namespace },
-                    "sde:route": {
+                    [prefix + ":route"]: {
                       $: { name: name },
-                      "sde:callable": callable,
-                      "sde:method": method,
-                      "sde:pattern": pattern,
-                      "sde:description": description,
-                      "sde:requiredAccess": {
+                      [prefix + ":callable"]: callable,
+                      [prefix + ":method"]: method,
+                      [prefix + ":pattern"]: pattern,
+                      [prefix + ":description"]: description,
+                      [prefix + ":requiredAccess"]: {
                         $: {},
-                        "sde:access": {
+                        [prefix + ":access"]: {
                           $: { ns: accessNameSpace },
                           _: access
                         }
@@ -355,7 +344,7 @@ exports.createRoute = ({
                 }
                 break;
               case "overrides":
-                overridesTag = configTag["sde:routes"];
+                overridesTag = configTag[prefix + ":routes"];
                 if (overridesTag) {
                   let myRoute = null;
                   overridesTag.forEach(item => {
@@ -363,47 +352,36 @@ exports.createRoute = ({
                       myRoute = item;
                     }
                   });
-                  if (myRoute !== null) {
-                    myRoute["sde:route-override"].push({
-                      $: { name: name },
-                      "sde:callable": callable,
-                      "sde:description": description,
-                      "sde:requiredAccess": {
-                        $: {},
-                        "sde:access": {
-                          $: { ns: accessNameSpace },
-                          _: access
-                        }
-                      }
-                    });
-                  } else {
-                    configTag["sde:routes"].push({
-                      $: { namespace: namespace },
-                      "sde:route-override": {
-                        $: { name: name },
-                        "sde:callable": callable,
-                        "sde:description": description,
-                        "sde:requiredAccess": {
-                          $: {},
-                          "sde:access": {
-                            $: { ns: accessNameSpace },
-                            _: access
-                          }
-                        }
-                      }
-                    });
+                  if (!myRoute[prefix + ":route-override"]) {
+                    myRoute[prefix + ":route-override"] = [];
                   }
+                  let tag =
+                    myRoute !== null
+                      ? myRoute[prefix + ":route-override"]
+                      : configTag[prefix + ":routes"];
+                  tag.push({
+                    $: { name: name },
+                    [prefix + ":callable"]: callable,
+                    [prefix + ":description"]: description,
+                    [prefix + ":requiredAccess"]: {
+                      $: {},
+                      [prefix + ":access"]: {
+                        $: { ns: accessNameSpace },
+                        _: access
+                      }
+                    }
+                  });
                 } else {
-                  configTag["sde:routes"] = [];
-                  configTag["sde:routes"].push({
+                  configTag[prefix + ":routes"] = [];
+                  configTag[prefix + ":routes"].push({
                     $: { namespace: namespace },
-                    "sde:route-override": {
+                    [prefix + ":route-override"]: {
                       $: { name: name },
-                      "sde:callable": callable,
-                      "sde:description": description,
-                      "sde:requiredAccess": {
+                      [prefix + ":callable"]: callable,
+                      [prefix + ":description"]: description,
+                      [prefix + ":requiredAccess"]: {
                         $: {},
-                        "sde:access": {
+                        [prefix + ":access"]: {
                           $: { ns: accessNameSpace },
                           _: access
                         }
