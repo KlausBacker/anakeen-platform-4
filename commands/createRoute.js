@@ -1,5 +1,4 @@
 const gulp = require("gulp");
-const { getModuleInfo } = require("../utils/moduleInfo");
 const signale = require("signale");
 const fs = require("fs");
 const { createRoute } = require("../tasks/createRoute");
