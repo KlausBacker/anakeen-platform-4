@@ -10,7 +10,7 @@ sidebar: false
      </a>
     </div>
     <div class="guide-section">
-     <a href="userInterfaces/">
+     <a href="hubStationInterfaces/">
      <i class="fa fa-desktop"></i><br/>
      <span>Utilisation</span>
      </a>
