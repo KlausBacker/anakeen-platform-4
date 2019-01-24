@@ -34,5 +34,4 @@ class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
     {
         return parent::getComponentConfiguration();
     }
-
 }

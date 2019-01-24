@@ -12,9 +12,12 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     public function registerHooks()
     {
         parent::registerHooks();
-        $this->getHooks()->addListener(SmartHooks::PRESTORE, function(){
-            $this->getHubConfigurationIcon();
-        });
+        $this->getHooks()->addListener(
+            SmartHooks::PRESTORE,
+            function () {
+                $this->getHubConfigurationIcon();
+            }
+        );
     }
 
     public function getConfiguration()
