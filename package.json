@@ -12,7 +12,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.0.7",
-    "@anakeen/ank-components": "1.0.0",
+    "@anakeen/ank-components": "1.0.1",
     "@anakeen/webpack-conf": "1.0.0",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-buttons-vue-wrapper": "^2018.3.911",
