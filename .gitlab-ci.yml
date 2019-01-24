@@ -51,7 +51,7 @@ package:
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target package
+    - ./.cibuild/cibuild.sh --target package --publish
   artifacts:
     paths:
       - outputs/
