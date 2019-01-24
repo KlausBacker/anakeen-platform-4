@@ -9,7 +9,7 @@ const readFile = util.promisify(fs.readFile);
 const exec = util.promisify(child_process.exec);
 
 
-findApp("user-interfaces").then(async(appPath) => {
+findApp("admin-center").then(async(appPath) => {
   const appInfo = await getInfoFromApp(appPath);
   console.log("Bump autorelease");
   await exec(
