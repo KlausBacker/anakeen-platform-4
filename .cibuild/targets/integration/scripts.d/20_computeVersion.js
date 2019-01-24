@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
 const util = require("util");
 const child_process = require("child_process");
-const { promiseSpawn, getInfoFromApp, findApp } = require("@anakeen/anakeen-ci/utils");
-
-const readFile = util.promisify(fs.readFile);
+const { getInfoFromApp, findApp } = require("@anakeen/anakeen-ci/utils");
 const exec = util.promisify(child_process.exec);
 
 
-findApp("user-interfaces").then(async(appPath) => {
+findApp("admin-center").then(async(appPath) => {
   const appInfo = await getInfoFromApp(appPath);
   console.log("Bump autorelease");
   await exec(
