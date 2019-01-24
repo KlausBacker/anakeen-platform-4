@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/user-interfaces",
-  "version": "1.0.0-1547646392",
+  "version": "1.0.0",
   "description": "",
   "scripts": {
     "beautify": "npx eslint ./src --fix",
@@ -25,10 +25,10 @@
   "license": "MIT",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/user-interfaces.git",
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0",
-    "@anakeen/anakeen-cli": "^1.0.6",
-    "@anakeen/ank-components": "latest",
-    "@anakeen/webpack-conf": "1.0.0-1543853095",
+    "@anakeen/anakeen-ci": "^1.0.8",
+    "@anakeen/anakeen-cli": "^1.0.7",
+    "@anakeen/ank-components": "1.0.1",
+    "@anakeen/webpack-conf": "1.0.0",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-ui": "^2018.3.1129",
     "@webcomponents/webcomponentsjs": "2.2.1",
@@ -50,7 +50,7 @@
     "little-loader": "^0.2.0",
     "mustache": "^3.0.1",
     "popper.js": "^1.14.6",
-    "prettier": "^1.15.3",
+    "prettier": "^1.16.1",
     "roboto-fontface": "^0.10.0",
     "style-loader": "^0.23.1",
     "tracekit": "^0.4.5",
