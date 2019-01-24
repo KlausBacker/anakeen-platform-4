@@ -10,11 +10,9 @@
     "build": "webpack --config webpack/index.js"
   },
   "files": [
-    "./src/**/*.scss",
-    "./LICENSE",
-    "README.md",
-    "VERSION",
-    "RELEASE"
+    "src/**/*.scss",
+    "LICENSE",
+    "README.md"
   ],
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
