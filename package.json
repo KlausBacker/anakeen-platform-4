@@ -5,7 +5,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.7",
+    "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.0.7"
   },
   "husky": {

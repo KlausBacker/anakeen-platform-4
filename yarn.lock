@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-ci@^1.0.7":
-  version "1.0.7"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.7.tgz#7b33301f3b6a66a404d27d9ad9ca555b36c7216f"
-  integrity sha512-o2+BNf6bzy+2BSwx1PXg857VXhxpXzxPfNWre3RaZ7dHEjghMftrQRkwptQ3WgMq5Myg8FZWeJqQYXLHKt1yIg==
+"@anakeen/anakeen-ci@^1.0.8":
+  version "1.0.8"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.8.tgz#6c31a8ffbb33ca642b06489b0a7a97389449f471"
+  integrity sha512-0Sx8+Ga+OgC9224ehuDUYpta+TzyWomVKWDnIgvH+yCeTd/S4DQL2B51enN9Qcgjhywo5SP51ZIHdLTzPBaBtw==
   dependencies:
     glob "^7.1.3"
     xml2js "^0.4.19"

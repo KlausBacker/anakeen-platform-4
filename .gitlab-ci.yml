@@ -47,7 +47,7 @@ package:
   tags:
   - a4ppm
   script:
-  - ./.cibuild/cibuild.sh --target package
+  - ./.cibuild/cibuild.sh --target package --publish
   variables:
     CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_BUCKET"
     CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_URL"
