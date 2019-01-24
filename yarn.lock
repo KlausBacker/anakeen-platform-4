@@ -2,18 +2,18 @@
 # yarn lockfile v1
 
 
-"@anakeen/anakeen-ci@^1.0.0":
-  version "1.0.6"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.6.tgz#96822e1982df4bc6995a407cb7a97464247b6eb7"
-  integrity sha512-d9yMvEHviNeU8G9YVmrJygozNuDc6n/h+tRzASKJefPkteGUA2Xnw1eZmBOR1wpVLrYNv5ETV0rHzT0DcgwKOQ==
+"@anakeen/anakeen-ci@^1.0.8":
+  version "1.0.8"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.8.tgz#6c31a8ffbb33ca642b06489b0a7a97389449f471"
+  integrity sha512-0Sx8+Ga+OgC9224ehuDUYpta+TzyWomVKWDnIgvH+yCeTd/S4DQL2B51enN9Qcgjhywo5SP51ZIHdLTzPBaBtw==
   dependencies:
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@^1.0.6":
-  version "1.0.6"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.6.tgz#3271f5fe648d5cf86615fa7f687a3108848598f0"
-  integrity sha512-Tb+vvNPcvfwb7b/fhXt0PqK9oaEnXT9Tc7u3C5UqtsIEGfoD5Iz4rJ5WBy8WKETXPJWy2EhYU1u968WIzd5Qsw==
+"@anakeen/anakeen-cli@^1.0.7":
+  version "1.0.7"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.7.tgz#26047d487ad294e32ad5194d5a6dace54c6ce625"
+  integrity sha512-bmu/UXNKbOdtZUFFBlUq7aM47nMaiYA7sWhDAJ3EglitHGMm5fdjdg4wa5OTD1H/qBq1wQPTySy+B2OLu8Josg==
   dependencies:
     "@anakeen/anakeen-module-validation" "^1.0.9"
     form-data "^2.3.3"
@@ -44,17 +44,17 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@latest":
-  version "1.0.0-1545131196"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.0-1545131196.tgz#d5d8403e69b6601e7bceba69319be7d8b1e05460"
-  integrity sha512-FpKCqcpyqrAD2dT4uC82s1eM4SVaDKUjjzNf4TGKgKiqvt7LyE00tfXIhZEBBgJ41f04wBsq0vjHXGEF7LvM4A==
+"@anakeen/ank-components@1.0.1":
+  version "1.0.1"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.1.tgz#cda659b24db55f8852b4ba356c448b8ba9a3384d"
+  integrity sha512-gUhAIGqlzNwSlP0uCFNH3K/U0aU5VOGRRlO8LtJVlrb1NKplBMGRfGdq9799u2/IdHTYJWXhtvvpYXtCVbxjPQ==
   dependencies:
     vue-gettext "^2.1.1"
 
-"@anakeen/webpack-conf@1.0.0-1543853095":
-  version "1.0.0-1543853095"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0-1543853095.tgz#94d0bf7cff78ad1b952de69876f42e0ede615354"
-  integrity sha512-F+KKDh5goHCWopYpWfowFgzskX0AD5/AIQeD1Axn8ayGuByBaR4NgEQa0q6q9Yp1SCDr4F0R6qLUgnLvtPKQ9g==
+"@anakeen/webpack-conf@1.0.0":
+  version "1.0.0"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0.tgz#97abc90e9df0182c9cc1db07f0a35e2eec3b8d79"
+  integrity sha512-dtTSj00KeArefaaYdXzLRPKLm7sHH+ofC1EuZ1CutYmcjJFWTv9geS1eO37OkZRkdGox/OIUBcCVOFuqcjEICw==
   dependencies:
     assets-webpack-plugin "^3.9.4"
     babel-core "^6.26.3"
@@ -66,8 +66,6 @@
     clean-webpack-plugin "^0.1.19"
     css-loader "^1.0.0"
     duplicate-package-checker-webpack-plugin "^3.0.0"
-    eslint "^5.9.0"
-    eslint-plugin-prettier "^3.0.0"
     file-loader "^1.1.11"
     graceful-fs "^4.1.15"
     html-webpack-inline-svg-plugin "^1.2.4"
@@ -76,7 +74,6 @@
     mini-css-extract-plugin "^0.4.2"
     node-sass "^4.9.3"
     optimize-css-assets-webpack-plugin "^5.0.1"
-    prettier "^1.15.3"
     raw-loader "^0.5.1"
     sass-loader "^7.1.0"
     style-loader "^0.22.1"
@@ -3284,7 +3281,7 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.3, escape-string-regexp@^
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-plugin-prettier@^3.0.0, eslint-plugin-prettier@^3.0.1:
+eslint-plugin-prettier@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.0.1.tgz#19d521e3981f69dd6d14f64aec8c6a6ac6eb0b0d"
   integrity sha512-/PMttrarPAY78PLvV3xfWibMOdMDl57hmlQ2XqFeA37wd+CJ7WSxV7txqjVPHi/AAFKd2lX0ZqfsOc/i5yFCSQ==
@@ -3309,7 +3306,7 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@^5.12.0, eslint@^5.9.0:
+eslint@^5.12.0:
   version "5.12.1"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.12.1.tgz#5ca9931fb9029d04e7be92b03ce3b58edfac7e3b"
   integrity sha512-54NV+JkTpTu0d8+UYSA8mMKAG4XAsaOrozA9rCW7tgneg1mevcL7wIotPC+fZ0SkWwdhNqoXoxnQCTBp7UvTsg==
@@ -6628,10 +6625,15 @@ prettier@1.13.7:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.7.tgz#850f3b8af784a49a6ea2d2eaa7ed1428a34b7281"
   integrity sha512-KIU72UmYPGk4MujZGYMFwinB7lOf2LsDNGSOC8ufevsrPLISrZbNJlWstRi3m0AMuszbH+EFSQ/r6w56RSPK6w==
 
-prettier@^1.13.0, prettier@^1.15.3:
+prettier@^1.13.0:
   version "1.16.0"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.0.tgz#104dd25f5ee3d0c9d0a6ce4bb40ced8481d51219"
   integrity sha512-MCBCYeAuZfejUPdEpkleLWvpRBwLii/Sp5jQs0eb8Ul/drGIDjkL6tAU24tk6yCGf0KPV5rhPPPlczfBmN2pWQ==
+
+prettier@^1.16.1:
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.1.tgz#534c2c9d7853f8845e5e078384e71973bd74089f"
+  integrity sha512-XXUITwIkGb3CPJ2hforHah/zTINRyie5006Jd2HKy2qz7snEJXl0KLfsJZW/wst9g6R2rFvqba3VpNYdu1hDcA==
 
 pretty-error@^2.0.2:
   version "2.1.1"
