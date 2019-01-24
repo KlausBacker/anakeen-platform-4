@@ -3,7 +3,7 @@
 const { produceApp } = require("@anakeen/anakeen-ci");
 const { getModuleInfo } = require("@anakeen/anakeen-cli/utils/moduleInfo");
 
-return produceApp({
+produceApp({
   apps: [
     {
       app: {
