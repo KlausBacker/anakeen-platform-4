@@ -4,6 +4,7 @@ namespace Anakeen\Hub\SmartStructures\HubConfiguration;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
+use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationBehavior extends \Anakeen\SmartElement
@@ -11,6 +12,12 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     public function registerHooks()
     {
         parent::registerHooks();
+        $this->getHooks()->addListener(
+            SmartHooks::PRESTORE,
+            function () {
+                $this->getHubConfigurationIcon();
+            }
+        );
     }
 
     public function getConfiguration()
@@ -76,21 +83,20 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     protected function getHubConfigurationIcon()
     {
         $iconEnum = $this->getRawValue("hub_icon_enum");
-        $finalIcon = $this->icon;
         switch ($iconEnum) {
             case "IMAGE":
-                $finalIcon = $this->getRawValue("hub_icon_image");
+                $this->setValue("hub_final_icon", "<img src='".$this->getRawValue("hub_icon_image")."'>");
                 break;
             case "HTML":
-                $finalIcon = $this->getRawValue("hub_icon_text");
+                $this->setValue("hub_final_icon", "<i class='fa fa-".$this->getRawValue("hub_icon_text")."'></i>");
                 break;
             case "FONT":
-                $finalIcon = $this->getRawValue("hub_icon_font");
+                $this->setValue("hub_final_icon", "<i class='fa fa-".$this->getRawValue("hub_icon_font")."'></i>");
                 break;
             default:
                 break;
         }
-        return $finalIcon;
+        return $this->getRawValue("hub_final_icon");
     }
 
     /**
