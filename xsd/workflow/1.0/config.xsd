@@ -82,10 +82,19 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
+
+
     <xs:complexType name="timerRefType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="ns:elementName" name="ref" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="timerTransRefType">
+        <xs:simpleContent>
+            <xs:extension base="ns:timerRefType">
                 <xs:attribute type="ns:timerType" name="type"  use="required"/>
             </xs:extension>
         </xs:simpleContent>
@@ -121,7 +130,7 @@
             <xs:element type="ns:commonRefType" name="element-access-configuration" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:commonRefType" name="field-access-configuration" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:commonRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="ns:timerRefType" name="timer" minOccurs="0"/>
+            <xs:element type="ns:timerRefType" name="timer" minOccurs="0" />
             <xs:element type="xs:token" name="color" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:commonRefType" name="mask" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element type="ns:commonRefType" name="view-control" maxOccurs="unbounded" minOccurs="0"/>
@@ -136,7 +145,7 @@
     <xs:complexType name="transitionRefType" mixed="true">
         <xs:sequence>
             <xs:element type="ns:commonRefType" name="mailtemplate" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element type="ns:timerRefType" name="timer" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="ns:timerTransRefType" name="timer" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute type="ns:fieldName" name="ref" use="required"/>
     </xs:complexType>
