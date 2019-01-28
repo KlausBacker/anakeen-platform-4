@@ -389,22 +389,7 @@ class Layout
     protected function GenJsRef($useLegacyLog = true)
     {
         $js = "";
-        if ($this->action) {
-            $list=[];
-            if ($useLegacyLog) {
-                $list[] = $this->action->GetParam("CORE_JSURL") . "/logmsg.js?wv="
-                    . $this->action->GetParam("WVERSION");
-            }
-            if (!empty($this->action->parent)) {
-                $list = array_merge($list, $this->action->parent->GetJsRef());
-            }
 
-            reset($list);
-
-            foreach ($list as $k => $v) {
-                $js .= "\n" . sprintf('<script type="text/javascript" language="JavaScript" src="%s"></script>', $v);
-            }
-        }
         return $js;
     }
     /**
