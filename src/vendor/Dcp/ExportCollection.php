@@ -5,6 +5,7 @@ namespace Dcp;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
+use Anakeen\Exception;
 
 class ExportCollection
 {
