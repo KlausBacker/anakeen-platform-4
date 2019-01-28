@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-#register npm
-npm config set @anakeen:registry http://npm.corp.anakeen.com:4873
+select_registry_for_autotest
