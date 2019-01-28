@@ -54,6 +54,7 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
 
             $this->setEltValue($mailtemplate, $mailNode->getAttribute("structure"), MailFields::tmail_family);
             $this->setEltValue($mailtemplate, $mailNode->getAttribute("label"), MailFields::tmail_title);
+            $this->setEltValue($mailtemplate, $mailNode->getAttribute("workflow-model"), MailFields::tmail_workflow);
             $this->setEltValue($mailtemplate, $this->evaluate($mailNode, "string({$this->mtPrefix}:subject)"), MailFields::tmail_subject);
             $this->setEltValue($mailtemplate, $this->evaluate($mailNode, "string({$this->mtPrefix}:body)"), MailFields::tmail_body);
             $this->setEltValue($mailtemplate, $this->evaluate($mailNode, "string({$this->mtPrefix}:use-html-anchor)") === "true" ? "yes" : "no", MailFields::tmail_ulink);
@@ -151,6 +152,10 @@ class ImportWorkflowConfiguration extends ImportRenderConfiguration
                 break;
             case "workflow-account-field":
                 $destType = "WD";
+                $destValue = $element->nodeValue;
+                break;
+            case "element-name":
+                $destType = "RD";
                 $destValue = $element->nodeValue;
                 break;
         }
