@@ -28,6 +28,10 @@ integration:
   stage: integration
   tags:
     - a4ppm
+  variables:
+    CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_INTEGRATION_ANAKEEN_APP_REGISTRY_BUCKET"
+    CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_INTEGRATION_ANAKEEN_APP_REGISTRY_URL"
+    CIBUILD_ANAKEEN_NPM_REGISTRY: "$CIBUILD_INTEGRATION_ANAKEEN_NPM_REGISTRY"
   script:
     - ./.cibuild/cibuild.sh --target integration --publish --no-tag --bucket integration
   artifacts:
@@ -42,7 +46,16 @@ package:
   stage: package
   tags:
   - a4ppm
+  variables:
+    CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_BUCKET"
+    CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_URL"
+    CIBUILD_ANAKEEN_NPM_REGISTRY: "$CIBUILD_STABLE_ANAKEEN_NPM_REGISTRY"
   script:
-  - ./.cibuild/cibuild.sh --target package
+  - ./.cibuild/cibuild.sh --target package --publish
+  artifacts:
+    paths:
+      - outputs/
+    expire_in: 1 week
+    when: always
   only:
   - /^\d+\.\d+-stable$/@Anakeen/Platform-4/migration-tools
