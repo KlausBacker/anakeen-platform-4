@@ -52,7 +52,7 @@ class FieldAccessLayerListHooks extends \Anakeen\SmartElement
             $layerId = $tl[$k];
             $this->extendedAcls[$acl] = array(
                 "name" => $acl,
-                "description" => $layerId ? "Layer $layerId" : "No$k"
+                "description" => $this->getTitle($layerId)
             );
 
             $this->acls[$acl] = $acl;
