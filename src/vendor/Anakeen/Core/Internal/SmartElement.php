@@ -2516,7 +2516,7 @@ create unique index i_docir on doc(initid, revision);";
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
-                $info = \Dcp\VaultManager::getFileInfo($vidin, $engine);
+                $info = \Anakeen\Core\VaultManager::getFileInfo($vidin, $engine);
                 // in case of server not reach : try again
                 if (!is_object($info)) {
                     // not found : create it
@@ -2548,7 +2548,7 @@ create unique index i_docir on doc(initid, revision);";
                             error_log($err);
                             return '';
                         }
-                        $info = \Dcp\VaultManager::getFileInfo($vidin);
+                        $info = \Anakeen\Core\VaultManager::getFileInfo($vidin);
                         if (!$isimage) {
                             unlink($filename);
                             $mime = 'text/plain';
@@ -2567,7 +2567,7 @@ create unique index i_docir on doc(initid, revision);";
                         $this->addHistoryEntry("value $engine : $value");
                     } else {
                         if ($err == "") {
-                            $info1 = \Dcp\VaultManager::getFileInfo($vidin);
+                            $info1 = \Anakeen\Core\VaultManager::getFileInfo($vidin);
                             $vidout = $info->id_file;
                             $vf->rename($vidout, sprintf(_("update of %s in progress") . ".%s", $info1->name, $engine));
                             $value = $info->mime_s . '|' . $info->id_file;
@@ -3839,9 +3839,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
     {
-        $vaultid = \Dcp\VaultManager::storeFile($filename, $ftitle);
+        $vaultid = \Anakeen\Core\VaultManager::storeFile($filename, $ftitle);
 
-        $info = \Dcp\VaultManager::getFileInfo($vaultid);
+        $info = \Anakeen\Core\VaultManager::getFileInfo($vaultid);
         if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
             throw new \Exception(\ErrorCode::getError('FILE0010', $filename));
         }
@@ -5446,7 +5446,7 @@ create unique index i_docir on doc(initid, revision);";
         DbManager::savePoint($point);
 
         if (preg_match(PREGEXPFILE, $icon, $reg)) {
-            $fileData = \Dcp\VaultManager::getFileInfo($reg["vid"]);
+            $fileData = \Anakeen\Core\VaultManager::getFileInfo($reg["vid"]);
             if (!$fileData->public_access) {
                 $icon = "!" . $icon;
             }
@@ -7013,7 +7013,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (preg_match(PREGEXPFILE, $filesvalue, $reg)) {
             $vid = $reg[2];
-            $info = \Dcp\VaultManager::getFileInfo($vid);
+            $info = \Anakeen\Core\VaultManager::getFileInfo($vid);
             if (!$info) {
                 return false;
             }
@@ -7418,7 +7418,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         DbManager::commitPoint($point);
         if (count($vids) > 0) {
-            \Dcp\VaultManager::setFilesPersitent($vids);
+            \Anakeen\Core\VaultManager::setFilesPersitent($vids);
         }
     }
     // ===================

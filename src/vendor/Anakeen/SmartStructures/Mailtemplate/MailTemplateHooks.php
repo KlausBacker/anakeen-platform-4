@@ -575,11 +575,11 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $cid = $src;
 
         if (preg_match("/.*app=FDL.*action=EXPORTFILE.*vid=([0-9]*)/", $src, $reg)) {
-            $info = \Dcp\VaultManager::getFileInfo($reg[1]);
+            $info = \Anakeen\Core\VaultManager::getFileInfo($reg[1]);
             $src = $info->path;
             $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
         } elseif (preg_match('!file/(?P<docid>\d+)/(?P<vid>\d+)/(?P<attrid>[^/]+)/(?P<index>[^/]+)/(?P<fname>[^?]+)!', $src, $reg)) {
-            $info = \Dcp\VaultManager::getFileInfo($reg['vid']);
+            $info = \Anakeen\Core\VaultManager::getFileInfo($reg['vid']);
             $src = $info->path;
             $cid = "cid" . $this->getUniqId() . $reg[1] . '.' . \Anakeen\Core\Utils\FileMime::getFileExtension($info->path);
         }

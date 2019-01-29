@@ -50,7 +50,7 @@ $sessionUtils->deleteExpiredSessionFiles();
 UserToken::deleteExpired();
 
 cleanTmpFiles();
-\Dcp\VaultManager::destroyTmpFiles(\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_TMPDIR_MAXAGE', '2'));
+\Anakeen\Core\VaultManager::destroyTmpFiles(\Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'CORE_TMPDIR_MAXAGE', '2'));
 
 function mkTmpScript($script, $prefix)
 {

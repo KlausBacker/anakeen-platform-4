@@ -6,7 +6,7 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 
 use Anakeen\Core\Settings;
-use Dcp\VaultManager;
+use Anakeen\Core\VaultManager;
 
 /**
  * Class TemporaryFile
