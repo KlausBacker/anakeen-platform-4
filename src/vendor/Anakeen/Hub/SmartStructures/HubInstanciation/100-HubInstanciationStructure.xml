@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBINSTANCIATION" label="HubInstanciation">
+        <smart:icon file="HubInstanciation.png"/>
+
+        <smart:class>Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationBehavior</smart:class>
+        <smart:fields>
+            <smart:field-set name="hub_instance_config" type="tab" label="Configuration" access="ReadWrite">
+                <smart:field-set name="hub_instance" type="frame" access="ReadWrite">
+                    <smart:field-text access="ReadWrite" name="instance_logical_name" label="Logical Name"
+                                       needed="true"/>
+                    <smart:field-image access="ReadWrite" name="hub_instanciation_icone" label="icone"/>
+                </smart:field-set>
+                <smart:field-set name="hub_instance_label_frame" type="frame" label="Label" access="ReadWrite">
+                    <smart:field-set name="hub_instance_titles" type="array" label="Hub Station Titles"
+                                     access="ReadWrite">
+                        <smart:field-text name="hub_instance_title" label="Title" access="ReadWrite"/>
+                        <smart:field-text name="hub_language" label="Language"
+                                          access="ReadWrite"/>
+                        <smart:field-text name="hub_language_code" label="Language code" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
+                <smart:field-set name="hub_security_frame" type="frame" access="ReadWrite">
+                    <smart:field-set name="hub_roles" type="array" label="Roles" access="ReadWrite">
+                        <smart:field-account name="hub_role" label="Role" access="ReadWrite">
+                            <smart:field-option name="match">role</smart:field-option>
+                        </smart:field-account>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:parameters>
+            <smart:field-set name="hub_fr_assets" type="frame" label="Hub asset parameters" access="ReadWrite">
+                <smart:field-set name="hub_jsassets" type="array" label="Javascript assets" access="ReadWrite">
+                    <smart:field-text name="hub_jsasset" label="Javascript Url" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="hub_cssassets" type="array" label="CSS assets" access="ReadWrite">
+                    <smart:field-text name="hub_cssasset" label="Css Url" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:parameters>
+
+        <smart:hooks>
+        </smart:hooks>
+
+        <smart:autocompletion>
+            <smart:field-autocomplete field="hub_language">
+                <smart:field-callable
+                        function="Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationAutocompletion\HubConfigurationAutocompletion::getLanguages"/>
+                <smart:field-returns>
+                    <smart:field-return field="hub_language"/>
+                    <smart:field-return field="hub_language_code"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+
+        <smart:defaults>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+
+    <smart:enumerates>
+    </smart:enumerates>
+</smart:config>

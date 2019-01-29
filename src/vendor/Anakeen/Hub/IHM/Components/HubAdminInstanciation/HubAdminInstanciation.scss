@@ -1,0 +1,95 @@
+$content-height: calc(100vh - 3.4rem);
+
+body, html {
+  font-size: 14px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+body {
+  background-color: #DDDDDD;
+  overflow:hidden;
+}
+.hub-instanciation-grid {
+  height: 100%;
+  width:100%;
+}
+
+.hub-instanciation {
+  height: 100%;
+  width: 100%;
+}
+
+.hub-instanciation-header {
+  height: 3.4rem;
+  display: flex;
+  font-size: 1.1667rem;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: .5rem 1rem;
+  background: #424142;
+}
+
+.hub-instanciation-header__content {
+  display: flex;
+  align-items: center;
+  > * + * {
+    margin-left: 1rem;
+  }
+}
+
+.logout-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  .fa {
+    font-size: 2rem;
+  }
+}
+
+.hub-instanciation-content {
+  display: flex;
+  flex-direction: column;
+  height: $content-height !important;
+  tr {
+    word-break: break-word;
+  }
+  .k-grid-consult,.k-grid-edit {
+    padding: 0.5rem 2.25rem !important;
+  }
+}
+.hub-instanciation-splitter {
+  height: $content-height !important;
+}
+
+.hub-modal {
+  height: 100%;
+  width: 100%;
+  visibility: visible !important;
+}
+
+.grid-toolbar-create-action {
+  width: 200px !important;
+  padding: 0;
+  .k-select {
+    &::before {
+      height: 100%;
+      width: 1px;
+      background: rgba(255,255, 255, 0.7);
+      content: " ";
+      margin-right: .5rem;
+    }
+
+    .k-icon {
+      margin: 0;
+    }
+  }
+  .k-dropdown-wrap {
+    color: white;
+    background-color: #157EFB;
+  }
+}
