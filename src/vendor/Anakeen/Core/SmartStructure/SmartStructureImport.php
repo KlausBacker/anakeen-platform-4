@@ -13,19 +13,16 @@
 /**
  */
 
-namespace Dcp;
+namespace Anakeen\Core\SmartStructure;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Settings;
-use Anakeen\Core\SmartStructure\FieldAccessManager;
-use Anakeen\Core\SmartStructure\BasicAttribute;
-use Anakeen\Core\SmartStructure\DocAttr;
-use Anakeen\Core\SmartStructure\SmartFieldAbsoluteOrder;
 use Anakeen\Core\Utils\MiscDoc;
+use Anakeen\Exception;
 use Anakeen\LogManager;
 
-class FamilyImport
+class SmartStructureImport
 {
     /**
      * Write PHP content to destination file if PHP syntax is correct.
@@ -70,7 +67,6 @@ class FamilyImport
      * @param array  $tdoc   array of family definition
      *
      * @return void
-     * @throws Db\Exception
      * @throws Exception
      */
     protected static function generateFamilyPhpClass($genDir, $tdoc)
@@ -945,7 +941,6 @@ class FamilyImport
      * @param DocAttr $ta
      *
      * @return mixed
-     * @throws Db\Exception
      */
     protected static function completeAttribute($dbaccess, $ta)
     {
@@ -999,7 +994,6 @@ class FamilyImport
      * @param string $fromid
      *
      * @return array
-     * @throws Db\Exception
      */
     protected static function getParentAttributes($dbaccess, $fromid)
     {
@@ -1064,13 +1058,13 @@ class FamilyImport
 
     protected static function getTypeMain($type)
     {
-        $p = \Dcp\FamilyImport::parseType($type);
+        $p = self::parseType($type);
         return $p['type'];
     }
 
     protected static function getTypeFormat($type)
     {
-        $p = \Dcp\FamilyImport::parseType($type);
+        $p =self::parseType($type);
         return $p['format'];
     }
 

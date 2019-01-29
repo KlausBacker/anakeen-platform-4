@@ -699,7 +699,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
         \Anakeen\Core\DbManager::setMasterLock(false);
-        return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $cid);
+        return \Anakeen\Core\SmartStructure\SmartStructureImport::refreshPhpPgDoc($this->dbaccess, $cid);
     }
 
     /**

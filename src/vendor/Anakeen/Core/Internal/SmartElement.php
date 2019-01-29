@@ -7722,7 +7722,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getSearchMethods($attrId, $attrType = '')
     {
         // Strip format strings for non-docid types
-        $pType = \Dcp\FamilyImport::parseType($attrType);
+        $pType = \Anakeen\Core\SmartStructure\SmartStructureImport::parseType($attrType);
         if ($pType['type'] != 'docid') {
             $attrType = $pType['type'];
         }
