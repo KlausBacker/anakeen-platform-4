@@ -1,5 +1,6 @@
 <?php
-namespace Dcp;
+
+namespace Anakeen\Core\Crontab;
 
 class CrontabDocument extends CrontabElement
 {
