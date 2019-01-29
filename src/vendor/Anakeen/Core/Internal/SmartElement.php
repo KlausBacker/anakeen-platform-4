@@ -2885,7 +2885,7 @@ create unique index i_docir on doc(initid, revision);";
         if (empty($oa->isNormal)) {
             throw new \Anakeen\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
         }
-        return \Dcp\AttributeValue::getTypedValue($this, $oa);
+        return \Anakeen\Core\SmartStructure\SmartFieldValue::getTypedValue($this, $oa);
     }
 
     /**
@@ -2923,7 +2923,7 @@ create unique index i_docir on doc(initid, revision);";
                 $localRecord[$k] = $this->getRawValue($v->id);
             }
         }
-        \Dcp\AttributeValue::setTypedValue($this, $oa, $value);
+        \Anakeen\Core\SmartStructure\SmartFieldValue::setTypedValue($this, $oa, $value);
         if ($oa->type === "array") {
             foreach ($localRecord as $aid => $v) {
                 if ($this->$aid !== $v) {

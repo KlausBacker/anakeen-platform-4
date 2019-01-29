@@ -4,9 +4,9 @@
  * @package FDL
 */
 
-namespace Dcp;
+namespace Anakeen\Core\SmartStructure;
 
-class AttributeValue
+class SmartFieldValue
 {
     /**
      * return typed value for an document's attribute
