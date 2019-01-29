@@ -147,5 +147,4 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
                 break;
         }
     }
-
 }

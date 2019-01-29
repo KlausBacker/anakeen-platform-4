@@ -29,5 +29,4 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $visibilities->setVisibility(HubInstanciationFields::hub_language_code, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
     }
-
 }

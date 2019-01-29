@@ -17,7 +17,6 @@ window.dcp.document.documentController(
   },
   function() {
     let hubId = $(this).documentController("getCustomClientData", "hubId");
-    console.log(hubId);
     $(this).documentController("setValue", "hub_station_id", {
       value: hubId.hubId
     });

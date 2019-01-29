@@ -21,7 +21,6 @@ class HubStationAdminConfig extends GridConfig
     protected function parseRequestParams(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
     {
         $this->structureName = $args["hubId"];
-
     }
 
     protected static function getFilterable($type)

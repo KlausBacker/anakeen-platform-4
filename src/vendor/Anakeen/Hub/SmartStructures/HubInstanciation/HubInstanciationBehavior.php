@@ -31,7 +31,8 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
         return $finalTitle;
     }
 
-    public function getFavIcon() {
+    public function getFavIcon()
+    {
         $icon = $this->icon;
         $newIcon = $this->getRawValue("hub_instanciation_icone");
         if ($newIcon) {

@@ -39,7 +39,7 @@ class HubStationAdmin extends GridContent
         $this->structure = SEManager::getDocument($this->structureName);
         // search in all parent structure
 
-        $this->_searchDoc->addFilter("%s = '%s'", Fields::hub_station_id,$this->structureName);
+        $this->_searchDoc->addFilter("%s = '%s'", Fields::hub_station_id, $this->structureName);
     }
 
     /**
