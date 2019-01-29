@@ -3,7 +3,7 @@
 namespace Dcp\Router;
 
 use Anakeen\Core\LogException;
-use Dcp\Core\Utils\ErrorMessage;
+use Anakeen\Core\Utils\ErrorMessage;
 
 class ErrorHandler
 {

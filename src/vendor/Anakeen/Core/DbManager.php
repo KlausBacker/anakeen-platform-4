@@ -143,7 +143,7 @@ class DbManager
      */
     public static function lockPoint($exclusiveLock, $exclusiveLockPrefix = '')
     {
-        if (($exclusiveLock_int32 = \Dcp\Core\Utils\Types::to_int32($exclusiveLock)) === false) {
+        if (($exclusiveLock_int32 = \Anakeen\Core\Utils\Types::to_int32($exclusiveLock)) === false) {
             throw new \Dcp\Db\Exception("DB0012", var_export($exclusiveLock, true));
         }
         $exclusiveLock = $exclusiveLock_int32;

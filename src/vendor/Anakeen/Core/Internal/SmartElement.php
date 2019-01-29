@@ -7405,7 +7405,7 @@ create unique index i_docir on doc(initid, revision);";
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
         $dvi->DeleteDoc($this->id);
 
-        $tvid = \Dcp\Core\Utils\VidExtractor::getVidsFromDoc($this);
+        $tvid = \Anakeen\Core\Utils\VidExtractor::getVidsFromDoc($this);
 
         $vids = array();
         foreach ($tvid as $vid) {

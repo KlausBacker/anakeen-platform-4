@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Core\Utils;
+namespace Anakeen\Core\Utils;
 
 /**
  * Architecture specific type manipulation.

@@ -67,7 +67,7 @@ class FatalHandler
                 header(sprintf("HTTP/1.0 %d %s", $e->getHttpStatus(), $e->getHttpMessage()));
             }
 
-            print \Dcp\Core\Utils\ErrorMessage::getError($displayMsg, $errId);
+            print \Anakeen\Core\Utils\ErrorMessage::getError($displayMsg, $errId);
         }
         exit(1);
     }

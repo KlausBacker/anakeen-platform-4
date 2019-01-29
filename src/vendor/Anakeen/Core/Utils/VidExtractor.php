@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Core\Utils;
+namespace Anakeen\Core\Utils;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
