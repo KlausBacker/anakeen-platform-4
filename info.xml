@@ -16,6 +16,9 @@
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
+
     </post-install>
     <post-upgrade>
         <process command="programs/update_catalog"/>
@@ -33,5 +36,7 @@
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
     </post-upgrade>
 </module>
