@@ -2759,17 +2759,17 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->getRawValue($v->id) != "") {
                 if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
                     $titles = Postgres::stringToFlatArray($this->getRawValue($v->id));
-                    $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(implode(" ", $titles)) . " ";
+                    $title1 .= \Anakeen\Core\Utils\Strings::mbTrim(implode(" ", $titles)) . " ";
                 } else {
                     $title1 .= $this->getRawValue($v->id) . " ";
                 }
             }
         }
         /* Replace control chars with spaces, and limit title to 256 chars */
-        if (\Anakeen\Core\Utils\Strings::mb_trim($title1) != "") {
-            $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
+        if (\Anakeen\Core\Utils\Strings::mbTrim($title1) != "") {
+            $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mbTrim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
         }
-        $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
+        $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mbTrim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
 
 

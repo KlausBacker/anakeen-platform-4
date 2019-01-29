@@ -67,7 +67,7 @@ function addWarningMsg($msg)
  */
 function mb_ucfirst($s)
 {
-    return Anakeen\Core\Utils\Strings::mb_ucfirst($s);
+    return Anakeen\Core\Utils\Strings::mbUcfirst($s);
 }
 
 /**
@@ -77,7 +77,7 @@ function mb_ucfirst($s)
  */
 function mb_trim($string)
 {
-    return Anakeen\Core\Utils\Strings::mb_trim($string);
+    return Anakeen\Core\Utils\Strings::mbTrim($string);
 }
 
 

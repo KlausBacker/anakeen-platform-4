@@ -10,7 +10,7 @@ class Strings
      *
      * @return string
      */
-    public static function mb_ucfirst($s)
+    public static function mbUcfirst($s)
     {
         if ($s) {
             $s = mb_strtoupper(mb_substr($s, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($s, 1, mb_strlen($s), 'UTF-8');
@@ -24,7 +24,7 @@ class Strings
      *
      * @return null|string|string[]
      */
-    public static function mb_trim($string)
+    public static function mbTrim($string)
     {
         return preg_replace("/(^\s+)|(\s+$)/us", "", $string);
     }

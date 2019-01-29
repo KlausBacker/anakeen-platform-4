@@ -122,7 +122,7 @@ create sequence seq_id_users start 10;";
      */
     public function setLoginName($login)
     {
-        $login = Strings::mb_trim(mb_strtolower($login));
+        $login = Strings::mbTrim(mb_strtolower($login));
 
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->AddQuery("login='" . pg_escape_string($login) . "'");
