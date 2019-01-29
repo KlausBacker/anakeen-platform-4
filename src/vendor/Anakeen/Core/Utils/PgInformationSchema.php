@@ -3,7 +3,9 @@
  * Helper methods to query Postgresql's information_schema
  */
 
-namespace Dcp\Core;
+namespace Anakeen\Core\Utils;
+
+use Anakeen\Core\DbManager;
 
 class PgInformationSchema
 {
@@ -30,7 +32,7 @@ WHERE
 LIMIT 1
 EOF;
         $q = sprintf($tpl_sql, pg_escape_literal($schemaName), pg_escape_literal($tableName));
-        simpleQuery($dbaccess, $q, $res, true, true, true);
+        DbManager::query($q, $res, true, true);
         return ($res === 't');
     }
     /**
@@ -55,7 +57,7 @@ WHERE
     AND table_name = %s
 EOF;
         $q = sprintf($tpl_sql, pg_escape_literal($schemaName), pg_escape_literal($tableName));
-        simpleQuery($dbaccess, $q, $res, true, false, true);
+        DbManager::query($q, $res, true, false);
         return $res;
     }
     /**
@@ -88,7 +90,7 @@ WHERE
     AND ci.oid = ix.indexrelid
 EOF;
         $q = sprintf($tpl_sql, pg_escape_literal($schemaName), pg_escape_literal($tableName));
-        simpleQuery($dbaccess, $q, $res, true, false, true);
+        DbManager::query($q, $res, true, false);
         return $res;
     }
 }

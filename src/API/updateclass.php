@@ -51,10 +51,10 @@ $usage->verify();
 $o = new $class();
 
 $sql = array();
-$updateExistingTable = \Dcp\Core\PgInformationSchema::tableExists($o->dbaccess, 'public', $o->dbtable);
+$updateExistingTable = \Anakeen\Core\Utils\PgInformationSchema::tableExists($o->dbaccess, 'public', $o->dbtable);
 if ($updateExistingTable) {
     /* Compute columns that appears both in new and old table */
-    $columns = \Dcp\Core\PgInformationSchema::getTableColumns($o->dbaccess, 'public', $o->dbtable);
+    $columns = \Anakeen\Core\Utils\PgInformationSchema::getTableColumns($o->dbaccess, 'public', $o->dbtable);
     $commonColumns = array_intersect($o->fields, $columns);
     /* Add SQL rename of current table to table + '_old' */
     $oldTableName = sprintf("%s_old", $o->dbtable);
@@ -62,7 +62,7 @@ if ($updateExistingTable) {
     /* Add SQL creation of new table */
     $sqlCommands = explode(";", str_replace("\n", " ", $o->sqlcreate));
     foreach ($sqlCommands as $k => $sqlQuery) {
-        $tableIndexes = \Dcp\Core\PgInformationSchema::getTableIndexes($o->dbaccess, 'public', $o->dbtable);
+        $tableIndexes = \Anakeen\Core\Utils\PgInformationSchema::getTableIndexes($o->dbaccess, 'public', $o->dbtable);
         /* Drop index (if exists) before recreating it */
         if (preg_match('/CREATE\s+  (?:UNIQUE\s+)?  INDEX\s+  (?:CONCURRENTLY\s+)?  (?:IF\s+NOT\s+EXISTS\s+)?  (?P<indexName>[a-z0-9_]+)/xi', $sqlQuery, $m)) {
             /* If index exists, then drop it */
