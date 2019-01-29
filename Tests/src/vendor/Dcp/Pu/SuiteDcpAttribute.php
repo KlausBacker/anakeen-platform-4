@@ -21,7 +21,6 @@ class SuiteDcpAttribute
         $suite->addTestSuite('Dcp\Pu\TestTypedValue');
         $suite->addTestSuite('Dcp\Pu\TestHtmlValue');
         $suite->addTestSuite('Dcp\Pu\TestAddArrayRow');
-        $suite->addTestSuite('Dcp\Pu\TestGetResPhpFunc');
         $suite->addTestSuite('Dcp\Pu\TestGetEnum');
         $suite->addTestSuite('Dcp\Pu\TestDocEnum');
         $suite->addTestSuite('Dcp\Pu\TestAttributeOrder');
