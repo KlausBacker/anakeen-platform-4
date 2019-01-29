@@ -18,6 +18,7 @@
  * @param string $name parameter key
  * @param string $def default value if parameter is not set
  * @param string $scope The scope for the search of the value ('zone' for $ZONE_ARGS, 'get' for $_GET, 'post' for $_POST and 'all' for searching in all)
+ * @deprecated
  * @return string
  */
 function getHttpVars($name, $def = "", $scope = "all")
@@ -38,7 +39,12 @@ function getHttpVars($name, $def = "", $scope = "all")
     return ($def);
 }
 
-
+/**
+ * @param $name
+ * @param $def
+ *
+ * @deprecated
+ */
 function SetHttpVar($name, $def)
 {
     global $ZONE_ARGS;
@@ -49,39 +55,8 @@ function SetHttpVar($name, $def)
     }
 }
 
-function GetMimeType($ext)
-{
-    $mimes = file("/etc/mime.types");
-    foreach ($mimes as $v) {
-        if (substr($v, 0, 1) == "#") {
-            continue;
-        }
-        $tab = preg_split('/\s+/', $v);
-        if ((isset($tab[1])) && ($tab[1] == $ext)) {
-            return ($tab[0]);
-        }
-    }
-    return ("text/any");
-}
 
-function GetExt($mime_type)
-{
-    $mimes = file("/etc/mime.types");
-    foreach ($mimes as $v) {
-        if (substr($v, 0, 1) == "#") {
-            continue;
-        }
-        $tab = preg_split('\s+/', $v);
-        if ((isset($tab[0])) && ($tab[0] == $mime_type)) {
-            if (isset($tab[1])) {
-                return ($tab[1]);
-            } else {
-                return ("");
-            }
-        }
-    }
-    return ("");
-}
+
 
 /**
  * Send a response with the content of a local file to be downloaded by the client
@@ -110,7 +85,7 @@ function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $
         $name = str_replace('"', '-', $name);
         $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
         $name = rawurlencode($name);
-        $fileMimeConfig = new \Dcp\FileMimeConfig();
+        $fileMimeConfig = new \Anakeen\Core\Utils\FileMimeConfig();
         if ($inline && !$fileMimeConfig->isInlineAllowed($mime_type)) {
             /* Override requested inline mode as it is forbidden */
             $inline = false;

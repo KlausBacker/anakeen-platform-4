@@ -79,7 +79,7 @@ function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvi
 
     $fld = Anakeen\Core\SEManager::getDocument($fldid);
     if ($famid == "") {
-        $famid = GetHttpVars("famid");
+        $famid = $_REQUEST["famid"]??'';
     }
     $fname = str_replace(array(
         " ",

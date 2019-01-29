@@ -46,15 +46,6 @@ class MailTemplateHooks extends \Anakeen\SmartElement
     protected $notifySendMail = self::NOTIFY_SENDMAIL_AUTO;
     protected $stopIfNoRecip = false;
 
-    public function preEdition()
-    {
-        global $action;
-
-        if ($mailfamily = $this->getRawValue("tmail_family", getHttpVars("TMAIL_FAMILY"))) {
-            $action->parent->AddJsRef(htmlspecialchars("?app=FDL&action=FCKDOCATTR&famid=" . urlencode($mailfamily), ENT_QUOTES));
-        }
-    }
-
     /**
      * Check if the relation is correct and the attribute does exists
      *
