@@ -19,7 +19,6 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
             }
         );
     }
-
     public function getConfiguration()
     {
         // Config to return
@@ -88,7 +87,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
                 $this->setValue("hub_final_icon", "<img src='".$this->getRawValue("hub_icon_image")."'>");
                 break;
             case "HTML":
-                $this->setValue("hub_final_icon", "<i class='fa fa-".$this->getRawValue("hub_icon_text")."'></i>");
+                $this->setValue("hub_final_icon", $this->getRawValue("hub_icon_text"));
                 break;
             case "FONT":
                 $this->setValue("hub_final_icon", "<i class='fa fa-".$this->getRawValue("hub_icon_font")."'></i>");
@@ -148,4 +147,5 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
                 break;
         }
     }
+
 }
