@@ -17,22 +17,25 @@
 /**
  * Exportation of documents from folder or searches
  *
- * @param string                        $aflid                       Folder identifier to use if no "id" http vars
- * @param string                        $famid                       Family restriction to filter folder content
- * @param string                        $outputPath                  where put export, if wfile outputPath is a directory
- * @param bool                          $exportInvisibleVisibilities set to true to export invisible attribute also
+ * @param string  $fldid                       Folder identifier to use if no "id" http vars
+ * @param string  $famid                       Family restriction to filter folder content
+ * @param string  $outputPath                  where put export, if wfile outputPath is a directory
+ * @param bool    $exportInvisibleVisibilities set to true to export invisible attribute also
  *
- * @throws \Anakeen\Exception
- * @throws Exception
- * @global string                       $fldid                       Http var : folder identifier to export
- * @global string                       $wprof                       Http var : (Y|N) if Y export associated profil also
- * @global string                       $wfile                       Http var : (Y|N) if Y export attached file export format will be tgz
- * @global string                       $wident                      Http var : (Y|N) if Y specid column is set with identifier of document
- * @global string                       $wutf8                       Http var : (Y|N) if Y encoding is utf-8 else iso8859-1
- * @global string                       $wcolumn                     Http var :  if - export preferences are ignored
- * @global string                       $eformat                     Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
- * @global string                       $selection                   Http var :  JSON document selection object
+ * @param array   $options
  * @return void
+ * @throws \Anakeen\Core\DocManager\Exception
+ * @throws \Anakeen\Exception
+ * @throws \Dcp\Core\Exception
+ * @throws \Dcp\Db\Exception
+ * @throws \Dcp\SearchDoc\Exception
+ * @global string $wprof                       Http var : (Y|N) if Y export associated profil also
+ * @global string $wfile                       Http var : (Y|N) if Y export attached file export format will be tgz
+ * @global string $wident                      Http var : (Y|N) if Y specid column is set with identifier of document
+ * @global string $wutf8                       Http var : (Y|N) if Y encoding is utf-8 else iso8859-1
+ * @global string $wcolumn                     Http var :  if - export preferences are ignored
+ * @global string $eformat                     Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
+ * @global string $selection                   Http var :  JSON document selection object
  */
 function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvisibleVisibilities = false, array $options = [])
 {
@@ -60,12 +63,12 @@ function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvi
 
 
     Anakeen\Core\Utils\System::setMaxExecutionTimeTo(3600);
-    $exportCollection = new Dcp\ExportCollection();
+    $exportCollection = new \Anakeen\Core\ExportCollection();
     $exportCollection->setOutputFormat($eformat);
     $exportCollection->setExportProfil($wprof);
     $exportCollection->setExportDocumentNumericIdentiers($wident);
     $exportCollection->setUseUserColumnParameter(!$nopref);
-    $exportCollection->setOutputFileEncoding($wutf8 ? Dcp\ExportCollection::utf8Encoding : Dcp\ExportCollection::latinEncoding);
+    $exportCollection->setOutputFileEncoding($wutf8 ? \Anakeen\Core\ExportCollection::utf8Encoding : \Anakeen\Core\ExportCollection::latinEncoding);
     $exportCollection->setVerifyAttributeAccess(!$exportInvisibleVisibilities);
     $exportCollection->setProfileAccountType($profilType);
 
@@ -112,7 +115,7 @@ function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvi
     }
 
     if (file_exists($foutname)) {
-        \Anakeen\Core\ContextManager::exitError(sprintf("export is not allowed to override existing file %s"), $outputPath);
+        \Anakeen\Core\ContextManager::exitError(sprintf("export is not allowed to override existing file %s", $outputPath));
     }
 
     $exportCollection->setOutputFilePath($foutname);
@@ -123,12 +126,12 @@ function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvi
         $exportCollection->export();
         if (is_file($foutname)) {
             switch ($eformat) {
-                case Dcp\ExportCollection::xmlFileOutputFormat:
+                case \Anakeen\Core\ExportCollection::xmlFileOutputFormat:
                     $fname .= ".xml";
                     $fileMime = "text/xml";
                     break;
 
-                case Dcp\ExportCollection::xmlArchiveOutputFormat:
+                case \Anakeen\Core\ExportCollection::xmlArchiveOutputFormat:
                     $fname .= ".zip";
                     $fileMime = "application/x-zip";
                     break;

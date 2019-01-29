@@ -87,7 +87,7 @@ class TestExportRevision extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setCvsEnclosure($enclosure);
         $ec->setCvsSeparator($separator);
@@ -116,9 +116,9 @@ class TestExportRevision extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
-        $ec->setOutputFormat(\Dcp\ExportCollection::xmlFileOutputFormat);
+        $ec->setOutputFormat(\Anakeen\Core\ExportCollection::xmlFileOutputFormat);
         $ec->setOutputFilePath($outFile);
         $ec->setDocumentlist($s->getDocumentList());
         $ec->export();
