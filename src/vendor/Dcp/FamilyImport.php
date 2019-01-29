@@ -21,6 +21,7 @@ use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\DocAttr;
+use Anakeen\Core\SmartStructure\SmartFieldAbsoluteOrder;
 use Anakeen\Core\Utils\MiscDoc;
 use Anakeen\LogManager;
 
@@ -331,7 +332,6 @@ class FamilyImport
                             $aformat = "";
                         }
                         $repeat = "false";
-                        $repeat2 = false;
 
                         if (isset($tnormal[strtolower($v->frameid)])) {
                             if (self::getTypeMain($tnormal[strtolower($v->frameid)]["type"]) == "array") {
@@ -345,11 +345,7 @@ class FamilyImport
                         }
 
                         if (strpos($v->options, "multiple=yes") !== false) {
-                            if ($repeat === "true") {
-                                $repeat2 = true;
-                            } else {
-                                $repeat = "true";
-                            }
+                            $repeat = "true";
                         }
 
                         $atype = strtolower(trim($atype));
@@ -452,8 +448,8 @@ class FamilyImport
                 }
             }
 
-            FamilyAbsoluteOrder::completeForNumericOrder($allAttributes, $tdoc["id"]);
-            $absoluteOrders = FamilyAbsoluteOrder::getAbsoluteOrders($allAttributes, $tdoc["id"]);
+            SmartFieldAbsoluteOrder::completeForNumericOrder($allAttributes, $tdoc["id"]);
+            $absoluteOrders = SmartFieldAbsoluteOrder::getAbsoluteOrders($allAttributes, $tdoc["id"]);
             $tAbsOrders = [];
             foreach ($absoluteOrders as $kOrder => $attrid) {
                 $tAbsOrders[] = sprintf('"%s"=>%d', $attrid, ($kOrder + 1) * 10);
@@ -626,19 +622,19 @@ class FamilyImport
         $docname = strtolower($docname);
         $msg = '';
         /* Create family's table if not exists */
-        if (!self::tableExists($dbaccess, "public", "doc$docid")) {
+        if (!self::tableExists("public", "doc$docid")) {
             $msg .= sprintf("Create table 'doc%d'\n", $docid);
-            self::createFamilyTable($dbaccess, $docid);
+            self::createFamilyTable($docid);
 
-            if (self::tableExists($dbaccess, "public", "doc$docid")) {
+            if (self::tableExists("public", "doc$docid")) {
                 /* Re-create family's view */
-                self::recreateFamilyView($dbaccess, $docname, $docid);
+                self::recreateFamilyView($docname, $docid);
             } else {
                 $msg .= sprintf("Could not create table 'doc%d'.\n", $docid);
             }
         }
 
-        $pgatt = self::getTableColumns($dbaccess, "public", "doc$docid");
+        $pgatt = self::getTableColumns("public", "doc$docid");
         // -----------------------------
         // add column attribute
         $qattr = new \Anakeen\Core\Internal\QueryDb($dbaccess, DocAttr::class);
@@ -735,20 +731,20 @@ class FamilyImport
                             $sqltype .= '[]';
                         }
 
-                        self::alterTableAddColumn($dbaccess, "public", "doc$docid", $ka, $sqltype);
+                        self::alterTableAddColumn("public", "doc$docid", $ka, $sqltype);
                         $updateView = true;
                     }
                 }
             }
             /* Update family's view if table structure has changed */
             if ($updateView) {
-                self::recreateFamilyView($dbaccess, $docname, $docid);
+                self::recreateFamilyView($docname, $docid);
             }
         }
         return $msg;
     }
 
-    protected static function tableExists($dbaccess, $schemaName, $tableName)
+    protected static function tableExists($schemaName, $tableName)
     {
         DbManager::query(
             sprintf("SELECT 'true' FROM information_schema.tables WHERE table_schema = %s AND table_name = %s", pg_escape_literal($schemaName), pg_escape_literal($tableName)),
@@ -759,7 +755,7 @@ class FamilyImport
         return ($res == 'true');
     }
 
-    protected static function viewExists($dbaccess, $schemaName, $viewName)
+    protected static function viewExists($schemaName, $viewName)
     {
         DbManager::query(
             sprintf(
@@ -774,7 +770,7 @@ class FamilyImport
         return ($res == 'true');
     }
 
-    protected static function createFamilyTable($dbaccess, $docid)
+    protected static function createFamilyTable($docid)
     {
         // create postgres table if new \familly
         $cdoc = SEManager::createTemporaryDocument($docid, false);
@@ -782,15 +778,15 @@ class FamilyImport
         $cdoc->query($triggers, 1);
         // step by step
         $cdoc->create();
-        self::setSqlIndex($dbaccess, $docid);
+        self::setSqlIndex($docid);
     }
 
-    protected static function recreateFamilyView($dbaccess, $docname, $docid)
+    protected static function recreateFamilyView($docname, $docid)
     {
         DbManager::query(sprintf("SELECT refreshFamilySchemaViews(%s, %s)", pg_escape_literal($docname), pg_escape_literal(intval($docid))), $res, true, true);
     }
 
-    protected static function getTableColumns($dbaccess, $schemaName, $tableName)
+    protected static function getTableColumns($schemaName, $tableName)
     {
         DbManager::query(sprintf(
             "SELECT column_name FROM information_schema.columns WHERE table_schema = %s AND table_name = %s",
@@ -800,7 +796,7 @@ class FamilyImport
         return $res;
     }
 
-    protected static function alterTableAddColumn($dbaccess, $schemaName, $tableName, $columnName, $columnType)
+    protected static function alterTableAddColumn($schemaName, $tableName, $columnName, $columnType)
     {
         DbManager::query(sprintf(
             "ALTER TABLE %s.%s ADD COLUMN %s %s",
@@ -854,7 +850,7 @@ class FamilyImport
         }
     }
 
-    public static function activateTrigger($dbaccess, $docid)
+    public static function activateTrigger($docid)
     {
         $cdoc = SEManager::createTemporaryDocument($docid, false);
         $cdoc->query($cdoc->sqltrigger(false, true), 1);
@@ -868,7 +864,7 @@ class FamilyImport
         }
     }
 
-    public static function setSqlIndex($dbaccess, $docid)
+    public static function setSqlIndex($docid)
     {
         $cdoc = SEManager::createTemporaryDocument($docid, false);
         $indexes = $cdoc->GetSqlIndex();
@@ -924,7 +920,7 @@ class FamilyImport
             } else {
                 LogManager::notice($msg);
             }
-            self::activateTrigger($dbaccess, $familyData["id"]);
+            self::activateTrigger($familyData["id"]);
 
             DbManager::commitPoint(__METHOD__);
             $savepointed = false;

@@ -72,7 +72,7 @@ if ($query->nb > 0) {
              */
             $wdoc = Anakeen\Core\SEManager::createDocument($v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow
-            \Dcp\FamilyImport::activateTrigger("", $v["id"]);
+            \Dcp\FamilyImport::activateTrigger($v["id"]);
         }
     }
     foreach ($tid as $k => $v) {
