@@ -23,6 +23,7 @@ class HubAdmin
         $page = __DIR__ . "/Layout/hubAdmin.html.mustache";
         $mustache = new \Mustache_Engine();
         $data = [
+            "favIconURL" => $args["hubId"],
             "JS_DEPS" => [
                 [
                     "key" => "jquery",

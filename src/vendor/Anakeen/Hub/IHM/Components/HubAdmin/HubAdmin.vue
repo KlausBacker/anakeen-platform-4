@@ -3,7 +3,7 @@
         <div class="hub-admin-parent">
             <div class="hub-admin-header">
                 <div class="hub-admin-header__content">
-                    <span>Hub Station Admin</span>
+                    <span>Hub Station Admin - <img :src="`/api/v2/hub/station/${hubId}/`" alt="favIcon" width="16" height="16"/> {{hubTitle}}</span>
                 </div>
                 <div class="hub-admin-header__content">
                     <identity :large="true" :email-alterable="true" :password-alterable="true"></identity>

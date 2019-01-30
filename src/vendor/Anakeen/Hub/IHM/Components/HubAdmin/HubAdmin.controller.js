@@ -25,6 +25,8 @@ export default {
       childFam: window.ankChildFam,
       collection: "",
       hubId: "",
+      hubTitle: "",
+      hubIcon: "",
       hubConfig: [],
       panes: [
         {
@@ -43,7 +45,11 @@ export default {
     };
   },
   created() {
-    this.hubId = this.$router.currentRoute.path.split("/").slice(-1)[0];
+    this.hubId = window.location.href.split("/").slice(-1)[0];
+    this.$http.get(`/api/v2/documents/${this.hubId}.json`).then(response => {
+      this.hubTitle =
+        response.data.data.document.attributes.hub_instance_title[0].displayValue;
+    });
   },
   mounted() {
     Object.keys(this.childFam).forEach(key => {
@@ -103,7 +109,8 @@ export default {
     },
     toolbarActionClick(e) {
       switch (e.data.type) {
-        case "config":
+        case "consult":
+          window.open(`/hub/station/${this.hubId}/`);
           break;
       }
     },
