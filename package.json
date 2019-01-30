@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
   "bin": {
@@ -38,5 +38,6 @@
     "eslint": "^5.9.0",
     "eslint-plugin-prettier": "^3.0.0",
     "prettier": "^1.15.2"
-  }
+  },
+  "autorelease": true
 }
