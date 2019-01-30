@@ -29,7 +29,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setCvsEnclosure($enclosure);
         $ec->setCvsSeparator($separator);
@@ -58,7 +58,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setCvsEnclosure($enclosure);
         $ec->setCvsSeparator($separator);
@@ -111,10 +111,10 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setOutputFilePath($outFile);
-        $ec->setOutputFormat(\Dcp\ExportCollection::xmlFileOutputFormat);
+        $ec->setOutputFormat(\Anakeen\Core\ExportCollection::xmlFileOutputFormat);
         $ec->setDocumentlist($s->getDocumentList());
         $ec->export();
 
@@ -143,10 +143,10 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setOutputFilePath($outFile);
-        $ec->setOutputFormat(\Dcp\ExportCollection::xmlArchiveOutputFormat);
+        $ec->setOutputFormat(\Anakeen\Core\ExportCollection::xmlArchiveOutputFormat);
         $ec->setDocumentlist($s->getDocumentList());
         $ec->export();
 
@@ -226,7 +226,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setCvsEnclosure($enclosure);
         $ec->setCvsSeparator($separator);
@@ -271,7 +271,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setCvsEnclosure($enclosure);
         $ec->setCvsSeparator($separator);
@@ -324,7 +324,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
 
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
 
         $ec->setCvsEnclosure($enclosure);
         $ec->setCvsSeparator($separator);
@@ -500,7 +500,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     {
         return array(
             array(
-                \Dcp\ExportCollection::csvDisplayValueOutputFormat,
+                \Anakeen\Core\ExportCollection::csvDisplayValueOutputFormat,
                 ";",
                 '"',
                 array(
@@ -531,7 +531,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                 )
             ),
             array(
-                \Dcp\ExportCollection::csvDisplayValueOutputFormat,
+                \Anakeen\Core\ExportCollection::csvDisplayValueOutputFormat,
                 ",",
                 '"',
                 array(
@@ -556,7 +556,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
                 )
             ),
             array(
-                \Dcp\ExportCollection::csvRawOnlyDataOutputFormat,
+                \Anakeen\Core\ExportCollection::csvRawOnlyDataOutputFormat,
                 ";",
                 '"',
                 array(

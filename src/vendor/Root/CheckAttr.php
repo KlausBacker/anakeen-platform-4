@@ -378,7 +378,7 @@ SQL;
             $this->addError(ErrorCode::getError('ATTR0702', $this->attrid));
         } elseif ($order) {
             if (!is_numeric($order)) {
-                if ($order === \Dcp\FamilyAbsoluteOrder::firstOrder || $order === \Dcp\FamilyAbsoluteOrder::autoOrder) {
+                if ($order === \Anakeen\Core\SmartStructure\SmartFieldAbsoluteOrder::firstOrder || $order === \Anakeen\Core\SmartStructure\SmartFieldAbsoluteOrder::autoOrder) {
                     return;
                 }
                 if (!$this->checkAttrSyntax($order)) {

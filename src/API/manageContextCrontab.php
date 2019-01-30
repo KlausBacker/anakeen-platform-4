@@ -10,7 +10,6 @@
 /**
  */
 
-include_once("FDL/Lib.Util.php");
 
 $usage = new \Anakeen\Script\ApiUsage();
 $usage->setDefinitionText("API script to manipulate user crontab");
@@ -33,7 +32,7 @@ $usage->verify();
 
 switch ($cmd) {
     case 'list':
-        $crontab = new Crontab($user);
+        $crontab = new Anakeen\Core\Crontab\CrontabManager($user);
         $ret = $crontab->listAll();
         if ($ret === false) {
             exit(1);
@@ -45,7 +44,7 @@ switch ($cmd) {
             error_log("Error: missing --file argument");
             exit(1);
         }
-        $crontab = new Crontab($user);
+        $crontab = new Anakeen\Core\Crontab\CrontabManager($user);
         $ret = $crontab->registerFile($file);
         if ($ret === false) {
             exit(1);
@@ -57,7 +56,7 @@ switch ($cmd) {
             error_log("Error: missing --file argument");
             exit(1);
         }
-        $crontab = new Crontab($user);
+        $crontab = new Anakeen\Core\Crontab\CrontabManager($user);
         $ret = $crontab->unregisterFile($file);
         if ($ret === false) {
             exit(1);
@@ -65,7 +64,7 @@ switch ($cmd) {
         break;
 
     case 'unregister-all':
-        $crontab = new Crontab($user);
+        $crontab = new Anakeen\Core\Crontab\CrontabManager($user);
         if ($crontab->unregisterAll() === false) {
             exit(1);
         }

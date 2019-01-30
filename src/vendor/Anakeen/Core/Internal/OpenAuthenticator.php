@@ -26,7 +26,6 @@ class OpenAuthenticator extends Authenticator
      */
     public function checkAuthentication()
     {
-        include_once('WHAT/Lib.Http.php');
         $privatekey = static::getTokenId();
         if (!$privatekey) {
             return Authenticator::AUTH_NOK;
@@ -50,7 +49,7 @@ class OpenAuthenticator extends Authenticator
 
     public static function getTokenId()
     {
-        $tokenId = getHttpVars(self::openGetId, getHttpVars("privateid"));
+        $tokenId = $_REQUEST[self::openGetId] ?? ($_REQUEST["privateid"] ?? '');
         if (!$tokenId) {
             $hAuthorization = \Anakeen\Router\AuthenticatorManager::getAuthorizationValue();
 
@@ -133,7 +132,7 @@ class OpenAuthenticator extends Authenticator
             if (is_array($context)) {
                 $allow = true;
                 foreach ($context as $k => $v) {
-                    if (getHttpVars($k) !== (string)$v) {
+                    if (isset($_REQUEST[$k]) && ($_REQUEST[$k] !== (string)$v)) {
                         $allow = false;
                     }
                 }

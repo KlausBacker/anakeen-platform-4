@@ -1,5 +1,5 @@
 <?php
-namespace Dcp\Core\Utils;
+namespace Anakeen\Core\Utils;
 
 /**
  * Architecture specific type manipulation.
@@ -14,7 +14,7 @@ class Types
      * @return bool(false)|int Returns an integer in the int32 range or
      * bool(false) if not a valid integer or an out-of-range integer.
      */
-    public static function to_int32($value)
+    public static function toInt32($value)
     {
         if (is_string($value)) {
             /* Check expected integer format /^-?\d+$/ without regex */

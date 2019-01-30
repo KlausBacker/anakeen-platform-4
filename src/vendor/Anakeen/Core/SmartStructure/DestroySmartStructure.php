@@ -43,7 +43,7 @@ class DestroySmartStructure
                 $tsql[] = "COMMIT;";
             }
 
-            \Dcp\FamilyImport::deleteGenFiles($tdoc["name"]);
+            \Anakeen\Core\SmartStructure\SmartStructureImport::deleteGenFiles($tdoc["name"]);
             $res = "";
             foreach ($tsql as $sql) {
                 $res = @pg_query($dbid, $sql);
@@ -61,7 +61,7 @@ class DestroySmartStructure
             }
         } else {
             if (!is_numeric($idfam)) {
-                \Dcp\FamilyImport::deleteGenFiles($idfam);
+                \Anakeen\Core\SmartStructure\SmartStructureImport::deleteGenFiles($idfam);
             }
             throw new Exception(sprintf("Structure \"%s\" not found", $idfam));
         }

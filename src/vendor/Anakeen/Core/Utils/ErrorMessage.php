@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Core\Utils;
+namespace Anakeen\Core\Utils;
 
 class ErrorMessage
 {

@@ -134,7 +134,7 @@ create unique index idx_idfam on docfam(id);";
     {
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            return \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->id);
+            return \Anakeen\Core\SmartStructure\SmartStructureImport::refreshPhpPgDoc($this->dbaccess, $this->id);
         })->addListener(SmartHooks::POSTIMPORT, function () {
             return $this->updateWorkflowAttributes();
         })->addListener(SmartHooks::PREDELETE, function () {
@@ -678,7 +678,7 @@ create unique index idx_idfam on docfam(id);";
         $dvi = new \DocVaultIndex($this->dbaccess);
         $dvi->DeleteDoc($this->id);
 
-        $tvid = \Dcp\Core\Utils\VidExtractor::getVidsFromDocFam($this);
+        $tvid = \Anakeen\Core\Utils\VidExtractor::getVidsFromDocFam($this);
 
         foreach ($tvid as $k => $vid) {
             $dvi->docid = $this->id;

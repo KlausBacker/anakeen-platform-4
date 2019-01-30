@@ -735,7 +735,7 @@ class OOoLayout extends Layout
                 if ($docimg && $docimg->isAlive()) {
                     $err = $docimg->control("view");
                     if (!$err) {
-                        $fileInfo = \Dcp\VaultManager::getFileInfo($vid);
+                        $fileInfo = \Anakeen\Core\VaultManager::getFileInfo($vid);
                     } else {
                         $fileInfo->path = "Images/erreur.png";
                     }

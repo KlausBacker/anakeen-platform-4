@@ -585,7 +585,7 @@ class ImportDocumentDescription
                     $this->tcr[$this->nLine]["msg"] = sprintf(_("update %s family %s"), $data[2], $data[5]);
                 }
                 if ($data[5]) {
-                    \Dcp\FamilyImport::deleteGenFiles($data[5]);
+                    \Anakeen\Core\SmartStructure\SmartStructureImport::deleteGenFiles($data[5]);
                 }
                 if ($data[1] && ($data[1] != '-')) {
                     if ($data[1] == '--') {
@@ -709,7 +709,7 @@ class ImportDocumentDescription
                     if (!$err) {
                         try {
                             //special to add calculated attributes
-                            $msg = \Dcp\FamilyImport::refreshPhpPgDoc($this->dbaccess, $this->doc->id);
+                            $msg = \Anakeen\Core\SmartStructure\SmartStructureImport::refreshPhpPgDoc($this->dbaccess, $this->doc->id);
                             if ($msg !== '') {
                                 $this->tcr[$this->nLine]["err"] .= $msg;
                                 $this->tcr[$this->nLine]["action"] = "ignored";
@@ -726,7 +726,7 @@ class ImportDocumentDescription
                                 // Need to update child family in case of new attribute
                                 $childsFams = ($this->doc->getChildFam());
                                 foreach ($childsFams as $famInfo) {
-                                    \Dcp\FamilyImport::createDocFile($this->dbaccess, $famInfo);
+                                    \Anakeen\Core\SmartStructure\SmartStructureImport::createDocFile($this->dbaccess, $famInfo);
                                 }
                             }
                         } catch (\Anakeen\Exception $e) {

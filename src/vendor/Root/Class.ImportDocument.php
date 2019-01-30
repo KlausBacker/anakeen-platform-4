@@ -292,9 +292,9 @@ class ImportDocument
         $lay->Set("nbdoc", $nbdoc);
         $lay->set("analyze", ($this->onlyAnalyze));
         if ($this->onlyAnalyze) {
-            $lay->set("processMessage", sprintf(n___("%d document detected", "%d documents detected", $nbdoc), $nbdoc));
+            $lay->set("processMessage", sprintf(n___("%d document detected", "%d documents detected", $nbdoc, "sde"), $nbdoc));
         } else {
-            $lay->set("processMessage", sprintf(n___("%d document processed", "%d documents processed", $nbdoc), $nbdoc));
+            $lay->set("processMessage", sprintf(n___("%d document processed", "%d documents processed", $nbdoc,"sde"), $nbdoc));
         }
         
         $lay->Set("nbprof", count(array_filter($this->cr, array(

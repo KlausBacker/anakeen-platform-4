@@ -3,7 +3,7 @@ namespace Anakeen\Routes\Core;
 
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Dcp\VaultManager;
+use Anakeen\Core\VaultManager;
 
 /**
  * Class RecordedFile

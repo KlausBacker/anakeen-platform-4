@@ -13,11 +13,12 @@
 /**
  */
 
-namespace Dcp;
+namespace Anakeen\Core\SmartStructure;
 
 use Anakeen\Core\Utils\MiscDoc;
+use Anakeen\Exception;
 
-class FamilyAbsoluteOrder
+class SmartFieldAbsoluteOrder
 {
     const firstOrder = "::first";
     const autoOrder = "::auto";

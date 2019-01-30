@@ -72,7 +72,7 @@ if ($query->nb > 0) {
              */
             $wdoc = Anakeen\Core\SEManager::createDocument($v["id"]);
             $wdoc->CreateProfileAttribute(); // add special attribute for workflow
-            \Dcp\FamilyImport::activateTrigger("", $v["id"]);
+            \Anakeen\Core\SmartStructure\SmartStructureImport::activateTrigger($v["id"]);
         }
     }
     foreach ($tid as $k => $v) {
@@ -84,7 +84,7 @@ if ($query->nb > 0) {
 function updateDoc($v)
 {
     try {
-        $err = \Dcp\FamilyImport::buildFamilyFilesAndTables("", $v, true);
+        $err = \Anakeen\Core\SmartStructure\SmartStructureImport::buildFamilyFilesAndTables("", $v, true);
         if ($err) {
             error_log($err);
         }

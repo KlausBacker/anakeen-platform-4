@@ -58,7 +58,7 @@ class FileAttribute
         }
 
         $response = ApiV2Response::withFile($response, $fileInfo->path, $fileInfo->name, $this->inline);
-        \Dcp\VaultManager::updateAccessDate($fileInfo->id_file);
+        \Anakeen\Core\VaultManager::updateAccessDate($fileInfo->id_file);
         if ($fileInfo->id_file === $this->tmpFlag) {
             unlink($fileInfo->path);
         }
@@ -95,12 +95,6 @@ class FileAttribute
                 } else {
                     $index = null;
                 }
-            }
-
-            if ($attribut->mvisibility === "I") {
-                $exception = new Exception("ROUTES0117", $attrid, $this->_document->getTitle());
-                $exception->setHttpStatus("403", "Forbidden");
-                throw $exception;
             }
 
             if ($attribut->type !== "file" && $attribut->type !== "image") {
@@ -144,7 +138,7 @@ class FileAttribute
         }
         $vaultid = $reg["vid"];
 
-        $fileInfo = \Dcp\VaultManager::getFileInfo($vaultid);
+        $fileInfo = \Anakeen\Core\VaultManager::getFileInfo($vaultid);
         if (!$fileInfo) {
             $exception = new Exception("ROUTES0119", $attrid, $index, $resourceId);
             $exception->setHttpStatus("404", "File not found");
@@ -167,7 +161,7 @@ class FileAttribute
                 if (empty($reg["vid"])) {
                     throw new Exception("CRUD0609", $attribute->id, $k, $this->_document->id);
                 }
-                $fileInfo = \Dcp\VaultManager::getFileInfo($reg["vid"]);
+                $fileInfo = \Anakeen\Core\VaultManager::getFileInfo($reg["vid"]);
                 $zip->addFile($fileInfo->path, sprintf($fileNamePattern, $k + 1, $fileInfo->name));
             }
             $zip->close();

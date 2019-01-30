@@ -2516,7 +2516,7 @@ create unique index i_docir on doc(initid, revision);";
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
-                $info = \Dcp\VaultManager::getFileInfo($vidin, $engine);
+                $info = \Anakeen\Core\VaultManager::getFileInfo($vidin, $engine);
                 // in case of server not reach : try again
                 if (!is_object($info)) {
                     // not found : create it
@@ -2548,7 +2548,7 @@ create unique index i_docir on doc(initid, revision);";
                             error_log($err);
                             return '';
                         }
-                        $info = \Dcp\VaultManager::getFileInfo($vidin);
+                        $info = \Anakeen\Core\VaultManager::getFileInfo($vidin);
                         if (!$isimage) {
                             unlink($filename);
                             $mime = 'text/plain';
@@ -2567,7 +2567,7 @@ create unique index i_docir on doc(initid, revision);";
                         $this->addHistoryEntry("value $engine : $value");
                     } else {
                         if ($err == "") {
-                            $info1 = \Dcp\VaultManager::getFileInfo($vidin);
+                            $info1 = \Anakeen\Core\VaultManager::getFileInfo($vidin);
                             $vidout = $info->id_file;
                             $vf->rename($vidout, sprintf(_("update of %s in progress") . ".%s", $info1->name, $engine));
                             $value = $info->mime_s . '|' . $info->id_file;
@@ -2759,17 +2759,17 @@ create unique index i_docir on doc(initid, revision);";
             if ($this->getRawValue($v->id) != "") {
                 if ($v->inArray() && ($v->getOption('multiple') == 'yes')) {
                     $titles = Postgres::stringToFlatArray($this->getRawValue($v->id));
-                    $title1 .= \Anakeen\Core\Utils\Strings::mb_trim(implode(" ", $titles)) . " ";
+                    $title1 .= \Anakeen\Core\Utils\Strings::mbTrim(implode(" ", $titles)) . " ";
                 } else {
                     $title1 .= $this->getRawValue($v->id) . " ";
                 }
             }
         }
         /* Replace control chars with spaces, and limit title to 256 chars */
-        if (\Anakeen\Core\Utils\Strings::mb_trim($title1) != "") {
-            $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
+        if (\Anakeen\Core\Utils\Strings::mbTrim($title1) != "") {
+            $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mbTrim(preg_replace('/\p{Cc}/u', ' ', $title1)), 0, 255);
         }
-        $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mb_trim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
+        $this->title = mb_substr(\Anakeen\Core\Utils\Strings::mbTrim(preg_replace('/\p{Cc}/u', ' ', $this->getCustomTitle())), 0, 255);
     }
 
 
@@ -2885,7 +2885,7 @@ create unique index i_docir on doc(initid, revision);";
         if (empty($oa->isNormal)) {
             throw new \Anakeen\Exception('DOC0116', $idAttr, $this->title, $this->fromname);
         }
-        return \Dcp\AttributeValue::getTypedValue($this, $oa);
+        return \Anakeen\Core\SmartStructure\SmartFieldValue::getTypedValue($this, $oa);
     }
 
     /**
@@ -2923,7 +2923,7 @@ create unique index i_docir on doc(initid, revision);";
                 $localRecord[$k] = $this->getRawValue($v->id);
             }
         }
-        \Dcp\AttributeValue::setTypedValue($this, $oa, $value);
+        \Anakeen\Core\SmartStructure\SmartFieldValue::setTypedValue($this, $oa, $value);
         if ($oa->type === "array") {
             foreach ($localRecord as $aid => $v) {
                 if ($this->$aid !== $v) {
@@ -3839,9 +3839,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
     {
-        $vaultid = \Dcp\VaultManager::storeFile($filename, $ftitle);
+        $vaultid = \Anakeen\Core\VaultManager::storeFile($filename, $ftitle);
 
-        $info = \Dcp\VaultManager::getFileInfo($vaultid);
+        $info = \Anakeen\Core\VaultManager::getFileInfo($vaultid);
         if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
             throw new \Exception(\ErrorCode::getError('FILE0010', $filename));
         }
@@ -5446,7 +5446,7 @@ create unique index i_docir on doc(initid, revision);";
         DbManager::savePoint($point);
 
         if (preg_match(PREGEXPFILE, $icon, $reg)) {
-            $fileData = \Dcp\VaultManager::getFileInfo($reg["vid"]);
+            $fileData = \Anakeen\Core\VaultManager::getFileInfo($reg["vid"]);
             if (!$fileData->public_access) {
                 $icon = "!" . $icon;
             }
@@ -7013,7 +7013,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if (preg_match(PREGEXPFILE, $filesvalue, $reg)) {
             $vid = $reg[2];
-            $info = \Dcp\VaultManager::getFileInfo($vid);
+            $info = \Anakeen\Core\VaultManager::getFileInfo($vid);
             if (!$info) {
                 return false;
             }
@@ -7405,7 +7405,7 @@ create unique index i_docir on doc(initid, revision);";
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
         $dvi->DeleteDoc($this->id);
 
-        $tvid = \Dcp\Core\Utils\VidExtractor::getVidsFromDoc($this);
+        $tvid = \Anakeen\Core\Utils\VidExtractor::getVidsFromDoc($this);
 
         $vids = array();
         foreach ($tvid as $vid) {
@@ -7418,7 +7418,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         DbManager::commitPoint($point);
         if (count($vids) > 0) {
-            \Dcp\VaultManager::setFilesPersitent($vids);
+            \Anakeen\Core\VaultManager::setFilesPersitent($vids);
         }
     }
     // ===================
@@ -7722,7 +7722,7 @@ create unique index i_docir on doc(initid, revision);";
     public function getSearchMethods($attrId, $attrType = '')
     {
         // Strip format strings for non-docid types
-        $pType = \Dcp\FamilyImport::parseType($attrType);
+        $pType = \Anakeen\Core\SmartStructure\SmartStructureImport::parseType($attrType);
         if ($pType['type'] != 'docid') {
             $attrType = $pType['type'];
         }

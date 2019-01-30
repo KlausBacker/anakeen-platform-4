@@ -39,7 +39,7 @@ namespace Anakeen\Core\Utils {
         }
 
         // New gettext keyword for plural strings with optional context argument
-        public static function n___($message, $message_plural, $num, $context = "")
+        public static function ngettextc($message, $message_plural, $num, $context = "")
         {
             if ($context != "") {
                 return self::npgettext($context, $message, $message_plural, abs($num));
@@ -61,6 +61,6 @@ namespace {
     // New gettext keyword for plural strings with optional context argument
     function n___($message, $message_plural, $num, $context)
     {
-        return Anakeen\Core\Utils\Gettext::n___($message, $message_plural, $num, $context);
+        return Anakeen\Core\Utils\Gettext::ngettextc($message, $message_plural, $num, $context);
     }
 }

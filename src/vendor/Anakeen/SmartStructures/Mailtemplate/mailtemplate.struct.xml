@@ -82,15 +82,15 @@
     <smart:enumerates>
         <smart:enum-configuration name="MAILTEMPLATE-tmail_desttype">
             <smart:enum name="F" label="Adresse fixe"/>
-            <smart:enum name="A" label="Attribut texte"/>
-            <smart:enum name="D" label="Attribut relation"/>
-            <smart:enum name="E" label="Paramètre de famille texte"/>
-            <smart:enum name="DE" label="Paramètre de famille relation"/>
+            <smart:enum name="A" label="Smart Field texte"/>
+            <smart:enum name="D" label="Smart Field relation"/>
+            <smart:enum name="E" label="Paramètre de structure texte"/>
+            <smart:enum name="DE" label="Paramètre de structure relation"/>
             <smart:enum name="P" label="Paramètres globaux"/>
             <smart:enum name="WA" label="Attribut cycle"/>
             <smart:enum name="WD" label="Relation cycle"/>
             <smart:enum name="WE" label="Paramètre cycle"/>
-            <smart:enum name="RD" label="Document destinataire"/>
+            <smart:enum name="RD" label="Smart Element destinataire"/>
         </smart:enum-configuration>
         <smart:enum-configuration name="MAILTEMPLATE-tmail_copymode">
             <smart:enum name="to" label="À"/>
@@ -107,10 +107,10 @@
         </smart:enum-configuration>
         <smart:enum-configuration name="MAILTEMPLATE-tmail_fromtype">
             <smart:enum name="F" label="Adresse fixe"/>
-            <smart:enum name="A" label="Attribut texte"/>
-            <smart:enum name="D" label="Attribut relation"/>
-            <smart:enum name="E" label="Paramètre de famille texte"/>
-            <smart:enum name="DE" label="Paramètre de famille relation"/>
+            <smart:enum name="A" label="Smart Field texte"/>
+            <smart:enum name="D" label="Smart Field relation"/>
+            <smart:enum name="E" label="Paramètre de structure texte"/>
+            <smart:enum name="DE" label="Paramètre de structure relation"/>
             <smart:enum name="P" label="Paramètres globaux"/>
             <smart:enum name="WA" label="Attribut cycle"/>
             <smart:enum name="WD" label="Relation cycle"/>

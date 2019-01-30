@@ -1,5 +1,5 @@
 <?php
-namespace Dcp;
+namespace Anakeen\Core\Utils;
 
 class FileMimeConfig
 {

@@ -9,8 +9,8 @@ class ApiV2Response
     /**
      * Return normalize output for http api
      *
-     * @param \Slim\Http\response               $response
-     * @param mixed                             $data
+     * @param \Slim\Http\response                   $response
+     * @param mixed                                 $data
      * @param \Anakeen\Routes\Core\Lib\ApiMessage[] $messages
      *
      * @return \Slim\Http\response
@@ -48,7 +48,10 @@ class ApiV2Response
          */
         /** @noinspection PhpUndefinedFieldInspection */
         $cache = $container->cache;
-        return $cache->withEtag($response, base64_encode($eTag));
+
+        $response = $cache->withEtag($response, base64_encode($eTag));
+        /** @var  \Slim\Http\response $response */
+        return $response;
     }
 
 
@@ -114,7 +117,7 @@ class ApiV2Response
         if (!$mime) {
             $mime = FileMime::getSysMimeFile(realpath($filePath), $fileName);
         }
-        $fileMimeConfig = new \Dcp\FileMimeConfig();
+        $fileMimeConfig = new \Anakeen\Core\Utils\FileMimeConfig();
 
         if ($inline === true && !$fileMimeConfig->isInlineAllowed($mime)) {
             /* Override requested inline mode as it is forbidden */

@@ -82,7 +82,7 @@ class TestGetText extends TestCaseDcp
     {
         $i18n = _("dcptest:Hello");
         $i18n = _("dcptest:Good Bye");
-        $i18n = Gettext::n___("dcptest:%d symbol", "dcptest:%d symbols", 45, "");
+        $i18n = Gettext::ngettextc("dcptest:%d symbol", "dcptest:%d symbols", 45, "");
         $i18n = n___("%d symbol", "%d symbols", 45, "dcpctx1");
         $i18n = _("dcptest:Test locale");
         $i18n = ___("dcptest:Test locale", "dcpctx1");
@@ -220,7 +220,7 @@ class TestGetText extends TestCaseDcp
 
     public function data3Underscore()
     {
-        $i18n = Gettext::n___("dcptest:%d symbol", "dcptest:%d symbols", 1, "");
+        $i18n = Gettext::ngettextc("dcptest:%d symbol", "dcptest:%d symbols", 1, "");
         $i18n = n___("dcptest:%.02f symbol", "dcptest:%02f symbols", 1, "");
         return array(
             array(

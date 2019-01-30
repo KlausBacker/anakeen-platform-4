@@ -151,7 +151,7 @@ class Files
         $name = str_replace('"', '-', $fileName);
         $uName = iconv("UTF-8", "ASCII//TRANSLIT", $name);
         $name = rawurlencode($name);
-        $fileMimeConfig = new \Dcp\FileMimeConfig();
+        $fileMimeConfig = new \Anakeen\Core\Utils\FileMimeConfig();
         if ($inline && !$fileMimeConfig->isInlineAllowed($mime)) {
             /* Override requested inline mode as it is forbidden */
             $inline = false;

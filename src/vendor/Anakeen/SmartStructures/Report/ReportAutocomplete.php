@@ -80,7 +80,7 @@ class ReportAutocomplete
         );
         foreach ($propList as $propName => $propLabel) {
             if (($name == "") || (preg_match("/$pattern/i", $propLabel, $m))) {
-                $propLabel = \Anakeen\Core\Utils\Strings::mb_ucfirst($propLabel);
+                $propLabel = \Anakeen\Core\Utils\Strings::mbUcfirst($propLabel);
                 $response->appendEntry(
                     $propLabel,
                     [

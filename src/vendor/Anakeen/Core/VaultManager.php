@@ -1,8 +1,7 @@
 <?php
 
-namespace Dcp;
+namespace Anakeen\Core;
 
-use Anakeen\Core\DbManager;
 use Anakeen\Exception;
 
 class VaultManager
@@ -134,7 +133,7 @@ class VaultManager
 
     /**
      * Recompute directory file size from database informations
-     * @throws Db\Exception
+     * @throws \Anakeen\Exception
      */
     public static function recomputeDirectorySize()
     {

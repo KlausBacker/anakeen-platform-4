@@ -282,15 +282,15 @@ class ContextManager
             $useHtml = ((!empty($accept) && preg_match("@\\btext/html\\b@", $accept)));
 
             if ($useHtml) {
-                print \Dcp\Core\Utils\ErrorMessage::getHtml($texterr, $code);
+                print \Anakeen\Core\Utils\ErrorMessage::getHtml($texterr, $code);
             } else {
                 $useJSON = ((!empty($accept) && preg_match("@\\bapplication/json\\b@", $accept)));
                 if ($useJSON) {
                     header('Content-Type: application/json');
-                    print \Dcp\Core\Utils\ErrorMessage::getJson($texterr, $code);
+                    print \Anakeen\Core\Utils\ErrorMessage::getJson($texterr, $code);
                 } else {
                     header('Content-Type: text/plain');
-                    print \Dcp\Core\Utils\ErrorMessage::getText($texterr, $code);
+                    print \Anakeen\Core\Utils\ErrorMessage::getText($texterr, $code);
                 }
             }
             if ($exit) {

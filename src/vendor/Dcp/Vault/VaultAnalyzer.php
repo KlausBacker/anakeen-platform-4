@@ -123,7 +123,7 @@ EOF;
                 'name' => $fam->name,
                 'title' => $fam->title,
                 'file_attributes' => $attrList,
-                'vid' => \Dcp\Core\Utils\VidExtractor::getVidsFromDocFam($fam)
+                'vid' => \Anakeen\Core\Utils\VidExtractor::getVidsFromDocFam($fam)
             );
         }
         return $set;
@@ -209,7 +209,7 @@ EOF;
             $rowIndex = 0;
             foreach ($rows as $row) {
                 $rowIndex++;
-                $vidList = \Dcp\Core\Utils\VidExtractor::getVidsFromRawDoc($row, $fam['file_attributes']);
+                $vidList = \Anakeen\Core\Utils\VidExtractor::getVidsFromRawDoc($row, $fam['file_attributes']);
                 foreach ($vidList as $vid) {
                     $this->sqlExec(self::STMT_INSERT_TMP, array(
                         $row['id'],

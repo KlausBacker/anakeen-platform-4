@@ -2,7 +2,7 @@
 
 namespace Dcp\Vault;
 
-use Dcp\VaultManager;
+use Anakeen\Core\VaultManager;
 
 class VaultAnalyzerCLI
 {

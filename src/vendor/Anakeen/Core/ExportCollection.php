@@ -1,10 +1,9 @@
 <?php
 
-namespace Dcp;
+namespace Anakeen\Core;
 
-use Anakeen\Core\ContextManager;
-use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Postgres;
+use Anakeen\Exception;
 
 class ExportCollection
 {
@@ -34,7 +33,7 @@ class ExportCollection
 
     protected $cvsSeparator = ";";
     protected $cvsEnclosure = "";
-    protected $profileAccountType = ExportDocument::useAclAccountType;
+    protected $profileAccountType = \Dcp\ExportDocument::useAclAccountType;
 
     protected $outputFilePath = '';
     /**
