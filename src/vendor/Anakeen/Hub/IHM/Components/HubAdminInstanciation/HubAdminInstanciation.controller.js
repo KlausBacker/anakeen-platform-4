@@ -59,10 +59,7 @@ export default {
       });
     },
     configureStation: function(e) {
-      let route = this.$router.resolve({
-        path: `/hub/admin/${e}`
-      });
-      window.open(route.href);
+      window.open(`/hub/admin/${e}`);
     },
     toolbarActionClick(e) {
       switch (e.data.type) {
