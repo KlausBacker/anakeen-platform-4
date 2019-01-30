@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       config: [],
+      hubId: "",
       content: {
         top: [],
         bottom: [],
@@ -33,6 +34,8 @@ export default {
   },
   created() {
     this.hubEntries = new HubEntries(this);
+    let route = window.location.href;
+    this.hubId = route.match(/\/hub\/station\/([0-9]+)/)[1];
   },
   mounted() {
     this.getConfig();
@@ -96,7 +99,7 @@ export default {
     },
     getConfig() {
       this.$http
-        .get("/hub/config/")
+        .get(`/hub/config/${this.hubId}`)
         .then(response => {
           const data = response.data.data;
           this.config = data;

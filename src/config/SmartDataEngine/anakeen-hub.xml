@@ -5,7 +5,7 @@
             <sde:callable>Anakeen\Hub\Routes\Hub</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/</sde:pattern>
-            <sde:pattern>/hub/station/[{args:.*}]</sde:pattern>
+            <sde:pattern>/hub/station/{hubId}/[{args:.*}]</sde:pattern>
             <sde:description>Get Hub page</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="Anakeen">HubUser</sde:access>
@@ -43,7 +43,7 @@
         <sde:route name="hubConfig">
             <sde:callable>Anakeen\Hub\Routes\MainConfiguration</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/hub/config/</sde:pattern>
+            <sde:pattern>/hub/config/{hubId}</sde:pattern>
             <sde:description>Get initial config of the hub</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="Anakeen">HubUser</sde:access>
@@ -83,6 +83,15 @@
             <sde:description>Get hub station admin config</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="Anakeen">HubAdmin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="getHubFavIcon">
+            <sde:callable>Anakeen\Hub\Routes\HubFavIcon</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/hub/station/{favIconURL}/</sde:pattern>
+            <sde:description>Get hub station fav icon</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Anakeen">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
