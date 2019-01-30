@@ -24,6 +24,7 @@ export default {
       // eslint-disable-next-line no-undef
       childFam: window.ankChildFam,
       collection: "",
+      hubId: "",
       hubConfig: [],
       panes: [
         {
@@ -40,6 +41,9 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    this.hubId = this.$router.currentRoute.path.split("/").slice(-1)[0];
   },
   mounted() {
     Object.keys(this.childFam).forEach(key => {
@@ -78,6 +82,9 @@ export default {
         initid: e,
         viewId: "!defaultCreation"
       });
+      this.$refs.smartConfig.addEventListener("ready", () => {
+        this.$refs.smartConfig.addCustomClientData({ hubId: this.hubId });
+      });
     },
     openConfig(e) {
       this.$refs.smartConfig.fetchSmartElement({
@@ -89,6 +96,9 @@ export default {
       this.$refs.smartConfig.fetchSmartElement({
         initid: e,
         viewId: "!defaultEdition"
+      });
+      this.$refs.smartConfig.addEventListener("ready", () => {
+        this.$refs.smartConfig.addCustomClientData({ hubId: this.hubId });
       });
     },
     toolbarActionClick(e) {

@@ -56,6 +56,7 @@ HTML;
         $visibilities = parent::getVisibilities($document, $mask);
         $visibilities->setVisibility(HubConfigurationFields::hub_language_code, RenderAttributeVisibilities::HiddenVisibility);
         $visibilities->setVisibility(HubConfigurationFields::hub_final_icon, RenderAttributeVisibilities::HiddenVisibility);
+        $visibilities->setVisibility(HubConfigurationFields::hub_station_id_frame, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
     }
 

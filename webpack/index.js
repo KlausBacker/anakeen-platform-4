@@ -11,6 +11,7 @@ module.exports = () => {
         "entry": {
             "hub" : [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")],
             "hubAdmin": [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")],
+            "hubInstanciation": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/IHM/JS/hubInstanciation.js")],
             "hubConfiguration": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/SmartStructures/HubConfiguration/Render/HubConfiguration.js")]
         },
       buildPath: PUBLIC_PATH,

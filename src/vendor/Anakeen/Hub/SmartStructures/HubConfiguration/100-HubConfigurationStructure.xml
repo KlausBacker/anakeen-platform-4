@@ -6,6 +6,9 @@
         <smart:class>Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationBehavior</smart:class>
         <smart:fields>
             <smart:field-set name="hub_config" type="tab" label="Configuration" access="ReadWrite">
+                <smart:field-set name="hub_station_id_frame" type="frame" label="Identification" access="ReadWrite">
+                    <smart:field-docid access="ReadWrite" name="hub_station_id"/>
+                </smart:field-set>
                 <smart:field-set name="hub_label_frame" type="frame" label="Label" access="ReadWrite">
                     <smart:field-set name="hub_titles" type="array" label="Element Titles"
                                      access="ReadWrite">
@@ -20,7 +23,7 @@
                     <smart:field-text name="hub_final_icon" label="Icon" access="ReadWrite"/>
                     <smart:field-text name="hub_icon_font" label="Icon picker" access="ReadWrite"/>
                     <smart:field-image name="hub_icon_image" label="Image" access="ReadWrite"/>
-                    <smart:field-htmltext name="hub_icon_text" label="Html icon" access="ReadWrite"/>
+                    <smart:field-longtext name="hub_icon_text" label="Html icon" access="ReadWrite"/>
                 </smart:field-set>
                 <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Element location">
                     <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
@@ -59,7 +62,11 @@
         </smart:parameters>
 
         <smart:hooks>
-
+            <smart:field-hook type="constraint" event="onPreStore" field="hub_title">
+                <smart:field-callable function="Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationChecking\HubConfigurationChecking::checkTitle"/>
+                <smart:field-argument type="field">hub_title</smart:field-argument>
+                <smart:field-argument type="field">hub_language</smart:field-argument>
+            </smart:field-hook>
         </smart:hooks>
 
         <smart:autocompletion>

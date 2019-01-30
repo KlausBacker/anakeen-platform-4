@@ -25,3 +25,4 @@ sidebar: false
 * Dock : Composant `Dock` présentation la configuration d'un Hub Station
 * HubAdmin : Rôle permettant l'accès à l'interface d'administration
 * HubUser : Rôle permettant l'accès à l'interface d'un HubStation
+* HubConfiguration : Configuration d'une SmartStructure associée à un Hub Station

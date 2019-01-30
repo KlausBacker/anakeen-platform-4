@@ -5,6 +5,25 @@ axios.create();
 
 window.dcp.document.documentController(
   "addEventListener",
+  "beforeSave",
+  {
+    name: "set:hub:station:id",
+    documentCheck: documentObject => {
+      return documentObject.renderMode === "edit";
+    },
+    attributeCheck: attributeObject => {
+      return attributeObject.id === "hub_station_id";
+    }
+  },
+  function() {
+    let hubId = $(this).documentController("getCustomClientData", "hubId");
+    $(this).documentController("setValue", "hub_station_id", {
+      value: hubId.hubId
+    });
+  }
+);
+window.dcp.document.documentController(
+  "addEventListener",
   "afterSave",
   {
     name: "passToView",
