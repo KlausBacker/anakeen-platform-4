@@ -59,6 +59,7 @@ class HubStationAdminConfig extends GridConfig
         $originalConfig["toolbar"] = [
             "title" => "",
             "actionConfigs" => [
+                ["action" => "consult", "title" => "Consult"],
                 ["action" => "create", "title" => "Create"]
             ]
         ];
