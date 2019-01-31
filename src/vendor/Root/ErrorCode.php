@@ -37,7 +37,12 @@ class ErrorCode
                         $nargs = func_num_args();
                         $sp = array();
                         for ($ip = 1; $ip < $nargs; $ip++) {
-                            $sp[] = func_get_arg($ip);
+                            $arg=func_get_arg($ip);
+                            if (is_a($arg, \Closure::class)) {
+                                $sp[] = 'Closure()';
+                            } else {
+                                $sp[] = $arg;
+                            }
                         }
                         $label = @vsprintf($fmt, $sp);
                         if ($label) {

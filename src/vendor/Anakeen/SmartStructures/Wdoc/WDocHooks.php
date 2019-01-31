@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
+
 /**
  * Workflow Class Document
  *
@@ -9,6 +10,7 @@ namespace Anakeen\SmartStructures\Wdoc;
 use Anakeen\Core\Account;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\LogManager;
 use Anakeen\SmartHooks;
@@ -53,6 +55,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * @var array
      */
     public $states = null;
+    protected $askValue;
     /**
      * @var WDocHooks|null
      */
@@ -94,9 +97,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     {
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-
             $this->getStates();
-
             if ($this->isChanged()) {
                 $this->modify();
             }
@@ -124,6 +125,15 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function getFirstState()
     {
         return $this->firstState;
+    }
+
+    /**
+     * Get the current associated smart element
+     * @return \Anakeen\Core\Internal\SmartElement
+     */
+    public function getSmartElement()
+    {
+        return $this->doc;
     }
 
     /**
@@ -377,6 +387,50 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     public function setStateMailTemplate($state, $mails)
     {
         return $this->setValue($this->_aid("_mtid", $state), $mails);
+    }
+
+
+    /**
+     * Return transition object referenced by name
+     * @param string $transitionName
+     *
+     * @return Transition|null
+     */
+    public function getTransition(string $transitionName): ?Transition
+    {
+        if (!isset($this->transitions[$transitionName])) {
+            return null;
+        }
+        return new Transition($this, $transitionName);
+    }
+
+    /**
+     * @param string $transitionName
+     * @param string $mIndex m0, m1, m2, m3
+     *
+     * @param array  $args   the three arguments $nextState, $previousState, $comment
+     * @return false|string error message (empty if no errors)
+     */
+    public function executeTransitionM(string $transitionName, string $mIndex, ...$args)
+    {
+        if (isset($this->transitions[$transitionName])) {
+            $tr = $this->transitions[$transitionName];
+            if (!empty($tr[$mIndex])) {
+                if (is_callable($tr[$mIndex])) {
+                    $err = call_user_func($tr[$mIndex], ...$args);
+                } else {
+                    if (!method_exists($this, $tr[$mIndex])) {
+                        return (sprintf(___("[%s] the method '%s' is not known for the object class %s", "sde"), $mIndex, $tr[$mIndex], get_class($this)));
+                    }
+                    $err = call_user_func(array(
+                        $this,
+                        $tr[$mIndex]
+                    ), ...$args);
+                }
+                return $err;
+            }
+        }
+        return false;
     }
 
     /**
@@ -700,7 +754,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         \Anakeen\Core\DbManager::setMasterLock(false);
         return \Anakeen\Core\SmartStructure\SmartStructureImport::refreshPhpPgDoc($this->dbaccess, $cid);
-    }
+    }/** @noinspection PhpUnusedParameterInspection */
 
     /**
      * change state of a document
@@ -782,43 +836,26 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
 
         if ($wm0 && (!empty($tr["m0"]))) {
-            // apply first method (condition for the change)
-            if (!method_exists($this, $tr["m0"])) {
-                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m0"], get_class($this)));
+            // apply M0 method precondition
+            try {
+                $err = $this->executeTransitionM($tname, "m0", $newstate, $this->doc->state, $addcomment);
+            } catch (Exception $e) {
+                $err = $e->getMessage();
             }
-
-            $err = call_user_func(array(
-                $this,
-                $tr["m0"]
-            ), $newstate, $this->doc->state, $addcomment);
             if ($err != "") {
                 $this->doc->unlock(true);
                 return (sprintf(_("Error : %s"), $err));
             }
         }
 
+        $this->recordAskValues($tname);
+
         if ($wm1 && (!empty($tr["m1"]))) {
-            // apply first method (condition for the change)
-            if (!method_exists($this, $tr["m1"])) {
-                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m1"], get_class($this)));
-            }
-
-            $err = call_user_func(array(
-                $this,
-                $tr["m1"]
-            ), $newstate, $this->doc->state, $addcomment);
-
-            if ($err == "->") {
-                if ($force) {
-                    $err = ""; // it is the return of the report
-                    SetHttpVar("redirect_app", ""); // override the redirect
-                    SetHttpVar("redirect_act", "");
-                } else {
-                    if ($addcomment != "") {
-                        $this->doc->addHistoryEntry($addcomment);
-                    } // add comment now because it will be lost
-                    return ""; //it is not a real error, but don't change state (reported)
-                }
+            // apply M1 method conditions
+            try {
+                $err = $this->executeTransitionM($tname, "m1", $newstate, $this->doc->state, $addcomment);
+            } catch (Exception $e) {
+                $err = $e->getMessage();
             }
             if ($err != "") {
                 $this->doc->unlock(true);
@@ -847,34 +884,8 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($addcomment != "") {
             $this->doc->addHistoryEntry($addcomment);
         }
-        if (isset($tr["ask"])) {
-            foreach ($tr["ask"] as $vpid) {
-                $oa = $this->getAttribute($vpid);
-                if ($oa->type === "array") {
-                    $elem = $this->attributes->getArrayElements($oa->id);
-                    foreach ($elem as $aid => $arrayAttribute) {
-                        if ($oa->type == "password") {
-                            $displayValue = "*****";
-                        } else {
-                            $displayValue = str_replace("\n", ", ", $this->getRawValue($arrayAttribute->id));
-                        }
-                        $revcomment .= sprintf("\n-%s : %s", $arrayAttribute->getLabel(), $displayValue);
-                    }
-                } else {
-                    $pv = $this->getRawValue($vpid);
-                    if ($pv != "") {
-                        if ($oa->type == "password") {
-                            $pv = "*****";
-                        }
 
-                        if (is_array($pv)) {
-                            $pv = implode(", ", $pv);
-                        }
-                        $revcomment .= sprintf("\n-%s : %s", $oa->getLabel(), $pv);
-                    }
-                }
-            }
-        }
+        $revcomment .= $this->recordAskHistory($tname);
         $incumbentName = \Anakeen\Core\ContextManager::getCurrentUser()->getIncumbentPrivilege($this, $tname);
         if ($incumbentName) {
             $revcomment = sprintf(_("(substitute of %s) : "), $incumbentName) . $revcomment;
@@ -891,27 +902,15 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             return $err . $err2;
         }
 
-        LogManager::notice(sprintf(_("%s new \state %s"), $this->doc->title, $this->getStateLabel($newstate)));
+        LogManager::notice(sprintf(___("%s new state %s", "sde"), $this->doc->title, $this->getStateLabel($newstate)));
         $this->doc->restoreAccessControl();
         // post action
         $msg2 = '';
         if ($wm2 && (!empty($tr["m2"]))) {
-            if (!method_exists($this, $tr["m2"])) {
-                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m2"], get_class($this)));
-            }
-            $msg2 = call_user_func(array(
-                $this,
-                $tr["m2"]
-            ), $newstate, $oldstate, $addcomment);
+            $msg2 = $this->executeTransitionM($tname, "m2", $newstate, $this->doc->state, $addcomment);
 
-            if ($msg2 == "->") {
-                $msg2 = "";
-            } //it is not a real error
             if ($msg2) {
                 $this->doc->addHistoryEntry($msg2);
-            }
-            if ($msg2 != "") {
-                $msg2 = sprintf(_("Warning : %s"), $msg2);
             }
         }
         $this->doc->addLog("state", array(
@@ -930,22 +929,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         // post action
         $msg3 = '';
         if ($wm3 && (!empty($tr["m3"]))) {
-            if (!method_exists($this, $tr["m3"])) {
-                return (sprintf(_("the method '%s' is not known for the object class %s"), $tr["m3"], get_class($this)));
-            }
-            $msg3 = call_user_func(array(
-                $this,
-                $tr["m3"]
-            ), $newstate, $oldstate, $addcomment);
-
-            if ($msg3 == "->") {
-                $msg3 = "";
-            } //it is not a real error
+            $msg3 = $this->executeTransitionM($tname, "m3", $newstate, $this->doc->state, $addcomment);
             if ($msg3) {
                 $this->doc->addHistoryEntry($msg3);
-            }
-            if ($msg3 != "") {
-                $msg3 = sprintf(_("Warning : %s"), $msg3);
             }
         }
         $msg .= ($msg && $msg2 ? "\n" : '') . $msg2;
@@ -1075,8 +1061,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
                     $keys["WCOMMENT"] = nl2br($comment);
                     if (isset($tr["ask"])) {
                         foreach ($tr["ask"] as $vpid) {
-                            $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
-                            $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
+                            if (is_a($vpid, BasicAttribute::class)) {
+                                $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
+                                $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
+                            } else {
+                                $keys["V_" . strtoupper($vpid)] = $this->getHtmlAttrValue($vpid);
+                                $keys[strtoupper($vpid)] = $this->getRawValue($vpid);
+                            }
                         }
                     }
                     $err .= $mt->sendDocument($this->doc, $keys);
@@ -1105,6 +1096,64 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             }
         }
         return $err;
+    }
+
+    public function setAskValue($fieldId, $value)
+    {
+        $this->askValue[$fieldId] = $value;
+    }
+
+    public function getAskValue($fieldId)
+    {
+        return $this->askValue[$fieldId];
+    }
+
+    protected function recordAskValues($transitionId)
+    {
+        if ($transitionId) {
+            $asks = $this->getTransition($transitionId)->getAsks();
+            foreach ($asks as $askField) {
+                $askValue = $this->getAskValue($askField->id);
+                if ($this->getSmartElement()->getAttribute($askField->id)) {
+                    $this->getSmartElement()->setValue($askField->id, $askValue);
+                }
+            }
+        }
+    }
+
+    protected function recordAskHistory($tname)
+    {
+        $revcomment = '';
+        $transition = $this->getTransition($tname);
+        if ($transition) {
+            $askes = $transition->getAsks();
+            foreach ($askes as $oa) {
+                if ($oa->type === "array") {
+                    $elem = $this->attributes->getArrayElements($oa->id);
+                    foreach ($elem as $aid => $arrayAttribute) {
+                        if ($oa->type == "password") {
+                            $displayValue = "*****";
+                        } else {
+                            $displayValue = str_replace("\n", ", ", $this->getAskValue($arrayAttribute->id));
+                        }
+                        $revcomment = sprintf("\n-%s : %s", $arrayAttribute->getLabel(), $displayValue);
+                    }
+                } else {
+                    $pv = $this->getAskValue($oa->id);
+                    if ($pv != "") {
+                        if ($oa->type == "password") {
+                            $pv = "*****";
+                        }
+
+                        if (is_array($pv)) {
+                            $pv = implode(", ", $pv);
+                        }
+                        $revcomment .= sprintf("\n-%s : %s", $oa->getLabel(), $pv);
+                    }
+                }
+            }
+        }
+        return $revcomment;
     }
 
     /**
@@ -1167,7 +1216,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * @param string $from next state
      * @return array|false transition array (false if not found)
      */
-    public function getTransition($from, $to)
+    public function searchTransition($from, $to)
     {
         foreach ($this->cycle as $v) {
             if (($v["e1"] == $from) && ($v["e2"] == $to)) {

@@ -91,7 +91,7 @@ class WorkflowStateCollection
             $wStates = $this->workflow->getFollowingStates();
         }
         foreach ($wStates as $aState) {
-            $transition = $this->workflow->getTransition($this->_document->state, $aState);
+            $transition = $this->workflow->searchTransition($this->_document->state, $aState);
             if ($transition) {
                 $controlTransitionError = $this->workflow->control($transition["id"]);
                 $transitionData = array(

@@ -219,27 +219,27 @@ class CheckWorkflow
                     $this->addCodeError('WFL0101', implode(',', $diff), $tkey, $this->className, implode(',', $this->transitionModelProperties));
                 }
 
-                if (isset($transition["ask"]) && (!is_array($transition["ask"]))) {
+                if (isset($transition["ask"]) && (!is_array($transition["ask"]) && (!is_callable($transition["ask"])))) {
                     $this->addCodeError('WFL0103', $tkey, $this->className);
                 }
 
                 if (!empty($transition["m0"])) {
-                    if (!method_exists($this->wdoc, $transition["m0"])) {
+                    if (is_string($transition["m0"]) && !method_exists($this->wdoc, $transition["m0"])) {
                         $this->addCodeError('WFL0108', $transition["m0"], $tkey, $this->className);
                     }
                 }
                 if (!empty($transition["m1"])) {
-                    if (!method_exists($this->wdoc, $transition["m1"])) {
+                    if (is_string($transition["m1"]) && !method_exists($this->wdoc, $transition["m1"])) {
                         $this->addCodeError('WFL0105', $transition["m1"], $tkey, $this->className);
                     }
                 }
                 if (!empty($transition["m2"])) {
-                    if (!method_exists($this->wdoc, $transition["m2"])) {
+                    if (is_string($transition["m2"]) && !method_exists($this->wdoc, $transition["m2"])) {
                         $this->addCodeError('WFL0106', $transition["m2"], $tkey, $this->className);
                     }
                 }
                 if (!empty($transition["m3"])) {
-                    if (!method_exists($this->wdoc, $transition["m3"])) {
+                    if (is_string($transition["m3"]) && !method_exists($this->wdoc, $transition["m3"])) {
                         $this->addCodeError('WFL0109', $transition["m3"], $tkey, $this->className);
                     }
                 }
@@ -264,7 +264,7 @@ class CheckWorkflow
                 $this->checkTransitionStateKey($tkey);
                 $askes = isset($transition["ask"]) ? $transition["ask"] : null;
                 if ($askes) {
-                    if (!is_array($askes)) {
+                    if (!is_array($askes) && ! is_callable($askes)) {
                         $this->addCodeError('WFL0103', $tkey, $this->className);
                     } else {
                         $wi = \Anakeen\Core\SEManager::createTemporaryDocument($this->familyName);
