@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace Anakeen\Routes\Core;
 
@@ -8,6 +8,7 @@ use Anakeen\Core\Settings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\SmartElementManager;
+use Anakeen\SmartStructures\Wdoc\Transition;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
@@ -37,6 +38,9 @@ class WorkflowState
      */
     protected $documentId = 0;
 
+    /** @var Transition */
+    protected $transition = null;
+
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -46,8 +50,10 @@ class WorkflowState
     }
 
 
-    protected function initParameters(\Slim\Http\request $request, $args)
-    {
+    protected function initParameters(
+        \Slim\Http\request $request,
+        $args
+    ) {
         $this->documentId = $args["docid"];
         $this->state = $args["state"];
         $this->setDocument($this->documentId);
@@ -67,11 +73,29 @@ class WorkflowState
          */
         $this->workflow = SEManager::getDocument($this->_document->wid);
         $this->workflow->set($this->_document);
+
+        $this->initTransition();
     }
 
-
-    protected function doRequest(&$messages = [])
+    protected function initTransition()
     {
+        $allStates = $this->workflow->getStates();
+        $state = isset($allStates[$this->getState()]) ? $allStates[$this->getState()] : null;
+        if ($state === null) {
+            $exception = new Exception("CRUD0228", $this->getState(), $this->workflow->title, $this->workflow->id);
+            $exception->setHttpStatus("404", "State not found");
+            throw $exception;
+        }
+
+        $transition = $this->workflow->searchTransition($this->_document->state, $this->getState());
+        if ($transition) {
+            $this->transition = $this->workflow->getTransition($transition["id"]);
+        }
+    }
+
+    protected function doRequest(
+        &$messages = []
+    ) {
         $info = array();
 
 
@@ -83,20 +107,10 @@ class WorkflowState
         ));
         $info["uri"] = sprintf("%sstates/%s", $baseUrl, $this->getState());
 
-        $allStates = $this->workflow->getStates();
-
-        $state = isset($allStates[$this->getState()]) ? $allStates[$this->getState()] : null;
-        if ($state === null) {
-            $exception = new Exception("CRUD0228", $this->getState(), $this->workflow->title, $this->workflow->id);
-            $exception->setHttpStatus("404", "State not found");
-            throw $exception;
-        }
-
-        $transition = $this->workflow->getTransition($this->_document->state, $state);
-        if ($transition) {
+        if ($this->transition) {
             $transitionData = array(
-                "uri" => sprintf("%stransitions/%s", $baseUrl, $transition["id"]),
-                "label" => _($transition["id"])
+                "uri" => sprintf("%stransitions/%s", $baseUrl, $this->transition->getId()),
+                "label" => $this->transition->getLabel()
             );
         } else {
             $transitionData = null;
@@ -105,7 +119,7 @@ class WorkflowState
          * @var \Anakeen\Core\Internal\SmartElement $revision
          */
 
-        $info["state"] = $this->getStateInfo($state);
+        $info["state"] = $this->getStateInfo($this->state);
         $info["state"]["transition"] = $transitionData;
         return $info;
     }
