@@ -14,6 +14,9 @@ const generateDescription = attr => {
   if (attr.type) {
     field.type = attr.type;
   }
+  if (attr.kind) {
+    field.kind = attr.kind;
+  }
   if (field.label) {
     desc += `        * ${field.label}\n`;
   }
@@ -31,13 +34,14 @@ const generateDescription = attr => {
   return desc;
 };
 
-const extractSmartField = (fields, currentFilePath) => {
+const extractSmartField = (fields, currentFilePath, kind = null) => {
   return Object.keys(fields).reduce((acc, currentKey) => {
     if (currentKey === "$") {
       //We are on the properties
       acc[fields[currentKey].name] = {
         field: fields[currentKey],
-        fileName: currentFilePath
+        fileName: currentFilePath,
+        kind
       };
       return acc;
     }
@@ -45,7 +49,11 @@ const extractSmartField = (fields, currentFilePath) => {
     //If the current element is a fieldset, we iterate on sub element
     if (currentKey === "fieldset") {
       const subFields = fields[currentKey].reduce((acc, currentSubField) => {
-        const subElement = extractSmartField(currentSubField, currentFilePath);
+        const subElement = extractSmartField(
+          currentSubField,
+          currentFilePath,
+          kind
+        );
         return {
           ...acc,
           ...subElement
@@ -68,7 +76,8 @@ const extractSmartField = (fields, currentFilePath) => {
         acc[currentAttr.$.name] = {
           field: currentAttr.$,
           type: attrType[currentKey],
-          fileName: currentFilePath
+          fileName: currentFilePath,
+          kind
         };
       }
       return acc;
@@ -125,25 +134,47 @@ exports.parseStub = ({ globFile, info, targetPath, log, verbose }) => {
                   (acc, currentConf) => {
                     const name = currentConf.$.name;
                     if (
-                      !currentConf.fields ||
-                      !currentConf.fields.length ||
-                      currentConf.fields.length === 0
+                      (!currentConf.fields ||
+                        !currentConf.fields.length ||
+                        currentConf.fields.length === 0) &&
+                      (!currentConf.parameters ||
+                        !currentConf.parameters.length ||
+                        currentConf.parameters.length === 0)
                     ) {
                       return acc;
                     }
-                    const elements = currentConf.fields.reduce(
-                      (acc, currentField) => {
-                        const fields = extractSmartField(
-                          currentField,
-                          currentFilePath
-                        );
-                        return {
-                          ...acc,
-                          ...fields
-                        };
-                      },
-                      {}
-                    );
+                    let elements = {};
+                    if (currentConf.fields) {
+                      elements = currentConf.fields.reduce(
+                        (acc, currentField) => {
+                          const fields = extractSmartField(
+                            currentField,
+                            currentFilePath
+                          );
+                          return {
+                            ...acc,
+                            ...fields
+                          };
+                        },
+                        elements
+                      );
+                    }
+                    if (currentConf.parameters) {
+                      elements = currentConf.parameters.reduce(
+                        (acc, currentField) => {
+                          const fields = extractSmartField(
+                            currentField,
+                            currentFilePath,
+                            "Parameter"
+                          );
+                          return {
+                            ...acc,
+                            ...fields
+                          };
+                        },
+                        elements
+                      );
+                    }
                     //Enhance elements with missing properties
                     const extend = currentConf.extends
                       ? currentConf.extends[0].$.ref

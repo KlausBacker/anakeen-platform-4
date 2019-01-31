@@ -31,7 +31,7 @@ exports.handler = async argv => {
           signale.success("moduleInfo done");
         } else {
           // eslint-disable-next-line no-console
-          console.log(info);
+          console.log(JSON.stringify(info));
         }
       })
       .catch(e => {
