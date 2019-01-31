@@ -1,24 +1,26 @@
-import Vue from "vue";
-import { AnkDock } from "@anakeen/ank-components";
-import { AnkLogout } from "@anakeen/ank-components";
-import { AnkIdentity } from "@anakeen/ank-components";
-
+// import Vue from "vue";
+// import { AnkDock } from "@anakeen/ank-components";
+// import { AnkLogout } from "@anakeen/ank-components";
+// import { AnkIdentity } from "@anakeen/ank-components";
+// import { HubStation, HubElement } from "@aurelien/hub-components";
 import HubEntries from "./utils/hubEntry";
 
-Vue.use(AnkLogout, {
-  globalVueComponent: true
-});
-
-Vue.use(AnkIdentity, {
-  globalVueComponent: true
-});
+// Vue.use(AnkLogout, {
+//   globalVueComponent: true
+// });
+// //Vue.use(HubComponents);
+// Vue.use(AnkIdentity, {
+//   globalVueComponent: true
+// });
 
 export default {
   name: "ank-hub",
   components: {
-    AnkDock,
-    AnkLogout,
-    AnkIdentity
+    // AnkDock,
+    // AnkLogout,
+    // AnkIdentity,
+    // "hub-station": HubStation,
+    // HubElement
   },
   data() {
     return {
@@ -102,7 +104,39 @@ export default {
         .get(`/hub/config/${this.hubId}`)
         .then(response => {
           const data = response.data.data;
-          this.config = data;
+          // this.config = data;
+          this.config = [
+            {
+              position: {
+                dock: "LEFT",
+                innerPosition: "CENTER"
+              },
+              component: {
+                name: "hello-world",
+                props: {
+                  msg: "HELLO"
+                }
+              }
+            }
+            // {
+            //   position: {
+            //     dock: "RIGHT",
+            //     innerPosition: "CENTER"
+            //   }
+            // },
+            // {
+            //   position: {
+            //     dock: "TOP",
+            //     innerPosition: "CENTER"
+            //   }
+            // },
+            // {
+            //   position: {
+            //     dock: "BOTTOM",
+            //     innerPosition: "CENTER"
+            //   }
+            // }
+          ];
         })
         .catch(error => {
           // TODO Notify user
