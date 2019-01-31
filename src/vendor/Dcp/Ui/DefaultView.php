@@ -239,15 +239,15 @@ class DefaultView extends RenderDefault
             $fstate = $wdoc->getFollowingStates();
 
             foreach ($fstate as $v) {
-                $tr = $wdoc->getTransition($doc->state, $v);
+                $tr = $wdoc->searchTransition($doc->state, $v);
 
-                $label = $tr['id'] ? $wdoc->getStateLabel($tr['id']) : $wdoc->getActivity($v, Strings::mb_ucfirst($wdoc->getStateLabel($v)));
+                $label = $tr['id'] ? $wdoc->getStateLabel($tr['id']) : $wdoc->getActivity($v, Strings::mbUcfirst($wdoc->getStateLabel($v)));
                 $itemMenu = new ItemMenu($v, $label);
 
                 $itemMenu->setUrl(sprintf("#action/document.transition:%s:%s", urlencode($tr['id']), urlencode($v)));
                 $itemMenu->setTarget("_dialog"); // alternative to data-popup
                 $visibility = $itemMenu::VisibilityVisible;
-                $tooltip = $wdoc->getActivity($v, Strings::mb_ucfirst($wdoc->getStateLabel($v)));
+                $tooltip = $wdoc->getActivity($v, Strings::mbUcfirst($wdoc->getStateLabel($v)));
                 //$icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
                 $icon = '';
                 if (!$tr) {
@@ -260,12 +260,11 @@ class DefaultView extends RenderDefault
                     $itemMenu->setBeforeContent(sprintf('<div style="color:%s" class="fa fa-square menu--transition" />', $wdoc->getColor($v)));
                 }
                 $m0error = '';
-                if ($tr && (!empty($tr["m0"]))) {
+
+                if ($tr) {
                     // verify m0
-                    $m0error = call_user_func(array(
-                        $wdoc,
-                        $tr["m0"],
-                    ), $v, $wdoc->doc->state);
+                    $m0error = $wdoc->executeTransitionM($tr['id'], "m0", $v, $wdoc->doc->state, '');
+
                     if ($m0error) {
                         $visibility = $itemMenu::VisibilityDisabled;
                         $tooltip = $m0error;

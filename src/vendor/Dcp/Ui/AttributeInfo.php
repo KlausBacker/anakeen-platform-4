@@ -6,6 +6,10 @@
 
 namespace Dcp\Ui;
 
+use Anakeen\Core\Internal\Format\DocidAttributeValue;
+use Anakeen\Core\Internal\Format\FileAttributeValue;
+use Anakeen\Core\Internal\Format\TextAttributeValue;
+
 class AttributeInfo implements \JsonSerializable
 {
     /**
@@ -57,7 +61,7 @@ class AttributeInfo implements \JsonSerializable
      */
     protected $parent = null;
     /**
-     * @var \TextAttributeValue|\DocidAttributeValue|\FileAttributeValue Value
+     * @var TextAttributeValue|DocidAttributeValue|FileAttributeValue Value
      */
     protected $attributeValue = null;
     /**
@@ -229,14 +233,14 @@ class AttributeInfo implements \JsonSerializable
         $this->id = $id;
     }
     /**
-     * @return \DocidAttributeValue|\FileAttributeValue|\TextAttributeValue
+     * @return DocidAttributeValue|FileAttributeValue|TextAttributeValue
      */
     public function getAttributeValue()
     {
         return $this->attributeValue;
     }
     /**
-     * @param \DocidAttributeValue|\FileAttributeValue|\TextAttributeValue $attributeValue
+     * @param DocidAttributeValue|FileAttributeValue|TextAttributeValue $attributeValue
      */
     public function setAttributeValue($attributeValue)
     {

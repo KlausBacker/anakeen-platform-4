@@ -1,15 +1,4 @@
-<?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-
-/**
- * Created by PhpStorm.
- * User: eric
- * Date: 20/02/15
- * Time: 17:35
- */
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace Dcp\Ui;
 
@@ -83,13 +72,20 @@ class TransitionRender
      */
     public function getTransitionParameters($transitionId)
     {
-        $transition = isset($this->workflow->transitions[$transitionId]) ? $this->workflow->transitions[$transitionId] : null;
-
-        $askes = isset($transition["ask"]) ? $transition["ask"] : array();
-        $addComment = empty($transition["nr"]);
-        $workflow = $this->getViewWorkflow();
 
         $attrData = array();
+        $askes = [];
+        if (!$transitionId) {
+            return $attrData;
+        }
+        $transition = $this->workflow->getTransition($transitionId);
+        if ($transition) {
+            $askes = $transition->getAsks();
+        }
+
+        $addComment = $transition->getRequiredComment();
+        $workflow = $this->getViewWorkflow();
+
 
         if (count($askes) > 0) {
             $transitionLabel = isset($transitionId) ? $this->workflow->getTransitionLabel($transitionId) : ___("Invalid transition", "ddui");
@@ -102,10 +98,10 @@ class TransitionRender
             );
             $attrData[] = $this->getAttributeInfo($workflow, $askFrame);
             $this->workflow->attributes->addAttribute($askFrame);
-            foreach ($askes as $ask) {
-                $oa = $this->workflow->getAttribute($ask);
+            foreach ($askes as $oa) {
                 if ($oa) {
                     $oa->fieldSet = $askFrame;
+
                     $attrData[] = $this->getAttributeInfo($workflow, $oa);
 
                     if ($oa->type === "array") {
@@ -170,16 +166,22 @@ class TransitionRender
             $aInfo->setParent($attribute->fieldSet->id);
         }
         $value = null;
+
+        $origin = $this->workflow;
+        if ($this->workflow->getSmartElement()->getAttribute($attribute->id)) {
+            $origin = $this->workflow->getSmartElement();
+        }
+
         if ($attribute->usefor === "Q") {
-            $value = $this->workflow->getFamilyParameterValue($attribute->id);
+            $value = $origin->getFamilyParameterValue($attribute->id);
         } else {
-            $value = $this->workflow->getRawValue($attribute->id);
+            $value = $origin->getRawValue($attribute->id);
         }
         if ($attribute->isNormal) {
             /**
              * @var \Anakeen\Core\SmartStructure\NormalAttribute $attribute
              */
-            $aInfo->setAttributeValue($this->formatCollection->getInfo($attribute, $value, $this->workflow));
+            $aInfo->setAttributeValue($this->formatCollection->getInfo($attribute, $value, $origin));
         }
         return $aInfo;
     }

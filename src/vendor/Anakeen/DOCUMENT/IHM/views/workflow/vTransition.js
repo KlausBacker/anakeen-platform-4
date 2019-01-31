@@ -344,7 +344,9 @@ define([
               errorTxt
             ) {
               if (response.responseJSON) {
-                let userMessage = response.responseJSON.userMessage;
+                let userMessage =
+                  response.responseJSON.userMessage ||
+                  response.responseJSON.message;
 
                 response.responseJSON.messages =
                   response.responseJSON.messages || [];
