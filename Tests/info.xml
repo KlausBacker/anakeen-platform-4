@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<module name="user-interfaces-test" release="0" version="1.0.0" vendor="Anakeen"
+<module name="user-interfaces-test" release="0" version="1.0.2" vendor="Anakeen"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description>Tests for Anakeen Uis</description>
 
