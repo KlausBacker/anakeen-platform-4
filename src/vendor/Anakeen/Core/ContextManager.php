@@ -242,6 +242,7 @@ class ContextManager
 
     /**
      * @param bool $original use origin logged account even sudo is used
+     *
      * @return \Anakeen\Core\Account|null
      */
     public static function getCurrentUser(bool $original = false)
@@ -303,7 +304,6 @@ class ContextManager
 
     /**
      * return value of an context application parameter
-     *
      *
      * @param string $ns parameter namespace
      * @param string $name parameter name
