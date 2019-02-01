@@ -1,6 +1,7 @@
 {
   "name": "@anakeen/user-interfaces",
   "version": "1.0.1",
+  "autorelease": true,
   "description": "",
   "scripts": {
     "beautify": "npx eslint ./src --fix",
@@ -65,6 +66,5 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  },
-  "autorelease": false
+  }
 }
