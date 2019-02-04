@@ -41,3 +41,4 @@
 > (Si vous pouvez, indiquez la portion de code qui vous semble responsable du problème)
 
 /label ~bug
+/label ~Ui
