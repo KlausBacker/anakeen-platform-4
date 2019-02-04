@@ -1,10 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
-namespace Dcp\Utils\CSVFormatDetector;
+namespace Anakeen\Core\Utils\Csv;
 
 /**
  * Class Detector

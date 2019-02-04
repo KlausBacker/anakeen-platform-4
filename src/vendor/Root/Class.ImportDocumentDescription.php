@@ -175,7 +175,7 @@ class ImportDocumentDescription
     {
         $content = file_get_contents($csvFileName);
         if ($separator == 'auto') {
-            $detector = new \Dcp\Utils\CSVFormatDetector\Detector();
+            $detector = new \Anakeen\Core\Utils\Csv\Detector();
             $detected = $detector->detect($content);
             if (!isset($detected['separator']['char']) || $detected['separator']['char'] === null) {
                 throw new \Anakeen\Exception(sprintf("cannot find csv separator in %s file", $csvFileName));
@@ -183,7 +183,7 @@ class ImportDocumentDescription
             $separator = $detected['separator']['char'];
         }
         if ($enclosure == 'auto') {
-            $detector = new \Dcp\Utils\CSVFormatDetector\Detector();
+            $detector = new \Anakeen\Core\Utils\Csv\Detector();
             $detector->separators = array(
                 $separator
             );
