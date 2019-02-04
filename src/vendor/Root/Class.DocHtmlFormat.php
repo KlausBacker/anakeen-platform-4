@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 /*
  * @author Anakeen
  * @package FDL
@@ -1045,7 +1045,7 @@ class DocHtmlFormat
                 "B$prefix",
                 "D$prefix"
             ), $avalue);
-            $avalue = \Dcp\Utils\htmlclean::normalizeHTMLFragment(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'), $error);
+            $avalue = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'), $error);
             $avalue = str_replace(array(
                 "B$prefix",
                 "D$prefix"
@@ -1178,29 +1178,6 @@ class DocHtmlFormat
         return $htmlval;
     }
 
-    private function rowattrReplace($s, $index)
-    {
-        if (substr($s, 0, 2) == "L_") {
-            return "[$s]";
-        }
-        if (substr($s, 0, 2) == "V_") {
-            $sl = substr(strtolower($s), 2);
-            $vis = $this->doc->getAttribute($sl)->mvisibility;
-
-            if (($vis == "H") || ($vis == "I") || ($vis == "O")) {
-                $v = "";
-            } else {
-                $v = $this->doc->GetHtmlAttrValue($sl, "_self", 2, $index);
-            }
-        } else {
-            $sl = strtolower($s);
-            if (!isset($this->doc->$sl)) {
-                return "[$s]";
-            }
-            $v = $this->doc->getMultipleRawValues($sl, "", $index);
-        }
-        return $v;
-    }
 
     /**
      * Format the given size in human readable SI format (up to terabytes).
@@ -1212,7 +1189,7 @@ class DocHtmlFormat
     private static function human_size($size)
     {
         if (abs($size) < 1000) {
-            return sprintf("%d %s", $size, n___("unit:byte", "unit:bytes", abs($size)));
+            return sprintf("%d %s", $size, n___("unit:byte", "unit:bytes", abs($size), 'sde'));
         }
         $size = $size / 1000;
         foreach (array(

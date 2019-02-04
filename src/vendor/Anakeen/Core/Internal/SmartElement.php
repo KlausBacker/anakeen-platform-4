@@ -3494,12 +3494,12 @@ create unique index i_docir on doc(initid, revision);";
                                             "",
                                             $tvalues[$kvalue]
                                         ); //delete comments
-                                        $tvalues[$kvalue] = \Dcp\Utils\htmlclean::xssClean($tvalues[$kvalue]);
+                                        $tvalues[$kvalue] = \Anakeen\Core\Utils\HtmlClean::xssClean($tvalues[$kvalue]);
                                         if ($oattr->getOption("htmlclean") == "yes") {
-                                            $tvalues[$kvalue] = \Dcp\Utils\htmlclean::cleanStyle($tvalues[$kvalue]);
+                                            $tvalues[$kvalue] = \Anakeen\Core\Utils\HtmlClean::cleanStyle($tvalues[$kvalue]);
                                         }
                                         /* Check for malformed HTML */
-                                        $html = \Dcp\Utils\htmlclean::normalizeHTMLFragment($tvalues[$kvalue], $error);
+                                        $html = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment($tvalues[$kvalue], $error);
                                         if ($html === false) {
                                             $html = '';
                                         }

@@ -167,10 +167,10 @@ class ImportXml
         $tkey = array(
             "title"
         );
-        $dom = new \Dcp\Utils\XDOMDocument();
+        $dom = new \Anakeen\Core\Utils\XDOMDocument();
         try {
             $dom->load($xmlfile, 0, $error);
-        } catch (\Dcp\Utils\XDOMDocumentException $e) {
+        } catch (\Anakeen\Core\Utils\XDOMDocumentException $e) {
             $log["action"] = 'ignored';
             $log["err"] = $e->getMessage();
             return $e->getMessage();

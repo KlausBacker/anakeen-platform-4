@@ -1,22 +1,8 @@
-<?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+<?php /** @noinspection PhpUnusedParameterInspection */
+
 /**
  * Layout Class for OOo files
  *
- * @author     Anakeen
- * @version    $Id: Class.OOoLayout.php,v 1.16 2008/10/31 17:01:18 eric Exp $
- * @package    FDL
- * @subpackage CORE
- */
-/**
- */
-
-include_once('Lib.FileMime.php');
-
-/**
  * @class OOoLayout
  * use an open document text file as template
  */
@@ -56,6 +42,7 @@ class OOoLayout extends Layout
     /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * construct template using an open document text file
+     *
      * @param string                              $caneva open document file of the template
      * @param \Anakeen\Core\Internal\SmartElement $doc    document
      */
@@ -90,7 +77,9 @@ class OOoLayout extends Layout
 
     /**
      * return inside string of a node
+     *
      * @param DOMnode $node
+     *
      * @return string
      */
     protected function innerXML(DOMnode & $node)
@@ -107,15 +96,30 @@ class OOoLayout extends Layout
     /**
      * @deprecated BLOCK are not supported
      * Enter description here ...
+     *
      * @param string $block
      * @param string $aid
      * @param string $vkey
+     *
      * @return string
      */
     protected function parseListInBlock($block, $aid, $vkey)
     {
-        $head = '<?xml version="1.0" encoding="UTF-8"?>
-<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">';
+        $head = <<<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" 
+xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" 
+xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" 
+xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" 
+xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" 
+xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" 
+xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" 
+xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" 
+xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" 
+xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" 
+xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">'
+EOF;
         $foot = '</office:document-content>';
         $domblock = new DOMDocument();
         $frag1 = '';
@@ -183,7 +187,9 @@ class OOoLayout extends Layout
 
     /**
      * get depth in dom tree
+     *
      * @param DOMNode $node
+     *
      * @return int
      */
     private function getNodeDepth(DOMNode & $node)
@@ -211,6 +217,7 @@ class OOoLayout extends Layout
      * @param string  $block     xml string which containt the condition
      * @param boolean $not       negative condition
      * @param array   $levelPath Path use to retrieve condition value in recursive repeatable mode
+     *
      * @return string
      */
     protected function testIf($name, $block, $not = false, $levelPath = null)
@@ -252,8 +259,10 @@ class OOoLayout extends Layout
 
     /**
      * Top level parse condition
+     *
      * @param string|null $out
-     * @throws \Anakeen\Exception 
+     *
+     * @throws \Anakeen\Exception
      */
     protected function parseIf(&$out = null)
     {
@@ -353,13 +362,15 @@ class OOoLayout extends Layout
 
     /**
      * to get xml warning as Exception
+     *
      * @param string $strXml
-     * @return \Dcp\Utils\XDOMDocument
-     * @throws \Dcp\Utils\XDOMDocumentException
+     *
+     * @return \Anakeen\Core\Utils\XDOMDocument
+     * @throws \Anakeen\Core\Utils\XDOMDocumentException
      */
     protected function xmlLoader($strXml)
     {
-        $this->dom = new \Dcp\Utils\XDOMDocument();
+        $this->dom = new \Anakeen\Core\Utils\XDOMDocument();
         $this->dom->loadXML($strXml);
         return $this->dom;
     }
@@ -370,8 +381,8 @@ class OOoLayout extends Layout
     protected function restoreUserFieldSet()
     {
         try {
-            $this->XmlLoader(\Dcp\Utils\htmlclean::cleanXMLUTF8($this->template));
-        } catch (\Dcp\Utils\XDOMDocumentException $e) {
+            $this->XmlLoader(\Anakeen\Core\Utils\HtmlClean::cleanXMLUTF8($this->template));
+        } catch (\Anakeen\Core\Utils\XDOMDocumentException $e) {
             $outfile = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/oooKo") . '.xml';
             $this->addError("LAY0004", $outfile);
             file_put_contents($outfile, $this->template);
@@ -403,9 +414,12 @@ class OOoLayout extends Layout
 
     /**
      * not use for the moment
+     *
      * @deprecated BLOCK are not supported
+     *
      * @param $name
      * @param $block
+     *
      * @return string
      */
     protected function setBlock($name, $block)
@@ -439,6 +453,7 @@ class OOoLayout extends Layout
 
     /**
      * replace simple key in xml string
+     *
      * @param string|null $out
      */
     protected function parseKey(&$out = null)
@@ -450,7 +465,9 @@ class OOoLayout extends Layout
 
     /**
      * read odt file and insert xmls in object
+     *
      * @param string $odtfile path to the odt file
+     *
      * @return string
      * @throws \Dcp\Layout\Exception|\Dcp\Core\Exception
      */
@@ -502,7 +519,9 @@ class OOoLayout extends Layout
 
     /**
      * recompose odt file
+     *
      * @param string $odsfile output file path
+     *
      * @return string
      */
     protected function content2odf($odsfile)
@@ -553,6 +572,7 @@ class OOoLayout extends Layout
 
     /**
      * set key/value pair assume key if XML fragment well formed
+     *
      * @param string          $tag the key to replace
      * @param string|string[] $val the value for the key
      */
@@ -574,6 +594,7 @@ class OOoLayout extends Layout
 
     /**
      * set key/value pair and XML entity encode
+     *
      * @param string $tag the key to replace
      * @param string $val the value for the key
      */
@@ -584,7 +605,9 @@ class OOoLayout extends Layout
 
     /**
      * replace entities & < >
+     *
      * @param string $s text to encode
+     *
      * @return string
      */
     public static function xmlEntities($s)
@@ -603,6 +626,7 @@ class OOoLayout extends Layout
     /**
      *
      * @param string $val
+     *
      * @return bool
      */
     protected function isXML($val)
@@ -613,7 +637,9 @@ class OOoLayout extends Layout
 
     /**
      * get value of $tag key
+     *
      * @param string $tag
+     *
      * @return string
      */
     public function get($tag)
@@ -626,6 +652,7 @@ class OOoLayout extends Layout
 
     /**
      * parse text
+     *
      * @param string|null $out
      */
     protected function parseText(&$out = null)
@@ -712,7 +739,9 @@ class OOoLayout extends Layout
 
     /**
      * set image from html fragment
-     * @param DOMElement $node
+     *
+     * @param DOMElement $draw
+     *
      * @return string
      */
     protected function setHtmlDraw(DOMElement & $draw)
@@ -783,9 +812,11 @@ class OOoLayout extends Layout
 
     /**
      * set image
+     *
      * @param DOMElement $draw
      * @param string     $name
      * @param string     $file
+     *
      * @return string
      */
     protected function setDraw(DOMElement & $draw, $name, $file)
@@ -848,6 +879,7 @@ class OOoLayout extends Layout
 
     /**
      * remove all xml:id attributes in children nodes
+     *
      * @param DomNode $objNode
      */
     protected function removeXmlId(&$objNode)
@@ -866,10 +898,12 @@ class OOoLayout extends Layout
 
     /**
      * This function replaces a node's string content with strNewContent
+     *
      * @param DomNode $objNode
      * @param string  $strOldContent
      * @param string  $strNewContent
-     * @throws \Anakeen\Exception 
+     *
+     * @throws \Anakeen\Exception
      */
     protected function replaceNodeText(DOMNode & $objNode, $strOldContent, $strNewContent)
     {
@@ -1032,6 +1066,7 @@ class OOoLayout extends Layout
      * @param DomElement $node
      * @param string     $name
      * @param string     $value
+     *
      * @return string error
      */
     protected function setInputField(DomElement & $node, $name, $value)
@@ -1051,6 +1086,7 @@ class OOoLayout extends Layout
      * @param DOMElement $node
      * @param string     $name
      * @param string     $value
+     *
      * @return string error message
      */
     protected function setDropDownField(DOMElement & $node, $name, $value)
@@ -1155,7 +1191,9 @@ class OOoLayout extends Layout
 
     /**
      * return the number of array in arrays
+     *
      * @param array $v
+     *
      * @return int
      */
     private static function getArrayDepth($v)
@@ -1171,8 +1209,10 @@ class OOoLayout extends Layout
     /**
      *
      * Retrieve one of values for a multi value key
+     *
      * @param string $key       the key name (multiple values)
      * @param array  $levelPath path to access of a particular value
+     *
      * @return string|null
      */
     protected function getArrayKeyValue($key, array $levelPath)
@@ -1199,6 +1239,7 @@ class OOoLayout extends Layout
 
     /**
      * fix span cause when IF/ENDIF are not on the same depth
+     *
      * @param $s
      */
     private function fixSpanIf(&$s)
@@ -1210,6 +1251,7 @@ class OOoLayout extends Layout
     /**
      *
      * Inspect conditions in cells
+     *
      * @param DOMNode $row
      * @param array   $levelPath
      */
@@ -1219,7 +1261,21 @@ class OOoLayout extends Layout
 
         $inner = $row->ownerDocument->saveXML($row);
 
-        $head = '<?xml version="1.0" encoding="UTF-8"?><office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">';
+        $head = <<<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" 
+xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" 
+xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" 
+xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" 
+xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" x
+mlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" 
+xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" 
+xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" 
+xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" 
+xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">
+EOF;
+
         $foot = '</office:document-content>';
 
         $level = 0;
@@ -1271,6 +1327,7 @@ class OOoLayout extends Layout
     /**
      *
      * Inspect list in sub tables
+     *
      * @param DOMElement $row
      * @param array      $levelPath
      * @param string     $ns        namespace for filter items (like text or table)
@@ -1509,6 +1566,7 @@ class OOoLayout extends Layout
 
     /**
      * Initialize of list to be used in table or list
+     *
      * @param string $key the key variable
      * @param array  $t   the values of the key
      */
@@ -1537,6 +1595,7 @@ class OOoLayout extends Layout
 
     /**
      * @deprecated BLOCK not supported, use setColumn instead
+     *
      * @param string $p_nom_block
      * @param array  $data
      */
@@ -1850,6 +1909,7 @@ class OOoLayout extends Layout
 
     /**
      * get all error stored by addError
+     *
      * @return string
      */
     public function getErrors()
@@ -1864,8 +1924,11 @@ class OOoLayout extends Layout
     /**
      * send exception and exit generation
      * use sored error
+     *
      * @see addError()
+     *
      * @param string $outfile corrupted file path
+     *
      * @throws Dcp\Layout\Exception
      */
     protected function exitError($outfile = '')
@@ -1884,6 +1947,7 @@ class OOoLayout extends Layout
 
     /**
      * store an error code
+     *
      * @param string $code
      * @param string $key
      * @param string $message
@@ -1899,8 +1963,10 @@ class OOoLayout extends Layout
 
     /**
      * Change Element Name
+     *
      * @param DOMElement $node
      * @param string     $name
+     *
      * @return DOMElement
      */
     protected function changeElementName($node, $name)
@@ -1963,7 +2029,7 @@ class OOoLayout extends Layout
 
             $this->ParseHtmlText();
 
-            $this->template = \Dcp\Utils\htmlclean::cleanXMLUTF8($this->template);
+            $this->template = \Anakeen\Core\Utils\HtmlClean::cleanXMLUTF8($this->template);
             $this->dom = new DOMDocument();
             if ($this->dom->loadXML($this->template)) {
                 $this->restoreSection();
@@ -1987,6 +2053,7 @@ class OOoLayout extends Layout
     /**
      * generate OOo document
      * get temporary file path of result
+     *
      * @throws Dcp\Layout\Exception
      * @return string odt file path
      */

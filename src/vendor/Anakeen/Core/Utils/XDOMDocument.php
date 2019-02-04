@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Utils;
+namespace Anakeen\Core\Utils;
 
 class XDOMDocument extends \DOMDocument
 {
