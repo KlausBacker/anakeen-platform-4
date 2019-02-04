@@ -18,14 +18,14 @@ namespace SmartStructure\Fields {
         * <li> <i>type</i> tab </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_instance_config='hub_instance_config';
         /**
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_instance='hub_instance';
         /**
         * Logical Name
@@ -34,7 +34,7 @@ namespace SmartStructure\Fields {
         * <li> <i>needed</i> true </li>
         * <li> <i>type</i> text </li>
         * </ul>
-        */
+        */ 
         const instance_logical_name='instance_logical_name';
         /**
         * icone
@@ -42,7 +42,7 @@ namespace SmartStructure\Fields {
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> image </li>
         * </ul>
-        */
+        */ 
         const hub_instanciation_icone='hub_instanciation_icone';
         /**
         * Label
@@ -50,7 +50,7 @@ namespace SmartStructure\Fields {
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_instance_label_frame='hub_instance_label_frame';
         /**
         * Hub Station Titles
@@ -58,7 +58,7 @@ namespace SmartStructure\Fields {
         * <li> <i>type</i> array </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_instance_titles='hub_instance_titles';
         /**
         * Title
@@ -66,7 +66,7 @@ namespace SmartStructure\Fields {
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> text </li>
         * </ul>
-        */
+        */ 
         const hub_instance_title='hub_instance_title';
         /**
         * Language
@@ -74,30 +74,30 @@ namespace SmartStructure\Fields {
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> text </li>
         * </ul>
-        */
-        const hub_language='hub_language';
+        */ 
+        const hub_instance_language='hub_instance_language';
         /**
         * Language code
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> text </li>
         * </ul>
-        */
-        const hub_language_code='hub_language_code';
+        */ 
+        const hub_instance_language_code='hub_instance_language_code';
         /**
         * Security
         * <ul>
         * <li> <i>type</i> tab </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_security='hub_security';
         /**
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_security_frame='hub_security_frame';
         /**
         * Roles
@@ -105,7 +105,7 @@ namespace SmartStructure\Fields {
         * <li> <i>type</i> array </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_roles='hub_roles';
         /**
         * Role
@@ -113,7 +113,7 @@ namespace SmartStructure\Fields {
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> account </li>
         * </ul>
-        */
+        */ 
         const hub_role='hub_role';
 
     }

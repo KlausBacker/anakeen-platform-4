@@ -6,6 +6,7 @@ namespace Anakeen\Hub\SmartStructures\HubInstanciation\Render;
 use Dcp\Ui\CommonRenderOptions;
 use Dcp\Ui\RenderAttributeVisibilities;
 use Dcp\Ui\RenderOptions;
+use Dcp\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Hubinstanciation as HubInstanciationFields;
 
 class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
@@ -14,10 +15,13 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
     {
         $options = parent::getOptions($document);
 
-        $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->setRowMinLimit(1);
+        $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->setRowMinDefault(2);
+        $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->setRowMaxLimit(2);
+        $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->disableRowAdd(true);
+        $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->disableRowDel(true);
         $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->setCollapse("none");
         $options->text(HubInstanciationFields::hub_instance_title)->setMaxLength(50);
-        $options->text(HubInstanciationFields::hub_language)->setMaxLength(15);
+        $options->text(HubInstanciationFields::hub_instance_language)->setMaxLength(15);
         $options->frame(HubInstanciationFields::hub_security_frame)->setLabelPosition(CommonRenderOptions::nonePosition);
 
         return $options;
@@ -26,7 +30,13 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
-        $visibilities->setVisibility(HubInstanciationFields::hub_language_code, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
+    }
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
+        $parent = parent::getJsReferences();
+        $path = UIGetAssetPath::getElementAssets("hub", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $parent["hubInstanciationRender"] = $path["hubInstanciationRender"]["js"];
+        return $parent;
     }
 }

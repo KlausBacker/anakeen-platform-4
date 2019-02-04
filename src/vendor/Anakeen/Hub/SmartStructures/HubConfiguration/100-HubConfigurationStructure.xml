@@ -15,7 +15,6 @@
                         <smart:field-text name="hub_title" label="Title" access="ReadWrite"/>
                         <smart:field-text name="hub_language" label="Language"
                                           access="ReadWrite"/>
-                        <smart:field-text name="hub_language_code" label="Language code" access="ReadWrite"/>
                     </smart:field-set>
                 </smart:field-set>
                 <smart:field-set name="hub_icon_frame" type="frame" label="Icon" access="ReadWrite">
@@ -62,11 +61,6 @@
         </smart:parameters>
 
         <smart:hooks>
-            <smart:field-hook type="constraint" event="onPreStore" field="hub_title">
-                <smart:field-callable function="Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationChecking\HubConfigurationChecking::checkTitle"/>
-                <smart:field-argument type="field">hub_title</smart:field-argument>
-                <smart:field-argument type="field">hub_language</smart:field-argument>
-            </smart:field-hook>
         </smart:hooks>
 
         <smart:autocompletion>

@@ -26,14 +26,14 @@ namespace SmartStructure\Fields {
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_station_id_frame='hub_station_id_frame';
         /**
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> docid </li>
         * </ul>
-        */
+        */ 
         const hub_station_id='hub_station_id';
         /**
         * Label
@@ -41,7 +41,7 @@ namespace SmartStructure\Fields {
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
         * </ul>
-        */
+        */ 
         const hub_label_frame='hub_label_frame';
         /**
         * Element Titles
@@ -98,7 +98,7 @@ namespace SmartStructure\Fields {
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> text </li>
         * </ul>
-        */
+        */ 
         const hub_final_icon='hub_final_icon';
         /**
         * Icon picker
@@ -120,7 +120,7 @@ namespace SmartStructure\Fields {
         * Html icon
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> htmltext </li>
+        * <li> <i>type</i> longtext </li>
         * </ul>
         */ 
         const hub_icon_text='hub_icon_text';
