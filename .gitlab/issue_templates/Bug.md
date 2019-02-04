@@ -25,6 +25,7 @@
 
 > (Copier les logs - Utiliser les code blocks (```) pour formater le code car c'est très difficule à lire sinon)
 > ajouter les éventuels fichiers utilisés par la commande
+> **éviter les captures d'écran de la console** , préférer un copier coller mis en forme
 
 
 #### Environment info
