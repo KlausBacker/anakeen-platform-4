@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace Anakeen\Router;
 
@@ -59,20 +59,20 @@ class RouterManager
         $c = self::$app->getContainer();
 
         $c['phpErrorHandler'] = function ($c) {
-            return new \Dcp\Router\ErrorHandler();
+            return new ErrorHandler();
         };
 
         $c['errorHandler'] = function ($c) {
-            return new \Dcp\Router\ErrorHandler();
+            return new ErrorHandler();
         };
         $c['notFoundHandler'] = function ($c) {
             return function ($request, $response) use ($c) {
-                return \Dcp\Router\NotHandler::notFound($request, $c["response"]);
+                return NotHandler::notFound($request, $c["response"]);
             };
         };
         $c['notAllowedHandler'] = function ($c) {
             return function ($request, $response, $methods) use ($c) {
-                return \Dcp\Router\NotHandler::notAllowed($request, $c["response"], $methods);
+                return NotHandler::notAllowed($request, $c["response"], $methods);
             };
         };
         return self::$app;
@@ -100,7 +100,9 @@ class RouterManager
 
     /**
      * add other path to defined routes aned parameters
+     *
      * @param string $path
+     *
      * @throws Exception
      * @throws \Anakeen\Exception
      */

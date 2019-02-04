@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Router;
+namespace Anakeen\Router;
 
 use Anakeen\Core\Utils\Gettext;
 
@@ -13,7 +13,7 @@ class NotHandler
      *
      * @return \Slim\Http\response
      */
-    public static function NotFound(\Slim\Http\request $request, \Slim\Http\response $response)
+    public static function notFound(\Slim\Http\request $request, \Slim\Http\response $response)
     {
         $args = ["title" => sprintf(Gettext::___("Page not found", "ank"))];
         $response = $response->withStatus(404);
@@ -27,7 +27,7 @@ class NotHandler
      *
      * @return \Slim\Http\response
      */
-    public static function NotAllowed(\Slim\Http\request $request, \Slim\Http\response $response, $methods)
+    public static function notAllowed(\Slim\Http\request $request, \Slim\Http\response $response, $methods)
     {
         $args = [
             "title" => sprintf(
