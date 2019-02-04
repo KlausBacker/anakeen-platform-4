@@ -41,31 +41,4 @@ class HubStationAdmin extends GridContent
 
         $this->_searchDoc->addFilter("%s = '%s'", Fields::hub_station_id, $this->structureName);
     }
-
-    /**
-     * @return array
-     * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Exception
-     */
-//    protected function getData()
-//    {
-//        $parent = parent::getData();
-//        $data = $parent["smartElements"];
-//        $result = [];
-//        foreach ($data as $datum) {
-//            $doc = SEManager::getDocument($datum["properties"]["id"]);
-//            if ($doc) {
-//                $value = [
-//                    "id" => $doc->id,
-//                    "title" => $doc->getCustomTitle(),
-//                    "icon" => $doc->getRawValue("hub_final_icon"),
-//                    "order" => $doc->getRawValue("hub_order"),
-//                    "position" => $doc->getRawValue("hub_docker_position")
-//                ];
-//                array_push($result, $value);
-//            }
-//        }
-////        $parent["hub"] = $result;
-//        return $parent;
-//    }
 }
