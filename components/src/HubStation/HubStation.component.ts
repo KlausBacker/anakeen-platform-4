@@ -1,12 +1,13 @@
-import { AnkDock, AnkDockTab } from "@anakeen/ank-components";
+import HubDock from "../HubDock/HubDock.vue";
+import HubDockEntry from "../HubDock/HubDockEntry/HubDockEntry.vue";
 import {DockPosition, HubStationDockConfigs, HubStationPropConfig, IAnkDock} from "./HubStationsTypes";
 // Vue class based component export
 import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 
 @Component({
   components: {
-    "hub-dock": AnkDock,
-    "hub-element": AnkDockTab
+    "hub-dock": HubDock,
+    "hub-dock-entry": HubDockEntry
   }
 })
 export default class HubStation extends Vue {
@@ -26,7 +27,6 @@ export default class HubStation extends Vue {
   @Watch("config")
   onConfigPropChanged(val: HubStationPropConfig[]) {
     this.configData = HubStation._organizeData(val);
-    console.log(this.configData);
   }
   // endregion watch
 
@@ -44,6 +44,10 @@ export default class HubStation extends Vue {
 
   get isRightEnabled() {
     return this.configData.right.length;
+  }
+
+  get DockPosition(): any {
+    return DockPosition;
   }
   //endregion computed
 
@@ -73,8 +77,70 @@ export default class HubStation extends Vue {
     }
   }
 
-  _onDockTabSelected(dockPosition: DockPosition, event) {
-    console.log(dockPosition, event);
+  getDockHeaders(configs: HubStationPropConfig[]) {
+    return configs.filter(c => {
+      if (c.position.dock === DockPosition.TOP || c.position.dock === DockPosition.BOTTOM) {
+        return c.position.innerPosition === DockPosition.LEFT;
+      } else {
+        return c.position.innerPosition === DockPosition.TOP;
+      }
+    })
+  }
+
+  getDockContent(configs: HubStationPropConfig[]) {
+    return configs.filter(c => {
+      return c.position.innerPosition === DockPosition.CENTER;
+    })
+  }
+
+  getDockFooter(configs: HubStationPropConfig[]) {
+    return configs.filter(c => {
+      if (c.position.dock === DockPosition.TOP || c.position.dock === DockPosition.BOTTOM) {
+        return c.position.innerPosition === DockPosition.RIGHT;
+      } else {
+        return c.position.innerPosition === DockPosition.BOTTOM;
+      }
+    })
+  }
+
+  onDockEntrySelected(entry) {
+    const component = Vue.component(entry.component.name);
+    // Create component instance
+    const instance = new component({
+      propsData: entry.component.props
+    });
+    // Get dom content ref
+    // @ts-ignore
+    const domRef = instance.$options.getHubConfiguration().contentEl;
+    if (domRef) {
+      instance.$mount(domRef);
+    }
+  }
+
+  getCollapsedTemplate(config: HubStationPropConfig) {
+    // Get component constructor
+    const component: any = Vue.component(config.component.name);
+    // Get Hub component configuration
+    if (component && component.options && component.options.getHubConfiguration) {
+      const template = component.options.getHubConfiguration().collapsedTemplate;
+      return Vue.extend({
+        template
+      });
+    }
+    return ""
+  }
+
+  getExpandedTemplate(config) {
+    // Get component constructor
+    const component: any = Vue.component(config.component.name);
+    // Get Hub component configuration
+    if (component && component.options && component.options.getHubConfiguration) {
+      const template = component.options.getHubConfiguration().expandedTemplate;
+      return Vue.extend({
+        template
+      });
+    }
+    return ""
   }
 
   private static _capitalize(str: string) {

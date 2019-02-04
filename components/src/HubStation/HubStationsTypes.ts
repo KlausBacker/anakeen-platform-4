@@ -1,7 +1,7 @@
 import {Vue} from "vue/types/vue";
 
-export const enum DockPosition {
-    TOP = "TOP", BOTTOM = "BOTTOM", LEFT = "LEFT", RIGHT = "RIGHT"
+export enum DockPosition {
+    TOP = "TOP", BOTTOM = "BOTTOM", LEFT = "LEFT", RIGHT = "RIGHT", CENTER = "CENTER"
 }
 
 export type HubStationConfigPosition = {
