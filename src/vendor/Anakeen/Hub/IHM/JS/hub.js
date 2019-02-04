@@ -6,6 +6,8 @@ import Router from "../Router";
 import AnkComponents from "@anakeen/ank-components";
 import AnkAxios from "axios";
 import HubMain from "../Components/Hub/Hub.vue";
+import HelloWorld from "../Components/HelloWorld";
+Vue.use(HelloWorld);
 
 Vue.prototype.$http = AnkAxios.create();
 Vue.use(AnkComponents);
