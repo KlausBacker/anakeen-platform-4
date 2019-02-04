@@ -20,18 +20,16 @@ module.exports = {
     },
     search: true,
     sidebar: {
+      '/guide/configuration/': getConfigSideBar(),
+      // '/guide/using/': getUsingSideBar(),
     },
 
     nav: [
       { text: 'Accueil', link: '/' },
       {
         text: 'Guide', items: [
-          { link: '/guide/smartData/', text: 'Smart Data' },
-          { link: '/guide/userInterfaces/', text: 'Interfaces utilisateur' },
-          { link: '/guide/security/', text: 'Sécurité' },
-          { link: '/guide/workflow/', text: 'Workflow' },
-          { link: '/guide/routes/', text: 'Routes' },
-          { link: '/guide/localisation/', text: 'Traductions' },
+          { link: '/guide/configuration/', text: 'Configuration' },
+          { link: '/guide/using/', text: 'Utilisation' }
         ]
       },
       { text: 'Anakeen', link: 'https://www.anakeen.com/' },
@@ -47,5 +45,16 @@ module.exports = {
       md.use(require('markdown-it-include'))
     }
   }
+}
 
+function getConfigSideBar() {
+  return [
+    {
+      title: "Configuration du composant Hub Station",
+      collaspsable: true,
+      children: [
+        ['hubStationComponent.md'],
+      ]
+    }
+  ];
 }
