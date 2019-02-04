@@ -8,7 +8,7 @@ namespace Dcp\Vault;
 
 use Anakeen\Core\DbManager;
 use Dcp\ConsoleProgressOMeter;
-use Dcp\PgFetchArrayIterator;
+use Anakeen\Core\Utils\PgFetchArrayIterator;
 
 class VaultAnalyzer
 {
