@@ -4,11 +4,10 @@
  * @package FDL
 */
 
-namespace Dcp\Vault;
+namespace Anakeen\Vault;
 
 use Anakeen\Core\DbManager;
-use Dcp\ConsoleProgressOMeter;
-use Dcp\PgFetchArrayIterator;
+use Anakeen\Core\Utils\PgFetchArrayIterator;
 
 class VaultAnalyzer
 {
@@ -44,16 +43,24 @@ class VaultAnalyzer
         }
         $report['all'] = $t;
 
-        $res
-            = $this->sqlQuery('SELECT count(id_file) AS count, sum(size) AS size, pg_size_pretty(sum(size)) AS size_pretty FROM vaultdiskstorage WHERE NOT EXISTS (SELECT 1 FROM docvaultindex WHERE vaultid = id_file)');
+        $q = <<<'SQL'
+SELECT count(id_file) AS count, sum(size) AS size, pg_size_pretty(sum(size)) AS size_pretty 
+FROM vaultdiskstorage 
+WHERE NOT EXISTS (SELECT 1 FROM docvaultindex WHERE vaultid = id_file)
+SQL;
+        $res = $this->sqlQuery($q);
+
         $t = pg_fetch_array($res, null, PGSQL_ASSOC);
         if ($t === false) {
             throw new VaultAnalyzerException(pg_last_error($this->_conn));
         }
         $report['orphan'] = $t;
 
-        $res
-            = $this->sqlQuery('SELECT count(id_file) AS count, sum(size) AS size, pg_size_pretty(sum(size)) AS size_pretty FROM vaultdiskstorage WHERE EXISTS (SELECT 1 FROM docvaultindex WHERE vaultid = id_file)');
+        $q = <<<'SQL'
+SELECT count(id_file) AS count, sum(size) AS size, pg_size_pretty(sum(size)) AS size_pretty 
+FROM vaultdiskstorage WHERE EXISTS (SELECT 1 FROM docvaultindex WHERE vaultid = id_file)
+SQL;
+        $res = $this->sqlQuery($q);
         $t = pg_fetch_array($res, null, PGSQL_ASSOC);
         if ($t === false) {
             throw new VaultAnalyzerException(pg_last_error($this->_conn));
@@ -67,8 +74,7 @@ class VaultAnalyzer
     {
         $report = array();
 
-        $query
-            = <<<'EOF'
+        $query = <<<'SQL'
 WITH files AS (
 SELECT id_file, vdfs.r_path AS vault_root, l_path || '/' || vds.id_file ||
 	CASE WHEN name ~ E'\\.[^.]+$' THEN regexp_replace(name, E'.*(\\.[^.]+)$', E'\\1')
@@ -83,7 +89,7 @@ WHERE
 SELECT files.*, dvi.* FROM files LEFT OUTER JOIN docvaultindex AS dvi ON vaultid = id_file
 ORDER BY id_file, docid
 ;
-EOF;
+SQL;
 
         $res = $this->sqlQuery($query);
         $count = pg_num_rows($res);
@@ -237,19 +243,22 @@ EOF;
 
 
         /* New */
-        $res
-            = $this->sqlQuery("SELECT * FROM tmp_docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid");
+        $q=<<< 'SQL'
+SELECT * FROM tmp_docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid
+SQL;
+
+        $res = $this->sqlQuery($q);
         $new = array(
             'count' => pg_num_rows($res),
             'iterator' => new PgFetchArrayIterator($res)
         );
         /* Missing */
-        $res = $this->sqlQuery("SELECT * FROM docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM tmp_docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid");
+        $q=<<< 'SQL'
+SELECT * FROM docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM tmp_docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid
+SQL;
+        $res
+            = $this->sqlQuery($q);
 
-
-        //DbManager::query("select * from tmp_docvaultindex", $r);print_r($r);
-        ///DbManager::query("select * from docvaultindex", $r);print_r($r);
-        //DbManager::query("SELECT * FROM docvaultindex AS d1 WHERE NOT EXISTS (SELECT 1 FROM tmp_docvaultindex AS d2 WHERE d2.docid = d1.docid AND d2.vaultid = d1.vaultid) ORDER BY docid, vaultid", $r); print_r($r);
         $missing = array(
             'count' => pg_num_rows($res),
             'iterator' => new PgFetchArrayIterator($res)

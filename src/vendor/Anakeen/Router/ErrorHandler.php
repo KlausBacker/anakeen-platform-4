@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Router;
+namespace Anakeen\Router;
 
 use Anakeen\Core\LogException;
 use Anakeen\Core\Utils\ErrorMessage;

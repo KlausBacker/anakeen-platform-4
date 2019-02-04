@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Utils\CSVFormatDetector;
+namespace Anakeen\Core\Utils\Csv;
 
 class Sample
 {

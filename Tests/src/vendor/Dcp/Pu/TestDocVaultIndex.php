@@ -167,7 +167,7 @@ class TestDocVaultIndex extends TestCaseDcpCommonFamily
          * Check docvaultindex consistency
         */
         $report = array();
-        $vaultAnalyzer = new \Dcp\Vault\VaultAnalyzer();
+        $vaultAnalyzer = new \Anakeen\Vault\VaultAnalyzer();
         // Inhibit/buffer progress messages from checkDocVaultIndex
         ob_start();
         try {

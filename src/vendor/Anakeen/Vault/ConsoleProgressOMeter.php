@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp;
+namespace Anakeen\Vault;
 
 class ConsoleProgressOMeter
 {
@@ -18,20 +18,22 @@ class ConsoleProgressOMeter
     protected $isInteractive = true;
     protected $updateProcessTitle = false;
     protected $prefix = '';
-    
+
     public function __construct()
     {
         if (function_exists('posix_isatty')) {
             $this->setInteractive(posix_isatty(STDOUT));
         }
-        
+
         return $this;
     }
+
     public function setPrefix($prefix)
     {
         $this->prefix = $prefix;
         return $this;
     }
+
     public function setMax($max)
     {
         $max = (int)$max;
@@ -40,6 +42,7 @@ class ConsoleProgressOMeter
         }
         return $this;
     }
+
     public function setInterval($interval)
     {
         $interval = (int)$interval;
@@ -47,9 +50,10 @@ class ConsoleProgressOMeter
             $this->timeInterval = 0;
             $this->interval = $interval;
         }
-        
+
         return $this;
     }
+
     public function setTimeInterval($interval)
     {
         $interval = (int)$interval;
@@ -57,21 +61,24 @@ class ConsoleProgressOMeter
             $this->timeInterval = $interval;
             $this->interval = 0;
         }
-        
+
         return $this;
     }
+
     public function setInteractive($bool)
     {
         $this->isInteractive = ($bool === true);
-        
+
         return $this;
     }
+
     public function setUpdateProcessTitle($prefix)
     {
         $this->updateProcessTitle = $prefix;
-        
+
         return $this;
     }
+
     public function start($at = 0)
     {
         $at = (int)$at;
@@ -83,6 +90,7 @@ class ConsoleProgressOMeter
         $this->starttime = microtime(true);
         return $this->progress(0);
     }
+
     public function finish()
     {
         if ($this->progress < $this->max) {
@@ -92,11 +100,13 @@ class ConsoleProgressOMeter
             print "\n";
         }
     }
+
     public function reset()
     {
         $this->start(0);
         return $this;
     }
+
     protected function isTimeToUpdateProgress($p)
     {
         if ($p == $this->max) {
@@ -110,6 +120,7 @@ class ConsoleProgressOMeter
         }
         return false;
     }
+
     public function progress($p)
     {
         $p = (int)$p;
@@ -118,7 +129,16 @@ class ConsoleProgressOMeter
         }
         if ($this->isTimeToUpdateProgress($p)) {
             $ratio = (($this->max == 0) ? 0 : $p / $this->max);
-            $line = sprintf("%s%3d%% (%d/%d) [elapsed: %d sec. | remaining: %d sec. | ETA: %s]", ($this->prefix != '' ? $this->prefix . ' ' : ''), intval(100 * $ratio), $p, $this->max, (microtime(true) - $this->starttime), $this->eta($p, false), $this->eta($p));
+            $line = sprintf(
+                "%s%3d%% (%d/%d) [elapsed: %d sec. | remaining: %d sec. | ETA: %s]",
+                ($this->prefix != '' ? $this->prefix . ' ' : ''),
+                intval(100 * $ratio),
+                $p,
+                $this->max,
+                (microtime(true) - $this->starttime),
+                $this->eta($p, false),
+                $this->eta($p)
+            );
             if ($this->isInteractive) {
                 print "\r" . $line;
                 if (strlen($line) < $this->prevLineLen) {
@@ -132,9 +152,10 @@ class ConsoleProgressOMeter
             $this->prevLineTime = microtime(true);
         }
         $this->progress = $p;
-        
+
         return $this;
     }
+
     protected function eta($done, $eta = true)
     {
         $now = microtime(true);
@@ -145,6 +166,7 @@ class ConsoleProgressOMeter
         }
         return $remainingtime;
     }
+
     protected function isProcessTitleEnabled()
     {
         if (!function_exists('cli_set_process_title')) {
@@ -152,12 +174,13 @@ class ConsoleProgressOMeter
         }
         return ($this->updateProcessTitle !== false && $this->updateProcessTitle != '');
     }
+
     private function updateProcessTitle($suffix = '')
     {
         if ($this->isProcessTitleEnabled()) {
             $title = $this->updateProcessTitle;
             if ($suffix != '') {
-                $title.= " - " . $suffix;
+                $title .= " - " . $suffix;
             }
             cli_set_process_title($title);
         }

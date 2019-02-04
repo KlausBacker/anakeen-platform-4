@@ -6,6 +6,7 @@
 
 /**
  * Get OpenText Value for document
+ *
  * @class DocOooFormat
  *
  */
@@ -23,6 +24,7 @@ class DocOooFormat
     private $attrid = '';
     /**
      * format set in type
+     *
      * @var string
      */
     private $cFormat = '';
@@ -41,6 +43,7 @@ class DocOooFormat
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oattr
      * @param string                                       $value
      * @param int                                          $index
+     *
      * @return string the formated value
      */
     public function getOooValue($oattr, $value, $index = -1)
@@ -151,6 +154,7 @@ class DocOooFormat
      * format Default attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatDefault($avalue)
@@ -179,6 +183,7 @@ class DocOooFormat
      * format Image attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatImage($avalue)
@@ -192,6 +197,7 @@ class DocOooFormat
      * format File attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatFile($avalue)
@@ -204,6 +210,7 @@ class DocOooFormat
      * format Longtext attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatLongtext($avalue)
@@ -226,6 +233,7 @@ class DocOooFormat
      * format Image attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatEnum($avalue)
@@ -259,7 +267,9 @@ class DocOooFormat
 
     /**
      * format Account attribute
+     *
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatAccount($avalue)
@@ -274,6 +284,7 @@ class DocOooFormat
      * format Docid attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatDocid($avalue)
@@ -317,6 +328,7 @@ class DocOooFormat
      * format Thesaurus attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatThesaurus($avalue)
@@ -331,8 +343,8 @@ class DocOooFormat
                 if (trim($vv) == "") {
                     $thval[] = $vv;
                 } else {
-                    $thc = new_doc($this->doc->dbaccess, trim($vv));
-                    if ($thc->isAlive()) {
+                    $thc = \Anakeen\Core\SEManager::getDocument(trim($vv));
+                    if ($thc && $thc->isAlive()) {
                         $thval[] = $thc->getCustomTitle();
                     } else {
                         $thval[] = "th error $vv";
@@ -344,8 +356,8 @@ class DocOooFormat
             if ($avalue == "") {
                 $oooval = $avalue;
             } else {
-                $thc = new_doc($this->doc->dbaccess, $avalue);
-                if ($thc->isAlive()) {
+                $thc = \Anakeen\Core\SEManager::getDocument($avalue);
+                if ($thc && $thc->isAlive()) {
                     $oooval = $thc->getCustomTitle();
                 } else {
                     $oooval = "th error $avalue";
@@ -356,11 +368,11 @@ class DocOooFormat
     }
 
 
-
     /**
      * format Money attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatMoney($avalue)
@@ -373,6 +385,7 @@ class DocOooFormat
      * format Htmltext attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatHtmltext($avalue)
@@ -383,14 +396,14 @@ class DocOooFormat
         if (!$html_body) {
             return '';
         }
-        $html_body = \Dcp\Utils\htmlclean::normalizeHTMLFragment($html_body, $error);
+        $html_body = \Anakeen\Core\Utils\HtmlClean::normalizeHTMLFragment($html_body, $error);
         if ($error != '') {
             \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Malformed HTML in field '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
         }
         if ($html_body === false) {
             return '';
         }
-        $xhtml_body = \Dcp\Utils\htmlclean::convertHTMLFragmentToXHTMLDocument($html_body, $error);
+        $xhtml_body = \Anakeen\Core\Utils\HtmlClean::convertHTMLFragmentToXHTMLDocument($html_body, $error);
         if ($error != '') {
             \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("Error converting HTML from attribute '%s' from document '%s': %s"), $this->oattr->id, $this->doc->title, $error));
         }
@@ -404,14 +417,14 @@ class DocOooFormat
         }, $xhtml_body);
         $xhtml_body = $this->cleanhtml($xhtml_body);
 
-        $domHtml = new \Dcp\Utils\XDOMDocument();
+        $domHtml = new \Anakeen\Core\Utils\XDOMDocument();
         $domHtml->load(DEFAULT_PUBDIR . "/Apps/CORE/Layout/html2odt.xsl");
         $xslt = new xsltProcessor;
         $xslt->importStyleSheet($domHtml);
         $dom = null;
         //	set_error_handler('HandleXmlError');
         try {
-            $dom = new \Dcp\Utils\XDOMDocument();
+            $dom = new \Anakeen\Core\Utils\XDOMDocument();
             $dom->loadXML($xhtml_body);
         } catch (Exception $e) {
             \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s: %s"), $this->doc->title, $e->getMessage()));
@@ -423,7 +436,7 @@ class DocOooFormat
         if ($dom) {
             $xmlout = $xslt->transformToXML($dom);
 
-            $dxml = new \Dcp\Utils\XDOMDocument();
+            $dxml = new \Anakeen\Core\Utils\XDOMDocument();
             $dxml->loadXML($xmlout);
 
             $ot = $dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "text");
@@ -448,10 +461,12 @@ class DocOooFormat
     /**
      * function use by \Anakeen\Core\Internal\SmartElement::getOOoValue()
      * use to convert html to xhtml
+     *
      * @param string $lt   the < character
      * @param string $tag  the tag name
      * @param string $attr all attributes of tag
      * @param string $gt   the > tag
+     *
      * @return string the new tag
      */
     protected function _fixupStyle($lt, $tag, $attr, $gt)
@@ -523,6 +538,7 @@ class DocOooFormat
      * format Date attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatDate($avalue)
@@ -546,6 +562,7 @@ class DocOooFormat
      * format Time attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatTime($avalue)
@@ -567,6 +584,7 @@ class DocOooFormat
      * format TimeStamp attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatTimestamp($avalue)
@@ -590,6 +608,7 @@ class DocOooFormat
      * format Color attribute
      *
      * @param string $avalue raw value of attribute
+     *
      * @return string openText value
      */
     public function formatColor($avalue)
@@ -605,6 +624,7 @@ class DocOooFormat
      * the property-names => property-values.
      *
      * @param $str
+     *
      * @return array hash of property-name => property-value
      */
     protected function parseInlineStyle($str)

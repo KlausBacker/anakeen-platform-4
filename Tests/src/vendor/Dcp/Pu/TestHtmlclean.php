@@ -24,7 +24,7 @@ class TestHtmlclean extends TestCaseDcp
      */
     public function testConvertHTMLFragmentToXHTMLDocument($data)
     {
-        \Dcp\Utils\htmlclean::convertHTMLFragmentToXHTMLDocument($data['html'], $error);
+        \Anakeen\Core\Utils\HtmlClean::convertHTMLFragmentToXHTMLDocument($data['html'], $error);
         if (!isset($data['errorMatch'])) {
             /* We do not expect errors */
             $this->assertEmpty($error, sprintf("Unexpected error '%s' when converting '%s'.", $error, $data['html']));

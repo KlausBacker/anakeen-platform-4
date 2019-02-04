@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp;
+namespace Anakeen\Core\Utils;
 
 class PgFetchArrayIterator implements \Iterator
 {

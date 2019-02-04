@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Vault;
+namespace Anakeen\Vault;
 
 class VaultAnalyzerCLIException extends \Anakeen\Exception
 {
