@@ -562,7 +562,7 @@ class ExportCollection
 
         foreach ($this->familyData as $famid => $aRow) {
             foreach ($aRow as $data) {
-                \Dcp\WriteCsv::fput($this->outHandler, $data);
+                \Anakeen\Core\Utils\WriteCsv::fput($this->outHandler, $data);
             }
         }
     }

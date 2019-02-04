@@ -5,6 +5,8 @@ namespace Dcp;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Anakeen\Core\Utils\WriteCsv;
+use Anakeen\Exception;
 
 class ExportDocument
 {
@@ -95,7 +97,7 @@ class ExportDocument
     protected function getUserLogin($uid)
     {
         if (!isset($this->logins[$uid])) {
-            simpleQuery("", sprintf("select login from users where id=%d", $uid), $login, true, true);
+            DbManager::query(sprintf("select login from users where id=%d", $uid), $login, true, true);
             $this->logins[$uid] = $login ? $login : 0;
         }
         return $this->logins[$uid];
@@ -104,7 +106,7 @@ class ExportDocument
     protected function getUserLogicalName($uid)
     {
         if (!isset($this->logicalName[$uid])) {
-            simpleQuery("", sprintf("select name from docread where id=(select fid from users where id = %d)", $uid), $logicalName, true, true);
+            DbManager::query(sprintf("select name from docread where id=(select fid from users where id = %d)", $uid), $logicalName, true, true);
             $this->logicalName[$uid] = $logicalName ? $logicalName : 0;
         }
         return $this->logicalName[$uid];
@@ -120,7 +122,7 @@ class ExportDocument
             return;
         }
         // import its profile
-        $doc = \new_Doc("", $docid); // needed to have special acls
+        $doc = SEManager::getDocument($docid); // needed to have special acls
         $doc->acls[] = "viewacl";
         $doc->acls[] = "modifyacl";
         if ($doc->name != "") {
@@ -180,7 +182,7 @@ class ExportDocument
         if ($doc->extendedAcls) {
             $extAcls = array_keys($doc->extendedAcls);
             $aclCond = \Anakeen\Core\DbManager::getSqlOrCond($extAcls, "acl");
-            simpleQuery($dbaccess, sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond), $eAcls);
+            DbManager::query(sprintf("select * from docpermext where docid=%d and %s order by userid", $doc->profid, $aclCond), $eAcls);
 
             foreach ($eAcls as $kAcl => $aAcl) {
                 $uid = $aAcl["userid"];
@@ -212,7 +214,7 @@ class ExportDocument
                 //fputs_utf8($fout, ";" . $tpa[$ku] . "=" . $uid);
                 $data[] = sprintf("%s=%s", $oneAcl["acl"], $oneAcl["uid"]);
             }
-            \Dcp\WriteCsv::fput($fout, $data);
+            WriteCsv::fput($fout, $data);
         }
     }
 
@@ -227,15 +229,14 @@ class ExportDocument
         }
         $this->alreadyExported[] = $doc->id;
 
-        \Dcp\WriteCsv::$separator = $this->csvSeparator;
-        \Dcp\WriteCsv::$enclosure = $this->csvEnclosure;
-        \Dcp\WriteCsv::$encoding = ($wutf8) ? "utf-8" : "iso8859-15";
+        WriteCsv::$separator = $this->csvSeparator;
+        WriteCsv::$enclosure = $this->csvEnclosure;
+        WriteCsv::$encoding = ($wutf8) ? "utf-8" : "iso8859-15";
 
         $efldid = '';
-        $dbaccess = $doc->dbaccess;
         if ($this->prevfromid != $doc->fromid) {
             if (($eformat != "I") && ($this->prevfromid > 0)) {
-                \Dcp\WriteCsv::fput($fout, array());
+                WriteCsv::fput($fout, array());
             }
             $adoc = $doc->getFamilyDocument();
             if ($adoc->name != "") {
@@ -286,7 +287,7 @@ class ExportDocument
             $docName = $doc->name;
         } elseif ($wprof) {
             if ($doc->locked != -1) {
-                $err = $doc->setNameAuto(true);
+                $doc->setNameAuto(true);
                 $docName = $doc->name;
             }
         } elseif ($wident) {
@@ -452,7 +453,7 @@ class ExportDocument
             $data[] = $csvValue;
         }
 
-        \Dcp\WriteCsv::fput($fout, $data);
+        WriteCsv::fput($fout, $data);
         if ($wprof) {
             $profid = ($doc->dprofid) ? $doc->dprofid : $doc->profid;
             if ($profid == $doc->id) {
@@ -468,7 +469,7 @@ class ExportDocument
                 }
                 if (!isset($tdoc[$profid])) {
                     $tdoc[$profid] = true;
-                    $pdoc = \new_Doc($dbaccess, $profid);
+                    $pdoc = SEManager::getDocument($profid);
                     $this->csvExport($pdoc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
                 }
                 $data = array(
@@ -477,7 +478,7 @@ class ExportDocument
                     $name,
                     ""
                 );
-                \Dcp\WriteCsv::fput($fout, $data);
+                WriteCsv::fput($fout, $data);
             }
         }
     }
