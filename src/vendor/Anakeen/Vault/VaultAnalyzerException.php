@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Vault;
+namespace Anakeen\Vault;
 
 class VaultAnalyzerException extends \Anakeen\Exception
 {

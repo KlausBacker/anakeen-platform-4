@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Vault;
+namespace Anakeen\Vault;
 
 use Anakeen\Core\VaultManager;
 
@@ -30,12 +30,12 @@ class VaultAnalyzerCLI
         try {
             if ($opts['analyze']) {
                 if ($opts['missing-files']) {
-                    self::main_analyze_missing_files();
+                    self::mainAnalyzeMissingFiles();
                 } else {
-                    self::main_analyze_orphans();
+                    self::mainAnalyzeOrphans();
                 }
             } elseif ($opts['clean']) {
-                self::main_clean_orphans($opts['skip-trash']);
+                self::mainCleanOrphans($opts['skip-trash']);
             }
         } catch (VaultAnalyzerCLIException $e) {
             printf("\nError: %s\n\n", $e->getMessage());
@@ -44,7 +44,7 @@ class VaultAnalyzerCLI
         return;
     }
 
-    public static function main_analyze_orphans()
+    public static function mainAnalyzeOrphans()
     {
         $vaultAnalyzer = new VaultAnalyzer();
         self::checkDocVaultIndex($vaultAnalyzer);
@@ -83,7 +83,7 @@ class VaultAnalyzerCLI
         return;
     }
 
-    public static function main_clean_orphans($skipTrash = false)
+    public static function mainCleanOrphans($skipTrash = false)
     {
         $vaultAnalyzer = new VaultAnalyzer();
         self::checkDocVaultIndex($vaultAnalyzer);
@@ -94,7 +94,7 @@ class VaultAnalyzerCLI
 
         $report = $vaultAnalyzer->analyzeOrphans();
         printf("* Deleting %d orphan files...\n", $report['count']);
-        $pom = new \Dcp\ConsoleProgressOMeter();
+        $pom = new \Anakeen\Vault\ConsoleProgressOMeter();
         $pom->setMax($report['count'])->setInterval(1000)->start();
         $p = 0;
         foreach ($report['iterator'] as $t) {
@@ -149,7 +149,7 @@ class VaultAnalyzerCLI
         return;
     }
 
-    public static function main_analyze_missing_files()
+    public static function mainAnalyzeMissingFiles()
     {
         $vaultAnalyzer = new vaultAnalyzer();
         self::checkDocVaultIndex($vaultAnalyzer);
@@ -209,7 +209,9 @@ class VaultAnalyzerCLI
     {
         $report = array();
         if ($vaultAnalyzer->checkDocVaultIndex($report) === false) {
-            throw new VaultAnalyzerCLIException(sprintf("Found inconsistencies in 'docvaultindex': you might need to regenerate docvaultindex with \"./ank.php --script=refreshVaultIndex\""));
+            throw new VaultAnalyzerCLIException(
+                "Found inconsistencies in 'docvaultindex': you might need to regenerate docvaultindex with \"./ank.php --script=refreshVaultIndex\""
+            );
         }
     }
 }
