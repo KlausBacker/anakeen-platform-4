@@ -53,17 +53,17 @@ class FieldAccessLayerAutoComplete
         $parentLabel = self::getParentLabel($attr);
         $htmlLabel = '';
         if ($parentLabel) {
-            $htmlLabel = sprintf("<b><i>%s</i></b>", xml_entity_encode($parentLabel));
+            $htmlLabel = sprintf("<b><i>%s</i></b>", \Anakeen\Core\Utils\Strings::xmlEncode($parentLabel));
         } else {
             if (is_a($attr, FieldSetAttribute::class)) {
-                $htmlLabel = sprintf("<b>Set (%s)</b>", xml_entity_encode($attr->type));
+                $htmlLabel = sprintf("<b>Set (%s)</b>", \Anakeen\Core\Utils\Strings::xmlEncode($attr->type));
             }
         }
         $html = sprintf(
             "%s <code>[%s]</code><br/><span>&nbsp;&nbsp;%s</span>",
             $htmlLabel,
-            xml_entity_encode($attr->id),
-            xml_entity_encode($attr->getLabel())
+            \Anakeen\Core\Utils\Strings::xmlEncode($attr->id),
+            \Anakeen\Core\Utils\Strings::xmlEncode($attr->getLabel())
         );
 
         return $html;
