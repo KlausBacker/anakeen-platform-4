@@ -14,11 +14,12 @@
 /**
  */
 
-namespace Dcp\Core;
+namespace Anakeen\Exchange;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Exception;
 
 include_once("FDL/import_tar.php");
 

@@ -14,7 +14,7 @@ class PuCoreRouteAccess extends \Anakeen\Pu\Routes\TestCaseRoutes
     protected static function getCommonImportFile()
     {
 
-        $importAccounts = new \Dcp\Core\ImportAccounts();
+        $importAccounts = new \Anakeen\Exchange\ImportAccounts();
         $importAccounts->setFile(__DIR__ . "/Inputs/testAccounts.xml");
         $importAccounts->import();
 

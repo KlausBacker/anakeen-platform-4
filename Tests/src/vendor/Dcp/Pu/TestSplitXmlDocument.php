@@ -61,7 +61,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         /* check splitXmlDocument() */
         if (isset($data['expect_error']) && $data['expect_error'] === true) {
             try {
-                \Dcp\Core\ImportXml::splitXmlDocument($workingXML, $testDir);
+                \Anakeen\Exchange\ImportXml::splitXmlDocument($workingXML, $testDir);
                 $this->assertTrue(false, "XML Error not detected");
             } catch (\Exception $e) {
                 $this->assertNotEmpty($e->getMessage(), sprintf("splitXmlDocument did not returned with an expected error"));
@@ -69,7 +69,7 @@ class TestSplitXmlDocument extends TestCaseDcp
 
             return;
         } else {
-            \Dcp\Core\ImportXml::splitXmlDocument($workingXML, $testDir);
+            \Anakeen\Exchange\ImportXml::splitXmlDocument($workingXML, $testDir);
         }
 
         if (!isset($data['produces'])) {
@@ -86,7 +86,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             $this->assertTrue($this->isValidXML($file), sprintf("Output file '%s' does not seems to be a valid XML file according to xmllint.", $file));
         }
 
-        $this->rm_Rf($testDir);
+        $this->rmRf($testDir);
     }
 
     private static function createWorkDir()
@@ -199,7 +199,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         return $xml;
     }
 
-    private function rm_Rf($dir)
+    private function rmRf($dir)
     {
         $type = filetype($dir);
         if ($type != 'dir') {
@@ -215,7 +215,7 @@ class TestSplitXmlDocument extends TestCaseDcp
                 continue;
             }
             $file = $dir . DIRECTORY_SEPARATOR . $file;
-            $this->rm_Rf($file);
+            $this->rmRf($file);
         }
         closedir($fh);
         rmdir($dir);

@@ -1,9 +1,6 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 include_once("FDL/import_file.php");
+
 class ImportDocument
 {
     private $begtime = 0;
@@ -15,7 +12,7 @@ class ImportDocument
      * @var bool strict mode
      */
     private $strict = true;
-    
+
     private $onlyAnalyze = false;
     protected $fileName = '';
     /**
@@ -40,24 +37,30 @@ class ImportDocument
     protected $policy = "update";
     /**
      * To verify visibility "I" of atttribute
+     *
      * @var bool
      */
     protected $verifyAttributeAccess = true;
-    
+
     protected $reset = array();
+
     /**
      * set strict mode
+     *
      * @param bool $strict set to false to accept error when import
+     *
      * @return void
      */
     public function setStrict($strict)
     {
         $this->strict = ($strict && true);
     }
+
     public function setPolicy($policy)
     {
         $this->policy = $policy;
     }
+
     public function setReset($reset)
     {
         if (is_array($reset)) {
@@ -66,22 +69,24 @@ class ImportDocument
             $this->reset[] = $reset;
         }
     }
-    
+
     public function setCsvOptions($csvSeparator = ';', $csvEnclosure = '"', $csvLinebreak = '\n')
     {
         $this->csvSeparator = $csvSeparator;
         $this->csvEnclosure = $csvEnclosure;
         $this->csvLinebreak = $csvLinebreak;
     }
-    
+
     public function setTargetDirectory($dirid)
     {
         $this->dirid = $dirid;
     }
+
     /**
-     * @param string $file filename path to import
-     * @param bool $onlyAnalyze if true only analyze not import really
-     * @param bool $archive if true to import file like an standard archive
+     * @param string $file        filename path to import
+     * @param bool   $onlyAnalyze if true only analyze not import really
+     * @param bool   $archive     if true to import file like an standard archive
+     *
      * @return array analyze report
      */
     public function importDocuments(string $file, bool $onlyAnalyze = false, bool $archive = false)
@@ -98,7 +103,7 @@ class ImportDocument
                 include_once("FDL/import_tar.php");
                 $untardir = getTarExtractDir(basename($file));
 
-                $mime =  \Anakeen\Core\Utils\FileMime::getSysMimeFile($file, basename($file));
+                $mime = \Anakeen\Core\Utils\FileMime::getSysMimeFile($file, basename($file));
                 $err = extractTar($file, $untardir, $mime);
                 if ($err !== '') {
                     $err = sprintf(_("cannot extract archive %s: status : %s"), $file, $err);
@@ -111,7 +116,7 @@ class ImportDocument
                         "filename" => "",
                         "title" => "",
                         "id" => "",
-                        "values" => array() ,
+                        "values" => array(),
                         "familyid" => 0,
                         "familyname" => "",
                         "action" => " "
@@ -127,14 +132,14 @@ class ImportDocument
                 $ext = substr($file, strrpos($file, '.') + 1);
                 $this->begtime = \Anakeen\Core\Internal\SmartElement::getTimeDate(0, true);
                 if ($ext == "xml") {
-                    $iXml = new \Dcp\Core\ImportXml();
+                    $iXml = new \Anakeen\Exchange\ImportXml();
                     $iXml->setPolicy($this->policy);
                     $iXml->setImportDirectory($this->dirid);
                     $iXml->setVerifyAttributeAccess($this->verifyAttributeAccess);
                     $iXml->analyzeOnly($this->onlyAnalyze);
                     $this->cr = $iXml->importSingleXmlFile($file);
                 } elseif ($ext == "zip") {
-                    $iXml = new \Dcp\Core\ImportXml();
+                    $iXml = new \Anakeen\Exchange\ImportXml();
                     $iXml->setPolicy($this->policy);
                     $iXml->setImportDirectory($this->dirid);
                     $iXml->setVerifyAttributeAccess($this->verifyAttributeAccess);
@@ -159,7 +164,7 @@ class ImportDocument
             );
             \Anakeen\Core\LogException::writeLog($e);
         }
-        
+
         if ($this->strict) {
             if ($this->getErrorMessage()) {
                 error_log("Import aborted :" . $this->getErrorMessage());
@@ -170,6 +175,7 @@ class ImportDocument
         }
         return $this->cr;
     }
+
     /**
      * @param boolean $verifyAttributeAccess
      */
@@ -177,6 +183,7 @@ class ImportDocument
     {
         $this->verifyAttributeAccess = $verifyAttributeAccess;
     }
+
     public function importSingleFile($file)
     {
         $if = new ImportDocumentDescription($file);
@@ -188,8 +195,10 @@ class ImportDocument
         $if->setCsvOptions($this->csvSeparator, $this->csvEnclosure, $this->csvLinebreak);
         return $if->importCsvFile();
     }
+
     /**
      * return all error message concatenated
+     *
      * @return string
      */
     public function getErrorMessage()
@@ -206,9 +215,12 @@ class ImportDocument
             return '';
         }
     }
+
     /**
      * write report in file
+     *
      * @param string $log filename path to write in
+     *
      * @return void
      */
     public function writeHTMLImportLog($log)
@@ -218,7 +230,6 @@ class ImportDocument
             if (!$flog) {
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
-                global $action;
                 $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"));
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
@@ -226,9 +237,12 @@ class ImportDocument
             }
         }
     }
+
     /**
      * internal method use only from freedom_import
+     *
      * @param Layout $lay
+     *
      * @return void
      */
     public function writeHtmlCr(Layout & $lay)
@@ -267,7 +281,12 @@ class ImportDocument
             $this->cr[$k]["msg"] = nl2br(htmlspecialchars($v["msg"], ENT_QUOTES));
             if (is_array($v["values"])) {
                 foreach ($v["values"] as $ka => $va) {
-                    $this->cr[$k]["svalues"].= sprintf("<LI %s>[%s:%s]</LI>", (($va == "/no change/") ? ' class="no"' : ''), htmlspecialchars($ka, ENT_QUOTES), htmlspecialchars($va, ENT_QUOTES));
+                    $this->cr[$k]["svalues"] .= sprintf(
+                        '<li %s>[%s:%s]</li>',
+                        (($va == "/no change/") ? ' class="no"' : ''),
+                        htmlspecialchars($ka, ENT_QUOTES),
+                        htmlspecialchars($va, ENT_QUOTES)
+                    );
                 }
             }
             if ($v["action"] == "ignored") {
@@ -276,7 +295,8 @@ class ImportDocument
             if ($v["action"] == "warning") {
                 $haswarning = true;
             }
-            $this->cr[$k]["err"] = (($this->cr[$k]["err"] != '') ? "<ul><li>" . join("</li><li>", explode("\n", htmlspecialchars($this->cr[$k]["err"], ENT_QUOTES))) . "</li></ul>" : "");
+            $this->cr[$k]["err"] = (($this->cr[$k]["err"] != '') ? "<ul><li>" . join("</li><li>", explode("\n", htmlspecialchars($this->cr[$k]["err"], ENT_QUOTES))) . "</li></ul>"
+                : "");
             $this->cr[$k]["action"] = htmlspecialchars($v["action"], ENT_QUOTES);
             $this->cr[$k]["specmsg"] = htmlspecialchars($v["specmsg"], ENT_QUOTES);
         }
@@ -294,14 +314,15 @@ class ImportDocument
         if ($this->onlyAnalyze) {
             $lay->set("processMessage", sprintf(n___("%d document detected", "%d documents detected", $nbdoc, "sde"), $nbdoc));
         } else {
-            $lay->set("processMessage", sprintf(n___("%d document processed", "%d documents processed", $nbdoc,"sde"), $nbdoc));
+            $lay->set("processMessage", sprintf(n___("%d document processed", "%d documents processed", $nbdoc, "sde"), $nbdoc));
         }
-        
+
         $lay->Set("nbprof", count(array_filter($this->cr, array(
             $this,
             "isprof"
         ))));
     }
+
     /**
      * record a log file from import results
      *
@@ -328,11 +349,14 @@ class ImportDocument
                     if (is_array($v["values"])) {
                         foreach ($v["values"] as $ka => $va) {
                             if ($va != "/no change/") {
-                                $chg.= "{" . $ka . ":" . str_replace("\n", "-", $va) . '}';
+                                $chg .= "{" . $ka . ":" . str_replace("\n", "-", $va) . '}';
                             }
                         }
                     }
-                    fputs($flog, sprintf("IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] [specmsg:%s] %s\n", $v["err"] ? "KO" : "OK", $v["title"], $v["id"], $v["action"], $chg, str_replace("\n", "-", $v["msg"]), ($v["err"] ? ('[error:' . str_replace("\n", "-", $v["err"]) . ']') : ""), (isset($v['specmsg']) ? str_replace("\n", "-", $v['specmsg']) : '')));
+                    fputs($flog,
+                        sprintf("IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] [specmsg:%s] %s\n", $v["err"] ? "KO" : "OK", $v["title"], $v["id"],
+                            $v["action"], $chg, str_replace("\n", "-", $v["msg"]), ($v["err"] ? ('[error:' . str_replace("\n", "-", $v["err"]) . ']') : ""),
+                            (isset($v['specmsg']) ? str_replace("\n", "-", $v['specmsg']) : '')));
                     if ($v['action'] !== 'ignored') {
                         if ($v["err"]) {
                             $counterr++;
@@ -348,12 +372,12 @@ class ImportDocument
             }
         }
     }
-    
+
     public static function isdoc($var)
     {
         return (($var["action"] == "added") || ($var["action"] == "updated"));
     }
-    
+
     public static function isprof($var)
     {
         return (($var["action"] == "modprofil"));

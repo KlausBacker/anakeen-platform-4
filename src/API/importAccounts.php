@@ -29,7 +29,7 @@ $dry = $usage->addEmptyParameter("dry-run", "Analyse file only - no import is pr
 
 $usage->verify();
 
-$import = new \Dcp\Core\ImportAccounts();
+$import = new \Anakeen\Exchange\ImportAccounts();
 $import->setFile($filename);
 $import->setAnalyzeOnly($dry);
 $import->import();

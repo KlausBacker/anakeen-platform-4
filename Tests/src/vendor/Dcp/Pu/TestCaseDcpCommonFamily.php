@@ -85,7 +85,7 @@ class TestCaseDcpCommonFamily extends TestCaseDcp
     public static function importAccountFile($f)
     {
         try {
-            $import = new \Dcp\Core\ImportAccounts();
+            $import = new \Anakeen\Exchange\ImportAccounts();
             $import->setFile($f);
             $import->import();
         } catch (\Anakeen\Exception $e) {

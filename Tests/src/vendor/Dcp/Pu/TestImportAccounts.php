@@ -28,7 +28,7 @@ class TestImportAccounts extends TestCaseDcpCommonFamily
         $err = '';
 
         try {
-            $import = new \Dcp\Core\ImportAccounts();
+            $import = new \Anakeen\Exchange\ImportAccounts();
 
             $import->setFile(sprintf("%s/%s", self::$testDataDirectory, $accountFile));
             $import->import();
