@@ -37,4 +37,4 @@
     @import './ParameterEditor.css';
 </style>
 
-<script src="./ParameterEditor.controller.js"></script>
+<script src="./ParameterEditor.controller.ts" lang="ts"></script>

@@ -25,7 +25,6 @@ export default function install(
     );
   });
 
-  Vue.ankApi = Vue.prototype.$ankApi = axiosApiV2;
   Vue.ankAdmin = Vue.prototype.$ankAdmin = axiosAdmin;
-  Vue.axios = Vue.prototype.$axios = axiosGlobal;
+  Vue.prototype.$http = axiosGlobal;
 }
