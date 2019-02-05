@@ -126,7 +126,7 @@ function lmail($dbaccess, $name)
                 $uid = " ";
             }
             $tr[] = array(
-                xml_entity_encode($mailTitle),
+                \Anakeen\Core\Utils\Strings::xmlEncode($mailTitle),
                 $mail,
                 $uid,
                 $type
@@ -1269,9 +1269,9 @@ function recipientDocument($dbaccess, $name)
                 $mailTitle = $mail;
             }
             $tr[] = array(
-                xml_entity_encode($mailTitle),
-                xml_entity_encode(sprintf("%d (%s)", $dest->id, $dest->getTitle())),
-                xml_entity_encode($dest->getTitle())
+                \Anakeen\Core\Utils\Strings::xmlEncode($mailTitle),
+                \Anakeen\Core\Utils\Strings::xmlEncode(sprintf("%d (%s)", $dest->id, $dest->getTitle())),
+                \Anakeen\Core\Utils\Strings::xmlEncode($dest->getTitle())
             );
         }
     }

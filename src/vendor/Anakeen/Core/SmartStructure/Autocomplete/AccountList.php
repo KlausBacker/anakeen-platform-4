@@ -111,8 +111,8 @@ class AccountList
             $response->appendEntry(
                 sprintf(
                     "<span>%s <i>%s</i></span>",
-                    xml_entity_encode($account->lastname . " " . $account->firstname),
-                    xml_entity_encode($mail)
+                    \Anakeen\Core\Utils\Strings::xmlEncode($account->lastname . " " . $account->firstname),
+                    \Anakeen\Core\Utils\Strings::xmlEncode($mail)
                 ),
                 [
                     [

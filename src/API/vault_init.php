@@ -15,7 +15,6 @@
 /**
  */
 
-include_once("FDL/Lib.Util.php");
 
 $usage = new \Anakeen\Script\ApiUsage();
 

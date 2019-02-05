@@ -42,7 +42,7 @@ class SmartStructureList
             $ftitle = \Anakeen\Core\SmartStructure::getLangTitle($v);
             if (($name == "") || (preg_match("/$pattern_name/i", $ftitle, $reg))) {
                 $response->appendEntry(
-                    xml_entity_encode($ftitle),
+                    \Anakeen\Core\Utils\Strings::xmlEncode($ftitle),
                     [
                         [
                             "value" => $v["id"],

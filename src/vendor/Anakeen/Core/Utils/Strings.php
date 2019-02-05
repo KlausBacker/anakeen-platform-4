@@ -69,4 +69,8 @@ class Strings
     {
         return preg_match('!!u', $Str);
     }
+    public static function xmlEncode($s)
+    {
+        return htmlspecialchars($s, ENT_NOQUOTES);
+    }
 }
