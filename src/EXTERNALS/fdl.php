@@ -15,25 +15,6 @@
  */
 
 
-function vault_filename($th, $fileid)
-{
-
-    if (preg_match(PREGEXPFILE, $fileid, $reg)) {
-        // reg[1] is mime type
-        $vf = newFreeVaultFile($th->dbaccess);
-        if ($vf->Show($reg[2], $info) == "") {
-            $fname = $info->name;
-        } else {
-            $fname = sprintf(_("file %d"), $th->initid);
-        }
-    } else {
-        $fname = sprintf(_("file %d"), $th->initid);
-    }
-
-    return array(
-        $fname
-    );
-}
 
 /**
  * Functions used for edition help

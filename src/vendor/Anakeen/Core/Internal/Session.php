@@ -2,6 +2,8 @@
 
 namespace Anakeen\Core\Internal;
 
+use Anakeen\Core\Utils\Date;
+
 class Session extends DbObj
 {
     const SESSION_CT_CLOSE = 2;
@@ -40,6 +42,7 @@ class Session extends DbObj
     public function __construct()
     {
         if (!empty($_SERVER['HTTP_HOST'])) {
+            /** @noinspection PhpIncludeInspection */
             include_once(DEFAULT_PUBDIR . "/config/sessionHandler.php");
         }
         parent::__construct();
@@ -517,11 +520,10 @@ class Session extends DbObj
 
     public function hasExpired()
     {
-        include_once('FDL/Lib.Util.php');
         $ttl = $this->getSessionTTL(0);
         if ($ttl > 0) {
             $now = time();
-            $last_seen = stringDateToUnixTs($this->last_seen);
+            $last_seen = Date::stringDateToUnixTs($this->last_seen);
             if ($now > $last_seen + $ttl) {
                 return true;
             }

@@ -2,6 +2,9 @@
 
 namespace Anakeen\Exchange;
 
+use Anakeen\Core\VaultManager;
+use Anakeen\Exception;
+
 class Utils
 {
     const ALTSEPCHAR=' --- ';
@@ -20,8 +23,11 @@ class Utils
         // $mime=mime_content_type($absfile);
         $mime = \Anakeen\Core\Utils\FileMime::getSysMimeFile($path);
         if (!$analyze) {
-            $vf = newFreeVaultFile($dbaccess);
-            $err = $vf->Store($path, false, $vid);
+            try {
+                $vid = VaultManager::storeFile($path, "", false);
+            } catch (Exception $e) {
+                $err=$e->getMessage();
+            }
         }
         if ($err != "") {
             \Anakeen\Core\Utils\System::addWarningMsg($err);
