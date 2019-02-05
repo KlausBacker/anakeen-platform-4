@@ -4,6 +4,7 @@ namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Exchange\ExportXmlFolder;
+use Anakeen\Exchange\ImportTar;
 
 class TestExportXml extends TestCaseDcpCommonFamily
 {
@@ -189,7 +190,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         exportxmlfld($folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
 
         if ($type == "X") {
-            $err = extractTar($testarchivefile, $testExtractFolder);
+            $err = ImportTar::extractTar($testarchivefile, $testExtractFolder);
             $this->assertEmpty($err, sprintf("Unexpected error while extracting archive '%s': %s", $testarchivefile, $err));
         } else {
             $testExtractFolder = $testFolder;

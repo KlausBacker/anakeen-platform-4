@@ -28,7 +28,7 @@ class CheckKeys extends CheckData
     public function check(array $data, &$extra = null)
     {
         $this->famName = (isset($data[1])) ? trim($data[1]) : null;
-        $this->attrIds = getOrder($data);
+        $this->attrIds = \Anakeen\Exchange\Utils::getOrder($data);
 
         $this->CheckKeysFamily();
         if (!$this->hasErrors()) {

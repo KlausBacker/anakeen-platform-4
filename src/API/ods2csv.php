@@ -155,7 +155,7 @@ function xmlcontent2csv($xmlcontent, &$fcsv)
             }
         }, $row);
 
-        $fcsv.= implode(SEPCHAR, $cellData) . "\n";
+        $fcsv.= implode(\Anakeen\Exchange\Utils::SEPCHAR, $cellData) . "\n";
     }
     return "";
 }

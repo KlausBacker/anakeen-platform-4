@@ -3,7 +3,6 @@ namespace Anakeen\Exchange;
 
 use Anakeen\Exception;
 
-include_once("FDL/import_file.php");
 class ImportDocument
 {
     private $begtime = 0;
@@ -103,11 +102,10 @@ class ImportDocument
         $this->fileName = $file;
         try {
             if ($archive) {
-                include_once("FDL/import_tar.php");
-                $untardir = getTarExtractDir(basename($file));
+                $untardir = ImportTar::getTarExtractDir(basename($file));
 
                 $mime = \Anakeen\Core\Utils\FileMime::getSysMimeFile($file, basename($file));
-                $err = extractTar($file, $untardir, $mime);
+                $err = ImportTar::extractTar($file, $untardir, $mime);
                 if ($err !== '') {
                     $err = sprintf(_("cannot extract archive %s: status : %s"), $file, $err);
                     $this->cr[] = array(
@@ -125,11 +123,11 @@ class ImportDocument
                         "action" => " "
                     );
                 } else {
-                    $onlycsv = hasfdlpointcsv($untardir);
+                    $onlycsv = ImportTar::hasfdlpointcsv($untardir);
                     $simpleFamilyFile = 7; // file
                     $simpleFamilyFolder = 2; // folder
                     $dirid = $this->dirid; // directory to insert imported doc
-                    $this->cr = import_directory($untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
+                    $this->cr = ImportTar::importDirectory($untardir, $dirid, $simpleFamilyFile, $simpleFamilyFolder, $onlycsv, $onlyAnalyze, $this->csvLinebreak);
                 }
             } else {
                 $ext = substr($file, strrpos($file, '.') + 1);

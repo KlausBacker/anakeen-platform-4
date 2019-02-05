@@ -7,6 +7,7 @@
 namespace Dcp\Pu;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Exchange\ImportTar;
 
 require_once __DIR__ . '/../../Anakeen/WHAT/Lib.Http.php';
 
@@ -54,7 +55,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         exportfld($folderId, $famid, $testFolder, false, $opts);
 
         $testarchivefile = $testFolder . "/fdl.zip";
-        $err = extractTar($testarchivefile, $testExtractFolder);
+        $err = ImportTar::extractTar($testarchivefile, $testExtractFolder);
         $this->assertEmpty($err, sprintf("Unexpected error while extracting archive '%s': %s", $testarchivefile, $err));
 
         $output = array();

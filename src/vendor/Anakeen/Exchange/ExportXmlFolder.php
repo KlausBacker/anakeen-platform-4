@@ -6,7 +6,6 @@
 
 namespace Anakeen\Exchange;
 
-include_once("FDL/import_file.php");
 require_once 'FDL/exportxmlfld.php';
 
 class ExportXmlFolder

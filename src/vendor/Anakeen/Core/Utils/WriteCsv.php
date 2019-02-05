@@ -6,6 +6,8 @@
 
 namespace Anakeen\Core\Utils;
 
+use Anakeen\Exchange\Utils;
+
 if (!defined("ALTSEPCHAR")) {
     define("ALTSEPCHAR", ' --- ');
 }
@@ -34,7 +36,7 @@ class WriteCsv
                     "\r"
                 ), array(
                     "\\n",
-                    ALTSEPCHAR,
+                    Utils::ALTSEPCHAR,
                     ""
                 ), $item);
             }, $data);

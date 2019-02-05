@@ -16,7 +16,6 @@
 
 
 include_once("WHAT/Lib.Http.php");
-include_once("FDL/import_file.php");
 
 use Anakeen\Core\ContextManager;
 

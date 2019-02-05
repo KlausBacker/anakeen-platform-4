@@ -1,17 +1,7 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Import directory with document descriptions
  *
- * @author     Anakeen
- * @version    $Id: freedom_import_dir.php,v 1.5 2007/01/19 16:23:32 eric Exp $
- * @package    FDL
- * @subpackage GED
- */
-/**
  */
 
 namespace Anakeen\Exchange;
@@ -20,8 +10,6 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Exception;
-
-include_once("FDL/import_tar.php");
 
 class ImportXml
 {

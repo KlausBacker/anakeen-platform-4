@@ -6,8 +6,6 @@
 
 namespace Anakeen\Exchange;
 
-include_once("FDL/import_file.php");
-
 use \Anakeen\Core\SmartStructure\DocAttr;
 use Anakeen\Exception;
 
@@ -19,7 +17,7 @@ class ImportDocumentDescription
     private $analyze = false;
     private $policy = "update";
     private $reinit = false;
-    private $csvSeparator = SEPCHAR;
+    private $csvSeparator = Utils::SEPCHAR;
     private $csvEnclosure = '';
     private $csvLinebreak = '\n';
     private $beginLine = 0;
@@ -81,8 +79,8 @@ class ImportDocumentDescription
     public function __construct($importFile = "")
     {
         if ($importFile) {
-            if (seemsODS($importFile)) {
-                $this->ods2CsvFile = ods2csv($importFile);
+            if (Utils::seemsODS($importFile)) {
+                $this->ods2CsvFile = Utils::ods2csv($importFile);
                 $this->fdoc = fopen($this->ods2CsvFile, "r");
             } else {
                 $this->fdoc = fopen($importFile, "r");
@@ -234,7 +232,7 @@ class ImportDocumentDescription
                 $data = array_map(function ($v) use ($csvLinebreak) {
                     return str_replace(array(
                         $csvLinebreak,
-                        ALTSEPCHAR
+                        Utils::ALTSEPCHAR
                     ), array(
                         "\n",
                         ';'
@@ -1921,7 +1919,7 @@ class ImportDocumentDescription
             $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
 
-        $this->colKeys[$orfromid] = getOrder($data);
+        $this->colKeys[$orfromid] = Utils::getOrder($data);
         if (($this->colKeys[$orfromid][0] == "") || (count($this->colKeys[$orfromid]) == 0)) {
             $this->tcr[$this->nLine]["err"] = sprintf(_("error in import keys : %s"), implode(" - ", $this->colKeys[$orfromid]));
             unset($this->colKeys[$orfromid]);
@@ -1962,7 +1960,7 @@ class ImportDocumentDescription
             $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
 
-        $this->colOrders[$orfromid] = getOrder($data);
+        $this->colOrders[$orfromid] = Utils::getOrder($data);
         $this->tcr[$this->nLine]["msg"] = sprintf(_("new column order %s"), implode(" - ", $this->colOrders[$orfromid]));
     }
 
