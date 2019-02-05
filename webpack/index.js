@@ -1,6 +1,6 @@
 const path = require('path');
 const {prod, prodLegacy, dev} = require("@anakeen/webpack-conf");
-const {useVueLoader, setKendoAndJqueryToGlobal} = require("@anakeen/webpack-conf/parts");
+const {useVueLoader, typescriptLoader, setKendoAndJqueryToGlobal} = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
@@ -17,6 +17,7 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     customParts: [
       useVueLoader(),
+      typescriptLoader(),
       setKendoAndJqueryToGlobal([
         /kendo.pdf/,
         /kendo.excel/
