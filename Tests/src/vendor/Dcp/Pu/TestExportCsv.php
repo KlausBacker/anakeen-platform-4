@@ -34,7 +34,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         include_once 'FDL/exportfld.php';
         include_once 'Lib.FileDir.php';
 
-        $oImport = new \ImportDocument();
+        $oImport = new \Anakeen\Exchange\ImportDocument();
         $oImport->importDocuments($archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) {
@@ -228,7 +228,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         /* eformat */
         $eformat = 'I';
 
-        $ed = new \Dcp\ExportDocument();
+        $ed = new \Anakeen\Exchange\ExportDocument();
         $ed->csvExport($doc, $ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat);
 
         fclose($fout);

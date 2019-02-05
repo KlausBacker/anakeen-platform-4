@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Dcp\ExportDocument;
+use Anakeen\Exchange\ExportDocument;
 
 class DocumentDataCSV extends DocumentData
 {
@@ -23,7 +23,7 @@ class DocumentDataCSV extends DocumentData
      */
     protected function getDocumentData()
     {
-        $exportXML = new ExportDocument();
+        $exportXML = new \Anakeen\Exchange\ExportDocument();
         $useless = [];
         $file = fopen('php://memory', 'w+');
         $exportXML->csvExport($this->_document, $useless, $file, false, false, false, true, true, "I");

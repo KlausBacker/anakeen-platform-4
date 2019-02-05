@@ -1,17 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Import single documents
  *
- * @author  Anakeen
- * @package FDL
- * @subpackage
  */
-/**
- */
+
+namespace Anakeen\Exchange;
 
 include_once("FDL/import_file.php");
 

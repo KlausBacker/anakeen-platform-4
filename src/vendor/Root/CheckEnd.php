@@ -15,11 +15,11 @@ class CheckEnd extends CheckData
      */
     protected $doc;
     /**
-     * @var ImportDocumentDescription
+     * @var \Anakeen\Exchange\ImportDocumentDescription
      */
     protected $importer = null;
 
-    public function __construct(ImportDocumentDescription & $importer = null)
+    public function __construct(\Anakeen\Exchange\ImportDocumentDescription & $importer = null)
     {
         $this->importer = $importer;
     }

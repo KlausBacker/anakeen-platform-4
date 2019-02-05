@@ -186,7 +186,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
         if (!file_exists($realfile)) {
             throw new \Anakeen\Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
-        $oImport = new \ImportDocument();
+        $oImport = new \Anakeen\Exchange\ImportDocument();
         $oImport->setCsvOptions(static::$importCsvSeparator, static::$importCsvEnclosure);
 
         $oImport->setVerifyAttributeAccess(false);

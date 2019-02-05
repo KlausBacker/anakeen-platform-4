@@ -143,7 +143,7 @@ if ($dirid) {
     $dirid = $dir->id;
     SetHttpVar("dirid", $dirid);
 }
-$oImport = new ImportDocument();
+$oImport = new Anakeen\Exchange\ImportDocument();
 if ($strict == 'no') {
     $oImport->setStrict(false);
 }

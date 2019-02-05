@@ -229,7 +229,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze, $c
         $nbdoc = 0;
         $tcolorder = array();
         $separator = $enclosure = "auto";
-        ImportDocumentDescription::detectAutoCsvOptions($fdlcsv, $separator, $enclosure);
+        \Anakeen\Exchange\ImportDocumentDescription::detectAutoCsvOptions($fdlcsv, $separator, $enclosure);
         if ($separator == '') {
             $separator = ';';
         }

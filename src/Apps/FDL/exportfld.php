@@ -46,7 +46,7 @@ function exportfld($fldid = "0", $famid = "", $outputPath = "", bool $exportInvi
     $fileEncoding = (!empty($options["code"])) ? $options["code"] : "utf8"; // File encoding
 
     // Profil option type
-    $profilType = (!empty($options["wproftype"])) ? $options["wproftype"] : \Dcp\ExportDocument::useAclAccountType;
+    $profilType = (!empty($options["wproftype"])) ? $options["wproftype"] : \Anakeen\Exchange\ExportDocument::useAclAccountType;
 
 
     $wutf8 = ($fileEncoding !== "iso8859-15");

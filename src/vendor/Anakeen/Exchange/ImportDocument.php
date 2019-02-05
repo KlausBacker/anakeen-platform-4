@@ -1,6 +1,9 @@
 <?php
-include_once("FDL/import_file.php");
+namespace Anakeen\Exchange;
 
+use Anakeen\Exception;
+
+include_once("FDL/import_file.php");
 class ImportDocument
 {
     private $begtime = 0;
@@ -230,7 +233,7 @@ class ImportDocument
             if (!$flog) {
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
-                $lay = new Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"));
+                $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"));
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
                 fclose($flog);
@@ -241,11 +244,11 @@ class ImportDocument
     /**
      * internal method use only from freedom_import
      *
-     * @param Layout $lay
+     * @param \Layout $lay
      *
      * @return void
      */
-    public function writeHtmlCr(Layout & $lay)
+    public function writeHtmlCr(\Layout & $lay)
     {
         $hasError = false;
         $haswarning = false;
@@ -353,10 +356,20 @@ class ImportDocument
                             }
                         }
                     }
-                    fputs($flog,
-                        sprintf("IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] [specmsg:%s] %s\n", $v["err"] ? "KO" : "OK", $v["title"], $v["id"],
-                            $v["action"], $chg, str_replace("\n", "-", $v["msg"]), ($v["err"] ? ('[error:' . str_replace("\n", "-", $v["err"]) . ']') : ""),
-                            (isset($v['specmsg']) ? str_replace("\n", "-", $v['specmsg']) : '')));
+                    fputs(
+                        $flog,
+                        sprintf(
+                            "IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] [specmsg:%s] %s\n",
+                            $v["err"] ? "KO" : "OK",
+                            $v["title"],
+                            $v["id"],
+                            $v["action"],
+                            $chg,
+                            str_replace("\n", "-", $v["msg"]),
+                            ($v["err"] ? ('[error:' . str_replace("\n", "-", $v["err"]) . ']') : ""),
+                            (isset($v['specmsg']) ? str_replace("\n", "-", $v['specmsg']) : '')
+                        )
+                    );
                     if ($v['action'] !== 'ignored') {
                         if ($v["err"]) {
                             $counterr++;

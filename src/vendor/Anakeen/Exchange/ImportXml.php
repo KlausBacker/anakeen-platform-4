@@ -315,7 +315,7 @@ class ImportXml
         }
 
         //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
-        $o = new \ImportSingleDocument();
+        $o = new \Anakeen\Exchange\ImportSingleDocument();
         if ($tkey) {
             $o->setKey($tkey);
         }

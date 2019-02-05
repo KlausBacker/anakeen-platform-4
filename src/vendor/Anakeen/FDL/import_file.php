@@ -37,7 +37,7 @@ function csvAddDoc($dbaccess, $data, $dirid = 0, $analyze = false, $ldir = '', $
     "title"
 ), $prevalues = array(), $torder = array())
 {
-    $o = new ImportSingleDocument();
+    $o = new \Anakeen\Exchange\ImportSingleDocument();
     if ($tkey) {
         $o->setKey($tkey);
     }

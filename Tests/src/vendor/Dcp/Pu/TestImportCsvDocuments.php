@@ -28,7 +28,7 @@ class TestImportCsvDocuments extends TestCaseDcp
      */
     public function testImportCsvFamily($fileName, $separator, $enclosure, $famName, $expected)
     {
-        $oImport = new \ImportDocument();
+        $oImport = new \Anakeen\Exchange\ImportDocument();
         $oImport->setCsvOptions($separator, $enclosure);
         $oImport->importDocuments(self::$testDataDirectory . DIRECTORY_SEPARATOR . $fileName);
         $err = $oImport->getErrorMessage();
@@ -56,7 +56,7 @@ class TestImportCsvDocuments extends TestCaseDcp
      */
     public function testDetectCsvOptions($fileName, $expectedSeparator, $expectedEnclosure)
     {
-        $oImport = new \importDocumentDescription(self::$testDataDirectory . DIRECTORY_SEPARATOR . $fileName);
+        $oImport = new \Anakeen\Exchange\ImportDocumentDescription(self::$testDataDirectory . DIRECTORY_SEPARATOR . $fileName);
         $options = $oImport->setCsvOptions('auto', 'auto');
 
         $this->assertEquals($expectedSeparator, $options["separator"], "incorrect csv separator");

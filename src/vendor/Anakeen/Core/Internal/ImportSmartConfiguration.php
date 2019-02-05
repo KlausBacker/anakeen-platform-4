@@ -421,7 +421,7 @@ class ImportSmartConfiguration
         if ($this->verbose) {
             $this->print($data);
         }
-        $import = new \ImportDocumentDescription();
+        $import = new \Anakeen\Exchange\ImportDocumentDescription();
         $import->analyzeOnly($this->onlyAnalyze);
 
         $this->cr = array_merge($this->cr, $import->importData($data));

@@ -33,7 +33,7 @@ class ExportCollection
 
     protected $cvsSeparator = ";";
     protected $cvsEnclosure = "";
-    protected $profileAccountType = \Dcp\ExportDocument::useAclAccountType;
+    protected $profileAccountType = \Anakeen\Exchange\ExportDocument::useAclAccountType;
 
     protected $outputFilePath = '';
     /**
@@ -277,7 +277,7 @@ class ExportCollection
     protected function exportCsv()
     {
         $dl = $this->documentList;
-        $exportDoc = new \Dcp\ExportDocument();
+        $exportDoc = new \Anakeen\Exchange\ExportDocument();
         $exportDoc->setCsvEnclosure($this->cvsEnclosure);
         $exportDoc->setCsvSeparator($this->cvsSeparator);
         $exportDoc->setExportAccountType($this->profileAccountType);
@@ -528,7 +528,7 @@ class ExportCollection
      */
     protected function writeFamilies()
     {
-        $exportDoc = new \Dcp\ExportDocument();
+        $exportDoc = new \Anakeen\Exchange\ExportDocument();
         $exportDoc->setCsvEnclosure($this->cvsEnclosure);
         $exportDoc->setCsvSeparator($this->cvsSeparator);
 

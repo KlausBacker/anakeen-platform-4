@@ -1111,7 +1111,7 @@ class FormatCollection
                 }
             }
             $rowList = array_map(function ($v) use ($sepRow) {
-                return str_replace($sepRow, \ImportSingleDocument::CSVLONGTEXTMULTIPLE, $v);
+                return str_replace($sepRow, \Anakeen\Exchange\ImportSingleDocument::CSVLONGTEXTMULTIPLE, $v);
             }, $rowList);
             $result = join($sepRow, $rowList);
         }

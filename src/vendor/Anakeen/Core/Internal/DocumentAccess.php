@@ -866,9 +866,9 @@ class DocumentAccess
     private function getUid($accountReference)
     {
         // Test logical name
-        if (!is_numeric($accountReference) && strpos($accountReference, \ImportDocumentDescription::attributePrefix) !== 0) {
-            if (strpos($accountReference, \ImportDocumentDescription::documentPrefix) === 0) {
-                $accountReference = substr($accountReference, strlen(\ImportDocumentDescription::documentPrefix));
+        if (!is_numeric($accountReference) && strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::attributePrefix) !== 0) {
+            if (strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::documentPrefix) === 0) {
+                $accountReference = substr($accountReference, strlen(\Anakeen\Exchange\ImportDocumentDescription::documentPrefix));
             }
             $uiid = SEManager::getIdFromName($accountReference);
             if ($uiid) {
@@ -879,9 +879,9 @@ class DocumentAccess
             }
         }
         // Test  account attribute reference
-        if (!is_numeric($accountReference) && strpos($accountReference, \ImportDocumentDescription::documentPrefix) !== 0) {
-            if (strpos($accountReference, \ImportDocumentDescription::attributePrefix) === 0) {
-                $accountReference = substr($accountReference, strlen(\ImportDocumentDescription::attributePrefix));
+        if (!is_numeric($accountReference) && strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::documentPrefix) !== 0) {
+            if (strpos($accountReference, \Anakeen\Exchange\ImportDocumentDescription::attributePrefix) === 0) {
+                $accountReference = substr($accountReference, strlen(\Anakeen\Exchange\ImportDocumentDescription::attributePrefix));
             }
             // logical name
             $vg = new \VGroup($this->document->dbaccess, strtolower($accountReference));

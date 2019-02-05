@@ -18,6 +18,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      * @param       $separator
      * @param       $enclosure
      * @param array $expectedData
+     *
      * @dataProvider dataExportCsv
      */
     public function testExportRawCsv($separator, $enclosure, array $expectedData)
@@ -47,6 +48,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      * @param       $separator
      * @param       $enclosure
      * @param array $expectedData
+     *
      * @dataProvider dataExportDisplayCsv
      */
     public function testExportDisplayCsv($format, $separator, $enclosure, array $expectedData)
@@ -97,7 +99,9 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     /**
      * @dataProvider dataExportXmlSingle
+     *
      * @param array $expectedData
+     *
      * @throws \Dcp\Db\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
@@ -128,8 +132,10 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     /**
      * @dataProvider dataExportXmlArchive
+     *
      * @param       $file
      * @param array $xmlPathes
+     *
      * @throws \Dcp\Db\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
@@ -215,6 +221,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      * @param       $separator
      * @param       $enclosure
      * @param array $expectedData
+     *
      * @dataProvider dataExportProfilCsv
      */
     public function testExportProfilCsv($separator, $enclosure, array $expectedData)
@@ -257,6 +264,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      * @param       $enclosure
      * @param       $file
      * @param array $expectedData
+     *
      * @throws \Dcp\Db\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
@@ -313,6 +321,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      * @param       $separator
      * @param       $enclosure
      * @param array $expectedData
+     *
      * @dataProvider dataExportFamilyCsv
      */
     public function testExportFamilyCsv($separator, $enclosure, array $expectedData)
@@ -590,7 +599,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
 
     public function dataExportCsv()
     {
-        $CSLM=\ImportSingleDocument::CSVSECONDLEVELMULTIPLE;
+        $CSLM = \Anakeen\Exchange\ImportSingleDocument::CSVSECONDLEVELMULTIPLE;
         return array(
             array(
                 ";",

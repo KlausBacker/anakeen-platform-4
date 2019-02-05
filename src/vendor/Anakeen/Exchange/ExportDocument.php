@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp;
+namespace Anakeen\Exchange;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
@@ -316,7 +316,7 @@ class ExportDocument
             if ($eformat == 'F') {
                 if ($this->csvEnclosure) {
                     $csvValue = str_replace(array(
-                        \ImportSingleDocument::CSVSECONDLEVELMULTIPLE,
+                        \Anakeen\Exchange\ImportSingleDocument::CSVSECONDLEVELMULTIPLE,
                         '<br/>'
                     ), array(
                         "\n",
@@ -324,7 +324,7 @@ class ExportDocument
                     ), $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 } else {
                     $csvValue = str_replace(array(
-                        \ImportSingleDocument::CSVSECONDLEVELMULTIPLE,
+                        \Anakeen\Exchange\ImportSingleDocument::CSVSECONDLEVELMULTIPLE,
                         '<br/>'
                     ), '\\n', $doc->getHtmlAttrValue($attr->id, '', false, -1, false));
                 }
@@ -333,7 +333,7 @@ class ExportDocument
             }
             if ($attr->type === "longtext" && is_array($csvValue)) {
                 foreach ($csvValue as $ck => $singleValue) {
-                    $csvValue[$ck] = str_replace("\n", \ImportSingleDocument::CSVLONGTEXTMULTIPLE, $singleValue);
+                    $csvValue[$ck] = str_replace("\n", \Anakeen\Exchange\ImportSingleDocument::CSVLONGTEXTMULTIPLE, $singleValue);
                 }
             }
 
@@ -384,7 +384,7 @@ class ExportDocument
                                     $tnbr[] = $brid;
                                 }
                             }
-                            $csvValue[] = implode(\ImportSingleDocument::CSVSECONDLEVELMULTIPLE, $tnbr);
+                            $csvValue[] = implode(\Anakeen\Exchange\ImportSingleDocument::CSVSECONDLEVELMULTIPLE, $tnbr);
                         }
                     } else {
                         $n = \Anakeen\Core\SEManager::getNameFromId($csvValue);
