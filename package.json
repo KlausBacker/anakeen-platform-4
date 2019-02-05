@@ -8,7 +8,8 @@
   "license": "",
   "scripts": {
     "beautify": "eslint ./src --fix",
-    "build": "webpack --config webpack/index.js"
+    "build": "webpack --config webpack/index.js",
+    "buildJs": "node --max_old_space_size=4096 ./node_modules/.bin/webpack --config webpack/index.js"
   },
   "files": [
     "src/**/*.scss",
@@ -16,16 +17,17 @@
     "README.md"
   ],
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/anakeen-cli": "^1.0.7",
-    "@anakeen/ank-components": "1.0.1",
-    "@anakeen/webpack-conf": "1.0.0",
+    "@anakeen/anakeen-ci": "latest",
+    "@anakeen/anakeen-cli": "latest",
+    "@anakeen/ank-components": "latest",
+    "@anakeen/webpack-conf": "latest",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
     "@progress/kendo-dialog-vue-wrapper": "^2018.2.516",
     "@progress/kendo-grid-vue-wrapper": "^2018.2.516",
     "@progress/kendo-treeview-vue-wrapper": "^2018.2.516",
     "@progress/kendo-ui": "^2018.1.226",
+    "@types/jquery": "^3.3.29",
     "axios": "^0.18.0",
     "commitlint": "^7.3.2",
     "document-register-element": "^1.8.1",
@@ -37,9 +39,11 @@
     "jsoneditor": "^5.18.0",
     "prettier": "^1.16.1",
     "vue": "^2.5.16",
+    "vue-class-component": "^6.3.2",
     "vue-custom-element": "^3.0.6",
     "vue-gettext": "^2.0.30",
     "vue-plugin-load-script": "^1.0.1",
+    "vue-property-decorator": "^7.3.0",
     "vue-router": "^3.0.1",
     "vue-router-multi-view": "^0.0.4",
     "vuex": "^3.0.1"
