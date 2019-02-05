@@ -15,9 +15,8 @@
                     <smart:field-set name="hub_instance_titles" type="array" label="Hub Station Titles"
                                      access="ReadWrite">
                         <smart:field-text name="hub_instance_title" label="Title" access="ReadWrite"/>
-                        <smart:field-text name="hub_language" label="Language"
+                        <smart:field-text name="hub_instance_language" label="Language"
                                           access="ReadWrite"/>
-                        <smart:field-text name="hub_language_code" label="Language code" access="ReadWrite"/>
                     </smart:field-set>
                 </smart:field-set>
             </smart:field-set>
@@ -47,14 +46,6 @@
         </smart:hooks>
 
         <smart:autocompletion>
-            <smart:field-autocomplete field="hub_language">
-                <smart:field-callable
-                        function="Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationAutocompletion\HubConfigurationAutocompletion::getLanguages"/>
-                <smart:field-returns>
-                    <smart:field-return field="hub_language"/>
-                    <smart:field-return field="hub_language_code"/>
-                </smart:field-returns>
-            </smart:field-autocomplete>
         </smart:autocompletion>
 
         <smart:defaults>

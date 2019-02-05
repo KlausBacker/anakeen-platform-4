@@ -17,7 +17,10 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $break2 = "33%";
         $template = file_get_contents(__DIR__."/template/hub_docker_position.template.mustache");
         $options->enum(HubConfigurationFields::hub_docker_position)->setTemplate($template);
-        $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinLimit(1);
+        $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinDefault(2);
+        $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMaxLimit(2);
+        $options->arrayAttribute(HubConfigurationFields::hub_titles)->disableRowAdd(true);
+        $options->arrayAttribute(HubConfigurationFields::hub_titles)->disableRowDel(true);
         $options->arrayAttribute(HubConfigurationFields::hub_titles)->setCollapse("none");
         $options->arrayAttribute(HubConfigurationFields::hub_roles)->setCollapse("none");
         $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
@@ -54,7 +57,6 @@ HTML;
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
-        $visibilities->setVisibility(HubConfigurationFields::hub_language_code, RenderAttributeVisibilities::HiddenVisibility);
         $visibilities->setVisibility(HubConfigurationFields::hub_final_icon, RenderAttributeVisibilities::HiddenVisibility);
         $visibilities->setVisibility(HubConfigurationFields::hub_station_id_frame, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;

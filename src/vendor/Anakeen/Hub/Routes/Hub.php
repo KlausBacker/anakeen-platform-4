@@ -2,6 +2,7 @@
 
 namespace Anakeen\Hub\Routes;
 
+use Anakeen\Core\SEManager;
 use Dcp\Ui\UIGetAssetPath;
 
 class Hub
@@ -13,7 +14,9 @@ class Hub
     ) {
         $page = __DIR__ . "/Layout/hub.html.mustache";
         $mustache = new \Mustache_Engine();
+        $title = SEManager::getTitle($args["hubId"]);
         $data = [
+            "title" => $title,
             "favIconURL" => $args["hubId"],
             "JS_DEPS" => [
                 [

@@ -12,7 +12,8 @@ module.exports = () => {
             "hub" : [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")],
             "hubAdmin": [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")],
             "hubInstanciation": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/IHM/JS/hubInstanciation.js")],
-            "hubConfiguration": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/SmartStructures/HubConfiguration/Render/HubConfiguration.js")]
+            "hubConfiguration": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/SmartStructures/HubConfiguration/Render/HubConfiguration.js")],
+            "hubInstanciationRender": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/SmartStructures/HubInstanciation/Render/HubInstanciation.js")]
         },
       buildPath: PUBLIC_PATH,
       customParts: [useVueLoader(),
