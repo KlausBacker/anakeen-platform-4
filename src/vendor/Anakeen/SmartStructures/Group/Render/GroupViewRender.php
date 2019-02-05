@@ -16,7 +16,7 @@ class GroupViewRender extends DefaultConfigViewRender
         $options->enum(myAttributes::grp_hasmail)->setInputTooltip(
             sprintf(
                 "<p>%s</p>",
-                xml_entity_encode(___("To avoid compute mail addresses when group has lot of members", " smart group"))
+                \Anakeen\Core\Utils\Strings::xmlEncode(___("To avoid compute mail addresses when group has lot of members", " smart group"))
             )
         );
         return $options;

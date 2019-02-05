@@ -25,7 +25,7 @@ class CVDocAutocomplete
                 if ('' !== $currentViewId) {
                     $currentViewlabel = $tlview[$k];
                     $response->appendEntry(
-                        sprintf("%s <i>(%s)</i>", xml_entity_encode($currentViewlabel), xml_entity_encode($currentViewId)),
+                        sprintf("%s <i>(%s)</i>", \Anakeen\Core\Utils\Strings::xmlEncode($currentViewlabel), \Anakeen\Core\Utils\Strings::xmlEncode($currentViewId)),
                         [
                             $currentViewId,
                             sprintf("%s (%s)", $currentViewlabel, $currentViewId)

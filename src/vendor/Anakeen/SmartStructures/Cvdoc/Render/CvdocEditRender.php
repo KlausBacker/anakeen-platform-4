@@ -20,19 +20,19 @@ class CvdocEditRender extends DefaultConfigEditRender
         $options->enum(myAttributes::cv_kview)->setDisplay('vertical');
         $options->enum(myAttributes::cv_displayed)->setDisplay('bool');
         $options->enum(myAttributes::cv_displayed)->displayDeleteButton(false);
-        $options->int(myAttributes::cv_order)->setInputTooltip(xml_entity_encode(
+        $options->int(myAttributes::cv_order)->setInputTooltip(\Anakeen\Core\Utils\Strings::xmlEncode(
             ___("Order for control access", " smart cvdoc")
         ));
-        $options->text(myAttributes::cv_menu)->setInputTooltip(xml_entity_encode(
+        $options->text(myAttributes::cv_menu)->setInputTooltip(\Anakeen\Core\Utils\Strings::xmlEncode(
             ___("Label of menu list", " smart cvdoc")
         ));
-        $options->docid(myAttributes::dpdoc_famid)->setInputTooltip(xml_entity_encode(
+        $options->docid(myAttributes::dpdoc_famid)->setInputTooltip(\Anakeen\Core\Utils\Strings::xmlEncode(
             ___("Structure used to configure access profil with account attributes", " smart cvdoc")
         ));
-        $options->text(myAttributes::cv_renderaccessclass)->setInputTooltip(xml_entity_encode(
+        $options->text(myAttributes::cv_renderaccessclass)->setInputTooltip(\Anakeen\Core\Utils\Strings::xmlEncode(
             ___("PHP Access render class used to fork the appropriate render config", " smart cvdoc")
         ));
-        $options->text(myAttributes::cv_renderconfigclass)->setInputTooltip(xml_entity_encode(
+        $options->text(myAttributes::cv_renderconfigclass)->setInputTooltip(\Anakeen\Core\Utils\Strings::xmlEncode(
             ___("PHP Config render class used to custom render", " smart cvdoc")
         ));
         return $options;

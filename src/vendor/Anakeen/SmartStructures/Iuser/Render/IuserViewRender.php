@@ -53,11 +53,11 @@ class IuserViewRender extends DefaultConfigViewRender
         );
         $options->arrayAttribute(myAttributes::us_t_roles)
             ->setCollapse(ArrayRenderOptions::collapseNone)
-            ->showEmptyContent(xml_entity_encode(___("No roles", "smart iuser")));
+            ->showEmptyContent(\Anakeen\Core\Utils\Strings::xmlEncode(___("No roles", "smart iuser")));
 
         $options->arrayAttribute(myAttributes::us_groups)
             ->setCollapse(ArrayRenderOptions::collapseNone)
-            ->showEmptyContent(xml_entity_encode(___("No groups", "smart iuser")));
+            ->showEmptyContent(\Anakeen\Core\Utils\Strings::xmlEncode(___("No groups", "smart iuser")));
 
         return $options;
     }

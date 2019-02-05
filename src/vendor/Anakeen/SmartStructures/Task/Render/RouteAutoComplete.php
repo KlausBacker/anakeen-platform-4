@@ -46,10 +46,10 @@ class RouteAutoComplete
 
                 $label = sprintf(
                     "<p><code>%s : </code><b>%s</b>::<b>%s</b></p><p>&nbsp;&nbsp;&nbsp;<cite>%s</cite></p>",
-                    xml_entity_encode(implode(", ", $route->methods)),
-                    xml_entity_encode($ns),
-                    xml_entity_encode($base),
-                    xml_entity_encode($route->description)
+                    \Anakeen\Core\Utils\Strings::xmlEncode(implode(", ", $route->methods)),
+                    \Anakeen\Core\Utils\Strings::xmlEncode($ns),
+                    \Anakeen\Core\Utils\Strings::xmlEncode($base),
+                    \Anakeen\Core\Utils\Strings::xmlEncode($route->description)
                 );
                 $response->appendEntry(
                     $label,
