@@ -16,9 +16,6 @@ const mode = process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME === "master" ? "int
 
 readPackage()
   .then(async content => {
-    if (content.autorelease && mode === "integration") {
-      return;
-    }
     const {stderr, stdout} = await exec(`yarn --json info ${content.name} versions`);
     const versions = JSON.parse(stdout);
     if (versions.data.indexOf(content.version) !== -1) {

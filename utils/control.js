@@ -140,7 +140,7 @@ exports.postModule = ({
     .then(result => {
       if (result.error) {
         if (result.data) {
-          controlLog.error(result.data.join(","));
+          controlLog.error(result.data.join(" ,\n"));
         }
         throw new Error(result.error);
       }
