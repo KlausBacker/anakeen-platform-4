@@ -68,14 +68,6 @@ namespace SmartStructure\Fields {
         */ 
         const hub_language='hub_language';
         /**
-        * Language code
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * </ul>
-        */ 
-        const hub_language_code='hub_language_code';
-        /**
         * Icon
         * <ul>
         * <li> <i>type</i> frame </li>
@@ -166,6 +158,15 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hub_activated='hub_activated';
+        /**
+        * Element is selectable
+        * <ul>
+        * <li> <i>relation</i> Yes_no_enum </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_selectable='hub_selectable';
         /**
         * Priority
         * <ul>

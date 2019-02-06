@@ -1,51 +1,117 @@
-# Création d'un composant Vue de contenu pour le Hub Station
+# Utilisation d'un composant Vue comme entrée du hub
 
-N'importe quel composant Vue peut être utilisé en tant que contenu du hub. 
-Néanmoins, certains éléments de configuration peuvent être ajoutés pour intéragir avec le Hub Station 
+N'importe quel composant Vue peut être utilisé pour définir une entrée du Hub Station. 
+Néanmoins, pour fonctionner correctement il est nécessaire que le composant hérite du composant `HubElement` (ou utilise le mixin `HubElementMixin` correspondant).
 
-## Routes du composant
-Le composant peut définir ses propres routes de navigation qui seront alors utilisées au sein du Hub.
-### Déclaration des routes
-La déclaration des routes du composant est fournie par la méthode `getRoutesConfig`.
-Cette méthode renvoie la liste des routes du composant sous forme d'un tableau.
-Le format utilisé pour chaque route est celui utilisé par la librairie `vue-router`.
-#### Exemple
-```js
+## Exemple
+
+Soit le composant Vue existant :
+
+ListView.vue
+```vue
+<template>
+<div>
+    <ul>
+        <li v-for="item in listItems">{{item.label}}</li>
+    </ul>
+</div>
+</template>
+<script>
 export default {
-  name: "UserTabsComponent",
-  methods: {
-    getRoutesConfig() {
-      return [
-        {
-          path: "infos",
-          name: "UserInfos",
-          component: UserInfosComponent,
-          children: [
-            {
-              path: ":userId",
-              component: UserDetailsComponent
-            }
-          ]
-        },
-        {
-          path: "contact",
-          component: UserContactComponent
-        }
-      ]
-      
+  props: {
+    listItems: {
+      type: Array,
+      default: () => []
     }
   }
 }
+</script>
 ```
 
-### Utilisation du routeur
-#### `hub-router-link` et `hub-router-view`
-Pour utiliser des liens de routage ainsi que la vue associée, il convient d'utiliser des slots nommés respectivement `hubRouterLink` et `hubRouterView`
+### Création du Hub Element
+ListViewEntry.vue
+```vue
+<template>
+<div>
+    <div v-if="isDockCollapsed">
+        <i class="fa fa-ul"></i>
+    </div>
+    <div v-else-if="isDockExpanded">
+        <span>Liste des utilisateurs</span>
+    </div>
+    <div v-else-if="isHubContent">
+        <list-view :listItems="items"></list-view>
+    </div>
+</div>
+</template>
+<script>
+import ListView from "./ListView.vue"; // Le composant existant
+import { HubElement } from "@anakeen/hub-components";
+// ou
+// import { HubElementMixin } from "@anakeen/hub-components";
+export default {
+  name: "list-view-entry",
+  extends: HubElement, // ou mixins: [ HubElementMixins ],
+  components: {
+    ListView
+  },
+  props: {
+    items: { // Le composant déclare des propriétés de même type que le composant ListView
+      type: Array,
+      default: () => []
+    }
+  }
+}
+</script>
+```
 
-##### Exemple
+### Enregistrement du Hub Element
+index.js
+```js
+import Vue from vue;
+import ListViewEntry from "./ListViewEntry.vue";
 
+Vue.component(ListViewEntry.name, ListViewEntry);
 
-### Évènements 
-`storeChanged` => hook vue
+```
 
-### Traduction
+### Configuration du Hub Station
+Main.vue
+```vue
+<template>
+    <hub-station :config="config"></hub-station>
+</template>
+<script>
+import { HubStation } from "@anakeen/hub-components";
+
+export default {
+  components: {
+    HubStation
+  },
+  data() {
+    return {
+      config: [
+        {
+          position: {
+            dock: "LEFT",
+            innerPosition: "CENTER",
+            order: null
+          },
+          component: {
+            name: "list-view-entry",
+            props: {
+              items: [{ label: "Foo" }, { label: "Bar"} ]
+            }
+          },
+          entryOptions: {
+            selectable: true,
+            selected: false
+          }
+        }
+      ]
+    }
+  }
+}
+</script>
+
+```

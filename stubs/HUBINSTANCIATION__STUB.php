@@ -77,14 +77,6 @@ namespace SmartStructure\Fields {
         */ 
         const hub_instance_language='hub_instance_language';
         /**
-        * Language code
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * </ul>
-        */ 
-        const hub_instance_language_code='hub_instance_language_code';
-        /**
         * Security
         * <ul>
         * <li> <i>type</i> tab </li>

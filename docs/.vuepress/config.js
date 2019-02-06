@@ -53,7 +53,9 @@ function getConfigSideBar() {
       title: "Configuration du composant Hub Station",
       collaspsable: true,
       children: [
-        ['hubStationComponent.md'],
+        ['hubStationComponent.md', "Hub Station"],
+        ['hubElementComponent.md', "Hub Element"],
+        ['vueComponent.md', "Définir une entrée du Hub"]
       ]
     }
   ];
