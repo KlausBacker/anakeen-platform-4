@@ -14,6 +14,7 @@ export default class HubDockEntry extends Vue {
   @Prop({ default: false}) evenSpace!: boolean;
   @Prop({ required: true}) name!: string;
   @Prop({ default: false }) selected!: boolean;
+  @Prop({ type: [String, Object ]}) route!: string|object;
 
   entrySelected: boolean = false;
 
@@ -46,6 +47,9 @@ export default class HubDockEntry extends Vue {
 
   selectEntry() {
     this.entrySelected = true;
-    this.$emit(dockEntryEvents.selected, this.entryConfiguration)
+    this.$emit(dockEntryEvents.selected, this.entryConfiguration);
+    if (this.route && this.$router) {
+      this.$router.push(this.route);
+    }
   }
 }

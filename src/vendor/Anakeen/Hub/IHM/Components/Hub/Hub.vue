@@ -1,6 +1,6 @@
 <template>
     <div class="hub-station-main">
-        <hub-station :config="config"></hub-station>
+        <hub-station :config="config" :baseUrl="`/hub/station/${hubId}`"></hub-station>
         <!--<header v-if="isHeaderEnabled" class="hub-station-bar hub-station-bar&#45;&#45;header">-->
             <!--<ank-dock ref="dockTop" @dockLoaded="onDockLoaded('top')" @tabSelected="onTabSelected('top', $event)" class="hub-dock hub-dock&#45;&#45;top" :content="content.top" :expanded="true" :expandable="false" position="top"></ank-dock>-->
         <!--</header>-->

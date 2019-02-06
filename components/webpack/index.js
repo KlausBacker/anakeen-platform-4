@@ -7,7 +7,6 @@ const commonConfig = require("./common");
 const umdConfig = require("./umd");
 
 module.exports = env => {
-  console.log(env);
   if (env === "production") {
     return [
       merge(baseConfig, prodConfig, commonConfig),

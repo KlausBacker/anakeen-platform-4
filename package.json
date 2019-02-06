@@ -24,6 +24,7 @@
     "@anakeen/anakeen-cli": "^1.0.0",
     "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
+    "@anakeen/hub-components": "^1.0.0",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-layout-vue-wrapper": "^2018.3.1025",
     "@progress/kendo-ui": "2018.2.806",

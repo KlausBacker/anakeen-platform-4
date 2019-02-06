@@ -15,21 +15,25 @@ $green-selected: #8ae234;
   display: flex;
   transition: width .5s ease;
 
+  .hub-dock-header, .hub-dock-footer {
+    display: flex;
+  }
+
   &.hub-dock--left, &.hub-dock--right {
     flex-direction: column;
     height: 100%;
+    .hub-dock-entry-component{
+      min-height: 5rem;
+      &.entry-selected  {
+        box-shadow: 2.5px 0 0 $green-selected inset;
+      }
+    }
     .hub-dock-center {
       border-right: 1px solid $border-color;
       border-left: 1px solid $border-color;
       .hub-dock-entries {
         flex-direction: column;
 
-        .hub-dock-entry-component{
-          min-height: 3rem;
-          &.entry-selected  {
-            box-shadow: 2.5px 0 0 $green-selected inset;
-          }
-        }
       }
     }
   }
@@ -37,6 +41,12 @@ $green-selected: #8ae234;
   &.hub-dock--top, &.hub-dock--bottom {
     flex-direction: row;
     width: 100%;
+    .hub-dock-entry-component {
+      min-width: 5rem;
+      &.entry-selected  {
+        box-shadow: 2.5px 0 0 $green-selected inset;
+      }
+    }
     .hub-dock-center {
       border-bottom: 1px solid $border-color;
       border-top: 1px solid $border-color;
@@ -45,7 +55,6 @@ $green-selected: #8ae234;
       }
     }
   }
-
   .hub-dock-header, .hub-dock-footer {
     background-color: $background-color-button;
     color: $button-icon-color;

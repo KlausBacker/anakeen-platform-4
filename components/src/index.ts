@@ -1,10 +1,13 @@
+const packageInfo = require("../package.json");
 import Vue from 'vue'
 import { Mixins } from "vue-property-decorator";
 import HubStation from "./HubStation/HubStation.vue"
-import ElementMixin from "./Mixins/HubElement/HubElementMixin";
+import HubElement from "./HubElement/HubElement.vue"
+import ElementMixin from "./HubElement/Mixins/HubElementMixin";
 const HubElementMixin = Mixins(ElementMixin);
 export {
     HubStation,
+    HubElement,
     HubElementMixin
 };
 
@@ -14,5 +17,6 @@ export function install(vue: typeof Vue) {
 
 
 export default {
-    install
+    install,
+    version: packageInfo.version
 }

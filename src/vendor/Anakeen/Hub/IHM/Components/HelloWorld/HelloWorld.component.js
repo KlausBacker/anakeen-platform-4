@@ -1,7 +1,8 @@
-import { HubElementMixin } from "@aurelien/hub-components";
+import { HubElement } from "@aurelien/hub-components";
+import SubHello from "./SubHello.vue";
 
 export default {
-  mixins: [HubElementMixin],
+  extends: HubElement,
   props: {
     msg: {
       type: String
@@ -11,13 +12,10 @@ export default {
       default: false
     }
   },
-  getHubConfiguration() {
-    return {
-      collapsedTemplate:
-        "<div style='width: 100%; height: 100%;display: flex; justify-content: center; align-items: center'><hello-icon></hello-icon></i></div>",
-      expandedTemplate:
-        "<div style='width: 100%; height: 100%;display: flex; justify-content: center; align-items: center'><i class='fa fa-edit'></i> <span>My app</span></div>",
-      contentEl: "#hubStationContent"
-    };
-  }
+  hubRoutes: [
+    {
+      path: "tutu",
+      component: SubHello
+    }
+  ]
 };
