@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0"
-        name="admin-center" version="1.0.1">
+        name="admin-center" version="1.0.2">
     <description>Admin Center</description>
 
     <requires>
-        <module name="user-interfaces" version="1.0.*"/>
+        <module name="user-interfaces" version="^1.0.2"/>
     </requires>
 </module>
