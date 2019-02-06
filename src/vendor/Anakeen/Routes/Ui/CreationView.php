@@ -26,7 +26,6 @@ class CreationView
      * @param                     $args
      * @return mixed
      * @throws Exception
-     * @throws \Dcp\Core\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
