@@ -469,7 +469,7 @@ EOF;
      * @param string $odtfile path to the odt file
      *
      * @return string
-     * @throws \Dcp\Layout\Exception|\Dcp\Core\Exception
+     * @throws \Dcp\Layout\Exception|\Anakeen\Core\Exception
      */
     protected function odf2content($odtfile)
     {
@@ -487,11 +487,11 @@ EOF;
             } else {
                 $err = 'unknown PHP error...';
             }
-            throw new Dcp\Core\Exception("LAY0006", $err);
+            throw new Anakeen\Core\Exception("LAY0006", $err);
         }
         if ($ret !== 0) {
             $err = join("\n", $out);
-            throw new Dcp\Core\Exception("LAY0007", $odtfile, $err);
+            throw new Anakeen\Core\Exception("LAY0007", $odtfile, $err);
         }
 
         $contentxml = $this->cibledir . "/content.xml";

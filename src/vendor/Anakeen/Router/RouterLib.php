@@ -5,7 +5,7 @@ namespace Anakeen\Router;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\Glob;
 use Anakeen\Router\Config\AccessInfo;
-use \Dcp\Core\Exception;
+use \Anakeen\Core\Exception;
 use \Anakeen\Router\Config\RouterInfo;
 
 class RouterLib

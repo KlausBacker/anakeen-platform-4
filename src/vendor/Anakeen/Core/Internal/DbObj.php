@@ -99,7 +99,7 @@ class DbObj
      * @param string $res      array of result issue to QueryDb {@link \Anakeen\Core\Internal\QueryDb::Query()}
      * @param int    $dbid     the database connection resource
      *
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {

@@ -11,7 +11,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Date;
 use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Dir\DirLib;
-use \Dcp\Core\Exception;
+use \Anakeen\Core\Exception;
 
 class DSearchHooks extends \SmartStructure\Search
 {

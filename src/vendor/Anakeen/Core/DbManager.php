@@ -19,15 +19,15 @@ class DbManager
 
         $configFile = ContextManager::getRootDirectory() . "/" . Settings::DbAccessFilePath;
         if (!file_exists($configFile)) {
-            throw new \Dcp\Core\Exception("CORE0015", $configFile);
+            throw new \Anakeen\Core\Exception("CORE0015", $configFile);
         }
         $pgservice_core = null;
         if (!include($configFile)) {
-            throw new \Dcp\Core\Exception("CORE0016", $configFile);
+            throw new \Anakeen\Core\Exception("CORE0016", $configFile);
         }
 
         if (!$pgservice_core) {
-            throw new \Dcp\Core\Exception("CORE0016", $configFile);
+            throw new \Anakeen\Core\Exception("CORE0016", $configFile);
         }
         static::$pgConnection = sprintf("service='%s'", $pgservice_core);
 
@@ -178,7 +178,7 @@ class DbManager
      * @param string $point
      *
      * @return void
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public static function commitPoint($point)
     {
@@ -194,7 +194,7 @@ class DbManager
                 static::$inTransition=false;
             }
         } else {
-            throw new \Dcp\Core\Exception(sprintf("cannot commit unsaved point : %s", $point));
+            throw new \Anakeen\Core\Exception(sprintf("cannot commit unsaved point : %s", $point));
         }
     }
 
@@ -204,7 +204,7 @@ class DbManager
      * @param string $point revert point
      *
      * @return void
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public static function rollbackPoint($point)
     {
@@ -222,7 +222,7 @@ class DbManager
                 static::$inTransition=false;
             }
         } else {
-            throw new \Dcp\Core\Exception(sprintf("cannot rollback unsaved point : %s", $point));
+            throw new \Anakeen\Core\Exception(sprintf("cannot rollback unsaved point : %s", $point));
         }
     }
 

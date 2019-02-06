@@ -272,7 +272,7 @@ class ContextManager
      * @param bool   $exit    if false , no exit are pêrformed
      * @param string $code    error code (ref to error log)
      *
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * @api abort action execution
      * @return void
      */
@@ -298,7 +298,7 @@ class ContextManager
                 exit;
             }
         } else {
-            throw new \Dcp\Core\Exception("CORE0001", $texterr);
+            throw new \Anakeen\Core\Exception("CORE0001", $texterr);
         }
     }
 

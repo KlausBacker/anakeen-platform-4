@@ -55,7 +55,7 @@ function clearCacheDoc($id = 0)
  * @param bool       $latest   if true set to latest revision of doc
  *
  * @return \Anakeen\Core\Internal\SmartElement object
- * @throws \Dcp\Core\Exception
+ * @throws \Anakeen\Core\Exception
  * @deprecated use SEManager::getDocument
  *
  * @code
@@ -98,7 +98,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  * @param bool   $temporary     if true create document as temporary doc (use \Anakeen\Core\Internal\SmartElement::createTmpDoc instead)
  *
  * @return \Anakeen\Core\Internal\SmartElement |false may be return false if no hability to create the document
- * @throws \Dcp\Core\Exception
+ * @throws \Anakeen\Core\Exception
  * @see        createTmpDoc to create temporary/working document
  * @code
  * $myDoc=createDoc("", "SOCIETY");
@@ -120,7 +120,7 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
                 $doc = SEManager::createDocument($fromid, $defaultvalues);
             }
         }
-    } catch (\Dcp\Core\Exception $e) {
+    } catch (\Anakeen\Core\Exception $e) {
         if ($e->getCode() === "APIDM0003") {
             return false;
         }

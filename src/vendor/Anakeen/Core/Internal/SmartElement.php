@@ -5059,7 +5059,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             $copy = SEManager::createDocument($this->fromid);
-        } catch (\Dcp\Core\Exception $e) {
+        } catch (\Anakeen\Core\Exception $e) {
             return false;
         }
 

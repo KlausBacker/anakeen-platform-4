@@ -2092,7 +2092,7 @@ class ImportDocumentDescription
      *
      * @param array $data       line of description file
      * @param bool  $updateMode true if update mode
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     protected function doAttr(array $data, $updateMode = false)
     {

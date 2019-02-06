@@ -4,7 +4,7 @@ namespace Anakeen\Routes\Middleware;
 
 use \Anakeen\Core\ContextManager;
 use Anakeen\LogManager;
-use \Dcp\Core\Exception;
+use \Anakeen\Core\Exception;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 

@@ -18,7 +18,7 @@ class ExportXml
      * @param bool      $toDownload
      *
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
@@ -298,7 +298,7 @@ EOF;
      * @return void
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Exception
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      * @global string $wprof                       Http var : (Y|N) if Y export associated profil also

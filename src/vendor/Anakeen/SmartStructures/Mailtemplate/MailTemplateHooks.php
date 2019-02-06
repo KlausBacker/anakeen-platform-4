@@ -453,7 +453,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $allowedValues = [self::NOTIFY_SENDMAIL_ALWAYS, self::NOTIFY_SENDMAIL_ERRORS_ONLY, self::NOTIFY_SENDMAIL_NEVER, self::NOTIFY_SENDMAIL_AUTO];
 
         if (!in_array($notifySendMail, $allowedValues)) {
-            throw new \Dcp\Core\Exception("MAIL0001", $notifySendMail, implode("' , '", $allowedValues));
+            throw new \Anakeen\Core\Exception("MAIL0001", $notifySendMail, implode("' , '", $allowedValues));
         } else {
             $this->notifySendMail = $notifySendMail;
         }

@@ -8,7 +8,7 @@ namespace Anakeen\Core\Utils;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
-use Dcp\Core\Exception;
+use Anakeen\Core\Exception;
 
 /**
  * Class vidExtractor

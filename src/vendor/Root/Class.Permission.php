@@ -220,7 +220,7 @@ create index permission_idx4 on permission(computed);
      * @param bool $force
      * @param bool $computed
      * @return array
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
      */
     public function getPrivileges($force = false, $computed = true)
