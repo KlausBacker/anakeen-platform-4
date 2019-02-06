@@ -12,7 +12,6 @@ use Anakeen\Core\SEManager;
 use Anakeen\LogManager;
 use Dcp\Core\Exception;
 
-
 class AuthenticatorManager
 {
     /**

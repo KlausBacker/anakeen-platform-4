@@ -11,6 +11,7 @@
  * @package FDL
  * @subpackage
  */
+
 /**
  */
 
@@ -26,8 +27,6 @@ function GetSqlCond($Table, $column, $integer = false)
 {
     return DbManager::getSqlOrCond($Table, $column, $integer);
 }
-
-
 
 
 /**
@@ -223,9 +222,6 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
 }
 
 
-
-
-
 /**
  * control privilege for a document in the array form
  * the array must provide from getTdoc
@@ -318,9 +314,6 @@ function getNextDoc($dbaccess, &$tres)
 }
 
 
-
-
-
 /**
  * return the identifier of a document from a search with title
  *
@@ -338,13 +331,13 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
     }
     if ($famid > 0) {
         $fromonly = ($only) ? "only" : "";
-        $err = DbManager::query(sprintf(
+        DbManager::query(sprintf(
             "select id from $fromonly doc%d where title='%s' and locked != -1",
             $famid,
             pg_escape_string($title)
         ), $id, true, true);
     } else {
-        $err = DbManager::query(sprintf(
+        DbManager::query(sprintf(
             "select id from docread where title='%s' and locked != -1",
             pg_escape_string($title)
         ), $id, true, true);
@@ -352,7 +345,6 @@ function getIdFromTitle($dbaccess, $title, $famid = "", $only = false)
 
     return $id;
 }
-
 
 
 function getFamTitle(&$tdoc)
@@ -447,7 +439,9 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array(), $fromid = fals
  * @param string $dbaccess database specification
  * @param array  $ids      array of document identificators
  *
- * @return array identifier relative to latest revision. if one or several documents document not exists the identifier not appear in result so the array count of result can be lesser than parameter
+ * @return array identifier relative to latest revision. if one or
+ * several documents document not exists the identifier not appear
+ * in result so the array count of result can be lesser than parameter
  */
 function getLatestDocIds($dbaccess, $ids)
 {
@@ -460,11 +454,10 @@ function getLatestDocIds($dbaccess, $ids)
         $ids[$k] = intval($v);
     }
     $sids = implode($ids, ",");
-    $sql
-        = sprintf(
-            "SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;",
-            $sids
-        );
+    $sql = sprintf(
+        "SELECT id,initid from docread where initid in (SELECT initid from docread where id in (%s)) and locked != -1;",
+        $sids
+    );
     $result = @pg_query($dbid, $sql);
     if ($result) {
         $arr = pg_fetch_all($result);
@@ -483,7 +476,9 @@ function getLatestDocIds($dbaccess, $ids)
  * @param string $dbaccess database specification
  * @param int    $initid   document identificator
  *
- * @return int identifier relative to latest revision. if one or several documents document not exists the identifier not appear in result so the array count of result can be lesser than parameter
+ * @return int identifier relative to latest revision.
+ * if one or several documents document not exists the identifier
+ * not appear in result so the array count of result can be lesser than parameter
  */
 function getLatestDocId($dbaccess, $initid)
 {
@@ -606,18 +601,16 @@ function createAutoFolder(&$doc)
     $dir->setValue("BA_TITLE", sprintf(_("root for %s"), $doc->title));
     $dir->setValue("BA_DESC", _("default folder"));
     $dir->setValue("FLD_ALLBUT", "1");
-    $dir->setValue("FLD_FAM", [$doc->title , _("folder") , _("search")]);
+    $dir->setValue("FLD_FAM", [$doc->title, _("folder"), _("search")]);
     $dir->setValue(
         "FLD_FAMIDS",
-        [$doc->id , SEManager::getFamilyIdFromName("DIR"), SEManager::getFamilyIdFromName("SEARCH")]
+        [$doc->id, SEManager::getFamilyIdFromName("DIR"), SEManager::getFamilyIdFromName("SEARCH")]
     );
-    $dir->setValue("FLD_SUBFAM", ["yes","yes","yes"]);
+    $dir->setValue("FLD_SUBFAM", ["yes", "yes", "yes"]);
     $dir->Modify();
     $fldid = $dir->id;
     return $fldid;
 }
-
-
 
 
 /**
@@ -625,14 +618,14 @@ function createAutoFolder(&$doc)
  *
  * @deprecated use \Anakeen\Core\DbManager::query
  *
- * @param string            $dbaccess     access database coordonates (not used)
- * @param string            $query        sql query
- * @param string|bool|array &$result      query result
- * @param bool              $singlecolumn set to true if only one field is return
- * @param bool              $singleresult set to true is only one row is expected (return the first row).
- *                                        If is combined with singlecolumn return the value not an array,
- *                                        if no results and $singlecolumn is true then $results is false
- * @param bool              $useStrict    set to true to force exception or false to force no exception, if null use global parameter
+ * @param string             $dbaccess     access database coordonates (not used)
+ * @param string             $query        sql query
+ * @param string|bool|array &$result       query result
+ * @param bool               $singlecolumn set to true if only one field is return
+ * @param bool               $singleresult set to true is only one row is expected (return the first row).
+ *                                         If is combined with singlecolumn return the value not an array,
+ *                                         if no results and $singlecolumn is true then $results is false
+ * @param bool               $useStrict    set to true to force exception or false to force no exception, if null use global parameter
  *
  * @throws Dcp\Db\Exception
  * @return string error message. Empty message if no errors (when strict mode is not enable)
