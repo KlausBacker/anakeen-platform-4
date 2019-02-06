@@ -3450,13 +3450,13 @@ create unique index i_docir on doc(initid, revision);";
                                                 $tvalues[$kvalue] = "";
                                             }
                                         } else {
-                                            if (!isValidDate($avalue)) {
+                                            if (!Date::isValidDate($avalue)) {
                                                 return sprintf(_("value [%s] is not a valid date"), $avalue);
                                             }
 
                                             $localeconfig = ContextManager::getLocaleConfig();
                                             if ($localeconfig !== false) {
-                                                $tvalues[$kvalue] = stringDateToIso(
+                                                $tvalues[$kvalue] = Date::stringDateToIso(
                                                     $avalue,
                                                     $localeconfig['dateFormat']
                                                 );
@@ -3472,13 +3472,13 @@ create unique index i_docir on doc(initid, revision);";
                                                 $tvalues[$kvalue] = "";
                                             }
                                         } else {
-                                            if (!isValidDate($avalue)) {
+                                            if (!Date::isValidDate($avalue)) {
                                                 return sprintf(_("value [%s] is not a valid timestamp"), $avalue);
                                             }
 
                                             $localeconfig = ContextManager::getLocaleConfig();
                                             if ($localeconfig !== false) {
-                                                $tvalues[$kvalue] = stringDateToIso(
+                                                $tvalues[$kvalue] = Date::stringDateToIso(
                                                     $avalue,
                                                     $localeconfig['dateTimeFormat']
                                                 );
@@ -7243,13 +7243,13 @@ create unique index i_docir on doc(initid, revision);";
             }
 
             if ($getlocale) {
-                return stringDateToLocaleDate(date("Y-m-d H:i", $nd));
+                return Date::stringDateToLocaleDate(date("Y-m-d H:i", $nd));
             } else {
                 return date("Y-m-d H:i", $nd);
             }
         } else {
             if ($getlocale) {
-                return stringDateToLocaleDate(date("Y-m-d", $nd));
+                return Date::stringDateToLocaleDate(date("Y-m-d", $nd));
             } else {
                 return date("Y-m-d", $nd);
             }

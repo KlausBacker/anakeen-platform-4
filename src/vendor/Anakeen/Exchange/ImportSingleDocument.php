@@ -1,19 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Import single documents
  *
- * @author  Anakeen
- * @package FDL
- * @subpackage
- */
-/**
  */
 
-include_once("FDL/import_file.php");
+namespace Anakeen\Exchange;
 
 class ImportSingleDocument
 {
@@ -299,7 +290,7 @@ class ImportSingleDocument
                                         $tvfids[] = '';
                                     } elseif ($fi) {
                                         $absfile = "$this->importFilePath/$fi";
-                                        $err = AddVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
+                                        $err = Utils::addVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
                                         if ($err != "") {
                                             $this->setError("DOC0101", $err, $fi, $attrid, $this->doc->name);
                                         } else {
@@ -319,7 +310,7 @@ class ImportSingleDocument
                                     // nothing
                                 } elseif ($dv) {
                                     $absfile = "$this->importFilePath/$dv";
-                                    $err = AddVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
+                                    $err = Utils::AddVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
                                     if ($err != "") {
                                         $this->setError("DOC0102", $err, $dv, $attrid, $this->doc->name);
                                     } else {
@@ -366,7 +357,7 @@ class ImportSingleDocument
                 if (isset($data[$iattr]) && ($data[$iattr] != "")) {
                     $dv = str_replace(array(
                         '\n',
-                        ALTSEPCHAR
+                        Utils::ALTSEPCHAR
                     ), array(
                         "\n",
                         ';'
@@ -628,7 +619,7 @@ class ImportSingleDocument
     {
         $dvCahnged = $matches[0];
         $absfile = "$this->importFilePath/$matches[2]";
-        $err = AddVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
+        $err = Utils::addVaultFile($this->dbaccess, $absfile, $this->analyze, $vfid);
         if ($err != "" || $this->analyze) {
             $this->setError("DOC0102", $err, $matches[2], $this->currentAttrid, $this->doc->name);
         } else {

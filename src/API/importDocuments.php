@@ -16,7 +16,6 @@
 
 
 include_once("WHAT/Lib.Http.php");
-include_once("FDL/import_file.php");
 
 use Anakeen\Core\ContextManager;
 
@@ -143,7 +142,7 @@ if ($dirid) {
     $dirid = $dir->id;
     SetHttpVar("dirid", $dirid);
 }
-$oImport = new ImportDocument();
+$oImport = new Anakeen\Exchange\ImportDocument();
 if ($strict == 'no') {
     $oImport->setStrict(false);
 }

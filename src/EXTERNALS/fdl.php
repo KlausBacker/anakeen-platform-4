@@ -15,25 +15,6 @@
  */
 
 
-function vault_filename($th, $fileid)
-{
-
-    if (preg_match(PREGEXPFILE, $fileid, $reg)) {
-        // reg[1] is mime type
-        $vf = newFreeVaultFile($th->dbaccess);
-        if ($vf->Show($reg[2], $info) == "") {
-            $fname = $info->name;
-        } else {
-            $fname = sprintf(_("file %d"), $th->initid);
-        }
-    } else {
-        $fname = sprintf(_("file %d"), $th->initid);
-    }
-
-    return array(
-        $fname
-    );
-}
 
 /**
  * Functions used for edition help
@@ -145,7 +126,7 @@ function lmail($dbaccess, $name)
                 $uid = " ";
             }
             $tr[] = array(
-                xml_entity_encode($mailTitle),
+                \Anakeen\Core\Utils\Strings::xmlEncode($mailTitle),
                 $mail,
                 $uid,
                 $type
@@ -1288,9 +1269,9 @@ function recipientDocument($dbaccess, $name)
                 $mailTitle = $mail;
             }
             $tr[] = array(
-                xml_entity_encode($mailTitle),
-                xml_entity_encode(sprintf("%d (%s)", $dest->id, $dest->getTitle())),
-                xml_entity_encode($dest->getTitle())
+                \Anakeen\Core\Utils\Strings::xmlEncode($mailTitle),
+                \Anakeen\Core\Utils\Strings::xmlEncode(sprintf("%d (%s)", $dest->id, $dest->getTitle())),
+                \Anakeen\Core\Utils\Strings::xmlEncode($dest->getTitle())
             );
         }
     }

@@ -5,9 +5,10 @@
 */
 /**
  * Layout Class
- * @author Anakeen
- * @version $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
- * @package FDL
+ *
+ * @author     Anakeen
+ * @version    $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
+ * @package    FDL
  * @subpackage CORE
  */
 /**
@@ -15,7 +16,7 @@
 
 /**
  *
- * @class Layout
+ * @class  Layout
  * @brief  Layout is a template generator
  *
  * Layout Class can manage three kind of datas :
@@ -72,6 +73,7 @@ class Layout
     public $encoding = "";
     /**
      * set to true to not parse template when it is generating
+     *
      * @var bool
      */
     public $noparse = false;
@@ -89,22 +91,20 @@ class Layout
      * @var array
      */
     protected $pkey = array();
-    
+
     protected $zoneLevel = 0;
 
 
-    
-    
     /**
      * construct layout to identify template
      *
      *
-     * @param string $caneva file path of the template
+     * @param string $caneva   file path of the template
      * @param string $template if no $caneva found or is empty use this template.
      */
     public function __construct(string $caneva = "", string $template = "[OUT]")
     {
-        $this->initialFile=$caneva;
+        $this->initialFile = $caneva;
         if (($template == "[OUT]") && ($caneva != "")) {
             $this->template = sprintf(_("Template [%s] not found"), $caneva);
         } else {
@@ -119,10 +119,10 @@ class Layout
         if ($caneva != "") {
             if ($this->initialFile[0] !== '/') {
                 if ((!file_exists($file))) {
-                    $file = DEFAULT_PUBDIR . "/Apps/".$this->initialFile; // try absolute in Apps
+                    $file = DEFAULT_PUBDIR . "/Apps/" . $this->initialFile; // try absolute in Apps
                 }
                 if ((!file_exists($file))) {
-                    $file = DEFAULT_PUBDIR . "/" .$this->initialFile; // try absolute
+                    $file = DEFAULT_PUBDIR . "/" . $this->initialFile; // try absolute
                 }
             }
 
@@ -133,31 +133,34 @@ class Layout
             }
         }
     }
+
     /**
      * set reference between array index and layout key
      *
      * use these data
+     *
      * @code
      *   $table = array ( "0" => array ( "name" => "John",
-     "surname" => "Smith"),
-     "1" => array ( "name" => "Robert",
-     "surname" => "Martin"));
+     * "surname" => "Smith"),
+     * "1" => array ( "name" => "Robert",
+     * "surname" => "Martin"));
      * @endcode
      * with the code
      * @code
      * $lay = new Layout ("file containing the block");
-     $lay->setBlockCorresp("IDENTITY","MYNAME","name");
-     $lay->setBlockCorresp("IDENTITY","MYSURNAME","surname");
-     $lay->SetBlockData("IDENTITY",$table);
-     $out = $lay->gen();
+     * $lay->setBlockCorresp("IDENTITY","MYNAME","name");
+     * $lay->setBlockCorresp("IDENTITY","MYSURNAME","surname");
+     * $lay->SetBlockData("IDENTITY",$table);
+     * $out = $lay->gen();
      * @endcode
      * for template
      * @code[BLOCK IDENTITY]
-     <tr><td align="left">[MYNAME]</td>
-     <td align="right">[MYSURNAME]</td>
-     </tr>
-     [ENDBLOCK IDENTITY]
+     * <tr><td align="left">[MYNAME]</td>
+     * <td align="right">[MYSURNAME]</td>
+     * </tr>
+     * [ENDBLOCK IDENTITY]
      * @endcode
+     *
      * @param string $p_nom_block
      * @param string $p_nom_modele
      * @param string $p_nom
@@ -166,11 +169,14 @@ class Layout
     {
         $this->corresp["$p_nom_block"]["[$p_nom_modele]"] = ($p_nom == null ? $p_nom_modele : "$p_nom");
     }
+
     /**
      * set encoded data to fill a block
+     *
      * @api set data to fill a block
+     *
      * @param string $p_nom_block block name
-     * @param array $data data to fill the block
+     * @param array  $data        data to fill the block
      */
     public function eSetBlockData($p_nom_block, $data = null)
     {
@@ -185,11 +191,14 @@ class Layout
         }
         $this->setBlockData($p_nom_block, $data);
     }
+
     /**
      * set data to fill a block
+     *
      * @api set data to fill a block
+     *
      * @param string $p_nom_block block name
-     * @param array $data data to fill the block
+     * @param array  $data        data to fill the block
      */
     public function setBlockData($p_nom_block, $data = null)
     {
@@ -207,11 +216,14 @@ class Layout
             }
         }
     }
+
     /**
      * return data set in block name
+     *
      * @see setBlockData
      *
      * @param string $p_nom_block block name
+     *
      * @return array|bool return data or false if no data are set yet
      */
     public function getBlockData($p_nom_block)
@@ -221,7 +233,7 @@ class Layout
         }
         return false;
     }
-    
+
     protected function SetBlock($name, $block)
     {
         if ($this->strip == 'Y') {
@@ -230,7 +242,7 @@ class Layout
         }
         $out = "";
         $oriRif = $this->rif;
-        
+
         if (isset($this->data) && isset($this->data["$name"]) && is_array($this->data["$name"])) {
             foreach ($this->data["$name"] as $k => $v) {
                 $loc = $block;
@@ -243,23 +255,23 @@ class Layout
                         $loc = str_replace($k2, str_replace($this->goZoneMapping, $this->noGoZoneMapping, $vv2), $loc);
                     }
                 }
-                $this->rif = & $v;
+                $this->rif = &$v;
                 $this->ParseIf($loc);
-                $out.= $loc;
+                $out .= $loc;
             }
             $this->rif = $oriRif;
         }
         $this->ParseBlock($out);
         return ($out);
     }
-    
+
     protected function ParseBlock(&$out)
     {
         $out = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches) {
             return $this->SetBlock($matches[1], $matches[2]);
         }, $out);
     }
-    
+
     protected function TestIf($name, $block, $not = false)
     {
         $out = "";
@@ -277,7 +289,7 @@ class Layout
             if ($this->strip == 'Y') {
                 $block = str_replace("\\\"", "\"", $block);
             }
-            
+
             if ($not) {
                 $out = "[IFNOT $name]" . $block . "[ENDIF $name]";
             } else {
@@ -286,26 +298,28 @@ class Layout
         }
         return ($out);
     }
-    
+
     protected function ParseIf(&$out)
     {
         $out = preg_replace_callback('/\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s+\\2\]/smu', function ($matches) {
             return $this->TestIf($matches[2], $matches[3], $matches[1]);
         }, $out);
     }
-    
 
-    
+
     protected function parseKey(&$out)
     {
         if (isset($this->rkey)) {
             $out = str_replace($this->pkey, $this->rkey, $out);
         }
     }
+
     /**
      * define new encoding text
      * default is utf-8
+     *
      * @param string $enc encoding (only 'utf-8' is allowed)
+     *
      * @deprecated not need always utf-8
      */
     public function setEncoding($enc)
@@ -319,7 +333,9 @@ class Layout
     /**
      * add a simple key /value in template
      * the key will be replaced by value when [KEY] is found in template
+     *
      * @api affect value to a key
+     *
      * @param string $tag
      * @param string $val
      */
@@ -328,16 +344,20 @@ class Layout
         $this->pkey[$tag] = "[$tag]";
         $this->rkey[$tag] = $val;
     }
+
     public function rSet($tag, $val)
     {
         $this->set($tag, $val);
     }
+
     public function xSet($tag, $val)
     {
-        $this->rSet($tag, xml_entity_encode_all($val));
+        $this->rSet($tag, htmlspecialchars($val, ENT_QUOTES | ENT_HTML5));
     }
+
     /**
      * set key/value pair and XML entity encode
+     *
      * @param string $tag the key to replace
      * @param string $val the value for the key
      */
@@ -346,11 +366,14 @@ class Layout
         $val = str_replace($this->goZoneMapping, $this->noGoZoneMapping, $val);
         $this->set($tag, str_replace("[", $this->escapeBracket, htmlspecialchars($val, ENT_QUOTES)));
     }
+
     /**
      * return the value set for a key
+     *
      * @see Layout::set()
      *
      * @param string $tag
+     *
      * @return string
      */
     public function get($tag)
@@ -360,9 +383,8 @@ class Layout
         }
         return "";
     }
-    
 
-    
+
     protected function ParseText(&$out)
     {
         $out = preg_replace_callback('/\[TEXT(\([^\)]*\))?:([^\]]*)\]/', function ($matches) {
@@ -377,7 +399,7 @@ class Layout
             }
         }, $out);
     }
-    
+
     protected function Text($s)
     {
         if ($s == "") {
@@ -385,17 +407,20 @@ class Layout
         }
         return _($s);
     }
-    
+
     protected function GenJsRef($useLegacyLog = true)
     {
         $js = "";
 
         return $js;
     }
+
     /**
      * get js code for notification (internal usage)
-     * @param $showlog
+     *
+     * @param      $showlog
      * @param bool $onlylog
+     *
      * @return string
      */
     public function GenJsCode($showlog, $onlylog = false)
@@ -407,28 +432,28 @@ class Layout
         if (!$onlylog) {
             $list = $this->action->parent->GetJsCode();
             foreach ($list as $k => $v) {
-                $out.= $v . "\n";
+                $out .= $v . "\n";
             }
         }
         if ($showlog) {
             // Add log messages
             $list = $this->action->parent->GetLogMsg();
             reset($list);
-            $out.= "var logmsg=new Array();\n";
+            $out .= "var logmsg=new Array();\n";
             foreach ($list as $k => $v) {
                 if (($v[0] == '{')) {
-                    $out.= "logmsg[$k]=$v;\n";
+                    $out .= "logmsg[$k]=$v;\n";
                 } else {
-                    $out.= "logmsg[$k]=" . json_encode($v) . ";\n";
+                    $out .= "logmsg[$k]=" . json_encode($v) . ";\n";
                 }
             }
-            
-            $out.= "if ('displayLogMsg' in window) displayLogMsg(logmsg);\n";
+
+            $out .= "if ('displayLogMsg' in window) displayLogMsg(logmsg);\n";
             $this->action->parent->ClearLogMsg();
             // Add warning messages
             $list = $this->action->parent->GetWarningMsg();
             if (count($list) > 0) {
-                $out.= "displayWarningMsg(" . json_encode(implode("\n---------\n", array_unique($list)), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
+                $out .= "displayWarningMsg(" . json_encode(implode("\n---------\n", array_unique($list)), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
             }
             $this->action->parent->ClearWarningMsg();
         }
@@ -437,19 +462,19 @@ class Layout
             $actcode = $actarg = array();
             $this->action->getActionDone($actcode, $actarg);
             if (count($actcode) > 0) {
-                $out.= "var actcode=new Array();\n";
-                $out.= "var actarg=new Array();\n";
+                $out .= "var actcode=new Array();\n";
+                $out .= "var actarg=new Array();\n";
                 foreach ($actcode as $k => $v) {
-                    $out.= sprintf("actcode[%d]=%s;\n", $k, json_encode($v, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
-                    $out.= sprintf("actarg[%d]=%s;\n", $k, json_encode($actarg[$k], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
+                    $out .= sprintf("actcode[%d]=%s;\n", $k, json_encode($v, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
+                    $out .= sprintf("actarg[%d]=%s;\n", $k, json_encode($actarg[$k], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
                 }
-                $out.= "sendActionNotification(actcode,actarg);\n";
+                $out .= "sendActionNotification(actcode,actarg);\n";
                 $this->action->clearActionDone();
             }
         }
         return ($out);
     }
-    
+
     protected function ParseJs(&$out)
     {
         $out = preg_replace_callback('/\[JS:REF\]/', function () {
@@ -459,16 +484,16 @@ class Layout
         $out = preg_replace_callback('/\[JS:CUSTOMREF\]/', function () {
             return $this->GenJsRef(false);
         }, $out);
-        
+
         $out = preg_replace_callback('/\[JS:CODE\]/', function () {
             return $this->GenJsCode(true);
         }, $out);
-        
+
         $out = preg_replace_callback('/\[JS:CODENLOG\]/', function () {
             return $this->GenJsCode(false);
         }, $out);
     }
-    
+
     protected function GenCssRef($oldCompatibility = true)
     {
         $css = "";
@@ -477,15 +502,15 @@ class Layout
         }
         if ($oldCompatibility) {
             $cssLink = $this->action->parent->getCssLink("css/dcp/system.css", true);
-            $css.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$cssLink\">\n";
+            $css .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$cssLink\">\n";
         }
         $list = $this->action->parent->GetCssRef();
         foreach ($list as $k => $v) {
-            $css.= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
+            $css .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
         }
         return $css;
     }
-    
+
     protected function GenCssCode()
     {
         if (empty($this->action->parent)) {
@@ -495,10 +520,11 @@ class Layout
         reset($list);
         $out = "";
         foreach ($list as $v) {
-            $out.= $v . "\n";
+            $out .= $v . "\n";
         }
         return ($out);
     }
+
     protected function ParseCss(&$out)
     {
         $out = preg_replace_callback('/\[CSS:REF\]/', function () {
@@ -507,13 +533,15 @@ class Layout
         $out = preg_replace_callback('/\[CSS:CUSTOMREF\]/', function () {
             return $this->GenCssRef(false);
         }, $out);
-        
+
         $out = preg_replace_callback('/\[CSS:CODE\]/', function () {
             return $this->GenCssCode();
         }, $out);
     }
+
     /**
      * Generate text from template with data included
+     *
      * @api generate text from template
      * @return string the complete text
      */
@@ -524,12 +552,12 @@ class Layout
         }
         // if used in an app , set the app params
         $out = $this->template;
-        
+
         $this->rif = $this->rkey;
         $this->ParseBlock($out);
         // Restore rif because parseBlock can change it
         $this->rif = $this->rkey;
-        
+
         $this->ParseIf($out);
         // Parse IMG: and LAY: tags
         $this->ParseText($out);
@@ -537,7 +565,7 @@ class Layout
         // Application parameters values
         $this->ParseJs($out);
         $this->ParseCss($out);
-        
+
         $out = str_replace(array(
             $this->noGoZoneMapping,
             $this->escapeBracket
@@ -555,8 +583,10 @@ class Layout
 
     /**
      * Count number of execute() calls on the stack to detect infinite recursive loops
-     * @param string $class name to track
-     * @param string $function/method name to track
+     *
+     * @param string $class    name to track
+     * @param string $function /method name to track
+     *
      * @return array array('count' => $callCount, 'delta' => $callDelta, 'depth' => $stackDepth)
      */
     protected function getRecursionCount($class, $function)
@@ -565,7 +595,7 @@ class Layout
         $curDepth = 0;
         $prevDepth = 0;
         $delta = 0;
-        
+
         $bt = debug_backtrace(false);
         $btCount = count($bt);
         for ($i = $btCount - 2; $i >= 0; $i--) {
@@ -578,37 +608,39 @@ class Layout
                 $count++;
             }
         }
-        
+
         return array(
             'count' => $count,
             'delta' => $delta,
             'depth' => $curDepth
         );
     }
+
     /**
      * Print a recursion count error message and stop execution
-     * @param string $class name to display
-     * @param string $function/method name to display
-     * @param int $count the call count that triggered the error
+     *
+     * @param string $class    name to display
+     * @param string $function /method name to display
+     * @param int    $count    the call count that triggered the error
      */
     protected function printRecursionCountError($class, $function, $count)
     {
         include_once('WHAT/Lib.Prefix.php');
-        
+
         $http_code = 500;
         $http_reason = "Recursion Count Error";
         header(sprintf("HTTP/1.1 %s %s", $http_code, $http_reason));
-        
+
         print "<html><head>\n";
         print "<title>" . htmlspecialchars($http_reason) . "</title>\n";
         print "</head></body>\n";
-        
+
         print "<h1>" . sprintf("%s %s", htmlspecialchars($http_code), htmlspecialchars($http_reason)) . "</h1>\n";
-        
+
         $message = sprintf("Infinite recursive loop in %s::%s() (call count = '%s')", $class, $function, $count);
         print "<h2>" . htmlspecialchars($message) . "</h2>\n";
         error_log(sprintf("%s::%s Error: %s", $class, $function, $message));
-        
+
         print "</body></html>\n";
         exit;
     }

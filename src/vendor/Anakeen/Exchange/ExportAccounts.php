@@ -4,10 +4,11 @@
  * @package FDL
 */
 
-namespace Dcp\Core;
+namespace Anakeen\Exchange;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Exception;
 
 class ExportAccounts
 {

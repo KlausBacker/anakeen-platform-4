@@ -9,6 +9,7 @@ namespace Dcp;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Anakeen\Core\Utils\Date;
 
 class ExportXmlDocument
 {
@@ -214,7 +215,7 @@ class ExportXmlDocument
         switch ($attribute->type) {
             case 'timestamp':
             case 'date':
-                $v = stringDateToIso($v);
+                $v = Date::stringDateToIso($v);
                 return sprintf("<%s>%s</%s>", $attribute->id, $v, $attribute->id);
             case 'array':
                 $av = $doc->getArrayRawValues($attribute->id);

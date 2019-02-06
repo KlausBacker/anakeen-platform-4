@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Core;
+namespace Anakeen\Exchange;
 
 use Anakeen\Core\Account;
 use Anakeen\Core\DbManager;

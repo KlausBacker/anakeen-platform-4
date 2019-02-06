@@ -1,21 +1,13 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Import documents
  *
- * @author  Anakeen
- * @package FDL
- * @subpackage
- */
-/**
  */
 
-include_once("FDL/import_file.php");
+namespace Anakeen\Exchange;
 
 use \Anakeen\Core\SmartStructure\DocAttr;
+use Anakeen\Exception;
 
 class ImportDocumentDescription
 {
@@ -25,7 +17,7 @@ class ImportDocumentDescription
     private $analyze = false;
     private $policy = "update";
     private $reinit = false;
-    private $csvSeparator = SEPCHAR;
+    private $csvSeparator = Utils::SEPCHAR;
     private $csvEnclosure = '';
     private $csvLinebreak = '\n';
     private $beginLine = 0;
@@ -41,7 +33,7 @@ class ImportDocumentDescription
      */
     private $verifyAttributeAccess = true;
     /**
-     * @var StructAttribute
+     * @var \StructAttribute
      */
     private $structAttr = null;
     /**
@@ -87,8 +79,8 @@ class ImportDocumentDescription
     public function __construct($importFile = "")
     {
         if ($importFile) {
-            if (seemsODS($importFile)) {
-                $this->ods2CsvFile = ods2csv($importFile);
+            if (Utils::seemsODS($importFile)) {
+                $this->ods2CsvFile = Utils::ods2csv($importFile);
                 $this->fdoc = fopen($this->ods2CsvFile, "r");
             } else {
                 $this->fdoc = fopen($importFile, "r");
@@ -240,7 +232,7 @@ class ImportDocumentDescription
                 $data = array_map(function ($v) use ($csvLinebreak) {
                     return str_replace(array(
                         $csvLinebreak,
-                        ALTSEPCHAR
+                        Utils::ALTSEPCHAR
                     ), array(
                         "\n",
                         ';'
@@ -545,7 +537,7 @@ class ImportDocumentDescription
         try {
             $this->doc = null;
             $this->beginLine = $this->nLine;
-            $check = new CheckBegin();
+            $check = new \CheckBegin();
             $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
             if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
                 $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -680,7 +672,7 @@ class ImportDocumentDescription
             $this->doc->modify();
 
 
-            $check = new CheckEnd($this);
+            $check = new \CheckEnd($this);
             if ($this->doc->doctype == "C") {
                 global $tFamIdName;
                 $check->checkMaxAttributes($this->doc);
@@ -693,7 +685,7 @@ class ImportDocumentDescription
                 }
                 if ($err == '') {
                     if (strpos($this->doc->usefor, "W") !== false) {
-                        $checkW = new CheckWorkflow($this->doc->classname, $this->doc->name);
+                        $checkW = new \CheckWorkflow($this->doc->classname, $this->doc->name);
                         $checkCr = $checkW->verifyWorkflowClass();
                         if (count($checkCr) > 0) {
                             if (count($checkCr) > 0) {
@@ -719,9 +711,9 @@ class ImportDocumentDescription
                             if (isset($tFamIdName)) {
                                 $tFamIdName[$this->doc->name] = $this->doc->id;
                             } // refresh getFamIdFromName for multiple family import
-                            $checkCr = CheckDb::verifyDbFamily($this->doc->id);
+                            $checkCr = \CheckDb::verifyDbFamily($this->doc->id);
                             if (count($checkCr) > 0) {
-                                $this->tcr[$this->nLine]["err"] .= ErrorCode::getError('ATTR1700', implode(",", $checkCr));
+                                $this->tcr[$this->nLine]["err"] .= \ErrorCode::getError('ATTR1700', implode(",", $checkCr));
                             } else {
                                 // Need to update child family in case of new attribute
                                 $childsFams = ($this->doc->getChildFam());
@@ -794,7 +786,7 @@ class ImportDocumentDescription
             return;
         }
 
-        $orphanAttributes = CheckDb::getOrphanAttributes($this->doc->id);
+        $orphanAttributes = \CheckDb::getOrphanAttributes($this->doc->id);
         if ($orphanAttributes) {
             $sql = array();
             foreach ($orphanAttributes as $orphanAttrId) {
@@ -839,7 +831,7 @@ class ImportDocumentDescription
     {
         $err = "";
         $data = array_map("trim", $data);
-        $check = new CheckReset();
+        $check = new \CheckReset();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -910,7 +902,7 @@ class ImportDocumentDescription
      */
     protected function doDoc(array $data)
     {
-        $check = new CheckDoc();
+        $check = new \CheckDoc();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         $famName = $check->getParsedFamName();
         if ($this->tcr[$this->nLine]["err"]) {
@@ -1083,7 +1075,7 @@ class ImportDocumentDescription
      */
     protected function doDocAtag(array $data)
     {
-        $check = new CheckDocATag();
+        $check = new \CheckDocATag();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1175,7 +1167,7 @@ class ImportDocumentDescription
         if (!isset($data[1])) {
             $data[1] = '';
         }
-        $check = new CheckDfldid();
+        $check = new \CheckDfldid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1219,7 +1211,7 @@ class ImportDocumentDescription
             return;
         }
 
-        $check = new CheckCfldid();
+        $check = new \CheckCfldid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1252,7 +1244,7 @@ class ImportDocumentDescription
         if (!isset($data[1])) {
             $data[1] = '';
         }
-        $check = new CheckWid();
+        $check = new \CheckWid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1304,7 +1296,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new CheckCvid();
+        $check = new \CheckCvid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1356,7 +1348,7 @@ class ImportDocumentDescription
         }
         $data = array_map("trim", $data);
 
-        $check = new CheckClass();
+        $check = new \CheckClass();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1381,7 +1373,7 @@ class ImportDocumentDescription
             return;
         }
         $data = array_map("trim", $data);
-        $check = new CheckMethod();
+        $check = new \CheckMethod();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1444,7 +1436,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new CheckCfallid();
+        $check = new \CheckCfallid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1475,7 +1467,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new CheckCprofid();
+        $check = new \CheckCprofid();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1507,7 +1499,7 @@ class ImportDocumentDescription
             return;
         }
 
-        $check = new CheckProfid();
+        $check = new \CheckProfid();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1537,7 +1529,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new CheckInitial();
+        $check = new \CheckInitial();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1580,7 +1572,7 @@ class ImportDocumentDescription
         if (!$this->doc) {
             return;
         }
-        $check = new CheckDefault();
+        $check = new \CheckDefault();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1621,7 +1613,7 @@ class ImportDocumentDescription
      */
     protected function doAccess(array $data)
     {
-        $check = new CheckAccess();
+        $check = new \CheckAccess();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1646,14 +1638,14 @@ class ImportDocumentDescription
         array_shift($data);
         array_shift($data);
 
-        $q = new \Anakeen\Core\Internal\QueryDb("", Acl::class);
+        $q = new \Anakeen\Core\Internal\QueryDb("", \Acl::class);
         $la = $q->Query(0, 0, "TABLE");
         $tacl = array();
         foreach ($la as $k => $v) {
             $tacl[$v["name"]] = $v["id"];
         }
 
-        $p = new Permission();
+        $p = new \Permission();
         $p->id_user = $wid;
         foreach ($data as $v) {
             $v = trim($v);
@@ -1716,13 +1708,13 @@ class ImportDocumentDescription
              */
             $check = new CheckTagable();
         } else {
-            $this->tcr[$this->nLine]["err"] = ErrorCode::getError('PROP0102', "TAGABLE", "dynacase-tags");
+            $this->tcr[$this->nLine]["err"] = \ErrorCode::getError('PROP0102', "TAGABLE", "dynacase-tags");
             $this->tcr[$this->nLine]["action"] = "ignored";
             error_log("ERROR:" . $this->tcr[$this->nLine]["err"]);
             return;
         }
         /**
-         * @var CheckData $check
+         * @var \CheckData $check
          */
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
@@ -1745,7 +1737,7 @@ class ImportDocumentDescription
      */
     protected function doProfil(array $data)
     {
-        $check = new CheckProfil();
+        $check = new \CheckProfil();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1770,7 +1762,7 @@ class ImportDocumentDescription
             /**
              * @var \Anakeen\Core\Internal\SmartElement $pdoc
              */
-            $pdoc = Anakeen\Core\SEManager::getDocument($pid);
+            $pdoc = \Anakeen\Core\SEManager::getDocument($pid);
             if ($pdoc && $pdoc->isAlive()) {
                 $this->tcr[$this->nLine]["msg"] = sprintf(_("change profil %s"), $data[1]);
                 $this->tcr[$this->nLine]["action"] = "modprofil";
@@ -1807,7 +1799,7 @@ class ImportDocumentDescription
                         $pdoc->accessControl()->removeControl();
                         $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("reset profil %s"), $pid);
                     } elseif ($optprof == "SET") {
-                        $initialPerms = array_merge(DocPerm::getPermsForDoc($pdoc->id), DocPermExt::getPermsForDoc($pdoc->id));
+                        $initialPerms = array_merge(\DocPerm::getPermsForDoc($pdoc->id), \DocPermExt::getPermsForDoc($pdoc->id));
                         $pdoc->accessControl()->removeControl();
                         $this->tcr[$this->nLine]["msg"] .= "\n" . sprintf(_("set profile %s"), $pid);
                     }
@@ -1833,12 +1825,12 @@ class ImportDocumentDescription
                         }
                     }
                     if ($optprof == "SET") {
-                        $newPerms = array_merge(DocPerm::getPermsForDoc($pdoc->id), DocPermExt::getPermsForDoc($pdoc->id));
+                        $newPerms = array_merge(\DocPerm::getPermsForDoc($pdoc->id), \DocPermExt::getPermsForDoc($pdoc->id));
                         $profilingHasChanged = (serialize($newPerms) != serialize($initialPerms));
                     }
                     if ($optprof == "RESET" || ($optprof == "SET" && $profilingHasChanged)) {
                         // need reset all documents
-                        $pdoc->addHistoryEntry(_('Recomputing profiled documents'), DocHisto::INFO, 'RECOMPUTE_PROFILED_DOCUMENT');
+                        $pdoc->addHistoryEntry(_('Recomputing profiled documents'), \DocHisto::INFO, 'RECOMPUTE_PROFILED_DOCUMENT');
                         $pdoc->accessControl()->recomputeProfiledDocument();
                     }
                 }
@@ -1910,7 +1902,7 @@ class ImportDocumentDescription
      */
     protected function doKeys(array $data)
     {
-        $check = new CheckKeys();
+        $check = new \CheckKeys();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -1927,7 +1919,7 @@ class ImportDocumentDescription
             $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
 
-        $this->colKeys[$orfromid] = getOrder($data);
+        $this->colKeys[$orfromid] = Utils::getOrder($data);
         if (($this->colKeys[$orfromid][0] == "") || (count($this->colKeys[$orfromid]) == 0)) {
             $this->tcr[$this->nLine]["err"] = sprintf(_("error in import keys : %s"), implode(" - ", $this->colKeys[$orfromid]));
             unset($this->colKeys[$orfromid]);
@@ -1944,7 +1936,7 @@ class ImportDocumentDescription
      */
     protected function doOrder(array $data)
     {
-        $check = new CheckOrder();
+        $check = new \CheckOrder();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
         $famName = $check->getParsedFamName();
         if ($this->tcr[$this->nLine]["err"]) {
@@ -1968,7 +1960,7 @@ class ImportDocumentDescription
             $orfromid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
         }
 
-        $this->colOrders[$orfromid] = getOrder($data);
+        $this->colOrders[$orfromid] = Utils::getOrder($data);
         $this->tcr[$this->nLine]["msg"] = sprintf(_("new column order %s"), implode(" - ", $this->colOrders[$orfromid]));
     }
 
@@ -1987,7 +1979,7 @@ class ImportDocumentDescription
         }
         $aid = (trim($data[2]));
         $index = $data[5];
-        $oa = new DocAttrLDAP($this->dbaccess, array(
+        $oa = new \DocAttrLDAP($this->dbaccess, array(
             $fid,
             $aid,
             $index
@@ -2065,14 +2057,14 @@ class ImportDocumentDescription
             strtolower($attrid)
         ));
         if (!$oattr->isAffected()) {
-            $this->tcr[$this->nLine]["err"] = ErrorCode::getError('ATTR0104', $attrid);
+            $this->tcr[$this->nLine]["err"] = \ErrorCode::getError('ATTR0104', $attrid);
         }
 
         if ($this->tcr[$this->nLine]["err"]) {
             $this->tcr[$this->nLine]["action"] = "ignored";
             return;
         }
-        $structAttr = new StructAttribute();
+        $structAttr = new \StructAttribute();
         $structAttr->set($data);
         $iAttr = new \Anakeen\Core\Internal\ImportSmartAttr();
         $iAttr->id = $oattr->id;
@@ -2112,7 +2104,7 @@ class ImportDocumentDescription
             $data[8] = 'ReadWrite';
         }
 
-        $check = new CheckAttr();
+        $check = new \CheckAttr();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));
@@ -2125,7 +2117,7 @@ class ImportDocumentDescription
         }
 
         if (!$this->structAttr) {
-            $this->structAttr = new StructAttribute();
+            $this->structAttr = new \StructAttribute();
         }
         $this->structAttr->set($data);
 
@@ -2283,7 +2275,7 @@ class ImportDocumentDescription
             $oe = new \Anakeen\Core\SmartStructure\DocEnum();
         }
         $enums = array();
-        EnumAttributeTools::flatEnumNotationToEnumArray($phpfunc, $enums);
+        \EnumAttributeTools::flatEnumNotationToEnumArray($phpfunc, $enums);
         $oe->name = $enumName;
         $oe->eorder = 0;
         if ($reset) {
@@ -2324,7 +2316,7 @@ class ImportDocumentDescription
      */
     protected function doProp($data)
     {
-        $check = new CheckProp();
+        $check = new \CheckProp();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
         if ($this->tcr[$this->nLine]["err"] && $this->analyze) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("Element can't be perfectly analyze, some error might occur or be corrected when importing"));

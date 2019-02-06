@@ -7,6 +7,7 @@
 
 namespace Anakeen\Core;
 
+use Anakeen\Core\Utils\Date;
 use Anakeen\SmartHooks;
 
 class SmartStructure extends \Anakeen\SmartStructures\Profiles\PFamHooks
@@ -371,7 +372,7 @@ create unique index idx_idfam on docfam(id);";
                     $tDates=[$val];
                 }
                 foreach ($tDates as $k => $date) {
-                    $tDates[$k] = stringDateToIso($date, $dateFormat);
+                    $tDates[$k] = Date::stringDateToIso($date, $dateFormat);
                 }
                 if (is_array($val)) {
                     $val=$tDates;

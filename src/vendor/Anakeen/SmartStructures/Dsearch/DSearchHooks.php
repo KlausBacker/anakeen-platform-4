@@ -8,6 +8,7 @@ namespace Anakeen\SmartStructures\Dsearch;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Core\Utils\Date;
 use Anakeen\SmartHooks;
 use Anakeen\SmartStructures\Dir\DirLib;
 use \Dcp\Core\Exception;
@@ -475,10 +476,10 @@ class DSearchHooks extends \SmartStructure\Search
 
             $cfgdate = ContextManager::getLocaleConfig();
             if ($val) {
-                $val = stringDateToIso($val, $cfgdate['dateFormat']);
+                $val = Date::stringDateToIso($val, $cfgdate['dateFormat']);
             }
             if ($val2) {
-                $val2 = stringDateToIso($val2, $cfgdate['dateFormat']);
+                $val2 = Date::stringDateToIso($val2, $cfgdate['dateFormat']);
             }
 
             if (($atype == "timestamp") && ($op == "=")) {

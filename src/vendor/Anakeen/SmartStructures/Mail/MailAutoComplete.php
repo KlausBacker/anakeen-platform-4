@@ -81,7 +81,7 @@ class MailAutoComplete
                 }
 
                 // Encode mail : Label entry is an HTML fragment
-                $response->appendEntry(xml_entity_encode($mailTitle), [
+                $response->appendEntry(\Anakeen\Core\Utils\Strings::xmlEncode($mailTitle), [
                     $mail,
                     $uid,
                     $type

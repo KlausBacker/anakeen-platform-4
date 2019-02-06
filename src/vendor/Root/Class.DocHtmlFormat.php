@@ -1076,14 +1076,14 @@ class DocHtmlFormat
     {
         if (($this->cFormat != "") && (trim($avalue) != "")) {
             if ($avalue) {
-                $htmlval = strftime($this->cFormat, stringDateToUnixTs($avalue));
+                $htmlval = strftime($this->cFormat, \Anakeen\Core\Utils\Date::stringDateToUnixTs($avalue));
             } else {
                 $htmlval = $avalue;
             }
         } elseif (trim($avalue) == "") {
             $htmlval = "";
         } else {
-            $htmlval = stringDateToLocaleDate($avalue);
+            $htmlval = \Anakeen\Core\Utils\Date::stringDateToLocaleDate($avalue);
         }
         $this->cancelFormat = true;
         return $htmlval;
@@ -1128,14 +1128,14 @@ class DocHtmlFormat
     {
         if (($this->cFormat != "") && (trim($avalue) != "")) {
             if ($avalue) {
-                $htmlval = strftime($this->cFormat, stringDateToUnixTs($avalue));
+                $htmlval = strftime($this->cFormat, \Anakeen\Core\Utils\Date::stringDateToUnixTs($avalue));
             } else {
                 $htmlval = $avalue;
             }
         } elseif (trim($avalue) == "") {
             $htmlval = "";
         } else {
-            $htmlval = stringDateToLocaleDate($avalue);
+            $htmlval = \Anakeen\Core\Utils\Date::stringDateToLocaleDate($avalue);
         }
         $this->cancelFormat = true;
         return $htmlval;

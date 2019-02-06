@@ -27,7 +27,7 @@ class TestImportArchive extends TestCaseDcpCommonFamily
     public function testExecuteImportArchive($archiveFile, $resultDocuments)
     {
 
-        $oImport = new \ImportDocument();
+        $oImport = new \Anakeen\Exchange\ImportDocument();
         $onlyAnalyze = false;
         $archive = true;
         $oImport->importDocuments(self::$testDataDirectory . DIRECTORY_SEPARATOR . $archiveFile, $onlyAnalyze, $archive);

@@ -6,13 +6,15 @@
 
 namespace Anakeen\Core\SmartStructure;
 
+use Anakeen\Core\Utils\Date;
+
 class SmartFieldValue
 {
     /**
      * return typed value for an document's attribute
      * @param \Anakeen\Core\Internal\SmartElement          $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
-     * @throws AttributeValue\Exception
+     * @throws \Dcp\AttributeValue\Exception
      * @return array|float|int|null|string
      */
     public static function getTypedValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
@@ -96,7 +98,7 @@ class SmartFieldValue
 
             case 'timestamp':
             case 'date':
-                $isoDate = stringDateToIso($rawValue, false, true);
+                $isoDate = Date::stringDateToIso($rawValue, false, true);
                 if (strlen($rawValue) == 16) {
                     $isoDate .= ':00';
                 }
@@ -243,7 +245,7 @@ class SmartFieldValue
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
      * @param mixed                                        $value
      * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue()
-     * @throws AttributeValue\Exception in case of incompatible value
+     * @throws \Dcp\AttributeValue\Exception in case of incompatible value
      */
     public static function setTypedValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, $value)
     {

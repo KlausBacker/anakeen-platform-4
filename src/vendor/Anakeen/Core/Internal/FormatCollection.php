@@ -8,6 +8,7 @@ namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
+use Anakeen\Core\Utils\Date;
 use Anakeen\Exception;
 use SmartStructure\Wdoc;
 
@@ -847,20 +848,20 @@ class FormatCollection
             $dateStyle = $this->dateStyle;
         }
         if ($dateStyle === Format\DateAttributeValue::defaultStyle) {
-            return stringDateToLocaleDate($v);
+            return Date::stringDateToLocaleDate($v);
         } elseif ($dateStyle === Format\DateAttributeValue::isoStyle) {
-            return stringDateToIso($v, false, true);
+            return Date::stringDateToIso($v, false, true);
         } elseif ($dateStyle === Format\DateAttributeValue::isoWTStyle) {
-            return stringDateToIso($v, false, false);
+            return Date::stringDateToIso($v, false, false);
         } elseif ($dateStyle === Format\DateAttributeValue::frenchStyle) {
-            $ldate = stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
+            $ldate = Date::stringDateToLocaleDate($v, '%d/%m/%Y %H:%M');
             if (strlen($v) < 11) {
                 return substr($ldate, 0, strlen($v));
             } else {
                 return $ldate;
             }
         }
-        return stringDateToLocaleDate($v);
+        return Date::stringDateToLocaleDate($v);
     }
 
     protected function getState(\Anakeen\Core\Internal\SmartElement $doc)
@@ -1111,7 +1112,7 @@ class FormatCollection
                 }
             }
             $rowList = array_map(function ($v) use ($sepRow) {
-                return str_replace($sepRow, \ImportSingleDocument::CSVLONGTEXTMULTIPLE, $v);
+                return str_replace($sepRow, \Anakeen\Exchange\ImportSingleDocument::CSVLONGTEXTMULTIPLE, $v);
             }, $rowList);
             $result = join($sepRow, $rowList);
         }

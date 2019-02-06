@@ -161,7 +161,7 @@ class MailtemplateAutoComplete
                     $mailTitle = $mail;
                 }
 
-                $response->appendEntry(xml_entity_encode($mailTitle), [
+                $response->appendEntry(\Anakeen\Core\Utils\Strings::xmlEncode($mailTitle), [
                     sprintf("%d (%s)", $dest->id, $dest->getTitle())
                 ]);
             }
@@ -204,7 +204,7 @@ class MailtemplateAutoComplete
                 if (($type == "") || ($v->type == $type) || ((strpos($type, '|') > 0) && (preg_match("/$pattern_type/", $v->type, $reg)))) {
                     $r = $v->id . ' (' . $v->getLabel() . ')';
 
-                    $response->appendEntry(xml_entity_encode($r), [$r]);
+                    $response->appendEntry(\Anakeen\Core\Utils\Strings::xmlEncode($r), [$r]);
                 }
             }
         }
@@ -225,7 +225,7 @@ class MailtemplateAutoComplete
         foreach ($la as $k => $v) {
             $p = $v["name"] . ' (' . $v["descr"] . ')';
 
-            $response->appendEntry(xml_entity_encode($p), [$p]);
+            $response->appendEntry(\Anakeen\Core\Utils\Strings::xmlEncode($p), [$p]);
         }
         return $response;
     }

@@ -545,14 +545,14 @@ class DocOooFormat
     {
         if (($this->cFormat != "") && (trim($avalue) != "")) {
             if ($avalue) {
-                $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
+                $oooval = strftime($this->cFormat, \Anakeen\Core\Utils\Date::stringDateToUnixTs($avalue));
             } else {
                 $oooval = $avalue;
             }
         } elseif (trim($avalue) == "") {
             $oooval = "";
         } else {
-            $oooval = stringDateToLocaleDate($avalue);
+            $oooval = \Anakeen\Core\Utils\Date::stringDateToLocaleDate($avalue);
         }
         $this->cFormat = "";
         return $oooval;
@@ -591,14 +591,14 @@ class DocOooFormat
     {
         if (($this->cFormat != "") && (trim($avalue) != "")) {
             if ($avalue) {
-                $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
+                $oooval = strftime($this->cFormat, \Anakeen\Core\Utils\Date::stringDateToUnixTs($avalue));
             } else {
                 $oooval = $avalue;
             }
         } elseif (trim($avalue) == "") {
             $oooval = "";
         } else {
-            $oooval = stringDateToLocaleDate($avalue);
+            $oooval = \Anakeen\Core\Utils\Date::stringDateToLocaleDate($avalue);
         }
         $this->cFormat = "";
         return $oooval;

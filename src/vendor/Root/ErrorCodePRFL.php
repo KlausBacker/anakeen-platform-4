@@ -90,7 +90,7 @@ class ErrorCodePRFL
     const PRFL0205 = 'Use of field "%s" ref and dynamic reference is not set for "%s" profil';
     /**
      * @errorCode user must be exists for static profil
-     * @see \Dcp\ExportDocument::setExportAccountType
+     * @see \Anakeen\Exchange\ExportDocument::setExportAccountType
      */
     const PRFL0300 = 'Export option setExportAccountType "%s" not available. Availables are : %s';
     /**

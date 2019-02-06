@@ -1,20 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 namespace Dcp\Pu;
 
-/**
- * @author  Anakeen
- * @package Dcp\Pu
- */
-
 use Anakeen\Core\ContextManager;
-use Anakeen\Core\SEManager;
-
-//require_once 'PU_testcase_dcp.php';
+use Anakeen\Exchange\ExportXmlFolder;
+use Anakeen\Exchange\ImportTar;
 
 class TestExportXml extends TestCaseDcpCommonFamily
 {
@@ -51,9 +41,9 @@ class TestExportXml extends TestCaseDcpCommonFamily
         if (!$this->dom) {
             $s = new \SearchDoc(self::$dbaccess, "TST_EXPORTFAM1");
             //print_r( $s->search());
-            $export = new \exportXmlFolder();
+            $export = new ExportXmlFolder();
 
-            $export->setOutputFormat(\exportXmlFolder::xmlFormat);
+            $export->setOutputFormat(ExportXmlFolder::xmlFormat);
             $export->useIdentificator(false);
             $export->exportFromSearch($s);
 
@@ -136,10 +126,10 @@ class TestExportXml extends TestCaseDcpCommonFamily
             $this->assertTrue(true);
             return;
         }
-        $export = new \exportXmlFolder();
+        $export = new \Anakeen\Exchange\ExportXmlFolder();
         $catchedMessage = '';
         try {
-            $export->setOutputFormat(\exportXmlFolder::xmlFormat);
+            $export->setOutputFormat(ExportXmlFolder::xmlFormat);
             $export->useIdentificator(false);
             $export->exportFromFolder($folderId);
             $this->dom = new \DOMDocument();
@@ -177,7 +167,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         include_once('Lib.FileDir.php');
 
         $this->clearSetHttpVar();
-        $oImport = new \ImportDocument();
+        $oImport = new \Anakeen\Exchange\ImportDocument();
         $oImport->importDocuments($archiveFile, false, true);
         $err = $oImport->getErrorMessage();
         if ($err) {
@@ -200,7 +190,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         exportxmlfld($folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
 
         if ($type == "X") {
-            $err = extractTar($testarchivefile, $testExtractFolder);
+            $err = ImportTar::extractTar($testarchivefile, $testExtractFolder);
             $this->assertEmpty($err, sprintf("Unexpected error while extracting archive '%s': %s", $testarchivefile, $err));
         } else {
             $testExtractFolder = $testFolder;

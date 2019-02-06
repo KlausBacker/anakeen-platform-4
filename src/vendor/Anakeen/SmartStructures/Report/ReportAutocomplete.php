@@ -32,8 +32,8 @@ class ReportAutocomplete
             if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
                 $html = sprintf(
                     "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s</span>",
-                    xml_entity_encode(self::getParentLabel($attr)),
-                    xml_entity_encode($attr->getLabel())
+                    \Anakeen\Core\Utils\Strings::xmlEncode(self::getParentLabel($attr)),
+                    \Anakeen\Core\Utils\Strings::xmlEncode($attr->getLabel())
                 );
 
                 $response->appendEntry(
@@ -108,8 +108,8 @@ class ReportAutocomplete
                 if (($name == "") || (preg_match("/$pattern/i", $attr->getLabel(), $m))) {
                     $html = sprintf(
                         "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s</span>",
-                        xml_entity_encode(self::getParentLabel($attr)),
-                        xml_entity_encode($attr->getLabel())
+                        \Anakeen\Core\Utils\Strings::xmlEncode(self::getParentLabel($attr)),
+                        \Anakeen\Core\Utils\Strings::xmlEncode($attr->getLabel())
                     );
                     $response->appendEntry(
                         $html,
@@ -122,8 +122,8 @@ class ReportAutocomplete
                     if (in_array($attr->type, $relTypes)) {
                         $html = sprintf(
                             "<b><i>%s</i></b><br/><span>&nbsp;&nbsp;%s <i>(%s)</i></span>",
-                            xml_entity_encode(self::getParentLabel($attr)),
-                            xml_entity_encode($attr->getLabel()),
+                            \Anakeen\Core\Utils\Strings::xmlEncode(self::getParentLabel($attr)),
+                            \Anakeen\Core\Utils\Strings::xmlEncode($attr->getLabel()),
                             ___("identifier", "smart report")
                         );
                         $response->appendEntry(

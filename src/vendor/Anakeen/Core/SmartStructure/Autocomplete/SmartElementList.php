@@ -67,7 +67,7 @@ class SmartElementList
 
         foreach ($tinter as $k => $v) {
             $response->appendEntry(
-                xml_entity_encode($v["title"]),
+                \Anakeen\Core\Utils\Strings::xmlEncode($v["title"]),
                 [
                     [
                         "value" => $v[$idid],

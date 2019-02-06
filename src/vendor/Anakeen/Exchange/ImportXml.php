@@ -1,26 +1,15 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Import directory with document descriptions
  *
- * @author     Anakeen
- * @version    $Id: freedom_import_dir.php,v 1.5 2007/01/19 16:23:32 eric Exp $
- * @package    FDL
- * @subpackage GED
- */
-/**
  */
 
-namespace Dcp\Core;
+namespace Anakeen\Exchange;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\SmartElement;
-
-include_once("FDL/import_tar.php");
+use Anakeen\Exception;
 
 class ImportXml
 {
@@ -314,7 +303,7 @@ class ImportXml
         }
 
         //$log = csvAddDoc($dbaccess, $tdoc, $importdirid, $analyze, $splitdir, $policy, $tkey, $prevalues, $tord);
-        $o = new \ImportSingleDocument();
+        $o = new \Anakeen\Exchange\ImportSingleDocument();
         if ($tkey) {
             $o->setKey($tkey);
         }
