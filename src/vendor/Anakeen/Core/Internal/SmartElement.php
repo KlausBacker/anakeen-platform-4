@@ -19,7 +19,6 @@ define("DELVALUE", 'DEL??');
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 
-require_once __DIR__ . "/../../FDL/LegacyDocManager.php";
 
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;

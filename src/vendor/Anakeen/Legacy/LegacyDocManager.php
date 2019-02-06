@@ -213,14 +213,7 @@ function getTDoc($dbaccess, $id, $sqlfilters = array(), $result = array())
         $sqlt1 = microtime();
     } // to test delay of request
     $result = pg_query($dbid, $sql);
-    if ($SQLDEBUG) {
-        global $TSQLDELAY;
-        $SQLDELAY += microtime_diff(microtime(), $sqlt1); // to test delay of request
-        $TSQLDELAY[] = array(
-            "t" => sprintf("%.04f", microtime_diff(microtime(), $sqlt1)),
-            "s" => $sql
-        );
-    }
+
     if (($result) && (pg_num_rows($result) > 0)) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
 

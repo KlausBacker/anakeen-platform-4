@@ -174,9 +174,9 @@ if ($to) {
     $body = new \Dcp\Mail\Body(file_get_contents($logfile), (($htmlmode == 'yes') ? 'text/html' : 'text/plain'));
     $message->setBody($body);
 
-    $from = getMailAddr(ContextManager::getCurrentUser()->id);
+    $from = ContextManager::getCurrentUser()->getMail();
     if ($from == "") {
-        $from = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
+        $from = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
     }
     if ($from == "") {
         $from = ContextManager::getCurrentUser()->login . '@' . php_uname('n');

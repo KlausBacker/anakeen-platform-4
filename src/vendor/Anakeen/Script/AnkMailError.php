@@ -1,10 +1,10 @@
 <?php
 
-namespace Dcp;
+namespace Anakeen\Script;
 
 use Anakeen\Core\ContextManager;
 
-class WSHMailError
+class AnkMailError
 {
     public $expand = array();
 
@@ -16,6 +16,7 @@ class WSHMailError
 
     /**
      * WSHError constructor.
+     *
      * @param $msg
      */
     public function __construct($msg)
@@ -41,6 +42,7 @@ class WSHMailError
 
     /**
      * @param $str
+     *
      * @return string
      */
     public function expand($str)
@@ -77,7 +79,7 @@ class WSHMailError
     public function autosend()
     {
         $user = \Anakeen\Core\ContextManager::getCurrentUser();
-        $from = (!empty($user) ? getMailAddr($user->id) : '');
+        $from = (!empty($user) ? $user->getMail() : '');
         if ($from == '') {
             $from = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
         }
@@ -110,8 +112,10 @@ class WSHMailError
 
     /**
      * Add a prefix at beginning of each lines
+     *
      * @param string $prefix
      * @param string $msg
+     *
      * @return string
      */
     public function prefixize($prefix, $msg)

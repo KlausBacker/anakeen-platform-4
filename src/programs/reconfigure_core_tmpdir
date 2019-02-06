@@ -19,8 +19,6 @@ if ($WIFF_CONTEXT_ROOT === false) {
 
 set_include_path(get_include_path() . PATH_SEPARATOR . $WIFF_CONTEXT_ROOT . PATH_SEPARATOR . "$WIFF_ROOT/include");
 
-require_once ('WHAT/Lib.Common.php');
-require_once ('WHAT/Class.Log.php');
 
 main($WIFF_CONTEXT_ROOT, $argv);
 

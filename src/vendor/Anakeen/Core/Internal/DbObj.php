@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace Anakeen\Core\Internal;
 
@@ -769,11 +769,11 @@ class DbObj
         }
         $sqlt1 = '';
         if ($SQLDEBUG) {
-            $sqlt1 = microtime();
+            $sqlt1 = microtime(true);
         } // to test delay of request
         $this->initDbid();
 
-       // error_log("SQL>".$sql."\n".Debug::getDebugStackString(2, 3));
+        // error_log("SQL>".$sql."\n".Debug::getDebugStackString(2, 3));
 
         $this->msg_err = $this->err_code = '';
         if ($prepare) {
@@ -843,9 +843,9 @@ class DbObj
 
         if ($SQLDEBUG) {
             global $TSQLDELAY;
-            $SQLDELAY += microtime_diff(microtime(), $sqlt1); // to test delay of request
+            $SQLDELAY += (microtime(true) - $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
-                "t" => sprintf("%.04f", microtime_diff(microtime(), $sqlt1)),
+                "t" => sprintf("%.04f", (microtime(true) - $sqlt1)),
                 "s" => str_replace(array(
                     "from",
                     'where'
@@ -897,6 +897,7 @@ class DbObj
         if (self::$sqlStrict) {
             throw new \Dcp\Db\Exception($err);
         }
-        logDebugStack(2, $err);
+
+        LogManager::debug($err);
     }
 }

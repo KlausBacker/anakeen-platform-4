@@ -328,7 +328,6 @@ class Message
     }
     private function _sendWithPHPMailer()
     {
-        include_once("WHAT/Lib.Common.php");
         $lcConfig = ContextManager::getLocaleConfig();
         $mail = new PHPMailer();
         /*

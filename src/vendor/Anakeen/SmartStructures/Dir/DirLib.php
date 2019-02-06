@@ -6,7 +6,7 @@ use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\LogManager;
 
-include_once("FDL/LegacyDocManager.php");
+include_once("Legacy/LegacyDocManager.php");
 
 class DirLib
 {

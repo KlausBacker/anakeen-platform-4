@@ -245,7 +245,7 @@ class ContextManager
      *
      * @return \Anakeen\Core\Account|null
      */
-    public static function getCurrentUser(bool $original = false)
+    public static function getCurrentUser(bool $original = false) : ?\Anakeen\Core\Account
     {
         if (self::$coreUser) {
             if ($original === true && self::$originalUser) {

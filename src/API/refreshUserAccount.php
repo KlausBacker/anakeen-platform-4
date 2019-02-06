@@ -47,7 +47,7 @@ if ($query->nb > 0) {
         $reste--;
         // search already created card
         $title = strtolower($v["lastname"] . " " . $v["firstname"]);
-        $mail = getMailAddr($v["id"]);
+        $mail = $v["mail"];
         // first in IUSER
         unset($tdoc);
         $udoc = false;
