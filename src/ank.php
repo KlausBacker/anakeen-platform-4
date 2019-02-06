@@ -11,6 +11,9 @@ chdir(__DIR__);
 require __DIR__ . '/vendor/Anakeen/autoload.php';
 require __DIR__ . '/vendor/Anakeen/WHAT/Lib.Prefix.php';
 
+// TODO To delete when legacy functions will have disappeared
+require __DIR__ . "/vendor/Anakeen/Legacy/LegacyDocManager.php";
+
 $programName = array_shift($argv);
 Anakeen\Script\ShellManager::recordArgs($argv);
 
