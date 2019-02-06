@@ -23,7 +23,7 @@ class HubConfigurationIdentityBehavior extends \SmartStructure\Hubconfigurations
     {
         return [
             // Name of the Vue.js component
-            "componentName" => "ank-identity",
+            "name" => "ank-identity",
 
             // Properties to use for the component
             "props" => [

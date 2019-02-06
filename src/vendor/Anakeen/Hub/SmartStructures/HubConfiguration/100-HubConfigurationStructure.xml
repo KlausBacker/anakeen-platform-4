@@ -33,6 +33,8 @@
                     <smart:field-enum name="hub_activated" label="Element is activated" relation="Yes_no_enum"
                                       access="ReadWrite"/>
                     <smart:field-int name="hub_activated_order" label="Priority" access="ReadWrite"/>
+                    <smart:field-enum name="hub_selectable" label="Element is selectable" relation="Yes_no_enum"
+                                      access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
             <smart:field-set name="hub_component_tab" type="tab" label="Element parameters" access="ReadWrite">
