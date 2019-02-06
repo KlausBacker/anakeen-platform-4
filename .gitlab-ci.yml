@@ -9,7 +9,7 @@ stages:
   - autotest
   - package
   - integration
-  -
+
 autotest:
   stage: autotest
   tags:
