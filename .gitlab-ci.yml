@@ -6,10 +6,10 @@ before_script:
   - GIT_DIR=.cibuild.tmp/.git git archive --format=tar master | tar -C .cibuild -xvf -
 
 stages:
-  - integration
   - autotest
   - package
-
+  - integration
+  -
 autotest:
   stage: autotest
   tags:
@@ -26,6 +26,10 @@ autotest:
 
 integration:
   stage: integration
+  variables:
+    CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_INTEGRATION_ANAKEEN_APP_REGISTRY_BUCKET"
+    CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_INTEGRATION_ANAKEEN_APP_REGISTRY_URL"
+    CIBUILD_ANAKEEN_NPM_REGISTRY: "$CIBUILD_INTEGRATION_ANAKEEN_NPM_REGISTRY"
   tags:
     - a4ppm
   script:
@@ -41,9 +45,13 @@ integration:
 
 package:
   stage: package
+  variables:
+    CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_BUCKET"
+    CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_URL"
+    CIBUILD_ANAKEEN_NPM_REGISTRY: "$CIBUILD_STABLE_ANAKEEN_NPM_REGISTRY"
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target package
+    - ./.cibuild/cibuild.sh --target package --publish
   only:
     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/Modules/anakeen-hub
