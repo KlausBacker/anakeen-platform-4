@@ -125,10 +125,10 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
     
-    PGSERVICE="$pgservice_core" pgExecuteSqlFile "$wpub/vendor/Anakeen/FDL/fdl.sql"
+    PGSERVICE="$pgservice_core" pgExecuteSqlFile "$wpub/vendor/Anakeen/Database/common_functions.sql"
     RET=$?
     if [ $RET -ne 0 ]; then
-	echo "Error executing sql file \"$wpub/vendor/Anakeen/FDL/fdl.sql\""
+	echo "Error executing sql file \"$wpub/vendor/Anakeen/Database/common_functions.sql\""
 	exit $RET
     fi
 
