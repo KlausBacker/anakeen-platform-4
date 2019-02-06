@@ -3,6 +3,7 @@ const { getModuleInfo } = require("../utils/moduleInfo");
 const signale = require("signale");
 const fs = require("fs");
 const path = require("path");
+
 const inquirer = require("inquirer");
 const {
   createWorkflowInstance,
@@ -116,9 +117,9 @@ const builder = {
       return arg;
     }
   },
-  modelName: {
-    description: "workflow model name (empty to create a new model)",
-    alias: "m",
+  smartStructureName: {
+    description: "workflow smart structure name",
+    alias: "n",
     default: "",
     type: "string",
     coerce: arg => {
@@ -131,21 +132,6 @@ const builder = {
             arg
         );
       }
-      return arg;
-    }
-  },
-  name: {
-    description: "name of the workflow model",
-    alias: "n",
-    type: "string",
-    coerce: arg => {
-      if (!checkSmartStructureName(arg)) {
-        throw new Error(
-          "Workflow name must use only uppercase letter and numbers (_ authorized) , the current value is not valid : " +
-            arg
-        );
-      }
-      wflOptions.name = arg;
       return arg;
     }
   },
@@ -167,8 +153,9 @@ const builder = {
       return arg;
     }
   },
-  instanceName: {
-    description: "name of the workflow instance",
+  smartElementName: {
+    description: "workflow smart element name",
+    alias: "e",
     type: "string",
     coerce: arg => {
       if (!checkSmartStructureName(arg)) {
@@ -227,10 +214,10 @@ const builder = {
     default: true,
     type: "boolean"
   },
-  insertIntoInfo: {
-    description: "Insert into info.xml",
-    default: true,
-    type: "boolean"
+  noCreateSmartStructure: {
+    description: "disable the creation of the SS",
+    type: "boolean",
+    default: false
   }
 };
 exports.builder = builder;
@@ -292,20 +279,16 @@ exports.handler = async argv => {
   }
   try {
     signale.time("createWorkflow");
-    let task;
-    let subtask = Promise.resolve();
-    if (argv.modelName) {
-      createWorkflowInstance(argv);
-      task = gulp.task("createWorkflowInstance");
-    } else {
+    //Check if the model already exist
+    let firstTask = Promise.resolve();
+    if (!argv.noCreateSmartStructure) {
       createWorkflowModel(argv);
-      task = gulp.task("createWorkflowModel");
-      createWorkflowInstance(Object.assign({}, argv, { modelName: argv.name }));
-      subtask = gulp.task("createWorkflowInstance");
+      firstTask = gulp.task("createWorkflowModel")();
     }
-    task()
+    firstTask
       .then(() => {
-        return subtask;
+        createWorkflowInstance(argv);
+        return gulp.task("createWorkflowInstance")();
       })
       .then(() => {
         signale.timeEnd("createWorkflow");
