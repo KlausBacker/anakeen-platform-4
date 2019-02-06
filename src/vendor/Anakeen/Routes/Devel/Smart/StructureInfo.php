@@ -11,7 +11,7 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\Lib\DocumentDataFormatter;
-use Dcp\Ui\RenderConfigManager;
+use Anakeen\Ui\RenderConfigManager;
 
 /**
  * Get Structure info
