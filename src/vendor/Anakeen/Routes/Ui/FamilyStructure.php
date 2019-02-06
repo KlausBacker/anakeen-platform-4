@@ -48,7 +48,7 @@ class FamilyStructure extends \Anakeen\Routes\Core\DocumentData
      * @param $id
      *
      * @return string
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function extractEtagDataFromId($id)
     {

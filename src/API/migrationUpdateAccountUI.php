@@ -9,6 +9,6 @@ try {
     \Anakeen\Core\DbManager::query("update family.iuser set cvid=(select id from family.cvdoc where name='CV_IUSER_ACCOUNT');");
     \Anakeen\Core\DbManager::query("update family.igroup set cvid=(select id from family.cvdoc where name='CV_GROUP_ACCOUNT');");
     echo "Migration done !\n";
-} catch (\Dcp\Db\Exception $e) {
+} catch (\Anakeen\Database\Exception $e) {
     echo "Unable to migrate ".$e->getMessage()."\n";
 }
