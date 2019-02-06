@@ -400,7 +400,7 @@ class ExportAccounts
             ));
         }
 
-        $export = new \Dcp\ExportXmlDocument();
+        $export = new \Anakeen\Exchange\ExportXmlDocument();
         $export->setStructureAttributes(true);
         $export->setIncludeSchemaReference(false);
 

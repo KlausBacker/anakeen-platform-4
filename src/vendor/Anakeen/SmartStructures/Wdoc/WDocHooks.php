@@ -214,7 +214,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         if ($this->graphModelName) {
             $label = ___($transitionId, $this->graphModelName . ":transition");
             if ($label === $transitionId) {
-                $label = $this->transitions[$transitionId]["label"];
+                $label = $this->transitions[$transitionId]["label"] ?? '';
                 if (!$label) {
                     $label = $transitionId;
                 }

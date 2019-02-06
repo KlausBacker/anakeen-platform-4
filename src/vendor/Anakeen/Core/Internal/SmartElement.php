@@ -7054,7 +7054,7 @@ create unique index i_docir on doc(initid, revision);";
         $exportAttributes = array()
     ) {
         try {
-            $exd = new \Dcp\ExportXmlDocument();
+            $exd = new \Anakeen\Exchange\ExportXmlDocument();
             $exd->setDocument($this);
             $exd->setExportFiles($withfile);
             $exd->setExportDocumentNumericIdentiers($wident);

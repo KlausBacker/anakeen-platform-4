@@ -605,7 +605,7 @@ class ExportCollection
             throw new Exception("EXPC0006", $foutdir);
         }
 
-        $exd = new \Dcp\ExportXmlDocument();
+        $exd = new \Anakeen\Exchange\ExportXmlDocument();
 
         $exd->setExportFiles($this->exportFiles);
         $exd->setExportDocumentNumericIdentiers($this->exportDocumentNumericIdentiers);

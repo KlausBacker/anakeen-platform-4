@@ -4,12 +4,13 @@
  * @package FDL
 */
 
-namespace Dcp;
+namespace Anakeen\Exchange;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\Utils\Date;
+use Anakeen\Exception;
 
 class ExportXmlDocument
 {
@@ -262,7 +263,7 @@ class ExportXmlDocument
                                 );
                             }
                         } else {
-                            return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $attribute->id, $vid, $mime, $name, $attribute->id);
+                            return sprintf('<!-- file not found --><%s vid="%s" mime="%s" title="%s"/>', $attribute->id, $vid, $mime, $name);
                         }
                     } else {
                         return sprintf('<%s vid="%s" mime="%s" href="%s" title="%s"/>', $attribute->id, $vid, $mime, $href, $name);

@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
-use Dcp\ExportXmlDocument;
+use Anakeen\Exchange\ExportXmlDocument;
 
 class DocumentDataXML extends DocumentData
 {
