@@ -6,9 +6,9 @@ before_script:
   - GIT_DIR=.cibuild.tmp/.git git archive --format=tar master | tar -C .cibuild -xvf -
 
 stages:
+  - integration
   - autotest
   - package
-  - integration
 
 autotest:
   stage: autotest
