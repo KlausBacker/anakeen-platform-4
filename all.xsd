@@ -10,4 +10,6 @@
     <import schemaLocation="./xsd/app/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/app/1.0"/>
     <import schemaLocation="./xsd/task/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/task/1.0"/>
     <import schemaLocation="./xsd/account/1.0/config.xsd"  namespace="https://platform.anakeen.com/4/schemas/account/1.0"/>
+    <import schemaLocation="./xsd/compose/1.0/compose.xsd" namespace="https://platform.anakeen.com/4/schemas/compose/1.0"/>
+    <import schemaLocation="./xsd/compose-lock/1.0/compose-lock.xsd" namespace="https://platform.anakeen.com/4/schemas/compose-lock/1.0"/>
 </schema>
