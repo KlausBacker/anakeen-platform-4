@@ -6,8 +6,6 @@
 
 namespace Anakeen\Exchange;
 
-require_once 'FDL/exportxmlfld.php';
-
 class ExportXmlFolder
 {
     const zipFormat = 'X';
@@ -93,7 +91,7 @@ class ExportXmlFolder
     public function exportFromSearch(\SearchDoc & $search, $outputFile = '')
     {
         $this->setOutputFile($outputFile);
-        exportxmlfld($folder = "0", $famid = "", $search, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
+        \Anakeen\Exchange\ExportXml::exportxmlfld($folder = "0", $famid = "", $search, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
     /**
      * export documents from search object
@@ -104,6 +102,6 @@ class ExportXmlFolder
     public function exportFromFolder($folderId, $outputFile = '')
     {
         $this->setOutputFile($outputFile);
-        exportxmlfld($folderId, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
+        \Anakeen\Exchange\ExportXml::exportxmlfld($folderId, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
 }

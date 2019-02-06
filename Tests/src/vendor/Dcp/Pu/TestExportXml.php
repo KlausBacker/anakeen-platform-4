@@ -161,8 +161,6 @@ class TestExportXml extends TestCaseDcpCommonFamily
      */
     public function testExportImageXmlZip($archiveFile, $needles, $type)
     {
-
-        include_once('FDL/exportfld.php');
         include_once("WHAT/Lib.Http.php");
         include_once('Lib.FileDir.php');
 
@@ -187,7 +185,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
         }
         SetHttpVar("wfile", "Y");
 
-        exportxmlfld($folderId, $famid, null, $testarchivefile, $type, "Y", null, false);
+        \Anakeen\Exchange\ExportXml::exportxmlfld($folderId, $famid, null, $testarchivefile, $type, "Y", false);
 
         if ($type == "X") {
             $err = ImportTar::extractTar($testarchivefile, $testExtractFolder);
