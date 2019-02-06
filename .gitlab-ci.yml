@@ -27,6 +27,7 @@ autotest:
     when: always
   only:
     - merge_requests
+    - web
 
 integration:
   stage: integration
