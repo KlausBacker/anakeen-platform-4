@@ -42,7 +42,7 @@ class DSearchHooks extends \SmartStructure\Search
      *
      * @return array|bool|string
      * @throws Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Exception
      */
     public function computeQuery($keyword = "", $famid = -1, $latest = "yes", $sensitive = false, $dirid = -1, $subfolder = true, $full = false)
@@ -358,7 +358,7 @@ class DSearchHooks extends \SmartStructure\Search
      *
      * @return array|string empty string if valid or error message
      * @throws Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function isValidCondition($attr, $op, $value)
     {
@@ -438,7 +438,7 @@ class DSearchHooks extends \SmartStructure\Search
      *
      * @return string the sql query part
      * @throws Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getSqlCond($col, $op, $val = "", $val2 = "", &$err = "", $validateCond = false)
     {
@@ -751,7 +751,7 @@ class DSearchHooks extends \SmartStructure\Search
      *
      * @return string
      * @throws Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Exception
      */
     public function getSqlDetailFilter($validateCond = false)

@@ -35,7 +35,7 @@ class TestPgArray extends TestCaseDcp
         try {
             $values = Postgres::stringToArray($pgValue);
             $this->assertTrue(false, sprintf("Error must occurs: %s", print_r($values, true)));
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
             $this->assertEquals($errorCode, $e->getDcpCode(), "Not expected error");
         }
     }

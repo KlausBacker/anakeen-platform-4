@@ -5,7 +5,7 @@ namespace Anakeen\Core\SmartStructure\Autocomplete;
 use Anakeen\Core\SEManager;
 use Anakeen\SmartAutocompleteRequest;
 use Anakeen\SmartAutocompleteResponse;
-use Dcp\Db\Exception;
+use Anakeen\Database\Exception;
 
 class SmartStructureList
 {
@@ -18,7 +18,7 @@ class SmartStructureList
      * @param SmartAutocompleteResponse $response
      * @param                           $args
      * @return SmartAutocompleteResponse
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      */
     public static function getSmartStructures(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args): SmartAutocompleteResponse

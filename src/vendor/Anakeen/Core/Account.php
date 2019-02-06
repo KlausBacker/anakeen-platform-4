@@ -905,7 +905,7 @@ union
      *
      * @param array $r
      * @return array of account array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getRUsersList($id, $r = array())
     {
@@ -1155,7 +1155,7 @@ union
      * @param int $uid user identifier
      * @return bool
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function isMember($uid)
     {

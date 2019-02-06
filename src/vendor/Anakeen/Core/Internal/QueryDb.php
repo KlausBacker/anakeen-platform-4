@@ -189,7 +189,7 @@ class QueryDb
      * @param string $res_type
      * @param string $p_query
      * @return array|bool|\DbObjectList|resource|string
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function query($start = 0, $slice = 0, $res_type = "LIST", $p_query = "")
     {
@@ -198,7 +198,7 @@ class QueryDb
         $err = $this->basic_elem->query($query, 0, true);
         if ($res_type == "ITER") {
             if ($err) {
-                throw new \Dcp\Db\Exception("query fail : " . $err);
+                throw new \Anakeen\Database\Exception("query fail : " . $err);
             }
             return new \DbObjectList($this->dbaccess, $this->basic_elem->res, $this->class);
         }

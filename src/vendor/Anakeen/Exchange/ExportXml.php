@@ -19,7 +19,7 @@ class ExportXml
      *
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
      * @global string   $fldid      Http var : folder identifier to export
@@ -299,7 +299,7 @@ EOF;
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      * @global string $wprof                       Http var : (Y|N) if Y export associated profil also
      * @global string $wfile                       Http var : (Y|N) if Y export attached file export format will be tgz

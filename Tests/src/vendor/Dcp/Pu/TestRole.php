@@ -77,7 +77,7 @@ class TestRole extends TestCaseDcpCommonFamily
      * @param       $login
      * @param array $expectedRoles
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function testDirectRole($login, array $expectedRoles)
     {

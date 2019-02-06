@@ -366,7 +366,7 @@ EOF;
     {
         try {
             DbManager::savePoint($point);
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
             throw new VaultAnalyzerException(sprintf("Error in %s: %s", __METHOD__, $e->getMessage()));
         }
     }
@@ -375,7 +375,7 @@ EOF;
     {
         try {
             DbManager::commitPoint($point);
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
             throw new VaultAnalyzerException(sprintf("Error in %s: %s", __METHOD__, $e->getMessage()));
         }
     }
@@ -384,7 +384,7 @@ EOF;
     {
         try {
             DbManager::rollbackPoint($point);
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
             throw new VaultAnalyzerException(sprintf("Error in %s: %s", __METHOD__, $e->getMessage()));
         }
     }

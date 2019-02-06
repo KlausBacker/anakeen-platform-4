@@ -202,7 +202,7 @@ class ExportAccounts
     /**
      * Reorder group bu depth to avoid unreferenced groups
      *
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function reorderGroups()
     {
@@ -651,7 +651,7 @@ class ExportAccounts
      *
      * @param \Anakeen\Core\Account $user
      *
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function addUserAccount(\Anakeen\Core\Account $user)
     {

@@ -95,7 +95,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
      * get all direct group document identificators of the isuser
      *
      * @return array of group document id, the index of array is the system identifier
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getUserGroups()
     {
@@ -117,7 +117,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
      * @param string $gid systeme identifier group or users
      *
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function getAscendantGroup($gid)
     {
@@ -142,7 +142,7 @@ class IUserHooks extends \Anakeen\SmartElement implements \Anakeen\Core\IMailRec
      * get all direct group and parent group document identificators of the isuser
      *
      * @return int[] of group document id the index of array is the system identifier
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getAllUserGroups()
     {

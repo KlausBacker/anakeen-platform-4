@@ -70,7 +70,7 @@ class DocumentData
      * @return \Slim\Http\Response
      * @throws Exception
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -222,7 +222,7 @@ class DocumentData
      * @param int $id
      *
      * @return string
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected static function getDocumentEtag($id)
     {

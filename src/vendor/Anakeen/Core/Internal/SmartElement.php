@@ -4579,7 +4579,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param int    $uid         system user identifier
      *
      * @return bool|\DocUTag
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     final public function getUTag($tag, $allrevision = true, $uid = null)
     {
@@ -5792,7 +5792,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param bool   $force
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function rawValueToArray($v, bool $force = false)
     {

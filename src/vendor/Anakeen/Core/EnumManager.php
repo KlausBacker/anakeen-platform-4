@@ -20,7 +20,7 @@ class EnumManager
      * @param string $name           enum set reference
      * @param bool   $returnDisabled if false disabled enum are not returned
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getEnums($name, $returnDisabled = true)
     {
@@ -184,7 +184,7 @@ class EnumManager
      * @param string $enumid         the key of enumerate (if no parameter all labels are returned
      * @param bool   $returnDisabled if false disabled enum are not returned
      * @return array|string|null
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getEnumItem($enumName, $enumid, $returnDisabled = true)
     {

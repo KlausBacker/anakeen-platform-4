@@ -757,7 +757,7 @@ class DbObj
      * @param int    $lvl     level set to 0 (internal purpose only)
      * @param bool   $prepare set to true to use pg_prepare, restrict to use single query
      *
-     * @throw Dcp\Db\Exception if query fail
+     * @throw Anakeen\Database\Exception if query fail
      * @return string error message if not strict mode
      */
     public function query($sql, $lvl = 0, $prepare = false)
@@ -895,7 +895,7 @@ class DbObj
             $err = $this->msg_err . "\n" . $moreerr . "\n";
         }
         if (self::$sqlStrict) {
-            throw new \Dcp\Db\Exception($err);
+            throw new \Anakeen\Database\Exception($err);
         }
 
         LogManager::debug($err);

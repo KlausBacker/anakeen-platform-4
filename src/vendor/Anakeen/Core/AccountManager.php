@@ -35,7 +35,7 @@ class AccountManager
      * Return system id from SmartElement Id
      * @param int $fid
      * @return int
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getIdFromSEId(int $fid): int
     {

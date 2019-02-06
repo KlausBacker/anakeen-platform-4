@@ -347,7 +347,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $c = -2;
         try {
             $c = $s->onlyCount();
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
         }
 
         $err = $s->getError();
@@ -379,7 +379,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $c = -2;
         try {
             $c = $s->onlyCount();
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
         }
 
 
@@ -410,7 +410,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $c = null;
         try {
             $c = $s->onlyCount();
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
         }
         $err = $s->getError();
         $this->assertContains($error, $err, sprintf("No good error %s", print_r($s->getSearchInfo(), true)));
@@ -475,7 +475,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $exceptionError = '';
         try {
             $s->onlyCount();
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
             $exceptionError = $e->getMessage();
         }
         $getError = $s->getError();
@@ -507,7 +507,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $exceptionError = '';
         try {
             $s->onlyCount();
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
             $exceptionError = $e->getMessage();
         }
 
@@ -551,7 +551,7 @@ class TestSearch extends TestCaseDcpCommonFamily
             }
             try {
                 $count = $s->onlyCount();
-            } catch (\Dcp\Db\Exception $e) {
+            } catch (\Anakeen\Database\Exception $e) {
             }
             $this->assertEquals(
                 $count,
@@ -923,7 +923,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      *
      * @param $docName
      * @param $expectedAttr
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      * @dataProvider dataSearchGetValue
      */
@@ -968,7 +968,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      *
      * @param $docName
      * @param $expectedAttr
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      * @dataProvider dataSearchGetValue
      */

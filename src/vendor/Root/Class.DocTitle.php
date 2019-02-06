@@ -216,7 +216,7 @@ class DocTitle
      * @param array  $info
      *
      * @return bool|null
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getTitle($docid, $latest = true, $docrevOption = "", array & $info = array())
     {

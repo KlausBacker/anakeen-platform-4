@@ -185,7 +185,7 @@ class DocumentAccess
      *
      * @return string
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function setProfil($profid, $fromdocidvalues = null)
     {
@@ -278,7 +278,7 @@ class DocumentAccess
      *
      * @return void
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      */
     public function recomputeProfiledDocument()
@@ -334,7 +334,7 @@ class DocumentAccess
      *
      * @return string error message
      * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function computeDProfil($dprofid = 0, $fromdocidvalues = null)
     {
@@ -504,7 +504,7 @@ class DocumentAccess
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function computeDProfilExt($dprofid, $fromdocidvalues = null)
     {

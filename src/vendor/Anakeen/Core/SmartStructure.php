@@ -239,7 +239,7 @@ create unique index idx_idfam on docfam(id);";
      * @param string $def default value if parameter not found or if it is null
      *
      * @return string parameter value
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     final public function getParameterRawValue($idp, $def = "")
     {
@@ -262,7 +262,7 @@ create unique index idx_idfam on docfam(id);";
      *
      * @see \Anakeen\Core\Internal\SmartElement::getParameterFamilyValue_
      * @return bool|string
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function getParameterFamilyRawValue($idp, $def)
     {
@@ -273,7 +273,7 @@ create unique index idx_idfam on docfam(id);";
      * return all family parameter - seach in parents if parameter value is null
      *
      * @return array string parameter value
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getParams()
     {
@@ -300,7 +300,7 @@ create unique index idx_idfam on docfam(id);";
      * @param int    $index  rank in case of multiple value
      *
      * @return array|string the list of parameter values
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getParamTValue($idAttr, $def = "", $index = -1)
     {
@@ -463,7 +463,7 @@ create unique index idx_idfam on docfam(id);";
      * @param string $def default value if parameter not found or if it is null
      *
      * @return string default value
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getDefValue($idp, $def = "")
     {
@@ -477,7 +477,7 @@ create unique index idx_idfam on docfam(id);";
      * search in parents families if value is null
      *
      * @return array string default value
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getDefValues()
     {
@@ -533,7 +533,7 @@ create unique index idx_idfam on docfam(id);";
      * @param string $def default value if parameter not found or if it is null
      *
      * @return string default value
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getXValue($X, $idp, $def = "")
     {
@@ -572,7 +572,7 @@ create unique index idx_idfam on docfam(id);";
      * @param string $X column name
      *
      * @return array string default value
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getXValues($X)
     {

@@ -8,7 +8,7 @@ class Postgres
      * convert PG array literal to PHP array
      * limit to 2-dimensionnals array
      * @param string $text
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @return array
      */
     public static function stringToArray(string $text): array
@@ -21,7 +21,7 @@ class Postgres
 
         $ct = strlen($text);
         if ($text[0] !== '{' || $text[$ct - 1] !== '}') {
-            throw new \Dcp\Db\Exception("DB0200", $text);
+            throw new \Anakeen\Database\Exception("DB0200", $text);
         }
 
         $escape = false;
@@ -39,7 +39,7 @@ class Postgres
             $c = $text[$i];
             switch ($c) {
                 case "\x00":
-                    throw new \Dcp\Db\Exception("DB0209", $text);
+                    throw new \Anakeen\Database\Exception("DB0209", $text);
                     break;
 
                 case '{':
@@ -50,7 +50,7 @@ class Postgres
                         if (!$quote) {
                             $dimLevel++;
                             if ($dimLevel > 1) {
-                                throw new \Dcp\Db\Exception("DB0207", $text);
+                                throw new \Anakeen\Database\Exception("DB0207", $text);
                             }
                             $hasLevel = true;
                             $word = '';
@@ -72,7 +72,7 @@ class Postgres
                             $endQuote = true;
                         } else {
                             if (trim($word, $isspace) != "") {
-                                throw new \Dcp\Db\Exception("DB0202", $text);
+                                throw new \Anakeen\Database\Exception("DB0202", $text);
                             }
                             $word = ''; // begin new word
                             $quote = true;
@@ -100,7 +100,7 @@ class Postgres
                             $endQuote = false;
                             if (!$hasLevel) {
                                 if (!$wordHasBegin) {
-                                    throw new \Dcp\Db\Exception("DB0208", $text);
+                                    throw new \Anakeen\Database\Exception("DB0208", $text);
                                 }
                                 $level[$index++] = $word;
                             } else {
@@ -112,7 +112,7 @@ class Postgres
                                     $level[$index++] = null;
                                 } else {
                                     if ($word) {
-                                        throw new \Dcp\Db\Exception("DB0206", $text);
+                                        throw new \Anakeen\Database\Exception("DB0206", $text);
                                     }
                                 }
                             }
@@ -162,20 +162,20 @@ class Postgres
                         $escape = false;
                     }
                     if ($endQuote) {
-                        throw new \Dcp\Db\Exception("DB0201", $text);
+                        throw new \Anakeen\Database\Exception("DB0201", $text);
                     }
                     if ($noCharAllowed) {
-                        throw new \Dcp\Db\Exception("DB0205", $text);
+                        throw new \Anakeen\Database\Exception("DB0205", $text);
                     }
 
                     $word .= $c;
             }
         }
         if ($quote) {
-            throw new \Dcp\Db\Exception("DB0203", $text);
+            throw new \Anakeen\Database\Exception("DB0203", $text);
         }
         if ($dimLevel >= 0) {
-            throw new \Dcp\Db\Exception("DB0204", $text);
+            throw new \Anakeen\Database\Exception("DB0204", $text);
         }
         return $level;
     }
@@ -222,7 +222,7 @@ class Postgres
      * {56,32,87} => [56,32,87]
      * @param string $text
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function stringToFlatArray(string $text): array
     {

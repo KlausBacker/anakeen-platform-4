@@ -74,7 +74,7 @@ function new_Doc($dbaccess, $id = '', $latest = false)
     if (!$doc) {
         $doc = new \Anakeen\SmartElement($dbaccess);
     } else {
-        if (count(\Dcp\Core\SharedDocuments::getKeys()) < \Dcp\Core\SharedDocuments::getLimit()) {
+        if (count(\Anakeen\Legacy\SharedDocuments::getKeys()) < \Anakeen\Legacy\SharedDocuments::getLimit()) {
             SEManager::cache()->addDocument($doc);
 
             // var_dump([memory_get_usage(), count(\Dcp\Core\SharedDocuments::getKeys()),  \Dcp\Core\SharedDocuments::getLimit()]);
@@ -627,7 +627,7 @@ function createAutoFolder(&$doc)
  *                                         if no results and $singlecolumn is true then $results is false
  * @param bool               $useStrict    set to true to force exception or false to force no exception, if null use global parameter
  *
- * @throws Dcp\Db\Exception
+ * @throws Anakeen\Database\Exception
  * @return string error message. Empty message if no errors (when strict mode is not enable)
  */
 function simpleQuery(
@@ -641,7 +641,7 @@ function simpleQuery(
     static $sqlStrict = null;
     try {
         \Anakeen\Core\DbManager::query($query, $result, $singlecolumn, $singleresult);
-    } catch (\Dcp\Db\Exception $e) {
+    } catch (\Anakeen\Database\Exception $e) {
         if ($useStrict !== false) {
             throw $e;
         }
