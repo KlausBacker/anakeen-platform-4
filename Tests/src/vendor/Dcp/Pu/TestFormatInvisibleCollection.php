@@ -85,7 +85,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $this->sudo($login);
         
-        $outFile = tempnam(getTmpDir(), 'tstexport');
+        $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
@@ -111,7 +111,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $this->sudo($login);
         
-        $outFile = tempnam(getTmpDir(), 'tstexport');
+        $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
@@ -157,7 +157,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     public function testExportXmlSingle($login, array $expectedData)
     {
         $this->sudo($login);
-        $outFile = tempnam(getTmpDir(), 'tstexport');
+        $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();

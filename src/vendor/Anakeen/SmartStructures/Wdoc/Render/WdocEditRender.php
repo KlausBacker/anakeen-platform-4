@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Wdoc\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 
 class WdocEditRender extends DefaultConfigEditRender
 {

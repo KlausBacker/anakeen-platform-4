@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Wdoc\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 
 class WdocViewRender extends DefaultConfigViewRender
 {
