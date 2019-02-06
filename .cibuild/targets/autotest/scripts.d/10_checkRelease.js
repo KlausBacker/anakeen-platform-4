@@ -12,8 +12,6 @@ const readPackage = async () => {
   return JSON.parse(packageJson);
 };
 
-const mode = process.env.CI_MERGE_REQUEST_TARGET_BRANCH_NAME === "master" ? "integration" : "stable";
-
 readPackage()
   .then(async content => {
     const {stderr, stdout} = await exec(`yarn --json info ${content.name} versions`);
