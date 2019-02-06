@@ -23,5 +23,5 @@ const yargs = require("yargs");
     .alias("h", "help")
     .showHelpOnFail(true)
     .detectLocale(false)
-    .help().argv;
+    .version(false).argv;
 })();
