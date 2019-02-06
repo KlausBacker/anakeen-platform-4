@@ -13,7 +13,7 @@
 
 ### Liens / Références
 
-> Mettre des liens vers les événtuelles normes, les captures d'écran
+> Mettre des liens vers les éventuelles normes, les captures d'écran
 
 
 

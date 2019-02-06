@@ -33,7 +33,6 @@
 > Quelle version exacte de anakeen-cli ?
 
 
-
 ### Possible correction
 
 > (Si vous pouvez, indiquez la portion de code qui vous semble responsable du problème)
