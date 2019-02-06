@@ -37,7 +37,7 @@ class IgroupViewRender extends DefaultConfigViewRender
 
         $options->frame(myAttributes::grp_fr)->setCollapse(false)->setLabelPosition(CommonRenderOptions::nonePosition);
         $options->arrayAttribute(myAttributes::grp_roles)->showEmptyContent(
-            xml_entity_encode(___("No roles", "smart igroup"))
+            \Anakeen\Core\Utils\Strings::xmlEncode(___("No roles", "smart igroup"))
         );
 
 

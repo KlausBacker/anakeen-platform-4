@@ -58,7 +58,7 @@ class ReportEditRender extends SearchEditRender
                 "grow" => true
             ]
         ));
-        $options->int(myAttr::rep_limit)->setInputTooltip(xml_entity_encode(
+        $options->int(myAttr::rep_limit)->setInputTooltip(\Anakeen\Core\Utils\Strings::xmlEncode(
             ___("Number maximum of displayed elements", "smart report")
         ));
         return $options;
