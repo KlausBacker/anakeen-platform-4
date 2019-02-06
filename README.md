@@ -18,10 +18,10 @@ Pour commencer un nouveau projet avec @anakeen/anakeen-cli, la démarche est sim
 
 * Créer le répertoire
 * Faire un npm init dans le répertoire
-* Enregistrer le registry anakeen ```npm login --registry=http://npm.corp.anakeen.com:4873 --scope=@anakeen```
+* Enregistrer le registry anakeen ```npm login --registry=http://npm-stable.corp.anakeen.com:4873 --scope=@anakeen```
 * lancer le npm install du module ```npm install @anakeen/anakeen-cli```
 * ensuite les commandes sont accessibles de deux manières :
- * via un outil en cli ```npx anakeen-cli```
+ * via un outil en cli ```npx @anakeen/anakeen-cli```
  * via des tâches gulp en créant un fichier ```gulpfile.js``` et ajouter les tâches dans ce fichier
  
  ## Déploiement
@@ -44,6 +44,17 @@ Pour commencer un nouveau projet avec @anakeen/anakeen-cli, la démarche est sim
             <controlPassword>anakeen</controlPassword>
             <controlContext>anakeen-platform</controlContext>
         </controlConfig>
-    </config>*
+    </config>
 ```
  
+ ## Utilisation sans installation
+ 
+ Comme tout module npm, on peut aussi l'utiliser directement sans installation :
+ 
+ ```npx @anakeen/anakeen-cli```
+ 
+## Dévelopement 
+
+Pour lancer manuellement anakeen-cli après avoir cloné le repo, il est possible de faire :
+
+```node ./index.js```
