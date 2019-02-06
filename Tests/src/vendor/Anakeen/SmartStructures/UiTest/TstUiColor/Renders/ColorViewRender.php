@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiColor\Renders;
 
-class ColorViewRender extends \Dcp\Ui\DefaultView
+class ColorViewRender extends \Anakeen\Ui\DefaultView
 {
 
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)

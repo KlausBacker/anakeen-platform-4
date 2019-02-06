@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class setTranslation extends \Dcp\Ui\DefaultEdit
+class setTranslation extends \Anakeen\Ui\DefaultEdit
 {
     //vérification lors de la modification de l'attribut
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)

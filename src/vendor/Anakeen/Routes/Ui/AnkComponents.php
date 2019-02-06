@@ -21,7 +21,7 @@ class AnkComponents
         if (preg_match($ie11Regex, $userAgent)) {
             $ie11 = true;
         }
-        $componentsPath = PUBLIC_DIR.\Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath(true, $ie11);
+        $componentsPath = PUBLIC_DIR.\Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true, $ie11);
         $filename = basename($componentsPath);
         $fileResponse = $response;
         if (!ApiV2Response::matchEtag($request, $filename)) {

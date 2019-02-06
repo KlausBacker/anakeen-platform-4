@@ -38,45 +38,45 @@ class LoginPage
             "JS_DEPS" => [
                 [
                     "key" => "jquery",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSJqueryPath()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoPath()
                 ]
             ],
             "JS" => [
                 [
                     "key" => "ankcomponents",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath()
                 ]
             ],
             "JS_LEGACY" => [
                 [
                     "key" => "polyfilles5",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getPolyfill()
                 ],
                 [
                     "key" => "ankcomponentses5",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
                 ]
             ],
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getCssBootstrap()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getCssKendo()
                 ],
                 [
                     "key" => "components",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getCssSmartWebComponents()
                 ],
                 [
                     "key" => "login",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCss("login")
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getCss("login")
                 ],
             ]
         ];

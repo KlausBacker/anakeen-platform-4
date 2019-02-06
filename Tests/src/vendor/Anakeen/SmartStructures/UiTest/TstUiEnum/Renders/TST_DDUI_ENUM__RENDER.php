@@ -7,10 +7,10 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
 use Anakeen\Core\ContextManager;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_enum as myAttributes;
 
-class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
+class EnumRenderConfigEditDefault extends \Anakeen\Ui\DefaultEdit
 {
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
@@ -22,7 +22,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
         $options = parent::getOptions($document);
 
         $options->document()->setTabPlacement(
-            \Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement
+            \Anakeen\Ui\DocumentRenderOptions::tabTopProportionalPlacement
         );
         return $options;
     }
@@ -54,36 +54,36 @@ class EnumRenderConfigEdit extends EnumRenderConfigEditDefault
         ));
         // ----------------------------
         // Direct
-        $options->enum(myAttributes::test_ddui_enum__enumcountry)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumtext)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumnumber)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumbool)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumcountry)->setDisplay(\Anakeen\Ui\EnumRenderOptions::listDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumtext)->setDisplay(\Anakeen\Ui\EnumRenderOptions::autocompletionDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumnumber)->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumbool)->setDisplay(\Anakeen\Ui\EnumRenderOptions::boolDisplay);
         
-        $options->enum(myAttributes::test_ddui_enum__enumscountry)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumstext)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumsnumber)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumscountry)->setDisplay(\Anakeen\Ui\EnumRenderOptions::listDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumstext)->setDisplay(\Anakeen\Ui\EnumRenderOptions::autocompletionDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumsnumber)->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay);
         // ----------------------------
         // Server
-        $options->enum(myAttributes::test_ddui_enum__srvcountry)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay)->useSourceUri(true);
-        $options->enum(myAttributes::test_ddui_enum__srvtext)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(true);
-        $options->enum(myAttributes::test_ddui_enum__srvnumber)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(true);
-        $options->enum(myAttributes::test_ddui_enum__srvbool)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_enum__srvcountry)->setDisplay(\Anakeen\Ui\EnumRenderOptions::listDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_enum__srvtext)->setDisplay(\Anakeen\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_enum__srvnumber)->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_enum__srvbool)->setDisplay(\Anakeen\Ui\EnumRenderOptions::boolDisplay)->useSourceUri(true);
         
-        $options->enum(myAttributes::test_ddui_enum__srvscountry)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay)->useSourceUri(true);
-        $options->enum(myAttributes::test_ddui_enum__srvstext)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(true);
-        $options->enum(myAttributes::test_ddui_enum__srvsnumber)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_enum__srvscountry)->setDisplay(\Anakeen\Ui\EnumRenderOptions::listDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_enum__srvstext)->setDisplay(\Anakeen\Ui\EnumRenderOptions::autocompletionDisplay)->useSourceUri(true);
+        $options->enum(myAttributes::test_ddui_enum__srvsnumber)->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay)->useSourceUri(true);
         // ----------------------------
         // Array direct
-        $options->enum(myAttributes::test_ddui_enum__enumtown_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumtext_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumnumber_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumbool_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::boolDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumtown_array)->setDisplay(\Anakeen\Ui\EnumRenderOptions::listDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumtext_array)->setDisplay(\Anakeen\Ui\EnumRenderOptions::autocompletionDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumnumber_array)->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumbool_array)->setDisplay(\Anakeen\Ui\EnumRenderOptions::boolDisplay);
         
-        $options->enum(myAttributes::test_ddui_enum__enumstown_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::listDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumstext_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::autocompletionDisplay);
-        $options->enum(myAttributes::test_ddui_enum__enumsnumber_array)->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumstown_array)->setDisplay(\Anakeen\Ui\EnumRenderOptions::listDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumstext_array)->setDisplay(\Anakeen\Ui\EnumRenderOptions::autocompletionDisplay);
+        $options->enum(myAttributes::test_ddui_enum__enumsnumber_array)->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay);
         
-        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->arrayAttribute()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         
         return $options;
     }
@@ -101,18 +101,18 @@ class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
     {
         $options = parent::getOptions($document);
 
-        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        $options->document()->setTabPlacement(\Anakeen\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         // Inhibit enum toolips
         $options->enum()->setTranslations(array(
             "invertSelection" => "",
             "selectMessage" => ""
         ));
-        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->arrayAttribute()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         
-        $options->enum(myAttributes::test_ddui_enum__enumcountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumtext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumbool)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumcountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumtext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumbool)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         
         $options->frame(myAttributes::test_ddui_enum__fr_enumsimple)->setTemplate(<<< 'HTML'
                 <div class="container-fluid"><div class="row">
@@ -124,9 +124,9 @@ class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
             </div></div></div>
 HTML
 ) ;
-        $options->enum(myAttributes::test_ddui_enum__enumscountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumstext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumsnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumscountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumstext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumsnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->frame(myAttributes::test_ddui_enum__fr_enummultiple)->setTemplate(<<< 'HTML'
                   <div class="container-fluid">
                 <div class="row">
@@ -141,10 +141,10 @@ HTML
 HTML
 ) ;
         
-        $options->enum(myAttributes::test_ddui_enum__srvcountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvtext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvbool)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvcountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvtext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvbool)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->frame(myAttributes::test_ddui_enum__fr_srvsimple)->setTemplate(<<< 'HTML'
                 <div class="container-fluid"><div class="row">
             <div class="col-md-8">{{{attributes.test_ddui_enum__srvcountry.htmlView}}}</div>
@@ -155,9 +155,9 @@ HTML
             </div></div></div>
 HTML
 ) ;
-        $options->enum(myAttributes::test_ddui_enum__srvscountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvstext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvsnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvscountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvstext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvsnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->frame(myAttributes::test_ddui_enum__fr_srvmultiple)->setTemplate(<<< 'HTML'
                   <div class="container-fluid">
                 <div class="row">
@@ -266,7 +266,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
     {
         $options = parent::getOptions($document);
         
-        $options->enum()->setDisplay(\Dcp\Ui\EnumRenderOptions::horizontalDisplay);
+        $options->enum()->setDisplay(\Anakeen\Ui\EnumRenderOptions::horizontalDisplay);
         //$options->enum()->useOtherChoice(true);
         return $options;
     }
@@ -290,7 +290,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
     {
         $options = parent::getOptions($document);
         
-        $options->enum()->setDisplay(\Dcp\Ui\EnumRenderOptions::verticalDisplay);
+        $options->enum()->setDisplay(\Anakeen\Ui\EnumRenderOptions::verticalDisplay);
         //$options->enum()->useOtherChoice(true);
         return $options;
     }
@@ -338,7 +338,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
     }
 }
 
-class EnumRenderConfigView extends \Dcp\Ui\DefaultView
+class EnumRenderConfigView extends \Anakeen\Ui\DefaultView
 {
     
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -352,7 +352,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
             $document
         );
 
-        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        $options->document()->setTabPlacement(\Anakeen\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         return $options;
     }
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)

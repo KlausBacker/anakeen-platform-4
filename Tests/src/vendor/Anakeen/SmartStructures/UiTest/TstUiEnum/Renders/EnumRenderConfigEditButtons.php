@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_enum as myAttributes;
 
 class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
@@ -16,18 +16,18 @@ class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
     {
         $options = parent::getOptions($document);
 
-        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        $options->document()->setTabPlacement(\Anakeen\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         // Inhibit enum toolips
         $options->enum()->setTranslations(array(
             "invertSelection" => "",
             "selectMessage" => ""
         ));
-        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->arrayAttribute()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         
-        $options->enum(myAttributes::test_ddui_enum__enumcountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumtext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumbool)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumcountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumtext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumbool)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         
         $options->frame(myAttributes::test_ddui_enum__fr_enumsimple)->setTemplate(<<< 'HTML'
                 <div class="container-fluid"><div class="row">
@@ -39,9 +39,9 @@ class EnumRenderConfigEditButtons extends EnumRenderConfigEditDefault
             </div></div></div>
 HTML
 ) ;
-        $options->enum(myAttributes::test_ddui_enum__enumscountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumstext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__enumsnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumscountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumstext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__enumsnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->frame(myAttributes::test_ddui_enum__fr_enummultiple)->setTemplate(<<< 'HTML'
                   <div class="container-fluid">
                 <div class="row">
@@ -56,10 +56,10 @@ HTML
 HTML
 ) ;
         
-        $options->enum(myAttributes::test_ddui_enum__srvcountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvtext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvbool)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvcountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvtext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvbool)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->frame(myAttributes::test_ddui_enum__fr_srvsimple)->setTemplate(<<< 'HTML'
                 <div class="container-fluid"><div class="row">
             <div class="col-md-8">{{{attributes.test_ddui_enum__srvcountry.htmlView}}}</div>
@@ -70,9 +70,9 @@ HTML
             </div></div></div>
 HTML
 ) ;
-        $options->enum(myAttributes::test_ddui_enum__srvscountry)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvstext)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
-        $options->enum(myAttributes::test_ddui_enum__srvsnumber)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvscountry)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvstext)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $options->enum(myAttributes::test_ddui_enum__srvsnumber)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->frame(myAttributes::test_ddui_enum__fr_srvmultiple)->setTemplate(<<< 'HTML'
                   <div class="container-fluid">
                 <div class="row">

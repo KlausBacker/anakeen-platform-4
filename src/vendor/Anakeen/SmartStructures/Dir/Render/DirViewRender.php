@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Dir\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 
 class DirViewRender extends DefaultConfigViewRender
 {

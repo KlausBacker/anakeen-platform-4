@@ -2,12 +2,12 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEmployee\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use \SmartStructure\Fields\Tst_ddui_employee as myAttribute;
 
-class EmployeeFrameViewSRCLRRender extends \Dcp\Ui\DefaultView
+class EmployeeFrameViewSRCLRRender extends \Anakeen\Ui\DefaultView
 {
-    public static function setColumn(\Dcp\Ui\RenderOptions &$options, $direction = \Dcp\Ui\FrameRenderOptions::leftRightDirection)
+    public static function setColumn(\Anakeen\Ui\RenderOptions &$options, $direction = \Anakeen\Ui\FrameRenderOptions::leftRightDirection)
     {
 
         $options->frame()->setResponsiveColumns([["number" => 2, "minWidth" => "70rem", "grow" => true, "direction" => $direction]]);

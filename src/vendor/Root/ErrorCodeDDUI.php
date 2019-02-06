@@ -32,7 +32,7 @@ class ErrorCodeCrudUI
     const CRUDUI0006 = 'Cannot access to view control "%s" associated to the document "%s"';
     /**
      * @errorCode The return of getJsReferences method must be an array of descriptive js file
-     * @see \Dcp\Ui\IRenderConfig::getJsReferences
+     * @see \Anakeen\Ui\IRenderConfig::getJsReferences
      */
     const CRUDUI0007 = 'Wrong js reference : list must be an array';
     /**

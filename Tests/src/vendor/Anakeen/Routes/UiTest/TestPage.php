@@ -15,45 +15,45 @@ class TestPage
             "JS_DEPS" => [
                 [
                     "key" =>"jquery",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSJqueryPath()
                 ],
                 [
                     "key" =>"kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoPath()
                 ]
             ],
             "JS" => [
                 [
                     "key" =>"ankcomponents",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath()
                 ],
                 [
                     "key" => "testPage",
-                    "path" =>  \Dcp\Ui\UIGetAssetPath::getElementAssets("uiTest")["TestPage"]["js"]
+                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("uiTest")["TestPage"]["js"]
                 ]
             ],
             "JS_LEGACY" => [
                 [
                     "key" => "polyfill",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getPolyfill()
                 ],
                 [
                     "key" =>"ankcomponents",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
                 ],
                 [
                     "key" => "testPage",
-                    "path" =>  \Dcp\Ui\UIGetAssetPath::getElementAssets("uiTest", "legacy")["TestPage"]["js"]
+                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("uiTest", "legacy")["TestPage"]["js"]
                 ]
             ],
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getCssBootstrap()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getCssKendo()
                 ]
             ]
         ];

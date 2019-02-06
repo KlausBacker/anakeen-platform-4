@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
 class AllRenderNoneLabel extends AllRenderConfigEdit
@@ -12,9 +12,9 @@ class AllRenderNoneLabel extends AllRenderConfigEdit
     {
         $options = parent::getOptions($document);
 
-        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
-        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
-        $options->tab()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
+        $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
+        $options->arrayAttribute()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
+        $options->tab()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::autoPosition);
 
         return $options;
     }

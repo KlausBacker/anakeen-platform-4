@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class setTemplate extends \Dcp\Ui\DefaultEdit
+class setTemplate extends \Anakeen\Ui\DefaultEdit
 {
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)

@@ -1,12 +1,12 @@
 <?php
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
-use Dcp\Ui\BarMenu;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Dsearch as myAttr;
-use Dcp\Ui\DefaultEdit;
-use Dcp\Ui\ItemMenu as ItemMenu;
+use Anakeen\Ui\DefaultEdit;
+use Anakeen\Ui\ItemMenu as ItemMenu;
 
 class SearchEditRender extends DefaultEdit
 {
@@ -29,10 +29,10 @@ class SearchEditRender extends DefaultEdit
     {
         $js = parent::getJsReferences($document);
 
-        $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath();
-        $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
-        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] =  \Dcp\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
+        $js["smartElementGrid"] = \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath();
+        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
+        if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
+            $js["dSearch"] =  \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
         }
 
         return $js;
@@ -54,26 +54,26 @@ class SearchEditRender extends DefaultEdit
         $options = parent::getOptions($document);
 
         $options->enum(myAttr::se_ol)->setDisplay(
-            \Dcp\Ui\EnumRenderOptions::horizontalDisplay
-        )->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+            \Anakeen\Ui\EnumRenderOptions::horizontalDisplay
+        )->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
         $options->enum(myAttr::se_ol)->useFirstChoice(true);
         $options->enum(myAttr::se_leftp)->setDisplay(
-            \Dcp\Ui\EnumRenderOptions::boolDisplay
+            \Anakeen\Ui\EnumRenderOptions::boolDisplay
         );
         $options->enum(myAttr::se_rightp)->setDisplay(
-            \Dcp\Ui\EnumRenderOptions::boolDisplay
+            \Anakeen\Ui\EnumRenderOptions::boolDisplay
         );
         $options->enum(myAttr::se_famonly)->setDisplay(
-            \Dcp\Ui\EnumRenderOptions::boolDisplay
+            \Anakeen\Ui\EnumRenderOptions::boolDisplay
         );
         $options->enum(myAttr::se_trash)->setDisplay(
-            \Dcp\Ui\EnumRenderOptions::horizontalDisplay
+            \Anakeen\Ui\EnumRenderOptions::horizontalDisplay
         );
         $options->enum(myAttr::se_acl)->setDisplay(
-            \Dcp\Ui\EnumRenderOptions::horizontalDisplay
+            \Anakeen\Ui\EnumRenderOptions::horizontalDisplay
         );
         $options->enum(myAttr::se_sysfam)->setDisplay(
-            \Dcp\Ui\EnumRenderOptions::boolDisplay
+            \Anakeen\Ui\EnumRenderOptions::boolDisplay
         );
         $options->enum(myAttr::se_ols)->useFirstChoice(true);
 
@@ -104,11 +104,11 @@ class SearchEditRender extends DefaultEdit
 
         $visibilities->setVisibility(
             myAttr::se_key,
-            \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility
+            \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility
         );
         $visibilities->setVisibility(
             myAttr::se_case,
-            \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility
+            \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility
         );
 
         return $visibilities;

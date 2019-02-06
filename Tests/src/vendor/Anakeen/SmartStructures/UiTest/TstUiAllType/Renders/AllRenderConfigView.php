@@ -4,7 +4,7 @@ namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class AllRenderConfigView extends \Dcp\Ui\DefaultView
+class AllRenderConfigView extends \Anakeen\Ui\DefaultView
 {
 
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)

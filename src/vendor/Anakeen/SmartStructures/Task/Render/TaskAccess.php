@@ -6,7 +6,7 @@
 
 namespace Anakeen\SmartStructures\Task\Render;
 
-class TaskAccess implements \Dcp\Ui\IRenderConfigAccess
+class TaskAccess implements \Anakeen\Ui\IRenderConfigAccess
 {
     /**
      * @param string                              $mode
@@ -16,10 +16,10 @@ class TaskAccess implements \Dcp\Ui\IRenderConfigAccess
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         switch ($mode) {
-            case \Dcp\Ui\RenderConfigManager::CreateMode:
-            case \Dcp\Ui\RenderConfigManager::EditMode:
+            case \Anakeen\Ui\RenderConfigManager::CreateMode:
+            case \Anakeen\Ui\RenderConfigManager::EditMode:
                 return new TaskEditRender();
-            case \Dcp\Ui\RenderConfigManager::ViewMode:
+            case \Anakeen\Ui\RenderConfigManager::ViewMode:
                 return new TaskViewRender();
         }
         return null;

@@ -14,7 +14,7 @@ class TransitionView extends WorkflowState
     protected $attributeCount = 0;
     protected $workflowData;
     /**
-     * @var WDocHooks|\Dcp\Ui\IRenderTransitionAccess
+     * @var WDocHooks|\Anakeen\Ui\IRenderTransitionAccess
      */
     protected $workflow;
     /**
@@ -27,7 +27,7 @@ class TransitionView extends WorkflowState
      * @param array $messages
      * @return array
      * @throws \Anakeen\Router\Exception
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     public function doRequest(&$messages = [])
     {
@@ -41,7 +41,7 @@ class TransitionView extends WorkflowState
             }
         }
         
-        $render = \Dcp\Ui\RenderConfigManager::getTransitionRender($transitionId, $this->workflow);
+        $render = \Anakeen\Ui\RenderConfigManager::getTransitionRender($transitionId, $this->workflow);
         
         $info["transition"] = array(
             "id" => ($transitionId !== null) ? $transitionId : null,

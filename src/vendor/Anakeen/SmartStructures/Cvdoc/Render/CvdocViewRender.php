@@ -4,7 +4,7 @@ namespace Anakeen\SmartStructures\Cvdoc\Render;
 
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Cvdoc as myAttributes;
 
 class CvdocViewRender extends DefaultConfigViewRender
@@ -12,7 +12,7 @@ class CvdocViewRender extends DefaultConfigViewRender
     /**
      * @param SmartElement $document Document instance
      *
-     * @return \Dcp\Ui\RenderOptions
+     * @return \Anakeen\Ui\RenderOptions
      */
     public function getOptions(SmartElement $document) : RenderOptions
     {

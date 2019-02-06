@@ -4,8 +4,8 @@ namespace Anakeen\SmartStructures\Group\Render;
 
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use \SmartStructure\Fields\Group as myAttributes;
 
 class GroupEditRender extends DefaultConfigEditRender
@@ -14,8 +14,8 @@ class GroupEditRender extends DefaultConfigEditRender
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
-     * @return \Dcp\Ui\RenderOptions
-     * @throws \Dcp\Ui\Exception
+     * @return \Anakeen\Ui\RenderOptions
+     * @throws \Anakeen\Ui\Exception
      */
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {

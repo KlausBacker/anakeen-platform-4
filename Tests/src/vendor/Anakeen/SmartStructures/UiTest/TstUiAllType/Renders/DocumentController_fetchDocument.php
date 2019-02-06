@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class DocumentController_fetchDocument extends \Dcp\Ui\DefaultEdit
+class DocumentController_fetchDocument extends \Anakeen\Ui\DefaultEdit
 {
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -29,7 +29,7 @@ class DocumentController_fetchDocument extends \Dcp\Ui\DefaultEdit
         $options = parent::getOptions($document);
 
         $options = parent::getOptions($document);
-        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = '<span>  Fetcher le document </span><i class="fa fa-eye"></i>';
         $viewDoc->class = "mybtn_DocumentController_fetchDocument userButton";
         $viewDoc->windowWidth = "400px";

@@ -3,9 +3,9 @@
 namespace Anakeen\SmartStructures\Task\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\TextRenderOptions;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\TextRenderOptions;
 use SmartStructure\Fields\Task as TaskFields;
 
 class TaskEditRender extends DefaultConfigEditRender

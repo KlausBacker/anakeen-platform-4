@@ -2,7 +2,7 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
 class AllRenderAutoLabel extends AllRenderConfigEdit
@@ -12,8 +12,8 @@ class AllRenderAutoLabel extends AllRenderConfigEdit
     {
         $options = parent::getOptions($document);
 
-        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
-        $options->arrayAttribute()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
+        $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::autoPosition);
+        $options->arrayAttribute()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::autoPosition);
 
         return $options;
     }

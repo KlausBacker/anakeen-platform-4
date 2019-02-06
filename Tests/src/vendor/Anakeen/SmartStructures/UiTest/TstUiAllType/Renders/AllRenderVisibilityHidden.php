@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderAttributeVisibilities;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class AllRenderVisibilityHidden extends \Dcp\Ui\DefaultView
+class AllRenderVisibilityHidden extends \Anakeen\Ui\DefaultView
 {
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
@@ -13,7 +13,7 @@ class AllRenderVisibilityHidden extends \Dcp\Ui\DefaultView
         $attrs = $document->getFieldAttributes();
         foreach ($attrs as $attrid => $attr) {
 
-            $visibilities->setVisibility($attrid, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+            $visibilities->setVisibility($attrid, \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility);
 
         }
         return $visibilities;

@@ -3,8 +3,8 @@
 namespace Anakeen\SmartStructures\FieldAccessLayer\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
 use \SmartStructure\Fields\Fieldaccesslayer as myAttributes;
 
 class FieldAccessLayerEditRender extends DefaultConfigEditRender
@@ -13,7 +13,7 @@ class FieldAccessLayerEditRender extends DefaultConfigEditRender
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
-     * @return \Dcp\Ui\RenderOptions
+     * @return \Anakeen\Ui\RenderOptions
      */
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {

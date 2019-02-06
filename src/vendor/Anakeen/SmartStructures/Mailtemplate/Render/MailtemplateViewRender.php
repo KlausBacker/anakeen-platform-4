@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Mailtemplate\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Mailtemplate as myAttributes;
 
 class MailtemplateViewRender extends DefaultConfigViewRender
@@ -11,12 +11,12 @@ class MailtemplateViewRender extends DefaultConfigViewRender
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
-     * @return \Dcp\Ui\RenderOptions
+     * @return \Anakeen\Ui\RenderOptions
      */
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->frame(myAttributes::tmail_fr_content)->setTemplate(
             <<< 'HTML'
             <div>

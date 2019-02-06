@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Mask\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\UIGetAssetPath;
 
 class MaskViewRender extends DefaultConfigViewRender
 {

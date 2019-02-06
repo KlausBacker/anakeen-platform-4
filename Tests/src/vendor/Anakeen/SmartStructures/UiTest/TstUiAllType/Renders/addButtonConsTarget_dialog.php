@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class addButtonConsTarget_dialog extends \Dcp\Ui\DefaultView
+class addButtonConsTarget_dialog extends \Anakeen\Ui\DefaultView
 {
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
@@ -27,7 +27,7 @@ class addButtonConsTarget_dialog extends \Dcp\Ui\DefaultView
     {
         $options = parent::getOptions($document);
 
-        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = ' <p> un bouton qui contient une balise p</p>';
         $viewDoc->url = "https://fr.wikipedia.org/wiki/ {{value}} ";
         $viewDoc->target = "_dialog";
@@ -35,18 +35,18 @@ class addButtonConsTarget_dialog extends \Dcp\Ui\DefaultView
         $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
 
-        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = '<span>  un button autre2 </span><i class="fa fa-eye"></i>';
         $viewDoc->url = "https://fr.wikipedia.org/wiki/ {{value}} ";
         $viewDoc->target = "_dialog";
         $viewDoc->class = "myClass";
         $options->docid()->addButton($viewDoc);
 
-        $cogButton = new \Dcp\Ui\ButtonOptions();
+        $cogButton = new \Anakeen\Ui\ButtonOptions();
         $cogButton->htmlContent = '<span>  un button grands </span><i class="fa fa-eye"></i>';
         $options->text()->addButton($cogButton);
 
-        $superButton = new \Dcp\Ui\ButtonOptions();
+        $superButton = new \Anakeen\Ui\ButtonOptions();
         $superButton->htmlContent = '<p> un bouton qui contient une balise p</p>';
         $superButton->class = "myClass";
         $options->commonOption()->addButton($superButton);

@@ -55,7 +55,7 @@ class DocumentViewUpdate extends DocumentView
             //Handle Restore Document from trash
             $err = $document->undelete();
             if ($err) {
-                throw new \Dcp\Ui\Exception("Unable to restore $err");
+                throw new \Anakeen\Ui\Exception("Unable to restore $err");
             }
         } else {
             if ($err = $document->canEdit()) {

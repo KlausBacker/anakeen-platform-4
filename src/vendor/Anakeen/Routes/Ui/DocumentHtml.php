@@ -125,13 +125,13 @@ class DocumentHtml
                 }
             }
 
-            $data["viewInformation"] = \Dcp\Ui\JsonHandler::encodeForHTML($viewInformation);
+            $data["viewInformation"] = \Anakeen\Ui\JsonHandler::encodeForHTML($viewInformation);
         } else {
-            $data["viewInformation"] = \Dcp\Ui\JsonHandler::encodeForHTML(false);
+            $data["viewInformation"] = \Anakeen\Ui\JsonHandler::encodeForHTML(false);
         }
         $data["messages"] = $this->getWarningMessages();
 
-        $render = new \Dcp\Ui\RenderDefault();
+        $render = new \Anakeen\Ui\RenderDefault();
 
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 

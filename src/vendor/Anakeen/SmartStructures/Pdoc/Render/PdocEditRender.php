@@ -7,7 +7,7 @@
 namespace Anakeen\SmartStructures\Pdoc\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 
 class PdocEditRender extends DefaultConfigEditRender
 {

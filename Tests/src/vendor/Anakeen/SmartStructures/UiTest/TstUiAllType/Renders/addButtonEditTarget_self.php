@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
+class addButtonEditTarget_self extends \Anakeen\Ui\DefaultEdit
 {
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
@@ -27,18 +27,18 @@ class addButtonEditTarget_self extends \Dcp\Ui\DefaultEdit
     {
         $options = parent::getOptions($document);
 
-        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = '<i class="fa fa-eye"></i>';
         $viewDoc->url = "#action/my:myOptions";
         $viewDoc->target = "_self";
         $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
 
-        $cogButton = new \Dcp\Ui\ButtonOptions();
+        $cogButton = new \Anakeen\Ui\ButtonOptions();
         $cogButton->htmlContent = '<i class="fa fa-cog"></i>';
         $options->text()->addButton($cogButton);
 
-        $superButton = new \Dcp\Ui\ButtonOptions();
+        $superButton = new \Anakeen\Ui\ButtonOptions();
         $superButton->htmlContent = '<i class="fa fa-superpowers"></i>';
         $options->commonOption()->addButton($superButton);
 

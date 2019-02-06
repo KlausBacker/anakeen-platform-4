@@ -26,7 +26,7 @@ class SubMenu
      * @param \Slim\Http\response $response
      * @param                     $args
      * @return \Slim\Http\response
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -41,25 +41,25 @@ class SubMenu
         $doc = SmartElementManager::getDocument($documentId);
 
         if (!$doc) {
-            throw new \Dcp\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
+            throw new \Anakeen\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
         }
         $err = $doc->control("view");
         if ($err) {
-            throw new \Dcp\Ui\Exception($err);
+            throw new \Anakeen\Ui\Exception($err);
         }
 
         if ($vId && $vId[0] === "!") {
             $vId = '';
         }
 
-        $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
+        $config = \Anakeen\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
         $menu = $config->getMenu($doc);
         /**
-         * @var \Dcp\Ui\DynamicMenu $element
+         * @var \Anakeen\Ui\DynamicMenu $element
          */
         $element = $menu->getElement($menuId);
         if (!$element) {
-            throw new \Dcp\Ui\Exception(sprintf(___("Menu id \"%s\" not found ", "ddui"), $menuId));
+            throw new \Anakeen\Ui\Exception(sprintf(___("Menu id \"%s\" not found ", "ddui"), $menuId));
         }
 
         return $element->getContent();

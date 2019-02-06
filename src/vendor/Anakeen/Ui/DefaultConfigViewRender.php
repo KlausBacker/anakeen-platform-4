@@ -6,14 +6,14 @@
 
 namespace Anakeen\Ui;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 
-class DefaultConfigViewRender extends \Dcp\Ui\DefaultView
+class DefaultConfigViewRender extends \Anakeen\Ui\DefaultView
 {
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         return $options;
     }
 

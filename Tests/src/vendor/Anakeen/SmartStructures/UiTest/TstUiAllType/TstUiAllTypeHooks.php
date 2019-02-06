@@ -3,19 +3,19 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType;
 
 class TstUiAllTypeHooks extends \Anakeen\SmartElement
- implements \Dcp\Ui\IRenderConfigAccess
+ implements \Anakeen\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
      * @param \Anakeen\Core\Internal\SmartElement   $document
-     * @return \Dcp\Ui\IRenderConfig
+     * @return \Anakeen\Ui\IRenderConfig
      */
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
-        if ($mode === \Dcp\Ui\RenderConfigManager::EditMode || $mode === \Dcp\Ui\RenderConfigManager::CreateMode) {
+        if ($mode === \Anakeen\Ui\RenderConfigManager::EditMode || $mode === \Anakeen\Ui\RenderConfigManager::CreateMode) {
             return new Renders\AllRenderConfigEdit();
         }
-        if ($mode === \Dcp\Ui\RenderConfigManager::ViewMode) {
+        if ($mode === \Anakeen\Ui\RenderConfigManager::ViewMode) {
             return new Renders\AllRenderConfigView();
         }
         return null;

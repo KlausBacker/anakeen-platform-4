@@ -11,11 +11,11 @@ use Anakeen\Router\Exception;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\ArrayRenderOptions;
-use Dcp\Ui\BarMenu;
-use Dcp\Ui\CallableMenu;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\ArrayRenderOptions;
+use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\CallableMenu;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Iuser as myAttributes;
 use SmartStructure\Iuser;
 
@@ -71,7 +71,7 @@ class IuserViewRender extends DefaultConfigViewRender
             $vidMenuEgroup = $menus->getElement("vid-EGROUP");
             $vidMenuESubstitute = $menus->getElement("vid-ESUBSTITUTE");
 
-            $listMenu = new \Dcp\Ui\ListMenu("accountManagement", ___("Account management", "smart iuser"));
+            $listMenu = new \Anakeen\Ui\ListMenu("accountManagement", ___("Account management", "smart iuser"));
 
 
             if ($vidMenuEgroup) {

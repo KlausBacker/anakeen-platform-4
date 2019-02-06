@@ -2,12 +2,12 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEmployee\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use \SmartStructure\Fields\Tst_ddui_employee as myAttribute;
 
-class EmployeeTabViewRender extends \Dcp\Ui\DefaultView
+class EmployeeTabViewRender extends \Anakeen\Ui\DefaultView
 {
-    public static function setColumn(\Dcp\Ui\RenderOptions &$options)
+    public static function setColumn(\Anakeen\Ui\RenderOptions &$options)
     {
 
         $options->tab()->setResponsiveColumns([

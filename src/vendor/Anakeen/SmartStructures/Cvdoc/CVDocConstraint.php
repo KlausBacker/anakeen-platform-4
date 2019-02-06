@@ -3,8 +3,8 @@
 namespace Anakeen\SmartStructures\Cvdoc;
 
 use Anakeen\Core\Internal\Autoloader;
-use Dcp\Ui\IRenderConfig;
-use Dcp\Ui\IRenderConfigAccess;
+use Anakeen\Ui\IRenderConfig;
+use Anakeen\Ui\IRenderConfigAccess;
 
 class CVDocConstraint
 {

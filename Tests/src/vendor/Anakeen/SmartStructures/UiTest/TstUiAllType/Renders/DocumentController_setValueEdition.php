@@ -4,7 +4,7 @@ namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class DocumentController_setValueEdition extends \Dcp\Ui\DefaultEdit
+class DocumentController_setValueEdition extends \Anakeen\Ui\DefaultEdit
 {
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {

@@ -3,9 +3,9 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
 use Anakeen\Core\ContextManager;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 
-class EnumRenderConfigView extends \Dcp\Ui\DefaultView
+class EnumRenderConfigView extends \Anakeen\Ui\DefaultView
 {
     
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -19,7 +19,7 @@ class EnumRenderConfigView extends \Dcp\Ui\DefaultView
             $document
         );
 
-        $options->document()->setTabPlacement(\Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
+        $options->document()->setTabPlacement(\Anakeen\Ui\DocumentRenderOptions::tabTopProportionalPlacement);
         return $options;
     }
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
