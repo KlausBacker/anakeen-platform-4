@@ -1,4 +1,4 @@
-const packageInfo = require("../package.json");
+const packageInfo = require("../../package.json");
 import Vue from 'vue'
 import { Mixins } from "vue-property-decorator";
 import HubStation from "./HubStation/HubStation.vue"

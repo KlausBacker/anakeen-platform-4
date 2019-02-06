@@ -1,4 +1,4 @@
-import { HubElement } from "@aurelien/hub-components";
+import { HubElement } from "@anakeen/hub-components";
 import SubHello from "./SubHello.vue";
 
 export default {

@@ -16,7 +16,15 @@ module.exports = () => {
             "hubInstanciationRender": [path.resolve(BASE_DIR,"src/vendor/Anakeen/Hub/SmartStructures/HubInstanciation/Render/HubInstanciation.js")]
         },
       buildPath: PUBLIC_PATH,
-      customParts: [useVueLoader(),
+      customParts: [
+        useVueLoader(),
+        {
+          resolve: {
+            alias: {
+              "@anakeen/hub-components": path.resolve(BASE_DIR, "components/lib/hub-components.common.min.js")
+            }
+          }
+        },
         {
           module: {
             rules: [

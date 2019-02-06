@@ -1,12 +1,17 @@
 {
-  "name": "anakeen-hub",
+  "name": "@anakeen/hub-components",
   "version": "1.0.0",
-  "description": "Hub station",
-  "main": "index.js",
+  "description": "Anakeen Hub Components",
+  "main": "components/lib/hub-components.common.min.js",
   "scripts": {
     "beautify": "./node_modules/eslint/bin/eslint.js ./ --fix",
     "lint": "./node_modules/eslint/bin/eslint.js ./",
-    "buildJs": "node --max_old_space_size=4096 ./node_modules/.bin/webpack --config webpack/index.js"
+    "buildJs": "node --max_old_space_size=4096 ./node_modules/.bin/webpack --config webpack/index.js",
+    "lib:prod": "webpack --env production --config ./components/webpack/index.js",
+    "lib:dev": "webpack --env development --config ./components/webpack/index.js",
+    "lib": "npm run lib:prod && npm run lib:dev",
+    "watch": "webpack --watch --env development --config ./components/webpack/index.js",
+    "prepare": "npm run lib"
   },
   "repository": {
     "type": "git",
@@ -18,13 +23,15 @@
   ],
   "author": "Anakeen",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@anakeen/ank-components": "^1.0.1",
+    "vue-class-component": "^6.2.0",
+    "vue-property-decorator": "^7.3.0"
+  },
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.0.0",
-    "@anakeen/ank-components": "latest",
     "@anakeen/webpack-conf": "latest",
-    "@anakeen/hub-components": "^1.0.0",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-layout-vue-wrapper": "^2018.3.1025",
     "@progress/kendo-ui": "2018.2.806",
