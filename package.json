@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/admin-center",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "autorelease": true,
   "description": "Web interfaces to admin applications and configure smart elements",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
