@@ -5,11 +5,11 @@ set -eo pipefail
 cat <<'EOF' > /etc/apache2/sites-available/anakeen-platform.conf
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
-	DocumentRoot /var/www/html/dynacase/public
+	DocumentRoot /var/www/html/anakeen/public
 
-	Alias /dynacase-control /var/www/html/dynacase-control
+	Alias /anakeen-control /var/www/html/dynacase-control
 
-	<Directory /var/www/html/dynacase/public>
+	<Directory /var/www/html/anakeen/public>
 		Require all granted
 		AllowOverride all
 	</Directory>
