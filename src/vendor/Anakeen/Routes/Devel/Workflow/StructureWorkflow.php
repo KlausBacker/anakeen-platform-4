@@ -9,7 +9,8 @@ use Anakeen\Search\SearchElements;
 
 class StructureWorkflow
 {
-    protected $target="all";
+    protected $target = "all";
+
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
@@ -50,7 +51,7 @@ class StructureWorkflow
         foreach ($wdocList as $wdoc) {
             $structure = SEManager::getFamily($wdoc->getAttributeValue("wf_famid"));
             $wfData = [
-                "id"=> $wdoc->name ?: $wdoc->id,
+                "id" => $wdoc->name ?: $wdoc->id,
                 "title" => $wdoc->title,
                 "baTitle" => $wdoc->getAttributeValue("ba_title"),
                 "icon" => $wdoc->getIcon("", 32),
@@ -58,12 +59,16 @@ class StructureWorkflow
                 "wfFamid" => $wdoc->getAttributeValue("wf_famid"),
                 "wfFam" => $wdoc->getAttributeValue("wf_fam"),
                 "dpdocFamid" => $wdoc->getAttributeValue("dpdoc_famid"),
-                "dpdocFam" => $wdoc->getAttributeValue("dpdoc_fam"),
-                "ssId"=>intval($structure->id),
-                "ssName"=>$structure->name,
-                "ssTitle"=>$structure->getTitle(),
-                "ssIcon"=>$structure->getIcon("", 32),
+                "dpdocFam" => $wdoc->getAttributeValue("dpdoc_fam")
             ];
+            if ($structure) {
+                $wfData = array_merge($wfData, [
+                    "ssId" => intval($structure->id),
+                    "ssName" => $structure->name,
+                    "ssTitle" => $structure->getTitle(),
+                    "ssIcon" => $structure->getIcon("", 32),
+                ]);
+            }
             $data[] = $wfData;
         }
         return $data;

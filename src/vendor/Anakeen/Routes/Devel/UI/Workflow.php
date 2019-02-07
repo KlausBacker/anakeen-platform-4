@@ -10,7 +10,7 @@ namespace Anakeen\Routes\Devel\UI;
 
 use Anakeen\Router\Exception;
 use Anakeen\SmartElementManager;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\UIGetAssetPath;
 
 class Workflow
 {
