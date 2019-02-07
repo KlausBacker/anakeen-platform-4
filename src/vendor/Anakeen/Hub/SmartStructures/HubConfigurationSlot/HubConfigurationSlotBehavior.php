@@ -2,7 +2,6 @@
 
 namespace Anakeen\Hub\SmartStructures\HubConfigurationSlot;
 
-
 class HubConfigurationSlotBehavior extends \SmartStructure\Hubconfiguration
 {
     public function registerHooks()

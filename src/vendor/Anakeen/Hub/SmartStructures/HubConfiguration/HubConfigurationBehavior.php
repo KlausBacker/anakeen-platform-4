@@ -123,7 +123,8 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         return $finalTitle;
     }
 
-    protected static function getInnerPosition($innerPosition) {
+    protected static function getInnerPosition($innerPosition)
+    {
         switch ($innerPosition) {
             case "TOP":
             case "LEFT":
