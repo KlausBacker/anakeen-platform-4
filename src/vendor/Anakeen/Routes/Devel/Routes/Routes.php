@@ -55,7 +55,7 @@ class Routes
     /**
      * @param $route
      * @return array
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * Retrieve dataSource from RoutesConfig
      */
     private function formatRoute(\Anakeen\Router\Config\RouterInfo $route)

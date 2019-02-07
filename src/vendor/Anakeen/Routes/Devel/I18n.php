@@ -5,7 +5,7 @@ namespace Anakeen\Routes\Devel;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\Glob;
 use Anakeen\Router\ApiV2Response;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 /** @noinspection PhpIncludeInspection */
 require_once "vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php";

@@ -47,7 +47,7 @@ class Middlewares
     /**
      * @param $route
      * @return array
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * Retrieve middlewares dataSource from RoutesConfig
      */
     private function formatMiddleware($middleware)
