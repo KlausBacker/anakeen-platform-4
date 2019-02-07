@@ -10,9 +10,7 @@ namespace Anakeen\Core\Internal;
 
 use Anakeen\Core\SEManager;
 use Anakeen\LogManager;
-use Dcp\Core\Exception;
-
-include_once("FDL/LegacyDocManager.php");
+use Anakeen\Core\Exception;
 
 class AuthenticatorManager
 {

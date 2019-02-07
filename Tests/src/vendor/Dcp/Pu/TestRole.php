@@ -36,7 +36,7 @@ class TestRole extends TestCaseDcpCommonFamily
      * @param array $addTo
      * @param array $expectedRoles
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function testRoleByGroup(array $addTo, array $expectedRoles)
     {
@@ -76,8 +76,8 @@ class TestRole extends TestCaseDcpCommonFamily
      * @dataProvider dataDirectRole
      * @param       $login
      * @param array $expectedRoles
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function testDirectRole($login, array $expectedRoles)
     {
@@ -102,7 +102,7 @@ class TestRole extends TestCaseDcpCommonFamily
      * @param $expectRawMail
      * @param $expectCompleteMail
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function testRoleMail($roleLogin, $expectRawMail, $expectCompleteMail)
     {

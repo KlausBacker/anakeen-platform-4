@@ -219,7 +219,7 @@ class SmartFieldAbsoluteOrder
      * @param array  $attributes
      *
      * @return int
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     protected static function getStructLevel($attrid, array $attributes)
     {
@@ -228,7 +228,7 @@ class SmartFieldAbsoluteOrder
             $attrid = $attributes[$attrid]["parent"];
             $level++;
             if ($level > 5) {
-                throw new \Dcp\Core\Exception("ATTR0214", $attrid);
+                throw new \Anakeen\Core\Exception("ATTR0214", $attrid);
             }
         }
         return $level;

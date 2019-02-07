@@ -27,7 +27,7 @@ trait TAccount
      * @param string $login login to test
      *
      * @return array 2 items $err & $sug for view result of the constraint
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function constraintLogin($login)
     {
@@ -56,7 +56,7 @@ trait TAccount
      * @param string $login login to test
      *
      * @return array 2 items $err & $sug for view result of the constraint
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function existsLogin($login)
     {

@@ -256,7 +256,7 @@ EOF;
 
     public static function sendEmailError($errMsg, $expand = array())
     {
-        $wshError = new \Dcp\WSHMailError($errMsg);
+        $wshError = new \Anakeen\Script\AnkMailError($errMsg);
         $wshError->prefix = sprintf('%s %s ', date('c'), php_uname('n'));
         $wshError->addExpand($expand);
         $wshError->autosend();

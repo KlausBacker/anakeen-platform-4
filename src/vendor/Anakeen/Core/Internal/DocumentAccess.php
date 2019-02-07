@@ -184,8 +184,8 @@ class DocumentAccess
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues
      *
      * @return string
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function setProfil($profid, $fromdocidvalues = null)
     {
@@ -277,8 +277,8 @@ class DocumentAccess
      * apply computeDProfil in all documents with this profile
      *
      * @return void
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      */
     public function recomputeProfiledDocument()
@@ -333,8 +333,8 @@ class DocumentAccess
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function computeDProfil($dprofid = 0, $fromdocidvalues = null)
     {
@@ -504,7 +504,7 @@ class DocumentAccess
      * @param \Anakeen\Core\Internal\SmartElement $fromdocidvalues other document to reference dynamic profiling (default itself)
      *
      * @return string error message
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function computeDProfilExt($dprofid, $fromdocidvalues = null)
     {
@@ -597,7 +597,7 @@ class DocumentAccess
      * @param bool   $deletecontrol set true if want delete a control
      *
      * @return string error message (empty if no errors)
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     protected function modifyControl($uid, $aclname, $deletecontrol = false)
     {
@@ -635,7 +635,7 @@ class DocumentAccess
      * @param string $aclname name of the acl (edit, view,...)
      *
      * @return string error message (empty if no errors)
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function addControl($uid, $aclname)
     {
@@ -660,7 +660,7 @@ class DocumentAccess
      * @param string $aclname name of the acl (edit, view,...)
      *
      * @return string error message (empty if no errors)
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function delControl($uid, $aclname)
     {
@@ -827,7 +827,7 @@ class DocumentAccess
      * @param bool   $deletecontrol set true if want delete a control
      *
      * @return string error message (empty if no errors)
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     private function modifyExtendedControl($uName, $aclname, $deletecontrol = false)
     {
@@ -861,7 +861,7 @@ class DocumentAccess
      * @param string $accountReference
      *
      * @return string
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     private function getUid($accountReference)
     {

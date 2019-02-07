@@ -20,7 +20,7 @@ class PuEnums extends TestCaseConfig
      * @dataProvider dataEnum
      * @param       $enumSetName
      * @param array $expectedEnums
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function testEnum($enumSetName, $expectedCount, array $expectedEnums)
     {

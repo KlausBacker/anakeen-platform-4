@@ -509,7 +509,7 @@ class System
     }
 
     /**
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function reapplyDatabaseParameters()
     {

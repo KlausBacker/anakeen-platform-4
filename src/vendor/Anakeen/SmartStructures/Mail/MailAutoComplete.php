@@ -16,7 +16,7 @@ class MailAutoComplete
      * @param SmartAutocompleteRequest  $request
      * @param SmartAutocompleteResponse $response
      * @return SmartAutocompleteResponse
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\SearchDoc\Exception
      */
     public static function getMailAddresses(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response): SmartAutocompleteResponse

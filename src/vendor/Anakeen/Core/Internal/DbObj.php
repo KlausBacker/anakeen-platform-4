@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace Anakeen\Core\Internal;
 
@@ -99,7 +99,7 @@ class DbObj
      * @param string $res      array of result issue to QueryDb {@link \Anakeen\Core\Internal\QueryDb::Query()}
      * @param int    $dbid     the database connection resource
      *
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -757,7 +757,7 @@ class DbObj
      * @param int    $lvl     level set to 0 (internal purpose only)
      * @param bool   $prepare set to true to use pg_prepare, restrict to use single query
      *
-     * @throw Dcp\Db\Exception if query fail
+     * @throw Anakeen\Database\Exception if query fail
      * @return string error message if not strict mode
      */
     public function query($sql, $lvl = 0, $prepare = false)
@@ -769,11 +769,11 @@ class DbObj
         }
         $sqlt1 = '';
         if ($SQLDEBUG) {
-            $sqlt1 = microtime();
+            $sqlt1 = microtime(true);
         } // to test delay of request
         $this->initDbid();
 
-       // error_log("SQL>".$sql."\n".Debug::getDebugStackString(2, 3));
+        // error_log("SQL>".$sql."\n".Debug::getDebugStackString(2, 3));
 
         $this->msg_err = $this->err_code = '';
         if ($prepare) {
@@ -843,9 +843,9 @@ class DbObj
 
         if ($SQLDEBUG) {
             global $TSQLDELAY;
-            $SQLDELAY += microtime_diff(microtime(), $sqlt1); // to test delay of request
+            $SQLDELAY += (microtime(true) - $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
-                "t" => sprintf("%.04f", microtime_diff(microtime(), $sqlt1)),
+                "t" => sprintf("%.04f", (microtime(true) - $sqlt1)),
                 "s" => str_replace(array(
                     "from",
                     'where'
@@ -895,8 +895,9 @@ class DbObj
             $err = $this->msg_err . "\n" . $moreerr . "\n";
         }
         if (self::$sqlStrict) {
-            throw new \Dcp\Db\Exception($err);
+            throw new \Anakeen\Database\Exception($err);
         }
-        logDebugStack(2, $err);
+
+        LogManager::debug($err);
     }
 }

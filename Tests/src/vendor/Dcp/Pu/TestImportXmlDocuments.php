@@ -40,7 +40,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
      * @dataProvider dataDocumentFiles
      * @param string $documentFile
      * @param int $nbError
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function testErrorImportDocument($documentFile, $nbError)
     {

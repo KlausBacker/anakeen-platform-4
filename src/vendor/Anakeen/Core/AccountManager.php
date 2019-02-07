@@ -20,7 +20,7 @@ class AccountManager
      * Return system account from login, null if login not found
      * @param string $login
      * @return Account|null
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public static function getAccount(string $login)
     {
@@ -35,7 +35,7 @@ class AccountManager
      * Return system id from SmartElement Id
      * @param int $fid
      * @return int
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getIdFromSEId(int $fid): int
     {

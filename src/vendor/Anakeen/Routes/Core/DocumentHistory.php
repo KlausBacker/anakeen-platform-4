@@ -224,7 +224,7 @@ class DocumentHistory
      * Generate the etag info for the current ressource
      *
      * @return null|string
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getEtagInfo()
     {

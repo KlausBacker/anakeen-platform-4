@@ -6,17 +6,14 @@
 /**
  * Full Text Search document
  *
- * @author Anakeen
- * @version $Id: fullsearch.php,v 1.10 2008/01/04 17:56:37 eric Exp $
- * @package FDL
+ * @author     Anakeen
+ * @version    $Id: fullsearch.php,v 1.10 2008/01/04 17:56:37 eric Exp $
+ * @package    FDL
  * @subpackage GED
  */
+
 /**
  */
-
-
-include_once("FDL/LegacyDocManager.php");
-
 class SearchHighlight
 {
     private $dbid;
@@ -24,37 +21,41 @@ class SearchHighlight
      * @var string limit size in Kb
      */
     private $limit = 200;
-    
+
     public $beginTag = '<b>';
     public $endTag = '</b>';
-    
+
     public function __construct()
     {
         $this->dbid = \Anakeen\Core\DbManager::getDbId();
     }
-    
+
     public function setLimit($limit)
     {
         $this->limit = $limit;
     }
+
     public static function strtr8($s, $c1, $c2)
     {
         $s9 = utf8_decode($s);
         $s9 = strtr($s9, utf8_decode($c1), utf8_decode($c2));
         return utf8_encode($s9);
     }
+
     /**
      * return part of text where are found keywords
      * use simply regexp replace
+     *
      * @param string $s original text
      * @param string $k keywords
+     *
      * @return string HTML text with <b> tags
      */
     public function rawHighLight($s, $k)
     {
         $offsetStart = 100; // number of characters displayed before and after first result
         $replace = $this->beginTag . '$1' . $this->endTag;
-        
+
         $out = preg_replace("/($k)/iu", $replace, str_replace(array(
             '£',
             $this->beginTag,
@@ -77,16 +78,19 @@ class SearchHighlight
             if ($end === false) {
                 $end = $begin + 100;
             }
-            
+
             $out = substr($out, $begin, $end - $begin);
         }
         return $out;
     }
+
     /**
      * return part of text where are found keywords
      * Due to unaccent fulltext vectorisation need to transpose original text with highlight text done by headline tsearch2 sql function
+     *
      * @param string $s original text
      * @param string $k keywords
+     *
      * @return string HTML text with <b> tags
      */
     public function highlight($s, $k)
@@ -114,7 +118,7 @@ class SearchHighlight
                 '',
                 "\n"
             ), $s);
-            
+
             $s = preg_replace('/<[a-z][^>]+>/i', '', $s);
             $s = preg_replace('/<\/[a-z]+\s*>/i', '', $s);
             $s = preg_replace('/<[a-z]+\/>/i', '', $s);
@@ -126,14 +130,20 @@ class SearchHighlight
             //print_r("\n\tSL".mb_strlen($s).'=='.mb_strlen($us)."\n");
             //print_r("\n\tS=$s\n");
             //print_r("\n\tUS=$us\n");
-            $q = sprintf("select ts_headline('french','%s',to_tsquery('french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')", pg_escape_string($us), pg_escape_string($k), pg_escape_string($this->beginTag), pg_escape_string($this->endTag));
+            $q = sprintf(
+                "select ts_headline('french','%s',to_tsquery('french','%s'),'MaxFragments=1,StartSel=%s, StopSel=%s')",
+                pg_escape_string($us),
+                pg_escape_string($k),
+                pg_escape_string($this->beginTag),
+                pg_escape_string($this->endTag)
+            );
             $result = pg_query($this->dbid, $q);
             if (pg_numrows($result) > 0) {
                 $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
                 $headline = $arr["ts_headline"];
                 //print_r("\n\tL=$headline");
             }
-            
+
             $pos = mb_strpos($headline, $this->beginTag);
             if ($pos !== false) {
                 $sw = (str_replace(array(
@@ -143,9 +153,9 @@ class SearchHighlight
                     '',
                     ''
                 ), $headline));
-                
+
                 $offset = mb_strpos($us, $sw);
-                
+
                 if ($offset === false) {
                     return $headline;
                 } // case mismatch in characters

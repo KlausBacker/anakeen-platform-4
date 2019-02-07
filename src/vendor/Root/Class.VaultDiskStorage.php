@@ -184,7 +184,7 @@ SQL;
 
             $err = $this->query(sprintf($sql, pg_escape_identifier($this->dbtable), $int));
             if ($err) {
-                throw new \Dcp\Db\Exception("DB0104", $err);
+                throw new \Anakeen\Database\Exception("DB0104", $err);
             }
             if ($this->numrows() === 0) {
                 /*
@@ -283,7 +283,7 @@ SQL;
      * @return string error message (empty if OK)
      *
      * @deprecated no usage
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getEngineObject($te_name, &$ngf)
     {

@@ -80,7 +80,7 @@ create unique index idx_perm on docperm(docid, userid);";
         if ($uid == 0) {
             $user=\Anakeen\Core\ContextManager::getCurrentUser();
             if (!$user) {
-                throw new \Dcp\Core\Exception("CORE0022");
+                throw new \Anakeen\Core\Exception("CORE0022");
             }
             if ($strict) {
                 $mof = $user->getStrictMemberOf();

@@ -174,7 +174,7 @@ create index permission_idx4 on permission(computed);
      * ACL value if they are empty.
      * @param int $uid user id
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getComputedPrivileges($uid)
     {
@@ -206,7 +206,7 @@ create index permission_idx4 on permission(computed);
      * @param $uid
      * @param $acl
      * @return mixed
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function computePerm($uid, $acl)
     {
@@ -220,8 +220,8 @@ create index permission_idx4 on permission(computed);
      * @param bool $force
      * @param bool $computed
      * @return array
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getPrivileges($force = false, $computed = true)
     {

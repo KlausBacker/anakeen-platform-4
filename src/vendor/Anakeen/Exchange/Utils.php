@@ -109,7 +109,7 @@ class Utils
      *
      * @return string the path to the csv file
      * @throws \Anakeen\Script\Exception
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public static function ods2csv($odsfile)
     {
@@ -118,7 +118,7 @@ class Utils
         system($cmd, $out);
 
         if ($out !== 0) {
-            throw new \Dcp\Core\Exception(sprintf("Cannot convert to csv file \"%s\"", $odsfile));
+            throw new \Anakeen\Core\Exception(sprintf("Cannot convert to csv file \"%s\"", $odsfile));
         }
         return $csvfile;
     }

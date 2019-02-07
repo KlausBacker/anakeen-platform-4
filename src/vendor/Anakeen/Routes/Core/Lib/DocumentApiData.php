@@ -386,7 +386,7 @@ class DocumentApiData
      * @param int $id
      *
      * @return string
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected static function getDocumentEtag($id)
     {

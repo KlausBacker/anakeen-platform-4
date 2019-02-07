@@ -3,8 +3,9 @@
 require __DIR__ . '/../vendor/Anakeen/autoload.php';
 require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
 
+
 // TODO To delete when legacy functions will have disappeared
-require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Common.php";
+require __DIR__ . "/../vendor/Anakeen/Legacy/LegacyDocManager.php";
 
 register_shutdown_function(function () {
     \Anakeen\Router\FatalHandler::handleFatalShutdown();

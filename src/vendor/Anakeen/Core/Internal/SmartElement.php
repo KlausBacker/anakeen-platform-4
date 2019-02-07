@@ -19,7 +19,6 @@ define("DELVALUE", 'DEL??');
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 
 
-require_once __DIR__ . "/../../FDL/LegacyDocManager.php";
 
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
@@ -4580,7 +4579,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param int    $uid         system user identifier
      *
      * @return bool|\DocUTag
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     final public function getUTag($tag, $allrevision = true, $uid = null)
     {
@@ -5060,7 +5059,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             $copy = SEManager::createDocument($this->fromid);
-        } catch (\Dcp\Core\Exception $e) {
+        } catch (\Anakeen\Core\Exception $e) {
             return false;
         }
 
@@ -5793,7 +5792,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param bool   $force
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function rawValueToArray($v, bool $force = false)
     {
@@ -7054,7 +7053,7 @@ create unique index i_docir on doc(initid, revision);";
         $exportAttributes = array()
     ) {
         try {
-            $exd = new \Dcp\ExportXmlDocument();
+            $exd = new \Anakeen\Exchange\ExportXmlDocument();
             $exd->setDocument($this);
             $exd->setExportFiles($withfile);
             $exd->setExportDocumentNumericIdentiers($wident);

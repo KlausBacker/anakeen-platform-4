@@ -1180,7 +1180,7 @@ class ImportDocumentDescription
                 if ($this->doc->dfldid == "") {
                     if (!$this->analyze) {
                         // create auto
-                        include_once("FDL/LegacyDocManager.php");
+                        include_once("Legacy/LegacyDocManager.php");
                         $fldid = createAutoFolder($this->doc);
                         $this->tcr[$this->nLine]["msg"] .= sprintf(_("create default folder (id [%d])\n"), $fldid);
                     }
@@ -2092,7 +2092,7 @@ class ImportDocumentDescription
      *
      * @param array $data       line of description file
      * @param bool  $updateMode true if update mode
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     protected function doAttr(array $data, $updateMode = false)
     {

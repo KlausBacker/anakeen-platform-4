@@ -667,7 +667,7 @@ class CheckDb
      * @param array $node   The families tree returned with columns to drop
      * @param int   $fromId Family id to start from (default is 0)
      * @return string empty string on success, non-empty string containing the error message on failure
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function computeDropColumns(&$node = null, $fromId = 0)
     {
@@ -686,7 +686,7 @@ EOF;
         $sql = sprintf($sql, $fromId);
         try {
             \Anakeen\Core\DbManager::query($sql, $families, false, false);
-        } catch (\Dcp\Db\Exception $e) {
+        } catch (\Anakeen\Database\Exception $e) {
             return $e->getMessage();
         }
 

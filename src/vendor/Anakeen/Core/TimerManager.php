@@ -7,7 +7,7 @@ class TimerManager
     /**
      * @param Internal\SmartElement $elt
      * @return TimerTask[]
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public static function getElementTasks(\Anakeen\Core\Internal\SmartElement $elt)
     {

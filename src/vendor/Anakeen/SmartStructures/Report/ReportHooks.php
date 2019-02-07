@@ -60,7 +60,7 @@ class ReportHooks extends \SmartStructure\Dsearch
      * @param string  $renderNumber
      * @return array
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Dcp\Fmtc\Exception
      * @throws \Dcp\SearchDoc\Exception
      */

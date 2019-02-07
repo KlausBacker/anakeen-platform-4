@@ -102,7 +102,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      *
      * @param array $expectedData
      *
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
      */
@@ -136,7 +136,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      * @param       $file
      * @param array $xmlPathes
      *
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
      */
@@ -265,7 +265,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      * @param       $file
      * @param array $expectedData
      *
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
      * @throws \Dcp\SearchDoc\Exception
      * @dataProvider dataExportFileCsv

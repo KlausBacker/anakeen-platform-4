@@ -905,7 +905,7 @@ union
      *
      * @param array $r
      * @return array of account array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function getRUsersList($id, $r = array())
     {
@@ -1122,7 +1122,7 @@ union
      *
      * @param bool $strict if true no use delegation
      * @return array|null
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Exception
      */
     public static function getUserMemberOf($uid, $strict = false)
@@ -1154,8 +1154,8 @@ union
      *
      * @param int $uid user identifier
      * @return bool
-     * @throws \Dcp\Core\Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Core\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function isMember($uid)
     {

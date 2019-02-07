@@ -303,7 +303,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $bcc = implode(',', $dest['bcc']);
         $from = implode(',', $dest['from']); // only one value expected for from
         if ($from == "") {
-            $from = getMailAddr(ContextManager::getCurrentUser()->id, true);
+            $from = ContextManager::getCurrentUser()->getMail(false);
         }
         if ($from == "") {
             $from = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
@@ -323,7 +323,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             }
         } //nobody to send data
         if ($this->sendercopy && \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "FDL_BCC") == "yes") {
-            $umail = getMailAddr(ContextManager::getCurrentUser(true)->id);
+            $umail = ContextManager::getCurrentUser(true)->getMail(false);
             if ($umail != "") {
                 $bcc .= (trim($bcc) == "" ? "" : ",") . $umail;
             }
@@ -453,7 +453,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $allowedValues = [self::NOTIFY_SENDMAIL_ALWAYS, self::NOTIFY_SENDMAIL_ERRORS_ONLY, self::NOTIFY_SENDMAIL_NEVER, self::NOTIFY_SENDMAIL_AUTO];
 
         if (!in_array($notifySendMail, $allowedValues)) {
-            throw new \Dcp\Core\Exception("MAIL0001", $notifySendMail, implode("' , '", $allowedValues));
+            throw new \Anakeen\Core\Exception("MAIL0001", $notifySendMail, implode("' , '", $allowedValues));
         } else {
             $this->notifySendMail = $notifySendMail;
         }

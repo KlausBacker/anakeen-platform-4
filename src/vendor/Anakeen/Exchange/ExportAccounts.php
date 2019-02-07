@@ -202,7 +202,7 @@ class ExportAccounts
     /**
      * Reorder group bu depth to avoid unreferenced groups
      *
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function reorderGroups()
     {
@@ -400,7 +400,7 @@ class ExportAccounts
             ));
         }
 
-        $export = new \Dcp\ExportXmlDocument();
+        $export = new \Anakeen\Exchange\ExportXmlDocument();
         $export->setStructureAttributes(true);
         $export->setIncludeSchemaReference(false);
 
@@ -651,7 +651,7 @@ class ExportAccounts
      *
      * @param \Anakeen\Core\Account $user
      *
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function addUserAccount(\Anakeen\Core\Account $user)
     {

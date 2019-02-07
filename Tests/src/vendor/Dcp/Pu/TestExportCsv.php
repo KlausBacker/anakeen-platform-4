@@ -32,7 +32,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
      */
     public function testExportImage($archiveFile, $needles)
     {
-        include_once 'FDL/exportfld.php';
         include_once 'Lib.FileDir.php';
 
         $oImport = new \Anakeen\Exchange\ImportDocument();
@@ -52,7 +51,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
             "wfile"=>true,
             "eformat"=>"I"
         ];
-        exportfld($folderId, $famid, $testFolder, false, $opts);
+        \Anakeen\Exchange\ExportXml::exportfld($folderId, $famid, $testFolder, false, $opts);
 
         $testarchivefile = $testFolder . "/fdl.zip";
         $err = ImportTar::extractTar($testarchivefile, $testExtractFolder);
@@ -78,8 +77,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
      */
     public function testExportFolder($folderId, array $expectDoc, $separator, $enclosure, array $expectedProfil)
     {
-        include_once 'FDL/exportfld.php';
-
         $this->clearSetHttpVar();
 
         $opts = [
@@ -92,7 +89,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
 
         $exportOutput = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testExport") . ".csv";
 
-        exportfld($folderId, 0, $exportOutput, false, $opts);
+        \Anakeen\Exchange\ExportXml::exportfld($folderId, 0, $exportOutput, false, $opts);
 
         $this->assertTrue(file_exists($exportOutput), sprintf('Export File "%s" nor create', $exportOutput));
 
@@ -137,8 +134,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
      */
     public function testExportamily($familyId, array $expectData, $separator, $enclosure)
     {
-        include_once('FDL/exportfld.php');
-
         $this->clearSetHttpVar();
         $opts = [
             "wfile" => false,
@@ -157,7 +152,7 @@ class TestExportCsv extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, "Error when create family folder");
         $exportOutput = uniqid(\Anakeen\Core\ContextManager::getTmpDir() . "/testExport") . ".csv";
 
-        exportfld($tmpFolder->id, 0, $exportOutput, false, $opts);
+        \Anakeen\Exchange\ExportXml::exportfld($tmpFolder->id, 0, $exportOutput, false, $opts);
 
         $this->assertTrue(file_exists($exportOutput), sprintf('Export File "%s" nor create', $exportOutput));
 
@@ -190,7 +185,6 @@ class TestExportCsv extends TestCaseDcpCommonFamily
      */
     public function testExportNoParam($data)
     {
-        include_once('FDL/exportfld.php');
 
         foreach (array(
                      'export:doc',

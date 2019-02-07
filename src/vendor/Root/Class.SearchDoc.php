@@ -223,7 +223,7 @@ class SearchDoc
      *
      * @return int the number of results
      * @throws Dcp\SearchDoc\Exception
-     * @throws Dcp\Db\Exception
+     * @throws Anakeen\Database\Exception
      */
     public function onlyCount()
     {
@@ -264,7 +264,7 @@ class SearchDoc
                     $mb = microtime(true);
                     try {
                         \Anakeen\Core\DbManager::query($sql, $result, false, true);
-                    } catch (\Dcp\Db\Exception $e) {
+                    } catch (\Anakeen\Database\Exception $e) {
                         $this->debuginfo["query"] = $sql;
                         $this->debuginfo["error"] = pg_last_error($dbid);
                         $this->count = -1;
@@ -453,7 +453,7 @@ class SearchDoc
      * @api send query
      * @return array|null|SearchDoc array of documents if no setObjectReturn else itself
      * @throws Dcp\SearchDoc\Exception
-     * @throws Dcp\Db\Exception
+     * @throws Anakeen\Database\Exception
      */
     public function search()
     {

@@ -11,11 +11,8 @@ chdir(__DIR__);
 require __DIR__ . '/vendor/Anakeen/autoload.php';
 require __DIR__ . '/vendor/Anakeen/WHAT/Lib.Prefix.php';
 
-// To get global functions like ___
-require __DIR__ . "/vendor/Anakeen/WHAT/Lib.Common.php";
-// Need to load universal autoload also
-//require __DIR__ . "/vendor/Anakeen/WHAT/autoload.php";
-
+// TODO To delete when legacy functions will have disappeared
+require __DIR__ . "/vendor/Anakeen/Legacy/LegacyDocManager.php";
 
 $programName = array_shift($argv);
 Anakeen\Script\ShellManager::recordArgs($argv);
