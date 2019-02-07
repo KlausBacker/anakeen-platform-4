@@ -1,6 +1,3 @@
----
-sidebarDepth: 3
----
 # Configuration
 
 Le Hub Station permet d'accueillir un ensemble d'éléments d'interface.

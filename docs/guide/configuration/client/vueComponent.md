@@ -3,7 +3,7 @@
 N'importe quel composant Vue peut être utilisé pour définir une entrée du Hub Station. 
 Néanmoins, pour fonctionner correctement il est nécessaire que le composant hérite du composant `HubElement` (ou utilise le mixin `HubElementMixin` correspondant).
 
-## Exemple
+## Exemple de composant Vue
 
 Soit le composant Vue existant :
 

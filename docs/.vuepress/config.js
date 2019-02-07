@@ -50,12 +50,23 @@ module.exports = {
 function getConfigSideBar() {
   return [
     {
-      title: "Configuration du composant Hub Station",
-      collaspsable: true,
+      title: "Créer un Hub Station",
       children: [
-        ['hubStationComponent.md', "Hub Station"],
-        ['hubElementComponent.md', "Hub Element"],
-        ['vueComponent.md', "Définir une entrée du Hub"]
+        ['instanciation/instanciation.md', "Instancier un Hub Station"]
+      ]
+    },
+    {
+      title: "Configuration du Hub Station: côté client",
+      children: [
+        ['client/hubStationComponent.md', "Hub Station"],
+        ['client/hubElementComponent.md', "Hub Element"],
+        ['client/vueComponent.md', "Définir une entrée du Hub"]
+      ]
+    },
+    {
+      title: "Configuration du Hub Station: côté serveur",
+      children: [
+        ['server/hubConfigurationStructure.md', "Hub Structures"]
       ]
     }
   ];

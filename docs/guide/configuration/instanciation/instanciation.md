@@ -1,4 +1,4 @@
-# Configuration et développement
+# Instancier un Hub Station
 
 Pour fonctionner, le module a besoin d'être configurer à l'aide d'une SmartStructure de configuration.
 Ainsi, la SmartStructure `Hub Configuration`permet d'apporter la configuration des différents éléments présentés dans le hub.

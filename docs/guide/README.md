@@ -4,7 +4,7 @@ sidebar: false
 
 <div class="guide-main">
     <div class="guide-section">
-     <a href="smartData/">
+     <a href="configuration/">
      <i class="fa fa-code"></i><br/>
      <span>Configuration</span>
      </a>
@@ -14,12 +14,6 @@ sidebar: false
      <i class="fa fa-desktop"></i><br/>
      <span>Utilisation</span>
      </a>
-    </div>
-    <div class="guide-section">
-         <a href="configuration/">
-         <i class="fa fa-desktop"></i><br/>
-         <span>Hub Station: côté client</span>
-         </a>
     </div>
 </div>
 
