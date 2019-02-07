@@ -2,10 +2,10 @@
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.0">
 
     <requires>
-        <module name="smart-data-engine" version="1.0.x"/>
-        <module name="user-interfaces" version="1.0.x"/>
-        <module name="security" version="1.0.x"/>
-        <module name="workflow" version="1.0.x"/>
+        <module name="smart-data-engine" version="2.0.x"/>
+        <module name="user-interfaces" version="2.0.x"/>
+        <module name="security" version="2.0.x"/>
+        <module name="workflow" version="2.0.x"/>
     </requires>
     <post-install>
         <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
