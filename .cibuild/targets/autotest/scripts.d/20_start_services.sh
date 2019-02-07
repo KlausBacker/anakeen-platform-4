@@ -7,7 +7,7 @@ cat <<'EOF' > /etc/apache2/sites-available/anakeen-platform.conf
 	ServerAdmin webmaster@localhost
 	DocumentRoot /var/www/html/dynacase/public
 
-	Alias /anakeen-control /var/www/html/dynacase-control
+	Alias /dynacase-control /var/www/html/dynacase-control
 
 	<Directory /var/www/html/dynacase/public>
 		Require all granted
