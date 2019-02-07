@@ -1,12 +1,16 @@
 {
   "name": "transformation",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/anakeen-cli": "^1.0.7"
+    "@anakeen/anakeen-cli": "^1.0.7",
+    "@commitlint/config-conventional": "^7.3.1",
+    "commitlint": "^7.3.2",
+    "husky": "^1.3.1",
+    "prettier": "^1.16.1"
   },
   "husky": {
     "hooks": {
