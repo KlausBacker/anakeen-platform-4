@@ -17,7 +17,7 @@ class HubConfigurationIdentityBehavior extends \SmartStructure\Hubconfigurations
      * Get component specific configuration, to display it correctly with its options
      *
      * @return array
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected function getComponentConfiguration()
     {

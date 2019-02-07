@@ -3,7 +3,7 @@
 namespace Anakeen\Hub\Routes;
 
 use Anakeen\Router\ApiV2Response;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\UIGetAssetPath;
 
 class FontAwesomeIcon
 {

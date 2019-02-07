@@ -2,7 +2,7 @@
 
 namespace Anakeen\Hub\Routes;
 
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\UIGetAssetPath;
 
 class HubInstanciation
 {
@@ -12,7 +12,7 @@ class HubInstanciation
      * @param $args
      * @return \Slim\Http\Response
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     public function __invoke(
         \Slim\Http\request $request,
@@ -25,17 +25,17 @@ class HubInstanciation
             "JS_DEPS" => [
                 [
                     "key" => "jquery",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
+                    "path" => UIGetAssetPath::getJSJqueryPath()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+                    "path" => UIGetAssetPath::getJSKendoPath()
                 ]
             ],
             "JS" => [
                 [
                     "key" => "hubInstanciation",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                    "path" => UIGetAssetPath::getElementAssets(
                         "hub",
                         UIGetAssetPath::isInDebug() ? "dev" : "prod"
                     )["hubInstanciation"]["js"]
@@ -44,11 +44,11 @@ class HubInstanciation
             "JS_LEGACY" => [
                 [
                     "key" => "polyfill",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
+                    "path" => UIGetAssetPath::getPolyfill()
                 ],
                 [
                     "key" => "hubInstanciation",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                    "path" => UIGetAssetPath::getElementAssets(
                         "hub",
                         "legacy"
                     )["hubInstanciation"]["js"]
@@ -57,15 +57,15 @@ class HubInstanciation
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap()
+                    "path" => UIGetAssetPath::getCssBootstrap()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
+                    "path" => UIGetAssetPath::getCssKendo()
                 ],
                 [
                     "key" => "component",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents()
+                    "path" => UIGetAssetPath::getCssSmartWebComponents()
                 ]
             ]
         ];

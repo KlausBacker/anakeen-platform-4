@@ -14,8 +14,8 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\response
-     * @throws \Dcp\Db\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Db\Exception
+     * @throws \Anakeen\SearchDoc\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
