@@ -60,7 +60,6 @@ class RestoreUserParameterSystemValue
      * @param $nameSpace
      * @param $parameterName
      * @param $userId
-     * @throws \Dcp\Exception
      */
     private function restoreParameter($nameSpace, $parameterName, $userId)
     {

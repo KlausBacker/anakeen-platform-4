@@ -3,7 +3,7 @@
 namespace Anakeen\Routes\Admin\Routes;
 
 use Anakeen\Router\ApiV2Response;
-use Dcp\Core\Exception;
+use Anakeen\Core\Exception;
 
 class ActivateRoute
 {
@@ -12,7 +12,7 @@ class ActivateRoute
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\response
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {

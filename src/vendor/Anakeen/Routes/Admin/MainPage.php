@@ -2,7 +2,7 @@
 
 namespace Anakeen\Routes\Admin;
 
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\UIGetAssetPath;
 
 class MainPage
 {
@@ -12,7 +12,7 @@ class MainPage
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\Response
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {

@@ -36,7 +36,7 @@ class AllParameters
      * Execute function to get all parameters
      *
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function doRequest()
     {
@@ -51,7 +51,7 @@ class AllParameters
      * Get raw data from DataBase
      *
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function getDataFromDb()
     {

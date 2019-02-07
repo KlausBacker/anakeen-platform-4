@@ -53,7 +53,7 @@ class UserParameters
      * Execute function to get all parameters for user
      *
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function doRequest()
     {
@@ -69,7 +69,7 @@ class UserParameters
      * Get all parameters from database
      *
      * @return array
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function getDataFromDb()
     {

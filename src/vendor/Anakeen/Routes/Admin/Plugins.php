@@ -3,8 +3,8 @@ namespace Anakeen\Routes\Admin;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Settings;
-use Dcp\Core\Exception;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Core\Exception;
+use Anakeen\Ui\UIGetAssetPath;
 
 /**
  * Class Plugins

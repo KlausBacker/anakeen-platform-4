@@ -9,7 +9,7 @@ class AllMiddlewares
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
     {
@@ -28,7 +28,7 @@ class AllMiddlewares
     /**
      * @param $route
      * @return array
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      * Retrieve middlewares dataSource from RoutesConfig
      */
     private function formatMiddleware($middleware)

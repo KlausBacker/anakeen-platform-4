@@ -1,6 +1,7 @@
 {
   "name": "@anakeen/admin-center",
-  "version": "1.0.1",
+  "version": "2.0.0",
+  "autorelease": true,
   "description": "Web interfaces to admin applications and configure smart elements",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
   "author": "",
@@ -47,6 +48,5 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  },
-  "autorelease": false
+  }
 }
