@@ -73,7 +73,6 @@ class AlterUserParameter
      * @param $newValue
      * @param $userId
      * @return array
-     * @throws \Dcp\Exception
      */
     private function alterUserParameter($nameSpace, $parameterName, $newValue, $userId)
     {
@@ -90,7 +89,7 @@ class AlterUserParameter
      * @param $parameterName
      * @param $newValue
      * @return bool
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function isCorrect($nameSpace, $parameterName, $newValue)
     {
@@ -140,7 +139,7 @@ class AlterUserParameter
      * @param $parameterName
      * @param $userId
      * @return mixed
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function getUserParameterValue($nameSpace, $parameterName, $userId)
     {

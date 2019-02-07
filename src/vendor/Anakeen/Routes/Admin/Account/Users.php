@@ -19,7 +19,7 @@ class Users
      * @param \Slim\Http\response $response
      * @return \Slim\Http\Response
      * @throws Exception
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
     {

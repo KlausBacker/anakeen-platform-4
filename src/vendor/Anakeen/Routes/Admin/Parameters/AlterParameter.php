@@ -66,7 +66,6 @@ class AlterParameter
      * @param $parameterName
      * @param $newValue
      * @return array
-     * @throws \Dcp\Exception
      */
     private function alterValue($nameSpace, $parameterName, $newValue)
     {
@@ -86,7 +85,7 @@ class AlterParameter
      * @param $parameterName
      * @param $newValue
      * @return bool
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     private function isCorrect($nameSpace, $parameterName, $newValue)
     {
