@@ -85,12 +85,12 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $this->sudo($login);
         
-        $outFile = tempnam(getTmpDir(), 'tstexport');
+        $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
         $ec->setVerifyAttributeAccess(false);
         $ec->setDocumentlist($dl);
         $separator = ',';
@@ -111,12 +111,12 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $this->sudo($login);
         
-        $outFile = tempnam(getTmpDir(), 'tstexport');
+        $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
         $ec->setVerifyAttributeAccess(true);
         $ec->setDocumentlist($dl);
         $separator = ',';
@@ -157,17 +157,17 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     public function testExportXmlSingle($login, array $expectedData)
     {
         $this->sudo($login);
-        $outFile = tempnam(getTmpDir(), 'tstexport');
+        $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
         
         $this->assertEmpty($s->searchError(), sprintf("Error in search %s", print_r($s->getSearchInfo(), true)));
         
-        $ec = new \Dcp\ExportCollection();
+        $ec = new \Anakeen\Core\ExportCollection();
         
         $ec->setOutputFilePath($outFile);
-        $ec->setOutputFormat(\Dcp\ExportCollection::xmlFileOutputFormat);
+        $ec->setOutputFormat(\Anakeen\Core\ExportCollection::xmlFileOutputFormat);
         $ec->setDocumentlist($s->getDocumentList());
         $ec->setVerifyAttributeAccess(true);
         $ec->export();
