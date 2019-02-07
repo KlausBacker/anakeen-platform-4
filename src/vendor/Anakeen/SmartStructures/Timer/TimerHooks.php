@@ -144,7 +144,7 @@ class TimerHooks extends \Anakeen\SmartElement
      * @param int                                 $c       count of deletion
      *
      * @return string error - empty if no error -
-     * @throws \Dcp\Core\Exception
+     * @throws \Anakeen\Core\Exception
      */
     public function unattachAllDocument(&$doc, &$origin = null, &$c = 0)
     {
