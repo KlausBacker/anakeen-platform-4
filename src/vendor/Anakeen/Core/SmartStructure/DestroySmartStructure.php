@@ -5,7 +5,7 @@ namespace Anakeen\Core\SmartStructure;
 
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 class DestroySmartStructure
 {
