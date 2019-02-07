@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TestRender\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_render as myAttributes;
 
-class RenderConfigEdit extends \Dcp\Ui\DefaultEdit
+class RenderConfigEdit extends \Anakeen\Ui\DefaultEdit
 {
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
@@ -17,7 +17,7 @@ class RenderConfigEdit extends \Dcp\Ui\DefaultEdit
         $options = parent::getOptions($document);
 
 
-        $options->htmltext(myAttributes::tst_desc)->setToolbar(\Dcp\Ui\HtmltextRenderOptions::basicToolbar);
+        $options->htmltext(myAttributes::tst_desc)->setToolbar(\Anakeen\Ui\HtmltextRenderOptions::basicToolbar);
 
 
         return $options;

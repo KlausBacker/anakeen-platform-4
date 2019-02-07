@@ -1,7 +1,7 @@
 <?php
 
 
-use Dcp\Ui\DocidRenderOptions;
+use Anakeen\Ui\DocidRenderOptions;
 
 class ErrorCodeUI
 {
@@ -23,7 +23,7 @@ class ErrorCodeUI
     const UI0004 = 'Render template file not found : %s';
     /**
      * @errorCode File use in DocumentTemplate class not found
-     * @see       Dcp\Ui\DocumentTemplate
+     * @see       Anakeen\Ui\DocumentTemplate
      */
     const UI0005 = 'Document template file not found : %s';
     /**
@@ -40,66 +40,66 @@ class ErrorCodeUI
     const UI0008 = 'Render configuration file "%s" is not found :';
     /**
      * @errorCode the implement method must return an array
-     * @see       \Dcp\Ui\RenderConfig::getCssReferences
+     * @see       \Anakeen\Ui\RenderConfig::getCssReferences
      */
     const UI0010 = 'Render css reference must be an array "%s" found :';
     /**
      * @errorCode the implement method must return an array
-     * @see       \Dcp\Ui\RenderConfig::getJsReferences
+     * @see       \Anakeen\Ui\RenderConfig::getJsReferences
      */
     const UI0011 = 'Render js reference must be an array "%s" found :';
     /**
      * @errorCode the implement method must return an array
-     * @see       \Dcp\Ui\RenderConfig::getTemplates
+     * @see       \Anakeen\Ui\RenderConfig::getTemplates
      */
     const UI0012 = 'Method "%s::getTemplate" must return array';
     /**
-     * @errorCode the implement method must return an Dcp\Ui\IRenderOptions object
-     * @see       \Dcp\Ui\RenderConfig::getOptions
+     * @errorCode the implement method must return an Anakeen\Ui\IRenderOptions object
+     * @see       \Anakeen\Ui\RenderConfig::getOptions
      */
-    const UI0013 = 'Method "%s::getOptions" must return \Dcp\Ui\IRenderOptions';
+    const UI0013 = 'Method "%s::getOptions" must return \Anakeen\Ui\IRenderOptions';
     /**
      * @errorCode A mask referenced in cvdoc doc has wrong value
      */
     const UI0014 = 'Mask "%s" not found in cvdoc "%s"';
     /**
      * @errorCode the menu item not exist
-     * @see       \Dcp\Ui\BarMenu::insertBefore
+     * @see       \Anakeen\Ui\BarMenu::insertBefore
      */
     const UI0100 = 'Menu insertBefore : Element index "%s" not exists';
     /**
      * @errorCode the menu item not exist
-     * @see       \Dcp\Ui\BarMenu::insertAfter
+     * @see       \Anakeen\Ui\BarMenu::insertAfter
      */
     const UI0101 = 'Menu insertAfter : Element index "%s" not exists';
     /**
      * @errorCode the attribte not exists
-     * @see       \Dcp\Ui\RenderAttributeVisibilities::setVisibility
+     * @see       \Anakeen\Ui\RenderAttributeVisibilities::setVisibility
      */
     const UI0102 = 'setVisibility : Attribute "%s" not exists for "%s" document';
     /**
      * @errorCode Visibility must be one of R,W,O,I,S,H
-     * @see       \Dcp\Ui\RenderAttributeVisibilities::setVisibility
+     * @see       \Anakeen\Ui\RenderAttributeVisibilities::setVisibility
      */
     const UI0103 = 'setVisibility : Visibility "%s" not correct. Allowed are "%s';
     /**
      * @errorCode the attribute not exists
-     * @see       \Dcp\Ui\RenderAttributeNeeded::setNeeded
+     * @see       \Anakeen\Ui\RenderAttributeNeeded::setNeeded
      */
     const UI0104 = 'setNeeded : Attribute "%s" not exists for "%s" document';
     /**
      * @errorCode Cannot apply needed on tab, frame or menu attributes, only an "normal" attribute
-     * @see       \Dcp\Ui\RenderAttributeNeeded::setNeeded
+     * @see       \Anakeen\Ui\RenderAttributeNeeded::setNeeded
      */
     const UI0105 = 'setNeeded : Attribute "%s" cannot be needed (not allowed type)  for "%s" document';
     /**
      * @errorCode Cannot apply needed an attribute wich is in an array
-     * @see       \Dcp\Ui\RenderAttributeNeeded::setNeeded
+     * @see       \Anakeen\Ui\RenderAttributeNeeded::setNeeded
      */
     const UI0106 = 'setNeeded : Attribute "%s" cannot be needed (must not be in an array)  for "%s" document';
     /**
      * @errorCode Tab can be set only on top or right
-     * @see       \Dcp\Ui\TabRenderOptions::setTabPlacement
+     * @see       \Anakeen\Ui\TabRenderOptions::setTabPlacement
      */
     const UI0107 = 'setTabPlacement : Placement "%s" is not valid,  allowed placement are "%s" document';
     /**

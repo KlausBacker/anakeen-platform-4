@@ -26,7 +26,7 @@ class CallMenu
      * @param \Slim\Http\response $response
      * @param                     $args
      * @return \Slim\Http\response
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -45,17 +45,17 @@ class CallMenu
         $doc = SmartElementManager::getDocument($documentId);
 
         if (!$doc) {
-            throw new \Dcp\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
+            throw new \Anakeen\Ui\Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
         }
         if ($request->getMethod() === "POST" || $request->getMethod() === "PUT") {
             $err = $doc->control("edit");
             if ($err) {
-                throw new \Dcp\Ui\Exception($err);
+                throw new \Anakeen\Ui\Exception($err);
             }
         } elseif ($request->getMethod() === "DELETE") {
             $err = $doc->control("delete");
             if ($err) {
-                throw new \Dcp\Ui\Exception($err);
+                throw new \Anakeen\Ui\Exception($err);
             }
         }
 
@@ -63,18 +63,18 @@ class CallMenu
             $vId = '';
         }
 
-        $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
+        $config = \Anakeen\Ui\RenderConfigManager::getRenderConfig($renderMode, $doc, $vId);
         $menu = $config->getMenu($doc);
         /**
-         * @var \Dcp\Ui\CallableMenu $element
+         * @var \Anakeen\Ui\CallableMenu $element
          */
         $element = $menu->getElement($menuId);
         if (!$element) {
-            throw new \Dcp\Ui\Exception(sprintf(___("Menu id \"%s\" not found ", "ui"), $menuId));
+            throw new \Anakeen\Ui\Exception(sprintf(___("Menu id \"%s\" not found ", "ui"), $menuId));
         }
 
         if ($element->getMethod() !== $request->getMethod()) {
-            throw new \Dcp\Ui\Exception(sprintf(___("Menu \"%s\" : Method mismatch need \"%s\" and has \"%s\"", "ui"), $menuId, $request->getMethod(), $element->getMethod()));
+            throw new \Anakeen\Ui\Exception(sprintf(___("Menu \"%s\" : Method mismatch need \"%s\" and has \"%s\"", "ui"), $menuId, $request->getMethod(), $element->getMethod()));
         }
 
         return $element->callMenuRequest($request, $response);

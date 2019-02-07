@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\FieldAccessLayer\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use \SmartStructure\Fields\Fieldaccesslayer as myAttributes;
 
 class FieldAccessLayerViewRender extends DefaultConfigViewRender

@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderAttributeNeeded;
+use Anakeen\Ui\RenderAttributeNeeded;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class AllRenderAllNeeded extends \Dcp\Ui\DefaultEdit
+class AllRenderAllNeeded extends \Anakeen\Ui\DefaultEdit
 {
     public function getNeeded(\Anakeen\Core\Internal\SmartElement $document) : RenderAttributeNeeded
     {

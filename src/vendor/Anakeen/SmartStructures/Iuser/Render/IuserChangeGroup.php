@@ -5,7 +5,7 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\UIGetAssetPath;
 //use \SmartStructure\Fields\Iuser as myAttributes;
 use SmartStructure\Iuser;
 

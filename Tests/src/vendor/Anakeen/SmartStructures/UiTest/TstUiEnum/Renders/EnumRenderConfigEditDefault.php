@@ -3,10 +3,10 @@
 namespace Anakeen\SmartStructures\UiTest\TstUiEnum\Renders;
 
 use Anakeen\Core\ContextManager;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_enum as myAttributes;
 
-class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
+class EnumRenderConfigEditDefault extends \Anakeen\Ui\DefaultEdit
 {
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
@@ -18,7 +18,7 @@ class EnumRenderConfigEditDefault extends \Dcp\Ui\DefaultEdit
         $options = parent::getOptions($document);
 
         $options->document()->setTabPlacement(
-            \Dcp\Ui\DocumentRenderOptions::tabTopProportionalPlacement
+            \Anakeen\Ui\DocumentRenderOptions::tabTopProportionalPlacement
         );
         return $options;
     }

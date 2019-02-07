@@ -6,19 +6,19 @@
 
 namespace Anakeen\SmartStructures\Mask\Render;
 
-class MaskAccess implements \Dcp\Ui\IRenderConfigAccess
+class MaskAccess implements \Anakeen\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
-     * @return \Dcp\Ui\IRenderConfig
+     * @return \Anakeen\Ui\IRenderConfig
      */
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         switch ($mode) {
-            case \Dcp\Ui\RenderConfigManager::CreateMode:
-            case \Dcp\Ui\RenderConfigManager::EditMode:
+            case \Anakeen\Ui\RenderConfigManager::CreateMode:
+            case \Anakeen\Ui\RenderConfigManager::EditMode:
                 return new MaskEditRender();
-            case \Dcp\Ui\RenderConfigManager::ViewMode:
+            case \Anakeen\Ui\RenderConfigManager::ViewMode:
                 return new MaskViewRender();
         }
         return null;

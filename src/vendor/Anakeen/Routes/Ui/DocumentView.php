@@ -6,7 +6,7 @@ use Anakeen\Router\URLUtils;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\SmartElementManager;
 use Anakeen\SmartStructures\Wdoc\WDocHooks;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Cvdoc as CvdocAttribute;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
@@ -305,7 +305,7 @@ class DocumentView
      * @param ApiMessage[] $messages
      * @return array
      * @throws Exception
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     protected function getViewInformation(&$viewId, &$messages)
     {
@@ -318,7 +318,7 @@ class DocumentView
                 case self::fieldRenderOptions:
                     $configOptions = $config->getOptions($this->document);
                     if (!is_a($configOptions, RenderOptions::class)) {
-                        throw new \Dcp\Ui\Exception("UI0013", get_class($config));
+                        throw new \Anakeen\Ui\Exception("UI0013", get_class($config));
                     }
 
                     $viewInfo[self::fieldRenderOptions] = $configOptions->jsonSerialize();
@@ -400,7 +400,7 @@ class DocumentView
     }
 
     /**
-     * @param \Dcp\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @return array|bool
      */
@@ -421,7 +421,7 @@ class DocumentView
     }
 
     /**
-     * @param \Dcp\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @throws Exception
      * @return array|bool
@@ -447,7 +447,7 @@ class DocumentView
 
 
     /**
-     * @param \Dcp\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      * @return ApiMessage[]
      */
@@ -560,18 +560,18 @@ class DocumentView
     }
 
     /**
-     * @param \Dcp\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig               $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return string
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
-    protected function renderTemplates(\Dcp\Ui\IRenderConfig $config, \Anakeen\Core\Internal\SmartElement $document)
+    protected function renderTemplates(\Anakeen\Ui\IRenderConfig $config, \Anakeen\Core\Internal\SmartElement $document)
     {
         $templates = $config->getTemplates($document);
 
         if (!is_array($templates)) {
-            throw new \Dcp\Ui\Exception("UI0012", get_class($config));
+            throw new \Anakeen\Ui\Exception("UI0012", get_class($config));
         }
         $delimiterStartTag = '[[';
         $delimiterEndTag = ']]';
@@ -582,7 +582,7 @@ class DocumentView
         );
         $mustacheEngine = new \Mustache_Engine($option);
 
-        $uiMustacheLoader = new \Dcp\Ui\MustacheLoaderSection($templates, $delimiterStartTag, $delimiterEndTag);
+        $uiMustacheLoader = new \Anakeen\Ui\MustacheLoaderSection($templates, $delimiterStartTag, $delimiterEndTag);
         $uiMustacheLoader->setDocument($document);
         $mustacheEngine->setPartialsLoader($uiMustacheLoader);
         $delimiter = sprintf('{{=%s %s=}}', $delimiterStartTag, $delimiterEndTag);
@@ -616,39 +616,39 @@ class DocumentView
 
     /**
      * @param string $vid
-     * @return \Dcp\Ui\IRenderConfig
+     * @return \Anakeen\Ui\IRenderConfig
      * @throws Exception
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     protected function getRenderConfig(&$vid)
     {
         if ($this->renderConfig === null) {
             $renderMode = "view";
             if ($vid == self::defaultViewConsultationId) {
-                $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
+                $renderMode = \Anakeen\Ui\RenderConfigManager::ViewMode;
                 $vid = '';
             } elseif ($vid == self::defaultViewEditionId) {
-                $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
+                $renderMode = \Anakeen\Ui\RenderConfigManager::EditMode;
                 $vid = '';
             } elseif ($vid == self::defaultViewCreationId) {
-                $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
+                $renderMode = \Anakeen\Ui\RenderConfigManager::CreateMode;
                 $vid = '';
             } elseif ($vid == self::coreViewConsultationId) {
-                $renderMode = \Dcp\Ui\RenderConfigManager::ViewMode;
+                $renderMode = \Anakeen\Ui\RenderConfigManager::ViewMode;
                 $vid = '!none';
             } elseif ($vid == self::coreViewEditionId) {
-                $renderMode = \Dcp\Ui\RenderConfigManager::EditMode;
+                $renderMode = \Anakeen\Ui\RenderConfigManager::EditMode;
                 $vid = '!none';
             } elseif ($vid == self::coreViewCreationId) {
-                $renderMode = \Dcp\Ui\RenderConfigManager::CreateMode;
+                $renderMode = \Anakeen\Ui\RenderConfigManager::CreateMode;
                 $vid = '!none';
             }
 
             if (($vid === "!none" || $this->document->cvid == 0) && $this->document->doctype !== "C") {
-                $config = \Dcp\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $this->document);
+                $config = \Anakeen\Ui\RenderConfigManager::getDefaultFamilyRenderConfig($renderMode, $this->document);
                 $vid = '';
             } else {
-                $config = \Dcp\Ui\RenderConfigManager::getRenderConfig($renderMode, $this->document, $vid);
+                $config = \Anakeen\Ui\RenderConfigManager::getRenderConfig($renderMode, $this->document, $vid);
             }
             switch ($config->getType()) {
                 case "view":
@@ -720,7 +720,7 @@ class DocumentView
 
         $refreshMsg = $this->setRefresh();
 
-        $disableEtag = \Dcp\Ui\RenderConfigManager::getRenderParameter(($this->document->doctype === "C") ? $this->document->name : $this->document->fromname, "disableEtag");
+        $disableEtag = \Anakeen\Ui\RenderConfigManager::getRenderParameter(($this->document->doctype === "C") ? $this->document->name : $this->document->fromname, "disableEtag");
 
         if ($disableEtag) {
             return null;
@@ -787,7 +787,7 @@ class DocumentView
         static $refreshMsg = '';
 
         if (!$onlyOne) {
-            $applyRefresh = \Dcp\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "applyRefresh");
+            $applyRefresh = \Anakeen\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "applyRefresh");
             if ($applyRefresh) {
                 $refreshMsg = $this->document->refresh();
             }

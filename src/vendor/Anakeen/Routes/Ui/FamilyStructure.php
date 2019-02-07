@@ -25,7 +25,7 @@ class FamilyStructure extends \Anakeen\Routes\Core\DocumentData
         $resourceId = $args["family"];
         $this->setDocument($resourceId);
         if ($this->_document->doctype !== "C") {
-            throw new \Dcp\Ui\Exception("CRUDUI0013", $resourceId);
+            throw new \Anakeen\Ui\Exception("CRUDUI0013", $resourceId);
         }
 
         $etag = $this->getDocumentEtag($this->_document->id);
@@ -48,7 +48,7 @@ class FamilyStructure extends \Anakeen\Routes\Core\DocumentData
      * @param $id
      *
      * @return string
-     * @throws \Dcp\Db\Exception
+     * @throws \Anakeen\Database\Exception
      */
     protected function extractEtagDataFromId($id)
     {

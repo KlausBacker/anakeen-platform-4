@@ -4,7 +4,7 @@ namespace Anakeen\Ui;
 
 use Anakeen\Core\SEManager;
 use Anakeen\Workflow\ExportElementConfiguration;
-use Dcp\Ui\RenderConfigManager;
+use Anakeen\Ui\RenderConfigManager;
 
 /**
  * Class ExportRenderConfiguration

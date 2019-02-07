@@ -2,17 +2,17 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiEmployee\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use \SmartStructure\Fields\Tst_ddui_employee as myAttribute;
 
-class EmployeeCustomRender extends \Dcp\Ui\DefaultEdit
+class EmployeeCustomRender extends \Anakeen\Ui\DefaultEdit
 {
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
 
 
-        $options->commonOption()->setLabelPosition(\Dcp\Ui\CommonRenderOptions::autoPosition);
+        $options->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::autoPosition);
         $tplIdent
             = <<< 'HTML'
         <div class="Bof" style="outline:dashed 1px red; margin: 1rem">
@@ -39,7 +39,7 @@ HTML;
           </div>
 HTML;
         $options->text(myAttribute::tst_nom)->setTemplate($tplIdent)
-            ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+            ->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
 
         $tplIdent
             = <<< 'HTML'

@@ -6,16 +6,16 @@
 
 namespace Anakeen\SmartStructures\Helppage\Render;
 
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Helppage as myAttributes;
 
-class HelppageEditRender extends \Dcp\Ui\DefaultEdit
+class HelppageEditRender extends \Anakeen\Ui\DefaultEdit
 {
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
-     * @return \Dcp\Ui\RenderOptions
+     * @return \Anakeen\Ui\RenderOptions
      */
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
@@ -62,7 +62,7 @@ class HelppageEditRender extends \Dcp\Ui\DefaultEdit
 HTML
         ) ;
 
-        $options->arrayAttribute(myAttributes::help_t_sections)->setLabelPosition(\Dcp\Ui\CommonRenderOptions::upPosition);
+        $options->arrayAttribute(myAttributes::help_t_sections)->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
         $options->text(myAttributes::help_sec_key)->setPlaceHolder($document->getLabel(myAttributes::help_sec_key));
         $options->text(myAttributes::help_sec_lang)->setPlaceHolder($document->getLabel(myAttributes::help_sec_lang));
         $options->text(myAttributes::help_sec_name)->setPlaceHolder($document->getLabel(myAttributes::help_sec_name));

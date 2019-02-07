@@ -2,12 +2,12 @@
 
 namespace Anakeen\SmartStructures\UiTest\TestRender\Renders;
 
-use Dcp\Ui\BarMenu;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Tst_render as myAttributes;
 
-class RenderConfigView extends \Dcp\Ui\DefaultView
+class RenderConfigView extends \Anakeen\Ui\DefaultView
 {
     public function getLabel(\Anakeen\Core\Internal\SmartElement $document = null)
     {
@@ -18,10 +18,10 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $options->frame(myAttributes::tst_fr_desc)->setTemplate('{{{attributes.tst_desc.htmlContent}}}')->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+        $options->frame(myAttributes::tst_fr_desc)->setTemplate('{{{attributes.tst_desc.htmlContent}}}')->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
 
         $options->frame(myAttributes::tst_fr_config)->setTemplate('<div class="test-document" />')
-            ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+            ->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
 
 
         return $options;
@@ -31,7 +31,7 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
     {
         $menu = parent::getMenu($document);
 
-        $menuItem = new \Dcp\Ui\ItemMenu(
+        $menuItem = new \Anakeen\Ui\ItemMenu(
             "openWindow",
             ___("Open in new window", "tst")
         );
@@ -39,7 +39,7 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
         $menuItem->setUrl("#action/tst:openWindow");
         $menu->appendElement($menuItem);
 
-        $menuItem = new \Dcp\Ui\ItemMenu(
+        $menuItem = new \Anakeen\Ui\ItemMenu(
             "exportData",
             ___("Export Data", "tst")
         );
@@ -57,7 +57,7 @@ class RenderConfigView extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
-        $js["smartElement"] = \Dcp\Ui\UIGetAssetPath::getJSSmartElementWidgetPath(true);
+        $js["smartElement"] = \Anakeen\Ui\UIGetAssetPath::getJSSmartElementWidgetPath(true);
         $path = UIGetAssetPath::getElementAssets("uiTest", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
         $js["familyTestRender"] = $path["familyTestRender"]["js"];
         return $js;

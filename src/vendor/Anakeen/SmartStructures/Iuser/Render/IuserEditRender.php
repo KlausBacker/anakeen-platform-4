@@ -9,10 +9,10 @@ namespace Anakeen\SmartStructures\Iuser\Render;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\SmartElementManager;
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\UIGetAssetPath;
-use \SmartStructure\Fields\Iuser as myAttributes;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
+use SmartStructure\Fields\Iuser as myAttributes;
 
 class IuserEditRender extends DefaultConfigEditRender
 {
@@ -39,8 +39,8 @@ class IuserEditRender extends DefaultConfigEditRender
 
     /**
      * @param SmartElement $smartElement
-     * @return \Dcp\Ui\RenderAttributeVisibilities
-     * @throws \Dcp\Ui\Exception
+     * @return \Anakeen\Ui\RenderAttributeVisibilities
+     * @throws \Anakeen\Ui\Exception
      */
     public function getVisibilities(SmartElement $smartElement, \SmartStructure\Mask $mask = null) : RenderAttributeVisibilities
     {
@@ -48,12 +48,12 @@ class IuserEditRender extends DefaultConfigEditRender
 
         if ($smartElement->getRawValue("us_whatid") == \Anakeen\Core\Account::ANONYMOUS_ID) {
             // Anonymous has no password
-            $visibilities->setVisibility(myAttributes::us_passwd1, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
-            $visibilities->setVisibility(myAttributes::us_passwd2, \Dcp\Ui\RenderAttributeVisibilities::HiddenVisibility);
+            $visibilities->setVisibility(myAttributes::us_passwd1, \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility);
+            $visibilities->setVisibility(myAttributes::us_passwd2, \Anakeen\Ui\RenderAttributeVisibilities::HiddenVisibility);
         }
 
         if (!$smartElement->getRawValue(myAttributes::us_fr_security)) {
-            $visibilities->setVisibility(myAttributes::us_fr_security, \Dcp\Ui\RenderAttributeVisibilities::ReadWriteVisibility);
+            $visibilities->setVisibility(myAttributes::us_fr_security, \Anakeen\Ui\RenderAttributeVisibilities::ReadWriteVisibility);
         }
         return $visibilities;
     }

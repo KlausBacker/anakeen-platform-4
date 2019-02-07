@@ -4,7 +4,7 @@
 namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchEditRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Report as myAttr;
 use Anakeen\Core\SEManager;
 
@@ -47,10 +47,10 @@ class ReportEditRender extends SearchEditRender
 
         $options->frame(myAttr::rep_fr_presentation)
             ->setOption("collapse", false)
-            ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+            ->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
         $options->frame(myAttr::se_crit)
             ->setOption("collapse", false)
-            ->setLabelPosition(\Dcp\Ui\CommonRenderOptions::nonePosition);
+            ->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::nonePosition);
         $options->frame(myAttr::rep_fr_presentation)->setResponsiveColumns(array(
             [
                 "number" => 2,

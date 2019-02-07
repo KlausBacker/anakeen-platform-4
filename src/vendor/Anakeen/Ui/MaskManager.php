@@ -6,7 +6,7 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
-use Dcp\Ui\Exception;
+use Anakeen\Ui\Exception;
 use SmartStructure\Fields\Cvdoc as CvdocFields;
 
 class MaskManager

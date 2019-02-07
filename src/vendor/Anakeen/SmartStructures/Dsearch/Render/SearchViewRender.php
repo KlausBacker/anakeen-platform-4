@@ -4,12 +4,12 @@
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
 use Anakeen\Core\SEManager;
-use Dcp\Ui\BarMenu;
-use Dcp\Ui\DocumentTemplateContext;
-use Dcp\Ui\ItemMenu as ItemMenu;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\DocumentTemplateContext;
+use Anakeen\Ui\ItemMenu as ItemMenu;
+use Anakeen\Ui\UIGetAssetPath;
 
-class SearchViewRender extends \Dcp\Ui\DefaultView
+class SearchViewRender extends \Anakeen\Ui\DefaultView
 {
 
     public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -24,11 +24,11 @@ class SearchViewRender extends \Dcp\Ui\DefaultView
     {
         $js = parent::getJsReferences($document);
 
-        $js["smartElementGrid"] = \Dcp\Ui\UIGetAssetPath::getSmartWebComponentsPath();
+        $js["smartElementGrid"] = \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath();
 
-        $js["dSearch"] = \Dcp\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
-        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] =  \Dcp\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
+        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
+        if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
+            $js["dSearch"] =  \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
         }
 
         $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");

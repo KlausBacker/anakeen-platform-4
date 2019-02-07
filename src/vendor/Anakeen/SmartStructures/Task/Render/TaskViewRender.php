@@ -4,11 +4,11 @@ namespace Anakeen\SmartStructures\Task\Render;
 
 use Anakeen\SmartStructures\Task\CrontabManager;
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\BarMenu;
-use Dcp\Ui\ItemMenu;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\TextRenderOptions;
+use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\ItemMenu;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\TextRenderOptions;
 use SmartStructure\Fields\Task as TaskFields;
 
 class TaskViewRender extends DefaultConfigViewRender

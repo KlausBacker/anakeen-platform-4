@@ -8,16 +8,16 @@ namespace Anakeen\SmartStructures\Helppage\Render;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\Strings;
-use Dcp\Ui\BarMenu;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 
-class HelppageViewRender extends \Dcp\Ui\DefaultView
+class HelppageViewRender extends \Anakeen\Ui\DefaultView
 {
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document instance
      *
-     * @return \Dcp\Ui\RenderOptions
+     * @return \Anakeen\Ui\RenderOptions
      */
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions
     {
@@ -41,10 +41,10 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
-        $ws = \Dcp\Ui\UIGetAssetPath::getWs();
+        $ws = \Anakeen\Ui\UIGetAssetPath::getWs();
 
         $js["dduiHelppage"] = 'uiAssets/Families/helppage/prod/helppage.js?ws=' . $ws;
-        if (\Dcp\Ui\UIGetAssetPath::isInDebug()) {
+        if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
             $js["dduiHelppage"] = 'uiAssets/Families/helppage/debug/helppage.js?ws=' . $ws;
         }
 
@@ -65,19 +65,19 @@ class HelppageViewRender extends \Dcp\Ui\DefaultView
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document Document object instance
      *
-     * @return \Dcp\Ui\BarMenu Menu configuration
+     * @return \Anakeen\Ui\BarMenu Menu configuration
      */
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
     {
         $menu = parent::getMenu($document);
-        $langMenuList = new \Dcp\Ui\ListMenu("helppage-langMenu", ___("Lang", "ddui helppage"));
+        $langMenuList = new \Anakeen\Ui\ListMenu("helppage-langMenu", ___("Lang", "ddui helppage"));
 
         $all_lang_keys = $document->getFamilyParameterValue('help_p_lang_key');
         $all_lang_texts = $document->getFamilyParameterValue('help_p_lang_name');
 
         $currentLocale = ContextManager::getLocaleConfig();
         foreach ($all_lang_keys as $i => $key) {
-            $menuItem = new \Dcp\Ui\ItemMenu("helppage-lang-" . $key, Strings::mbUcfirst($all_lang_texts[$i]));
+            $menuItem = new \Anakeen\Ui\ItemMenu("helppage-lang-" . $key, Strings::mbUcfirst($all_lang_texts[$i]));
             $lang = strtolower(substr($key, 3, 2));
             $menuItem->setIcon(sprintf("flags/%s.png", $lang));
             $menuItem->setUrl("#action/helppage.lang:" . $key);

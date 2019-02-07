@@ -6,12 +6,12 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Routes\Core\Lib\ApiMessage;
 use Anakeen\Routes\Ui\CallMenuResponse;
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\BarMenu;
-use Dcp\Ui\CallableMenu;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\TextRenderOptions;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\CallableMenu;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\TextRenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Task as TaskFields;
 
 trait TaskRender

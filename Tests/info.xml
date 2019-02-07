@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
-<module name="user-interfaces-test" release="0" version="1.0.2" vendor="Anakeen"
+<module name="user-interfaces-test" release="0" version="2.0.0" vendor="Anakeen"
         license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3">
     <description>Tests for Anakeen Uis</description>
 
     <requires>
-        <module name="user-interfaces"/>
-        <module name="smart-data-engine-test"/>
+        <module name="user-interfaces" version="2.0.x"/>
+        <module name="smart-data-engine-test" version="2.0.x"/>
         <module name="anakeen-dev-data"/>
     </requires>
 

@@ -3,8 +3,8 @@
 namespace Anakeen\SmartStructures\Group\Render;
 
 use Anakeen\Ui\DefaultConfigViewRender;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
 use \SmartStructure\Fields\Group as myAttributes;
 
 class GroupViewRender extends DefaultConfigViewRender

@@ -15,7 +15,7 @@ class TransitionSet extends WorkflowSetState
     protected $attributeCount = 0;
     protected $workflowData;
     /**
-     * @var \WDoc|\Dcp\Ui\IRenderTransitionAccess
+     * @var \WDoc|\Anakeen\Ui\IRenderTransitionAccess
      */
     protected $workflow;
     /**

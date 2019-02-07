@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchViewRender;
-use Dcp\Ui\BarMenu;
+use Anakeen\Ui\BarMenu;
 use SmartStructure\Fields\Report;
 
 class ReportViewRender extends SearchViewRender
@@ -31,7 +31,7 @@ class ReportViewRender extends SearchViewRender
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["ankcomponent"]= \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents();
+        $css["ankcomponent"]= \Anakeen\Ui\UIGetAssetPath::getCssSmartWebComponents();
         return $css;
     }
 }

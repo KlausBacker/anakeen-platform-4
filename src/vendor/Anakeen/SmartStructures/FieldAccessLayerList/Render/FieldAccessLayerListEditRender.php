@@ -3,7 +3,7 @@
 namespace Anakeen\SmartStructures\FieldAccessLayerList\Render;
 
 use Anakeen\Ui\DefaultConfigEditRender;
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use \SmartStructure\Fields\Fieldaccesslayerlist as myAttributes;
 
 class FieldAccessLayerListEditRender extends DefaultConfigEditRender
@@ -12,7 +12,7 @@ class FieldAccessLayerListEditRender extends DefaultConfigEditRender
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
-     * @return \Dcp\Ui\RenderOptions
+     * @return \Anakeen\Ui\RenderOptions
      */
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {

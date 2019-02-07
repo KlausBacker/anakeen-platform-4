@@ -6,7 +6,7 @@
 
 namespace Anakeen\SmartStructures\FieldAccessLayer\Render;
 
-class FieldAccessLayerAccess implements \Dcp\Ui\IRenderConfigAccess
+class FieldAccessLayerAccess implements \Anakeen\Ui\IRenderConfigAccess
 {
     /**
      * @param string $mode
@@ -15,10 +15,10 @@ class FieldAccessLayerAccess implements \Dcp\Ui\IRenderConfigAccess
     public function getRenderConfig($mode, \Anakeen\Core\Internal\SmartElement $document)
     {
         switch ($mode) {
-            case \Dcp\Ui\RenderConfigManager::CreateMode:
-            case \Dcp\Ui\RenderConfigManager::EditMode:
+            case \Anakeen\Ui\RenderConfigManager::CreateMode:
+            case \Anakeen\Ui\RenderConfigManager::EditMode:
                 return new FieldAccessLayerEditRender();
-            case \Dcp\Ui\RenderConfigManager::ViewMode:
+            case \Anakeen\Ui\RenderConfigManager::ViewMode:
                 return new FieldAccessLayerViewRender();
         }
         return null;

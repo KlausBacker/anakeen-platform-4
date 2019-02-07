@@ -2,10 +2,10 @@
 
 namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
 
-use Dcp\Ui\RenderOptions;
+use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
 
-class DocumentController_saveDocument extends \Dcp\Ui\DefaultEdit
+class DocumentController_saveDocument extends \Anakeen\Ui\DefaultEdit
 {
 
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
@@ -28,7 +28,7 @@ class DocumentController_saveDocument extends \Dcp\Ui\DefaultEdit
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $viewDoc = new \Dcp\Ui\ButtonOptions();
+        $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = '<span>  Sauvegarder le document </span><i class="fa fa-eye"></i>';
         $viewDoc->class = "mybtn_DocumentController_saveDocument userButton";
         $viewDoc->windowWidth = "400px";
