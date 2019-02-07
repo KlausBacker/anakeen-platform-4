@@ -1145,6 +1145,7 @@ define([
       transition,
       values,
       withoutInterface,
+      transitionElementsCallBack,
       reinitOptions
     ) {
       var $target = $('<div class="dcpTransition"/>'),
@@ -1304,12 +1305,21 @@ define([
 
         transitionElements.model.fetch({
           success: function transitionModel_setDefaultValues() {
-            if (values) {
-              transitionElements.model.setValues(values);
-            }
             if (withoutInterface === true) {
               transitionElements.model
                 ._loadDocument(transitionElements.model)
+                .then(function documentController_transitionValues() {
+                  if (values) {
+                    transitionElements.model.setValues(values);
+                  }
+                  if (_.isFunction(transitionElementsCallBack)) {
+                    try {
+                      transitionElementsCallBack(transitionElements);
+                    } catch (e) {
+                      //nothing to do;
+                    }
+                  }
+                })
                 .then(function documentController_TransitionSave() {
                   transitionElements.model.save(
                     {},
@@ -1334,6 +1344,18 @@ define([
             } else {
               transitionElements.model
                 ._loadDocument(transitionElements.model)
+                .then(function documentController_transitionValues() {
+                  if (values) {
+                    transitionElements.model.setValues(values);
+                  }
+                  if (_.isFunction(transitionElementsCallBack)) {
+                    try {
+                      transitionElementsCallBack(transitionElements);
+                    } catch (e) {
+                      //nothing to do;
+                    }
+                  }
+                })
                 .then(function documentController_TransitionDisplay() {
                   transitionElements.model.trigger("dduiDocumentReady");
                 })
@@ -2004,6 +2026,7 @@ define([
         parameters.transition,
         parameters.values || null,
         parameters.unattended || false,
+        parameters.transitionElementsCallBack || false,
         reinitOptions
       );
       return this._registerOutputPromise(documentPromise, options);
