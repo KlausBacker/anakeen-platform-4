@@ -33,7 +33,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     public function testRenderInvisibleCollection($login, $docName, array $expectedValues)
     {
         $this->sudo($login);
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
@@ -58,7 +58,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     public function testRenderNoVerifyAccessCollection($login, $docName, array $expectedValues)
     {
         $this->sudo($login);
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
@@ -86,7 +86,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         $this->sudo($login);
         
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
@@ -112,7 +112,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
         $this->sudo($login);
         
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         
@@ -158,7 +158,7 @@ class TestFormatInvisibleCollection extends TestCaseDcpCommonFamily
     {
         $this->sudo($login);
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
         
