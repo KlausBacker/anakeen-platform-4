@@ -320,8 +320,8 @@ class DocHtmlFormat
             $htmlval = "file://" . $this->doc->vault_filename($this->oattr->id, true, $kvalue);
         } else {
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-                $fileInfo = new VaultFileInfo();
-                $vf = new \VaultFile();
+                $fileInfo = new Anakeen\Vault\FileInfo();
+                $vf = new \Anakeen\Vault\VaultFile();
                 if ($vf->Show($reg[2], $fileInfo) == "") {
                     if (!file_exists($fileInfo->path)) {
                         if (!$vf->storage->fs->isAvailable()) {
@@ -370,7 +370,7 @@ class DocHtmlFormat
         static $vf = null;
 
         if (!$vf) {
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
         }
         $vid = "";
         $fileInfo = false;
@@ -382,7 +382,7 @@ class DocHtmlFormat
             $vid = $reg[2];
             $mime = $reg[1];
 
-            $fileInfo = new VaultFileInfo();
+            $fileInfo = new Anakeen\Vault\FileInfo();
             if ($vf->Show($reg[2], $fileInfo) == "") {
                 $fname = $fileInfo->name;
                 if (!file_exists($fileInfo->path)) {
@@ -501,7 +501,7 @@ class DocHtmlFormat
                             $viewfiletype = 'embed';
                             $pages = 1;
                         } else {
-                            $infopdf = new VaultFileInfo();
+                            $infopdf = new Anakeen\Vault\FileInfo();
                             $err = $vf->Show($vid, $infopdf, 'pdf');
                             if ($err == "" && \Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Client')) {
                                 if ($infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_done

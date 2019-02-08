@@ -312,7 +312,7 @@ class TestDocument extends TestCaseDcpCommonFamily
         $exception = '';
         $vid = '';
         /**
-         * @var \VaultFileInfo $info
+         * @var \Anakeen\Vault\FileInfo $info
          */
         $info = null;
         try {

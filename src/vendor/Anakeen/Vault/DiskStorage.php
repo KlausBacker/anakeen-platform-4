@@ -1,46 +1,39 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Retrieve and store file in Vault for unix fs
- *
- * @author  Anakeen
- * @version $Id: Class.VaultDiskStorage.php,v 1.8 2007/11/14 09:53:37 eric Exp $
- * @package FDL
  */
 
-/**
- */
+namespace Anakeen\Vault;
 
 use \Anakeen\LogManager;
 
-class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
+class DiskStorage extends \Anakeen\Core\Internal\DbObj
 {
-    public $fields = array(
-        "id_file",
-        "id_fs",
-        "id_dir",
-        "public_access",
-        "size",
-        "name",
-        "id_tmp",
+    public $fields
+        = array(
+            "id_file",
+            "id_fs",
+            "id_dir",
+            "public_access",
+            "size",
+            "name",
+            "id_tmp",
 
-        "mime_t", // file mime type text
-        "mime_s", // file mime type system
-        "cdate", // creation date
-        "mdate", // modification date
-        "adate", // access date
-        "teng_state", // Transformation Engine state
-        "teng_lname", // Transformation Engine logical name (VIEW, THUMBNAIL, ....)
-        "teng_id_file", // Transformation Engine source file id
-        "teng_comment", // Comment for transformation
+            "mime_t", // file mime type text
+            "mime_s", // file mime type system
+            "cdate", // creation date
+            "mdate", // modification date
+            "adate", // access date
+            "teng_state", // Transformation Engine state
+            "teng_lname", // Transformation Engine logical name (VIEW, THUMBNAIL, ....)
+            "teng_id_file", // Transformation Engine source file id
+            "teng_comment", // Comment for transformation
 
-    );
-    public $id_fields = array(
-        "id_file"
-    );
+        );
+    public $id_fields
+        = array(
+            "id_file"
+        );
     public $dbtable = "vaultdiskstorage";
     public $sqlcreate = "create table vaultdiskstorage  ( 
                                      id_file          bigint not null, primary key (id_file),
@@ -72,6 +65,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
     public $name;
     /**
      * Indicate if file is a temporary file : set to session user id
+     *
      * @var string
      */
     public $id_tmp;
@@ -89,7 +83,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
 
     public $storage = 1;
     /**
-     * @var VaultDiskFsStorage
+     * @var \Anakeen\Vault\DiskFsStorage
      */
     public $fs;
 
@@ -97,7 +91,7 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
     public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         parent::__construct($dbaccess, $id, $res, $dbid);
-        $this->fs = new VaultDiskFsStorage($this->dbaccess);
+        $this->fs = new \Anakeen\Vault\DiskFsStorage($this->dbaccess);
     }
 
     /**
@@ -105,15 +99,10 @@ class VaultDiskStorage extends \Anakeen\Core\Internal\DbObj
      */
     public function complete()
     {
-        if ($this->storage == 1) {
-            if (!$this->fs) {
-                $this->fs = new VaultDiskFsStorage($this->dbaccess);
-            }
-            $this->fs->select($this->id_fs);
-        } else {
-            // not implemented
-            $this->fs = new VaultDiskFsCache($this->dbaccess, $this->id_fs);
+        if (!$this->fs) {
+            $this->fs = new \Anakeen\Vault\DiskFsStorage($this->dbaccess);
         }
+        $this->fs->select($this->id_fs);
     }
 
     public function preInsert()
@@ -200,7 +189,7 @@ SQL;
     public function listFiles(&$list)
     {
         // --------------------------------------------------------------------
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $list = $query->Query(0, 0, "TABLE");
         $fc = $query->nb;
         return $fc;
@@ -213,24 +202,26 @@ SQL;
 
     /**
      * Add new file in VAULT
+     *
      * @param string $infile        complete server path of file to store
      * @param bool   $public_access set true if can be access without any permission
      * @param int &  $idf           new file identifier
      * @param string $fsname        name of the VAULT to store (can be empty=>store in one of available VAULT)
      * @param string $te_lname      transformation engine name
      * @param int    $te_id_file    transformation engine file result identifier
+     *
      * @return string error message (empty if OK)
      */
     public function store($infile, $public_access, &$idf, $fsname = "", $te_lname = "", $te_id_file = 0)
     {
         if (!is_file($infile)) {
-            return ErrorCode::getError('FILE0007', $infile);
+            return \ErrorCode::getError('FILE0007', $infile);
         }
         if (!is_readable($infile)) {
-            return ErrorCode::getError('FILE0008', $infile);
+            return \ErrorCode::getError('FILE0008', $infile);
         }
         $this->size = filesize($infile);
-        $msg = $this->fs->SetFreeFs($this->size, $id_fs, $id_dir, $f_path, $fsname);
+        $msg = $this->fs->setFreeFs($this->size, $id_fs, $id_dir, $f_path, $fsname);
         if ($msg != '') {
             LogManager::error("Can't find free entry in vault. [reason $msg]");
             return ($msg);
@@ -277,9 +268,11 @@ SQL;
     }
 
     /**
-     * Get the VaultDiskStorage transforming object corresponding to the current object
-     * @param string             $te_name transformation engine name
-     * @param  VaultDiskStorage &$ngf     returned object
+     * Get the \Anakeen\Vault\DiskStorage transforming object corresponding to the current object
+     *
+     * @param string                       $te_name transformation engine name
+     * @param  \Anakeen\Vault\DiskStorage &$ngf     returned object
+     *
      * @return string error message (empty if OK)
      *
      * @deprecated no usage
@@ -291,16 +284,16 @@ SQL;
             return _("vault file is not initialized");
         }
         $err = '';
-        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, \VaultDiskStorage::class);
+        $q = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $q->AddQuery("teng_id_file=" . $this->id_file);
         $q->AddQuery("teng_lname='" . pg_escape_string($te_name) . "'");
         $tn = $q->Query();
         if ($q->nb == 0) {
-            $ngf = new VaultDiskStorage($this->dbaccess);
+            $ngf = new \Anakeen\Vault\DiskStorage($this->dbaccess);
             $ngf->teng_id_file = $this->id_file;
             $ngf->teng_lname = $te_name;
             $size = 1;
-            $ngf->fs->SetFreeFs($size, $id_fs, $id_dir, $f_path, $fsname = '');
+            $ngf->fs->setFreeFs($size, $id_fs, $id_dir, $f_path, $fsname = '');
             $ngf->cdate = $ngf->mdate = $ngf->adate = date("c", time());
             $ngf->id_fs = $id_fs;
             $ngf->id_dir = $id_dir;
@@ -316,9 +309,10 @@ SQL;
     }
 
     /**
-     * @param int           $id_file    vault file identifier
-     * @param VaultFileInfo $f_infos
-     * @param string        $teng_lname engine name
+     * @param int                    $id_file    vault file identifier
+     * @param \Anakeen\Vault\FileInfo $f_infos
+     * @param string                 $teng_lname engine name
+     *
      * @return string
      */
     public function show($id_file, &$f_infos, $teng_lname = "")
@@ -326,7 +320,7 @@ SQL;
         // --------------------------------------------------------------------
         $this->id_file = -1;
         if ($teng_lname != "") {
-            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+            $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
             $query->AddQuery(sprintf("teng_id_file = E'%s'::bigint", pg_escape_string($id_file)));
             $query->AddQuery(sprintf("teng_lname = E'%s'", pg_escape_string($teng_lname)));
 
@@ -342,8 +336,8 @@ SQL;
         }
 
         if ($this->id_file != -1) {
-            $this->fs->Show($this->id_fs, $this->id_dir, $f_path);
-            $f_infos = new VaultFileInfo();
+            $this->fs->show($this->id_fs, $this->id_dir, $f_path);
+            $f_infos = new \Anakeen\Vault\FileInfo();
             $f_infos->id_file = $this->id_file;
             $f_infos->name = $this->name;
             $f_infos->size = $this->size;
@@ -383,11 +377,12 @@ SQL;
 
     /**
      * return the complete path in file system
+     *
      * @return string the path
      */
     public function getPath()
     {
-        $this->fs->Show($this->id_fs, $this->id_dir, $f_path);
+        $this->fs->show($this->id_fs, $this->id_dir, $f_path);
         return self::vaultfilename($f_path, $this->name, $this->id_file);
     }
 
@@ -395,10 +390,10 @@ SQL;
     public function destroy($id)
     {
         // --------------------------------------------------------------------
-        $msg = $this->Show($id, $inf);
+        $msg = $this->show($id, $inf);
         if ($msg == '') {
             @unlink($inf->path);
-            $msg = $this->fs->delEntry($this->id_fs, $this->id_dir, $inf->size);
+            $msg = $this->fs->delEntry($this->id_fs, $this->id_dir);
             $this->Delete();
         }
 
@@ -409,10 +404,10 @@ SQL;
     public function save($infile, $public_access, $idf)
     {
         $err = '';
-        $vf = new VaultFile($this->dbaccess);
-        if ($vf->Show($idf, $info) == "") {
+        $vf = new \Anakeen\Vault\VaultFile($this->dbaccess);
+        if ($vf->show($idf, $info) == "") {
             /**
-             * @var VaultFileInfo $info
+             * @var \Anakeen\Vault\FileInfo $info
              */
             $path = str_replace("//", "/", $info->path);
 

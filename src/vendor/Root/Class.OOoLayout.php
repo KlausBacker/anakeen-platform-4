@@ -755,7 +755,7 @@ EOF;
             $img = $imgs->item(0);
 
             $href = $img->getAttribute('xlink:href');
-            $fileInfo = new VaultFileInfo();
+            $fileInfo = new Anakeen\Vault\FileInfo();
 
             if (preg_match('/^file\/([^\/]+)\/([0-9]+)/', $href, $reg)) {
                 $vid = $reg[2];

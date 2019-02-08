@@ -28,16 +28,16 @@ $err = "";
 if (!is_dir($dirname)) {
     if (is_dir(dirname($dirname))) {
         print sprintf(_("create directory %s\n"), $dirname);
-        mkdir($dirname . "/", VaultFile::VAULT_DMODE);
+        mkdir($dirname . "/", \Anakeen\Vault\VaultFile::VAULT_DMODE);
     }
 }
 if (!is_dir($dirname)) {
     $err = sprintf(_("cannot create directory %s\nParent directory must be create before"), $dirname);
 }
 if ($err == "") {
-    $vf = new VaultFile();
+    $vf = new \Anakeen\Vault\VaultFile();
     //  print_r2($vf);
-    $q = new \Anakeen\Core\Internal\QueryDb("", \VaultDiskFsStorage::class);
+    $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Vault\DiskFsStorage::class);
     $q->AddQuery("r_path='" . pg_escape_string(trim($dirname)) . "'");
     $l = $q->Query(0, 0, "TABLE");
     if ($q->nb == 0) {

@@ -2422,7 +2422,7 @@ create unique index i_docir on doc(initid, revision);";
         $dvi = new \DocVaultIndex($this->dbaccess);
         $tvid = $dvi->getVaultIds($this->id);
         $tinfo = array();
-        $vf = new \VaultFile();
+        $vf = new \Anakeen\Vault\VaultFile();
         foreach ($tvid as $vid) {
             $info = null;
             $err = $vf->Retrieve($vid, $info);
@@ -2483,7 +2483,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($val) {
             $info = $this->getFileInfo($val);
             if ($info) {
-                $ofout = new \VaultDiskStorage($this->dbaccess, $info["id_file"]);
+                $ofout = new \Anakeen\Vault\DiskStorage($this->dbaccess, $info["id_file"]);
                 if ($ofout->isAffected()) {
                     $err = $ofout->delete();
                 }
@@ -2519,13 +2519,13 @@ create unique index i_docir on doc(initid, revision);";
                 // in case of server not reach : try again
                 if (!is_object($info)) {
                     // not found : create it
-                    $info = new \VaultFileInfo();
+                    $info = new \Anakeen\Vault\FileInfo();
                 }
                 if ($info->teng_state == \Anakeen\TransformationEngine\Client::error_connect) {
                     $info->teng_state = \Anakeen\TransformationEngine\Client::status_inprogress;
                 }
                 if ((!$info->teng_vid) || ($info->teng_state == \Anakeen\TransformationEngine\Client::status_inprogress)) {
-                    $vf = new \VaultFile();
+                    $vf = new \Anakeen\Vault\VaultFile();
                     if (!$info->teng_vid) {
                         // create temporary file
                         $value = sprintf(_("conversion %s in progress"), $engine);
@@ -3570,13 +3570,13 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         $a = $this->getAttribute($attrid);
         if ($a->type == "file") {
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
             $fvalue = $this->getRawValue($attrid);
             $basename = "";
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
                 //$mimetype = $reg[1];
-                $info = new \vaultFileInfo();
+                $info = new \Anakeen\Vault\FileInfo();
                 $err = $vf->Retrieve($vaultid, $info);
 
                 if ($err == "") {
@@ -3624,13 +3624,13 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         $a = $this->getAttribute($attrid);
         if ($a->type == "file") {
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
             $fvalue = $this->getRawValue($attrid);
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
-                $info = new \VaultFileInfo();
+                $info = new \Anakeen\Vault\FileInfo();
                 /**
-                 * VaultFileInfo $info
+                 * Anakeen\Vault\FileInfo $info
                  */
                 $err = $vf->Retrieve($vaultid, $info);
 
@@ -3662,7 +3662,7 @@ create unique index i_docir on doc(initid, revision);";
             $mimetype = $ext = $oftitle = $vaultid = '';
             $a = $this->getAttribute($attrid);
             if ($a->type == "file") {
-                $vf = new \VaultFile();
+                $vf = new \Anakeen\Vault\VaultFile();
                 if ($index > -1) {
                     $fvalue = $this->getMultipleRawValues($attrid, '', $index);
                 } else {
@@ -3673,7 +3673,7 @@ create unique index i_docir on doc(initid, revision);";
                     $vaultid = $reg[2];
                     $mimetype = $reg[1];
                     $oftitle = $reg[3];
-                    $info = new \VaultFileInfo();
+                    $info = new \Anakeen\Vault\FileInfo();
                     $err = $vf->Retrieve($vaultid, $info);
 
                     if ($err == "") {
@@ -3762,9 +3762,9 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($f) {
             if (preg_match(PREGEXPFILE, $f, $reg)) {
-                $vf = new \VaultFile();
+                $vf = new \Anakeen\Vault\VaultFile();
                 /**
-                 * @var \VaultFileInfo $info
+                 * @var \Anakeen\Vault\FileInfo $info
                  */
                 if ($vf->Show($reg[2], $info) == "") {
                     $cible = $info->path;
@@ -3808,10 +3808,10 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($f) {
                 if (preg_match(PREGEXPFILE, $f, $reg)) {
-                    $vf = new \VaultFile();
+                    $vf = new \Anakeen\Vault\VaultFile();
                     $vid = $reg[2];
                     /**
-                     * @var \VaultFileInfo $info
+                     * @var \Anakeen\Vault\FileInfo $info
                      */
                     if ($vf->Show($reg[2], $info) == "") {
                         $cible = $info->path;
@@ -3831,7 +3831,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string         $filename the file pathname
      * @param string         $ftitle   override the stored file name or empty string to keep the original file name
-     * @param \VaultFileInfo $info     the vault's informations for the stored file or null if could not get informations
+     * @param \Anakeen\Vault\FileInfo $info     the vault's informations for the stored file or null if could not get informations
      *
      * @return string trigram of the file in the vault: "mime_s|id_file|name"
      * @throws \Exception on error
@@ -3841,7 +3841,7 @@ create unique index i_docir on doc(initid, revision);";
         $vaultid = \Anakeen\Core\VaultManager::storeFile($filename, $ftitle);
 
         $info = \Anakeen\Core\VaultManager::getFileInfo($vaultid);
-        if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
+        if (!is_object($info) || !is_a($info, 'Anakeen\Vault\FileInfo')) {
             throw new \Exception(\ErrorCode::getError('FILE0010', $filename));
         }
 
@@ -5832,7 +5832,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param bool           $cache      set to true if file may be persistent in client cache
      * @param bool           $inline     set to true if file must be displayed in web browser
      * @param string         $otherValue use another file value instead of attribute value
-     * @param \VaultFileInfo $info       extra file info
+     * @param \Anakeen\Vault\FileInfo $info       extra file info
      *
      * @return string the url anchor
      */
@@ -6934,9 +6934,9 @@ create unique index i_docir on doc(initid, revision);";
         $fname = "";
         if (preg_match(PREGEXPFILE, $fileid, $reg)) {
             // reg[1] is mime type
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
             /**
-             * @var \VaultFileInfo $info
+             * @var \Anakeen\Vault\FileInfo $info
              */
             if ($vf->Show($reg[2], $info) == "") {
                 if ($path) {
@@ -6982,9 +6982,9 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($fileids as $k => $fileid) {
             if (preg_match(PREGEXPFILE, $fileid, $reg)) {
                 // reg[1] is mime type
-                $vf = new \VaultFile();
+                $vf = new \Anakeen\Vault\VaultFile();
                 /**
-                 * @var \VaultFileInfo $info
+                 * @var \Anakeen\Vault\FileInfo $info
                  */
                 if ($vf->Show($reg[2], $info) == "") {
                     $tinfo[$k] = get_object_vars($info);
@@ -7001,9 +7001,9 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $filesvalue the file value : like application/pdf|12345
      * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, teng_state, teng_lname, teng_vid, teng_comment, path
-     * @param string $returnType if "array" return indexed array else return VaultFileInfo object
+     * @param string $returnType if "array" return indexed array else return Anakeen\Vault\FileInfo object
      *
-     * @return array|string|\VaultFileInfo value of property or array of all properties if no key
+     * @return array|string|\Anakeen\Vault\FileInfo value of property or array of all properties if no key
      */
     final public function getFileInfo($filesvalue, $key = "", $returnType = "array")
     {

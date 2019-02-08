@@ -9,12 +9,12 @@ class VaultManager
     protected static $vault = null;
 
     /**
-     * @return \VaultFile
+     * @return \Anakeen\Vault\VaultFile
      */
     protected static function getVault()
     {
         if (self::$vault === null) {
-            self::$vault = new \VaultFile("", "FREEDOM");
+            self::$vault = new \Anakeen\Vault\VaultFile("", "FREEDOM");
         }
         return self::$vault;
     }
@@ -23,7 +23,7 @@ class VaultManager
      * return various informations for a file stored in VAULT
      * @param int    $idfile    vault file identifier
      * @param string $teng_name transformation engine name
-     * @return \VaultFileInfo
+     * @return \Anakeen\Vault\FileInfo
      */
     public static function getFileInfo($idfile, $teng_name = "")
     {

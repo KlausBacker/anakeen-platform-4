@@ -1,7 +1,9 @@
 <?php
 
 
-class VaultFileInfo
+namespace Anakeen\Vault;
+
+class FileInfo
 {
     /**
      * @var int vault identifier

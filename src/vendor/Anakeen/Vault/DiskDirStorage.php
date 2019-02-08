@@ -1,24 +1,14 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Directories for vault files
- * @author  Anakeen
- * @package FDL
  */
-// ---------------------------------------------------------------
-// $Id: Class.VaultDiskDir.php,v 1.10 2006/12/06 11:12:13 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/vault/Class/Class.VaultDiskDir.php,v $
-// ---------------------------------------------------------------
-//
-// ---------------------------------------------------------------
+
+namespace Anakeen\Vault;
 
 define("VAULT_MAXENTRIESBYDIR", 1000);
 define("VAULT_MAXDIRBYDIR", 100);
 
-class VaultDiskDirStorage extends \Anakeen\Core\Internal\DbObj
+class DiskDirStorage extends \Anakeen\Core\Internal\DbObj
 {
     public $fields = array(
         "id_dir",
@@ -104,7 +94,7 @@ SQL;
 
     public function setFreeDir($fs)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $id_fs = $fs["id_fs"];
 
         // Lock directory : force each process to use its proper dir
@@ -153,7 +143,7 @@ SQL;
         $err = '';
         foreach ($this->dirsToClose as $dirid) {
             if ($dirid) {
-                $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+                $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
                 $sql = sprintf("SELECT sum(size) FROM vaultdiskstorage WHERE id_dir=%d", $dirid);
                 $t = $query->Query(0, 0, "TABLE", $sql);
                 if ($query->nb > 0) {
@@ -171,7 +161,7 @@ SQL;
     protected function createDirectory($fs)
     {
         $id_fs = $fs["id_fs"];
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $t = $query->Query(0, 0, "TABLE", "SELECT * from vaultdiskdirstorage where id_fs=" . intval($id_fs) . " order by id_dir desc limit 1");
         $lpath = $t[0]["l_path"];
         $npath = $this->nextdir($lpath);
@@ -193,7 +183,7 @@ SQL;
         if ($err == "") {
             $dirpath = $rpath . "/" . $npath;
             if (!is_dir($dirpath)) {
-                mkdir($dirpath, VaultFile::VAULT_DMODE, true);
+                mkdir($dirpath, \Anakeen\Vault\VaultFile::VAULT_DMODE, true);
             }
         } else {
             error_log("Vault dirs full");
@@ -218,7 +208,7 @@ SQL;
     public function exists($path, $id_fs)
     {
 
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->basic_elem->sup_where = array(
             "l_path='" . $path . "'",
             "id_fs=" . $id_fs

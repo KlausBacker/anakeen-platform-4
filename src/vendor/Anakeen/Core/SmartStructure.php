@@ -706,7 +706,7 @@ create unique index idx_idfam on docfam(id);";
             }
             fclose($tmpstream);
             if (!$err) {
-                $vf = new \VaultFile();
+                $vf = new \Anakeen\Vault\VaultFile();
                 $info = null;
                 $err = $vf->Retrieve($vid, $info);
                 if ($err == "") {

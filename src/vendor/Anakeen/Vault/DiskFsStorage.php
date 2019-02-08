@@ -1,15 +1,8 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
-/**
- * @author  Anakeen
- * @package FDL
- */
-// ---------------------------------------------------------------
 
-class VaultDiskFsStorage extends \Anakeen\Core\Internal\DbObj
+namespace Anakeen\Vault;
+
+class DiskFsStorage extends \Anakeen\Core\Internal\DbObj
 {
     public $fields = array(
         "id_fs",
@@ -48,7 +41,7 @@ SQL;
     public $r_path;
     public $specific;
     /**
-     * @var VaultDiskDirStorage
+     * @var \Anakeen\Vault\DiskDirStorage
      */
     protected $sd;
     private $htaccess = <<<EOF
@@ -94,10 +87,10 @@ EOF;
     }
 
     // --------------------------------------------------------------------
-    public function PreInsert()
+    public function preInsert()
     {
         // --------------------------------------------------------------------
-        if ($this->Exists($this->r_path)) {
+        if ($this->exists($this->r_path)) {
             return (_("File System already exists"));
         }
         $this->query(sprintf("select nextval ('%s')", pg_escape_string($this->seq)));
@@ -107,10 +100,10 @@ EOF;
     }
 
     // --------------------------------------------------------------------
-    public function Exists($path)
+    public function exists($path)
     {
         // --------------------------------------------------------------------
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->basic_elem->sup_where = array(
             "r_path=E'" . pg_escape_string($path) . "'"
         );
@@ -119,7 +112,7 @@ EOF;
     }
 
     // --------------------------------------------------------------------
-    public function SetFreeFs($f_size, &$id_fs, &$id_dir, &$f_path, $fsname)
+    public function setFreeFs($f_size, &$id_fs, &$id_dir, &$f_path, $fsname)
     {
         // --------------------------------------------------------------------
         $id_fs = $id_dir = -1;
@@ -129,7 +122,7 @@ EOF;
         if ($freeFs) {
             $ifs = $this->getValues();
 
-            $this->sd = new VaultDiskDirStorage($this->dbaccess);
+            $this->sd = new \Anakeen\Vault\DiskDirStorage($this->dbaccess);
             $err = $this->sd->SetFreeDir($ifs);
 
             if (!$err) {
@@ -137,7 +130,7 @@ EOF;
                 $id_dir = $this->sd->id_dir;
                 $f_path = $this->r_path . "/" . $this->sd->l_path;
                 if (!is_dir($f_path)) {
-                    if (!mkdir($f_path, VaultFile::VAULT_DMODE, true)) {
+                    if (!mkdir($f_path, \Anakeen\Vault\VaultFile::VAULT_DMODE, true)) {
                         return (sprintf(_("Failed to create directory \"%s\" in vault"), $f_path));
                     }
                 }
@@ -246,13 +239,13 @@ SQL;
 
     public function show($id_fs, $id_dir, &$f_path)
     {
-        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, $this->dbtable);
+        $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->basic_elem->sup_where = array(
             sprintf("id_fs=%d", $id_fs)
         );
         $t = $query->Query(0, 0, "TABLE");
         if ($query->nb > 0) {
-            $sd = new VaultDiskDirStorage($this->dbaccess, $id_dir);
+            $sd = new \Anakeen\Vault\DiskDirStorage($this->dbaccess, $id_dir);
             if ($sd->IsAffected()) {
                 $f_path = $t[0]["r_path"] . "/" . $sd->l_path;
             } else {
@@ -264,11 +257,11 @@ SQL;
         return '';
     }
 
-    public function delEntry($id_fs, $id_dir, $fs)
+    public function delEntry($id_fs, $id_dir)
     {
         $this->select($id_fs);
         if ($this->IsAffected()) {
-            $sd = new VaultDiskDirStorage($this->dbaccess, $id_dir);
+            $sd = new \Anakeen\Vault\DiskDirStorage($this->dbaccess, $id_dir);
             if ($sd->IsAffected()) {
                 $sd->DelEntry();
             } else {

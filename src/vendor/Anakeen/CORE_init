@@ -140,6 +140,9 @@ if [ "$1" = "I" ] ; then
         DocHisto \
         DocLog \
         "Anakeen\\Core\\SmartStructure\\DocEnum" \
+        "Anakeen\\Vault\\DiskDirStorage" \
+        "Anakeen\\Vault\\DiskFsStorage" \
+        "Anakeen\\Vault\\DiskStorage" \
         DocPermExt \
         DocPerm \
         DocRel \
@@ -152,10 +155,6 @@ if [ "$1" = "I" ] ; then
     ; do
         "$wpub"/ank.php --script=updateclass  "--class=$CLASS"
     done
-
-    "$wpub"/ank.php --script=updateclass   "--class=VaultDiskDirStorage"
-    "$wpub"/ank.php --script=updateclass   "--class=VaultDiskFsStorage"
-    "$wpub"/ank.php --script=updateclass   "--class=VaultDiskStorage"
 
     "$wpub"/ank.php --script=updateclass  --class=Group
 

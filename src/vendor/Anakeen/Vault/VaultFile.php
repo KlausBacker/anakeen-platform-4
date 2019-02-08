@@ -4,6 +4,8 @@
  *
  */
 
+namespace Anakeen\Vault;
+
 use \Anakeen\LogManager;
 
 class VaultFile
@@ -18,7 +20,7 @@ class VaultFile
 
     const VAULT_DMODE = 0700;
     /**
-     * @var VaultDiskStorage
+     * @var \Anakeen\Vault\DiskStorage
      */
     public $storage;
     protected $name;
@@ -33,7 +35,7 @@ class VaultFile
         $this->type = "fs";
         switch ($this->type) {
             case "fs":
-                $this->storage = new VaultDiskStorage($access);
+                $this->storage = new \Anakeen\Vault\DiskStorage($access);
                 break;
 
             default:
@@ -44,13 +46,13 @@ class VaultFile
 
     /**
      * @param int           $id_file    vault file identifier
-     * @param vaultFileInfo $infos      file properties
+     * @param \Anakeen\Vault\FileInfo $infos      file properties
      * @param string        $teng_lname engine name
      * @return string error message
      */
     public function show($id_file, &$infos, $teng_lname = "")
     {
-        return $this->storage->Show($id_file, $infos, $teng_lname);
+        return $this->storage->show($id_file, $infos, $teng_lname);
     }
 
     /**
@@ -66,7 +68,7 @@ class VaultFile
     /**
      * retrieve information from vault id
      * @param int           $id_file
-     * @param VaultFileInfo $infos
+     * @param \Anakeen\Vault\FileInfo $infos
      * @return string error message
      */
     public function retrieve($id_file, &$infos)
@@ -77,7 +79,7 @@ class VaultFile
             unset($infos);
         }
 
-        $msg = $this->storage->Show($id_file, $infos);
+        $msg = $this->storage->show($id_file, $infos);
 
         if ($msg != '') {
             LogManager::error($msg);
@@ -155,7 +157,7 @@ class VaultFile
 
             $infile = $this->storage->getPath();
             $oldname = $this->storage->name;
-            $this->storage->Show($id_file, $infos);
+            $this->storage->show($id_file, $infos);
             $this->storage->name = $newname;
             $this->storage->mime_t = \Anakeen\Core\Utils\FileMime::getTextMimeFile($infile, $this->storage->name);
             $this->storage->mime_s = \Anakeen\Core\Utils\FileMime::getSysMimeFile($infile, $this->storage->name);
