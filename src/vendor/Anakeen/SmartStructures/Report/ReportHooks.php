@@ -61,7 +61,6 @@ class ReportHooks extends \SmartStructure\Dsearch
      * @return array
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\Fmtc\Exception
      * @throws \Dcp\SearchDoc\Exception
      */
     public function generateCSVReportStruct(
@@ -73,9 +72,6 @@ class ReportHooks extends \SmartStructure\Dsearch
         $stripHtmlTags = false,
         $renderNumber = "format"
     ) {
-        require_once 'WHAT/Class.twoDimensionalArray.php';
-        require_once 'FDL/Class.SearchDoc.php';
-
         $famId = $this->getRawValue("se_famid", 1);
         $limit = $this->getRawValue("rep_limit", "ALL");
         $order = $this->getRawValue("rep_idsort", "title");
@@ -257,7 +253,6 @@ class ReportHooks extends \SmartStructure\Dsearch
      * @param bool                                $stripHtmlFormat
      * @param string                              $renderNumber
      * @return array
-     * @throws \Dcp\Fmtc\Exception
      */
     protected function generateBasicCSV(
         \SearchDoc $search,

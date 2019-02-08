@@ -19,7 +19,6 @@ class DocumentDataFormatter extends CollectionDataFormatter
      * Get Document Data for REST Api
      *
      * @return mixed
-     * @throws \Dcp\Fmtc\Exception
      */
     public function getData()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Fmtc;
+namespace Anakeen\Core\Internal\Format;
 
 class Exception extends \Anakeen\Exception
 {
