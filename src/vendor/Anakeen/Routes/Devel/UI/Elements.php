@@ -5,9 +5,7 @@ namespace Anakeen\Routes\Devel\UI;
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Components\Grid\Routes\GridContent;
 use Anakeen\Core\DbManager;
-use Anakeen\Core\Internal\SmartElement;
-use Anakeen\Core\SEManager;
-use SearchDoc;
+use Anakeen\Search\Internal\SearchSmartData;
 
 /**
  * Get Profiles
@@ -58,7 +56,7 @@ class Elements extends GridContent
 
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new SearchDoc();
+        $this->_searchDoc = new SearchSmartData();
         $this->_searchDoc->setObjectReturn();
         $this->_searchDoc->excludeConfidential(true);
     }

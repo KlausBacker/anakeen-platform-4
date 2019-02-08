@@ -21,7 +21,7 @@ class Masks extends GridContent
 
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new \SearchDoc("", "MASK");
+        $this->_searchDoc = new \Anakeen\Search\Internal\SearchSmartData("", "MASK");
         $this->_searchDoc->setObjectReturn();
         $this->_searchDoc->excludeConfidential(true);
     }
