@@ -57,8 +57,8 @@ class SearchUsers
     private function searchUser($search, $page, $take)
     {
         $searchTerm = preg_quote($search);
-        $searchAccount = new \SearchAccount();
-        $searchAccount->setTypeFilter(\SearchAccount::userType);
+        $searchAccount = new \Anakeen\Accounts\SearchAccounts();
+        $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::userType);
         $searchAccount->addFilter("login  ~* '%s' or lastname ~* '%s' or firstname ~* '%s' ", $searchTerm, $searchTerm, $searchTerm);
 
         $result = [];

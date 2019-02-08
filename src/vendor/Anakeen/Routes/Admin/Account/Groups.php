@@ -12,8 +12,8 @@ class Groups
 
         $filter = $request->getQueryParam("filter");
 
-        $searchAccount = new \SearchAccount();
-        $searchAccount->setTypeFilter(\SearchAccount::groupType);
+        $searchAccount = new \Anakeen\Accounts\SearchAccounts();
+        $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::groupType);
         if ($filter !== null) {
             $searchAccount->addFilter("lastname ~* '%s' OR login ~* '%s'", preg_quote($filter));
         }
@@ -41,8 +41,8 @@ class Groups
 
         //Compute nb total of users
         $nbUsers = 0;
-        $searchAccount = new \SearchAccount();
-        $searchAccount->setTypeFilter(\SearchAccount::userType);
+        $searchAccount = new \Anakeen\Accounts\SearchAccounts();
+        $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::userType);
         $request = $searchAccount->getQuery();
         DbManager::query("select count(*) from (".$request.") as nbResult;", $nbUsers, true, true);
 
