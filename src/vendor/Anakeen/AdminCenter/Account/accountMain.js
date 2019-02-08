@@ -8,10 +8,15 @@ import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 
 import AdminCenterUserAndGroup from "./AdminCenterAccount";
-import installVuePlugin from "../Vue/installVuePlugin";
 
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
 Vue.use(TreeViewInstaller);
 
-installVuePlugin(Vue, "ank-admin-account", AdminCenterUserAndGroup);
+new Vue({
+  el: "#ank-admin-parameter",
+  components: {
+    AdminCenterUserAndGroup
+  },
+  template: "<ank-admin-parameter></ank-admin-parameter>"
+});
