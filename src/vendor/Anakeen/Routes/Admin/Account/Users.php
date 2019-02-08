@@ -9,7 +9,6 @@
 namespace Anakeen\Routes\Admin\Account;
 
 use Anakeen\Core\DbManager;
-use Dcp\Sacc\Exception;
 
 class Users
 {
@@ -18,7 +17,6 @@ class Users
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @return \Slim\Http\Response
-     * @throws Exception
      * @throws \Anakeen\Database\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
@@ -29,8 +27,8 @@ class Users
         $take= $request->getQueryParam("take");
         $sort = $request->getQueryParam("sort");
 
-        $searchAccount = new \SearchAccount();
-        $searchAccount->setTypeFilter(\SearchAccount::userType);
+        $searchAccount = new \Anakeen\Accounts\SearchAccounts();
+        $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::userType);
         if ($sort) {
             $sortString = "";
             foreach ($sort as $currentSort) {

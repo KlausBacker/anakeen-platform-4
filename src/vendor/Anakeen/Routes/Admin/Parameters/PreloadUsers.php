@@ -50,8 +50,8 @@ class PreloadUsers
      */
     private function getUsers($page, $take)
     {
-        $searchAccount = new \SearchAccount();
-        $searchAccount->setTypeFilter(\SearchAccount::userType);
+        $searchAccount = new \Anakeen\Accounts\SearchAccounts();
+        $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::userType);
 
         $result = [];
 
