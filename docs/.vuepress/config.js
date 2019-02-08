@@ -20,18 +20,16 @@ module.exports = {
     },
     search: true,
     sidebar: {
+      '/guide/configuration/': getConfigSideBar(),
+      // '/guide/using/': getUsingSideBar(),
     },
 
     nav: [
       { text: 'Accueil', link: '/' },
       {
         text: 'Guide', items: [
-          { link: '/guide/smartData/', text: 'Smart Data' },
-          { link: '/guide/userInterfaces/', text: 'Interfaces utilisateur' },
-          { link: '/guide/security/', text: 'Sécurité' },
-          { link: '/guide/workflow/', text: 'Workflow' },
-          { link: '/guide/routes/', text: 'Routes' },
-          { link: '/guide/localisation/', text: 'Traductions' },
+          { link: '/guide/configuration/', text: 'Configuration' },
+          { link: '/guide/using/', text: 'Utilisation' }
         ]
       },
       { text: 'Anakeen', link: 'https://www.anakeen.com/' },
@@ -47,5 +45,29 @@ module.exports = {
       md.use(require('markdown-it-include'))
     }
   }
+}
 
+function getConfigSideBar() {
+  return [
+    {
+      title: "Créer un Hub Station",
+      children: [
+        ['instanciation/instanciation.md', "Instancier un Hub Station"]
+      ]
+    },
+    {
+      title: "Configuration du Hub Station: côté client",
+      children: [
+        ['client/hubStationComponent.md', "Hub Station"],
+        ['client/hubElementComponent.md', "Hub Element"],
+        ['client/vueComponent.md', "Définir une entrée du Hub"]
+      ]
+    },
+    {
+      title: "Configuration du Hub Station: côté serveur",
+      children: [
+        ['server/hubConfigurationStructure.md', "Hub Structures"]
+      ]
+    }
+  ];
 }

@@ -1,0 +1,19 @@
+.hub-station-component {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+
+  .hub-station-center-area {
+    .hub-station-content {
+      display: flex;
+      flex: 1;
+      .hub-station-content-view {
+        flex: 1;
+      }
+    }
+    display: flex;
+    flex: 1;
+  }
+}

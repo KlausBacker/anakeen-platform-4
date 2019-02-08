@@ -1,0 +1,13 @@
+*.app
+src
+webpack
+Makefile
+Makefile.local
+.idea
+.cibuild
+*.xml
+ide
+stubs
+.gitlab-ci.yml
+
+

@@ -3,7 +3,7 @@
 namespace Anakeen\Hub\Routes;
 
 use Anakeen\Core\SEManager;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\UIGetAssetPath;
 
 class Hub
 {
@@ -21,17 +21,17 @@ class Hub
             "JS_DEPS" => [
                 [
                     "key" => "jquery",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSJqueryPath()
+                    "path" => UIGetAssetPath::getJSJqueryPath()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getJSKendoPath()
+                    "path" => UIGetAssetPath::getJSKendoPath()
                 ]
             ],
             "JS" => [
                 [
                     "key" => "hub",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                    "path" => UIGetAssetPath::getElementAssets(
                         "hub",
                         UIGetAssetPath::isInDebug() ? "dev" : "prod"
                     )["hub"]["js"]
@@ -40,11 +40,11 @@ class Hub
             "JS_LEGACY" => [
                 [
                     "key" => "polyfill",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getPolyfill()
+                    "path" => UIGetAssetPath::getPolyfill()
                 ],
                 [
                     "key" => "hub",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getElementAssets(
+                    "path" => UIGetAssetPath::getElementAssets(
                         "hub",
                         "legacy"
                     )["hub"]["js"]
@@ -53,15 +53,15 @@ class Hub
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssBootstrap()
+                    "path" => UIGetAssetPath::getCssBootstrap()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssKendo()
+                    "path" => UIGetAssetPath::getCssKendo()
                 ],
                 [
                     "key" => "component",
-                    "path" => \Dcp\Ui\UIGetAssetPath::getCssSmartWebComponents()
+                    "path" => UIGetAssetPath::getCssSmartWebComponents()
                 ]
             ]
         ];

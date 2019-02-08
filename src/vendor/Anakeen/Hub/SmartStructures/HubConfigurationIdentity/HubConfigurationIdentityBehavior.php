@@ -17,13 +17,13 @@ class HubConfigurationIdentityBehavior extends \SmartStructure\Hubconfigurations
      * Get component specific configuration, to display it correctly with its options
      *
      * @return array
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     protected function getComponentConfiguration()
     {
         return [
             // Name of the Vue.js component
-            "componentName" => "ank-identity",
+            "name" => "ank-identity",
 
             // Properties to use for the component
             "props" => [

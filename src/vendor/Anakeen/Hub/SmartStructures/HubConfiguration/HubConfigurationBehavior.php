@@ -24,22 +24,20 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         // Config to return
         $configuration = [];
 
-        $configuration["dock"] = $this->getAttributeValue(HubConfigurationFields::hub_docker_position);
         $configuration["assets"] = $this->getAssets();
-        $configuration["tab"] = [];
-        $configuration["tab"]["expanded"] = "<span>".$this->getHubConfigurationTitle()."</span>";
-        $configuration["position"] = $this->getAttributeValue(HubConfigurationFields::hub_order);
-        //$DockerPosition = $this->getAttributeValue(HubConfigurationSlotFields::hub_docker_position);
+        $dockPosition = static::getDockPosition($this->getAttributeValue(HubConfigurationFields::hub_docker_position));
+        $configuration["position"] = [
+            "order" => $this->getAttributeValue(HubConfigurationFields::hub_order),
+            "dock" => $dockPosition["dock"],
+            "innerPosition" => $dockPosition["innerPosition"]
+        ];
+        $configuration["component"] = $this->getComponentConfiguration();
 
-        // Default configuration : Elements are in the body, and selectable
-        $configuration["area"] = $this->getHubPosition($this->getAttributeValue(HubConfigurationFields::hub_docker_position));
-        $configuration["tab"]["selectable"] = true;
-        $configuration["tab"]["selected"] = false;
-
-        // Component is in the content of the dock element, and compact is the selected icon
-        $configuration["tab"]["compact"] = $this->getHubConfigurationIcon();
-        $configuration["tab"]["content"] = $this->getComponentConfiguration();
-
+        $configuration["entryOptions"] = [
+            "iconTemplate" => $this->getAttributeValue(HubConfigurationFields::hub_final_icon),
+            "selected" => $this->getAttributeValue(HubConfigurationFields::hub_activated) === "TRUE",
+            "selectable" => $this->getAttributeValue(HubConfigurationFields::hub_selectable) === "TRUE"
+        ];
         return $configuration;
     }
 
@@ -106,7 +104,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     protected function getComponentConfiguration()
     {
         return [
-            "componentName" => "",
+            "name" => "",
             "props" => []
         ];
     }
@@ -125,26 +123,30 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         return $finalTitle;
     }
 
-    protected function getHubPosition($position)
+    protected static function getInnerPosition($innerPosition)
     {
-        switch ($position) {
-            case "LEFT_TOP":
-            case "RIGHT_TOP":
-            case "TOP_LEFT":
-            case "BOTTOM_LEFT":
-                return "header";
-            case "LEFT_CENTER":
-            case "RIGHT_CENTER":
-            case "BOTTOM_CENTER":
-            case "TOP_CENTER":
-                return "body";
-            case "LEFT_BOTTOM":
-            case "RIGHT_BOTTOM":
-            case "BOTTOM_RIGHT":
-            case "TOP_RIGHT":
-                return "footer";
+        switch ($innerPosition) {
+            case "TOP":
+            case "LEFT":
+                return "HEADER";
+            case "RIGHT":
+            case "BOTTOM":
+                return "FOOTER";
             default:
-                break;
+                return $innerPosition;
         }
+    }
+
+    protected static function getDockPosition($dockPosition)
+    {
+        $position = [ "dock" => "", "innerPosition" => ""];
+        if (!empty($dockPosition)) {
+            $tokens = explode("_", $dockPosition);
+            if (!empty($tokens) && count($tokens) > 0) {
+                $position["dock"] = $tokens[0];
+                $position["innerPosition"] = static::getInnerPosition($tokens[1]);
+            }
+        }
+        return $position;
     }
 }

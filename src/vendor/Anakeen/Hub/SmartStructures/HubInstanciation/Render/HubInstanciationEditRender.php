@@ -3,10 +3,10 @@
 
 namespace Anakeen\Hub\SmartStructures\HubInstanciation\Render;
 
-use Dcp\Ui\CommonRenderOptions;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\CommonRenderOptions;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Hubinstanciation as HubInstanciationFields;
 
 class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender

@@ -64,7 +64,7 @@ po: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} extractPo
 
-stub: install-deps
+stubs: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} generateStubs
 

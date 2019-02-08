@@ -2,10 +2,10 @@
 
 namespace Anakeen\Hub\SmartStructures\HubConfiguration\Render;
 
-use Dcp\Ui\CommonRenderOptions;
-use Dcp\Ui\RenderAttributeVisibilities;
-use Dcp\Ui\RenderOptions;
-use Dcp\Ui\UIGetAssetPath;
+use Anakeen\Ui\CommonRenderOptions;
+use Anakeen\Ui\RenderAttributeVisibilities;
+use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
@@ -65,7 +65,7 @@ HTML;
     /**
      * @param \Anakeen\Core\Internal\SmartElement|null $document
      * @return array|string[]
-     * @throws \Dcp\Ui\Exception
+     * @throws \Anakeen\Ui\Exception
      */
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {

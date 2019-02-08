@@ -4,9 +4,9 @@ sidebar: false
 
 <div class="guide-main">
     <div class="guide-section">
-     <a href="smartData/">
+     <a href="configuration/">
      <i class="fa fa-code"></i><br/>
-     <span>Configuration et développement</span>
+     <span>Configuration</span>
      </a>
     </div>
     <div class="guide-section">

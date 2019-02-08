@@ -22,7 +22,7 @@ class HubConfigurationLogoutBehavior extends \SmartStructure\Hubconfigurationslo
     {
         return [
             // Name of the Vue.js component
-            "componentName" => "ank-logout",
+            "name" => "ank-logout",
 
             // Properties to use for the components
             "props" => [
