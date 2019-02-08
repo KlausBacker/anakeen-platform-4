@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\Layout;
+namespace Anakeen\Layout;
 
 class Exception extends \Anakeen\Exception
 {

@@ -607,7 +607,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     /**
      * document layout
      *
-     * @var \Layout|\OooLayout
+     * @var \Anakeen\Layout\TextLayout|\Anakeen\Layout\OooLayout
      */
     public $lay = null;
     /**
@@ -6274,7 +6274,7 @@ create unique index i_docir on doc(initid, revision);";
             return $sql;
         } // only drop
         if ($code) {
-            $lay = new \Layout("vendor/Anakeen/Core/Layout/sqltrigger.sql");
+            $lay = new \Anakeen\Layout\TextLayout("vendor/Anakeen/Core/Layout/sqltrigger.sql");
             $na = $this->GetNormalAttributes();
             $tvalues = array();
             foreach ($na as $k => $v) {
@@ -6616,9 +6616,9 @@ create unique index i_docir on doc(initid, revision);";
         if (strtolower($ext) == "odt") {
             $target = "ooo";
             $ulink = false;
-            $this->lay = new \OOoLayout($tplfile, $this);
+            $this->lay = new \Anakeen\Layout\OooLayout($tplfile, $this);
         } else {
-            $this->lay = new \Layout($tplfile, "");
+            $this->lay = new \Anakeen\Layout\TextLayout($tplfile, "");
         }
         //if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->set("_readonly", ($this->Control('edit') != ""));

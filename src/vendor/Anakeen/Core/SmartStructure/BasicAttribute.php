@@ -273,11 +273,11 @@ class BasicAttribute
     /**
      * Generate XML schema layout
      *
-     * @param \Layout $play
+     * @param \Anakeen\Layout\TextLayout $play
      */
     public function commonGetXmlSchema(&$play)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
+        $lay = new \Anakeen\Layout\TextLayout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "infoattribute_schema.xml"));
         $lay->set("aname", $this->id);
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);

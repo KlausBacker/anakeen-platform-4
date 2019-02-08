@@ -1,12 +1,15 @@
 <?php /** @noinspection PhpUnusedParameterInspection */
 
+
+namespace Anakeen\Layout;
+
 /**
  * Layout Class for OOo files
  *
  * @class OOoLayout
  * use an open document text file as template
  */
-class OOoLayout extends Layout
+class OOoLayout extends TextLayout
 {
     //############################################
     //#
@@ -36,9 +39,12 @@ class OOoLayout extends Layout
     protected $errors = array();
     /**
      * /**
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     protected $dom;
+
+    /** @var \Anakeen\Core\Internal\SmartElement */
+    protected $doc;
     /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * construct template using an open document text file
@@ -78,11 +84,11 @@ class OOoLayout extends Layout
     /**
      * return inside string of a node
      *
-     * @param DOMnode $node
+     * @param \DOMnode $node
      *
      * @return string
      */
-    protected function innerXML(DOMnode & $node)
+    protected function innerXML(\DOMnode & $node)
     {
         if (!$node) {
             return false;
@@ -121,7 +127,7 @@ xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/20
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">'
 EOF;
         $foot = '</office:document-content>';
-        $domblock = new DOMDocument();
+        $domblock = new \DOMDocument();
         $frag1 = '';
         $frag2 = '';
         $block = trim($block);
@@ -146,7 +152,7 @@ EOF;
         $lists = $domblock->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "list");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $items = $list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "list-item");
             if ($items->length > 0) {
@@ -188,11 +194,11 @@ EOF;
     /**
      * get depth in dom tree
      *
-     * @param DOMNode $node
+     * @param \DOMNode $node
      *
      * @return int
      */
-    private function getNodeDepth(DOMNode & $node)
+    private function getNodeDepth(\DOMNode & $node)
     {
         $mynode = $node;
         $depth = 0;
@@ -272,7 +278,7 @@ EOF;
         while ($templateori != $this->template && ($level < 10)) {
             $templateori = $this->template;
             $this->template = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches) {
-                return $this->TestIf($matches[2], $matches[3], $matches[1]);
+                return $this->testIf($matches[2], $matches[3], $matches[1]);
             }, $this->template);
             $level++; // to prevent infinite loop
         }
@@ -290,7 +296,7 @@ EOF;
         $domElemsToClean = array();
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             if (!$list->getAttribute('office:string-value')) {
                 if ($list->textContent == '') {
@@ -302,7 +308,7 @@ EOF;
             }
         }
         /**
-         * @var $domElemsToRemove DOMElement[]
+         * @var $domElemsToRemove \DOMElement[]
          */
         foreach ($domElemsToRemove as $domElement) {
             $domElement->parentNode->removeChild($domElement);
@@ -320,7 +326,7 @@ EOF;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "user-field-decl");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var \DOMElement $list
              */
             $list->setAttribute('office:string-value', str_replace('[', '-CROCHET-', $list->getAttribute('office:string-value')));
             $list->setAttribute('text:name', str_replace('[', '-CROCHET-', $list->getAttribute('text:name')));
@@ -328,11 +334,11 @@ EOF;
         // detect user field to force it into a span
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "user-field-get");
         /**
-         * @var $list DOMElement
+         * @var \DOMElement $list
          */
         foreach ($lists as $list) {
             /**
-             * @var DOMElement $lp
+             * @var \DOMElement $lp
              */
             $lp = $list->parentNode;
             if ($lp->tagName != 'text:span') {
@@ -404,7 +410,7 @@ EOF;
 
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var \DOMElement $list
              */
             $list->setAttribute('office:string-value', str_replace('-CROCHET-', '[', $list->getAttribute('office:string-value')));
             $list->setAttribute('text:name', str_replace('-CROCHET-', '[', $list->getAttribute('text:name')));
@@ -469,7 +475,7 @@ EOF;
      * @param string $odtfile path to the odt file
      *
      * @return string
-     * @throws \Dcp\Layout\Exception|\Anakeen\Core\Exception
+     * @throws \Anakeen\Layout\Exception|\Anakeen\Core\Exception
      */
     protected function odf2content($odtfile)
     {
@@ -487,11 +493,11 @@ EOF;
             } else {
                 $err = 'unknown PHP error...';
             }
-            throw new Anakeen\Core\Exception("LAY0006", $err);
+            throw new \Anakeen\Core\Exception("LAY0006", $err);
         }
         if ($ret !== 0) {
             $err = join("\n", $out);
-            throw new Anakeen\Core\Exception("LAY0007", $odtfile, $err);
+            throw new \Anakeen\Core\Exception("LAY0007", $odtfile, $err);
         }
 
         $contentxml = $this->cibledir . "/content.xml";
@@ -675,15 +681,15 @@ EOF;
      */
     protected function updateManifest()
     {
-        $manifest = new DomDocument();
+        $manifest = new \DOMDocument();
         $manifest->loadXML($this->manifest);
         /**
-         * @var DOMDocument $manifest_root
+         * @var \DOMDocument $manifest_root
          */
         $manifest_root = null;
         $items = $manifest->childNodes;
         /**
-         * @var $item DOMElement
+         * @var\DOMElement  $item
          */
         foreach ($items as $item) {
             if ($item->nodeName == 'manifest:manifest') {
@@ -698,7 +704,7 @@ EOF;
         $items = $manifest->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:manifest:1.0", "file-entry");
         foreach ($items as $aItem) {
             /**
-             * @var $aItem DOMElement
+             * @var \DOMElement $aItem
              */
             $type = $aItem->getAttribute("manifest:media-type");
             if (substr($type, 0, 6) == "image/") {
@@ -728,7 +734,7 @@ EOF;
         $draws = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0", "frame");
         foreach ($draws as $draw) {
             /**
-             * @var $draw DOMElement
+             * @var \DOMElement $draw
              */
             $name = trim($draw->getAttribute('draw:name'));
             if ($name === "htmlgraphic") {
@@ -740,22 +746,22 @@ EOF;
     /**
      * set image from html fragment
      *
-     * @param DOMElement $draw
+     * @param \DOMElement $draw
      *
      * @return string
      */
-    protected function setHtmlDraw(DOMElement & $draw)
+    protected function setHtmlDraw(\DOMElement & $draw)
     {
         $imgs = $draw->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0", "image");
         $err = "";
         if ($imgs->length > 0) {
             /**
-             * @var $img DOMElement
+             * @var \DOMElement $img
              */
             $img = $imgs->item(0);
 
             $href = $img->getAttribute('xlink:href');
-            $fileInfo = new Anakeen\Vault\FileInfo();
+            $fileInfo = new \Anakeen\Vault\FileInfo();
 
             if (preg_match('/^file\/([^\/]+)\/([0-9]+)/', $href, $reg)) {
                 $vid = $reg[2];
@@ -813,13 +819,13 @@ EOF;
     /**
      * set image
      *
-     * @param DOMElement $draw
-     * @param string     $name
-     * @param string     $file
+     * @param \DOMElement $draw
+     * @param string      $name
+     * @param string      $file
      *
      * @return string
      */
-    protected function setDraw(DOMElement & $draw, $name, $file)
+    protected function setDraw(\DOMElement & $draw, $name, $file)
     {
         if (strpos($file, '<text:tab') !== false) {
             return 'muliple values : fail';
@@ -828,7 +834,7 @@ EOF;
         $err = "";
         if ($imgs->length > 0) {
             /**
-             * @var $img DOMElement
+             * @var  \DOMElement $img
              */
             $img = $imgs->item(0);
             if (file_exists($file)) {
@@ -864,7 +870,7 @@ EOF;
 
         foreach ($draws as $draw) {
             /**
-             * @var $draw DOMElement
+             * @var $draw \DOMElement
              */
 
             $name = trim($draw->getAttribute('draw:name'));
@@ -880,14 +886,14 @@ EOF;
     /**
      * remove all xml:id attributes in children nodes
      *
-     * @param DomNode $objNode
+     * @param \DomNode $objNode
      */
     protected function removeXmlId(&$objNode)
     {
         $objNodeListNested = $objNode->childNodes;
         foreach ($objNodeListNested as $objNodeNested) {
             /**
-             * @var $objNodeNested DOMElement
+             * @var $objNodeNested \DOMElement
              */
             if ($objNodeNested->nodeType == XML_ELEMENT_NODE) {
                 $objNodeNested->removeAttribute("xml:id");
@@ -899,13 +905,13 @@ EOF;
     /**
      * This function replaces a node's string content with strNewContent
      *
-     * @param DomNode $objNode
-     * @param string  $strOldContent
-     * @param string  $strNewContent
+     * @param \DomNode $objNode
+     * @param string   $strOldContent
+     * @param string   $strNewContent
      *
      * @throws \Anakeen\Exception
      */
-    protected function replaceNodeText(DOMNode & $objNode, $strOldContent, $strNewContent)
+    protected function replaceNodeText(\DOMNode & $objNode, $strOldContent, $strNewContent)
     {
         if ($strNewContent === null) {
             return;
@@ -916,7 +922,7 @@ EOF;
         $objNodeListNested = &$objNode->childNodes;
         foreach ($objNodeListNested as $objNodeNested) {
             /**
-             * @var $objNodeNested DOMElement
+             * @var $objNodeNested \DOMElement
              */
             if ($objNodeNested->nodeType == XML_TEXT_NODE) {
                 if ($objNodeNested->nodeValue != "") {
@@ -959,7 +965,7 @@ EOF;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "list");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $items = $list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "list-item");
             if ($items->length > 0) {
@@ -1011,7 +1017,7 @@ EOF;
         // need to inpect section with max depth before to avoid et repeat top level section
 
         /**
-         * @var $aSection DOMElement
+         * @var $aSection \DOMElement
          */
         foreach ($lists as $aSection) {
             $depth = $this->getNodeDepth($aSection);
@@ -1025,7 +1031,7 @@ EOF;
         ));
         foreach ($section as $aSection) {
             /**
-             * @var $aSection DOMElement
+             * @var $aSection \DOMElement
              */
             $skey = implode('|', array_keys($this->arrayMainKeys));
             if (preg_match_all("/\\[($skey)\\]/", $this->innerXML($aSection), $reg)) {
@@ -1040,7 +1046,7 @@ EOF;
                 if ($maxk > 0) {
                     for ($i = 0; $i < $maxk; $i++) {
                         /**
-                         * @var DOMElement $clone
+                         * @var \DOMElement $clone
                          */
                         $clone = $aSection->cloneNode(true);
                         $aSection->parentNode->insertBefore($clone, $aSection);
@@ -1063,13 +1069,13 @@ EOF;
     /**
      * modify a text:input field value
      *
-     * @param DomElement $node
-     * @param string     $name
-     * @param string     $value
+     * @param \DomElement $node
+     * @param string      $name
+     * @param string      $value
      *
      * @return string error
      */
-    protected function setInputField(DomElement & $node, $name, $value)
+    protected function setInputField(\DomElement & $node, $name, $value)
     {
         if (strpos($value, '<text:tab') !== false) {
             return 'muliple values : fail';
@@ -1083,13 +1089,13 @@ EOF;
     /**
      * modify a text:drop-down list
      *
-     * @param DOMElement $node
-     * @param string     $name
-     * @param string     $value
+     * @param \DOMElement $node
+     * @param string      $name
+     * @param string      $value
      *
      * @return string error message
      */
-    protected function setDropDownField(DOMElement & $node, $name, $value)
+    protected function setDropDownField(\DOMElement & $node, $name, $value)
     {
         if (strpos($value, '<text:tab') !== false) {
             return 'muliple values : fail';
@@ -1105,23 +1111,23 @@ EOF;
             ">",
             '&'
         ), $value);
-        $item = new DOMElement('text:label', '', 'urn:oasis:names:tc:opendocument:xmlns:text:1.0');
+        $item = new \DOMElement('text:label', '', 'urn:oasis:names:tc:opendocument:xmlns:text:1.0');
         $item = $node->appendChild($item);
         /**
-         * @var $item DOMElement
+         * @var $item \DOMElement
          */
         $item->setAttribute("text:current-selected", 'true');
         $item->setAttribute("text:value", $value);
-        $node->appendChild(new DOMText($value));
+        $node->appendChild(new \DOMText($value));
         return '';
     }
 
     /**
      * remove all child nodes
      *
-     * @param DomNode $objNode
+     * @param \DomNode $objNode
      */
-    protected function removeAllChilds(DOMNode & $objNode)
+    protected function removeAllChilds(\DOMNode & $objNode)
     {
         $objNodeListNested = $objNode->childNodes;
         $objNode->nodeValue = '';
@@ -1143,7 +1149,7 @@ EOF;
 
         $skey = implode('|', array_keys($this->arrayMainKeys));
         /**
-         * @var $rowItem DOMElement
+         * @var $rowItem \DOMElement
          */
         foreach ($lists as $rowItem) {
             if (preg_match("/\[($skey)\]/", $this->innerXML($rowItem), $reg)) {
@@ -1152,7 +1158,7 @@ EOF;
         }
         foreach ($validRow as $rowItem) {
             /**
-             * @var $rowItem DOMElement
+             * @var $rowItem \DOMElement
              */
             if (preg_match_all("/\[($skey)\]/", $this->innerXML($rowItem), $reg)) {
                 $reg0 = $reg[0];
@@ -1166,7 +1172,7 @@ EOF;
                 if ($maxk > 0) {
                     for ($i = 0; $i < $maxk; $i++) {
                         /**
-                         * @var DOMElement $clone
+                         * @var \DOMElement $clone
                          */
                         $clone = $rowItem->cloneNode(true);
 
@@ -1252,10 +1258,10 @@ EOF;
      *
      * Inspect conditions in cells
      *
-     * @param DOMNode $row
-     * @param array   $levelPath
+     * @param \DOMNode $row
+     * @param array    $levelPath
      */
-    protected function replaceRowIf(DOMNode & $row, array $levelPath)
+    protected function replaceRowIf(\DOMNode & $row, array $levelPath)
     {
         $this->removeXmlId($row);
 
@@ -1281,7 +1287,7 @@ EOF;
         $level = 0;
         while ($level < 10) {
             $replacement = preg_replace_callback('/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/s', function ($matches) use ($levelPath) {
-                return $this->TestIf($matches[2], $matches[3], $matches[1], $levelPath);
+                return $this->testIf($matches[2], $matches[3], $matches[1], $levelPath);
             }, $inner);
             if ($inner == $replacement) {
                 break;
@@ -1292,7 +1298,7 @@ EOF;
         }
         $this->fixSpanIf($replacement);
 
-        $dxml = new DomDocument();
+        $dxml = new \DOMDocument();
 
         $dxml->loadXML($head . $replacement . $foot);
         $ot = $dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "document-content");
@@ -1311,10 +1317,10 @@ EOF;
     }
 
     /**
-     * @param DOMElement $row
-     * @param array      $levelPath
+     * @param \DOMElement $row
+     * @param array       $levelPath
      */
-    protected function replaceRowNode(DOMElement & $row, array $levelPath)
+    protected function replaceRowNode(\DOMElement & $row, array $levelPath)
     {
         // Inspect sub tables, rows
         $this->replaceRowSomething($row, $levelPath, "table", "table-row", true);
@@ -1328,13 +1334,13 @@ EOF;
      *
      * Inspect list in sub tables
      *
-     * @param DOMElement $row
-     * @param array      $levelPath
-     * @param string     $ns        namespace for filter items (like text or table)
-     * @param string     $tag       tag for filter (like table-row or list-item)
-     * @param boolean    $recursive recursive mode
+     * @param \DOMElement $row
+     * @param array       $levelPath
+     * @param string      $ns        namespace for filter items (like text or table)
+     * @param string      $tag       tag for filter (like table-row or list-item)
+     * @param boolean     $recursive recursive mode
      */
-    protected function replaceRowSomething(DOMElement & $row, array $levelPath, $ns, $tag, $recursive)
+    protected function replaceRowSomething(\DOMElement & $row, array $levelPath, $ns, $tag, $recursive)
     {
         if (count($this->arrayKeys) == 0) {
             return;
@@ -1356,7 +1362,7 @@ EOF;
             $tvkey = array();
             foreach ($rowList as $item) {
                 /**
-                 * @var $item DOMElement
+                 * @var $item \DOMElement
                  */
                 if (preg_match_all("/\\[($skey)\\]/", $this->innerXML($item), $reg)) {
                     $maxk = 0;
@@ -1369,7 +1375,7 @@ EOF;
                     if ($maxk > 0) {
                         for ($i = 0; $i < $maxk; $i++) {
                             /**
-                             * @var DOMElement $clone
+                             * @var \DOMElement $clone
                              */
                             $clone = $item->cloneNode(true);
                             $item->parentNode->insertBefore($clone, $item);
@@ -1400,7 +1406,7 @@ EOF;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "text-input");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $name = $list->getAttribute("text:description");
             if (preg_match('/\[(V_[A-Z0-9_-]+)\]/', $name, $reg)) {
@@ -1420,7 +1426,7 @@ EOF;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "drop-down");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $name = $list->getAttribute("text:name");
             if (preg_match('/\[(V_[A-Z0-9_-]+)\]/', $name, $reg)) {
@@ -1452,7 +1458,7 @@ EOF;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "section");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $name = $list->getAttribute("text:name");
             if (substr($name, 0, 5) == '_tpl_') {
@@ -1463,7 +1469,7 @@ EOF;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "section");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $name = $list->getAttribute("text:name");
             if (substr($name, 0, 4) == 'tpl_') {
@@ -1472,14 +1478,14 @@ EOF;
                 $heads = $list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "h");
                 if ($heads->length > 0) {
                     /**
-                     * @var $firsthead DOMElement
+                     * @var $firsthead \DOMElement
                      */
                     $firsthead = $heads->item(0);
                     $firsthead->setAttribute("text:style-name", trim($firsthead->getAttribute('text:style-name'), '_'));
                 }
                 $this->saved_sections[$name] = $list->cloneNode(true);
                 /**
-                 * @var $originSection DOMElement
+                 * @var $originSection \DOMElement
                  */
                 $originSection = $this->saved_sections[$name];
                 $list->setAttribute("text:name", '_' . $name);
@@ -1489,7 +1495,7 @@ EOF;
                 $heads = $originSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "h");
                 if ($heads->length > 0) {
                     /**
-                     * @var $firsthead DOMElement
+                     * @var $firsthead \DOMElement
                      */
                     $firsthead = $heads->item(0);
                     $styleName = $firsthead->getAttribute("text:style-name");
@@ -1500,7 +1506,7 @@ EOF;
                         $tStyleName = array();
                         foreach ($styles as $style) {
                             /**
-                             * @var $style DOMElement
+                             * @var $style \DOMElement
                              */
                             $aStyleName = $style->getAttribute("style:name");
                             $tStyleName[] = $aStyleName;
@@ -1508,7 +1514,7 @@ EOF;
                                 $copyName = '_' . $styleName . '_';
                                 if (!(in_array($copyName, $tStyleName))) {
                                     /**
-                                     * @var $cloneStyle DOMElement
+                                     * @var $cloneStyle \DOMElement
                                      */
                                     $cloneStyle = $style->cloneNode(true);
                                     $cloneStyle->setAttribute("style:name", $copyName);
@@ -1535,7 +1541,7 @@ EOF;
         $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "section");
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $name = $list->getAttribute("text:name");
             if (substr($name, 0, 5) == '_tpl_' && isset($this->saved_sections[substr($name, 1)])) {
@@ -1557,7 +1563,7 @@ EOF;
                 $node = $insert_to_do[1]->parentNode->appenChild($insert_to_do[0]);
             }
             /**
-             * @var $node DOMElement
+             * @var $node \DOMElement
              */
             $node->setAttribute("text:protected", 'true');
             $node->setAttribute("text:display", 'none');
@@ -1613,12 +1619,14 @@ EOF;
                     }
                 } else {
                     if (!\Anakeen\Core\Utils\Strings::isUTF8($data)) {
+                        /** @var string $data */
                         $data = utf8_encode($data);
                     }
                 }
             }
             $this->data[$p_nom_block] = $data;
             if (is_array($data)) {
+                /** @var array $data */
                 reset($data);
                 $elem = current($data);
                 if (isset($elem) && is_array($elem)) {
@@ -1675,17 +1683,17 @@ EOF;
     {
         $xmldata = '<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">' . "</xhtml:html>";
 
-        $ddXsl = new DOMDocument();
+        $ddXsl = new \DOMDocument();
         $ddXsl->load(DEFAULT_PUBDIR . "/Apps/CORE/Layout/html2odt.xsl");
-        $xslt = new xsltProcessor;
+        $xslt = new \XSLTProcessor;
 
         $xslt->importStyleSheet($ddXsl);
 
-        $ddData = new DOMDocument();
+        $ddData = new \DOMDocument();
         $ddData->loadXML($xmldata);
         $xmlout = $xslt->transformToXML($ddData);
 
-        $dxml = new DomDocument();
+        $dxml = new \DOMDocument();
         $dxml->loadXML($xmlout);
         $ot = $dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0", "automatic-styles");
         if ($ot->length <= 0) {
@@ -1716,7 +1724,7 @@ EOF;
         $used_images = array();
         foreach ($imgs as $img) {
             /**
-             * @var $img DOMElement
+             * @var $img \DOMElement
              */
             $href = basename($img->getAttribute('xlink:href'));
             if (substr($href, 0, 7) == 'dcp') {
@@ -1767,7 +1775,7 @@ EOF;
      */
     protected function genStyle()
     {
-        $this->dom = new DOMDocument();
+        $this->dom = new \DOMDocument();
 
         $this->dom->loadXML($this->style_template);
         if ($this->dom) {
@@ -1777,9 +1785,9 @@ EOF;
             $this->template = $this->dom->saveXML();
 
             $this->hideUserFieldSet();
-            $this->ParseIf();
+            $this->parseIf();
             $this->ParseKey();
-            $this->ParseText();
+            $this->parseText();
             $this->restoreUserFieldSet();
             $this->style_template = $this->template;
         }
@@ -1790,15 +1798,15 @@ EOF;
      */
     protected function genMeta()
     {
-        $this->dom = new DOMDocument();
+        $this->dom = new \DOMDocument();
 
         $this->dom->loadXML($this->meta_template);
         if ($this->dom) {
             $this->template = $this->meta_template;
 
-            $this->ParseIf();
+            $this->parseIf();
             $this->ParseKey();
-            $this->ParseText();
+            $this->parseText();
 
             $this->meta_template = $this->template;
         }
@@ -1817,7 +1825,7 @@ EOF;
         $htmlCleanSections = array();
         foreach ($lists as $list) {
             /**
-             * @var $list DOMElement
+             * @var $list \DOMElement
              */
             $aid = $list->getAttribute("aid");
             if ($aid) {
@@ -1832,7 +1840,7 @@ EOF;
         }
         foreach ($htmlSections as $htmlSection) {
             /**
-             * @var $htmlSection DOMElement
+             * @var $htmlSection \DOMElement
              */
             $pParentHtml = $htmlSection->parentNode->parentNode;
             $parentHtml = $htmlSection->parentNode;
@@ -1850,7 +1858,7 @@ EOF;
             if (($parentHtml->nodeName == "text:p") && ($parentHtml->childNodes->length == 1)) {
                 $htmlPs = $htmlSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p");
                 /**
-                 * @var DOMElement $p
+                 * @var \DOMElement $p
                  */
                 foreach ($htmlPs as $p) {
                     foreach ($parentHtml->attributes as $attribute) {
@@ -1893,7 +1901,7 @@ EOF;
         }
         foreach ($htmlCleanSections as $htmlSection) {
             /**
-             * @var $htmlSection DOMElement
+             * @var $htmlSection \DOMElement
              */
 
             $attrid = substr($htmlSection->getAttribute("text:name"), 7);
@@ -1916,7 +1924,7 @@ EOF;
     {
         $s = array();
         foreach ($this->errors as $err) {
-            $s[] = ErrorCode::getError($err["code"], $err["key"]);
+            $s[] = \ErrorCode::getError($err["code"], $err["key"]);
         }
         return implode("\n", $s);
     }
@@ -1929,13 +1937,13 @@ EOF;
      *
      * @param string $outfile corrupted file path
      *
-     * @throws Dcp\Layout\Exception
+     * @throws \Anakeen\Layout\Exception
      */
     protected function exitError($outfile = '')
     {
         foreach ($this->errors as $err) {
             if ($err["code"]) {
-                $e = new Dcp\Layout\Exception($err["code"], $err["key"]);
+                $e = new \Anakeen\Layout\Exception($err["code"], $err["key"]);
                 if ($outfile) {
                     error_log(sprintf("Error {%s}: corrupted temporary file is %s", $err["code"], $outfile));
                     $e->setCorruptedFile($outfile);
@@ -1964,10 +1972,10 @@ EOF;
     /**
      * Change Element Name
      *
-     * @param DOMElement $node
-     * @param string     $name
+     * @param \DOMElement $node
+     * @param string      $name
      *
-     * @return DOMElement
+     * @return \DOMElement
      */
     protected function changeElementName($node, $name)
     {
@@ -1979,7 +1987,7 @@ EOF;
         // Add clones of the old element's children to the replacement
 
         /**
-         * @var DOMElement $child
+         * @var \DOMElement $child
          */
         foreach ($node->childNodes as $child) {
             $newElement->appendChild($child->cloneNode(true));
@@ -1994,7 +2002,7 @@ EOF;
      */
     protected function genContent()
     {
-        $this->dom = new DOMDocument();
+        $this->dom = new \DOMDocument();
 
         $this->dom->loadXML($this->content_template);
         if ($this->dom) {
@@ -2016,12 +2024,12 @@ EOF;
             $this->template = $this->dom->saveXML();
             // Parse i18n text
             $this->ParseBlock();
-            $this->ParseIf();
+            $this->parseIf();
             //$this->ParseKeyXml();
             //$this->template=$this->dom->saveXML();
             //      print $this->template;exit;
             $this->ParseKey();
-            $this->ParseText();
+            $this->parseText();
 
             $this->restoreUserFieldSet();
 
@@ -2030,7 +2038,7 @@ EOF;
             $this->ParseHtmlText();
 
             $this->template = \Anakeen\Core\Utils\HtmlClean::cleanXMLUTF8($this->template);
-            $this->dom = new DOMDocument();
+            $this->dom = new \DOMDocument();
             if ($this->dom->loadXML($this->template)) {
                 $this->restoreSection();
                 // not remove images because delete images defined in style.xml
@@ -2054,7 +2062,7 @@ EOF;
      * generate OOo document
      * get temporary file path of result
      *
-     * @throws Dcp\Layout\Exception
+     * @throws \Anakeen\Layout\Exception
      * @return string odt file path
      */
     public function gen()
@@ -2077,7 +2085,7 @@ EOF;
 
         if (!empty($this->errors)) {
             //error_log(sprintf("Error {LAY0001}: corrupted temporary file is %s", $outfile));
-            //throw new Dcp\Layout\Exception("LAY0001", $this->getErrors() , $outfile);
+            //throw new Anakeen\Layout\Exception("LAY0001", $this->getErrors() , $outfile);
             $this->exitError($outfile);
         }
         //print_r2($this->content_template);

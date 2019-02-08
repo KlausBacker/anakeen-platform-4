@@ -470,7 +470,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
     private function generateMailInstance(\Anakeen\Core\Internal\SmartElement & $doc, $tpl, $oattr = false)
     {
         $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in \Anakeen\Core\Internal\SmartElement::setValue()
-        $doc->lay = new \Layout("", $tpl);
+        $doc->lay = new \Anakeen\Layout\TextLayout("", $tpl);
 
         $ulink = ($this->getRawValue("tmail_ulink") == "yes");
         /* Expand layout's [TAGS] */

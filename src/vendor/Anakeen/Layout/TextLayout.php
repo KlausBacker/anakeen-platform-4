@@ -1,18 +1,11 @@
-<?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+<?php /** @noinspection HtmlRequiredTitleElement */
+/** @noinspection HtmlRequiredLangAttribute */
+
 /**
  * Layout Class
  *
- * @author     Anakeen
- * @version    $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
- * @package    FDL
- * @subpackage CORE
  */
-/**
- */
+namespace Anakeen\Layout;
 
 /**
  *
@@ -43,7 +36,7 @@
  *       [ENDBLOCK IDENTITY]
  * @endcode
  *    the code :
- * @code $lay = new Layout ("file containing the block");
+ * @code $lay = new \Anakeen\Layout\TextLayout ("file containing the block");
  *                $lay->SetBlockData("IDENTITY",$table);
  *
  *                $out = $lay->gen();
@@ -64,8 +57,11 @@
  *     then the APPLIST function in the CORE Application is called
  *     this function can then use another layout etc......
  */
-class Layout
+class TextLayout
 {
+    protected $initialFile;
+    public $file;
+    public $template;
     private $strip = 'N';
     private $escapeBracket = "__BRACKET-OPEN__";
     private $noGoZoneMapping = "__NO-GO-ZONE__";
@@ -111,7 +107,6 @@ class Layout
             $this->template = $template;
         }
 
-        $this->generation = "";
         $this->noGoZoneMapping = uniqid($this->noGoZoneMapping);
         $this->escapeBracket = uniqid($this->escapeBracket);
         $file = $caneva;
@@ -147,7 +142,7 @@ class Layout
      * @endcode
      * with the code
      * @code
-     * $lay = new Layout ("file containing the block");
+     * $lay = new \Anakeen\Layout\TextLayout ("file containing the block");
      * $lay->setBlockCorresp("IDENTITY","MYNAME","name");
      * $lay->setBlockCorresp("IDENTITY","MYSURNAME","surname");
      * $lay->SetBlockData("IDENTITY",$table);
@@ -234,7 +229,7 @@ class Layout
         return false;
     }
 
-    protected function SetBlock($name, $block)
+    protected function setBlock($name, $block)
     {
         if ($this->strip == 'Y') {
             //      $block = StripSlashes($block);
@@ -256,23 +251,23 @@ class Layout
                     }
                 }
                 $this->rif = &$v;
-                $this->ParseIf($loc);
+                $this->parseIf($loc);
                 $out .= $loc;
             }
             $this->rif = $oriRif;
         }
-        $this->ParseBlock($out);
+        $this->parseBlock($out);
         return ($out);
     }
 
-    protected function ParseBlock(&$out)
+    protected function parseBlock(&$out)
     {
         $out = preg_replace_callback('/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/s', function ($matches) {
             return $this->SetBlock($matches[1], $matches[2]);
         }, $out);
     }
 
-    protected function TestIf($name, $block, $not = false)
+    protected function testIf($name, $block, $not = false)
     {
         $out = "";
         if (array_key_exists($name, $this->rif) || isset($this->rkey[$name])) {
@@ -282,8 +277,8 @@ class Layout
                     $block = str_replace("\\\"", "\"", $block);
                 }
                 $out = $block;
-                $this->ParseBlock($out);
-                $this->ParseIf($out);
+                $this->parseBlock($out);
+                $this->parseIf($out);
             }
         } else {
             if ($this->strip == 'Y') {
@@ -299,10 +294,10 @@ class Layout
         return ($out);
     }
 
-    protected function ParseIf(&$out)
+    protected function parseIf(&$out)
     {
         $out = preg_replace_callback('/\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s+\\2\]/smu', function ($matches) {
-            return $this->TestIf($matches[2], $matches[3], $matches[1]);
+            return $this->testIf($matches[2], $matches[3], $matches[1]);
         }, $out);
     }
 
@@ -385,7 +380,7 @@ class Layout
     }
 
 
-    protected function ParseText(&$out)
+    protected function parseText(&$out)
     {
         $out = preg_replace_callback('/\[TEXT(\([^\)]*\))?:([^\]]*)\]/', function ($matches) {
             $s = $matches[2];
@@ -399,146 +394,7 @@ class Layout
             }
         }, $out);
     }
-
-    protected function Text($s)
-    {
-        if ($s == "") {
-            return $s;
-        }
-        return _($s);
-    }
-
-    protected function GenJsRef($useLegacyLog = true)
-    {
-        $js = "";
-
-        return $js;
-    }
-
-    /**
-     * get js code for notification (internal usage)
-     *
-     * @param      $showlog
-     * @param bool $onlylog
-     *
-     * @return string
-     */
-    public function GenJsCode($showlog, $onlylog = false)
-    {
-        $out = "";
-        if (empty($this->action->parent)) {
-            return $out;
-        }
-        if (!$onlylog) {
-            $list = $this->action->parent->GetJsCode();
-            foreach ($list as $k => $v) {
-                $out .= $v . "\n";
-            }
-        }
-        if ($showlog) {
-            // Add log messages
-            $list = $this->action->parent->GetLogMsg();
-            reset($list);
-            $out .= "var logmsg=new Array();\n";
-            foreach ($list as $k => $v) {
-                if (($v[0] == '{')) {
-                    $out .= "logmsg[$k]=$v;\n";
-                } else {
-                    $out .= "logmsg[$k]=" . json_encode($v) . ";\n";
-                }
-            }
-
-            $out .= "if ('displayLogMsg' in window) displayLogMsg(logmsg);\n";
-            $this->action->parent->ClearLogMsg();
-            // Add warning messages
-            $list = $this->action->parent->GetWarningMsg();
-            if (count($list) > 0) {
-                $out .= "displayWarningMsg(" . json_encode(implode("\n---------\n", array_unique($list)), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP) . ");\n";
-            }
-            $this->action->parent->ClearWarningMsg();
-        }
-        if (!$onlylog) {
-            // Add action notification messages
-            $actcode = $actarg = array();
-            $this->action->getActionDone($actcode, $actarg);
-            if (count($actcode) > 0) {
-                $out .= "var actcode=new Array();\n";
-                $out .= "var actarg=new Array();\n";
-                foreach ($actcode as $k => $v) {
-                    $out .= sprintf("actcode[%d]=%s;\n", $k, json_encode($v, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
-                    $out .= sprintf("actarg[%d]=%s;\n", $k, json_encode($actarg[$k], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP));
-                }
-                $out .= "sendActionNotification(actcode,actarg);\n";
-                $this->action->clearActionDone();
-            }
-        }
-        return ($out);
-    }
-
-    protected function ParseJs(&$out)
-    {
-        $out = preg_replace_callback('/\[JS:REF\]/', function () {
-            return $this->GenJsRef();
-        }, $out);
-
-        $out = preg_replace_callback('/\[JS:CUSTOMREF\]/', function () {
-            return $this->GenJsRef(false);
-        }, $out);
-
-        $out = preg_replace_callback('/\[JS:CODE\]/', function () {
-            return $this->GenJsCode(true);
-        }, $out);
-
-        $out = preg_replace_callback('/\[JS:CODENLOG\]/', function () {
-            return $this->GenJsCode(false);
-        }, $out);
-    }
-
-    protected function GenCssRef($oldCompatibility = true)
-    {
-        $css = "";
-        if (empty($this->action->parent)) {
-            return "";
-        }
-        if ($oldCompatibility) {
-            $cssLink = $this->action->parent->getCssLink("css/dcp/system.css", true);
-            $css .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$cssLink\">\n";
-        }
-        $list = $this->action->parent->GetCssRef();
-        foreach ($list as $k => $v) {
-            $css .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
-        }
-        return $css;
-    }
-
-    protected function GenCssCode()
-    {
-        if (empty($this->action->parent)) {
-            return "";
-        }
-        $list = $this->action->parent->GetCssCode();
-        reset($list);
-        $out = "";
-        foreach ($list as $v) {
-            $out .= $v . "\n";
-        }
-        return ($out);
-    }
-
-    protected function ParseCss(&$out)
-    {
-        $out = preg_replace_callback('/\[CSS:REF\]/', function () {
-            return $this->GenCssRef();
-        }, $out);
-        $out = preg_replace_callback('/\[CSS:CUSTOMREF\]/', function () {
-            return $this->GenCssRef(false);
-        }, $out);
-
-        $out = preg_replace_callback('/\[CSS:CODE\]/', function () {
-            return $this->GenCssCode();
-        }, $out);
-    }
-
+    
     /**
      * Generate text from template with data included
      *
@@ -554,17 +410,15 @@ class Layout
         $out = $this->template;
 
         $this->rif = $this->rkey;
-        $this->ParseBlock($out);
+        $this->parseBlock($out);
         // Restore rif because parseBlock can change it
         $this->rif = $this->rkey;
 
-        $this->ParseIf($out);
+        $this->parseIf($out);
         // Parse IMG: and LAY: tags
-        $this->ParseText($out);
+        $this->parseText($out);
         $this->ParseKey($out);
         // Application parameters values
-        $this->ParseJs($out);
-        $this->ParseCss($out);
 
         $out = str_replace(array(
             $this->noGoZoneMapping,
@@ -625,8 +479,6 @@ class Layout
      */
     protected function printRecursionCountError($class, $function, $count)
     {
-        include_once('WHAT/Lib.Prefix.php');
-
         $http_code = 500;
         $http_reason = "Recursion Count Error";
         header(sprintf("HTTP/1.1 %s %s", $http_code, $http_reason));

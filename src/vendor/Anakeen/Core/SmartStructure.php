@@ -727,7 +727,7 @@ create unique index idx_idfam on docfam(id);";
      */
     public function getXmlSchema($linkInclude = false)
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/family_schema.xml", DEFAULT_PUBDIR));
+        $lay = new \Anakeen\Layout\TextLayout(sprintf("%s/vendor/Anakeen/Core/Layout/family_schema.xml", DEFAULT_PUBDIR));
         $lay->set("famname", strtolower($this->name));
         $lay->set("famtitle", strtolower($this->getTitle()));
         $lay->set("include", $linkInclude);

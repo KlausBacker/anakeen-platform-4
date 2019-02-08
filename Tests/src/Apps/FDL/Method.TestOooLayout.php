@@ -22,7 +22,7 @@ class __TST_OOOLAYOUT extends \Anakeen\Core\Internal\SmartElement
 
 {
     /**
-     * @var OooLayout
+     * @var \Anakeen\Layout\OOoLayout
      */
     public $lay;
     /**

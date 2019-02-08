@@ -6,7 +6,7 @@ class ErrorMessage
 {
     public static function getHtml($htmlMessage, $errId, $tooltip = "")
     {
-        $lay = new \Layout("CORE/Layout/error.html");
+        $lay = new \Anakeen\Layout\TextLayout("CORE/Layout/error.html");
         $lay->set("TITLE", _("Error"));
         $lay->set("tooltip", $tooltip);
         $lay->set("error", str_replace("[", "&#x5b;", $htmlMessage));

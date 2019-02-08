@@ -61,14 +61,14 @@ class TestOooLayout extends TestCaseDcpDocument
      */
     public function testErrorXML($layoutFile, array $data, $expectedCode)
     {
-        $l = new \OOoLayout(sprintf("%s/Apps/DCPTEST/Layout/%s", DEFAULT_PUBDIR, $layoutFile));
+        $l = new \Anakeen\Layout\OooLayout(sprintf("%s/Apps/DCPTEST/Layout/%s", DEFAULT_PUBDIR, $layoutFile));
         foreach ($data as $k => $v) {
             $l->set($k, $v);
         }
         try {
             $f = $l->gen();
             $this->fail(sprintf("Generate %s", $f));
-        } catch (\Dcp\Layout\Exception $e) {
+        } catch (\Anakeen\Layout\Exception $e) {
             $this->assertEquals($expectedCode, $e->getDcpCode(), "not correct code :" . $e->getMessage());
             $this->assertNotEmpty($e->getCorruptedFile());
         }
@@ -93,7 +93,7 @@ class TestOooLayout extends TestCaseDcpDocument
             $file = '';
             try {
                 $file = $instance->viewDoc("DCPTEST:" . $template . ":B");
-            } catch (\Dcp\Layout\Exception $e) {
+            } catch (\Anakeen\Layout\Exception $e) {
                 $this->fail(sprintf("%s, \n file: %s", $e->getMessage(), $e->getCorruptedFile()));
             }
             $this->assertTrue(file_exists($file), "fail layout $template : $file");
@@ -123,7 +123,7 @@ class TestOooLayout extends TestCaseDcpDocument
             try {
                 $instance->viewDoc("DCPTEST:" . $template . ":B");
                 $this->fail(sprintf("No error detected. Need find %s code", $expectedCode));
-            } catch (\Dcp\Layout\exception $e) {
+            } catch (\Anakeen\Layout\exception $e) {
                 $this->assertEquals($expectedCode, $e->getDcpCode(), sprintf("%s, \n corrupted file is : %s", $e->getMessage(), $e->getCorruptedFile()));
                 $this->assertNotEmpty($e->getCorruptedFile(), "no corrupted file found");
             }
@@ -138,7 +138,7 @@ class TestOooLayout extends TestCaseDcpDocument
      */
     public function testGoodXML($layoutFile, array $data)
     {
-        $l = new \OOoLayout(sprintf("%s/Apps/DCPTEST/Layout/%s", DEFAULT_PUBDIR, $layoutFile));
+        $l = new \Anakeen\Layout\OooLayout(sprintf("%s/Apps/DCPTEST/Layout/%s", DEFAULT_PUBDIR, $layoutFile));
         foreach ($data as $k => $v) {
             $l->set($k, $v);
         }

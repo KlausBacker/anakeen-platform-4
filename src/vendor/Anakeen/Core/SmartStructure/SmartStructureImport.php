@@ -71,7 +71,7 @@ class SmartStructureImport
      */
     protected static function generateFamilyPhpClass($genDir, $tdoc)
     {
-        $phpAdoc = new \Layout();
+        $phpAdoc = new \Anakeen\Layout\TextLayout();
 
         if ($tdoc["classname"] == "") { // default classname
             if ($tdoc["fromid"] == 0) {
@@ -555,7 +555,7 @@ class SmartStructureImport
 
     protected static function attrIdToPhp($dbaccess, $tdoc)
     {
-        $phpAdoc = new \Layout("vendor/Anakeen/Core/Layout/Class.Attrid.layout");
+        $phpAdoc = new \Anakeen\Layout\TextLayout("vendor/Anakeen/Core/Layout/Class.Attrid.layout");
 
         if ($tdoc["fromid"] == 0) {
             $phpAdoc->Set("extend", '');
