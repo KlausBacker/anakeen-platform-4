@@ -37,7 +37,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testBasicSearch($criteria, $arg, $family)
     {
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
         $s->search();
@@ -154,7 +154,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     {
         $this->createDataSearch();
 
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -208,7 +208,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testCountRevisionSearch($latest, $distinct, $trash, $criteria, $arg, $family, array $expectTitles)
     {
         $this->createDataSearch();
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -286,7 +286,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         return $titles;
     }
 
-    private function getReturnTitles(\SearchDoc $s)
+    private function getReturnTitles(\Anakeen\Search\Internal\SearchSmartData $s)
     {
         $dl = $s->getDocumentList();
         $titles = array();
@@ -311,7 +311,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testArrayCountSearch($criteria, $arg, $family, $count)
     {
         $this->createDataSearch();
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -339,7 +339,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testOnlyCountSearch($criteria, $arg, $family, $count)
     {
         $this->createDataSearch();
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -402,7 +402,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testOnlyCountErrorSearch($criteria, $arg, $family, $error)
     {
         $this->createDataSearch();
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -467,7 +467,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testOnlyCountErrorSearchException($criteria, $arg, $family, $error)
     {
         $this->createDataSearch();
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -543,7 +543,7 @@ class TestSearch extends TestCaseDcpCommonFamily
             $fam = SEManager::getFamily($test['search:family']);
             $this->assertTrue($fam->isAlive(), sprintf("test#%s> Family '%s' not found.", $i, $test['search:family']));
 
-            $s = new \SearchDoc(self::$dbaccess, $test['search:family']);
+            $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $test['search:family']);
             $s->setObjectReturn();
             $count = -2;
             if (isset($test['search:noviewcontrol']) && $test['search:noviewcontrol']) {
@@ -641,7 +641,7 @@ class TestSearch extends TestCaseDcpCommonFamily
             $fam = SEManager::getFamily($test['search:family']);
             $this->assertTrue($fam->isAlive(), sprintf("test#%s> Family '%s' not found.", $i, $test['search:family']));
 
-            $s = new \SearchDoc(self::$dbaccess, $test['search:family']);
+            $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $test['search:family']);
             $s->setObjectReturn();
             if (isset($test['search:noviewcontrol']) && $data['search:noviewcontrol']) {
                 $s->overrideViewControl();
@@ -678,7 +678,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testSliceSearch($criteria, $arg, $family)
     {
         $this->createDataSearch();
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -729,7 +729,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     {
         $this->createDataSearch();
 
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -737,7 +737,7 @@ class TestSearch extends TestCaseDcpCommonFamily
         $s->onlyCount();
         $call = $s->count();
 
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         if ($criteria) {
             $s->addFilter($criteria, $arg);
         }
@@ -792,7 +792,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testErrorSearch($data)
     {
         try {
-            $s = new \SearchDoc(self::$dbaccess, $data['family']);
+            $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $data['family']);
             $s->addFilter($data['criteria'], $data['arg']);
             if (isset($data['collection'])) {
                 $s->useCollection($data['collection']);
@@ -849,7 +849,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testCountAndResetSearch($criteria, $arg, $family, $count)
     {
         $this->createDataSearch();
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         $s->onlyCount();
 
         if ($criteria) {
@@ -874,7 +874,7 @@ class TestSearch extends TestCaseDcpCommonFamily
     public function testGetOriginalQuery($test)
     {
         $fam = empty($test['search:family']) ? '' : $test['search:family'];
-        $s = new \SearchDoc(self::$dbaccess, $fam);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $fam);
         if (isset($test['search:filter'])) {
             if (!is_array($test['search:filter'])) {
                 $test['search:filter'] = array(
@@ -929,7 +929,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testSearchGetValue($famName, $docName, $expectedAttr)
     {
-        $s = new \SearchDoc("", $famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", $famName);
         $s->setObjectReturn(true);
         $dl = $s->search()->getDocumentList();
 
@@ -974,7 +974,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      */
     public function testSearchGetData($famName, $docName, $expectedAttr)
     {
-        $s = new \SearchDoc("", $famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", $famName);
         $s->setObjectReturn(false);
         $data = $s->search();
 

@@ -540,7 +540,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
      */
     public function getDocumentList()
     {
-        $s = new SearchDoc($this->dbaccess);
+        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess);
         $s->useCollection($this->initid);
         $s->setObjectReturn();
         $s->excludeConfidential();

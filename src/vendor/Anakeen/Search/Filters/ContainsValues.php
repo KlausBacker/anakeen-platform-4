@@ -40,7 +40,7 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
             $this->NOT = ($argv[0] & self::NOT);
         }
     }
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -50,11 +50,13 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
         $value = $this->value;

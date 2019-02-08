@@ -33,7 +33,7 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
         }
     }
 
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -45,12 +45,12 @@ class OneGreaterThan extends StandardAttributeFilter implements ElementSearchFil
     /**
      * Generate sql part
      *
-     * @param \SearchDoc $search
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
      *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
         $search->addFilter($this->_filter($attr, $this->value));

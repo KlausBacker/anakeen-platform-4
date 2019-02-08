@@ -26,7 +26,7 @@ class TestSearchJoin extends TestCaseDcpCommonFamily
      */
     public function testSearchJoinExecute($join, $filter, $filterVar)
     {
-        $s = new \SearchDoc(self::$dbaccess, "TST_SEARCHJOIN2");
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, "TST_SEARCHJOIN2");
         $s->join($join);
         $s->addFilter($filter, $filterVar);
         $s->search();

@@ -355,7 +355,7 @@ class SearchAccounts
 
         $u = \Anakeen\Core\ContextManager::getCurrentUser();
         if ($this->viewControl && $u->id != 1) {
-            $viewVector = \SearchDoc::getUserViewVector($u->id);
+            $viewVector = \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($u->id);
             if ($this->familyFilter) {
                 $table = "doc" . $this->familyFilter;
                 $sql = sprintf("select users.* from users, $table where users.fid = $table.id and $table.views && '%s' and %s ", $viewVector, $groupRoleFilter);

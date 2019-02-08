@@ -29,10 +29,12 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
         // $famName = $attr->format;

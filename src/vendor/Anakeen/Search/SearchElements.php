@@ -2,14 +2,12 @@
 
 namespace Anakeen\Search;
 
-use \Anakeen\Search\Exception;
-
 class SearchElements
 {
     const NOTRASH = "no";
     const ALSOTRASH = "also";
     const ONLYTRASH = "only";
-    protected $searchDoc = null;
+    protected $searchData = null;
 
     /**
      * initialize with family
@@ -18,8 +16,8 @@ class SearchElements
      */
     public function __construct($structureName = 0)
     {
-        $this->searchDoc = new \SearchDoc("", $structureName);
-        $this->searchDoc->setObjectReturn(true);
+        $this->searchData = new \Anakeen\Search\Internal\SearchSmartData("", $structureName);
+        $this->searchData->setObjectReturn(true);
     }
 
     /**
@@ -34,8 +32,8 @@ class SearchElements
      */
     public function onlyCount()
     {
-        $c = $this->searchDoc->onlyCount();
-        if ($err = $this->searchDoc->getError()) {
+        $c = $this->searchData->onlyCount();
+        if ($err = $this->searchData->getError()) {
             throw new Exception("SD0012", $err);
         }
         return $c;
@@ -60,21 +58,22 @@ class SearchElements
      */
     public function join($jointure)
     {
-        $this->searchDoc->join($jointure);
+        $this->searchData->join($jointure);
         return $this;
     }
 
     /**
      * count results
      * ::search must be call before
-     * @see SearchDoc::search()
+     *
+     * @see \Anakeen\Search\Internal\SearchSmartData::search()
      * @api count results after query search is sended
      *
      * @return int
      */
     public function count()
     {
-        return $this->searchDoc->count();
+        return $this->searchData->count();
     }
 
     /**
@@ -84,7 +83,7 @@ class SearchElements
      */
     public function isExecuted()
     {
-        return $this->searchDoc->isExecuted();
+        return $this->searchData->isExecuted();
     }
 
     /**
@@ -94,7 +93,7 @@ class SearchElements
      */
     public function returnsOnly(array $returns)
     {
-        $this->searchDoc->returnsOnly($returns);
+        $this->searchData->returnsOnly($returns);
         return $this;
     }
 
@@ -107,7 +106,7 @@ class SearchElements
      */
     public function setSlice($slice)
     {
-        if (!$this->searchDoc->setSlice($slice)) {
+        if (!$this->searchData->setSlice($slice)) {
             throw new Exception("SD0009", $slice);
         }
         return $this;
@@ -122,7 +121,7 @@ class SearchElements
      */
     public function setStart($start)
     {
-        if (!$this->searchDoc->setStart($start)) {
+        if (!$this->searchData->setStart($start)) {
             throw new Exception("SD0010", $start);
         }
         return $this;
@@ -141,7 +140,7 @@ class SearchElements
      */
     public function setOrder($order, $orderbyLabel = '')
     {
-        $this->searchDoc->setOrder($order, $orderbyLabel);
+        $this->searchData->setOrder($order, $orderbyLabel);
     }
 
     /**
@@ -153,7 +152,7 @@ class SearchElements
      */
     public function useCollection($dirid)
     {
-        if (!$this->searchDoc->useCollection($dirid)) {
+        if (!$this->searchData->useCollection($dirid)) {
             throw new Exception("SD0011", $dirid);
         }
         return $this;
@@ -161,13 +160,13 @@ class SearchElements
 
     public function setLatest(bool $latest)
     {
-        $this->searchDoc->latest = $latest;
+        $this->searchData->latest = $latest;
         return $this;
     }
 
     public function setDistinct(bool $distinct)
     {
-        $this->searchDoc->distinct = $distinct;
+        $this->searchData->distinct = $distinct;
         return $this;
     }
 
@@ -177,7 +176,7 @@ class SearchElements
         if (!in_array($trash, $allowed)) {
             throw new Exception("SD0012", $trash, implode($allowed, ", "));
         }
-        $this->searchDoc->trash = $trash;
+        $this->searchData->trash = $trash;
         return $this;
     }
 
@@ -187,7 +186,7 @@ class SearchElements
      */
     public function getFamily()
     {
-        return $this->searchDoc->getFamily();
+        return $this->searchData->getFamily();
     }
 
     /**
@@ -198,7 +197,7 @@ class SearchElements
      */
     public function excludeConfidential($exclude = true)
     {
-        $this->searchDoc->excludeConfidential($exclude);
+        $this->searchData->excludeConfidential($exclude);
         return $this;
     }
 
@@ -212,7 +211,7 @@ class SearchElements
      */
     public function addFilter($filter, ...$args)
     {
-        $this->searchDoc->addFilter($filter, ...$args);
+        $this->searchData->addFilter($filter, ...$args);
     }
 
     /**
@@ -222,7 +221,7 @@ class SearchElements
      */
     public function overrideAccessControl()
     {
-        $this->searchDoc->overrideViewControl();
+        $this->searchData->overrideViewControl();
         return $this;
     }
 
@@ -234,9 +233,9 @@ class SearchElements
      */
     public function search()
     {
-        $this->searchDoc->search();
+        $this->searchData->search();
 
-        if ($err = $this->searchDoc->getError()) {
+        if ($err = $this->searchData->getError()) {
             throw new Exception("SD0013", $err);
         }
         return $this;
@@ -254,7 +253,7 @@ class SearchElements
      */
     public function rewind()
     {
-        $this->searchDoc->rewind();
+        $this->searchData->rewind();
         return $this;
     }
 
@@ -266,7 +265,7 @@ class SearchElements
      */
     public function getSearchInfo()
     {
-        return $this->searchDoc->getSearchInfo();
+        return $this->searchData->getSearchInfo();
     }
 
 
@@ -282,6 +281,6 @@ class SearchElements
      */
     public function getNextElement()
     {
-        return $this->searchDoc->getNextDoc();
+        return $this->searchData->getNextDoc();
     }
 }

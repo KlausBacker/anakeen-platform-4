@@ -250,11 +250,11 @@ class DocumentHistory
     }
 
     /**
-     * @return \SearchDoc
+     * @return \Anakeen\Search\Internal\SearchSmartData
      */
     protected function prepareSearchDoc()
     {
-        $search = new \SearchDoc();
+        $search = new \Anakeen\Search\Internal\SearchSmartData();
         $search->addFilter("initid = %d", $this->_document->initid);
         $search->setOrder("revision desc");
         if ($this->revisionFilter >= 0) {

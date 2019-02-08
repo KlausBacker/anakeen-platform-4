@@ -82,7 +82,7 @@ class SmartElementList
     protected static function getSearchConfig(array $args)
     {
         $famid = $args["smartstructure"];
-        $s = new \SearchDoc("", $famid);
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", $famid);
         if (!empty($args["only"])) {
             $s->only = true;
         }

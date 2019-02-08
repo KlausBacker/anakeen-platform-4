@@ -294,7 +294,7 @@ class DocumentAccess
                     DbManager::query("lock table docperm in exclusive mode");
                     self::$globalDocPermLock = true;
                 }
-                $s = new \SearchDoc($this->document->dbaccess);
+                $s = new \Anakeen\Search\Internal\SearchSmartData($this->document->dbaccess);
                 $s->addFilter("dprofid = %d", $this->document->id);
                 $s->setObjectReturn();
                 $s->overrideViewControl();
@@ -303,7 +303,7 @@ class DocumentAccess
                     $doc->accessControl()->computeDProfil();
                 }
                 // in case of change profil status (static -> dynamic)
-                $s = new \SearchDoc($this->document->dbaccess);
+                $s = new \Anakeen\Search\Internal\SearchSmartData($this->document->dbaccess);
                 $s->addFilter("profid = %d", $this->document->id);
                 $s->setObjectReturn();
                 $s->overrideViewControl();
@@ -314,7 +314,7 @@ class DocumentAccess
             } else {
                 // static profil
                 // revert to static profiling
-                $s = new \SearchDoc($this->document->dbaccess);
+                $s = new \Anakeen\Search\Internal\SearchSmartData($this->document->dbaccess);
                 $s->addFilter("dprofid = %d", $this->document->id);
                 $s->setObjectReturn();
                 $s->overrideViewControl();

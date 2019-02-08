@@ -19,7 +19,7 @@ class MSearchAutocomplete extends SmartElementList
 
     protected static function getSearchConfig(array $args)
     {
-        $s = new \SearchDoc("", $args["smartstructure"]);
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", $args["smartstructure"]);
         $s->addFilter("fromid=5 or fromid=16");
         return $s;
     }

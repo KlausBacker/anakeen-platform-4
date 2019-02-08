@@ -12,7 +12,7 @@ class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
         parent::__construct($attrId);
         $this->value = $value;
     }
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (is_array($this->value)) {
@@ -27,11 +27,13 @@ class IsEqual extends StandardAttributeFilter implements ElementSearchFilter
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $this->verifyCompatibility($search);
         $search->addFilter(sprintf('%s = %s', pg_escape_identifier($this->attributeId), pg_escape_literal($this->value)));

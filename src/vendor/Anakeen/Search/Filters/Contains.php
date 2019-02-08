@@ -29,7 +29,7 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
         }
     }
 
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!is_scalar($this->value)) {
@@ -43,11 +43,13 @@ class Contains extends StandardAttributeFilter implements ElementSearchFilter
 
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
         /*

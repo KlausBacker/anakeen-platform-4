@@ -10,12 +10,12 @@ class SearchElementData extends SearchElements
     public function __construct($structureName = 0)
     {
         parent::__construct($structureName);
-        $this->searchDoc->setObjectReturn(false);
+        $this->searchData->setObjectReturn(false);
     }
 
     public function search()
     {
-        $this->data = $this->searchDoc->search();
+        $this->data = $this->searchData->search();
         return $this;
     }
 

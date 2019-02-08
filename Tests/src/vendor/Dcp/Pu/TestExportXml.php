@@ -39,7 +39,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
     private function getExportedSearchDom()
     {
         if (!$this->dom) {
-            $s = new \SearchDoc(self::$dbaccess, "TST_EXPORTFAM1");
+            $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, "TST_EXPORTFAM1");
             //print_r( $s->search());
             $export = new ExportXmlFolder();
 

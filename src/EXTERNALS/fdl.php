@@ -68,7 +68,7 @@ function lmail($dbaccess, $name)
 {
 
     $tr = array();
-    $sf = new SearchDoc($dbaccess, -1);
+    $sf = new \Anakeen\Search\Internal\SearchSmartData($dbaccess, -1);
     $sf->setObjectReturn();
     $sf->overrideViewControl();
     $sf->addFilter("atags ~* 'MAILRECIPIENT'");
@@ -93,7 +93,7 @@ function lmail($dbaccess, $name)
         }
 
         $mailAttr = $cfam->getMailAttribute();
-        $s = new SearchDoc($dbaccess, $fam->id);
+        $s = new \Anakeen\Search\Internal\SearchSmartData($dbaccess, $fam->id);
         $s->setObjectReturn();
         $s->setSlice(100);
         if ($mailAttr) {
@@ -371,7 +371,7 @@ function lfamily($dbaccess, $famid, $name = "", $dirid = 0, $filter = array(), $
             return sprintf(_("family %s not found"), $famName);
         }
     }
-    $s = new SearchDoc($dbaccess, $famid); //$famid=-(abs($famid));
+    $s = new \Anakeen\Search\Internal\SearchSmartData($dbaccess, $famid); //$famid=-(abs($famid));
     if ($only) {
         $s->only = true;
     }
@@ -539,7 +539,7 @@ function fdlGetDocuments($families, $filterName = '', $limit = 15, $extraFilter 
 
     foreach ($famname as $famid) {
         if (count($tout) < $limit) {
-            $s = new SearchDoc("", $famid);
+            $s = new \Anakeen\Search\Internal\SearchSmartData("", $famid);
             if ($filterName) {
                 $s->addFilter("title ~* '%s'", $filterName);
             }
@@ -1226,7 +1226,7 @@ function ldocstates($dbaccess, $docid, $name = "")
 function recipientDocument($dbaccess, $name)
 {
     $tr = array();
-    $sf = new SearchDoc($dbaccess, -1);
+    $sf = new \Anakeen\Search\Internal\SearchSmartData($dbaccess, -1);
     $sf->setObjectReturn();
     $sf->overrideViewControl();
     $sf->addFilter("atags ~* E'\\\\yMAILRECIPIENT\\\\y'");
@@ -1245,7 +1245,7 @@ function recipientDocument($dbaccess, $name)
         }
 
         $mailAttr = $cfam->getMailAttribute();
-        $s = new SearchDoc($dbaccess, $fam->id);
+        $s = new \Anakeen\Search\Internal\SearchSmartData($dbaccess, $fam->id);
         $s->setObjectReturn();
         $s->setSlice(100);
         if ($mailAttr) {

@@ -133,7 +133,7 @@ class GroupHooks extends \SmartStructure\Dir
             $nomail = ($this->getRawValue("grp_hasmail") == "no");
         }
         if (!$nomail) {
-            $s = new \SearchDoc($this->dbaccess);
+            $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess);
             $s->useCollection($this->initid);
             $r = $s->search();
             foreach ($r as $account) {

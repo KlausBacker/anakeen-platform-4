@@ -1640,7 +1640,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getDocWithSameTitle($key1 = "title", $key2 = "")
     {
-        $s = new \SearchDoc($this->dbaccess, $this->fromid);
+        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, $this->fromid);
         $s->overrideViewControl();
         $s->addFilter("doctype != 'T'");
         if ($this->initid > 0) {
@@ -2067,7 +2067,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->childs = array();
             }
 
-            $s = new \SearchDoc($this->dbaccess, -1);
+            $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, -1);
             $s->addFilter("fromid = %d", $id);
             $s->overrideViewControl();
             $table1 = $s->search();
@@ -7702,7 +7702,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($fromid === "") {
             $fromid = $this->fromid;
         }
-        $s = new \SearchDoc($this->dbaccess, "HELPPAGE");
+        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, "HELPPAGE");
         $s->addFilter("help_family='%d'", $fromid);
         $help = $s->search();
         $helpId = "";

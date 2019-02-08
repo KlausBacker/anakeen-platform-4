@@ -9,31 +9,31 @@ class ExportXml
      * Exportation as xml of documents from folder or searches
      *
      *
-     * @param string    $aflid
-     * @param string    $famid      restrict to specific family for folder
-     * @param \SearchDoc $specSearch use this search instead folder
-     * @param string    $outputFile put result into this file instead download it
-     * @param string    $eformat    X : zip (xml inside), Y: global xml file
-     * @param string    $wident
-     * @param bool      $toDownload
+     * @param string         $aflid
+     * @param string         $famid      restrict to specific family for folder
+     * @param \Anakeen\Search\Internal\SearchSmartData $specSearch use this search instead folder
+     * @param string         $outputFile put result into this file instead download it
+     * @param string         $eformat    X : zip (xml inside), Y: global xml file
+     * @param string         $wident
+     * @param bool           $toDownload
      *
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
      * @throws \Anakeen\Search\Exception
-     * @global string   $fldid      Http var : folder identifier to export
-     * @global string   $wfile      Http var : (Y|N) if Y export attached file export format will be tgz
-     * @global string   $flat       Http var : (Y|N) if Y specid column is set with identifier of document
-     * @global string   $eformat    Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
-     * @global string   $log        Http var :  log file output
-     * @global string   $selection  Http var :  JSON document selection object
+     * @global string        $fldid      Http var : folder identifier to export
+     * @global string        $wfile      Http var : (Y|N) if Y export attached file export format will be tgz
+     * @global string        $flat       Http var : (Y|N) if Y specid column is set with identifier of document
+     * @global string        $eformat    Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
+     * @global string        $log        Http var :  log file output
+     * @global string        $selection  Http var :  JSON document selection object
      *
      */
     public static function exportxmlfld(
         $aflid = "0",
         $famid = "",
-        \SearchDoc $specSearch = null,
+        \Anakeen\Search\Internal\SearchSmartData $specSearch = null,
         $outputFile = '',
         $eformat = "",
         $wident = 'Y',
@@ -128,7 +128,7 @@ class ExportXml
                 "-"
             ), $fld->title);
             //$tdoc = getChildDoc($dbaccess, $fldid,"0","ALL",array(),$action->user->id,"TABLE",$famid);
-            $s = new \SearchDoc($dbaccess, $famid);
+            $s = new \Anakeen\Search\Internal\SearchSmartData($dbaccess, $famid);
             $s->setObjectReturn();
 
             $s->dirid = $fld->id;
@@ -364,7 +364,7 @@ EOF;
 
         $exportCollection->recordStatus(_("Retrieve documents from database"));
 
-        $s = new \SearchDoc("", $famid);
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", $famid);
         $s->setObjectReturn(true);
         $s->setOrder("fromid, id");
         $s->useCollection($fld->initid);

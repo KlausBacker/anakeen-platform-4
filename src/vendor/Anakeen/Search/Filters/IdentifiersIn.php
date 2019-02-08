@@ -34,11 +34,13 @@ class IdentifiersIn extends StandardAttributeFilter implements ElementSearchFilt
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $leftOperand = ($this->INITID) ? 'initid' : 'id';
         $this->value = array_map(function ($v) {

@@ -39,7 +39,7 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
         $dir = new_Doc(self::$dbaccess, $dirId);
         $this->assertTrue($dir->isAlive(), sprintf("Could not get search with id '%s'.", $dirId));
         
-        $search = new \SearchDoc(self::$dbaccess, $famId);
+        $search = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $famId);
         $search->setObjectReturn();
         $search->useCollection($dirId);
         $search->setRecursiveSearch(true, $sublevel);
@@ -68,7 +68,7 @@ class TestSearchByFolder extends TestCaseDcpCommonFamily
         $dir = new_Doc(self::$dbaccess, $dirId);
         $this->assertTrue($dir->isAlive(), sprintf("Could not get search with id '%s'.", $dirId));
         
-        $search = new \SearchDoc(self::$dbaccess, $famId);
+        $search = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $famId);
         $search->setObjectReturn();
         $search->useCollection($dirId);
         $search->setRecursiveSearch(true, $sublevel);

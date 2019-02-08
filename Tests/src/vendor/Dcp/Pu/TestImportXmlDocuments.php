@@ -53,7 +53,7 @@ class TestImportXmlDocuments extends TestCaseDcpCommonFamily
         $this->assertNotEmpty($err);
         $this->assertEquals($nbError, $this->countErrors($err), sprintf('status error : "%s"', $err));
         
-        $s = new \SearchDoc("", "TST_FAMIMP1");
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", "TST_FAMIMP1");
         $this->assertEquals(0, $s->onlyCount(), "document is created and must be not");
     }
     /**

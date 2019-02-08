@@ -281,7 +281,7 @@ SQL;
     {
         $uid = ContextManager::getCurrentUser()->id;
         if (!isset(self::$viewUserVector[$uid])) {
-            self::$viewUserVector[$uid] = SearchDoc::getUserViewVector($uid);
+            self::$viewUserVector[$uid] = \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($uid);
         }
         return self::$viewUserVector[$uid];
     }

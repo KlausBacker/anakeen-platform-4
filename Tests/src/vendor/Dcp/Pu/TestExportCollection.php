@@ -24,7 +24,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     public function testExportRawCsv($separator, $enclosure, array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 
@@ -54,7 +54,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     public function testExportDisplayCsv($format, $separator, $enclosure, array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 
@@ -109,7 +109,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     public function testExportXmlSingle(array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 
@@ -143,7 +143,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     public function testExportXmlArchive($file, array $xmlPathes)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 
@@ -227,7 +227,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     public function testExportProfilCsv($separator, $enclosure, array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 
@@ -273,7 +273,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     public function testExportFileCsv($separator, $enclosure, $file, array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexportfile');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 
@@ -327,7 +327,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
     public function testExportFamilyCsv($separator, $enclosure, array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 

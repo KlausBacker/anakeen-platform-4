@@ -18,7 +18,7 @@ class IsNotEqual extends StandardAttributeFilter implements ElementSearchFilter
         parent::__construct($attrId);
         $this->value = $value;
     }
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (is_array($this->value)) {
@@ -33,10 +33,12 @@ class IsNotEqual extends StandardAttributeFilter implements ElementSearchFilter
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
         $search->addFilter(sprintf('%s IS NULL OR %s <> %s', pg_escape_identifier($attr->id), pg_escape_identifier($attr->id), pg_escape_literal($this->value)));

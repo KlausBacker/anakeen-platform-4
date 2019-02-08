@@ -1,18 +1,10 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
- * Search Document
+ * Search Smart Data
  *
- * @author  Anakeen
- * @version $Id: Class.SearchDoc.php,v 1.8 2008/08/14 14:20:25 eric Exp $
- * @package FDL
  */
 
-/**
- */
+namespace Anakeen\Search\Internal;
 
 use \Anakeen\SmartStructures\Dir\DirLib;
 use \Anakeen\SmartStructures\Dir\DirHooks;
@@ -20,7 +12,7 @@ use \Anakeen\SmartStructures\Dir\DirHooks;
 /**
  * document searches
  * @code
- * $s=new SearchDoc($db,"IUSER");
+ * $s=new SearchSmartData($db,"IUSER");
  * $s->setObjectReturn(); // document object returns
  * $s->addFilter('us_extmail is not null'); // simple filter
  * $s->search(); // send search query
@@ -32,9 +24,8 @@ use \Anakeen\SmartStructures\Dir\DirHooks;
  * print "$k)".$doc->getTitle()."(".$doc->getRawValue("US_MAIL","nomail").")\n";clam
  * $k+
  * @endcode
- * @class SearchDoc.
  */
-class SearchDoc
+class SearchSmartData
 {
     /**
      * family identifier filter
@@ -193,7 +184,7 @@ class SearchDoc
                 $sign = -1;
                 $id = abs($id);
             }
-            $fam = Anakeen\Core\SEManager::getFamily($id);
+            $fam= \Anakeen\Core\SEManager::getFamily($id);
             if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
@@ -205,7 +196,7 @@ class SearchDoc
                 $sign = -1;
                 $id = substr($id, 1);
             }
-            $fam = Anakeen\Core\SEManager::getFamily($id);
+            $fam= \Anakeen\Core\SEManager::getFamily($id);
             if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
@@ -222,13 +213,13 @@ class SearchDoc
      * @api send query search and only count results
      *
      * @return int the number of results
-     * @throws Anakeen\Search\Exception
-     * @throws Anakeen\Database\Exception
+     * @throws \Anakeen\Search\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function onlyCount()
     {
         /**  @var DirHooks $fld */
-        $fld = Anakeen\Core\SEManager::getDocument($this->dirid);
+        $fld= \Anakeen\Core\SEManager::getDocument($this->dirid);
         $userid = $this->userid;
         if (!$fld || $fld->fromid != \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
             $this->recursiveSearchInit();
@@ -361,7 +352,8 @@ class SearchDoc
     /**
      * count results
      * ::search must be call before
-     * @see SearchDoc::search()
+     *
+     * @see \Anakeen\Search\Internal\SearchSmartData::search()
      * @api count results after query search is sended
      *
      * @return int
@@ -450,15 +442,16 @@ class SearchDoc
     /**
      * send search
      * the query is sent to database
+     *
      * @api send query
-     * @return array|null|SearchDoc array of documents if no setObjectReturn else itself
-     * @throws Anakeen\Search\Exception
-     * @throws Anakeen\Database\Exception
+     * @return array|null|\Anakeen\Search\Internal\SearchSmartData array of documents if no setObjectReturn else itself
+     * @throws \Anakeen\Search\Exception
+     * @throws \Anakeen\Database\Exception
      */
     public function search()
     {
         if (count($this->filters) > 0 && $this->dirid > 0) {
-            $dir = Anakeen\Core\SEManager::getDocument($this->dirid);
+            $dir = \Anakeen\Core\SEManager::getDocument($this->dirid);
             if ($dir && $dir->isAlive() && is_a($dir, \SmartStructure\Ssearch::class)) {
                 // Searching on a "Specialized search" collection and specifying additional filters is not supported
                 throw new \Anakeen\Search\Exception("SD0008");
@@ -512,7 +505,7 @@ class SearchDoc
         if ($this->mode == "ITEM") {
             if ($this->dirid) {
                 // change search mode because ITEM mode not supported for Specailized searches
-                $fld = Anakeen\Core\SEManager::getDocument($this->dirid);
+                $fld= \Anakeen\Core\SEManager::getDocument($this->dirid);
                 if ($fld->fromid == \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
                     $this->searchmode = "TABLE";
                 }
@@ -566,11 +559,11 @@ class SearchDoc
      * }
      * @endcode
      * @api get document iterator
-     * @return DocumentList
+     * @return \DocumentList
      */
     public function getDocumentList()
     {
-        return new DocumentList($this);
+        return new \DocumentList($this);
     }
 
     /**
@@ -610,7 +603,7 @@ class SearchDoc
             return $this->returnsFields;
         }
         if ($this->fromid) {
-            $fdoc = Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
+            $fdoc= \Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
             if ($fdoc->isAlive()) {
                 return array_merge($fdoc->fields, $fdoc->sup_fields);
             }
@@ -645,11 +638,13 @@ class SearchDoc
     /**
      * set recursive mode for folder searches
      * can be use only if collection set if a static folder
+     *
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
      * @param int  $level         Indicate depth to inspect subfolders
-     * @throws Anakeen\Search\Exception
+     *
+     * @throws \Anakeen\Search\Exception
      * @api set recursive mode for folder searches
-     * @see SearchDoc::useCollection
+     * @see \Anakeen\Search\Internal\SearchSmartData::useCollection
      * @return void
      */
     public function setRecursiveSearch($recursiveMode = true, $level = 2)
@@ -718,7 +713,7 @@ class SearchDoc
      */
     public function useCollection($dirid)
     {
-        $dir = Anakeen\Core\SEManager::getDocument($dirid);
+        $dir= \Anakeen\Core\SEManager::getDocument($dirid);
         if ($dir && $dir->isAlive()) {
             $this->dirid = $dir->initid;
             $this->originalDirId = $this->dirid;
@@ -751,7 +746,7 @@ class SearchDoc
      * can, be use in loop
      * ::search must be call before
      *
-     * @see SearchDoc::search
+     * @see \Anakeen\Search\Internal\SearchSmartData::search
      *
      * @api get next document results
      *
@@ -831,7 +826,7 @@ class SearchDoc
             $fromid = "family";
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
-                $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid, false);
+                $this->cacheDocuments[$fromid]= \Anakeen\Core\SEManager::createDocument($fromid, false);
                 if (empty($this->cacheDocuments[$fromid])) {
                     throw new \Anakeen\Search\Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }
@@ -963,7 +958,7 @@ class SearchDoc
             if ($this->userid != 1) {
                 $this->excludeFilter = sprintf(
                     "confidential is null or hasaprivilege('%s', profid,%d)",
-                    DocPerm::getMemberOfVector($this->userid),
+                    \DocPerm::getMemberOfVector($this->userid),
                     1 << \Anakeen\Core\Internal\DocumentAccess::POS_CONF
                 );
             }
@@ -981,7 +976,7 @@ class SearchDoc
             /**
              * @var \Anakeen\SmartStructures\Search\SearchHooks $tmps
              */
-            $tmps = Anakeen\Core\SEManager::createTemporaryDocument("SEARCH");
+            $tmps= \Anakeen\Core\SEManager::createTemporaryDocument("SEARCH");
             $tmps->setValue(\SmartStructure\Fields\Search::se_famid, $this->fromid);
             $tmps->setValue(\SmartStructure\Fields\Search::se_idfld, $this->originalDirId);
             $tmps->setValue(\SmartStructure\Fields\Search::se_latest, "yes");
@@ -1038,7 +1033,7 @@ class SearchDoc
                 if (DirLib::isSimpleFilter($sqlfilters) && (DirLib::familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
 
-                    $fdoc = Anakeen\Core\SEManager::getFamily($fromid);
+                    $fdoc= \Anakeen\Core\SEManager::getFamily($fromid);
                     $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                         $fromid
                     ), array_keys($fdoc->GetChildFam())), "fromid", true);
@@ -1106,7 +1101,7 @@ class SearchDoc
             // in a specific folder
             //-------------------------------------------
 
-            $fld = Anakeen\Core\SEManager::getDocument($dirid);
+            $fld= \Anakeen\Core\SEManager::getDocument($dirid);
             if ($fld->defDoctype != 'S') {
                 /**
                  * @var DirHooks $fld
@@ -1181,7 +1176,7 @@ class SearchDoc
                     switch ($ldocsearch[0]["qtype"]) {
                         case "M": // complex query
                             // $sqlM=$ldocsearch[0]["query"];
-                            $fld = Anakeen\Core\SEManager::getDocument($dirid);
+                            $fld= \Anakeen\Core\SEManager::getDocument($dirid);
                             /**
                              * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
@@ -1309,7 +1304,7 @@ class SearchDoc
      */
     private function _getAttributeFromColumn($fromid, $column)
     {
-        $fam = Anakeen\Core\SEManager::getFamily($fromid);
+        $fam= \Anakeen\Core\SEManager::getFamily($fromid);
         if (!$fam) {
             return false;
         }

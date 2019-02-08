@@ -84,11 +84,13 @@ class ExportXmlFolder
     }
     /**
      * export documents from search object
-     * @param \SearchDoc $search search to export
-     * @param string $outputFile path to output file
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search     search to export
+     * @param string         $outputFile path to output file
+     *
      * @return void
      */
-    public function exportFromSearch(\SearchDoc & $search, $outputFile = '')
+    public function exportFromSearch(\Anakeen\Search\Internal\SearchSmartData & $search, $outputFile = '')
     {
         $this->setOutputFile($outputFile);
         \Anakeen\Exchange\ExportXml::exportxmlfld($folder = "0", $famid = "", $search, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');

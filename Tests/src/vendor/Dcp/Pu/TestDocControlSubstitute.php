@@ -28,7 +28,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         );
     }
     
-    private function getSearchName(\SearchDoc & $s)
+    private function getSearchName(\Anakeen\Search\Internal\SearchSmartData & $s)
     {
         $names = array();
         while ($doc = $s->getNextDoc()) {
@@ -55,7 +55,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         }
         
         $this->sudo($login);
-        $s = new \SearchDoc(self::$dbaccess, 'TST_SUBSTITUTE1');
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, 'TST_SUBSTITUTE1');
         $s->setObjectReturn();
         $s->search();
         $err = $s->getError();
@@ -85,7 +85,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         }
         foreach ($expectedDocNamesByLogin as $login => $expectNames) {
             $this->sudo($login);
-            $s = new \SearchDoc(self::$dbaccess, 'TST_SUBSTITUTE1');
+            $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, 'TST_SUBSTITUTE1');
             $s->setObjectReturn();
             $s->search();
             $err = $s->getError();
