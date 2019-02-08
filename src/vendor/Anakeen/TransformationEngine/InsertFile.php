@@ -8,6 +8,7 @@ use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Exception;
+use Anakeen\Vault\VaultFile;
 
 /**
  * Class InsertFile
@@ -63,11 +64,11 @@ class InsertFile
                 if ($err == "") {
                     $outfile = $info["outfile"];
                     $status = $info["status"];
-                    $infoin = new \VaultFileInfo();
-                    $infoout = new \VaultFileInfo();
+                    $infoin = new \Anakeen\Vault\FileInfo();
+                    $infoout = new \Anakeen\Vault\FileInfo();
 
                     if (($status === 'D') && ($outfile != '')) {
-                        $vf = new \VaultFile();
+                        $vf = new VaultFile();
                         $vf->Retrieve($this->vidin, $infoin);
                         $vf->Retrieve($this->vidout, $infoout);
                         $vf->Save($filename, false, $this->vidout);
@@ -97,7 +98,7 @@ class InsertFile
                             }
                         }
                     } else {
-                        $vf = new \VaultFile();
+                        $vf = new VaultFile();
                         $vf->Retrieve($this->vidin, $infoin);
                         $vf->Retrieve($this->vidout, $infoout);
 

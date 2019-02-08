@@ -16,6 +16,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Utils\System;
 use Anakeen\Router\AuthenticatorManager;
+use Anakeen\Vault\VaultFile;
 
 class Manager
 {
@@ -131,7 +132,7 @@ class Manager
     {
         static $THEVAULT = false;
         if (!$THEVAULT) {
-            $THEVAULT = new \VaultFile();
+            $THEVAULT = new VaultFile();
         }
         return $THEVAULT;
     }
