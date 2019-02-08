@@ -73,4 +73,4 @@
 <style >
     @import "./AdminCenterAccount.css";
 </style>
-<script src="./AdminCenterAccount.controller.js"></script>
+<script src="./AdminCenterAccount.controller.ts" lang="ts"></script>

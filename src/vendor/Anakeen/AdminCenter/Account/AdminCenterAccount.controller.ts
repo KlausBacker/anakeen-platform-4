@@ -1,10 +1,18 @@
-export default {
-  data() {
-    return {
-      groupTree: new kendo.data.HierarchicalDataSource({
+import Vue from "vue";
+import Component from "vue-class-component";
+import { AnkSmartElem } from "@anakeen/ank-components";
+declare var $;
+declare var kendo;
+
+@Component
+export default class AdminCenterAccountController extends Vue {
+  $refs!: {
+    [key: string]: AnkSmartElem | any;
+  };
+      groupTree = new kendo.data.HierarchicalDataSource({
         transport: {
           read: options => {
-            this.$ankApi
+            this.$http
               .get("admin/account/groups/")
               .then(response => {
                 if (response.status === 200 && response.statusText === "OK") {
@@ -115,8 +123,8 @@ export default {
             children: "items"
           }
         }
-      }),
-      gridContent: new kendo.data.DataSource({
+      });
+      gridContent = new kendo.data.DataSource({
         transport: {
           read: {
             url: "/api/v2/admin/account/users/"
@@ -139,39 +147,36 @@ export default {
         serverPaging: true,
         serverSorting: true,
         pageSize: 10
-      }),
-      userModeSelected: false,
-      displayGroupDocument: false,
-      selectedGroupDocumentId: false,
-      selectedGroupLogin: false,
-      options: {}
-    };
-  },
+      });
+      userModeSelected: boolean = false;
+      displayGroupDocument: boolean = false;
+      selectedGroupDocumentId: boolean = false;
+      selectedGroupLogin: boolean = false;
+      options: Object = {};
   mounted() {
     this.fetchConfig();
     this.bindTree();
     this.bindGrid();
     this.bindSplitter();
     this.bindEditDoc();
-  },
-  methods: {
+  };
     //Get the config of the creation toolbar
-    fetchConfig: function() {
-      this.$ankApi
+    fetchConfig() {
+      this.$http
         .get("admin/account/config/")
         .then(response => {
           if (response.status === 200 && response.statusText === "OK") {
             this.options = response.data;
             this.bindToolbars(response.data);
           } else {
-            throw new Error(response);
+            throw new Error(response.data);
           }
         })
         .catch(error => {
           console.error("Unable to get options", error);
         });
-    },
-    bindToolbars: function(element) {
+    };
+    bindToolbars(element) {
       const openDoc = this.$refs.openDoc;
       const groupToolbar = this.$refs.groupToolbar.kendoWidget();
       const toggleUserMode = this.toggleUserMode.bind(this);
@@ -182,7 +187,7 @@ export default {
             event.target[0].id === "userCreateToolbar"
           ) {
             event.preventDefault();
-            this.$(event.target[0])
+            $(event.target[0])
               .parent()
               .data("kendoPopup")
               .open();
@@ -211,9 +216,9 @@ export default {
         menuButtons: element.user
       });
       userToolbar.bind("click", openInCreation);
-    },
+    };
     //Bind the tree events
-    bindTree: function() {
+    bindTree() {
       const treeview = this.$refs.groupTreeView.kendoWidget();
       treeview.bind("dataBound", () => {
         const selectedElement = treeview.dataItem(treeview.select());
@@ -226,13 +231,13 @@ export default {
           }
         }
       });
-    },
+    };
     //Bind the grid events (click to open an user)
-    bindGrid: function() {
+    bindGrid() {
       const grid = this.$refs.grid.$el;
       const openDoc = this.$refs.openDoc;
       const toggleUserMode = this.toggleUserMode.bind(this);
-      this.$(grid).on("click", ".openButton", event => {
+      $(grid).on("click", ".openButton", event => {
         event.preventDefault();
         const userId = event.currentTarget.dataset["initid"];
         if (userId) {
@@ -245,17 +250,17 @@ export default {
           toggleUserMode();
         }
       });
-    },
+    };
     //Create the splitter system
-    bindSplitter: function() {
+    bindSplitter() {
       const onContentResize = (part, $split) => {
         return () => {
           window.setTimeout(() => {
-            this.$(window).trigger("resize");
+            $(window).trigger("resize");
           }, 100);
           window.localStorage.setItem(
             "admin.account." + part,
-            this.$($split)
+            $($split)
               .data("kendoSplitter")
               .size(".k-pane:first")
           );
@@ -265,7 +270,7 @@ export default {
         window.localStorage.getItem("admin.account.content") || "200px";
       const sizeCenterPart =
         window.localStorage.getItem("admin.account.center") || "200px";
-      this.$(this.$refs.gridAndTreePart).kendoSplitter({
+      $(this.$refs.gridAndTreePart).kendoSplitter({
         panes: [
           {
             collapsible: true,
@@ -277,7 +282,7 @@ export default {
         ],
         resize: onContentResize("content", this.$refs.gridAndTreePart)
       });
-      this.$(this.$refs.centerPart).kendoSplitter({
+      $(this.$refs.centerPart).kendoSplitter({
         orientation: "vertical",
         panes: [
           {
@@ -290,8 +295,8 @@ export default {
         ],
         resize: onContentResize("center", this.$refs.centerPart)
       });
-    },
-    bindEditDoc: function() {
+    };
+    bindEditDoc() {
       const openDoc = this.$refs.openDoc;
       openDoc.addEventListener("afterSave", event => {
         if (
@@ -307,13 +312,13 @@ export default {
           this.updateGridData();
         }
       });
-    },
+    };
     //Display the user pane
-    toggleUserMode: function() {
+    toggleUserMode() {
       this.userModeSelected = !this.userModeSelected;
-    },
+    };
     //Manually refresh the tree pane
-    updateTreeData: function(force) {
+    updateTreeData(force?) {
       const filterTitle = this.$refs.filterTree.value
         ? this.$refs.filterTree.value.toLowerCase()
         : "";
@@ -328,9 +333,9 @@ export default {
         });
       }
       this.groupTree.filter({});
-    },
+    };
     //Display the selected group in the ank-document
-    updateGroupSelected: function(selectedGroupId) {
+    updateGroupSelected(selectedGroupId) {
       const groupDoc = this.$refs.groupDoc;
       this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
       if (selectedGroupId && selectedGroupId !== "@users") {
@@ -340,9 +345,9 @@ export default {
         return;
       }
       this.displayGroupDocument = false;
-    },
+    };
     //Refresh the grid with the new selected group
-    updateGridData: function(selectedGroupLogin) {
+    updateGridData(selectedGroupLogin?) {
       const grid = this.$refs.grid.kendoWidget();
       grid.clearSelection();
       if (selectedGroupLogin === "@users") {
@@ -354,9 +359,9 @@ export default {
           value: selectedGroupLogin
         });
       }
-    },
+    }
     //Open group selected in group change mode
-    openChangeGroup: function() {
+    openChangeGroup() {
       const openDoc = this.$refs.openDoc;
       openDoc.publicMethods.fetchSmartElement({
         initid: this.selectedGroupDocumentId,
@@ -364,9 +369,9 @@ export default {
       });
 
       this.toggleUserMode();
-    },
+    };
     //Update the selected group
-    onGroupSelect: function(event) {
+    onGroupSelect(event) {
       const selectedElement = event.sender.dataItem(event.sender.select());
       window.localStorage.setItem(
         "admin.account.groupSelected",
@@ -374,14 +379,14 @@ export default {
       );
       this.updateGroupSelected(selectedElement.documentId);
       this.updateGridData(selectedElement.login);
-    },
+    };
     //Register the leaf open and closed
-    registerTreeState: function() {
-      const saveTreeView = function() {
+    registerTreeState() {
+      const saveTreeView = () => {
         const treeview = this.$refs.groupTreeView.kendoWidget();
         const expandedItemsIds = {};
-        treeview.element.find(".k-item").each(function() {
-          let item = treeview.dataItem(this);
+        treeview.element.find(".k-item").each(function(x) {
+          let item = treeview.dataItem(x);
           if (item.expanded) {
             expandedItemsIds[item.hierarchicalId] = true;
           }
@@ -390,29 +395,28 @@ export default {
           "admin.account.expandedElement",
           JSON.stringify(expandedItemsIds)
         );
-      }.bind(this);
+      }
       window.setTimeout(saveTreeView, 100);
-    },
+    };
     //Close all the leafs
-    collapseAll: function() {
+    collapseAll() {
       window.localStorage.setItem(
         "admin.account.expandedElement",
         JSON.stringify({ "#all": false })
       );
       this.updateTreeData();
-    },
+    };
     //Expand all the leafs
-    expandAll: function() {
+    expandAll() {
       window.localStorage.setItem(
         "admin.account.expandedElement",
         JSON.stringify({ "#all": true })
       );
       this.updateTreeData();
-    },
+    };
     //Disable all the group non selected
-    filterGroup: function(event) {
+    filterGroup(event) {
       event.preventDefault();
       this.updateTreeData(true);
     }
-  }
 };
