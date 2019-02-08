@@ -1,17 +1,17 @@
 import Vue from "vue";
-import Component from "vue-class-component"
+import Component from "vue-class-component";
 import parameterEditor from "../ParameterEditor/ParameterEditor.vue";
 
 declare var $;
 declare var kendo;
 
 @Component({
+  name: "admin-center-user-parameters",
   components: {
     "admin-center-parameters-editor": parameterEditor
   }
 })
 export default class UserParametersController extends Vue {
-  name: string = "admin-center-user-parameters";
   // Data source for user parameters treeList
   userParametersDataSource: userParametersDataSource;
 

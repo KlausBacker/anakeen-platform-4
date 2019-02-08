@@ -1,4 +1,5 @@
 import Vue from "vue";
+import Component from "vue-class-component";
 import JSONEditor from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.min.css";
 import {Prop} from "vue-property-decorator";
@@ -7,8 +8,10 @@ import "./ParameterEditor.types.ts";
 declare var $;
 declare var kendo;
 
+@Component({
+  name: "admin-center-parameter-editor"
+})
 export default class ParameterEditorController extends Vue {
-  name: string = "admin-center-parameter-editor";
   @Prop(Object) editedItem = { value: "", name: "", type:"", initialValue: ""};
   @Prop(String) editRoute = "";
   jsonEditor: jsonEditor;

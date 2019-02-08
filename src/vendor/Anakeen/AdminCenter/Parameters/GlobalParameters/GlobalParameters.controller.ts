@@ -6,12 +6,13 @@ declare var $;
 declare var kendo;
 
 @Component({
+    name: "admin-center-global-parameters",
     components: {
         "admin-center-parameters-editor": parameterEditor
     }
 })
 export default class GlobalParametersController extends Vue {
-    name: String = "admin-center-global-parameters";
+
     // Data source for system parameters
     allParametersDataSource = new kendo.data.TreeListDataSource({
         transport: {

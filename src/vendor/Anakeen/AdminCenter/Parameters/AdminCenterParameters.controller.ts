@@ -4,6 +4,7 @@ import AdminCenterGlobalParameters from "./GlobalParameters/GlobalParameters.vue
 import AdminCenterUserParameters from "./UserParameters/UserParameters.vue";
 
 @Component({
+    name: "ank-admin-parameters",
     components: {
         "admin-center-global-parameters": AdminCenterGlobalParameters,
         "admin-center-user-parameters": AdminCenterUserParameters
@@ -11,7 +12,6 @@ import AdminCenterUserParameters from "./UserParameters/UserParameters.vue";
 })
 
 export class AdminCenterParametersController extends Vue {
-  name: string = "admin-center-parameters";
   globalParameters: boolean = true;
 
   switchParameters() {
