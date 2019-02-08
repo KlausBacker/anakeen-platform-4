@@ -1,8 +1,8 @@
 <?php
 
-namespace Dcp\AttributeValue;
+namespace Anakeen\Core\SmartStructure;
 
-class Exception extends \Anakeen\Exception
+class SmartFieldValueException extends \Anakeen\Exception
 {
     public $originalError = "";
     public $attributeId = "";

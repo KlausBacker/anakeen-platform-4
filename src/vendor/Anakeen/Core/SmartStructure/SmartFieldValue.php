@@ -14,13 +14,13 @@ class SmartFieldValue
      * return typed value for an document's attribute
      * @param \Anakeen\Core\Internal\SmartElement          $doc
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
-     * @throws \Dcp\AttributeValue\Exception
+     * @throws SmartFieldValueException
      * @return array|float|int|null|string
      */
     public static function getTypedValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr)
     {
         if (!isset($doc->attributes->attr[$oAttr->id])) {
-            throw new \Dcp\AttributeValue\Exception('VALUE0101', $oAttr->id, $doc->fromname, $doc->getTitle());
+            throw new SmartFieldValueException('VALUE0101', $oAttr->id, $doc->fromname, $doc->getTitle());
         }
         if ($oAttr->isMultiple()) {
             return self::getMultipleValues($doc, $oAttr);
@@ -144,14 +144,14 @@ class SmartFieldValue
         switch ($type) {
             case 'int':
                 if (!is_string($typedValue) && !is_int($typedValue)) {
-                    throw new \Dcp\AttributeValue\Exception('VALUE0200', print_r($typedValue, true), gettype($typedValue));
+                    throw new SmartFieldValueException('VALUE0200', print_r($typedValue, true), gettype($typedValue));
                 }
                 break;
 
             case 'money':
             case 'double':
                 if (!is_string($typedValue) && !is_int($typedValue) && !is_double($typedValue)) {
-                    throw new \Dcp\AttributeValue\Exception('VALUE0201', print_r($typedValue, true), gettype($typedValue));
+                    throw new SmartFieldValueException('VALUE0201', print_r($typedValue, true), gettype($typedValue));
                 }
                 break;
 
@@ -187,7 +187,7 @@ class SmartFieldValue
                 ;
         }
         if (!is_scalar($typedValue)) {
-            throw new \Dcp\AttributeValue\Exception('VALUE0202', print_r($typedValue, true), gettype($typedValue));
+            throw new SmartFieldValueException('VALUE0202', print_r($typedValue, true), gettype($typedValue));
         }
         return $typedValue;
     }
@@ -215,7 +215,7 @@ class SmartFieldValue
             }
             return $ti;
         }
-        throw new \Dcp\AttributeValue\Exception('VALUE0100', $oAttr->id, $doc->title, $doc->fromname);
+        throw new SmartFieldValueException('VALUE0100', $oAttr->id, $doc->title, $doc->fromname);
     }
 
     private static function setTypedArrayValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, array $value)
@@ -223,7 +223,7 @@ class SmartFieldValue
         $doc->clearArrayValues($oAttr->id);
         foreach ($value as $row) {
             if (!is_array($row)) {
-                throw new \Dcp\AttributeValue\Exception('VALUE0009', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($row, true));
+                throw new SmartFieldValueException('VALUE0009', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($row, true));
             }
             foreach ($row as $columnName => & $columnValue) {
                 $cAttr = $doc->getAttribute($columnName);
@@ -234,7 +234,7 @@ class SmartFieldValue
             unset($columnValue);
             $err = $doc->addArrayRow($oAttr->id, $row);
             if ($err) {
-                throw new \Dcp\AttributeValue\Exception('VALUE0007', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
+                throw new SmartFieldValueException('VALUE0007', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
             }
         }
     }
@@ -245,12 +245,12 @@ class SmartFieldValue
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oAttr
      * @param mixed                                        $value
      * @see \Anakeen\Core\Internal\SmartElement::setAttributeValue()
-     * @throws \Dcp\AttributeValue\Exception in case of incompatible value
+     * @throws SmartFieldValueException in case of incompatible value
      */
     public static function setTypedValue(\Anakeen\Core\Internal\SmartElement & $doc, \Anakeen\Core\SmartStructure\NormalAttribute & $oAttr, $value)
     {
         if (!isset($doc->attributes->attr[$oAttr->id])) {
-            throw new \Dcp\AttributeValue\Exception('VALUE0004', $oAttr->id, $doc->fromname, $doc->getTitle());
+            throw new SmartFieldValueException('VALUE0004', $oAttr->id, $doc->fromname, $doc->getTitle());
         }
         $kindex = -1;
         $err = '';
@@ -262,7 +262,7 @@ class SmartFieldValue
             }
         } elseif ($oAttr->isMultiple()) {
             if (!is_array($value)) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0002', print_r($value, true), $oAttr->id, $doc->fromname, $doc->getTitle());
+                $e = new SmartFieldValueException('VALUE0002', print_r($value, true), $oAttr->id, $doc->fromname, $doc->getTitle());
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
@@ -278,7 +278,7 @@ class SmartFieldValue
                             if ($rowValues === null) {
                                 $rawValues[$k] = [];
                             } else {
-                                $e = new \Dcp\AttributeValue\Exception('VALUE0003', print_r($value, true), $oAttr->id, $doc->fromname, $doc->getTitle());
+                                $e = new SmartFieldValueException('VALUE0003', print_r($value, true), $oAttr->id, $doc->fromname, $doc->getTitle());
                                 $e->attributeId = $oAttr->id;
                                 throw $e;
                             }
@@ -291,27 +291,27 @@ class SmartFieldValue
             }
         } elseif ($oAttr->type == "array") {
             if (!is_array($value)) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0008', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($value, true));
+                $e = new SmartFieldValueException('VALUE0008', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($value, true));
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
             self::setTypedArrayValue($doc, $oAttr, $value);
         } else {
             if (is_array($value)) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0006', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($value, true));
+                $e = new SmartFieldValueException('VALUE0006', $oAttr->id, $doc->fromname, $doc->getTitle(), print_r($value, true));
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
             try {
                 $err = $doc->setValue($oAttr->id, self::typed2string($oAttr->type, $value), -1, $kindex);
-            } catch (\Dcp\AttributeValue\Exception $e) {
-                $e = new \Dcp\AttributeValue\Exception('VALUE0005', $oAttr->id, $doc->fromname, $doc->getTitle(), $e->getMessage());
+            } catch (SmartFieldValueException $e) {
+                $e = new SmartFieldValueException('VALUE0005', $oAttr->id, $doc->fromname, $doc->getTitle(), $e->getMessage());
                 $e->attributeId = $oAttr->id;
                 throw $e;
             }
         }
         if ($err) {
-            $e = new \Dcp\AttributeValue\Exception('VALUE0001', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
+            $e = new SmartFieldValueException('VALUE0001', $oAttr->id, $doc->fromname, $doc->getTitle(), $err);
             $e->originalError = $err;
             $e->attributeId = $oAttr->id;
             $e->index = $kindex;
