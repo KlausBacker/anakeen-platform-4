@@ -2,19 +2,13 @@
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #path
-STUB_PATH=stubs/
-VERSION_PATH=$(MK_DIR)/VERSION
-RELEASE_PATH=$(MK_DIR)/RELEASE
+MODULE_NAME=admin-center
 JS_CONF_PATH=$(MK_DIR)
 NODE_MODULE_PATH=node_modules
-WEBPACK_CONF_PATH=webpack
-
-## Version and release
-VERSION = $(shell cat VERSION)
-RELEASE = $(shell cat RELEASE)
 
 ## control conf
 port=80
+CONTROL_PROTOCOL=http
 CONTROL_PORT=$(port)
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
@@ -23,19 +17,18 @@ CONTROL_CONTEXT=$(ctx)
 
 ##bin
 YARN_BIN=yarn
-
-ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-COMPOSER_BIN=composer
+ANAKEEN_CLI_BIN=node ./node_modules/@anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
 CS_BIN=php ./ide/vendor/bin/phpcs
+COMPOSER_BIN=composer
 
 -include Makefile.local
-
 ########################################################################################################################
 ##
 ## Deps
 ##
 ########################################################################################################################
+
 install-deps:
 	$(YARN_BIN) install
 
@@ -61,6 +54,7 @@ beautify:
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
+
 ########################################################################################################################
 ##
 ## Po and stub
@@ -76,22 +70,42 @@ stub: install-deps
 
 ########################################################################################################################
 ##
+## BUILD JS
+##
+########################################################################################################################
+
+buildJS: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildJs
+
+########################################################################################################################
+##
 ## Build
 ##
 ########################################################################################################################
-app: install-deps
+app: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
-	$(YARN_BIN) run build
 	${ANAKEEN_CLI_BIN} build
 
 app-all: app
 
-app-autorelease: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autorelease${RESET_COLOR}\n"
-	$(YARN_BIN) run build
+app-autorelease: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} build --auto-release
 
 app-all-autorelease: app-autorelease
+
+########################################################################################################################
+##
+## Deploy
+##
+########################################################################################################################
+deploy: install-deps buildJS
+	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
+deploy-all: deploy
+
 
 ########################################################################################################################
 ##
@@ -116,7 +130,7 @@ publishNpm--autorelease:
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
-	rm -fr ./src/public/Anakeen/ ./src/public/AdminCenter
+	rm -fr ./src/public/Anakeen/
 	rm -rf ${MODULE_NAME}*.app
 	rm -rf ${MODULE_NAME}*.src
 
@@ -126,7 +140,7 @@ clean: ## clean the local pub
 ##
 ########################################################################################################################
 
-.PHONY: app po deploy install pojs clean cleanAll stub
+.PHONY: app po deploy install pojs clean cleanAll stub nodePublish
 
 PRINT_COLOR = printf
 SUCCESS_COLOR = \033[1;32m
