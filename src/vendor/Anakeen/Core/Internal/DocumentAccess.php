@@ -279,7 +279,7 @@ class DocumentAccess
      * @return void
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function recomputeProfiledDocument()
     {

@@ -61,7 +61,7 @@ class ReportHooks extends \SmartStructure\Dsearch
      * @return array
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function generateCSVReportStruct(
         $isPivotExport = false,

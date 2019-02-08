@@ -139,7 +139,7 @@ SQL;
     {
         $searchDoc->search();
         if (($err = $searchDoc->searchError()) !== '') {
-            throw new \Dcp\SearchDoc\Exception($err);
+            throw new \Anakeen\Search\Exception($err);
         }
         return $searchDoc->getDocumentList();
     }

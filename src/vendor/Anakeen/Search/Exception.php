@@ -1,6 +1,6 @@
 <?php
 
-namespace Dcp\SearchDoc;
+namespace Anakeen\Search;
 
 class Exception extends \Anakeen\Exception
 {

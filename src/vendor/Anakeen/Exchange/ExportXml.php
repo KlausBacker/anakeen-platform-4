@@ -21,7 +21,7 @@ class ExportXml
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      * @global string   $fldid      Http var : folder identifier to export
      * @global string   $wfile      Http var : (Y|N) if Y export attached file export format will be tgz
      * @global string   $flat       Http var : (Y|N) if Y specid column is set with identifier of document
@@ -300,7 +300,7 @@ EOF;
      * @throws \Anakeen\Exception
      * @throws \Anakeen\Core\Exception
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      * @global string $wprof                       Http var : (Y|N) if Y export associated profil also
      * @global string $wfile                       Http var : (Y|N) if Y export attached file export format will be tgz
      * @global string $wident                      Http var : (Y|N) if Y specid column is set with identifier of document

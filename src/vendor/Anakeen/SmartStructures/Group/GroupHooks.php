@@ -122,7 +122,7 @@ class GroupHooks extends \SmartStructure\Dir
      *
      * @return string error message, if no error empty string
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function setGroupMail($nomail = false)
     {

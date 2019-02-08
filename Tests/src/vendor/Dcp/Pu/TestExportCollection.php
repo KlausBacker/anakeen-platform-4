@@ -104,7 +104,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      *
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function testExportXmlSingle(array $expectedData)
     {
@@ -138,7 +138,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      *
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function testExportXmlArchive($file, array $xmlPathes)
     {
@@ -267,7 +267,7 @@ class TestExportCollection extends TestCaseDcpCommonFamily
      *
      * @throws \Anakeen\Database\Exception
      * @throws \Anakeen\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      * @dataProvider dataExportFileCsv
      */
     public function testExportFileCsv($separator, $enclosure, $file, array $expectedData)

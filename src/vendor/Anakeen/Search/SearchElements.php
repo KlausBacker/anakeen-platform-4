@@ -2,7 +2,7 @@
 
 namespace Anakeen\Search;
 
-use \Dcp\SearchDoc\Exception;
+use \Anakeen\Search\Exception;
 
 class SearchElements
 {

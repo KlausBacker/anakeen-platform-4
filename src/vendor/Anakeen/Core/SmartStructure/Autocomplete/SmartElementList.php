@@ -18,7 +18,7 @@ class SmartElementList
      * @param                           $args
      * @return SmartAutocompleteResponse
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public static function getSmartElements(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args): SmartAutocompleteResponse
     {

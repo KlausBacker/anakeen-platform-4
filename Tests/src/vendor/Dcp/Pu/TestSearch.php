@@ -924,7 +924,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      * @param $docName
      * @param $expectedAttr
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      * @dataProvider dataSearchGetValue
      */
     public function testSearchGetValue($famName, $docName, $expectedAttr)
@@ -969,7 +969,7 @@ class TestSearch extends TestCaseDcpCommonFamily
      * @param $docName
      * @param $expectedAttr
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      * @dataProvider dataSearchGetValue
      */
     public function testSearchGetData($famName, $docName, $expectedAttr)

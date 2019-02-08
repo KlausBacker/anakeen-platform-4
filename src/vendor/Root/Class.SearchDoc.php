@@ -222,7 +222,7 @@ class SearchDoc
      * @api send query search and only count results
      *
      * @return int the number of results
-     * @throws Dcp\SearchDoc\Exception
+     * @throws Anakeen\Search\Exception
      * @throws Anakeen\Database\Exception
      */
     public function onlyCount()
@@ -354,7 +354,7 @@ class SearchDoc
         } elseif (preg_match('/([a-z0-9_\-:]+)\s*(=|<|>|<=|>=)\s*([a-z0-9_\-:]+)\(([^\)]*)\)/', $jointure, $reg)) {
             $this->join = $jointure;
         } else {
-            throw new \Dcp\SearchDoc\Exception("SD0001", $jointure);
+            throw new \Anakeen\Search\Exception("SD0001", $jointure);
         }
     }
 
@@ -452,7 +452,7 @@ class SearchDoc
      * the query is sent to database
      * @api send query
      * @return array|null|SearchDoc array of documents if no setObjectReturn else itself
-     * @throws Dcp\SearchDoc\Exception
+     * @throws Anakeen\Search\Exception
      * @throws Anakeen\Database\Exception
      */
     public function search()
@@ -461,7 +461,7 @@ class SearchDoc
             $dir = Anakeen\Core\SEManager::getDocument($this->dirid);
             if ($dir && $dir->isAlive() && is_a($dir, \SmartStructure\Ssearch::class)) {
                 // Searching on a "Specialized search" collection and specifying additional filters is not supported
-                throw new \Dcp\SearchDoc\Exception("SD0008");
+                throw new \Anakeen\Search\Exception("SD0008");
             }
         }
         if ($this->getError()) {
@@ -647,7 +647,7 @@ class SearchDoc
      * can be use only if collection set if a static folder
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
      * @param int  $level         Indicate depth to inspect subfolders
-     * @throws Dcp\SearchDoc\Exception
+     * @throws Anakeen\Search\Exception
      * @api set recursive mode for folder searches
      * @see SearchDoc::useCollection
      * @return void
@@ -656,7 +656,7 @@ class SearchDoc
     {
         $this->recursiveSearch = $recursiveMode;
         if (!is_int($level) || $level < 0) {
-            throw new \Dcp\SearchDoc\Exception("SD0006", $level);
+            throw new \Anakeen\Search\Exception("SD0006", $level);
         }
         $this->folderRecursiveLevel = $level;
     }
@@ -833,7 +833,7 @@ class SearchDoc
             if (!isset($this->cacheDocuments[$fromid])) {
                 $this->cacheDocuments[$fromid] = Anakeen\Core\SEManager::createDocument($fromid, false);
                 if (empty($this->cacheDocuments[$fromid])) {
-                    throw new \Dcp\SearchDoc\Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
+                    throw new \Anakeen\Search\Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }
             }
         }
@@ -876,14 +876,14 @@ class SearchDoc
             }
         } elseif (is_object($filter)) {
             if (!is_a($filter, \Anakeen\Search\Filters\ElementSearchFilter::class)) {
-                throw new \Dcp\SearchDoc\Exception(sprintf("Filter object does not implements \"%s\" interface.", \Anakeen\Search\Filters\ElementSearchFilter::class));
+                throw new \Anakeen\Search\Exception(sprintf("Filter object does not implements \"%s\" interface.", \Anakeen\Search\Filters\ElementSearchFilter::class));
             }
             /**
              * @var \Anakeen\Search\Filters\ElementSearchFilter $filter
              */
             $filter->addFilter($this);
         } else {
-            throw new \Dcp\SearchDoc\Exception(sprintf("Filter is neither a string nor an objet implementing \\Dcp\\Documentfilter interface."));
+            throw new \Anakeen\Search\Exception(sprintf("Filter is neither a string nor an objet implementing \\Dcp\\Documentfilter interface."));
         }
     }
 
@@ -990,7 +990,7 @@ class SearchDoc
                 $tmps->addQuery($tmps->getQuery()); // compute internal sql query
                 $this->dirid = $tmps->id;
             } else {
-                throw new \Dcp\SearchDoc\Exception("SD0005", $err);
+                throw new \Anakeen\Search\Exception("SD0005", $err);
             }
         }
     }
