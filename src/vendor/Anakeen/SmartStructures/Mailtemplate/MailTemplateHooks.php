@@ -88,14 +88,14 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      * @param \Anakeen\Core\Internal\SmartElement $doc  Document to use for complete mail
      * @param array                               $keys extra keys to complete mail body or subject
      *
-     * @return \Dcp\Mail\Message (return null if no recipients)
+     * @return \Anakeen\Mail\Message (return null if no recipients)
      * @throws \Anakeen\Exception 
      */
     public function getMailMessage(\Anakeen\Core\Internal\SmartElement & $doc, $keys = array())
     {
         $this->keys = $keys;
 
-        $message = new \Dcp\Mail\Message();
+        $message = new \Anakeen\Mail\Message();
 
         $tdest = $this->getArrayRawValues("tmail_dest");
 
@@ -329,13 +329,13 @@ class MailTemplateHooks extends \Anakeen\SmartElement
             }
         }
 
-        $body = new \Dcp\Mail\Body($pfout, 'text/html');
+        $body = new \Anakeen\Mail\Body($pfout, 'text/html');
         $message->setBody($body);
         // ---------------------------
         // add inserted image
         foreach ($this->ifiles as $k => $v) {
             if (file_exists($v)) {
-                $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($v, $k, sprintf("image/%s", \Anakeen\Core\Utils\FileMime::getFileExtension($v)), $k));
+                $message->addBodyRelatedAttachment(new \Anakeen\Mail\RelatedAttachment($v, $k, sprintf("image/%s", \Anakeen\Core\Utils\FileMime::getFileExtension($v)), $k));
             }
         }
         //send attachment
@@ -354,7 +354,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
                     if ($vf) {
                         $fileinfo = $this->getFileInfo($vf);
                         if ($fileinfo["path"]) {
-                            $message->addAttachment(new \Dcp\Mail\Attachment($fileinfo['path'], $fileinfo['name'], $fileinfo['mime_s']));
+                            $message->addAttachment(new \Anakeen\Mail\Attachment($fileinfo['path'], $fileinfo['name'], $fileinfo['mime_s']));
                         }
                     }
                 }
@@ -404,7 +404,7 @@ class MailTemplateHooks extends \Anakeen\SmartElement
         $from = $message->getFrom();
         $savecopy = $this->getRawValue("tmail_savecopy") == "yes";
         if (($err == "") && $savecopy) {
-            createSentMessage($to, $from, $cc, $bcc, $subject, $message, $doc);
+            SentMessage::createSentMessage($to, $from, $cc, $bcc, $subject, $message, $doc);
         }
         $recip = "";
         if ($to) {
@@ -498,7 +498,11 @@ class MailTemplateHooks extends \Anakeen\SmartElement
      */
     private function addSubstitutes(array & $dests)
     {
-        $sql = "SELECT incumbent.login as inlogin, incumbent.mail as inmail, substitut.firstname || ' ' || substitut.lastname as suname , substitut.mail as sumail from users as incumbent, users as substitut where substitut.id=incumbent.substitute and incumbent.substitute is not null and incumbent.mail is not null and substitut.mail is not null;";
+        $sql = <<< 'SQL'
+SELECT incumbent.login as inlogin, incumbent.mail as inmail, substitut.firstname || ' ' || substitut.lastname as suname , substitut.mail as sumail 
+from users as incumbent, users as substitut 
+where substitut.id=incumbent.substitute and incumbent.substitute is not null and incumbent.mail is not null and substitut.mail is not null;
+SQL;
         DbManager::query($sql, $substituteMails);
         foreach (array(
                      "to",

@@ -41,13 +41,13 @@ class SmartElementManager extends \Anakeen\Core\SEManager
     }
 
 
-    public static function createDocument($familyIdentifier, $useDefaultValues = true)
+    public static function createDocument($structureIdentifier, $useDefaultValues = true)
     {
-        $doc = parent::createDocument($familyIdentifier, $useDefaultValues);
+        $doc = parent::createDocument($structureIdentifier, $useDefaultValues);
         $family = $doc->getFamilyDocument();
         $err = $family->control('create');
         if ($err != "") {
-            throw new Exception("APIDM0003", $familyIdentifier);
+            throw new Exception("APIDM0003", $structureIdentifier);
         }
         $doc->disableAccessControl(false);
         return $doc;

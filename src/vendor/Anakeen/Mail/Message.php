@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Mail;
+namespace Anakeen\Mail;
 
 use Anakeen\Core\ContextManager;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -24,18 +24,18 @@ use PHPMailer\PHPMailer\PHPMailer;
  * Sample usage:
  *
  *     --8<--
- *     $message = new \Dcp\Mail\Message();
+ *     $message = new \Anakeen\Mail\Message();
  *
- *     $message->setFrom(new \Dcp\Mail\Address('john.steed@example.net', 'John Steed (The Avengers)'));
- *     $message->addTo(new \Dcp\Mail\Address('emma.peel@example.net', 'Emma Peel (The Avengers)'));
- *     $message->addCc(new \Dcp\Mail\Address('mother@eexample.net', 'Mother'));
+ *     $message->setFrom(new \Anakeen\Mail\Address('john.steed@example.net', 'John Steed (The Avengers)'));
+ *     $message->addTo(new \Anakeen\Mail\Address('emma.peel@example.net', 'Emma Peel (The Avengers)'));
+ *     $message->addCc(new \Anakeen\Mail\Address('mother@eexample.net', 'Mother'));
  *
  *     $message->setSubject('Our next mission');
  *
- *     $message->setBody(new \Dcp\Mail\Body('<html>A picture is worth a thousand words: <img src="cid:img01" /></html>', 'text/html'));
- *     $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment('/tmp/next-mission.png', 'next-mission.png', 'image/png', 'img01'));
+ *     $message->setBody(new \Anakeen\Mail\Body('<html>A picture is worth a thousand words: <img src="cid:img01" /></html>', 'text/html'));
+ *     $message->addBodyRelatedAttachment(new \Anakeen\Mail\RelatedAttachment('/tmp/next-mission.png', 'next-mission.png', 'image/png', 'img01'));
  *
- *     $message->addAttachment(new \Dcp\Mail\Attachment('/tmp/plan.pdf', 'The plan.pdf', 'application/pdf'));
+ *     $message->addAttachment(new \Anakeen\Mail\Attachment('/tmp/plan.pdf', 'The plan.pdf', 'application/pdf'));
  *
  *     $err = $message->send();
  *     if ($err != '') {
@@ -43,7 +43,6 @@ use PHPMailer\PHPMailer\PHPMailer;
  *     }
  *     -->8--
  *
- * @package Dcp\Mail
  */
 class Message
 {
@@ -89,9 +88,9 @@ class Message
     public $attachments = array();
     /**
      * Parse a string containing mail addresses and return
-     * list of\Dcp\Mail\Address objects
+     * list of \Anakeen\Mail\Address objects
      * @param $str
-     * @return \Dcp\Mail\Address[]
+     * @return \Anakeen\Mail\Address[]
      */
     private function stringToAddress($str)
     {

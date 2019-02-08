@@ -4,30 +4,29 @@
  * @package FDL
 */
 
-namespace Dcp\Mail;
+namespace Anakeen\Mail;
 
 /**
  * Class MailAddrParser
  *
  * Try to parse a UTF8 string containing multiple mail addresses in
  * RFC5322/RFC2822 notation, and extract them as a list of
- * \Dcp\MailAddress objects.
+ * \Anakeen\Mail\Address objects.
  *
  *     Jöhn Dôé <john.doe@example.net>, "Foo, Bar <ACME Corp.>" <foo.bar@acme.corp>, xyz@example.net
  *
- * And returns a list of \Dcp\Mail\Address objects with display names
+ * And returns a list of \Anakeen\Mail\Address objects with display names
  * and mail adresses :
  *
  *     array(
- *         new \Dcp\Mail\Address("john.doe@example.net", "Jöhn Dôé"),
- *         new \Dcp\Mail\Address("foo.bar@acme.corp", "Foo, Bar <ACME Corp.>"),
- *         new \Dcp\Mail\Address("xyz@example.net", "")
+ *         new \Anakeen\Mail\Address("john.doe@example.net", "Jöhn Dôé"),
+ *         new \Anakeen\Mail\Address("foo.bar@acme.corp", "Foo, Bar <ACME Corp.>"),
+ *         new \Anakeen\Mail\Address("xyz@example.net", "")
  *     )
  *
  * Note:
  * - It will not validate the mail addresses.
  *
- * @package Dcp\Mail
  */
 class MailAddrParser
 {
@@ -137,11 +136,11 @@ class MailAddrParser
     }
 
     /**
-     * Parse the given string and extract \Dcp\Mail\Address objects
+     * Parse the given string and extract \Anakeen\Mail\Address objects
      *
      * @param $s
      *
-     * @return \Dcp\Mail\Address[]
+     * @return \Anakeen\Mail\Address[]
      * @throws MailAddrParserException
      */
     public function parse($s)

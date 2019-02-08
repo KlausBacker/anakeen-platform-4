@@ -4,7 +4,7 @@
  * @package FDL
 */
 
-namespace Dcp\Mail;
+namespace Anakeen\Mail;
 
 interface DataSource
 {

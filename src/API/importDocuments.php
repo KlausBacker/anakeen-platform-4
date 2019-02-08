@@ -169,9 +169,9 @@ if ($logfile) {
 }
 // mode HTML
 if ($to) {
-    $message = new \Dcp\Mail\Message();
+    $message = new \Anakeen\Mail\Message();
 
-    $body = new \Dcp\Mail\Body(file_get_contents($logfile), (($htmlmode == 'yes') ? 'text/html' : 'text/plain'));
+    $body = new \Anakeen\Mail\Body(file_get_contents($logfile), (($htmlmode == 'yes') ? 'text/html' : 'text/plain'));
     $message->setBody($body);
 
     $from = ContextManager::getCurrentUser()->getMail();
