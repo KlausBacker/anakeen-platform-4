@@ -66,7 +66,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     public function testRenderFormatCollection($docName, $attrName, $expectRender, $expectContainRender = array())
     {
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
 
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
@@ -122,7 +122,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testUnknowRenderFormatCollection($docName, $attrName, $nc)
     {
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         $fc = new \Anakeen\Core\Internal\FormatCollection();
@@ -145,7 +145,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testStateRenderFormatCollection($docName, $expectState, $expectColor, $expectActivity, $expectDisplayValue)
     {
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         $fc = new \Anakeen\Core\Internal\FormatCollection();
@@ -169,7 +169,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testDatePropertyRenderFormatCollection($docName, $propertyName, $format, $expectedFormat)
     {
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         $fc = new \Anakeen\Core\Internal\FormatCollection();
@@ -189,7 +189,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testPropertyRenderFormatCollection($docName, $propertyName, $expectedValue)
     {
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         $fc = new \Anakeen\Core\Internal\FormatCollection();
@@ -226,7 +226,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
     public function testRenderAttributeHookFormatCollection($docName, $attrName, $hook, $expectRender)
     {
         $this->requiresCoreParamEquals('CORE_LANG', 'fr_FR');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
         $fc = new \Anakeen\Core\Internal\FormatCollection();
@@ -279,7 +279,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testPropertyHookRenderFormatCollection($docName, $propertyName, $hook, $expectedValue)
     {
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
 
@@ -300,7 +300,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
      */
     public function testDocumentHookRenderFormatCollection($docName, $hook, array $expectedProps)
     {
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $dl = $s->search()->getDocumentList();
 
