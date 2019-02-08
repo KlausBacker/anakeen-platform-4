@@ -55,7 +55,7 @@ class Config
 
     public function getChildrenFamilies(\Anakeen\Core\Internal\SmartElement $smartElement, &$result = [])
     {
-        $search = new \SearchDoc("", -1);
+        $search = new \Anakeen\Search\Internal\SearchSmartData("", -1);
         $search->setObjectReturn();
         $search->addFilter("fromid = %d", $smartElement->id);
         foreach ($search->getDocumentList() as $currentDoc) {
