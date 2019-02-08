@@ -14,6 +14,10 @@
     "watch": "webpack --watch --env development --config ./components/webpack/index.js",
     "prepare": "npm run lib"
   },
+  "files": [
+    "/components/lib",
+    "/components/README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git@gitlab.anakeen.com:Anakeen/Users/charles.bonnissent/anakeen-hub.git"
