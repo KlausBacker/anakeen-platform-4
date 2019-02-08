@@ -26,7 +26,7 @@ class Structures
         $this->filters = $request->getParam("filter", []);
     }
 
-    protected function filterRequest(\SearchDoc $searchDoc)
+    protected function filterRequest(\Anakeen\Search\Internal\SearchSmartData $searchDoc)
     {
         if (!empty($this->filters)) {
             if (!empty($this->filters["logic"]) && !empty($this->filters["filters"])) {
@@ -42,7 +42,7 @@ class Structures
 
     public function doRequest()
     {
-        $s=new \SearchDoc("", -1);
+        $s=new \Anakeen\Search\Internal\SearchSmartData("", -1);
         if ($this->target === "vendor") {
             $s->addFilter("atags is null or atags->>'vendor' <> 'Anakeen' or atags ->> 'vendor' is null");
         }

@@ -22,7 +22,7 @@ class Control extends GridContent
 
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new \SearchDoc("", "CVDOC");
+        $this->_searchDoc = new \Anakeen\Search\Internal\SearchSmartData("", "CVDOC");
         $this->_searchDoc->setObjectReturn();
         $this->_searchDoc->excludeConfidential(true);
     }

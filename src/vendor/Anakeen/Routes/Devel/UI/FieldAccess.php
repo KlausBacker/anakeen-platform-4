@@ -4,11 +4,10 @@ namespace Anakeen\Routes\Devel\UI;
 
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Components\Grid\Routes\GridContent;
-use Anakeen\Core\DbManager;
 use Anakeen\Core\Internal\Format\UnknowAttributeValue;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
-use SearchDoc;
+use Anakeen\Search\Internal\SearchSmartData;
 
 /**
  * Get Profiles
@@ -27,7 +26,7 @@ class FieldAccess extends GridContent
 
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new SearchDoc("", "FIELDACCESSLAYERLIST");
+        $this->_searchDoc = new SearchSmartData("", "FIELDACCESSLAYERLIST");
         $this->_searchDoc->setObjectReturn();
         $this->_searchDoc->excludeConfidential(true);
     }
@@ -54,7 +53,7 @@ class FieldAccess extends GridContent
     protected function prepareDocumentFormatter($documentList)
     {
         $formatter = parent::prepareDocumentFormatter($documentList);
-        $formatter->getFormatCollection()->setAttributeRenderHook(function ($attrValue, $attrId) {
+        $formatter->getFormatCollection()->setAttributeRenderHook(function ($attrValue) {
             // Return empty value for non existing attribute in elements
             if (empty($attrValue)) {
                 return new UnknowAttributeValue('');
