@@ -77,7 +77,7 @@ class IgroupLib
                 if ($refresh) {
                     $doc->refreshMembers();
                 }
-                $doc->SetGroupMail();
+                $doc->setGroupMail();
                 $doc->modify();
                 $doc->specPostInsert();
                 $doc->setValue("grp_isrefreshed", "1");

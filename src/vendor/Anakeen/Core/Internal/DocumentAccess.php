@@ -614,9 +614,9 @@ class DocumentAccess
                 $uid
             ));
             if ($deletecontrol) {
-                $perm->UnsetControlP($pos);
+                $perm->unSetControlP($pos);
             } else {
-                $perm->SetControlP($pos);
+                $perm->setControlP($pos);
             }
             if ($perm->isAffected()) {
                 $err = $perm->modify();

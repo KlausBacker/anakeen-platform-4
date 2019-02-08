@@ -246,7 +246,7 @@ class ExportXmlDocument
                     $base = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($attribute->id));
                     if ($this->exportFiles) {
-                        $path = $doc->vault_filename_fromvalue($v, true);
+                        $path = $doc->vaultFilenameFromvalue($v, true);
 
                         if (is_file($path)) {
                             if ($this->writeToFile) {
@@ -431,7 +431,7 @@ class ExportXmlDocument
                                 }
                                 $docimg = SEManager::getDocument($docid);
                                 $attr = $docimg->getAttribute($attrid);
-                                $tfiles = $docimg->vault_properties($attr);
+                                $tfiles = $docimg->vaultProperties($attr);
                                 $f = $tfiles[$index];
                                 $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
                                 if (is_file($f["path"])) {

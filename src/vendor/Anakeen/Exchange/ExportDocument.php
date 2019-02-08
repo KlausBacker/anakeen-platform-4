@@ -339,7 +339,7 @@ class ExportDocument
 
             // invert HTML entities
             if (($attr->type == "image") || ($attr->type == "file")) {
-                $tfiles = $doc->vault_properties($attr);
+                $tfiles = $doc->vaultProperties($attr);
                 $tf = array();
                 foreach ($tfiles as $f) {
                     $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', \Anakeen\Core\Utils\Strings::Unaccent($doc->title)) . "_D";
@@ -422,7 +422,7 @@ class ExportDocument
                             $doc = SEManager::getDocument($docid);
                             if ($doc && $doc->hasPermission("view")) {
                                 $attr = $doc->getAttribute($attrid);
-                                $tfiles = $doc->vault_properties($attr);
+                                $tfiles = $doc->vaultProperties($attr);
                                 $f = $tfiles[$index];
 
                                 $ldir = $doc->id . '-' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', \Anakeen\Core\Utils\Strings::Unaccent($doc->title)) . "_D";

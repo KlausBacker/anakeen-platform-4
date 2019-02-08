@@ -82,8 +82,8 @@ if ($query->nb > 0) {
             /**
              * @var \SmartStructure\IUSER|\SmartStructure\IGROUP $udoc
              */
-            if (method_exists($udoc, "RefreshGroup")) {
-                $udoc->RefreshGroup();
+            if (method_exists($udoc, "refreshGroup")) {
+                $udoc->refreshGroup();
             } elseif (method_exists($udoc, "RefreshDocUser")) {
                 $udoc->RefreshDocUser();
             }

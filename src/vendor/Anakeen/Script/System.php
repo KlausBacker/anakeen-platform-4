@@ -243,7 +243,7 @@ class System
 
     protected function debug($msg)
     {
-        $this->stdio->wstart_stderr($msg);
+        $this->stdio->wstartStderr($msg);
     }
 
     /**
@@ -258,7 +258,7 @@ class System
             return;
         }
         if ($level <= $this->verbose) {
-            $this->stdio->wstart_stdout($msg);
+            $this->stdio->wstartStdout($msg);
         }
     }
 

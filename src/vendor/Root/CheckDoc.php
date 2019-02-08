@@ -33,9 +33,9 @@ class CheckDoc extends CheckData
         $this->famName = isset($data[1]) ? trim($data[1]) : '';
         $this->specName = isset($data[2]) ? trim($data[2]) : '';
         $this->folderId = isset($data[3]) ? trim($data[3]) : '';
-        $this->CheckDocName();
+        $this->checkDocName();
         if (!$this->hasErrors()) {
-            $this->CheckDocFrom();
+            $this->checkDocFrom();
         }
         
         return $this;
@@ -55,7 +55,7 @@ class CheckDoc extends CheckData
      * check
      * @return void
      */
-    protected function CheckDocFrom()
+    protected function checkDocFrom()
     {
         if ($this->famName) {
             if (!$this->checkName($this->famName)) {
@@ -88,7 +88,7 @@ class CheckDoc extends CheckData
      * check logical name
      * @return void
      */
-    protected function CheckDocName()
+    protected function checkDocName()
     {
         if (!$this->checkName($this->specName)) {
             $this->addError(ErrorCode::getError('DOC0004', $this->specName));

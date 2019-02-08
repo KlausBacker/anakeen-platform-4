@@ -19,7 +19,7 @@ class ImageHooks extends \Anakeen\SmartElement
     {
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            return $this->setValue("IMG_TITLE", $this->vault_filename("IMG_FILE"));
+            return $this->setValue("IMG_TITLE", $this->vaultFilename("IMG_FILE"));
         });
     }
 }

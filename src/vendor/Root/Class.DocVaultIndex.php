@@ -1,34 +1,27 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Class.DocVaultIndex.php manages a full index
  * for files attached to a Freedom document
  *
- * @author Anakeen
- * @version $Id: Class.DocVaultIndex.php,v 1.8 2007/03/07 18:42:24 eric Exp $
- * @package FDL
- */
-/**
  */
 
 
-class DocVaultIndex extends DbObj
+class DocVaultIndex extends \Anakeen\Core\Internal\DbObj
 {
-    public $fields = array(
-        "docid",
-        "vaultid"
-    );
-    
-    public $id_fields = array(
-        "docid",
-        "vaultid"
-    );
-    
+    public $fields
+        = array(
+            "docid",
+            "vaultid"
+        );
+
+    public $id_fields
+        = array(
+            "docid",
+            "vaultid"
+        );
+
     public $dbtable = "docvaultindex";
-    
+
     public $order_by = "docid";
     public $docid;
     public $vaultid;
@@ -38,25 +31,30 @@ create table docvaultindex ( docid  int not null,
                    );
 create index idx_docvid on docvaultindex(vaultid);
 create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
+
     /**
      * return doc ids from a vault file
+     *
      * @param int $vid vault id
+     *
      * @return array object
      */
     public function getDocIds($vid)
     {
-        $t = array();
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
         $query->basic_elem->sup_where = array(
             "vaultid = $vid"
         );
         $t = $query->Query();
-        
+
         return $t;
     }
+
     /**
      * return first doc id from a vault file
+     *
      * @param int $vid vault id
+     *
      * @return int id of document
      */
     public function getDocId($vid)
@@ -69,9 +67,12 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
         }
         return false;
     }
+
     /**
      * return vault ids for a document
+     *
      * @param int $docid document id
+     *
      * @return array
      */
     public function getVaultIds($docid)
@@ -90,14 +91,14 @@ create unique index idx_docvaultindex on docvaultindex (docid, vaultid);";
         }
         return $tvid;
     }
-    
-    public function DeleteDoc($docid)
+
+    public function deleteDoc($docid)
     {
         $err = $this->query("delete from " . $this->dbtable . " where docid=" . $docid);
         return $err;
     }
-    
-    public function DeleteVaultId($vid)
+
+    public function deleteVaultId($vid)
     {
         $err = $this->query("delete from " . $this->dbtable . " where vaultid=" . $vid);
         return $err;

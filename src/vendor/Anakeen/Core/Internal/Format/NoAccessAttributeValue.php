@@ -4,7 +4,7 @@ namespace Anakeen\Core\Internal\Format;
 
 use \Anakeen\Core\SEManager;
 
-class noAccessAttributeValue extends StandardAttributeValue
+class NoAccessAttributeValue extends StandardAttributeValue
 {
     public $visible = true;
 

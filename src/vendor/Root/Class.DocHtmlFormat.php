@@ -186,12 +186,12 @@ class DocHtmlFormat
                 } elseif ($htmlval === "\t" && $oattr->inArray() && $showEmpty) {
                     // array with single empty line
                     $htmlval = $showEmpty;
-                } elseif (($this->cFormat != "" && $this->cancelFormat === false) &&
-                    ($htmlval !== '') &&
-                    ($atype != "enum") &&
-                    ($atype != "doc") &&
-                    ($atype != "array") &&
-                    ($atype != "option")) {
+                } elseif (($this->cFormat != "" && $this->cancelFormat === false)
+                    && ($htmlval !== '')
+                    && ($atype != "enum")
+                    && ($atype != "doc")
+                    && ($atype != "array")
+                    && ($atype != "option")) {
                     //printf($htmlval);
                     $htmlval = sprintf($this->cFormat, $htmlval);
                 }
@@ -317,7 +317,7 @@ class DocHtmlFormat
             }
         }
         if ($this->target == "te") {
-            $htmlval = "file://" . $this->doc->vault_filename($this->oattr->id, true, $kvalue);
+            $htmlval = "file://" . $this->doc->vaultFilename($this->oattr->id, true, $kvalue);
         } else {
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
                 $fileInfo = new Anakeen\Vault\FileInfo();
@@ -555,7 +555,7 @@ class DocHtmlFormat
                     }
                     if ($standardview) {
                         global $action;
-                        $size = self::human_size($fileInfo->size);
+                        $size = self::humanSize($fileInfo->size);
                         $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
                         $inline = $this->oattr->getOption("inline");
                         $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\""
@@ -702,7 +702,7 @@ class DocHtmlFormat
 
         $tval = array();
         foreach ($ta as $k => $v) {
-            if ($v->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS ) {
+            if ($v->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS) {
                 continue;
             }
             $talabel[] = array(
@@ -743,8 +743,7 @@ class DocHtmlFormat
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $va
                  */
                 foreach ($ta as $ka => $va) {
-
-                    if ($va->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS ) {
+                    if ($va->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS) {
                         continue;
                     }
                     if (isset($tval[$ka][$k])) {
@@ -795,7 +794,7 @@ class DocHtmlFormat
      *
      * @return bool
      */
-    public static function xt_innerXML(&$node)
+    public static function xtInnerXML(&$node)
     {
         if (!$node) {
             return false;
@@ -1186,17 +1185,13 @@ class DocHtmlFormat
      *
      * @return string
      */
-    private static function human_size($size)
+    private static function humanSize($size)
     {
         if (abs($size) < 1000) {
             return sprintf("%d %s", $size, n___("unit:byte", "unit:bytes", abs($size), 'sde'));
         }
         $size = $size / 1000;
-        foreach (array(
-                _("unit:kB"),
-                _("unit:MB"),
-                _("unit:GB")
-            ) as $unit) {
+        foreach ([_("unit:kB"), _("unit:MB"), _("unit:GB")] as $unit) {
             if (abs($size) < 1000) {
                 return sprintf("%3.2f %s", $size, $unit);
             }

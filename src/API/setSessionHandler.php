@@ -14,7 +14,7 @@ if ($handlerName != "SessionHandler") {
     }
     $ref = new ReflectionClass($handlerName);
     $filePath = $ref->getFileName();
-    
+
     if (strpos($filePath, DEFAULT_PUBDIR) == 0) {
         $basefilePath = substr($filePath, strlen(DEFAULT_PUBDIR) + 1);
         if (file_exists($basefilePath)) {
@@ -22,18 +22,9 @@ if ($handlerName != "SessionHandler") {
         }
     }
     $h = new $handlerName();
-    if (interface_exists("SessionHandlerInterface", false) && is_a($h, "SessionHandlerInterface")) {
-        // PHP 5.4 method used
-        $handlerCode = sprintf('<?php require_once("%s");$handler = new %s();session_set_save_handler($handler, true);', $filePath, $handlerName);
-    } else {
-        // Old method compatible PHP 5.3
-        if ($ref->hasMethod("open") && $ref->hasMethod("close") && $ref->hasMethod("read") && $ref->hasMethod("write") && $ref->hasMethod("destroy") && $ref->hasMethod("gc")) {
-            // PHP 5.3 mode
-            $handlerCode = sprintf('<?php require_once("%s");$handler = new %s();session_set_save_handler(array($handler, "open"), array($handler, "close"),array($handler, "read"),array($handler, "write"),array($handler, "destroy"),array($handler, "gc"));register_shutdown_function("session_write_close");', $filePath, $handlerName);
-        } else {
-            ContextManager::exitError(sprintf('class "%s" incompatible with session handler', $handlerName));
-        }
-    }
+
+    $handlerCode = sprintf('<?php require_once("%s");$handler = new %s();session_set_save_handler($handler, true);', $filePath, $handlerName);
+
     file_put_contents("config/sessionHandler.php", $handlerCode);
     printf("Write config/sessionHandler.php Done.\n");
 } else {

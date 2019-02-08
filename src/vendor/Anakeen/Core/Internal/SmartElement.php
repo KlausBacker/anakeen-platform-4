@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace Anakeen\Core\Internal;
 
@@ -17,7 +17,6 @@ define("FAM_ACCESSFAM", 23);
 define("DELVALUE", 'DEL??');
 
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
-
 
 
 use \Anakeen\Core\DbManager;
@@ -506,6 +505,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     /**
      * extend acl definition
      * used in WDoc and CVDoc
+     *
      * @var array
      */
     public $extendedAcls = array();
@@ -1148,6 +1148,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @see \Anakeen\Core\Internal\SmartElement::restoreAccessControl
      * @api disable edit control for setValue/modify/store
+     *
      * @param bool $disable if false restore control access immediatly
      */
     final public function disableAccessControl($disable = true)
@@ -1386,11 +1387,11 @@ create unique index i_docir on doc(initid, revision);";
             return ($err);
         }
 
-        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
+        if ($forceVerifyWithControl === false && !$this->isUnderControl()) {
             return "";
         } // admin can do anything but not modify fixed doc
 
-        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
+        if ($forceVerifyWithControl === false && !$this->isUnderControl()) {
             return "";
         } // no more test if disableAccessControl activated
         if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
@@ -1725,7 +1726,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = \Anakeen\Core\Internal\DbObj::delete($nopost);
         if ($err == "") {
             $dvi = new \DocVaultIndex($this->dbaccess);
-            $err = $dvi->DeleteDoc($this->id);
+            $err = $dvi->deleteDoc($this->id);
             if ($this->name != '' && $this->locked != -1) {
                 $this->query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
             }
@@ -2271,8 +2272,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getNormalAttributes($onlyopt = false)
     {
-        if ((isset($this->attributes)) && (method_exists($this->attributes, "GetNormalAttributes"))) {
-            return $this->attributes->GetNormalAttributes($onlyopt);
+        if ((isset($this->attributes)) && (method_exists($this->attributes, "getNormalAttributes"))) {
+            return $this->attributes->getNormalAttributes($onlyopt);
         } else {
             return array();
         }
@@ -2510,8 +2511,8 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         $err = '';
-        if (\Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Manager') &&
-            ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE") === "yes") {
+        if (\Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Manager')
+            && ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE") === "yes") {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
@@ -3829,8 +3830,8 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Register (store) a file in the vault and return the file's vault's informations
      *
-     * @param string         $filename the file pathname
-     * @param string         $ftitle   override the stored file name or empty string to keep the original file name
+     * @param string                  $filename the file pathname
+     * @param string                  $ftitle   override the stored file name or empty string to keep the original file name
      * @param \Anakeen\Vault\FileInfo $info     the vault's informations for the stored file or null if could not get informations
      *
      * @return string trigram of the file in the vault: "mime_s|id_file|name"
@@ -4432,6 +4433,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $tag   the tag to add
      *
      * @param mixed  $value value of tag (true by default)
+     *
      * @return string error message
      */
     final public function addATag($tag, $value = true)
@@ -4467,6 +4469,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $tag   the tag to search
      * @param string $value return tag value recorded
+     *
      * @return bool return true if found
      */
     final public function getATag($tag, &$value = null)
@@ -5616,7 +5619,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($oa->inArray()) {
                     $t = $this->getMultipleRawValues($oa->id);
                     foreach ($t as $k => $v) {
-                        $cfname = $this->vault_filename($oa->id, false, $k);
+                        $cfname = $this->vaultFilename($oa->id, false, $k);
                         if ($cfname) {
                             $fname = $this->applyMethod($rn, "", $k, array(
                                 $cfname
@@ -5628,7 +5631,7 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                 } else {
-                    $cfname = $this->vault_filename($oa->id);
+                    $cfname = $this->vaultFilename($oa->id);
                     if ($cfname) {
                         $fname = $this->applyMethod($rn, "", -1, array(
                             $cfname
@@ -5791,6 +5794,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $v value
      *
      * @param bool   $force
+     *
      * @return array
      * @throws \Anakeen\Database\Exception
      */
@@ -5827,11 +5831,11 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return an url to download for file attribute
      *
-     * @param string         $attrid     attribute identifier
-     * @param int            $index      set to row rank if it is in array else use -1
-     * @param bool           $cache      set to true if file may be persistent in client cache
-     * @param bool           $inline     set to true if file must be displayed in web browser
-     * @param string         $otherValue use another file value instead of attribute value
+     * @param string                  $attrid     attribute identifier
+     * @param int                     $index      set to row rank if it is in array else use -1
+     * @param bool                    $cache      set to true if file may be persistent in client cache
+     * @param bool                    $inline     set to true if file must be displayed in web browser
+     * @param string                  $otherValue use another file value instead of attribute value
      * @param \Anakeen\Vault\FileInfo $info       extra file info
      *
      * @return string the url anchor
@@ -6372,7 +6376,7 @@ create unique index i_docir on doc(initid, revision);";
                     return null;
                 }
 
-                return $this->vault_filename_fromvalue($template, true);
+                return $this->vaultFilenameFromvalue($template, true);
             }
             return sprintf("%s/Apps/%s/Layout/%s", DEFAULT_PUBDIR, $reg['app'], $aid);
         }
@@ -6911,14 +6915,14 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string the file name of the attribute
      */
-    final public function vault_filename($attrid, $path = false, $index = -1)
+    final public function vaultFilename($attrid, $path = false, $index = -1)
     {
         if ($index == -1) {
             $fileid = $this->getRawValue($attrid);
         } else {
             $fileid = $this->getMultipleRawValues($attrid, '', $index);
         }
-        return $this->vault_filename_fromvalue($fileid, $path);
+        return $this->vaultFilenameFromvalue($fileid, $path);
     }
 
     /**
@@ -6929,7 +6933,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string the file name of the attribute
      */
-    final public function vault_filename_fromvalue($fileid, $path = false)
+    final public function vaultFilenameFromvalue($fileid, $path = false)
     {
         $fname = "";
         if (preg_match(PREGEXPFILE, $fileid, $reg)) {
@@ -6970,7 +6974,7 @@ create unique index i_docir on doc(initid, revision);";
      * [path] => /var/www/eric/vaultfs/1/16.pdf
      * [vid] => 16
      */
-    final public function vault_properties(\Anakeen\Core\SmartStructure\NormalAttribute $attr)
+    final public function vaultProperties(\Anakeen\Core\SmartStructure\NormalAttribute $attr)
     {
         if ($attr->inArray()) {
             $fileids = $this->getMultipleRawValues($attr->id);
@@ -7402,7 +7406,7 @@ create unique index i_docir on doc(initid, revision);";
         DbManager::savePoint($point);
         DbManager::lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
-        $dvi->DeleteDoc($this->id);
+        $dvi->deleteDoc($this->id);
 
         $tvid = \Anakeen\Core\Utils\VidExtractor::getVidsFromDoc($this);
 

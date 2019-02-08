@@ -6,7 +6,7 @@
 /**
  * Document permissions
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: Class.DocPerm.php,v 1.15 2007/06/14 15:48:25 eric Exp $
  * @package FDL
  */
@@ -15,30 +15,33 @@
 
 /**
  * Managing permissions of documents
+ *
  * @package FDL
  *
  */
-class DocPerm extends DbObj
+class DocPerm extends \Anakeen\Core\Internal\DbObj
 {
-    public $fields = array(
-        "docid",
-        "userid",
-        "upacl"
-    );
-    
-    public $id_fields = array(
-        "docid",
-        "userid"
-    );
+    public $fields
+        = array(
+            "docid",
+            "userid",
+            "upacl"
+        );
+
+    public $id_fields
+        = array(
+            "docid",
+            "userid"
+        );
     public $docid;
     public $userid;
     public $upacl;
     public $uperm;
-    
+
     public $dbtable = "docperm";
-    
+
     public $order_by = "docid";
-    
+
     public $sqlcreate = "
 create table docperm ( 
                      docid int check (docid > 0),
@@ -46,7 +49,7 @@ create table docperm (
                      upacl int  not null
                    );
 create unique index idx_perm on docperm(docid, userid);";
-    
+
     public function preSelect($tid)
     {
         if (count($tid) == 2) {
@@ -54,7 +57,7 @@ create unique index idx_perm on docperm(docid, userid);";
             $this->userid = $tid[1];
         }
     }
-    
+
     public function preInsert()
     {
         if ($this->userid == 1) {
@@ -62,23 +65,27 @@ create unique index idx_perm on docperm(docid, userid);";
         }
         return '';
     }
-    
+
     public function preUpdate()
     {
         return $this->preInsert();
     }
+
     /**
      * return account vector for current user
      * to be use in getaperm sql function
+     *
      * @static
-     * @param int $uid user identifier
+     *
+     * @param int  $uid    user identifier
      * @param bool $strict set to true to not use substitute
+     *
      * @return string
      */
     public static function getMemberOfVector($uid = 0, $strict = false)
     {
         if ($uid == 0) {
-            $user=\Anakeen\Core\ContextManager::getCurrentUser();
+            $user = \Anakeen\Core\ContextManager::getCurrentUser();
             if (!$user) {
                 throw new \Anakeen\Core\Exception("CORE0022");
             }
@@ -94,11 +101,14 @@ create unique index idx_perm on docperm(docid, userid);";
         }
         return '{' . implode(',', $mof) . '}';
     }
+
     /**
      * @static
-     * @param int $profid profil identifier
-     * @param int $userid user identifier
+     *
+     * @param int  $profid profil identifier
+     * @param int  $userid user identifier
      * @param bool $strict set to true to not use substitute
+     *
      * @return int
      */
     public static function getUperm($profid, $userid, $strict = false)
@@ -113,10 +123,10 @@ create unique index idx_perm on docperm(docid, userid);";
         if ($uperm === false) {
             return 0;
         }
-        
+
         return $uperm;
     }
-    
+
     public static function getStrictUperm($profid, $userid)
     {
         if ($userid == 1) {
@@ -129,18 +139,19 @@ create unique index idx_perm on docperm(docid, userid);";
         if ($uperm === false) {
             return 0;
         }
-        
+
         return $uperm;
     }
 
-    
 
     /**
      * control access at $pos position direct inly (green)
+     *
      * @param $pos
+     *
      * @return bool
      */
-    public function ControlUp($pos)
+    public function controlUp($pos)
     {
         // --------------------------------------------------------------------
         if ($this->isAffected()) {
@@ -148,34 +159,41 @@ create unique index idx_perm on docperm(docid, userid);";
         }
         return false;
     }
+
     // --------------------------------------------------------------------
     public static function controlMask($acl, $pos)
     {
         return (($acl & (1 << ($pos))) != 0);
     }
+
     /**
      * no control for anyone
      */
-    public function UnSetControl()
+    public function unSetControl()
     {
         $this->upacl = 0;
     }
+
     /**
      * set positive ACL in specified position
+     *
      * @param int $pos column number (0 is the first right column)
      */
-    public function SetControlP($pos)
+    public function setControlP($pos)
     {
         $this->upacl = intval($this->upacl) | (1 << $pos);
     }
+
     /**
      * unset positive ACL in specified position
+     *
      * @param int $pos column number (0 is the first right column)
      */
-    public function UnSetControlP($pos)
+    public function unSetControlP($pos)
     {
         $this->upacl = $this->upacl & (~(1 << $pos));
     }
+
     public static function getPermsForDoc($docid)
     {
         $sql = sprintf("SELECT docid, userid, upacl FROM docperm WHERE docid = %d ORDER BY docid, userid, upacl", $docid);

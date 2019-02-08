@@ -233,7 +233,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
         }
         $qf->dirid = $this->initid; // the reference folder is the initial id
         $qf->query = "";
-        if (!$qf->Exists()) {
+        if (!$qf->exists()) {
             // use pre virtual method
             if (!$noprepost) {
                 $err = $this->preInsertDocument($doc->id);

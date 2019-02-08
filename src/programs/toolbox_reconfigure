@@ -49,7 +49,7 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-V=$(installUtils pg_escape_string "$client_name")
+V=$(installUtils pgEscapeString "$client_name")
 PGSERVICE="$core_db" psql -c "UPDATE paramv SET val = '$V' WHERE name = 'CORE_CLIENT'"
 RET=$?
 if [ $RET -ne 0 ]; then
@@ -67,7 +67,7 @@ if [ "$vault_save" == "no" ]; then
     fi
 fi
 echo "Updating vault r_path..."
-V=$(installUtils pg_escape_string "$vault_root")
+V=$(installUtils pgEscapeString "$vault_root")
 PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskfsstorage SET r_path = '$V' || '/' || id_fs; "
 
 RET=$?

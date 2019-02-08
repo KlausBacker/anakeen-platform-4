@@ -1,15 +1,7 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * Verify several point for the integrity of the system
  *
- * @author     Anakeen
- * @version    $Id: checklist.php,v 1.8 2008/12/31 14:37:26 jerome Exp $
- * @package    FDL
- * @subpackage CORE
  */
 
 /**
@@ -21,10 +13,7 @@ class CheckDb
      */
     private $r;
     private $connect;
-    /**
-     * @var array;
-     */
-    private $tparam;
+
     /**
      * @var array
      */
@@ -101,7 +90,8 @@ class CheckDb
         if ($value !== 'off') {
             $res['status'] = self::KO;
             $res['msg'] = sprintf(
-                "Database's \"standard_conforming_strings\" should be set to 'off' (actual value is '%s')&nbsp;:<br/><pre>ALTER DATABASE %s SET standard_conforming_strings = off;</pre>",
+                "Database's \"standard_conforming_strings\" should be set to 'off'" .
+                " (actual value is '%s')&nbsp;:<br/><pre>ALTER DATABASE %s SET standard_conforming_strings = off;</pre>",
                 htmlspecialchars($value, ENT_QUOTES),
                 htmlspecialchars(pg_escape_identifier($dbname))
             );
@@ -244,10 +234,14 @@ class CheckDb
 
     public function checkMultipleAlive()
     {
-        $result = pg_query(
-            $this->r,
-            "select id, title from docread where id in (SELECT m AS id  FROM (SELECT min(id) AS m, initid, count(initid) AS c  FROM docread WHERE locked != -1 AND doctype != 'T' GROUP BY docread.initid) AS z where z.c > 1);"
-        );
+        $sql = <<<'SQL'
+select id, title from docread 
+where id in (SELECT m AS id 
+  FROM (SELECT min(id) AS m, initid, count(initid) AS c  
+    FROM docread WHERE locked != -1 AND doctype != 'T' GROUP BY docread.initid) AS z where z.c > 1);
+SQL;
+
+        $result = pg_query($this->r, $sql);
         $pout = array();
         while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             $pout[$row["id"]] = $row["title"];
@@ -273,10 +267,12 @@ class CheckDb
                 $fromid = "";
             }
             $fid = intval($row["id"]);
-            $test = pg_query(
-                $this->r,
-                sprintf("SELECT pg_class.relname from pg_class where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='doc%d'));", $fid)
-            );
+            $sqlPattern = <<<'SQL'
+SELECT pg_class.relname from pg_class 
+where oid in (SELECT inhparent from pg_inherits where inhrelid =(SELECT oid FROM pg_class where relname='doc%d'));
+SQL;
+
+            $test = pg_query($this->r, sprintf($sqlPattern, $fid));
             $dbfrom = pg_fetch_array($test, null, PGSQL_ASSOC);
             if ($dbfrom["relname"] != "doc$fromid") {
                 $pout[] = sprintf("Family %s [%d]: fromid = %d, pg inherit=%s", $row["name"], $row["id"], $row["fromid"], $dbfrom["relname"]);
@@ -288,95 +284,6 @@ class CheckDb
         );
     }
 
-    public function checkNetworkUser()
-    {
-        // Test User LDAP (NetworkUser Module)
-        $appNameList = array();
-        $result = pg_query($this->r, "SELECT name FROM application;");
-        while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $appNameList[] = $row['name'];
-        }
-        $nuAppExists = (array_search('NU', $appNameList) === false) ? false : true;
-        $ldaphost = $this->getGlobalParam("NU_LDAP_HOST");
-        $ldapport = $this->getGlobalParam("NU_LDAP_PORT");
-        $ldapmode = $this->getGlobalParam("NU_LDAP_MODE");
-        if ($nuAppExists && $ldaphost) {
-            include_once('../../../NU/Lib.NU.php');
-
-            $ldapBindDn = $this->getGlobalParam('NU_LDAP_BINDDN');
-            $ldapPassword = $this->getGlobalParam('NU_LDAP_PASSWORD');
-
-            $baseList = array();
-            array_push($baseList, array(
-                'dn' => $this->getGlobalParam('NU_LDAP_USER_BASE_DN'),
-                'filter' => $this->getGlobalParam('NU_LDAP_USER_FILTER')
-            ));
-            array_push($baseList, array(
-                'dn' => $this->getGlobalParam('NU_LDAP_GROUP_BASE_DN'),
-                'filter' => $this->getGlobalParam('NU_LDAP_GROUP_FILTER')
-            ));
-
-            foreach ($baseList as $base) {
-                $testName = sprintf("connection to '%s'", $base['dn']);
-                $this->tout[$testName] = array();
-                /** @noinspection PhpUndefinedFunctionInspection */
-                $uri = getLDAPUri($ldapmode, $ldaphost, $ldapport);
-                $conn = ldap_connect($uri);
-                if ($conn === false) {
-                    $this->tout[$testName]['status'] = self::KO;
-                    $this->tout[$testName]['msg'] = sprintf("Could not connect to LDAP server '%s': %s", $uri, $php_errormsg);
-                    continue;
-                }
-
-                ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
-                ldap_set_option($conn, LDAP_OPT_REFERRALS, 0);
-
-                if ($ldapmode == 'tls') {
-                    $ret = ldap_start_tls($conn);
-                    if ($ret === false) {
-                        $this->tout[$testName]['status'] = self::KO;
-                        $this->tout[$testName]['msg'] = sprintf("Could not negotiate TLS with server '%s': %s", $uri, ldap_error($conn));
-                        continue;
-                    }
-                }
-
-                $bind = ldap_bind($conn, $ldapBindDn, $ldapPassword);
-                if ($bind === false) {
-                    $this->tout[$testName]['status'] = self::KO;
-                    $this->tout[$testName]['msg'] = sprintf("Could not bind with bind DN '%s' on server '%s': %s", $ldapBindDn, $uri, ldap_error($conn));
-                    ldap_close($conn);
-                    continue;
-                }
-
-                $res = ldap_search($conn, $base['dn'], sprintf("(&(objectClass=*)%s)", $base['filter']));
-                if ($res === false) {
-                    $this->tout[$testName]['status'] = self::KO;
-                    $this->tout[$testName]['msg'] = sprintf("LDAP search on base '%s' with filter '%s' failed: %s", $base['dn'], $base['filter'], ldap_error($conn));
-                    ldap_close($conn);
-                    continue;
-                }
-
-                $count = ldap_count_entries($conn, $res);
-                if ($count === false) {
-                    $this->tout[$testName]['status'] = self::KO;
-                    $this->tout[$testName]['msg'] = sprintf("Error counting result entries: %s", ldap_error($conn));
-                    ldap_close($conn);
-                    continue;
-                }
-                if ($count <= 0) {
-                    $this->tout[$testName]['status'] = self::BOF;
-                    $this->tout[$testName]['msg'] = sprintf("Search returned 0 entries...");
-                    ldap_close($conn);
-                    continue;
-                }
-
-                $this->tout[$testName]['status'] = self::OK;
-                $this->tout[$testName]['msg'] = sprintf("Search returned %s entries.", $count);
-                ldap_close($conn);
-            }
-        }
-    }
-
     public function checkcleanContext()
     {
         $testName = "cleanContext cron job execution";
@@ -386,9 +293,10 @@ class CheckDb
 
             if ($res[0]['count'] > 0) {
                 $err = sprintf("<p>Oldest temporary document is &gt; 24 hours: <code>%s</code></p>", htmlspecialchars($res[0]['mincdate']));
-                $err .= "<p>Dynacase crontab might not be active or correctly registered.</p>";
+                $err .= "<p>Apache Crontab might not be active or correctly registered.</p>";
                 $err .= "<ul>";
-                $err .= "<li>Check that the Dynacase crontab 'FREEDOM/freedom.cron' is correctly registered in the Apache's user crontab: <pre>./ank.php --script=manageContextCrontab --cmd=list</pre></li>";
+                $err .= "<li>Check that the Anakeen Platform crontab 'FREEDOM/freedom.cron' is correctly registered in the Apache's user crontab: <pre>." .
+                    "/ank.php --script=manageContextCrontab --cmd=list</pre></li>";
                 $err .= "<li>If the crontab is not registered, try to register it: <pre>./ank.php --script=manageContextCrontab --cmd=register --file=FREEDOM/freedom.cron</pre>";
                 $err .= "<li>If the crontab is correctly registered but not executed, check that the system's cron daemon is correctly running.</li>";
                 $err .= "</ul>";
@@ -412,6 +320,7 @@ class CheckDb
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $oa
      * @param string                                       $pgtype
      * @param string                                       $rtype
+     *
      * @return string
      */
     private static function verifyDbAttr(&$oa, $pgtype, &$rtype)
@@ -460,9 +369,11 @@ class CheckDb
 
     /**
      * detected sql type inconsistence with declaration
+     *
      * @param                                              $famid
      * @param \Anakeen\Core\SmartStructure\NormalAttribute $aoa if wan't test only one attribute
-     * @throws \Anakeen\Exception 
+     *
+     * @throws \Anakeen\Exception
      * @return array empty array if no error, else an item string by error detected
      */
     public static function verifyDbFamily($famid, \Anakeen\Core\SmartStructure\NormalAttribute $aoa = null)
@@ -471,10 +382,16 @@ class CheckDb
 
         $fam = Anakeen\Core\SEManager::getFamily($famid);
         if ($fam) {
-            $sql = sprintf(
-                "select pg_attribute.attname,pg_type.typname FROM pg_attribute, pg_type where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=(SELECT pg_class.oid from pg_class, pg_namespace where pg_class.relname='doc%d' and pg_class.relnamespace = pg_namespace.oid  and pg_namespace.nspname = 'public') order by pg_attribute.attname;",
-                $fam->id
-            );
+            $sqlPattern = <<<'SQL'
+select pg_attribute.attname,pg_type.typname 
+FROM pg_attribute, pg_type 
+where pg_type.oid=pg_attribute.atttypid and pg_attribute.attrelid=
+  (SELECT pg_class.oid 
+  from pg_class, pg_namespace 
+  where pg_class.relname='doc%d' and pg_class.relnamespace = pg_namespace.oid  and pg_namespace.nspname = 'public') order by pg_attribute.attname;
+SQL;
+
+            $sql = sprintf($sqlPattern, $fam->id);
 
             \Anakeen\Core\DbManager::query($sql, $res);
             $pgtype = array();
@@ -497,8 +414,8 @@ class CheckDb
                 if (($oa->structureId == $fam->id) && ($oa->type != "array") && ($oa->type != "frame") && ($oa->type != "tab") && ($oa->type != "") && ($oa->type != "menu")) {
                     $err = self::verifyDbAttr($oa, $pgtype[$aid], $rtype);
                     if ($err) {
-                        $cr[] =
-                            sprintf(
+                        $cr[]
+                            = sprintf(
                                 "family %s, %s (%s) : %s\n",
                                 $fam->getTitle(),
                                 $aid,
@@ -544,6 +461,7 @@ class CheckDb
 
     /**
      * verify attribute sql type
+     *
      * @return void
      */
     public function checkAttributeType()
@@ -564,6 +482,7 @@ class CheckDb
 
     /**
      * verify attribute sql type
+     *
      * @return void
      */
     public function checkAttributeOrphan()
@@ -580,8 +499,8 @@ class CheckDb
         if (count($cmds) > 0) {
             $html .= "BEGIN;<br/>";
             $html .= "<br/>";
-            $html .=
-                implode(
+            $html
+                .= implode(
                     "<br/>",
                     array_map(
                         function ($v) {
@@ -606,6 +525,7 @@ class CheckDb
      *
      * @param array  $node   The tree node starting point
      * @param string $column The column's name to lookup for
+     *
      * @return bool bool(true) if the column is already marked for deletion
      *                       in a parent family or bool(false) if not
      */
@@ -666,6 +586,7 @@ class CheckDb
      *
      * @param array $node   The families tree returned with columns to drop
      * @param int   $fromId Family id to start from (default is 0)
+     *
      * @return string empty string on success, non-empty string containing the error message on failure
      * @throws \Anakeen\Database\Exception
      */
@@ -749,7 +670,6 @@ EOF;
             $this->checkDoubleName();
             $this->checkInheritance();
             $this->checkMultipleAlive();
-            $this->checkNetworkUser();
             $this->checkAttributeType();
             $this->checkAttributeOrphan();
             $this->checkcleanContext();
@@ -760,23 +680,6 @@ EOF;
         return $this->tout;
     }
 
-    private function initGlobalParam()
-    {
-        $result = pg_query($this->r, "SELECT * FROM paramv where  type='G'");
-
-        $this->tparam = array();
-        while ($row = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $this->tparam[$row["name"]] = $row["val"];
-        }
-    }
-
-    private function getGlobalParam($key)
-    {
-        if (!$this->tparam) {
-            $this->initGlobalParam();
-        }
-        return isset($this->tparam[$key]) ? $this->tparam[$key] : null;
-    }
 
     public function checkUnnamedFamilies()
     {

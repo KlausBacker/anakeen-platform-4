@@ -1,17 +1,7 @@
-<?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+<?php /** @noinspection PhpUnusedParameterInspection */
 /**
- * importation of documents
+ * importation of Smart Elements
  *
- * @author     Anakeen
- * @version    $Id: freedom_import.php,v 1.9 2008/11/13 16:49:16 eric Exp $
- * @package    FDL
- * @subpackage WSH
- */
-/**
  */
 
 
@@ -33,7 +23,8 @@ $archive = $usage->addOptionalParameter("archive", "description file is an stand
 $logfile = $usage->addOptionalParameter("log", "log file output");
 $policy = $usage->addOptionalParameter(
     "policy",
-    "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t[add] to always create new document, \n\t\t[keep] to do nothing if same document already present",
+    "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t".
+    "[add] to always create new document, \n\t\t[keep] to do nothing if same document already present",
     array(
         "update",
         "add",
@@ -130,8 +121,6 @@ if ($logfile) {
         fclose($f);
     }
 }
-setHttpVar('analyze', ($analyze == "yes") ? 'Y' : 'N');
-setHttpVar('htmlmode', ($htmlmode == "yes") ? 'Y' : 'N');
 $archive = ($archive == "yes");
 
 if ($dirid) {
@@ -140,7 +129,6 @@ if ($dirid) {
         ContextManager::exitError(sprintf("folder %s not found (dir option)", $dirid));
     }
     $dirid = $dir->id;
-    SetHttpVar("dirid", $dirid);
 }
 $oImport = new Anakeen\Exchange\ImportDocument();
 if ($strict == 'no') {
@@ -182,7 +170,7 @@ if ($to) {
         $from = ContextManager::getCurrentUser()->login . '@' . php_uname('n');
     }
 
-    $subject = sprintf(_("result of import  %s"), basename(GetHttpVars("file")));
+    $subject = sprintf(_("result of import  %s"), basename($filename));
     $message->setSubject($subject);
     $message->setFrom($from);
     $message->addTo($to);

@@ -6,36 +6,34 @@
 /**
  * Folder managing
  *
- * @author Anakeen
- * @version $Id: Class.QueryDir.php,v 1.25 2007/05/24 15:01:45 eric Exp $
- * @package FDL
- */
-/**
  */
 
 /**
  * Folder managing
+ *
  * @package FDL
  *
  */
-class QueryDir extends DbObj
+class QueryDir extends \Anakeen\Core\Internal\DbObj
 {
-    public $fields = array(
-        "dirid",
-        "query",
-        "childid",
-        "qtype",
-        "fromid",
-        "doctype"
-    );
+    public $fields
+        = array(
+            "dirid",
+            "query",
+            "childid",
+            "qtype",
+            "fromid",
+            "doctype"
+        );
     /*public $sup_fields= array("fromid",
      "doctype"); */
     // not be in fieldsset by trigger
-    public $id_fields = array(
-        "dirid",
-        "childid"
-    );
-    
+    public $id_fields
+        = array(
+            "dirid",
+            "childid"
+        );
+
     public $dirid;
     public $query;
     public $childid;
@@ -43,13 +41,14 @@ class QueryDir extends DbObj
     public $qtype;
     public $doctype;
     public $dbtable = "fld";
-    
+
     public $order_by = "dirid";
-    
-    public $fulltextfields = array(
-        ""
-    );
-    
+
+    public $fulltextfields
+        = array(
+            ""
+        );
+
     public $sqlcreate = "
 create table fld ( 
                     dirid   int not null,
@@ -64,19 +63,21 @@ create index fld_iqc on fld(qtype,childid);
 create unique index fld_u on fld(qtype,dirid,childid);
 create sequence seq_id_fld start 100;
 CREATE TRIGGER tfldfrom before insert on fld FOR EACH ROW execute procedure fromfld();";
+
     #CREATE TRIGGER tfldrel after insert or update or delete on fld FOR EACH ROW execute procedure relfld();";
-    public function PreInsert()
+    public function preInsert()
     {
         // test if not already exist
         if ($this->qtype != "M") {
             $this->delete(false); // delete before insert
         }
     }
-    public function Exists()
+
+    public function exists()
     {
         // test if  already exist
         if ($this->qtype != "M") {
-            $err = $this->query(sprintf("select * from fld where dirid=%s and childid=%s", $this->dirid, $this->childid));
+            $this->query(sprintf("select * from fld where dirid=%s and childid=%s", $this->dirid, $this->childid));
             if ($this->numrows() > 0) {
                 return true; // just to say it is not a real error
             }

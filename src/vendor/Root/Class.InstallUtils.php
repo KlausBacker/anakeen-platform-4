@@ -6,7 +6,7 @@
 
 class InstallUtils
 {
-    public static function replace_usage()
+    public static function replaceUsage()
     {
         return <<<'EOF'
 
@@ -71,13 +71,13 @@ EOF;
             } elseif (!$end && $opt == '-f') {
                 $file = array_shift($argv);
                 if ($file === null) {
-                    throw new Exception(sprintf("Missing file after '-f' option.\n%s", self::replace_usage()));
+                    throw new Exception(sprintf("Missing file after '-f' option.\n%s", self::replaceUsage()));
                 }
                 $files[] = $file;
             } else {
                 $value = array_shift($argv);
                 if ($value === null) {
-                    throw new Exception(sprintf("Missing value for variable '%s'.\n%s", $opt, self::replace_usage()));
+                    throw new Exception(sprintf("Missing value for variable '%s'.\n%s", $opt, self::replaceUsage()));
                 }
                 $vars[] = array(
                     'key' => $opt,
@@ -118,7 +118,7 @@ EOF;
         }
         return 0;
     }
-    public static function doublequote_usage()
+    public static function doublequoteUsage()
     {
         return <<<'EOF'
 
@@ -185,7 +185,7 @@ EOF;
             print($string['value'] . PHP_EOL);
         }
     }
-    public static function pg_escape_string_usage()
+    public static function pgEscapeStringUsage()
     {
         return <<<'EOF'
 
@@ -197,7 +197,7 @@ Returns the string escaped for inclusion between apostrophes.
 
 EOF;
     }
-    public static function pg_escape_string($argv)
+    public static function pgEscapeString($argv)
     {
         $strings = array();
         $end = false;

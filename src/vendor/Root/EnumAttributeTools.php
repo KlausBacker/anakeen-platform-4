@@ -5,10 +5,12 @@ class EnumAttributeTools
 {
     /**
      * convert enum flat notation to an array of item (key/label).
-     * @param string $phpfunc the flat notation
-     * @param array $theEnum [out] the enum array converted
-     * @param array $theEnumlabel [out] the enum array converted - with complete labels in case of levels
-     * @param string $locale the prefix key for locale values (if empty no locale are set)
+     *
+     * @param string $phpfunc      the flat notation
+     * @param array  $theEnum      [out] the enum array converted
+     * @param array  $theEnumlabel [out] the enum array converted - with complete labels in case of levels
+     * @param string $locale       the prefix key for locale values (if empty no locale are set)
+     *
      * @return array
      */
     public static function flatEnumNotationToEnumArray($phpfunc, array & $theEnum, array & $theEnumlabel = array(), $locale = '')
@@ -23,7 +25,7 @@ class EnumAttributeTools
         // set the enum array
         $theEnum = array();
         $theEnumlabel = array();
-        
+
         $sphpfunc = str_replace("\\.", "-dot-", $phpfunc); // to replace dot & comma separators
         $sphpfunc = str_replace("\\,", "-comma-", $sphpfunc);
         if ($sphpfunc == "-") {
@@ -39,7 +41,7 @@ class EnumAttributeTools
                     $enumKey = " ";
                 }
                 $enumValue = trim($enumValue);
-                
+
                 $n = count($treeKeys);
                 if ($n <= 1) {
                     $enumValue = str_replace(array(
@@ -49,40 +51,41 @@ class EnumAttributeTools
                         '\.',
                         ','
                     ), $enumValue);
-                    
+
                     if ($locale) {
                         $translatedEnumValue = _($locale . $enumKey);
                         if ($translatedEnumValue != $locale . $enumKey) {
                             $enumValue = $translatedEnumValue;
                         }
                     }
-                    
+
                     $theEnum[str_replace(array(
                         '-dot-',
                         '-comma-'
                     ), array(
                         '\.',
                         ','
-                    ), $enumKey) ] = $enumValue;
+                    ), $enumKey)]
+                        = $enumValue;
                     $theEnumlabel[str_replace(array(
                         '-dot-',
                         '-comma-'
                     ), array(
                         '.',
                         ','
-                    ), $enumKey) ] = $enumValue;
+                    ), $enumKey)]
+                        = $enumValue;
                 } else {
                     $enumlabelKey = '';
                     $tmpKey = '';
-                    $previousKey = '';
                     foreach ($treeKeys as $i => $treeKey) {
                         $enumlabelKey = $treeKey;
-                        
+
                         if ($i < $n - 1) {
                             if ($i > 0) {
-                                $tmpKey.= '.';
+                                $tmpKey .= '.';
                             }
-                            $tmpKey.= $treeKey;
+                            $tmpKey .= $treeKey;
                         }
                     }
                     $tmpKey = str_replace(array(
@@ -92,7 +95,7 @@ class EnumAttributeTools
                         '\.',
                         ','
                     ), $tmpKey);
-                    
+
                     if ($locale) {
                         $translatedEnumValue = _($locale . $enumlabelKey);
                         if ($translatedEnumValue != $locale . $enumlabelKey) {
@@ -113,21 +116,23 @@ class EnumAttributeTools
                     ), array(
                         '\.',
                         ','
-                    ), $enumKey) ] = $enumValue;
+                    ), $enumKey)]
+                        = $enumValue;
                     $theEnumlabel[str_replace(array(
                         '-dot-',
                         '-comma-'
                     ), array(
                         '.',
                         ','
-                    ), $enumlabelKey) ] = $enumlabelValue;
+                    ), $enumlabelKey)]
+                        = $enumlabelValue;
                 }
             }
         }
-        
+
         return $theEnum;
     }
-    
+
     private static function getEnumHierarchy($key, $parents)
     {
         if (isset($parents[$key])) {
@@ -140,16 +145,23 @@ class EnumAttributeTools
             );
         }
     }
+
     /**
      * return flat notation from docenum database table
-     * @param int $famid family identifier
+     *
+     * @param int    $famid  family identifier
      * @param string $attrid attribute identifier
+     *
      * @return string ftat enum
      */
     public static function getFlatEnumNotation($famid, $attrid)
     {
-        $sql = sprintf("select * from docenum where famid='%s' and attrid='%s' and (disabled is null or not disabled) order by eorder", pg_escape_string($famid), pg_escape_string($attrid));
-        simpleQuery('', $sql, $results);
+        $sql = sprintf(
+            "select * from docenum where famid='%s' and attrid='%s' and (disabled is null or not disabled) order by eorder",
+            pg_escape_string($famid),
+            pg_escape_string($attrid)
+        );
+        \Anakeen\Core\DbManager::query($sql, $results);
         $tItems = array();
         $hierarchy = array();
         foreach ($results as $item) {

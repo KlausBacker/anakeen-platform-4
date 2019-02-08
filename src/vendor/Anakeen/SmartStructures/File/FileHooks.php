@@ -18,7 +18,7 @@ class FileHooks extends \Anakeen\SmartElement
     {
         parent::registerHooks();
         $this->getHooks()->addListener(SmartHooks::POSTSTORE, function () {
-            $filename = $this->vault_filename("FI_FILE");
+            $filename = $this->vaultFilename("FI_FILE");
 
             if ($this->getRawValue("FI_TITLEW") == "") {
                 $this->SetValue("FI_TITLE", $filename);

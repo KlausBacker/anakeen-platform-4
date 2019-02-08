@@ -961,7 +961,7 @@ class FormatCollection
         $info = null;
 
         if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
-            //  $info = new Format\noAccessAttributeValue($this->noAccessText);
+            //  $info = new Format\NoAccessAttributeValue($this->noAccessText);
             $info = null;
         } else {
             switch ($oa->type) {

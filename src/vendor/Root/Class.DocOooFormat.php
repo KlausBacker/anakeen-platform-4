@@ -188,7 +188,7 @@ class DocOooFormat
      */
     public function formatImage($avalue)
     {
-        $oooval = $this->doc->vault_filename_fromvalue($avalue, true);
+        $oooval = $this->doc->vaultFilenameFromvalue($avalue, true);
 
         return $oooval;
     }
@@ -202,7 +202,7 @@ class DocOooFormat
      */
     public function formatFile($avalue)
     {
-        $oooval = $this->doc->vault_filename_fromvalue($avalue, false);
+        $oooval = $this->doc->vaultFilenameFromvalue($avalue, false);
         return $oooval;
     }
 

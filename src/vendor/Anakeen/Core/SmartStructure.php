@@ -677,7 +677,7 @@ create unique index idx_idfam on docfam(id);";
 
 
         $dvi = new \DocVaultIndex($this->dbaccess);
-        $dvi->DeleteDoc($this->id);
+        $dvi->deleteDoc($this->id);
 
         $tvid = \Anakeen\Core\Utils\VidExtractor::getVidsFromDocFam($this);
 
