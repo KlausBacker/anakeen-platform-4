@@ -582,7 +582,7 @@ function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
 {
     $sort = 'lastname';
     $searchinmail = false;
-    $s = new SearchAccount();
+    $s = new \Anakeen\Accounts\SearchAccounts();
     $s->setSlice($limit);
     if (preg_match('/usemailfilter\s*=([^|]*)/', $options, $regMatch)) {
         $searchinmail = trim($regMatch[1]);

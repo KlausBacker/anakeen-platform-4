@@ -1,23 +1,18 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
 
 /**
  * Search Account : User / Group / Role
  *
- * @author  Anakeen
- * @package FDL
  */
 
+namespace Anakeen\Accounts;
 
 use Anakeen\Core\DbManager;
 
 /**
- * @class SearchAccount
  * @code
- * $s = new SearchAccount();
+ * $s = new SearchAccounts();
  * $s->addRoleFilter($s->getLoginFromDocName('TST_ROLEWRITTER'));
  * $s->addGroupFilter("all");
  * $s->addFilter("mail ~ '%s'", "test");
@@ -27,7 +22,7 @@ use Anakeen\Core\DbManager;
  * }
  * @endcode
  */
-class SearchAccount
+class SearchAccounts
 {
     /**
      * user type filter
@@ -78,7 +73,7 @@ class SearchAccount
      *
      * @param string $role role reference (login)
      *
-     * @throws Dcp\Sacc\Exception
+     * @throws Exception
      */
     public function addRoleFilter($role)
     {
@@ -93,7 +88,7 @@ class SearchAccount
                 $sql = sprintf("select id from users where accounttype='R' and login='%s'", pg_escape_string(mb_strtolower($aRole)));
                 DbManager::query($sql, $result, true, true);
                 if (!$result) {
-                    throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0002", $aRole));
+                    throw new Exception(\ErrorCode::getError("SACC0002", $aRole));
                 }
                 $this->roleFilters[] = $result;
             }
@@ -107,7 +102,7 @@ class SearchAccount
      *
      * @param string $group group name (login)
      *
-     * @throws Dcp\Sacc\Exception
+     * @throws Exception
      */
     public function addGroupFilter($group)
     {
@@ -122,7 +117,7 @@ class SearchAccount
                 $sql = sprintf("select id from users where accounttype='G' and login='%s'", pg_escape_string($aGroup));
                 DbManager::query($sql, $result, true, true);
                 if (!$result) {
-                    throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0005", $aGroup));
+                    throw new Exception(\ErrorCode::getError("SACC0005", $aGroup));
                 }
                 $this->groupFilters[] = $result;
             }
@@ -192,12 +187,12 @@ class SearchAccount
      *
      * @param int|string $slice
      *
-     * @throws Dcp\Sacc\Exception
+     * @throws Exception
      */
     public function setSlice($slice)
     {
         if (((!is_numeric($slice)) && (strtolower($slice) != 'all')) || ($slice < 0)) {
-            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0003", $slice));
+            throw new Exception(\ErrorCode::getError("SACC0003", $slice));
         }
         if (is_numeric($slice)) {
             $this->slice = intval($slice);
@@ -213,12 +208,12 @@ class SearchAccount
      *
      * @param int $start
      *
-     * @throws Dcp\Sacc\Exception
+     * @throws Exception
      */
     public function setStart($start)
     {
         if ((!is_numeric($start)) || ($start < 0)) {
-            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0004", $start));
+            throw new Exception(\ErrorCode::getError("SACC0004", $start));
         }
         $this->start = intval($start);
     }
@@ -244,12 +239,12 @@ class SearchAccount
      *
      * @param string $type self::returnDocument or self::returnAccount
      *
-     * @throws Dcp\Sacc\Exception
+     * @throws Exception
      */
     public function setObjectReturn($type)
     {
         if ($type != self::returnAccount && $type != self::returnDocument) {
-            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0001", $type));
+            throw new Exception(\ErrorCode::getError("SACC0001", $type));
         }
         $this->returnType = $type;
     }
@@ -261,12 +256,12 @@ class SearchAccount
      *
      * @param string $type self::returnDocument or self::returnAccount
      *
-     * @throws Dcp\Sacc\Exception
+     * @throws Exception
      */
     public function setReturnType($type)
     {
         if ($type != self::returnAccount && $type != self::returnDocument) {
-            throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0001", $type));
+            throw new Exception(\ErrorCode::getError("SACC0001", $type));
         }
         $this->returnType = $type;
     }
@@ -292,14 +287,14 @@ class SearchAccount
     /**
      * @param string $family
      *
-     * @throws Dcp\Sacc\Exception if $family is not a valid family name
+     * @throws Exception if $family is not a valid family name
      */
     public function filterFamily($family)
     {
         if (!is_numeric($family)) {
             $famId = \Anakeen\Core\SEManager::getFamilyIdFromName($family);
             if (!$famId) {
-                throw new Dcp\Sacc\Exception(ErrorCode::getError("SACC0006", $family));
+                throw new Exception(\ErrorCode::getError("SACC0006", $family));
             }
             $this->familyFilter = $famId;
         } else {
@@ -311,7 +306,7 @@ class SearchAccount
      * send search of account's object
      *
      * @api send search of account's object
-     * @return DocumentList|AccountList
+     * @return \DocumentList|AccountList
      */
     public function search()
     {
@@ -326,7 +321,7 @@ class SearchAccount
                     $ids[] = $account["fid"];
                 }
             }
-            $dl = new DocumentList();
+            $dl = new \DocumentList();
 
             $dl->addDocumentIdentifiers($ids);
             return $dl;
@@ -360,7 +355,7 @@ class SearchAccount
 
         $u = \Anakeen\Core\ContextManager::getCurrentUser();
         if ($this->viewControl && $u->id != 1) {
-            $viewVector = SearchDoc::getUserViewVector($u->id);
+            $viewVector = \SearchDoc::getUserViewVector($u->id);
             if ($this->familyFilter) {
                 $table = "doc" . $this->familyFilter;
                 $sql = sprintf("select users.* from users, $table where users.fid = $table.id and $table.views && '%s' and %s ", $viewVector, $groupRoleFilter);

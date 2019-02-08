@@ -1,11 +1,11 @@
 <?php
 
-namespace Dcp\Sacc;
+namespace Anakeen\Accounts;
 
 /**
  * Account search exception
  * Exception used to checking manage user/group/role
- * @see \SearchAccount
+ * @see \Anakeen\Accounts\SearchAccounts
  */
 class Exception extends \Anakeen\Exception
 {

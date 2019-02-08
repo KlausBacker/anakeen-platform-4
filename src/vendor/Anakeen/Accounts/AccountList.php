@@ -1,9 +1,11 @@
 <?php
 
-class AccountList implements Iterator, Countable
+namespace Anakeen\Accounts;
+
+class AccountList implements \Iterator, \Countable
 {
     /**
-     * @var null|SearchAccount
+     * @var null|\Anakeen\Accounts\SearchAccounts
      */
     private $accountsData = null;
     /**
@@ -11,8 +13,7 @@ class AccountList implements Iterator, Countable
      */
     private $currentAccount = null;
     private $currentIndex = 0;
-    
-    private $init = false;
+
     public $length = 0;
     
     public function __construct(array $data)

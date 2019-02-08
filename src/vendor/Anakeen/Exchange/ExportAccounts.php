@@ -13,7 +13,7 @@ use Anakeen\Exception;
 class ExportAccounts
 {
     /**
-     * @var \SearchAccount
+     * @var \Anakeen\Accounts\SearchAccounts
      */
     protected $search = null;
     /**
@@ -64,9 +64,9 @@ class ExportAccounts
     /**
      * Define accounts to exports
      *
-     * @param \SearchAccount $s
+     * @param \Anakeen\Accounts\SearchAccounts $s
      */
-    public function setSearchAccount(\SearchAccount $s)
+    public function setSearchAccount(\Anakeen\Accounts\SearchAccounts $s)
     {
         $this->search = $s;
     }

@@ -160,7 +160,6 @@ class CollectionDataFormatter
      * Format the collection and return the array of result
      *
      * @return array
-     * @throws \Dcp\Fmtc\Exception
      */
     public function format()
     {
