@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Core;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Core\SmartStructure\SmartFieldValueException;
 use Anakeen\Core\Utils\Gettext;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -68,7 +69,7 @@ class DocumentUpdateData extends DocumentData
                 } else {
                     $this->_document->setAttributeValue($aid, $value);
                 }
-            } catch (\Dcp\AttributeValue\Exception $e) {
+            } catch (SmartFieldValueException $e) {
                 $exception = new Exception("ROUTES0107", $this->_document->id, $aid, $e->getDcpMessage());
                 $exception->setHttpStatus("500", "Unable to modify the document");
                 $exception->setUserMEssage(___("Document update failed", "ank"));

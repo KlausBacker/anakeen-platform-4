@@ -1,7 +1,7 @@
 <?php
 function tstSearchDocSsearch($start = "0", $slice = "ALL", $userid = 0)
 {
-    $s = new \SearchDoc();
+    $s = new \Anakeen\Search\Internal\SearchSmartData();
     $s->setObjectReturn(false);
     $s->setSlice($slice);
     $s->setStart($start);

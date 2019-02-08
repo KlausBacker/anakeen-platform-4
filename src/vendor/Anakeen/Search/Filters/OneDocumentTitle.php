@@ -11,7 +11,7 @@ use Anakeen\Search;
 
 class OneDocumentTitle extends StandardDocumentTitleFilter implements ElementSearchFilter
 {
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {

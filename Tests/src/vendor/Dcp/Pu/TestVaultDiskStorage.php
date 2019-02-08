@@ -6,6 +6,8 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Vault\DiskStorage;
+
 /**
  * @author Anakeen
  * @package Dcp\Pu
@@ -32,7 +34,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
     {
         $id_file = null;
 
-        $vds = new \VaultDiskStorage(self::$dbaccess);
+        $vds = new \Anakeen\Vault\DiskStorage(self::$dbaccess);
         $err = $vds->store($data['infile'], $data['public_access'], $id_file);
         if (!$data['expect:success']) {
             $this->assertNotEmpty($err, sprintf("Store(%s) did not returned with an expected error.", $data['infile']));
@@ -69,18 +71,18 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
     {
         $id_file = null;
 
-        $vds = new \VaultdiskStorage(self::$dbaccess);
+        $vds = new DiskStorage(self::$dbaccess);
         $err = $vds->store($data['infile'], false, $id_file);
         if ($err != '') {
             $this->markTestIncomplete(sprintf("Store(%s) returned with error: %s", $data['infile'], $err));
         }
 
         $vfi = null;
-        $vds = new \VaultDiskStorage(self::$dbaccess);
+        $vds = new \Anakeen\Vault\DiskStorage(self::$dbaccess);
         $err = $vds->show($id_file, $vfi);
         $this->assertEmpty($err, sprintf("show(%s) returned with error: %s", $id_file, $err));
         $this->assertTrue(is_object($vfi), sprintf("show(%s) did not returned an object.", $id_file));
-        $this->assertTrue(is_a($vfi, '\VaultFileInfo'), sprintf("show(%s) dit not returned a VaultFileInfo object: class is %s", $id_file, get_class($vfi)));
+        $this->assertTrue(is_a($vfi, \Anakeen\Vault\FileInfo::class), sprintf("show(%s) dit not returned a Anakeen\Vault\FileInfo object: class is %s", $id_file, get_class($vfi)));
     }
 
     public function dataShow()
@@ -101,13 +103,13 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
     {
         $id_file = null;
 
-        $vds = new \VaultDiskStorage(self::$dbaccess);
+        $vds = new \Anakeen\Vault\DiskStorage(self::$dbaccess);
         $err = $vds->store($data['infile'], false, $id_file);
         if ($err != '') {
             $this->markTestIncomplete(sprintf("Store(%s) returned with error: %s", $data['infile'], $err));
         }
 
-        $vds = new \VaultDiskStorage(self::$dbaccess, $id_file);
+        $vds = new \Anakeen\Vault\DiskStorage(self::$dbaccess, $id_file);
         $this->assertTrue($vds->isAffected(), sprintf("Could not get back id_file '%s' from previously stored file '%s'.", $id_file, $data['infile']));
 
         $path = $vds->getPath();
@@ -133,13 +135,13 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
     {
         $id_file = null;
 
-        $vds = new \VaultDiskStorage(self::$dbaccess);
+        $vds = new \Anakeen\Vault\DiskStorage(self::$dbaccess);
         $err = $vds->store($data['infile'], false, $id_file);
         if ($err != '') {
-            $this->markTestIncomplete(sprintf("Store(%s) returned with error: %s", $err));
+            $this->markTestIncomplete(sprintf("Store returned with error: %s", $err));
         }
 
-        $vds = new \VaultDiskStorage(self::$dbaccess, $id_file);
+        $vds = new \Anakeen\Vault\DiskStorage(self::$dbaccess, $id_file);
         if (!$vds->isAffected()) {
             $this->markTestIncomplete(sprintf("Could not get back id_file '%s' from previously stored file '%s'.", $id_file, $data['infile']));
         }
@@ -153,7 +155,7 @@ class TestVaultDiskStorage extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, sprintf("Destroy() returned with error: %s", $err));
         $this->assertFalse(is_file($path), sprintf("File '%s' from id_file %s is still present after Destroy().", $path, $id_file));
 
-        $vds = new \VaultDiskStorage(self::$dbaccess, $id_file);
+        $vds = new \Anakeen\Vault\DiskStorage(self::$dbaccess, $id_file);
         $this->assertFalse($vds->isAffected(), sprintf("id_file '%s' is still present in database after Destroy().", $id_file));
     }
 

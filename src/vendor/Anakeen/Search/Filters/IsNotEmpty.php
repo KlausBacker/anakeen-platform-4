@@ -13,10 +13,12 @@ class IsNotEmpty extends StandardAttributeFilter implements ElementSearchFilter
 {
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $this->verifyCompatibility($search);
         $search->addFilter(sprintf('%s IS NOT NULL', pg_escape_string($this->attributeId)));

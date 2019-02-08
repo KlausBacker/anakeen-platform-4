@@ -19,7 +19,7 @@ class MailtemplateAutoComplete
      * @param array                     $args
      * @return SmartAutocompleteResponse
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public static function getMailAddresses(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, array $args): SmartAutocompleteResponse
     {
@@ -118,7 +118,7 @@ class MailtemplateAutoComplete
     protected static function recipientDocument(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response)
     {
         $name = $request->getFilterValue();
-        $sf = new \SearchDoc("", -1);
+        $sf = new \Anakeen\Search\Internal\SearchSmartData("", -1);
         $sf->setObjectReturn();
         $sf->overrideViewControl();
         $sf->addFilter("atags ~* E'\\\\yMAILRECIPIENT\\\\y'");
@@ -137,7 +137,7 @@ class MailtemplateAutoComplete
             }
 
             $mailAttr = $cfam->getMailAttribute();
-            $s = new \SearchDoc("", $fam->id);
+            $s = new \Anakeen\Search\Internal\SearchSmartData("", $fam->id);
             $s->setObjectReturn();
             $s->setSlice(100);
             if ($mailAttr) {

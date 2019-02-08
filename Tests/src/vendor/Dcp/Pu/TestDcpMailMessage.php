@@ -20,12 +20,12 @@ class TestDcpMailMessage extends TestCaseDcp
      */
     public function testMailAddrParser($str, $expectedMails)
     {
-        $p = new \Dcp\Mail\MailAddrParser();
+        $p = new \Anakeen\Mail\MailAddrParser();
         $addrList = array();
         $err = '';
         try {
             $addrList = $p->parse($str);
-        } catch (\Dcp\Mail\MailAddrParserException $e) {
+        } catch (\Anakeen\Mail\MailAddrParserException $e) {
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, sprintf("Unexpected parse error: %s", $err));

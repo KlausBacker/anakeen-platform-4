@@ -24,11 +24,13 @@ class HasUserTag extends StandardAttributeFilter implements ElementSearchFilter
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $search->join("id = docutag(id)");
         $sql = sprintf("(docutag.uid = %s AND docutag.tag = %s)", pg_escape_literal($this->uid), pg_escape_literal($this->value));

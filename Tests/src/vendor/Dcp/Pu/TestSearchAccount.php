@@ -32,7 +32,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testSearchByRole($roleFilter, $groupFilter, array $expectedAccounts)
     {
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         if ($roleFilter) {
             $s->addRoleFilter($roleFilter);
         }
@@ -41,7 +41,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         }
         $s->setReturnType($s::returnAccount);
         /**
-         * @var \AccountList $al
+         * @var \Anakeen\Accounts\AccountList $al
          */
         $al = $s->search();
         
@@ -63,7 +63,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         }
     }
     
-    private function getAccounlLogin(\AccountList $al)
+    private function getAccounlLogin(\Anakeen\Accounts\AccountList $al)
     {
         $logins = array();
         /**
@@ -79,7 +79,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testSearchByRoleDocument($roleFilter, $groupFilter, array $expectedAccounts)
     {
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         if ($roleFilter) {
             $s->addRoleFilter($roleFilter);
         }
@@ -117,14 +117,14 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testCountSearchByRole($slice, $start, $order, $roleFilter, array $expectedAccounts)
     {
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         $s->addRoleFilter($roleFilter);
         $s->setSlice($slice);
         $s->setStart($start);
         $s->setOrder($order);
         $s->setReturnType($s::returnAccount);
         /**
-         * @var \AccountList $al
+         * @var \Anakeen\Accounts\AccountList $al
          */
         $al = $s->search();
         
@@ -144,7 +144,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testFilterSearch($filter, $filterArg, $accountType, array $expectedAccounts)
     {
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         $s->addFilter($filter, $filterArg);
         if ($accountType) {
             $s->setTypeFilter($accountType);
@@ -152,7 +152,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
         $s->setOrder("login");
         $s->setReturnType($s::returnAccount);
         /**
-         * @var \AccountList $al
+         * @var \Anakeen\Accounts\AccountList $al
          */
         $al = $s->search();
         
@@ -175,13 +175,13 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     public function testFilterViewControl($login, $filter, $filterArg, array $expectedAccounts)
     {
         $this->sudo($login);
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         $s->addFilter($filter, $filterArg);
         $s->setOrder("login");
         $s->overrideViewControl(false);
         $s->setReturnType($s::returnAccount);
         /**
-         * @var \AccountList $al
+         * @var \Anakeen\Accounts\AccountList $al
          */
         $al = $s->search();
         
@@ -205,7 +205,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testDocName2Login($docName, $login)
     {
-        $this->assertEquals(mb_strtolower($login), \SearchAccount::getLoginFromDocName($docName), "logical name convert to login failed");
+        $this->assertEquals(mb_strtolower($login), \Anakeen\Accounts\SearchAccounts::getLoginFromDocName($docName), "logical name convert to login failed");
     }
     /**
      * @dataProvider dataFilterByFamily
@@ -213,14 +213,14 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
     public function testFilterByFamily($family, $filter, $expectedCount)
     {
         $this->sudo("tstlogina1");
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         $s->addFilter($filter);
         $s->setOrder("login");
         $s->overrideViewControl(false);
         $s->setReturnType($s::returnAccount);
         $s->filterFamily($family);
         /**
-         * @var \AccountList $al
+         * @var \Anakeen\Accounts\AccountList $al
          */
         $al = $s->search();
         
@@ -234,14 +234,14 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
      */
     public function testFilterByFamilyNoView($family, $filter, $expectedCount)
     {
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         $s->addFilter($filter);
         $s->setOrder("login");
         $s->overrideViewControl(true);
         $s->setReturnType($s::returnAccount);
         $s->filterFamily($family);
         /**
-         * @var \AccountList $al
+         * @var \Anakeen\Accounts\AccountList $al
          */
         $al = $s->search();
         
@@ -312,7 +312,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             array(
                 "filter" => "login ~ '^tst.*1$'",
                 "arg" => '^tst.*1$',
-                "type" => \SearchAccount::userType,
+                "type" => \Anakeen\Accounts\SearchAccounts::userType,
                 array(
                     "tstLoginA1",
                     "tstLoginU1",
@@ -322,7 +322,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             array(
                 "filter" => "login ~ '%s'",
                 "arg" => '^tst.*1$',
-                "type" => \SearchAccount::groupType,
+                "type" => \Anakeen\Accounts\SearchAccounts::groupType,
                 array(
                     "tstLoginG1"
                 )
@@ -330,7 +330,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             array(
                 "filter" => "login ~ '%s'",
                 "arg" => '^tst.*1$',
-                "type" => \SearchAccount::roleType,
+                "type" => \Anakeen\Accounts\SearchAccounts::roleType,
                 array(
                     "tstLoginR1"
                 )
@@ -338,7 +338,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             array(
                 "filter" => "login ~ '%s'",
                 "arg" => '^tst.*1$',
-                "type" => \SearchAccount::roleType | \SearchAccount::groupType,
+                "type" => \Anakeen\Accounts\SearchAccounts::roleType | \Anakeen\Accounts\SearchAccounts::groupType,
                 array(
                     "tstLoginG1",
                     "tstLoginR1"
@@ -347,7 +347,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             array(
                 "filter" => "login ~ '%s'",
                 "arg" => '^tst.*1$',
-                "type" => \SearchAccount::userType | \SearchAccount::groupType,
+                "type" => \Anakeen\Accounts\SearchAccounts::userType | \Anakeen\Accounts\SearchAccounts::groupType,
                 array(
                     "tstLoginA1",
                     "tstLoginG1",
@@ -358,7 +358,7 @@ class TestSearchAccount extends TestCaseDcpCommonFamily
             array(
                 "filter" => "login ~ '%s'",
                 "arg" => '^tst.*1$',
-                "type" => \SearchAccount::userType | \SearchAccount::roleType,
+                "type" => \Anakeen\Accounts\SearchAccounts::userType | \Anakeen\Accounts\SearchAccounts::roleType,
                 array(
                     "tstLoginA1",
                     "tstLoginR1",

@@ -9,7 +9,6 @@ namespace Anakeen\Core\Internal;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\Utils\Date;
-use Anakeen\Exception;
 use SmartStructure\Wdoc;
 
 /**
@@ -248,7 +247,7 @@ class FormatCollection
     /**
      * @param string $propDateStyle
      * @return $this
-     * @throws \Dcp\Fmtc\Exception
+     * @throws Format\Exception
      */
     public function setPropDateStyle($propDateStyle)
     {
@@ -258,7 +257,7 @@ class FormatCollection
             Format\DateAttributeValue::isoWTStyle,
             Format\DateAttributeValue::isoStyle
         ))) {
-            throw new \Dcp\Fmtc\Exception("FMTC0003", $propDateStyle);
+            throw new Format\Exception("FMTC0003", $propDateStyle);
         }
         $this->propDateStyle = $propDateStyle;
         return $this;
@@ -332,7 +331,7 @@ class FormatCollection
      * possible values are :DateAttributeValue::defaultStyle,DateAttributeValue::frenchStyle,DateAttributeValue::isoWTStyle,DateAttributeValue::isoStyle
      * @param string $style
      * @return $this
-     * @throws \Dcp\Fmtc\Exception
+     * @throws Format\Exception
      */
     public function setDateStyle($style)
     {
@@ -342,7 +341,7 @@ class FormatCollection
             Format\DateAttributeValue::isoWTStyle,
             Format\DateAttributeValue::isoStyle
         ))) {
-            throw new \Dcp\Fmtc\Exception("FMTC0003", $style);
+            throw new Format\Exception("FMTC0003", $style);
         }
         $this->dateStyle = $style;
         return $this;
@@ -352,13 +351,13 @@ class FormatCollection
      * add a property to render
      * by default id and title are rendered
      * @param string $props
-     * @throws \Dcp\Fmtc\Exception
+     * @throws Format\Exception
      * @return \Anakeen\Core\Internal\FormatCollection
      */
     public function addProperty($props)
     {
         if ((!in_array($props, $this->propsKeys) && ($props != self::propUrl))) {
-            throw new \Dcp\Fmtc\Exception("FMTC0001", $props);
+            throw new Format\Exception("FMTC0001", $props);
         }
         $this->fmtProps[$props] = $props;
         return $this;
@@ -480,7 +479,7 @@ class FormatCollection
 
     /**
      * return formatted document list to be easily exported in other format
-     * @throws \Dcp\Fmtc\Exception
+     * @throws Format\Exception
      * @return array
      */
     public function render()
@@ -504,7 +503,7 @@ class FormatCollection
                 $oa = $doc->getAttribute($attrid);
                 if ($oa) {
                     if (($oa->type == "array") || ($oa->type == "tab") || ($oa->type == "frame")) {
-                        throw new \Dcp\Fmtc\Exception("FMTC0002", $attrid);
+                        throw new Format\Exception("FMTC0002", $attrid);
                     }
 
                     $value = $doc->getRawValue($oa->id);
@@ -924,7 +923,7 @@ class FormatCollection
                             $tvv = $this->rtrimNull($av);
                         } else {
                             // Not possible
-                            throw new Exception(sprintf("Incorrect value for multiple x2 \"%s\" \"%s\"", $av, $value));
+                            throw new Format\Exception(sprintf("Incorrect value for multiple x2 \"%s\" \"%s\"", $av, $value));
                         }
                         if (count($tvv) == 0) {
                             $info[$k] = array();
@@ -961,7 +960,7 @@ class FormatCollection
         $info = null;
 
         if ($this->verifyAttributeAccess === true && !FieldAccessManager::hasReadAccess($doc, $oa)) {
-            //  $info = new Format\noAccessAttributeValue($this->noAccessText);
+            //  $info = new Format\NoAccessAttributeValue($this->noAccessText);
             $info = null;
         } else {
             switch ($oa->type) {

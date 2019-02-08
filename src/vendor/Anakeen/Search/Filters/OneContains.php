@@ -3,7 +3,6 @@
 namespace Anakeen\Search\Filters;
 
 use Anakeen\Core\SmartStructure\NormalAttribute;
-use Anakeen\Search;
 
 class OneContains extends StandardAttributeFilter implements ElementSearchFilter
 {
@@ -12,13 +11,14 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
     const ALL = 4;
     protected $NOT = false;
     protected $NOCASE = false;
-    protected $compatibleType = array(
-        'text',
-        'htmltext',
-        'longtext'
-    );
+    protected $compatibleType
+        = array(
+            'text',
+            'htmltext',
+            'longtext'
+        );
     protected $value = null;
-    protected $ALL= false;
+    protected $ALL = false;
 
     public function __construct($attrId, $value)
     {
@@ -32,7 +32,8 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
             $this->ALL = $this->ALL | ($argv[0] & self::ALL);
         }
     }
-    public function verifyCompatibility(\SearchDoc & $search)
+
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -40,17 +41,21 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
         }
         return $attr;
     }
+
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
         $search->addFilter($this->_filter($attr, $this->value));
         return $this;
     }
+
     protected function _filter(NormalAttribute & $attr, $value)
     {
         /*
@@ -59,7 +64,14 @@ class OneContains extends StandardAttributeFilter implements ElementSearchFilter
          * - http://www.postgresql.org/docs/9.1/static/functions-matching.html#POSIX-METASYNTAX
         */
         $value = '***=' . $value;
-        $sql = sprintf("%s IS NOT NULL AND %s ~%s< %s(%s)", pg_escape_identifier($attr->id), pg_escape_literal($value), ($this->NOCASE ? '*' : ''), ($this->ALL ? 'ALL' : 'ANY'), pg_escape_identifier($attr->id));
+        $sql = sprintf(
+            "%s IS NOT NULL AND %s ~%s< %s(%s)",
+            pg_escape_identifier($attr->id),
+            pg_escape_literal($value),
+            ($this->NOCASE ? '*' : ''),
+            ($this->ALL ? 'ALL' : 'ANY'),
+            pg_escape_identifier($attr->id)
+        );
         if ($this->NOT) {
             $sql = sprintf("NOT(%s)", $sql);
         }

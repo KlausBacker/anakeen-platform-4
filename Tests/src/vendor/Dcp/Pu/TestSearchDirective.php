@@ -46,7 +46,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $dir = SEManager::getDocument($dirId);
         $this->assertTrue($dir->isAlive(), sprintf("Could not get search with id '%s'.", $dirId));
         
-        $search = new \SearchDoc(self::$dbaccess, 0);
+        $search = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, 0);
         $search->setObjectReturn();
         $search->useCollection($dirId);
         $search->addFilter("name ~ '^TST_USEFOR'");
@@ -185,7 +185,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
      */
     public function testSearchDocOnlyCount($fam, $properties, $methods, $filters, $expectedCount)
     {
-        $search = new \SearchDoc(self::$dbaccess, $fam);
+        $search = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $fam);
         if (is_array($properties)) {
             foreach ($properties as $prop => $value) {
                 $search->$prop = $value;
@@ -307,7 +307,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
      */
     function testSearchDocSetOrder($fam, $orderby, $orderbyLabel, $expectedCount, $expectedTitles = array())
     {
-        $search = new \SearchDoc(self::$dbaccess, $fam);
+        $search = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $fam);
         $search->setObjectReturn(true);
         $search->setOrder($orderby, $orderbyLabel);
         $search->search();
@@ -447,7 +447,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
      */
     function testSearchDocSetOrderWithCollection($collectionId, $orderby, $orderbyLabel, $expectedCount, $expectedTitles = array())
     {
-        $search = new \SearchDoc(self::$dbaccess);
+        $search = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess);
         $search->useCollection($collectionId);
         $search->setObjectReturn(true);
         $search->setOrder($orderby, $orderbyLabel);

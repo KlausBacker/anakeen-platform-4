@@ -29,7 +29,7 @@ class DocumentList
     protected $orderBy = "title:asc";
 
     /**
-     * @var \SearchDoc
+     * @var \Anakeen\Search\Internal\SearchSmartData
      */
     protected $_searchDoc = null;
 
@@ -188,7 +188,7 @@ class DocumentList
      */
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new \SearchDoc();
+        $this->_searchDoc = new \Anakeen\Search\Internal\SearchSmartData();
         $this->_searchDoc->setObjectReturn();
         $this->_searchDoc->excludeConfidential(true);
     }

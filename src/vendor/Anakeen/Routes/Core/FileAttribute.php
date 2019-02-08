@@ -69,7 +69,7 @@ class FileAttribute
     /**
      * @param string $resourceId
      *
-     * @return \vaultFileInfo
+     * @return \Anakeen\Vault\FileInfo
      * @throws Exception
      */
     protected function getFileInfo($resourceId)
@@ -165,7 +165,7 @@ class FileAttribute
                 $zip->addFile($fileInfo->path, sprintf($fileNamePattern, $k + 1, $fileInfo->name));
             }
             $zip->close();
-            $fileInfo = new \vaultFileInfo();
+            $fileInfo = new \Anakeen\Vault\FileInfo();
             $fileInfo->id_file = $this->tmpFlag;
             $fileInfo->name = $attribute->getLabel() . ".zip";
             $fileInfo->path = $tmpZip;

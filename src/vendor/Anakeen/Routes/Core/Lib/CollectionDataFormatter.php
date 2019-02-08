@@ -57,9 +57,9 @@ class CollectionDataFormatter
         } elseif (is_a($source, "DocumentList")) {
             $this->formatCollection = new \Anakeen\Core\Internal\FormatCollection();
             $this->formatCollection->useCollection($source);
-        } elseif (is_a($source, "SearchDoc")) {
+        } elseif (is_a($source, "\Anakeen\Search\Internal\SearchSmartData")) {
             $this->formatCollection = new \Anakeen\Core\Internal\FormatCollection();
-            /* @var \SearchDoc $source */
+            /* @var \Anakeen\Search\Internal\SearchSmartData $source */
             $docList = $source->getDocumentList();
             $this->formatCollection->useCollection($docList);
         } else {
@@ -160,7 +160,6 @@ class CollectionDataFormatter
      * Format the collection and return the array of result
      *
      * @return array
-     * @throws \Dcp\Fmtc\Exception
      */
     public function format()
     {

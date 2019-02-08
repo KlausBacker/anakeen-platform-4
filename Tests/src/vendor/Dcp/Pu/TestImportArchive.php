@@ -35,7 +35,7 @@ class TestImportArchive extends TestCaseDcpCommonFamily
 
         $this->assertEmpty($err, sprintf("import error %s", $err));
         foreach ($resultDocuments as $expected) {
-            $s = new \SearchDoc('', $expected["family"]);
+            $s = new \Anakeen\Search\Internal\SearchSmartData('', $expected["family"]);
             $s->addFilter("title = '%s'", $expected["title"]);
             $count = $s->onlyCount();
             $this->assertGreaterThan(0, $count, sprintf("document %s not imported from archive %s", $expected["title"], $archiveFile));

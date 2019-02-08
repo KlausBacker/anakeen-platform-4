@@ -21,7 +21,7 @@ class ImageAttribute extends FileAttribute
     protected $size;
     protected $imageFileName;
     /**
-     * @var \VaultFileInfo
+     * @var \Anakeen\Vault\FileInfo
      */
     protected $fileInfo;
     protected $extension;

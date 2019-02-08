@@ -128,7 +128,7 @@ class TestProfil extends TestCaseDcpCommonFamily
         $this->sudo($login);
         
         $this->resetDocumentCache();
-        $s = new \SearchDoc(self::$dbaccess, $famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $famName);
         $s->search();
         
         $this->assertEquals($expectNumber, $s->count(), sprintf("query:%s: %s", print_r($s->getSearchInfo(), true), print_r($this->getViews($famName), true)));

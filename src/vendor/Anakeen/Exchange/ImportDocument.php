@@ -231,7 +231,7 @@ class ImportDocument
             if (!$flog) {
                 \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("cannot write log in %s"), $log));
             } else {
-                $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"));
+                $lay = new \Anakeen\Layout\TextLayout(sprintf("%s/vendor/Anakeen/Core/Layout/%s", DEFAULT_PUBDIR, "reportImport.xml"));
                 $this->writeHtmlCr($lay);
                 fputs($flog, $lay->gen());
                 fclose($flog);
@@ -242,11 +242,11 @@ class ImportDocument
     /**
      * internal method use only from freedom_import
      *
-     * @param \Layout $lay
+     * @param \Anakeen\Layout\TextLayout $lay
      *
      * @return void
      */
-    public function writeHtmlCr(\Layout & $lay)
+    public function writeHtmlCr(\Anakeen\Layout\TextLayout & $lay)
     {
         $hasError = false;
         $haswarning = false;

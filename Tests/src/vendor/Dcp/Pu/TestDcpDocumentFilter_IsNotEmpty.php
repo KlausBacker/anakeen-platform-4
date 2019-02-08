@@ -16,7 +16,7 @@ class TestDcpDocumentFilter_IsNotEmpty extends TestCaseDcpCommonFamily
      */
     public function test_IsNotEmpty($test)
     {
-        $s = new \SearchDoc("", $test["fam"]);
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", $test["fam"]);
         $s->addFilter(new \Anakeen\Search\Filters\IsNotEmpty($test["attr"]));
         $s->setObjectReturn(false);
         $res = $s->search();

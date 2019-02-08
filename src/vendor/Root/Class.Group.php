@@ -1,31 +1,14 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 /**
  * User Group Definition
  *
- * @author     Anakeen
- * @version    $Id: Class.Group.php,v 1.22 2007/03/12 08:25:55 eric Exp $
- * @package    FDL
- * @subpackage CORE
  */
 
-/**
- */
-class Group extends DbObj
+class Group extends \Anakeen\Core\Internal\DbObj
 {
-    public $fields
-        = array(
-            "iduser",
-            "idgroup"
-        );
+    public $fields = ["iduser", "idgroup"];
 
-    public $id_fields
-        = array(
-            "iduser"
-        );
+    public $id_fields = ["iduser"];
 
     public $dbtable = "groups";
 
@@ -52,16 +35,18 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      *
      * @return bool true if at least one group
      */
-    public function GetGroups()
+    public function getGroups()
     {
         $query = new \Anakeen\Core\Internal\QueryDb($this->dbaccess, self::class);
 
         $query->AddQuery("iduser='{$this->iduser}'");
-        $sql
-            = sprintf(
-            "SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d order by accounttype, lastname",
-            $this->iduser
-        );
+
+        $str = <<< 'SQL'
+SELECT groups.idgroup as gid 
+from groups, users 
+where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d order by accounttype, lastname;
+SQL;
+        $sql = sprintf($str, $this->iduser);
 
         \Anakeen\Core\DbManager::query($sql, $groupIds, true, false);
         $this->groups = $groupIds;
@@ -77,7 +62,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      *
      * @return string error message
      */
-    public function SuppressUser($uid, $nopost = false)
+    public function suppressUser($uid, $nopost = false)
     {
         $err = "";
 
@@ -98,10 +83,12 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 
     /**
      * initialise groups for a user
+     *
+     * @param $id
      */
-    public function PostSelect($id)
+    public function postSelect($id)
     {
-        $this->GetGroups();
+        $this->getGroups();
     }
 
     public function preInsert()
@@ -114,7 +101,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         return $err;
     }
 
-    public function PostDelete($uid = 0)
+    public function postDelete($uid = 0)
     {
         if ($uid) {
             $u = new \Anakeen\Core\Account("", $uid);
@@ -141,7 +128,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         }
     }
 
-    public function PostInsert()
+    public function postInsert()
     {
         $err = $this->query(sprintf("delete from sessions where userid=%d", $this->iduser));
         //    $this->FreedomCopyGroup();
@@ -194,19 +181,18 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 $u->affect($tu);
                 $u->updateMemberOf();
             }
-
         }
     }
 
     /**
      * get ascendant direct group and group of group
      */
-    public function GetAllGroups()
+    public function getAllGroups()
     {
         $allg = $this->groups;
         foreach ($this->groups as $k => $gid) {
             $og = new Group($this->dbaccess, $gid);
-            $allg = array_merge($allg, $og->GetAllGroups());
+            $allg = array_merge($allg, $og->getAllGroups());
         }
         $allg = array_unique($allg);
 
@@ -215,6 +201,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 
     /**
      * get all child (descendant) group of this group
+     *
+     * @param $pgid
      *
      * @return array id
      */
@@ -239,6 +227,9 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 
     /**
      * get all parent (ascendant) group of this group
+     *
+     * @param     $pgid
+     * @param int $level
      *
      * @return array id
      */
@@ -268,6 +259,9 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 
     /**
      * get all parent (ascendant) group of this group
+     *
+     * @param $pgid
+     * @param $uasid
      *
      * @return array id
      */

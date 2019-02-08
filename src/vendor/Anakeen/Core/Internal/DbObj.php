@@ -438,8 +438,8 @@ class DbObj
      * @param bool $nopre  PreInsert method not apply if true
      *
      * @return string error message, if no error empty string
-     * @see PreInsert()
-     * @see PostInsert()
+     * @see preInsert()
+     * @see postInsert()
      */
     public function add($nopost = false, $nopre = false)
     {
@@ -448,7 +448,7 @@ class DbObj
         }
         $msg = '';
         if (!$nopre) {
-            $msg = $this->PreInsert();
+            $msg = $this->preInsert();
         }
         if ($msg != '') {
             return $msg;
@@ -472,7 +472,7 @@ class DbObj
         }
         $this->isset = true;
         if (!$nopost) {
-            $msg = $this->PostInsert();
+            $msg = $this->postInsert();
         }
         return $msg;
     }
@@ -594,8 +594,8 @@ class DbObj
      * @param bool $nopost PostInsert method not apply if true
      *
      * @return string error message, if no error empty string
-     * @see PreInsert()
-     * @see PostInsert()
+     * @see preInsert()
+     * @see postInsert()
      */
     public function adds(&$tcopy, $nopost = false)
     {
@@ -623,7 +623,7 @@ class DbObj
         }
 
         if (!$nopost) {
-            $msg = $this->PostInsert();
+            $msg = $this->postInsert();
         }
         return $msg;
     }

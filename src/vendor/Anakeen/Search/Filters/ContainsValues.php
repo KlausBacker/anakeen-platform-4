@@ -5,6 +5,12 @@ namespace Anakeen\Search\Filters;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure\NormalAttribute;
 
+/**
+ * Class ContainsValues
+ *
+ * Filter for multiple values
+ * Verify if values are included in value set of field
+ */
 class ContainsValues extends StandardAttributeFilter implements ElementSearchFilter
 {
     const NOT = 1;
@@ -34,7 +40,7 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
             $this->NOT = ($argv[0] & self::NOT);
         }
     }
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $attr = parent::verifyCompatibility($search);
         if (!$attr->isMultiple()) {
@@ -44,18 +50,18 @@ class ContainsValues extends StandardAttributeFilter implements ElementSearchFil
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
         $value = $this->value;
         if (!is_array($value)) {
-            $value = array(
-                $value
-            );
+            $value = [$value];
         }
         $search->addFilter($this->_filter($attr, $value));
         return $this;

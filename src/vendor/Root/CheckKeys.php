@@ -30,12 +30,12 @@ class CheckKeys extends CheckData
         $this->famName = (isset($data[1])) ? trim($data[1]) : null;
         $this->attrIds = \Anakeen\Exchange\Utils::getOrder($data);
 
-        $this->CheckKeysFamily();
+        $this->checkKeysFamily();
         if (!$this->hasErrors()) {
-            $this->CheckKeysCount();
+            $this->checkKeyscount();
         }
         if (!$this->hasErrors()) {
-            $this->CheckKeysAttribute();
+            $this->checkKeysAttribute();
         }
 
         return $this;
@@ -47,7 +47,7 @@ class CheckKeys extends CheckData
      *
      * @return void
      */
-    protected function CheckKeysFamily()
+    protected function checkKeysFamily()
     {
         if ($this->famName) {
             if (!$this->checkName($this->famName)) {
@@ -81,7 +81,7 @@ class CheckKeys extends CheckData
      *
      * @return void
      */
-    protected function CheckKeysAttribute()
+    protected function checkKeysAttribute()
     {
         if ($this->family) {
             foreach ($this->attrIds as $aid) {
@@ -97,7 +97,7 @@ class CheckKeys extends CheckData
      *
      * @return void
      */
-    protected function CheckKeyscount()
+    protected function checkKeyscount()
     {
         $c = 0;
         foreach ($this->attrIds as $aid) {

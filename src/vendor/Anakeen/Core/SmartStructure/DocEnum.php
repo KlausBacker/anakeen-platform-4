@@ -136,12 +136,14 @@ create unique index i_docenum on docenum(name,  key);
             $seqName = uniqid("tmpseqenum");
             $sql = sprintf("create temporary sequence %s;", $seqName);
 
-            $sql .= sprintf(
-                "UPDATE docenum SET eorder = neworder from (SELECT *, nextval('%s') as neworder from (select * from docenum where  name='%s'  order by eorder) as tmpz) as w where w.name=docenum.name  and docenum.key=w.key;",
-                $seqName,
-                pg_escape_string($this->name)
-            );
+            $sqlPattern = <<<'SQL'
+UPDATE docenum SET eorder = neworder 
+from (SELECT *, nextval('%s') as neworder 
+   from (select * from docenum where  name='%s'  order by eorder) as tmpz) as w 
+   where w.name=docenum.name  and docenum.key=w.key;
+SQL;
 
+            $sql .= sprintf($sqlPattern, $seqName, pg_escape_string($this->name));
             DbManager::query($sql);
         }
     }
@@ -305,7 +307,7 @@ msgstr ""
             }
             // add new entry
             $msgEntry = sprintf(
-                'msgctxt "%s"'."\n".'msgid "%s"' . "\n" . 'msgstr "%s"',
+                'msgctxt "%s"' . "\n" . 'msgid "%s"' . "\n" . 'msgstr "%s"',
                 str_replace('"', '\\"', $enumName),
                 str_replace('"', '\\"', $enumId),
                 str_replace('"', '\\"', $label)

@@ -186,12 +186,12 @@ class DocHtmlFormat
                 } elseif ($htmlval === "\t" && $oattr->inArray() && $showEmpty) {
                     // array with single empty line
                     $htmlval = $showEmpty;
-                } elseif (($this->cFormat != "" && $this->cancelFormat === false) &&
-                    ($htmlval !== '') &&
-                    ($atype != "enum") &&
-                    ($atype != "doc") &&
-                    ($atype != "array") &&
-                    ($atype != "option")) {
+                } elseif (($this->cFormat != "" && $this->cancelFormat === false)
+                    && ($htmlval !== '')
+                    && ($atype != "enum")
+                    && ($atype != "doc")
+                    && ($atype != "array")
+                    && ($atype != "option")) {
                     //printf($htmlval);
                     $htmlval = sprintf($this->cFormat, $htmlval);
                 }
@@ -317,11 +317,11 @@ class DocHtmlFormat
             }
         }
         if ($this->target == "te") {
-            $htmlval = "file://" . $this->doc->vault_filename($this->oattr->id, true, $kvalue);
+            $htmlval = "file://" . $this->doc->vaultFilename($this->oattr->id, true, $kvalue);
         } else {
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-                $fileInfo = new VaultFileInfo();
-                $vf = new \VaultFile();
+                $fileInfo = new Anakeen\Vault\FileInfo();
+                $vf = new \Anakeen\Vault\VaultFile();
                 if ($vf->Show($reg[2], $fileInfo) == "") {
                     if (!file_exists($fileInfo->path)) {
                         if (!$vf->storage->fs->isAvailable()) {
@@ -370,7 +370,7 @@ class DocHtmlFormat
         static $vf = null;
 
         if (!$vf) {
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
         }
         $vid = "";
         $fileInfo = false;
@@ -382,7 +382,7 @@ class DocHtmlFormat
             $vid = $reg[2];
             $mime = $reg[1];
 
-            $fileInfo = new VaultFileInfo();
+            $fileInfo = new Anakeen\Vault\FileInfo();
             if ($vf->Show($reg[2], $fileInfo) == "") {
                 $fname = $fileInfo->name;
                 if (!file_exists($fileInfo->path)) {
@@ -501,7 +501,7 @@ class DocHtmlFormat
                             $viewfiletype = 'embed';
                             $pages = 1;
                         } else {
-                            $infopdf = new VaultFileInfo();
+                            $infopdf = new Anakeen\Vault\FileInfo();
                             $err = $vf->Show($vid, $infopdf, 'pdf');
                             if ($err == "" && \Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Client')) {
                                 if ($infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_done
@@ -526,7 +526,7 @@ class DocHtmlFormat
                         if ($imageview && (!$this->abstractMode)) {
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/widgetFile.js");
                             $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/detectPdfPlugin.js");
-                            $lay = new Layout("FDL/Layout/viewfileimage.xml");
+                            $lay = new \Anakeen\Layout\TextLayout("FDL/Layout/viewfileimage.xml");
                             $lay->set("docid", $this->doc->id);
                             $lay->set("waiting", ($waiting ? 'true' : 'false'));
                             $lay->set("attrid", $this->oattr->id);
@@ -555,7 +555,7 @@ class DocHtmlFormat
                     }
                     if ($standardview) {
                         global $action;
-                        $size = self::human_size($fileInfo->size);
+                        $size = self::humanSize($fileInfo->size);
                         $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
                         $inline = $this->oattr->getOption("inline");
                         $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\""
@@ -682,7 +682,7 @@ class DocHtmlFormat
             $displayRowCount = 10;
         }
 
-        $lay = new Layout("FDL/Layout/viewdocarray.xml");
+        $lay = new \Anakeen\Layout\TextLayout("FDL/Layout/viewdocarray.xml");
         $lay->set("issort", ($sort == "yes"));
         if (!method_exists($this->doc->attributes, "getArrayElements")) {
             return $htmlval;
@@ -702,7 +702,7 @@ class DocHtmlFormat
 
         $tval = array();
         foreach ($ta as $k => $v) {
-            if ($v->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS ) {
+            if ($v->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS) {
                 continue;
             }
             $talabel[] = array(
@@ -743,8 +743,7 @@ class DocHtmlFormat
                  * @var \Anakeen\Core\SmartStructure\NormalAttribute $va
                  */
                 foreach ($ta as $ka => $va) {
-
-                    if ($va->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS ) {
+                    if ($va->getAccess() === \Anakeen\Core\SmartStructure\BasicAttribute::NONE_ACCESS) {
                         continue;
                     }
                     if (isset($tval[$ka][$k])) {
@@ -795,7 +794,7 @@ class DocHtmlFormat
      *
      * @return bool
      */
-    public static function xt_innerXML(&$node)
+    public static function xtInnerXML(&$node)
     {
         if (!$node) {
             return false;
@@ -951,7 +950,7 @@ class DocHtmlFormat
      */
     public function formatOption($kvalue, $avalue)
     {
-        $lay = new Layout("FDL/Layout/viewdocoption.xml");
+        $lay = new \Anakeen\Layout\TextLayout("FDL/Layout/viewdocoption.xml");
         $htmlval = "";
 
         if ($kvalue > -1) {
@@ -1152,7 +1151,7 @@ class DocHtmlFormat
     public function formatIfile($kvalue, $avalue)
     {
         global $action;
-        $lay = new Layout("FDL/Layout/viewifile.xml");
+        $lay = new \Anakeen\Layout\TextLayout("FDL/Layout/viewifile.xml");
         $lay->set("aid", $this->oattr->id);
         $lay->set("id", $this->doc->id);
         $lay->set("iheight", $this->oattr->getOption("height", "200px"));
@@ -1186,17 +1185,13 @@ class DocHtmlFormat
      *
      * @return string
      */
-    private static function human_size($size)
+    private static function humanSize($size)
     {
         if (abs($size) < 1000) {
             return sprintf("%d %s", $size, n___("unit:byte", "unit:bytes", abs($size), 'sde'));
         }
         $size = $size / 1000;
-        foreach (array(
-                _("unit:kB"),
-                _("unit:MB"),
-                _("unit:GB")
-            ) as $unit) {
+        foreach ([_("unit:kB"), _("unit:MB"), _("unit:GB")] as $unit) {
             if (abs($size) < 1000) {
                 return sprintf("%3.2f %s", $size, $unit);
             }

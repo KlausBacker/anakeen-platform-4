@@ -48,7 +48,7 @@ class TestDefaultHooks extends \Anakeen\SmartElement
     
     public function searchOnFamily()
     {
-        $s = new \SearchDoc($this->dbaccess, "TST_DEFAULTFAMILY1");
+        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, "TST_DEFAULTFAMILY1");
         $s->search();
         return $s->count();
     }

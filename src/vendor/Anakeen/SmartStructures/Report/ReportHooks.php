@@ -61,8 +61,7 @@ class ReportHooks extends \SmartStructure\Dsearch
      * @return array
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\Fmtc\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function generateCSVReportStruct(
         $isPivotExport = false,
@@ -73,15 +72,12 @@ class ReportHooks extends \SmartStructure\Dsearch
         $stripHtmlTags = false,
         $renderNumber = "format"
     ) {
-        require_once 'WHAT/Class.twoDimensionalArray.php';
-        require_once 'FDL/Class.SearchDoc.php';
-
         $famId = $this->getRawValue("se_famid", 1);
         $limit = $this->getRawValue("rep_limit", "ALL");
         $order = $this->getRawValue("rep_idsort", "title");
 
         $this->setStatus(_("Doing search request"));
-        $search = new \SearchDoc($this->dbaccess, $famId);
+        $search = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, $famId);
         $search->dirid = $this->initid;
         $search->slice = $limit;
         $search->orderby = trim($order . " " . $this->getRawValue("rep_ordersort"));
@@ -115,7 +111,7 @@ class ReportHooks extends \SmartStructure\Dsearch
     }
 
     protected function generatePivotCSV(
-        \SearchDoc $search,
+        \Anakeen\Search\Internal\SearchSmartData $search,
         array $columns,
         \Anakeen\Core\Internal\SmartElement $famDoc,
         $pivotId,
@@ -246,7 +242,7 @@ class ReportHooks extends \SmartStructure\Dsearch
     /**
      * Generate a basic CSV export
      *
-     * @param \SearchDoc                          $search  the result of the report
+     * @param \Anakeen\Search\Internal\SearchSmartData                      $search  the result of the report
      * @param array                               $columns an array of id
      * @param array                               $displayOptions
      * @param \Anakeen\Core\Internal\SmartElement $famDoc  the associated family doc
@@ -256,11 +252,11 @@ class ReportHooks extends \SmartStructure\Dsearch
      * @param                                     $dateFormat
      * @param bool                                $stripHtmlFormat
      * @param string                              $renderNumber
+     *
      * @return array
-     * @throws \Dcp\Fmtc\Exception
      */
     protected function generateBasicCSV(
-        \SearchDoc $search,
+        \Anakeen\Search\Internal\SearchSmartData $search,
         array $columns,
         array $displayOptions,
         \Anakeen\Core\Internal\SmartElement $famDoc,

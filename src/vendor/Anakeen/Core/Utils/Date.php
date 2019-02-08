@@ -4,6 +4,12 @@ namespace Anakeen\Core\Utils;
 
 class Date
 {
+    /**
+     * get Current Date with current time
+     * @param bool $useMicrosecond
+     *
+     * @return string
+     */
     public static function getNow(bool $useMicrosecond = false): string
     {
         $isoDate = date("Y-m-d H:i:s");

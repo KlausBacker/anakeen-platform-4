@@ -76,7 +76,7 @@ class NotHandler
 
     public static function getHtml(array $args, $layout)
     {
-        $lay = new \Layout($layout);
+        $lay = new \Anakeen\Layout\TextLayout($layout);
         foreach ($args as $k => $arg) {
             $lay->set($k, $arg);
         }

@@ -106,7 +106,7 @@ SQL;
     protected function getFamilies()
     {
         $set = array();
-        $s = new \SearchDoc('', -1);
+        $s = new \Anakeen\Search\Internal\SearchSmartData('', -1);
         $s->setObjectReturn(true);
         $s->setOrder('id');
         /**
@@ -135,11 +135,11 @@ SQL;
         return $set;
     }
 
-    protected function searchErrors(\SearchDoc $searchDoc)
+    protected function searchErrors(\Anakeen\Search\Internal\SearchSmartData $searchDoc)
     {
         $searchDoc->search();
         if (($err = $searchDoc->searchError()) !== '') {
-            throw new \Dcp\SearchDoc\Exception($err);
+            throw new \Anakeen\Search\Exception($err);
         }
         return $searchDoc->getDocumentList();
     }

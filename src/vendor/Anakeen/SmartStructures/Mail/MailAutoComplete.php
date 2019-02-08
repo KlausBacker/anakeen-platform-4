@@ -17,12 +17,12 @@ class MailAutoComplete
      * @param SmartAutocompleteResponse $response
      * @return SmartAutocompleteResponse
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public static function getMailAddresses(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response): SmartAutocompleteResponse
     {
         $filter = $request->getFilterValue();
-        $sf = new \SearchDoc("", -1);
+        $sf = new \Anakeen\Search\Internal\SearchSmartData("", -1);
         $sf->setObjectReturn();
         $sf->overrideViewControl();
         $sf->addFilter("atags->>'MAILRECIPIENT' = 'true'");
@@ -47,7 +47,7 @@ class MailAutoComplete
             }
 
             $mailAttr = $cfam->getMailAttribute();
-            $s = new \SearchDoc("", $fam->id);
+            $s = new \Anakeen\Search\Internal\SearchSmartData("", $fam->id);
             $s->setObjectReturn();
             $s->setSlice(100);
             if ($mailAttr) {

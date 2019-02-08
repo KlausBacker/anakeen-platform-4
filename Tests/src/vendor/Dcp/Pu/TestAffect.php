@@ -27,7 +27,7 @@ class TestAffect extends TestCaseDcpCommonFamily
      */
     public function testAffect($family, $count, $one, $two)
     {
-        $s = new \SearchDoc(self::$dbaccess, $family);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $family);
         $s->setObjectReturn(true);
         $s->setOrder("initid");
         $s->search();

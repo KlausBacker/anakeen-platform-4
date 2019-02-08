@@ -15,11 +15,13 @@ class HasApplicationTag extends StandardAttributeFilter implements ElementSearch
     }
     /**
      * Generate sql part
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @throws Exception
      * @return string sql where condition
      */
-    public function addFilter(\SearchDoc $search)
+    public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $sql = sprintf("atags->'%s' is not null", pg_escape_string($this->value));
         $search->addFilter($sql);

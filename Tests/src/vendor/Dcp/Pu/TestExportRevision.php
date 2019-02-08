@@ -81,7 +81,7 @@ class TestExportRevision extends TestCaseDcpCommonFamily
     public function testExportRevisionCsv($separator, $enclosure, array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 
@@ -110,7 +110,7 @@ class TestExportRevision extends TestCaseDcpCommonFamily
     public function testExportRevisionXml(array $expectedData)
     {
         $outFile = tempnam(\Anakeen\Core\ContextManager::getTmpDir(), 'tstexport');
-        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess, $this->famName);
         $s->setObjectReturn();
         $s->search();
 

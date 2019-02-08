@@ -101,7 +101,7 @@ if ($famId) {
     $famtitle = $f->getTitle();
 }
 
-$s = new SearchDoc("", $famId);
+$s = new \Anakeen\Search\Internal\SearchSmartData("", $famId);
 $s->setObjectReturn();
 $s->orderby = 'id desc';
 $s->slice = $slice;

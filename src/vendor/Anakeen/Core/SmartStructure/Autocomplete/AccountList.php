@@ -22,7 +22,7 @@ class AccountList
     {
         $sort = 'lastname';
         $searchinmail = false;
-        $s = new \SearchAccount();
+        $s = new \Anakeen\Accounts\SearchAccounts();
         $s->setSlice(self::$limit);
         if (!empty($args["usemailfilter"])) {
             $searchinmail = ($args["usemailfilter"] === "yes");

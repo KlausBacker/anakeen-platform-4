@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 /*
  * @author Anakeen
  * @package FDL
@@ -6,11 +6,12 @@
 /**
  * Document searches classes
  */
+
 /**
  * Document searches classes
  *
- * @brief class use to search documents
- * @class DocCollection
+ * @brief   class use to search documents
+ * @class   DocCollection
  * @package FDL
  */
 class DocCollection extends \Anakeen\Core\Internal\SmartElement
@@ -20,271 +21,273 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
      *
      * @var array
      */
-    public $top = array(
-        "~*" => array(
-            "label" => "include",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} include {right}", # _("{left} include {right}")
-            "slabel" => array(
-                "file" => "filename or type include", #_("filename or type include")
-                "image" => "filename or type include",
-                "array" => "one value include", #_("one value include")
-                
-            ) ,
-            "sdynlabel" => array(
-                "file" => "{left} filename or type include {right}", #_("{left} filename or type include {right}")
-                "image" => "{left} filename or type include {right}",
-                "array" => "one value of {left} include {right}", #_("one value of {left} include {right}")
-                
-            ) ,
-            "type" => array(
-                "text",
-                "longtext",
-                "htmltext",
-                "ifile",
-                "array",
-                "file",
-                "image"
-            )
-        ) ,
-        "=~*" => array(
-            "label" => "title include",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} title include {right}", # _("{left} last or first name include {right}")
-            "slabel" => array(
-                "uid" => "last or first name include",
-                "docidtitle[]" => "one of the titles include"
-            ) , #_("title include") _("last or first name include") _("one of the titles include")
-            "sdynlabel" => array(
-                "uid" => "{left} last or first name include {right}",
-                "docidtitle[]" => "one of the titles {left} include {right}"
-            ) , #_("{left} title include {right}") _("one of the titles {left} include {right}")
-            "type" => array(
-                "uid",
-                "docid",
-                "account",
-                "docidtitle[]"
-            )
-        ) ,
+    public $top
+        = array(
+            "~*" => array(
+                "label" => "include",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} include {right}", # _("{left} include {right}")
+                "slabel" => array(
+                    "file" => "filename or type include", #_("filename or type include")
+                    "image" => "filename or type include",
+                    "array" => "one value include", #_("one value include")
+
+                ),
+                "sdynlabel" => array(
+                    "file" => "{left} filename or type include {right}", #_("{left} filename or type include {right}")
+                    "image" => "{left} filename or type include {right}",
+                    "array" => "one value of {left} include {right}", #_("one value of {left} include {right}")
+
+                ),
+                "type" => array(
+                    "text",
+                    "longtext",
+                    "htmltext",
+                    "ifile",
+                    "array",
+                    "file",
+                    "image"
+                )
+            ),
+            "=~*" => array(
+                "label" => "title include",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} title include {right}", # _("{left} last or first name include {right}")
+                "slabel" => array(
+                    "uid" => "last or first name include",
+                    "docidtitle[]" => "one of the titles include"
+                ), #_("title include") _("last or first name include") _("one of the titles include")
+                "sdynlabel" => array(
+                    "uid" => "{left} last or first name include {right}",
+                    "docidtitle[]" => "one of the titles {left} include {right}"
+                ), #_("{left} title include {right}") _("one of the titles {left} include {right}")
+                "type" => array(
+                    "uid",
+                    "docid",
+                    "account",
+                    "docidtitle[]"
+                )
+            ),
 
 
-        "=" => array(
-            "label" => "equal",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} equal {right}", # _("{left} equal {right}")
-            "slabel" => array(
-                "docid" => "identificator equal",
-                "account" => "identificator equal",
-                "uid" => "system identifiant equal"
-            ) , #_("identificator equal") _("system identifiant equal")
-            "sdynlabel" => array(
-                "docid" => "{left} identifier equal {right}",
-                "account" => "{left} identifier equal {right}",
-                "uid" => "{left} system identifier equal {right}"
-            ) , #_("{left} identifier equal {right}") _("{left} system identifier equal {right}")
-            "type" => array(
-                "text",
-                "integer",
-                "int",
-                "double",
-                "enum",
-                "date",
-                "time",
-                "timestamp",
-                "money",
-                "color",
-                "docid",
-                "account",
-                "uid"
+            "=" => array(
+                "label" => "equal",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} equal {right}", # _("{left} equal {right}")
+                "slabel" => array(
+                    "docid" => "identificator equal",
+                    "account" => "identificator equal",
+                    "uid" => "system identifiant equal"
+                ), #_("identificator equal") _("system identifiant equal")
+                "sdynlabel" => array(
+                    "docid" => "{left} identifier equal {right}",
+                    "account" => "{left} identifier equal {right}",
+                    "uid" => "{left} system identifier equal {right}"
+                ), #_("{left} identifier equal {right}") _("{left} system identifier equal {right}")
+                "type" => array(
+                    "text",
+                    "integer",
+                    "int",
+                    "double",
+                    "enum",
+                    "date",
+                    "time",
+                    "timestamp",
+                    "money",
+                    "color",
+                    "docid",
+                    "account",
+                    "uid"
+                )
+            ),
+            "~^" => array(
+                "label" => "begin by",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} begin by {right}", # _("{left} begin by {right}")
+                "type" => array(
+                    "text",
+                    "longtext"
+                )
+            ),
+            "!=" => array(
+                "label" => "not equal",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} is not equal {right}", # _("{left} is not equal {right}")
+                "sdynlabel" => array(
+                    "docid" => "{left} identifier not equal {right}",
+                    "account" => "{left} identifier not equal {right}",
+                    "uid" => "{left} system identifier not equal {right}"
+                ), #_("{left} identifier not equal {right}") _("{left} system identifier not equal {right}")
+                "slabel" => array(
+                    "docid" => "identificator not equal",
+                    "account" => "identificator not equal",
+                    "uid" => "system identifier not equal"
+                ), #_("identificator not equal") _("system identifier not equal")
+                "type" => array(
+                    "text",
+                    "integer",
+                    "int",
+                    "double",
+                    "enum",
+                    "date",
+                    "time",
+                    "timestamp",
+                    "money",
+                    "color",
+                    "docid",
+                    "account",
+                    "uid"
+                )
+            ),
+            "!~*" => array(
+                "label" => "not include",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} not include {right}", # _("{left} not include {right}")
+                "slabel" => array(
+                    "file" => "filename or type not include",
+                    "image" => "filename or type not include", #_("filename or type not include")
+                    "array" => "no value include", #_("no value include")
+
+                ),
+                "sdynlabel" => array(
+                    "file" => "{left} filename or type not include {right}",
+                    "image" => "{left} filename or type not include {right}", #_("{left} filename or type not include {right}")
+                    "array" => "{left} include no value of {right}"
+                ), #_("{left} include no value of {right}")
+                "type" => array(
+                    "text",
+                    "longtext",
+                    "htmltext",
+                    "ifile",
+                    "array",
+                    "file",
+                    "image"
+                )
+            ),
+            ">" => array(
+                "label" => "&gt;",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} greater than {right}", # _("{left} greater than {right}")
+                "type" => array(
+                    "int",
+                    "integer",
+                    "double",
+                    "date",
+                    "time",
+                    "timestamp",
+                    "money"
+                )
+            ),
+            "<" => array(
+                "label" => "&lt;",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} lesser than {right}", # _("{left} lesser than {right}")
+                "type" => array(
+                    "int",
+                    "integer",
+                    "double",
+                    "date",
+                    "time",
+                    "timestamp",
+                    "money"
+                )
+            ),
+            ">=" => array(
+                "label" => "&gt; or equal",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} greater or equal to {right}", # _("{left} greater or equal to {right}")
+                "type" => array(
+                    "int",
+                    "integer",
+                    "double",
+                    "date",
+                    "time",
+                    "timestamp",
+                    "money"
+                )
+            ),
+            "<=" => array(
+                "label" => "&lt; or equal",
+                "operand" => array(
+                    "left",
+                    "right"
+                ),
+                "dynlabel" => "{left} lesser or equal to {right}", # _("{left} lesser or equal to {right}")
+                "type" => array(
+                    "int",
+                    "integer",
+                    "double",
+                    "date",
+                    "time",
+                    "timestamp",
+                    "money"
+                )
+            ),
+            "is null" => array(
+                "label" => "is empty",
+                "operand" => array(
+                    "left"
+                ),
+                "dynlabel" => "{left} is null"
+            ), # _("{left} is null"),
+            "is not null" => array(
+                "label" => "is not empty",
+                "operand" => array(
+                    "left"
+                ),
+                "dynlabel" => "{left} is not empty"
+            ), # _("{left} is not empty"),
+            "><" => array(
+                "label" => "between", #_("between")
+                "operand" => array(
+                    "left",
+                    "min",
+                    "max"
+                ),
+                "dynlabel" => "{left} is between {min} and {max}", # _("{left} is between {min} and {max}")
+                "type" => array(
+                    "int",
+                    "integer",
+                    "double",
+                    "date",
+                    "time",
+                    "timestamp",
+                    "money"
+                )
             )
-        ) ,
-        "~^" => array(
-            "label" => "begin by",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} begin by {right}", # _("{left} begin by {right}")
-            "type" => array(
-                "text",
-                "longtext"
-            )
-        ) ,
-        "!=" => array(
-            "label" => "not equal",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} is not equal {right}", # _("{left} is not equal {right}")
-            "sdynlabel" => array(
-                "docid" => "{left} identifier not equal {right}",
-                "account" => "{left} identifier not equal {right}",
-                "uid" => "{left} system identifier not equal {right}"
-            ) , #_("{left} identifier not equal {right}") _("{left} system identifier not equal {right}")
-            "slabel" => array(
-                "docid" => "identificator not equal",
-                "account" => "identificator not equal",
-                "uid" => "system identifier not equal"
-            ) , #_("identificator not equal") _("system identifier not equal")
-            "type" => array(
-                "text",
-                "integer",
-                "int",
-                "double",
-                "enum",
-                "date",
-                "time",
-                "timestamp",
-                "money",
-                "color",
-                "docid",
-                "account",
-                "uid"
-            )
-        ) ,
-        "!~*" => array(
-            "label" => "not include",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} not include {right}", # _("{left} not include {right}")
-            "slabel" => array(
-                "file" => "filename or type not include",
-                "image" => "filename or type not include", #_("filename or type not include")
-                "array" => "no value include", #_("no value include")
-                
-            ) ,
-            "sdynlabel" => array(
-                "file" => "{left} filename or type not include {right}",
-                "image" => "{left} filename or type not include {right}", #_("{left} filename or type not include {right}")
-                "array" => "{left} include no value of {right}"
-            ) , #_("{left} include no value of {right}")
-            "type" => array(
-                "text",
-                "longtext",
-                "htmltext",
-                "ifile",
-                "array",
-                "file",
-                "image"
-            )
-        ) ,
-        ">" => array(
-            "label" => "&gt;",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} greater than {right}", # _("{left} greater than {right}")
-            "type" => array(
-                "int",
-                "integer",
-                "double",
-                "date",
-                "time",
-                "timestamp",
-                "money"
-            )
-        ) ,
-        "<" => array(
-            "label" => "&lt;",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} lesser than {right}", # _("{left} lesser than {right}")
-            "type" => array(
-                "int",
-                "integer",
-                "double",
-                "date",
-                "time",
-                "timestamp",
-                "money"
-            )
-        ) ,
-        ">=" => array(
-            "label" => "&gt; or equal",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} greater or equal to {right}", # _("{left} greater or equal to {right}")
-            "type" => array(
-                "int",
-                "integer",
-                "double",
-                "date",
-                "time",
-                "timestamp",
-                "money"
-            )
-        ) ,
-        "<=" => array(
-            "label" => "&lt; or equal",
-            "operand" => array(
-                "left",
-                "right"
-            ) ,
-            "dynlabel" => "{left} lesser or equal to {right}", # _("{left} lesser or equal to {right}")
-            "type" => array(
-                "int",
-                "integer",
-                "double",
-                "date",
-                "time",
-                "timestamp",
-                "money"
-            )
-        ) ,
-        "is null" => array(
-            "label" => "is empty",
-            "operand" => array(
-                "left"
-            ) ,
-            "dynlabel" => "{left} is null"
-        ) , # _("{left} is null"),
-        "is not null" => array(
-            "label" => "is not empty",
-            "operand" => array(
-                "left"
-            ) ,
-            "dynlabel" => "{left} is not empty"
-        ) , # _("{left} is not empty"),
-        "><" => array(
-            "label" => "between", #_("between")
-            "operand" => array(
-                "left",
-                "min",
-                "max"
-            ) ,
-            "dynlabel" => "{left} is between {min} and {max}", # _("{left} is between {min} and {max}")
-            "type" => array(
-                "int",
-                "integer",
-                "double",
-                "date",
-                "time",
-                "timestamp",
-                "money"
-            )
-        )
-    );
+        );
+
     /**
      * get label forom operatore code
      *
-     * @param string $operator operator code
+     * @param string $operator      operator code
      * @param string $attributeType sttribute type
      *
      * @return string
@@ -309,12 +312,13 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
         }
         return $operator; // no label found
     }
+
     /**
      * return document includes in search folder
      *
-     * @param bool $controlview if false all document are returned else only visible for current user  document are return
-     * @param array $filter to add list sql filter for selected document
-     * @param int|string $famid family identifier to restrict search
+     * @param bool       $controlview if false all document are returned else only visible for current user  document are return
+     * @param array      $filter      to add list sql filter for selected document
+     * @param int|string $famid       family identifier to restrict search
      *
      * @return array array of document array
      */
@@ -322,12 +326,13 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
     {
         return array();
     }
+
     /**
      * return sql filter from object filter
      *
-     * @param object $of the object filter
+     * @param object   $of    the object filter
      * @param integer &$famid return the family filter
-     * @param string &$fsql return the sql filter
+     * @param string & $fsql  return the sql filter
      *
      * @return string error message if incorrect filter, empty if no errors
      */
@@ -360,7 +365,12 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
             $of->sql = trim($of->sql);
         }
         if (!empty($of->sql)) {
-            if ((!strstr($of->sql, '--')) && (!strstr($of->sql, ';')) && (!stristr($of->sql, 'insert')) && (!stristr($of->sql, 'alter')) && (!stristr($of->sql, 'delete')) && (!stristr($of->sql, 'update'))) {
+            if ((!strstr($of->sql, '--'))
+                && (!strstr($of->sql, ';'))
+                && (!stristr($of->sql, 'insert'))
+                && (!stristr($of->sql, 'alter'))
+                && (!stristr($of->sql, 'delete'))
+                && (!stristr($of->sql, 'update'))) {
                 // try to prevent sql injection
                 $sql[] = $of->sql;
             }
@@ -368,17 +378,17 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
         if ((!empty($of->criteria)) && (!is_array($of->criteria))) {
             if ($of->criteria->operator) {
                 $of->criteria = array(
-                $of->criteria
+                    $of->criteria
                 );
             }
             if ($of->criteria->or) {
                 $of->criteria = array(
-                $of->criteria
+                    $of->criteria
                 );
             }
             if ($of->criteria->and) {
                 $of->criteria = array(
-                $of->criteria
+                    $of->criteria
                 );
             }
         }
@@ -387,7 +397,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
             foreach ($of->criteria as $c) {
                 $sqlone = '';
                 if (!empty($c->operator)) {
-                    $err.= $this->_1object2SqlFilter($c, $sqlone, $famid);
+                    $err .= $this->oneObject2SqlFilter($c, $sqlone, $famid);
                     if ($err == "") {
                         $sql[] = $sqlone;
                     }
@@ -395,7 +405,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
                     $sqlor = array();
                     foreach ($c->or as $cor) {
                         if ($cor->operator) {
-                            $err.= $this->_1object2SqlFilter($cor, $sqlone, $famid);
+                            $err .= $this->oneObject2SqlFilter($cor, $sqlone, $famid);
                         } else {
                             $oone = new stdClass();
                             $oone->criteria = $cor;
@@ -414,7 +424,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
                     $sqlor = array();
                     foreach ($c->and as $cor) {
                         if ($cor->operator) {
-                            $err.= $this->_1object2SqlFilter($cor, $sqlone, $famid);
+                            $err .= $this->oneObject2SqlFilter($cor, $sqlone, $famid);
                         } else {
                             $oone = new stdClass();
                             $oone->criteria = $cor;
@@ -438,16 +448,17 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
         }
         return $err;
     }
+
     /**
      * return sql from a single object filter
      *
-     * @param stdClass $c the filter object
-     * @param string &$sql return the sql where clause
-     * @param string $famid family identifier
+     * @param stdClass $c     the filter object
+     * @param string & $sql   return the sql where clause
+     * @param string   $famid family identifier
      *
      * @return string error message. Empty is no errors
      */
-    private function _1object2SqlFilter($c, &$sql, $famid = "")
+    private function oneObject2SqlFilter($c, &$sql, $famid = "")
     {
         static $sw = false;
         $err = '';
@@ -501,6 +512,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
         }
         return $err;
     }
+
     /**
      * return specfic filters instead of normal content
      *
@@ -510,6 +522,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
     {
         return array();
     }
+
     /**
      * test if document has specific filters
      *
@@ -519,6 +532,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
     {
         return (count($this->getSpecificFilters()) > 0);
     }
+
     /**
      * return content of collection
      *
@@ -526,7 +540,7 @@ class DocCollection extends \Anakeen\Core\Internal\SmartElement
      */
     public function getDocumentList()
     {
-        $s = new SearchDoc($this->dbaccess);
+        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess);
         $s->useCollection($this->initid);
         $s->setObjectReturn();
         $s->excludeConfidential();

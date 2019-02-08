@@ -1,8 +1,4 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
 
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\DbManager;
@@ -229,8 +225,14 @@ class DocTitle
         } else {
             if (preg_match('/^state\(([^\)]+)\)/', $docrevOption, $matches)) {
                 $revState = $matches[1];
+                $sqlPattern = <<<'SQL'
+select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess 
+from docread 
+where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1
+SQL;
+
                 $sql = sprintf(
-                    "select id,initid,revision,title,name,doctype,fromid,icon,views && '%s' as canaccess from docread where initid=(select initid from docread where id=%d) and state = '%s' and locked = -1 order by id desc limit 1",
+                    $sqlPattern,
                     self::getUserVector(),
                     $docid,
                     pg_escape_string($revState)
@@ -279,7 +281,7 @@ class DocTitle
     {
         $uid = ContextManager::getCurrentUser()->id;
         if (!isset(self::$viewUserVector[$uid])) {
-            self::$viewUserVector[$uid] = SearchDoc::getUserViewVector($uid);
+            self::$viewUserVector[$uid] = \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($uid);
         }
         return self::$viewUserVector[$uid];
     }

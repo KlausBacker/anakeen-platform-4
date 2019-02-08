@@ -249,24 +249,24 @@ class SEManager
      *
      * The document is not yet recorded to database and has no identifier
      *
-     * @param int|string $familyIdentifier
+     * @param int|string $structureIdentifier
      *
      * @throws Exception
      * @return \Anakeen\Core\Internal\SmartElement
      */
-    public static function initializeDocument($familyIdentifier)
+    public static function initializeDocument($structureIdentifier)
     {
-        $famId = self::getFamilyIdFromName($familyIdentifier);
+        $famId = self::getFamilyIdFromName($structureIdentifier);
 
         if (empty($famId)) {
-            throw new Exception("APIDM0001", $familyIdentifier);
+            throw new Exception("APIDM0001", $structureIdentifier);
         }
         /**
          * @var \Anakeen\Core\SmartStructure $family
          */
         $family = self::getFamily($famId);
         if ($family === null) {
-            throw new Exception("APIDM0002", $familyIdentifier, $famId);
+            throw new Exception("APIDM0002", $structureIdentifier, $famId);
         }
 
         $classname = "Doc" . $famId;
@@ -300,15 +300,15 @@ class SEManager
      *
      * The document is not yet recorded to database and has no identifier
      *
-     * @param int|string $familyIdentifier
+     * @param int|string $structureIdentifier
      * @param bool       $useDefaultValues
      *
      * @throws Exception
      * @return \Anakeen\Core\Internal\SmartElement
      */
-    public static function createDocument($familyIdentifier, $useDefaultValues = true)
+    public static function createDocument($structureIdentifier, $useDefaultValues = true)
     {
-        $doc = self::initializeDocument($familyIdentifier);
+        $doc = self::initializeDocument($structureIdentifier);
         /**
          * @var \Anakeen\Core\SmartStructure $family
          */

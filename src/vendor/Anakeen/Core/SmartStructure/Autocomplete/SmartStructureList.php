@@ -19,7 +19,7 @@ class SmartStructureList
      * @param                           $args
      * @return SmartAutocompleteResponse
      * @throws \Anakeen\Database\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public static function getSmartStructures(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args): SmartAutocompleteResponse
     {

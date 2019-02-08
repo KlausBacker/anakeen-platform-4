@@ -35,10 +35,12 @@ class StandardAttributeFilter
     }
     /**
      * Verify attribute compatibility
-     * @param \SearchDoc $search
+     *
+     * @param \Anakeen\Search\Internal\SearchSmartData $search
+     *
      * @return NormalAttribute the attribute object
      */
-    public function verifyCompatibility(\SearchDoc & $search)
+    public function verifyCompatibility(\Anakeen\Search\Internal\SearchSmartData & $search)
     {
         $fam = $search->getFamily();
         if (!$fam) {

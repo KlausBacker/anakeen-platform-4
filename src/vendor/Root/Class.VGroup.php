@@ -41,7 +41,7 @@ create table vgroup ( id  text primary key,
                       num int not null);
 create sequence seq_id_docvgroup start 1000000;";
     
-    public function PreInsert()
+    public function preInsert()
     {
         // compute new id
         if ($this->num == "") {

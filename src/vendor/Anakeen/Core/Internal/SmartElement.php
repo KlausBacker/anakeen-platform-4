@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 
 namespace Anakeen\Core\Internal;
 
@@ -17,7 +17,6 @@ define("FAM_ACCESSFAM", 23);
 define("DELVALUE", 'DEL??');
 
 define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
-
 
 
 use \Anakeen\Core\DbManager;
@@ -506,6 +505,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     /**
      * extend acl definition
      * used in WDoc and CVDoc
+     *
      * @var array
      */
     public $extendedAcls = array();
@@ -607,7 +607,7 @@ class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
     /**
      * document layout
      *
-     * @var \Layout|\OooLayout
+     * @var \Anakeen\Layout\TextLayout|\Anakeen\Layout\OooLayout
      */
     public $lay = null;
     /**
@@ -1148,6 +1148,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @see \Anakeen\Core\Internal\SmartElement::restoreAccessControl
      * @api disable edit control for setValue/modify/store
+     *
      * @param bool $disable if false restore control access immediatly
      */
     final public function disableAccessControl($disable = true)
@@ -1386,11 +1387,11 @@ create unique index i_docir on doc(initid, revision);";
             return ($err);
         }
 
-        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
+        if ($forceVerifyWithControl === false && !$this->isUnderControl()) {
             return "";
         } // admin can do anything but not modify fixed doc
 
-        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
+        if ($forceVerifyWithControl === false && !$this->isUnderControl()) {
             return "";
         } // no more test if disableAccessControl activated
         if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
@@ -1639,7 +1640,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getDocWithSameTitle($key1 = "title", $key2 = "")
     {
-        $s = new \SearchDoc($this->dbaccess, $this->fromid);
+        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, $this->fromid);
         $s->overrideViewControl();
         $s->addFilter("doctype != 'T'");
         if ($this->initid > 0) {
@@ -1725,7 +1726,7 @@ create unique index i_docir on doc(initid, revision);";
         $err = \Anakeen\Core\Internal\DbObj::delete($nopost);
         if ($err == "") {
             $dvi = new \DocVaultIndex($this->dbaccess);
-            $err = $dvi->DeleteDoc($this->id);
+            $err = $dvi->deleteDoc($this->id);
             if ($this->name != '' && $this->locked != -1) {
                 $this->query(sprintf("delete from docname where name='%s'", pg_escape_string($this->name)));
             }
@@ -2066,7 +2067,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->childs = array();
             }
 
-            $s = new \SearchDoc($this->dbaccess, -1);
+            $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, -1);
             $s->addFilter("fromid = %d", $id);
             $s->overrideViewControl();
             $table1 = $s->search();
@@ -2271,8 +2272,8 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getNormalAttributes($onlyopt = false)
     {
-        if ((isset($this->attributes)) && (method_exists($this->attributes, "GetNormalAttributes"))) {
-            return $this->attributes->GetNormalAttributes($onlyopt);
+        if ((isset($this->attributes)) && (method_exists($this->attributes, "getNormalAttributes"))) {
+            return $this->attributes->getNormalAttributes($onlyopt);
         } else {
             return array();
         }
@@ -2422,7 +2423,7 @@ create unique index i_docir on doc(initid, revision);";
         $dvi = new \DocVaultIndex($this->dbaccess);
         $tvid = $dvi->getVaultIds($this->id);
         $tinfo = array();
-        $vf = new \VaultFile();
+        $vf = new \Anakeen\Vault\VaultFile();
         foreach ($tvid as $vid) {
             $info = null;
             $err = $vf->Retrieve($vid, $info);
@@ -2483,7 +2484,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($val) {
             $info = $this->getFileInfo($val);
             if ($info) {
-                $ofout = new \VaultDiskStorage($this->dbaccess, $info["id_file"]);
+                $ofout = new \Anakeen\Vault\DiskStorage($this->dbaccess, $info["id_file"]);
                 if ($ofout->isAffected()) {
                     $err = $ofout->delete();
                 }
@@ -2510,8 +2511,8 @@ create unique index i_docir on doc(initid, revision);";
             return "";
         }
         $err = '';
-        if (\Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Manager') &&
-            ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE") === "yes") {
+        if (\Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Manager')
+            && ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE") === "yes") {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
@@ -2519,13 +2520,13 @@ create unique index i_docir on doc(initid, revision);";
                 // in case of server not reach : try again
                 if (!is_object($info)) {
                     // not found : create it
-                    $info = new \VaultFileInfo();
+                    $info = new \Anakeen\Vault\FileInfo();
                 }
                 if ($info->teng_state == \Anakeen\TransformationEngine\Client::error_connect) {
                     $info->teng_state = \Anakeen\TransformationEngine\Client::status_inprogress;
                 }
                 if ((!$info->teng_vid) || ($info->teng_state == \Anakeen\TransformationEngine\Client::status_inprogress)) {
-                    $vf = new \VaultFile();
+                    $vf = new \Anakeen\Vault\VaultFile();
                     if (!$info->teng_vid) {
                         // create temporary file
                         $value = sprintf(_("conversion %s in progress"), $engine);
@@ -3570,13 +3571,13 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         $a = $this->getAttribute($attrid);
         if ($a->type == "file") {
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
             $fvalue = $this->getRawValue($attrid);
             $basename = "";
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
                 //$mimetype = $reg[1];
-                $info = new \vaultFileInfo();
+                $info = new \Anakeen\Vault\FileInfo();
                 $err = $vf->Retrieve($vaultid, $info);
 
                 if ($err == "") {
@@ -3624,13 +3625,13 @@ create unique index i_docir on doc(initid, revision);";
         $err = '';
         $a = $this->getAttribute($attrid);
         if ($a->type == "file") {
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
             $fvalue = $this->getRawValue($attrid);
             if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                 $vaultid = $reg[2];
-                $info = new \VaultFileInfo();
+                $info = new \Anakeen\Vault\FileInfo();
                 /**
-                 * VaultFileInfo $info
+                 * Anakeen\Vault\FileInfo $info
                  */
                 $err = $vf->Retrieve($vaultid, $info);
 
@@ -3662,7 +3663,7 @@ create unique index i_docir on doc(initid, revision);";
             $mimetype = $ext = $oftitle = $vaultid = '';
             $a = $this->getAttribute($attrid);
             if ($a->type == "file") {
-                $vf = new \VaultFile();
+                $vf = new \Anakeen\Vault\VaultFile();
                 if ($index > -1) {
                     $fvalue = $this->getMultipleRawValues($attrid, '', $index);
                 } else {
@@ -3673,7 +3674,7 @@ create unique index i_docir on doc(initid, revision);";
                     $vaultid = $reg[2];
                     $mimetype = $reg[1];
                     $oftitle = $reg[3];
-                    $info = new \VaultFileInfo();
+                    $info = new \Anakeen\Vault\FileInfo();
                     $err = $vf->Retrieve($vaultid, $info);
 
                     if ($err == "") {
@@ -3762,9 +3763,9 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($f) {
             if (preg_match(PREGEXPFILE, $f, $reg)) {
-                $vf = new \VaultFile();
+                $vf = new \Anakeen\Vault\VaultFile();
                 /**
-                 * @var \VaultFileInfo $info
+                 * @var \Anakeen\Vault\FileInfo $info
                  */
                 if ($vf->Show($reg[2], $info) == "") {
                     $cible = $info->path;
@@ -3808,10 +3809,10 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($f) {
                 if (preg_match(PREGEXPFILE, $f, $reg)) {
-                    $vf = new \VaultFile();
+                    $vf = new \Anakeen\Vault\VaultFile();
                     $vid = $reg[2];
                     /**
-                     * @var \VaultFileInfo $info
+                     * @var \Anakeen\Vault\FileInfo $info
                      */
                     if ($vf->Show($reg[2], $info) == "") {
                         $cible = $info->path;
@@ -3829,9 +3830,9 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * Register (store) a file in the vault and return the file's vault's informations
      *
-     * @param string         $filename the file pathname
-     * @param string         $ftitle   override the stored file name or empty string to keep the original file name
-     * @param \VaultFileInfo $info     the vault's informations for the stored file or null if could not get informations
+     * @param string                  $filename the file pathname
+     * @param string                  $ftitle   override the stored file name or empty string to keep the original file name
+     * @param \Anakeen\Vault\FileInfo $info     the vault's informations for the stored file or null if could not get informations
      *
      * @return string trigram of the file in the vault: "mime_s|id_file|name"
      * @throws \Exception on error
@@ -3841,7 +3842,7 @@ create unique index i_docir on doc(initid, revision);";
         $vaultid = \Anakeen\Core\VaultManager::storeFile($filename, $ftitle);
 
         $info = \Anakeen\Core\VaultManager::getFileInfo($vaultid);
-        if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
+        if (!is_object($info) || !is_a($info, 'Anakeen\Vault\FileInfo')) {
             throw new \Exception(\ErrorCode::getError('FILE0010', $filename));
         }
 
@@ -4432,6 +4433,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $tag   the tag to add
      *
      * @param mixed  $value value of tag (true by default)
+     *
      * @return string error message
      */
     final public function addATag($tag, $value = true)
@@ -4467,6 +4469,7 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $tag   the tag to search
      * @param string $value return tag value recorded
+     *
      * @return bool return true if found
      */
     final public function getATag($tag, &$value = null)
@@ -5616,7 +5619,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($oa->inArray()) {
                     $t = $this->getMultipleRawValues($oa->id);
                     foreach ($t as $k => $v) {
-                        $cfname = $this->vault_filename($oa->id, false, $k);
+                        $cfname = $this->vaultFilename($oa->id, false, $k);
                         if ($cfname) {
                             $fname = $this->applyMethod($rn, "", $k, array(
                                 $cfname
@@ -5628,7 +5631,7 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                 } else {
-                    $cfname = $this->vault_filename($oa->id);
+                    $cfname = $this->vaultFilename($oa->id);
                     if ($cfname) {
                         $fname = $this->applyMethod($rn, "", -1, array(
                             $cfname
@@ -5791,6 +5794,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $v value
      *
      * @param bool   $force
+     *
      * @return array
      * @throws \Anakeen\Database\Exception
      */
@@ -5827,12 +5831,12 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * return an url to download for file attribute
      *
-     * @param string         $attrid     attribute identifier
-     * @param int            $index      set to row rank if it is in array else use -1
-     * @param bool           $cache      set to true if file may be persistent in client cache
-     * @param bool           $inline     set to true if file must be displayed in web browser
-     * @param string         $otherValue use another file value instead of attribute value
-     * @param \VaultFileInfo $info       extra file info
+     * @param string                  $attrid     attribute identifier
+     * @param int                     $index      set to row rank if it is in array else use -1
+     * @param bool                    $cache      set to true if file may be persistent in client cache
+     * @param bool                    $inline     set to true if file must be displayed in web browser
+     * @param string                  $otherValue use another file value instead of attribute value
+     * @param \Anakeen\Vault\FileInfo $info       extra file info
      *
      * @return string the url anchor
      */
@@ -6274,7 +6278,7 @@ create unique index i_docir on doc(initid, revision);";
             return $sql;
         } // only drop
         if ($code) {
-            $lay = new \Layout("vendor/Anakeen/Core/Layout/sqltrigger.sql");
+            $lay = new \Anakeen\Layout\TextLayout("vendor/Anakeen/Core/Layout/sqltrigger.sql");
             $na = $this->GetNormalAttributes();
             $tvalues = array();
             foreach ($na as $k => $v) {
@@ -6372,7 +6376,7 @@ create unique index i_docir on doc(initid, revision);";
                     return null;
                 }
 
-                return $this->vault_filename_fromvalue($template, true);
+                return $this->vaultFilenameFromvalue($template, true);
             }
             return sprintf("%s/Apps/%s/Layout/%s", DEFAULT_PUBDIR, $reg['app'], $aid);
         }
@@ -6616,9 +6620,9 @@ create unique index i_docir on doc(initid, revision);";
         if (strtolower($ext) == "odt") {
             $target = "ooo";
             $ulink = false;
-            $this->lay = new \OOoLayout($tplfile, $this);
+            $this->lay = new \Anakeen\Layout\OooLayout($tplfile, $this);
         } else {
-            $this->lay = new \Layout($tplfile, "");
+            $this->lay = new \Anakeen\Layout\TextLayout($tplfile, "");
         }
         //if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->set("_readonly", ($this->Control('edit') != ""));
@@ -6911,14 +6915,14 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string the file name of the attribute
      */
-    final public function vault_filename($attrid, $path = false, $index = -1)
+    final public function vaultFilename($attrid, $path = false, $index = -1)
     {
         if ($index == -1) {
             $fileid = $this->getRawValue($attrid);
         } else {
             $fileid = $this->getMultipleRawValues($attrid, '', $index);
         }
-        return $this->vault_filename_fromvalue($fileid, $path);
+        return $this->vaultFilenameFromvalue($fileid, $path);
     }
 
     /**
@@ -6929,14 +6933,14 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @return string the file name of the attribute
      */
-    final public function vault_filename_fromvalue($fileid, $path = false)
+    final public function vaultFilenameFromvalue($fileid, $path = false)
     {
         $fname = "";
         if (preg_match(PREGEXPFILE, $fileid, $reg)) {
             // reg[1] is mime type
-            $vf = new \VaultFile();
+            $vf = new \Anakeen\Vault\VaultFile();
             /**
-             * @var \VaultFileInfo $info
+             * @var \Anakeen\Vault\FileInfo $info
              */
             if ($vf->Show($reg[2], $info) == "") {
                 if ($path) {
@@ -6970,7 +6974,7 @@ create unique index i_docir on doc(initid, revision);";
      * [path] => /var/www/eric/vaultfs/1/16.pdf
      * [vid] => 16
      */
-    final public function vault_properties(\Anakeen\Core\SmartStructure\NormalAttribute $attr)
+    final public function vaultProperties(\Anakeen\Core\SmartStructure\NormalAttribute $attr)
     {
         if ($attr->inArray()) {
             $fileids = $this->getMultipleRawValues($attr->id);
@@ -6982,9 +6986,9 @@ create unique index i_docir on doc(initid, revision);";
         foreach ($fileids as $k => $fileid) {
             if (preg_match(PREGEXPFILE, $fileid, $reg)) {
                 // reg[1] is mime type
-                $vf = new \VaultFile();
+                $vf = new \Anakeen\Vault\VaultFile();
                 /**
-                 * @var \VaultFileInfo $info
+                 * @var \Anakeen\Vault\FileInfo $info
                  */
                 if ($vf->Show($reg[2], $info) == "") {
                     $tinfo[$k] = get_object_vars($info);
@@ -7001,9 +7005,9 @@ create unique index i_docir on doc(initid, revision);";
      *
      * @param string $filesvalue the file value : like application/pdf|12345
      * @param string $key        one of property id_file, name, size, public_access, mime_t, mime_s, cdate, mdate, teng_state, teng_lname, teng_vid, teng_comment, path
-     * @param string $returnType if "array" return indexed array else return VaultFileInfo object
+     * @param string $returnType if "array" return indexed array else return Anakeen\Vault\FileInfo object
      *
-     * @return array|string|\VaultFileInfo value of property or array of all properties if no key
+     * @return array|string|\Anakeen\Vault\FileInfo value of property or array of all properties if no key
      */
     final public function getFileInfo($filesvalue, $key = "", $returnType = "array")
     {
@@ -7402,7 +7406,7 @@ create unique index i_docir on doc(initid, revision);";
         DbManager::savePoint($point);
         DbManager::lockPoint($this->initid, "UPVI");
         // Need to lock to avoid constraint errors when concurrent docvaultindex update
-        $dvi->DeleteDoc($this->id);
+        $dvi->deleteDoc($this->id);
 
         $tvid = \Anakeen\Core\Utils\VidExtractor::getVidsFromDoc($this);
 
@@ -7698,7 +7702,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($fromid === "") {
             $fromid = $this->fromid;
         }
-        $s = new \SearchDoc($this->dbaccess, "HELPPAGE");
+        $s = new \Anakeen\Search\Internal\SearchSmartData($this->dbaccess, "HELPPAGE");
         $s->addFilter("help_family='%d'", $fromid);
         $help = $s->search();
         $helpId = "";

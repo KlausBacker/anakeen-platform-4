@@ -11,7 +11,7 @@
 class DocumentList implements Iterator, Countable
 {
     /**
-     * @var null|SearchDoc
+     * @var null|\Anakeen\Search\Internal\SearchSmartData
      */
     private $search = null;
     /**
@@ -27,7 +27,7 @@ class DocumentList implements Iterator, Countable
     private $init = false;
     public $length = 0;
     
-    public function __construct(SearchDoc & $s = null)
+    public function __construct(\Anakeen\Search\Internal\SearchSmartData & $s = null)
     {
         $this->search = & $s;
     }
@@ -116,7 +116,7 @@ class DocumentList implements Iterator, Countable
         return $this->currentDoc != false;
     }
     /**
-     * @return null|SearchDoc
+     * @return null|\Anakeen\Search\Internal\SearchSmartData
      */
     public function &getSearchDocument()
     {
@@ -141,7 +141,7 @@ class DocumentList implements Iterator, Countable
      */
     public function addDocumentIdentifiers(array $ids, $useInitid = true)
     {
-        $this->search = new SearchDoc();
+        $this->search = new \Anakeen\Search\Internal\SearchSmartData();
         $this->search->setObjectReturn();
         $this->search->excludeConfidential();
         foreach ($ids as $k => $v) {

@@ -60,7 +60,7 @@ class Attributes
      * @param bool $onlyopt
      * @return NormalAttribute[]
      */
-    public function GetNormalAttributes($onlyopt = false)
+    public function getNormalAttributes($onlyopt = false)
     {
         $tsa = array();
         if (isset($this->attr)) {
@@ -90,8 +90,12 @@ class Attributes
         }
         return $tsa;
     }
+
     /**
      * get attributes included in an arrary
+     *
+     * @param $id
+     *
      * @return NormalAttribute[]|false
      */
     public function getArrayElements($id)
@@ -100,7 +104,7 @@ class Attributes
         
         if ($a && ($a->type == "array")) {
             if ($a->usefor != "Q") {
-                $tsa = $this->GetNormalAttributes();
+                $tsa = $this->getNormalAttributes();
             } else {
                 $tsa = $this->getParamAttributes();
             }

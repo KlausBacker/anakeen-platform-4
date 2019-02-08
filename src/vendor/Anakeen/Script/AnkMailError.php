@@ -146,7 +146,7 @@ class AnkMailError
      */
     public function send($from, $mailto, $subject, $htmlBody, $altTextBody = '', $attachments = array())
     {
-        $message = new \Dcp\Mail\Message();
+        $message = new \Anakeen\Mail\Message();
         $message->setFrom($from);
         $message->setSubject($subject);
         $recipients = array();
@@ -165,9 +165,9 @@ class AnkMailError
         foreach ($recipients as $to) {
             $message->addTo($to);
         }
-        $message->setBody(new \Dcp\Mail\Body($htmlBody, 'text/html'));
+        $message->setBody(new \Anakeen\Mail\Body($htmlBody, 'text/html'));
         if (is_string($altTextBody) && strlen($altTextBody) > 0) {
-            $message->setAltBody(new \Dcp\Mail\Body($altTextBody, 'text/plain'));
+            $message->setAltBody(new \Anakeen\Mail\Body($altTextBody, 'text/plain'));
         }
         if (is_array($attachments)) {
             foreach ($attachments as $att) {
@@ -175,9 +175,9 @@ class AnkMailError
                     continue;
                 }
                 if (isset($att['cid'])) {
-                    $message->addBodyRelatedAttachment(new \Dcp\Mail\RelatedAttachment($att['file'], $att['name'], $att['mime']));
+                    $message->addBodyRelatedAttachment(new \Anakeen\Mail\RelatedAttachment($att['file'], $att['name'], $att['mime']));
                 } else {
-                    $message->addAttachment(new \Dcp\Mail\Attachment($att['file'], $att['name'], $att['mime']));
+                    $message->addAttachment(new \Anakeen\Mail\Attachment($att['file'], $att['name'], $att['mime']));
                 }
             }
         }

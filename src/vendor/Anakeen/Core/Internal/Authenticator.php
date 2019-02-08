@@ -8,13 +8,14 @@
  *
  * Top-level class to authenticate and authorize users
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: Class.Authenticator.php,v 1.6 2009/01/16 13:33:00 jerome Exp $
  * @package FDL
  * @subpackage
  */
 /**
  */
+
 namespace Anakeen\Core\Internal;
 
 abstract class Authenticator
@@ -25,7 +26,7 @@ abstract class Authenticator
     const AUTH_NOK = 1;
     /* Authentication status cannot be determined, and credentials should be asked */
     const AUTH_ASK = 2;
-    
+
     const nullProvider = "__for_logout__";
     /**
      * @var \Anakeen\Core\Internal\AuthentProvider
@@ -35,14 +36,14 @@ abstract class Authenticator
 
     public function __construct($authtype, $authprovider)
     {
-        
+
         if ($authtype == "") {
             throw new \Anakeen\Exception(__METHOD__ . " " . "Error: authentication mode not set");
         }
         if ($authprovider == "") {
             throw new \Anakeen\Exception(__METHOD__ . " " . "Error: authentication provider not set");
         }
-        
+
         $tx = array(
             'type' => $authtype,
             'AuthentProvider' => $authprovider
@@ -51,7 +52,7 @@ abstract class Authenticator
         if ($authprovider != self::nullProvider) {
             $tp = self::getAuthParam($authprovider);
             $this->parms = array_merge($tx, $ta, $tp);
-            
+
             if (!array_key_exists('AuthentProvider', $this->parms)) {
                 throw new \Anakeen\Exception(__METHOD__ . " " . "Error: provider parm not specified at __construct");
             }
@@ -70,6 +71,7 @@ abstract class Authenticator
             $this->parms = array_merge($tx, $ta);
         }
     }
+
     public static function getAuthParam($provider = "")
     {
         if ($provider == "") {
@@ -79,20 +81,19 @@ abstract class Authenticator
         if (!is_array($authentConfigs)) {
             return array();
         }
-        
+
         if (!array_key_exists($provider, $authentConfigs)) {
             error_log(__FUNCTION__ . ":" . __LINE__ . "provider " . $provider . " does not exists in authentProvidersConfig");
             return array();
         }
-        
+
         return $authentConfigs[$provider];
     }
-    
 
-    
+
     public static function documentUserExists($username)
     {
-        
+
         $u = new \Anakeen\Core\Account();
         if ($u->SetLoginName($username)) {
             $du = \Anakeen\Core\SEManager::getDocument($u->fid);
@@ -102,11 +103,12 @@ abstract class Authenticator
         }
         return false;
     }
-    
+
     public function tryInitializeUser($username)
     {
         if (!$this->provider->canICreateUser()) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Authentication failed for user '%s' because auto-creation is disabled for provider '%s'!", $username, $this->provider->pname));
+            error_log(__CLASS__ . "::" . __FUNCTION__ . " " .
+                sprintf("Authentication failed for user '%s' because auto-creation is disabled for provider '%s'!", $username, $this->provider->pname));
             return false;
         }
         $err = $this->provider->initializeUser($username);
@@ -117,7 +119,7 @@ abstract class Authenticator
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Initialized user '%s'!", $username));
         return true;
     }
-    
+
     public function getProviderErrno()
     {
         if ($this->provider) {
@@ -125,7 +127,7 @@ abstract class Authenticator
         }
         return 0;
     }
-    
+
     public function getAuthApp()
     {
         if (isset($this->parms['auth']['app'])) {
@@ -133,13 +135,20 @@ abstract class Authenticator
         }
         return false;
     }
-    
+
     abstract public function checkAuthentication();
+
     abstract public function checkAuthorization($opt);
+
     abstract public function askAuthentication($args);
+
     abstract public function getAuthUser();
+
     abstract public function getAuthPw();
+
     abstract public function logout($redir_uri = '');
+
     abstract public function setSessionVar($name, $value);
+
     abstract public function getSessionVar($name);
 }

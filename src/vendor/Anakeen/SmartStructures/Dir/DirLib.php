@@ -308,18 +308,19 @@ class DirLib
      * @param string     $slice      the maximum number of returned document
      * @param array      $sqlfilters array of sql filter
      * @param int        $userid     the current user id
-     * @param string     $qtype      LIST|TABLE the kind of return : list of object or list or values array
-     * @param int|string $fromid     identifier of family document
-     * @param bool       $distinct   if false all revision of the document are returned else only latest
-     * @param string     $orderby    field order
-     * @param bool       $latest     if true only latest else all revision
-     * @param string     $trash      (no|only|also) search in trash or not
-     * @param bool       $debug
-     * @param int        $folderRecursiveLevel
-     * @param string     $join
-     * @param \SearchDoc $searchDoc  the SearchDoc object when getChildDoc is used by a SearchDoc object
+     * @param string         $qtype     LIST|TABLE the kind of return : list of object or list or values array
+     * @param int|string     $fromid    identifier of family document
+     * @param bool           $distinct  if false all revision of the document are returned else only latest
+     * @param string         $orderby   field order
+     * @param bool           $latest    if true only latest else all revision
+     * @param string         $trash     (no|only|also) search in trash or not
+     * @param bool           $debug
+     * @param int            $folderRecursiveLevel
+     * @param string         $join
+     * @param \Anakeen\Search\Internal\SearchSmartData $searchDoc the SearchDoc object when getChildDoc is used by a SearchDoc object
+     *
      * @internal use searchDoc to get document collection
-     * @see      SearchDoc
+     * @see      \Anakeen\Search\Internal\SearchSmartData
      * @return array
      */
     public static function internalGetDocCollection(
@@ -338,7 +339,7 @@ class DirLib
         &$debug = null,
         $folderRecursiveLevel = 2,
         $join = '',
-        \SearchDoc & $searchDoc = null
+        \Anakeen\Search\Internal\SearchSmartData & $searchDoc = null
     ) {
         return self::_internalGetDocCollection(
             false,
@@ -378,7 +379,7 @@ class DirLib
         &$debug = null,
         $folderRecursiveLevel = 2,
         $join = '',
-        \SearchDoc & $searchDoc = null
+        \Anakeen\Search\Internal\SearchSmartData & $searchDoc = null
     ) {
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) {
@@ -495,7 +496,7 @@ class DirLib
                     $sqlfields = implode(", ", $tsqlfields);
                     if ($userid > 1) { // control view privilege
                         // $qsql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
-                        $qsql .= sprintf(" and (%sviews && '%s')", $maintabledot, \SearchDoc::getUserViewVector($userid));
+                        $qsql .= sprintf(" and (%sviews && '%s')", $maintabledot, \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($userid));
                         // no compute permission here, just test it
                         $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
                     } else {
@@ -541,7 +542,7 @@ class DirLib
                     // families
                     if ($userid > 1) { // control view privilege
                         //$qsql.= " and (profid <= 0 or hasviewprivilege($userid, profid))";
-                        $qsql .= sprintf(" and (views && '%s')", \SearchDoc::getUserViewVector($userid));
+                        $qsql .= sprintf(" and (views && '%s')", \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($userid));
                         // and get permission
                         //$qsql = str_replace("* from ", "* ,getuperm($userid,profid) as uperm from ", $qsql);
                     }
@@ -771,7 +772,7 @@ class DirLib
         }
         // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",docfam.profid)");
         if ($userid > 1) {
-            $query->AddQuery(sprintf("views && '%s'", \SearchDoc::getUserViewVector($userid)));
+            $query->AddQuery(sprintf("views && '%s'", \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($userid)));
         }
         if (is_array($extraFilters) && count($extraFilters) > 0) {
             foreach ($extraFilters as $filter) {

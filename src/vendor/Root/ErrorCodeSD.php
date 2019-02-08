@@ -6,7 +6,7 @@
  * @class ErrorCodeSD
  * @see   ErrorCode
  * @brief List all error code for searchDoc class
- * @see   SearchDoc
+ * @see   \Anakeen\Search\Internal\SearchSmartData
  */
 class ErrorCodeSD
 {

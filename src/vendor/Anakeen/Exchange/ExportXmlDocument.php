@@ -102,7 +102,7 @@ class ExportXmlDocument
 
     protected function export($outfile = "")
     {
-        $lay = new \Layout(sprintf("%s/vendor/Anakeen/Core/Layout/exportxml.xml", DEFAULT_PUBDIR));
+        $lay = new \Anakeen\Layout\TextLayout(sprintf("%s/vendor/Anakeen/Core/Layout/exportxml.xml", DEFAULT_PUBDIR));
         //$lay=&$this->document->lay;
         $lay->set("famname", strtolower($this->document->fromname));
         $lay->set("id", ($this->exportDocumentNumericIdentiers ? $this->document->id : ''));
@@ -246,7 +246,7 @@ class ExportXmlDocument
                     $base = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL");
                     $href = $base . str_replace('&', '&amp;', $doc->getFileLink($attribute->id));
                     if ($this->exportFiles) {
-                        $path = $doc->vault_filename_fromvalue($v, true);
+                        $path = $doc->vaultFilenameFromvalue($v, true);
 
                         if (is_file($path)) {
                             if ($this->writeToFile) {
@@ -431,7 +431,7 @@ class ExportXmlDocument
                                 }
                                 $docimg = SEManager::getDocument($docid);
                                 $attr = $docimg->getAttribute($attrid);
-                                $tfiles = $docimg->vault_properties($attr);
+                                $tfiles = $docimg->vaultProperties($attr);
                                 $f = $tfiles[$index];
                                 $f["name"] = htmlspecialchars($f["name"], ENT_QUOTES);
                                 if (is_file($f["path"])) {

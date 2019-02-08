@@ -6,7 +6,7 @@ class TestDcpDocumentFilter_common extends TestCaseDcpCommonFamily
 {
     public function common_testFilter($fam, $filter, $expected)
     {
-        $s = new \SearchDoc("", $fam);
+        $s = new \Anakeen\Search\Internal\SearchSmartData("", $fam);
         $s->addFilter($filter);
         $s->setObjectReturn(false);
         $res = $s->search();
