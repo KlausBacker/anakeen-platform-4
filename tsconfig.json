@@ -1,19 +1,25 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "strict": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "types": ["jquery"],
-        "noImplicitAny": false,
-        "strictNullChecks": false,
-        "sourceMap": true,
-        "lib": [
-            "dom",
-            "esnext",
-            "es6"
-        ]
-    }
+  "compilerOptions": {
+    "target": "es5",
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "types": [
+      "jquery"
+    ],
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "sourceMap": true,
+    "lib": [
+      "dom",
+      "esnext",
+      "es6"
+    ]
+  },
+  "include": ["./src/**/*.vue",
+  "./src/**/*.ts"],
+  "files": ["./vue-shims.d.ts",
+  "./vue-type-shims.d.ts"]
 }

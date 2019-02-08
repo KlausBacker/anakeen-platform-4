@@ -5,14 +5,12 @@ const {useVueLoader, typescriptLoader, setKendoAndJqueryToGlobal} = require("@an
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
 
-const adminPluginsEntries = require('./config/pluginsEntries');
-
 module.exports = () => {
   const conf = {
     "moduleName": "adminCenter",
     "entry": {
-      'adminCenter': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/AdminCenter/Components/main.js')],
-      ...adminPluginsEntries
+      "adminCenterParameters": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/Parameters/parametersMain.js")],
+      "adminCenterAccounts": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/Account/accountMain.js")]
     },
     buildPath: PUBLIC_PATH,
     customParts: [
