@@ -62,7 +62,7 @@ class Families extends DocumentCollection
     
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new \SearchDoc("", -1);
+        $this->_searchDoc = new \Anakeen\Search\Internal\SearchSmartData("", -1);
     
         $this->_searchDoc->setObjectReturn();
     

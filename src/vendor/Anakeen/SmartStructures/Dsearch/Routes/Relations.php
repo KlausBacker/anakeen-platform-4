@@ -28,7 +28,7 @@ class Relations
         $fdoc = SEManager::getFamily($this->_family);
         foreach ($fdoc->getNormalAttributes() as $myAttribute) {
             if ($myAttribute->id == $this->_attrid) {
-                $s = new \SearchDoc("", $myAttribute->format);
+                $s = new \Anakeen\Search\Internal\SearchSmartData("", $myAttribute->format);
                 if ($slice !== null) {
                     $s->setSlice($slice);
                 }
