@@ -11,13 +11,13 @@
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubAdminCenterAccounts/**/*.xml"/>
         <process
-                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
     </post-install>
 
     <post-upgrade>
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubAdminCenterAccounts/**/*.xml"/>
         <process
-                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
     </post-upgrade>
 </module>

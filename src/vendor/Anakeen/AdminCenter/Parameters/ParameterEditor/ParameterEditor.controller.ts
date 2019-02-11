@@ -3,7 +3,6 @@ import Component from "vue-class-component";
 import JSONEditor from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.min.css";
 import {Prop} from "vue-property-decorator";
-import "./ParameterEditor.types.ts";
 
 declare var $;
 declare var kendo;
@@ -12,9 +11,9 @@ declare var kendo;
   name: "admin-center-parameter-editor"
 })
 export default class ParameterEditorController extends Vue {
-  @Prop(Object) editedItem = { value: "", name: "", type:"", initialValue: ""};
-  @Prop(String) editRoute = "";
-  jsonEditor: jsonEditor;
+  @Prop({ type: Object, default: () => ({ value: "", name: "", type:"", initialValue: ""})}) editedItem;
+  @Prop({ type: String, default: ""}) editRoute;
+  jsonEditor: JSONEditor;
   jsonValue: Object = {};
 
   // Saved value sent by the server in response
@@ -24,6 +23,7 @@ export default class ParameterEditorController extends Vue {
   editionWindow: any = null;
   confirmationWindow: any = null;
   errorWindow: any = null;
+  inputIsJson: boolean = false;
   // Open the parameter editor with corresponding fields
     openEditor() {
       if (this.editedItem) {
@@ -53,7 +53,7 @@ export default class ParameterEditorController extends Vue {
           ParameterEditorController.isJson(this.editedItem.value)
         ) {
           this.jsonValue = JSON.parse(this.editedItem.value);
-          let divContainer = $(".json-editor", this.$el)[0]; // [0] to get DOM element
+          let divContainer = $(".json-editor", this.$el)[0]; // [0] to get DOM element a la base c'est ca mais ca change rien
           this.jsonEditor = new JSONEditor(
             divContainer,
             {
@@ -239,6 +239,10 @@ export default class ParameterEditorController extends Vue {
     // Value to display in the editor. If the parameter has no value, display initial system value (if possible)
     get inputSelectedValue() {
       if (this.editedItem.value) {
+        this.inputIsJson = false;
+        if (ParameterEditorController.isJson(this.editedItem.value)) {
+          this.inputIsJson = true;
+        }
         return this.editedItem.value;
       } else if (this.editedItem.initialValue) {
         return this.editedItem.initialValue;

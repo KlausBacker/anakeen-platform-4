@@ -8,17 +8,16 @@ declare var kendo;
 @Component({
     name: "admin-center-global-parameters",
     components: {
-        "admin-center-parameters-editor": parameterEditor
+        "admin-center-parameter-editor": parameterEditor
     }
 })
 export default class GlobalParametersController extends Vue {
-
     // Data source for system parameters
     allParametersDataSource = new kendo.data.TreeListDataSource({
         transport: {
             read: options => {
                 this.$http
-                    .get("admin/parameters/")
+                    .get("api/v2/admin/parameters/")
                     .then(options.success)
                     .catch(options.error);
             }
@@ -27,7 +26,6 @@ export default class GlobalParametersController extends Vue {
             data: response => response.data.data
         }
     });
-
     // Current edited item to pass to the parameter editor
     editedItem: any = null;
 
@@ -60,7 +58,6 @@ export default class GlobalParametersController extends Vue {
 
         // class to add to the treeList headers to display a filter icon showing filtered columns
         let headerAttributes = {class: "filterable-header"}; // jscs:ignore disallowQuotedKeysInObjects
-
         let tree = $(".parameters-tree", this.$el)
             .kendoTreeList({
                 dataSource: this.allParametersDataSource,
@@ -211,7 +208,7 @@ export default class GlobalParametersController extends Vue {
     openEditor(dataItem) {
         this.editedItem = dataItem;
         this.editRoute =
-            "admin/parameters/" +
+            "api/v2/admin/parameters/" +
             this.editedItem.nameSpace +
             "/" +
             this.editedItem.name +
@@ -311,11 +308,11 @@ export default class GlobalParametersController extends Vue {
         let items = treeList.items();
 
         // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
-        setTimeout(x => {
-            items.each(function addTypeClass() {
-                let dataItem = treeList.dataItem(x);
+        setTimeout(() => {
+            items.each(function addTypeClass(this: any) {
+                let dataItem = treeList.dataItem(this);
                 if (dataItem.rowLevel) {
-                    $(x).addClass("grid-expandable grid-level-" + dataItem.rowLevel);
+                    $(this).addClass("grid-expandable grid-level-" + dataItem.rowLevel);
                 }
             });
         }, 0);

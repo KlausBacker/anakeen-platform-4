@@ -158,24 +158,31 @@ SQL;
 
         foreach ($params as $param) {
             $param['id'] = $currentId++;
-            $currentNameSpace = $nameSpaceIds[$param['nameSpace']] ?? null;
-            if ($currentNameSpace === null) {
+            if (isset($nameSpaceIds[$param['nameSpace']])) {
+                $currentNameSpace = $nameSpaceIds[$param['nameSpace']];
+            } else {
+                $currentNameSpace = null;
+            }
+            if ($currentNameSpace === null && $param['nameSpace'] !== null) {
                 $newId = $currentId++;
-                $data[] = ['id' => $newId, 'parentId' => null, 'name' => $param['nameSpace'], 'rowLevel' => 1];
+                array_push($data, ['id' => $newId, 'parentId' => null, 'name' => $param['nameSpace'], 'rowLevel' => 1]);
                 $nameSpaceIds[$param['nameSpace']] = $newId;
                 $categoryIds[$param['nameSpace']] = [];
                 $currentNameSpace = $newId;
             }
 
             if ($param['category']) {
-                $currentCategory = $categoryIds[$param['nameSpace']][$param['category']] ?? null;
+                if (isset($categoryIds[$param['nameSpace']][$param['category']])) {
+                    $currentCategory = $categoryIds[$param['nameSpace']][$param['category']];
+                } else {
+                    $currentCategory = null;
+                }
                 if ($currentCategory === null) {
                     $newId = $currentId++;
-                    $data[] = ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2];
+                    array_push($data, ['id' => $newId, 'parentId' => $currentNameSpace, 'name' => $param['category'], 'rowLevel' => 2]);
                     $categoryIds[$param['nameSpace']][$param['category']] = $newId;
                     $currentCategory = $newId;
                 }
-
                 $param['parentId'] = $currentCategory;
                 $data[] = $param;
             } else {
@@ -183,7 +190,6 @@ SQL;
                 $data[] = $param;
             }
         }
-
         return $data;
     }
 }

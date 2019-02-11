@@ -20,6 +20,7 @@
     "@anakeen/anakeen-ci": "latest",
     "@anakeen/anakeen-cli": "latest",
     "@anakeen/ank-components": "latest",
+    "@anakeen/hub-components": "^1.0.0-dev20190208100202",
     "@anakeen/webpack-conf": "latest",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",

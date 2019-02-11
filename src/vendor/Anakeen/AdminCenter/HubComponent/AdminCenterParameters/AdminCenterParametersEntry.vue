@@ -4,10 +4,10 @@
             <i class="fa fa-cog"></i>
         </div>
         <div v-else-if="isDockExpanded">
-            <span>Admin Center Parameters</span>
+            <span><i class="fa fa-cog"></i> Parameters</span>
         </div>
         <div v-else-if="isHubContent">
-            <ank-admin-parameters></ank-admin-parameters>
+            <admin-center-parameters></admin-center-parameters>
         </div>
     </div>
 </template>
@@ -16,10 +16,10 @@
   import { HubElement } from "@anakeen/hub-components";
 
   export default {
-    name: "ank-admin-parameters",
+    name: "ank-admin-parameter",
     extends: HubElement, // ou mixins: [ HubElementMixins ],
     components: {
-      AdminCenterParameters
+       "admin-center-parameters": AdminCenterParameters
     }
   }
 </script>

@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HUBADMINCENTERPARAMETERSVUE" label="Admin center parameters configuration">
         <smart:extends ref="HUBCONFIGURATIONVUE"/>
         <smart:icon file="HubAdminCenterParameters.png"/>
-        <smart:class>Anakeen\Hub\SmartStructures\HubAdminCenterParameters\HubAdminCenterParametersVueBehavior</smart:class>
+        <smart:class>Anakeen\AdminCenter\SmartStructures\HubAdminCenterParameters\HubAdminCenterParametersVueBehavior</smart:class>
 
         <smart:fields>
         </smart:fields>

@@ -8,7 +8,7 @@ declare var kendo;
 @Component({
   name: "admin-center-user-parameters",
   components: {
-    "admin-center-parameters-editor": parameterEditor
+    "admin-center-parameter-editor": parameterEditor
   }
 })
 export default class UserParametersController extends Vue {
@@ -53,7 +53,7 @@ export default class UserParametersController extends Vue {
             transport: {
               read: options => {
                 this.$http
-                    .get("admin/parameters/users/")
+                    .get("api/v2/admin/parameters/users/")
                     .then(options.success)
                     .catch(options.error);
               }
@@ -305,7 +305,7 @@ export default class UserParametersController extends Vue {
       transport: {
         read: options => {
           this.$http
-              .get("admin/parameters/users/" + this.actualLogin + "/")
+              .get("api/v2/admin/parameters/users/" + this.actualLogin + "/")
               .then(options.success)
               .catch(options.error);
         }
@@ -345,7 +345,7 @@ export default class UserParametersController extends Vue {
   deleteParameter(dataItem) {
     this.$http
         .delete(
-            "admin/parameters/" +
+            "api/v2/admin/parameters/" +
             this.actualLogin +
             "/" +
             dataItem.nameSpace +
@@ -418,7 +418,7 @@ export default class UserParametersController extends Vue {
         transport: {
           read: options => {
             this.$http
-                .get("admin/parameters/users/search/" + user + "/")
+                .get("api/v2/admin/parameters/users/search/" + user + "/")
                 .then(options.success)
                 .catch(options.error);
           }
@@ -483,11 +483,11 @@ export default class UserParametersController extends Vue {
     let items = treeList.items();
 
     // setTimeout(function, 0) to add CSS classes when all DOM content has been updated
-    setTimeout(x => {
-      items.each(function addTypeClass() {
-        let dataItem = treeList.dataItem(x);
+    setTimeout(() => {
+      items.each(function addTypeClass(this: any) {
+        let dataItem = treeList.dataItem(this);
         if (dataItem.rowLevel) {
-          $(x).addClass("grid-expandable grid-level-" + dataItem.rowLevel);
+          $(this).addClass("grid-expandable grid-level-" + dataItem.rowLevel);
         }
       });
     }, 0);

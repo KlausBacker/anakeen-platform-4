@@ -13,7 +13,7 @@
                 <select class="value-input parameter-new-value enum-drop-down" :value="inputSelectedValue" v-else-if="parameterInputType === 'enum'" title="value">
                     <option v-for="value in enumPossibleValues">{{ value }}</option>
                 </select>
-                <div class="json-editor" v-else-if="isJson(inputSelectedValue)"></div>
+                <div class="json-editor" v-else-if="inputIsJson"></div>
                 <div v-else>
                     <div class="alert alert-warning invalid-json-warning" role="alert">Parameter is not a valid json, please save it as json</div>
                     <textarea class="form-control parameter-new-value" :value="inputSelectedValue" title="value"></textarea>
