@@ -478,85 +478,16 @@ class DocHtmlFormat
                         $htmlval = $textval;
                     }
                 } elseif ($this->htmlLink) {
-                    $mimeicon = getIconMimeFile($fileInfo->mime_s == "" ? $mime : $fileInfo->mime_s);
+                    $mimeicon = \Anakeen\Core\Utils\FileMime::getIconMimeFile($fileInfo->mime_s == "" ? $mime : $fileInfo->mime_s);
                     if (($this->oattr->repeat) && ($this->index <= 0)) {
                         $idx = $kvalue;
                     } else {
                         $idx = $this->index;
                     }
                     $standardview = true;
-                    $infopdf = false;
-                    $viewfiletype = $this->oattr->getOption("viewfiletype");
-                    $imageview = false;
-                    $pages = 0;
-                    if ($viewfiletype == "image" || $viewfiletype == "pdf") {
-                        global $action;
-                        $waiting = false;
-                        if (substr($fileInfo->mime_s, 0, 5) == "image") {
-                            $imageview = true;
-                            $viewfiletype = 'png';
-                            $pages = 1;
-                        } elseif (substr($fileInfo->mime_s, 0, 4) == "text") {
-                            $imageview = true;
-                            $viewfiletype = 'embed';
-                            $pages = 1;
-                        } else {
-                            $infopdf = new VaultFileInfo();
-                            $err = $vf->Show($vid, $infopdf, 'pdf');
-                            if ($err == "" && \Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Client')) {
-                                if ($infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_done
-                                    || $infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_waiting
-                                    || $infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_inprogress) {
-                                    $imageview = true;
-                                    if ($viewfiletype == 'image') {
-                                        $viewfiletype = 'png';
-                                    } elseif ($viewfiletype == 'pdf') {
-                                        $viewfiletype = 'embed';
-                                    }
-
-                                    $pages = getPdfNumberOfPages($infopdf->path);
-                                    if ($infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_waiting
-                                        || $infopdf->teng_state == \Anakeen\TransformationEngine\Client::status_inprogress) {
-                                        $waiting = true;
-                                    }
-                                }
-                            }
-                        }
-
-                        if ($imageview && (!$this->abstractMode)) {
-                            $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/widgetFile.js");
-                            $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/detectPdfPlugin.js");
-                            $lay = new Layout("FDL/Layout/viewfileimage.xml");
-                            $lay->set("docid", $this->doc->id);
-                            $lay->set("waiting", ($waiting ? 'true' : 'false'));
-                            $lay->set("attrid", $this->oattr->id);
-                            $lay->set("index", $idx);
-                            $lay->set("viewtype", $viewfiletype);
-                            $lay->set("mimeicon", $mimeicon);
-                            $lay->set("vid", ($infopdf ? $infopdf->id_file : $vid));
-                            $lay->set("filetitle", json_encode((string)$fname));
-                            $lay->set("height", $this->oattr->getOption('viewfileheight', '300px'));
-                            $lay->set("filelink", $this->doc->getFileLink($this->oattr->id, $idx, false, false));
-
-                            $lay->set("pdflink", '');
-                            if ($pdfattr = $this->oattr->getOption('pdffile')) {
-                                //$infopdf=$this->doc->vault_properties($this->doc->getAttribute($pdfattr));
-                                if (!preg_match('/^(text|image)/', $fileInfo->mime_s)) {
-                                    //$pdfidx=($idx <0)?0:$idx;
-                                    if ($waiting || preg_match('/(pdf)/', $infopdf->mime_s)) {
-                                        $lay->set("pdflink", $this->doc->getFileLink($pdfattr, $idx, false, false));
-                                    }
-                                }
-                            }
-                            $lay->set("pages", $pages); // todo
-                            $htmlval = $lay->gen();
-                            $standardview = false;
-                        }
-                    }
                     if ($standardview) {
-                        global $action;
                         $size = self::human_size($fileInfo->size);
-                        $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
+                        $utarget = "_blank";
                         $inline = $this->oattr->getOption("inline");
                         $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\""
                             . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes"), $avalue, $fileInfo) . "\">";
@@ -673,17 +604,13 @@ class DocHtmlFormat
             return $htmlval;
         }
         $viewzone = $this->oattr->getOption("rowviewzone");
-        $sort = $this->oattr->getOption("sorttable");
-        if ($sort == "yes") {
-            $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/sorttable.js");
-        }
+
         $displayRowCount = $this->oattr->getOption("displayrowcount", 10);
         if (!is_numeric($displayRowCount)) {
             $displayRowCount = 10;
         }
 
         $lay = new Layout("FDL/Layout/viewdocarray.xml");
-        $lay->set("issort", ($sort == "yes"));
         if (!method_exists($this->doc->attributes, "getArrayElements")) {
             return $htmlval;
         }

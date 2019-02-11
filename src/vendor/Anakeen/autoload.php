@@ -31,8 +31,6 @@ spl_autoload_register(function ($classname) {
         if (file_exists($classFile)) {
            // error_log("Legacy require $classFile");
             require_once($classFile);
-        } else {
-            error_log("Legacy not found $classFile");
         }
     }
 });
