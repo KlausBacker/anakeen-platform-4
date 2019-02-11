@@ -39,15 +39,15 @@ class MailPassword
         $user->setLoginName($login);
 
         if (!$user->isAffected()) {
-            $s = new \SearchAccount();
+            $s = new \Anakeen\Accounts\SearchAccounts();
 
-            $s->setTypeFilter(\SearchAccount::userType);
+            $s->setTypeFilter(\Anakeen\Accounts\SearchAccounts::userType);
             $s->addFilter("mail = '%s'", $login);
 
 
             $s->overrideViewControl();
             /**
-             * @var \AccountList $accounts
+             * @var \Anakeen\Accounts\AccountList $accounts
              */
             $accounts = $s->search();
             if ($accounts->count() === 1) {

@@ -23,7 +23,7 @@ class TestSearchFamilies extends \Dcp\Pu\TestCaseDcpCommonFamily
      */
     public function testProperties($filterName, array $expectedProperties)
     {
-        $s = new \SearchDoc(self::$dbaccess);
+        $s = new \Anakeen\Search\Internal\SearchSmartData(self::$dbaccess);
         if ($filterName) {
             $s->addFilter("name = '%s'", $filterName);
         }

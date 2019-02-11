@@ -40,7 +40,7 @@ class SearchGridConfig extends GridConfig
         foreach ($foots as $k => $function) {
             switch ($function) {
                 case "CARD":
-                    $s = new \SearchDoc();
+                    $s = new \Anakeen\Search\Internal\SearchSmartData();
                     $s->useCollection($document->initid);
                     $return[$cols[$k]] = $s->onlyCount();
                     break;
@@ -49,7 +49,7 @@ class SearchGridConfig extends GridConfig
                 case "SUM":
                     $attrid = $cols[$k];
 
-                    $s = new \SearchDoc("", $document->getRawValue("se_famid"));
+                    $s = new \Anakeen\Search\Internal\SearchSmartData("", $document->getRawValue("se_famid"));
                     $s->useCollection($document->initid);
                     $s->returnsOnly([$attrid]);
                     $results = $s->search();
