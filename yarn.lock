@@ -44,12 +44,21 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@latest":
+"@anakeen/ank-components@^1.0.1", "@anakeen/ank-components@latest":
   version "1.0.1"
   resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.1.tgz#cda659b24db55f8852b4ba356c448b8ba9a3384d"
   integrity sha512-gUhAIGqlzNwSlP0uCFNH3K/U0aU5VOGRRlO8LtJVlrb1NKplBMGRfGdq9799u2/IdHTYJWXhtvvpYXtCVbxjPQ==
   dependencies:
     vue-gettext "^2.1.1"
+
+"@anakeen/hub-components@^1.0.0-dev20190208100202":
+  version "1.0.0-dev20190208100202"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190208100202.tgz#ed21e5a182a4675fcdcf5292d37f769fe786810c"
+  integrity sha512-1eG3RtFuFoeTg9rNrLcQ8iPWOLfRyC2wQxrhgUO45DYeHqKtsaK1CNHrKg2b001WdT7V7sda5Hgu38AHngeGLA==
+  dependencies:
+    "@anakeen/ank-components" "^1.0.1"
+    vue-class-component "^6.2.0"
+    vue-property-decorator "^7.3.0"
 
 "@anakeen/webpack-conf@latest":
   version "1.0.1"

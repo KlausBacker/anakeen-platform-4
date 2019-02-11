@@ -5,16 +5,7 @@
             <sde:priority>0</sde:priority>
             <sde:callable>Anakeen\Routes\Admin\MainPage</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/admin[/]</sde:pattern>
-            <sde:requiredAccess>
-                <sde:access ns="AdminCenter">Admin</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
-        <sde:route name="Admin:Plugins">
-            <sde:priority>0</sde:priority>
-            <sde:callable>Anakeen\Routes\Admin\Plugins</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/admin/plugins[/]</sde:pattern>
+            <sde:pattern>/admin/[{args:.*}]</sde:pattern>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>

@@ -9,8 +9,7 @@ module.exports = () => {
   const conf = {
     "moduleName": "adminCenter",
     "entry": {
-      "adminCenterParameters": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/Parameters/parametersMain.js")],
-      "adminCenterAccounts": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/Account/accountMain.js")]
+      adminCenter: [ path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/main.js")]
     },
     buildPath: PUBLIC_PATH,
     customParts: [
