@@ -4,10 +4,10 @@
             <i class="fa fa-users"></i>
         </div>
         <div v-else-if="isDockExpanded">
-            <span>Admin Center Accounts</span>
+            <span><i class="fa fa-users"></i> Accounts</span>
         </div>
-        <div v-else-if="isHubContent">
-            <ank-admin-account></ank-admin-account>
+        <div v-else-if="isHubContent" class="account-station">
+            <admin-center-account></admin-center-account>
         </div>
     </div>
 </template>
@@ -23,3 +23,9 @@
     }
   }
 </script>
+<style>
+    .account-station {
+        height: 100%;
+        width: 100%;
+    }
+</style>
