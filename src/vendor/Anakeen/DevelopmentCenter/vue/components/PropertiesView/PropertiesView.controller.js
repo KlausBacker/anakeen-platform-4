@@ -92,7 +92,9 @@ export default {
   methods: {
     fetchProperties(eId) {
       this.$http
-        .get(`/api/v2/documents/${eId}.json?fields=document.properties.all`)
+        .get(
+          `/api/v2/smart-elements/${eId}.json?fields=document.properties.all`
+        )
         .then(response => {
           if (response && response.data && response.data.data) {
             this.propertiesList = this.parseProperties(

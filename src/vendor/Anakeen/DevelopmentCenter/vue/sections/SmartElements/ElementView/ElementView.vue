@@ -74,9 +74,9 @@
       onDetachElement() {
         if (window.open) {
           if (this.viewId) {
-            window.open(`/api/v2/documents/${this.initid}/views/${this.viewId}.html`);
+            window.open(`/api/v2/smart-elements/${this.initid}/views/${this.viewId}.html`);
           } else {
-            window.open(`/api/v2/documents/${this.initid}.html`);
+            window.open(`/api/v2/smart-elements/${this.initid}.html`);
           }
         }
       },
