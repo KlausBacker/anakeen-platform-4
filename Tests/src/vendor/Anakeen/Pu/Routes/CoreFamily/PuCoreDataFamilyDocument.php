@@ -160,7 +160,7 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
         return array(
 
             array(
-                'PUT /api/v2/documents/TST_F21D0',
+                'PUT /api/v2/smart-elements/TST_F21D0',
                 json_encode([
                     "document" => [
                         "attributes" => [
@@ -178,7 +178,7 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
             ),
 
             array(
-                'PUT /api/v2/documents/TST_F21D1',
+                'PUT /api/v2/smart-elements/TST_F21D1',
                 json_encode([
                     "document" => [
                         "attributes" => [
@@ -196,7 +196,7 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
             ),
 
             array(
-                'PUT /api/v2/documents/TST_F22D2',
+                'PUT /api/v2/smart-elements/TST_F22D2',
                 json_encode([
                     "document" => [
                         "attributes" => [

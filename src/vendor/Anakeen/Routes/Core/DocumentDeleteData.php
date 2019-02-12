@@ -10,7 +10,7 @@ use Anakeen\Router\Exception;
  *
  * Put document to the trash
  *
- * @note    Used by route : GET /api/v2/documents/{docid}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentDeleteData extends DocumentData

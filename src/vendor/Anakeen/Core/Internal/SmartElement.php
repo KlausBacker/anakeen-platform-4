@@ -5389,7 +5389,7 @@ create unique index i_docir on doc(initid, revision);";
                     $size = "20";
                 }
                 $efile = sprintf(
-                    "%sdocuments/%d/images/%s/-1/sizes/%sx%s.png",
+                    "%smart-elements/%d/images/%s/-1/sizes/%sx%s.png",
                     $apiURL,
                     ($otherId == null) ? $this->id : $otherId,
                     rawurlencode($reg["name"]),
@@ -5957,7 +5957,7 @@ create unique index i_docir on doc(initid, revision);";
 
 
                     default:
-                        $ul .= sprintf("/api/v2/documents/%s.html", $id);
+                        $ul .= sprintf("/api/v2/smart-elements/%s.html", $id);
                 }
                 /* Add target's specific elements to base URL */
 

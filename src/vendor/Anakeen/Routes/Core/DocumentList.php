@@ -12,7 +12,7 @@ use Anakeen\Router\ApiV2Response;
  *
  * List all visible documents
  *
- * @note    Used by route : GET /api/v2/documents/
+ * @note    Used by route : GET /api/v2/smart-elements/
  * @package Anakeen\Routes\Core
  */
 class DocumentList
@@ -103,7 +103,7 @@ class DocumentList
             )
         );
 
-        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . "documents/");
+        $data["uri"] = URLUtils::generateURL(Settings::ApiV2 . "smart-elements/");
         $documentFormatter = $this->prepareDocumentFormatter($documentList);
         $docData = $documentFormatter->format();
         $data["documents"] = $docData;

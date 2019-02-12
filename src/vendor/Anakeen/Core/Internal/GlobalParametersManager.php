@@ -16,7 +16,7 @@ class GlobalParametersManager
 
         $core_externurl = ($absindex) ? self::stripUrlSlahes($absindex) : ".";
         $core_mailaction = ContextParameterManager::getValue(Settings::NsSde, "CORE_MAILACTION");
-        $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "api/v2/documents/%INITID%.html");
+        $core_mailactionurl = ($core_mailaction != '') ? ($core_mailaction) : ($core_externurl . "api/v2/smart-elements/%INITID%.html");
 
         ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, "CORE_EXTERNURL", $core_externurl);
         ContextParameterManager::setVolatile(\Anakeen\Core\Settings::NsSde, "CORE_MAILACTIONURL", $core_mailactionurl);

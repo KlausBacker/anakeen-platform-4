@@ -8,7 +8,7 @@ use Anakeen\Core\Settings;
 /**
  * Class WorkflowTransitionCollection
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/workflows/transitions/
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/workflows/transitions/
  * @package Anakeen\Routes\Core
  */
 class WorkflowTransitionCollection extends WorkflowStateCollection

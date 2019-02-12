@@ -8,7 +8,7 @@ use Anakeen\Router\Exception;
 /**
  * Class WorkflowState
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/workflows/states/{state}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/workflows/states/{state}
  * @package Anakeen\Routes\Core
  */
 class WorkflowSetTransition extends WorkflowTransition

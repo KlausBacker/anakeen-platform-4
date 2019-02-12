@@ -117,40 +117,40 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
     {
         return array(
             array(
-                'GET /api/v2/documents/1',
+                'GET /api/v2/smart-elements/1',
                 __DIR__ . "/Expects/base.json"
             ),
             array(
-                'GET /api/v2/documents/2',
+                'GET /api/v2/smart-elements/2',
                 __DIR__ . "/Expects/dir.json"
             ),
             array(
-                'GET /api/v2/documents/TST_APIDOC01',
+                'GET /api/v2/smart-elements/TST_APIDOC01',
                 __DIR__ . "/Expects/doc1.json"
             ),
             array(
-                'GET /api/v2/documents/1?fields=document.properties.all',
+                'GET /api/v2/smart-elements/1?fields=document.properties.all',
                 __DIR__ . "/Expects/baseAllProperties.json"
             ),
             array(
-                'GET /api/v2/documents/2?fields=document.properties.all',
+                'GET /api/v2/smart-elements/2?fields=document.properties.all',
                 __DIR__ . "/Expects/dirAllProperties.json"
             ),
 
             array(
-                'GET /api/v2/documents/TST_APIDOC13',
+                'GET /api/v2/smart-elements/TST_APIDOC13',
                 __DIR__ . "/Expects/doc13.json"
             ),
             array(
-                'GET /api/v2/documents/TST_APIDOC13/revisions/0',
+                'GET /api/v2/smart-elements/TST_APIDOC13/revisions/0',
                 __DIR__ . "/Expects/doc13_rev0.json"
             ),
             array(
-                'GET /api/v2/documents/TST_APIDOC13/revisions/1',
+                'GET /api/v2/smart-elements/TST_APIDOC13/revisions/1',
                 __DIR__ . "/Expects/doc13_rev1.json"
             ),
             array(
-                'GET /api/v2/documents/TST_APIDOC13/revisions/3',
+                'GET /api/v2/smart-elements/TST_APIDOC13/revisions/3',
                 __DIR__ . "/Expects/doc13_rev3.json"
             ),
             array(
@@ -170,7 +170,7 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
         return array(
 
             array(
-                'PUT /api/v2/documents/TST_APIDOC01',
+                'PUT /api/v2/smart-elements/TST_APIDOC01',
                 json_encode([
                     "document" => [
                         "attributes" => [
@@ -205,7 +205,7 @@ class PuCoreDataDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
                 __DIR__ . "/Expects/doc16.json"
             ),
             array(
-                'DELETE /api/v2/documents/TST_APIDOC17',
+                'DELETE /api/v2/smart-elements/TST_APIDOC17',
                 null,
                 __DIR__ . "/Expects/doc17.json"
             )
