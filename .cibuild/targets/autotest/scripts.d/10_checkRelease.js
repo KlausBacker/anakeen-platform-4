@@ -15,6 +15,7 @@ const readPackage = async () => {
 readPackage()
   .then(async content => {
     const {stderr, stdout} = await exec(`yarn --json info ${content.name} versions`);
+    console.log(stdout, stderr);
     const versions = JSON.parse(stdout);
     if (versions.data.indexOf(content.version) !== -1) {
       console.error("This version already exist in the npm");
