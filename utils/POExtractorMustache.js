@@ -56,10 +56,13 @@ module.exports = ({ globFile, targetName, info, potPath, verbose, log }) => {
           if (verbose) {
             log(`Analyze : ${currentFile} : ✓`);
           }
-          const tokens = Mustache.parse(
-            fs.readFileSync(currentFile, { encoding: "utf8" }),
-            ["[[", "]]"]
-          );
+          const currentFileContent = fs.readFileSync(currentFile, {
+            encoding: "utf8"
+          });
+          const tokens = [
+            ...Mustache.parse(currentFileContent, ["[[", "]]"]),
+            ...Mustache.parse(currentFileContent, ["{{", "}}"])
+          ];
           const concatKeys = tokens.reduce((acc, token) => {
             const lkeys = getMustachei18n(token, currentFile);
             return { ...acc, ...lkeys };
