@@ -27,12 +27,12 @@
         </div>
         <div class="parameters-div">
             <div class="user-parameters-tree"></div>
-            <admin-center-parameters-editor :edited-item="editedItem" :editRoute="editRoute" @closeEditor="updateAtEditorClose"></admin-center-parameters-editor>
+            <admin-center-parameter-editor :edited-item="editedItem" :editRoute="editRoute" @closeEditor="updateAtEditorClose"></admin-center-parameter-editor>
         </div>
     </div>
 </template>
 
-<script src="./UserParameters.controller.js"></script>
+<script src="./UserParameters.controller.ts" lang="ts"></script>
 
 <style scoped>
     @import "./UserParameters.css";

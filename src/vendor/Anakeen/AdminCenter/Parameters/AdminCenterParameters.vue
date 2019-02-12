@@ -9,4 +9,4 @@
     @import './AdminCenterParameters.css';
 </style>
 
-<script src="./AdminCenterParameters.controller.js"></script>
+<script src="./AdminCenterParameters.controller.ts" lang="ts"></script>

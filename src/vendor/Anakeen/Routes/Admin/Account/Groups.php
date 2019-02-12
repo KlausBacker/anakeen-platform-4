@@ -7,6 +7,13 @@ use Anakeen\Core\DbManager;
 class Groups
 {
 
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     * @throws \Anakeen\Database\Exception
+     */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
 

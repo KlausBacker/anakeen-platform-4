@@ -16,7 +16,7 @@ class MainPage
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
-        $page=__DIR__."/../../AdminCenter/Layout/adminCenterMainPage.html.mustache";
+        $page=__DIR__."/../Layout/adminCenterMainPage.html.mustache";
         $mustache = new \Mustache_Engine();
         $data = [
             "JS_DEPS" => [
@@ -44,7 +44,7 @@ class MainPage
                     "path" => UIGetAssetPath::getPolyfill()
                 ],
                 [
-                    "key" => "adminCenterLegacy",
+                    "key" => "adminCenter",
                     "path" => UIGetAssetPath::getElementAssets(
                         "adminCenter",
                         "legacy"
