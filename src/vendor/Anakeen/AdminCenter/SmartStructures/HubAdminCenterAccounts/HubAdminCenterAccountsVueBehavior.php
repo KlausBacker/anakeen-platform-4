@@ -1,8 +1,10 @@
 <?php
 
-namespace Anakeen\SmartStructures\HubAdminCenterAccounts;
+namespace Anakeen\AdminCenter\SmartStructures\HubAdminCenterAccounts;
 
-class HubAdminCenterAccountsVueBehavior extends Anakeen\Hub\SmartStructures\HubConfiguration
+use SmartStructure\Hubconfigurationvue;
+
+class HubAdminCenterAccountsVueBehavior extends Hubconfigurationvue
 {
 
     public function registerHooks()
@@ -19,7 +21,7 @@ class HubAdminCenterAccountsVueBehavior extends Anakeen\Hub\SmartStructures\HubC
     {
         return [
             // Name of the Vue.js component
-            "componentName" => "ank-admin-account",
+            "name" => "ank-admin-account",
 
             // Properties to use for the components
             "props" => []

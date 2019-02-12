@@ -35,7 +35,7 @@
                             <kendo-toolbar ref="groupToolbar">
                                 <kendo-toolbar-item type="button" text="Change group" @click="openChangeGroup"></kendo-toolbar-item>
                             </kendo-toolbar>
-                            <ank-smart-element ref="groupDoc" ></ank-smart-element>
+                            <ank-smart-element ref="groupDoc"></ank-smart-element>
                         </div>
                         <div v-show="!displayGroupDocument" class="accountManager_logo">
                             <div><img class="anakeen-logo" src="/Images/anakeen-logo.svg" alt="Anakeen Logo"/></div>
@@ -65,12 +65,12 @@
                 <kendo-toolbar>
                     <kendo-toolbar-item type="button" icon="arrow-double-60-left" @click="toggleUserMode"></kendo-toolbar-item>
                 </kendo-toolbar>
-                <ank-smart-element ref="openDoc" ></ank-smart-element>
+                <ank-smart-element ref="openDoc"></ank-smart-element>
             </div>
         </div>
     </div>
 </template>
-<style >
+<style>
     @import "./AdminCenterAccount.css";
 </style>
 <script src="./AdminCenterAccount.controller.ts" lang="ts"></script>

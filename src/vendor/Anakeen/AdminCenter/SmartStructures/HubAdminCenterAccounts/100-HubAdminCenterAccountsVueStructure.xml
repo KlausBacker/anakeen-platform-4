@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HUBADMINCENTERACCOUNTSVUE" label="Admin center accounts configuration">
         <smart:extends ref="HUBCONFIGURATIONVUE"/>
         <smart:icon file="HubAdminCenterParameters.png"/>
-        <smart:class>Anakeen\Hub\SmartStructures\HubAdminCenterAccounts\HubAdminCenterAccountsVueBehavior</smart:class>
+        <smart:class>Anakeen\AdminCenter\SmartStructures\HubAdminCenterAccounts\HubAdminCenterAccountsVueBehavior</smart:class>
 
         <smart:fields>
         </smart:fields>

@@ -19,7 +19,10 @@ class Config
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
+     * @return \Slim\Http\Response
      * @throws DocManager\Exception
+     * @throws \Anakeen\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response)
     {
@@ -53,9 +56,15 @@ class Config
         return $response->withJson($result);
     }
 
+    /**
+     * @param \Anakeen\Core\Internal\SmartElement $smartElement
+     * @param array $result
+     * @return array
+     * @throws \Anakeen\Search\Exception
+     */
     public function getChildrenFamilies(\Anakeen\Core\Internal\SmartElement $smartElement, &$result = [])
     {
-        $search = new \Anakeen\Search\Internal\SearchSmartData("", -1);
+        $search =  new \Anakeen\Search\Internal\SearchSmartData("", -1);
         $search->setObjectReturn();
         $search->addFilter("fromid = %d", $smartElement->id);
         foreach ($search->getDocumentList() as $currentDoc) {
