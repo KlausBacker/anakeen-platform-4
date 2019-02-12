@@ -287,7 +287,11 @@ define([
     setValues: function mDocumentdocumentSetValues(values) {
       this.get("attributes").each(function mDocumentSetValue(currentAttribute) {
         var newValue = values[currentAttribute.id];
-        if (!currentAttribute.get("isValueAttribute")) {
+        if (
+          !newValue ||
+          !newValue.value ||
+          !currentAttribute.get("isValueAttribute")
+        ) {
           return;
         }
         currentAttribute.set("attributeValue", newValue);
