@@ -10,7 +10,7 @@ use Anakeen\Router\ApiV2Response;
 /**
  * Class DocumentViewUpdate
  *
- * @note    Used by route : PUT /api/v2/documents/{docid}/revisions/{revision}/views/{view}
+ * @note    Used by route : PUT /api/v2/smart-elements/{docid}/revisions/{revision}/views/{view}
  * @package Anakeen\Routes\Ui
  */
 class DocumentViewUpdate extends DocumentView

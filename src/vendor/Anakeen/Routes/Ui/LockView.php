@@ -7,7 +7,7 @@ use Anakeen\Core\ContextManager;
 
 /**
  * Class LockView
- * @note    Used by route : GET /api/v2/documents/{docid}/views/{view}/locks/{lockType}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/views/{view}/locks/{lockType}
  * @package Anakeen\Routes\Ui
  */
 class LockView extends \Anakeen\Routes\Core\DocumentLock

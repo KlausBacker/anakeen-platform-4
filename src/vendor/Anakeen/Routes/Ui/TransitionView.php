@@ -6,7 +6,7 @@ use Anakeen\SmartStructures\Wdoc\WDocHooks;
 
 /**
  * Class TransitionView
- * @note    Used by route : GET /api/v2/documents/{docid}/views/states/{state}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/views/states/{state}
  * @package Anakeen\Routes\Ui
  */
 class TransitionView extends WorkflowState

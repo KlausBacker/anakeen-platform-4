@@ -134,7 +134,7 @@ import searchAttributes from "./searchAttributes";
                 var $r = $.Deferred();
                 if (testWorkflow) {
                   $.getJSON(
-                    "api/v2/documents/" +
+                    "api/v2/smart-elements/" +
                       famid +
                       "/workflows/states/?allStates=1",
                     function requestWorkflows(data) {
@@ -856,7 +856,7 @@ import searchAttributes from "./searchAttributes";
             .then(function doneFamidChanged() {
               if (testWorkflow) {
                 $.getJSON(
-                  "api/v2/documents/" +
+                  "api/v2/smart-elements/" +
                     famid +
                     "/workflows/states/?allStates=1",
                   function requestWorkflowsFamidChanged(data) {

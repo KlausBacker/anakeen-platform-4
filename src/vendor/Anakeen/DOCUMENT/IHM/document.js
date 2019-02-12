@@ -65,7 +65,7 @@
 
   $.widget("dcp.document", {
     _template: _.template(
-      '<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="<%- base %>api/v2/documents/0.html#widgetValue<%- options.json_encode %>"></iframe>'
+      '<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="<%- base %>api/v2/smart-elements/0.html#widgetValue<%- options.json_encode %>"></iframe>'
     ),
 
     defaults: {
