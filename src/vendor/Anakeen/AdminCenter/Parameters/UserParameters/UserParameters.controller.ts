@@ -331,7 +331,7 @@ export default class UserParametersController extends Vue {
   openEditor(dataItem) {
     this.editedItem = dataItem;
     this.editRoute =
-        "admin/parameters/" +
+        "api/v2/admin/parameters/" +
         this.actualLogin +
         "/" +
         dataItem.nameSpace +

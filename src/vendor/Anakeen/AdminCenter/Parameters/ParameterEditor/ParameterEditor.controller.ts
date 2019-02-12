@@ -239,10 +239,7 @@ export default class ParameterEditorController extends Vue {
     // Value to display in the editor. If the parameter has no value, display initial system value (if possible)
     get inputSelectedValue() {
       if (this.editedItem.value) {
-        this.inputIsJson = false;
-        if (ParameterEditorController.isJson(this.editedItem.value)) {
-          this.inputIsJson = true;
-        }
+        this.inputIsJson = ParameterEditorController.isJson(this.editedItem.value);
         return this.editedItem.value;
       } else if (this.editedItem.initialValue) {
         return this.editedItem.initialValue;
