@@ -15,13 +15,14 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\response
-     * @throws \Anakeen\Db\Exception
-     * @throws \Anakeen\SearchDoc\Exception
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Database\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->structureName = $args["hubId"];
-        $search = new \SearchDoc("", "HUBCONFIGURATION");
+        $search = new \Anakeen\Search\Internal\SearchSmartData("", "HUBCONFIGURATION");
         $search->setObjectReturn(true);
         $search->overrideViewControl();
         if (!intval($this->structureName)) {
