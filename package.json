@@ -18,9 +18,9 @@
   ],
   "devDependencies": {
     "@anakeen/anakeen-ci": "latest",
-    "@anakeen/anakeen-cli": "latest",
-    "@anakeen/ank-components": "latest",
-    "@anakeen/hub-components": "^1.0.0-dev20190208100202",
+    "@anakeen/anakeen-cli": "1.0.8-dev20190212111736",
+    "@anakeen/ank-components": "1.0.2-dev20190213085409",
+    "@anakeen/hub-components": "^1.0.0-dev20190213180547",
     "@anakeen/webpack-conf": "latest",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
