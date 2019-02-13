@@ -1,4 +1,4 @@
-/*global define, console, require*/
+/*global define, console */
 define([
   "jquery",
   "underscore",
@@ -77,7 +77,7 @@ define([
      * @returns {string}
      */
     url: function mDocumenturl() {
-      var urlData = "api/v2/",
+      var urlData = "/api/v2/",
         viewId = this.get("viewId");
       var customClientData = this._customClientData;
       var currentMethod = this.get("currentHttpMethod");
@@ -182,7 +182,7 @@ define([
             // No use model destroy : page is destroyed before request is some case
             $.ajax({
               url:
-                "api/v2/smart-elements/" +
+                "/api/v2/smart-elements/" +
                 theModel.get("initid") +
                 "/locks/temporary",
               type: "DELETE",
@@ -215,7 +215,7 @@ define([
         ) {
           $.ajax({
             url:
-              "api/v2/smart-elements/" +
+              "/api/v2/smart-elements/" +
               theModel.get("initid") +
               "/locks/temporary",
             type: "DELETE",

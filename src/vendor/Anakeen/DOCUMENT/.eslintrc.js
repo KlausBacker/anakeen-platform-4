@@ -25,7 +25,8 @@ module.exports = {
         kendo: false,
         define: false,
         _: false,
-        Mustache: false
+        Mustache: false,
+        require: false
     },
     "plugins": [
         "prettier"

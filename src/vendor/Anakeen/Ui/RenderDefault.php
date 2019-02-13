@@ -43,8 +43,8 @@ class RenderDefault implements IRenderConfig
 
     public function getJsDeps()
     {
-        $pubExternalPath = "uiAssets/externals";
-        $pubInternalPath = "uiAssets/anakeen";
+        $pubExternalPath = "/uiAssets/externals";
+        $pubInternalPath = "/uiAssets/anakeen";
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef = [
             "jquery" => UIGetAssetPath::getJSJqueryPath(),
@@ -304,7 +304,7 @@ class RenderDefault implements IRenderConfig
         $linkOption = new htmlLinkOptions();
         //$linkOption->title = ___("View {{{displayValue}}}", "ddui");
         $linkOption->target = "_render";
-        $linkOption->url = "api/v2/smart-elements/{{value}}{{#isRevision}}/revisions/{{revisionTarget}}{{/isRevision}}.html";
+        $linkOption->url = "/api/v2/smart-elements/{{value}}{{#isRevision}}/revisions/{{revisionTarget}}{{/isRevision}}.html";
         $opt->docid()->setLink($linkOption);
         $opt->account()->setLink(clone $linkOption);
         $opt->thesaurus()->setLink(clone $linkOption);

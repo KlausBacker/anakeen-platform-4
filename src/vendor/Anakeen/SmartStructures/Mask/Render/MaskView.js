@@ -63,7 +63,7 @@ import "@progress/kendo-ui/js/kendo.columnmenu";
         dataSource: {
           transport: {
             read: {
-              url: "api/v2/admin/mask/" + documentObject.id + "/visibilities/"
+              url: "/api/v2/admin/mask/" + documentObject.id + "/visibilities/"
             }
           },
           schema: {

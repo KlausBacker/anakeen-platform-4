@@ -262,7 +262,7 @@ class CVDocHooks extends \SmartStructure\Base
             if ($edition && (!$this->doc->id)) {
                 $vidcreate = $this->getRawValue("cv_idcview");
                 if ($vidcreate) {
-                    //	   control must be done by the caller
+                    //     control must be done by the caller
                     $viewU = $this->getView($vidcreate); // use it first if exist
                     $view = array();
                     foreach ($viewU as $k => $v) {

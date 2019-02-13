@@ -24,7 +24,7 @@ define([
      */
     url: function mTransition_url() {
       var urlData =
-        "api/v2/smart-elements/<%= documentId %>/views/states/<%= state %>";
+        "/api/v2/smart-elements/<%= documentId %>/views/states/<%= state %>";
 
       urlData = urlData.replace(
         "<%= documentId %>",

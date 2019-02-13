@@ -661,7 +661,7 @@ define([
         return this;
       }
       autocompleteUrl =
-        "api/v2/smart-elements/" +
+        "/api/v2/smart-elements/" +
         (documentModel.id || "0") +
         "/autocomplete/" +
         this.model.id;

@@ -16,6 +16,11 @@ msgctxt "ddui"
 msgid "Add new line"
 msgstr "Ajouter une nouvelle ligne"
 
+#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
+msgctxt "ddui"
+msgid "Click to reload the document"
+msgstr "Cliquez pour recharger la page"
+
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Conditions"
@@ -30,6 +35,11 @@ msgstr "Suppression de : "
 msgctxt "ddui"
 msgid "Delete line"
 msgstr "Supprimer la ligne"
+
+#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
+msgctxt "ddui"
+msgid "Document Render"
+msgstr "Smart element"
 
 #: src/vendor/Anakeen/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 msgctxt "ddui"
@@ -80,3 +90,8 @@ msgstr "Recherche en cours"
 msgctxt "ddui"
 msgid "Select line"
 msgstr "Sélectionner la ligne"
+
+#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
+msgctxt "ddui"
+msgid "Unable to load try again"
+msgstr "Impossible de charger la page, veuillez essayer à nouveau."

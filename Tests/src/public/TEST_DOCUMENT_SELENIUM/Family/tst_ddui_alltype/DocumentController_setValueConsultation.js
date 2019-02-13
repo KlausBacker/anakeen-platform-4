@@ -61,7 +61,7 @@ function test() {
     window.dcp.document.documentController("setValue", "test_ddui_all__account", {
             "familyRelation": "",
             "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1072&amp;latest=Y",
-            "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+            "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
             "revision": -1,
             "initid": 1072,
             "fromid": 128,
@@ -73,7 +73,7 @@ function test() {
             {
                 "familyRelation": "",
                 "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1074&amp;latest=Y",
-                "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                 "revision": -1,
                 "initid": 1074,
                 "fromid": 128,
@@ -83,7 +83,7 @@ function test() {
             {
                 "familyRelation": "",
                 "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1073&amp;latest=Y",
-                "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                 "revision": -1,
                 "initid": 1073,
                 "fromid": 128,
@@ -395,7 +395,7 @@ function test() {
             {
                 "familyRelation": "",
                 "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1074&amp;latest=Y",
-                "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                 "revision": -1,
                 "initid": 1074,
                 "fromid": 128,
@@ -405,7 +405,7 @@ function test() {
             {
                 "familyRelation": "",
                 "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1075&amp;latest=Y",
-                "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                 "revision": -1,
                 "initid": 1075,
                 "fromid": 128,
@@ -423,7 +423,7 @@ function test() {
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1073&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1073,
                         "fromid": 128,
@@ -433,7 +433,7 @@ function test() {
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1072&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1072,
                         "fromid": 128,
@@ -448,7 +448,7 @@ function test() {
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1075&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1075,
                         "fromid": 128,
@@ -458,7 +458,7 @@ function test() {
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1073&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1073,
                         "fromid": 128,
@@ -468,7 +468,7 @@ function test() {
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1072&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1072,
                         "fromid": 128,

@@ -1,12 +1,6 @@
-/**
- * Created by Alex on 23/06/15.
- */
-
 /*
 Research result in consult mode
  */
-
-/*global define, require, console*/
 
 {
   window.dcp.document.documentController(

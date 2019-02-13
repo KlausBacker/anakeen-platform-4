@@ -29,7 +29,7 @@ class addButtonConsTarget_self extends \Anakeen\Ui\DefaultView
 
         $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = '<i class="fa fa-eye"></i>';
-        $viewDoc->url = sprintf("api/v1/documents/{{value}}.html");
+        $viewDoc->url = sprintf("/api/v1/documents/{{value}}.html");
         $viewDoc->target = "_self";
         $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
