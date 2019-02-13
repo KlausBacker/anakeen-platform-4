@@ -1,7 +1,7 @@
 {
   "name": "development-center",
   "version": "2.0.0",
-  "autorelease" : true,
+  "autorelease": true,
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
   "scripts": {
@@ -12,9 +12,9 @@
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/anakeen-cli": "^1.0.7",
-    "@anakeen/ank-components": "1.0.1",
-    "@anakeen/webpack-conf": "1.0.0",
+    "@anakeen/anakeen-cli": "^1.0.8-dev20190212111736",
+    "@anakeen/ank-components": "1.0.2-dev20190213085409",
+    "@anakeen/webpack-conf": "1.0.1",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-buttons-vue-wrapper": "^2018.3.911",
     "@progress/kendo-datasource-vue-wrapper": "^2018.3.1018",
