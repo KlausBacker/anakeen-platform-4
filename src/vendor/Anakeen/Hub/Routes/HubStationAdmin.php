@@ -22,18 +22,20 @@ class HubStationAdmin extends GridContent
 
     protected function prepareSearchDoc()
     {
-        $this->_searchDoc = new \SearchDoc("", "HUBCONFIGURATION");
+        $this->_searchDoc = new \Anakeen\Search\Internal\SearchSmartData("", "HUBCONFIGURATION");
         $this->_searchDoc->setObjectReturn();
         $this->_searchDoc->excludeConfidential(true);
     }
 
     /**
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\SearchDoc\Exception
      */
     protected function prepareFiltering()
     {
         parent::prepareFiltering();
+        if (!intval($this->structureName)) {
+            $this->structureName = SEManager::getIdFromName($this->structureName);
+        }
         $this->structure = SEManager::getDocument($this->structureName);
         // search in all parent structure
 

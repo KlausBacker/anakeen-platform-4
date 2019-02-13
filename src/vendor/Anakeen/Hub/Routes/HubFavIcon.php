@@ -3,8 +3,8 @@
 namespace Anakeen\Hub\Routes;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Core\VaultManager;
 use Anakeen\Router\ApiV2Response;
-use Dcp\VaultManager;
 
 class HubFavIcon
 {
@@ -17,7 +17,7 @@ class HubFavIcon
      * @return ApiV2Response
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Router\Exception
-     * @throws \Dcp\Exception
+     * @throws \Anakeen\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
