@@ -10,21 +10,22 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
       this.document = options.document;
 
       //  eslint-disable-next-line no-useless-escape
-      this.route(/api\/v2\/documents\/([^\/]+)\.html/, "viewDocument");
+      this.route(/api\/v2\/smart-elements\/([^\/]+)\.html/, "viewDocument");
       this.route(
         //  eslint-disable-next-line no-useless-escape
-        /api\/v2\/documents\/(.+)\/revisions\/([^\/]+)\.html/,
+        /api\/v2\/smart-elements\/(.+)\/revisions\/([^\/]+)\.html/,
         "viewRevision"
       );
-      //  eslint-disable-next-line no-useless-escape
-      this.route(/api\/v2\/documents\/(.+)\/views\/([^\/]+)\.html/, "viewView");
       this.route(
         //  eslint-disable-next-line no-useless-escape
-        /api\/v2\/documents\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/,
+        /api\/v2\/smart-elements\/(.+)\/views\/([^\/]+)\.html/,
+        "viewView"
+      );
+      this.route(
+        //  eslint-disable-next-line no-useless-escape
+        /api\/v2\/smart-elements\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/,
         "viewRevisionView"
       );
-
-      this.route(/[^?]*\?app=DOCUMENT([^#]+)/, "fetch");
 
       // Listen to document sync and update url
       this.document.listenTo(this.document, "sync", function sync() {
@@ -139,7 +140,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
       var noRecordHistory;
       if (options.initid) {
         parsePath = window.location.pathname.match(
-          "(.*)api\\/v2\\/documents\\/(.*)"
+          "(.*)api\\/v2\\/smart-elements\\/(.*)"
         );
         if (parsePath) {
           beginPath = parsePath[1];
@@ -157,7 +158,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
             }
           }
 
-          noRecordHistory = /documents\/0\.html$/.test(options.path);
+          noRecordHistory = /smart-elements\/0\.html$/.test(options.path);
 
           parseHash = /#widgetValue{(.*)}/.exec(locationHash);
           if (parseHash) {

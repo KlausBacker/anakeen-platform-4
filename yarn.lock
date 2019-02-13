@@ -12,7 +12,7 @@
 
 "@anakeen/anakeen-cli@^1.0.8-dev20190212111736":
   version "1.0.8-dev20190212111736"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.8-dev20190212111736.tgz#8f48640acf0d6c3d074544bd67ad39fdf774976c"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.8-dev20190212111736.tgz#8f48640acf0d6c3d074544bd67ad39fdf774976c"
   integrity sha512-xJibDE/MU+lPoaWqt3BkLrCDA1b3VxNgWMUdQ8yBTRBQq3LtWpGok6ALCIGbYwsg2WUWFd0K73SEcX3wi+Ek3Q==
   dependencies:
     "@anakeen/anakeen-module-validation" "^1.0.9"
@@ -46,14 +46,14 @@
 
 "@anakeen/ank-components@1.0.2-dev20190213085409":
   version "1.0.2-dev20190213085409"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.2-dev20190213085409.tgz#68d2e8f61a12b594c625ad2e2b578370c2796eec"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.2-dev20190213085409.tgz#68d2e8f61a12b594c625ad2e2b578370c2796eec"
   integrity sha512-tgQJskmqCSuzyveaRpGLxOA99Jg8h5c6M3qW0BCx3sctqlOHhI+4TDqMlo3xbWr7A/Es7iVq7xpHyuOP6/2RVw==
   dependencies:
     vue-gettext "^2.1.1"
 
 "@anakeen/webpack-conf@1.0.1":
   version "1.0.1"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.1.tgz#791787188ced59fb5e017a29cfdb6ad3eb28c449"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.1.tgz#791787188ced59fb5e017a29cfdb6ad3eb28c449"
   integrity sha512-0PqoWr8Z2c2Hnhfiherb/y5pkbLdWTjlTnczEYnnKJuVy7ZYT9+4a4jU+/dkSTk+rfNBhAUEdvZI6Bmq1embSA==
   dependencies:
     assets-webpack-plugin "^3.9.4"
