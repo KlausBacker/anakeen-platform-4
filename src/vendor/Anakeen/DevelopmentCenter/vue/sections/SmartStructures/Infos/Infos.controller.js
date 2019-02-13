@@ -15,17 +15,17 @@ const formatChildrenList = (parent, children) => {
 const URLS = {
   json: {
     structure: "/api/v2/families/<identifier>/views/structure",
-    element: "/api/v2/documents/<identifier>.json",
-    default: "/api/v2/documents/<identifier>.json"
+    element: "/api/v2/smart-elements/<identifier>.json",
+    default: "/api/v2/smart-elements/<identifier>.json"
   },
   xml: {
     structure: "/api/v2/devel/config/smart/structures/<identifier>.xml",
-    element: "/api/v2/documents/<identifier>.xml",
+    element: "/api/v2/smart-elements/<identifier>.xml",
     workflow: `/api/v2/devel/config/smart/workflows/<identifier>.xml`,
-    default: "/api/v2/documents/<identifier>.xml"
+    default: "/api/v2/smart-elements/<identifier>.xml"
   },
   creation: {
-    structure: "/api/v2/documents/<identifier>/views/!defaultCreation.html"
+    structure: "/api/v2/smart-elements/<identifier>/views/!defaultCreation.html"
   }
 };
 
