@@ -272,7 +272,7 @@ class CollectionDataFormatter
         $pattern = "%file/([0-9]+)/[0-9]+/([^/]+)/-1/([^\\?]+)\\?.*&width=([0-9]+)%";
         if (preg_match($pattern, $imgUrl, $reg)) {
             $imgUrl = sprintf(
-                "%smart-elements/%d/images/%s/-1/sizes/%sx%sc.png",
+                "%ssmart-elements/%d/images/%s/-1/sizes/%sx%sc.png",
                 $this->rootPath,
                 $reg[1],
                 $reg[2],
@@ -290,7 +290,7 @@ class CollectionDataFormatter
         if (preg_match($pattern, $imgUrl, $reg)) {
             if ($revision === -1) {
                 $imgUrl = sprintf(
-                    "%smart-elements/%d/images/%s/%s/sizes/%s.png",
+                    "%ssmart-elements/%d/images/%s/%s/sizes/%s.png",
                     $this->rootPath,
                     $docid ? $docid : $reg["docid"],
                     $reg["attrid"],
@@ -299,7 +299,7 @@ class CollectionDataFormatter
                 );
             } else {
                 $imgUrl = sprintf(
-                    "%smart-elements/%d/revisions/%d/images/%s/%s/sizes/%s.png",
+                    "%ssmart-elements/%d/revisions/%d/images/%s/%s/sizes/%s.png",
                     $this->rootPath,
                     $docid ? $docid : $reg["docid"],
                     $revision,
@@ -318,7 +318,7 @@ class CollectionDataFormatter
         if (preg_match($pattern, $fileUrl, $reg)) {
             if ($revision === -1) {
                 $fileUrl = sprintf(
-                    "%smart-elements/%d/files/%s/%s/%s",
+                    "%ssmart-elements/%d/files/%s/%s/%s",
                     $this->rootPath,
                     $docid ? $docid : $reg["docid"],
                     $reg["attrid"],
@@ -327,7 +327,7 @@ class CollectionDataFormatter
                 );
             } else {
                 $fileUrl = sprintf(
-                    "%smart-elements/%d/revisions/%d/files/%s/%s/%s",
+                    "%ssmart-elements/%d/revisions/%d/files/%s/%s/%s",
                     $this->rootPath,
                     $docid ? $docid : $reg["docid"],
                     $revision,

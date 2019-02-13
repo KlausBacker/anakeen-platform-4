@@ -15,7 +15,7 @@ use SmartStructure\Wdoc;
  * Format document list to be easily used in
  * @class FormatCollection
  * @code
- *      $s = new \SearchDoc(self::$dbaccess, $this->famName);
+ *      $s = new SearchSmartData(self::$dbaccess, $this->famName);
  * $s->setObjectReturn();
  * $dl = $s->search()->getDocumentList();
  * $fc = new \Anakeen\Core\Internal\FormatCollection();
