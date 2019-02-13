@@ -97,13 +97,14 @@ class ApiV2Response
         return false;
     }
 
+
     public static function withFile(
         \Slim\Http\response $response,
         $filePath,
         $fileName = "",
         $inline = false,
         $mime = ""
-    ) {
+    ): \Slim\Http\response {
         if (!$fileName) {
             $fileName = basename($filePath);
         }

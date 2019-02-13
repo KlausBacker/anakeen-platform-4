@@ -5389,7 +5389,7 @@ create unique index i_docir on doc(initid, revision);";
                     $size = "20";
                 }
                 $efile = sprintf(
-                    "%smart-elements/%d/images/%s/-1/sizes/%sx%s.png",
+                    "%ssmart-elements/%d/images/%s/-1/sizes/%sx%s.png",
                     $apiURL,
                     ($otherId == null) ? $this->id : $otherId,
                     rawurlencode($reg["name"]),

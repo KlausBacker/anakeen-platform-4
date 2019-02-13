@@ -326,7 +326,7 @@ class SearchSmartData
      *
      * @api Add join condition
      * @code
-     * $s=new searchDoc();
+     * $s=new searchSmartData();
      * $s->trash='only';
      * $s->join("id = dochisto(id)");
      * $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
@@ -486,7 +486,7 @@ class SearchSmartData
             if ($fromid == 0) {
                 $error = sprintf(___("\"%s\" is not a structure", "search"), $this->fromid);
                 $this->debuginfo["error"] = $error;
-                error_log("ERROR SearchDoc: " . $error);
+                error_log("ERROR SearchSmartData: " . $error);
                 if ($this->mode == "ITEM") {
                     return null;
                 } else {
@@ -550,7 +550,7 @@ class SearchSmartData
     /**
      * return document iterator to be used in loop
      * @code
-     *  $s=new \SearchDoc($dbaccess, $famName);
+     *  $s=new SearchSmartData($dbaccess, $famName);
      * $s->setObjectReturn();
      * $s->search();
      * $dl=$s->getDocumentList();
