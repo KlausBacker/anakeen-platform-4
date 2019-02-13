@@ -11,8 +11,6 @@ class DirEditRender extends DefaultConfigEditRender
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {
         $options = parent::getOptions($document);
-        $options->enum(myAttributes::gui_isrss)->setDisplay('bool');
-        $options->enum(myAttributes::gui_isrss)->displayDeleteButton(false);
         return $options;
     }
 }

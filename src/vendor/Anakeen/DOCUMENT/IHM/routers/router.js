@@ -16,8 +16,11 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
         /api\/v2\/smart-elements\/(.+)\/revisions\/([^\/]+)\.html/,
         "viewRevision"
       );
-      //  eslint-disable-next-line no-useless-escape
-      this.route(/api\/v2\/smart-elements\/(.+)\/views\/([^\/]+)\.html/, "viewView");
+      this.route(
+        //  eslint-disable-next-line no-useless-escape
+        /api\/v2\/smart-elements\/(.+)\/views\/([^\/]+)\.html/,
+        "viewView"
+      );
       this.route(
         //  eslint-disable-next-line no-useless-escape
         /api\/v2\/smart-elements\/(.+)\/revisions\/([^\/]+)\/views\/([^\/]+)\.html/,
