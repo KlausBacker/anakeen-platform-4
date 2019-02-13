@@ -10,10 +10,10 @@
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@^1.0.7":
-  version "1.0.7"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.7.tgz#26047d487ad294e32ad5194d5a6dace54c6ce625"
-  integrity sha512-bmu/UXNKbOdtZUFFBlUq7aM47nMaiYA7sWhDAJ3EglitHGMm5fdjdg4wa5OTD1H/qBq1wQPTySy+B2OLu8Josg==
+"@anakeen/anakeen-cli@^1.0.8-dev20190212111736":
+  version "1.0.8-dev20190212111736"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.8-dev20190212111736.tgz#8f48640acf0d6c3d074544bd67ad39fdf774976c"
+  integrity sha512-xJibDE/MU+lPoaWqt3BkLrCDA1b3VxNgWMUdQ8yBTRBQq3LtWpGok6ALCIGbYwsg2WUWFd0K73SEcX3wi+Ek3Q==
   dependencies:
     "@anakeen/anakeen-module-validation" "^1.0.9"
     form-data "^2.3.3"
@@ -44,17 +44,17 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@1.0.1":
-  version "1.0.1"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.1.tgz#cda659b24db55f8852b4ba356c448b8ba9a3384d"
-  integrity sha512-gUhAIGqlzNwSlP0uCFNH3K/U0aU5VOGRRlO8LtJVlrb1NKplBMGRfGdq9799u2/IdHTYJWXhtvvpYXtCVbxjPQ==
+"@anakeen/ank-components@1.0.2-dev20190213085409":
+  version "1.0.2-dev20190213085409"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.2-dev20190213085409.tgz#68d2e8f61a12b594c625ad2e2b578370c2796eec"
+  integrity sha512-tgQJskmqCSuzyveaRpGLxOA99Jg8h5c6M3qW0BCx3sctqlOHhI+4TDqMlo3xbWr7A/Es7iVq7xpHyuOP6/2RVw==
   dependencies:
     vue-gettext "^2.1.1"
 
-"@anakeen/webpack-conf@1.0.0":
-  version "1.0.0"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.0.tgz#97abc90e9df0182c9cc1db07f0a35e2eec3b8d79"
-  integrity sha512-dtTSj00KeArefaaYdXzLRPKLm7sHH+ofC1EuZ1CutYmcjJFWTv9geS1eO37OkZRkdGox/OIUBcCVOFuqcjEICw==
+"@anakeen/webpack-conf@1.0.1":
+  version "1.0.1"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.1.tgz#791787188ced59fb5e017a29cfdb6ad3eb28c449"
+  integrity sha512-0PqoWr8Z2c2Hnhfiherb/y5pkbLdWTjlTnczEYnnKJuVy7ZYT9+4a4jU+/dkSTk+rfNBhAUEdvZI6Bmq1embSA==
   dependencies:
     assets-webpack-plugin "^3.9.4"
     babel-core "^6.26.3"
@@ -77,6 +77,8 @@
     raw-loader "^0.5.1"
     sass-loader "^7.1.0"
     style-loader "^0.22.1"
+    ts-loader "^5.3.3"
+    typescript "^3.2.4"
     vue-loader "^15.3.0"
     vue-style-loader "^4.1.1"
     vue-template-compiler "^2.5.17"
@@ -3191,7 +3193,7 @@ end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   dependencies:
     once "^1.4.0"
 
-enhanced-resolve@^4.1.0:
+enhanced-resolve@^4.0.0, enhanced-resolve@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-4.1.0.tgz#41c7e0bfdfe74ac1ffe1e57ad6a5c6c9f3742a7f"
   integrity sha512-F/7vkyTtyc/llOIn8oWclcB25KdRaiPBpZYDgJHgh/UHtpgT2p2eldQgtQnLtUvfMKPKxbRaQM/hHkvLHt1Vng==
@@ -7438,7 +7440,7 @@ semver-greatest-satisfied-range@^1.1.0:
   dependencies:
     sver-compat "^1.5.0"
 
-"semver@2 || 3 || 4 || 5", semver@5.6.0, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0, semver@^5.5.1:
+"semver@2 || 3 || 4 || 5", semver@5.6.0, semver@^5.0.1, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0, semver@^5.5.1:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
   integrity sha512-RS9R6R35NYgQn++fkDWaOmqGoj4Ek9gGs+DPxNUZKuwE183xjJroKvyo1IzVFeXvUrvmALy6FWD5xrdJT25gMg==
@@ -8220,6 +8222,17 @@ trim-right@^1.0.1:
   dependencies:
     glob "^7.1.2"
 
+ts-loader@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-5.3.3.tgz#8b4af042e773132d86b3c99ef0acf3b4d325f473"
+  integrity sha512-KwF1SplmOJepnoZ4eRIloH/zXL195F51skt7reEsS6jvDqzgc/YSbz9b8E07GxIUwLXdcD4ssrJu6v8CwaTafA==
+  dependencies:
+    chalk "^2.3.0"
+    enhanced-resolve "^4.0.0"
+    loader-utils "^1.0.2"
+    micromatch "^3.1.4"
+    semver "^5.0.1"
+
 tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
@@ -8253,6 +8266,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@^3.2.4:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
+  integrity sha512-Y21Xqe54TBVp+VDSNbuDYdGw0BpoR/Q6wo/+35M8PAU0vipahnyduJWirxxdxjsAkS7hue53x2zp8gz7F05u0A==
 
 uglify-js@3.4.x:
   version "3.4.9"

@@ -16,7 +16,7 @@ use Anakeen\Router\ApiV2Response;
 /**
  * Class Autocomplete
  *
- * @note    Used by route : POST /api/v2/documents/{docid}/autocomplete/{attrid}
+ * @note    Used by route : POST /api/v2/smart-elements/{docid}/autocomplete/{attrid}
  * @package Anakeen\Routes\Ui
  */
 class Autocomplete

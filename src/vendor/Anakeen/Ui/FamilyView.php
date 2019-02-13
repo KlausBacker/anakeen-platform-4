@@ -37,7 +37,7 @@ class FamilyView extends RenderDefault
             $item = new ItemMenu(
                 "Create",
                 ___("Create", "UiMenu"),
-                sprintf("%sdocuments/%s/views/!defaultCreation.html", Settings::ApiV2, $document->name)
+                sprintf("%ssmart-elements/%s/views/!defaultCreation.html", Settings::ApiV2, $document->name)
             );
             $item->setTarget("_blank");
             $menu->appendElement($item);

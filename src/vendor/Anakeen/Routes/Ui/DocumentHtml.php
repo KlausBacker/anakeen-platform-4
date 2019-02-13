@@ -13,10 +13,10 @@ use Anakeen\Core\SEManager;
 
 /**
  * Class DocumentHtml
- * @note    Used by route : GET /api/v2/documents/{docid}.html
- * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisions}.html
- * @note    Used by route : GET /api/v2/documents/{docid}/views/{view}.html
- * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revisions}/views/{view}.html
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}.html
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/revisions/{revisions}.html
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/views/{view}.html
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/revisions/{revisions}/views/{view}.html
  * @package Anakeen\Routes\Ui
  */
 class DocumentHtml

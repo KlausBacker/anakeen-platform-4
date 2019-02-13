@@ -89,7 +89,7 @@ define([
           encodeURIComponent(this.get("creationFamid")) +
           "/documentsViews/";
       } else {
-        urlData += "documents/" + encodeURIComponent(this.id);
+        urlData += "smart-elements/" + encodeURIComponent(this.id);
         //Don't add revision for the deletion of a alive document
         if (revision !== null && currentMethod !== "delete") {
           if (_.isObject(revision) && revision.state) {
@@ -182,7 +182,7 @@ define([
             // No use model destroy : page is destroyed before request is some case
             $.ajax({
               url:
-                "api/v2/documents/" +
+                "api/v2/smart-elements/" +
                 theModel.get("initid") +
                 "/locks/temporary",
               type: "DELETE",
@@ -215,7 +215,9 @@ define([
         ) {
           $.ajax({
             url:
-              "api/v2/documents/" + theModel.get("initid") + "/locks/temporary",
+              "api/v2/smart-elements/" +
+              theModel.get("initid") +
+              "/locks/temporary",
             type: "DELETE",
             async: false
           });

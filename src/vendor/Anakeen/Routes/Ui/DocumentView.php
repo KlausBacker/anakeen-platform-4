@@ -18,8 +18,8 @@ use Anakeen\Router\ApiV2Response;
 /**
  * Class DocumentView
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revision}/views/{view}
- * @note    Used by route : GET /api/v2/documents/{docid}/views/{view}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/revisions/{revision}/views/{view}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/views/{view}
  * @package Anakeen\Routes\Ui
  */
 class DocumentView
@@ -595,9 +595,9 @@ class DocumentView
     protected function getUri(\Anakeen\Core\Internal\SmartElement $document, $vid)
     {
         if ($this->revision === -1) {
-            return URLUtils::generateURL(sprintf("%s/documents/%s/views/%s", Settings::ApiV2, $document->initid, $vid));
+            return URLUtils::generateURL(sprintf("%s/smart-elements/%s/views/%s", Settings::ApiV2, $document->initid, $vid));
         } else {
-            return URLUtils::generateURL(sprintf("%s/documents/%s/revisions/%d/views/%s", Settings::ApiV2, $document->initid, $this->revision, $vid));
+            return URLUtils::generateURL(sprintf("%s/smart-elements/%s/revisions/%d/views/%s", Settings::ApiV2, $document->initid, $this->revision, $vid));
         }
     }
 

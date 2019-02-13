@@ -7,7 +7,7 @@ use Anakeen\Routes\Core\WorkflowSetState;
 
 /**
  * Class TransitionView
- * @note    Used by route : GET /api/v2/documents/{docid}/views/states/{state}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/views/states/{state}
  * @package Anakeen\Routes\Ui
  */
 class TransitionSet extends WorkflowSetState

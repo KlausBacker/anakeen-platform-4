@@ -7,7 +7,7 @@ use Anakeen\Router\Exception;
 /**
  * Class DocumentViewDelete
  *
- * @note Used by route : DELETE /api/v2/documents/{docid}/views/{view}
+ * @note Used by route : DELETE /api/v2/smart-elements/{docid}/views/{view}
  * @package Anakeen\Routes\Ui
  */
 class DocumentViewDelete extends DocumentView

@@ -9,7 +9,7 @@ use Anakeen\SmartElementManager;
 
 /**
  * Class SubMenu
- * @note    Used by route : POST /api/v2/documents/{docid}/views/{view}/menus/{menu}
+ * @note    Used by route : POST /api/v2/smart-elements/{docid}/views/{view}/menus/{menu}
  * @package Anakeen\Routes\Ui
  */
 class SubMenu

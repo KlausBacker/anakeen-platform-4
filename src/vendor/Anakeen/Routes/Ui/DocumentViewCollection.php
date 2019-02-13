@@ -9,7 +9,7 @@ use Anakeen\Core\SEManager;
 
 /**
  * Class DocumentViewCollection
- * @note    Used by route : GET /api/v2/documents/{docid}/views/
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/views/
  * @package Anakeen\Routes\Ui
  */
 class DocumentViewCollection extends DocumentView

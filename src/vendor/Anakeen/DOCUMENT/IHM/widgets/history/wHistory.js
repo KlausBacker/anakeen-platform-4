@@ -315,7 +315,7 @@ define([
               render: function whistoryRenderRevision(data) {
                 if (data !== "") {
                   return (
-                    '<a class="history-revision-link btn btn-default" href="api/v2/documents/' +
+                    '<a class="history-revision-link btn btn-default" href="api/v2/smart-elements/' +
                     historyWidget.options.documentId +
                     "/revisions/" +
                     data +
@@ -500,7 +500,7 @@ define([
 
           ajax: function whistory_getData(data, callback) {
             $.getJSON(
-              "api/v2/documents/" +
+              "api/v2/smart-elements/" +
                 historyWidget.options.documentId +
                 "/history/"
             )

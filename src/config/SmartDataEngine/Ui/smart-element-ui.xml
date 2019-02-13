@@ -13,7 +13,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentView</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/{view}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/{view}</sde:pattern>
             <sde:description>Get render view data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -21,7 +21,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentViewCollection</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/</sde:pattern>
             <sde:description>Get render view list</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -37,7 +37,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentViewUpdate</sde:callable>
             <sde:method>PUT</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
             <sde:description>Modify document data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -45,7 +45,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentViewDelete</sde:callable>
             <sde:method>DELETE</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/{view}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/{view}</sde:pattern>
             <sde:description>Delete document data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -53,7 +53,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentView</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/revisions/{revision:[0-9]+}/views/{view}</sde:pattern>
             <sde:description>Get render view data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -61,7 +61,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\TransitionView</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/states/{state}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/states/{state}</sde:pattern>
             <sde:description>Document Workflow Transition View</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -69,7 +69,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\TransitionSet</sde:callable>
             <sde:method>POST</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/states/{state}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/states/{state}</sde:pattern>
             <sde:description>Change state for a document</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -85,7 +85,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}.html</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}.html</sde:pattern>
             <sde:description>Html page to view document</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -93,7 +93,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}.html</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/revisions/{revision:[0-9]+}.html</sde:pattern>
             <sde:description>Html page to view revision</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -101,7 +101,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/{view}.html</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/{view}.html</sde:pattern>
             <sde:description>Html page to view document with specific view</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -109,7 +109,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\DocumentHtml</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/revisions/{revision:[0-9]+}/views/{view}.html</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/revisions/{revision:[0-9]+}/views/{view}.html</sde:pattern>
             <sde:description>Html page to view revision with specific view</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -120,7 +120,7 @@
             <sde:method>GET</sde:method>
             <sde:method>POST</sde:method>
             <sde:method>PUT</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/{view}/locks/{lockType:permanent|temporary}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/{view}/locks/{lockType:permanent|temporary}</sde:pattern>
             <sde:description>Lock document</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -128,7 +128,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\Autocomplete</sde:callable>
             <sde:method>POST</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/autocomplete/{attrid}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/autocomplete/{attrid}</sde:pattern>
             <sde:description>Get Autocomplete suggestion for an attribute</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -136,7 +136,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\SubMenu</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/{view}/menus/{menu}</sde:pattern>
             <sde:description>Get submenu items</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -144,7 +144,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\CallMenu</sde:callable>
             <sde:method>ANY</sde:method>
-            <sde:pattern>/api/v2/documents/{docid}/views/{view}/menus/{menu}/call</sde:pattern>
+            <sde:pattern>/api/v2/smart-elements/{docid}/views/{view}/menus/{menu}/call</sde:pattern>
             <sde:description>Call callable menu items</sde:description>
             <sde:requiredAccess/>
         </sde:route>

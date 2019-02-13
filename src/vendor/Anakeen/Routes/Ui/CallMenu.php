@@ -9,7 +9,7 @@ use Anakeen\SmartElementManager;
 
 /**
  * Class CallMenu
- * @note    Used by route : POST /api/v2/documents/{docid}/views/{view}/menus/{menu}/call
+ * @note    Used by route : POST /api/v2/smart-elements/{docid}/views/{view}/menus/{menu}/call
  * @package Anakeen\Routes\Ui
  */
 class CallMenu
