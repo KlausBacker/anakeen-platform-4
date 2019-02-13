@@ -2,6 +2,7 @@
 
 namespace Anakeen\Hub\Routes;
 
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use SmartStructure\Fields\Hubconfiguration as Fields;
 
@@ -23,6 +24,9 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
         $search = new \SearchDoc("", "HUBCONFIGURATION");
         $search->setObjectReturn(true);
         $search->overrideViewControl();
+        if (!intval($this->structureName)) {
+            $this->structureName = SEManager::getIdFromName($this->structureName);
+        }
         $search->addFilter("%s = '%s'", Fields::hub_station_id, $this->structureName);
         $search->search();
         $hubConfigurations = $search->getDocumentList();

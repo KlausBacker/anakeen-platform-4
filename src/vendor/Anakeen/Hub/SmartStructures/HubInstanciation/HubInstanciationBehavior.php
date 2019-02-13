@@ -13,6 +13,7 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
             SmartHooks::PRESTORE,
             function () {
                 $this->getFavIcon();
+                $this->affectLogicalName();
             }
         );
     }
@@ -41,5 +42,10 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
         }
 
         return $icon;
+    }
+
+    protected function affectLogicalName()
+    {
+        $this->setLogicalName($this->getRawValue("instance_logical_name"));
     }
 }

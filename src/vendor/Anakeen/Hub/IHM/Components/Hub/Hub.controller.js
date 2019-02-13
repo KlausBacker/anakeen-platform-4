@@ -15,7 +15,7 @@ export default {
   created() {
     this.hubEntries = new HubEntries(this);
     let route = window.location.href;
-    this.hubId = route.match(/\/hub\/station\/([0-9]+)/)[1];
+    this.hubId = route.match(/\/hub\/station\/(\w+)/)[1];
   },
   mounted() {
     this.getConfig();

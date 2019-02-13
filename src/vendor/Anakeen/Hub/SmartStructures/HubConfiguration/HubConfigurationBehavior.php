@@ -105,7 +105,9 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     {
         return [
             "name" => "",
-            "props" => []
+            "props" => [
+                "msg" => getAttributeValue()
+            ]
         ];
     }
 
