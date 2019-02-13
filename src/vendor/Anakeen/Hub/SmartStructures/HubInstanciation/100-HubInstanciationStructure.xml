@@ -6,10 +6,10 @@
         <smart:class>Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationBehavior</smart:class>
         <smart:fields>
             <smart:field-set name="hub_instance_config" type="tab" label="Configuration" access="ReadWrite">
-                <smart:field-set name="hub_instance" type="frame" access="ReadWrite">
+                <smart:field-set name="hub_instance" type="frame" access="ReadWrite" label="Information">
                     <smart:field-text access="ReadWrite" name="instance_logical_name" label="Logical Name"
-                                       needed="true"/>
-                    <smart:field-image access="ReadWrite" name="hub_instanciation_icone" label="icone"/>
+                                      needed="true"/>
+                    <smart:field-image access="ReadWrite" name="hub_instanciation_icone" label="Fav icon"/>
                 </smart:field-set>
                 <smart:field-set name="hub_instance_label_frame" type="frame" label="Label" access="ReadWrite">
                     <smart:field-set name="hub_instance_titles" type="array" label="Hub Station Titles"
@@ -23,9 +23,7 @@
             <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
                 <smart:field-set name="hub_security_frame" type="frame" access="ReadWrite">
                     <smart:field-set name="hub_roles" type="array" label="Roles" access="ReadWrite">
-                        <smart:field-account name="hub_role" label="Role" access="ReadWrite">
-                            <smart:field-option name="match">role</smart:field-option>
-                        </smart:field-account>
+                        <smart:field-account name="hub_role" label="Role" access="ReadWrite" match="role"/>
                     </smart:field-set>
                 </smart:field-set>
             </smart:field-set>

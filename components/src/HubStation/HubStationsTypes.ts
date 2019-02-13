@@ -21,8 +21,7 @@ export type HubStationConfigComponentDef = {
 export type HubStationEntryOptions = {
     route: string,
     selectable: boolean,
-    selected: boolean,
-    iconTemplate: string
+    selected: boolean
 }
 
 export type HubStationDockConfigs = {

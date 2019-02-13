@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
-    <sde:routes namespace="Core">
-        <sde:route-override name="Root">
+    <sde:routes namespace="AnakeenHub">
+        <sde:route name="Root">
             <sde:callable>Anakeen\Hub\Routes\Hub</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/</sde:pattern>
             <sde:pattern>/hub/station/{hubId}/[{args:.*}]</sde:pattern>
             <sde:description>Get Hub page</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubUser</sde:access>
+                <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
-        </sde:route-override>
-    </sde:routes>
-    <sde:routes namespace="Anakeen">
+        </sde:route>
+    
         <sde:route name="hubAdmin">
             <sde:callable>Anakeen\Hub\Routes\HubInstanciation</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/admin/</sde:pattern>
             <sde:description>Get Hub administration page</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubAdmin</sde:access>
+                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubStationAdmin">
@@ -28,7 +26,7 @@
             <sde:pattern>/hub/admin/{hubId}</sde:pattern>
             <sde:description>Get Hub Station administration page</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubAdmin</sde:access>
+                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubAdmConfigStruct">
@@ -37,7 +35,7 @@
             <sde:pattern>/hub/admin/configurationStructures/</sde:pattern>
             <sde:description>Get inherited Smart Structures of the hub config smart structures </sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubAdmin</sde:access>
+                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubConfig">
@@ -46,7 +44,7 @@
             <sde:pattern>/hub/config/{hubId}</sde:pattern>
             <sde:description>Get initial config of the hub</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubUser</sde:access>
+                <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="hubElement">
@@ -55,7 +53,7 @@
             <sde:pattern>/hub/elements/</sde:pattern>
             <sde:description>Get elements hub activities and visibilities content</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubUser</sde:access>
+                <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="FAIcon">
@@ -64,7 +62,7 @@
             <sde:pattern>/hub/font/icons/</sde:pattern>
             <sde:description>Get font awesome icons</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubUser</sde:access>
+                <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="getHubStationAdminInfos">
@@ -73,7 +71,7 @@
             <sde:pattern>/api/v2/hub/station/{hubId}/admin/</sde:pattern>
             <sde:description>Get hub station info </sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubAdmin</sde:access>
+                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="getHubStationAdminConfig">
@@ -82,7 +80,7 @@
             <sde:pattern>/api/v2/hub/station/{hubId}/admin/config/</sde:pattern>
             <sde:description>Get hub station admin config</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubAdmin</sde:access>
+                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="getHubFavIcon">
@@ -91,11 +89,11 @@
             <sde:pattern>/api/v2/hub/station/{favIconURL}/</sde:pattern>
             <sde:description>Get hub station fav icon</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="Anakeen">HubUser</sde:access>
+                <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
-    <sde:accesses namespace="Anakeen">
+    <sde:accesses namespace="AnakeenHub">
         <sde:access name="HubUser">
             <sde:description>Hub user access</sde:description>
         </sde:access>
@@ -105,7 +103,7 @@
         <sde:route-access ref="HubAdmin" account="hub-admin-role"/>
         <sde:route-access ref="HubUser" account="hub-user-role"/>
     </sde:accesses>
-    <sde:parameters namespace="Anakeen">
+    <sde:parameters namespace="AnakeenHub">
             <sde:parameter name="CONFIG">
                 <sde:description>Hub configuration</sde:description>
                 <sde:value>[]</sde:value>

@@ -105,20 +105,20 @@
                                          :name="`right-header-${index}`">
                             <template slot="collapsedContent">
                                 <component :is="entry.component.name" v-bind="entry.component.props"
-                                           :displayType="HubElementDisplayTypes.COLLAPSED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                           :displayType="HubElementDisplayTypes.COLLAPSED"></component>
                             </template>
                             <template slot="expandedContent">
                                 <component :is="entry.component.name" v-bind="entry.component.props"
-                                           :displayType="HubElementDisplayTypes.EXPANDED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                           :displayType="HubElementDisplayTypes.EXPANDED"></component>
                             </template>
                         </hub-dock-entry>
                     </template>
                     <hub-dock-entry v-for="(entry, index) in getDockContent(configData.right)" :key="`right-content-${index}`" :name="`right-content-${index}`" :route="getEntryRoutePath(entry.entryOptions.route)">
                         <template slot="collapsedContent">
-                            <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.COLLAPSED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                            <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.COLLAPSED"></component>
                         </template>
                         <template slot="expandedContent">
-                            <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.EXPANDED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                            <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.EXPANDED"></component>
                         </template>
                     </hub-dock-entry>
                     <template slot="footer">
@@ -128,11 +128,11 @@
                                 :name="`right-footer-${index}`">
                             <template slot="collapsedContent">
                                 <component :is="entry.component.name" v-bind="entry.component.props"
-                                           :displayType="HubElementDisplayTypes.COLLAPSED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                           :displayType="HubElementDisplayTypes.COLLAPSED"></component>
                             </template>
                             <template slot="expandedContent">
                                 <component :is="entry.component.name" v-bind="entry.component.props"
-                                           :displayType="HubElementDisplayTypes.EXPANDED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                           :displayType="HubElementDisplayTypes.EXPANDED"></component>
                             </template>
                         </hub-dock-entry>
                     </template>
@@ -150,20 +150,20 @@
                                      :name="`bottom-header-${index}`">
                         <template slot="collapsedContent">
                             <component :is="entry.component.name" v-bind="entry.component.props"
-                                       :displayType="HubElementDisplayTypes.COLLAPSED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                       :displayType="HubElementDisplayTypes.COLLAPSED"></component>
                         </template>
                         <template slot="expandedContent">
                             <component :is="entry.component.name" v-bind="entry.component.props"
-                                       :displayType="HubElementDisplayTypes.EXPANDED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                       :displayType="HubElementDisplayTypes.EXPANDED"></component>
                         </template>
                     </hub-dock-entry>
                 </template>
                 <hub-dock-entry v-for="(entry, index) in getDockContent(configData.bottom)" :key="`bottom-content-${index}`" :name="`bottom-content-${index}`" :route="getEntryRoutePath(entry.entryOptions.route)">
                     <template slot="collapsedContent">
-                        <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.COLLAPSED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                        <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.COLLAPSED"></component>
                     </template>
                     <template slot="expandedContent">
-                        <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.EXPANDED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                        <component :is="entry.component.name" v-bind="entry.component.props" :displayType="HubElementDisplayTypes.EXPANDED"></component>
                     </template>
                 </hub-dock-entry>
                 <template slot="footer">
@@ -173,11 +173,11 @@
                             :name="`bottom-footer-${index}`">
                         <template slot="collapsedContent">
                             <component :is="entry.component.name" v-bind="entry.component.props"
-                                       :displayType="HubElementDisplayTypes.COLLAPSED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                       :displayType="HubElementDisplayTypes.COLLAPSED"></component>
                         </template>
                         <template slot="expandedContent">
                             <component :is="entry.component.name" v-bind="entry.component.props"
-                                       :displayType="HubElementDisplayTypes.EXPANDED" :iconTemplate="entry.entryOptions.iconTemplate"></component>
+                                       :displayType="HubElementDisplayTypes.EXPANDED"></component>
                         </template>
                     </hub-dock-entry>
                 </template>

@@ -29,13 +29,13 @@
   "author": "Anakeen",
   "license": "MIT",
   "dependencies": {
-    "@anakeen/ank-components": "^1.0.1",
+    "@anakeen/ank-components": "^1.0.2-dev20190213085409",
     "vue-class-component": "^6.2.0",
     "vue-property-decorator": "^7.3.0"
   },
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
-    "@anakeen/anakeen-cli": "^1.0.0",
+    "@anakeen/anakeen-cli": "^1.0.8-dev20190212111736",
     "@anakeen/webpack-conf": "latest",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-layout-vue-wrapper": "^2018.3.1025",

@@ -6,7 +6,7 @@
 
         <smart:fields>
             <smart:field-set name="hub_slot_parameters" extended="true">
-                <smart:field-text access="ReadWrite" name="hub_vue_router_entry" label="Router entry"/>
+                <smart:field-text access="ReadWrite" name="hub_vue_router_entry" needed="true" label="Router entry"/>
             </smart:field-set>
         </smart:fields>
 

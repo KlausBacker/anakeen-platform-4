@@ -16,7 +16,6 @@ export default class HubElementMixin extends Vue {
   // @Prop() entryOptions!: HubStationEntryOptions;
   @Prop() displayType!: HubElementDisplayTypes;
   @Prop() parentPath!: string;
-  @Prop() iconTemplate!: string;
 
   get isDockCollapsed() {
     return this.displayType === HubElementDisplayTypes.COLLAPSED;

@@ -10,10 +10,10 @@
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@^1.0.0":
-  version "1.0.7"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.7.tgz#26047d487ad294e32ad5194d5a6dace54c6ce625"
-  integrity sha512-bmu/UXNKbOdtZUFFBlUq7aM47nMaiYA7sWhDAJ3EglitHGMm5fdjdg4wa5OTD1H/qBq1wQPTySy+B2OLu8Josg==
+"@anakeen/anakeen-cli@^1.0.8-dev20190212111736":
+  version "1.0.8-dev20190212111736"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.8-dev20190212111736.tgz#8f48640acf0d6c3d074544bd67ad39fdf774976c"
+  integrity sha512-xJibDE/MU+lPoaWqt3BkLrCDA1b3VxNgWMUdQ8yBTRBQq3LtWpGok6ALCIGbYwsg2WUWFd0K73SEcX3wi+Ek3Q==
   dependencies:
     "@anakeen/anakeen-module-validation" "^1.0.9"
     form-data "^2.3.3"
@@ -44,10 +44,10 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@^1.0.1":
-  version "1.0.1"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.1.tgz#cda659b24db55f8852b4ba356c448b8ba9a3384d"
-  integrity sha512-gUhAIGqlzNwSlP0uCFNH3K/U0aU5VOGRRlO8LtJVlrb1NKplBMGRfGdq9799u2/IdHTYJWXhtvvpYXtCVbxjPQ==
+"@anakeen/ank-components@^1.0.2-dev20190213085409":
+  version "1.0.2-dev20190213085409"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.2-dev20190213085409.tgz#68d2e8f61a12b594c625ad2e2b578370c2796eec"
+  integrity sha512-tgQJskmqCSuzyveaRpGLxOA99Jg8h5c6M3qW0BCx3sctqlOHhI+4TDqMlo3xbWr7A/Es7iVq7xpHyuOP6/2RVw==
   dependencies:
     vue-gettext "^2.1.1"
 
