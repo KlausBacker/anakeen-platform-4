@@ -1,7 +1,4 @@
-/**
- * Created by Alex on 21/04/15.
- */
-/*global define, require, console*/
+/*global require*/
 
 const _ = require("underscore");
 import i18n from "./searchCatalog";

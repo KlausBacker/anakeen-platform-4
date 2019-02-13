@@ -22,7 +22,7 @@ class setLinkTarget_self extends AllRenderConfigView
         $linkOptionAccount = new \Dcp\ui\htmlLinkOptions();
         $linkOptionAccount->target = "_self";
         $linkOptionAccount->title = "Mon test {{value}} {{displayValue}}";
-        $linkOptionAccount->url = "api/v1/documents/{{value}}/views/!defaultEdition.html";
+        $linkOptionAccount->url = "/api/v1/documents/{{value}}/views/!defaultEdition.html";
 
         $linkOptionImage = new \Dcp\ui\htmlLinkOptions();
         $linkOptionImage->target = "_self";

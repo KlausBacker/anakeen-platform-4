@@ -7,7 +7,7 @@ define(["underscore", "backbone"], function require_structure(_, Backbone) {
 
     url: function mFamilyStructure_url() {
       var urlStructure = _.template(
-        "api/v2/families/<%- familyId %>/views/structure"
+        "/api/v2/families/<%- familyId %>/views/structure"
       );
 
       return urlStructure({

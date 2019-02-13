@@ -21,7 +21,7 @@ define(["underscore", "backbone", "dcpDocument/models/mDocument"], function(
      */
     url: function mTransition_url() {
       var urlData =
-        "api/v2/smart-elements/<%= documentId %>/workflows/states/?allStates=1";
+        "/api/v2/smart-elements/<%= documentId %>/workflows/states/?allStates=1";
 
       urlData = urlData.replace(
         "<%= documentId %>",

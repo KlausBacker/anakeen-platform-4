@@ -14,7 +14,7 @@ use Anakeen\Core\ContextManager;
 class UIGetAssetPath
 {
 
-    protected static $assetPath = 'uiAssets/externals/';
+    protected static $assetPath = '/uiAssets/externals/';
     protected static $anakeenPublicPath = 'Anakeen/';
     protected static $anakeenManifestPath = __DIR__.'/../../../public/Anakeen/manifest';
     protected static $inDebug = null;
@@ -58,7 +58,7 @@ class UIGetAssetPath
     public static function getJSJqueryPath()
     {
         $jqueryFileName = self::isInDebug() ? 'jquery.js' : 'jquery.min.js';
-        return "/".self::$assetPath.'/jquery/'.$jqueryFileName.'?ws='.self::getWs();
+        return self::$assetPath.'/jquery/'.$jqueryFileName.'?ws='.self::getWs();
     }
 
     /**

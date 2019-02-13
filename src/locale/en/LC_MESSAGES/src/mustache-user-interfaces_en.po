@@ -17,6 +17,11 @@ msgctxt "ddui"
 msgid "Add new line"
 msgstr ""
 
+#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
+msgctxt "ddui"
+msgid "Click to reload the document"
+msgstr ""
+
 #: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
 msgctxt "dsearch"
 msgid "Conditions"
@@ -31,6 +36,12 @@ msgstr ""
 msgctxt "ddui"
 msgid "Delete line"
 msgstr ""
+
+#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
+#, fuzzy
+msgctxt "ddui"
+msgid "Document Render"
+msgstr "Document deleted at"
 
 #: src/vendor/Anakeen/DOCUMENT/IHM/views/document/document__header-fixed.mustache
 msgctxt "ddui"
@@ -81,4 +92,9 @@ msgstr ""
 #: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Select line"
+msgstr ""
+
+#: src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
+msgctxt "ddui"
+msgid "Unable to load try again"
 msgstr ""

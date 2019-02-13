@@ -1,7 +1,3 @@
-/**
- * Created by Alex on 06/07/15.
- */
-
 /*
 Ask for a document title in creation mode
  */

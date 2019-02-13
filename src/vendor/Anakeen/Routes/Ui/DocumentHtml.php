@@ -70,7 +70,6 @@ class DocumentHtml
 
         $templateFile = __DIR__ . "/Templates/document-view.html.mustache";
         $data = new I18nTemplateContext();
-        $data["BASEURL"] = self::getBaseUrl();
         $data["NOTIFICATION_DELAY"] = ContextManager::getParameterValue("Ui", "NOTIFICATION_DELAY");
         $data["htmlTitle"] = ___("Smart ELement", "ddui");
         $data["notificationLabelMore"] = ___("See more ...", "ddui:notification");
@@ -180,23 +179,5 @@ class DocumentHtml
         }
         //$action->parent->clearWarningMsg();
         return json_encode($messages);
-    }
-
-    protected static function getBaseUrl()
-    {
-        // Use protocol relative url
-        $url = sprintf("//%s", $_SERVER["SERVER_NAME"]);
-        if ($_SERVER["SERVER_PORT"] !== "80") {
-            $url .= sprintf(":%s", $_SERVER["SERVER_PORT"]);
-        }
-        if (preg_match('@^(.*)/api/v2/@', $_SERVER["REQUEST_URI"], $reg)) {
-            $url .= $reg[1];
-        } else {
-            if (preg_match('@^(.*)/\\?@', $_SERVER["REQUEST_URI"], $reg)) {
-                $url .= $reg[1];
-            }
-        }
-        $url .= "/";
-        return $url;
     }
 }

@@ -1,7 +1,7 @@
 define(["underscore", "backbone"], function(_, Backbone) {
   "use strict";
 
-  var url = _.template("api/v2/smart-elements/<%- initid %>/usertags/lasttab");
+  var url = _.template("/api/v2/smart-elements/<%- initid %>/usertags/lasttab");
 
   return Backbone.Model.extend({
     typeModel: "ddui:attributeTab",

@@ -198,7 +198,7 @@ define([
             var myData = [];
 
             $.getJSON(
-              "api/v2/smart-elements/" +
+              "/api/v2/smart-elements/" +
                 revisionDiffWidget.options.documentId +
                 "/revisions/" +
                 revisionDiffWidget.options.firstRevision +
@@ -207,7 +207,7 @@ define([
               .done(function dcpRevisionDiff_getDataDone(data1) {
                 revisionDiffWidget.firstDocument = data1.data.revision;
                 $.getJSON(
-                  "api/v2/smart-elements/" +
+                  "/api/v2/smart-elements/" +
                     revisionDiffWidget.options.documentId +
                     "/revisions/" +
                     revisionDiffWidget.options.secondRevision +

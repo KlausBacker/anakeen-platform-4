@@ -32,7 +32,7 @@ class CallableMenu extends ElementMenu
     {
         $this->contentDefinition = $definition;
         
-        $this->url = sprintf("api/v2/smart-elements/{{document.properties.id}}/views/{{document.properties.viewId}}/menus/%s/call", urlencode($this->id));
+        $this->url = sprintf("/api/v2/smart-elements/{{document.properties.id}}/views/{{document.properties.viewId}}/menus/%s/call", urlencode($this->id));
     }
     /**
      * Return instanciated dynamic menu

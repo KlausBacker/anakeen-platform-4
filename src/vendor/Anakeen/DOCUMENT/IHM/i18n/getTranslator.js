@@ -27,7 +27,7 @@ window.dcp = window.dcp || {};
       }
 
       $.ajax({
-        url: "api/v2/i18n/" + window.encodeURIComponent(applicationName),
+        url: "/api/v2/i18n/" + window.encodeURIComponent(applicationName),
         type: "GET",
         dataType: "text"
       })

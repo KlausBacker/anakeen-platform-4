@@ -18,7 +18,7 @@ class setLinkTarget_dialog extends AllRenderConfigView
         $linkOptionAccount->windowHeight = "300px";
         $linkOptionAccount->windowWidth = "500px";
         $linkOptionAccount->windowTitle = "Mon test {{value}} {{displayValue}}";
-        $linkOptionAccount->url = "api/v1/documents/{{value}}/views/!defaultEdition.html";
+        $linkOptionAccount->url = "/api/v1/documents/{{value}}/views/!defaultEdition.html";
 
         $linkOptionImage = new \Dcp\ui\htmlLinkOptions();
         $linkOptionImage->target = "_dialog";

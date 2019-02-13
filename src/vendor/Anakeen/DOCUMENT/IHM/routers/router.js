@@ -112,7 +112,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
           }
           newUrl =
             window.location.pathname +
-            "api/v2/smart-elements/" +
+            "/api/v2/smart-elements/" +
             options.initid +
             urlSecondPart +
             ".html";
@@ -192,7 +192,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
 
           this.navigate(
             beginPath +
-              "api/v2/smart-elements/" +
+              "/api/v2/smart-elements/" +
               options.initid +
               urlSecondPart +
               ".html" +

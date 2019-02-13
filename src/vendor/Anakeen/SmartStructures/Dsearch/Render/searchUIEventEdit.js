@@ -1,7 +1,3 @@
-/**
- * Created by Alex on 09/06/15.
- */
-
 /*
  Research result in edit mode
  */
@@ -104,7 +100,7 @@ import showGrid from "./searchUISEGrid";
     $.ajax({
       method: "POST",
       url:
-        "api/v2/smartstructures/dsearch/temporaryDoc/" +
+        "/api/v2/smartstructures/dsearch/temporaryDoc/" +
         $documentController.documentController("getProperties").family.name +
         "/",
       data: JSON.stringify($dataJSON),

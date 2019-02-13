@@ -1,7 +1,4 @@
 /**
- * Created by Alex on 29/04/15.
- */
-/**
  * Document's constraints file
  */
 

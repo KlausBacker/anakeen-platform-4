@@ -1,7 +1,4 @@
-/**
- * Created by Alex on 27/05/15.
- */
-/*global define, require, console*/
+/*global require*/
 
 const _ = require("underscore");
 import i18n from "./searchCatalog";
@@ -120,7 +117,7 @@ import searchAttributes from "./searchAttributes";
             })
             .then(function doneFirstSReady() {
               $.getJSON(
-                "api/v2/smartstructures/dsearch/operators/",
+                "/api/v2/smartstructures/dsearch/operators/",
                 function requestOperatorsSReady(data) {
                   myOperators = [];
                   $.each(data.data, function eachDataOperatorsSReady(
@@ -134,7 +131,7 @@ import searchAttributes from "./searchAttributes";
                 var $r = $.Deferred();
                 if (testWorkflow) {
                   $.getJSON(
-                    "api/v2/smart-elements/" +
+                    "/api/v2/smart-elements/" +
                       famid +
                       "/workflows/states/?allStates=1",
                     function requestWorkflows(data) {
@@ -856,7 +853,7 @@ import searchAttributes from "./searchAttributes";
             .then(function doneFamidChanged() {
               if (testWorkflow) {
                 $.getJSON(
-                  "api/v2/smart-elements/" +
+                  "/api/v2/smart-elements/" +
                     famid +
                     "/workflows/states/?allStates=1",
                   function requestWorkflowsFamidChanged(data) {
@@ -1570,7 +1567,7 @@ import searchAttributes from "./searchAttributes";
             $.ajax({
               type: "GET",
               url:
-                "api/v2/smartstructures/dsearch/relations/" +
+                "/api/v2/smartstructures/dsearch/relations/" +
                 famid +
                 "/" +
                 attrid +
@@ -1634,7 +1631,7 @@ import searchAttributes from "./searchAttributes";
             }
             $.ajax({
               type: "GET",
-              url: "api/v2/families/" + famid + "/enumerates/" + attrid,
+              url: "/api/v2/families/" + famid + "/enumerates/" + attrid,
               data: filter,
               dataType: "json",
               success: function succesRequestEnumsIEnum(result) {

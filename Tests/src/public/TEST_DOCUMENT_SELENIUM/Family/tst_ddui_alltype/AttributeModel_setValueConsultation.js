@@ -54,7 +54,7 @@
                 var newValue = {
                     "familyRelation": "",
                     "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1072&amp;latest=Y",
-                    "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                    "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                     "revision": -1,
                     "initid": 1072,
                     "fromid": 128,
@@ -89,7 +89,7 @@
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1074&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1074,
                         "fromid": 128,
@@ -99,7 +99,7 @@
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1073&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1075,
                         "fromid": 128,
@@ -133,7 +133,7 @@
                 var newValue = {
                     "familyRelation": "TST_DDUI_ALLTYPE",
                     "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1156&amp;latest=Y",
-                    "icon": "api/v1/images/assets/sizes/14x14c/testdduiall.png",
+                    "icon": "/api/v1/images/assets/sizes/14x14c/testdduiall.png",
                     "revision": -1,
                     "initid": 1156,
                     "fromid": 1051,
@@ -1272,7 +1272,7 @@
                     {
                         "familyRelation": "",
                         "url": "?app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=1074&amp;latest=Y",
-                        "icon": "api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
+                        "icon": "/api/v1/images/assets/sizes/14x14c/dynacase-iuser.png",
                         "revision": -1,
                         "initid": 1074,
                         "fromid": 128,
