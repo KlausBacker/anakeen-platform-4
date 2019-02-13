@@ -10,7 +10,7 @@ use Anakeen\Exception;
  *
  * Change state for a document
  *
- * @note    Used by route : POST /api/v2/documents/{docid}/workflows/states/{state}
+ * @note    Used by route : POST /api/v2/smart-elements/{docid}/workflows/states/{state}
  * @package Anakeen\Routes\Core
  */
 class WorkflowSetState extends WorkflowState

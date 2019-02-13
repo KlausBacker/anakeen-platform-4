@@ -553,7 +553,7 @@ class FormatCollection
             case self::propState:
                 return $this->getState($doc);
             case self::propUrl:
-                return sprintf("/api/v2/documents/%s.html", $doc->id);
+                return sprintf("/api/v2/smart-elements/%s.html", $doc->id);
             case self::mdate:
             case self::cdate:
                 return $this->getFormatDate($doc->$propName, $this->propDateStyle);

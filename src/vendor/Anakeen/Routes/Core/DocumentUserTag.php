@@ -12,13 +12,13 @@ use Anakeen\SmartElementManager;
 /**
  * Class DocumentUserTag
  *
- * @note    Used by route : GET|POST\DELETE|PUT /api/v2/documents/{docid}/usertags/{tag}
+ * @note    Used by route : GET|POST\DELETE|PUT /api/v2/smart-elements/{docid}/usertags/{tag}
  * @note    Used by route : GET|POST\DELETE|PUT /api/v2/families/{family}/documents/{docid}/usertags/{tag}
  * @package Anakeen\Routes\Core
  */
 class DocumentUserTag
 {
-    protected $baseURL = "documents";
+    protected $baseURL = "smart-elements";
     /**
      * @var \Anakeen\Core\Internal\SmartElement
      */

@@ -12,7 +12,7 @@ use Anakeen\SmartElementManager;
  *
  * List all visible documents
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/revisions/
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/revisions/
  * @note    Used by route : GET /api/v2/families/{family}/documents/{docid}/revisions/
  * @package Anakeen\Routes\Core
  */
@@ -22,7 +22,7 @@ class RevisionList extends DocumentList
      * @var \Anakeen\Core\Internal\SmartElement
      */
     protected $_document = null;
-    protected $rootLevel = "documents";
+    protected $rootLevel = "smart-elements";
     protected $documentId;
     protected $orderBy = "revision:desc";
 

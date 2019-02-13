@@ -72,12 +72,12 @@ class PuFieldAccess extends \Anakeen\Pu\Routes\TestCaseRoutes
     {
         return array(
             array(
-                'GET /api/v2/documents/TST_FA1',
+                'GET /api/v2/smart-elements/TST_FA1',
                 "admin",
                 __DIR__ . "/Expects/docTstFaAdmin.json"
             ),
             array(
-                'GET /api/v2/documents/TST_FA1',
+                'GET /api/v2/smart-elements/TST_FA1',
                 "fachewie",
                 __DIR__ . "/Expects/docTstFaChewie.json"
             ),
@@ -90,7 +90,7 @@ class PuFieldAccess extends \Anakeen\Pu\Routes\TestCaseRoutes
         return array(
 
             array(
-                'PUT /api/v2/documents/TST_APIDOC01',
+                'PUT /api/v2/smart-elements/TST_APIDOC01',
                 json_encode([
                     "document" => [
                         "attributes" => [

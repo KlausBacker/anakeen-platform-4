@@ -61,7 +61,7 @@ class TestGetDocAnchor extends TestCaseDcpCommonFamily
                             "value" => "http://www1.example.net/"
                         )
                     ),
-                    "expected_href" => "http://www1.example.net/api/v2/documents/%INITID%.html"
+                    "expected_href" => "http://www1.example.net/api/v2/smart-elements/%INITID%.html"
                 )
             ),
             array(

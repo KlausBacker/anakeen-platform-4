@@ -14,8 +14,8 @@ use Anakeen\SmartElementManager;
  *
  * Download file from document file attribute
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/files/{attrid}/{index}/{fileName}
- * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/files/{attrid}/{index}/{fileName}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}
  * @package Anakeen\Routes\Core
  */
 class FileAttribute

@@ -164,7 +164,7 @@ class DocumentUtils
                     if ($document->locked == -1) {
                         return URLUtils::generateURL(
                             sprintf(
-                                "%s/documents/%s/revisions/%d.json",
+                                "%s/smart-elements/%s/revisions/%d.json",
                                 $prefix,
                                 $document->initid,
                                 $document->revision
@@ -173,7 +173,7 @@ class DocumentUtils
                     } else {
                         return URLUtils::generateURL(
                             sprintf(
-                                "%s/documents/%s.json",
+                                "%s/smart-elements/%s.json",
                                 $prefix,
                                 $document->initid
                             )

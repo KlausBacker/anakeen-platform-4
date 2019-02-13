@@ -5,7 +5,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentData</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:description>Get data for a document</sde:description>
       <sde:requiredAccess/>
@@ -14,7 +14,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentDataXML</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid:[^/.]+}.xml</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid:[^/.]+}.xml</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}.xml</sde:pattern>
       <sde:description>Get data for a document</sde:description>
       <sde:requiredAccess/>
@@ -23,7 +23,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentDataCSV</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid:[^/.]+}.csv</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid:[^/.]+}.csv</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}.csv</sde:pattern>
       <sde:description>Get data for a document</sde:description>
       <sde:requiredAccess/>
@@ -32,7 +32,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentUpdateData</sde:callable>
       <sde:method>PUT</sde:method>
-      <sde:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:description>Modify data for a document</sde:description>
       <sde:requiredAccess/>
@@ -49,7 +49,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentDeleteData</sde:callable>
       <sde:method>DELETE</sde:method>
-      <sde:pattern>/api/v2/documents/{docid:[^/.]+}[.json]</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid:[^/.]+}[.json]</sde:pattern>
       <sde:description>Delete document (put in trash)</sde:description>
       <sde:requiredAccess/>
@@ -61,7 +61,7 @@
       <sde:method>GET</sde:method>
       <sde:method>POST</sde:method>
       <sde:method>PUT</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/locks/{lockType:permanent|temporary}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/locks/{lockType:permanent|temporary}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/locks/{lockType:permanent|temporary}</sde:pattern>
       <sde:description>Lock document</sde:description>
       <sde:requiredAccess/>
@@ -71,7 +71,7 @@
       <sde:callable>Anakeen\Routes\Core\DocumentLocks</sde:callable>
       <sde:method>GET</sde:method>
       <sde:method>DELETE</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/locks/</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/locks/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/locks/</sde:pattern>
       <sde:description>Document locks information</sde:description>
       <sde:requiredAccess/>
@@ -83,7 +83,7 @@
       <sde:method>GET</sde:method>
       <sde:method>POST</sde:method>
       <sde:method>PUT</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/usertags/{tag}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/usertags/{tag}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/usertags/{tag}</sde:pattern>
       <sde:description>User Tag for document</sde:description>
       <sde:requiredAccess/>
@@ -92,7 +92,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentUserTags</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/usertags/</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/usertags/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/usertags/</sde:pattern>
       <sde:description>User Tag for document</sde:description>
       <sde:requiredAccess/>
@@ -101,7 +101,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentList</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/</sde:pattern>
       <sde:description>List all documents</sde:description>
       <sde:requiredAccess/>
     </sde:route>
@@ -125,7 +125,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\RevisionData</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/revisions/{revisionNumber:[0-9]+}[.json]</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/revisions/{revisionNumber:[0-9]+}[.json]</sde:pattern>
       <sde:description>Get a specific revision of a document</sde:description>
       <sde:requiredAccess/>
@@ -134,7 +134,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\RevisionList</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/revisions/</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/revisions/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/revisions/</sde:pattern>
       <sde:description>Get a revisions of a document</sde:description>
       <sde:requiredAccess/>
@@ -215,7 +215,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\FileAttribute</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/files/{attrid}/{index}/{fileName}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/files/{attrid}/{index}/{fileName}</sde:pattern>
       <sde:description>Download file from document</sde:description>
       <sde:requiredAccess/>
     </sde:route>
@@ -223,7 +223,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\FileAttribute</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/revisions/{revision}/files/{attrid}/{index}/{fileName}</sde:pattern>
       <sde:description>Download file from document</sde:description>
       <sde:requiredAccess/>
     </sde:route>
@@ -231,7 +231,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\ImageAttribute</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</sde:pattern>
       <sde:description>Download file image from document</sde:description>
       <sde:requiredAccess/>
     </sde:route>
@@ -239,7 +239,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\ImageAttribute</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]</sde:pattern>
       <sde:description>Download file image from document</sde:description>
       <sde:requiredAccess/>
     </sde:route>
@@ -287,7 +287,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\WorkflowStateCollection</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/workflows/states/</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/workflows/states/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/states/</sde:pattern>
       <sde:description>List of availables next states</sde:description>
       <sde:requiredAccess/>
@@ -296,7 +296,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\WorkflowState</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/workflows/states/{state}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/workflows/states/{state}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/states/{state}</sde:pattern>
       <sde:description>Information about a workflow state</sde:description>
       <sde:requiredAccess/>
@@ -305,7 +305,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\WorkflowSetState</sde:callable>
       <sde:method>POST</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/workflows/states/{state}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/workflows/states/{state}</sde:pattern>
       <sde:description>Document go to a new state</sde:description>
       <sde:requiredAccess/>
     </sde:route>
@@ -313,7 +313,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\WorkflowTransitionCollection</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/workflows/transitions/</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/workflows/transitions/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/</sde:pattern>
       <sde:description>List available transitions</sde:description>
       <sde:requiredAccess/>
@@ -322,7 +322,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\WorkflowTransition</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/workflows/transitions/{transition}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
       <sde:description>Information about a workflow transition</sde:description>
       <sde:requiredAccess/>
@@ -331,7 +331,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\WorkflowSetTransition</sde:callable>
       <sde:method>POST</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/workflows/transitions/{transition}</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/workflows/transitions/{transition}</sde:pattern>
       <sde:description>Pass a transition</sde:description>
       <sde:requiredAccess/>
@@ -340,7 +340,7 @@
       <sde:priority>1</sde:priority>
       <sde:callable>Anakeen\Routes\Core\DocumentHistory</sde:callable>
       <sde:method>GET</sde:method>
-      <sde:pattern>/api/v2/documents/{docid}/history/</sde:pattern>
+      <sde:pattern>/api/v2/smart-elements/{docid}/history/</sde:pattern>
       <sde:pattern>/api/v2/families/{family}/documents/{docid}/history/</sde:pattern>
       <sde:description>Get document history information</sde:description>
       <sde:requiredAccess/>

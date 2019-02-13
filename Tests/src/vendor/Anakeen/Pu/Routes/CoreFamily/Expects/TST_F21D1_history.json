@@ -1,7 +1,7 @@
 {
     "success": true,
     "data": {
-        "uri": "\/api\/v2\/documents\/TST_F21D1\/history\/",
+        "uri": "\/api\/v2\/smart-elements\/TST_F21D1\/history\/",
         "requestParameters": {
             "slice": -1,
             "offset": 0,
@@ -9,7 +9,7 @@
         },
         "history": [
             {
-                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/3.json",
+                "uri": "\/api\/v2\/smart-elements\/TST_F21D1\/revisions\/3.json",
                 "properties": {
                     "title": "Test n\u00b02 - #03",
                     "status": "alive",
@@ -30,7 +30,7 @@
                 "messages": []
             },
             {
-                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/2.json",
+                "uri": "\/api\/v2\/smart-elements\/TST_F21D1\/revisions\/2.json",
                 "properties": {
                     "title": "Test n\u00b02 - #03",
                     "status": "fixed",
@@ -60,7 +60,7 @@
                 ]
             },
             {
-                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/1.json",
+                "uri": "\/api\/v2\/smart-elements\/TST_F21D1\/revisions\/1.json",
                 "properties": {
                     "title": "Test n\u00b02 - #02",
                     "status": "fixed",
@@ -90,7 +90,7 @@
                 ]
             },
             {
-                "uri": "\/api\/v2\/documents\/TST_F21D1\/revisions\/0.json",
+                "uri": "\/api\/v2\/smart-elements\/TST_F21D1\/revisions\/0.json",
                 "properties": {
                     "title": "Test n\u00b02 - #01",
                     "status": "fixed",

@@ -14,13 +14,13 @@ use Anakeen\SmartStructures\Wdoc\WDocHooks;
 /**
  * Class WorkflowState
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/workflows/states/{state}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/workflows/states/{state}
  * @note    Used by route : GET /api/v2/families/{family}/documents/{docid}/workflows/states/{state}
  * @package Anakeen\Routes\Core
  */
 class WorkflowState
 {
-    protected $baseURL = "documents";
+    protected $baseURL = "smart-elements";
     /**
      * @var \Anakeen\Core\Internal\SmartElement
      */

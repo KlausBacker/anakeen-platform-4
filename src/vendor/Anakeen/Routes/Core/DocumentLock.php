@@ -12,13 +12,13 @@ use Anakeen\SmartElementManager;
 /**
  * Class Lock
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/locks/{lockType}
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/locks/{lockType}
  * @note    Used by route : GET /api/v2/families/{family}/documents/{docid}/locks/{lockType}
  * @package Anakeen\Routes\Core
  */
 class DocumentLock
 {
-    protected $baseURL = "documents";
+    protected $baseURL = "smart-elements";
     /**
      * @var \Anakeen\Core\Internal\SmartElement
      */

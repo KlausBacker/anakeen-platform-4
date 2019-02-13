@@ -59,7 +59,7 @@ class DocidAttributeValue extends StandardAttributeValue
         if (!$v) {
             return '';
         }
-        $ul = sprintf("/api/v2/documents/%s.html", $v);
+        $ul = sprintf("/api/v2/smart-elements/%s.html", $v);
 
         if ($docrev == "latest" || $docrev == "" || !$docrev) {
         } elseif ($docrev != "fixed") {

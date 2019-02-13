@@ -11,8 +11,8 @@ use Anakeen\Router\ApiV2Response;
  *
  * Download image from public assets
  *
- * @note    Used by route : GET /api/v2/documents/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]
- * @note    Used by route : GET /api/v2/documents/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]
+ * @note    Used by route : GET /api/v2/smart-elements/{docid}/revisions/{revision}/images/{attrid}/{index}/sizes/{size:[0-9x]+[cfs]?}[.{extension}]
  * @package Anakeen\Routes\Core
  */
 class ImageAttribute extends FileAttribute

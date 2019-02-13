@@ -14,7 +14,7 @@ use \Anakeen\Core\Internal\StoreInfo;
  *
  * Modify attribute values of a document
  *
- * @note    Used by route : PUT /api/v2/documents/{docid}
+ * @note    Used by route : PUT /api/v2/smart-elements/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentUpdateData extends DocumentData
