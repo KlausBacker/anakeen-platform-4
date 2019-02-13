@@ -4,16 +4,16 @@
 
 "@anakeen/anakeen-ci@latest":
   version "1.0.8"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.8.tgz#6c31a8ffbb33ca642b06489b0a7a97389449f471"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-ci/-/anakeen-ci-1.0.8.tgz#6c31a8ffbb33ca642b06489b0a7a97389449f471"
   integrity sha512-0Sx8+Ga+OgC9224ehuDUYpta+TzyWomVKWDnIgvH+yCeTd/S4DQL2B51enN9Qcgjhywo5SP51ZIHdLTzPBaBtw==
   dependencies:
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@latest":
-  version "1.0.7"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.7.tgz#26047d487ad294e32ad5194d5a6dace54c6ce625"
-  integrity sha512-bmu/UXNKbOdtZUFFBlUq7aM47nMaiYA7sWhDAJ3EglitHGMm5fdjdg4wa5OTD1H/qBq1wQPTySy+B2OLu8Josg==
+"@anakeen/anakeen-cli@1.0.8-dev20190212111736":
+  version "1.0.8-dev20190212111736"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.0.8-dev20190212111736.tgz#8f48640acf0d6c3d074544bd67ad39fdf774976c"
+  integrity sha512-xJibDE/MU+lPoaWqt3BkLrCDA1b3VxNgWMUdQ8yBTRBQq3LtWpGok6ALCIGbYwsg2WUWFd0K73SEcX3wi+Ek3Q==
   dependencies:
     "@anakeen/anakeen-module-validation" "^1.0.9"
     form-data "^2.3.3"
@@ -44,25 +44,25 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/ank-components@^1.0.1", "@anakeen/ank-components@latest":
-  version "1.0.1"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.1.tgz#cda659b24db55f8852b4ba356c448b8ba9a3384d"
-  integrity sha512-gUhAIGqlzNwSlP0uCFNH3K/U0aU5VOGRRlO8LtJVlrb1NKplBMGRfGdq9799u2/IdHTYJWXhtvvpYXtCVbxjPQ==
+"@anakeen/ank-components@1.0.2-dev20190213085409", "@anakeen/ank-components@^1.0.2-dev20190213085409":
+  version "1.0.2-dev20190213085409"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fank-components/-/ank-components-1.0.2-dev20190213085409.tgz#68d2e8f61a12b594c625ad2e2b578370c2796eec"
+  integrity sha512-tgQJskmqCSuzyveaRpGLxOA99Jg8h5c6M3qW0BCx3sctqlOHhI+4TDqMlo3xbWr7A/Es7iVq7xpHyuOP6/2RVw==
   dependencies:
     vue-gettext "^2.1.1"
 
-"@anakeen/hub-components@^1.0.0-dev20190208100202":
-  version "1.0.0-dev20190208100202"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190208100202.tgz#ed21e5a182a4675fcdcf5292d37f769fe786810c"
-  integrity sha512-1eG3RtFuFoeTg9rNrLcQ8iPWOLfRyC2wQxrhgUO45DYeHqKtsaK1CNHrKg2b001WdT7V7sda5Hgu38AHngeGLA==
+"@anakeen/hub-components@^1.0.0-dev20190213180547":
+  version "1.0.0-dev20190213180547"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190213180547.tgz#c9671243ef0bb50f9c9a9eb4a3d341339d3b2eab"
+  integrity sha512-X19mGfCjAF1irRN2LaKbwx1CX2rYbijKN03kjz78chBw2KgmZgLkg3S4ZqjsSutfvkvU79kIEV1VXVvOxQWHAA==
   dependencies:
-    "@anakeen/ank-components" "^1.0.1"
+    "@anakeen/ank-components" "^1.0.2-dev20190213085409"
     vue-class-component "^6.2.0"
     vue-property-decorator "^7.3.0"
 
 "@anakeen/webpack-conf@latest":
   version "1.0.1"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.1.tgz#791787188ced59fb5e017a29cfdb6ad3eb28c449"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.1.tgz#791787188ced59fb5e017a29cfdb6ad3eb28c449"
   integrity sha512-0PqoWr8Z2c2Hnhfiherb/y5pkbLdWTjlTnczEYnnKJuVy7ZYT9+4a4jU+/dkSTk+rfNBhAUEdvZI6Bmq1embSA==
   dependencies:
     assets-webpack-plugin "^3.9.4"
