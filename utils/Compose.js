@@ -12,6 +12,7 @@ const { AppRegistryBucket } = require(path.resolve(
 ));
 const { HTTPAgent } = require(path.resolve(__dirname, "HTTPAgent.js"));
 const { AppModuleFile } = require(path.resolve(__dirname, "AppModuleFile.js"));
+const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
@@ -225,15 +226,20 @@ class Compose {
   }
 
   static async genRepoContentXML(repoDir) {
+    const xmlLoader = new XMLLoader();
     let fileList = await fs_readdir(repoDir);
     console.dir(fileList);
     fileList = fileList.filter(filename => {
       return filename.match(/\.app$/);
     });
-    const file = fileList[0];
-    const moduleFile = new AppModuleFile([repoDir, file].join("/"));
-    const content = await moduleFile.getInfoXMLText();
-    console.log(content);
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
+      const moduleFile = new AppModuleFile([repoDir, file].join("/"));
+      const xml = await moduleFile.getInfoXMLText();
+      await xmlLoader.loadFromString(xml);
+      const moduleNode = xmlLoader.data.module;
+      console.dir(moduleNode);
+    }
   }
 }
 

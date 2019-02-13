@@ -16,18 +16,25 @@ class XMLLoader {
     return this;
   }
 
-  async loadFromFile(filename) {
-    const content = await fs_readFile(filename, { encoding: "utf-8" });
-    this.data = await xml2js_parseString(content, {
+  async loadFromString(xml) {
+    this.data = await xml2js_parseString(xml, {
       tagNameProcessors: [xml2js.processors.stripPrefix]
     });
     return this;
   }
 
-  async saveToFile(filename) {
+  async loadFromFile(filename) {
+    const content = await fs_readFile(filename, { encoding: "utf-8" });
+    return this.loadFromString(content);
+  }
+
+  async toString() {
     const builder = new xml2js.Builder();
-    const xml = builder.buildObject(this.data);
-    await fs_writeFile(filename, xml);
+    return builder.buildObject(this.data);
+  }
+
+  async saveToFile(filename) {
+    await fs_writeFile(filename, this.toString());
     return this;
   }
 }
