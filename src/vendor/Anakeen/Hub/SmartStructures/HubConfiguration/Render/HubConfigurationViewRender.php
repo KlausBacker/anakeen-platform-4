@@ -12,9 +12,7 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
-        $visibilities->setVisibility(HubConfigurationFields::hub_icon_enum, RenderAttributeVisibilities::HiddenVisibility);
-        $visibilities->setVisibility(HubConfigurationFields::hub_final_icon, RenderAttributeVisibilities::HiddenVisibility);
-        $visibilities->setVisibility(HubConfigurationFields::hub_station_id_frame, RenderAttributeVisibilities::HiddenVisibility);
+        $visibilities->setVisibility(HubConfigurationFields::hub_title, RenderAttributeVisibilities::HiddenVisibility);
         return $visibilities;
     }
 
@@ -24,8 +22,6 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
 
         $break2 = "33%";
         $break3 = "50%";
-        $options->arrayAttribute(HubConfigurationFields::hub_titles)->setRowMinLimit(1);
-        $options->arrayAttribute(HubConfigurationFields::hub_titles)->setCollapse("none");
         $options->arrayAttribute(HubConfigurationFields::hub_roles)->setCollapse("none");
         $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
         $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(

@@ -145,7 +145,6 @@ export default class HubStation extends Vue {
                                       componentProps: Object.assign({}, cfg.component.props,
                                           {
                                               displayType: HubElementDisplayTypes.CONTENT,
-                                              iconTemplate: cfg.entryOptions.iconTemplate,
                                               parentPath: nodePath.join(this.baseUrl, cfg.entryOptions.route)
                                           })
                                   }

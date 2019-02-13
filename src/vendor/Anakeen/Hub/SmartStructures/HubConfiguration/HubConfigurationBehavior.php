@@ -2,9 +2,7 @@
 
 namespace Anakeen\Hub\SmartStructures\HubConfiguration;
 
-use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
-use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationBehavior extends \Anakeen\SmartElement
@@ -12,12 +10,6 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     public function registerHooks()
     {
         parent::registerHooks();
-        $this->getHooks()->addListener(
-            SmartHooks::PRESTORE,
-            function () {
-                $this->getHubConfigurationIcon();
-            }
-        );
     }
     public function getConfiguration()
     {
@@ -34,35 +26,13 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         $configuration["component"] = $this->getComponentConfiguration();
 
         $configuration["entryOptions"] = [
-            "iconTemplate" => $this->getAttributeValue(HubConfigurationFields::hub_final_icon),
             "selected" => $this->getAttributeValue(HubConfigurationFields::hub_activated) === "TRUE",
             "selectable" => $this->getAttributeValue(HubConfigurationFields::hub_selectable) === "TRUE"
         ];
         return $configuration;
     }
 
-    /**
-     * Get Hub configuration title corresponding to the user language
-     *
-     * @return string
-     */
-    protected function getHubConfigurationTitle()
-    {
-        $titles = $this->getArrayRawValues("hub_titles");
-        $language = ContextManager::getLanguage();
-        $defaultTitle = "";
 
-        foreach ($titles as $title) {
-            if ($title["hub_language_code"] == "en-US") {
-                $defaultTitle = $title["hub_title"];
-            }
-            if (strpos(str_replace("_", "-", $language), $title["hub_language_code"]) === 0) {
-                return $title["hub_title"];
-            }
-        }
-
-        return $defaultTitle;
-    }
 
     protected function getAssets()
     {
@@ -72,29 +42,6 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         return $assets;
     }
 
-    /**
-     * Get Hub configuration icon
-     *
-     * @return string
-     */
-    protected function getHubConfigurationIcon()
-    {
-        $iconEnum = $this->getRawValue("hub_icon_enum");
-        switch ($iconEnum) {
-            case "IMAGE":
-                $this->setValue("hub_final_icon", "<img src='".$this->getRawValue("hub_icon_image")."'>");
-                break;
-            case "HTML":
-                $this->setValue("hub_final_icon", $this->getRawValue("hub_icon_text"));
-                break;
-            case "FONT":
-                $this->setValue("hub_final_icon", "<i class='fa fa-".$this->getRawValue("hub_icon_font")."'></i>");
-                break;
-            default:
-                break;
-        }
-        return $this->getRawValue("hub_final_icon");
-    }
 
     /**
      * Get component configuration
@@ -106,23 +53,9 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         return [
             "name" => "",
             "props" => [
-                "msg" => getAttributeValue()
+                "msg" => "???"
             ]
         ];
-    }
-
-    public function getCustomTitle()
-    {
-        $titles = $this->getArrayRawValues("hub_titles");
-        $finalTitle = $this->title;
-        if ($titles) {
-            $finalTitle = "";
-            foreach ($titles as $title) {
-                $finalTitle = $finalTitle . $title["hub_title"]."/";
-            }
-        }
-        $finalTitle = preg_replace("/\/$/", '', $finalTitle);
-        return $finalTitle;
     }
 
     protected static function getInnerPosition($innerPosition)

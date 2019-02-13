@@ -17,8 +17,7 @@ Type d'affichage du hub element. Cette propriété peut contenir 3 valeurs :
 * "CONTENT": Le composant affiche son template comme contenu du hub
 ### `parentPath: string`
 Route d'accès à l'élément parent. Cette propriété doit être utilisé pour résoudre les sous routes de navigation éventuellement utilisées dans le composant.
-### `iconTemplate: string`
-Template HTML par défaut de l'affichage de l'entrée du dock en mode "replié".
+
  
 ## Méthodes
 ### `resolveHubSubPath(path)`

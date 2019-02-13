@@ -47,10 +47,12 @@ export default {
   created() {
     let route = window.location.href;
     this.hubId = route.match(/\/hub\/admin\/(\w+)/)[1];
-    this.$http.get(`/api/v2/documents/${this.hubId}.json`).then(response => {
-      this.hubTitle =
-        response.data.data.document.attributes.hub_instance_title[0].displayValue;
-    });
+    this.$http
+      .get(`/api/v2/smart-elements/${this.hubId}.json`)
+      .then(response => {
+        this.hubTitle =
+          response.data.data.document.attributes.hub_instance_title[0].displayValue;
+      });
   },
   mounted() {
     Object.keys(this.childFam).forEach(key => {

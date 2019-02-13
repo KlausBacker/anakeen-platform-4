@@ -1,19 +1,6 @@
 
-.card-default[data-attrid="hub_titles"] {
-    width: 100% !important;
-}
 
-.dcpAttribute[data-attrid='hub_icon_enum'] > div {
-    width: 33% !important;
-}
 
-.dcpAttribute[data-attrid='hub_icon_image'] > div {
-    width: 33% !important;
-}
-
-.dcpAttribute[data-attrid='hub_icon_font'] > div {
-    width: 33% !important;
-}
 
 .dock-position-chooser {
     position: relative;
