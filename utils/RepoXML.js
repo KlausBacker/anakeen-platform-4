@@ -2,6 +2,7 @@ const path = require("path");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
+const { normalizeUrl } = require(path.resolve(__dirname, "HTTPAgent.js"));
 
 class RepoXMLError extends GenericError {}
 
@@ -76,6 +77,8 @@ class RepoXML extends XMLLoader {
         `Registry with name/identifier '${name}' already exists`
       );
     }
+
+    url = normalizeUrl(url);
 
     let newRegistry = { $: { name, url } };
     if (authUser !== null) {

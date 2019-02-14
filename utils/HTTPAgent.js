@@ -9,6 +9,14 @@ const Tmp = require(path.resolve(__dirname, "Tmp.js"));
 
 const fs_rename = util.promisify(fs.rename);
 
+function normalizeUrl(url) {
+  /* Normalize hostname (to lowercase) in URL */
+  const u = new URL(url);
+  /* Remove duplicates slashes */
+  u.pathname = u.pathname.replace(/\/\/+/, "/");
+  return u.toString();
+}
+
 class HTTPAgentError extends GenericError {}
 
 class HTTPAgent {
@@ -28,6 +36,7 @@ class HTTPAgent {
   }
 
   async fetch(url) {
+    url = normalizeUrl(url);
     return await fetch(url);
   }
 
@@ -79,4 +88,4 @@ class HTTPAgent {
   }
 }
 
-module.exports = { HTTPAgent, HTTPAgentError };
+module.exports = { HTTPAgent, HTTPAgentError, normalizeUrl };
