@@ -9,7 +9,7 @@ use Anakeen\Core\Settings;
  * Class Lock
  *
  * @note    Used by route : GET /api/v2/smart-elements/{docid}/locks/{lockType}
- * @note    Used by route : GET /api/v2/families/{family}/documents/{docid}/locks/{lockType}
+ * @note    Used by route : GET /api/v2/smart-structures/{family}/documents/{docid}/locks/{lockType}
  * @package Anakeen\Routes\Core
  */
 class DocumentLocks extends DocumentLock

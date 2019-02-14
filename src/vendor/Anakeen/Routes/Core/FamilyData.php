@@ -8,7 +8,7 @@ use Anakeen\Router\Exception;
 /**
  * Class FamilyData
  *
- * @note Used by route : GET /api/v2/families/{family}
+ * @note Used by route : GET /api/v2/smart-structures/{family}
  * @package Anakeen\Routes\Core
  */
 class FamilyData extends DocumentData

@@ -12,7 +12,7 @@ use Anakeen\SmartStructures\Wdoc\WDocHooks;
  * Class WorkflowTransition
  *
  * @note    Used by route : GET /api/v2/smart-elements/{docid}/workflows/transitions/{transition}
- * @note    Used by route : GET /api/v2/families/{family}documents/{docid}/workflows/transitions/{transition}
+ * @note    Used by route : GET /api/v2/smart-structures/{family}documents/{docid}/workflows/transitions/{transition}
  * @package Anakeen\Routes\Core
  */
 class WorkflowTransition extends WorkflowState

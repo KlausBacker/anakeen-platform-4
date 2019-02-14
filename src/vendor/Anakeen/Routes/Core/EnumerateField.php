@@ -9,7 +9,7 @@ use Anakeen\Router\Exception;
 /**
  * Class Enumerates
  *
- * @note    Used by route : POST /api/v2/families/{family}/enumerates/{enum}
+ * @note    Used by route : POST /api/v2/smart-structures/{family}/enumerates/{enum}
  * @package Anakeen\Routes\Core
  */
 class EnumerateField extends Enumerate

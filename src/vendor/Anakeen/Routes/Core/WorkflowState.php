@@ -15,7 +15,7 @@ use Anakeen\SmartStructures\Wdoc\WDocHooks;
  * Class WorkflowState
  *
  * @note    Used by route : GET /api/v2/smart-elements/{docid}/workflows/states/{state}
- * @note    Used by route : GET /api/v2/families/{family}/documents/{docid}/workflows/states/{state}
+ * @note    Used by route : GET /api/v2/smart-structures/{family}/documents/{docid}/workflows/states/{state}
  * @package Anakeen\Routes\Core
  */
 class WorkflowState

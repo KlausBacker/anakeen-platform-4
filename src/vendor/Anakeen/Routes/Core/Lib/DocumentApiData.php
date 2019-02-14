@@ -369,7 +369,7 @@ class DocumentApiData
                 $info["enumItems"] = $enumItems;
             }
             $url = sprintf(
-                "families/%s/enumerates/%s",
+                "smart-structures/%s/enumerates/%s",
                 ($this->_document->doctype === "C" ? $this->_document->name : $this->_document->fromname),
                 $attribute->id
             );
