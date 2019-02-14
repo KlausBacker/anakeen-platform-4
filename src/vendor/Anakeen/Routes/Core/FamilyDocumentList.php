@@ -11,7 +11,7 @@ use Anakeen\Core\Settings;
  * Class FamilyDocumentList
  *
  * List all visible documents of a family
- * @note Used by route : GET /api/v2/families/{family}/documents/
+ * @note Used by route : GET /api/v2/smart-structures/{family}/documents/
  * @package Anakeen\Routes\Core
  */
 class FamilyDocumentList extends DocumentList
@@ -38,7 +38,7 @@ class FamilyDocumentList extends DocumentList
     protected function getData()
     {
         $data = parent::getData();
-        $data["uri"] = URLUtils::generateURL(sprintf("%s/families/%s/documents/", Settings::ApiV2, $this->_family->name));
+        $data["uri"] = URLUtils::generateURL(sprintf("%s/smart-structures/%s/documents/", Settings::ApiV2, $this->_family->name));
         return $data;
     }
 

@@ -156,7 +156,7 @@ class DocumentUtils
     {
         if ($document) {
             if ($document->defDoctype === "C") {
-                return URLUtils::generateURL(sprintf("%s/families/%s.json", $prefix, $document->name));
+                return URLUtils::generateURL(sprintf("%s/smart-structures/%s.json", $prefix, $document->name));
             } else {
                 if ($document->doctype === "Z") {
                     return URLUtils::generateURL(sprintf("%s/trash/%s.json", $prefix, $document->initid));

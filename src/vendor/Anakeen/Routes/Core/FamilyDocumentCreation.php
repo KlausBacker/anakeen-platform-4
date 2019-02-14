@@ -10,7 +10,7 @@ use Anakeen\Router\Exception;
 /**
  * Class FamilyDocumentCreation
  *
- * @note    Used by route : POST /api/v2/families/{family}/
+ * @note    Used by route : POST /api/v2/smart-structures/{family}/
  * @package Anakeen\Routes\Core
  */
 class FamilyDocumentCreation extends DocumentUpdateData

@@ -11,7 +11,7 @@
                 "revision": 0,
                 "status": "alive"
             },
-            "uri": "%baseURL%api\/v2\/families\/DIR.json"
+            "uri": "%baseURL%api\/v2\/smart-structures\/DIR.json"
         }
     },
     "messages": []

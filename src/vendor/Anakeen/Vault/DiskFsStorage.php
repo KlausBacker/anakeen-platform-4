@@ -230,7 +230,7 @@ SQL;
             if ($result) {
                 $this->affect($result);
 
-                return intval($result["size"]);
+                return doubleval($result["size"]);
             }
         }
         return -1;

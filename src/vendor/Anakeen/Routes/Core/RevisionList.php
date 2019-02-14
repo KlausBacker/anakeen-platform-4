@@ -13,7 +13,7 @@ use Anakeen\SmartElementManager;
  * List all visible documents
  *
  * @note    Used by route : GET /api/v2/smart-elements/{docid}/revisions/
- * @note    Used by route : GET /api/v2/families/{family}/documents/{docid}/revisions/
+ * @note    Used by route : GET /api/v2/smart-structures/{family}/documents/{docid}/revisions/
  * @package Anakeen\Routes\Core
  */
 class RevisionList extends DocumentList

@@ -13,7 +13,7 @@ use Anakeen\SmartElementManager;
  * Class DocumentData
  *
  * @note    Used by route : GET /api/v2/smart-elements/{docid}
- * @note    Used by route : GET /api/v2/families/{family}documents/{docid}
+ * @note    Used by route : GET /api/v2/smart-structures/{family}documents/{docid}
  * @package Anakeen\Routes\Core
  */
 class DocumentData
