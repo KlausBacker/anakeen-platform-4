@@ -12,6 +12,7 @@ const { RepoContentXML } = require(path.resolve(
   __dirname,
   "RepoContentXML.js"
 ));
+const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
@@ -198,12 +199,6 @@ class Compose {
       module.version
     );
 
-    repoLockXML.addModule({
-      name: moduleName,
-      version: module.version,
-      registry: registryName
-    });
-
     const httpAgent = new HTTPAgent({ debug: this.$.debug });
     const resources = {
       app: undefined,
@@ -216,21 +211,30 @@ class Compose {
       );
       resources.app = {
         name: moduleInfo.app,
-        pathname: pathname
+        pathname: pathname,
+        sha256: await SHA256Digest.file(pathname)
       };
     }
     if (moduleInfo.hasOwnProperty("src")) {
       const pathname = await httpAgent.downloadFileTo(
-        module.url + "/app",
+        module.url + "/src",
         [localSrc, moduleInfo.src].join("/")
       );
       resources.src = {
         name: moduleInfo.src,
-        pathname: pathname
+        pathname: pathname,
+        sha256: await SHA256Digest.file(pathname)
       };
     }
 
     this.debug({ resources: resources }, { depth: 20 });
+
+    repoLockXML.addModule({
+      name: moduleName,
+      version: module.version,
+      registry: registryName,
+      sha256: resources.app.sha256
+    });
 
     const appList = await this.genRepoContentXML(localRepo);
 

@@ -142,9 +142,7 @@ class AppRegistry {
     const agent = new HTTPAgent();
     const response = await agent.fetch(infoUrl);
     if (!response.ok) {
-      throw new AppRegistryError(
-        `Could not get info from URL '${infoUrl}'`
-      );
+      throw new AppRegistryError(`Could not get info from URL '${infoUrl}'`);
     }
 
     const data = await response.text();
