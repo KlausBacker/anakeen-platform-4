@@ -11,7 +11,7 @@ module.exports = env => {
     return [
       merge(baseConfig, prodConfig, commonConfig),
       merge(baseConfig, prodConfig, umdConfig)
-    ]
+    ];
   }
   return [
     merge(baseConfig, devConfig, commonConfig),

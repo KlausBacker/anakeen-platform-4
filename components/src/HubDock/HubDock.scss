@@ -13,18 +13,20 @@ $green-selected: #8ae234;
 .hub-dock-component {
   background-color: $background-color;
   display: flex;
-  transition: width .5s ease;
+  transition: width 0.5s ease;
 
-  .hub-dock-header, .hub-dock-footer {
+  .hub-dock-header,
+  .hub-dock-footer {
     display: flex;
   }
 
-  &.hub-dock--left, &.hub-dock--right {
+  &.hub-dock--left,
+  &.hub-dock--right {
     flex-direction: column;
     height: 100%;
-    .hub-dock-entry-component{
+    .hub-dock-entry-component {
       min-height: 5rem;
-      &.entry-selected  {
+      &.entry-selected {
         box-shadow: 2.5px 0 0 $green-selected inset;
       }
     }
@@ -33,17 +35,17 @@ $green-selected: #8ae234;
       border-left: 1px solid $border-color;
       .hub-dock-entries {
         flex-direction: column;
-
       }
     }
   }
 
-  &.hub-dock--top, &.hub-dock--bottom {
+  &.hub-dock--top,
+  &.hub-dock--bottom {
     flex-direction: row;
     width: 100%;
     .hub-dock-entry-component {
       min-width: 5rem;
-      &.entry-selected  {
+      &.entry-selected {
         box-shadow: 2.5px 0 0 $green-selected inset;
       }
     }
@@ -55,7 +57,8 @@ $green-selected: #8ae234;
       }
     }
   }
-  .hub-dock-header, .hub-dock-footer {
+  .hub-dock-header,
+  .hub-dock-footer {
     background-color: $background-color-button;
     color: $button-icon-color;
   }

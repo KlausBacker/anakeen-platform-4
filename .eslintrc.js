@@ -3,7 +3,7 @@ module.exports = {
     node: true,
     es6: true,
     browser: true,
-    commonjs: true,
+    commonjs: true
   },
   extends: "eslint:recommended",
   parserOptions: {
@@ -25,8 +25,6 @@ module.exports = {
   globals: {
     $: false,
     kendo: false,
-    define: false,
-    _: false,
     Mustache: false
   },
   plugins: [
