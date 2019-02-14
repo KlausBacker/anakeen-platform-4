@@ -12,7 +12,7 @@ use Anakeen\SmartElementManager;
  *
  * List folder content
  *
- * @note    Used by route : GET /api/v2/folders/{folder}/documents/
+ * @note    Used by route : GET /api/v2/folders/{folder}/smart-elements/
  * @package Anakeen\Routes\Core
  */
 class FolderContent extends DocumentList
@@ -51,7 +51,7 @@ class FolderContent extends DocumentList
     {
         $data = parent::getData();
         $data["uri"] = URLUtils::generateURL(sprintf(
-            "%s/folders/%s/documents/",
+            "%s/folders/%s/smart-elements/",
             Settings::ApiV2,
             $this->_folder->name
         ));

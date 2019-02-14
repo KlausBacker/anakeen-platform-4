@@ -113,43 +113,43 @@ class PuCoreDataFamilyDocument extends \Anakeen\Pu\Routes\TestCaseRoutes
                 __DIR__ . "/Expects/TST_F2_2_struct.json"
             ),
             array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/',
                 __DIR__ . "/Expects/TST_F2_1_docs.json"
             ),
             array(
-                'GET /api/v2/smart-structures/TST_F2_2/documents/',
+                'GET /api/v2/smart-structures/TST_F2_2/smart-elements/',
                 __DIR__ . "/Expects/TST_F2_2_docs.json"
             ),
             array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/TST_F21D0',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/TST_F21D0',
                 __DIR__ . "/Expects/TST_F21D0.json"
             ),
             array(
-                'GET /api/v2/smart-structures/TST_F2_2/documents/TST_F22D2',
+                'GET /api/v2/smart-structures/TST_F2_2/smart-elements/TST_F22D2',
                 __DIR__ . "/Expects/TST_F22D2.json"
             ),
             array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/TST_F21D1',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/TST_F21D1',
                 __DIR__ . "/Expects/TST_F21D1.json"
             ),
             "revision0"=>array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/TST_F21D1/revisions/0',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/TST_F21D1/revisions/0',
                 __DIR__ . "/Expects/TST_F21D1_rev0.json"
             ),
             "revision1"=>array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/TST_F21D1/revisions/1',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/TST_F21D1/revisions/1',
                 __DIR__ . "/Expects/TST_F21D1_rev1.json"
             ),
             "revision3"=>array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/TST_F21D1/revisions/3',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/TST_F21D1/revisions/3',
                 __DIR__ . "/Expects/TST_F21D1_rev3.json"
             ),
             "revisions"=>array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/TST_F21D1/revisions/',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/TST_F21D1/revisions/',
                 __DIR__ . "/Expects/TST_F21D1_revs.json"
             ),
             "history"=>array(
-                'GET /api/v2/smart-structures/TST_F2_1/documents/TST_F21D1/history/',
+                'GET /api/v2/smart-structures/TST_F2_1/smart-elements/TST_F21D1/history/',
                 __DIR__ . "/Expects/TST_F21D1_history.json"
             ),
         );

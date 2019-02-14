@@ -15,7 +15,7 @@ use Anakeen\SmartElementManager;
  * Class DocumentUserTag
  *
  * @note    Used by route : GET /api/v2/smart-elements/{docid}/usertags/
- * @note    Used by route : GET /api/v2/smart-structures/{family}/documents/{docid}/usertags/
+ * @note    Used by route : GET /api/v2/smart-structures/{family}/smart-elements/{docid}/usertags/
  * @package Anakeen\Routes\Core
  */
 class DocumentUserTags
