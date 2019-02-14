@@ -13,7 +13,7 @@ use Anakeen\SmartStructures\Search\SearchHooks;
  *
  * List document find by a search
  *
- * @note    Used by route : GET /api/v2/searches/{search}/documents/
+ * @note    Used by route : GET /api/v2/searches/{search}/smart-elements/
  * @package Anakeen\Routes\Core
  */
 class SearchContent extends DocumentList
@@ -52,7 +52,7 @@ class SearchContent extends DocumentList
     {
         $data = parent::getData();
         $data["uri"] = URLUtils::generateURL(sprintf(
-            "%s/searches/%s/documents/",
+            "%s/searches/%s/smart-elements/",
             Settings::ApiV2,
             $this->_search->name
         ));
