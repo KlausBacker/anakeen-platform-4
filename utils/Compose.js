@@ -6,13 +6,12 @@ const fs = require("fs");
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
 const { RepoLockXML } = require(path.resolve(__dirname, "RepoLockXML.js"));
-const { AppRegistryBucket } = require(path.resolve(
-  __dirname,
-  "AppRegistryBucket.js"
-));
+const { AppRegistry } = require(path.resolve(__dirname, "AppRegistry.js"));
 const { HTTPAgent } = require(path.resolve(__dirname, "HTTPAgent.js"));
-const { AppModuleFile } = require(path.resolve(__dirname, "AppModuleFile.js"));
-const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
+const { RepoContentXML } = require(path.resolve(
+  __dirname,
+  "RepoContentXML.js"
+));
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
@@ -21,6 +20,25 @@ const fs_readdir = util.promisify(fs.readdir);
 class ComposeError extends GenericError {}
 
 class Compose {
+  constructor(options = {}) {
+    if (typeof options !== "object") {
+      options = {};
+    }
+    this.$ = {
+      debug: options.hasOwnProperty("debug") && options.debug === true
+    };
+  }
+
+  debug(msg, options = {}) {
+    if (this.$.debug === true) {
+      if (typeof msg === "object") {
+        console.dir(msg, options);
+      } else {
+        console.log(msg);
+      }
+    }
+  }
+
   /**
    * @param {string} localRepo
    * @param [string} localSrc
@@ -69,7 +87,7 @@ class Compose {
    * @param {string} localSrc
    * @returns {Promise<void>}
    */
-  static async init({ localRepo, localSrc }) {
+  async init({ localRepo, localSrc }) {
     let stats;
 
     if (await Compose.fileExists("repo.xml")) {
@@ -115,16 +133,15 @@ class Compose {
 
   /**
    * @param {string} name Registry's unique name/identifier
-   * @param {string} url Registry's bse URL (e.g. 'http://localhost:8080')
-   * @param {string} bucket Registry's bucket name
+   * @param {string} url Registry's URL (e.g. 'http://localhost:8080/my/bucket')
    * @param {string} authUser Registry's authentication username
    * @param {string} authPassword Registry's authentication password
    * @returns {Promise<{name: *, authUser: *, url: *, authPassword: *}>}
    */
-  static async addAppRegistry({ name, url, bucket, authUser, authPassword }) {
+  async addAppRegistry({ name, url, authUser, authPassword }) {
     const repoXML = new RepoXML("repo.xml");
     await repoXML.load();
-    await repoXML.addAppRegistry({ name, url, bucket, authUser, authPassword });
+    await repoXML.addAppRegistry({ name, url, authUser, authPassword });
     await repoXML.save();
   }
 
@@ -133,7 +150,7 @@ class Compose {
    * @param {string} moduleVersion Module's semver version
    * @param {string} registryName Registry's unique name/identifier from which the module is to be downloaded.
    */
-  static async addModule({
+  async addModule({
     name: moduleName,
     version: moduleVersion,
     registry: registryName
@@ -143,6 +160,9 @@ class Compose {
     const localRepo = await repoXML.getConfigLocalRepo();
     const localSrc = await repoXML.getConfigLocalSrc();
 
+    const repoLockXML = new RepoLockXML("repo.lock.xml");
+    await repoLockXML.load();
+
     const registry = repoXML.getRegistryByName(registryName);
     if (!registry) {
       throw new ComposeError(
@@ -150,14 +170,20 @@ class Compose {
       );
     }
 
-    const appRegistryBucket = new AppRegistryBucket(registry);
-    const ping = await appRegistryBucket.ping();
+    await repoXML.addModule({
+      name: moduleName,
+      version: moduleVersion,
+      registry: registryName
+    });
+
+    const appRegistry = new AppRegistry(registry);
+    const ping = await appRegistry.ping();
     if (!ping) {
       throw new ComposeError(
         `Registry '${registryName}' does not seems to be valid`
       );
     }
-    const moduleList = await appRegistryBucket.getModuleList(
+    const moduleList = await appRegistry.getModuleList(
       moduleName,
       moduleVersion
     );
@@ -167,14 +193,18 @@ class Compose {
       );
     }
     const module = moduleList.slice(0, 1)[0];
-    const moduleInfo = await appRegistryBucket.getModuleVersionInfo(
+    const moduleInfo = await appRegistry.getModuleVersionInfo(
       module.name,
       module.version
     );
 
-    console.dir(moduleInfo);
+    repoLockXML.addModule({
+      name: moduleName,
+      version: module.version,
+      registry: registryName
+    });
 
-    const httpAgent = new HTTPAgent({ debug: true });
+    const httpAgent = new HTTPAgent({ debug: this.$.debug });
     const resources = {
       app: undefined,
       src: undefined
@@ -200,46 +230,37 @@ class Compose {
       };
     }
 
-    console.dir(resources);
+    this.debug({ resources: resources }, { depth: 20 });
 
-    const appList = await Compose.genRepoContentXML(localRepo);
+    const appList = await this.genRepoContentXML(localRepo);
 
-    throw new Error(`DEBUG`);
+    this.debug({ appList: appList }, { depth: 20 });
 
-    await repoXML.addModule({
-      name: moduleName,
-      version: moduleVersion,
-      registry: registryName
-    });
-
-    const repoLockXML = new RepoLockXML("repo.lock.xml");
-    await repoLockXML.load();
-    repoLockXML.addModule({
-      name: moduleName,
-      version: module.version,
-      registry: registryName
-    });
-
-    await repoLockXML.addOrUpdateModule(module);
+    this.debug({ repoXML: repoXML.data }, { depth: 20 });
+    this.debug({ repoLockXML: repoLockXML.data }, { depth: 20 });
 
     await repoXML.save();
+    await repoLockXML.save();
   }
 
-  static async genRepoContentXML(repoDir) {
-    const xmlLoader = new XMLLoader();
-    let fileList = await fs_readdir(repoDir);
-    console.dir(fileList);
-    fileList = fileList.filter(filename => {
+  async genRepoContentXML(repoDir) {
+    const repoContentXML = new RepoContentXML(
+      [repoDir, "content.xml"].join("/")
+    );
+    repoContentXML.reset();
+
+    let moduleFileList = await fs_readdir(repoDir);
+    moduleFileList = moduleFileList.filter(filename => {
       return filename.match(/\.app$/);
     });
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i];
-      const moduleFile = new AppModuleFile([repoDir, file].join("/"));
-      const xml = await moduleFile.getInfoXMLText();
-      await xmlLoader.loadFromString(xml);
-      const moduleNode = xmlLoader.data.module;
-      console.dir(moduleNode);
+    for (let i = 0; i < moduleFileList.length; i++) {
+      const moduleFile = moduleFileList[i];
+      await repoContentXML.addModuleFile([repoDir, moduleFile].join("/"));
     }
+
+    await repoContentXML.save();
+
+    return moduleFileList;
   }
 }
 

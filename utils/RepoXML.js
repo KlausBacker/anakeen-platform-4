@@ -66,19 +66,18 @@ class RepoXML extends XMLLoader {
   /**
    * @param {string} name
    * @param {string} url
-   * @param {string} bucket
    * @param {string} authUser
    * @param {string} authPassword
    * @returns {RepoXML}
    */
-  addAppRegistry({ name, url, bucket, authUser, authPassword }) {
+  addAppRegistry({ name, url, authUser, authPassword }) {
     if (this.getRegistryByName(name)) {
       throw new RepoXMLError(
         `Registry with name/identifier '${name}' already exists`
       );
     }
 
-    let newRegistry = { $: { name, url, bucket } };
+    let newRegistry = { $: { name, url } };
     if (authUser !== null) {
       newRegistry.$.authUser = authUser;
       if (authPassword !== null) {
@@ -137,6 +136,8 @@ class RepoXML extends XMLLoader {
         return module.$;
       }
     }
+
+    return undefined;
   }
 
   /**

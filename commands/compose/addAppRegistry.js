@@ -16,11 +16,6 @@ exports.builder = {
     type: "string",
     demandOption: true
   },
-  bucket: {
-    description: "Registry's bucket name",
-    type: "string",
-    demandOption: true
-  },
   authUser: {
     description: "Registry's authentication username",
     default: null,
@@ -34,12 +29,9 @@ exports.builder = {
 };
 
 exports.handler = async argv => {
-  signale.start(
-    `Adding registry '${argv.name}' with URL '${argv.url}' and bucket ` +
-      `${argv.bucket}'...`
-  );
+  signale.start(`Adding registry '${argv.name}' with URL '${argv.url}'...`);
   try {
-    await Compose.addAppRegistry(argv);
+    await new Compose().addAppRegistry(argv);
   } catch (e) {
     signale.error(`Error: ${e.message}`);
     throw e;

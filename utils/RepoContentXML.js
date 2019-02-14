@@ -6,24 +6,30 @@ const fs_access = util.promisify(fs.access);
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
+const { AppModuleFile } = require(path.resolve(__dirname, "AppModuleFile.js"));
 
 class RepoContentXMLError extends GenericError {}
 
 class RepoContentXML extends XMLLoader {
-  constructor(filename) {
+  constructor(filename, options = {}) {
     super();
+    this.options = typeof options === "object" ? options : {};
     this.filename = filename;
   }
 
-  static repoContentXMLTemplate() {
+  repoContentXMLTemplate() {
+    const format = this.options.hasOwnProperty("format")
+      ? this.options.format
+      : "control";
+    const label = this.options.hasOwnProperty("label")
+      ? this.options.label
+      : "";
+    const status = this.options.hasOwnProperty("status")
+      ? this.options.status
+      : "";
     return {
       repo: {
-        $: {
-          xmlns: "https://platform.anakeen.com/4/schemas/compose-lock/1.0",
-          format: "control",
-          label: "",
-          status: ""
-        },
+        $: { format, label, status },
         modules: []
       }
     };
@@ -45,7 +51,7 @@ class RepoContentXML extends XMLLoader {
       lockFileExists = false;
     }
     if (!lockFileExists) {
-      this.setData(RepoContentXML.repoContentXMLTemplate());
+      this.setData(this.repoContentXMLTemplate());
     } else {
       await super.loadFromFile(filename);
     }
@@ -65,6 +71,33 @@ class RepoContentXML extends XMLLoader {
     if (!this.data["repo"].hasOwnProperty("modules")) {
       this.data["repo"].modules = [];
     }
+    return this;
+  }
+
+  reset() {
+    this.setData(this.repoContentXMLTemplate());
+    this.checkStructure();
+    return this;
+  }
+
+  async addModuleFile(file) {
+    const appModuleFile = new AppModuleFile(file);
+    const xmlStr = await appModuleFile.getInfoXMLText();
+
+    const xmlLoader = new XMLLoader();
+    await xmlLoader.loadFromString(xmlStr);
+
+    const rootNode = xmlLoader.data.module;
+    /* Remove xmlns declaration and unused child nodes */
+    delete rootNode.$.xmlns;
+    for (let prop of Object.keys(rootNode)) {
+      if (!["$", "description", "requires"].includes(prop)) {
+        delete rootNode[prop];
+      }
+    }
+
+    this.data.repo.modules.push(rootNode);
+
     return this;
   }
 }

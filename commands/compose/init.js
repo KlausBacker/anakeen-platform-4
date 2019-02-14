@@ -8,12 +8,12 @@ exports.description = "Initialize a repository";
 exports.builder = {
   localRepo: {
     description: "App repository output directory",
-    default: null,
+    default: "anakeen/repo",
     type: "string"
   },
   localSrc: {
     description: "Src packages output directory",
-    default: null,
+    default: "anakeen/src",
     type: "string"
   }
 };
@@ -21,7 +21,7 @@ exports.builder = {
 exports.handler = async argv => {
   signale.start(`Initializing 'repo.xml'...`);
   try {
-    await Compose.init(argv);
+    await new Compose().init(argv);
   } catch (e) {
     signale.error(`Error: ${e.message}`);
     throw e;

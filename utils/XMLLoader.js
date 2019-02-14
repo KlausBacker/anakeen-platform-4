@@ -28,7 +28,7 @@ class XMLLoader {
     return this.loadFromString(content);
   }
 
-  async toString() {
+  toString() {
     const builder = new xml2js.Builder();
     return builder.buildObject(this.data);
   }

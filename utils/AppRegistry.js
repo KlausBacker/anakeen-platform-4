@@ -4,48 +4,46 @@ const semver = require("semver");
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { HTTPAgent } = require(path.resolve(__dirname, "HTTPAgent.js"));
 
-class AppRegistryBucketError extends GenericError {}
+class AppRegistryError extends GenericError {}
 
-class AppRegistryBucket {
+class AppRegistry {
   /**
    * @param {string} url Registry's base URL
-   * @param {string} bucket Registry's bucket name
    * @param {string} authUser (optional) HTTP auth username
    * @param {string} authPassword (optional) HTTP auth password
    */
-  constructor({ url, bucket, authUser, authPassword }) {
+  constructor({ url, authUser, authPassword }) {
     this._index = undefined;
-    this.url = url;
-    this.bucket = bucket;
+    this.url = url.trim().replace(/\/+$/, "");
     /* TODO: Implement HTTP Basic authentication. */
     this.authUser = authUser;
     this.authPassword = authPassword;
   }
 
   /**
-   * @returns {Promise<AppRegistryBucket>}
+   * @returns {Promise<AppRegistry>}
    */
   async refreshIndex() {
-    const bucketUrl = this.getBucketURL();
+    const url = this.getURL();
     const agent = new HTTPAgent();
-    const response = await agent.fetch(bucketUrl);
+    const response = await agent.fetch(url);
     if (!response.ok) {
-      throw new AppRegistryBucketError(
-        `Could not get content from registry at URL '${bucketUrl}'`
+      throw new AppRegistryError(
+        `Could not get content from registry at URL '${url}'`
       );
     }
     const data = await response.text();
     const index = JSON.parse(data);
     if (!Array.isArray(index)) {
-      throw new AppRegistryBucketError(
-        `Malformed response from registry at URL '${bucketUrl}': ` +
+      throw new AppRegistryError(
+        `Malformed response from registry at URL '${url}': ` +
           `${response.status} ${response.statusText}\n` +
           data
       );
     }
     for (let i = 0; i < index.length; i++) {
       index[i].url = [
-        bucketUrl,
+        url,
         encodeURI(index[i].name),
         encodeURI(index[i].version)
       ].join("/");
@@ -55,7 +53,7 @@ class AppRegistryBucket {
   }
 
   /**
-   * @returns {Promise<AppRegistryBucket>}
+   * @returns {Promise<AppRegistry>}
    */
   async refreshIndexIfUndefined() {
     if (!Array.isArray(this._index)) {
@@ -67,8 +65,8 @@ class AppRegistryBucket {
   /**
    * @returns {string}
    */
-  getBucketURL() {
-    return `${this.url}/${encodeURI(this.bucket)}`;
+  getURL() {
+    return this.url;
   }
 
   /**
@@ -99,7 +97,7 @@ class AppRegistryBucket {
   }
 
   /**
-   * Get list of modules from registry's bucket with optional name and version
+   * Get list of modules from registry with optional name and version
    * filtering.
    *
    * @param {string} filterName Module's name strict matching filtering
@@ -138,13 +136,13 @@ class AppRegistryBucket {
   }
 
   async getModuleVersionInfo(name, version) {
-    const bucketUrl = this.getBucketURL();
-    const infoUrl = [bucketUrl, encodeURI(name), encodeURI(version)].join("/");
+    const url = this.getURL();
+    const infoUrl = [url, encodeURI(name), encodeURI(version)].join("/");
 
     const agent = new HTTPAgent();
     const response = await agent.fetch(infoUrl);
     if (!response.ok) {
-      throw new AppRegistryBucketError(
+      throw new AppRegistryError(
         `Could not get info from URL '${infoUrl}'`
       );
     }
@@ -152,7 +150,7 @@ class AppRegistryBucket {
     const data = await response.text();
     const info = JSON.parse(data);
     if (typeof info !== "object") {
-      throw new AppRegistryBucketError(
+      throw new AppRegistryError(
         `Malformed response from URL '${infoUrl}': ` +
           `${response.status} ${response.statusText}\n` +
           data
@@ -162,4 +160,7 @@ class AppRegistryBucket {
   }
 }
 
-module.exports = { AppRegistryBucket, AppRegistryBucketError };
+module.exports = {
+  AppRegistry: AppRegistry,
+  AppRegistryError: AppRegistryError
+};

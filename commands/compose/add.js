@@ -21,6 +21,11 @@ exports.builder = {
       "Registry's unique name/identifier from which the Module is to be downloaded",
     type: "string",
     requiresArg: true
+  },
+  debug: {
+    descriptions: "Print debug messages",
+    type: "boolean",
+    default: false
   }
 };
 
@@ -30,7 +35,7 @@ exports.handler = async argv => {
       `from registry '${argv.registry}'...`
   );
   try {
-    await Compose.addModule(argv);
+    await new Compose({ debug: argv.debug }).addModule(argv);
   } catch (e) {
     signale.error(`Error: ${e.message}`);
     throw e;
