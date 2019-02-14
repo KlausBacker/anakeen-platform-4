@@ -38,7 +38,5 @@ module.exports = {
       callback();
     }
   ],
-  plugins: [
-    new VueLoaderPlugin(),
-  ]
+  plugins: [new VueLoaderPlugin()]
 };

@@ -1,18 +1,13 @@
 {
-    "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
-        "strict": true,
-        "target": "es5",
-        "importHelpers": true,
-        "noUnusedLocals": true,
-        "noImplicitAny": false,
-        "lib": [
-            "dom",
-            "es6"
-        ]
-    },
-    "include": [
-        "src/**/*.ts"
-    ]
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "target": "es5",
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "lib": ["dom", "es6"]
+  },
+  "include": ["src/**/*.ts"]
 }

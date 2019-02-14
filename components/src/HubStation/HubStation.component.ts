@@ -1,17 +1,17 @@
 const nodePath = require("path");
+import AnkComponents from "@anakeen/ank-components";
+// Vue class based component export
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import HubDock from "../HubDock/HubDock.vue";
 import HubDockEntry from "../HubDock/HubDockEntry/HubDockEntry.vue";
+import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
 import {
   DockPosition,
-  HubStationDockConfigs,
-  HubStationPropConfig,
   IAnkDock,
+  IHubStationDockConfigs,
+  IHubStationPropConfig,
   InnerDockPosition
 } from "./HubStationsTypes";
-// Vue class based component export
-import {Component, Prop, Vue, Watch} from "vue-property-decorator";
-import AnkComponents from "@anakeen/ank-components";
-import {HubElementDisplayTypes} from "../HubElement/HubElementTypes";
 Vue.use(AnkComponents, { globalVueComponents: true });
 @Component({
   components: {
@@ -20,29 +20,11 @@ Vue.use(AnkComponents, { globalVueComponents: true });
   }
 })
 export default class HubStation extends Vue {
-
-  configData: HubStationDockConfigs = { top: [], bottom: [], left: [], right: []};
-
-  $refs!: {
-    [key: string]: IAnkDock
-  };
-
-  // region props
-  @Prop({ default: () => [], type: Array}) config!: HubStationPropConfig[];
-  @Prop({ default: "", type: String }) baseUrl!: string;
-  // endregion props
-
-  // region watch
-  @Watch("config")
-  onConfigPropChanged(val: HubStationPropConfig[]) {
-    this.configData = HubStation._organizeData(val);
-    this.initRouterConfig(this.configData);
-  }
   // endregion watch
 
-// region computed
+  // region computed
   get isHeaderEnabled() {
-      return this.configData.top.length;
+    return this.configData.top.length;
   }
   get isFooterEnabled() {
     return this.configData.bottom.length;
@@ -61,120 +43,148 @@ export default class HubStation extends Vue {
   }
 
   get HubElementDisplayTypes(): any {
-      return HubElementDisplayTypes;
-  }
-  //endregion computed
-
-  // region hooks
-
-  //endregion hooks
-
-  // region methods
-  addHubElement(config: HubStationPropConfig) {
-    const dockPosition = config.position.dock.toLowerCase();
-    if (dockPosition) {
-      this.configData[dockPosition].push(config);
-    }
+    return HubElementDisplayTypes;
   }
 
-  expandDock(dockPosition) {
-    const ref = `dock${HubStation._capitalize(dockPosition)}`;
-    if (this.$refs[ref]) {
-      this.$refs[ref].expand();
-    }
-  }
-
-  collapseDock(dockPosition: DockPosition) {
-    const ref = `dock${HubStation._capitalize(dockPosition)}`;
-    if (this.$refs[ref]) {
-      this.$refs[ref].contract()
-    }
-  }
-
-  getDockHeaders(configs: HubStationPropConfig[]) {
-    return configs.filter(c => {
-      return c.position.innerPosition === InnerDockPosition.HEADER;
-    })
-  }
-
-  getDockContent(configs: HubStationPropConfig[]) {
-    return configs.filter(c => {
-      return c.position.innerPosition === InnerDockPosition.CENTER;
-    })
-  }
-
-  getDockFooter(configs: HubStationPropConfig[]) {
-    return configs.filter(c => {
-      return c.position.innerPosition === InnerDockPosition.FOOTER;
-    })
-  }
-
-  initRouterConfig(configData: HubStationDockConfigs) {
-      Object.keys(configData).forEach(key => {
-         const routes = this._getRoutesConfigs(configData[key]);
-         if (this.$router) {
-             this.$nextTick(() => {
-                 this.$router.addRoutes(routes);
-             });
-         }
-      });
-  }
-
-  getEntryRoutePath(path) {
-      return nodePath.join(this.baseUrl, path);
-  }
-
-  mounted() {
-      this.initRouterConfig(this.configData);
-  }
-
-  private _getRoutesConfigs(configs: HubStationPropConfig[]) {
-      const routes: any[] = [];
-      if (configs && configs.length) {
-          configs.forEach(cfg => {
-              if (cfg.component && cfg.component.name) {
-                  const component = Vue.component(cfg.component.name);
-                  if (component && cfg.entryOptions && cfg.entryOptions.route) {
-                      const routeComponent = {
-                          path: nodePath.join(this.baseUrl, cfg.entryOptions.route),
-                          component: {
-                              template: `<component :is="componentName" v-bind="componentProps"></component>`,
-                              data: () => {
-                                  return {
-                                      componentName: cfg.component.name,
-                                      componentProps: Object.assign({}, cfg.component.props,
-                                          {
-                                              displayType: HubElementDisplayTypes.CONTENT,
-                                              parentPath: nodePath.join(this.baseUrl, cfg.entryOptions.route)
-                                          })
-                                  }
-                              }
-                          },
-                          // @ts-ignore
-                          children: component.options ? component.options.hubRoutes : []
-                      };
-                      routes.push(routeComponent);
-                  }
-              }
-          });
-      }
-      return routes;
-  }
-
-  private static _capitalize(str: string) {
+  private static capitalize(str: string) {
     if (str) {
       return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
     }
     return str;
   }
 
-  private static _organizeData(config: HubStationPropConfig[]): HubStationDockConfigs {
+  private static organizeData(
+    config: IHubStationPropConfig[]
+  ): IHubStationDockConfigs {
     return {
-      top: config.filter(c => c.position.dock === DockPosition.TOP),
       bottom: config.filter(c => c.position.dock === DockPosition.BOTTOM),
+      left: config.filter(c => c.position.dock === DockPosition.LEFT),
       right: config.filter(c => c.position.dock === DockPosition.RIGHT),
-      left: config.filter(c => c.position.dock === DockPosition.LEFT)
+      top: config.filter(c => c.position.dock === DockPosition.TOP)
     };
+  }
+
+  public configData: IHubStationDockConfigs = {
+    bottom: [],
+    left: [],
+    right: [],
+    top: []
+  };
+
+  public $refs!: {
+    [key: string]: IAnkDock;
+  };
+
+  // region props
+  @Prop({ default: () => [], type: Array })
+  public config!: IHubStationPropConfig[];
+  @Prop({ default: "", type: String }) public baseUrl!: string;
+  // endregion props
+
+  // region watch
+  @Watch("config")
+  public onConfigPropChanged(val: IHubStationPropConfig[]) {
+    this.configData = HubStation.organizeData(val);
+    this.initRouterConfig(this.configData);
+  }
+  // endregion computed
+
+  // region hooks
+
+  // endregion hooks
+
+  // region methods
+  public addHubElement(config: IHubStationPropConfig) {
+    const dockPosition = config.position.dock.toLowerCase();
+    if (dockPosition) {
+      this.configData[dockPosition].push(config);
+    }
+  }
+
+  public expandDock(dockPosition) {
+    const ref = `dock${HubStation.capitalize(dockPosition)}`;
+    if (this.$refs[ref]) {
+      this.$refs[ref].expand();
+    }
+  }
+
+  public collapseDock(dockPosition: DockPosition) {
+    const ref = `dock${HubStation.capitalize(dockPosition)}`;
+    if (this.$refs[ref]) {
+      this.$refs[ref].contract();
+    }
+  }
+
+  public getDockHeaders(configs: IHubStationPropConfig[]) {
+    return configs.filter(c => {
+      return c.position.innerPosition === InnerDockPosition.HEADER;
+    });
+  }
+
+  public getDockContent(configs: IHubStationPropConfig[]) {
+    return configs.filter(c => {
+      return c.position.innerPosition === InnerDockPosition.CENTER;
+    });
+  }
+
+  public getDockFooter(configs: IHubStationPropConfig[]) {
+    return configs.filter(c => {
+      return c.position.innerPosition === InnerDockPosition.FOOTER;
+    });
+  }
+
+  public initRouterConfig(configData: IHubStationDockConfigs) {
+    Object.keys(configData).forEach(key => {
+      const routes = this.getRoutesConfigs(configData[key]);
+      if (this.$router) {
+        this.$nextTick(() => {
+          this.$router.addRoutes(routes);
+        });
+      }
+    });
+  }
+
+  public getEntryRoutePath(path) {
+    return nodePath.join(this.baseUrl, path);
+  }
+
+  public mounted() {
+    this.initRouterConfig(this.configData);
+  }
+
+  private getRoutesConfigs(configs: IHubStationPropConfig[]) {
+    const routes: any[] = [];
+    if (configs && configs.length) {
+      configs.forEach(cfg => {
+        if (cfg.component && cfg.component.name) {
+          const component = Vue.component(cfg.component.name);
+          if (component && cfg.entryOptions && cfg.entryOptions.route) {
+            const routeComponent = {
+              // @ts-ignore
+              children: component.options ? component.options.hubRoutes : [],
+              component: {
+                data: () => {
+                  return {
+                    componentName: cfg.component.name,
+                    componentProps: Object.assign({}, cfg.component.props, {
+                      displayType: HubElementDisplayTypes.CONTENT,
+                      parentPath: nodePath.join(
+                        this.baseUrl,
+                        cfg.entryOptions.route
+                      )
+                    })
+                  };
+                },
+                template: `<component :is="componentName" v-bind="componentProps"></component>`
+              },
+              path: nodePath.join(this.baseUrl, cfg.entryOptions.route)
+            };
+            routes.push(routeComponent);
+          }
+        }
+      });
+    }
+    return routes;
   }
   // endregion methods
 }
