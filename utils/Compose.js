@@ -2,6 +2,7 @@ const console = require("console");
 const path = require("path");
 const util = require("util");
 const fs = require("fs");
+const semver = require("semver");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
@@ -270,6 +271,54 @@ class Compose {
     await repoContentXML.save();
 
     return moduleFileList;
+  }
+
+  async install() {
+    const repoXML = new RepoXML("repo.xml");
+    const repoLockXML = new RepoLockXML("repo.lock.xml");
+
+    await repoXML.load();
+    await repoLockXML.load();
+
+    const moduleLockList = repoLockXML.getModuleList();
+    const moduleList = repoXML.getModuleList();
+
+    const triage = Compose.triageList(moduleList, moduleLockList);
+
+    this.debug({ triage: triage }, { depth: 20 });
+  }
+
+  static triageList(moduleList, moduleLockList) {
+    const notLockedList = [];
+    const lockedList = [];
+    const orphanLockList = [];
+
+    for (let i = 0; i < moduleList.length; i++) {
+      const module = moduleList[i];
+      const lockedModule = Compose.isModuleInList(module.$.name, moduleLockList);
+      if (lockedModule) {
+        lockedList.push(module);
+      } else {
+        notLockedList.push(module);
+      }
+    }
+    for (let i = 0; i < moduleLockList.length; i++) {
+      const module = moduleLockList[i];
+      const lockedModule = Compose.isModuleInList(module.$.name, moduleList);
+      if (!lockedModule) {
+        orphanLockList.push(module);
+      }
+    }
+    return { notLockedList, lockedList, orphanLockList };
+  }
+
+  static isModuleInList(moduleName, moduleList) {
+    for (let i = 0; i < moduleList.length; i++) {
+      if (moduleList[i].$.name === moduleName) {
+        return moduleList[i];
+      }
+    }
+    return undefined;
   }
 }
 
