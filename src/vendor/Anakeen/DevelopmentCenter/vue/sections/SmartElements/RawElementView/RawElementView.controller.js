@@ -2,7 +2,7 @@ import RawView from "./RawView/RawView.vue";
 
 const URLS = {
   json: {
-    structure: "/api/v2/families/<identifier>/views/structure",
+    structure: "/api/v2/smart-structures/<identifier>/views/structure",
     element: "/api/v2/smart-elements/<identifier>.json",
     default: "/api/v2/smart-elements/<identifier>.json"
   },
