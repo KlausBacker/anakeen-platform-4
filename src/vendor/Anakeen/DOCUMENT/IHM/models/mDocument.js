@@ -85,7 +85,7 @@ define([
 
       if (this.get("creationFamid") && this.id === null) {
         urlData +=
-          "families/" +
+          "smart-structures/" +
           encodeURIComponent(this.get("creationFamid")) +
           "/documentsViews/";
       } else {
