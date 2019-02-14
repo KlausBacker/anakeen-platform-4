@@ -65,7 +65,7 @@
 
   $.widget("dcp.document", {
     _template: _.template(
-      '<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="<%- base %>api/v2/smart-elements/0.html#widgetValue<%- options.json_encode %>"></iframe>'
+      '<iframe class="dcpDocumentWrapper" name="<%- options.iframeName %>" style="border : 0;" data-src="/api/v2/smart-elements/0.html#widgetValue<%- options.json_encode %>"></iframe>'
     ),
 
     defaults: {
@@ -120,8 +120,7 @@
           options: {
             iframeName: this.options.iframeName,
             json_encode: options_encode
-          },
-          base: $("base").attr("href") || ""
+          }
         })
       );
       //bind the internal controller to the documentWidget

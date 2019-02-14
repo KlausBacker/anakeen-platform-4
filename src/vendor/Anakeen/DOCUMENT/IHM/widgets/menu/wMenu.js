@@ -120,9 +120,6 @@ define([
                   options: eventContent
                 });
               } else {
-                var $base = $("base");
-                var isAbsUrl = new RegExp("^(?:[a-z]+:)?//", "i");
-
                 target = $elementA.attr("target") || "_self";
 
                 if (
@@ -142,13 +139,7 @@ define([
                 }
 
                 if (target === "_self") {
-                  // For IE : Not honor base href in this case
-
-                  if (!isAbsUrl.test(href)) {
-                    window.location.href = $base.attr("href") + href;
-                  } else {
-                    window.location.href = href;
-                  }
+                  window.location.href = href;
                 } else {
                   configMenu = $menuElement.data("menuConfiguration");
                   targetOptions = configMenu.targetOptions || {};
@@ -191,10 +182,6 @@ define([
                           ",";
                       }
                       wFeature += "resizable=yes,scrollbars=yes";
-                    }
-                    if (!isAbsUrl.test(href)) {
-                      // For IE : Not honor base href in this case
-                      href = $base.attr("href") + href;
                     }
                     window.open(href, target, wFeature);
                   }

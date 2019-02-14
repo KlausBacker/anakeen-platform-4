@@ -111,7 +111,6 @@
      */
     ckOptions: function wHtmlTextCkOptions(cssPath) {
       var locale = this.options.locale;
-      var hrefBase = $("head base").attr("href") || ""; // no use document.baseURI because get complete url if no base href defined
       if (this.options.renderOptions.toolbar) {
         this.options.renderOptions.ckEditorConfiguration.toolbar = this.options.renderOptions.toolbar;
       }
@@ -129,7 +128,7 @@
           "a11yhelp,about,basicstyles,blockquote,clipboard,colorbutton,contextmenu,elementspath,enterkey,entities,filebrowser,floatingspace,font,format,horizontalrule,htmlwriter,image,indentlist,justify,link,list,magicline,maximize,pastefromword,pastetext,removeformat,resize,scayt,showborders,sourcearea,sourcedialog,specialchar,stylescombo,tab,table,tabletools,toolbar,undo,wsc,wysiwygarea",
         toolbarCanCollapse: true,
         entities: false, // no use HTML entities
-        baseHref: hrefBase,
+        baseHref: "/",
         title: "",
         toolbar_Full: [
           {
@@ -431,9 +430,6 @@
               }
             );
             if (isNotPrevented) {
-              var $base = $("base");
-              var isAbsUrl = new RegExp("^(?:[a-z]+:)?//", "i");
-
               anchorsTarget = anchorsConfig.target || "_blank";
               href = anchor.href;
 
@@ -475,12 +471,7 @@
                   dcpWindow.data("dcpWindow").open();
                   break;
                 case "_self":
-                  // For IE : Not honor base href in this case
-                  if (!isAbsUrl.test(href)) {
-                    window.location.href = $base.attr("href") + href;
-                  } else {
-                    window.location.href = href;
-                  }
+                  window.location.href = href;
                   break;
                 default:
                   if (anchorsConfig.windowWidth || anchorsConfig.windowHeight) {
@@ -497,9 +488,6 @@
                         ",";
                     }
                     wFeature += "resizable=yes,scrollbars=yes";
-                  }
-                  if (!isAbsUrl.test(href)) {
-                    href = $base.attr("href") + href;
                   }
                   window.open(href, anchorsTarget, wFeature);
                   break;

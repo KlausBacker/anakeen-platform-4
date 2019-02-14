@@ -164,14 +164,9 @@
               index: currentWidget._getIndex()
             });
             if (isNotPrevented) {
-              var url = fileUrl,
-                $base = $("base");
+              var url = fileUrl;
 
               if (isNotPrevented) {
-                if ($base.length > 0) {
-                  // For IE : Not honor base href in this case
-                  url = $base.attr("href") + url;
-                }
                 window.open(url);
               }
             }
