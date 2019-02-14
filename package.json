@@ -64,6 +64,9 @@
   "dependencies": {},
   "husky": {
     "hooks": {
+      "eslint": "npx eslint ./",
+      "phpLint": "make lint",
+      "checkXML": "make checkXML",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
