@@ -64,6 +64,7 @@
   "dependencies": {},
   "husky": {
     "hooks": {
+      "pre-push": "npx eslint ./ && make lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }

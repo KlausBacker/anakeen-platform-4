@@ -615,9 +615,6 @@
             Mustache.escape = originalEscape;
 
             if (buttonConfig.target !== "_dialog") {
-              var $base = $("base");
-              var isAbsUrl = new RegExp("^(?:[a-z]+:)?//", "i");
-
               if (
                 buttonConfig &&
                 (buttonConfig.windowWidth || buttonConfig.windowHeight)
@@ -631,10 +628,6 @@
                     "height=" + parseInt(buttonConfig.windowHeight, 10) + ",";
                 }
                 wFeature += "resizable=yes,scrollbars=yes";
-              }
-              if (!isAbsUrl.test(url)) {
-                // For IE : Not honor base href in this case
-                url = $base.attr("href") + url;
               }
               window.open(url, buttonConfig.target, wFeature);
             } else {
