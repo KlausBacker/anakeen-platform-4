@@ -63,6 +63,10 @@ class MainPage
                 [
                     "key" => "component",
                     "path" => UIGetAssetPath::getCssSmartWebComponents()
+                ],
+                [
+                    "key" => "admincenter",
+                    "path" => "/Anakeen/adminCenter/assets/adminCenter.css"
                 ]
             ]
         ];
