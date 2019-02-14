@@ -1,0 +1,37 @@
+html {
+    font-size: 14px;
+}
+
+.hub-dock-entries {
+    background-color: #646464;
+}
+
+.hub-dock-entry-component {
+    color: white;
+}
+
+.hub-dock--top .hub-dock-header,
+.hub-dock--top .hub-dock-center,
+.hub-dock--top .hub-dock-footer {
+    border-top: none !important;;
+    border-bottom: solid 1px #a8a8a8 !important;
+}
+
+
+.hub-dock--left .hub-dock-center {
+    border-left: none !important;
+}
+
+.hub-dock-collapse-button {
+    border-bottom: solid 1px #a8a8a8;
+}
+
+.hub-dock--left .hub-dock-entry-component {
+    border-bottom: solid 1px #a8a8a8;
+    border-top: none !important;
+}
+
+.hub-dock--left.hub-dock--expanded .hub-dock-entry-component {
+    justify-content: flex-start !important;
+    padding-left: 1rem ! important;
+}
