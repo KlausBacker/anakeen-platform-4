@@ -29,8 +29,6 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
 
       // Listen to document sync and update url
       this.document.listenTo(this.document, "sync", function sync() {
-        var searchArguments;
-
         var viewId = currentRouter.document.get("viewId"),
           options = {
             path: window.location.pathname,
@@ -53,77 +51,9 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
           // No write revision if not a fixed one
           options.revision = -1;
         }
-
-        searchArguments = currentRouter.getUrlParameters(
-          window.location.search
-        );
-        if (searchArguments.app) {
-          // old school url
-          currentRouter.rewriteAppUrl(searchArguments, options);
-        } else {
-          // api url
-          currentRouter.rewriteApiUrl(options);
-        }
+        // api url
+        currentRouter.rewriteApiUrl(options);
       });
-    },
-
-    /**
-     * Rewrite access document render HTML page from url like ?app=DOCUMENT&initid=1456&revision=45
-     * @param searchArguments
-     * @param options
-     */
-    rewriteAppUrl: function router_rewriteAppUrl(searchArguments, options) {
-      var searchPart,
-        urlSecondPart = "",
-        newUrl;
-      if (searchArguments.app) {
-        if (options.initid) {
-          // Extract all GET parameters and rewrite if needed
-          _.each(searchArguments, function routerGetUrl(getParameter, getKey) {
-            if (
-              ["id", "initid", "app", "viewId", "revision"].indexOf(getKey) >= 0
-            ) {
-              searchArguments[getKey] = null;
-            }
-          });
-
-          searchPart = _.compact(
-            _.map(searchArguments, function router_composeSearchLocation(
-              GETValue,
-              GETKey
-            ) {
-              if (GETValue === null) {
-                return null;
-              }
-              return GETKey + "=" + encodeURIComponent(GETValue);
-            })
-          );
-
-          if (options.viewId !== "!defaultConsultation") {
-            urlSecondPart = "/views/" + encodeURIComponent(options.viewId);
-            if (options.revision >= 0) {
-              urlSecondPart +=
-                "/revisions/" + encodeURIComponent(options.revision);
-            }
-          } else {
-            if (options.revision >= 0) {
-              urlSecondPart =
-                "/revisions/" + encodeURIComponent(options.revision);
-            }
-          }
-          newUrl =
-            window.location.pathname +
-            "/api/v2/smart-elements/" +
-            options.initid +
-            urlSecondPart +
-            ".html";
-          if (searchPart.length > 0) {
-            newUrl += "?" + searchPart.join("&");
-          }
-          newUrl += window.location.hash;
-          this.navigate(newUrl, { replace: !this.useHistory });
-        }
-      }
     },
 
     /**
@@ -193,7 +123,7 @@ define(["underscore", "backbone"], function define_router(_, Backbone) {
 
           this.navigate(
             beginPath +
-              "/api/v2/smart-elements/" +
+              "api/v2/smart-elements/" +
               options.initid +
               urlSecondPart +
               ".html" +

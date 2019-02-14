@@ -29,7 +29,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\CreationView</sde:callable>
             <sde:method>POST</sde:method>
-            <sde:pattern>/api/v2/families/{family}/documentsViews/</sde:pattern>
+            <sde:pattern>/api/v2/smart-structures/{family}/documentsViews/</sde:pattern>
             <sde:description>Get render view data</sde:description>
             <sde:requiredAccess/>
         </sde:route>
@@ -77,7 +77,7 @@
             <sde:priority>1</sde:priority>
             <sde:callable>Anakeen\Routes\Ui\FamilyStructure</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/families/{family}/views/structure</sde:pattern>
+            <sde:pattern>/api/v2/smart-structures/{family}/views/structure</sde:pattern>
             <sde:description>Get attributes structure of family</sde:description>
             <sde:requiredAccess/>
         </sde:route>

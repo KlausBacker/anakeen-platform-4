@@ -7,7 +7,7 @@ use Anakeen\Router\ApiV2Response;
 
 /**
  * Class FamilyStructure
- * @note Used by route : GET /api/v2/families/{family}/views/structure
+ * @note Used by route : GET /api/v2/smart-structures/{family}/views/structure
  * @package Anakeen\Routes\Ui
  */
 class FamilyStructure extends \Anakeen\Routes\Core\DocumentData
