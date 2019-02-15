@@ -7,6 +7,11 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Search\SearchElements;
 use SmartStructure\Fields\Hubconfiguration as Fields;
 
+/**
+ * Class MainConfiguration
+ *
+ * @note used by route /hub/config/{hubId}
+ */
 class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
 {
     protected $structureName = "";
@@ -28,6 +33,7 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
 
         $search->overrideAccessControl();
         $search->addFilter("%s = '%s'", Fields::hub_station_id, $this->structureName);
+        $search->setOrder(Fields::hub_docker_position. ','.Fields::hub_order);
         $search->search();
         $hubConfigurations = $search->getResults();
         $return = [];
