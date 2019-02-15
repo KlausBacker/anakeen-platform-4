@@ -19,6 +19,11 @@ class ComposeCtx {
     this.repoXML = repoXML;
     this.repoLockXML = repoLockXML;
   }
+
+  async commit() {
+    await this.repoXML.save();
+    await this.repoLockXML.save();
+  }
 }
 
 module.exports = { ComposeCtx, ComposeCtxError };
