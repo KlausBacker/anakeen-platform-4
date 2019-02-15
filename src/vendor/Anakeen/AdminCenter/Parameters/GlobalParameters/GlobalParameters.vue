@@ -6,8 +6,9 @@
     </div>
 </template>
 
-<script src="./GlobalParameters.controller.ts" lang="ts"></script>
+<script src="./GlobalParameters.controller.ts" lang="ts">
+</script>
 
 <style scoped>
-    @import "./GlobalParameters.css";
+@import "./GlobalParameters.css";
 </style>

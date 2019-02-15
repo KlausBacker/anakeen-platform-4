@@ -12,20 +12,20 @@
     </div>
 </template>
 <script>
-  import AdminCenterAccount from "../../Account/AdminCenterAccount.vue";
-  import { HubElement } from "@anakeen/hub-components";
+import AdminCenterAccount from "../../Account/AdminCenterAccount.vue";
+import { HubElement } from "@anakeen/hub-components";
 
-  export default {
-    name: "ank-admin-account",
-    extends: HubElement, // ou mixins: [ HubElementMixins ],
-    components: {
-      AdminCenterAccount
-    }
+export default {
+  name: "ank-admin-account",
+  extends: HubElement, // ou mixins: [ HubElementMixins ],
+  components: {
+    AdminCenterAccount
   }
+};
 </script>
 <style>
-    .account-station {
-        height: 100%;
-        width: 100%;
-    }
+.account-station {
+  height: 100%;
+  width: 100%;
+}
 </style>

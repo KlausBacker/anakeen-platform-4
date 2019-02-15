@@ -34,7 +34,8 @@
 </template>
 
 <style scoped>
-    @import './ParameterEditor.css';
+@import "./ParameterEditor.css";
 </style>
 
-<script src="./ParameterEditor.controller.ts" lang="ts"></script>
+<script src="./ParameterEditor.controller.ts" lang="ts">
+</script>

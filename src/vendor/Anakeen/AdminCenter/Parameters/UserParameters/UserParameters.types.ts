@@ -1,4 +1,4 @@
-interface userParametersDataSource {
-    read: () => Promise<any>;
-    filter: (x) => Array<object>;
+interface IuserParametersDataSource {
+  read: () => Promise<any>;
+  filter: (x) => object[];
 }

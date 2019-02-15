@@ -32,8 +32,9 @@
     </div>
 </template>
 
-<script src="./UserParameters.controller.ts" lang="ts"></script>
+<script src="./UserParameters.controller.ts" lang="ts">
+</script>
 
 <style scoped>
-    @import "./UserParameters.css";
+@import "./UserParameters.css";
 </style>
