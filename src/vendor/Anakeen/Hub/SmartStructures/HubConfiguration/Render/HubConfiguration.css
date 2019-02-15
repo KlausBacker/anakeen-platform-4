@@ -5,7 +5,8 @@
 .dock-position-chooser {
     position: relative;
     width: 100%;
-    padding-top: calc(56.25% * 1); /* 16:9 ratio */
+    height: 20rem;
+    /*padding-top: calc(56.25% * 1); *//* 16:9 ratio */
 }
 
 .dock-position-chooser .dock-position-chooser-wrap {
@@ -39,6 +40,7 @@
 .dock-position-chooser .dock-area {
     background: white;
     border: 1px solid #666666;
+    flex:1;
     width: 2rem;
     height: 2rem;
     margin: .1rem;

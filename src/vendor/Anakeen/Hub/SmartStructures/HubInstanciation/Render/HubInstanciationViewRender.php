@@ -33,6 +33,7 @@ class HubInstanciationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
 
         $item = new ItemMenu("adminconfig", ___("Configuration", "hub"));
         $item->setUrl(sprintf("/hub/admin/%s", $document->name?:$document->id));
+        $item->setTarget("_blank");
 
         $menu->appendElement($item);
         return $menu;
