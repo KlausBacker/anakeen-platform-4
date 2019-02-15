@@ -59,7 +59,6 @@ exports.getModuleInfo = async sourcePath => {
               result.vendor = data.module.$.vendor;
               result.name = data.module.$.name;
               result.version = data.module.$.version;
-              result.release = data.module.$.release;
               resolve(result);
             }
           );
