@@ -224,7 +224,7 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
                         (acc, currentField) => {
                           const fields = extractSmartField(
                             currentField,
-                            currentFilePath
+                            path.relative(srcPath, currentFilePath)
                           );
                           return {
                             ...acc,
@@ -243,7 +243,7 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
                         (acc, currentField) => {
                           const fields = extractSmartField(
                             currentField,
-                            currentFilePath
+                            path.relative(srcPath, currentFilePath)
                           );
                           return {
                             ...acc,
@@ -261,7 +261,7 @@ exports.xmlStructure2Pot = ({ globFile, info, potPath, verbose, log }) => {
                     if (!acc[name].title) {
                       acc[name].title = {
                         field: { label: "", name: "title" },
-                        fileName: currentFilePath
+                        fileName: path.relative(srcPath, currentFilePath)
                       };
                     }
                     return acc;
@@ -336,7 +336,7 @@ exports.xmlEnum2Pot = ({ globFile, info, potPath, verbose, log }) => {
                         (acc, currentField) => {
                           acc[currentField.$.name] = {
                             enumItem: currentField.$,
-                            fileName: currentFilePath
+                            fileName: path.relative(srcPath, currentFilePath)
                           };
                           return acc;
                         },
@@ -422,7 +422,7 @@ exports.xmlCVDOC2Pot = ({ globFile, info, potPath, verbose, log }) => {
                         view: {
                           name: currentView.$.name,
                           label: currentView.$.label,
-                          fileName: currentFilePath
+                          fileName: path.relative(srcPath, currentFilePath)
                         }
                       };
                       if (currentView.$["parent-menu-id"]) {
@@ -430,7 +430,7 @@ exports.xmlCVDOC2Pot = ({ globFile, info, potPath, verbose, log }) => {
                           view: {
                             name: currentView.$["parent-menu-id"],
                             label: "",
-                            fileName: currentFilePath
+                            fileName: path.relative(srcPath, currentFilePath)
                           }
                         };
                       }
@@ -516,7 +516,7 @@ exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
                             name: `${currentView.$.name}`,
                             context: `${graphName}:state`,
                             label: currentView.$["state-label"],
-                            fileName: currentFilePath
+                            fileName: path.relative(srcPath, currentFilePath)
                           }
                         };
                       }
@@ -526,7 +526,7 @@ exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
                             name: `${currentView.$.name}`,
                             context: `${graphName}:activity`,
                             label: currentView.$["activity-label"],
-                            fileName: currentFilePath
+                            fileName: path.relative(srcPath, currentFilePath)
                           }
                         };
                       }
@@ -548,7 +548,7 @@ exports.xmlWorkflow2Pot = ({ globFile, info, potPath, verbose, log }) => {
                           name: currentView.$.name,
                           label: currentView.$.label,
                           context: `${graphName}:transition`,
-                          fileName: currentFilePath
+                          fileName: path.relative(srcPath, currentFilePath)
                         }
                       };
                       return acc;
