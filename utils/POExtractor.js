@@ -332,6 +332,9 @@ exports.xmlEnum2Pot = ({ globFile, info, potPath, verbose, log }) => {
                   return enumMainTag.enumconfiguration.reduce(
                     (acc, currentConf) => {
                       const enumName = currentConf.$.name;
+                      if (!currentConf.enum) {
+                        return acc;
+                      }
                       const enums = currentConf.enum.reduce(
                         (acc, currentField) => {
                           acc[currentField.$.name] = {
