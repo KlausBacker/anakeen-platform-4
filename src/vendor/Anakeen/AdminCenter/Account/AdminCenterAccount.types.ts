@@ -1,5 +1,5 @@
-interface Object {
-    items: Array<any>;
-    parents: Array<any>;
-    accountId: string;
+interface ITreeElement {
+  items: ITreeElement[];
+  parents: any[];
+  accountId: string;
 }

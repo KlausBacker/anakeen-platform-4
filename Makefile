@@ -17,7 +17,7 @@ CONTROL_CONTEXT=$(ctx)
 
 ##bin
 YARN_BIN=yarn
-ANAKEEN_CLI_BIN=node ./node_modules/@anakeen/anakeen-cli
+ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 CBF_BIN=php ./ide/vendor/bin/phpcbf
 CS_BIN=php ./ide/vendor/bin/phpcs
 COMPOSER_BIN=composer

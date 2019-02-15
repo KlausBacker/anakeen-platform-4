@@ -71,6 +71,7 @@
     </div>
 </template>
 <style>
-    @import "./AdminCenterAccount.css";
+@import "./AdminCenterAccount.css";
 </style>
-<script src="./AdminCenterAccount.controller.ts" lang="ts"></script>
+<script src="./AdminCenterAccount.controller.ts" lang="ts">
+</script>

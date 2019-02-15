@@ -12,14 +12,14 @@
     </div>
 </template>
 <script>
-  import AdminCenterParameters from "../../Parameters/AdminCenterParameters.vue";
-  import { HubElement } from "@anakeen/hub-components";
+import AdminCenterParameters from "../../Parameters/AdminCenterParameters.vue";
+import { HubElement } from "@anakeen/hub-components";
 
-  export default {
-    name: "ank-admin-parameter",
-    extends: HubElement, // ou mixins: [ HubElementMixins ],
-    components: {
-       "admin-center-parameters": AdminCenterParameters
-    }
+export default {
+  name: "ank-admin-parameter",
+  extends: HubElement, // ou mixins: [ HubElementMixins ],
+  components: {
+    "admin-center-parameters": AdminCenterParameters
   }
+};
 </script>
