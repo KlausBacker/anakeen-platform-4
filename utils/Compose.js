@@ -3,6 +3,7 @@ const path = require("path");
 const util = require("util");
 const fs = require("fs");
 const semver = require("semver");
+const signale = require("signale");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
@@ -14,6 +15,7 @@ const { RepoContentXML } = require(path.resolve(
   "RepoContentXML.js"
 ));
 const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
+const { ComposeCtx } = require(path.resolve(__dirname, "ComposeCtx"));
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
@@ -159,24 +161,54 @@ class Compose {
   }) {
     const repoXML = new RepoXML("repo.xml");
     await repoXML.load();
-    const localRepo = await repoXML.getConfigLocalRepo();
-    const localSrc = await repoXML.getConfigLocalSrc();
 
     const repoLockXML = new RepoLockXML("repo.lock.xml");
     await repoLockXML.load();
-
-    const registry = repoXML.getRegistryByName(registryName);
-    if (!registry) {
-      throw new ComposeError(
-        `Registry with name '${registryName}' not found in 'repo.xml'`
-      );
-    }
 
     await repoXML.addModule({
       name: moduleName,
       version: moduleVersion,
       registry: registryName
     });
+
+    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
+
+    await this._ctx_installModule({
+      ctx: composeCtx,
+      name: moduleName,
+      version: moduleVersion,
+      registry: registryName
+    });
+
+    await repoXML.save();
+    await repoLockXML.save();
+  }
+
+  /**
+   * Install a module that is present in the 'repo.xml'
+   *
+   * @param {ComposeCtx} composeCtx
+   * @param {string} moduleName
+   * @param {string} moduleVersion
+   * @param {string} registryName
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _ctx_installModule({
+    ctx: composeCtx,
+    name: moduleName,
+    version: moduleVersion,
+    registry: registryName
+  }) {
+    const localRepo = await composeCtx.repoXML.getConfigLocalRepo();
+    const localSrc = await composeCtx.repoXML.getConfigLocalSrc();
+
+    const registry = composeCtx.repoXML.getRegistryByName(registryName);
+    if (!registry) {
+      throw new ComposeError(
+        `Registry with name '${registryName}' not found in 'repo.xml'`
+      );
+    }
 
     const appRegistry = new AppRegistry(registry);
     const ping = await appRegistry.ping();
@@ -208,9 +240,11 @@ class Compose {
     };
     if (moduleInfo.hasOwnProperty("app")) {
       const srcUrl = [module.url, "app", moduleInfo.app].join("/");
+      const pathname = [localRepo, moduleInfo.app].join("/");
+      signale.note(`Downloading '${srcUrl}' to '${pathname}'...`);
       const tmpFile = await httpAgent.downloadFileTo(
         srcUrl,
-        [localRepo, moduleInfo.app].join("/")
+        pathname
       );
       resources.app = {
         name: moduleInfo.app,
@@ -221,9 +255,11 @@ class Compose {
     }
     if (moduleInfo.hasOwnProperty("src")) {
       const srcUrl = [module.url, "src", moduleInfo.src].join("/");
+      const pathname = [localSrc, moduleInfo.src].join("/");
+      signale.note(`Downloading '${srcUrl}' to '${pathname}'...`);
       const tmpFile = await httpAgent.downloadFileTo(
         srcUrl,
-        [localSrc, moduleInfo.src].join("/")
+        pathname
       );
       resources.src = {
         name: moduleInfo.src,
@@ -235,22 +271,20 @@ class Compose {
 
     this.debug({ resources: resources }, { depth: 20 });
 
-    repoLockXML.addModule({
+    composeCtx.repoLockXML.addModule({
       name: module.name,
       version: module.version,
       src: resources.app.src,
       sha256: resources.app.sha256
     });
 
+    signale.note(`Generating 'content.xml' in '${localRepo}'...`);
     const appList = await this.genRepoContentXML(localRepo);
 
     this.debug({ appList: appList }, { depth: 20 });
 
-    this.debug({ repoXML: repoXML.data }, { depth: 20 });
-    this.debug({ repoLockXML: repoLockXML.data }, { depth: 20 });
-
-    await repoXML.save();
-    await repoLockXML.save();
+    this.debug({ repoXML: composeCtx.repoXML.data }, { depth: 20 });
+    this.debug({ repoLockXML: composeCtx.repoLockXML.data }, { depth: 20 });
   }
 
   async genRepoContentXML(repoDir) {
@@ -284,20 +318,161 @@ class Compose {
     const moduleList = repoXML.getModuleList();
 
     const triage = Compose.triageList(moduleList, moduleLockList);
-
     this.debug({ triage: triage }, { depth: 20 });
+
+    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
+
+    /*
+     * Process new modules (not yet locked)
+     */
+    let count = triage.notLockedList.length;
+    if (count > 0) {
+      signale.note(`Found ${count} new module(s) to install`);
+      for (let i = 0; i < triage.notLockedList.length; i++) {
+        const module = triage.notLockedList[i];
+        await this._ctx_installModule({
+          ctx: composeCtx,
+          name: module.$.name,
+          version: module.$.version,
+          registry: module.$.registry
+        });
+      }
+    }
+
+    /*
+     * Process existing modules (already locked)
+     */
+    count = triage.lockedList.length;
+    if (count > 0) {
+      signale.note(`Found ${count} locked module(s) to install`);
+      for (let i = 0; i < triage.lockedList.length; i++) {
+        const bimod = triage.lockedList[i];
+        // semver.satisfies(semver.coerce(elmt.version), filterVersion)
+        if (
+          semver.satisfies(
+            semver.coerce(bimod.locked.$.version),
+            bimod.required.$.version
+          )
+        ) {
+          await this._ctx_installModuleFromLock({
+            ctx: composeCtx,
+            lockedModule: bimod.locked
+          });
+        } else {
+          await this._ctx_installModule({
+            ctx: composeCtx,
+            name: bimod.required.$.name,
+            version: bimod.required.$.version,
+            registry: bimod.$.required.registry
+          });
+        }
+      }
+    }
+
+    /*
+     * Process orphans
+     */
+    count = triage.orphanLockedList.length;
+    if (count > 0) {
+      signale.note(`Found ${count} orphaned locked module(s)`);
+      for (let i = 0; i < triage.orphanLockedList.length; i++) {
+        const module = triage.orphanLockedList[i];
+        composeCtx.repoLockXML.deleteModuleByName(module.$.name);
+      }
+    }
+
+    this.debug({ repoLockXML }, { depth: 20 });
   }
 
+  async _ctx_installModuleFromLock({ ctx: composeCtx, lockedModule }) {
+    const localRepo = composeCtx.repoXML.getConfigLocalRepo();
+    const localSrc = composeCtx.repoXML.getConfigLocalSrc();
+
+    const src = lockedModule.$.src;
+    const sha256 = lockedModule.$.sha256;
+    const basename = path.basename(new URL(src).pathname);
+    const pathname = [localRepo, basename].join("/");
+
+    this.debug({ src, sha256, basename, pathname });
+
+    let localIsOutdated = true;
+    if (await Compose.fileExists(pathname)) {
+      const localSha256 = await SHA256Digest.file(pathname);
+      localIsOutdated = localSha256 !== sha256;
+    }
+
+    if (localIsOutdated) {
+      signale.note(
+        `Updating outdated module '${pathname}' from lock src '${src}'`
+      );
+      const httpAgent = new HTTPAgent({ debug: this.$.debug });
+      await httpAgent.downloadFileTo(src, pathname);
+      signale.note(`Done.`);
+    } else {
+      signale.note(`Local module '${pathname}' is up-to-date`);
+    }
+
+    /* Fetch src */
+    const moduleFromRepo = composeCtx.repoXML.getModuleByName(
+      lockedModule.$.name
+    );
+    this.debug({ moduleFromRepo }, { depth: 20 });
+    if (typeof moduleFromRepo !== "object") {
+      throw new ComposeError(
+        `Could not get module '${lockedModule.$.name}' from 'repo.xml'`
+      );
+    }
+
+    const registryName = moduleFromRepo.registry;
+    const registry = composeCtx.repoXML.getRegistryByName(registryName);
+    if (!registry) {
+      throw new ComposeError(
+        `Registry with name '${registryName}' not found in 'repo.xml'`
+      );
+    }
+
+    const appRegistry = new AppRegistry(registry);
+    const moduleInfo = await appRegistry.getModuleVersionInfo(
+      lockedModule.$.name,
+      lockedModule.$.version
+    );
+    this.debug({ moduleInfo });
+
+    if (moduleInfo.hasOwnProperty("src")) {
+      const httpAgent = new HTTPAgent({ debug: this.$.debug });
+      const pathname = [localSrc, moduleInfo.src].join("/");
+      const src = [
+        appRegistry.getURL(),
+        encodeURI(lockedModule.$.name),
+        encodeURI(lockedModule.$.version),
+        "src"
+      ].join("/");
+      signale.note(`Downloading '${src}' to '${pathname}'...`);
+      await httpAgent.downloadFileTo(src, pathname);
+    }
+  }
+
+  /**
+   * @param {Array} moduleList
+   * @param {Array} moduleLockList
+   * @returns {{orphanLockedList: Array, notLockedList: Array, lockedList: Array}}
+   */
   static triageList(moduleList, moduleLockList) {
     const notLockedList = [];
     const lockedList = [];
-    const orphanLockList = [];
+    const orphanLockedList = [];
 
     for (let i = 0; i < moduleList.length; i++) {
       const module = moduleList[i];
-      const lockedModule = Compose.isModuleInList(module.$.name, moduleLockList);
+      const lockedModule = Compose.isModuleInList(
+        module.$.name,
+        moduleLockList
+      );
       if (lockedModule) {
-        lockedList.push(module);
+        lockedList.push({
+          required: module,
+          locked: lockedModule
+        });
       } else {
         notLockedList.push(module);
       }
@@ -306,10 +481,10 @@ class Compose {
       const module = moduleLockList[i];
       const lockedModule = Compose.isModuleInList(module.$.name, moduleList);
       if (!lockedModule) {
-        orphanLockList.push(module);
+        orphanLockedList.push(module);
       }
     }
-    return { notLockedList, lockedList, orphanLockList };
+    return { notLockedList, lockedList, orphanLockedList };
   }
 
   static isModuleInList(moduleName, moduleList) {
