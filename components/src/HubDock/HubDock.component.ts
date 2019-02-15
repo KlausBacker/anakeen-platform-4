@@ -14,7 +14,30 @@ import {
   }
 })
 export default class HubDock extends Vue {
-  get faCollapseIcon(): string {
+  private static getHubEntriesInstance(...slots): Vue[] {
+    let result: Vue[] = [];
+    if (slots && slots.length) {
+      for (const nodeSlots of slots) {
+        if (nodeSlots && nodeSlots.length) {
+          result = result.concat(
+              nodeSlots
+                  .filter(slot => {
+                    if (slot.componentInstance && slot.componentInstance.$options) {
+                      return (
+                          slot.componentInstance.$options.name === HUB_DOCK_ENTRY_NAME
+                      );
+                    }
+                    return false;
+                  })
+                  .map(slot => slot.componentInstance)
+          );
+        }
+      }
+    }
+    return result;
+  }
+
+  public get faCollapseIcon(): string {
     let collapseIcon: string = "chevron";
     let expandIcon: string = "chevron";
     switch (this.position) {
@@ -38,7 +61,7 @@ export default class HubDock extends Vue {
     return this.collapsed ? expandIcon : collapseIcon;
   }
 
-  get sizeConverted(): string {
+  public get sizeConverted(): string {
     if (this.currentSize in Number) {
       return `${this.currentSize}px`;
     } else {
@@ -46,7 +69,7 @@ export default class HubDock extends Vue {
     }
   }
 
-  get dockStyle(): object {
+  public get dockStyle(): object {
     switch (this.position) {
       case DockPosition.TOP:
       case DockPosition.BOTTOM:
@@ -63,7 +86,7 @@ export default class HubDock extends Vue {
     }
   }
 
-  get entriesStyle(): object {
+  public get entriesStyle(): object {
     if (this.evenSpace) {
       return {
         "justify-content": "space-evenly"
@@ -72,28 +95,6 @@ export default class HubDock extends Vue {
     return {};
   }
 
-  private static getHubEntriesInstance(...slots): Vue[] {
-    let result: Vue[] = [];
-    if (slots && slots.length) {
-      for (const nodeSlots of slots) {
-        if (nodeSlots && nodeSlots.length) {
-          result = result.concat(
-            nodeSlots
-              .filter(slot => {
-                if (slot.componentInstance && slot.componentInstance.$options) {
-                  return (
-                    slot.componentInstance.$options.name === HUB_DOCK_ENTRY_NAME
-                  );
-                }
-                return false;
-              })
-              .map(slot => slot.componentInstance)
-          );
-        }
-      }
-    }
-    return result;
-  }
   @Prop({ default: DockPosition.LEFT }) public position!: DockPosition;
   @Prop({ default: true }) public expandable!: boolean;
   @Prop({ default: false }) public expanded!: boolean;
