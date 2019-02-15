@@ -37,7 +37,7 @@ class HubStationAdmin extends GridContent
         parent::prepareFiltering();
         $this->structure = SEManager::getDocument($this->structureName);
         // search in all parent structure
-
+        $this->_searchDoc->setOrder(Fields::hub_docker_position.','.Fields::hub_order);
         $this->_searchDoc->addFilter("%s = '%s'", Fields::hub_station_id, $this->structure->initid);
     }
 }
