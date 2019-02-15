@@ -20,16 +20,16 @@ export default class HubDock extends Vue {
       for (const nodeSlots of slots) {
         if (nodeSlots && nodeSlots.length) {
           result = result.concat(
-              nodeSlots
-                  .filter(slot => {
-                    if (slot.componentInstance && slot.componentInstance.$options) {
-                      return (
-                          slot.componentInstance.$options.name === HUB_DOCK_ENTRY_NAME
-                      );
-                    }
-                    return false;
-                  })
-                  .map(slot => slot.componentInstance)
+            nodeSlots
+              .filter(slot => {
+                if (slot.componentInstance && slot.componentInstance.$options) {
+                  return (
+                    slot.componentInstance.$options.name === HUB_DOCK_ENTRY_NAME
+                  );
+                }
+                return false;
+              })
+              .map(slot => slot.componentInstance)
           );
         }
       }
