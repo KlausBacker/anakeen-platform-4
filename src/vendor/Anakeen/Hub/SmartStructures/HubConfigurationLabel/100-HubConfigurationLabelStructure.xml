@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <smart:structure-configuration name="HUBCONFIGURATIONLABEL" label="Label component configuration">
-        <smart:extends ref="HUBCONFIGURATION"/>
+        <smart:extends ref="HUBCONFIGURATIONSLOT"/>
         <smart:icon file="HubConfigurationLabel.png"/>
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationLabel\HubConfigurationLabelBehavior</smart:class>
 

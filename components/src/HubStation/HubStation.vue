@@ -37,7 +37,7 @@
           v-for="(entry, index) in getDockContent(configData.top)"
           :key="`top-content-${index}`"
           :name="`top-content-${index}`"
-          :route="getEntryRoutePath(entry.entryOptions.route)"
+          :route="getEntryRoutePath(entry.entryOptions)"
         >
           <template slot="collapsedContent">
             <component
@@ -107,7 +107,7 @@
             v-for="(entry, index) in getDockContent(configData.left)"
             :key="`left-content-${index}`"
             :name="`left-content-${index}`"
-            :route="getEntryRoutePath(entry.entryOptions.route)"
+            :route="getEntryRoutePath(entry.entryOptions)"
           >
             <template slot="collapsedContent">
               <component
@@ -183,7 +183,7 @@
             v-for="(entry, index) in getDockContent(configData.right)"
             :key="`right-content-${index}`"
             :name="`right-content-${index}`"
-            :route="getEntryRoutePath(entry.entryOptions.route)"
+            :route="getEntryRoutePath(entry.entryOptions)"
           >
             <template slot="collapsedContent">
               <component
@@ -263,7 +263,7 @@
           v-for="(entry, index) in getDockContent(configData.bottom)"
           :key="`bottom-content-${index}`"
           :name="`bottom-content-${index}`"
-          :route="getEntryRoutePath(entry.entryOptions.route)"
+          :route="getEntryRoutePath(entry.entryOptions)"
         >
           <template slot="collapsedContent">
             <component

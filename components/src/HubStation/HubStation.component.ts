@@ -5,6 +5,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import HubDock from "../HubDock/HubDock.vue";
 import HubDockEntry from "../HubDock/HubDockEntry/HubDockEntry.vue";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
+import HubLabel from "../HubLabel/HubLabel.vue";
+
 import {
   DockPosition,
   IAnkDock,
@@ -13,6 +15,7 @@ import {
   InnerDockPosition
 } from "./HubStationsTypes";
 Vue.use(AnkComponents, { globalVueComponents: true });
+Vue.component("hub-label", HubLabel);
 @Component({
   components: {
     "hub-dock": HubDock,
@@ -144,8 +147,11 @@ export default class HubStation extends Vue {
     });
   }
 
-  public getEntryRoutePath(path) {
-    return nodePath.join(this.baseUrl, path);
+  public getEntryRoutePath(entryOptions) {
+    if (entryOptions && entryOptions.route) {
+      return nodePath.join(this.baseUrl, entryOptions.route);
+    }
+    return "";
   }
 
   public mounted() {
