@@ -144,8 +144,11 @@ export default class HubStation extends Vue {
     });
   }
 
-  public getEntryRoutePath(path) {
-    return nodePath.join(this.baseUrl, path);
+  public getEntryRoutePath(entryOptions) {
+    if (entryOptions && entryOptions.route) {
+      return nodePath.join(this.baseUrl, entryOptions.route);
+    }
+    return "";
   }
 
   public mounted() {
