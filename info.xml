@@ -13,10 +13,12 @@
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
         <!-- import default configuration of admin center -->
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/AdminCenter/Config/hubConfiguration.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAuthenticationTokens/**/*.xml"/>
     </post-install>
 
     <post-upgrade>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterAccounts/**/*.xml"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
+        <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAuthenticationTokens/**/*.xml"/>
     </post-upgrade>
 </module>

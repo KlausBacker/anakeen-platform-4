@@ -51,10 +51,10 @@
   dependencies:
     vue-gettext "^2.1.1"
 
-"@anakeen/hub-components@^1.0.0-dev20190215131332":
-  version "1.0.0-dev20190215131332"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190215131332.tgz#0d75aebe82e22065bcde1f1edb630831dfc7e5bb"
-  integrity sha512-vCwjLWRn7SxWBWgg2q2ljWPLnj6HdUw6l90aDsyhoqADyHoNz6M0tKJsJijcfZRR02bI4JSv1ThEUVztTdYa4g==
+"@anakeen/hub-components@^1.0.0-dev20190215162831":
+  version "1.0.0-dev20190215162831"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190215162831.tgz#bc43c904caaa71b5f4c3cf6d918cea773bf7a6a9"
+  integrity sha512-twKE9OC554ycBMVgvV9M9nq07N/K0heYYOkyVLfxujt4AVOd51qaoRHbzz/o5+daxA10+tS/K3zJGO2Emt+iSg==
   dependencies:
     "@anakeen/ank-components" "^1.0.2-dev20190213085409"
     vue-class-component "^6.2.0"

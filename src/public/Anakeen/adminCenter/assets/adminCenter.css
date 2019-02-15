@@ -1,5 +1,5 @@
 html {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .hub-dock-entries {
@@ -34,4 +34,14 @@ html {
 .hub-dock--left.hub-dock--expanded .hub-dock-entry-component {
     justify-content: flex-start !important;
     padding-left: 1rem ! important;
+}
+/* Big button when collapsed */
+.hub-dock--left.hub-dock--collapsed .hub-dock-entry-component {
+    font-size:2rem;
+}
+
+/* For the label Admin Center */
+header .hub-dock-header {
+    font-size:1.5rem;
+    padding-left:1rem,
 }
