@@ -1,0 +1,5 @@
+Tests/
+node_modules/
+webpackConfig/
+localpub/
+dist/
