@@ -25,3 +25,20 @@ window.dcp.document.documentController(
     ]);
   }
 );
+
+window.dcp.document.documentController(
+  "addEventListener",
+  "afterSave",
+  {
+    name: "passToViewInstance",
+    documentCheck: documentObject => {
+      return documentObject.renderMode === "edit";
+    }
+  },
+  function reloadInConsultation(event, currentDocumentObject) {
+    this.documentController("fetchDocument", {
+      initid: currentDocumentObject.id,
+      viewId: "!defaultConsultation"
+    });
+  }
+);
