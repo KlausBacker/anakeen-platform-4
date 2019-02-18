@@ -1153,7 +1153,7 @@ class ImportDocumentDescription
     {
         if (empty($data[1])) {
             $this->tcr[$this->nLine]["msg"] = sprintf(_("No Icon specified"));
-        } elseif ($this->doc->icon == "" || $data[2] === "force=yes") {
+        } elseif ($this->doc->icon == "" || (isset($data[2]) && $data[2] === "force=yes")) {
             $this->familyIcon = $data[1]; // reported to end section
             $this->tcr[$this->nLine]["msg"] = sprintf(_("set icon to '%s'"), $data[1]);
         } else {
