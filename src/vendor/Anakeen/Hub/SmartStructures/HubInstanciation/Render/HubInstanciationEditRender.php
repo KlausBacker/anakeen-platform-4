@@ -3,6 +3,7 @@
 
 namespace Anakeen\Hub\SmartStructures\HubInstanciation\Render;
 
+use Anakeen\Hub\Routes\HubInstanciation;
 use Anakeen\Ui\CommonRenderOptions;
 use Anakeen\Ui\RenderAttributeVisibilities;
 use Anakeen\Ui\RenderOptions;
@@ -27,9 +28,16 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         return $options;
     }
 
+    /**
+     * @param \Anakeen\Core\Internal\SmartElement $document
+     * @param \SmartStructure\Mask|null $mask
+     * @return RenderAttributeVisibilities
+     * @throws \Anakeen\Ui\Exception
+     */
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
+        $visibilities->setVisibility(HubInstanciationFields::hub_instance_language, RenderAttributeVisibilities::StaticWriteVisibility);
         return $visibilities;
     }
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
