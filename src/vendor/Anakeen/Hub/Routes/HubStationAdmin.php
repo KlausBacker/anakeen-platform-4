@@ -30,7 +30,7 @@ class HubStationAdmin extends GridContent
 
     /**
      * @throws \Anakeen\Core\DocManager\Exception
-     * @throws \Dcp\SearchDoc\Exception
+     * @throws \Anakeen\Search\Internal\SearchSmartData\Exception
      */
     protected function prepareFiltering()
     {
