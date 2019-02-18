@@ -22,6 +22,7 @@
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
 
@@ -41,6 +42,7 @@
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+
         <process
                 command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
     </post-upgrade>
