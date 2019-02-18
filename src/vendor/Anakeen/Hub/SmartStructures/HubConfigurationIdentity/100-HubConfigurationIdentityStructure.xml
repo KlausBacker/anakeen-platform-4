@@ -7,9 +7,9 @@
 
         <smart:fields>
             <smart:field-set name="hub_component_parameters" extended="true">
-                <smart:field-enum name="email_alterable" label="Email alterable" relation="Yes_no_enum"
+                <smart:field-enum name="email_alterable" label="Email alterable" relation="Hub_YesNo"
                                   access="ReadWrite"/>
-                <smart:field-enum name="password_alterable" label="Password alterable" relation="Yes_no_enum"
+                <smart:field-enum name="password_alterable" label="Password alterable" relation="Hub_YesNo"
                                   access="ReadWrite"/>
             </smart:field-set>
         </smart:fields>
