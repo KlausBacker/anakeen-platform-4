@@ -7,6 +7,14 @@ use Anakeen\Ui\UIGetAssetPath;
 
 class Hub
 {
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Ui\Exception
+     */
     public function __invoke(
         \Slim\Http\request $request,
         \Slim\Http\response $response,
@@ -14,7 +22,7 @@ class Hub
     ) {
         $page = __DIR__ . "/Layout/hub.html.mustache";
         $mustache = new \Mustache_Engine();
-        $title = SEManager::getTitle($args["hubId"]);
+        $title = SEManager::getDocument($args["hubId"])->getTitle();
         $data = [
             "title" => $title,
             "favIconURL" => $args["hubId"],

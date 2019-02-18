@@ -2,6 +2,7 @@
 
 namespace Anakeen\Hub\SmartStructures\HubInstanciation;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Exception;
 use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubinstanciation as HubinstanciationFields;
@@ -23,15 +24,17 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
     public function getCustomTitle()
     {
         $titles = $this->getArrayRawValues(HubinstanciationFields::hub_instance_titles);
-        $finalTitle = $this->title;
+        $currentLanguage = ContextManager::getLanguage();
         if ($titles) {
-            $finalTitle = "";
             foreach ($titles as $title) {
-                $finalTitle = $finalTitle . $title[HubinstanciationFields::hub_instance_title]."/";
+                if (strpos($currentLanguage,"fr_FR") !== false && $title[HubinstanciationFields::hub_instance_language] === "Français") {
+                    $this->title = $title[HubinstanciationFields::hub_instance_title];
+                } else if (strpos($currentLanguage,"en_US") !== false && $title[HubinstanciationFields::hub_instance_language] === "English") {
+                    $this->title = $title[HubinstanciationFields::hub_instance_title];
+                }
             }
         }
-        $finalTitle = preg_replace("/\/$/", '', $finalTitle);
-        return $finalTitle;
+        return $this->title;
     }
 
     public function getFavIcon()
@@ -43,7 +46,6 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
             $this->icon = $newIcon;
             return $icon;
         }
-
         return $icon;
     }
 

@@ -22,9 +22,9 @@ class HubAdmin
     ) {
         $page = __DIR__ . "/Layout/hubAdmin.html.mustache";
         $mustache = new \Mustache_Engine();
-        $title = SEManager::getTitle($args["hubId"]);
+        $title = SEManager::getDocument($args["hubId"]);
         $data = [
-            "title" => $title,
+            "title" => $title->title,
             "favIconURL" => $args["hubId"],
             "JS_DEPS" => [
                 [
