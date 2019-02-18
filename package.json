@@ -65,7 +65,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npx eslint ./ && npx tslint './components/src/**/*.ts' && npx prettier --check './components/src/**/*.ts'",
+      "pre-push": "npx eslint ./ && npx tslint './components/src/**/*.ts' && npx prettier --check './components/src/**/*.ts' && make beautify",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
