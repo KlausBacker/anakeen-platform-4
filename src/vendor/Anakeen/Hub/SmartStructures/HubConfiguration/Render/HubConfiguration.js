@@ -5,7 +5,7 @@ axios.create();
 
 window.dcp.document.documentController(
   "addEventListener",
-  "beforeSave",
+  "ready",
   {
     name: "set:hub:station:id",
     documentCheck: documentObject => {
@@ -18,7 +18,8 @@ window.dcp.document.documentController(
   function() {
     let hubId = $(this).documentController("getCustomClientData", "hubId");
     $(this).documentController("setValue", "hub_station_id", {
-      value: hubId.hubId
+      value: hubId.hubId,
+      displayValue: hubId.hubTitle
     });
   }
 );
