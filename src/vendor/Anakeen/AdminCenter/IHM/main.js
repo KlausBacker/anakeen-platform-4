@@ -5,6 +5,7 @@ import { HubStation } from "@anakeen/hub-components";
 import axios from "axios";
 import AccountsEntry from "../HubComponent/AdminCenterAccounts/AdminCenterAccountsEntry.vue";
 import ParametersEntry from "../HubComponent/AdminCenterParameters/AdminCenterParametersEntry.vue";
+import AuthenticationTokensEntry from "../HubComponent/AuthenticationTokensHub/AuthenticationTokensHubComponent.vue";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
@@ -13,6 +14,7 @@ const router = new VueRouter({
 });
 Vue.component("ank-admin-account", AccountsEntry);
 Vue.component("ank-admin-parameter", ParametersEntry);
+Vue.component("ank-hub-authentication-tokens", AuthenticationTokensEntry);
 new Vue({
   el: "#admin-center",
   template: '<hub-station :config="config" baseUrl="/admin"></hub-station>',
