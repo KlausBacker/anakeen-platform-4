@@ -105,40 +105,40 @@ class RepoLockXML extends XMLLoader {
   /**
    * @param {string} name
    * @param {string} version
-   * @param {string} registry
+   * @param {string} src
    * @param {string} sha256 Hex encoded SHA256
    */
-  updateModule({ name, version, registry, sha256 }) {
+  updateModule({ name, version, src, sha256 }) {
     this.deleteModuleByName(name, true);
-    this.addModule({ name, version, registry, sha256 });
+    this.addModule({ name, version, src, sha256 });
   }
 
   /**
    * @param {string} name
    * @param {string} version
-   * @param {string} registry
+   * @param {string} src
    * @param {string} sha256 Hex encoded SHA256
    */
-  addOrUpdateModule({ name, version, registry, sha256 }) {
+  addOrUpdateModule({ name, version, src, sha256 }) {
     this.deleteModuleByName(name, false);
-    this.addModule({ name, version, registry, sha256 });
+    this.addModule({ name, version, src, sha256 });
   }
 
   /**
    * @param {string} name Module's name
    * @param {string} version Module's semver version
-   * @param {string} registry Module's registry name
+   * @param {string} src URL from which the module has been downloaded
    * @param {string} sha256 Hex encoded SHA256
    * @returns {RepoLockXML}
    */
-  addModule({ name, version, registry, sha256 }) {
+  addModule({ name, version, src, sha256 }) {
     if (this.getModuleByName(name)) {
       throw new RepoLockXMLError(
         `Module '${name}' already exists in locked dependencies`
       );
     }
 
-    let newModule = { $: { name, version, registry, sha256 } };
+    let newModule = { $: { name, version, src, sha256 } };
 
     const moduleList = this.getModuleList();
     moduleList.push(newModule);

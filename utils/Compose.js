@@ -198,6 +198,7 @@ class Compose {
       module.name,
       module.version
     );
+    this.debug({ moduleInfo });
 
     const httpAgent = new HTTPAgent({ debug: this.$.debug });
     const resources = {
@@ -205,34 +206,38 @@ class Compose {
       src: undefined
     };
     if (moduleInfo.hasOwnProperty("app")) {
-      const pathname = await httpAgent.downloadFileTo(
-        module.url + "/app",
+      const srcUrl = [module.url, "app", moduleInfo.app].join("/");
+      const tmpFile = await httpAgent.downloadFileTo(
+        srcUrl,
         [localRepo, moduleInfo.app].join("/")
       );
       resources.app = {
         name: moduleInfo.app,
-        pathname: pathname,
-        sha256: await SHA256Digest.file(pathname)
+        src: srcUrl,
+        sha256: await SHA256Digest.file(tmpFile),
+        tmpFile: tmpFile
       };
     }
     if (moduleInfo.hasOwnProperty("src")) {
-      const pathname = await httpAgent.downloadFileTo(
-        module.url + "/src",
+      const srcUrl = [module.url, "src", moduleInfo.src].join("/");
+      const tmpFile = await httpAgent.downloadFileTo(
+        srcUrl,
         [localSrc, moduleInfo.src].join("/")
       );
       resources.src = {
         name: moduleInfo.src,
-        pathname: pathname,
-        sha256: await SHA256Digest.file(pathname)
+        src: srcUrl,
+        sha256: await SHA256Digest.file(tmpFile),
+        tmpFile: tmpFile
       };
     }
 
     this.debug({ resources: resources }, { depth: 20 });
 
     repoLockXML.addModule({
-      name: moduleName,
+      name: module.name,
       version: module.version,
-      registry: registryName,
+      src: resources.app.src,
       sha256: resources.app.sha256
     });
 
