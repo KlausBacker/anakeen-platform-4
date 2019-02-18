@@ -27,9 +27,9 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
         $currentLanguage = ContextManager::getLanguage();
         if ($titles) {
             foreach ($titles as $title) {
-                if (strpos($currentLanguage,"fr_FR") !== false && $title[HubinstanciationFields::hub_instance_language] === "Français") {
+                if (strpos($currentLanguage, "fr_FR") !== false && $title[HubinstanciationFields::hub_instance_language] === "Français") {
                     $this->title = $title[HubinstanciationFields::hub_instance_title];
-                } else if (strpos($currentLanguage,"en_US") !== false && $title[HubinstanciationFields::hub_instance_language] === "English") {
+                } elseif (strpos($currentLanguage, "en_US") !== false && $title[HubinstanciationFields::hub_instance_language] === "English") {
                     $this->title = $title[HubinstanciationFields::hub_instance_title];
                 }
             }

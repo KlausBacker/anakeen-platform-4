@@ -91,7 +91,10 @@ export default {
         viewId: "!defaultCreation"
       });
       this.$refs.smartConfig.addEventListener("ready", () => {
-        this.$refs.smartConfig.addCustomClientData({ hubId: this.hubId, hubTitle: this.hubTitle });
+        this.$refs.smartConfig.addCustomClientData({
+          hubId: this.hubId,
+          hubTitle: this.hubTitle
+        });
       });
     },
     openConfig(e) {
