@@ -24,16 +24,18 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         return $configuration;
     }
 
-    protected function getPositionConfiguration() {
+    protected function getPositionConfiguration()
+    {
         $dockPosition = static::getDockPosition($this->getAttributeValue(HubConfigurationFields::hub_docker_position));
-       return [
+        return [
             "order" => $this->getAttributeValue(HubConfigurationFields::hub_order),
             "dock" => $dockPosition["dock"],
             "innerPosition" => $dockPosition["innerPosition"]
         ];
     }
 
-    protected function getEntryOptions() {
+    protected function getEntryOptions()
+    {
         return  [
             "selected" => $this->getAttributeValue(HubConfigurationFields::hub_activated) === "TRUE",
             "selectable" => $this->getAttributeValue(HubConfigurationFields::hub_selectable) === "TRUE"
