@@ -192,5 +192,12 @@ export default class HubStation extends Vue {
     }
     return routes;
   }
+
+  public isSelectableEntry(entry) {
+    if (entry && entry.entryOptions) {
+      return entry.entryOptions.selectable;
+    }
+    return true;
+  }
   // endregion methods
 }
