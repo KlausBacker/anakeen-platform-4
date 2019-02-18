@@ -6,7 +6,7 @@
         <div v-else-if="isDockExpanded">
             <span><i class="fa fa-user-secret"></i> Authentication Tokens</span>
         </div>
-        <div v-else-if="isHubContent">
+        <div v-else-if="isHubContent" class="token-station">
             <admin-center-authentication-tokens></admin-center-authentication-tokens>
         </div>
     </div>

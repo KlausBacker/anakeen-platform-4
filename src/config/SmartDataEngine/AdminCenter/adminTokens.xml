@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes  namespace="AdminCenter">
+        <sde:route name="AdminTokens:List">
+            <sde:priority>0</sde:priority>
+            <sde:callable>Anakeen\Routes\Admin\Tokens\TokenList</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/tokens/</sde:pattern>
+            <sde:description>Get all tokens</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>

@@ -1,0 +1,24 @@
+.token-station {
+    height: 100%;
+    position: relative;
+}
+
+.authentication-tokens {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+
+    > .ank-token-splitter {
+        flex-grow: 1;
+    }
+}
+
+.token-grid {
+    table {
+       // table-layout: auto;
+    }
+    .cell--token {
+        font-family: monospace;
+    }
+}
