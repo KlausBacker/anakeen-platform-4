@@ -1,0 +1,33 @@
+// Import of the other css : to remove because it will be provided by the server
+.identity-component {
+  .identity {
+
+    .identity-badge {
+      background-color: $ank-ui-color-client;
+      height: $ank-identity-badge-height;
+      border-radius: $ank-identity-badge-height / 2;
+    }
+
+    .identity-badge:hover {
+      background-color: lighten($ank-ui-color-client, 20%);
+    }
+
+    .identity-badge-initials {
+      color: $ank-identity-badge-font-color;
+    }
+
+    .identity-badge-icon {
+      color: $ank-identity-badge-font-color;
+    }
+  }
+
+  .identity-modification-popup {
+    background: $white;
+
+    ul {
+      .action:hover {
+        background-color: $ank-ui-color-hovered;
+      }
+    }
+  }
+}

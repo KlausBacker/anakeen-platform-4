@@ -1,0 +1,38 @@
+# English translations for ank-components package.
+# Copyright (C) 2018 THE ank-components'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ank-components package.
+# Automatically generated, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ank-components 0.0.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-31 11:26+0200\n"
+"PO-Revision-Date: 2018-07-31 11:26+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#~ msgctxt "Notifier"
+#~ msgid "Error"
+#~ msgstr "Error"
+
+#~ msgctxt "Notifier"
+#~ msgid "Warning"
+#~ msgstr "Warning"
+
+#~ msgctxt "Notifier"
+#~ msgid "Success"
+#~ msgstr "Success"
+
+#~ msgctxt "Notifier"
+#~ msgid "Info"
+#~ msgstr "Info"
+
+#~ msgctxt "Notifier"
+#~ msgid "Notice"
+#~ msgstr "Notice"

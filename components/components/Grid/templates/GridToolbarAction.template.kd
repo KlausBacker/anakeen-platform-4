@@ -1,0 +1,4 @@
+<a role="button" class="k-button k-button-icontext grid-toolbar-action grid-toolbar-export-action k-grid-export" href="##">
+    <span class="#: iconClass#"></span>
+    #: text#
+</a>

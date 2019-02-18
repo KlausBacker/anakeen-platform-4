@@ -1,0 +1,133 @@
+# English translations for Document-uis package.
+# Copyright (C) 2017 THE Document-uis'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Document-uis package.
+# Automatically generated, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Document-uis 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-04 14:57+0200\n"
+"PO-Revision-Date: 2017-10-16 13:23+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/components/Authent/Authent.vue:27
+msgctxt "Authent"
+msgid "Enter identifier or email address :"
+msgstr ""
+
+#: src/components/Authent/Authent.vue:77
+msgctxt "Authent"
+msgid "Forget password ?"
+msgstr ""
+
+#: src/components/Authent/Authent.vue:65
+msgctxt "Authent"
+msgid "Go back to home page"
+msgstr ""
+
+#: src/components/Authent/Authent.vue:74
+msgctxt "Authent"
+msgid "Help"
+msgstr ""
+
+#: src/components/Authent/Authent.vue:24
+msgctxt "Authent"
+msgid "Help Content"
+msgstr ""
+"This window allows you to log on the application, that is indicate to the applications whom you are.\n"
+"\n"
+"This is necessary to guarantee that yours informations are accessible only by you. To log on, it is necessary to fill the login and password (If you do not possess it contact your administrator).\n"
+"\n"
+"Pay attention, this password is your identification : be sure to keep it safe and do not spread it !\n"
+"\n"
+"Mind the case (use of the characters capital letter and small letter) during the fill of your login and password!"
+
+#: src/components/Authent/Authent.vue:4
+msgctxt "Authent"
+msgid "Identifier :"
+msgstr "Username"
+
+#: src/components/Authent/Authent.vue:40 src/components/Authent/Authent.vue:62
+msgctxt "Authent"
+msgid "Send reset password ask"
+msgstr "Send"
+
+#: src/components/Authent/Authent.vue:19
+msgctxt "Authent"
+msgid "Sign in"
+msgstr "Log in"
+
+#: src/components/Authent/Authent.component.js:49
+msgctxt "Authent"
+msgid "Enter your identifier"
+msgstr "Enter your username"
+
+#: src/components/Authent/Authent.component.js:50
+#, fuzzy
+msgctxt "Authent"
+msgid "Enter your password"
+msgstr "Enter your identifier"
+
+#: src/components/Authent/Authent.component.js:53
+msgctxt "Authent"
+msgid "You must enter your password"
+msgstr ""
+
+#: src/components/Authent/Authent.component.js:57
+#, fuzzy
+msgctxt "Authent"
+msgid "You must enter your identifier"
+msgstr "Enter your identifier"
+
+#: src/components/Authent/Authent.component.js:59
+msgctxt "Authent"
+msgid "Help to sign in"
+msgstr "Help to log in"
+
+#: src/components/Authent/Authent.component.js:60
+msgctxt "Authent"
+msgid "Authentication error"
+msgstr "Authentication error"
+
+#: src/components/Authent/Authent.component.js:61
+msgctxt "Authent"
+msgid "Unexpected error"
+msgstr ""
+
+#: src/components/Authent/Authent.component.js:62
+msgctxt "Authent"
+msgid "Form to reset password"
+msgstr "Reset password"
+
+#: src/components/Authent/Authent.component.js:65
+msgctxt "Authent"
+msgid "Identifier or email address"
+msgstr ""
+
+#: src/components/Authent/Authent.component.js:67
+msgctxt "Authent"
+msgid "Password :"
+msgstr ""
+
+#: src/components/Authent/Authent.component.js:68
+#, fuzzy
+msgctxt "Authent"
+msgid "New password :"
+msgstr "Enter your identifier"
+
+#: src/components/Authent/Authent.component.js:69
+msgctxt "Authent"
+msgid "Confirm password :"
+msgstr ""
+
+#: src/components/Authent/Authent.component.js:72
+msgctxt "Authent"
+msgid "Confirm password are not same as new password"
+msgstr ""

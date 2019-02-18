@@ -29,7 +29,10 @@ module.exports = () => {
           new CopyWebpackPlugin([
             {
               //dynacase-report
-              context: path.resolve(__dirname, "../src/vendor/Anakeen/DOCUMENT/IHM/"),
+              context: path.resolve(
+                __dirname,
+                "../src/vendor/Anakeen/DOCUMENT/IHM/"
+              ),
               from: "dynacaseReport.js",
               to: path.resolve(__dirname, "../src/public/uiAssets/anakeen/")
             },

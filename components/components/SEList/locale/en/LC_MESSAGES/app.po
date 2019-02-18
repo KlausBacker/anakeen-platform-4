@@ -1,0 +1,38 @@
+# English translations for anakeen-ui package.
+# Copyright (C) 2018 THE anakeen-ui'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the anakeen-ui package.
+# Automatically generated, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: anakeen-ui 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-28 11:38+0200\n"
+"PO-Revision-Date: 2018-05-25 14:41+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/components/SEList/seList.component.js:149
+msgctxt "SEList"
+msgid "of"
+msgstr "of"
+
+#: src/components/SEList/seList.component.js:334
+msgctxt "SEList"
+msgid "Search in : %{collection}"
+msgstr "Search in : %{collection}"
+
+#: src/components/SEList/seList.component.js:338
+msgctxt "SEList"
+msgid "No %{collection} to display"
+msgstr "No %{collection} to display"
+
+#: src/components/SEList/seList.component.js:344
+msgctxt "SEList"
+msgid "Items per page"
+msgstr "Items per page"

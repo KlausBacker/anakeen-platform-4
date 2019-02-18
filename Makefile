@@ -93,6 +93,8 @@ stub: install-deps
 ########################################################################################################################
 
 buildJS: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build polyfill $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildCss
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildAsset
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"
