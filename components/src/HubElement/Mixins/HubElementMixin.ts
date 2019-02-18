@@ -1,9 +1,7 @@
 // mixin.js
 const path = require("path");
 import { Component, Prop, Vue } from "vue-property-decorator";
-import {
- IHubStationEntryOptions
-} from "../../HubStation/HubStationsTypes";
+import { IHubStationEntryOptions } from "../../HubStation/HubStationsTypes";
 import { HubElementDisplayTypes } from "../HubElementTypes";
 
 // You can declare a mixin as the same style as components.

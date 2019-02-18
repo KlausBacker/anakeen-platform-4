@@ -154,6 +154,13 @@ export default class HubStation extends Vue {
     return "";
   }
 
+  public isSelectableEntry(entry) {
+    if (entry && entry.entryOptions) {
+      return entry.entryOptions.selectable;
+    }
+    return true;
+  }
+
   public mounted() {
     this.initRouterConfig(this.configData);
   }
@@ -191,13 +198,6 @@ export default class HubStation extends Vue {
       });
     }
     return routes;
-  }
-
-  public isSelectableEntry(entry) {
-    if (entry && entry.entryOptions) {
-      return entry.entryOptions.selectable;
-    }
-    return true;
   }
   // endregion methods
 }
