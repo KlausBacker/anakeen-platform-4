@@ -1,0 +1,9 @@
+<div class="seTabs__openedTab__listItem" data-docid="#=data.initid#">
+    <div class="seTabs__openedTab__listItem__heading">
+        <img class="seTabs__openedTab__listItem__heading--icon" src="#= data.icon#"/>
+        <span class="seTabs__openedTab__listItem__heading--title">#= data.title#</span>
+    </div>
+    <div class="seTabs__openedTab__listItem__close">
+        <i class="material-icons">close</i>
+    </div>
+</div>

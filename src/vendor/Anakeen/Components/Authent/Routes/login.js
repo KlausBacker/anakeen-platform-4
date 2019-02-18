@@ -1,5 +1,5 @@
 import Vue from "vue";
-import AnkAuthent from "@anakeen/ank-components/src/components/Authent/Authent.vue";
+import AnkAuthent from "../../../../../../components/components/Authent/Authent";
 
 Vue.use(AnkAuthent, {
   webComponents: true
