@@ -40,6 +40,18 @@ export default {
     };
   },
   methods: {
+    cellRender(event) {
+      if (event.data && event.data.columnConfig) {
+        switch (event.data.columnConfig.field) {
+          case "icon":
+            event.data.cellRender.html(
+              `<img src=${
+                event.data.cellData
+              } alt="instanceIcon" width="16" height="16"/>`
+            );
+        }
+      }
+    },
     createHubStation() {
       this.$refs.instanceConfig.fetchSmartElement({
         initid: "HUBINSTANCIATION",

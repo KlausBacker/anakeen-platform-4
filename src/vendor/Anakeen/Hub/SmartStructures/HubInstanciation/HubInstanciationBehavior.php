@@ -40,6 +40,7 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
         $newIcon = $this->getRawValue(HubinstanciationFields::hub_instanciation_icone);
         if ($newIcon) {
             $icon = $newIcon;
+            $this->icon = $newIcon;
             return $icon;
         }
 

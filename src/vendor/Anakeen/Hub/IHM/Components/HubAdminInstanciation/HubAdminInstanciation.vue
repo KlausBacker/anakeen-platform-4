@@ -23,7 +23,8 @@
                                   ref="hubInstanciationGrid"
                                   :contextTitles="false"
                                   @toolbar-action-click="toolbarActionClick"
-                                  @action-click="actionClick">
+                                  @action-click="actionClick"
+                                  @before-grid-cell-render="cellRender">
                                 <grid-column title="Icon" field="icon" :width="'10rem'" :encoded="'false'"></grid-column>
                                 <grid-column title="Title" field="title"></grid-column>
                                 <grid-actions>
