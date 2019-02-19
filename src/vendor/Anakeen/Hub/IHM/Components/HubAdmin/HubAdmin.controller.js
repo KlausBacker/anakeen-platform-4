@@ -50,8 +50,7 @@ export default {
     this.$http
       .get(`/api/v2/smart-elements/${this.hubId}.json`)
       .then(response => {
-        this.hubTitle =
-          response.data.data.document.attributes.hub_instance_title[0].displayValue;
+        this.hubTitle = response.data.data.document.properties.title;
       });
   },
   mounted() {
@@ -92,7 +91,10 @@ export default {
         viewId: "!defaultCreation"
       });
       this.$refs.smartConfig.addEventListener("ready", () => {
-        this.$refs.smartConfig.addCustomClientData({ hubId: this.hubId });
+        this.$refs.smartConfig.addCustomClientData({
+          hubId: this.hubId,
+          hubTitle: this.hubTitle
+        });
       });
     },
     openConfig(e) {

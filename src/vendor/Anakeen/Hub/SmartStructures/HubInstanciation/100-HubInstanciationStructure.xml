@@ -16,7 +16,7 @@
                                      access="ReadWrite">
                         <smart:field-text name="hub_instance_title" label="Title" access="ReadWrite"/>
                         <smart:field-text name="hub_instance_language" label="Language"
-                                          access="ReadWrite"/>
+                                          access="Read"/>
                     </smart:field-set>
                 </smart:field-set>
             </smart:field-set>
