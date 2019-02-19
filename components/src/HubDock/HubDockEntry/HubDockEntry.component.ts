@@ -13,6 +13,7 @@ export default class HubDockEntry extends Vue {
   @Prop({ default: false }) public evenSpace!: boolean;
   @Prop({ required: true }) public name!: string;
   @Prop({ default: false }) public selected!: boolean;
+  @Prop({ default: true }) public selectable!: boolean;
   @Prop({ type: [String, Object] }) public route!: string | object;
 
   public entrySelected: boolean = false;
@@ -21,7 +22,9 @@ export default class HubDockEntry extends Vue {
 
   @Watch("selected")
   public onSelectedPropChange(val) {
-    this.entrySelected = val;
+    if (this.selectable) {
+      this.entrySelected = val;
+    }
   }
 
   get isCollapsed(): boolean {
@@ -45,10 +48,12 @@ export default class HubDockEntry extends Vue {
   }
 
   public selectEntry() {
-    this.entrySelected = true;
-    this.$emit(dockEntryEvents.selected, this.entryConfiguration);
-    if (this.route && this.$router) {
-      this.$router.push(this.route);
+    if (this.selectable) {
+      this.entrySelected = true;
+      this.$emit(dockEntryEvents.selected, this.entryConfiguration);
+      if (this.route && this.$router) {
+        this.$router.push(this.route);
+      }
     }
   }
 }

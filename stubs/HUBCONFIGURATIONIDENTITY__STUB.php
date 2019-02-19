@@ -21,7 +21,7 @@ namespace SmartStructure\Fields {
         /**
         * Email alterable
         * <ul>
-        * <li> <i>relation</i> Yes_no_enum </li>
+        * <li> <i>relation</i> Hub_YesNo </li>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> enum </li>
         * </ul>
@@ -30,7 +30,7 @@ namespace SmartStructure\Fields {
         /**
         * Password alterable
         * <ul>
-        * <li> <i>relation</i> Yes_no_enum </li>
+        * <li> <i>relation</i> Hub_YesNo </li>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> enum </li>
         * </ul>

@@ -16,11 +16,13 @@
             v-for="(entry, index) in getDockHeaders(configData.top)"
             :key="`top-header-${index}`"
             :name="`top-header-${index}`"
+            :selectable="isSelectableEntry(entry)"
           >
             <template slot="collapsedContent">
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.COLLAPSED"
               ></component>
             </template>
@@ -28,6 +30,7 @@
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.EXPANDED"
               ></component>
             </template>
@@ -37,12 +40,14 @@
           v-for="(entry, index) in getDockContent(configData.top)"
           :key="`top-content-${index}`"
           :name="`top-content-${index}`"
+          :selectable="isSelectableEntry(entry)"
           :route="getEntryRoutePath(entry.entryOptions)"
         >
           <template slot="collapsedContent">
             <component
               :is="entry.component.name"
               v-bind="entry.component.props"
+              :entryOptions="entry.entryOptions"
               :displayType="HubElementDisplayTypes.COLLAPSED"
             ></component>
           </template>
@@ -50,6 +55,7 @@
             <component
               :is="entry.component.name"
               v-bind="entry.component.props"
+              :entryOptions="entry.entryOptions"
               :displayType="HubElementDisplayTypes.EXPANDED"
             ></component>
           </template>
@@ -59,11 +65,13 @@
             v-for="(entry, index) in getDockFooter(configData.top)"
             :key="`top-footer-${index}`"
             :name="`top-footer-${index}`"
+            :selectable="isSelectableEntry(entry)"
           >
             <template slot="collapsedContent">
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.COLLAPSED"
               ></component>
             </template>
@@ -71,6 +79,7 @@
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.EXPANDED"
               ></component>
             </template>
@@ -86,11 +95,13 @@
               v-for="(entry, index) in getDockHeaders(configData.left)"
               :key="`left-header-${index}`"
               :name="`left-header-${index}`"
+              :selectable="isSelectableEntry(entry)"
             >
               <template slot="collapsedContent">
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.COLLAPSED"
                 ></component>
               </template>
@@ -98,6 +109,7 @@
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.EXPANDED"
                 ></component>
               </template>
@@ -107,12 +119,14 @@
             v-for="(entry, index) in getDockContent(configData.left)"
             :key="`left-content-${index}`"
             :name="`left-content-${index}`"
+            :selectable="isSelectableEntry(entry)"
             :route="getEntryRoutePath(entry.entryOptions)"
           >
             <template slot="collapsedContent">
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.COLLAPSED"
               ></component>
             </template>
@@ -120,6 +134,7 @@
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.EXPANDED"
               ></component>
             </template>
@@ -128,12 +143,14 @@
             <hub-dock-entry
               v-for="(entry, index) in getDockFooter(configData.left)"
               :key="`left-footer-${index}`"
+              :selectable="isSelectableEntry(entry)"
               :name="`left-footer-${index}`"
             >
               <template slot="collapsedContent">
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.COLLAPSED"
                 ></component>
               </template>
@@ -141,6 +158,7 @@
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.EXPANDED"
                 ></component>
               </template>
@@ -161,12 +179,14 @@
             <hub-dock-entry
               v-for="(entry, index) in getDockHeaders(configData.right)"
               :key="`right-header-${index}`"
+              :selectable="isSelectableEntry(entry)"
               :name="`right-header-${index}`"
             >
               <template slot="collapsedContent">
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.COLLAPSED"
                 ></component>
               </template>
@@ -174,6 +194,7 @@
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.EXPANDED"
                 ></component>
               </template>
@@ -183,12 +204,14 @@
             v-for="(entry, index) in getDockContent(configData.right)"
             :key="`right-content-${index}`"
             :name="`right-content-${index}`"
+            :selectable="isSelectableEntry(entry)"
             :route="getEntryRoutePath(entry.entryOptions)"
           >
             <template slot="collapsedContent">
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.COLLAPSED"
               ></component>
             </template>
@@ -196,6 +219,7 @@
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.EXPANDED"
               ></component>
             </template>
@@ -205,11 +229,13 @@
               v-for="(entry, index) in getDockFooter(configData.right)"
               :key="`right-footer-${index}`"
               :name="`right-footer-${index}`"
+              :selectable="isSelectableEntry(entry)"
             >
               <template slot="collapsedContent">
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.COLLAPSED"
                 ></component>
               </template>
@@ -217,6 +243,7 @@
                 <component
                   :is="entry.component.name"
                   v-bind="entry.component.props"
+                  :entryOptions="entry.entryOptions"
                   :displayType="HubElementDisplayTypes.EXPANDED"
                 ></component>
               </template>
@@ -242,11 +269,13 @@
             v-for="(entry, index) in getDockHeaders(configData.bottom)"
             :key="`bottom-header-${index}`"
             :name="`bottom-header-${index}`"
+            :selectable="isSelectableEntry(entry)"
           >
             <template slot="collapsedContent">
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.COLLAPSED"
               ></component>
             </template>
@@ -254,6 +283,7 @@
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.EXPANDED"
               ></component>
             </template>
@@ -263,12 +293,14 @@
           v-for="(entry, index) in getDockContent(configData.bottom)"
           :key="`bottom-content-${index}`"
           :name="`bottom-content-${index}`"
+          :selectable="isSelectableEntry(entry)"
           :route="getEntryRoutePath(entry.entryOptions)"
         >
           <template slot="collapsedContent">
             <component
               :is="entry.component.name"
               v-bind="entry.component.props"
+              :entryOptions="entry.entryOptions"
               :displayType="HubElementDisplayTypes.COLLAPSED"
             ></component>
           </template>
@@ -276,6 +308,7 @@
             <component
               :is="entry.component.name"
               v-bind="entry.component.props"
+              :entryOptions="entry.entryOptions"
               :displayType="HubElementDisplayTypes.EXPANDED"
             ></component>
           </template>
@@ -285,11 +318,13 @@
             v-for="(entry, index) in getDockFooter(configData.bottom)"
             :key="`bottom-footer-${index}`"
             :name="`bottom-footer-${index}`"
+            :selectable="isSelectableEntry(entry)"
           >
             <template slot="collapsedContent">
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.COLLAPSED"
               ></component>
             </template>
@@ -297,6 +332,7 @@
               <component
                 :is="entry.component.name"
                 v-bind="entry.component.props"
+                :entryOptions="entry.entryOptions"
                 :displayType="HubElementDisplayTypes.EXPANDED"
               ></component>
             </template>

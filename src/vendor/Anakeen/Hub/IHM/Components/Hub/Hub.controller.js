@@ -22,89 +22,21 @@ export default {
   },
   methods: {
     getConfig() {
+      this.$kendo.ui.progress(this.$(this.$el), true);
       this.$http
         .get(`/hub/config/${this.hubId}`)
         .then(response => {
           const data = response.data.data;
-          // this.config = data;
-          this.config = [
-            ...data,
-            {
-              position: {
-                dock: "LEFT",
-                innerPosition: "CENTER",
-                order: null
-              },
-              component: {
-                name: "hello-world",
-                props: {
-                  msg: "HELLO"
-                }
-              },
-              entryOptions: {
-                route: "hello",
-                selectable: true,
-                selected: false
-              }
-            },
-            {
-              position: {
-                dock: "RIGHT",
-                innerPosition: "CENTER",
-                order: null
-              },
-              component: {
-                name: "hello-world",
-                props: {
-                  msg: "HELLO 2"
-                }
-              },
-              entryOptions: {
-                route: "hello2",
-                selectable: true,
-                selected: false
-              }
-            },
-            {
-              position: {
-                dock: "TOP",
-                innerPosition: "CENTER",
-                order: null
-              },
-              component: {
-                name: "hello-world",
-                props: {
-                  msg: "HELLO 3"
-                }
-              },
-              entryOptions: {
-                route: "hello3",
-                selectable: true,
-                selected: false
-              }
-            },
-            {
-              position: {
-                dock: "BOTTOM",
-                innerPosition: "CENTER",
-                order: null
-              },
-              component: {
-                name: "hello-world",
-                props: {
-                  msg: "HELLO 4"
-                }
-              },
-              entryOptions: {
-                route: "hello4",
-                selectable: true,
-                selected: false
-              }
-            }
-          ];
+          this.hubEntries.contents = data;
+          this.hubEntries.loadAssets().then(() => {
+            this.$kendo.ui.progress(this.$(this.$el), false);
+            this.hubEntries.useComponents();
+            this.config = data;
+          });
         })
         .catch(error => {
           console.error(error);
+          this.$kendo.ui.progress(this.$(this.$el), false);
         });
     }
   }

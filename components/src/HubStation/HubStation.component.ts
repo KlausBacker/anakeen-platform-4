@@ -154,6 +154,13 @@ export default class HubStation extends Vue {
     return "";
   }
 
+  public isSelectableEntry(entry) {
+    if (entry && entry.entryOptions) {
+      return entry.entryOptions.selectable;
+    }
+    return true;
+  }
+
   public mounted() {
     this.initRouterConfig(this.configData);
   }

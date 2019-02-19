@@ -10,7 +10,7 @@ namespace SmartStructure {
 
 namespace SmartStructure\Fields {
 
-    class Hubconfigurationlabel extends Hubconfiguration
+    class Hubconfigurationlabel extends Hubconfigurationslot
     {
         /**
         * <ul>
