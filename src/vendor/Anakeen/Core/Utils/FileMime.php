@@ -116,7 +116,7 @@ class FileMime
             $mime = trim($tmime[0]);
             $mimeIcon = self::getIconMimeArray();
             if (isset($mimeIcon[$mime])) {
-                $icon = $mimeIcon[$mime] . ".png";
+                $icon = "mime/png/".$mimeIcon[$mime] . ".png";
             } else {
                 $p = strpos($mime, '/');
                 $mime = substr($mime, 0, $p);
