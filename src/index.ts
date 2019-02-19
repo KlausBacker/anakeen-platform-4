@@ -1,9 +1,13 @@
-const packageInfo = require("../../package.json");
+const packageInfo = require("../package.json");
+import { VueConstructor } from "vue/types/vue";
+import AnkSplitter from "./Splitter/Splitter.vue";
 
-import Vue from "vue";
+export {
+  AnkSplitter
+}
 
-export function install(vue: typeof Vue) {
-  // TODO Register components globally
+export function install(Vue: VueConstructor) {
+  Vue.component(AnkSplitter.name, AnkSplitter);
 }
 
 export default {
@@ -11,3 +15,27 @@ export default {
   name: packageInfo.name,
   version: packageInfo.version
 };
+
+const plugin = {
+  install,
+  name: packageInfo.name,
+  version: packageInfo.version
+};
+
+interface IWindow extends Window { Vue: VueConstructor };
+interface IGlobal extends NodeJS.Global { Vue: VueConstructor; }
+declare const window: IWindow;
+declare const global: IGlobal;
+
+// Auto install
+let GlobalVue: VueConstructor|null = null;
+console.log(window);
+if (window.Vue) {
+  GlobalVue = window.Vue;
+} else if (global.Vue) {
+  GlobalVue = global.Vue
+}
+
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
