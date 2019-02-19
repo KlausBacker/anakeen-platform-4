@@ -65,7 +65,7 @@ export default class GridActions extends AbstractGridUtil {
     this.vueComponent.$emit("action-click", event);
     if (!event.isDefaultPrevented()) {
       window.open(
-        `/api/v2/documents/${id}/views/!defaultEdition.html`,
+        `/api/v2/smart-elements/${id}/views/!defaultEdition.html`,
         "_blank"
       );
     }
@@ -92,7 +92,7 @@ export default class GridActions extends AbstractGridUtil {
     const id = item.initid || item.id;
     if (!event.isDefaultPrevented()) {
       window.open(
-        `/api/v2/documents/${id}/views/!defaultConsultation.html`,
+        `/api/v2/smart-elements/${id}/views/!defaultConsultation.html`,
         "_blank"
       );
     }
