@@ -1,4 +1,3 @@
-import Vue from "vue";
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
 
@@ -6,9 +5,7 @@ import { AnkSEGrid } from "@anakeen/user-interfaces";
 import { AnkLogout } from "@anakeen/user-interfaces";
 import { AnkIdentity } from "@anakeen/user-interfaces";
 import { AnkSmartElement } from "@anakeen/user-interfaces";
-import Splitter from "../Splitter/Splitter.vue";
-
-Vue.use(Splitter);
+import { AnkSplitter } from "@anakeen/internal-components";
 
 export default {
   name: "ank-hub-instanciation",
@@ -17,7 +14,7 @@ export default {
     identity: AnkIdentity,
     logout: AnkLogout,
     smartElem: AnkSmartElement,
-    "ank-splitter": Splitter
+    "ank-splitter": AnkSplitter
   },
   data() {
     return {
