@@ -53,7 +53,7 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
     {
         $instanceName= $this->getRawValue(HubinstanciationFields::instance_logical_name);
         if ($this->name !== $instanceName) {
-            $err = $this->setLogicalName($instanceName, true);
+            $err = $this->setLogicalName($instanceName, true, true);
             if ($err) {
                 throw new Exception($err);
             }
