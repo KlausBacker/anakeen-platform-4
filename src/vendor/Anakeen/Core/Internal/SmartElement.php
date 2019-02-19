@@ -1387,11 +1387,11 @@ create unique index i_docir on doc(initid, revision);";
             return ($err);
         }
 
-        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
+        if ($forceVerifyWithControl === false && !$this->isUnderControl()) {
             return "";
         } // admin can do anything but not modify fixed doc
 
-        if ($forceVerifyWithControl===false && !$this->isUnderControl()) {
+        if ($forceVerifyWithControl === false && !$this->isUnderControl()) {
             return "";
         } // no more test if disableAccessControl activated
         if (($this->locked != 0) && (abs($this->locked) != ContextManager::getCurrentUser()->id)) {
@@ -5863,30 +5863,39 @@ create unique index i_docir on doc(initid, revision);";
         if ($oa->usefor === "Q" && $this->doctype !== "C") {
             $docid = $this->fromid;
         } else {
-            $docid = $this->id;
+            $docid = $this->initid;
         }
 
         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
             $fileKey = 0;
             if ($info) {
-                $fileKey = strtotime($info->mdate);
                 // Double quote not supported by all browsers - replace by minus
                 $fname = str_replace('"', '-', $info->name);
             } else {
                 $fname = str_replace('"', '-', $reg[3]);
             }
-            // will be rewrited by apache rules
 
-            $url = sprintf(
-                "file/%s/%d/%s/%s/%s?cache=%s&inline=%s",
-                $docid,
-                $fileKey,
-                $attrid,
-                $index,
-                rawurlencode($fname),
-                $cache ? "yes" : "no",
-                $inline ? "yes" : "no"
-            );
+            if ($this->locked != -1) {
+                $url = sprintf(
+                    "api/v2/documents/%d/files/%s/%s/%s",
+                    $docid,
+                    $attrid,
+                    $index,
+                    rawurlencode($fname)
+                );
+            } else {
+                $url = sprintf(
+                    "api/v2/documents/%d/revisions/%d/files/%s/%s/%s",
+                    $docid,
+                    $this->revision,
+                    $attrid,
+                    $index,
+                    rawurlencode($fname)
+                );
+            }
+            if ($inline) {
+                $url.="?inline=true";
+            }
 
             return $url;
         }
