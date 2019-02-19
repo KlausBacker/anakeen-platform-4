@@ -2,7 +2,14 @@
   "name": "@anakeen/user-interfaces",
   "version": "2.0.0",
   "autorelease": true,
-  "description": "",
+  "description": "A package for the user interface of anakeen-platform",
+  "keywords": [
+    "anakeen-platform",
+    "smart element",
+    "user interface",
+    "component"
+  ],
+  "main": "./components/components/index.js",
   "scripts": {
     "beautify": "npx eslint ./src --fix",
     "buildPolyfill": "npx webpack --config ./webpackConfig/polyfill.js",
@@ -20,9 +27,7 @@
     "src/vendor/Anakeen/DOCUMENT/IHM/document.js",
     "src/vendor/Anakeen/DOCUMENT/IHM/widgets/widget.js",
     "LICENSE",
-    "README.md",
-    "RELEASE",
-    "VERSION"
+    "README.md"
   ],
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -46,7 +51,6 @@
     "datatables.net-bs4": "^1.10.16",
     "little-loader": "^0.2.0",
     "mustache": "^3.0.1",
-    "popper.js": "^1.14.7",
     "tracekit": "^0.4.5",
     "underscore": "^1.8.3",
     "whatwg-fetch": "^3.0.0"
@@ -54,9 +58,7 @@
   "peerDependencies": {
     "@progress/kendo-ui": "^2019.1.213",
     "vue": "^2.6.6",
-    "jquery": "^3.3.1",
-    "axios": "^0.18.0",
-    "bootstrap": "^4.3.1"
+    "jquery": "^3.3.1"
   },
   "dependencies":  {
     "@anakeen/theme-variables": "^0.0.1",
@@ -70,7 +72,8 @@
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "@webcomponents/webcomponentsjs": "2.2.7",
-    "document-register-element": "^1.11.0"
+    "document-register-element": "^1.11.0",
+    "popper.js": "^1.14.7"
   },
   "husky": {
     "hooks": {
