@@ -14,7 +14,7 @@ class ImageAttributeValue extends FileAttributeValue
         $fileLink = $doc->getFileLink($oa->id, $index, false, true, $v);
         if ($fileLink) {
             if ($thumbnailSize > 0) {
-                $this->thumbnail = sprintf('%s&width=%d', $fileLink, $thumbnailSize);
+                $this->thumbnail = $this->getImageLink($oa, $doc, $index, $thumbnailSize);
             } else {
                 $this->thumbnail = $fileLink;
             }
@@ -31,5 +31,17 @@ class ImageAttributeValue extends FileAttributeValue
                 }
             }
         }
+    }
+
+    protected function getImageLink($oa, $doc, $index, $width)
+    {
+        return sprintf(
+            "api/v2/documents/%d/images/%s/%d/sizes/%sx%sc.png",
+            $doc->id,
+            rawurlencode($oa->id),
+            $index,
+            $width,
+            $width
+        );
     }
 }
