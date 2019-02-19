@@ -1,5 +1,6 @@
 {
   "name": "@anakeen/internal-components",
+  "autorelease": true,
   "version": "1.0.0",
   "description": "Anakeen internal components",
   "main": "lib/ank-internal-components.common.min.js",
@@ -16,7 +17,6 @@
     "build:prod": "node --max_old_space_size=4096 node_modules/.bin/webpack --env production --config ./webpack/index.js --progress",
     "build:dev": "node --max_old_space_size=4096 node_modules/.bin/webpack --env development --config ./webpack/index.js --progress",
     "build": "npm run build:prod && npm run build:dev",
-    "prepublishOnly": "npm run build",
     "watch": "webpack --watch --env development --config ./components/webpack/index.js"
   },
   "files": [
