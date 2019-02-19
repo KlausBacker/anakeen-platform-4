@@ -2,10 +2,10 @@ import Vue from "vue";
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
 
-import { AnkSEGrid } from "@anakeen/ank-components";
-import { AnkLogout } from "@anakeen/ank-components";
-import { AnkIdentity } from "@anakeen/ank-components";
-import { AnkSmartElement } from "@anakeen/ank-components";
+import { AnkSEGrid } from "@anakeen/user-interfaces";
+import { AnkLogout } from "@anakeen/user-interfaces";
+import { AnkIdentity } from "@anakeen/user-interfaces";
+import { AnkSmartElement } from "@anakeen/user-interfaces";
 import Splitter from "../Splitter/Splitter.vue";
 
 Vue.use(Splitter);

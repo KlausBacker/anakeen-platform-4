@@ -3,7 +3,7 @@ import LoadScript from "vue-m-loader";
 import LoadCss from "load-css-file";
 
 import Router from "../Router";
-import AnkComponents from "@anakeen/ank-components";
+import AnkComponents from "@anakeen/user-interfaces";
 import AnkAxios from "axios";
 import HubMain from "../Components/Hub/Hub.vue";
 
