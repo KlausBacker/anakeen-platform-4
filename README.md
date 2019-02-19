@@ -1,9 +1,8 @@
-# Anakeen UI
+# Anakeen User Interfaces
 
 ## Description
 
-New user interfaces to view and edit document in web browser.
-
+Interfaces utilisateurs standards de la plateforme anakeen 
 
 ## Licence
 
@@ -15,15 +14,3 @@ La licence s'applique à l'ensemble des codes source du module.
 Elle prévaut sur toutes licences qui pourraient être mentionnées dans certains
 fichiers.
 
-
-## Build
-
-Requirement :
-*  node > 4
-*  npm
-*  easygettext (npm install -g easygettext)
-*  xgettext (apt install gettext)
-
-## Autotest
-
-Pour ajouter, lancer des autotests se référer au README dans le répertoire `Tests/webdriver`
