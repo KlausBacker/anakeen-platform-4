@@ -71,6 +71,16 @@ exports.autoconf = () => {
             }
           }
 
+          if (data.config.composeConfig) {
+            const compose = data.config.composeConfig[0];
+            if (compose.localRepo) {
+              conf.localRepo = compose.localRepo[0];
+            }
+            if (compose.localSrc) {
+              conf.localSrc = compose.localSrc[0];
+            }
+          }
+
           resolve(conf);
         }
       );

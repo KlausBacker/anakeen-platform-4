@@ -58,3 +58,10 @@ Pour commencer un nouveau projet avec @anakeen/anakeen-cli, la démarche est sim
 Pour lancer manuellement anakeen-cli après avoir cloné le repo, il est possible de faire :
 
 ```node ./index.js```
+
+## Run CLI locally
+
+```
+$ yarn run anakeen-cli --help
+```
+
