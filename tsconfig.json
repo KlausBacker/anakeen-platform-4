@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "strict": true,
+    "target": "es5",
+    "noImplicitAny": false,
+    "lib": ["dom", "es6"]
+  },
+  "include": ["src/**/*.ts"]
+}
