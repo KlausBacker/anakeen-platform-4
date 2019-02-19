@@ -51,6 +51,17 @@
   dependencies:
     vue-gettext "^2.1.1"
 
+"@anakeen/internal-components@^1.0.1":
+  version "1.0.1"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1.tgz#f69bf1dd67eea4d97496db7aad5084afb3541610"
+  integrity sha512-S1s/2K83cYxxrzrNt9x6TuRN/+d/0ubrYFjuzK93OpBzUTYvqfzkxYBb8VEoL+0AmR2ZLl/7GyxTsMhFftR9iQ==
+  dependencies:
+    "@anakeen/user-interfaces" "^2.0.0-dev20190219120819"
+    "@progress/kendo-layout-vue-wrapper" "^2019.1.124"
+    vue "^2.6.6"
+    vue-class-component "^7.0.1"
+    vue-property-decorator "^7.3.0"
+
 "@anakeen/theme-variables@^0.0.1":
   version "0.0.1"
   resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2ftheme-variables/-/theme-variables-0.0.1.tgz#c8b2c7fc68b480ca9883fded10ec0663159e0b7f"
@@ -60,7 +71,7 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190219134931":
+"@anakeen/user-interfaces@^2.0.0-dev20190219120819", "@anakeen/user-interfaces@^2.0.0-dev20190219134931":
   version "2.0.0-dev20190219134931"
   resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190219134931.tgz#6eb9d9e3a28e59a32bb191c857abfd9f7560b05d"
   integrity sha512-qhvvYW+30+2MJ+3rgDDizUPpaCV6iK70mZdv9nFojga5fETmDROlnI7V6TEPDFGIdWt5U5hHGmFOtNKF4LIfFg==

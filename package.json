@@ -28,11 +28,12 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "axios": "^0.18.0",
     "@anakeen/ank-components": "^1.0.2-dev20190213085409",
+    "@anakeen/internal-components": "^1.0.1",
     "@anakeen/user-interfaces": "^2.0.0-dev20190219134931",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.124",
     "@progress/kendo-ui": "^2019.1.213",
+    "axios": "^0.18.0",
     "jquery": "^3.3.1",
     "load-css-file": "^1.0.0",
     "typescript": ">=2.1.0",
