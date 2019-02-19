@@ -1,14 +1,14 @@
 <template>
-    <span>{{label}}</span>
+  <span>{{ label }}</span>
 </template>
 <script lang="ts">
-    import { Prop, Component, Vue, Mixins} from "vue-property-decorator";
-    import HubElementMixins from "../HubElement/Mixins/HubElementMixin";
+import { Prop, Component, Vue, Mixins } from "vue-property-decorator";
+import HubElementMixins from "../HubElement/Mixins/HubElementMixin";
 
-    @Component({
-        mixins: [Mixins(HubElementMixins)]
-    })
-  export default class HubLabel extends Vue {
-    @Prop ({ type: String, default: ""}) label;
-  }
+@Component({
+  mixins: [Mixins(HubElementMixins)]
+})
+export default class HubLabel extends Vue {
+  @Prop({ type: String, default: "" }) label;
+}
 </script>
