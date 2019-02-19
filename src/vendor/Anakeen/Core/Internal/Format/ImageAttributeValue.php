@@ -2,7 +2,7 @@
 
 namespace Anakeen\Core\Internal\Format;
 
-use \Anakeen\Core\SEManager;
+use Anakeen\Core\Settings;
 
 class ImageAttributeValue extends FileAttributeValue
 {
@@ -19,16 +19,16 @@ class ImageAttributeValue extends FileAttributeValue
                 $this->thumbnail = $fileLink;
             }
         } elseif ($v) {
-            global $action;
-            $localImage = $action->parent->getImageLink($v);
-            if ($localImage) {
-                $this->displayValue = basename($v);
-                $this->url = $localImage;
-                if ($thumbnailSize > 0) {
-                    $this->thumbnail = $action->parent->getImageLink($v, null, $thumbnailSize);
-                } else {
-                    $this->thumbnail = $localImage;
-                }
+            if ($thumbnailSize > 0) {
+                $this->thumbnail = sprintf(
+                    "%simages/assets/sizes/%dx%dc/%s",
+                    Settings::ApiV2,
+                    $thumbnailSize,
+                    $thumbnailSize,
+                    $v
+                );
+            } else {
+                $this->thumbnail = sprintf("%simages/assets/sizes/original/%s", Settings::ApiV2, $v);
             }
         }
     }
