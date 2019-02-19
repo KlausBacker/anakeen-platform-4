@@ -245,16 +245,16 @@
     rimraf "^2.5.2"
 
 "@progress/kendo-theme-bootstrap@^3.2.1":
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.2.1.tgz#6d04ff31342e35a393c877216bf74e4fc7845ad8"
-  integrity sha512-uwTDkAfy7XYuAssoOdPDOuk5fp5kop+1JjjnptAW9wlUhrbkIvJ3C2H/LdqTZC7w9fmLy36q8IZS8ydUu6Gp7w==
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.2.2.tgz#c666043ccfa23add34106170c771499c9f22a89e"
+  integrity sha512-TsqMAA3Z7kJgbwJEp+n1cPIScMfvB8kFYeeU92dzEgk6ZUhqiGnCsOMh204ACSWSmR0E9Ww8lnSKoE3RzqBQzA==
   dependencies:
-    "@progress/kendo-theme-default" "^3.3.0"
+    "@progress/kendo-theme-default" "^3.3.1"
 
-"@progress/kendo-theme-default@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.3.0.tgz#430bfca987b1c01f62c09b154c0d4b42039bd694"
-  integrity sha512-WlOLQmRGNRF7z/Hs4iFx6t+Kia3d2GipdCVyw7cJygI5tyPRmR4HBXgjBnB9+b9hKk71gtopVFrrhSinEcY9cA==
+"@progress/kendo-theme-default@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.3.1.tgz#ed80ca247792094512e60320383e1e9cb0f58689"
+  integrity sha512-3PbhtrljTsMABtUAEtWytiWYL6Qm+oUwEqD5Ppmu/lMxZgdJJm9yhP9iRNwhctKoKt7hMg92zacpypHrlKTjdw==
 
 "@progress/kendo-ui@^2019.1.213":
   version "2019.1.213"
