@@ -2,7 +2,14 @@
   "name": "@anakeen/user-interfaces",
   "version": "2.0.0",
   "autorelease": true,
-  "description": "",
+  "description": "A package for the user interface of anakeen-platform",
+  "keywords": [
+    "anakeen-platform",
+    "smart element",
+    "user interface",
+    "component"
+  ],
+  "main": "./components/components/index.js",
   "scripts": {
     "beautify": "npx eslint ./src --fix",
     "buildPolyfill": "npx webpack --config ./webpackConfig/polyfill.js",
@@ -20,9 +27,7 @@
     "src/vendor/Anakeen/DOCUMENT/IHM/document.js",
     "src/vendor/Anakeen/DOCUMENT/IHM/widgets/widget.js",
     "LICENSE",
-    "README.md",
-    "RELEASE",
-    "VERSION"
+    "README.md"
   ],
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
