@@ -32,7 +32,8 @@ class Compose {
       debug: options.hasOwnProperty("debug") && options.debug === true,
       frozenLockfile:
         options.hasOwnProperty("frozenLockfile") &&
-        options["frozenLockfile"] === true
+        options["frozenLockfile"] === true,
+      latest: options.hasOwnProperty("latest") && options.latest === true
     };
   }
 
@@ -294,7 +295,7 @@ class Compose {
       });
     }
 
-    composeCtx.repoLockXML.addModule(newModule);
+    composeCtx.repoLockXML.addOrUpdateModule(newModule);
 
     signale.note(`Generating 'content.xml' in '${localRepo}'...`);
     const appList = await this.genRepoContentXML(localRepo);
@@ -374,6 +375,11 @@ class Compose {
             bimod.required.$.version
           )
         ) {
+          signale.note(
+            `Installing module '${bimod.locked.$.name}' with version '${
+              bimod.locked.$.version
+            }' from lock file`
+          );
           await this._ctx_installModuleFromLock({
             ctx: composeCtx,
             lockedModule: bimod.locked
@@ -388,11 +394,16 @@ class Compose {
               }'`
             );
           }
+          signale.note(
+            `Installing module '${bimod.required.$.name}' with version '${
+              bimod.required.$.version
+            }'`
+          );
           await this._ctx_installModule({
             ctx: composeCtx,
             name: bimod.required.$.name,
             version: bimod.required.$.version,
-            registry: bimod.$.required.registry
+            registry: bimod.required.$.registry
           });
         }
       }
@@ -512,6 +523,85 @@ class Compose {
       }
     }
     return undefined;
+  }
+
+  /**
+   * @param {[{string}]} moduleList List of module's name[@version]
+   * @returns {Promise<void>}
+   */
+  async upgrade(moduleList = []) {
+    const repoXML = new RepoXML("repo.xml");
+    const repoLockXML = new RepoLockXML("repo.lock.xml");
+
+    await repoXML.load();
+    await repoLockXML.load();
+
+    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
+
+    if (moduleList.length <= 0) {
+      moduleList = composeCtx.repoXML.getModuleList().map(elmt => {
+        return {
+          name: elmt.$.name,
+          version: this.$.latest ? "latest" : elmt.$.version,
+          registry: elmt.$.registry
+        };
+      });
+    } else {
+      for (let i = 0; i < moduleList.length; i++) {
+        const moduleAtVersion = this.parseNameAtVersion(moduleList[i]);
+        const module = composeCtx.repoXML.getModuleByName(moduleAtVersion.name);
+        if (typeof module === "undefined") {
+          throw new ComposeError(
+            `Could not find module '${moduleAtVersion.name}' in 'repo.xml'`
+          );
+        }
+        moduleList[i] = {
+          name: module.name,
+          version: this.$.latest
+            ? "latest"
+            : moduleAtVersion.version !== ""
+            ? moduleAtVersion.version
+            : module.version,
+          registry: module.registry
+        };
+      }
+    }
+
+    this.debug(moduleList, { depth: 20 });
+
+    for (let i = 0; i < moduleList.length; i++) {
+      const module = moduleList[i];
+      signale.note(
+        `Installing '${module.name}' with version '${module.version}'`
+      );
+      await this._ctx_installModule({
+        ctx: composeCtx,
+        name: module.name,
+        version: module.version,
+        registry: module.registry
+      });
+    }
+
+    this.debug(composeCtx.repoLockXML.data, { depth: 20 });
+
+    await composeCtx.commit();
+  }
+
+  /**
+   * @param {string} str
+   * @returns {{name: (*|string), version: string}}
+   */
+  parseNameAtVersion(str) {
+    const tokens = str.split("@");
+    if (tokens.length > 2) {
+      throw new ComposeError(`Malformed name[@version] string '${str}'`);
+    }
+    const name = tokens[0];
+    let version = "";
+    if (tokens.length === 2) {
+      version = tokens[1];
+    }
+    return { name, version };
   }
 }
 
