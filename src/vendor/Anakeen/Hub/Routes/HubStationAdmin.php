@@ -40,4 +40,19 @@ class HubStationAdmin extends GridContent
         $this->_searchDoc->setOrder(Fields::hub_docker_position.','.Fields::hub_order);
         $this->_searchDoc->addFilter("%s = '%s'", Fields::hub_station_id, $this->structure->initid);
     }
+
+    /**
+     * @return array
+     * @throws \Anakeen\Core\DocManager\Exception
+     */
+    protected function getData()
+    {
+        $parent = parent::getData();
+        foreach ($parent["smartElements"] as $key => $datum) {
+            $doc = SEManager::getDocument($parent["smartElements"][$key]["properties"]["initid"])->fromid;
+            $fam = SEManager::getFamily($doc);
+            $parent["smartElements"][$key]["attributes"]["hub_type"] = array("value" => $fam->getTitle(), "displayValue" => $fam->getTitle());
+        }
+        return $parent;
+    }
 }
