@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-npm publish
+npm run build && npm publish
