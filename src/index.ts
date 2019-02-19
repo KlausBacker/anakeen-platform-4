@@ -31,7 +31,6 @@ declare const global: IGlobal;
 
 // Auto install
 let GlobalVue: VueConstructor | null = null;
-console.log(window);
 if (window.Vue) {
   GlobalVue = window.Vue;
 } else if (global.Vue) {
