@@ -9,7 +9,7 @@ export default {
   name: "ank-smart-element",
   data() {
     return {
-      initialDocumentUrl: "/api/v2/documents/0.html"
+      initialDocumentUrl: "/api/v2/smart-elements/0.html"
     };
   },
 
