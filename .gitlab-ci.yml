@@ -38,7 +38,7 @@ integration:
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target integration --publish --no-tag --bucket integration
+    - ./.cibuild/cibuild.sh --target integration --no-tag --bucket integration
   artifacts:
     paths:
       - outputs/
@@ -57,6 +57,6 @@ package:
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target package --publish
+    - ./.cibuild/cibuild.sh --target package
   only:
     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/npm/internal-components
