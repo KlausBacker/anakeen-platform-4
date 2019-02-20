@@ -1,5 +1,6 @@
 {
   "name": "@anakeen/internal-components",
+  "autorelease": true,
   "version": "1.0.1",
   "description": "Anakeen internal components",
   "main": "lib/ank-internal-components.common.min.js",
