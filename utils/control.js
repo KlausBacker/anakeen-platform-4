@@ -117,7 +117,7 @@ exports.postModule = ({
     formData.append("action", action);
   }
   if (force) {
-    formData.append("additional_args[force]", "yes");
+    formData.append("additional_args[]", "force=yes");
   }
   return fetch(urljoin(controlUrl, CONTROL_API_BASE), {
     headers: {
