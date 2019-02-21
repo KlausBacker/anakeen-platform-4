@@ -154,7 +154,7 @@ export default class AdminCenterAccountController extends Vue {
       read: {
         url: "/api/v2/admin/account/users/"
       }
-  }
+    }
   });
   public userModeSelected: boolean = false;
   public displayGroupDocument: boolean = false;
