@@ -43,7 +43,7 @@ class TestPage
                 ],
                 [
                     "key" => "testPage",
-                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("uiTest", "legacy")["TestPage"]["js"]
+                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("uiTest", "prod")["TestPage"]["js"]
                 ]
             ],
             "CSS" => [

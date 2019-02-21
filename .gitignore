@@ -9,7 +9,6 @@ src/public/login/dist/
 src/public/Anakeen/
 src/public/uiAssets/
 src/vendor/Anakeen/Components/translation.json
-src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache
 Tests/src/public/Anakeen/
 src/public/uiAssets/
 Makefile.local

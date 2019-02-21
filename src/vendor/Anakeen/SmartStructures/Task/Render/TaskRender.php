@@ -41,7 +41,7 @@ trait TaskRender
     {
         $js = parent::getJsReferences();
 
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $js["task"] = $path["Task"]["js"];
         return $js;
     }

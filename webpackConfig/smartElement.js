@@ -1,12 +1,10 @@
 const path = require("path");
-const { prod, dev, prodLegacy } = require("@anakeen/webpack-conf");
+const { prod, dev } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
 const {
   cssLoader,
   setKendoAndJqueryToGlobal
 } = require("@anakeen/webpack-conf/parts");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackInlineSVGPlugin = require("html-webpack-inline-svg-plugin");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
@@ -57,24 +55,12 @@ module.exports = () => {
         plugins: [
           new webpack.ProvidePlugin({
             Popper: ["popper.js", "default"]
-          }),
-          new HtmlWebpackPlugin({
-            filename: path.resolve(
-              __dirname,
-              "../src/vendor/Anakeen/Routes/Ui/Templates/document-view.html.mustache"
-            ),
-            template: path.resolve(
-              __dirname,
-              "../src/vendor/Anakeen/DOCUMENT/IHM/document-view.html.mustache"
-            ),
-            inject: false
-          }),
-          new HtmlWebpackInlineSVGPlugin()
+          })
         ]
       },
-      setKendoAndJqueryToGlobal([/dcpExternals\/KendoUI\/KendoUI/]),
+      setKendoAndJqueryToGlobal([{"dcpExternals/KendoUI/KendoUI": "kendo"}]),
       cssLoader()
     ]
   };
-  return [prod(conf), prodLegacy(conf), dev(conf)];
+  return [prod(conf), dev(conf)];
 };
