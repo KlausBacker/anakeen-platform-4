@@ -1,9 +1,8 @@
-import { AnkSmartElem } from "@anakeen/ank-components";
+import { AnkSmartElement } from "@anakeen/ank-components";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { TreeViewInstaller } from "@progress/kendo-treeview-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid";
-import "@progress/kendo-ui/js/kendo.splitter";
 import "@progress/kendo-ui/js/kendo.toolbar";
 import "@progress/kendo-ui/js/kendo.treeview";
 import Vue from "vue";
@@ -17,13 +16,13 @@ declare var kendo;
 
 @Component({
   components: {
-    AnkSmartElem
+    AnkSmartElement
   }
 })
 export default class AdminCenterAccountController extends Vue {
   public $refs!: {
     [key: string]: any;
-    openDoc: AnkSmartElem;
+    openDoc: AnkSmartElement;
   };
   public groupTree = new kendo.data.HierarchicalDataSource({
     schema: {
@@ -155,7 +154,7 @@ export default class AdminCenterAccountController extends Vue {
       read: {
         url: "/api/v2/admin/account/users/"
       }
-    }
+  }
   });
   public userModeSelected: boolean = false;
   public displayGroupDocument: boolean = false;
