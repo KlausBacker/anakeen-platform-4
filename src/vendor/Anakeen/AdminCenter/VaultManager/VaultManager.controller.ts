@@ -55,73 +55,90 @@ export default class VaultManagerController extends Vue {
 
   public mounted() {
     // @ts-ignore
-    $(".vault-manager-grid").kendoGrid({
-      columns: [
-        {
-          field: "path",
-          title: "Vault"
-        },
-        {
-          field: "humanMetrics.totalSize",
-          title: "Logical capacity",
-          width: "10rem"
-        },
-        {
-          field: "freespace",
-          title: "Free Space",
-          width: "10rem"
-        },
-        {
-          filterable: false,
-          // Add a button only if the parameter is modifiable
-          template:
-             `<a class="consult-btn" title="Consult">Consult</a>`,
-          width: "10rem"
-        }
-      ],
-      toolbar: [
-        {
-          iconClass: "fa fa-plus",
-          name: "create",
-          text: "Create"
-           }
-      ],
+    $(".vault-manager-grid")
+      .kendoGrid({
+        columns: [
+          {
+            field: "path",
+            title: "Vault"
+          },
+          {
+            field: "humanMetrics.totalSize",
+            title: "Logical capacity",
+            width: "10rem"
+          },
+          {
+            field: "freespace",
+            title: "Free Space",
+            width: "10rem"
+          },
+          {
+            filterable: false,
+            // Add a button only if the parameter is modifiable
+            template: `<a class="consult-btn" title="Consult">Consult</a>`,
+            width: "10rem"
+          }
+        ],
+        toolbar: [
+          {
+            iconClass: "fa fa-plus",
+            name: "create",
+            text: "Create"
+          }
+        ],
 
-      dataBound: e => {
-
-        $(".consult-btn", this.$el).kendoButton();
-      },
-      dataSource: this.vaultsGridData
-    })
-      .on("click", ".consult-btn",  e => {
+        dataBound: e => {
+          $(".consult-btn", this.$el).kendoButton();
+        },
+        dataSource: this.vaultsGridData
+      })
+      .on("click", ".consult-btn", e => {
         const grid = $(".vault-manager-grid").data("kendoGrid");
         const dataItem = grid.dataItem(e.currentTarget.closest("tr"));
         // @ts-ignore
         this.info = dataItem.toJSON();
         // @ts-ignore
-        this.info.series = [{
-          data: [{
-            category: "Referenced",
-            color: '#17a2b8',
-            nbFiles: this.info.metrics.repartition.usefulCount,
-            sizeFiles: this.info.metrics.repartition.usefulSize,
-            value: Math.floor((this.info.metrics.repartition.usefulSize / this.info.metrics.totalSize) * 100)
-          }, {
-            category: "Trash can",
-            color: "#dc3545",
-            nbFiles: this.info.metrics.repartition.trashCount,
-            sizeFiles: this.info.metrics.repartition.trashSize,
-            value: Math.floor((this.info.metrics.repartition.trashSize / this.info.metrics.totalSize ) * 100)
-          }, {
-            category: "Orphans",
-            color: "#ffc107",
-            nbFiles: this.info.metrics.repartition.orphanCount,
-            sizeFiles: this.info.metrics.repartition.orphanSize,
-            value: Math.floor((this.info.metrics.repartition.orphanSize / this.info.metrics.totalSize) * 100)
-          }],
-          type: "pie"
-        }];
+        this.info.series = [
+          {
+            data: [
+              {
+                category: "Referenced",
+                color: "#17a2b8",
+                nbFiles: this.info.metrics.repartition.usefulCount,
+                sizeFiles: this.info.metrics.repartition.usefulSize,
+                value: Math.floor(
+                  (this.info.metrics.repartition.usefulSize /
+                    this.info.metrics.totalSize) *
+                    100
+                )
+              },
+              {
+                category: "Trash can",
+                color: "#dc3545",
+                nbFiles: this.info.metrics.repartition.trashCount,
+                sizeFiles: this.info.metrics.repartition.trashSize,
+                value: Math.floor(
+                  (this.info.metrics.repartition.trashSize /
+                    this.info.metrics.totalSize) *
+                    100
+                )
+              },
+              {
+                category: "Orphans",
+                color: "#ffc107",
+                nbFiles: this.info.metrics.repartition.orphanCount,
+                sizeFiles: this.info.metrics.repartition.orphanSize,
+                value: Math.floor(
+                  (this.info.metrics.repartition.orphanSize /
+                    this.info.metrics.totalSize) *
+                    100
+                )
+              }
+            ],
+            type: "pie"
+          }
+        ];
         this.$refs.vaultSplitter.disableEmptyContent();
       });
   }
-};
+}
