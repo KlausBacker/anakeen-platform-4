@@ -24,12 +24,16 @@
     "@anakeen/webpack-conf": "latest",
     "@commitlint/config-conventional": "^7.5.0",
     "@progress/kendo-buttons-vue-wrapper": "^2018.2.516",
+    "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
     "@progress/kendo-dialog-vue-wrapper": "^2018.2.516",
+    "@progress/kendo-gauges-vue-wrapper": "^2019.1.220",
     "@progress/kendo-grid-vue-wrapper": "^2018.2.516",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.124",
     "@progress/kendo-treeview-vue-wrapper": "^2018.2.516",
     "@progress/kendo-ui": "^2018.1.226",
     "@types/jquery": "^3.3.29",
+    "@types/kendo-ui": "^2019.1.0",
     "axios": "^0.18.0",
     "commitlint": "^7.5.2",
     "document-register-element": "^1.8.1",
@@ -57,5 +61,8 @@
       "pre-push": "npx eslint ./ && npx tslint './src/vendor/Anakeen/AdminCenter/**/*.ts' && npx prettier --check './src/vendor/Anakeen/AdminCenter/**/*.ts'",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "dependencies": {
+    "@anakeen/internal-components": "^1.0.1-dev20190220102656"
   }
 }
