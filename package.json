@@ -42,11 +42,13 @@
   "dependencies": {
     "@anakeen/user-interfaces": "^2.0.0-dev20190219120819",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.124",
+    "axios": "^0.18.0",
     "vue": "^2.6.6",
     "vue-class-component": "^7.0.1",
     "vue-property-decorator": "^7.3.0"
   },
   "peerDependencies": {
+    "axios": "^0.18.0",
     "vue": "^2.6.6"
   },
   "husky": {

@@ -1,8 +1,9 @@
 const packageInfo = require("../package.json");
 import { VueConstructor } from "vue/types/vue";
+import VueAxiosPlugin from "./AxiosPlugin/AxiosPlugin";
 import AnkSplitter from "./Splitter/Splitter.vue";
 
-export { AnkSplitter };
+export { AnkSplitter, VueAxiosPlugin };
 
 export function install(Vue: VueConstructor) {
   Vue.component(AnkSplitter.name, AnkSplitter);
