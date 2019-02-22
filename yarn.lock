@@ -290,32 +290,17 @@
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
-"@progress/kendo-base-components-vue-wrapper@2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.2.516.tgz#8067bda44a8cfad38466da3e46e68f5583155ebc"
-  integrity sha512-KdDkEajGGmAveJVjBAUTdvqRtiOPaC4khtXbiaAfnXQI0jVLDwQLB0r76zbwJuaj/8w29y6CyyvP3ms13ucnRg==
-
-"@progress/kendo-base-components-vue-wrapper@2018.2.822.08270928":
-  version "2018.2.82-2.8270928"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2018.2.82-2.8270928.tgz#9dbcdb819dc10c40d76203228d3b15356e0dae01"
-  integrity sha512-SBSe5HE9H446qgE2ykLMeteOf7eNlaI5BiYATgUfjzMR57ZqR0BCdkB71v7O6LlNSkQ7XLUGQydXq3+0F4yseA==
-
-"@progress/kendo-base-components-vue-wrapper@2019.1.124":
-  version "2019.1.124"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2019.1.124.tgz#b1af6b7da1ffee9b4cdfe309f401a43fdc398d78"
-  integrity sha512-eV5L1FM7UwDRHPHT8lYAXG2RriokMpm63Fwd+NgwlOFQ1Bom/I65RcvBIftIGneV1qAJUYi0GDT2AjsogqyRIA==
-
 "@progress/kendo-base-components-vue-wrapper@2019.1.220":
   version "2019.1.220"
   resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2019.1.220.tgz#484fa25da3d52054f380e97046282cce207cc37e"
   integrity sha512-ou7yksiHr1cYJH4BEueavC8IjTgiE4S4qQmzMwKz8RYKcnM0WeslMPYE/fFpUv6YYCSNunwG57kzx+q3kl8uCQ==
 
-"@progress/kendo-buttons-vue-wrapper@^2018.2.516":
-  version "2018.3.911"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-buttons-vue-wrapper/-/kendo-buttons-vue-wrapper-2018.3.911.tgz#412dbde05e1f5c56122f6dbed5b0866a639de291"
-  integrity sha512-n5Rif9H4UHshlCGNqkMeTSaM1g0+Eso3yJAEja8BXvRShJTEdXhEwCrLQoSCOqirSbmMaw34mrCTM3h6kQzAdA==
+"@progress/kendo-buttons-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-buttons-vue-wrapper/-/kendo-buttons-vue-wrapper-2019.1.220.tgz#ddcf9a62d8b1838b2201c0f5b720f7dddacbac89"
+  integrity sha512-QuzlYidWVjevDDa/ccmm50vPdxs1wcjFDqWX6TNdDlBWJmcnVyqQnsu3caskAHWe2R3IUFnn9YHhupTh+s/zvg==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
 "@progress/kendo-charts-vue-wrapper@^2019.1.220":
   version "2019.1.220"
@@ -331,12 +316,12 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
-"@progress/kendo-dialog-vue-wrapper@^2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-dialog-vue-wrapper/-/kendo-dialog-vue-wrapper-2018.2.516.tgz#28952dd781e1c6c8513106306fab1f891c181fd7"
-  integrity sha512-/VDZvJTICmiw86exjqS927DCKZUiS9JH3EtqMKjJ5gjeX5S80GRm1pVNlonDLHhPyXd3raeo8utEk5+7HwbRiQ==
+"@progress/kendo-dialog-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-dialog-vue-wrapper/-/kendo-dialog-vue-wrapper-2019.1.220.tgz#a1f6c146b0715f1ca68745df6b873b742758d255"
+  integrity sha512-4ChD7rEqBN9lD0zLuDMiPQ0LVEEP0qQGFTLID2aR1OW4u1FWyJJEvI0Z9jnVbFKFNrsjx6jAwebDuuaiVLsy3Q==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
 "@progress/kendo-gauges-vue-wrapper@^2019.1.220":
   version "2019.1.220"
@@ -345,19 +330,19 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
-"@progress/kendo-grid-vue-wrapper@^2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2018.2.516.tgz#3036f675a1f50257795d536f8b63b2b34dd3f2a0"
-  integrity sha512-i3F+KtDeNPgu02UfD8FWJwFOet6b6LTj2P1F9JAh8LEDx5QWD1e2nzHkR/y+duYJN4pbyd6RR59ntSWZEkgfSw==
+"@progress/kendo-grid-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-grid-vue-wrapper/-/kendo-grid-vue-wrapper-2019.1.220.tgz#ebdca10f274fc6d4b3cf7393257b291a2a985393"
+  integrity sha512-2lYsutO/NLXc0RqOCZGvfcvBsdBf0E4bMDObb0+1M3+ic4tV09Vg3rDE5rcRdvJrZvdigSdC2khw8YTkKJ+2fg==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
 "@progress/kendo-layout-vue-wrapper@^2019.1.124":
-  version "2019.1.124"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-layout-vue-wrapper/-/kendo-layout-vue-wrapper-2019.1.124.tgz#3cda835d069613e06a4b1a3e2abf8b65512907fa"
-  integrity sha512-OOOxk/mZ75auRrv+F3BYjv88DotFB0ka2zQ6StkK7Vp4xjDCFYqQpxDD3UXwSZKmx/zuft7D3IqgdhEHTfnQgQ==
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-layout-vue-wrapper/-/kendo-layout-vue-wrapper-2019.1.220.tgz#c448b5977c341d37c7ec327f09e64c07206bbe71"
+  integrity sha512-LItGBm/1KWqnqRIGm5Upe1FhQWfqpcXvayfS1qCzFW/s0ryg3h98UmXRk63a8fWzj/7pp2umHRDL8tRQUoV9kQ==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2019.1.124"
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
 "@progress/kendo-theme-bootstrap@^3.2.1":
   version "3.2.2"
@@ -371,21 +356,14 @@
   resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.3.1.tgz#ed80ca247792094512e60320383e1e9cb0f58689"
   integrity sha512-3PbhtrljTsMABtUAEtWytiWYL6Qm+oUwEqD5Ppmu/lMxZgdJJm9yhP9iRNwhctKoKt7hMg92zacpypHrlKTjdw==
 
-"@progress/kendo-treeview-vue-wrapper@^2018.2.516":
-  version "2018.2.516"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-treeview-vue-wrapper/-/kendo-treeview-vue-wrapper-2018.2.516.tgz#ccf3a21415638112d44359fca6221621928f0abc"
-  integrity sha512-aP/N3FMOpFb/dSMUWbLqTiDi8fRmzxsOQ+G6XjboTMrlDjfvUP63B6uuWSPzDa9OvEWztUZtQQzuAghYqyUW2A==
+"@progress/kendo-treeview-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-treeview-vue-wrapper/-/kendo-treeview-vue-wrapper-2019.1.220.tgz#820f3cccfd717ae81012b2fe0cef71e3870cb17a"
+  integrity sha512-btNB0+pwJJTgZ8Kpwm926Y2Ylu1M4Wo4u8ZUficccfBxPQG8yx3fBgrL1R8pjkXgxwdjxWIXyqu5QSe0Lkkalg==
   dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
-"@progress/kendo-ui@^2018.1.226":
-  version "2018.3.1003"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.3.1003.tgz#2285afa36280589e1a510b752599abcdf21dd0a5"
-  integrity sha512-MZIcgrdW1GIRqWuT3tmFKzRt+RXC/ppu2iSMSCr/28DX3AtYWIsTZHsqt0nIy2+8b5SpcvWyF1ELEWxRBqL4xA==
-  dependencies:
-    jquery "<=3"
-
-"@progress/kendo-ui@^2019.1.213":
+"@progress/kendo-ui@^2019.1.213", "@progress/kendo-ui@^2019.1.220":
   version "2019.1.220"
   resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.220.tgz#69e17cce1a3af5dde49b4c88a58cfd6cb820104f"
   integrity sha512-JeYpiwnl9jS+R0vaFmLUljVbOg+x1RubBt9nsDtMvJ6m/IjnN22ORJohFgnNQS3neRZiEUqQXZSY5LDH7LsTtg==

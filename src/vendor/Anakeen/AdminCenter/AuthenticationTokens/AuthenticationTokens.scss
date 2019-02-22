@@ -1,24 +1,72 @@
-.token-station {
-    height: 100%;
-    position: relative;
-}
-
 .authentication-tokens {
+
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  > header {
     display: flex;
-    flex-direction: column;
-    height: 100%;
-
-
-    > .ank-token-splitter {
-        flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    .token-title {
+      font-size: 2rem;
     }
-}
+  }
 
-.token-grid {
+  .button-filtering {
+    > i {
+      width:2rem;
+      margin-right: 1rem;
+    }
+  }
+
+  > .ank-token-splitter {
+    flex-grow: 1;
+  }
+
+  .token-grid {
     table {
-       // table-layout: auto;
+      // table-layout: auto;
+    }
+    .k-filtercell .k-autocomplete {
+      width:100%;
     }
     .cell--token {
-        font-family: monospace;
+      font-family: monospace;
     }
+    .k-pager-nav, .k-pager-numbers {
+      display: none;
+    }
+
+    .token--expired  .cell--expire {
+      color:var(--warning);
+    }
+    .token--expired.token--selected  .cell--expire {
+      color:inherit;
+    }
+  }
+
+  .token-logo {
+    display: flex;
+    height: 100%;
+    > span {
+      font-size:5rem;
+      margin:auto;
+    }
+  }
+  .token--selected {
+    background-color:var(--primary);
+    color:white;
+    &:hover {
+      background-color:var(--primary);
+      color:white;
+    }
+  }
+}
+
+.token-station {
+  height: 100%;
+  position: relative;
 }

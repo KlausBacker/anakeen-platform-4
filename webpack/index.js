@@ -18,7 +18,12 @@ module.exports = () => {
       setKendoAndJqueryToGlobal([
         /kendo.pdf/,
         /kendo.excel/
-      ])
+      ]),
+      {
+        resolve: {
+          extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
+        },
+      }
     ]
   };
   return [
