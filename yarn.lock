@@ -60,6 +60,45 @@
     vue-class-component "^6.2.0"
     vue-property-decorator "^7.3.0"
 
+"@anakeen/internal-components@^1.0.1-dev20190220102656":
+  version "1.0.1-dev20190220102656"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190220102656.tgz#b775778e7b80c417cac14b4f237e8dd607fb1eb3"
+  integrity sha512-XVNb8k0FXwq6dM7K0UVrj8quJrVeDbaG3GDxmHrAHfLqUmcCp+tczxfV9JqYJvwGWxKV4CfiW+c9m33k0N7AFQ==
+  dependencies:
+    "@anakeen/user-interfaces" "^2.0.0-dev20190219120819"
+    "@progress/kendo-layout-vue-wrapper" "^2019.1.124"
+    vue "^2.6.6"
+    vue-class-component "^7.0.1"
+    vue-property-decorator "^7.3.0"
+
+"@anakeen/theme-variables@^0.0.1":
+  version "0.0.1"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2ftheme-variables/-/theme-variables-0.0.1.tgz#c8b2c7fc68b480ca9883fded10ec0663159e0b7f"
+  integrity sha512-81IvPc7Tp/fjGiIlzm3XxY8Lkn6Kx80I7+cFQ+QXqBlLuU56cYo0iGPc+tkMTiFpSVlXWjadC7CuSKUICUgqLA==
+  dependencies:
+    font-awesome "^4.7.0"
+    material-design-icons-iconfont "^4.0.4"
+    roboto-fontface "^0.10.0"
+
+"@anakeen/user-interfaces@^2.0.0-dev20190219120819":
+  version "2.0.0-dev20190219134931"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190219134931.tgz#6eb9d9e3a28e59a32bb191c857abfd9f7560b05d"
+  integrity sha512-qhvvYW+30+2MJ+3rgDDizUPpaCV6iK70mZdv9nFojga5fETmDROlnI7V6TEPDFGIdWt5U5hHGmFOtNKF4LIfFg==
+  dependencies:
+    "@anakeen/theme-variables" "^0.0.1"
+    "@progress/kendo-theme-bootstrap" "^3.2.1"
+    "@progress/kendo-ui" "^2019.1.213"
+    "@webcomponents/webcomponentsjs" "2.2.7"
+    axios "^0.18.0"
+    bootstrap "^4.3.1"
+    document-register-element "^1.11.0"
+    jquery "^3.3.1"
+    popper.js "^1.14.7"
+    vue "^2.6.6"
+    vue-custom-element "^3.2.5"
+    vue-gettext "^2.1.0"
+    vue-template-compiler "^2.6.6"
+
 "@anakeen/webpack-conf@latest":
   version "1.0.1"
   resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.0.1.tgz#791787188ced59fb5e017a29cfdb6ad3eb28c449"
@@ -266,6 +305,11 @@
   resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2019.1.124.tgz#b1af6b7da1ffee9b4cdfe309f401a43fdc398d78"
   integrity sha512-eV5L1FM7UwDRHPHT8lYAXG2RriokMpm63Fwd+NgwlOFQ1Bom/I65RcvBIftIGneV1qAJUYi0GDT2AjsogqyRIA==
 
+"@progress/kendo-base-components-vue-wrapper@2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2019.1.220.tgz#484fa25da3d52054f380e97046282cce207cc37e"
+  integrity sha512-ou7yksiHr1cYJH4BEueavC8IjTgiE4S4qQmzMwKz8RYKcnM0WeslMPYE/fFpUv6YYCSNunwG57kzx+q3kl8uCQ==
+
 "@progress/kendo-buttons-vue-wrapper@^2018.2.516":
   version "2018.3.911"
   resolved "https://registry.yarnpkg.com/@progress/kendo-buttons-vue-wrapper/-/kendo-buttons-vue-wrapper-2018.3.911.tgz#412dbde05e1f5c56122f6dbed5b0866a639de291"
@@ -273,12 +317,33 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2018.2.822.08270928"
 
+"@progress/kendo-charts-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-charts-vue-wrapper/-/kendo-charts-vue-wrapper-2019.1.220.tgz#72d349013e52222a692ff82f4a9c838ccd0bc4e8"
+  integrity sha512-rRxbwv3M0xfCVZros480whH2CBoD/2nTp5IV3XwhyYUc5qr86d6KMxwnbVbmnFV2oAfVwJLQvhIajD3CrTRSZw==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
+
+"@progress/kendo-datasource-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-datasource-vue-wrapper/-/kendo-datasource-vue-wrapper-2019.1.220.tgz#e35a071b2e4725a863d3cf6ecb477dbf4b600c89"
+  integrity sha512-GNQ3AaKFsZJ9/lQk0GYQ1gTxJNKWtJl0nrmAkbPeTcMfC3rXR535EnzcB0GeVYmw+sJ6NayzJ0Fhqf4WNjbRUg==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
+
 "@progress/kendo-dialog-vue-wrapper@^2018.2.516":
   version "2018.2.516"
   resolved "https://registry.yarnpkg.com/@progress/kendo-dialog-vue-wrapper/-/kendo-dialog-vue-wrapper-2018.2.516.tgz#28952dd781e1c6c8513106306fab1f891c181fd7"
   integrity sha512-/VDZvJTICmiw86exjqS927DCKZUiS9JH3EtqMKjJ5gjeX5S80GRm1pVNlonDLHhPyXd3raeo8utEk5+7HwbRiQ==
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2018.2.516"
+
+"@progress/kendo-gauges-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-gauges-vue-wrapper/-/kendo-gauges-vue-wrapper-2019.1.220.tgz#126ca5ceec2e27248d72451208ed24e7afed9416"
+  integrity sha512-27d4/EweFMmsYRQ3Cz9GvdKt0UZFOxeqXLCAxVccQurVVVFHNcmRcofZP2uUz7QRizVeQ5XpVMnGDzzMCHHZ6A==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
 "@progress/kendo-grid-vue-wrapper@^2018.2.516":
   version "2018.2.516"
@@ -294,6 +359,18 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2019.1.124"
 
+"@progress/kendo-theme-bootstrap@^3.2.1":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.2.2.tgz#c666043ccfa23add34106170c771499c9f22a89e"
+  integrity sha512-TsqMAA3Z7kJgbwJEp+n1cPIScMfvB8kFYeeU92dzEgk6ZUhqiGnCsOMh204ACSWSmR0E9Ww8lnSKoE3RzqBQzA==
+  dependencies:
+    "@progress/kendo-theme-default" "^3.3.1"
+
+"@progress/kendo-theme-default@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.3.1.tgz#ed80ca247792094512e60320383e1e9cb0f58689"
+  integrity sha512-3PbhtrljTsMABtUAEtWytiWYL6Qm+oUwEqD5Ppmu/lMxZgdJJm9yhP9iRNwhctKoKt7hMg92zacpypHrlKTjdw==
+
 "@progress/kendo-treeview-vue-wrapper@^2018.2.516":
   version "2018.2.516"
   resolved "https://registry.yarnpkg.com/@progress/kendo-treeview-vue-wrapper/-/kendo-treeview-vue-wrapper-2018.2.516.tgz#ccf3a21415638112d44359fca6221621928f0abc"
@@ -305,6 +382,13 @@
   version "2018.3.1003"
   resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2018.3.1003.tgz#2285afa36280589e1a510b752599abcdf21dd0a5"
   integrity sha512-MZIcgrdW1GIRqWuT3tmFKzRt+RXC/ppu2iSMSCr/28DX3AtYWIsTZHsqt0nIy2+8b5SpcvWyF1ELEWxRBqL4xA==
+  dependencies:
+    jquery "<=3"
+
+"@progress/kendo-ui@^2019.1.213":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.220.tgz#69e17cce1a3af5dde49b4c88a58cfd6cb820104f"
+  integrity sha512-JeYpiwnl9jS+R0vaFmLUljVbOg+x1RubBt9nsDtMvJ6m/IjnN22ORJohFgnNQS3neRZiEUqQXZSY5LDH7LsTtg==
   dependencies:
     jquery "<=3"
 
@@ -320,12 +404,19 @@
   dependencies:
     "@types/babel-types" "*"
 
-"@types/jquery@^3.3.29":
+"@types/jquery@*", "@types/jquery@^3.3.29":
   version "3.3.29"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.29.tgz#680a2219ce3c9250483722fccf5570d1e2d08abd"
   integrity sha512-FhJvBninYD36v3k6c+bVk1DSZwh7B5Dpb/Pyk3HKVsiohn0nhbefZZ+3JXbWQhFyt0MxSl2jRDdGQPHeOHFXrQ==
   dependencies:
     "@types/sizzle" "*"
+
+"@types/kendo-ui@^2019.1.0":
+  version "2019.1.0"
+  resolved "https://registry.yarnpkg.com/@types/kendo-ui/-/kendo-ui-2019.1.0.tgz#79431f7d87f4dbbf45ac992bc7808e7a4fcbe879"
+  integrity sha512-dw4OMnnGe/id+Oui9ELQCN3u0PDM0NeINCBmb+HmzCNcHrULcEgXk/20HFraBnwu3BBw/hGgnfZrp55N6fMi3A==
+  dependencies:
+    "@types/jquery" "*"
 
 "@types/node@*":
   version "10.12.21"
@@ -514,6 +605,11 @@
     "@webassemblyjs/ast" "1.7.11"
     "@webassemblyjs/wast-parser" "1.7.11"
     "@xtuc/long" "4.2.1"
+
+"@webcomponents/webcomponentsjs@2.2.7":
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/@webcomponents/webcomponentsjs/-/webcomponentsjs-2.2.7.tgz#1f1a7a7aa083db5ae6aadaeda68caa8fd8657462"
+  integrity sha512-kPPjzV+5kpoWpTniyvBSPcXS33f3j/C6HvNOJ3YecF3pvz3XwVeU4ammbxtVy/osF3z7hr1DYNptIf4oPEvXZA==
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -1724,6 +1820,11 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
+
+bootstrap@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
+  integrity sha512-rXqOmH1VilAt2DyPzluTi2blhk17bO7ef+zLLPlWvG494pDxcM234pJ8wTc/6R40UWizAIIMgxjvxZg5kmsbag==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -2971,6 +3072,13 @@ doctypes@^1.1.0:
   resolved "https://registry.yarnpkg.com/doctypes/-/doctypes-1.1.0.tgz#ea80b106a87538774e8a3a4a5afe293de489e0a9"
   integrity sha1-6oCxBqh1OHdOijpKWv4pPeSJ4Kk=
 
+document-register-element@^1.11.0:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.13.1.tgz#dad8cb7be38e04ee3f56842e6cf81af46c1249ba"
+  integrity sha512-92ZyLDKg9j4rOll//NNXj25f+8rAzOkYsGJonhugKwXfeqH7bzs8Ucpvey0WzZ2ZzKdrvW9RnUw3UyOZ/uhBFw==
+  dependencies:
+    lightercollective "^0.1.0"
+
 document-register-element@^1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.8.1.tgz#db841ece6cba28e6e538ac8e815413b59e86047e"
@@ -3638,6 +3746,11 @@ follow-redirects@^1.3.0:
   integrity sha512-uxYePVPogtya1ktGnAAXOacnbIuRMB4dkvqeNz2qTtTQsuzSfbDolV+wMMKxAmCx0bLgAKLbBOkjItMbbkR1vg==
   dependencies:
     debug "^3.1.0"
+
+font-awesome@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
+  integrity sha1-j6jPBBGhoxr9B7BtKQK7n8gVoTM=
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -4750,7 +4863,7 @@ jmespath@0.15.0:
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
   integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
 
-jquery@<=3:
+jquery@<=3, jquery@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
   integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
@@ -4993,6 +5106,11 @@ lightercollective@^0.0.0:
   resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.0.0.tgz#5b85f6755b78c1f94db590e479f954cbfeeb0409"
   integrity sha512-4SdGgHgQjlqhk90QxAYsltGEI6HHt30xy9fOIPKi+c3vcGRcpPDtzm6+kxr1N9ixkrx/ngMhTCe/VpBc/HmNBQ==
 
+lightercollective@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.1.0.tgz#70df102c530dcb8d0ccabfe6175a8d00d5f61300"
+  integrity sha512-J9tg5uraYoQKaWbmrzDDexbG6hHnMcWS1qLYgJSWE+mpA3U5OCSeMUhb+K55otgZJ34oFdR0ECvdIb3xuO5JOQ==
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -5211,6 +5329,11 @@ matchdep@^2.0.0:
     micromatch "^3.0.4"
     resolve "^1.4.0"
     stack-trace "0.0.10"
+
+material-design-icons-iconfont@^4.0.4:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/material-design-icons-iconfont/-/material-design-icons-iconfont-4.0.5.tgz#4107ba3b8a9d688a3d9325fc7363af51b17d3aee"
+  integrity sha512-ByJJ1yz8+RfCx2uNiC5WjVCR7K3UWRb8ytWV3RMaoFRzQLNr/J5x7+Wg1+3OlIZahNXrId9Hu+BfXfQIo01v7g==
 
 md5.js@^1.3.4:
   version "1.3.5"
@@ -6235,6 +6358,11 @@ pofile@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/pofile/-/pofile-1.0.10.tgz#503dda9499403984e83ff4489ba2d80af276172a"
   integrity sha512-bkQlDA9YYNaZGLLrxBoQgydzjc2tasbUfxa94/kx2FO/FCiHAJG6B40Jr3fWQgDC7kr+a9q7q5x7449B91CF0A==
+
+popper.js@^1.14.7:
+  version "1.14.7"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.7.tgz#e31ec06cfac6a97a53280c3e55e4e0c860e7738e"
+  integrity sha512-4q1hNvoUre/8srWsH7hnoSJ5xVmIL4qgz+s4qf2TnJIMyZFUFMGH+9vE7mXynAlHSZ/NdTmmow86muD0myUkVQ==
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -7272,6 +7400,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+roboto-fontface@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/roboto-fontface/-/roboto-fontface-0.10.0.tgz#7eee40cfa18b1f7e4e605eaf1a2740afb6fd71b0"
+  integrity sha512-OlwfYEgA2RdboZohpldlvJ1xngOins5d7ejqnIBWr9KaMxsnBqotpptRXTyfNRLnFpqzX6sTDt+X+a+6udnU8g==
 
 run-async@^2.2.0:
   version "2.3.0"
@@ -8512,15 +8645,30 @@ vue-class-component@^6.2.0, vue-class-component@^6.3.2:
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-6.3.2.tgz#e6037e84d1df2af3bde4f455e50ca1b9eec02be6"
   integrity sha512-cH208IoM+jgZyEf/g7mnFyofwPDJTM/QvBNhYMjqGB8fCsRyTf68rH2ISw/G20tJv+5mIThQ3upKwoL4jLTr1A==
 
+vue-class-component@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.0.1.tgz#7af2225c600667c7042b60712eefdf41dfc6de63"
+  integrity sha512-YIihdl7YmceEOjSwcxLhCXCNA3TKC2FStuMcjtuzhUAgw5x5d1T5gZTmVQHGyOaQsaKffL4GlZzYN3dlMYl53w==
+
 vue-custom-element@^3.0.6:
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.5.tgz#83e359242291c2c02157db1428802510b4cece65"
   integrity sha512-hMdfV0V7CCixn5soADKSsxY0riLu61x8TSk8qcR2Oue2rvXtWC7+ZWNhngNb23kC7jdwGoqEgyxyG3s3Dnr76w==
 
+vue-custom-element@^3.2.5:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.6.tgz#9e3f52eb5c5014c298cad731321ed64487fada0b"
+  integrity sha512-tNWsax/Rq4Sr1QHj0pi4CWaBnAYfva75rlQg2fBKGja35+6AmdcZre/ztoiBWCSlSJ7APsMakG5R0A+GWBAc4Q==
+
 vue-gettext@^2.0.30:
   version "2.0.31"
   resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.0.31.tgz#0f113bea6aed747e2a809ae4a0db83eaac0b07fc"
   integrity sha512-Ff6dwCFQ472KrChI4W1tEi0oj32A5JL5d2gVadUPszlVjXBPZAzAlxlNnw/JW+HctNagX6756Zh1O1Vb+EHzUw==
+
+vue-gettext@^2.1.0:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.2.tgz#b6b5160bed8ce61b6ead6adf5f4029ff04f57720"
+  integrity sha512-issGZfHvGntflaoLd+46Ru305lWOVEG/0vTI7uB5zvq/4JVGoF7J/+DUrcYswowiCKpJluYqf6inILat2HNeRQ==
 
 vue-gettext@^2.1.1:
   version "2.1.1"
@@ -8589,6 +8737,14 @@ vue-template-compiler@^2.5.17:
     de-indent "^1.0.2"
     he "^1.1.0"
 
+vue-template-compiler@^2.6.6:
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.6.6.tgz#a807acbf3d51971d3721d75ecb1b927b517c1a02"
+  integrity sha512-OakxDGyrmMQViCjkakQFbDZlG0NibiOzpLauOfyCUVRQc9yPmTqpiz9nF0VeA+dFkXegetw0E5x65BFhhLXO0A==
+  dependencies:
+    de-indent "^1.0.2"
+    he "^1.1.0"
+
 vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.8.2:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.8.2.tgz#dd73e80ba58bb65dd7a8aa2aeef6089cf6116f2a"
@@ -8598,6 +8754,11 @@ vue@^2.5.16:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
   integrity sha512-/ffmsiVuPC8PsWcFkZngdpas19ABm5mh2wA7iDqcltyCTwlgZjHGeJYOXkBMo422iPwIcviOtrTCUpSfXmToLQ==
+
+vue@^2.6.6:
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.6.tgz#dde41e483c11c46a7bf523909f4f2f816ab60d25"
+  integrity sha512-Y2DdOZD8sxApS+iUlwv1v8U1qN41kq6Kw45lM6nVZKhygeWA49q7VCCXkjXqeDBXgurrKWkYQ9cJeEJwAq0b9Q==
 
 vuex@^3.0.1:
   version "3.0.1"

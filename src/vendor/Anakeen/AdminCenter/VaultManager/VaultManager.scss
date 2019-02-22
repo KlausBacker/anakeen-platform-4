@@ -1,0 +1,51 @@
+.vault-manager-grid {
+  height: 100%;
+  width:100%;
+  tr {
+    word-break: break-word;
+    td {
+
+    }
+  }
+}
+
+.vault-manager {
+  height: 100%;
+  width: 100%;
+}
+
+.vault-manager-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  tr {
+    word-break: break-word;
+  }
+  .k-grid-consult,.k-grid-edit {
+    padding: 0.5rem 2.25rem !important;
+  }
+}
+.vault-manager-splitter {
+  height: 100%;
+}
+
+.consult-btn {
+  color: #157EFB !important;
+  font-weight: bold;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.consult-btn:hover {
+  color: white !important;
+  font-weight: bold;
+  background-color: #157EFB;
+  box-shadow: none;
+  border: none;
+}
+
+.vault-info {
+  width: 100%;
+  height: 100%;
+}

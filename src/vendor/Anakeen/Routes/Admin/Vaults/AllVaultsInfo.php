@@ -20,7 +20,7 @@ class AllVaultsInfo
         $fsList = $q->query();
         if ($q->nb > 0) {
             /** @var \Anakeen\Vault\DiskFsStorage $fsItem */
-            foreach ($fsList as $fsItem) {
+            foreach ($fsList as $key => $fsItem) {
                 $info = \Anakeen\Vault\VaultFsManager::getInfo($fsItem);
 
                 if ($info["metrics"]["usedSize"] !== $info["computedMetrics"]["usedSize"]) {
@@ -33,9 +33,20 @@ class AllVaultsInfo
                     ));
                 }
                 $fsInfo[] = $info;
+                $fsInfo[$key]["freespace"] = $this->formatBytes($info["metrics"]["totalSize"] - $info["metrics"]["usedSize"], 2);
             }
         }
-
         return \Anakeen\Router\ApiV2Response::withData($response, $fsInfo, $messages);
+    }
+
+    protected function formatBytes($bytes, $precision = 2)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
