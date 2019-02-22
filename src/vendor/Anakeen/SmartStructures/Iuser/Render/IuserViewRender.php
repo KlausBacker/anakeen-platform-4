@@ -168,9 +168,8 @@ class IuserViewRender extends DefaultConfigViewRender
     public function getJsReferences(SmartElement $smartElement = null)
     {
         $js = parent::getJsReferences();
-        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $js["iuser"] = $path["Iuser"]["js"];
 
         return $js;

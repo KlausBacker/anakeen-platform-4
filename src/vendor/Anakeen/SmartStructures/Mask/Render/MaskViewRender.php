@@ -10,7 +10,7 @@ class MaskViewRender extends DefaultConfigViewRender
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences();
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $js["dduiMask"] = $path["Mask"]["js"];
 
         return $js;

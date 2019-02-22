@@ -16,24 +16,15 @@ module.exports = () => {
       smartElement: [path.resolve(__dirname, "./scss/smartElement.scss")],
       login: [path.resolve(__dirname, "./scss/login.scss")]
     },
-    buildPath: PUBLIC_PATH,
-    customParts: [
-      {
-        resolve: {
-          alias: {
-            scss: path.resolve(__dirname, "../scss")
-          },
-          extensions: [".scss", ".sass", ".css", ".js"]
-        }
-      }
-    ]
+    buildPath: PUBLIC_PATH
   };
   const confProd = {
     ...conf,
     customParts: [
       scssLoader({
         filename: "[name]-[chunkhash].css",
-        minify: true
+        minify: true,
+        removeJS: true
       })
     ]
   };
@@ -41,7 +32,8 @@ module.exports = () => {
     ...conf,
     customParts: [
       scssLoader({
-        filename: "[name].css"
+        filename: "[name].css",
+        removeJS: true
       })
     ]
   };

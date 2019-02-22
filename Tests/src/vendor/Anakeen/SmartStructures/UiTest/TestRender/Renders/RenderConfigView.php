@@ -58,7 +58,7 @@ class RenderConfigView extends \Anakeen\Ui\DefaultView
     {
         $js = parent::getJsReferences();
         $js["smartElement"] = \Anakeen\Ui\UIGetAssetPath::getJSSmartElementWidgetPath(true);
-        $path = UIGetAssetPath::getElementAssets("uiTest", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
+        $path = UIGetAssetPath::getElementAssets("uiTest", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $js["familyTestRender"] = $path["familyTestRender"]["js"];
         return $js;
     }

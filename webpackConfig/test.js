@@ -1,5 +1,5 @@
 const path = require("path");
-const { prod, prodLegacy, dev } = require("@anakeen/webpack-conf");
+const { prod, dev } = require("@anakeen/webpack-conf");
 const { cssLoader } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -25,5 +25,5 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     customParts: [cssLoader()]
   };
-  return [prod(conf), prodLegacy(conf), dev(conf)];
+  return [prod(conf), dev(conf)];
 };

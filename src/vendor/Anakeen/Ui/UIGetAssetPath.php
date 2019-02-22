@@ -113,12 +113,16 @@ class UIGetAssetPath
      */
     public static function getSmartWebComponentsPath($legacy = false)
     {
+        $name = "ank-components";
         if (self::isInDebug()) {
             $paths = self::getElementAssets("ank-components", "dev");
         } else {
-            $paths = self::getElementAssets("ank-components", $legacy ? "legacy": "prod");
+            $paths = self::getElementAssets("ank-components", "prod");
+            if (!$legacy) {
+                $name .= ".modern";
+            }
         }
-        return $paths["ank-components"]["js"];
+        return $paths[$name]["js"];
     }
 
     public static function getCssSmartWebComponents()
@@ -133,12 +137,16 @@ class UIGetAssetPath
      */
     public static function getJSSmartElementPath($legacy = false)
     {
+        $name = "smartElement";
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
-            $paths = self::getElementAssets("smartElement", $legacy ? "legacy": "prod");
+            $paths = self::getElementAssets("smartElement", "prod");
+            if (!$legacy) {
+                $name .= ".modern";
+            }
         }
-        return $paths["smartElement"]["js"];
+        return $paths[$name]["js"];
     }
 
     public static function getCssSmartElement()
@@ -153,12 +161,16 @@ class UIGetAssetPath
      */
     public static function getJSSmartElementWidgetPath($legacy = false)
     {
+        $name = "smartElementWidget";
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
-            $paths = self::getElementAssets("smartElement", $legacy ? "legacy": "prod");
+            $paths = self::getElementAssets("smartElement", "prod");
+            if (!$legacy) {
+                $name .= ".modern";
+            }
         }
-        return $paths["smartElementWidget"]["js"];
+        return $paths[$name]["js"];
     }
 
     public static function getCssBootstrap()

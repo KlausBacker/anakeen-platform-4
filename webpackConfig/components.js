@@ -1,7 +1,7 @@
 const path = require("path");
 const { prod, prodLegacy, dev } = require("@anakeen/webpack-conf");
 const {
-  useVueLoader,
+  vueLoader,
   setKendoAndJqueryToGlobal
 } = require("@anakeen/webpack-conf/parts");
 
@@ -30,7 +30,7 @@ module.exports = () => {
         }
       },
       setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
-      useVueLoader()
+      vueLoader()
     ]
   };
   const confLegacy = {
@@ -53,5 +53,5 @@ module.exports = () => {
       ]
     }
   };
-  return [prod(conf), prodLegacy(confLegacy), dev(confDev)];
+  return [prod(conf), dev(confDev)];
 };
