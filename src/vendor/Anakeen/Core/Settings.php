@@ -9,7 +9,7 @@ class Settings
     const RouterConfigDir="config/SmartDataEngine";
     const MimeConfig="config/mime.conf";
     const MimeUserConfig="config/mime-user.conf";
-    const ApiV2="api/v2/";
+    const ApiV2="/api/v2/";
     const CacheDir="var/cache/";
     const NsSde = "Core";
 }

@@ -87,7 +87,7 @@ class TemporaryFile
                 "reference" => sprintf("%s|%s|%s", $info->mime_s, $info->id_file, $info->name),
                 "cdate" => $info->cdate,
                 "downloadUrl" => $url,
-                "iconUrl" => sprintf("%simages/assets/sizes/%s/%s", Settings::ApiV2, $iconSize, urlencode($iconFile)),
+                "iconUrl" => sprintf("%simages/assets/sizes/%s/%s", Settings::ApiV2, $iconSize, $iconFile),
                 "fileName" => $info->name
             )
         );

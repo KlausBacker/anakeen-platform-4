@@ -22,13 +22,13 @@ define("PREGEXPFILE", "/(?P<mime>[^\|]*)\|(?P<vid>[0-9]*)\|?(?P<name>.*)?/");
 use \Anakeen\Core\DbManager;
 use \Anakeen\Core\ContextManager;
 use \Anakeen\Core\SEManager;
+use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\MiscDoc;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
-use Anakeen\Routes\Core\Lib\CollectionDataFormatter;
 use Anakeen\SmartHooks;
 
 class SmartElement extends \Anakeen\Core\Internal\DbObj implements SmartHooks
@@ -5373,7 +5373,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getIcon($idicon = "", $size = null, $otherId = null)
     {
-        $apiURL = '/' . CollectionDataFormatter::APIURL;
+        $apiURL = Settings::ApiV2;
         $efile = null;
 
         if ($idicon == "") {
@@ -5866,30 +5866,38 @@ create unique index i_docir on doc(initid, revision);";
         if ($oa->usefor === "Q" && $this->doctype !== "C") {
             $docid = $this->fromid;
         } else {
-            $docid = $this->id;
+            $docid = $this->initid;
         }
 
         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-            $fileKey = 0;
             if ($info) {
-                $fileKey = strtotime($info->mdate);
                 // Double quote not supported by all browsers - replace by minus
                 $fname = str_replace('"', '-', $info->name);
             } else {
                 $fname = str_replace('"', '-', $reg[3]);
             }
-            // will be rewrited by apache rules
 
-            $url = sprintf(
-                "file/%s/%d/%s/%s/%s?cache=%s&inline=%s",
-                $docid,
-                $fileKey,
-                $attrid,
-                $index,
-                rawurlencode($fname),
-                $cache ? "yes" : "no",
-                $inline ? "yes" : "no"
-            );
+            if ($this->locked != -1) {
+                $url = sprintf(
+                    "/api/v2/smart-elements/%d/files/%s/%s/%s",
+                    $docid,
+                    $attrid,
+                    $index,
+                    rawurlencode($fname)
+                );
+            } else {
+                $url = sprintf(
+                    "/api/v2/smart-elements/%d/revisions/%d/files/%s/%s/%s",
+                    $docid,
+                    $this->revision,
+                    $attrid,
+                    $index,
+                    rawurlencode($fname)
+                );
+            }
+            if ($inline) {
+                $url.="?inline=true";
+            }
 
             return $url;
         }
