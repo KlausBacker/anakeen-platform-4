@@ -1,12 +1,12 @@
 // tslint:disable: no-console
-import {AxiosInstance, AxiosResponse } from "axios";
+import { AxiosInstance, AxiosResponse } from "axios";
 
 interface IEventCallback {
   (): any;
   onceCallback: boolean;
 }
 interface IErrorManagerEvent {
-  [eventName: string]: IEventCallback[]
+  [eventName: string]: IEventCallback[];
 }
 
 interface IErrorManagerEvents {
@@ -18,14 +18,15 @@ interface IErrorManagerEvents {
 
 // Manage App Errors
 export default class ErrorManager implements IErrorManagerEvents {
-
   protected events: IErrorManagerEvent = {};
   protected axiosInstance: AxiosInstance;
 
   constructor(axios: AxiosInstance) {
     this.axiosInstance = axios;
     if (!this.axiosInstance) {
-      throw new Error("[AxiosErrorManager] : Unable to retrieve the instance of axios");
+      throw new Error(
+        "[AxiosErrorManager] : Unable to retrieve the instance of axios"
+      );
     }
     this.bindNetworkCommonsErrors();
   }
@@ -76,24 +77,24 @@ export default class ErrorManager implements IErrorManagerEvents {
   // Intercept network errors from axios instance
   protected bindNetworkCommonsErrors() {
     this.axiosInstance.interceptors.response.use(
-        (response: AxiosResponse) => {
-          if (response.headers) {
-            if (
-                response.headers["content-type"].indexOf("application/json") > -1 &&
-                response.request &&
-                response.request.responseText
-            ) {
-              try {
-                JSON.parse(response.request.responseText);
-              } catch (err) {
-                console.error(
-                    `JSON parsing response error for request : ${response.request.toString()}`
-                );
-                return Promise.reject(response) as Promise<AxiosResponse>;
-              }
+      (response: AxiosResponse) => {
+        if (response.headers) {
+          if (
+            response.headers["content-type"].indexOf("application/json") > -1 &&
+            response.request &&
+            response.request.responseText
+          ) {
+            try {
+              JSON.parse(response.request.responseText);
+            } catch (err) {
+              console.error(
+                `JSON parsing response error for request : ${response.request.toString()}`
+              );
+              return Promise.reject(response) as Promise<AxiosResponse>;
             }
           }
-          return response;
+        }
+        return response;
       },
       error => {
         if (error.response) {
@@ -105,8 +106,8 @@ export default class ErrorManager implements IErrorManagerEvents {
           ) {
             this.emit("displayError", {
               textContent:
-                  error.response.data.message ||
-                  error.response.data.exceptionMessage,
+                error.response.data.message ||
+                error.response.data.exceptionMessage,
               title: "Server Error"
             });
           }
