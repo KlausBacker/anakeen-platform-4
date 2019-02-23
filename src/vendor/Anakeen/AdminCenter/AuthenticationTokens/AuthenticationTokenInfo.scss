@@ -1,0 +1,101 @@
+.authentication-token-info {
+
+  &.tokenExpired > p.token-expired {
+    background: var(--warning);
+  }
+  p {
+    text-align: center;
+  }
+  .authentication-token-form {
+    padding: 1rem;
+    label {
+      display: block;
+    }
+
+    label .label {
+      display: block;
+    }
+
+    .k-textbox,
+    .label + .k-widget {
+      width: 100%;
+    }
+
+    .token-route {
+      display: flex;
+      flex-direction: row;
+
+      > input {
+        flex-grow: 1;
+      }
+      .k-dropdown-wrap .k-input {
+        display: inline-block;
+        text-align: center;
+      }
+    }
+    .token-expendable {
+      display: flex;
+      flex-direction: row;
+
+      > label {
+        flex-grow: 1;
+      }
+      .k-radio-label {
+        padding: 0.5rem 2.5rem;
+        border: solid 1px #c8c8c8;
+        margin: 0 1rem 1rem 1rem;
+        border-radius: 0.25rem;
+      }
+
+      .k-radio-label::before {
+        margin: 0.1rem;
+        width: 2rem;
+        height: 2rem;
+      }
+      .k-radio-label::after {
+        margin: 0.1rem;
+        width: 1rem;
+        height: 1rem;
+        top: 0.5rem;
+        left: 0.5rem;
+      }
+    }
+
+    .token-expire {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+      > .label {
+      }
+      > .token-dates {
+        display: flex;
+        flex-direction: row;
+      }
+      > .k-datetimepicker {
+        flex-grow: 1;
+      }
+
+      button {
+        font-size: 1.5rem;
+        padding: 0 1rem;
+      }
+      button[data-active] {
+        background: var(--primary);
+        color:  var(--white);
+      }
+    }
+    .token-buttons {
+      text-align: center;
+      padding: 1rem;
+    }
+    .button-add {
+      width: 2rem;
+    }
+  }
+}
+
+.button-delete {
+  color: white;
+  background: var(--red);
+}

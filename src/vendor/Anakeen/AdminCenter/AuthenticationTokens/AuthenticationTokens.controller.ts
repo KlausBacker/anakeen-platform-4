@@ -6,11 +6,12 @@ import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
 import { Component, Vue } from "vue-property-decorator";
 import AuthenticationTokenInfo from "./AuthenticationTokenInfo.vue";
-import IAuthenticationToken from "./IAuthenticationToken";
-
-declare var $;
+import { IAuthenticationToken } from "./IAuthenticationToken";
+import IsoDates from "./IsoDates";
 
 Vue.use(LayoutInstaller);
+
+declare var kendo;
 
 // noinspection JSUnusedGlobalSymbols
 @Component({
@@ -21,105 +22,241 @@ Vue.use(LayoutInstaller);
 })
 export default class AuthenticationTokensController extends Vue {
   public tokenInfo: IAuthenticationToken = {
-    token: "Hello"
+    token: ""
   };
+  public showExpire: boolean = false;
+  protected kTokenGrid: any;
+
+  // noinspection JSMethodCanBeStatic
+  public get panes() {
+    return [
+      { collapsible: false },
+      { collapsible: false, size: "25%", max: "500px", min: "250px" }
+    ];
+  }
+
+  public get viewToken() {
+    return this.tokenInfo.token !== "";
+  }
 
   public mounted() {
-    console.log("Hello", this.$refs.tokenGrid);
     this.initTokenGrid(this.$refs.tokenGrid);
   }
-  protected initTokenGrid(divDom) {
-    $(divDom).kendoGrid({
-      columns: [
+
+  public flipFiltering() {
+    this.showExpire = !this.showExpire;
+    this.refreshList();
+  }
+  public displayCreateForm() {
+    const tomorrow = new Date();
+
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    this.tokenInfo = {
+      description: "",
+      expendable: true,
+      expirationDate: tomorrow,
+      routes: [
         {
-          attributes: {
-            class: "cell--description"
-          },
-          field: "description",
-          title: "Description"
-        },
-        {
-          attributes: {
-            class: "cell--token"
-          },
-          field: "token",
-          title: "Token",
-          width: "30rem"
-        },
-        {
-          attributes: {
-            class: "cell--user"
-          },
-          field: "user",
-          title: "User"
-        },
-        {
-          attributes: {
-            class: "cell--expire"
-          },
-          field: "expire",
-          template:
-            '#= kendo.toString(expire,"D") # #= kendo.toString(expire,"HH:mm:ss") #',
-          title: "Expiration",
-          type: "date"
-        },
-        {
-          command: {
-            click: e => {
-              const widget = $(e.delegateTarget).data("kendo-grid");
-              const dataItem = widget.dataItem(
-                $(e.currentTarget).closest("tr")
-              );
-              console.log("Click", dataItem);
-              this.tokenInfo.token = dataItem.token;
-              this.tokenInfo.user = dataItem.user;
-              this.tokenInfo.expirationDate = new Date(dataItem.expire);
-            },
-            text: "View Details",
-            title: " ",
-            width: "180px"
-          }
+          method: "GET",
+          pattern: "/"
         }
       ],
+      token: "new",
+      user: ""
+    };
+  }
 
-      dataSource: {
-        schema: {
-          data: response => {
-            return response.data;
-          },
-          model: {
-            fields: {
-              description: {
-                type: "string"
-              },
-              expire: {
-                type: "date"
+  public refreshList() {
+    this.tokenInfo = {
+      token: ""
+    };
+    this.kTokenGrid.dataSource.read();
+  }
+
+  /**
+   * add token in tr tag to easily select tr
+   * @param grid
+   */
+  protected addRowClassName(grid) {
+    const items = grid.items();
+
+    // Need to defer because kendo treelist delete custom class after expand/collapse
+    window.setTimeout(() => {
+      const nowIsTime = IsoDates.getIsoData(new Date());
+      items.each(function addTypeClass(this: any) {
+        const dataItem = grid.dataItem(this);
+        if (dataItem.token) {
+          $(this).attr("data-token", dataItem.token);
+        }
+        if (dataItem.expire < nowIsTime) {
+          $(this).addClass("token--expired");
+        }
+      });
+    }, 1);
+  }
+
+  protected initTokenGrid(divDom) {
+    this.kTokenGrid = kendo
+      .jQuery(divDom)
+      .kendoGrid({
+        columns: [
+          {
+            attributes: {
+              class: "cell--description"
+            },
+            field: "description",
+            filterable: {
+              cell: {
+                delay: 1,
+                operator: "contains",
+                showOperators: false,
+                suggestionOperator: "contains"
               }
             },
-            id: "token"
+            title: "Description"
+          },
+          {
+            attributes: {
+              class: "cell--token"
+            },
+            field: "token",
+            filterable: {
+              cell: {
+                delay: 1,
+                operator: "contains",
+                showOperators: false,
+                suggestionOperator: "contains"
+              }
+            },
+            title: "Token",
+            width: "30rem"
+          },
+          {
+            attributes: {
+              class: "cell--user"
+            },
+            field: "user",
+            filterable: {
+              cell: {
+                delay: 1,
+                operator: "contains",
+                showOperators: false,
+                suggestionOperator: "contains"
+              }
+            },
+            title: "User"
+          },
+          {
+            attributes: {
+              class: "cell--expire"
+            },
+            field: "expire",
+            filterable: {
+              cell: {
+                delay: 9999,
+                operator: "contains",
+                showOperators: false,
+                suggestionOperator: "contains"
+              }
+            },
+            template:
+              '# if (expire != "infinity") { #  #= kendo.toString(new Date(expire),"yyyy-MM-dd HH:mm:ss") # # } else { # Never # } #',
+            title: "Expire at",
+            type: "text",
+            width: "13rem"
+          },
+          {
+            command: {
+              click: e => {
+                const widget = kendo
+                  .jQuery(e.delegateTarget)
+                  .data("kendo-grid");
+                const $tr = kendo.jQuery(e.currentTarget).closest("tr");
+                const dataItem = widget.dataItem($tr).toJSON(); // Need to use JSON to has the raw data
+                this.tokenInfo = {
+                  author: dataItem.author,
+                  creationDate: new Date(dataItem.cdate),
+                  description: dataItem.description,
+                  expendable: dataItem.expendable,
+                  expirationDate:
+                    dataItem.expire === "infinity"
+                      ? null
+                      : new Date(dataItem.expire),
+                  routes: [],
+                  token: dataItem.token,
+                  user: dataItem.user
+                };
+
+                dataItem.routes.forEach(route => {
+                  route.methods.forEach(method => {
+                    this.tokenInfo.routes.push({
+                      method,
+                      pattern: route.pattern
+                    });
+                  });
+                });
+                $tr
+                  .closest("tbody")
+                  .find("tr")
+                  .removeClass("token--selected");
+                $tr.addClass("token--selected");
+              },
+              text: "Info",
+              title: "View token details"
+            },
+
+            width: "10rem"
+          }
+        ],
+
+        dataBound: e => {
+          const grid = e.sender;
+          this.addRowClassName(grid);
+        },
+        dataSource: {
+          schema: {
+            data: response => {
+              return response.data;
+            },
+            model: {
+              fields: {
+                description: {
+                  type: "string"
+                },
+                expire: {
+                  type: "string"
+                }
+              },
+              id: "token"
+            }
+          },
+          transport: {
+            read: {
+              data: () => {
+                return {
+                  showExpired: this.showExpire
+                };
+              },
+              url: `/api/v2/admin/tokens/`
+            }
           }
         },
-        transport: {
-          read: {
-            url: `/api/v2/admin/tokens/`
-          }
-        }
-      },
-      filterable: {
-        extra: false,
-        operators: {
-          string: {
-            contains: "Contains...",
-            startswith: "Starts with..."
-          }
-        }
-      },
-      pageable: {
-        buttonCount: 5,
-        pageSizes: true,
-        refresh: true
-      },
-      sortable: true
-    });
+
+        filterable: {
+          extra: false,
+          mode: "row"
+        },
+        pageable: {
+          alwaysVisible: true,
+          info: false,
+          messages: {
+            display: "Showing {0}-{1} from {2} data items"
+          },
+          pageSizes: false,
+          refresh: true
+        },
+        sortable: true
+      })
+      .data("kendo-grid");
   }
 }

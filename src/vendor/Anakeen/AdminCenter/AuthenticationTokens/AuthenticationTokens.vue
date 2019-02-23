@@ -1,9 +1,23 @@
 <template>
   <div class="authentication-tokens">
-    <h1>Authentication Tokens</h1>
-    <kendo-splitter class="ank-token-splitter" orientation="horizontal">
+    <header>
+      <div class="token-title">Authentication Tokens </div>
+
+      <kendo-button class="button-filtering k-outline k-primary" @click="flipFiltering">
+        <i class="fa " :class="{ 'fa-check': showExpire }"/>
+        <span> Show expired </span>
+      </kendo-button>
+
+      <kendo-button class="button-createform k-primary" @click="displayCreateForm">Create token</kendo-button>
+    </header>
+    <kendo-splitter ref="splitter" class="ank-token-splitter" orientation="horizontal" :panes="panes">
       <div ref="tokenGrid" class="token-grid" />
-      <ank-token-info :info="tokenInfo">Detail</ank-token-info>
+      <div>
+      <ank-token-info  v-if="viewToken" :info="tokenInfo" @token-deleted="refreshList">Detail</ank-token-info>
+        <div v-else class="token-logo">
+        <span class="fa fa-user-secret"/>
+        </div>
+      </div>
     </kendo-splitter>
   </div>
 </template>

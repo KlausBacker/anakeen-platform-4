@@ -30,6 +30,22 @@
         <hub_activated>FALSE</hub_activated>
         <hub_activated_order>2</hub_activated_order>
     </hubadmincenterparametersvue>
+    <hubauthenticationtokensvue >
+        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
+        <hub_title>Tokens</hub_title>
+        <hub_order>3</hub_order>
+        <hub_docker_position>LEFT_CENTER</hub_docker_position>
+        <hub_vue_router_entry>tokens</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+    </hubauthenticationtokensvue>
+    <hubadmincentervaultvue>
+        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
+        <hub_title>Vault Manager</hub_title>
+        <hub_order>4</hub_order>
+        <hub_docker_position>LEFT_CENTER</hub_docker_position>
+        <hub_vue_router_entry>vaults</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+    </hubadmincentervaultvue>
     <hubconfigurationidentity  name="HUBA_IDENTITY">
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
         <hub_title>Me</hub_title>
