@@ -43,7 +43,6 @@ class TokenDelete
         return [
             "token" => $this->token
         ];
-
     }
 
 
