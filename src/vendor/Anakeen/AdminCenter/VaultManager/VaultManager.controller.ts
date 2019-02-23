@@ -15,7 +15,6 @@ Vue.use(GridInstaller);
 
 @Component({
   components: {
-    Grid,
     "ank-splitter": AnkSplitter,
     "ank-vault-info": AnkVaultInfo
   }
