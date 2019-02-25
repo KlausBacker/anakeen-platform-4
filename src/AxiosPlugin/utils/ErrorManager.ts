@@ -1,5 +1,6 @@
 // tslint:disable: no-console
 import { AxiosInstance, AxiosResponse } from "axios";
+import AxiosErrorEvent from "./ErrorEvent";
 
 interface IEventCallback {
   (): any;
@@ -10,7 +11,7 @@ interface IErrorManagerEvent {
 }
 
 interface IErrorManagerEvents {
-  emit(eventName: string): void;
+  emit(eventName: string, ...args: any[]): void;
   on(eventName: string, cb: IEventCallback);
   once(eventName: string, cb: IEventCallback);
   off(eventName: string, cb?: IEventCallback);
@@ -104,28 +105,32 @@ export default class ErrorManager implements IErrorManagerEvents {
             error.response.data.message ||
             error.response.data.exceptionMessage
           ) {
-            this.emit("displayError", {
-              textContent:
+            this.emit(
+              "error",
+              new AxiosErrorEvent(
                 error.response.data.message ||
-                error.response.data.exceptionMessage,
-              title: "Server Error"
-            });
+                  error.response.data.exceptionMessage
+              )
+            );
           }
           if (error.response.data.error) {
-            this.emit("displayError", {
-              textContent: error.response.data.error,
-              title: "Server Error"
-            });
+            this.emit(
+              "displayError",
+              new AxiosErrorEvent(error.response.data.error)
+            );
           }
           console.error(error.response);
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
-          this.emit("displayError", {
-            textContent: "Looks like there are some network troubles",
-            title: "Network Error"
-          });
+          this.emit(
+            "displayError",
+            new AxiosErrorEvent(
+              "Looks like there are some network troubles",
+              "Network Error"
+            )
+          );
           console.error(error.request);
         } else {
           // Something happened in setting up the request that triggered an Error
