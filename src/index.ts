@@ -1,12 +1,14 @@
 const packageInfo = require("../package.json");
 import { VueConstructor } from "vue/types/vue";
 import VueAxiosPlugin from "./AxiosPlugin/AxiosPlugin";
+import AnkNotifier from "./Notifier/Notifier.vue";
 import AnkSplitter from "./Splitter/Splitter.vue";
 
-export { AnkSplitter, VueAxiosPlugin };
+export { AnkSplitter, AnkNotifier, VueAxiosPlugin };
 
 export function install(Vue: VueConstructor) {
   Vue.component(AnkSplitter.name, AnkSplitter);
+  Vue.component(AnkNotifier.name, AnkNotifier);
 }
 
 export default {

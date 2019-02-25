@@ -1,9 +1,10 @@
 .splitter-wrapper {
   & /deep/ {
-    .k-splitbar.k-splitbar-horizontal[role=separator],
+    .k-splitbar.k-splitbar-horizontal[role="separator"],
     .k-ghost-splitbar-horizontal {
-      &:active, &.k-state-focused {
-        background: #157EFB;
+      &:active,
+      &.k-state-focused {
+        background: #157efb;
       }
 
       width: 1.5rem;
@@ -12,7 +13,8 @@
         margin: 0;
         font-size: 1.75rem;
 
-        &.k-collapse-prev, &.k-expand-next {
+        &.k-collapse-prev,
+        &.k-expand-next {
           &::before {
             content: "\e016";
           }
@@ -23,7 +25,8 @@
           align-items: center;
         }
 
-        &.k-collapse-next, &.k-expand-prev {
+        &.k-collapse-next,
+        &.k-expand-prev {
           &::before {
             content: "\e014";
           }
@@ -50,18 +53,18 @@
     align-items: center;
     justify-content: center;
     display: flex;
-    background-color: #DEDEDE;
+    background-color: #dedede;
 
     .splitter-empty-icon {
       display: block;
       font-size: 10rem;
       margin: auto;
-      color: #A4A4A4;
+      color: #a4a4a4;
     }
 
     .splitter-empty-text {
       font-size: 1.5rem;
-      color: #A4A4A4;
+      color: #a4a4a4;
     }
   }
 
