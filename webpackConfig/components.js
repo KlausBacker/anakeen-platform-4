@@ -1,5 +1,5 @@
 const path = require("path");
-const { prod, prodLegacy, dev } = require("@anakeen/webpack-conf");
+const { prod, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
   setKendoAndJqueryToGlobal
@@ -29,18 +29,9 @@ module.exports = () => {
           libraryTarget: "umd"
         }
       },
-      setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
+      setKendoAndJqueryToGlobal([{"./kendo.pdf": "kendo", "./kendo.excel": "kendo"}]),
       vueLoader()
     ]
-  };
-  const confLegacy = {
-    ...conf,
-    entry: {
-      "ank-components": [
-        "@webcomponents/webcomponentsjs/webcomponents-bundle.js",
-        path.resolve(__dirname, "../src/vendor/Anakeen/Components/main.js")
-      ]
-    }
   };
   const confDev = {
     ...conf,
