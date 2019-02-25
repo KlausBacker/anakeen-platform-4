@@ -340,6 +340,12 @@
         </template>
       </hub-dock>
     </footer>
+    <ank-notifier
+      v-if="withNotifier"
+      ref="ankNotifier"
+      position="top-right"
+      defaultType="notice"
+    ></ank-notifier>
   </div>
 </template>
 <!-- CSS to this component only -->

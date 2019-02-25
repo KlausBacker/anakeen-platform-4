@@ -1,3 +1,5 @@
+import { AnkNotifier, VueAxiosPlugin } from "@anakeen/internal-components";
+
 const nodePath = require("path");
 import AnkComponents from "@anakeen/ank-components";
 // Vue class based component export
@@ -14,17 +16,18 @@ import {
   IHubStationPropConfig,
   InnerDockPosition
 } from "./HubStationsTypes";
+
+Vue.use(VueAxiosPlugin);
 Vue.use(AnkComponents, { globalVueComponents: true });
 Vue.component("hub-label", HubLabel);
 @Component({
   components: {
+    "ank-notifier": AnkNotifier,
     "hub-dock": HubDock,
     "hub-dock-entry": HubDockEntry
   }
 })
 export default class HubStation extends Vue {
-  // endregion watch
-
   // region computed
   get isHeaderEnabled() {
     return this.configData.top.length;
@@ -75,13 +78,14 @@ export default class HubStation extends Vue {
   };
 
   public $refs!: {
-    [key: string]: IAnkDock;
+    [key: string]: IAnkDock | any;
   };
 
   // region props
   @Prop({ default: () => [], type: Array })
   public config!: IHubStationPropConfig[];
   @Prop({ default: "", type: String }) public baseUrl!: string;
+  @Prop({ default: true, type: Boolean }) public withNotifier!: boolean;
   // endregion props
 
   // region watch
@@ -159,6 +163,31 @@ export default class HubStation extends Vue {
       return entry.entryOptions.selectable;
     }
     return true;
+  }
+
+  public created() {
+    if (this.$http && this.$http.errorEvents) {
+      this.$http.errorEvents.on("error", event => {
+        event.defaultPrevented = false;
+        event.preventDefault = function() {
+          this.defaultPrevented = true;
+        };
+        this.$emit("hubError", event);
+        if (this.withNotifier && !event.defaultPrevented) {
+          this.$refs.ankNotifier.publishNotification(
+            new CustomEvent("ankNotification", {
+              detail: [
+                {
+                  content: event.message,
+                  title: event.title,
+                  type: "error"
+                }
+              ]
+            })
+          );
+        }
+      });
+    }
   }
 
   public mounted() {

@@ -4,10 +4,10 @@ import LoadCss from "load-css-file";
 
 import Router from "../Router";
 import AnkComponents from "@anakeen/user-interfaces";
-import AnkAxios from "axios";
+import { VueAxiosPlugin } from "@anakeen/internal-components";
 import HubMain from "../Components/Hub/Hub.vue";
 
-Vue.prototype.$http = AnkAxios.create();
+Vue.use(VueAxiosPlugin);
 Vue.use(AnkComponents);
 Vue.use(LoadScript);
 Vue.prototype.$loadCssFile = Vue.loadCssFile = LoadCss;
