@@ -1,16 +1,16 @@
 <template>
-    <div class="hub-station-main">
-        <hub-station :config="config" :baseUrl="`/hub/station/${hubId}`"></hub-station>
-    </div>
+  <div class="hub-station-main">
+    <hub-station
+      :config="config"
+      :baseUrl="`/hub/station/${hubId}`"
+    ></hub-station>
+  </div>
 </template>
 
 <!-- CSS to this component only -->
 <style lang="scss">
-    @import "./Hub.scss";
+@import "./Hub.scss";
 </style>
 <!-- Global CSS -->
-<style lang="scss">
-</style>
-<script src="./Hub.controller.js">
-</script>
-
+<style lang="scss"></style>
+<script src="./Hub.controller.js"></script>
