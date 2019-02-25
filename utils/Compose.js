@@ -4,6 +4,8 @@ const util = require("util");
 const fs = require("fs");
 const semver = require("semver");
 const signale = require("signale");
+const tar = require("tar");
+const rimraf = require("rimraf");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
@@ -77,17 +79,32 @@ class Compose {
   }
 
   /**
+   * @param {string} pathname
+   * @returns {Promise<*>}
+   */
+  static async rm_Rf(pathname) {
+    return new Promise((resolve, reject) => {
+      rimraf(pathname, { glob: false }, err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(pathname);
+        }
+      });
+    });
+  }
+
+  /**
    * Check if a file (or dir) exists
    * @param {string} filename
-   * @returns {boolean}
+   * @returns {boolean|{fs.Stats}}
    */
   static async fileExists(filename) {
     try {
-      await fs_stat(filename);
+      return await fs_stat(filename);
     } catch (e) {
       return false;
     }
-    return true;
   }
 
   /**
@@ -243,33 +260,29 @@ class Compose {
     );
     this.debug({ moduleInfo });
 
-    const httpAgent = new HTTPAgent({ debug: this.$.debug });
     const resources = {
       app: undefined,
       src: undefined
     };
-    if (moduleInfo.hasOwnProperty("app")) {
-      const srcUrl = [module.url, "app", moduleInfo.app].join("/");
-      const pathname = [localRepo, moduleInfo.app].join("/");
-      signale.note(`Downloading '${srcUrl}' to '${pathname}'...`);
-      const tmpFile = await httpAgent.downloadFileTo(srcUrl, pathname);
-      resources.app = {
-        name: moduleInfo.app,
-        src: srcUrl,
-        sha256: await SHA256Digest.file(tmpFile),
-        tmpFile: tmpFile
-      };
-    }
-    if (moduleInfo.hasOwnProperty("src")) {
-      const srcUrl = [module.url, "src", moduleInfo.src].join("/");
-      const pathname = [localSrc, moduleInfo.src].join("/");
-      signale.note(`Downloading '${srcUrl}' to '${pathname}'...`);
-      const tmpFile = await httpAgent.downloadFileTo(srcUrl, pathname);
-      resources.src = {
-        name: moduleInfo.src,
-        src: srcUrl,
-        sha256: await SHA256Digest.file(tmpFile),
-        tmpFile: tmpFile
+    for (let type of ["app", "src"]) {
+      if (!moduleInfo.hasOwnProperty(type)) {
+        continue;
+      }
+      const url = [module.url, type, moduleInfo[type]].join("/");
+      let pathname;
+      if (type === "app") {
+        pathname = [localRepo, moduleInfo[type]].join("/");
+      } else if (type === "src") {
+        pathname = [localSrc, moduleInfo[type]].join("/");
+      } else {
+        throw new ComposeError(`Unrecognized resource type '${type}'`);
+      }
+      await this._updateLocalResource({ type, src: url, pathname });
+      resources[type] = {
+        name: moduleInfo[type],
+        src: url,
+        sha256: await SHA256Digest.file(pathname),
+        pathname: pathname
       };
     }
 
@@ -304,6 +317,30 @@ class Compose {
 
     this.debug({ repoXML: composeCtx.repoXML.data }, { depth: 20 });
     this.debug({ repoLockXML: composeCtx.repoLockXML.data }, { depth: 20 });
+  }
+
+  /**
+   * Unpack archive into a directory created from
+   * the archive's basename: `/path/to/archive.src` will be unpacked in
+   * `/path/to/archive` (without the `.src` suffix)
+   * @param {string} archive Path to archive
+   * @returns {Promise<*>}
+   */
+  async unpackSrc(archive) {
+    if (!archive.match(/\.src$/)) {
+      throw new ComposeError(`Archive '${archive}' has no '.src' suffix`);
+    }
+    const basename = path.basename(archive, ".src");
+    const dirname = path.dirname(archive);
+    const pathname = path.normalize([dirname, basename].join("/"));
+    if (await Compose.fileExists(pathname)) {
+      await Compose.rm_Rf(pathname);
+    }
+    await fs_mkdir(pathname, { recursive: true });
+    return tar.x({
+      C: pathname,
+      file: archive
+    });
   }
 
   async genRepoContentXML(repoDir) {
@@ -465,20 +502,44 @@ class Compose {
         localIsOutdated = localSha256 !== sha256;
       }
 
+      if (
+        !localIsOutdated &&
+        type === "src" &&
+        !Compose._srcUnpackDirExists(pathname)
+      ) {
+        localIsOutdated = true;
+      }
+
       if (localIsOutdated) {
         signale.note(
-          `Updating outdated module '${pathname}' from lock src '${src}'`
+          `Updating outdated resource '${pathname}' from lock src '${src}'`
         );
-        const httpAgent = new HTTPAgent({ debug: this.$.debug });
-        await httpAgent.downloadFileTo(src, pathname);
-        signale.note(`Done.`);
+        await this._updateLocalResource({ type, src, pathname });
       } else {
-        signale.note(`Local module '${pathname}' is up-to-date`);
+        signale.note(`Local resource '${pathname}' is up-to-date`);
       }
     }
 
     signale.note(`Generating 'content.xml' in '${localRepo}'...`);
     await this.genRepoContentXML(localRepo);
+  }
+
+  static _srcUnpackDirExists(srcPathname) {
+    const srcBasename = path.basename(srcPathname, ".src");
+    const srcDirname = path.dirname(srcPathname);
+    const srcUnpackDir = path.join(srcDirname, srcBasename);
+    return Compose.fileExists(srcUnpackDir);
+  }
+
+  async _updateLocalResource({ type, src, pathname }) {
+    signale.note(`Downloading '${src}' to '${pathname}'...`);
+    const httpAgent = new HTTPAgent({ debug: this.$.debug });
+    await httpAgent.downloadFileTo(src, pathname);
+    if (type === "src") {
+      signale.note(`Unpacking '${type}' from '${src}' into '${pathname}'`);
+      await this.unpackSrc(pathname);
+    }
+    signale.note(`Done.`);
   }
 
   /**
