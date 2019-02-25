@@ -122,7 +122,7 @@ class AppRegistry {
       });
     }
 
-    /* Order by descending order */
+    /* Order by descending version */
     index.sort((a, b) => {
       return semver.compare(b.version, a.version);
     });

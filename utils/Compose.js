@@ -22,6 +22,7 @@ const { ComposeCtx } = require(path.resolve(__dirname, "ComposeCtx"));
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
 const fs_readdir = util.promisify(fs.readdir);
+const fs_unlink = util.promisify(fs.unlink);
 
 class ComposeError extends GenericError {}
 
@@ -260,6 +261,21 @@ class Compose {
     );
     this.debug({ moduleInfo });
 
+    /* Remove previous module's resources */
+    const lockedModule = composeCtx.repoLockXML.getModuleByName(module.name);
+    if (lockedModule) {
+      if (lockedModule.$.version === module.version) {
+        signale.note(
+          `Module '${module.name}' with version '${
+            module.version
+          }' is up-to-date`
+        );
+        return;
+      } else {
+        await this.deleteModuleResources(composeCtx, lockedModule);
+      }
+    }
+
     const resources = {
       app: undefined,
       src: undefined
@@ -317,6 +333,47 @@ class Compose {
 
     this.debug({ repoXML: composeCtx.repoXML.data }, { depth: 20 });
     this.debug({ repoLockXML: composeCtx.repoLockXML.data }, { depth: 20 });
+  }
+
+  async deleteModuleResources(composeCtx, lockedModule) {
+    if (!lockedModule.hasOwnProperty("resources")) {
+      return;
+    }
+    const resources = lockedModule["resources"][0];
+    const rmList = [];
+    for (let type of ["app", "src"]) {
+      if (!resources.hasOwnProperty(type)) {
+        continue;
+      }
+      const resource = resources[type][0];
+      const url = resource.$.src;
+
+      let basename;
+      let dirname;
+      switch (type) {
+        case "app":
+          basename = path.basename(url);
+          dirname = composeCtx.repoXML.getConfigLocalRepo();
+          rmList.push({ type: "file", path: path.join(dirname, basename) });
+          break;
+        case "src":
+          basename = path.basename(url, ".src");
+          dirname = composeCtx.repoXML.getConfigLocalSrc();
+          rmList.push({
+            type: "file",
+            path: path.join(dirname, basename + ".src")
+          });
+          rmList.push({ type: "dir", path: path.join(dirname, basename) });
+          break;
+      }
+    }
+
+    for (let elmt of rmList) {
+      if (Compose.fileExists(elmt.path)) {
+        signale.note(`Removing ${elmt.type} '${elmt.path}'...`);
+        await Compose.rm_Rf(elmt.path);
+      }
+    }
   }
 
   /**
@@ -600,11 +657,11 @@ class Compose {
     const composeCtx = new ComposeCtx(repoXML, repoLockXML);
 
     if (moduleList.length <= 0) {
-      moduleList = composeCtx.repoXML.getModuleList().map(elmt => {
+      moduleList = composeCtx.repoXML.getModuleList().map(module => {
         return {
-          name: elmt.$.name,
-          version: this.$.latest ? "latest" : elmt.$.version,
-          registry: elmt.$.registry
+          name: module.$.name,
+          version: this.$.latest ? "latest" : module.$.version,
+          registry: module.$.registry
         };
       });
     } else {
@@ -617,13 +674,13 @@ class Compose {
           );
         }
         moduleList[i] = {
-          name: module.name,
+          name: module.$.name,
           version: this.$.latest
             ? "latest"
             : moduleAtVersion.version !== ""
             ? moduleAtVersion.version
-            : module.version,
-          registry: module.registry
+            : module.$.version,
+          registry: module.$.registry
         };
       }
     }
