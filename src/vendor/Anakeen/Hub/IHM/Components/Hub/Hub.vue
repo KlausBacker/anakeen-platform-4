@@ -2,7 +2,6 @@
   <div class="hub-station-main">
     <hub-station
       :config="config"
-      :baseUrl="`/hub/station/${hubId}`"
     ></hub-station>
   </div>
 </template>

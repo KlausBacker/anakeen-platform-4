@@ -8,6 +8,7 @@ import HubDock from "../HubDock/HubDock.vue";
 import HubDockEntry from "../HubDock/HubDockEntry/HubDockEntry.vue";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
 import HubLabel from "../HubLabel/HubLabel.vue";
+import { IHubStationConfig } from "./HubStationsTypes";
 
 import {
   DockPosition,
@@ -52,6 +53,15 @@ export default class HubStation extends Vue {
     return HubElementDisplayTypes;
   }
 
+  get rootUrl(): string {
+    if (this.config && this.config.routerEntry) {
+      return this.config.routerEntry;
+    } else if (this.baseUrl) {
+      return this.baseUrl;
+    }
+    return "";
+  }
+
   private static capitalize(str: string) {
     if (str) {
       return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
@@ -82,16 +92,17 @@ export default class HubStation extends Vue {
   };
 
   // region props
-  @Prop({ default: () => [], type: Array })
-  public config!: IHubStationPropConfig[];
+  @Prop({ default: () => [], type: Object })
+  public config!: IHubStationConfig;
   @Prop({ default: "", type: String }) public baseUrl!: string;
   @Prop({ default: true, type: Boolean }) public withNotifier!: boolean;
+  @Prop({ default: false, type: Boolean }) public injectTag!: boolean;
   // endregion props
 
   // region watch
   @Watch("config")
-  public onConfigPropChanged(val: IHubStationPropConfig[]) {
-    this.configData = HubStation.organizeData(val);
+  public onConfigPropChanged(val: IHubStationConfig) {
+    this.configData = HubStation.organizeData(val.hubElements);
     this.initRouterConfig(this.configData);
   }
   // endregion computed
@@ -153,7 +164,7 @@ export default class HubStation extends Vue {
 
   public getEntryRoutePath(entryOptions) {
     if (entryOptions && entryOptions.route) {
-      return nodePath.join(this.baseUrl, entryOptions.route);
+      return nodePath.join(this.rootUrl, entryOptions.route);
     }
     return "";
   }
@@ -211,7 +222,7 @@ export default class HubStation extends Vue {
                     componentProps: Object.assign({}, cfg.component.props, {
                       displayType: HubElementDisplayTypes.CONTENT,
                       parentPath: nodePath.join(
-                        this.baseUrl,
+                        this.rootUrl,
                         cfg.entryOptions.route
                       )
                     })
@@ -219,7 +230,7 @@ export default class HubStation extends Vue {
                 },
                 template: `<component :is="componentName" v-bind="componentProps"></component>`
               },
-              path: nodePath.join(this.baseUrl, cfg.entryOptions.route)
+              path: nodePath.join(this.rootUrl, cfg.entryOptions.route)
             };
             routes.push(routeComponent);
           }

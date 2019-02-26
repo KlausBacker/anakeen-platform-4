@@ -2,7 +2,6 @@
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <smart:structure-configuration name="HUBCONFIGURATIONSLOT" label="Slot element configuration">
         <smart:extends ref="HUBCONFIGURATION"/>
-        <smart:icon file="HubConfigurationSlot.png"/>
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationSlot\HubConfigurationSlotBehavior</smart:class>
 
         <smart:fields>

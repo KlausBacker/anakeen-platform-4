@@ -42,6 +42,19 @@ export interface IHubStationPropConfig {
   entryOptions: IHubStationEntryOptions;
 }
 
+interface IHubStationAssets {
+  js: string[],
+  css: string[]
+}
+
+export interface IHubStationConfig {
+  instanceName: string;
+  routerEntry: string;
+  globalAssets: IHubStationAssets;
+  hubElements: IHubStationPropConfig[]
+}
+
+
 export interface IAnkDock extends Vue {
   expand(): void;
   contract(): void;

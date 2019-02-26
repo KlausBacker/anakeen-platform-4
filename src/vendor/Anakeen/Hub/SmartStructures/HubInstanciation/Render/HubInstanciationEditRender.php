@@ -21,6 +21,7 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->disableRowAdd(true);
         $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->disableRowDel(true);
         $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->setCollapse("none");
+
         $options->text(HubInstanciationFields::hub_instance_title)->setMaxLength(50);
         $options->text(HubInstanciationFields::hub_instance_language)->setMaxLength(15);
         $options->frame(HubInstanciationFields::hub_security_frame)->setLabelPosition(CommonRenderOptions::nonePosition);
