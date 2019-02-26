@@ -1,3 +1,4 @@
+import { AnkSplitter } from "@anakeen/internal-components";
 import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.grid";
@@ -16,11 +17,15 @@ declare var kendo;
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
+    "ank-splitter": AnkSplitter,
     "ank-token-info": AuthenticationTokenInfo
   },
   name: "ank-authentication-tokens"
 })
 export default class AuthenticationTokensController extends Vue {
+  public $refs!: {
+    [key: string]: any;
+  };
   public tokenInfo: IAuthenticationToken = {
     token: ""
   };
@@ -30,8 +35,19 @@ export default class AuthenticationTokensController extends Vue {
   // noinspection JSMethodCanBeStatic
   public get panes() {
     return [
-      { collapsible: false },
-      { collapsible: false, size: "25%", max: "500px", min: "250px" }
+      {
+        collapsible: false,
+        resizable: true,
+        scrollable: false
+      },
+      {
+        collapsible: false,
+        max: "500px",
+        min: "250px",
+        resizable: true,
+        scrollable: false,
+        size: "25%"
+      }
     ];
   }
 
@@ -47,7 +63,9 @@ export default class AuthenticationTokensController extends Vue {
     this.showExpire = !this.showExpire;
     this.refreshList();
   }
+
   public displayCreateForm() {
+    this.$refs.splitter.disableEmptyContent();
     const tomorrow = new Date();
 
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -168,6 +186,7 @@ export default class AuthenticationTokensController extends Vue {
           {
             command: {
               click: e => {
+                this.$refs.splitter.disableEmptyContent();
                 const widget = kendo
                   .jQuery(e.delegateTarget)
                   .data("kendo-grid");
@@ -186,7 +205,6 @@ export default class AuthenticationTokensController extends Vue {
                   token: dataItem.token,
                   user: dataItem.user
                 };
-
                 dataItem.routes.forEach(route => {
                   route.methods.forEach(method => {
                     this.tokenInfo.routes.push({
