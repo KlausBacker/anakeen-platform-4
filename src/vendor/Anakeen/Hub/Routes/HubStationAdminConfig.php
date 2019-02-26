@@ -66,6 +66,14 @@ class HubStationAdminConfig extends GridConfig
         $originalConfig["smartFields"] = [
             ColumnsConfig::getColumnConfig("hub_docker_position", SEManager::getDocument("HUBCONFIGURATION")),
             ColumnsConfig::getColumnConfig("hub_order", SEManager::getDocument("HUBCONFIGURATION")),
+            [
+                "field" => "hub_type",
+                "smartType" => "text",
+                "abstract" => true,
+                "title" => "Type",
+                "sortable" => true,
+                "filterable" => self::getFilterable("text")
+            ],
             ColumnsConfig::getColumnConfig("hub_title", SEManager::getDocument("HUBCONFIGURATION"))
         ];
 
