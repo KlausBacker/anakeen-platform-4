@@ -18,10 +18,12 @@ class HubInstanciationAutocomplete
                 foreach ($files as $filename) {
                     if ($filename !== "." && $filename !== ".." && is_dir($manifestPath . "/" . $filename)) {
                         if ($userValue === "" || preg_match("/$userValue/", $filename)) {
-                            $response->appendEntry($filename,
+                            $response->appendEntry(
+                                $filename,
                                 [
                                     $filename
-                                ]);
+                                ]
+                            );
                         }
                     }
                 }

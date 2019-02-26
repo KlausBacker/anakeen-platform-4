@@ -60,7 +60,8 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
         }
     }
 
-    public function getConfiguration() {
+    public function getConfiguration()
+    {
         return [
           "instanceName" => $this->getRawValue(HubinstanciationFields::instance_logical_name),
           "routerEntry" => $this->getRawValue(HubinstanciationFields::hub_instanciation_router_entry),

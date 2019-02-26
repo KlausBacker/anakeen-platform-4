@@ -9,9 +9,11 @@ use Anakeen\Ui\UIGetAssetPath;
 class Hub
 {
 
-    protected function getHubInstanceId(\Slim\Http\request $request,
-                                        \Slim\Http\response $response,
-                                        $args) {
+    protected function getHubInstanceId(
+        \Slim\Http\request $request,
+        \Slim\Http\response $response,
+        $args
+    ) {
         if (isset($args["hubId"])) {
             return $args["hubId"];
         }
@@ -23,6 +25,7 @@ class Hub
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\Response
+     * @throws Exception
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Ui\Exception
      */
