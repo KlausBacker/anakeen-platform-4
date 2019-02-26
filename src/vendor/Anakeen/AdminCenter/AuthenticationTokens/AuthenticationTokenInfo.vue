@@ -1,6 +1,9 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
-  <div class="authentication-token-info" v-bind:class="{ tokenExpired: isExpired }">
+  <div
+    class="authentication-token-info"
+    v-bind:class="{ tokenExpired: isExpired }"
+  >
     <p v-if="isInfo">
       Created by : <b>{{ info.author }}</b> at
       <b>{{ creationDateFormatted }}</b>
@@ -37,27 +40,25 @@
         />
       </label>
       <div class="token-expire">
-
-          <span class="label">Expire :</span>
-          <div class="token-dates">
-            <kendo-button
-                    :data-active="neverExpire"
-              v-show="neverExpire || !isInfo"
-              :disabled="isInfo"
-              class="button-infinity"
-              @click="onInfinity"
-              >&infin;</kendo-button
-            >
-            <input
-              v-show="!neverExpire || !isInfo"
-              ref="expireDate"
-              :disabled="!isInfo && neverExpire"
-              :readonly="isInfo"
-              type="text"
-              v-model="info.expirationDate"
-            />
-          </div>
-
+        <span class="label">Expire :</span>
+        <div class="token-dates">
+          <kendo-button
+            :data-active="neverExpire"
+            v-show="neverExpire || !isInfo"
+            :disabled="isInfo"
+            class="button-infinity"
+            @click="onInfinity"
+            >&infin;</kendo-button
+          >
+          <input
+            v-show="!neverExpire || !isInfo"
+            ref="expireDate"
+            :disabled="!isInfo && neverExpire"
+            :readonly="isInfo"
+            type="text"
+            v-model="info.expirationDate"
+          />
+        </div>
       </div>
 
       <label>
@@ -119,7 +120,7 @@
       <div class="token-buttons">
         <kendo-button
           v-show="isInfo"
-          class="button-delete"
+          class="button-delete k-danger"
           @click="onConfirmDelete"
           >Delete token</kendo-button
         >
@@ -137,7 +138,10 @@
         Sure delete token <b>{{ info.description }}</b> ?
       </p>
       <pre>{{ info.token }}</pre>
-      <kendo-button v-show="isInfo" class="button-delete" @click="onDelete"
+      <kendo-button
+        v-show="isInfo"
+        class="button-delete k-danger"
+        @click="onDelete"
         >Delete token</kendo-button
       >
 

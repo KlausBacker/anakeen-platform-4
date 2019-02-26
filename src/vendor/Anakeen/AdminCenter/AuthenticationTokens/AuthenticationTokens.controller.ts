@@ -255,7 +255,28 @@ export default class AuthenticationTokensController extends Vue {
           pageSizes: false,
           refresh: true
         },
-        sortable: true
+        sortable: true,
+        toolbar: [
+          {
+            name: "expired",
+            template: `<div class="expired-btn">
+                        <input type="checkbox" class="k-grid-expired">
+                        <span>&nbspShow expired&nbsp</span>
+                       </div>`,
+            text: "Show expired"
+          },
+          {
+            iconClass: "fa fa-plus",
+            name: "add",
+            text: "Create token"
+          }
+        ]
+      })
+      .on("click", ".k-grid-add", () => {
+        this.displayCreateForm();
+      })
+      .on("click", ".k-grid-expired", () => {
+        this.flipFiltering();
       })
       .data("kendo-grid");
   }
