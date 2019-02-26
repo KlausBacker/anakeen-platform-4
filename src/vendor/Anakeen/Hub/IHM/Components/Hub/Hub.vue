@@ -1,8 +1,6 @@
 <template>
   <div class="hub-station-main">
-    <hub-station
-      :config="config"
-    ></hub-station>
+    <hub-station :config="config"></hub-station>
   </div>
 </template>
 
