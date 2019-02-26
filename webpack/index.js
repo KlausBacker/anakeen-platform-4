@@ -5,6 +5,7 @@ const {vueLoader, typeScriptLoader, setKendoAndJqueryToGlobal} = require("@anake
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
 const accounts = require("./accountManager");
+const parameters = require("./parametersManager");
 
 module.exports = () => {
   const conf = {
@@ -48,6 +49,7 @@ module.exports = () => {
     prod(conf),
     legacy(conf),
     dev(conf)
+    lib(parameters),
     lib(accounts)
   ];
 };
