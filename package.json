@@ -9,7 +9,10 @@
   "scripts": {
     "beautify": "eslint ./src --fix",
     "build": "webpack --config webpack/index.js",
-    "buildJs": "node --max_old_space_size=4096 ./node_modules/.bin/webpack --config webpack/index.js"
+    "buildJs:prod": "conf=PROD node --max_old_space_size=4096 node_modules/.bin/webpack --config webpack/index.js",
+    "buildJs:dev": "conf=DEV node --max_old_space_size=4096 node_modules/.bin/webpack --config webpack/index.js",
+    "buildJs:legacy": "conf=LEGACY node --max_old_space_size=4096 node_modules/.bin/webpack --config webpack/index.js",
+    "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev && yarn run buildJs:legacy"
   },
   "files": [
     "src/**/*.scss",

@@ -16,7 +16,9 @@ module.exports = () => {
       /node_modules\/axios/,
       /node_modules\/@progress\/.*/,
       /node_modules\/css-loader/,
-      /node_modules\/vue/
+      /node_modules\/vue/,
+      /node_modules\/jsoneditor/,
+      /node_modules\/brace/
     ],
     customParts: [
       vueLoader(),
@@ -32,6 +34,15 @@ module.exports = () => {
       }
     ]
   };
+  if (process.env.conf === "PROD") {
+    return prod(conf);
+  }
+  if (process.env.conf === "DEV") {
+    return dev(conf);
+  }
+  if (process.env.conf === "LEGACY") {
+    return legacy(conf);
+  }
   return [
     prod(conf),
     legacy(conf),
