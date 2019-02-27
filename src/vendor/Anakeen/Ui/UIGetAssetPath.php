@@ -108,6 +108,7 @@ class UIGetAssetPath
 
     /**
      * Return the asset ank web components path. By default, the route path is returned.
+     * @param bool $legacy
      * @return string - the asset path
      * @throws Exception
      */
@@ -117,10 +118,7 @@ class UIGetAssetPath
         if (self::isInDebug()) {
             $paths = self::getElementAssets("ank-components", "dev");
         } else {
-            $paths = self::getElementAssets("ank-components", "prod");
-            if (!$legacy) {
-                $name .= ".modern";
-            }
+            $paths = self::getElementAssets("ank-components", $legacy ? "legacy" : "prod");
         }
         return $paths[$name]["js"];
     }
@@ -141,10 +139,7 @@ class UIGetAssetPath
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
-            $paths = self::getElementAssets("smartElement", "prod");
-            if (!$legacy) {
-                $name .= ".modern";
-            }
+            $paths = self::getElementAssets("smartElement", $legacy ? "legacy" : "prod");
         }
         return $paths[$name]["js"];
     }
@@ -165,10 +160,7 @@ class UIGetAssetPath
         if (self::isInDebug()) {
             $paths = self::getElementAssets("smartElement", "dev");
         } else {
-            $paths = self::getElementAssets("smartElement", "prod");
-            if (!$legacy) {
-                $name .= ".modern";
-            }
+            $paths = self::getElementAssets("smartElement", $legacy ? "legacy" : "prod");
         }
         return $paths[$name]["js"];
     }

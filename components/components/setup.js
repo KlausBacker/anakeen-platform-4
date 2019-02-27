@@ -1,5 +1,5 @@
 import axios from "../utils/axios";
-import GetTextPlugin from "vue-gettext";
+import GetTextPlugin from "vue-gettext/src/index.js";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.tabstrip";
 import "@progress/kendo-ui/js/kendo.dropdownlist";

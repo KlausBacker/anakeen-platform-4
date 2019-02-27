@@ -26,12 +26,12 @@ class SearchViewRender extends \Anakeen\Ui\DefaultView
 
         $js["smartElementGrid"] = \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath();
 
-        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "prod")["Dsearch"]["js"];
+        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
         if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
             $js["dSearch"] =  \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
         }
 
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
         $js["dSearch"] = $path["Dsearch"]["js"];
 
         return $js;
