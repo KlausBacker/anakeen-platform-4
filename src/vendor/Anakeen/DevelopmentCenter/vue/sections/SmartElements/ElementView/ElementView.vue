@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { AnkSmartElement } from "@anakeen/ank-components";
+  import { AnkSmartElement } from "@anakeen/user-interfaces";
   export default {
     name: "ElementView",
     components: {

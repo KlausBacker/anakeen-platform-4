@@ -1,6 +1,6 @@
 const path = require('path');
 const {prod, dev} = require("@anakeen/webpack-conf");
-const { useVueLoader, setKendoAndJqueryToGlobal } = require("@anakeen/webpack-conf/parts");
+const { vueLoader, setKendoAndJqueryToGlobal } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, '../');
 const PUBLIC_PATH =  path.join(BASE_DIR, "src/public");
@@ -14,8 +14,14 @@ module.exports = () => {
       'workflow': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/workflowRights.js')],
     },
     buildPath: PUBLIC_PATH,
+    excludeBabel: [
+      /node_modules\/axios/,
+      /node_modules\/@progress\/.*/,
+      /node_modules\/css-loader/,
+      /node_modules\/vue/
+    ],
     customParts :[
-      useVueLoader(),
+      vueLoader(),
       setKendoAndJqueryToGlobal([
         /kendo.pdf/,
         /kendo.excel/

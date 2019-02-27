@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { AnkSEGrid } from "@anakeen/ank-components";
+import { AnkSEGrid } from "@anakeen/user-interfaces";
 import Splitter from "../../../components/Splitter/Splitter.vue";
 
 Vue.use(Splitter);

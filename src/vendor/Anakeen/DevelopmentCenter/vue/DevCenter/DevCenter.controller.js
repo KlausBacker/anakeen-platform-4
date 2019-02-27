@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { AnkNotifier } from "@anakeen/ank-components";
+import { AnkNotifier } from "@anakeen/user-interfaces";
 import DevHeader from "./DevHeader/DevHeader.vue";
 import DevSideMenu from "./DevSideMenu/DevSideMenu.vue";
 
