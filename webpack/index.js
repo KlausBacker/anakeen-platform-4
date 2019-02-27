@@ -1,7 +1,7 @@
 const path = require("path");
-const { prod, prodLegacy, dev } = require("@anakeen/webpack-conf");
+const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const {
-  useVueLoader,
+  vueLoader,
   setKendoAndJqueryToGlobal
 } = require("@anakeen/webpack-conf/parts");
 
@@ -35,10 +35,16 @@ module.exports = () => {
         )
       ]
     },
+    excludeBabel: [
+      /node_modules\/axios/,
+      /node_modules\/@progress\/.*/,
+      /node_modules\/css-loader/,
+      /node_modules\/vue/
+    ],
     buildPath: PUBLIC_PATH,
     customParts: [
       setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
-      useVueLoader(),
+      vueLoader(),
       {
         resolve: {
           alias: {
@@ -63,5 +69,5 @@ module.exports = () => {
       }
     ]
   };
-  return [prod(conf), prodLegacy(conf), dev(conf)];
+  return [prod(conf), dev(conf), legacy(conf)];
 };
