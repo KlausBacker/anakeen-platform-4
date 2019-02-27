@@ -16,6 +16,7 @@ module.exports = () => {
       smartElement: [path.resolve(__dirname, "./scss/smartElement.scss")],
       login: [path.resolve(__dirname, "./scss/login.scss")]
     },
+    withoutBabel: true,
     buildPath: PUBLIC_PATH
   };
   const confProd = {

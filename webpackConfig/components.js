@@ -1,5 +1,5 @@
 const path = require("path");
-const { prod, prodLegacy, dev } = require("@anakeen/webpack-conf");
+const { prod, legacy, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
   setKendoAndJqueryToGlobal
@@ -17,13 +17,13 @@ module.exports = () => {
       ]
     },
     buildPath: PUBLIC_PATH,
+    excludeBabel: [
+      /node_modules\/axios/,
+      /node_modules\/@progress\/kendo-ui/,
+      /node_modules\/document-register-element/
+    ],
     customParts: [
       {
-        resolve: {
-          alias: {
-            vue$: "vue/dist/vue.esm.js"
-          }
-        },
         output: {
           library: "ank-components",
           libraryTarget: "umd"
@@ -33,25 +33,5 @@ module.exports = () => {
       vueLoader()
     ]
   };
-  const confLegacy = {
-    ...conf,
-    entry: {
-      "ank-components": [
-        "@webcomponents/webcomponentsjs/webcomponents-bundle.js",
-        path.resolve(__dirname, "../src/vendor/Anakeen/Components/main.js")
-      ]
-    }
-  };
-  const confDev = {
-    ...conf,
-    entry: {
-      "ank-components": [
-        path.resolve(
-          __dirname,
-          "../src/vendor/Anakeen/Components/main-debug.js"
-        )
-      ]
-    }
-  };
-  return [prod(conf), dev(confDev)];
+  return [prod(conf), legacy(conf), dev(conf)];
 };

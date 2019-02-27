@@ -1,5 +1,5 @@
 const path = require("path");
-const { prod, dev } = require("@anakeen/webpack-conf");
+const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const { cssLoader } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -47,6 +47,9 @@ module.exports = () => {
       ]
     },
     buildPath: PUBLIC_PATH,
+    excludeBabel: [
+      /node_modules\/style-loader/
+    ],
     customParts: [
       {
         resolve: {
@@ -72,5 +75,5 @@ module.exports = () => {
       cssLoader()
     ]
   };
-  return [prod(conf), dev(conf)];
+  return [prod(conf), dev(conf), legacy(conf)];
 };

@@ -30,7 +30,7 @@ class SearchEditRender extends DefaultEdit
         $js = parent::getJsReferences($document);
 
         $js["smartElementGrid"] = \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath();
-        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "prod")["Dsearch"]["js"];
+        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
         if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
             $js["dSearch"] =  \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
         }

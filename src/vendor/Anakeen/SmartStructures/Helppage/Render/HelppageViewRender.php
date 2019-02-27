@@ -48,7 +48,7 @@ class HelppageViewRender extends \Anakeen\Ui\DefaultView
             $js["dduiHelppage"] = 'uiAssets/Families/helppage/debug/helppage.js?ws=' . $ws;
         }
 
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
         $js["dduiHelppage"] = $path["Helppage"]["js"];
 
         return $js;

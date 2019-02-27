@@ -32,7 +32,7 @@ class IuserChangeGroup extends DefaultConfigEditRender
     {
         $js = parent::getJsReferences();
 
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
         $js["dduiGroup"] = $path["IuserGroup"]["js"];
 
         return $js;

@@ -10,9 +10,10 @@ module.exports = () => {
   const conf = {
     moduleName: "assets",
     entry: {
-      KendoUI: [path.resolve(__dirname, "./kendo.js")]
+      KendoUI: [path.resolve(__dirname, "./kendo/kendo.js")]
     },
     buildPath: PUBLIC_PATH,
+    withoutBabel: true,
     customParts: [
       {
         output: {

@@ -118,7 +118,7 @@ class IuserEditRender extends DefaultConfigEditRender
     {
         $js = parent::getJsReferences();
 
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
         $js["iuser"] = $path["Iuser"]["js"];
 
         return $js;

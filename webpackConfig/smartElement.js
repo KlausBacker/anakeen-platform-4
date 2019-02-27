@@ -1,5 +1,5 @@
 const path = require("path");
-const { prod, dev } = require("@anakeen/webpack-conf");
+const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
 const {
   cssLoader,
@@ -27,7 +27,7 @@ module.exports = () => {
       ]
     },
     buildPath: PUBLIC_PATH,
-    excludeBabel: /node_modules\/ckeditor/,
+    excludeBabel: [/node_modules\/ckeditor/],
     customParts: [
       {
         resolve: {
@@ -47,7 +47,7 @@ module.exports = () => {
             "kendo-culture-fr":
               "@progress/kendo-ui/js/cultures/kendo.culture.fr-FR",
             tooltip: "bootstrap/js/src/tooltip",
-            documentCkEditor: path.resolve(__dirname, "./ckeditor.js")
+            documentCkEditor: path.resolve(__dirname, "./ckeditor/ckeditor.js")
           }
         }
       },
@@ -58,9 +58,9 @@ module.exports = () => {
           })
         ]
       },
-      setKendoAndJqueryToGlobal([{"dcpExternals/KendoUI/KendoUI": "kendo"}]),
+      setKendoAndJqueryToGlobal([/dcpExternals\/KendoUI\/KendoUI/]),
       cssLoader()
     ]
   };
-  return [prod(conf), dev(conf)];
+  return [prod(conf), dev(conf), legacy(conf)];
 };

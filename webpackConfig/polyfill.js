@@ -9,11 +9,12 @@ module.exports = () => {
     moduleName: "polyfill",
     entry: {
       polyfill: [
-        path.resolve(__dirname, "./scriptModulePolyfill.js"),
-        "whatwg-fetch",
-        "core-js"
+        path.resolve(__dirname, "./polyfill/scriptModulePolyfill.js"),
+        path.resolve(__dirname, "./polyfill/promisePolyfill.js"),
+        "whatwg-fetch"
       ]
     },
+    withoutBabel: true,
     buildPath: PUBLIC_PATH,
     customParts: []
   };
