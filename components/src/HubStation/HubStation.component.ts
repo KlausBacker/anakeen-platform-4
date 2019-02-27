@@ -1,7 +1,7 @@
 import { AnkNotifier, VueAxiosPlugin } from "@anakeen/internal-components";
 
 const nodePath = require("path");
-import AnkComponents from "@anakeen/ank-components";
+import AnkComponents from "@anakeen/user-interfaces";
 // Vue class based component export
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import HubDock from "../HubDock/HubDock.vue";

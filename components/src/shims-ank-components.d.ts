@@ -1,1 +1,1 @@
-declare module "@anakeen/ank-components";
+declare module "@anakeen/user-interfaces";
