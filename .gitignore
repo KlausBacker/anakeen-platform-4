@@ -20,3 +20,4 @@ Makefile.local
 /.idea/webServers.xml
 /.idea/workspace.xml
 ide/vendor/
+lib/

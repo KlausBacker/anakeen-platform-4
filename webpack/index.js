@@ -1,6 +1,6 @@
 const path = require('path');
-const {prod, prodLegacy, dev} = require("@anakeen/webpack-conf");
-const {useVueLoader, typescriptLoader, setKendoAndJqueryToGlobal} = require("@anakeen/webpack-conf/parts");
+const {prod, legacy, dev} = require("@anakeen/webpack-conf");
+const {vueLoader, typeScriptLoader, setKendoAndJqueryToGlobal} = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
@@ -12,9 +12,15 @@ module.exports = () => {
       adminCenter: [ path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/main.js")]
     },
     buildPath: PUBLIC_PATH,
+    excludeBabel: [
+      /node_modules\/axios/,
+      /node_modules\/@progress\/.*/,
+      /node_modules\/css-loader/,
+      /node_modules\/vue/
+    ],
     customParts: [
-      useVueLoader(),
-      typescriptLoader(),
+      vueLoader(),
+      typeScriptLoader(),
       setKendoAndJqueryToGlobal([
         /kendo.pdf/,
         /kendo.excel/
@@ -28,7 +34,7 @@ module.exports = () => {
   };
   return [
     prod(conf),
-    prodLegacy(conf),
+    legacy(conf),
     dev(conf)
   ];
 };
