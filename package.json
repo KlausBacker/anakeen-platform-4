@@ -47,7 +47,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.1.1",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190227111733",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190228092305",
     "@commitlint/config-conventional": "^7.5.0",
     "backbone": "^1.4.0",
     "ckeditor": "^4.11.3",
