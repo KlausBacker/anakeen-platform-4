@@ -3,15 +3,29 @@
 namespace Anakeen\Hub\Routes;
 
 use Anakeen\Core\SEManager;
+use Anakeen\Router\Exception;
 use Anakeen\Ui\UIGetAssetPath;
 
 class Hub
 {
+
+    protected function getHubInstanceId(
+        \Slim\Http\request $request,
+        \Slim\Http\response $response,
+        $args
+    ) {
+        if (isset($args["hubId"])) {
+            return $args["hubId"];
+        }
+        throw new Exception("The Hub Instance ID is not defined");
+    }
+
     /**
      * @param \Slim\Http\request $request
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\Response
+     * @throws Exception
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Ui\Exception
      */
@@ -21,11 +35,12 @@ class Hub
         $args
     ) {
         $page = __DIR__ . "/Layout/hub.html.mustache";
+        $hubId = $this->getHubInstanceId($request, $response, $args);
         $mustache = new \Mustache_Engine();
-        $title = SEManager::getDocument($args["hubId"])->getTitle();
+        $title = SEManager::getDocument($hubId)->getTitle();
         $data = [
             "title" => $title,
-            "favIconURL" => $args["hubId"],
+            "hubInstanceId" => $hubId,
             "JS_DEPS" => [
                 [
                     "key" => "jquery",

@@ -14,8 +14,7 @@ export default {
   },
   created() {
     this.hubEntries = new HubEntries(this);
-    let route = window.location.href;
-    this.hubId = route.match(/\/hub\/station\/(\w+)/)[1];
+    this.hubId = window.AnkHubInstanceId;
   },
   mounted() {
     this.getConfig();
@@ -27,7 +26,10 @@ export default {
         .get(`/hub/config/${this.hubId}`)
         .then(response => {
           const data = response.data.data;
-          this.hubEntries.contents = data;
+          const globalAssets = data.globalAssets || [];
+          this.hubEntries.contents = [{ assets: globalAssets }].concat(
+            data.hubElements
+          );
           this.hubEntries.loadAssets().then(() => {
             this.$kendo.ui.progress(this.$(this.$el), false);
             this.hubEntries.useComponents();

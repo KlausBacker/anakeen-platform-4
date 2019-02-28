@@ -1,5 +1,11 @@
 <template>
-  <div class="hub-station-component">
+  <div
+    :class="
+      `hub-station-component ${
+        config.instanceName ? `hub-instance-${config.instanceName}` : ''
+      }`
+    "
+  >
     <header
       v-if="isHeaderEnabled"
       class="hub-station-bar hub-station-bar--header"
@@ -340,6 +346,12 @@
         </template>
       </hub-dock>
     </footer>
+    <ank-notifier
+      v-if="withNotifier"
+      ref="ankNotifier"
+      position="top-right"
+      defaultType="notice"
+    ></ank-notifier>
   </div>
 </template>
 <!-- CSS to this component only -->

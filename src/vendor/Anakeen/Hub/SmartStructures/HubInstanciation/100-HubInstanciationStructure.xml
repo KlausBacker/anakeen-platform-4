@@ -9,6 +9,7 @@
                 <smart:field-set name="hub_instance" type="frame" access="ReadWrite" label="Information">
                     <smart:field-text access="ReadWrite" name="instance_logical_name" label="Logical Name"
                                       needed="true"/>
+                    <smart:field-text access="ReadWrite" name="hub_instanciation_router_entry" label="Router entry"/>
                     <smart:field-image access="ReadWrite" name="hub_instanciation_icone" label="Fav icon"/>
                 </smart:field-set>
                 <smart:field-set name="hub_instance_label_frame" type="frame" label="Label" access="ReadWrite">
@@ -17,6 +18,18 @@
                         <smart:field-text name="hub_instance_title" label="Title" access="ReadWrite"/>
                         <smart:field-text name="hub_instance_language" label="Language"
                                           access="Read"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_instance_tab_assets" type="tab" label="Global assets" access="ReadWrite">
+                <smart:field-set name="hub_instance_fr_assets" type="frame" label="Hub instance global assets" access="ReadWrite">
+                    <smart:field-set name="hub_instance_jsassets" type="array" label="Javascript assets" access="ReadWrite">
+                        <smart:field-enum name="hub_instance_jsasset_type" label="Asset type" access="ReadWrite" relation="hub_instance_asset_type"/>
+                        <smart:field-text name="hub_instance_jsasset" label="Location" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="hub_instance_cssassets" type="array" label="CSS assets" access="ReadWrite">
+                        <smart:field-enum name="hub_instance_cssasset_type" label="Asset type" access="ReadWrite" relation="hub_instance_asset_type"/>
+                        <smart:field-text name="hub_instance_cssasset" label="Location" access="ReadWrite"/>
                     </smart:field-set>
                 </smart:field-set>
             </smart:field-set>
@@ -30,27 +43,39 @@
         </smart:fields>
 
         <smart:parameters>
-            <smart:field-set name="hub_fr_assets" type="frame" label="Hub asset parameters" access="ReadWrite">
-                <smart:field-set name="hub_jsassets" type="array" label="Javascript assets" access="ReadWrite">
-                    <smart:field-text name="hub_jsasset" label="Javascript Url" access="ReadWrite"/>
-                </smart:field-set>
-                <smart:field-set name="hub_cssassets" type="array" label="CSS assets" access="ReadWrite">
-                    <smart:field-text name="hub_cssasset" label="Css Url" access="ReadWrite"/>
-                </smart:field-set>
-            </smart:field-set>
         </smart:parameters>
 
         <smart:hooks>
         </smart:hooks>
 
         <smart:autocompletion>
+            <smart:field-autocomplete field="hub_instance_jsasset">
+                <smart:field-callable
+                        function="Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationAutocomplete\HubInstanciationAutocomplete::getManifests"/>
+                <smart:field-returns>
+                    <smart:field-return field="hub_instance_jsasset"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="hub_instance_cssasset">
+                <smart:field-callable
+                        function="Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationAutocomplete\HubInstanciationAutocomplete::getManifests"/>
+                <smart:field-returns>
+                    <smart:field-return field="hub_instance_cssasset"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
         </smart:autocompletion>
 
         <smart:defaults>
+            <smart:default field="hub_instance_cssasset_type">manifest</smart:default>
+            <smart:default field="hub_instance_jsasset_type">manifest</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>
 
     <smart:enumerates>
+        <smart:enum-configuration name="hub_instance_asset_type">
+            <smart:enum name="manifest" label="Manifest"/>
+            <smart:enum name="path" label="Path"/>
+        </smart:enum-configuration>
     </smart:enumerates>
 </smart:config>

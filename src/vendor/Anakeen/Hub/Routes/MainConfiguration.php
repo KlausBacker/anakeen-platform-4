@@ -21,6 +21,8 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
      * @param \Slim\Http\response $response
      * @param $args
      * @return \Slim\Http\response
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Search\Exception
      */
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -36,12 +38,18 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
         $search->setOrder(Fields::hub_docker_position. ','.Fields::hub_order);
         $search->search();
         $hubConfigurations = $search->getResults();
-        $return = [];
+        $hubInstance = SEManager::getDocument($this->structureName);
+        $return = [
+            "hubElements" =>  []
+        ];
+        if (!empty($hubInstance)) {
+            $return = $hubInstance->getConfiguration();
+        }
         /**
          * @var $hubConfig \SmartStructure\Hubconfiguration
          */
         foreach ($hubConfigurations as $hubConfig) {
-            $return[] = $hubConfig->getConfiguration();
+            $return["hubElements"][] = $hubConfig->getConfiguration();
         }
         return ApiV2Response::withData($response, $return);
     }

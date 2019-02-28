@@ -13,9 +13,6 @@
     <div class="hub-dock-header">
       <slot name="header"></slot>
     </div>
-    <div v-if="expandable" class="hub-dock-collapse-button" @click="toggleDock">
-      <i :class="`fa fa-${faCollapseIcon}`"></i>
-    </div>
     <div class="hub-dock-center">
       <div class="hub-dock-entries" :style="entriesStyle">
         <slot></slot>
@@ -23,6 +20,9 @@
     </div>
     <div class="hub-dock-footer">
       <slot name="footer"></slot>
+    </div>
+    <div v-if="expandable" class="hub-dock-collapse-button" @click="toggleDock">
+      <i :class="`fa fa-${faCollapseIcon}`"></i>
     </div>
   </div>
 </template>

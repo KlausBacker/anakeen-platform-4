@@ -35,19 +35,23 @@ class HubEntries {
           const assetsPromises = [];
           if (assets.js && assets.js.length) {
             assets.js.forEach(jsUrl => {
-              assetsPromises.push(
-                this.hubInstance.$loader({
-                  url: jsUrl,
-                  library: dockContent.entryOptions
-                    ? dockContent.entryOptions.libName
-                    : undefined
-                })
-              );
+              if (jsUrl) {
+                assetsPromises.push(
+                  this.hubInstance.$loader({
+                    url: jsUrl,
+                    library: dockContent.entryOptions
+                      ? dockContent.entryOptions.libName
+                      : undefined
+                  })
+                );
+              }
             });
           }
           if (assets.css && assets.css.length) {
             assets.css.forEach(cssUrl => {
-              this.hubInstance.$loadCssFile(cssUrl);
+              if (cssUrl) {
+                this.hubInstance.$loadCssFile(cssUrl);
+              }
             });
           }
           return Promise.all(assetsPromises).then(() => {

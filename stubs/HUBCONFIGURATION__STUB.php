@@ -37,6 +37,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_station_id='hub_station_id';
         /**
+        * Title
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>is-title</i> true </li>

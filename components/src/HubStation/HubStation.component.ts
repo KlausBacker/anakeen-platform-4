@@ -1,11 +1,14 @@
+import { AnkNotifier, VueAxiosPlugin } from "@anakeen/internal-components";
+
 const nodePath = require("path");
-import AnkComponents from "@anakeen/ank-components";
+import AnkComponents from "@anakeen/user-interfaces";
 // Vue class based component export
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import HubDock from "../HubDock/HubDock.vue";
 import HubDockEntry from "../HubDock/HubDockEntry/HubDockEntry.vue";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
 import HubLabel from "../HubLabel/HubLabel.vue";
+import { IHubStationConfig } from "./HubStationsTypes";
 
 import {
   DockPosition,
@@ -14,17 +17,18 @@ import {
   IHubStationPropConfig,
   InnerDockPosition
 } from "./HubStationsTypes";
+
+Vue.use(VueAxiosPlugin);
 Vue.use(AnkComponents, { globalVueComponents: true });
 Vue.component("hub-label", HubLabel);
 @Component({
   components: {
+    "ank-notifier": AnkNotifier,
     "hub-dock": HubDock,
     "hub-dock-entry": HubDockEntry
   }
 })
 export default class HubStation extends Vue {
-  // endregion watch
-
   // region computed
   get isHeaderEnabled() {
     return this.configData.top.length;
@@ -47,6 +51,15 @@ export default class HubStation extends Vue {
 
   get HubElementDisplayTypes(): any {
     return HubElementDisplayTypes;
+  }
+
+  get rootUrl(): string {
+    if (this.config && this.config.routerEntry) {
+      return this.config.routerEntry;
+    } else if (this.baseUrl) {
+      return this.baseUrl;
+    }
+    return "";
   }
 
   private static capitalize(str: string) {
@@ -75,19 +88,21 @@ export default class HubStation extends Vue {
   };
 
   public $refs!: {
-    [key: string]: IAnkDock;
+    [key: string]: IAnkDock | any;
   };
 
   // region props
-  @Prop({ default: () => [], type: Array })
-  public config!: IHubStationPropConfig[];
+  @Prop({ default: () => [], type: Object })
+  public config!: IHubStationConfig;
   @Prop({ default: "", type: String }) public baseUrl!: string;
+  @Prop({ default: true, type: Boolean }) public withNotifier!: boolean;
+  @Prop({ default: false, type: Boolean }) public injectTag!: boolean;
   // endregion props
 
   // region watch
   @Watch("config")
-  public onConfigPropChanged(val: IHubStationPropConfig[]) {
-    this.configData = HubStation.organizeData(val);
+  public onConfigPropChanged(val: IHubStationConfig) {
+    this.configData = HubStation.organizeData(val.hubElements);
     this.initRouterConfig(this.configData);
   }
   // endregion computed
@@ -149,7 +164,7 @@ export default class HubStation extends Vue {
 
   public getEntryRoutePath(entryOptions) {
     if (entryOptions && entryOptions.route) {
-      return nodePath.join(this.baseUrl, entryOptions.route);
+      return nodePath.join(this.rootUrl, entryOptions.route);
     }
     return "";
   }
@@ -159,6 +174,31 @@ export default class HubStation extends Vue {
       return entry.entryOptions.selectable;
     }
     return true;
+  }
+
+  public created() {
+    if (this.$http && this.$http.errorEvents) {
+      this.$http.errorEvents.on("error", event => {
+        event.defaultPrevented = false;
+        event.preventDefault = function() {
+          this.defaultPrevented = true;
+        };
+        this.$emit("hubError", event);
+        if (this.withNotifier && !event.defaultPrevented) {
+          this.$refs.ankNotifier.publishNotification(
+            new CustomEvent("ankNotification", {
+              detail: [
+                {
+                  content: event.message,
+                  title: event.title,
+                  type: "error"
+                }
+              ]
+            })
+          );
+        }
+      });
+    }
   }
 
   public mounted() {
@@ -182,7 +222,7 @@ export default class HubStation extends Vue {
                     componentProps: Object.assign({}, cfg.component.props, {
                       displayType: HubElementDisplayTypes.CONTENT,
                       parentPath: nodePath.join(
-                        this.baseUrl,
+                        this.rootUrl,
                         cfg.entryOptions.route
                       )
                     })
@@ -190,7 +230,7 @@ export default class HubStation extends Vue {
                 },
                 template: `<component :is="componentName" v-bind="componentProps"></component>`
               },
-              path: nodePath.join(this.baseUrl, cfg.entryOptions.route)
+              path: nodePath.join(this.rootUrl, cfg.entryOptions.route)
             };
             routes.push(routeComponent);
           }

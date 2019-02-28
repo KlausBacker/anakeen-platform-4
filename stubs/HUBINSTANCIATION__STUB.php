@@ -38,6 +38,15 @@ namespace SmartStructure\Fields {
         */ 
         const instance_logical_name='instance_logical_name';
         /**
+        * Router entry
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>needed</i> true </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const hub_instanciation_router_entry='hub_instanciation_router_entry';
+        /**
         * Fav icon
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
@@ -72,11 +81,77 @@ namespace SmartStructure\Fields {
         /**
         * Language
         * <ul>
-        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>access</i> Read </li>
         * <li> <i>type</i> text </li>
         * </ul>
         */ 
         const hub_instance_language='hub_instance_language';
+        /**
+        * Global assets
+        * <ul>
+        * <li> <i>type</i> tab </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const hub_instance_tab_assets='hub_instance_tab_assets';
+        /**
+        * Hub instance global assets
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const hub_instance_fr_assets='hub_instance_fr_assets';
+        /**
+        * Javascript assets
+        * <ul>
+        * <li> <i>type</i> array </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const hub_instance_jsassets='hub_instance_jsassets';
+        /**
+        * Asset type
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> hub_instance_asset_type </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_instance_jsasset_type='hub_instance_jsasset_type';
+        /**
+        * Location
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const hub_instance_jsasset='hub_instance_jsasset';
+        /**
+        * CSS assets
+        * <ul>
+        * <li> <i>type</i> array </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const hub_instance_cssassets='hub_instance_cssassets';
+        /**
+        * Asset type
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> hub_instance_asset_type </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_instance_cssasset_type='hub_instance_cssasset_type';
+        /**
+        * Location
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const hub_instance_cssasset='hub_instance_cssasset';
         /**
         * Security
         * <ul>
@@ -109,51 +184,6 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hub_role='hub_role';
-        /**
-        * Hub asset parameters
-        * <ul>
-        * <li> <i>type</i> frame </li>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_fr_assets='hub_fr_assets';
-        /**
-        * Javascript assets
-        * <ul>
-        * <li> <i>type</i> array </li>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_jsassets='hub_jsassets';
-        /**
-        * Javascript Url
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_jsasset='hub_jsasset';
-        /**
-        * CSS assets
-        * <ul>
-        * <li> <i>type</i> array </li>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_cssassets='hub_cssassets';
-        /**
-        * Css Url
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
-        * <li> <i>kind</i> Parameter </li>
-        * </ul>
-        */ 
-        const hub_cssasset='hub_cssasset';
 
     }
 }

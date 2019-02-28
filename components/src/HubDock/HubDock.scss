@@ -1,16 +1,28 @@
 $tab-height: 3rem;
 
-$background-color: #f9f9f9;
+$background-color: #FFFFF;
 $background-color-button: #646464;
-$background-color-button-hovered: #777777;
+$background-color-button-hovered: #F5F5F5;
 $background-color-tab: #f3f3f3;
 $button-icon-color: #ffffff;
 $border-color: #a9a9a9;
 $tab-compact-color: #646464;
-$selected-color: #a9a9a9;
+$selected-color: rgba(21, 126, 251, 0.08);
 $selected-header-footer-color: #777777;
 $green-selected: #8ae234;
 .hub-dock-component {
+  &.hub-dock--top {
+    box-shadow:  0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  }
+  &.hub-dock--left {
+    box-shadow:  2px 0px 5px 0 rgba(0, 0, 0, 0.2);
+  }
+  &.hub-dock--right {
+    box-shadow:  -2px 0px 5px 0 rgba(0, 0, 0, 0.2);
+  }
+  &.hub-dock--bottom {
+    box-shadow:  0 -2px 5px 0 rgba(0, 0, 0, 0.2);
+  }
   background-color: $background-color;
   display: flex;
   transition: width 0.5s ease;
@@ -26,15 +38,85 @@ $green-selected: #8ae234;
     height: 100%;
     .hub-dock-entry-component {
       min-height: 5rem;
-      &.entry-selected {
-        box-shadow: 2.5px 0 0 $green-selected inset;
-      }
     }
     .hub-dock-center {
-      border-right: 1px solid $border-color;
-      border-left: 1px solid $border-color;
       .hub-dock-entries {
         flex-direction: column;
+      }
+    }
+  }
+
+  &.hub-dock--left {
+
+    .hub-dock-header {
+      border-top: 1px solid rgba(230, 230, 230, 0.5);
+      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+    }
+
+    .hub-dock-footer {
+      border-top: 1px solid rgba(230, 230, 230, 0.5);
+      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+    }
+    .hub-dock-entry-component {
+      &.entry-selected {
+        border-left: 3px solid $green-selected;
+      }
+    }
+  }
+
+  &.hub-dock--right {
+
+    .hub-dock-header {
+      border-top: 1px solid rgba(230, 230, 230, 0.5);
+      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+    }
+
+    .hub-dock-footer {
+      border-top: 1px solid rgba(230, 230, 230, 0.5);
+      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+    }
+
+    .hub-dock-entry-component {
+      &.entry-selected {
+        border-right:  3px solid $green-selected;
+      }
+    }
+  }
+
+  &.hub-dock--top {
+
+    .hub-dock-header {
+      border-left: 1px solid rgba(230, 230, 230, 0.5);
+      border-right: 1px solid rgba(230, 230, 230, 0.5);
+    }
+
+    .hub-dock-footer {
+      border-left: 1px solid rgba(230, 230, 230, 0.5);
+      border-right: 1px solid rgba(230, 230, 230, 0.5);
+    }
+
+    .hub-dock-entry-component {
+      &.entry-selected {
+        border-top:  3px solid $green-selected;
+      }
+    }
+  }
+
+  &.hub-dock--bottom {
+
+    .hub-dock-header {
+      border-left: 1px solid rgba(230, 230, 230, 0.5);
+      border-right: 1px solid rgba(230, 230, 230, 0.5);
+    }
+
+    .hub-dock-footer {
+      border-left: 1px solid rgba(230, 230, 230, 0.5);
+      border-right: 1px solid rgba(230, 230, 230, 0.5);
+    }
+
+    .hub-dock-entry-component {
+      &.entry-selected {
+        border-bottom:  3px solid $green-selected;
       }
     }
   }
@@ -45,27 +127,16 @@ $green-selected: #8ae234;
     width: 100%;
     .hub-dock-entry-component {
       min-width: 5rem;
-      &.entry-selected {
-        box-shadow: 2.5px 0 0 $green-selected inset;
-      }
     }
     .hub-dock-center {
-      border-bottom: 1px solid $border-color;
-      border-top: 1px solid $border-color;
       .hub-dock-entries {
         flex-direction: row;
       }
     }
   }
-  .hub-dock-header,
-  .hub-dock-footer {
-    background-color: $background-color-button;
-    color: $button-icon-color;
-  }
 
   .hub-dock-collapse-button {
-    background-color: $background-color-button;
-    color: $button-icon-color;
+    color: #BEBEBE;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -90,9 +161,8 @@ $green-selected: #8ae234;
         min-width: 5rem;
         &.entry-selected {
           background-color: $selected-color;
-        }
-        & + .hub-dock-entry-component {
-          border-top: 1px solid $border-color;
+          color: #157EFB;
+          font-weight: bold;
         }
       }
     }

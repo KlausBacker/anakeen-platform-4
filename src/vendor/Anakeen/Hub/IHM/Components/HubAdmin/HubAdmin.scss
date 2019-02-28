@@ -1,20 +1,20 @@
 $content-height: calc(100vh - 3.4rem);
 
-body, html {
+body,
+html {
   font-size: 14px;
   font-family: Roboto, Helvetica, Arial, sans-serif;
   height: 100vh;
   width: 100vw;
 }
 
-
 body {
-  background-color: #DDDDDD;
-  overflow:hidden;
+  background-color: #dddddd;
+  overflow: hidden;
 }
 .hub-admin-grid {
   height: 100%;
-  width:100%;
+  width: 100%;
 }
 
 .hub-admin {
@@ -29,7 +29,7 @@ body {
   justify-content: space-between;
   align-items: center;
   color: rgba(255, 255, 255, 0.7);
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   background: #424142;
 }
 
@@ -58,7 +58,8 @@ body {
   tr {
     word-break: break-word;
   }
-  .k-grid-consult,.k-grid-edit {
+  .k-grid-consult,
+  .k-grid-edit {
     padding: 0.5rem 2.25rem !important;
   }
 }
@@ -79,9 +80,9 @@ body {
     &::before {
       height: 100%;
       width: 1px;
-      background: rgba(255,255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.7);
       content: " ";
-      margin-right: .5rem;
+      margin-right: 0.5rem;
     }
 
     .k-icon {
@@ -90,6 +91,6 @@ body {
   }
   .k-dropdown-wrap {
     color: white;
-    background-color: #157EFB;
+    background-color: #157efb;
   }
 }
