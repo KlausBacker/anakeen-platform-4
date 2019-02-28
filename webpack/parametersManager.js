@@ -1,6 +1,10 @@
 const path = require("path");
 
-const {useVueLoader, typescriptLoader} = require("@anakeen/webpack-conf/parts");
+const {
+  vueLoader,
+  typeScriptLoader,
+  setKendoAndJqueryToGlobal
+} = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
@@ -11,13 +15,22 @@ module.exports = {
     "parameter-manager": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/HubComponent/AdminCenterParameters/index.js")]
   },
   buildPath: PUBLIC_PATH,
+  excludeBabel: [
+    /node_modules\/axios/,
+    /node_modules\/@progress\/.*/,
+    /node_modules\/css-loader/,
+    /node_modules\/vue/,
+    /node_modules\/jsoneditor/,
+    /node_modules\/brace/
+  ],
   customParts: [
-    useVueLoader(),
-    typescriptLoader(),
+    vueLoader(),
+    typeScriptLoader(),
+    setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
     {
       resolve: {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
-      },
+      }
     }
   ]
 };
