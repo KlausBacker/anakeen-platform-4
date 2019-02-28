@@ -1,4 +1,4 @@
-import { AnkSmartElement } from "@anakeen/ank-components";
+import { AnkSmartElement } from "@anakeen/user-interfaces";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { TreeViewInstaller } from "@progress/kendo-treeview-vue-wrapper";
