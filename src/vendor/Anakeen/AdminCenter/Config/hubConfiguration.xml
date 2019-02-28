@@ -20,6 +20,7 @@
         <hub_docker_position>LEFT_CENTER</hub_docker_position>
         <hub_vue_router_entry>accounts</hub_vue_router_entry>
         <hub_activated>TRUE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
     </hubadmincenteraccountsvue>
     <hubadmincenterparametersvue  name="HUBA_PARAMETERS">
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
@@ -29,6 +30,7 @@
         <hub_vue_router_entry>parameters</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_activated_order>2</hub_activated_order>
+        <hub_selectable>TRUE</hub_selectable>
     </hubadmincenterparametersvue>
     <hubauthenticationtokensvue >
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
@@ -37,6 +39,7 @@
         <hub_docker_position>LEFT_CENTER</hub_docker_position>
         <hub_vue_router_entry>tokens</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
     </hubauthenticationtokensvue>
     <hubadmincentervaultvue>
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
@@ -45,6 +48,7 @@
         <hub_docker_position>LEFT_CENTER</hub_docker_position>
         <hub_vue_router_entry>vaults</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
     </hubadmincentervaultvue>
     <hubconfigurationidentity  name="HUBA_IDENTITY">
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
@@ -55,6 +59,7 @@
         <hub_activated_order>1</hub_activated_order>
         <email_alterable>FALSE</email_alterable>
         <password_alterable>FALSE</password_alterable>
+        <hub_selectable>FALSE</hub_selectable>
     </hubconfigurationidentity>
     <hubconfigurationlogout  name="HUBA_LOGOUT">
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
@@ -62,5 +67,6 @@
         <hub_order>2</hub_order>
         <hub_docker_position>TOP_RIGHT</hub_docker_position>
         <hub_activated>FALSE</hub_activated>
+        <hub_selectable>FALSE</hub_selectable>
     </hubconfigurationlogout>
 </documents>

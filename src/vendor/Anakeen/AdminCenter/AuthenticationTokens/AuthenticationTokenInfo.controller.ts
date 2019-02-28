@@ -1,3 +1,4 @@
+import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.grid";
@@ -18,7 +19,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 // declare var kendo;
 
 Vue.use(LayoutInstaller);
-
+Vue.use(ButtonsInstaller);
 // noinspection JSUnusedGlobalSymbols
 @Component({
   name: "ank-token-info"

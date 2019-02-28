@@ -1,6 +1,4 @@
 .authentication-tokens {
-
-
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -17,7 +15,7 @@
 
   .button-filtering {
     > i {
-      width:2rem;
+      width: 2rem;
       margin-right: 1rem;
     }
   }
@@ -31,20 +29,21 @@
       // table-layout: auto;
     }
     .k-filtercell .k-autocomplete {
-      width:100%;
+      width: 100%;
     }
     .cell--token {
       font-family: monospace;
     }
-    .k-pager-nav, .k-pager-numbers {
+    .k-pager-nav,
+    .k-pager-numbers {
       display: none;
     }
 
-    .token--expired  .cell--expire {
-      color:var(--warning);
+    .token--expired .cell--expire {
+      color: var(--warning);
     }
-    .token--expired.token--selected  .cell--expire {
-      color:inherit;
+    .token--expired.token--selected .cell--expire {
+      color: inherit;
     }
   }
 
@@ -52,16 +51,16 @@
     display: flex;
     height: 100%;
     > span {
-      font-size:5rem;
-      margin:auto;
+      font-size: 5rem;
+      margin: auto;
     }
   }
   .token--selected {
-    background-color:var(--primary);
-    color:white;
+    background-color: var(--primary);
+    color: white;
     &:hover {
-      background-color:var(--primary);
-      color:white;
+      background-color: var(--primary);
+      color: white;
     }
   }
 }

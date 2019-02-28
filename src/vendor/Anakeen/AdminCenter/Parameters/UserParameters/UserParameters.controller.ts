@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
 import parameterEditor from "../ParameterEditor/ParameterEditor.vue";
 
 declare var $;
@@ -24,6 +25,7 @@ export default class UserParametersController extends Vue {
       editor.destroy();
     }
   }
+  @Prop({ type: Boolean }) public globalParameters;
   // Data source for user parameters treeList
   public userParametersDataSource: IuserParametersDataSource;
 
@@ -627,10 +629,7 @@ export default class UserParametersController extends Vue {
     this.initTreeList();
 
     // Init switch button
-    $(".switch-parameters", this.$el).kendoButton({
-      icon: "arrow-left"
-    });
-
+    $(".switch-parameters", this.$el).prop("checked", !this.globalParameters);
     // Hide user parameters tree to show user search
     $(".parameters-div", this.$el).attr("style", "display: none !important;");
 

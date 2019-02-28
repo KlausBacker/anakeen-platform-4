@@ -13,7 +13,10 @@
         </smart:parameters>
 
         <smart:hooks/>
-
-        <smart:defaults/>
+        <smart:defaults>
+            <smart:default field="hub_jsasset" reset="true">
+                <smart:field-callable function="Anakeen\AdminCenter\SmartStructures\HubAdminCenterAccounts\HubAdminCenterAccountsVueBehavior::getJSAsset"/>
+            </smart:default>
+        </smart:defaults>
     </smart:structure-configuration>
 </smart:config>

@@ -3,20 +3,12 @@ import Vue from "vue";
 // import router from "./router";
 import { HubStation } from "@anakeen/hub-components";
 import axios from "axios";
-import AccountsEntry from "../HubComponent/AdminCenterAccounts/AdminCenterAccountsEntry.vue";
-import ParametersEntry from "../HubComponent/AdminCenterParameters/AdminCenterParametersEntry.vue";
-import AuthenticationTokensEntry from "../HubComponent/AuthenticationTokensHub/AuthenticationTokensHubComponent.vue";
-import VaultManager from "../HubComponent/AdminCenterVaultManager/AdminCenterVaultManagerEntry.vue";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 const router = new VueRouter({
   mode: "history"
 });
-Vue.component("ank-admin-account", AccountsEntry);
-Vue.component("ank-admin-parameter", ParametersEntry);
-Vue.component("ank-hub-authentication-tokens", AuthenticationTokensEntry);
-Vue.component("ank-admin-vault-manager", VaultManager);
 new Vue({
   el: "#admin-center",
   template: '<hub-station :config="config" baseUrl="/admin"></hub-station>',
