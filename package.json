@@ -22,7 +22,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.0.0",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190227111733",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190228092305",
     "@commitlint/config-conventional": "^7.5.0",
     "commitlint": "^7.5.2",
     "document-register-element": "^1.13.1",
@@ -36,9 +36,9 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.0-dev20190226093648",
+    "@anakeen/hub-components": "^1.0.0-dev20190228080617",
     "@anakeen/internal-components": "^1.0.1-dev20190225080352",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190222085407",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190227155216",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
     "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
