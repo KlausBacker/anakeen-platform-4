@@ -33,5 +33,14 @@ module.exports = () => {
       vueLoader()
     ]
   };
+  if (process.env.conf === "PROD") {
+    return prod(conf);
+  }
+  if (process.env.conf === "DEV") {
+    return dev(conf);
+  }
+  if (process.env.conf === "LEGACY") {
+    return legacy(conf);
+  }
   return [prod(conf), legacy(conf), dev(conf)];
 };
