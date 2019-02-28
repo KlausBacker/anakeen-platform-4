@@ -31,7 +31,6 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/ank-components": "^1.0.2-dev20190213085409",
     "@anakeen/internal-components": "^1.0.1",
     "@anakeen/user-interfaces": "^2.0.0-dev20190227155216",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
