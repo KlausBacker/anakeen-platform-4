@@ -33,7 +33,7 @@
   "dependencies": {
     "@anakeen/ank-components": "^1.0.2-dev20190213085409",
     "@anakeen/internal-components": "^1.0.1",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190222085407",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190227155216",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@progress/kendo-ui": "^2019.1.227",
     "axios": "^0.18.0",
@@ -51,7 +51,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.1",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190227111733",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190228092305",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/node": "^11.9.5",
     "commitlint": "^7.5.2",
