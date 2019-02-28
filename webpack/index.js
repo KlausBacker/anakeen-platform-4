@@ -1,18 +1,26 @@
-const path = require('path');
-const {prod, legacy, dev} = require("@anakeen/webpack-conf");
-const {vueLoader, typeScriptLoader, setKendoAndJqueryToGlobal} = require("@anakeen/webpack-conf/parts");
+const path = require("path");
+const { prod, legacy, dev } = require("@anakeen/webpack-conf");
+const {
+  vueLoader,
+  typeScriptLoader,
+  setKendoAndJqueryToGlobal
+} = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
 const tokens = require("./tokenManager");
+const vaults = require("./vaultManager");
 const accounts = require("./accountManager");
 const parameters = require("./parametersManager");
+const { lib } = require("@anakeen/webpack-conf");
 
 module.exports = () => {
   const conf = {
-    "moduleName": "adminCenter",
-    "entry": {
-      adminCenter: [ path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/main.js")]
+    moduleName: "adminCenter",
+    entry: {
+      adminCenter: [
+        path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/main.js")
+      ]
     },
     buildPath: PUBLIC_PATH,
     excludeBabel: [
@@ -26,14 +34,11 @@ module.exports = () => {
     customParts: [
       vueLoader(),
       typeScriptLoader(),
-      setKendoAndJqueryToGlobal([
-        /kendo.pdf/,
-        /kendo.excel/
-      ]),
+      setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
       {
         resolve: {
           extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
-        },
+        }
       }
     ]
   };
@@ -49,8 +54,9 @@ module.exports = () => {
   return [
     prod(conf),
     legacy(conf),
-    dev(conf)
+    dev(conf),
     lib(tokens),
+    lib(vaults),
     lib(parameters),
     lib(accounts)
   ];
