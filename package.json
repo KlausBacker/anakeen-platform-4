@@ -8,7 +8,7 @@
   "unpkg": "lib/ank-internal-components.umd.min.js",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/npm/internal-components.git",
   "author": "Anakeen",
-  "license": "LicenseRef-LICENSE",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "lint:fix": "npx eslint ./ --fix && npx tslint ./src/**/*.ts --fix",
     "lint": "npx eslint ./ && npx tslint ./src/**/*.ts",
@@ -25,7 +25,7 @@
   ],
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/webpack-conf": "^1.0.2",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190228092305",
     "@commitlint/config-conventional": "^7.5.0",
     "commitlint": "^7.5.2",
     "eslint": "^5.14.1",
@@ -33,17 +33,20 @@
     "eslint-plugin-vue": "^5.2.2",
     "husky": "^1.3.1",
     "prettier": "^1.16.4",
-    "tslint": "^5.12.1",
+    "tslint": "^5.13.0",
     "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.3.3333",
     "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.6",
+    "vue-template-compiler": "^2.6.7",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@anakeen/user-interfaces": "^2.0.0-dev20190219120819",
-    "@progress/kendo-layout-vue-wrapper": "^2019.1.124",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190228100138",
+    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-ui": "^2019.1.227",
     "axios": "^0.18.0",
-    "vue": "^2.6.6",
+    "jquery": "^3.3.1",
+    "vue": "^2.6.7",
     "vue-class-component": "^7.0.1",
     "vue-property-decorator": "^7.3.0"
   },
