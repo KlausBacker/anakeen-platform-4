@@ -7,10 +7,13 @@
   "scripts": {
     "beautify": "npx eslint ./ --fix",
     "lint": "npx eslint ./",
-    "buildJs": "node --max_old_space_size=4096 ./node_modules/.bin/webpack --config webpack/index.js",
-    "lib:prod": "webpack --env production --config ./components/webpack/index.js",
-    "lib:dev": "webpack --env development --config ./components/webpack/index.js",
-    "lib": "npm run lib:prod && npm run lib:dev",
+    "lib:prod": "npx webpack --env production --config ./components/webpack/index.js",
+    "lib:dev": "npx webpack --env development --config ./components/webpack/index.js",
+    "lib": "yarn run lib:prod && yarn run lib:dev",
+    "buildJs:prod": "conf=PROD npx webpack --config ./webpack/index.js",
+    "buildJs:dev": "conf=DEV npx webpack --config ./webpack/index.js",
+    "buildJs:legacy": "conf=LEGACY npx webpack --config ./webpack/index.js",
+    "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev && yarn run buildJs:legacy",
     "watch": "webpack --watch --env development --config ./components/webpack/index.js"
   },
   "files": [
