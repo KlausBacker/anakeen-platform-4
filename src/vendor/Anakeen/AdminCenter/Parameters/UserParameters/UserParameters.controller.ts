@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
-import parameterEditor from "../ParameterEditor/ParameterEditor.vue";
+const parameterEditor = () => import("../ParameterEditor/ParameterEditor.vue");
 
 declare var $;
 declare var kendo;

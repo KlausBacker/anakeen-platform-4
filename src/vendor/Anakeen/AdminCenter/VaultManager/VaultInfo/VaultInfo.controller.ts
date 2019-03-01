@@ -8,9 +8,6 @@ Vue.use(ChartInstaller);
 Vue.use(GaugesInstaller);
 
 @Component({
-  components: {
-    Chart
-  },
   name: "ank-vault-info"
 })
 export default class VaultInfoController extends Vue {

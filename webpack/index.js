@@ -1,7 +1,3 @@
-const path = require('path');
-
-const BASE_DIR = path.resolve(__dirname, "../");
-const PUBLIC_PATH = path.resolve(BASE_DIR, "src/public");
 const tokens = require("./tokenManager");
 const vaults = require("./vaultManager");
 const accounts = require("./accountManager");
