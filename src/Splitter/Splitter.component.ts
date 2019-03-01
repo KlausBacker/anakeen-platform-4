@@ -1,4 +1,5 @@
-import { LayoutInstaller, Splitter } from "@progress/kendo-layout-vue-wrapper";
+import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
+import "@progress/kendo-ui/js/kendo.splitter";
 import { Component, Prop, Vue } from "vue-property-decorator";
 Vue.use(LayoutInstaller);
 
@@ -8,7 +9,8 @@ Vue.use(LayoutInstaller);
 export default class SplitterComponent extends Vue {
   public $refs: any;
 
-  @Prop({ type: String, default: "" }) public localStorageKey!: string;
+  @Prop({ type: String, default: "" })
+  public localStorageKey!: string;
 
   public splitterEmpty: boolean = true;
   public mounted() {
