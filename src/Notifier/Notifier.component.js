@@ -1,3 +1,5 @@
+import "@progress/kendo-ui/js/kendo.notification";
+
 export default {
   name: "ank-notifier",
   props: {
