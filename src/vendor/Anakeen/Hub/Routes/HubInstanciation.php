@@ -30,6 +30,21 @@ class HubInstanciation
                 [
                     "key" => "kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
+                ],
+                [
+                    "key" => "kendoDLL",
+                    "path" => UIGetAssetPath::getJSKendoComponentPath()
+                ],
+                [
+                    "key" => "vueDll",
+                    "path" => UIGetAssetPath::getJSVueComponentPath()
+                ],
+                [
+                    "key" => "hub",
+                    "path" => UIGetAssetPath::getElementAssets(
+                        "hubVendor",
+                        "deps"
+                    )["hubVendor"]["js"]
                 ]
             ],
             "JS" => [

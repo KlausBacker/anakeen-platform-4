@@ -2,10 +2,17 @@ const path = require("path");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
-  setKendoAndJqueryToGlobal
+  setKendoAndJqueryToGlobal,
+  addDll
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
+const USER_INTERFACES = path.resolve(
+  BASE_DIR,
+  "node_modules",
+  "@anakeen",
+  "user-interfaces"
+);
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
 
 module.exports = () => {
@@ -14,9 +21,11 @@ module.exports = () => {
     entry: {
       hub: [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")],
       hubAdmin: [
+        "@progress/kendo-ui/js/kendo.splitter",
         path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")
       ],
       hubInstanciation: [
+        "@progress/kendo-ui/js/kendo.splitter",
         path.resolve(
           BASE_DIR,
           "src/vendor/Anakeen/Hub/IHM/JS/hubInstanciation.js"
@@ -43,6 +52,52 @@ module.exports = () => {
     ],
     buildPath: PUBLIC_PATH,
     customParts: [
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          USER_INTERFACES,
+          "src",
+          "public",
+          "Anakeen",
+          "assets",
+          "deps",
+          "KendoUI-manifest.json"
+        )
+      }),
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          USER_INTERFACES,
+          "src",
+          "public",
+          "Anakeen",
+          "ankDll",
+          "deps",
+          "vueDll-manifest.json"
+        )
+      }),
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          USER_INTERFACES,
+          "src",
+          "public",
+          "Anakeen",
+          "ankDll",
+          "deps",
+          "ankKendoDll-manifest.json"
+        )
+      }),
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          PUBLIC_PATH,
+          "Anakeen",
+          "hubVendor",
+          "deps",
+          "hubVendor-manifest.json"
+        )
+      }),
       setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
       vueLoader(),
       {
