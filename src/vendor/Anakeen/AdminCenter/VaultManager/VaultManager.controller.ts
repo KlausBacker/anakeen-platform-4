@@ -7,7 +7,6 @@ import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import Vue from "vue";
 import Component from "vue-class-component";
-import AnkVaultInfo from "./VaultInfo/VaultInfo.vue";
 
 Vue.use(ButtonsInstaller);
 Vue.use(DataSourceInstaller);
@@ -15,8 +14,7 @@ Vue.use(GridInstaller);
 
 @Component({
   components: {
-    "ank-splitter": AnkSplitter,
-    "ank-vault-info": AnkVaultInfo
+    "ank-splitter": AnkSplitter
   }
 })
 export default class VaultManagerController extends Vue {
@@ -92,6 +90,11 @@ export default class VaultManagerController extends Vue {
         dataSource: this.vaultsGridData
       })
       .on("click", ".consult-btn", e => {
+        Vue.component("ank-vault-info", resolve => {
+          import("./VaultInfo/VaultInfo.vue").then(AnkVaultInfo => {
+            resolve(AnkVaultInfo.default);
+          });
+        });
         const grid = $(".vault-manager-grid").data("kendoGrid");
         const dataItem = grid.dataItem(e.currentTarget.closest("tr"));
         // @ts-ignore

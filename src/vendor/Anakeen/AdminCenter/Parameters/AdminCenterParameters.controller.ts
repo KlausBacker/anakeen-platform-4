@@ -4,8 +4,10 @@ import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
 import Vue from "vue";
 import Component from "vue-class-component";
-import AdminCenterGlobalParameters from "./GlobalParameters/GlobalParameters.vue";
-import AdminCenterUserParameters from "./UserParameters/UserParameters.vue";
+const AdminCenterGlobalParameters = () =>
+  import("./GlobalParameters/GlobalParameters.vue");
+const AdminCenterUserParameters = () =>
+  import("./UserParameters/UserParameters.vue");
 
 @Component({
   components: {

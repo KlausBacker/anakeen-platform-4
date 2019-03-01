@@ -6,7 +6,6 @@ import "@progress/kendo-ui/js/kendo.splitter";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
 import { Component, Vue } from "vue-property-decorator";
-import AuthenticationTokenInfo from "./AuthenticationTokenInfo.vue";
 import { IAuthenticationToken } from "./IAuthenticationToken";
 import IsoDates from "./IsoDates";
 
@@ -17,8 +16,7 @@ declare var kendo;
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "ank-splitter": AnkSplitter,
-    "ank-token-info": AuthenticationTokenInfo
+    "ank-splitter": AnkSplitter
   },
   name: "ank-authentication-tokens"
 })
@@ -187,6 +185,13 @@ export default class AuthenticationTokensController extends Vue {
             command: {
               click: e => {
                 this.$refs.splitter.disableEmptyContent();
+                Vue.component("ank-token-info", resolve => {
+                  import("./AuthenticationTokenInfo.vue").then(
+                    AuthenticationTokenInfo => {
+                      resolve(AuthenticationTokenInfo.default);
+                    }
+                  );
+                });
                 const widget = kendo
                   .jQuery(e.delegateTarget)
                   .data("kendo-grid");
@@ -291,6 +296,13 @@ export default class AuthenticationTokensController extends Vue {
         ]
       })
       .on("click", ".k-grid-add", () => {
+        Vue.component("ank-token-info", resolve => {
+          import("./AuthenticationTokenInfo.vue").then(
+            AuthenticationTokenInfo => {
+              resolve(AuthenticationTokenInfo.default);
+            }
+          );
+        });
         this.displayCreateForm();
       })
       .on("click", ".k-grid-expired", () => {
