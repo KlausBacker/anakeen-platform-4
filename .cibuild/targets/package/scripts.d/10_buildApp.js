@@ -20,21 +20,26 @@ return produceApp({
         path: "./stubs/"
       },
       src: true
-    },
-    {
-      app: {
-        command: "make",
-        args: ["app-test"]
-      },
-      path: {
-        infoXML: "./Tests",
-        src: "./Tests/src/"
-      },
-      src: true
     }
   ],
   getModuleInfo
 })
+  .produceApp({
+    apps: [
+      {
+        app: {
+          command: "make",
+          args: ["app-test"]
+        },
+        path: {
+          infoXML: "./Tests",
+          src: "./Tests/src/"
+        },
+        src: true
+      }
+    ],
+    getModuleInfo
+  })
   .then(() => {
     console.log("OK");
   })

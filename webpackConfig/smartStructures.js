@@ -1,6 +1,6 @@
 const path = require("path");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
-const { cssLoader } = require("@anakeen/webpack-conf/parts");
+const { cssLoader, addDll } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
@@ -51,6 +51,16 @@ module.exports = () => {
       /node_modules\/style-loader/
     ],
     customParts: [
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          PUBLIC_PATH,
+          "Anakeen",
+          "assets",
+          "deps",
+          "KendoUI-manifest.json"
+        )
+      }),
       {
         resolve: {
           extensions: [".js"],

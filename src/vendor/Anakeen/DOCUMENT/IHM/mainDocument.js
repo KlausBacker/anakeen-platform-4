@@ -3,13 +3,13 @@
  */
 /*global require, console*/
 import $ from "jquery";
+import "../../../../../webpackConfig/kendo/kendo";
 
 $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   //Trigger an event when translation loaded
   window.dcp.i18n = catalog;
 
   var _ = require("underscore");
-  require("dcpExternals/KendoUI/KendoUI");
   require("dcpDocument/widgets/documentController/documentController");
 
   ("use strict");
