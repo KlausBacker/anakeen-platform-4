@@ -1,9 +1,10 @@
 const path = require("path");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
-const { cssLoader } = require("@anakeen/webpack-conf/parts");
+const { cssLoader, addDll } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
+const USER_INTERFACES = path.join(BASE_DIR, "/src/public");
 
 module.exports = () => {
   const conf = {
@@ -23,7 +24,19 @@ module.exports = () => {
       ]
     },
     buildPath: PUBLIC_PATH,
-    customParts: [cssLoader()]
+    customParts: [
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          USER_INTERFACES,
+          "Anakeen",
+          "assets",
+          "deps",
+          "KendoUI-manifest.json"
+        )
+      }),
+      cssLoader()
+    ]
   };
   if (process.env.conf === "PROD") {
     return prod(conf);

@@ -57,10 +57,10 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/webpack-conf@^1.2.0-dev20190228092305":
-  version "1.2.0-dev20190228092305"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.2.0-dev20190228092305.tgz#f38fc981ea1dc0c43f2f566d3058879b995d0808"
-  integrity sha512-TUesC2+QiAcnq5mytyrpcXksvvEQss/mmfncmikgpEqcIXcXY16TDw6XsiWSFGEYy6XNqzdCgjrWwanV+pO69w==
+"@anakeen/webpack-conf@^1.2.0-dev20190301180056":
+  version "1.2.0-dev20190301180056"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.2.0-dev20190301180056.tgz#e546f32e3c899458ba63d0848e34d6ba362c6945"
+  integrity sha512-cMPLR5wEaqBV57LF1CuPf3UNtW+gtJB7iWhaEgBTFhEtwAi4Ov5ZWSs7e5pT1wuioByWt6IlZu2GyKJPY5H6RQ==
   dependencies:
     "@babel/core" "^7.3.4"
     "@babel/plugin-syntax-dynamic-import" "^7.2.0"

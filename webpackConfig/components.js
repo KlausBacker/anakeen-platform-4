@@ -1,8 +1,9 @@
 const path = require("path");
-const { prod, legacy, dev } = require("@anakeen/webpack-conf");
+const { prod, legacy, dev, deps } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
-  setKendoAndJqueryToGlobal
+  setKendoAndJqueryToGlobal,
+  addDll
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -24,11 +25,51 @@ module.exports = () => {
     ],
     customParts: [
       {
+        resolve: {
+          alias: {
+            "@anakeen/user-interfaces": path.resolve(
+              BASE_DIR,
+              "components/components/index"
+            )
+          }
+        }
+      },
+      {
         output: {
           library: "ank-components",
           libraryTarget: "umd"
         }
       },
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          PUBLIC_PATH,
+          "Anakeen",
+          "assets",
+          "deps",
+          "KendoUI-manifest.json"
+        )
+      }),
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          PUBLIC_PATH,
+          "Anakeen",
+          "ankDll",
+          "deps",
+          "ankKendoDll-manifest.json"
+        )
+      }),
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          PUBLIC_PATH,
+          "Anakeen",
+          "ankDll",
+          "deps",
+          "vueDll-manifest.json"
+        )
+      }),
       setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
       vueLoader()
     ]

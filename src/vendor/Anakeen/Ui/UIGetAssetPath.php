@@ -71,6 +71,28 @@ class UIGetAssetPath
         return $assets["KendoUI"]["js"];
     }
 
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getJSKendoComponentPath()
+    {
+        $assets = self::getElementAssets("ankDll", "deps");
+        return $assets["ankKendoDll"]["js"];
+    }
+
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getJSVueComponentPath()
+    {
+        $assets = self::getElementAssets("ankDll", "deps");
+        return $assets["vueDll"]["js"];
+    }
+
+
+
     public static function getCssKendo()
     {
         if (self::isInDebug()) {
