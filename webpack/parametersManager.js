@@ -1,4 +1,5 @@
 const path = require("path");
+const { dontParse, dllPart } = require("./common.part");
 
 const {
   vueLoader,
@@ -8,21 +9,19 @@ const {
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
-module.exports = {
+const conf = {
   moduleName: "parameterManager",
   libName: "AdminParametersManager",
   entry: {
-    "parameter-manager": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/HubComponent/AdminCenterParameters/index.js")]
+    "parameter-manager": [
+      path.resolve(
+        BASE_DIR,
+        "src/vendor/Anakeen/AdminCenter/HubComponent/AdminCenterParameters/index.js"
+      )
+    ]
   },
   buildPath: PUBLIC_PATH,
-  excludeBabel: [
-    /node_modules\/axios/,
-    /node_modules\/@progress\/.*/,
-    /node_modules\/css-loader/,
-    /node_modules\/vue/,
-    /node_modules\/jsoneditor/,
-    /node_modules\/brace/
-  ],
+  excludeBabel: dontParse,
   customParts: [
     vueLoader(),
     typeScriptLoader(),
@@ -35,3 +34,6 @@ module.exports = {
   ]
 };
 
+conf.customParts = [...conf.customParts, ...dllPart];
+
+module.exports = conf;
