@@ -70,7 +70,7 @@ class TokenAuthenticator extends \Anakeen\Core\Internal\OpenAuthenticator
                     }
                 } else {
                     // Simple route
-                    if (preg_match("/^(GET|POST|PUT|DELETE|\\*)\\s+(.*)/", $rules, $reg)) {
+                    if (preg_match("/^(GET|POST|PUT|DELETE|PATCH|\\*)\\s+(.*)/", $rules, $reg)) {
                         $expectedMethod = $reg[1];
                         $routePattern = $reg[2];
                     } else {
