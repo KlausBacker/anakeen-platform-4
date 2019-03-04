@@ -2,7 +2,8 @@ const path = require("path");
 const { deps } = require("@anakeen/webpack-conf");
 
 const {
-  addDll
+  addDll,
+  setKendoAndJqueryToGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -32,6 +33,7 @@ module.exports = () => {
           "KendoUI-manifest.json"
         )
       }),
+      setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/])
     ]
   };
   return [deps(conf)];
