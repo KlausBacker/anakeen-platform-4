@@ -22,8 +22,9 @@
     "watch": "webpack --watch --env development --config ./components/webpack/index.js"
   },
   "files": [
-    "/components/lib",
-    "/components/README.md"
+    "/components/**/*",
+    "/components/README.md",
+    "/src/**/*"
   ],
   "repository": {
     "type": "git",
@@ -37,7 +38,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "@anakeen/internal-components": "^1.0.1-dev20190301181201",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190304103714",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190304152147",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@progress/kendo-ui": "^2019.1.227",
     "axios": "^0.18.0",
