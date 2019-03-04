@@ -47,13 +47,13 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/hub-components@^1.0.0-dev20190304123030":
-  version "1.0.0-dev20190304123030"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190304123030.tgz#6171e569902ee28b3c8ab5d0a5c413cc7064e81c"
-  integrity sha512-GzDnA/d6WAQTB8esanboyWLbGwwNhbJX5pGpFyM9xJ7+2K/66hFYSO/ypgbonOrOrYWPmiFa2rl5IGnBFSZlqA==
+"@anakeen/hub-components@^1.0.0-dev20190304155514":
+  version "1.0.0-dev20190304155514"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190304155514.tgz#22b5ad69ab4bd2ef2c8b4f2d6975fdd57769ac42"
+  integrity sha512-NMxtRxMbkSAP9QMaMlh3mysCgoQ/i+Ve36N6NlzubmheE4WX+naPGdSmWL/BeF0CXFUQJUk8UVTolFKVFArKCw==
   dependencies:
     "@anakeen/internal-components" "^1.0.1-dev20190301181201"
-    "@anakeen/user-interfaces" "^2.0.0-dev20190304103714"
+    "@anakeen/user-interfaces" "^2.0.0-dev20190304152147"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     "@progress/kendo-ui" "^2019.1.227"
     axios "^0.18.0"
@@ -111,10 +111,10 @@
     vue "^2.6.7"
     vue-custom-element "^3.2.5"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190304103714":
-  version "2.0.0-dev20190304103714"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190304103714.tgz#5ea446c2688b100db1762b71b087be2edd93875c"
-  integrity sha512-LX3McN0/bqUasi40gfJ3KWGH6g5M3E/vH+B9GMw20TLl+8loTi+S7vdZ6l+K9rqzvAteB1lRgKwSzDQPyJ+AFQ==
+"@anakeen/user-interfaces@^2.0.0-dev20190304152147":
+  version "2.0.0-dev20190304152147"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190304152147.tgz#e4107c5b1033b0118198667613f24d6ecea09ebd"
+  integrity sha512-eILb8qbIjh61gK20sx7Lh/LYmcKQ7AWLwwCFdG0A/2fX8lTOaHbyr0R+L4ulmO4itcRHE/ae5reqr+8uYGfBzw==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@progress/kendo-theme-bootstrap" "^3.2.1"

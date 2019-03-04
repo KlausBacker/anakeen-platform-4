@@ -36,9 +36,9 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.0-dev20190304123030",
+    "@anakeen/hub-components": "^1.0.0-dev20190304155514",
     "@anakeen/internal-components": "^1.0.1-dev20190301181201",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190304103714",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190304152147",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
     "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",

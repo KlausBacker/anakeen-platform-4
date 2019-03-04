@@ -1,13 +1,13 @@
 const path = require("path");
 const BASE_DIR = path.resolve(__dirname, "../");
-const USER_INTERFACES = path.resolve(BASE_DIR, "../", "user-interfaces");
-/** "node_modules",
+const USER_INTERFACES = path.resolve(BASE_DIR,
+ "node_modules",
  "@anakeen",
- "user-interfaces");**/
-const HUB = path.resolve(BASE_DIR, "../", "anakeen-hub");
-/** "node_modules",
+ "user-interfaces");
+const HUB = path.resolve(BASE_DIR,
+"node_modules",
  "@anakeen",
- "user-interfaces");**/
+ "hub-components");
 
 const { addDll } = require("@anakeen/webpack-conf/parts");
 
