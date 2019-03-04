@@ -55,7 +55,7 @@ class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
      * @return string   return the token identifier
      * @throws Exception
      */
-    public static function getAuthorizationToken(\Anakeen\Core\Account $userAccount, array $routes, $expiration = -1, $oneshot = false, $description = "")
+    public static function getAuthorizationToken(\Anakeen\Core\Account $userAccount, array $routes, $expiration = -1, bool $oneshot = false, $description = "")
     {
         if ($expiration === -1) {
             $expiration = \UserToken::INFINITY;
@@ -76,7 +76,7 @@ class AuthenticatorManager extends \Anakeen\Core\Internal\AuthenticatorManager
                 $route = $rules["pattern"];
             } else {
                 // Simple route
-                if (preg_match("/^(GET|POST|PUT|DELETE)\\s+(.*)/", $rules, $reg)) {
+                if (preg_match("/^(GET|POST|PUT|DELETE|PATCH)\\s+(.*)/", $rules, $reg)) {
                     $method = $reg[1];
                     $rules = $reg[2];
                 } else {
