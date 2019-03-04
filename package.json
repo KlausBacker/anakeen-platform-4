@@ -58,7 +58,6 @@
     "ckeditor": "^4.11.3",
     "commitlint": "^7.5.2",
     "copy-webpack-plugin": "^5.0.0",
-    "core-js": "^2.6.5",
     "datatables.net": "^1.10.16",
     "datatables.net-bs4": "^1.10.16",
     "eslint": "^5.14.1",
