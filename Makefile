@@ -93,19 +93,22 @@ stub: install-deps
 ########################################################################################################################
 
 buildJS: install-deps
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build polyfill $@${RESET_COLOR}\n"
+	@${PRINT_COLOR} "${DEBUG_COLOR}Extract component po $@${RESET_COLOR}\n"
+	make -f pojs.make compile
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build Css $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildCss
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build polyfill $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildPolyfill
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildAsset
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build dll $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildDll
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"
-	make -f pojs.make compile
 	$(YARN_BIN) buildSmartElement
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildComponent
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildSmartStructures
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build polyfill $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildPolyfill
 
 buildJS-test: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"

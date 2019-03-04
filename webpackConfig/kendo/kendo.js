@@ -14,7 +14,6 @@ define([
   "@progress/kendo-ui/js/kendo.dropdownlist",
   "@progress/kendo-ui/js/kendo.color",
   "@progress/kendo-ui/js/kendo.colorpicker",
-  "@progress/kendo-ui/js/kendo.splitter",
   "@progress/kendo-ui/js/kendo.tabstrip",
   "@progress/kendo-ui/js/kendo.button",
   "@progress/kendo-ui/js/kendo.listview"

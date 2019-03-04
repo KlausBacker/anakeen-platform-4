@@ -43,6 +43,14 @@ class LoginPage
                 [
                     "key" => "kendo",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoPath()
+                ],
+                [
+                    "key" => "kendoDLL",
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoComponentPath()
+                ],
+                [
+                    "key" => "vueDll",
+                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSVueComponentPath()
                 ]
             ],
             "JS" => [
