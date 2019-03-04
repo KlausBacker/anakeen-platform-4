@@ -35,7 +35,7 @@ class HubAdminCenterParametersVueBehavior extends Hubconfigurationvue
      */
     public static function getJSAsset()
     {
-        $asset = UIGetAssetPath::getElementAssets("parameterManager");
+        $asset = UIGetAssetPath::getElementAssets("parameterManager", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         if (isset($asset["parameter-manager"]["js"])) {
             return [
                 $asset["parameter-manager"]["js"]
