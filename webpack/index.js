@@ -21,26 +21,12 @@ module.exports = () => {
     entry: {
       hub: [path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hub.js")],
       hubAdmin: [
-        "@progress/kendo-ui/js/kendo.splitter",
         path.resolve(BASE_DIR, "src/vendor/Anakeen/Hub/IHM/JS/hubAdmin.js")
       ],
       hubInstanciation: [
-        "@progress/kendo-ui/js/kendo.splitter",
         path.resolve(
           BASE_DIR,
           "src/vendor/Anakeen/Hub/IHM/JS/hubInstanciation.js"
-        )
-      ],
-      hubConfiguration: [
-        path.resolve(
-          BASE_DIR,
-          "src/vendor/Anakeen/Hub/SmartStructures/HubConfiguration/Render/HubConfiguration.js"
-        )
-      ],
-      hubInstanciationRender: [
-        path.resolve(
-          BASE_DIR,
-          "src/vendor/Anakeen/Hub/SmartStructures/HubInstanciation/Render/HubInstanciation.js"
         )
       ]
     },

@@ -44,7 +44,7 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $parent = parent::getJsReferences();
-        $path = UIGetAssetPath::getElementAssets("hub", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $path = UIGetAssetPath::getElementAssets("hubRender", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $parent["hubInstanciationRender"] = $path["hubInstanciationRender"]["js"];
         return $parent;
     }

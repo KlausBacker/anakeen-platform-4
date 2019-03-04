@@ -10,6 +10,7 @@ import HubMain from "../Components/Hub/Hub.vue";
 Vue.use(VueAxiosPlugin);
 Vue.use(AnkComponents);
 Vue.use(LoadScript);
+
 Vue.prototype.$loadCssFile = Vue.loadCssFile = LoadCss;
 
 new Vue({

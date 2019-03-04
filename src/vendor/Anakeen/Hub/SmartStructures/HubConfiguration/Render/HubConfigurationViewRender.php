@@ -53,7 +53,7 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $parent = parent::getJsReferences();
-        $path = UIGetAssetPath::getElementAssets("hub", UIGetAssetPath::isInDebug() ? "dev" : "prod");
+        $path = UIGetAssetPath::getElementAssets("hubRender", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         $parent["hubConfiguration"] = $path["hubConfiguration"]["js"];
         return $parent;
     }
