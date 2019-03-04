@@ -2,6 +2,7 @@ const path = require("path");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
+  typeScriptLoader,
   setKendoAndJqueryToGlobal,
   addDll
 } = require("@anakeen/webpack-conf/parts");
@@ -86,12 +87,13 @@ module.exports = () => {
       }),
       setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
       vueLoader(),
+      typeScriptLoader(),
       {
         resolve: {
           alias: {
             "@anakeen/hub-components": path.resolve(
               BASE_DIR,
-              "components/lib/hub-components.common.min.js"
+              "components/src/index.ts"
             )
           }
         }
