@@ -3,6 +3,9 @@
 const { produceApp } = require("@anakeen/anakeen-ci");
 const { getModuleInfo } = require("@anakeen/anakeen-cli/utils/moduleInfo");
 
+const writeFile = util.promisify(fs.writeFile);
+const readFile = util.promisify(fs.readFile);
+
 return produceApp({
   apps: [
     {
@@ -24,8 +27,9 @@ return produceApp({
   ],
   getModuleInfo
 })
-  .then(() => {
-    return produceApp({
+  .then(async () => {
+    const result = JSON.parse(await readFile(path.join(outputPath, "app.json"), "utf8"));
+    await produceApp({
       apps: [
         {
           app: {
@@ -41,6 +45,12 @@ return produceApp({
       ],
       getModuleInfo
     });
+    const resultTest = JSON.parse(await readFile(path.join(outputPath, "app.json"), "utf8"));
+    return await writeFile(
+      path.join(outputPath, "app.json"),
+      JSON.stringify([...result, ...resultTest])
+    );
+
   })
   .then(() => {
     console.log("OK");

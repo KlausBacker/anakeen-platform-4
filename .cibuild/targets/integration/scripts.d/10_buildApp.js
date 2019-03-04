@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 
 const fs = require("fs");
+const path = require("path");
 const util = require("util");
 const { produceApp } = require("@anakeen/anakeen-ci");
 const { getModuleInfo } = require("@anakeen/anakeen-cli/utils/moduleInfo");
 
+const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
+
+const outputPath = process.env.CIBUILD_OUTPUTS;
 const readPackage = async () => {
   const packageJson = await readFile("./package.json", { encoding: "utf8" });
   return JSON.parse(packageJson);
@@ -29,9 +33,11 @@ readPackage()
       ],
       getModuleInfo
     });
+    return content;
   })
-  .then(() => {
-    return produceApp({
+  .then(async (content) => {
+    const result = JSON.parse(await readFile(path.join(outputPath, "app.json"), "utf8"));
+    await produceApp({
       apps: [
         {
           app: {
@@ -47,6 +53,11 @@ readPackage()
       ],
       getModuleInfo
     });
+    const resultTest = JSON.parse(await readFile(path.join(outputPath, "app.json"), "utf8"));
+    return await writeFile(
+      path.join(outputPath, "app.json"),
+      JSON.stringify([...result, ...resultTest])
+    );
   })
   .then(() => {
     console.log("OK");
