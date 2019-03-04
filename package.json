@@ -8,10 +8,18 @@
   "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "beautify": "eslint ./src --fix",
-    "buildJs:tokens": "element=TOKENS npx webpack --config webpack/index.js",
-    "buildJs:vaults": "element=VAULTFS npx webpack --config webpack/index.js",
-    "buildJs:parameters": "element=PARAMETERS npx webpack --config webpack/index.js",
-    "buildJs:accounts": "element=ACCOUNTS npx webpack --config webpack/index.js",
+    "buildJs:tokens:prod": "element=TOKENS npx webpack --config webpack/index.js",
+    "buildJs:tokens:dev": "element=TOKENS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:tokens" : "yarn run buildJs:tokens:prod && yarn run buildJs:tokens:dev",
+    "buildJs:vaults:prod": "element=VAULTFS npx webpack --config webpack/index.js",
+    "buildJs:vaults:dev": "element=VAULTFS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:vaults" : "yarn run buildJs:vaults:prod && yarn run buildJs:vaults:dev",
+    "buildJs:parameters:prod": "element=PARAMETERS npx webpack --config webpack/index.js",
+    "buildJs:parameters:dev": "element=PARAMETERS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:parameters" : "yarn run buildJs:parameters:prod && yarn run buildJs:parameters:dev",
+    "buildJs:accounts:prod": "element=ACCOUNTS npx webpack --config webpack/index.js",
+    "buildJs:accounts:dev": "element=ACCOUNTS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:accounts" : "yarn run buildJs:accounts:prod && yarn run buildJs:accounts:dev",
     "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts"
   },
   "files": [

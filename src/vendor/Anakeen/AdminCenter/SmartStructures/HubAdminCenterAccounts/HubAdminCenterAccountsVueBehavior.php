@@ -35,7 +35,7 @@ class HubAdminCenterAccountsVueBehavior extends Hubconfigurationvue
      */
     public static function getJSAsset()
     {
-        $asset = UIGetAssetPath::getElementAssets("accountManager");
+        $asset = UIGetAssetPath::getElementAssets("accountManager", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         if (isset($asset["account-manager"]["js"])) {
             return [
                 $asset["account-manager"]["js"]

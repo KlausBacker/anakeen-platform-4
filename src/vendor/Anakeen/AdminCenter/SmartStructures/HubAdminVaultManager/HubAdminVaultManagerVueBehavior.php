@@ -35,7 +35,7 @@ class HubAdminVaultManagerVueBehavior extends Hubconfigurationvue
      */
     public static function getJSAsset()
     {
-        $asset = UIGetAssetPath::getElementAssets("vaultManager");
+        $asset = UIGetAssetPath::getElementAssets("vaultManager", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         if (isset($asset["vault-manager"]["js"])) {
             return [
                 $asset["vault-manager"]["js"]

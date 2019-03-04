@@ -14,6 +14,8 @@ Vue.use(TreeViewInstaller);
 declare var $;
 declare var kendo;
 
+alert("toto");
+
 @Component({
   components: {
     AnkSmartElement

@@ -35,7 +35,7 @@ class HubAuthenticationTokensVueBehavior extends Hubconfigurationvue
      */
     public static function getJSAsset()
     {
-        $asset = UIGetAssetPath::getElementAssets("tokenManager");
+        $asset = UIGetAssetPath::getElementAssets("tokenManager", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         if (isset($asset["token-manager"]["js"])) {
             return [
                 $asset["token-manager"]["js"]
