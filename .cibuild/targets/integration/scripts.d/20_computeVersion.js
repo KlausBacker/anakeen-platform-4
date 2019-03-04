@@ -6,9 +6,8 @@ const { getInfoFromApp, findApp } = require("@anakeen/anakeen-ci/utils");
 const exec = util.promisify(child_process.exec);
 
 
-findApp("user-interfaces").then(async(appPath) => {
+findApp("user-interfaces-test").then(async(appPath) => {
   const appInfo = await getInfoFromApp(appPath);
-  console.log("Bump autorelease");
   await exec(
     `yarn version --no-git-tag-version --no-commit-hooks --new-version ${appInfo.version}`
   );
