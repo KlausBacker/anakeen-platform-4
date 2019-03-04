@@ -480,11 +480,6 @@ class ImportDocumentDescription
                     $this->doAccess($data);
                     break;
 
-                case "LDAPMAP":
-                    $this->doLdapmap($data);
-
-                    break;
-
                 case "PROP":
                     $this->doProp($data);
                     break;
@@ -1962,58 +1957,6 @@ class ImportDocumentDescription
 
         $this->colOrders[$orfromid] = Utils::getOrder($data);
         $this->tcr[$this->nLine]["msg"] = sprintf(_("new column order %s"), implode(" - ", $this->colOrders[$orfromid]));
-    }
-
-    /**
-     * analyze LDAPMAP
-     *
-     * @param array $data line of description file
-     */
-    protected function doLdapmap(array $data)
-    {
-        $err = '';
-        if (is_numeric($data[1])) {
-            $fid = $data[1];
-        } else {
-            $fid = \Anakeen\Core\SEManager::getFamilyIdFromName($data[1]);
-        }
-        $aid = (trim($data[2]));
-        $index = $data[5];
-        $oa = new \DocAttrLDAP($this->dbaccess, array(
-            $fid,
-            $aid,
-            $index
-        ));
-        if (substr($data[2], 0, 2) == "::") {
-            $oa->ldapname = $data[2];
-        } else {
-            $oa->ldapname = strtolower(trim($data[2]));
-        }
-
-        $oa->ldapclass = trim($data[4]);
-        $oa->famid = $fid;
-        $oa->ldapmap = $data[3];
-        $oa->index = $index;
-        $oa->ldapname = $aid;
-
-        if ($oa->isAffected()) {
-            if (!$this->analyze) {
-                $err = $oa->modify();
-            }
-            $this->tcr[$this->nLine]["msg"] = sprintf(_("LDAP Attribute modified to %s %s"), $oa->ldapname, $oa->ldapmap);
-            $this->tcr[$this->nLine]["action"] = "updated";
-        } else {
-            if (!$this->analyze) {
-                $err = $oa->add();
-            }
-
-            $this->tcr[$this->nLine]["msg"] = sprintf(_("LDAP Attribute added to %s %s"), $oa->ldapname, $oa->ldapmap);
-            $this->tcr[$this->nLine]["action"] = "added";
-        }
-        $this->tcr[$this->nLine]["err"] .= $err;
-        if ($this->tcr[$this->nLine]["err"]) {
-            $this->tcr[$this->nLine]["action"] = "ignored";
-        }
     }
 
     /**

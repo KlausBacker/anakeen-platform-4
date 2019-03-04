@@ -6,7 +6,7 @@
     <description>Smart Data Engine</description>
 
     <requires>
-        <installer version="2.1.x" />
+        <installer version="2.1.x"/>
     </requires>
 
     <parameters>
@@ -62,17 +62,11 @@
         <check type="syscommand" command="convert">
             <label>Check "convert". To resize images</label>
         </check>
-        <check type="syscommand" command="recode">
-            <label>Check "recode". For send pdf email</label>
-        </check>
         <check type="syscommand" command="php">
             <label>Check "php". Core language</label>
         </check>
         <check type="syscommand" command="psql">
             <label>Check "psql". Postgresql Client</label>
-        </check>
-        <check type="syscommand" command="pg_dump">
-            <label>Check "pg_dump". To archive database</label>
         </check>
         <check type="syscommand" command="msgcat">
             <label>Check "msgcat". To construct language catalogue</label>
@@ -111,28 +105,8 @@
                 PHP.
             </help>
         </check>
-        <check type="phpfunction" function="ldap_connect">
-            <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
-                PHP.
-            </help>
-        </check>
-        <check type="phpfunction" function="pspell_new" optional="Y">
-            <help>You might need to install a php-pspell package from your distribution in order to have spelling
-                support in PHP.
-            </help>
-        </check>
-        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
-            <label>Check english spelling dictionary</label>
-            <help>English spelling dictionary not found: you might need to install a aspell-en package from your
-                distribution in order to have english spelling support.
-            </help>
-        </check>
-        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
-            <label>Check french spelling dictionary</label>
-            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your
-                distribution in order to have french spelling support.
-            </help>
-        </check>
+
+
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
             <label>Check required "en_US.UTF-8" locale</label>
             <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the
@@ -165,11 +139,6 @@
         <check type="phpfunction" function="gd_info">
             <help>You might need to install a php-gd package from your distribution in order to have GD image support in
                 PHP.
-            </help>
-        </check>
-        <check type="phpfunction" function="cal_info">
-            <help>You might need to install a php-calendar package from your distribution in order to have calendar and
-                date manipulation support in PHP.
             </help>
         </check>
         <check type="phpfunction" function="json_encode">
@@ -347,17 +316,11 @@
         <check type="syscommand" command="convert">
             <label>Check "convert". To resize images</label>
         </check>
-        <check type="syscommand" command="recode">
-            <label>Check "recode". For send pdf email</label>
-        </check>
         <check type="syscommand" command="php">
             <label>Check "php". Core language</label>
         </check>
         <check type="syscommand" command="psql">
             <label>Check "psql". Postgresql Client</label>
-        </check>
-        <check type="syscommand" command="pg_dump">
-            <label>Check "pg_dump". To archive database</label>
         </check>
         <check type="syscommand" command="msgcat">
             <label>Check "msgcat". To construct language catalogue</label>
@@ -396,28 +359,6 @@
                 PHP.
             </help>
         </check>
-        <check type="phpfunction" function="ldap_connect">
-            <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
-                PHP.
-            </help>
-        </check>
-        <check type="phpfunction" function="pspell_new" optional="Y">
-            <help>You might need to install a php-pspell package from your distribution in order to have spelling
-                support in PHP.
-            </help>
-        </check>
-        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;en&quot;)!==false?0:1);'">
-            <label>Check english spelling dictionary</label>
-            <help>English spelling dictionary not found: you might need to install a aspell-en package from your
-                distribution in order to have english spelling support.
-            </help>
-        </check>
-        <check type="exec" cmd="php -r 'exit(pspell_new(&quot;fr&quot;)!==false?0:1);'">
-            <label>Check french spelling dictionary</label>
-            <help>French spelling dictionary not found: you might need to install a aspell-fr package from your
-                distribution in order to have french spelling support.
-            </help>
-        </check>
         <check type="exec" cmd="php -r 'exit(setlocale(LC_MESSAGES,&quot;en_US.UTF-8&quot;)!==false?0:1);'">
             <label>Check required "en_US.UTF-8" locale</label>
             <help>The required "en_US.UTF-8" locale is missing. You must install or generate (using locale-gen) the
@@ -448,11 +389,6 @@
         <check type="phpfunction" function="gd_info">
             <help>You might need to install a php-gd package from your distribution in order to have GD image support in
                 PHP.
-            </help>
-        </check>
-        <check type="phpfunction" function="cal_info">
-            <help>You might need to install a php-calendar package from your distribution in order to have calendar and
-                date manipulation support in PHP.
             </help>
         </check>
         <check type="phpfunction" function="json_encode">
