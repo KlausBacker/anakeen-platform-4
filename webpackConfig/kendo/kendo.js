@@ -18,5 +18,11 @@ define([
   "@progress/kendo-ui/js/kendo.button",
   "@progress/kendo-ui/js/kendo.listview"
 ], function($, kendo) {
+  if (!window.$) {
+    window.$ = kendo.jQuery;
+  }
+  if (!window.jQuery) {
+    window.jQuery = kendo.jQuery;
+  }
   return kendo.jQuery;
 });

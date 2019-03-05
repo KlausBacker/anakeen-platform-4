@@ -1,8 +1,8 @@
 const path = require("path");
-const { prod, legacy, dev, deps } = require("@anakeen/webpack-conf");
+const { prod, legacy, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
-  setKendoAndJqueryToGlobal,
+  addFalseKendoGlobal,
   addDll
 } = require("@anakeen/webpack-conf/parts");
 
@@ -46,7 +46,7 @@ module.exports = () => {
           PUBLIC_PATH,
           "Anakeen",
           "assets",
-          "deps",
+          "legacy",
           "KendoUI-manifest.json"
         )
       }),
@@ -56,7 +56,7 @@ module.exports = () => {
           PUBLIC_PATH,
           "Anakeen",
           "ankDll",
-          "deps",
+          "legacy",
           "ankKendoDll-manifest.json"
         )
       }),
@@ -66,11 +66,11 @@ module.exports = () => {
           PUBLIC_PATH,
           "Anakeen",
           "ankDll",
-          "deps",
+          "legacy",
           "vueDll-manifest.json"
         )
       }),
-      setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
+      addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
       vueLoader()
     ]
   };

@@ -31,7 +31,7 @@ module.exports = () => {
           USER_INTERFACES,
           "Anakeen",
           "assets",
-          "deps",
+          "legacy",
           "KendoUI-manifest.json"
         )
       }),
