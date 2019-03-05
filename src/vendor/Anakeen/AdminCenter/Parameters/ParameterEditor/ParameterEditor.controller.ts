@@ -165,9 +165,7 @@ export default class ParameterEditorController extends Vue {
     if (newValue) {
       if (
         this.parameterInputType === "json" &&
-        !ParameterEditorController.isJson(
-          newValue
-        )
+        !ParameterEditorController.isJson(newValue)
       ) {
         $(".parameter-new-value", this.$el).css("border-color", "red");
         this.isNotJson = true;
