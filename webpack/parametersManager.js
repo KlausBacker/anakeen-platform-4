@@ -4,7 +4,7 @@ const { dontParse, dllPart } = require("./common.part");
 const {
   vueLoader,
   typeScriptLoader,
-  setKendoAndJqueryToGlobal
+  addFalseKendoGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -25,7 +25,7 @@ const conf = {
   customParts: [
     vueLoader(),
     typeScriptLoader(),
-    setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/]),
+    addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
     {
       resolve: {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]

@@ -29,7 +29,7 @@ module.exports.dllPart = [
       "public",
       "Anakeen",
       "assets",
-      "deps",
+      "legacy",
       "KendoUI-manifest.json"
     )
   }),
@@ -41,7 +41,7 @@ module.exports.dllPart = [
       "public",
       "Anakeen",
       "ankDll",
-      "deps",
+      "legacy",
       "vueDll-manifest.json"
     )
   }),
@@ -53,7 +53,7 @@ module.exports.dllPart = [
       "public",
       "Anakeen",
       "ankDll",
-      "deps",
+      "legacy",
       "ankKendoDll-manifest.json"
     )
   }),
@@ -65,7 +65,7 @@ module.exports.dllPart = [
       "public",
       "Anakeen",
       "hubVendor",
-      "deps",
+      "legacy",
       "hubVendor-manifest.json"
     )
   })
