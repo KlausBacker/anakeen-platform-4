@@ -58,7 +58,7 @@ class Hub
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
                         "hubVendor",
-                        UIGetAssetPath::isInDebug() ? "dev" : "prod"
+                        UIGetAssetPath::isInDebug() ? "dev" : "legacy"
                     )["hubVendor"]["js"]
                 ]
             ],

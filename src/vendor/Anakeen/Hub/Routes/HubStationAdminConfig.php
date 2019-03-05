@@ -54,6 +54,12 @@ class HubStationAdminConfig extends GridConfig
         return $filterable;
     }
 
+    /**
+     * @param $originalConfig
+     * @return mixed
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Router\Exception
+     */
     protected function getAdminConfig($originalConfig)
     {
         $originalConfig["toolbar"] = [
@@ -89,6 +95,11 @@ class HubStationAdminConfig extends GridConfig
         return $originalConfig;
     }
 
+    /**
+     * @return array|mixed
+     * @throws \Anakeen\Core\DocManager\Exception
+     * @throws \Anakeen\Router\Exception
+     */
     protected function getConfig()
     {
         $config = parent::getConfig();
