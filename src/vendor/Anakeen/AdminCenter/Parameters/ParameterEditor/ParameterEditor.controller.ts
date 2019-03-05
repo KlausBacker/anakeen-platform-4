@@ -1,5 +1,3 @@
-import JSONEditor from "jsoneditor";
-import "jsoneditor/dist/jsoneditor.min.css";
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
@@ -67,7 +65,6 @@ export default class ParameterEditorController extends Vue {
   public editedItem;
   @Prop({ type: String, default: "" })
   public editRoute;
-  public jsonEditor: JSONEditor;
   public jsonValue: object = {};
   // Saved value sent by the server in response
   public responseValue: string = "";
@@ -76,6 +73,7 @@ export default class ParameterEditorController extends Vue {
   public confirmationWindow: any = null;
   public errorWindow: any = null;
   public inputIsJson: boolean = false;
+  public isNotJson: boolean = false;
   // Open the parameter editor with corresponding fields
   public openEditor() {
     if (this.editedItem) {
@@ -100,24 +98,6 @@ export default class ParameterEditorController extends Vue {
         .data("kendoButton");
 
       // Init Json editor if edited item is a json
-      if (
-        this.parameterInputType === "json" &&
-        ParameterEditorController.isJson(this.editedItem.value)
-      ) {
-        this.jsonValue = JSON.parse(this.editedItem.value);
-        const divContainer = $(".json-editor", this.$el)[0]; // [0] to get DOM element a la base c'est ca mais ca change rien
-        this.jsonEditor = new JSONEditor(
-          divContainer,
-          {
-            history: false,
-            modes: ["tree", "code"],
-            navigationBar: false,
-            search: false,
-            statusBar: false
-          },
-          this.jsonValue
-        );
-      }
 
       this.editionWindow = $(".edition-window")
         .kendoWindow({
@@ -140,7 +120,7 @@ export default class ParameterEditorController extends Vue {
               this.parameterInputType === "json" &&
               ParameterEditorController.isJson(this.editedItem.value)
             ) {
-              this.jsonEditor.destroy();
+              // this.jsonEditor.destroy();
             } else if (this.parameterInputType === "enum") {
               kendoDropdown.destroy();
             }
@@ -174,14 +154,7 @@ export default class ParameterEditorController extends Vue {
       this.parameterInputType === "json" &&
       ParameterEditorController.isJson(this.editedItem.value)
     ) {
-      newValue = JSON.stringify(this.jsonEditor.get());
-    } else if (
-      this.parameterInputType === "json" &&
-      !ParameterEditorController.isJson(
-        $(".parameter-new-value", this.$el).val()
-      )
-    ) {
-      $(".parameter-new-value", this.$el).css("border-color", "red");
+      newValue = $(".parameter-new-value", this.$el).val();
     } else if (this.parameterInputType === "enum") {
       newValue = $("select.enum-drop-down", this.$el).val();
     } else {
@@ -190,6 +163,17 @@ export default class ParameterEditorController extends Vue {
     }
 
     if (newValue) {
+      if (
+        this.parameterInputType === "json" &&
+        !ParameterEditorController.isJson(
+          newValue
+        )
+      ) {
+        $(".parameter-new-value", this.$el).css("border-color", "red");
+        this.isNotJson = true;
+        return false;
+      }
+      this.isNotJson = false;
       // Send the request at edition route passed as a prop of the component
       this.$http
         .put(this.editRoute, {
@@ -197,6 +181,7 @@ export default class ParameterEditorController extends Vue {
         })
         .then(response => {
           // Save the modified value sent by the server, and open a confirmation window
+          console.log(response);
           this.responseValue = response.data.data.value;
           this.confirmationWindow = $(".confirmation-window")
             .kendoWindow({

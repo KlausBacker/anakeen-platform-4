@@ -100,7 +100,6 @@ class AlterParameter
 
 
         $paramType = $output[0]['kind'];
-
         switch ($paramType) {
             case "password":
                 return is_string($newValue);
@@ -117,7 +116,7 @@ class AlterParameter
             case "double":
                 return is_numeric($newValue);
                 break;
-            case "json":
+            case "JSON":
                 return is_string($newValue) && is_array(json_decode($newValue, true)) && (json_last_error() == JSON_ERROR_NONE) ? true : false;
                 break;
             default:
