@@ -47,7 +47,6 @@ class RenderDefault implements IRenderConfig
         $pubInternalPath = "/uiAssets/anakeen";
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef = [
-            "jquery" => UIGetAssetPath::getJSJqueryPath(),
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 
@@ -63,11 +62,6 @@ class RenderDefault implements IRenderConfig
     public function getCoreJs($legacy = false)
     {
         return UIGetAssetPath::getJSSmartElementPath($legacy);
-    }
-
-    public function getEs5Polyfill()
-    {
-        return UIGetAssetPath::getPolyfill();
     }
 
     public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)

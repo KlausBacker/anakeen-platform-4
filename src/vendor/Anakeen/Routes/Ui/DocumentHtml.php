@@ -158,7 +158,6 @@ class DocumentHtml
             ["key" => "core", "path" => $render->getCoreJs()]
         ];
         $data["JS_LEGACY"] = [
-            ["key" => "polyfilles5", "path" => $render->getEs5Polyfill()],
             ["key" => "core", "path" => $render->getCoreJs(true)]
         ];
 
