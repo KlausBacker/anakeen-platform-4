@@ -97,8 +97,6 @@ buildJS: install-deps
 	make -f pojs.make compile
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build Css $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildCss
-	@${PRINT_COLOR} "${DEBUG_COLOR}Build polyfill $@${RESET_COLOR}\n"
-	$(YARN_BIN) buildPolyfill
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildAsset
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build dll $@${RESET_COLOR}\n"

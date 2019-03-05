@@ -3,7 +3,7 @@ const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
 const {
   cssLoader,
-  setKendoAndJqueryToGlobal,
+  addFalseKendoGlobal,
   addDll
 } = require("@anakeen/webpack-conf/parts");
 
@@ -65,11 +65,11 @@ module.exports = () => {
           PUBLIC_PATH,
           "Anakeen",
           "assets",
-          "deps",
+          "legacy",
           "KendoUI-manifest.json"
         )
       }),
-      setKendoAndJqueryToGlobal([/dcpExternals\/KendoUI\/KendoUI/]),
+      addFalseKendoGlobal([/dcpExternals\/KendoUI\/KendoUI/]),
       cssLoader()
     ]
   };

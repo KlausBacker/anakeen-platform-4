@@ -37,10 +37,6 @@ class LoginPage
             "title" => sprintf(Gettext::___("Connexion to %s", "login"), ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_CLIENT")),
             "JS_DEPS" => [
                 [
-                    "key" => "jquery",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSJqueryPath()
-                ],
-                [
                     "key" => "kendo",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoPath()
                 ],
@@ -60,10 +56,6 @@ class LoginPage
                 ]
             ],
             "JS_LEGACY" => [
-                [
-                    "key" => "polyfilles5",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getPolyfill()
-                ],
                 [
                     "key" => "ankcomponentses5",
                     "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)

@@ -16,11 +16,22 @@ module.exports = () => {
     withoutBabel: true,
     customParts: [
       {
-        output: {
-          libraryTarget: "umd"
-        },
-        externals: {
-          jquery: "jQuery"
+        module: {
+          rules: [
+            {
+              test: require.resolve("jquery"),
+              use: [
+                {
+                  loader: "expose-loader",
+                  options: "jQuery"
+                },
+                {
+                  loader: "expose-loader",
+                  options: "$"
+                }
+              ]
+            }
+          ]
         }
       },
       clean(path.resolve(__dirname, "../src/public/uiAssets/externals/")),
@@ -53,15 +64,6 @@ module.exports = () => {
                 "../src/public/uiAssets/externals/traceKit/traceKit.js"
               )
             },
-            //jQuery
-            {
-              context: "./node_modules/jquery/dist/",
-              from: "*",
-              to: path.resolve(
-                __dirname,
-                "../src/public/uiAssets/externals/jquery/"
-              )
-            },
             //ckeditor
             {
               from: "./node_modules/ckeditor/",
@@ -75,5 +77,12 @@ module.exports = () => {
       }
     ]
   };
-  return [deps(conf)];
+  if (process.env.conf === "DEV") {
+    return deps({ ...conf, ...{ mode: "dev" } });
+  }
+  if (process.env.conf === "LEGACY") {
+    return deps(conf);
+  }
+
+  return [deps(conf), deps({ ...conf, ...{ mode: "dev" } })];
 };

@@ -57,7 +57,7 @@ module.exports = () => {
           PUBLIC_PATH,
           "Anakeen",
           "assets",
-          "deps",
+          "legacy",
           "KendoUI-manifest.json"
         )
       }),
@@ -75,11 +75,6 @@ module.exports = () => {
               "../src/public/uiAssets/externals/"
             )
           }
-        }
-      },
-      {
-        externals: {
-          jquery: "jQuery"
         }
       },
       cssLoader()

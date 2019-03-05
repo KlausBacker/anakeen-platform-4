@@ -3,7 +3,7 @@ const { deps } = require("@anakeen/webpack-conf");
 
 const {
   addDll,
-  setKendoAndJqueryToGlobal
+  addFalseKendoGlobal
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -29,12 +29,19 @@ module.exports = () => {
           PUBLIC_PATH,
           "Anakeen",
           "assets",
-          "deps",
+          "legacy",
           "KendoUI-manifest.json"
         )
       }),
-      setKendoAndJqueryToGlobal([/kendo.pdf/, /kendo.excel/])
+      addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/])
     ]
   };
-  return [deps(conf)];
+  if (process.env.conf === "DEV") {
+    return deps({...conf, ...{mode: "dev"}});
+  }
+  if (process.env.conf === "LEGACY") {
+    return deps(conf);
+  }
+
+  return [deps(conf), deps({...conf, ...{mode: "dev"}})];
 };

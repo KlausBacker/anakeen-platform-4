@@ -55,19 +55,13 @@ class UIGetAssetPath
         return $manifest;
     }
 
-    public static function getJSJqueryPath()
-    {
-        $jqueryFileName = self::isInDebug() ? 'jquery.js' : 'jquery.min.js';
-        return self::$assetPath.'/jquery/'.$jqueryFileName.'?ws='.self::getWs();
-    }
-
     /**
      * @return mixed
      * @throws Exception
      */
     public static function getJSKendoPath()
     {
-        $assets = self::getElementAssets("assets", "deps");
+        $assets = self::getElementAssets("assets", self::isInDebug()? "dev":"legacy");
         return $assets["KendoUI"]["js"];
     }
 
@@ -77,7 +71,7 @@ class UIGetAssetPath
      */
     public static function getJSKendoComponentPath()
     {
-        $assets = self::getElementAssets("ankDll", "deps");
+        $assets = self::getElementAssets("ankDll", self::isInDebug()? "dev":"legacy");
         return $assets["ankKendoDll"]["js"];
     }
 
@@ -87,7 +81,7 @@ class UIGetAssetPath
      */
     public static function getJSVueComponentPath()
     {
-        $assets = self::getElementAssets("ankDll", "deps");
+        $assets = self::getElementAssets("ankDll", self::isInDebug()? "dev":"legacy");
         return $assets["vueDll"]["js"];
     }
 
@@ -120,12 +114,6 @@ class UIGetAssetPath
         $baseUrl .= "ws=".self::getWs();
 
         return $baseUrl;
-    }
-
-    public static function getPolyfill()
-    {
-        $assets = self::getElementAssets("polyfill", "deps");
-        return $assets["polyfill"]["js"];
     }
 
     /**
