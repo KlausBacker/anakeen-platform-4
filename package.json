@@ -58,7 +58,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.1",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190305153830",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190305160245",
     "@anakeen/webpack-conf": "^1.2.0-dev20190305145653",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/node": "^11.10.4",

@@ -89,10 +89,10 @@
     vue "^2.6.7"
     vue-custom-element "^3.2.5"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190305153830":
-  version "2.0.0-dev20190305153830"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190305153830.tgz#187eadf73bd7acd666e7269e431dc37f6051d34f"
-  integrity sha512-HHRSPc4deJfUzfexEidhxCxXfB1IztqY+Mp9Htg56xuojayq2kt3Lg4bXBRA8f7lr2uKlwPQ/n116axtEo9zfg==
+"@anakeen/user-interfaces@^2.0.0-dev20190305160245":
+  version "2.0.0-dev20190305160245"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190305160245.tgz#cbcd14908deeba9669367084c2befbcd17e46145"
+  integrity sha512-qg+wbdhxCykENyrtY91SxEibitCTvs4SEO3TSJRbSPsNNtkTh5mI6mfdB3hrpCqln0Wpe/LEOtEJ4qQQ4hjSAg==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@progress/kendo-theme-bootstrap" "^3.2.1"
