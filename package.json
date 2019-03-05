@@ -43,8 +43,8 @@
     "src/vendor/Anakeen/DOCUMENT/IHM/document.js",
     "src/vendor/Anakeen/DOCUMENT/IHM/widgets/widget.js",
     "src/public/Anakeen/ank-components/deps/*",
-    "src/public/Anakeen/assets/deps/*",
-    "src/public/Anakeen/ankDll/deps/*",
+    "src/public/Anakeen/assets/**/*",
+    "src/public/Anakeen/ankDll/**/*",
     "LICENSE",
     "README.md"
   ],
