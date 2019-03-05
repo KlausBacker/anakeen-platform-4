@@ -10,7 +10,9 @@
     "lib:prod": "npx webpack --env production --config ./components/webpack/index.js",
     "lib:dev": "npx webpack --env development --config ./components/webpack/index.js",
     "lib": "yarn run lib:prod && yarn run lib:dev",
-    "buildVendor": "npx webpack --config ./webpack/hubVendor.js",
+    "buildVendor:legacy": "conf=DEV npx webpack --config ./webpack/hubVendor.js",
+    "buildVendor:dev": "conf=LEGACY npx webpack --config ./webpack/hubVendor.js",
+    "buildVendor": "yarn run buildVendor:dev && yarn run buildVendor:legacy",
     "buildJs:prod": "conf=PROD npx webpack --config ./webpack/index.js",
     "buildJs:dev": "conf=DEV npx webpack --config ./webpack/index.js",
     "buildJs:legacy": "conf=LEGACY npx webpack --config ./webpack/index.js",
@@ -38,14 +40,13 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "@anakeen/internal-components": "^1.0.1-dev20190301181201",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190304152147",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@progress/kendo-ui": "^2019.1.227",
     "axios": "^0.18.0",
     "jquery": "^3.3.1",
     "load-css-file": "^1.0.0",
     "typescript": "^3.3.3333",
-    "vue": "^2.6.7",
+    "vue": "^2.6.8",
     "vue-class-component": "^7.0.1",
     "vue-gettext": "^2.1.2",
     "vue-m-loader": "^1.0.1",
@@ -57,7 +58,8 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.1",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190301180056",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190305153830",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190305145653",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/node": "^11.10.4",
     "commitlint": "^7.5.2",
@@ -69,9 +71,7 @@
     "tslint": "^5.13.1",
     "tslint-config-prettier": "^1.18.0"
   },
-  "peerDependencies": {
-    "@anakeen/user-interfaces": "^2.0.0-dev20190304103714"
-  },
+  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-push": "npx eslint ./ && npx tslint './components/src/**/*.ts' && npx prettier --check './components/src/**/*.ts' && make lint",

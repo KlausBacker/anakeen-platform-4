@@ -43,10 +43,6 @@ class Hub
             "hubInstanceId" => $hubId,
             "JS_DEPS" => [
                 [
-                    "key" => "jquery",
-                    "path" => UIGetAssetPath::getJSJqueryPath()
-                ],
-                [
                     "key" => "kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
                 ],
@@ -62,7 +58,7 @@ class Hub
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
                         "hubVendor",
-                        "deps"
+                        UIGetAssetPath::isInDebug() ? "dev" : "prod"
                     )["hubVendor"]["js"]
                 ]
             ],
@@ -76,10 +72,6 @@ class Hub
                 ]
             ],
             "JS_LEGACY" => [
-                [
-                    "key" => "polyfill",
-                    "path" => UIGetAssetPath::getPolyfill()
-                ],
                 [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
