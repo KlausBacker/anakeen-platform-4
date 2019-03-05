@@ -34,7 +34,7 @@ module.exports = () => {
           "public",
           "Anakeen",
           "assets",
-          "deps",
+          "legacy",
           "KendoUI-manifest.json"
         )
       }),
@@ -46,7 +46,7 @@ module.exports = () => {
           "public",
           "Anakeen",
           "ankDll",
-          "deps",
+          "legacy",
           "vueDll-manifest.json"
         )
       }),
@@ -58,11 +58,17 @@ module.exports = () => {
           "public",
           "Anakeen",
           "ankDll",
-          "deps",
+          "legacy",
           "ankKendoDll-manifest.json"
         )
       })
     ]
   };
-  return [deps(conf)];
+  if (process.env.conf === "DEV") {
+    return deps({...conf, ...{mode: "dev"}});
+  }
+  if (process.env.conf === "LEGACY") {
+    return deps(conf);
+  }
+  return [deps(conf), deps({...conf, ...{mode: "dev"}})];
 };

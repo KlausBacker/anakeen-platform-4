@@ -24,10 +24,6 @@ class HubInstanciation
         $data = [
             "JS_DEPS" => [
                 [
-                    "key" => "jquery",
-                    "path" => UIGetAssetPath::getJSJqueryPath()
-                ],
-                [
                     "key" => "kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
                 ],
@@ -43,7 +39,7 @@ class HubInstanciation
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
                         "hubVendor",
-                        "deps"
+                        UIGetAssetPath::isInDebug() ? "dev" : "prod"
                     )["hubVendor"]["js"]
                 ]
             ],
@@ -57,10 +53,6 @@ class HubInstanciation
                 ]
             ],
             "JS_LEGACY" => [
-                [
-                    "key" => "polyfill",
-                    "path" => UIGetAssetPath::getPolyfill()
-                ],
                 [
                     "key" => "hubInstanciation",
                     "path" => UIGetAssetPath::getElementAssets(
