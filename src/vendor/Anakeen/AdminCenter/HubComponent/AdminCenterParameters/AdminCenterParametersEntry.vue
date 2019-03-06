@@ -6,7 +6,7 @@
         <div v-else-if="isDockExpanded">
             <span><i class="fa fa-cog"></i> Parameters</span>
         </div>
-        <div v-else-if="isHubContent">
+        <div v-else-if="isHubContent" class="parameters-parent">
             <admin-center-parameters></admin-center-parameters>
         </div>
     </div>
@@ -23,3 +23,8 @@ export default {
   }
 };
 </script>
+<style>
+    .parameters-parent {
+        height: 100%;
+    }
+</style>

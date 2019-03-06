@@ -114,6 +114,7 @@ export default class GlobalParametersController extends Vue {
 
         // Disable kendo column filters => global filter in toolbar
         filterable: false,
+        height: "100%",
         resizable: false,
         toolbar: toolbarTemplate,
 

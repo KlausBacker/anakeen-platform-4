@@ -97,6 +97,10 @@
   margin: 0.5rem;
 }
 
+.search-group > span {
+  margin-top: 0.5rem;
+}
+
 .users-tree {
   height: 100%;
 }
