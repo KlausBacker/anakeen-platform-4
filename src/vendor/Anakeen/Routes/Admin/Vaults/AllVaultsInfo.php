@@ -4,6 +4,9 @@ namespace Anakeen\Routes\Admin\Vaults;
 
 use Anakeen\Routes\Core\Lib\ApiMessage;
 
+/**
+ * @note use by route GET /api/v2/admin/vaults/
+ */
 class AllVaultsInfo
 {
     /**
@@ -17,6 +20,7 @@ class AllVaultsInfo
         $fsInfo = [];
         $messages = [];
         $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Vault\DiskFsStorage::class);
+        $q->order_by="id_fs";
         $fsList = $q->query();
         if ($q->nb > 0) {
             /** @var \Anakeen\Vault\DiskFsStorage $fsItem */
@@ -24,7 +28,6 @@ class AllVaultsInfo
                 $info = \Anakeen\Vault\VaultFsManager::getInfo($fsItem);
 
                 if ($info["metrics"]["usedSize"] !== $info["computedMetrics"]["usedSize"]) {
-                    var_dump([$info["metrics"]["usedSize"],$info["computedMetrics"]["usedSize"] ]);
                     $messages[] = new ApiMessage(sprintf(
                         "Mismatch used size in fs #%d. Computed = %s, Cached = %s",
                         $fsItem->id_fs,
@@ -39,7 +42,7 @@ class AllVaultsInfo
         return \Anakeen\Router\ApiV2Response::withData($response, $fsInfo, $messages);
     }
 
-    protected function formatBytes($bytes, $precision = 2)
+    public static function formatBytes($bytes, $precision = 2)
     {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 

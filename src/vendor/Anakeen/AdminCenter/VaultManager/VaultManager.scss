@@ -12,6 +12,24 @@
 .vault-manager {
   height: 100%;
   width: 100%;
+
+  .vault--selected {
+    background-color: var(--primary);
+    color: white;
+    &:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    a.k-button {
+      background-color: transparent;
+    }
+  }
+}
+
+.vault-manager-form {
+  input {
+    width: 100%;
+  }
 }
 
 .vault-manager-content {
@@ -27,6 +45,13 @@
 }
 .vault-manager-splitter {
   height: 100%;
+  header {
+    text-align: right;
+
+    .fa {
+      margin-right: 0.2rem;
+    }
+  }
 }
 
 .consult-btn {
