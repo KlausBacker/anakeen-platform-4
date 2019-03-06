@@ -97,7 +97,7 @@ class WorkflowStateCollection
                 $transitionData = array(
                     "id" => $transition["id"],
                     "uri" => sprintf("%stransitions/%s", $baseUrl, $transition["id"]),
-                    "label" => _($transition["id"]),
+                    "label" => $this->workflow->getTransitionLabel($transition["id"]),
                     "error" => $this->getM0($transition, $aState),
                     "authorized" => empty($controlTransitionError)
                 );
