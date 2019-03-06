@@ -13,7 +13,7 @@
  */
 /**
  */
-# MIME type	Extension
+# MIME type Extension
 function getExtensions()
 {
     return array(

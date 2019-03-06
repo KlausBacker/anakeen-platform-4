@@ -720,7 +720,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 
                 foreach ($tallfam as $cdoc) {
                     $tclassdoc[$cdoc["id"]] = $cdoc;
-                    //	  $tclassdoc += $this->GetChildFam($cdoc["id"]);
+                    //    $tclassdoc += $this->GetChildFam($cdoc["id"]);
                 }
                 // suppress undesirable families
                 reset($tfamid);

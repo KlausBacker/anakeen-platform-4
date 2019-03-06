@@ -732,7 +732,7 @@ class DbObj
                 if ($st == "") {
                     return true;
                 } else {
-                
+
                     $err= \ErrorCode::getError('DB0004', $this->dbtable, $st);
                     $this->msg_err = $originError . "\n" . $err;
                 }

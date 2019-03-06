@@ -422,7 +422,7 @@ class DocOooFormat
         $xslt = new xsltProcessor;
         $xslt->importStyleSheet($domHtml);
         $dom = null;
-        //	set_error_handler('HandleXmlError');
+        //  set_error_handler('HandleXmlError');
         try {
             $dom = new \Anakeen\Core\Utils\XDOMDocument();
             $dom->loadXML($xhtml_body);

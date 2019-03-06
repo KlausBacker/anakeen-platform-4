@@ -10,8 +10,8 @@ use Anakeen\Core\ContextManager;
  */
 class TestSplitXmlDocument extends TestCaseDcp
 {
-    static private $runid = 0;
-    static private $workDir = false;
+    private static $runid = 0;
+    private static $workDir = false;
     public $errmsg = '';
 
     public static function setUpBeforeClass()

@@ -570,8 +570,8 @@ create sequence seq_id_users start 10;";
         if (intval($this->passdelay) == 0) {
             $this->expires = "0";
             $this->passdelay = "0";
-        } // neither expire
-        elseif (intval($this->expires) == 0) {
+            // neither expire
+        } elseif (intval($this->expires) == 0) {
             $this->expires = time() + $this->passdelay;
         }
     }
@@ -589,8 +589,8 @@ create sequence seq_id_users start 10;";
             $iuser = \Anakeen\Core\SEManager::getDocument($this->fid);
 
             $err = $iuser->RefreshDocUser();
-        } //Update from what
-        else {
+            //Update from what
+        } else {
             if ($this->famid != "") {
                 $fam = $this->famid;
             } elseif ($this->accounttype == self::GROUP_TYPE) {

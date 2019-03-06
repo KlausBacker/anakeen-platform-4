@@ -123,8 +123,7 @@ class ShellManager
                 fprintf(STDERR, "%s\n", $e->getDcpMessage());
                 self::exceptionHandler($e, false);
                 exit(1);
-            } /** @noinspection PhpRedundantCatchClauseInspection */
-            catch (\Anakeen\Exception $e) {
+            } catch (\Anakeen\Exception $e) {
                 self::exceptionHandler($e);
             } catch (\Exception $e) {
                 self::exceptionHandler($e);

@@ -1466,9 +1466,9 @@ create unique index i_docir on doc(initid, revision);";
         $err = "";
         if ($this->locked != 0) { // if is already unlocked
             if ($this->profid > 0) {
+                // first control unlock privilege
                 $err = $this->Control("unlock");
-            } // first control unlock privilege
-            else {
+            } else {
                 $err = _("cannot unlock");
             } // not control unlock if the document is not controlled
         }
@@ -4810,8 +4810,8 @@ create unique index i_docir on doc(initid, revision);";
 
         if ($locked > 0) {
             $this->locked = $locked;
-        } // report the lock
-        else {
+            // report the lock
+        } else {
             $this->locked = 0;
         }
         $this->allocated = $allocated; // report the allocate
@@ -5757,7 +5757,7 @@ create unique index i_docir on doc(initid, revision);";
                         $sattrid .= $link[$i];
                         $i++;
                     }
-                    //	  print "attr=$sattrid";
+                    //    print "attr=$sattrid";
                     $ovalue = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, $sattrid);
                     $urllink .= rawurlencode($ovalue);
 
