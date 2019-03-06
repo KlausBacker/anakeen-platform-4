@@ -38,10 +38,12 @@ class RouterConfig
         $this->accesses = isset($data->accesses) ? $data->accesses : [];
         $this->parameters = isset($data->parameters) ? $data->parameters : [];
 
-        static::sortRoutesByPriority($this->routes);
+
         $this->uniqueName($this->routes);
-        static::sortMiddleByPriority($this->middlewares);
+        static::sortRoutesByPriority($this->routes);
+
         $this->uniqueName($this->middlewares);
+        static::sortMiddleByPriority($this->middlewares);
 
         static::normalizeMethods($this->routes);
         static::normalizeMethods($this->middlewares);
@@ -95,19 +97,14 @@ class RouterConfig
 
     protected static function sortRoutesByPriority(array &$routes)
     {
-        usort($routes, function ($a, $b) {
+        uasort($routes, function ($a, $b) {
 
             /**
              * @var RouterInfo $a
              * @var RouterInfo $b
              */
 
-            if (!empty($a->override) && empty($b->override)) {
-                return 1;
-            }
-            if (!empty($b->override) && empty($a->override)) {
-                return -1;
-            }
+
             if (isset($a->priority) && isset($b->priority)) {
                 if ($a->priority > $b->priority) {
                     return 1;
@@ -123,12 +120,17 @@ class RouterConfig
                 return -1;
             }
 
-            if (isset($a->pattern) && isset($b->pattern) && !is_array($a->pattern) && !is_array($b->pattern)) {
-                if (strlen($a->pattern) > strlen($b->pattern)) {
-                    return 1;
-                }
-                if (strlen($a->pattern) < strlen($b->pattern)) {
-                    return -1;
+            if (isset($a->pattern) && isset($b->pattern)) {
+                $aPattern = is_array($a->pattern) ? $a->pattern[0] : $a->pattern;
+                $bPattern = is_array($b->pattern) ? $b->pattern[0] : $b->pattern;
+
+                if ($aPattern && $bPattern) {
+                    if (strlen($aPattern) > strlen($bPattern)) {
+                        return 1;
+                    }
+                    if (strlen($aPattern) < strlen($bPattern)) {
+                        return -1;
+                    }
                 }
             }
             return strcmp($a->name, $b->name);
