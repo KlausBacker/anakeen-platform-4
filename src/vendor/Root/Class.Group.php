@@ -217,7 +217,7 @@ SQL;
                 if ($v["idgroup"] == $pgid) {
                     $uid = $v["iduser"];
                     $groupsid[$uid] = $uid;
-                    //	  $groupsid=array_merge($groupsid, $this->getChildsGroup($v["iduser"]));
+                    //    $groupsid=array_merge($groupsid, $this->getChildsGroup($v["iduser"]));
                     $groupsid += $this->getChildsGroupId($uid);
                 }
             }

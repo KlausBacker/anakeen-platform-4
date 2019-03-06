@@ -1152,7 +1152,7 @@ class SearchSmartData
                             if ($table == "docread") {
                                 /*$qsql= "select $selectfields ".
                                                  "from $table where initid in (select childid from fld where $sqlfld)  ".
-                                                 "and  $sqlcond ";	*/
+                                                 "and  $sqlcond ";  */
                                 $qsql = "select $selectfields " . "from $table where initid in ($sfldids)  " . "and  $sqlcond ";
                             } else {
                                 /*$qsql= "select $selectfields ".

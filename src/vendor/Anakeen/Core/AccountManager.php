@@ -4,7 +4,7 @@ namespace Anakeen\Core;
 
 class AccountManager
 {
-    static protected $sysIds=[];
+    protected static $sysIds=[];
     public static function getIdFromLogin(string $login): int
     {
         $sql=sprintf("select id from users where login='%s'", pg_escape_string($login));

@@ -320,7 +320,7 @@ class IGroupHooks extends \SmartStructure\Group
             parent::Clear();
             $tfid = array();
             foreach ($tu as $k => $v) {
-                //	if ($v["fid"]>0)  $err.=$this->AddFile($v["fid"]);
+                //  if ($v["fid"]>0)  $err.=$this->AddFile($v["fid"]);
                 if ($v["fid"] > 0) {
                     $tfid[] = $v["fid"];
                 }
@@ -434,7 +434,7 @@ class IGroupHooks extends \SmartStructure\Group
                 foreach ($tu as $uid => $tvu) {
                     if ($tvu["accounttype"] == \Anakeen\Core\Account::GROUP_TYPE) {
                         $tgid[$uid] = $tvu["fid"];
-                        //	  $tglogin[$uid]=$this->getTitle($tvu["fid"]);
+                        //    $tglogin[$uid]=$this->getTitle($tvu["fid"]);
                         $tglogin[$tvu["fid"]] = $tvu["lastname"];
                     }
                 }

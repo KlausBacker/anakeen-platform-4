@@ -2098,13 +2098,14 @@ class ImportDocumentDescription
             if (!$this->tcr[$this->nLine]["err"]) {
                 if ($data[0] == "PARAM") {
                     $oattr->usefor = 'Q';
-                } // parameters
-                elseif ($data[0] == "OPTION") {
+                    // parameters
+                } elseif ($data[0] == "OPTION") {
                     $oattr->usefor = 'O';
-                } // options
-                else {
+                    // options
+                } else {
                     $oattr->usefor = 'N';
-                } // normal
+                    // normal
+                }
                 $oattr->docid = $this->doc->id;
                 $oattr->id = trim(strtolower($this->structAttr->id));
 

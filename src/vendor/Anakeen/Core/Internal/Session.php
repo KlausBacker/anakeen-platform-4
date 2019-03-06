@@ -232,7 +232,7 @@ class Session extends DbObj
             session_id($idsess);
             @session_start();
             @session_write_close(); // avoid block
-            //	$this->initCache();
+            //  $this->initCache();
         }
         $this->name = self::getName();
         $this->id = $idsess;

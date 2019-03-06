@@ -369,7 +369,7 @@ class DocumentAccess
             $query->AddQuery(sprintf("docid=%d", $pdoc->id));
             $tacl = $query->Query(0, 0, "TABLE");
             if (!is_array($tacl)) {
-                //	print "err $tacl";
+                //  print "err $tacl";
                 $tacl = array();
             }
             $tgnum = array(); // list of virtual user/group
@@ -518,7 +518,7 @@ class DocumentAccess
         $query->AddQuery(sprintf("docid=%d", $dprofid));
         $tacl = $query->Query(0, 0, "TABLE");
         if (!is_array($tacl)) {
-            //	print "err $tacl";
+            //  print "err $tacl";
             $tacl = array();
         }
         if (!$tacl) {

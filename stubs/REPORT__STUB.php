@@ -119,6 +119,33 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const rep_foots='rep_foots';
+        /**
+        * Paramètres
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const rep_fr_param='rep_fr_param';
+        /**
+        * Texte à afficher pour les valeurs protégées
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> htmltext </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const rep_noaccesstext='rep_noaccesstext';
+        /**
+        * Limite d'affichage pour le nombre de rangées
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> int </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const rep_maxdisplaylimit='rep_maxdisplaylimit';
 
     }
 }

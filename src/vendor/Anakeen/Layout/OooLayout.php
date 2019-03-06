@@ -160,7 +160,7 @@ EOF;
 
                 if (preg_match('/\[V_[A-Z0-9_-]+\]/', $item->textContent, $reg)) {
                     $skey = $reg[0];
-                    //	    print "serack key : [$skey] [$aid] [$vkey]";
+                    //      print "serack key : [$skey] [$aid] [$vkey]";
                     if ($skey == $aid) {
                         //  $vkey=$this->rkey[$key];
                         $tvkey = explode('<text:tab/>', $vkey);
@@ -448,7 +448,7 @@ EOF;
                     }
                 }
                 $this->rif = &$v;
-                //	$this->ParseIf($loc);
+                //  $this->ParseIf($loc);
                 $out .= $loc;
             }
         }
