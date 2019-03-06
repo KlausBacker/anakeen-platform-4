@@ -9,7 +9,6 @@ namespace Anakeen\Ui;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Strings;
-use Anakeen\Ui\MaskManager;
 use \SmartStructure\Fields\Cvdoc as CvAttributes;
 
 class DefaultView extends RenderDefault
@@ -123,11 +122,9 @@ class DefaultView extends RenderDefault
         }
 
         $this->addCvMenu($document, $menu);
-        $this->addFamilyMenu($document, $menu);
         $this->addHelpMenu($document, $menu);
         return $this->setMenuVisibility($menu, $document);
     }
-
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement $document
@@ -146,7 +143,7 @@ class DefaultView extends RenderDefault
                 $workflowMenu->setContent(function (ListMenu & $menu) use ($document) {
                     $this->getWorkflowMenu($document, $menu);
                 });
-                $workflowMenu->setBeforeContent(sprintf('<div class="fa fa-sitemap" />', $document->getStateColor("transparent")));
+                $workflowMenu->setBeforeContent('<div class="fa fa-sitemap" />');
                 $workflowMenu->setHtmlAttribute("class", "menu--workflow menu--left");
                 if ($this->displayDefaultMenuTooltip) {
                     $workflowMenu->setTooltipLabel(___("Goto next activity", "UiMenu"), "left");
@@ -240,7 +237,8 @@ class DefaultView extends RenderDefault
             foreach ($fstate as $v) {
                 $tr = $wdoc->searchTransition($doc->state, $v);
 
-                $label = $tr['id'] ? $wdoc->getStateLabel($tr['id']) : $wdoc->getActivity($v, Strings::mbUcfirst($wdoc->getStateLabel($v)));
+                $label = $tr['id'] ? $wdoc->getTransitionLabel($tr['id']) : $wdoc->getActivity($v, Strings::mbUcfirst($wdoc->getStateLabel($v)));
+
                 $itemMenu = new ItemMenu($v, $label);
 
                 $itemMenu->setUrl(sprintf("#action/document.transition:%s:%s", urlencode($tr['id']), urlencode($v)));
@@ -302,23 +300,6 @@ class DefaultView extends RenderDefault
      *
      * @param \Anakeen\Core\Internal\SmartElement $doc
      * @param BarMenu                             $menu target menu
-     */
-    public function addFamilyMenu(\Anakeen\Core\Internal\SmartElement $doc, BarMenu & $menu)
-    {
-        $legacyPopupFile = sprintf("%s/Apps/FDL/popupdocdetail.php", DEFAULT_PUBDIR);
-        if (file_exists($legacyPopupFile)) {
-            include_once($legacyPopupFile);
-            $links = array();
-            addFamilyPopup($links, $doc);
-            $this->addOldMenu($links, $menu);
-        }
-    }
-
-    /**
-     * Add Menu item defined by attribute family
-     *
-     * @param \Anakeen\Core\Internal\SmartElement $doc
-     * @param BarMenu                             $menu target menu
      *
      * @throws \Anakeen\Ui\Exception
      */
@@ -361,60 +342,6 @@ class DefaultView extends RenderDefault
                 $modifyItem->setTextLabel($cv->getLocaleViewLabel($defaultview['cv_idview']));
 
                 $menu->removeElement("vid-" . $defaultview['cv_idview']);
-            }
-        }
-    }
-
-    /**
-     * Add Menu item defined by attribute family
-     *
-     * @param array   $links old configuration format for links
-     * @param BarMenu $menu  target menu
-     */
-    protected function addOldMenu(array $links, BarMenu & $menu)
-    {
-        $advMenu = $menu->getElement("advanced");
-        foreach ($links as $idLink => $link) {
-            if (isset($link["visibility"])) {
-                $menuItem = new ItemMenu($idLink, htmlspecialchars_decode($link["descr"], ENT_QUOTES));
-                if (!empty($link["target"])) {
-                    if (preg_match("/[0-9]+$/", $link["target"])) {
-                        $menuItem->setTarget("_dialog");
-                    } else {
-                        $menuItem->setTarget($link["target"]);
-                    }
-                } else {
-                    $menuItem->setTarget("_dialog");
-                }
-                if (!empty($link["url"])) {
-                    $menuItem->setUrl($link["url"]);
-                }
-                if (!empty($link["title"])) {
-                    $menuItem->setTooltipLabel($link["title"]);
-                }
-                if (!empty($link["confirm"]) && $link["confirm"] === "true") {
-                    $menuItem->useConfirm($link["tconfirm"]);
-                }
-
-                if (!empty($link["submenu"])) {
-                    if ($link["visibility"] === POPUP_ACTIVE || $link["visibility"] === POPUP_CTRLACTIVE) {
-                        $lmenu = $menu->getElement($link["submenu"]);
-                        if (!$lmenu) {
-                            // Create new list menu
-                            $lmenu = new ListMenu($link["submenu"], $link["submenu"]);
-                            $menu->insertAfter("delete", $lmenu);
-                        }
-                        $lmenu->appendElement($menuItem);
-                    }
-                } elseif ($link["visibility"] === POPUP_ACTIVE) {
-                    $menu->insertAfter("delete", $menuItem);
-                } elseif ($link["visibility"] === POPUP_CTRLACTIVE) {
-                    if (!$advMenu) {
-                        $menu->appendElement(new ListMenu("advanced", ___("Advanced", "UiMenu")));
-                        $advMenu = $menu->getElement("advanced");
-                    }
-                    $advMenu->appendElement($menuItem);
-                }
             }
         }
     }
