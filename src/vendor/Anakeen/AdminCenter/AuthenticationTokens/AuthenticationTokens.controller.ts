@@ -63,6 +63,11 @@ export default class AuthenticationTokensController extends Vue {
   }
 
   public displayCreateForm() {
+    Vue.component("ank-token-info", resolve => {
+      import("./AuthenticationTokenInfo.vue").then(AuthenticationTokenInfo => {
+        resolve(AuthenticationTokenInfo.default);
+      });
+    });
     this.$refs.splitter.disableEmptyContent();
     const tomorrow = new Date();
 
@@ -112,8 +117,7 @@ export default class AuthenticationTokensController extends Vue {
   }
 
   protected initTokenGrid(divDom) {
-    this.kTokenGrid = kendo
-      .jQuery(divDom)
+    this.kTokenGrid = $(divDom)
       .kendoGrid({
         columns: [
           {
@@ -178,7 +182,6 @@ export default class AuthenticationTokensController extends Vue {
             template:
               '# if (expire != "infinity") { #  #= kendo.toString(new Date(expire),"yyyy-MM-dd HH:mm:ss") # # } else { # Never # } #',
             title: "Expire at",
-            type: "text",
             width: "13rem"
           },
           {
@@ -224,8 +227,7 @@ export default class AuthenticationTokensController extends Vue {
                   .removeClass("token--selected");
                 $tr.addClass("token--selected");
               },
-              text: "Info",
-              title: "View token details"
+              text: "Info"
             },
 
             width: "10rem"
@@ -278,35 +280,7 @@ export default class AuthenticationTokensController extends Vue {
           pageSizes: false,
           refresh: true
         },
-        sortable: true,
-        toolbar: [
-          {
-            name: "expired",
-            template: `<div class="expired-btn">
-                        <input type="checkbox" class="k-grid-expired">
-                        <span>&nbspShow expired&nbsp</span>
-                       </div>`,
-            text: "Show expired"
-          },
-          {
-            iconClass: "fa fa-plus",
-            name: "add",
-            text: "Create token"
-          }
-        ]
-      })
-      .on("click", ".k-grid-add", () => {
-        Vue.component("ank-token-info", resolve => {
-          import("./AuthenticationTokenInfo.vue").then(
-            AuthenticationTokenInfo => {
-              resolve(AuthenticationTokenInfo.default);
-            }
-          );
-        });
-        this.displayCreateForm();
-      })
-      .on("click", ".k-grid-expired", () => {
-        this.flipFiltering();
+        sortable: true
       })
       .data("kendo-grid");
   }

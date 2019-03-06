@@ -3,22 +3,20 @@
   flex-direction: column;
   height: 100%;
 
-  > header {
+  header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     .token-title {
       font-size: 2rem;
     }
-  }
-
-  .button-filtering {
-    > i {
+    .fa {
       width: 2rem;
       margin-right: 1rem;
     }
   }
+
 
   > .ank-token-splitter {
     flex-grow: 1;
@@ -61,6 +59,9 @@
     &:hover {
       background-color: var(--primary);
       color: white;
+    }
+    a.k-button {
+        background-color: transparent;
     }
   }
 }

@@ -4,10 +4,23 @@
       ref="splitter"
       class="ank-token-splitter"
       :panes="panes"
-      localStorageKey="vault-manager-splitter"
+      localStorageKey="token-manager-splitter"
     >
       <template slot="left">
-        <div ref="tokenGrid" class="token-grid"></div>
+        <div>
+          <header>
+            <kendo-button class="button-filtering k-outline k-primary" @click="flipFiltering">
+              <i class="fa " :class="{ 'fa-check': showExpire }"/>
+              <span> Show expired </span>
+            </kendo-button>
+
+            <kendo-button class="button-createform k-primary" @click="displayCreateForm">
+              <i class="fa fa-plus"/>
+              <span>Create token</span></kendo-button>
+          </header>
+
+          <div ref="tokenGrid" class="token-grid"></div>
+        </div>
       </template>
       <template slot="right">
         <ank-token-info

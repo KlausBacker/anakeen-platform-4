@@ -1,6 +1,7 @@
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.button";
+import "@progress/kendo-ui/js/kendo.datetimepicker";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.splitter";
 import "@progress/kendo-ui/js/kendo.treelist";
@@ -196,7 +197,6 @@ export default class AuthenticationTokenInfoController extends Vue {
   protected initForm() {
     const $expireDate = $(this.$refs.expireDate);
 
-    console.log("data", this.info.expirationDate);
     $expireDate.kendoDateTimePicker({
       change: (e: any) => {
         this.tokenValues.expirationDate = e.sender.value();
