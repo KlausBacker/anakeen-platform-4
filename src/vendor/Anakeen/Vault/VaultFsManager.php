@@ -124,6 +124,14 @@ class VaultFsManager
 
     protected static function df($path)
     {
+        if (!is_dir($path)) {
+            return [
+                'total' => 0,
+                'free' => 0,
+                'used' => 0
+            ];
+        }
+
         $df = array(
             'total' => disk_total_space($path),
             'free' => disk_free_space($path)
