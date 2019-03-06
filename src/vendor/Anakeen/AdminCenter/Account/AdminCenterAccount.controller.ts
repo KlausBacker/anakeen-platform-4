@@ -1,3 +1,4 @@
+import { AnkSplitter } from "@anakeen/internal-components";
 import { AnkSmartElement } from "@anakeen/user-interfaces";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
@@ -16,13 +17,27 @@ declare var kendo;
 
 @Component({
   components: {
-    AnkSmartElement
+    AnkSmartElement,
+    "ank-splitter": AnkSplitter
   }
 })
 export default class AdminCenterAccountController extends Vue {
+  public panes: object[] = [
+    {
+      collapsible: true,
+      resizable: true,
+      scrollable: false,
+      size: "30%"
+    },
+    {
+      collapsible: true,
+      resizable: true,
+      scrollable: false,
+      size: "70%"
+    }
+  ];
   public $refs!: {
     [key: string]: any;
-    openDoc: AnkSmartElement;
   };
   public groupTree = new kendo.data.HierarchicalDataSource({
     schema: {
@@ -161,13 +176,16 @@ export default class AdminCenterAccountController extends Vue {
   public selectedGroupDocumentId: boolean = false;
   public selectedGroupLogin: boolean = false;
   public options: object = {};
+  public groupId: boolean = false;
 
   public mounted() {
-    this.fetchConfig();
-    this.bindTree();
-    this.bindGrid();
-    this.bindSplitter();
-    this.bindEditDoc();
+    this.$refs.accountTreeSplitter.disableEmptyContent();
+    this.$nextTick(() => {
+      this.fetchConfig();
+      this.bindTree();
+      this.bindSplitter();
+      this.bindEditDoc();
+    });
   }
 
   // Get the config of the creation toolbar
@@ -188,14 +206,12 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   public bindToolbars(element) {
-    const openDoc = this.$refs.openDoc;
-    const groupToolbar = this.$refs.groupToolbar.kendoWidget();
-    const toggleUserMode = this.toggleUserMode.bind(this);
     const openInCreation = event => {
+      this.$refs.accountSplitter.disableEmptyContent();
       if (event && event.target && event.target[0] && event.target[0].id) {
         if (
-          event.target[0].id === "groupCreateToolbar" ||
-          event.target[0].id === "userCreateToolbar"
+          event.target[0].id === "userCreateToolbar" ||
+          event.target[0].id === "groupCreateToolbar"
         ) {
           event.preventDefault();
           $(event.target[0])
@@ -204,26 +220,25 @@ export default class AdminCenterAccountController extends Vue {
             .open();
           return;
         }
+        const openDoc = this.$refs.openDoc;
         openDoc.fetchSmartElement({
           customClientData: { defaultGroup: this.selectedGroupDocumentId },
           initid: event.target[0].id,
           viewId: "!defaultCreation"
         });
-        toggleUserMode();
       }
     };
-    groupToolbar.add({
+    const userToolbar = this.$refs.userToolbar.kendoWidget();
+    userToolbar.add({
       id: "groupCreateToolbar",
       menuButtons: element.group,
-      text: "Create",
+      text: "Create sub group",
       type: "splitButton"
     });
-    groupToolbar.bind("click", openInCreation);
-    const userToolbar = this.$refs.userToolbar.kendoWidget();
     userToolbar.add({
       id: "userCreateToolbar",
       menuButtons: element.user,
-      text: "Create",
+      text: "Create user",
       type: "splitButton"
     });
     userToolbar.bind("click", openInCreation);
@@ -246,21 +261,31 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Bind the grid events (click to open an user)
-  public bindGrid() {
-    const grid = this.$refs.grid.$el;
-    const openDoc = this.$refs.openDoc;
-    const toggleUserMode = this.toggleUserMode.bind(this);
-    $(grid).on("click", ".openButton", event => {
+  public openUser(event) {
+    this.$refs.accountSplitter.disableEmptyContent();
+    this.$nextTick(() => {
       event.preventDefault();
-      const userId = event.currentTarget.dataset.initid;
+      const grid = $(".user-grid").data("kendoGrid");
+      const userId = grid.dataItem(
+        kendo.jQuery(event.currentTarget).closest("tr")
+      ).id;
       if (userId) {
-        // Set props because publicMethods fetchSmartElement is not accessible
-        // until document is loaded
-        openDoc.seValue = JSON.stringify({
-          initid: userId,
-          viewId: "!defaultConsultation"
-        });
-        toggleUserMode();
+        const openDoc = this.$refs.openDoc;
+        if (openDoc) {
+          if (openDoc.isLoaded()) {
+            openDoc.fetchSmartElement({
+              initid: userId,
+              viewId: "!defaultConsultation"
+            });
+          } else {
+            openDoc.$once("documentLoaded", () => {
+              openDoc.fetchSmartElement({
+                initid: userId,
+                viewId: "!defaultConsultation"
+              });
+            });
+          }
+        }
       }
     });
   }
@@ -314,25 +339,22 @@ export default class AdminCenterAccountController extends Vue {
 
   public bindEditDoc() {
     const openDoc = this.$refs.openDoc;
-    openDoc.$el.addEventListener("afterSave", event => {
-      if (
-        event &&
-        event.detail &&
-        event.detail[1] &&
-        event.detail[1] &&
-        event.detail[1].type &&
-        event.detail[1].type === "folder"
-      ) {
-        this.updateTreeData(true);
-      } else {
-        this.updateGridData();
-      }
-    });
-  }
-
-  // Display the user pane
-  public toggleUserMode() {
-    this.userModeSelected = !this.userModeSelected;
+    if (openDoc) {
+      openDoc.$el.addEventListener("afterSave", event => {
+        if (
+          event &&
+          event.detail &&
+          event.detail[1] &&
+          event.detail[1] &&
+          event.detail[1].type &&
+          event.detail[1].type === "folder"
+        ) {
+          this.updateTreeData(true);
+        } else {
+          this.updateGridData();
+        }
+      });
+    }
   }
 
   // Manually refresh the tree pane
@@ -355,25 +377,49 @@ export default class AdminCenterAccountController extends Vue {
 
   // Display the selected group in the ank-document
   public updateGroupSelected(selectedGroupId) {
-    const groupDoc = this.$refs.groupDoc;
     this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
     if (selectedGroupId && selectedGroupId !== "@users") {
       this.selectedGroupDocumentId = selectedGroupId;
       this.displayGroupDocument = true;
-      if (groupDoc.isLoaded()) {
-        groupDoc.fetchSmartElement({
-          initid: selectedGroupId,
-          viewId: "!defaultConsultation"
-        });
-      } else {
-        groupDoc.$once("documentLoaded", () => {
-          groupDoc.fetchSmartElement({
-            initid: selectedGroupId,
-            viewId: "!defaultConsultation"
-          });
-        });
-      }
+      this.$on("open-group", () => {
+        const openDoc = this.$refs.openDoc;
+        if (openDoc) {
+          if (openDoc.isLoaded()) {
+            openDoc.fetchSmartElement({
+              initid: selectedGroupId,
+              viewId: "!defaultConsultation"
+            });
+          } else {
+            openDoc.$once("documentLoaded", () => {
+              openDoc.fetchSmartElement({
+                initid: selectedGroupId,
+                viewId: "!defaultConsultation"
+              });
+            });
+          }
+        }
+      });
+      this.$on("open-change-group", () => {
+        const openDoc = this.$refs.openDoc;
+        if (openDoc) {
+          if (openDoc.isLoaded()) {
+            openDoc.fetchSmartElement({
+              initid: selectedGroupId,
+              viewId: "changeGroup"
+            });
+          } else {
+            openDoc.$once("documentLoaded", () => {
+              openDoc.fetchSmartElement({
+                initid: selectedGroupId,
+                viewId: "changeGroup"
+              });
+            });
+          }
+        }
+      });
       return;
+    } else if (selectedGroupId === "@users") {
+      this.$refs.accountSplitter.enableEmptyContent();
     }
     this.displayGroupDocument = false;
   }
@@ -393,15 +439,17 @@ export default class AdminCenterAccountController extends Vue {
     }
   }
 
+  public openGroup() {
+    this.$refs.accountSplitter.disableEmptyContent();
+    this.$nextTick(() => {
+      this.$emit("open-group");
+    });
+  }
+
   // Open group selected in group change mode
   public openChangeGroup() {
-    const openDoc = this.$refs.openDoc;
-    openDoc.fetchSmartElement({
-      initid: this.selectedGroupDocumentId,
-      viewId: "changeGroup"
-    });
-
-    this.toggleUserMode();
+    this.$refs.accountSplitter.disableEmptyContent();
+    this.$emit("open-change-group");
   }
 
   // Update the selected group
@@ -413,6 +461,7 @@ export default class AdminCenterAccountController extends Vue {
     );
     this.updateGroupSelected(selectedElement.documentId);
     this.updateGridData(selectedElement.login);
+    this.groupId = selectedElement.documentId;
   }
 
   // Register the leaf open and closed
