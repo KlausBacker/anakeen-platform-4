@@ -47,7 +47,7 @@ namespace SmartStructure\Fields {
         */ 
         const dpdoc_fr_dyn='dpdoc_fr_dyn';
         /**
-        * Smart Structure utilisable pour les droits en fonction des attributs "account"
+        * Smart Structure utilisable pour les droits en fonction des smart fields "account"
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>relation</i> -1 </li>

@@ -279,6 +279,24 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const us_accexpiredate='us_accexpiredate';
+        /**
+        * Paramètre
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const us_fr_default='us_fr_default';
+        /**
+        * Groupe par défaut
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> account </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const us_defaultgroup='us_defaultgroup';
 
     }
 }

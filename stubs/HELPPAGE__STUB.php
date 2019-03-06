@@ -112,6 +112,42 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const help_sec_text='help_sec_text';
+        /**
+        * Paramètres de famille
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const help_fr_family='help_fr_family';
+        /**
+        * Langues
+        * <ul>
+        * <li> <i>type</i> array </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const help_t_family='help_t_family';
+        /**
+        * Libellé de la langue
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const help_p_lang_name='help_p_lang_name';
+        /**
+        * Langue
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * <li> <i>kind</i> parameters </li>
+        * </ul>
+        */ 
+        const help_p_lang_key='help_p_lang_key';
 
     }
 }
