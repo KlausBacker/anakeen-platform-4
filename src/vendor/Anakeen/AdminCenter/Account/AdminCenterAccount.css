@@ -1,3 +1,36 @@
+.account-tree-splitter .account-splitter {
+  height: 100%;
+}
+
+.account-manager-splitter {
+  height: 100%;
+}
+
+.open-element-content {
+  height: 100% !important;
+}
+
+.k-treeview .k-in.k-state-selected {
+  border-color: #157efb;
+  background-color: #157efb;
+  color: white;
+}
+
+.k-grid-Consult {
+  color: #157efb !important;
+  font-weight: bold;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.k-grid-Consult:hover {
+  color: white !important;
+  font-weight: bold;
+  background-color: #157efb;
+  box-shadow: none;
+  border: none;
+}
 .ank-admin-account {
   width: 100%;
   height: 100%;
