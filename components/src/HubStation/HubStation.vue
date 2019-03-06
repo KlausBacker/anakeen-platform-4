@@ -95,7 +95,8 @@
     </header>
     <section class="hub-station-center-area">
       <aside v-if="isLeftEnabled" class="hub-station-aside hub-station-left">
-        <hub-dock ref="dockLeft" :position="DockPosition.LEFT">
+        <hub-dock ref="dockLeft" :position="DockPosition.LEFT"
+                  @dockResized="resizeWindow">
           <template slot="header">
             <hub-dock-entry
               v-for="(entry, index) in getDockHeaders(configData.left)"
@@ -175,8 +176,9 @@
       <section class="hub-station-content">
         <router-view class="hub-station-content-view"></router-view>
       </section>
-      <aside v-if="isRightEnabled" class="hub-station-right">
+      <aside v-if="isRightEnabled" class="hub-station-aside hub-station-right">
         <hub-dock
+                @dockResized="resizeWindow"
           ref="dockRight"
           class="hub-dock hub-dock--right"
           :position="DockPosition.RIGHT"
@@ -358,6 +360,8 @@
 <style scoped lang="scss">
 @import "./HubStation.scss";
 </style>
+<style lang="scss">
+  @import "./HubStationStyle.scss";
+</style>
 <!-- Global CSS -->
-<style lang="scss"></style>
 <script lang="ts" src="./HubStation.component.ts"></script>

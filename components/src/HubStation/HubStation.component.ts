@@ -45,10 +45,12 @@ export default class HubStation extends Vue {
     return this.configData.right.length;
   }
 
+  // noinspection JSMethodCanBeStatic
   get DockPosition(): any {
     return DockPosition;
   }
 
+  // noinspection JSMethodCanBeStatic
   get HubElementDisplayTypes(): any {
     return HubElementDisplayTypes;
   }
@@ -92,7 +94,7 @@ export default class HubStation extends Vue {
   };
 
   // region props
-  @Prop({ default: () => [], type: Object })
+  @Prop({ default: () => ({}), type: Object })
   public config!: IHubStationConfig;
   @Prop({ default: "", type: String }) public baseUrl!: string;
   @Prop({ default: true, type: Boolean }) public withNotifier!: boolean;
@@ -169,6 +171,14 @@ export default class HubStation extends Vue {
     return "";
   }
 
+  // noinspection JSMethodCanBeStatic
+  public resizeWindow() {
+    // Need deferred because of animation
+    window.setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 1000);
+  }
+  // noinspection JSMethodCanBeStatic
   public isSelectableEntry(entry) {
     if (entry && entry.entryOptions) {
       return entry.entryOptions.selectable;

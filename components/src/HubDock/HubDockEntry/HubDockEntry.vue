@@ -2,7 +2,8 @@
   <div
     :class="{
       'hub-dock-entry-component': true,
-      'entry-selected': entrySelected
+      'entry-selected': entrySelected,
+      'entry-selectable': selectable
     }"
     :style="entryStyle"
     @click="selectEntry"

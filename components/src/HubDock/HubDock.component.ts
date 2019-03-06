@@ -154,11 +154,13 @@ export default class HubDock extends Vue {
   public expand() {
     this.collapsed = false;
     this.$emit("dockExpanded");
+    this.$emit("dockResized");
   }
 
   public collapse() {
     this.collapsed = true;
     this.$emit("dockCollapsed");
+    this.$emit("dockResized");
   }
 
   public toggleDock() {
