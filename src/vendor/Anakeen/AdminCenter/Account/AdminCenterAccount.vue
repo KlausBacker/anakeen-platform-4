@@ -66,13 +66,15 @@
           >
             <template slot="left">
               <div class="accountManager_contentPart_gridPart">
-                <kendo-toolbar ref="userToolbar">
+                <kendo-toolbar ref="userToolbar" class="account-user-toolbar">
                   <kendo-toolbar-item
+                    id="changeGroupBtn"
                     type="button"
                     text="Change group"
                     @click="openChangeGroup"
                   ></kendo-toolbar-item>
                   <kendo-toolbar-item
+                    id="openGroupBtn"
                     type="button"
                     text="Open group"
                     @click="openGroup"
@@ -80,7 +82,7 @@
                 </kendo-toolbar>
                 <kendo-grid
                   ref="grid"
-                  class="user-grid"
+                  class="account-user-grid"
                   :data-source="gridContent"
                   :pageable="{ alwaysVisible: true, pageSizes: [10, 20, 100] }"
                   :sortable="true"
@@ -91,10 +93,6 @@
                   :persistSelection="true"
                   :autoBind="false"
                 >
-                  <kendo-grid-column
-                    :selectable="true"
-                    width="50px"
-                  ></kendo-grid-column>
                   <kendo-grid-column
                     field="id"
                     :hidden="true"
