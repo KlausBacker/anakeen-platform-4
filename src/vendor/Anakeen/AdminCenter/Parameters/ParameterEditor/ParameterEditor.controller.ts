@@ -161,7 +161,9 @@ export default class ParameterEditorController extends Vue {
       $(".parameter-new-value", this.$el).css("border-color", "");
       newValue = $(".parameter-new-value", this.$el).val();
     }
-
+    if (newValue === "") {
+      newValue = " ";
+    }
     if (newValue) {
       if (
         this.parameterInputType === "json" &&
@@ -179,7 +181,6 @@ export default class ParameterEditorController extends Vue {
         })
         .then(response => {
           // Save the modified value sent by the server, and open a confirmation window
-          console.log(response);
           this.responseValue = response.data.data.value;
           this.confirmationWindow = $(".confirmation-window")
             .kendoWindow({
