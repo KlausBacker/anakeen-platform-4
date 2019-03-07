@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div v-if="isDockCollapsed">
-            <i class="fa fa-user-secret"></i>
-        </div>
-        <div v-else-if="isDockExpanded">
-            <span><i class="fa fa-user-secret"></i> Authentication Tokens</span>
-        </div>
+        <nav v-if="isDockCollapsed">
+            <i class="material-icons hub-icon">fingerprint</i>
+        </nav>
+        <nav v-else-if="isDockExpanded">
+            <i class="material-icons hub-icon">fingerprint</i><span> Authentication Tokens</span>
+        </nav>
         <div v-else-if="isHubContent" class="token-station">
             <admin-center-authentication-tokens></admin-center-authentication-tokens>
         </div>

@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div v-if="isDockCollapsed">
-            <i class="fa fa-cog"></i>
-        </div>
-        <div v-else-if="isDockExpanded">
-            <span><i class="fa fa-cog"></i> Parameters</span>
-        </div>
+        <nav v-if="isDockCollapsed">
+            <i class="material-icons hub-icon">settings</i>
+        </nav>
+        <nav v-else-if="isDockExpanded">
+            <i class="material-icons hub-icon">settings</i><span> Parameters</span>
+        </nav>
         <div v-else-if="isHubContent" class="parameters-parent">
             <admin-center-parameters></admin-center-parameters>
         </div>

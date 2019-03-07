@@ -5,6 +5,7 @@ import { GaugesInstaller } from "@progress/kendo-gauges-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.dataviz";
 import axios from "axios";
 import { Component, Prop, Vue } from "vue-property-decorator";
+import VaultManagerController from "../VaultManager.controller";
 
 Vue.use(ChartInstaller);
 Vue.use(GaugesInstaller);
@@ -15,6 +16,35 @@ Vue.use(DropdownsInstaller);
   name: "ank-vault-info"
 })
 export default class VaultInfoController extends Vue {
+  protected static getGaugeUnit(size) {
+    const hasta = 2;
+    if (size < hasta * 1024 * 1024) {
+      return 1024; // kB
+    }
+    if (size < hasta * 1024 * 1024 * 1024) {
+      return 1024 * 1024; // MB
+    }
+    if (size < hasta * 1024 * 1024 * 1024 * 1024) {
+      return 1024 * 1024 * 1024; // GB
+    }
+    if (size < hasta * 1024 * 1024 * 1024 * 1024 * 1024) {
+      return 1024 * 1024 * 1024 * 1024; // TB
+    }
+  }
+
+  protected static getGaugeRangeLabel(size) {
+    switch (VaultInfoController.getGaugeUnit(size)) {
+      case 1024:
+        return "#.# kB";
+      case 1024 * 1024:
+        return "#.# MB";
+      case 1024 * 1024 * 1024:
+        return "#.# GB";
+      case 1024 * 1024 * 1024 * 1024:
+        return "#.# TB";
+    }
+    return "#";
+  }
   @Prop({ type: Object as () => {} }) public info;
 
   public requestMessage: string = "";
@@ -35,13 +65,7 @@ export default class VaultInfoController extends Vue {
 
   // noinspection JSMethodCanBeStatic
   public convertBytes(x) {
-    const units = ["bytes", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    let l = 0;
-    let n = parseInt(x, 10) || 0;
-    while (n >= 1024 && ++l) {
-      n = n / 1024;
-    }
-    return n.toFixed(n < 10 && l > 0 ? 1 : 0) + " " + units[l];
+    return VaultManagerController.convertBytes(x);
   }
 
   public labelTemplate(data) {
@@ -55,6 +79,80 @@ export default class VaultInfoController extends Vue {
     } files \n ${this.convertBytes(data.dataItem.sizeFiles)} (${
       data.dataItem.value
     }%)`;
+  }
+
+  public get getGaugeLogicalMax() {
+    return (
+      this.info.metrics.totalSize /
+      VaultInfoController.getGaugeUnit(this.info.metrics.totalSize)
+    );
+  }
+  public get getGaugeLogicalUsed() {
+    return (
+      this.info.metrics.usedSize /
+      VaultInfoController.getGaugeUnit(this.info.metrics.totalSize)
+    );
+  }
+
+  public get getGaugeLogicalRangeLabel() {
+    return VaultInfoController.getGaugeRangeLabel(this.info.metrics.totalSize);
+  }
+
+  public get getGaugeLogicalRanges() {
+    return [
+      {
+        color: "#ffc700",
+        from: this.getGaugeLogicalMax * 0.7,
+        to: this.getGaugeLogicalMax * 0.8
+      },
+      {
+        color: "#ff7a00",
+        from: this.getGaugeLogicalMax * 0.8,
+        to: this.getGaugeLogicalMax * 0.9
+      },
+      {
+        color: "#c20000",
+        from: this.getGaugeLogicalMax * 0.9,
+        to: this.getGaugeLogicalMax
+      }
+    ];
+  }
+
+  public get getGaugeDiskMax() {
+    return (
+      this.info.disk.totalSize /
+      VaultInfoController.getGaugeUnit(this.info.disk.totalSize)
+    );
+  }
+  public get getGaugeDiskUsed() {
+    return (
+      this.info.disk.usedSize /
+      VaultInfoController.getGaugeUnit(this.info.disk.totalSize)
+    );
+  }
+
+  public get getGaugeDiskRangeLabel() {
+    return VaultInfoController.getGaugeRangeLabel(this.info.disk.totalSize);
+  }
+
+  public get getGaugeDiskRanges() {
+    return [
+      {
+        color: "#ffc700",
+        from: this.getGaugeDiskMax * 0.7,
+        to: this.getGaugeDiskMax * 0.8
+      },
+      {
+        color: "#ff7a00",
+        from: this.getGaugeDiskMax * 0.8,
+        to: this.getGaugeDiskMax * 0.9
+      },
+      {
+        color: "#c20000",
+        from: this.getGaugeDiskMax * 0.9,
+        to: this.getGaugeDiskMax
+      }
+    ];
   }
 
   public get getSeries() {
@@ -114,26 +212,6 @@ export default class VaultInfoController extends Vue {
         type: "pie"
       }
     ];
-  }
-
-  public logicalTemplate() {
-    return `<b>${this.convertBytes(
-      this.info.metrics.usedSize
-    )}</b> used on <b>${this.convertBytes(
-      this.info.metrics.totalSize
-    )}</b> (<b>${Math.floor(
-      (this.info.metrics.usedSize / this.info.metrics.totalSize) * 100
-    )}%</b>)`;
-  }
-
-  public diskTemplate() {
-    return `<b>${this.convertBytes(
-      this.info.disk.usedSize
-    )}</b> used on <b>${this.convertBytes(
-      this.info.disk.totalSize
-    )}</b> (<b>${Math.floor(
-      (this.info.disk.usedSize / this.info.disk.totalSize) * 100
-    )}%</b>)`;
   }
 
   // noinspection JSMethodCanBeStatic

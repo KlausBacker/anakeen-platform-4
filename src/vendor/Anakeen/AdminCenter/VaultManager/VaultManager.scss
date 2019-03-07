@@ -24,6 +24,15 @@
       background-color: transparent;
     }
   }
+  .vault-grid--error {
+    background-color: var(--danger);
+    color: var(--white);
+  }
+
+  .vault-grid-sizes {
+    text-align: right;
+    font-style: italic;
+  }
 }
 
 .vault-manager-form {
