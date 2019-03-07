@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div v-if="isDockCollapsed">
-            <i class="fa fa-users"></i>
-        </div>
-        <div v-else-if="isDockExpanded">
-            <span><i class="fa fa-users"></i> Accounts</span>
-        </div>
+        <nav v-if="isDockCollapsed">
+            <i class="material-icons hub-icon">group</i>
+        </nav>
+        <nav v-else-if="isDockExpanded" >
+            <i class="material-icons hub-icon">group</i> <span>Accounts</span>
+        </nav>
         <div v-else-if="isHubContent" class="account-station">
             <admin-center-account></admin-center-account>
         </div>

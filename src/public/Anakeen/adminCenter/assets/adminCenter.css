@@ -2,13 +2,19 @@ html {
     font-size: 12px;
 }
 
-/* Big button when collapsed */
-.hub-station-aside .hub-dock--collapsed .hub-dock-entry-component {
-    font-size:2rem;
+/* align dock buttons */
+.hub-dock-entry-component nav  .hub-icon {
+    margin-right: 0.5rem;
 }
+
+.hub-dock-entry-component nav {
+    display: flex;
+    align-items: center;
+}
+
 
 /* For the label Admin Center */
 header .hub-dock-header {
-    font-size:1.5rem;
-    padding-left:1rem,
+    font-size: 1.5rem;
+    padding-left: 1rem,
 }

@@ -32,7 +32,7 @@
       </template>
       <template slot="emptyIcon">
         <div class="token-logo">
-          <span class="fa fa-user-secret"></span>
+          <span class="material-icons">fingerprint</span>
         </div>
       </template>
       <template slot="emptyText"></template>
