@@ -176,7 +176,7 @@ export default class AdminCenterAccountController extends Vue {
   public selectedGroupDocumentId: boolean = false;
   public selectedGroupLogin: boolean = false;
   public options: object = {};
-  public groupId: boolean = false;
+  public groupId: any = false;
   @Watch("groupId")
   public watchGroupId(value) {
     const toolbar = $(".account-user-toolbar").data("kendoToolBar");
@@ -192,6 +192,7 @@ export default class AdminCenterAccountController extends Vue {
   public mounted() {
     this.$refs.accountTreeSplitter.disableEmptyContent();
     this.$nextTick(() => {
+      this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
       this.fetchConfig();
       this.bindTree();
       this.bindSplitter();
@@ -227,7 +228,6 @@ export default class AdminCenterAccountController extends Vue {
         event.target[0].id !== "changeGroupBtn" &&
         event.target[0].id !== "openGroupBtn"
       ) {
-        console.log(event.target);
         if (
           event.target[0].id === "userCreateToolbar" ||
           event.target[0].id === "groupCreateToolbar"
@@ -483,6 +483,7 @@ export default class AdminCenterAccountController extends Vue {
       "admin.account.groupSelected",
       selectedElement.hierarchicalId
     );
+    window.localStorage.setItem("admin.account.groupSelected.id", selectedElement.documentId);
     this.updateGroupSelected(selectedElement.documentId);
     this.updateGridData(selectedElement.login);
     this.groupId = selectedElement.documentId;
