@@ -5,37 +5,26 @@
             <div class="row">
                 <div class="col-sm col-sm-3 disk-gauges">
                     <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
-                        <p class="arc-title">Logical disk capacity</p>
-                        <kendo-arcgauge ref="logicalGauge"
+                        <p class="arc-title">Logical vault capacity</p>
+                        <kendo-radialgauge ref="logicalGauge"
                                         class="logical-gauge arc-gauge"
                                         :scale-min="0"
-                                        :value="info.metrics.usedSize"
-                                        :scale-max="info.metrics.totalSize"
-                                        :centerTemplate="logicalTemplate">
-                            <kendo-arcgauge-color :to="info.metrics.totalSize * 0.75"
-                                                  :color="'#28a745'"></kendo-arcgauge-color>
-                            <kendo-arcgauge-color :from="info.metrics.totalSize * 0.75"
-                                                  :to="info.metrics.totalSize * 0.90"
-                                                  :color="'#ffc107'"></kendo-arcgauge-color>
-                            <kendo-arcgauge-color :from="info.metrics.totalSize * 0.90"
-                                                  :color="'#dc3545'"></kendo-arcgauge-color>
-                        </kendo-arcgauge>
+                                        :scale-max="getGaugeLogicalMax"
+                                        :scale-labels-format="getGaugeLogicalRangeLabel"
+                                        :scale-ranges="getGaugeLogicalRanges">
+                            <kendo-radialgauge-pointer :value="getGaugeLogicalUsed" :color="'#ff6358'"/>
+                        </kendo-radialgauge>
                     </div>
                     <div class="disk-gauge" :class="{ diskerror: info.disk.totalSize === 0 }" >
                         <p class="arc-title">Physical disk capacity</p>
-                        <kendo-arcgauge ref="diskGauge"
+                        <kendo-radialgauge ref="diskGauge"
                                         class="physical-gauge arc-gauge"
                                         :scale-min="0"
-                                        :value="info.disk.usedSize"
-                                        :scale-max="info.disk.totalSize"
-                                        :centerTemplate="diskTemplate">
-                            <kendo-arcgauge-color :to="info.disk.totalSize * 0.75"
-                                                  :color="'#28a745'"></kendo-arcgauge-color>
-                            <kendo-arcgauge-color :from="info.disk.totalSize * 0.75" :to="info.metrics.totalSize * 0.90"
-                                                  :color="'#ffc107'"></kendo-arcgauge-color>
-                            <kendo-arcgauge-color :from="info.disk.totalSize * 0.90"
-                                                  :color="'#dc3545'"></kendo-arcgauge-color>
-                        </kendo-arcgauge>
+                                       :scale-max="getGaugeDiskMax"
+                                       :scale-labels-format="getGaugeDiskRangeLabel"
+                                       :scale-ranges="getGaugeDiskRanges">
+                            <kendo-radialgauge-pointer :value="getGaugeDiskUsed" :color="'#ff6358'"/>
+                        </kendo-radialgauge>
                     </div>
                 </div>
                 <div class="col-sm col-sm-9 disk-chart">

@@ -18,6 +18,23 @@ Vue.use(DropdownsInstaller);
   }
 })
 export default class VaultManagerController extends Vue {
+  public static convertBytes(x) {
+    const units = ["bytes", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    let l = 0;
+    let n = parseInt(x, 10) || 0;
+    const neg = n < 0;
+    let human;
+
+    n = Math.abs(n);
+    while (n >= 1024 && ++l) {
+      n = n / 1024;
+    }
+    human = n.toFixed(n < 10 && l > 0 ? 1 : 0) + " " + units[l];
+    if (neg) {
+      human = "-" + human;
+    }
+    return human;
+  }
   public info: any = [];
   public panes: object[] = [
     {
@@ -61,6 +78,7 @@ export default class VaultManagerController extends Vue {
       value: 1024 * 1024 * 1024
     }
   ];
+
   private vaultGrid: any;
   private selectedFs: string = "";
 
@@ -142,17 +160,30 @@ export default class VaultManagerController extends Vue {
         columns: [
           {
             field: "path",
+            template: dataItem => {
+              let vaultErrorClass = "";
+              if (
+                dataItem.disk.totalSize === 0 ||
+                dataItem.metrics.totalSize < dataItem.metrics.usedSize
+              ) {
+                vaultErrorClass = " vault-grid--error";
+              }
+              return (
+                dataItem.path +
+                "<div class='vault-grid-sizes" +
+                vaultErrorClass +
+                "'> (" +
+                VaultManagerController.convertBytes(
+                  dataItem.metrics.totalSize - dataItem.metrics.usedSize
+                ) +
+                " / " +
+                VaultManagerController.convertBytes(
+                  dataItem.metrics.totalSize
+                ) +
+                ") </div>"
+              );
+            },
             title: "Vault"
-          },
-          {
-            field: "humanMetrics.totalSize",
-            title: "Logical capacity",
-            width: "10rem"
-          },
-          {
-            field: "freespace",
-            title: "Free Space",
-            width: "10rem"
           },
           {
             command: {
