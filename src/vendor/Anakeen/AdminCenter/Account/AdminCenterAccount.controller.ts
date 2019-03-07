@@ -7,7 +7,7 @@ import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.toolbar";
 import "@progress/kendo-ui/js/kendo.treeview";
 import Vue from "vue";
-import Component from "vue-class-component";
+import { Component, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
@@ -177,6 +177,17 @@ export default class AdminCenterAccountController extends Vue {
   public selectedGroupLogin: boolean = false;
   public options: object = {};
   public groupId: boolean = false;
+  @Watch("groupId")
+  public watchGroupId(value) {
+    const toolbar = $(".account-user-toolbar").data("kendoToolBar");
+    if (value === "@users") {
+      toolbar.enable("#openGroupBtn", false);
+      toolbar.enable("#changeGroupBtn", false);
+    } else {
+      toolbar.enable("#openGroupBtn");
+      toolbar.enable("#changeGroupBtn");
+    }
+  }
 
   public mounted() {
     this.$refs.accountTreeSplitter.disableEmptyContent();
@@ -208,7 +219,15 @@ export default class AdminCenterAccountController extends Vue {
   public bindToolbars(element) {
     const openInCreation = event => {
       this.$refs.accountSplitter.disableEmptyContent();
-      if (event && event.target && event.target[0] && event.target[0].id) {
+      if (
+        event &&
+        event.target &&
+        event.target[0] &&
+        event.target[0].id &&
+        event.target[0].id !== "changeGroupBtn" &&
+        event.target[0].id !== "openGroupBtn"
+      ) {
+        console.log(event.target);
         if (
           event.target[0].id === "userCreateToolbar" ||
           event.target[0].id === "groupCreateToolbar"
@@ -241,6 +260,15 @@ export default class AdminCenterAccountController extends Vue {
       text: "Create user",
       type: "splitButton"
     });
+    if (
+      window.localStorage.getItem("admin.account.groupSelected") === "@users"
+    ) {
+      userToolbar.enable("#changeGroupBtn", false);
+      userToolbar.enable("#openGroupBtn", false);
+    } else {
+      userToolbar.enable("#changeGroupBtn");
+      userToolbar.enable("#openGroupBtn");
+    }
     userToolbar.bind("click", openInCreation);
   }
 
@@ -265,7 +293,7 @@ export default class AdminCenterAccountController extends Vue {
     this.$refs.accountSplitter.disableEmptyContent();
     this.$nextTick(() => {
       event.preventDefault();
-      const grid = $(".user-grid").data("kendoGrid");
+      const grid = $(".account-user-grid").data("kendoGrid");
       const userId = grid.dataItem(
         kendo.jQuery(event.currentTarget).closest("tr")
       ).id;
@@ -381,42 +409,6 @@ export default class AdminCenterAccountController extends Vue {
     if (selectedGroupId && selectedGroupId !== "@users") {
       this.selectedGroupDocumentId = selectedGroupId;
       this.displayGroupDocument = true;
-      this.$on("open-group", () => {
-        const openDoc = this.$refs.openDoc;
-        if (openDoc) {
-          if (openDoc.isLoaded()) {
-            openDoc.fetchSmartElement({
-              initid: selectedGroupId,
-              viewId: "!defaultConsultation"
-            });
-          } else {
-            openDoc.$once("documentLoaded", () => {
-              openDoc.fetchSmartElement({
-                initid: selectedGroupId,
-                viewId: "!defaultConsultation"
-              });
-            });
-          }
-        }
-      });
-      this.$on("open-change-group", () => {
-        const openDoc = this.$refs.openDoc;
-        if (openDoc) {
-          if (openDoc.isLoaded()) {
-            openDoc.fetchSmartElement({
-              initid: selectedGroupId,
-              viewId: "changeGroup"
-            });
-          } else {
-            openDoc.$once("documentLoaded", () => {
-              openDoc.fetchSmartElement({
-                initid: selectedGroupId,
-                viewId: "changeGroup"
-              });
-            });
-          }
-        }
-      });
       return;
     } else if (selectedGroupId === "@users") {
       this.$refs.accountSplitter.enableEmptyContent();
@@ -442,14 +434,46 @@ export default class AdminCenterAccountController extends Vue {
   public openGroup() {
     this.$refs.accountSplitter.disableEmptyContent();
     this.$nextTick(() => {
-      this.$emit("open-group");
+      const openDoc = this.$refs.openDoc;
+      if (openDoc) {
+        if (openDoc.isLoaded()) {
+          openDoc.fetchSmartElement({
+            initid: this.groupId,
+            viewId: "!defaultConsultation"
+          });
+        } else {
+          openDoc.$once("documentLoaded", () => {
+            openDoc.fetchSmartElement({
+              initid: this.groupId,
+              viewId: "!defaultConsultation"
+            });
+          });
+        }
+      }
     });
   }
 
   // Open group selected in group change mode
   public openChangeGroup() {
     this.$refs.accountSplitter.disableEmptyContent();
-    this.$emit("open-change-group");
+    this.$nextTick(() => {
+      const openDoc = this.$refs.openDoc;
+      if (openDoc) {
+        if (openDoc.isLoaded()) {
+          openDoc.fetchSmartElement({
+            initid: this.groupId,
+            viewId: "changeGroup"
+          });
+        } else {
+          openDoc.$once("documentLoaded", () => {
+            openDoc.fetchSmartElement({
+              initid: this.groupId,
+              viewId: "changeGroup"
+            });
+          });
+        }
+      }
+    });
   }
 
   // Update the selected group
