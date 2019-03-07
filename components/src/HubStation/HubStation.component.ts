@@ -20,12 +20,13 @@ import {
 
 Vue.use(VueAxiosPlugin);
 Vue.use(AnkComponents, { globalVueComponents: true });
-Vue.component("hub-label", HubLabel);
+
 @Component({
   components: {
     "ank-notifier": AnkNotifier,
     "hub-dock": HubDock,
-    "hub-dock-entry": HubDockEntry
+    "hub-dock-entry": HubDockEntry,
+    "hub-label": HubLabel
   }
 })
 export default class HubStation extends Vue {
