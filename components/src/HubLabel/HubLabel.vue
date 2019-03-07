@@ -1,6 +1,9 @@
 <template>
-  <span>{{ label }}</span>
+  <div>
+    <div v-html="label"></div>
+  </div>
 </template>
+
 <script lang="ts">
 import { Prop, Component, Vue, Mixins } from "vue-property-decorator";
 import HubElementMixins from "../HubElement/Mixins/HubElementMixin";
