@@ -1,6 +1,6 @@
 <template>
   <div class="edition-window">
-    <form v-if="editedItem">
+    <form v-if="editedItem" @keypress.enter.prevent="modifyParameter">
       <div class="form-group">
         <div class="form-label">Description :</div>
         <span class="description-text">
@@ -16,11 +16,17 @@
           v-if="
             parameterInputType === 'text' ||
               parameterInputType === 'number' ||
-              parameterInputType === 'password' ||
-              parameterInputType === 'json'
+              parameterInputType === 'password'
           "
           title="value"
         />
+        <textarea
+          :type="parameterInputType"
+          class="form-control value-input parameter-new-value"
+          :value="inputSelectedValue"
+        v-else-if="parameterInputType === 'json'"
+        title="value">
+        </textarea>
         <select
           class="value-input parameter-new-value enum-drop-down"
           :value="inputSelectedValue"
