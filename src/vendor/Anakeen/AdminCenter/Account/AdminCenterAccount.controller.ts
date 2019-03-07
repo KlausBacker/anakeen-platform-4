@@ -192,7 +192,9 @@ export default class AdminCenterAccountController extends Vue {
   public mounted() {
     this.$refs.accountTreeSplitter.disableEmptyContent();
     this.$nextTick(() => {
-      this.groupId = window.localStorage.getItem("admin.account.groupSelected.id");
+      this.groupId = window.localStorage.getItem(
+        "admin.account.groupSelected.id"
+      );
       this.fetchConfig();
       this.bindTree();
       this.bindSplitter();
@@ -483,7 +485,10 @@ export default class AdminCenterAccountController extends Vue {
       "admin.account.groupSelected",
       selectedElement.hierarchicalId
     );
-    window.localStorage.setItem("admin.account.groupSelected.id", selectedElement.documentId);
+    window.localStorage.setItem(
+      "admin.account.groupSelected.id",
+      selectedElement.documentId
+    );
     this.updateGroupSelected(selectedElement.documentId);
     this.updateGridData(selectedElement.login);
     this.groupId = selectedElement.documentId;
