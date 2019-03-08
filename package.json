@@ -57,18 +57,7 @@
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@progress/kendo-treeview-vue-wrapper": "^2019.1.220",
     "@progress/kendo-ui": "^2019.1.227",
-    "@types/jquery": "^3.3.29",
-    "axios": "^0.18.0",
-    "jquery": "^3.3.1",
-    "vue": "^2.6.6",
-    "vue-class-component": "^7.0.1",
-    "vue-custom-element": "^3.2.6",
-    "vue-gettext": "^2.1.2",
-    "vue-plugin-load-script": "^1.2.0",
-    "vue-property-decorator": "^7.3.0",
-    "vue-router": "^3.0.2",
-    "vue-router-multi-view": "^0.1.0",
-    "vuex": "^3.1.0"
+    "@types/jquery": "^3.3.29"
   },
   "husky": {
     "hooks": {
