@@ -10,19 +10,16 @@ const rimraf = require("rimraf");
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
 const { RepoLockXML } = require(path.resolve(__dirname, "RepoLockXML.js"));
-const { AppRegistry } = require(path.resolve(__dirname, "AppRegistry.js"));
 const { HTTPAgent } = require(path.resolve(__dirname, "HTTPAgent.js"));
 const { RepoContentXML } = require(path.resolve(
   __dirname,
   "RepoContentXML.js"
 ));
 const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
-const { ComposeCtx } = require(path.resolve(__dirname, "ComposeCtx"));
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
 const fs_readdir = util.promisify(fs.readdir);
-const fs_unlink = util.promisify(fs.unlink);
 
 class ComposeError extends GenericError {}
 
@@ -38,6 +35,33 @@ class Compose {
         options["frozenLockfile"] === true,
       latest: options.hasOwnProperty("latest") && options.latest === true
     };
+  }
+
+  /**
+   * Load 'repo.xml' and 'repo.lock.xml' files
+   * @returns {Promise<void>}
+   */
+  async loadContext() {
+    if (typeof this.repoXML !== "undefined") {
+      throw new ComposeError(`repoXML already loaded!`);
+    }
+    this.repoXML = new RepoXML("repo.xml");
+    await this.repoXML.load();
+
+    if (typeof this.repoLockXML !== "undefined") {
+      throw new ComposeError(`repoLockXML already loaded!`);
+    }
+    this.repoLockXML = new RepoLockXML("repo.lock.xml");
+    await this.repoLockXML.load();
+  }
+
+  /**
+   * Commit changes back to 'repo.xml' and 'repo.lock.xml' files
+   * @returns {Promise<void>}
+   */
+  async commitContext() {
+    await this.repoXML.save();
+    await this.repoLockXML.save();
   }
 
   debug(msg, options = {}) {
@@ -165,10 +189,9 @@ class Compose {
    * @returns {Promise<{name: *, authUser: *, url: *, authPassword: *}>}
    */
   async addAppRegistry({ name, url, authUser, authPassword }) {
-    const repoXML = new RepoXML("repo.xml");
-    await repoXML.load();
-    await repoXML.addAppRegistry({ name, url, authUser, authPassword });
-    await repoXML.save();
+    await this.loadContext();
+    await this.repoXML.addAppRegistry({ name, url, authUser, authPassword });
+    await this.commitContext();
   }
 
   /**
@@ -181,43 +204,33 @@ class Compose {
     version: moduleVersion,
     registry: registryName
   }) {
-    const repoXML = new RepoXML("repo.xml");
-    await repoXML.load();
+    await this.loadContext();
 
-    const repoLockXML = new RepoLockXML("repo.lock.xml");
-    await repoLockXML.load();
-
-    await repoXML.addModule({
+    await this.repoXML.addModule({
       name: moduleName,
       version: moduleVersion,
       registry: registryName
     });
 
-    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
-
-    await this._ctx_installModule({
-      ctx: composeCtx,
+    await this._installSemverModule({
       name: moduleName,
       version: moduleVersion,
       registry: registryName
     });
 
-    await repoXML.save();
-    await repoLockXML.save();
+    await this.commitContext();
   }
 
   /**
    * Install a module that is present in the 'repo.xml'
    *
-   * @param {ComposeCtx} composeCtx
-   * @param {string} moduleName
-   * @param {string} moduleVersion
-   * @param {string} registryName
+   * @param {string} moduleName Module's name
+   * @param {string} moduleVersion SemVer version
+   * @param {string} registryName Registry's name
    * @returns {Promise<void>}
    * @private
    */
-  async _ctx_installModule({
-    ctx: composeCtx,
+  async _installSemverModule({
     name: moduleName,
     version: moduleVersion,
     registry: registryName
@@ -228,17 +241,7 @@ class Compose {
       );
     }
 
-    const localRepo = await composeCtx.repoXML.getConfigLocalRepo();
-    const localSrc = await composeCtx.repoXML.getConfigLocalSrc();
-
-    const registry = composeCtx.repoXML.getRegistryByName(registryName);
-    if (!registry) {
-      throw new ComposeError(
-        `Registry with name '${registryName}' not found in 'repo.xml'`
-      );
-    }
-
-    const appRegistry = new AppRegistry(registry);
+    const appRegistry = this.repoXML.getRegistryByName(registryName);
     const ping = await appRegistry.ping();
     if (!ping) {
       throw new ComposeError(
@@ -255,26 +258,42 @@ class Compose {
       );
     }
     const module = moduleList.slice(0, 1)[0];
-    const moduleInfo = await appRegistry.getModuleVersionInfo(
-      module.name,
-      module.version
-    );
-    this.debug({ moduleInfo });
+
+    await this._installAndLockModuleVersion({
+      name: module.name,
+      version: module.version,
+      registry: registryName
+    });
+  }
+
+  async _installAndLockModuleVersion({
+    name: moduleName,
+    version: moduleVersion,
+    registry: registryName
+  }) {
+    const localRepo = await this.repoXML.getConfigLocalRepo();
+    const localSrc = await this.repoXML.getConfigLocalSrc();
+
+    const appRegistry = this.repoXML.getRegistryByName(registryName);
 
     /* Remove previous module's resources */
-    const lockedModule = composeCtx.repoLockXML.getModuleByName(module.name);
+    const lockedModule = this.repoLockXML.getModuleByName(moduleName);
     if (lockedModule) {
-      if (lockedModule.$.version === module.version) {
+      if (lockedModule.$.version === moduleVersion) {
         signale.note(
-          `Module '${module.name}' with version '${
-            module.version
-          }' is up-to-date`
+          `Module '${moduleName}' with version '${moduleVersion}' is up-to-date`
         );
         return;
       } else {
-        await this.deleteModuleResources(composeCtx, lockedModule);
+        await this.deleteModuleResources(lockedModule);
       }
     }
+
+    const moduleInfo = await appRegistry.getModuleVersionInfo(
+      moduleName,
+      moduleVersion
+    );
+    this.debug({ moduleInfo });
 
     const resources = {
       app: undefined,
@@ -284,7 +303,11 @@ class Compose {
       if (!moduleInfo.hasOwnProperty(type)) {
         continue;
       }
-      const url = [module.url, type, moduleInfo[type]].join("/");
+      const url = [
+        appRegistry.getModuleVersionURL(moduleName, moduleVersion),
+        type,
+        moduleInfo[type]
+      ].join("/");
       let pathname;
       if (type === "app") {
         pathname = [localRepo, moduleInfo[type]].join("/");
@@ -305,8 +328,8 @@ class Compose {
     this.debug({ resources: resources }, { depth: 20 });
 
     const newModule = {
-      name: module.name,
-      version: module.version,
+      name: moduleName,
+      version: moduleVersion,
       resources: []
     };
     if (typeof resources.app !== "undefined") {
@@ -324,18 +347,18 @@ class Compose {
       });
     }
 
-    composeCtx.repoLockXML.addOrUpdateModule(newModule);
+    this.repoLockXML.addOrUpdateModule(newModule);
 
     signale.note(`Generating 'content.xml' in '${localRepo}'...`);
     const appList = await this.genRepoContentXML(localRepo);
 
     this.debug({ appList: appList }, { depth: 20 });
 
-    this.debug({ repoXML: composeCtx.repoXML.data }, { depth: 20 });
-    this.debug({ repoLockXML: composeCtx.repoLockXML.data }, { depth: 20 });
+    this.debug({ repoXML: this.repoXML.data }, { depth: 20 });
+    this.debug({ repoLockXML: this.repoLockXML.data }, { depth: 20 });
   }
 
-  async deleteModuleResources(composeCtx, lockedModule) {
+  async deleteModuleResources(lockedModule) {
     if (!lockedModule.hasOwnProperty("resources")) {
       return;
     }
@@ -353,12 +376,12 @@ class Compose {
       switch (type) {
         case "app":
           basename = path.basename(url);
-          dirname = composeCtx.repoXML.getConfigLocalRepo();
+          dirname = this.repoXML.getConfigLocalRepo();
           rmList.push({ type: "file", path: path.join(dirname, basename) });
           break;
         case "src":
           basename = path.basename(url, ".src");
-          dirname = composeCtx.repoXML.getConfigLocalSrc();
+          dirname = this.repoXML.getConfigLocalSrc();
           rmList.push({
             type: "file",
             path: path.join(dirname, basename + ".src")
@@ -424,19 +447,13 @@ class Compose {
    * @returns {Promise<void>}
    */
   async install() {
-    const repoXML = new RepoXML("repo.xml");
-    const repoLockXML = new RepoLockXML("repo.lock.xml");
+    await this.loadContext();
 
-    await repoXML.load();
-    await repoLockXML.load();
-
-    const moduleLockList = repoLockXML.getModuleList();
-    const moduleList = repoXML.getModuleList();
+    const moduleLockList = this.repoLockXML.getModuleList();
+    const moduleList = this.repoXML.getModuleList();
 
     const triage = Compose.triageList(moduleList, moduleLockList);
     this.debug({ triage: triage }, { depth: 20 });
-
-    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
 
     /*
      * (1) Process new modules (not yet locked)
@@ -446,8 +463,7 @@ class Compose {
       signale.note(`Found ${count} new module(s) to install`);
       for (let i = 0; i < triage.notLockedList.length; i++) {
         const module = triage.notLockedList[i];
-        await this._ctx_installModule({
-          ctx: composeCtx,
+        await this._installSemverModule({
           name: module.$.name,
           version: module.$.version,
           registry: module.$.registry
@@ -474,8 +490,7 @@ class Compose {
               bimod.locked.$.version
             }' from lock file`
           );
-          await this._ctx_installModuleFromLock({
-            ctx: composeCtx,
+          await this._installModuleFromLock({
             lockedModule: bimod.locked
           });
         } else {
@@ -493,8 +508,7 @@ class Compose {
               bimod.required.$.version
             }'`
           );
-          await this._ctx_installModule({
-            ctx: composeCtx,
+          await this._installSemverModule({
             name: bimod.required.$.name,
             version: bimod.required.$.version,
             registry: bimod.required.$.registry
@@ -518,18 +532,18 @@ class Compose {
             }' while using '--frozen-lockfile' option`
           );
         }
-        composeCtx.repoLockXML.deleteModuleByName(module.$.name);
+        this.repoLockXML.deleteModuleByName(module.$.name);
       }
     }
 
-    this.debug({ repoLockXML }, { depth: 20 });
+    this.debug({ repoLockXML: this.repoLockXML }, { depth: 20 });
 
-    await composeCtx.commit();
+    await this.commitContext();
   }
 
-  async _ctx_installModuleFromLock({ ctx: composeCtx, lockedModule }) {
-    const localRepo = composeCtx.repoXML.getConfigLocalRepo();
-    const localSrc = composeCtx.repoXML.getConfigLocalSrc();
+  async _installModuleFromLock({ lockedModule }) {
+    const localRepo = this.repoXML.getConfigLocalRepo();
+    const localSrc = this.repoXML.getConfigLocalSrc();
 
     const resourceDir = {
       app: localRepo,
@@ -648,16 +662,10 @@ class Compose {
    * @returns {Promise<void>}
    */
   async upgrade(moduleList = []) {
-    const repoXML = new RepoXML("repo.xml");
-    const repoLockXML = new RepoLockXML("repo.lock.xml");
-
-    await repoXML.load();
-    await repoLockXML.load();
-
-    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
+    await this.loadContext();
 
     if (moduleList.length <= 0) {
-      moduleList = composeCtx.repoXML.getModuleList().map(module => {
+      moduleList = this.repoXML.getModuleList().map(module => {
         return {
           name: module.$.name,
           version: this.$.latest ? "latest" : module.$.version,
@@ -667,12 +675,7 @@ class Compose {
     } else {
       for (let i = 0; i < moduleList.length; i++) {
         const moduleAtVersion = this.parseNameAtVersion(moduleList[i]);
-        const module = composeCtx.repoXML.getModuleByName(moduleAtVersion.name);
-        if (typeof module === "undefined") {
-          throw new ComposeError(
-            `Could not find module '${moduleAtVersion.name}' in 'repo.xml'`
-          );
-        }
+        const module = this.repoXML.getModuleByName(moduleAtVersion.name);
         moduleList[i] = {
           name: module.$.name,
           version: this.$.latest
@@ -692,17 +695,16 @@ class Compose {
       signale.note(
         `Installing '${module.name}' with version '${module.version}'`
       );
-      await this._ctx_installModule({
-        ctx: composeCtx,
+      await this._installSemverModule({
         name: module.name,
         version: module.version,
         registry: module.registry
       });
     }
 
-    this.debug(composeCtx.repoLockXML.data, { depth: 20 });
+    this.debug(this.repoLockXML.data, { depth: 20 });
 
-    await composeCtx.commit();
+    await this.commitContext();
   }
 
   /**

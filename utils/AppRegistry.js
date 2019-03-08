@@ -41,13 +41,6 @@ class AppRegistry {
           data
       );
     }
-    for (let i = 0; i < index.length; i++) {
-      index[i].url = [
-        url,
-        encodeURI(index[i].name),
-        encodeURI(index[i].version)
-      ].join("/");
-    }
     this._index = index;
     return this;
   }
@@ -67,6 +60,14 @@ class AppRegistry {
    */
   getURL() {
     return this.url;
+  }
+
+  getModuleVersionURL(moduleName, moduleVersion) {
+    return [
+      this.getURL(),
+      encodeURI(moduleName),
+      encodeURI(moduleVersion)
+    ].join("/");
   }
 
   /**
