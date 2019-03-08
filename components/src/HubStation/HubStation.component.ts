@@ -1,4 +1,5 @@
-import { AnkNotifier, VueAxiosPlugin } from "@anakeen/internal-components";
+import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
+import AnkNotifier from "@anakeen/internal-components/lib/Notifier";
 
 const nodePath = require("path");
 import AnkComponents from "@anakeen/user-interfaces";
