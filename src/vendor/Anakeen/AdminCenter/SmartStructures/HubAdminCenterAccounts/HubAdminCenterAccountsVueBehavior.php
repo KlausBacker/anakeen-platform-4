@@ -41,7 +41,8 @@ class HubAdminCenterAccountsVueBehavior extends Hubconfigurationvue
                 $asset["account-manager"]["js"]
             ];
         }
-        return parent::getAssets();
+        $assets=parent::getAssets(\SmartStructure\Hubadmincenteraccountsvue::familyName);
+        return $assets["js"];
     }
 
     protected function getEntryOptions()

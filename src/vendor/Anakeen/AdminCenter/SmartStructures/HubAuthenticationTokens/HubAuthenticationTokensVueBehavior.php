@@ -41,7 +41,9 @@ class HubAuthenticationTokensVueBehavior extends Hubconfigurationvue
                 $asset["token-manager"]["js"]
             ];
         }
-        return parent::getAssets();
+
+        $assets = parent::getAssets(\SmartStructure\Hubauthenticationtokensvue::familyName);
+        return $assets["js"];
     }
 
     protected function getEntryOptions()
