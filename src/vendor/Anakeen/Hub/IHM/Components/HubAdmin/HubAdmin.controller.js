@@ -5,7 +5,7 @@ import { AnkSEGrid } from "@anakeen/user-interfaces";
 import { AnkLogout } from "@anakeen/user-interfaces";
 import { AnkIdentity } from "@anakeen/user-interfaces";
 import { AnkSmartElement } from "@anakeen/user-interfaces";
-import { AnkSplitter } from "@anakeen/internal-components";
+import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 
 export default {
   name: "ank-hub-admin",

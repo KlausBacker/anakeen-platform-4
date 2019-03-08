@@ -4,7 +4,7 @@ import LoadCss from "load-css-file";
 
 import Router from "../Router";
 import AnkComponents from "@anakeen/user-interfaces";
-import { VueAxiosPlugin } from "@anakeen/internal-components";
+import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
 import HubMain from "../Components/Hub/Hub.vue";
 
 Vue.use(VueAxiosPlugin);
