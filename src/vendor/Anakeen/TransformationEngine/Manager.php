@@ -161,7 +161,8 @@ class Manager
             ContextManager::getCurrentUser(),
             $routes,
             3600 * 24,
-            true
+            true,
+            "Transformation Engine"
         );
         if (strstr($urlindex, '?')) {
             $beg = '&';
