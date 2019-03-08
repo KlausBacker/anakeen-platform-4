@@ -171,7 +171,7 @@ class RepoLockXML extends XMLLoader {
 
   /**
    * @param {string} name
-   * @returns {*}
+   * @returns {*}|undefined
    */
   getModuleByName(name) {
     const moduleList = this.getModuleList();
@@ -182,9 +182,11 @@ class RepoLockXML extends XMLLoader {
         throw new RepoLockXMLError(`Malformed module at index #${i}`);
       }
       if (module.$.name === name) {
-        return module.$;
+        return module;
       }
     }
+
+    return undefined;
   }
 }
 

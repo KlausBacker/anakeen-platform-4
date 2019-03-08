@@ -4,18 +4,18 @@ const util = require("util");
 const fs = require("fs");
 const semver = require("semver");
 const signale = require("signale");
+const tar = require("tar");
+const rimraf = require("rimraf");
 
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const { RepoXML } = require(path.resolve(__dirname, "RepoXML.js"));
 const { RepoLockXML } = require(path.resolve(__dirname, "RepoLockXML.js"));
-const { AppRegistry } = require(path.resolve(__dirname, "AppRegistry.js"));
 const { HTTPAgent } = require(path.resolve(__dirname, "HTTPAgent.js"));
 const { RepoContentXML } = require(path.resolve(
   __dirname,
   "RepoContentXML.js"
 ));
 const SHA256Digest = require(path.resolve(__dirname, "SHA256Digest"));
-const { ComposeCtx } = require(path.resolve(__dirname, "ComposeCtx"));
 
 const fs_stat = util.promisify(fs.stat);
 const fs_mkdir = util.promisify(fs.mkdir);
@@ -35,6 +35,33 @@ class Compose {
         options["frozenLockfile"] === true,
       latest: options.hasOwnProperty("latest") && options.latest === true
     };
+  }
+
+  /**
+   * Load 'repo.xml' and 'repo.lock.xml' files
+   * @returns {Promise<void>}
+   */
+  async loadContext() {
+    if (typeof this.repoXML !== "undefined") {
+      throw new ComposeError(`repoXML already loaded!`);
+    }
+    this.repoXML = new RepoXML("repo.xml");
+    await this.repoXML.load();
+
+    if (typeof this.repoLockXML !== "undefined") {
+      throw new ComposeError(`repoLockXML already loaded!`);
+    }
+    this.repoLockXML = new RepoLockXML("repo.lock.xml");
+    await this.repoLockXML.load();
+  }
+
+  /**
+   * Commit changes back to 'repo.xml' and 'repo.lock.xml' files
+   * @returns {Promise<void>}
+   */
+  async commitContext() {
+    await this.repoXML.save();
+    await this.repoLockXML.save();
   }
 
   debug(msg, options = {}) {
@@ -77,17 +104,32 @@ class Compose {
   }
 
   /**
+   * @param {string} pathname
+   * @returns {Promise<*>}
+   */
+  static async rm_Rf(pathname) {
+    return new Promise((resolve, reject) => {
+      rimraf(pathname, { glob: false }, err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(pathname);
+        }
+      });
+    });
+  }
+
+  /**
    * Check if a file (or dir) exists
    * @param {string} filename
-   * @returns {boolean}
+   * @returns {boolean|{fs.Stats}}
    */
   static async fileExists(filename) {
     try {
-      await fs_stat(filename);
+      return await fs_stat(filename);
     } catch (e) {
       return false;
     }
-    return true;
   }
 
   /**
@@ -147,10 +189,9 @@ class Compose {
    * @returns {Promise<{name: *, authUser: *, url: *, authPassword: *}>}
    */
   async addAppRegistry({ name, url, authUser, authPassword }) {
-    const repoXML = new RepoXML("repo.xml");
-    await repoXML.load();
-    await repoXML.addAppRegistry({ name, url, authUser, authPassword });
-    await repoXML.save();
+    await this.loadContext();
+    await this.repoXML.addAppRegistry({ name, url, authUser, authPassword });
+    await this.commitContext();
   }
 
   /**
@@ -163,43 +204,33 @@ class Compose {
     version: moduleVersion,
     registry: registryName
   }) {
-    const repoXML = new RepoXML("repo.xml");
-    await repoXML.load();
+    await this.loadContext();
 
-    const repoLockXML = new RepoLockXML("repo.lock.xml");
-    await repoLockXML.load();
-
-    await repoXML.addModule({
+    await this.repoXML.addModule({
       name: moduleName,
       version: moduleVersion,
       registry: registryName
     });
 
-    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
-
-    await this._ctx_installModule({
-      ctx: composeCtx,
+    await this._installSemverModule({
       name: moduleName,
       version: moduleVersion,
       registry: registryName
     });
 
-    await repoXML.save();
-    await repoLockXML.save();
+    await this.commitContext();
   }
 
   /**
    * Install a module that is present in the 'repo.xml'
    *
-   * @param {ComposeCtx} composeCtx
-   * @param {string} moduleName
-   * @param {string} moduleVersion
-   * @param {string} registryName
+   * @param {string} moduleName Module's name
+   * @param {string} moduleVersion SemVer version
+   * @param {string} registryName Registry's name
    * @returns {Promise<void>}
    * @private
    */
-  async _ctx_installModule({
-    ctx: composeCtx,
+  async _installSemverModule({
     name: moduleName,
     version: moduleVersion,
     registry: registryName
@@ -210,17 +241,7 @@ class Compose {
       );
     }
 
-    const localRepo = await composeCtx.repoXML.getConfigLocalRepo();
-    const localSrc = await composeCtx.repoXML.getConfigLocalSrc();
-
-    const registry = composeCtx.repoXML.getRegistryByName(registryName);
-    if (!registry) {
-      throw new ComposeError(
-        `Registry with name '${registryName}' not found in 'repo.xml'`
-      );
-    }
-
-    const appRegistry = new AppRegistry(registry);
+    const appRegistry = this.repoXML.getRegistryByName(registryName);
     const ping = await appRegistry.ping();
     if (!ping) {
       throw new ComposeError(
@@ -237,47 +258,78 @@ class Compose {
       );
     }
     const module = moduleList.slice(0, 1)[0];
+
+    await this._installAndLockModuleVersion({
+      name: module.name,
+      version: module.version,
+      registry: registryName
+    });
+  }
+
+  async _installAndLockModuleVersion({
+    name: moduleName,
+    version: moduleVersion,
+    registry: registryName
+  }) {
+    const localRepo = await this.repoXML.getConfigLocalRepo();
+    const localSrc = await this.repoXML.getConfigLocalSrc();
+
+    const appRegistry = this.repoXML.getRegistryByName(registryName);
+
+    /* Remove previous module's resources */
+    const lockedModule = this.repoLockXML.getModuleByName(moduleName);
+    if (lockedModule) {
+      if (lockedModule.$.version === moduleVersion) {
+        signale.note(
+          `Module '${moduleName}' with version '${moduleVersion}' is up-to-date`
+        );
+        return;
+      } else {
+        await this.deleteModuleResources(lockedModule);
+      }
+    }
+
     const moduleInfo = await appRegistry.getModuleVersionInfo(
-      module.name,
-      module.version
+      moduleName,
+      moduleVersion
     );
     this.debug({ moduleInfo });
 
-    const httpAgent = new HTTPAgent({ debug: this.$.debug });
     const resources = {
       app: undefined,
       src: undefined
     };
-    if (moduleInfo.hasOwnProperty("app")) {
-      const srcUrl = [module.url, "app", moduleInfo.app].join("/");
-      const pathname = [localRepo, moduleInfo.app].join("/");
-      signale.note(`Downloading '${srcUrl}' to '${pathname}'...`);
-      const tmpFile = await httpAgent.downloadFileTo(srcUrl, pathname);
-      resources.app = {
-        name: moduleInfo.app,
-        src: srcUrl,
-        sha256: await SHA256Digest.file(tmpFile),
-        tmpFile: tmpFile
-      };
-    }
-    if (moduleInfo.hasOwnProperty("src")) {
-      const srcUrl = [module.url, "src", moduleInfo.src].join("/");
-      const pathname = [localSrc, moduleInfo.src].join("/");
-      signale.note(`Downloading '${srcUrl}' to '${pathname}'...`);
-      const tmpFile = await httpAgent.downloadFileTo(srcUrl, pathname);
-      resources.src = {
-        name: moduleInfo.src,
-        src: srcUrl,
-        sha256: await SHA256Digest.file(tmpFile),
-        tmpFile: tmpFile
+    for (let type of ["app", "src"]) {
+      if (!moduleInfo.hasOwnProperty(type)) {
+        continue;
+      }
+      const url = [
+        appRegistry.getModuleVersionURL(moduleName, moduleVersion),
+        type,
+        moduleInfo[type]
+      ].join("/");
+      let pathname;
+      if (type === "app") {
+        pathname = [localRepo, moduleInfo[type]].join("/");
+      } else if (type === "src") {
+        pathname = [localSrc, moduleInfo[type]].join("/");
+      } else {
+        throw new ComposeError(`Unrecognized resource type '${type}'`);
+      }
+      await this._updateLocalResource({ type, src: url, pathname });
+      resources[type] = {
+        name: moduleInfo[type],
+        src: url,
+        sha256: await SHA256Digest.file(pathname),
+        pathname: pathname
       };
     }
 
     this.debug({ resources: resources }, { depth: 20 });
 
     const newModule = {
-      name: module.name,
-      version: module.version,
+      name: moduleName,
+      version: moduleVersion,
       resources: []
     };
     if (typeof resources.app !== "undefined") {
@@ -295,15 +347,80 @@ class Compose {
       });
     }
 
-    composeCtx.repoLockXML.addOrUpdateModule(newModule);
+    this.repoLockXML.addOrUpdateModule(newModule);
 
     signale.note(`Generating 'content.xml' in '${localRepo}'...`);
     const appList = await this.genRepoContentXML(localRepo);
 
     this.debug({ appList: appList }, { depth: 20 });
 
-    this.debug({ repoXML: composeCtx.repoXML.data }, { depth: 20 });
-    this.debug({ repoLockXML: composeCtx.repoLockXML.data }, { depth: 20 });
+    this.debug({ repoXML: this.repoXML.data }, { depth: 20 });
+    this.debug({ repoLockXML: this.repoLockXML.data }, { depth: 20 });
+  }
+
+  async deleteModuleResources(lockedModule) {
+    if (!lockedModule.hasOwnProperty("resources")) {
+      return;
+    }
+    const resources = lockedModule["resources"][0];
+    const rmList = [];
+    for (let type of ["app", "src"]) {
+      if (!resources.hasOwnProperty(type)) {
+        continue;
+      }
+      const resource = resources[type][0];
+      const url = resource.$.src;
+
+      let basename;
+      let dirname;
+      switch (type) {
+        case "app":
+          basename = path.basename(url);
+          dirname = this.repoXML.getConfigLocalRepo();
+          rmList.push({ type: "file", path: path.join(dirname, basename) });
+          break;
+        case "src":
+          basename = path.basename(url, ".src");
+          dirname = this.repoXML.getConfigLocalSrc();
+          rmList.push({
+            type: "file",
+            path: path.join(dirname, basename + ".src")
+          });
+          rmList.push({ type: "dir", path: path.join(dirname, basename) });
+          break;
+      }
+    }
+
+    for (let elmt of rmList) {
+      if (Compose.fileExists(elmt.path)) {
+        signale.note(`Removing ${elmt.type} '${elmt.path}'...`);
+        await Compose.rm_Rf(elmt.path);
+      }
+    }
+  }
+
+  /**
+   * Unpack archive into a directory created from
+   * the archive's basename: `/path/to/archive.src` will be unpacked in
+   * `/path/to/archive` (without the `.src` suffix)
+   * @param {string} archive Path to archive
+   * @returns {Promise<*>}
+   */
+  async unpackSrc(archive) {
+    if (!archive.match(/\.src$/)) {
+      throw new ComposeError(`Archive '${archive}' has no '.src' suffix`);
+    }
+    const basename = path.basename(archive, ".src");
+    const dirname = path.dirname(archive);
+    const pathname = path.normalize([dirname, basename].join("/"));
+    if (await Compose.fileExists(pathname)) {
+      await Compose.rm_Rf(pathname);
+    }
+    await fs_mkdir(pathname, { recursive: true });
+    return tar.x({
+      C: pathname,
+      file: archive
+    });
   }
 
   async genRepoContentXML(repoDir) {
@@ -330,19 +447,13 @@ class Compose {
    * @returns {Promise<void>}
    */
   async install() {
-    const repoXML = new RepoXML("repo.xml");
-    const repoLockXML = new RepoLockXML("repo.lock.xml");
+    await this.loadContext();
 
-    await repoXML.load();
-    await repoLockXML.load();
-
-    const moduleLockList = repoLockXML.getModuleList();
-    const moduleList = repoXML.getModuleList();
+    const moduleLockList = this.repoLockXML.getModuleList();
+    const moduleList = this.repoXML.getModuleList();
 
     const triage = Compose.triageList(moduleList, moduleLockList);
     this.debug({ triage: triage }, { depth: 20 });
-
-    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
 
     /*
      * (1) Process new modules (not yet locked)
@@ -352,8 +463,7 @@ class Compose {
       signale.note(`Found ${count} new module(s) to install`);
       for (let i = 0; i < triage.notLockedList.length; i++) {
         const module = triage.notLockedList[i];
-        await this._ctx_installModule({
-          ctx: composeCtx,
+        await this._installSemverModule({
           name: module.$.name,
           version: module.$.version,
           registry: module.$.registry
@@ -380,8 +490,7 @@ class Compose {
               bimod.locked.$.version
             }' from lock file`
           );
-          await this._ctx_installModuleFromLock({
-            ctx: composeCtx,
+          await this._installModuleFromLock({
             lockedModule: bimod.locked
           });
         } else {
@@ -399,8 +508,7 @@ class Compose {
               bimod.required.$.version
             }'`
           );
-          await this._ctx_installModule({
-            ctx: composeCtx,
+          await this._installSemverModule({
             name: bimod.required.$.name,
             version: bimod.required.$.version,
             registry: bimod.required.$.registry
@@ -424,18 +532,18 @@ class Compose {
             }' while using '--frozen-lockfile' option`
           );
         }
-        composeCtx.repoLockXML.deleteModuleByName(module.$.name);
+        this.repoLockXML.deleteModuleByName(module.$.name);
       }
     }
 
-    this.debug({ repoLockXML }, { depth: 20 });
+    this.debug({ repoLockXML: this.repoLockXML }, { depth: 20 });
 
-    await composeCtx.commit();
+    await this.commitContext();
   }
 
-  async _ctx_installModuleFromLock({ ctx: composeCtx, lockedModule }) {
-    const localRepo = composeCtx.repoXML.getConfigLocalRepo();
-    const localSrc = composeCtx.repoXML.getConfigLocalSrc();
+  async _installModuleFromLock({ lockedModule }) {
+    const localRepo = this.repoXML.getConfigLocalRepo();
+    const localSrc = this.repoXML.getConfigLocalSrc();
 
     const resourceDir = {
       app: localRepo,
@@ -465,20 +573,44 @@ class Compose {
         localIsOutdated = localSha256 !== sha256;
       }
 
+      if (
+        !localIsOutdated &&
+        type === "src" &&
+        !Compose._srcUnpackDirExists(pathname)
+      ) {
+        localIsOutdated = true;
+      }
+
       if (localIsOutdated) {
         signale.note(
-          `Updating outdated module '${pathname}' from lock src '${src}'`
+          `Updating outdated resource '${pathname}' from lock src '${src}'`
         );
-        const httpAgent = new HTTPAgent({ debug: this.$.debug });
-        await httpAgent.downloadFileTo(src, pathname);
-        signale.note(`Done.`);
+        await this._updateLocalResource({ type, src, pathname });
       } else {
-        signale.note(`Local module '${pathname}' is up-to-date`);
+        signale.note(`Local resource '${pathname}' is up-to-date`);
       }
     }
 
     signale.note(`Generating 'content.xml' in '${localRepo}'...`);
     await this.genRepoContentXML(localRepo);
+  }
+
+  static _srcUnpackDirExists(srcPathname) {
+    const srcBasename = path.basename(srcPathname, ".src");
+    const srcDirname = path.dirname(srcPathname);
+    const srcUnpackDir = path.join(srcDirname, srcBasename);
+    return Compose.fileExists(srcUnpackDir);
+  }
+
+  async _updateLocalResource({ type, src, pathname }) {
+    signale.note(`Downloading '${src}' to '${pathname}'...`);
+    const httpAgent = new HTTPAgent({ debug: this.$.debug });
+    await httpAgent.downloadFileTo(src, pathname);
+    if (type === "src") {
+      signale.note(`Unpacking '${type}' from '${src}' into '${pathname}'`);
+      await this.unpackSrc(pathname);
+    }
+    signale.note(`Done.`);
   }
 
   /**
@@ -530,39 +662,28 @@ class Compose {
    * @returns {Promise<void>}
    */
   async upgrade(moduleList = []) {
-    const repoXML = new RepoXML("repo.xml");
-    const repoLockXML = new RepoLockXML("repo.lock.xml");
-
-    await repoXML.load();
-    await repoLockXML.load();
-
-    const composeCtx = new ComposeCtx(repoXML, repoLockXML);
+    await this.loadContext();
 
     if (moduleList.length <= 0) {
-      moduleList = composeCtx.repoXML.getModuleList().map(elmt => {
+      moduleList = this.repoXML.getModuleList().map(module => {
         return {
-          name: elmt.$.name,
-          version: this.$.latest ? "latest" : elmt.$.version,
-          registry: elmt.$.registry
+          name: module.$.name,
+          version: this.$.latest ? "latest" : module.$.version,
+          registry: module.$.registry
         };
       });
     } else {
       for (let i = 0; i < moduleList.length; i++) {
         const moduleAtVersion = this.parseNameAtVersion(moduleList[i]);
-        const module = composeCtx.repoXML.getModuleByName(moduleAtVersion.name);
-        if (typeof module === "undefined") {
-          throw new ComposeError(
-            `Could not find module '${moduleAtVersion.name}' in 'repo.xml'`
-          );
-        }
+        const module = this.repoXML.getModuleByName(moduleAtVersion.name);
         moduleList[i] = {
-          name: module.name,
+          name: module.$.name,
           version: this.$.latest
             ? "latest"
             : moduleAtVersion.version !== ""
             ? moduleAtVersion.version
-            : module.version,
-          registry: module.registry
+            : module.$.version,
+          registry: module.$.registry
         };
       }
     }
@@ -574,17 +695,16 @@ class Compose {
       signale.note(
         `Installing '${module.name}' with version '${module.version}'`
       );
-      await this._ctx_installModule({
-        ctx: composeCtx,
+      await this._installSemverModule({
         name: module.name,
         version: module.version,
         registry: module.registry
       });
     }
 
-    this.debug(composeCtx.repoLockXML.data, { depth: 20 });
+    this.debug(this.repoLockXML.data, { depth: 20 });
 
-    await composeCtx.commit();
+    await this.commitContext();
   }
 
   /**

@@ -3,8 +3,13 @@ const path = require("path");
 const GenericError = require(path.resolve(__dirname, "GenericError.js"));
 const XMLLoader = require(path.resolve(__dirname, "XMLLoader.js"));
 const { normalizeUrl } = require(path.resolve(__dirname, "HTTPAgent.js"));
+const { AppRegistry } = require(path.resolve(__dirname, "AppRegistry.js"));
 
 class RepoXMLError extends GenericError {}
+
+class RepoXMLRegistryNotFoundError extends RepoXMLError {}
+
+class RepoXMLModuleNotFoundError extends RepoXMLError {}
 
 class RepoXML extends XMLLoader {
   constructor(filename) {
@@ -72,7 +77,7 @@ class RepoXML extends XMLLoader {
    * @returns {RepoXML}
    */
   addAppRegistry({ name, url, authUser, authPassword }) {
-    if (this.getRegistryByName(name)) {
+    if (this.registryExists(name)) {
       throw new RepoXMLError(
         `Registry with name/identifier '${name}' already exists`
       );
@@ -88,7 +93,7 @@ class RepoXML extends XMLLoader {
       }
     }
 
-    const registryList = this.getRegistryList();
+    const registryList = this._getRegistryList();
     registryList.push(newRegistry);
 
     return this;
@@ -101,10 +106,10 @@ class RepoXML extends XMLLoader {
    * @returns {RepoXML}
    */
   addModule({ name, version, registry }) {
-    if (!this.getRegistryByName(registry)) {
+    if (!this.registryExists(registry)) {
       throw new RepoXMLError(`Registry '${registry}' does not exists`);
     }
-    if (this.getModuleByName(name)) {
+    if (this.moduleExists(name)) {
       throw new RepoXMLError(`Module '${name}' already exists in dependencies`);
     }
 
@@ -124,6 +129,23 @@ class RepoXML extends XMLLoader {
   }
 
   /**
+   * Check if module exists in registry
+   * @param {string} name Module's name
+   * @returns {boolean}
+   */
+  moduleExists(name) {
+    try {
+      this.getModuleByName(name);
+    } catch (e) {
+      if (e instanceof RepoXMLModuleNotFoundError) {
+        return false;
+      }
+      throw e;
+    }
+    return true;
+  }
+
+  /**
    * @param {string} name
    * @returns {*}
    */
@@ -139,23 +161,41 @@ class RepoXML extends XMLLoader {
         return module.$;
       }
     }
-
-    return undefined;
+    throw new RepoXMLModuleNotFoundError(
+      `Found no module with name '${name} in 'repo.xml'`
+    );
   }
 
   /**
    * @returns {Array|*}
    */
-  getRegistryList() {
+  _getRegistryList() {
     return this.data.compose.registries[0].registry;
   }
 
   /**
+   * Check if a registry exists in 'repo.xml'
+   * @param {string} registryName Registry's name
+   * @returns {boolean}
+   */
+  registryExists(registryName) {
+    try {
+      this.getRegistryByName(registryName);
+    } catch (e) {
+      if (e instanceof RepoXMLRegistryNotFoundError) {
+        return false;
+      }
+      throw e;
+    }
+    return true;
+  }
+
+  /**
    * @param {string} name
-   * @returns {*}
+   * @returns {AppRegistry}
    */
   getRegistryByName(name) {
-    const registryList = this.getRegistryList();
+    const registryList = this._getRegistryList();
 
     for (let i = 0; i < registryList.length; i++) {
       let registry = registryList[i];
@@ -163,11 +203,18 @@ class RepoXML extends XMLLoader {
         throw new RepoXMLError(`Malformed registry at index #${i}`);
       }
       if (registry.$.name === name) {
-        return registry.$;
+        return new AppRegistry(registry.$);
       }
     }
-    return undefined;
+    throw new RepoXMLRegistryNotFoundError(
+      `Registry with name '${name}' not found in 'repo.xml'`
+    );
   }
 }
 
-module.exports = { RepoXML, RepoXMLError };
+module.exports = {
+  RepoXML,
+  RepoXMLError,
+  RepoXMLRegistryNotFoundError,
+  RepoXMLModuleNotFoundError
+};
