@@ -6,7 +6,7 @@
         <nav v-else-if="isDockExpanded">
             <i class="material-icons hub-icon">file_copy</i> <span> Transformation File Manager</span>
         </nav>
-        <div v-else-if="isHubContent" class="vault-manager">
+        <div v-else-if="isHubContent" class="hub-te-manager">
             <admin-center-vault></admin-center-vault>
         </div>
     </div>
@@ -23,3 +23,8 @@
     }
   }
 </script>
+<style>
+    .hub-te-manager {
+        height:100%;
+    }
+</style>

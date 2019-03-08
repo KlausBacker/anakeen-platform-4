@@ -1,0 +1,35 @@
+.te-task-information {
+  background-color: var(--white);
+  padding: 1rem;
+  caption {
+    caption-side: top;
+  }
+
+  .te-task-info {
+    border-bottom: solid 1px #e1e1e1;
+    > label {
+      display: block;
+      color: grey;
+      margin: 0.5rem 0 0 0;
+      &:after {
+        content: ":";
+      }
+    }
+    > div {
+      padding-left:1rem;
+    }
+
+    .te-log-comment {
+      padding-left: 4rem;
+      font-style: italic;
+    }
+  }
+
+  .button-delete {
+    color: white;
+    background: var(--red);
+  }
+  .te-task-buttons {
+    text-align: right;
+  }
+}

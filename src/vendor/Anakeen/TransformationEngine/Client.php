@@ -75,6 +75,10 @@ class Client
     {
         $err = "";
 
+        if (! Manager::isActivated()) {
+            return "TE Active parameter is off. Turn on to send conversion request.";
+        }
+
         clearstatcache(); // to reset filesize
         if (!file_exists($filename)) {
             $err = sprintf("file %s not found", $filename);
@@ -474,7 +478,7 @@ class Client
     {
         $saddr = gethostbyname($this->host);
         $sport = $this->port;
-        $sock = stream_socket_client("tcp://$saddr:$sport", $errno, $errstr, $this->timeout);
+        $sock = @stream_socket_client("tcp://$saddr:$sport", $errno, $errstr, $this->timeout);
         if ($sock === false) {
             throw new ClientException(_("socket creation error") . " : $errstr ($errno)\n");
         }
@@ -584,7 +588,7 @@ class Client
         try {
             $sock = $this->connect();
         } catch (ClientException $e) {
-            throw new ClientException(sprintf(_("Could not connect to TE server: %s"), $e->getMessage()));
+            throw new ClientException(sprintf("Cannot connect to TE server  (%s:%d) server: %s", $this->host, $this->port, $e->getMessage()));
         }
         $ret = $this->fwriteStream($sock, $cmd);
         if ($ret != strlen($cmd)) {
@@ -669,12 +673,12 @@ class Client
     /**
      * Retrieve history log for a specific task id
      *
-     * @param        $histo array which will hold the history log
      * @param string $tid   task id
+     * @param        $histo array which will hold the history log
      *
      * @return string
      */
-    public function retrieveTaskHisto(&$histo, $tid)
+    public function retrieveTaskHisto($tid, &$histo)
     {
         return $this->_genericCommandWithJSONResponse(sprintf("INFO:HISTO\n<task id=\"%s\"/>\n", $tid), $histo);
     }

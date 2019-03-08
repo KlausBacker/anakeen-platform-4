@@ -1,0 +1,22 @@
+.te-manager {
+  background-color: white;
+  padding:0.5rem;
+  height: 100%;
+
+  .k-tabstrip-items li.k-state-default:not(.k-state-active) {
+    color:var(--primary);
+  }
+
+  .te-server-load {
+  }
+  .te-server-load.k-content.k-state-active,
+  .te-supervision.k-content.k-state-active {
+
+    position:relative;
+
+    display: flex!important;
+    flex:1;
+    flex-direction: column;
+    overflow: unset !important;
+  }
+}

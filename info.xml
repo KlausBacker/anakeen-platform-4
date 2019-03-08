@@ -10,6 +10,7 @@
   </replaces>
   <post-install>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubTeManager/**/*.xml"/>
+    <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
   </post-install>
   <post-upgrade>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubTeManager/**/*.xml"/>

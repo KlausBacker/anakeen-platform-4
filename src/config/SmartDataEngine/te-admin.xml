@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="TE">
+        <sde:route name="ConfigurationInfo">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\GetTeConfiguration</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/admin/transformationengine/config/</sde:pattern>
+            <sde:description>Get configuration to communicate with TE</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="RecordInfo">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\RecordTeConfiguration</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/admin/transformationengine/config/</sde:pattern>
+            <sde:description>Record new configuration of TE connection</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="CheckConfiguration">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\CheckTeConfiguration</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/admin/transformationengine/check/{step}</sde:pattern>
+            <sde:description>Check configuration test</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="TestCallbackConfiguration">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\TestTeConfiguration</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/admin/transformationengine/tests/{id}</sde:pattern>
+            <sde:description>Test callback used to check configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetTasks">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\GetTeTasks</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/admin/transformationengine/tasks/</sde:pattern>
+            <sde:description>Get recording tasks collection</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetTaskInfo">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\GetTeTaskInfo</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/admin/transformationengine/tasks/{task}</sde:pattern>
+            <sde:description>Get task properties</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="DeleteTask">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\DeleteTask</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/admin/transformationengine/tasks/{task}</sde:pattern>
+            <sde:description>Delete task in TE server</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetLoadInfo">
+            <sde:callable>Anakeen\Routes\TransformationEngine\Admin\GetTeLoadInfo</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/admin/transformationengine/load</sde:pattern>
+            <sde:requiredAccess>
+                <sde:access ns="AdminCenter">Admin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>

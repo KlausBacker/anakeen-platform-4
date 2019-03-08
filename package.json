@@ -14,7 +14,14 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.0.7",
+    "@anakeen/internal-components": "^1.0.1-dev20190314101439",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190306182547",
     "@commitlint/config-conventional": "^7.3.1",
+    "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-inputs-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-ui": "^2019.1.227",
     "@types/jquery": "^3.3.29",
     "commitlint": "^7.3.2",
     "eslint": "^5.15.1",
@@ -34,6 +41,6 @@
   },
   "dependencies": {
     "@anakeen/hub-components": "^1.0.0-dev20190307153655",
-    "@anakeen/webpack-conf": "1.2.0-dev20190305145653"
- }
+    "@anakeen/webpack-conf": "^1.2.0-dev20190305145653"
+  }
 }

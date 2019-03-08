@@ -19,5 +19,7 @@
     ]
   },
   "include": ["./src/**/*.vue",
-  "./src/**/*.ts"]
+  "./src/**/*.ts"],
+  "files": ["./vue-shims.d.ts",
+    "./vue-type-shims.d.ts"]
 }

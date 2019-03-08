@@ -1,18 +1,40 @@
-// import Splitter from "../Components/Splitter/Splitter.vue";
-// import { AnkSplitter } from "@anakeen/internal-components";
-// import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
-// import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
-// import "@progress/kendo-ui/js/kendo.grid.js";
-// import "@progress/kendo-ui/js/kendo.toolbar.js";
-// import axios from "axios";
-import Vue from "vue";
-import Component from "vue-class-component";
+import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
+import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 
-// Vue.use(ButtonsInstaller);
-// Vue.use(DropdownsInstaller);
+import { Component, Vue } from "vue-property-decorator";
+
+import TeConfig from "./TeConfig.vue";
+import TeServerLoad from "./TeServerLoad.vue";
+import TeSupervision from "./TeSupervision.vue";
+
+Vue.use(LayoutInstaller);
+Vue.use(ButtonsInstaller);
 
 // noinspection JSUnusedGlobalSymbols
-@Component({})
+@Component({
+  components: {
+    "te-config": TeConfig,
+    "te-server-load": TeServerLoad,
+    "te-supervision": TeSupervision
+  }
+})
 export default class TeManagerController extends Vue {
-  public mounted() {}
+  public $refs!: {
+    supervisionComponent: TeSupervision | any;
+    serverLoadComponent: TeServerLoad | any;
+  };
+  public supervisionActived: boolean = false;
+  public loadActived: boolean = false;
+  public onTabActivate(e) {
+    switch ($(e.item).data("id")) {
+      case "supervision":
+        this.supervisionActived = true;
+        break;
+      case "load":
+        this.loadActived = true;
+        break;
+    }
+
+    $(window).trigger("resize");
+  }
 }
