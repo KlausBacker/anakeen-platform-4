@@ -1,12 +1,9 @@
 module.exports = config => {
   const entries = {};
   Object.keys(config.entry).forEach(key => {
-    entries[`${key}.common`] = config.entry[key];
+    entries[`${key}`] = config.entry[key];
   });
   return {
     entry: entries,
-    output: {
-      libraryTarget: "commonjs"
-    }
   }
 };

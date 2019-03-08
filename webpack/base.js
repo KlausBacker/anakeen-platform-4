@@ -14,6 +14,8 @@ module.exports = config => ({
   resolve: {
     extensions: [".ts", ".js"]
   },
+  mode: "development",
+  devtool: "inline-source-map",
   module: {
     rules: [
       { test: /\.vue$/, use: "vue-loader" },

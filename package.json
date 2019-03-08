@@ -3,9 +3,6 @@
   "autorelease": true,
   "version": "1.0.1",
   "description": "Anakeen internal components",
-  "main": "lib/ank-internal-components.common.min.js",
-  "typings": "lib/types/index.d.ts",
-  "unpkg": "lib/ank-internal-components.umd.min.js",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/npm/internal-components.git",
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
@@ -14,9 +11,8 @@
     "lint": "npx eslint ./ && npx tslint ./src/**/*.ts",
     "prettier": "prettier --check ./src/**/*.{js,ts}",
     "prettier:fix": "prettier --write ./src/**/*.{js,ts}",
-    "build:prod": "node --max_old_space_size=4096 node_modules/.bin/webpack --env production --config ./webpack/index.js --progress",
-    "build:dev": "node --max_old_space_size=4096 node_modules/.bin/webpack --env development --config ./webpack/index.js --progress",
-    "build": "npm run build:prod && npm run build:dev",
+    "build:dev": "npx webpack --env development --config ./webpack/index.js --progress",
+    "build": "yarn run build:dev",
     "watch": "webpack --watch --env development --config ./components/webpack/index.js"
   },
   "files": [

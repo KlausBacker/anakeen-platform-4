@@ -2,8 +2,11 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "strict": true,
-    "target": "es5",
+    "target": "es6",
     "noImplicitAny": false,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "module": "es6",
     "lib": ["dom", "es6"]
   },
   "include": ["src/**/*.ts"]
