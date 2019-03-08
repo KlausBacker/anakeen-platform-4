@@ -28,12 +28,16 @@ class Main
             ],
             "JS_DEPS" => [
                 [
-                    "key" =>"jquery",
-                    "path" => UIGetAssetPath::getJSJqueryPath()
+                    "key" => "kendo",
+                    "path" => UIGetAssetPath::getJSKendoPath()
                 ],
                 [
-                    "key" =>"kendo",
-                    "path" => UIGetAssetPath::getJSKendoPath()
+                    "key" => "kendoDLL",
+                    "path" => UIGetAssetPath::getJSKendoComponentPath()
+                ],
+                [
+                    "key" => "vueDll",
+                    "path" => UIGetAssetPath::getJSVueComponentPath()
                 ]
             ],
             "JS" => [
