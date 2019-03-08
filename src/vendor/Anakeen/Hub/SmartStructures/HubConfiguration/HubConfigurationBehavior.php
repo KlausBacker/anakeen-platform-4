@@ -16,7 +16,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
         // Config to return
         $configuration = [];
 
-        $configuration["assets"] = $this->getAssets();
+        $configuration["assets"] = $this->getAssets($this->fromname);
         $configuration["position"] = $this->getPositionConfiguration();
         $configuration["component"] = $this->getComponentConfiguration();
 
@@ -43,14 +43,13 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     }
 
 
-    protected function getAssets()
+    protected static function getAssets($structureName)
     {
         $assets = [];
-        $assets["js"] = SEManager::getFamily($this->fromname)->getFamilyParameterValue("hub_jsasset", []);
-        $assets["css"] = SEManager::getFamily($this->fromname)->getFamilyParameterValue("hub_cssasset", []);
+        $assets["js"] = SEManager::getFamily($structureName)->getFamilyParameterValue("hub_jsasset", []);
+        $assets["css"] = SEManager::getFamily($structureName)->getFamilyParameterValue("hub_cssasset", []);
         return $assets;
     }
-
 
     /**
      * Get component configuration
