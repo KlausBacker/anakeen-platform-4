@@ -66,7 +66,7 @@ protected function getEntryOptions()
     return $entryOptions;
 }
 
-public static function getJSAsset() {
+public function getJSAsset() {
     $asset = UIGetAssetPath::getElementAssets("helloWorld");
     if (isset($asset["hello-world"]["js"])) {
         return [

@@ -27,13 +27,6 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
                 ["number" => 3, "minWidth" => $break2, "grow" => false]
             ]
         );
-        $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(
-            [
-                ["number" => 2, "minWidth" => $break2, "grow" => false],
-                ["number" => 3, "minWidth" => $break2, "grow" => false]
-            ]
-        );
-
 
         return $options;
     }
