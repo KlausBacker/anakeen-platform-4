@@ -1,15 +1,11 @@
-import { AnkSplitter } from "@anakeen/internal-components";
-import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
+import AnkSplitter from "@anakeen/internal-components/src/Splitter/Splitter.vue";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.grid";
-import "@progress/kendo-ui/js/kendo.splitter";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
 import { Component, Vue } from "vue-property-decorator";
 import { IAuthenticationToken } from "./IAuthenticationToken";
 import IsoDates from "./IsoDates";
-
-Vue.use(LayoutInstaller);
 
 declare var kendo;
 

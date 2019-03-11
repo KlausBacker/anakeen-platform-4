@@ -1,5 +1,4 @@
-// import Splitter from "../Components/Splitter/Splitter.vue";
-import { AnkSplitter } from "@anakeen/internal-components";
+import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid.js";
