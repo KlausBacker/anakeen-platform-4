@@ -51,11 +51,16 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
 
     protected function affectLogicalName()
     {
-        $instanceName= $this->getRawValue(HubinstanciationFields::instance_logical_name);
+        $instanceName = $this->getRawValue(HubinstanciationFields::instance_logical_name);
         if ($this->name !== $instanceName) {
             $err = $this->setLogicalName($instanceName, true, true);
             if ($err) {
                 throw new Exception($err);
+            } else {
+                $err = $this->setLogicalName($instanceName, true);
+                if ($err) {
+                    throw new Exception($err);
+                }
             }
         }
     }
@@ -63,12 +68,12 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
     public function getConfiguration()
     {
         return [
-          "instanceName" => $this->getRawValue(HubinstanciationFields::instance_logical_name),
-          "routerEntry" => $this->getRawValue(HubinstanciationFields::hub_instanciation_router_entry),
-          "globalAssets" => [
-              "js" => $this->getAttributeValue(HubinstanciationFields::hub_instance_jsasset),
-              "css" => $this->getAttributeValue(HubinstanciationFields::hub_instance_cssasset)
-          ]
+            "instanceName" => $this->getRawValue(HubinstanciationFields::instance_logical_name),
+            "routerEntry" => $this->getRawValue(HubinstanciationFields::hub_instanciation_router_entry),
+            "globalAssets" => [
+                "js" => $this->getAttributeValue(HubinstanciationFields::hub_instance_jsasset),
+                "css" => $this->getAttributeValue(HubinstanciationFields::hub_instance_cssasset)
+            ]
         ];
     }
 }
