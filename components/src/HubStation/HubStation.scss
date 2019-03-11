@@ -9,6 +9,7 @@
     .hub-station-content {
       display: flex;
       flex: 1;
+      overflow: auto;
 
       .hub-station-content-view {
         flex: 1;
