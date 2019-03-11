@@ -1,8 +1,8 @@
-// @ts-ignore
-import { Chart, ChartInstaller } from "@progress/kendo-charts-vue-wrapper";
+import { ChartInstaller } from "@progress/kendo-charts-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { GaugesInstaller } from "@progress/kendo-gauges-vue-wrapper";
-import "@progress/kendo-ui/js/kendo.dataviz";
+import "@progress/kendo-ui/js/dataviz/chart/chart";
+import "@progress/kendo-ui/js/dataviz/gauge/main";
 import axios from "axios";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import VaultManagerController from "../VaultManager.controller";
@@ -45,7 +45,8 @@ export default class VaultInfoController extends Vue {
     }
     return "#";
   }
-  @Prop({ type: Object as () => {} }) public info;
+  @Prop({ type: Object as () => {} })
+  public info;
 
   public requestMessage: string = "";
   public sizeOptions = [
