@@ -9,6 +9,7 @@ const OUTPUT_PATH = {
 
 module.exports = config => ({
   output: {
+    libraryTarget: "commonjs2",
     path: OUTPUT_PATH.lib
   },
   resolve: {
