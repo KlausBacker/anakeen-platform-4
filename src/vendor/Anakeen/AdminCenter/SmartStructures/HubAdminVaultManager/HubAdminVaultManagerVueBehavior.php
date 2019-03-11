@@ -41,7 +41,9 @@ class HubAdminVaultManagerVueBehavior extends Hubconfigurationvue
                 $asset["vault-manager"]["js"]
             ];
         }
-        return parent::getAssets();
+
+        $assets = parent::getAssets(\SmartStructure\Hubadmincentervaultvue::familyName);
+        return $assets["js"];
     }
 
     protected function getEntryOptions()

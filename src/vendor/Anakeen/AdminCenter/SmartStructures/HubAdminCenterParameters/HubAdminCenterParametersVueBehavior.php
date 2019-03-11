@@ -41,7 +41,8 @@ class HubAdminCenterParametersVueBehavior extends Hubconfigurationvue
                 $asset["parameter-manager"]["js"]
             ];
         }
-        return parent::getAssets();
+        $assets = parent::getAssets(\SmartStructure\Hubadmincenterparametersvue::familyName);
+        return $assets["js"];
     }
 
     protected function getEntryOptions()

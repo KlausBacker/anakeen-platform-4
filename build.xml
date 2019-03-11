@@ -4,6 +4,9 @@
     <module:po-config>
         <module:po-js source="src/vendor/Anakeen/**/*js" target="ADMIN_CENTER"/>
     </module:po-config>
+    <module:stub-config>
+        <module:stub-struct source="src/vendor/Anakeen/AdminCenter/SmartStructures/**/*.xml"/>
+    </module:stub-config>
     <module:check-config>
         <module:config-xml source="src/**/*.xml"/>
     </module:check-config>
