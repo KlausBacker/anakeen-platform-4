@@ -17,33 +17,44 @@
     }
   }
 
+  .token-main {
+    display: flex;
+    flex-direction: column;
+
+    .token-grid-box {
+      flex:1;
+      display: flex;
+      flex-direction: column;
+    }
+    .token-grid {
+      height:100%;
+      table {
+        // table-layout: auto;
+      }
+      .k-filtercell .k-autocomplete {
+        width: 100%;
+      }
+      .cell--token {
+        font-family: monospace;
+      }
+      .k-pager-nav,
+      .k-pager-numbers {
+        display: none;
+      }
+
+      .token--expired .cell--expire {
+        color: var(--warning);
+      }
+      .token--expired.token--selected .cell--expire {
+        color: inherit;
+      }
+    }
+  }
 
   > .ank-token-splitter {
     flex-grow: 1;
   }
 
-  .token-grid {
-    table {
-      // table-layout: auto;
-    }
-    .k-filtercell .k-autocomplete {
-      width: 100%;
-    }
-    .cell--token {
-      font-family: monospace;
-    }
-    .k-pager-nav,
-    .k-pager-numbers {
-      display: none;
-    }
-
-    .token--expired .cell--expire {
-      color: var(--warning);
-    }
-    .token--expired.token--selected .cell--expire {
-      color: inherit;
-    }
-  }
 
   .token-logo {
     display: flex;

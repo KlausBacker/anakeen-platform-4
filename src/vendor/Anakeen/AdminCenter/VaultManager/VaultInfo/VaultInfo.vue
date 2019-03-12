@@ -1,33 +1,31 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
     <div class="vault-pie-chart">
-        <div class="vault-graphs container-fluid">
-            <div class="row">
-                <div class="col-sm col-sm-3 disk-gauges">
-                    <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
-                        <p class="arc-title">Logical vault capacity</p>
-                        <kendo-radialgauge ref="logicalGauge"
-                                        class="logical-gauge arc-gauge"
-                                        :scale-min="0"
-                                        :scale-max="getGaugeLogicalMax"
-                                        :scale-labels-format="getGaugeLogicalRangeLabel"
-                                        :scale-ranges="getGaugeLogicalRanges">
-                            <kendo-radialgauge-pointer :value="getGaugeLogicalUsed" :color="'#ff6358'"/>
-                        </kendo-radialgauge>
-                    </div>
-                    <div class="disk-gauge" :class="{ diskerror: info.disk.totalSize === 0 }" >
-                        <p class="arc-title">Physical disk capacity</p>
-                        <kendo-radialgauge ref="diskGauge"
-                                        class="physical-gauge arc-gauge"
-                                        :scale-min="0"
+        <div class="vault-graphs">
+            <div class="disk-gauges">
+                <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
+                    <p class="arc-title">Logical vault capacity</p>
+                    <kendo-radialgauge ref="logicalGauge"
+                                       class="logical-gauge arc-gauge"
+                                       :scale-min="0"
+                                       :scale-max="getGaugeLogicalMax"
+                                       :scale-labels-format="getGaugeLogicalRangeLabel"
+                                       :scale-ranges="getGaugeLogicalRanges">
+                        <kendo-radialgauge-pointer :value="getGaugeLogicalUsed" :color="'#ff6358'"/>
+                    </kendo-radialgauge>
+                </div>
+                <div class="disk-gauge" :class="{ diskerror: info.disk.totalSize === 0 }">
+                    <p class="arc-title">Physical disk capacity</p>
+                    <kendo-radialgauge ref="diskGauge"
+                                       class="physical-gauge arc-gauge"
+                                       :scale-min="0"
                                        :scale-max="getGaugeDiskMax"
                                        :scale-labels-format="getGaugeDiskRangeLabel"
                                        :scale-ranges="getGaugeDiskRanges">
-                            <kendo-radialgauge-pointer :value="getGaugeDiskUsed" :color="'#ff6358'"/>
-                        </kendo-radialgauge>
-                    </div>
+                        <kendo-radialgauge-pointer :value="getGaugeDiskUsed" :color="'#ff6358'"/>
+                    </kendo-radialgauge>
                 </div>
-                <div class="col-sm col-sm-9 disk-chart">
+                <div class="disk-chart">
                     <kendo-chart ref="chart"
                                  class="vault-chart"
                                  :title-text="'Vault disk usage'"
@@ -103,11 +101,12 @@
 
             <input ref="newPath" class="k-textbox" placeholder="New path">
             <div class="vault-buttons">
-            <kendo-button
-                    class="k-primary"
-                    @click="requestMoveIt" >Move it</kendo-button >
+                <kendo-button
+                        class="k-primary"
+                        @click="requestMoveIt">Move it
+                </kendo-button>
 
-            <kendo-button  @click="closeWindow" >Cancel</kendo-button >
+                <kendo-button @click="closeWindow">Cancel</kendo-button>
             </div>
         </div>
 
@@ -121,26 +120,27 @@
                 <kendo-dropdownlist
                         ref="kNewSizeUnit"
                         :data-source="sizeOptions"
-                                    value="1048576"
-                                    :data-text-field="'text'"
-                                    :data-value-field="'value'"
-                                    :options-label="'Select Size...'">
+                        value="1048576"
+                        :data-text-field="'text'"
+                        :data-value-field="'value'"
+                        :options-label="'Select Size...'">
                 </kendo-dropdownlist>
             </div>
             <div class="vault-buttons">
                 <kendo-button
                         class="k-primary"
-                        @click="requestResizeIt" >Resize it</kendo-button >
+                        @click="requestResizeIt">Resize it
+                </kendo-button>
 
-                <kendo-button  @click="closeWindow" >Cancel</kendo-button >
+                <kendo-button @click="closeWindow">Cancel</kendo-button>
             </div>
         </div>
 
         <div ref="infoUpdate" class="vault-updated" style="display: none">
             <p>
-                 <b>{{ requestMessage }}</b>
+                <b>{{ requestMessage }}</b>
             </p>
-            <kendo-button  @click="closeWindow" >Close</kendo-button >
+            <kendo-button @click="closeWindow">Close</kendo-button>
 
         </div>
     </div>
