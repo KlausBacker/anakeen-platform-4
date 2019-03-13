@@ -30,7 +30,11 @@ class RepoContentXML extends XMLLoader {
     return {
       repo: {
         $: { format, label, status },
-        modules: []
+        modules: [
+          {
+            module: []
+          }
+        ]
       }
     };
   }
@@ -69,7 +73,11 @@ class RepoContentXML extends XMLLoader {
       throw new RepoContentXMLError(`/compose-lock is not a valid root node`);
     }
     if (!this.data["repo"].hasOwnProperty("modules")) {
-      this.data["repo"].modules = [];
+      this.data["repo"].modules = [
+        {
+          module: []
+        }
+      ];
     }
     return this;
   }
@@ -96,7 +104,7 @@ class RepoContentXML extends XMLLoader {
       }
     }
 
-    this.data.repo.modules.push(rootNode);
+    this.data.repo.modules[0].module.push(rootNode);
 
     return this;
   }
