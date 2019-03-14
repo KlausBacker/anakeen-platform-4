@@ -57,6 +57,7 @@
     "@anakeen/anakeen-cli": "^1.1.1",
     "@anakeen/webpack-conf": "^1.2.0-dev20190305145653",
     "@commitlint/config-conventional": "^7.5.0",
+    "@types/jquery": "^3.3.29",
     "backbone": "^1.4.0",
     "ckeditor": "^4.11.3",
     "commitlint": "^7.5.2",
@@ -71,7 +72,8 @@
     "mustache": "^3.0.1",
     "prettier": "^1.16.4",
     "tracekit": "^0.4.5",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "vue-property-decorator": "^8.0.0"
   },
   "peerDependencies": {
     "@progress/kendo-ui": "^2019.1.213",

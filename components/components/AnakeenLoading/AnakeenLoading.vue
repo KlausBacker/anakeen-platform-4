@@ -71,4 +71,4 @@
 <!-- Global CSS -->
 <style lang="scss">
 </style>
-<script src="./AnakeenLoading.controller.js"></script>
+<script src="./AnakeenLoading.controller.ts" lang="ts"></script>

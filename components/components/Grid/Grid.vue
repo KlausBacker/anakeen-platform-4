@@ -11,5 +11,5 @@
     @import "./Grid.scss";
 </style>
 
-<script src="./Grid.controller.js">
+<script src="./Grid.controller.ts" lang="ts">
 </script>

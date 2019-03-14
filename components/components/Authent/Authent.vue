@@ -80,7 +80,7 @@
         </div>
     </section>
 </template>
-<script src="./Authent.component.js"></script>
+<script src="./Authent.component.ts" lang="ts"></script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
     @import "./Authent.scss";

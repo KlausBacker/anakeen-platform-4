@@ -1,11 +1,15 @@
 // jscs:disable disallowImplicitTypeConversion
 // jscs:disable requirePaddingNewLinesBeforeLineComments
+import Vue from "vue";
 import contentTemplate from "./templates/tab/seTabsContent.template.kd";
 import headerTemplate from "./templates/tab/seTabsHeader.template.kd";
 import openedTabListItemTemplate from "./templates/openedTabList/seOpenedTabListItem.template.kd";
 import AnkMixins from "../../mixins/AnkVueComponentMixin";
 import TabModel from "./model/tabModel";
+import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import { ISeTabs } from "./ISeTabs";
 
+declare var kendo;
 const Constants = {
   WELCOME_TAB_ID: "welcome_tab_id",
   NEW_TAB_ID: "new_tab_id",
@@ -57,158 +61,124 @@ const smartElementEvents = [
   "attributeCreateDialogDocumentBeforeDestroy"
 ];
 
-export default {
-  mixins: AnkMixins,
+@Component({
   name: "ank-se-tabs",
-  props: {
-    "header-tab-template": {
-      type: String,
-      default: ""
-    },
-
-    "welcome-tab-template": {
-      type: String,
-      default: ""
-    },
-
-    "custom-tab-template": {
-      type: String,
-      default: ""
-    },
-
-    "se-list": {
-      type: String,
-      default: "[]",
-      validator: value => {
-        try {
-          JSON.parse(value);
-          return true;
-        } catch (err) {
-          console.error('"se-list" prop validation failed :', err.toString());
-          return false;
-        }
-      }
-    },
-
-    "se-css": {
-      type: String,
-      default: ""
-    },
-
-    closable: {
-      type: Boolean,
-      default: true
-    },
-
-    addable: {
-      type: Boolean,
-      default: false
-    },
-
-    sortable: {
-      type: Boolean,
-      default: false
-    }
-  },
-
-  data() {
-    return {
-      tabModel: null,
-      tabstripEl: null,
-      tabslistEl: null,
-      tabslistSource: null,
-      newTabConfig: null,
-      welcomeTabConfig: null,
-      defaultEmptyImgUrl: "/CORE/Images/anakeenplatform-logo-fondblanc.svg"
-    };
-  },
-
-  computed: {
-    hasWelcomeTab() {
-      return !!this.welcomeTabTemplate;
-    },
-
-    hasCustomTab() {
-      return !!this.customTabTemplate;
-    },
-
-    hasContent() {
-      if (this.tabModel) {
-        return !this.tabModel.isEmpty();
-      } else {
+  mixins: [AnkMixins]
+})
+export default class SeTabsComponent extends Vue {
+  @Prop({ type: String, default: "" }) public headerTabTemplate;
+  @Prop({ type: String, default: "" }) public welcomeTabTemplate;
+  @Prop({ type: String, default: "" }) public customTabTemplate;
+  @Prop({
+    type: String,
+    default: "[]",
+    validator: value => {
+      try {
+        JSON.parse(value);
+        return true;
+      } catch (err) {
+        console.error('"se-list" prop validation failed :', err.toString());
         return false;
       }
-    },
-
-    seListProp() {
-      return JSON.parse(this.seList);
-    },
-
-    tabstrip() {
-      if (this.tabstripEl) {
-        return this.tabstripEl.data("kendoTabStrip");
-      }
-
-      return null;
-    },
-
-    tabslist() {
-      if (this.tabslistEl) {
-        return this.tabslistEl.data("kendoDropDownList");
-      }
-
-      return null;
-    },
-
-    newLazyTab() {
-      return {
-        tabId: Constants.LAZY_TAB_ID,
-        headerTemplate,
-        contentTemplate,
-        data: {
-          initid: 0
-        }
-      };
-    },
-
-    lazyTabDocument() {
-      const index = this.privateScope.getLazyTabIndex();
-      if (index > -1) {
-        return this.$(this.tabstrip.contentElement(index)).find(
-          "ank-smart-element"
-        );
-      }
-
-      return null;
-    },
-
-    translations() {
-      return {
-        noSEOpened: this.$pgettext("SETabs", "No Smart Element opened"),
-        closeAllSE: this.$pgettext("SETabs", "Close all ")
-      };
     }
-  },
+  }) public seList;
 
-  watch: {
-    closable(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.tabstrip.tabGroup.children().each((i, t) => {
-          this.privateScope.configureCloseTab(t, this.newValue);
-        });
-      }
-    },
+  @Prop({ type: String, default: "" }) public "se-css";
+  @Prop({ type: Boolean, default: true }) public closable;
+  @Prop({ type: Boolean, default: false }) public addable;
+  @Prop({ type: Boolean, default: false }) public sortable;
+  public tabModel: any = null;
+  public tabstripEl: any = null;
+  public tabslistEl: any = null;
+  public tabslistSource: any = null;
+  public newTabConfig: any = null;
+  public welcomeTabConfig: any = null;
+  public defaultEmptyImgUrl: string =
+    "/CORE/Images/anakeenplatform-logo-fondblanc.svg";
+  public ps: ISeTabs;
+  private documentCss: any;
+  private seCss: any;
+  public get hasWelcomeTab() {
+    return !!this.welcomeTabTemplate;
+  }
 
-    addable(newValue) {
-      this.privateScope.setAddTabButton(newValue);
-    },
+  public get hasCustomTab() {
+    return !!this.customTabTemplate;
+  }
 
-    sortable(newValue) {
-      this.privateScope.configureSortable(newValue);
+  public get hasContent() {
+    if (this.tabModel) {
+      return !this.tabModel.isEmpty();
+    } else {
+      return false;
     }
-  },
+  }
 
-  created() {
+  public get seListProp() {
+    return JSON.parse(this.seList);
+  }
+
+  public get tabstrip() {
+    if (this.tabstripEl) {
+      return this.tabstripEl.data("kendoTabStrip");
+    }
+
+    return null;
+  }
+
+  public get tabslist() {
+    if (this.tabslistEl) {
+      return this.tabslistEl.data("kendoDropDownList");
+    }
+
+    return null;
+  }
+
+  public static get newLazyTab() {
+    return {
+      tabId: Constants.LAZY_TAB_ID,
+      headerTemplate,
+      contentTemplate,
+      data: {
+        initid: 0
+      }
+    };
+  }
+
+  public get lazyTabDocument() {
+    const index = this.ps.privateScope.getLazyTabIndex();
+    if (index > -1) {
+      return kendo
+        .jquery(this.tabstrip.contentElement(index))
+        .find("ank-smart-element");
+    }
+    return null;
+  }
+
+  public get translations() {
+    return {
+      noSEOpened: this.$pgettext("SETabs", "No Smart Element opened"),
+      closeAllSE: this.$pgettext("SETabs", "Close all ")
+    };
+  }
+  @Watch("closable")
+  public watchClosable(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      this.tabstrip.tabGroup.children().each((i, t) => {
+        this.ps.privateScope.configureCloseTab(t, newValue);
+      });
+    }
+  }
+  @Watch("addable")
+  public watchAddable(newValue) {
+    this.ps.privateScope.setAddTabButton(newValue);
+  }
+  @Watch("sortable")
+  public watchSortable(newValue) {
+    this.ps.privateScope.configureSortable(newValue);
+  }
+
+  public created() {
     if (this.hasWelcomeTab) {
       this.$options.components.welcomeTab = {
         template: this.welcomeTabTemplate
@@ -221,40 +191,41 @@ export default {
       };
     }
 
-    this.privateScope = {
+    // @ts-ignore
+    this.ps.privateScope = {
       createKendoComponents: () => {
-        this.privateScope.createKendoTabStrip();
-        this.privateScope.createKendoOpenedTabsList();
-        this.privateScope.initTabModel();
-        this.$(window).resize(() => {
-          this.privateScope.resizeComponents();
+        this.ps.privateScope.createKendoTabStrip();
+        this.ps.privateScope.createKendoOpenedTabsList();
+        this.ps.privateScope.initTabModel();
+        $(window).resize(() => {
+          this.ps.privateScope.resizeComponents();
         });
-        this.privateScope.resizeComponents();
+        this.ps.privateScope.resizeComponents();
       },
 
       createKendoTabStrip: () => {
-        this.tabstripEl = this.$(this.$refs.tabstrip).kendoTabStrip({
+        this.tabstripEl = kendo.jquery(this.$refs.tabstrip).kendoTabStrip({
           animation: false,
-          select: this.privateScope.onTabstripSelect
+          select: this.ps.privateScope.onTabstripSelect
         });
         this.tabModel = new TabModel();
-        this.tabModel.on("add", this.privateScope.onModelAddItem);
-        this.tabModel.on("remove", this.privateScope.onModelRemoveItem);
-        this.tabModel.on("itemchange", this.privateScope.onModelItemChange);
+        this.tabModel.on("add", this.ps.privateScope.onModelAddItem);
+        this.tabModel.on("remove", this.ps.privateScope.onModelRemoveItem);
+        this.tabModel.on("itemchange", this.ps.privateScope.onModelItemChange);
       },
 
       createKendoOpenedTabsList: () => {
-        this.tabsListSource = new this.$kendo.data.DataSource({
+        this.tabslistSource = new kendo.data.DataSource({
           data: []
         });
-        this.tabslistEl = this.$(this.$refs.tabsList).kendoDropDownList({
+        this.tabslistEl = kendo.jquery(this.$refs.tabsList).kendoDropDownList({
           animation: false,
-          dataSource: this.tabsListSource,
-          template: this.$kendo.template(openedTabListItemTemplate),
+          dataSource: this.tabslistSource,
+          template: kendo.template(openedTabListItemTemplate),
           valueTemplate: '<i class="material-icons">list</i>',
-          dataBound: this.privateScope.onOpenedTabsListDataBound,
+          dataBound: this.ps.privateScope.onOpenedTabsListDataBound,
           autoWidth: true,
-          select: this.privateScope.onOpenedTabsListItemClick,
+          select: this.ps.privateScope.onOpenedTabsListItemClick,
           noDataTemplate: this.translations.noSEOpened,
           headerTemplate: `<button class="seTabs__tabsList__list__close__all">
                                         ${this.translations.closeAllSE}
@@ -267,17 +238,17 @@ export default {
       },
 
       sendGetRequest: (url, config, loadingElement) => {
-        const element = this.$(loadingElement);
-        this.$kendo.ui.progress(element, true);
+        const element = $(loadingElement);
+        kendo.ui.progress(element, true);
         return new Promise((resolve, reject) => {
           this.$http
             .get(url, config)
             .then(response => {
-              this.$kendo.ui.progress(element, false);
+              kendo.ui.progress(element, false);
               resolve(response);
             })
             .catch(error => {
-              this.$kendo.ui.progress(element, false);
+              kendo.ui.progress(element, false);
               reject(error);
             });
         });
@@ -285,11 +256,13 @@ export default {
 
       resizeComponents: () => {
         this.tabstrip.resize();
-        this.privateScope.setTabstripPagination();
+        this.ps.privateScope.setTabstripPagination();
       },
 
       setTabstripPagination: () => {
-        const paginatorWidth = this.$(this.$refs.tabsTools).outerWidth(true);
+        const paginatorWidth = kendo
+          .jquery(this.$refs.tabsTools)
+          .outerWidth(true);
         let marginRight = paginatorWidth || 0;
         // let marginLeft = 0;
         // const prev = this.tabstripEl.find('.k-tabstrip-prev');
@@ -319,17 +292,17 @@ export default {
             { tabId: Constants.WELCOME_TAB_ID },
             this.welcomeTabConfig
           );
-          if (this.privateScope.getLazyTabIndex() > -1) {
+          if (this.ps.privateScope.getLazyTabIndex() > -1) {
             this.tabModel.add(welcomeTab);
           } else {
-            this.tabModel.add(welcomeTab, this.newLazyTab);
+            this.tabModel.add(welcomeTab, SeTabsComponent.newLazyTab);
           }
 
           this.selectIndex(0);
         }
 
-        this.privateScope.configureSortable(this.sortable);
-        this.privateScope.setAddTabButton(this.addable);
+        this.ps.privateScope.configureSortable(this.sortable);
+        this.ps.privateScope.setAddTabButton(this.addable);
       },
 
       canUseLazyTab: () => {
@@ -391,15 +364,15 @@ export default {
       },
 
       setAddTabButton: (addable = true) => {
-        let newTabButton = this.$("#seTabs__new__tab__button");
+        let newTabButton = kendo.jquery("#seTabs__new__tab__button");
         if (addable) {
           if (!newTabButton.length) {
-            newTabButton = this.$(
+            newTabButton = kendo.jquery(
               '<button id="seTabs__new__tab__button" class="tab__new__button">' +
                 '<i class="material-icons">add</i>' +
                 "</button>"
             );
-            newTabButton.on("click", this.privateScope.onAddTabClick);
+            newTabButton.on("click", this.ps.privateScope.onAddTabClick);
           }
 
           this.tabstrip.tabGroup.append(newTabButton);
@@ -411,7 +384,7 @@ export default {
       },
 
       setCloseTabButton: (tab, forceClose) => {
-        const $tab = this.$(tab);
+        const $tab = $(tab);
         const closable = forceClose !== undefined ? forceClose : this.closable;
         if (closable) {
           $tab
@@ -422,7 +395,7 @@ export default {
           $tab.on(
             "click",
             "[data-type='remove']",
-            this.privateScope.onCloseTabClick
+            this.ps.privateScope.onCloseTabClick
           );
         } else {
           $tab.off("click", "[data-type='remove']");
@@ -431,26 +404,24 @@ export default {
       },
 
       loadLazyTabDocument: data => {
-        const tab = this.$(
-          this.tabstrip.items()[this.privateScope.getLazyTabIndex()]
+        const tab = $(
+          this.tabstrip.items()[this.ps.privateScope.getLazyTabIndex()]
         );
         tab.find(".seTab__title").text(data.data.title);
         tab
           .find(".seTab__icon")
           .replaceWith(`<img class="seTab__icon" src="${data.data.icon}" />`);
-        this.privateScope.onAddDocumentTab(this.privateScope.getLazyTabIndex());
-        this.$(
-          this.tabstrip.items()[this.privateScope.getLazyTabIndex()]
-        ).show();
-        this.$(this.lazyTabDocument).prop("seValue", JSON.stringify(data.data));
-        this.tabModel.get(this.privateScope.getLazyTabIndex()).tabId =
+        this.ps.privateScope.onAddDocumentTab(this.ps.privateScope.getLazyTabIndex());
+        $(this.tabstrip.items()[this.ps.privateScope.getLazyTabIndex()]).show();
+        $(this.lazyTabDocument).prop("seValue", JSON.stringify(data.data));
+        this.tabModel.get(this.ps.privateScope.getLazyTabIndex()).tabId =
           data.tabId;
-        this.tabsListSource.add(data);
+        this.tabslistSource.add(data);
       },
 
       bindWelcomeTabEvents: ($newTab, index) => {
         $newTab.on("document-creation", e =>
-          this.privateScope.onCreateDocumentClick(e, index)
+          this.ps.privateScope.onCreateDocumentClick(e, index)
         );
         $newTab.on("document-selected", e => {
           this.setSE(e.detail[0], index);
@@ -462,11 +433,11 @@ export default {
       getSEEventHandler: eventName => {
         switch (eventName) {
           case "ready":
-            return this.privateScope.onDocumentReady;
+            return this.ps.privateScope.onDocumentReady;
           case "actionClick":
-            return this.privateScope.onDocumentActionClick;
+            return this.ps.privateScope.onDocumentActionClick;
           case "afterSave":
-            return this.privateScope.onDocumentAfterSave;
+            return this.ps.privateScope.onDocumentAfterSave;
           default:
             return noop;
         }
@@ -476,7 +447,7 @@ export default {
         const documentComponent = $doc;
         smartElementEvents.forEach(eventName => {
           documentComponent.on(eventName, e => {
-            const cb = this.privateScope.getSEEventHandler(eventName);
+            const cb = this.ps.privateScope.getSEEventHandler(eventName);
             cb.call(this, e, tabIndex);
             const notCancelled = this.$emitAnkEvent(
               `se-${camelToKebab(eventName)}`,
@@ -497,12 +468,8 @@ export default {
       onModelAddItem: event => {
         const addedItems = event.items;
         addedItems.forEach((item, pos) => {
-          const header = this.$kendo.template(item.headerTemplate)(
-            item.data || {}
-          );
-          const content = this.$kendo.template(item.contentTemplate)(
-            item.data || {}
-          );
+          const header = kendo.template(item.headerTemplate)(item.data || {});
+          const content = kendo.template(item.contentTemplate)(item.data || {});
           const tabAdded = { text: header, encoded: false, content: content };
           const index = event.index + pos;
           if (index === this.tabModel.size() - addedItems.length) {
@@ -516,17 +483,17 @@ export default {
             );
           }
 
-          this.privateScope.onAddGenericTab(index);
+          this.ps.privateScope.onAddGenericTab(index);
           if (
             item.tabId === Constants.NEW_TAB_ID ||
             item.tabId === Constants.WELCOME_TAB_ID
           ) {
-            this.privateScope.onAddWelcomeTab(index);
+            this.ps.privateScope.onAddWelcomeTab(index);
           } else if (item.tabId === Constants.LAZY_TAB_ID) {
-            this.privateScope.onAddLazyTab(index);
+            this.ps.privateScope.onAddLazyTab(index);
           } else {
-            this.privateScope.onAddDocumentTab(index);
-            this.tabsListSource.add(item);
+            this.ps.privateScope.onAddDocumentTab(index);
+            this.tabslistSource.add(item);
           }
         });
       },
@@ -534,9 +501,7 @@ export default {
       onModelRemoveItem: event => {
         if (event.items.length === 1) {
           if (
-            this.$(this.tabstrip.items()[event.index]).hasClass(
-              "k-state-active"
-            ) &&
+            $(this.tabstrip.items()[event.index]).hasClass("k-state-active") &&
             !this.tabModel.isEmpty()
           ) {
             this.selectIndex(0);
@@ -551,16 +516,16 @@ export default {
           this.tabModel.isEmpty() ||
           this.tabModel.findIndex(t => t.tabId !== Constants.LAZY_TAB_ID) === -1
         ) {
-          this.privateScope.initTabModel();
+          this.ps.privateScope.initTabModel();
         }
 
-        this.privateScope.setTabstripPagination();
+        this.ps.privateScope.setTabstripPagination();
         event.items.forEach(i => {
-          const deletedEl = this.tabsListSource
+          const deletedEl = this.tabslistSource
             .data()
             .find(e => e.tabId == i.tabId);
           if (deletedEl) {
-            this.tabsListSource.remove(deletedEl);
+            this.tabslistSource.remove(deletedEl);
           }
         });
       },
@@ -571,7 +536,7 @@ export default {
         );
         const props = event.field.split(".");
         let newValue;
-        const $indexedItem = this.$(this.tabstrip.items()[index]);
+        const $indexedItem = $(this.tabstrip.items()[index]);
         switch (event.field) {
           case "data.title":
             newValue = event.items[0][props[0]][props[1]];
@@ -585,33 +550,33 @@ export default {
       },
 
       onAddGenericTab: index => {
-        this.privateScope.setAddTabButton(this.addable);
-        this.privateScope.setCloseTabButton(this.tabstrip.items()[index]);
-        this.privateScope.setTabstripPagination();
+        this.ps.privateScope.setAddTabButton(this.addable);
+        this.ps.privateScope.setCloseTabButton(this.tabstrip.items()[index]);
+        this.ps.privateScope.setTabstripPagination();
       },
 
       onAddWelcomeTab: index => {
         const tabContent = this.tabstrip.contentElement(index);
-        const $newTab = this.$(tabContent).find("ank-welcome-tab");
-        this.privateScope.bindWelcomeTabEvents($newTab, index);
+        const $newTab = $(tabContent).find("ank-welcome-tab");
+        this.ps.privateScope.bindWelcomeTabEvents($newTab, index);
       },
 
       onAddLazyTab: index => {
-        this.$(this.tabstrip.items()[index]).hide();
-        this.$(this.tabstrip.contentElement(index)).hide();
+        $(this.tabstrip.items()[index]).hide();
+        $(this.tabstrip.contentElement(index)).hide();
         const tabContent = this.tabstrip.contentElement(index);
-        this.privateScope.bindLazyTabEvents(tabContent, index);
+        this.ps.privateScope.bindLazyTabEvents(tabContent, index);
       },
 
       onAddDocumentTab: index => {
         const tabContent = this.tabstrip.contentElement(index);
-        const $doc = this.$(tabContent).find("ank-smart-element");
-        this.privateScope.bindDocumentTabEvents($doc, index);
+        const $doc = $(tabContent).find("ank-smart-element");
+        this.ps.privateScope.bindDocumentTabEvents($doc, index);
         $doc.one("ready", () => {
-          this.$(tabContent)
+          $(tabContent)
             .find(".seTabs__tab__content--se")
             .show();
-          this.$(tabContent)
+          $(tabContent)
             .find(".seTabs__tab__content--loading")
             .hide();
         });
@@ -638,7 +603,7 @@ export default {
         e.preventDefault();
         e.stopPropagation();
 
-        const item = this.$(e.target).closest(".k-item");
+        const item = $(e.target).closest(".k-item");
         this.closeSE(item.index());
       },
 
@@ -655,14 +620,14 @@ export default {
       },
 
       onTabstripSelect: e => {
-        const itemSelectedPos = this.$(e.item).index();
+        const itemSelectedPos = $(e.item).index();
         const selectedTab = this.tabModel.get(itemSelectedPos);
         if (
           selectedTab.tabId === Constants.NEW_TAB_ID ||
           selectedTab.tabId === Constants.WELCOME_TAB_ID
         ) {
           const DOMElement = this.tabstrip.contentElement(itemSelectedPos);
-          const welcomeTab = this.$(DOMElement).find("ank-welcome-tab");
+          const welcomeTab = $(DOMElement).find("ank-welcome-tab");
           if (welcomeTab.prop("publicMethods")) {
             welcomeTab.prop("publicMethods").refresh();
           }
@@ -689,8 +654,8 @@ export default {
       },
 
       onDocumentReady: (readyEvent, tabPosition) => {
-        const $document = this.$(readyEvent.target);
-        const iframeDocument = this.$(readyEvent.detail[0].target);
+        const $document = $(readyEvent.target);
+        const iframeDocument = $(readyEvent.detail[0].target);
         iframeDocument.find(".dcpDocument__header").hide();
         const menus = iframeDocument.find("nav.dcpDocument__menu");
         if (menus.length > 1) {
@@ -703,25 +668,25 @@ export default {
         }
 
         if (tabPosition !== undefined) {
-          this.$(this.tabstrip.items()[tabPosition])
+          $(this.tabstrip.items()[tabPosition])
             .find("a.seTab__header__content")
             .prop("href", readyEvent.detail[1].url);
-          this.$(this.tabstrip.items()[tabPosition])
+          $(this.tabstrip.items()[tabPosition])
             .find("a.seTab__header__content .seTab__title")
             .text(readyEvent.detail[1].title);
-          this.$(this.tabstrip.items()[tabPosition])
+          $(this.tabstrip.items()[tabPosition])
             .find("a.seTab__header__content .seTab__icon")
             .replaceWith(
               `<img class="seTab__icon" src="${readyEvent.detail[1].icon}" />`
             );
         }
 
-        const lazyIndex = this.privateScope.getLazyTabIndex();
+        const lazyIndex = this.ps.privateScope.getLazyTabIndex();
         if (lazyIndex != -1) {
           this.tabModel.remove(lazyIndex);
         }
 
-        this.tabModel.add(this.newLazyTab);
+        this.tabModel.add(SeTabsComponent.newLazyTab);
       },
 
       onDocumentActionClick: e => {
@@ -765,14 +730,14 @@ export default {
         return Object.assign({}, otherProps, { initid: initid.toString() });
       }
     };
-  },
+  }
 
   mounted() {
-    this.$kendo.ui.progress(this.$(this.$refs.tabsWrapper), true);
+    kendo.ui.progress(kendo.jquery(this.$refs.tabsWrapper), true);
     const ready = () => {
-      this.privateScope.createKendoComponents();
+      this.ps.privateScope.createKendoComponents();
       this.$emitAnkEvent("se-tabs-ready");
-      this.$kendo.ui.progress(this.$(this.$refs.tabsWrapper), false);
+      kendo.ui.progress(kendo.jquery(this.$refs.tabsWrapper), false);
       this._enableReady();
     };
 
@@ -781,11 +746,35 @@ export default {
     } else {
       ready();
     }
-  },
+  }
+  public addSE(seConfig) {
+    const seFormat = this.ps.privateScope.formatSE(seConfig);
+    const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
+    if (index < 0) {
+      const tabData = {
+        tabId: seFormat.initid,
+        headerTemplate,
+        contentTemplate,
+        data: Object.assign({}, seFormat)
+      };
+      if (this.ps.privateScope.canUseLazyTab()) {
+        // Use preloaded smart element
+        this.ps.privateScope.loadLazyTabDocument(tabData);
+      } else {
+        this.tabModel.add(tabData);
+      }
 
-  methods: {
-    addSE(seConfig) {
-      const seFormat = this.privateScope.formatSE(seConfig);
+      this.selectSE(seFormat);
+    } else {
+      this.selectIndex(index);
+    }
+  }
+
+  public setSE(se, position) {
+    if (position === undefined) {
+      this.addSE(se);
+    } else {
+      const seFormat = this.ps.privateScope.formatSE(se);
       const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
       if (index < 0) {
         const tabData = {
@@ -794,89 +783,62 @@ export default {
           contentTemplate,
           data: Object.assign({}, seFormat)
         };
-        if (this.privateScope.canUseLazyTab()) {
-          // Use preloaded smart element
-          this.privateScope.loadLazyTabDocument(tabData);
-        } else {
-          this.tabModel.add(tabData);
-        }
-
+        this.tabModel.replace(position, tabData);
         this.selectSE(seFormat);
       } else {
         this.selectIndex(index);
       }
-    },
-
-    setSE(se, position) {
-      if (position === undefined) {
-        this.addSE(se);
-      } else {
-        const seFormat = this.privateScope.formatSE(se);
-        const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
-        if (index < 0) {
-          const tabData = {
-            tabId: seFormat.initid,
-            headerTemplate,
-            contentTemplate,
-            data: Object.assign({}, seFormat)
-          };
-          this.tabModel.replace(position, tabData);
-          this.selectSE(seFormat);
-        } else {
-          this.selectIndex(index);
-        }
-      }
-    },
-
-    selectIndex(seIndex = 0) {
-      let index = seIndex;
-      if (index < 0) {
-        index = 0;
-      }
-
-      this.$emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
-
-      this.tabstrip.select(index);
-    },
-
-    selectSE(seConfig) {
-      const seFormat = this.privateScope.formatSE(seConfig);
-      let index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
-      if (index < 0) {
-        index = 0;
-      }
-
-      this.$emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
-
-      this.tabstrip.select(index);
-    },
-
-    closeSE(documentId) {
-      this.tabModel.remove(documentId);
-    },
-
-    closeAllSE() {
-      this.tabModel.removeAll();
-    },
-
-    setNewTabConfig(newTabConfiguration) {
-      this.newTabConfig = newTabConfiguration;
-    },
-
-    initWithWelcomeTab(tabConfig = null) {
-      this.welcomeTabConfig = tabConfig || this.newTabConfig;
-      this.privateScope.initTabModel();
-    },
-
-    addCustomTab(tabConfiguration) {
-      if (tabConfiguration.headerTemplate && tabConfiguration.contentTemplate) {
-        this.tabModel.add(
-          Object.assign({}, tabConfiguration, {
-            tabId: Constants.CUSTOM_TAB_ID
-          })
-        );
-        this.selectSE({ initid: Constants.CUSTOM_TAB_ID });
-      }
     }
   }
-};
+
+  public selectIndex(seIndex = 0) {
+    let index = seIndex;
+    if (index < 0) {
+      index = 0;
+    }
+
+    this.$emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
+
+    this.tabstrip.select(index);
+  }
+
+  public selectSE(seConfig) {
+    const seFormat = this.ps.privateScope.formatSE(seConfig);
+    let index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
+    if (index < 0) {
+      index = 0;
+    }
+
+    this.$emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
+
+    this.tabstrip.select(index);
+  }
+
+  public closeSE(documentId) {
+    this.tabModel.remove(documentId);
+  }
+
+  public closeAllSE() {
+    this.tabModel.removeAll();
+  }
+
+  public setNewTabConfig(newTabConfiguration) {
+    this.newTabConfig = newTabConfiguration;
+  }
+
+  public initWithWelcomeTab(tabConfig = null) {
+    this.welcomeTabConfig = tabConfig || this.newTabConfig;
+    this.ps.privateScope.initTabModel();
+  }
+
+  public addCustomTab(tabConfiguration) {
+    if (tabConfiguration.headerTemplate && tabConfiguration.contentTemplate) {
+      this.tabModel.add(
+        Object.assign({}, tabConfiguration, {
+          tabId: Constants.CUSTOM_TAB_ID
+        })
+      );
+      this.selectSE({ initid: Constants.CUSTOM_TAB_ID });
+    }
+  }
+}

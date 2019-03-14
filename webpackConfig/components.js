@@ -2,6 +2,7 @@ const path = require("path");
 const { prod, legacy, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
+  typeScriptLoader,
   addFalseKendoGlobal,
   addDll
 } = require("@anakeen/webpack-conf/parts");
@@ -71,7 +72,8 @@ module.exports = () => {
         )
       }),
       addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
-      vueLoader()
+      vueLoader(),
+      typeScriptLoader()
     ]
   };
   if (process.env.conf === "PROD") {

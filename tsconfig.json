@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "sourceMap": true,
+    "types": ["jquery"],
+    "lib": [
+      "dom",
+      "esnext",
+      "es6"
+    ]
+  },
+  "include": ["./components/**/*.vue",
+  "./components/**/*.ts"],
+  "files": [
+    "./vue-shims.d.ts",
+    "./vue-type-shims.d.ts",
+    "./template-shims.d.ts"
+  ]
+}

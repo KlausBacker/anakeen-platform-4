@@ -1,20 +1,18 @@
+import Vue from "vue";
 import AnkMixins from "../../mixins/AnkVueComponentMixin";
+import { Component, Prop, Mixins } from "vue-property-decorator";
 
-export default {
+@Component({
   name: "ank-logout",
-  mixins: AnkMixins,
-  props: {
-    title: {
-      type: String
-    }
-  },
-
-  methods: {
-    logout() {
+  mixins: [AnkMixins],
+})
+export default class LogoutComponent extends Vue {
+  @Prop({type: String, default: ""}) public title;
+  public logout() {
       let eventName = "beforeLogout";
-      let options = { cancelable: true };
+      let options = { cancelable: true, bubbles: false, detail: false };
       let event;
-      if (typeof window.CustomEvent === "function") {
+      if (typeof CustomEvent === "function") {
         event = new CustomEvent(eventName, options);
       } else {
         event = document.createEvent("CustomEvent");
@@ -46,17 +44,12 @@ export default {
           });
       }
     }
-  },
-
-  computed: {
-    translations() {
+  public get translations() {
       return {
         title: this.$pgettext("Logout", "Logout")
       };
     }
-  },
-
-  mounted() {
+  public mounted() {
     this._enableReady();
   }
 };

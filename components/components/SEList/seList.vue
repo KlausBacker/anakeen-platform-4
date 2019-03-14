@@ -47,4 +47,4 @@
 <style lang="scss">
     @import './seList.scss';
 </style>
-<script src="./seList.component.js"></script>
+<script src="./seList.component.ts" lang="ts"></script>

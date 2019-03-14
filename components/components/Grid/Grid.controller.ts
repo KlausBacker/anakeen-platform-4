@@ -1,3 +1,5 @@
+import Vue from "vue";
+import { Component, Watch, Prop } from "vue-property-decorator";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.window";
@@ -8,60 +10,66 @@ import GridEvent from "./utils/GridEvent";
 
 import GridDataUtils from "./utils/GridDataUtils";
 import GridFilter from "./utils/GridFilter";
-import GridColumnsDialog from "./GridDialog/GridDialog";
+const GridColumnsDialog = () => import("./GridDialog/GridDialog.vue");
 
 import GridError from "./utils/GridError";
 import GridProps from "./utils/GridProps";
 import GridVueUtil from "./utils/GridVueUtil";
 import GridKendoUtils from "./utils/GridKendoUtils";
 const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
+import { IGrid } from "./IGrid";
 
-export default {
+declare var kendo;
+
+@Component({
   name: "ank-se-grid",
   components: {
     "grid-dialog": GridColumnsDialog
   },
-  props: GridProps,
-
-  watch: {
-    urlConfig(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.privateScope.initGrid();
-      }
-    },
-    kendoDataSourceOptions(newVal) {
-      this.dataSource = new this.$kendo.data.DataSource(newVal);
-    },
-    kendoGridOptions(newVal) {
-      if (this.kendoGrid) {
-        this.kendoGrid.setOptions(newVal);
-      } else {
-        this.$once("grid-ready", () => {
-          this.kendoGrid.setOptions(newVal);
-        });
-      }
-    },
-    dataSource(newVal) {
-      if (this.kendoGrid) {
-        this.kendoGrid.setDataSource(newVal);
-      } else {
-        this.$once("grid-ready", () => {
-          this.kendoGrid.setDataSource(newVal);
-        });
-      }
+  props: GridProps
+})
+export default class GridController extends Vue {
+  @Watch("urlConfig")
+  public watchUrlConfig(newVal, oldVal) {
+    if (newVal !== oldVal) {
+      this.ps.privateScope.initGrid();
     }
-  },
+  }
+  @Watch("kendoDataSourceOptions")
+  public watchKendoDataSourceOptions(newVal) {
+    this.dataSource = new kendo.data.DataSource(newVal);
+  }
+  @Watch("kendoGridOptions")
+  public watchKendoGridOptions(newVal) {
+    if (this.kendoGrid) {
+      this.kendoGrid.setOptions(newVal);
+    } else {
+      this.$once("grid-ready", () => {
+        this.kendoGrid.setOptions(newVal);
+      });
+    }
+  }
+  @Watch("dataSource")
+  public watchDataSource(newVal) {
+    if (this.kendoGrid) {
+      this.kendoGrid.setDataSource(newVal);
+    } else {
+      this.$once("grid-ready", () => {
+        this.kendoGrid.setDataSource(newVal);
+      });
+    }
+  }
 
-  created() {
+  public created() {
     this.gridActions = new GridActions(this);
     this.gridFilter = new GridFilter(this);
     this.gridError = new GridError(this);
     this.gridDataUtils = new GridDataUtils(this);
     this.gridVueUtils = new GridVueUtil(this);
     this.gridKendoUtils = new GridKendoUtils(this);
-    this.privateScope = {
+    this.ps.privateScope = {
       getQueryParamsData: (columns, kendoPagerInfo) => {
-        const result = {};
+        const result = {fields: []};
         if (kendoPagerInfo) {
           Object.keys(kendoPagerInfo).forEach(key => {
             if (kendoPagerInfo[key] !== undefined) {
@@ -96,7 +104,7 @@ export default {
                   .filter(f => f.field)
                   .map(f => f.field)
                   .join(",");
-                const queryParams = this.$.param({
+                const queryParams = $.param({
                   fields: requestedFields
                 });
                 this.$http
@@ -164,18 +172,18 @@ export default {
       },
 
       initGrid: (savedColsOpts = null) => {
-        this.$kendo.ui.progress(this.$(this.$refs.gridWrapper), true);
-        return this.privateScope
+        kendo.ui.progress(kendo.jquery(this.$refs.gridWrapper), true);
+        return this.ps.privateScope
           .getGridConfig()
           .then(config => {
             this.gridConfig = config;
             this.gridKendoUtils.initKendoGrid(config, savedColsOpts);
-            this.privateScope.bindGridEvents();
-            this.$kendo.ui.progress(this.$(this.$refs.gridWrapper), false);
+            this.ps.privateScope.bindGridEvents();
+            kendo.ui.progress(kendo.jquery(this.$refs.gridWrapper), false);
           })
           .catch(err => {
             this.gridError.error(err);
-            this.$kendo.ui.progress(this.$(this.$refs.gridWrapper), false);
+            kendo.ui.progress(kendo.jquery(this.$refs.gridWrapper), false);
           });
       },
 
@@ -189,7 +197,7 @@ export default {
             this.gridConfig.toolbar.actionConfigs.forEach(conf => {
               if (conf.action !== "export") {
                 const action = this.gridActions.getToolbarAction(conf.action);
-                this.$(this.$refs.kendoGrid)
+                kendo.jquery(this.$refs.kendoGrid)
                   .find(".k-grid-toolbar")
                   .on("click", `.grid-toolbar-${conf.action}-action`, e =>
                     action.click(e, conf.action)
@@ -210,9 +218,9 @@ export default {
           "GridStateEvent"
         );
         this.$emit("before-save-state", event);
-        if (!event.isDefaultPrevented() && this.persistStateKey) {
+        if (!event.isDefaultPrevented() && GridProps.persistStateKey) {
           localStorage.setItem(
-            this.persistStateKey,
+            GridProps.persistStateKey,
             kendo.stringify({
               columns: this.kendoGrid.getOptions().columns.map(c => ({
                 field: c.field,
@@ -225,96 +233,91 @@ export default {
         }
       }
     };
-  },
-  computed: {
-    isFullSelectionState() {
-      return this.checkable && this.allRowsSelectable;
-    },
-    colsConfig() {
-      if (this.kendoGrid) {
-        return this.kendoGrid.columns;
-      }
-      return [];
-    },
-
-    resolveExportUrl() {
-      const baseUrl = this.urlExport || "";
-      if (baseUrl.indexOf("<collection>") > -1) {
-        if (!this.collection) {
-          console.warn("Grid config URL : You must provide a collection name");
-          return "";
-        }
-      }
-      const collection = this.collection;
-      return baseUrl.replace("<collection>", collection.toString());
-    },
-
-    resolveConfigUrl() {
-      const baseUrl = this.urlConfig || "";
-      if (baseUrl.indexOf("<collection>") > -1) {
-        if (!this.collection) {
-          console.warn("Grid config URL : You must provide a collection name");
-          return "";
-        }
-      }
-      const collection = this.collection;
-      return baseUrl.replace("<collection>", collection.toString());
-    },
-    resolveColumnsUrl() {
-      const baseUrl = COMPLETE_FIELDS_INFO_URL;
-      if (baseUrl.indexOf("<collection>") > -1) {
-        if (!this.collection) {
-          console.warn("Grid config URL : You must provide a collection name");
-          return "";
-        }
-      }
-      const collection = this.collection;
-      return baseUrl.replace("<collection>", collection.toString());
-    },
-    resolveContentUrl() {
-      const baseUrl = this.urlContent;
-      if (baseUrl.indexOf("<collection>") > -1) {
-        if (!this.collection) {
-          console.warn("Grid content URL : You must provide a collection name");
-          return "";
-        }
-      }
-      const collection = this.collection;
-      return baseUrl.replace("<collection>", collection.toString());
-    },
-    translations() {
-      return {
-        emptyMessage: this.$pgettext("SEGrid", "No element on this page"),
-        itemsPerPage: this.$pgettext("SEGrid", "items per page"),
-        contains: this.$pgettext("SEGrid", "Contains"),
-        doesNotContain: this.$pgettext("SEGrid", "Does not contain"),
-        isEmpty: this.$pgettext("SEGrid", "Is empty"),
-        isNotEmpty: this.$pgettext("SEGrid", "Is not empty"),
-        selectOperator: this.$pgettext(
-          "SEGrid",
-          "-- Select another operator --"
-        ),
-        extraOperator: this.$pgettext("SEGrid", "Extra operators..."),
-        columns: this.$pgettext("SEGrid", "Grid Settings"),
-        consult: this.$pgettext("SEGrid", "Consult"),
-        custom: this.$pgettext("SEGrid", "Custom"),
-        edit: this.$pgettext("SEGrid", "Edit"),
-        export: this.$pgettext("SEGrid", "Export as XSLX")
-      };
+  }
+  public get isFullSelectionState() {
+    return GridProps.checkable && this.allRowsSelectable;
+  }
+  public get colsConfig() {
+    if (this.kendoGrid) {
+      return this.kendoGrid.columns;
     }
-  },
-  mounted() {
+    return [];
+  }
+
+  public get resolveExportUrl() {
+    const baseUrl = GridProps.urlExport || "";
+    if (baseUrl.indexOf("<collection>") > -1) {
+      if (!GridProps.collection) {
+        console.warn("Grid config URL : You must provide a collection name");
+        return "";
+      }
+    }
+    const collection = GridProps.collection;
+    return baseUrl.replace("<collection>", collection.toString());
+  }
+
+  public get resolveConfigUrl() {
+    const baseUrl = GridProps.urlConfig || "";
+    if (baseUrl.indexOf("<collection>") > -1) {
+      if (!GridProps.collection) {
+        console.warn("Grid config URL : You must provide a collection name");
+        return "";
+      }
+    }
+    const collection = GridProps.collection;
+    return baseUrl.replace("<collection>", collection.toString());
+  }
+  public get resolveColumnsUrl() {
+    const baseUrl = COMPLETE_FIELDS_INFO_URL;
+    if (baseUrl.indexOf("<collection>") > -1) {
+      if (!GridProps.collection) {
+        console.warn("Grid config URL : You must provide a collection name");
+        return "";
+      }
+    }
+    const collection = GridProps.collection;
+    return baseUrl.replace("<collection>", collection.toString());
+  }
+  public get resolveContentUrl() {
+    const baseUrl = GridProps.urlContent;
+    if (baseUrl.indexOf("<collection>") > -1) {
+      if (!GridProps.collection) {
+        console.warn("Grid content URL : You must provide a collection name");
+        return "";
+      }
+    }
+    const collection = GridProps.collection;
+    return baseUrl.replace("<collection>", collection.toString());
+  }
+  public get translations() {
+    return {
+      emptyMessage: this.$pgettext("SEGrid", "No element on this page"),
+      itemsPerPage: this.$pgettext("SEGrid", "items per page"),
+      contains: this.$pgettext("SEGrid", "Contains"),
+      doesNotContain: this.$pgettext("SEGrid", "Does not contain"),
+      isEmpty: this.$pgettext("SEGrid", "Is empty"),
+      isNotEmpty: this.$pgettext("SEGrid", "Is not empty"),
+      selectOperator: this.$pgettext("SEGrid", "-- Select another operator --"),
+      extraOperator: this.$pgettext("SEGrid", "Extra operators..."),
+      columns: this.$pgettext("SEGrid", "Grid Settings"),
+      consult: this.$pgettext("SEGrid", "Consult"),
+      custom: this.$pgettext("SEGrid", "Custom"),
+      edit: this.$pgettext("SEGrid", "Edit"),
+      export: this.$pgettext("SEGrid", "Export as XSLX")
+    };
+  }
+  public mounted() {
     let saveColumnsOptions = null;
-    if (this.persistStateKey) {
-      saveColumnsOptions = localStorage.getItem(this.persistStateKey);
+    if (GridProps.persistStateKey) {
+      saveColumnsOptions = localStorage.getItem(GridProps.persistStateKey);
       if (saveColumnsOptions) {
         saveColumnsOptions = JSON.parse(saveColumnsOptions);
       }
     }
-    this.privateScope.initGrid(saveColumnsOptions).then(() => {
-      if (this.resizable) {
+    this.ps.privateScope.initGrid(saveColumnsOptions).then(() => {
+      if (GridProps.resizable) {
         this.kendoGrid.resizable.bind("start", e => {
-          const $header = this.$(e.currentTarget.data("th"));
+          const $header = $(e.currentTarget.data("th"));
           if (
             $header.data("id") === "ank-se-grid-actions" ||
             $header.data("id") === "ank-se-grid-checkable"
@@ -324,9 +327,9 @@ export default {
         });
       }
 
-      if (this.reorderable) {
+      if (GridProps.reorderable) {
         this.kendoGrid._draggableInstance.bind("dragstart", e => {
-          const $header = this.$(e.currentTarget);
+          const $header = $(e.currentTarget);
           this.kendoGrid._draggableInstance.options.autoScroll = true;
           if (
             $header.data("id") === "ank-se-grid-actions" ||
@@ -351,76 +354,76 @@ export default {
       }
       this.$emit("grid-ready");
     });
-  },
-  data() {
-    return {
-      allRowsSelectable: false,
-      uncheckRows: {},
-      dataSource: [],
-      kendoGrid: null,
-      gridConfig: null,
-      kendoDataSourceOptions: {
-        serverPaging: this.serverPaging,
-        serverFiltering: this.serverFiltering,
-        serverSorting: this.serverSorting,
-        pageSize:
-          this.pageSizes && this.pageSizes.length ? this.pageSizes[0] : 10,
-        schema: {
-          data: response => response.data.data.smartElements,
-          total: response => response.data.data.requestParameters.pager.total
+  }
+  public ps : IGrid;
+  public gridActions: any;
+  public gridFilter: any;
+  public gridError: any;
+  public gridDataUtils: any;
+  public gridVueUtils: any;
+  public gridKendoUtils: any;
+  public allRowsSelectable: boolean = false;
+  public uncheckRows: object = {};
+  public dataSource: any;
+  public kendoGrid: any = null;
+  public gridConfig: any = null;
+  public kendoDataSourceOptions: object = {
+    serverPaging: GridProps.serverPaging,
+    serverFiltering: GridProps.serverFiltering,
+    serverSorting: GridProps.serverSorting,
+    pageSize: GridProps.pageSizes && GridProps.pageSizes.length ? GridProps.pageSizes[0] : 10,
+    schema: {
+      data: response => response.data.data.smartElements,
+      total: response => response.data.data.requestParameters.pager.total
+    }
+  };
+  public kendoGridOptions: object = {
+    filterable: GridProps.filterable
+      ? {
+          mode: GridProps.filterable === "inline" ? "menu, row" : GridProps.filterable
         }
-      },
-      kendoGridOptions: {
-        filterable: this.filterable
-          ? {
-              mode: this.filterable === "inline" ? "menu, row" : this.filterable
-            }
-          : this.filterable,
-        sortable: this.sortable
-          ? {
-              mode: this.sortable,
-              showIndexes: true
-            }
-          : this.sortable,
-        reorderable: this.reorderable,
-        pageable: this.pageable
-          ? {
-              pageSizes: this.pageSizes,
-              numeric: false,
-              messages: {
-                itemsPerPage: "résultats par page",
-                of: "sur",
-                display: "{0} - {1} sur {2} résultats"
-              }
-            }
-          : this.pageable,
-        resizable: this.resizable,
-        selectable: this.selectable,
-        persistSelection: this.persistSelection
-      }
-    };
-  },
-  methods: {
-    setKendoOptions(options) {
-      this.kendoGridOptions = options;
-    },
-    setData(data) {
-      this.dataSource = new this.$kendo.data.DataSource({
-        data: this.gridDataUtils.parseData(data)
-      });
-    },
-    onSettingsChange(changes) {
-      if (changes) {
-        Object.keys(changes).forEach(colId => {
-          if (this.kendoGrid) {
-            if (changes[colId].display === true) {
-              this.kendoGrid.showColumn(colId);
-            } else if (changes[colId].display === false) {
-              this.kendoGrid.hideColumn(colId);
-            }
+      : GridProps.filterable,
+    sortable: GridProps.sortable
+      ? {
+          mode: GridProps.sortable,
+          showIndexes: true
+        }
+      : GridProps.sortable,
+    reorderable: GridProps.reorderable,
+    pageable: GridProps.pageable
+      ? {
+          pageSizes: GridProps.pageSizes,
+          numeric: false,
+          messages: {
+            itemsPerPage: "résultats par page",
+            of: "sur",
+            display: "{0} - {1} sur {2} résultats"
           }
-        });
-      }
+        }
+      : GridProps.pageable,
+    resizable: GridProps.resizable,
+    selectable: GridProps.selectable,
+    persistSelection: GridProps.persistSelection
+  };
+  public setKendoOptions(options) {
+    this.kendoGridOptions = options;
+  }
+  public setData(data) {
+    this.dataSource = new kendo.data.DataSource({
+      data: this.gridDataUtils.parseData(data)
+    });
+  }
+  public onSettingsChange(changes) {
+    if (changes) {
+      Object.keys(changes).forEach(colId => {
+        if (this.kendoGrid) {
+          if (changes[colId].display === true) {
+            this.kendoGrid.showColumn(colId);
+          } else if (changes[colId].display === false) {
+            this.kendoGrid.hideColumn(colId);
+          }
+        }
+      });
     }
   }
-};
+}

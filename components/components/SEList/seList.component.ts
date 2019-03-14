@@ -1,34 +1,33 @@
+import Vue from "vue";
 import AnkMixins from "../../mixins/AnkVueComponentMixin";
-import SeTemplate from "./seListItem.template.kd";
+import * as SeTemplate from "./seListItem.template.kd";
+import { Component, Mixins, Prop } from "vue-property-decorator";
+import { ISeList } from "./ISeList";
 
-export default {
-  mixins: AnkMixins,
+"./ISeList";
+
+declare var kendo;
+@Component({
   name: "ank-se-list",
-  props: {
-    logoUrl: {
-      type: String,
-      default: "/CORE/Images/anakeen-logo.svg"
-    },
-    smartCollection: {
-      default: ""
-    },
-    label: {
-      default: ""
-    },
-    contentUrl: {
-      type: String,
-      default: "/components/selist/pager/{collection}/pages/{page}"
-    },
-    order: {
-      type: String,
-      default: "title:asc"
-    }
-  },
+  mixins: [AnkMixins]
+})
+export default class SeListComponent extends Vue {
+  @Prop({ type: String, default: "/CORE/Images/anakeen-logo.svg" })
+  public logoUrl;
+  @Prop({ type: String, default: "" }) public smartCollection;
+  @Prop({ type: String, default: "" }) public label;
+  @Prop({
+    type: String,
+    default: "/components/selist/pager/{collection}/pages/{page}"
+  })
+  public contentUrl;
+  public ps: ISeList;
+  @Prop({ type: String, default: "title:asc" }) public order;
 
-  created() {
-    this.privateScope = {
+  public created() {
+    this.ps.privateScope = {
       replaceTopPagerButton: () => {
-        const $pager = this.$(this.$refs.summaryPager);
+        const $pager = kendo.jquery(this.$refs.summaryPager);
         const buttons = $pager.find(
           ".k-pager-nav:not(.k-pager-last):not(.k-pager-first)"
         );
@@ -57,23 +56,24 @@ export default {
 
       initKendo: () => {
         const _this = this;
-        this.dataSource = new this.$kendo.data.DataSource({
-          error: this.privateScope.propageKendoDataSourceEvent("error"),
-          requestStart: this.privateScope.propageKendoDataSourceEvent(
+        this.dataSource = new kendo.data.DataSource({
+          error: this.ps.privateScope.propageKendoDataSourceEvent("error"),
+          requestStart: this.ps.privateScope.propageKendoDataSourceEvent(
             "request",
             "before"
           ),
-          requestEnd: this.privateScope.propageKendoDataSourceEvent(
+          requestEnd: this.ps.privateScope.propageKendoDataSourceEvent(
             "request",
             "after"
           ),
-          change: this.privateScope.propageKendoDataSourceEvent("change"),
+          change: this.ps.privateScope.propageKendoDataSourceEvent("change"),
           transport: {
             read: options => {
               if (options.data.collection) {
                 const params = {
                   slice: options.data.take,
-                  orderBy: this.orderBy
+                  orderBy: this.orderBy,
+                  filter: ""
                 };
                 if (this.filterInput) {
                   params.filter = this.filterInput;
@@ -82,7 +82,7 @@ export default {
                 const request = this.contentUrl
                   .replace("{collection}", options.data.collection)
                   .replace("{page}", options.data.page);
-                _this.privateScope
+                _this.ps.privateScope
                   .sendGetRequest(request, {
                     params
                   })
@@ -118,47 +118,48 @@ export default {
             data: response => response.data.data.documents
           }
         });
-        this.$(this.$refs.listView).kendoListView({
+        kendo.jquery(this.$refs.listView).kendoListView({
           dataSource: this.dataSource,
-          template: this.$kendo.template(SeTemplate),
+          template: kendo.template(SeTemplate),
           selectable: "single",
-          change: this.privateScope.onSelectSe,
+          change: this.ps.privateScope.onSelectSe,
           scrollable: true
         });
 
-        this.$(this.$refs.pager).kendoPager({
+        kendo.jquery(this.$refs.pager).kendoPager({
           dataSource: this.dataSource,
           numeric: false,
           input: true,
           info: false,
           pageSizes: false,
-          change: this.privateScope.onPagerChange,
+          change: this.ps.privateScope.onPagerChange,
           messages: {
             page: "",
             of: "/ {0}",
             empty: this.translations.noDataPagerLabel
           }
         });
-        this.$(this.$refs.summaryPager).kendoPager({
+        kendo.jquery(this.$refs.summaryPager).kendoPager({
           dataSource: this.dataSource,
           numeric: false,
           input: false,
           info: true,
-          change: this.privateScope.onPagerChange,
+          change: this.ps.privateScope.onPagerChange,
           messages: {
             display: `{0} - {1} ${this.$pgettext("SEList", "of")} {2}`,
             empty: this.translations.noDataPagerLabel
           }
         });
 
-        this.$(this.$refs.pagerCounter)
+        kendo
+          .jquery(this.$refs.pagerCounter)
           .kendoDropDownList({
             dataSource: this.pageSizeOptions,
             dataTextField: "text",
             dataValueField: "value",
             animation: false,
             index: 1,
-            change: this.privateScope.onSelectPageSize,
+            change: this.ps.privateScope.onSelectPageSize,
             headerTemplate: `<li class="dropdown-header">${
               this.translations.itemsPerPageLabel
             }</li>`,
@@ -184,7 +185,12 @@ export default {
             ]
           }
         );
-        if (this.$emitAnkEvent("before-se-list-page-change", customEvent)) {
+        if (
+          this.$emitAnkEvent(
+            "before-se-list-page-change",
+            customEvent
+          )
+        ) {
           this.dataSource.page(customEvent.detail[0].newPage);
           this.refreshList()
             .then(() => {
@@ -192,7 +198,10 @@ export default {
                 "after-se-list-page-change",
                 customEvent.detail
               );
-              this.$emitAnkEvent("after-se-list-page-change", customAfterEvent);
+              this.$emitAnkEvent(
+                "after-se-list-page-change",
+                customAfterEvent
+              );
             })
             .catch(err => {
               console.error(err);
@@ -201,26 +210,26 @@ export default {
       },
 
       sendGetRequest: (url, conf) => {
-        const element = this.$(this.$refs.wrapper);
-        this.$kendo.ui.progress(element, true);
+        const element = kendo.jquery(this.$refs.wrapper);
+        kendo.ui.progress(element, true);
         return new Promise((resolve, reject) => {
           this.$http
             .get(url, conf)
             .then(response => {
-              this.$kendo.ui.progress(element, false);
+              kendo.ui.progress(element, false);
               resolve(response);
             })
             .catch(error => {
-              this.$kendo.ui.progress(element, false);
+              kendo.ui.progress(element, false);
               reject(error);
             });
         });
       },
 
       onSelectPageSize: e => {
-        const counter = this.$(this.$refs.pagerCounter).data(
-          "kendoDropDownList"
-        );
+        const counter = kendo
+          .jquery(this.$refs.pagerCounter)
+          .data("kendoDropDownList");
         const newPageSize = counter.dataItem(e.item).value;
         const customEvent = this.$createComponentEvent(
           "before-se-list-pagesize-change",
@@ -235,7 +244,12 @@ export default {
           },
           e
         );
-        if (this.$emitAnkEvent("before-se-list-pagesize-change", customEvent)) {
+        if (
+          this.$emitAnkEvent(
+            "before-se-list-pagesize-change",
+            customEvent
+          )
+        ) {
           this.dataSource.pageSize(customEvent.detail[0].newPageSize);
           this.refreshList()
             .then(() => {
@@ -250,7 +264,10 @@ export default {
                   ]
                 }
               );
-              this.$emitAnkEvent("after-se-list-pagesize-change", customEvent);
+              this.$emitAnkEvent(
+                "after-se-list-pagesize-change",
+                customEvent
+              );
             })
             .catch(err => {
               console.error(err);
@@ -260,22 +277,23 @@ export default {
 
       onSelectSe: event => {
         const data = this.dataSource.view();
-        const listView = this.$(this.$refs.listView).data("kendoListView");
-        const selected = this.$.map(
+        const listView = kendo
+          .jquery(this.$refs.listView)
+          .data("kendoListView");
+        const selected = $.map(
           listView.select(),
-          item => data[this.$(item).index()]
+          item => data[$(item).index()]
         );
         this._selectSe(event, selected[0]);
       }
     };
-  },
-
-  mounted() {
-    this.$kendo.ui.progress(this.$(this.$refs.wrapper), true);
+  }
+  public mounted() {
+    kendo.ui.progress(kendo.jquery(this.$refs.wrapper), true);
     const ready = () => {
-      this.privateScope.initKendo();
-      this.privateScope.replaceTopPagerButton();
-      this.$kendo.ui.progress(this.$(this.$refs.wrapper), false);
+      this.ps.privateScope.initKendo();
+      this.ps.privateScope.replaceTopPagerButton();
+      kendo.ui.progress(kendo.jquery(this.$refs.wrapper), false);
 
       if (this.smartCollection) {
         this.setCollection({
@@ -294,145 +312,135 @@ export default {
     } else {
       ready();
     }
-  },
+  }
 
-  data() {
-    return {
-      collection: null,
-      dataSource: null,
-      filterInput: "",
-      orderBy: this.order,
-      pageSizeOptions: [
-        {
-          text: "5",
-          value: 5
-        },
-        {
-          text: "10",
-          value: 10
-        },
-        {
-          text: "25",
-          value: 25
-        },
-        {
-          text: "50",
-          value: 50
-        },
-        {
-          text: "100",
-          value: 100
-        }
-      ]
-    };
-  },
-
-  computed: {
-    translations() {
-      const searchTranslated = this.$pgettext(
-        "SEList",
-        "Search in : %{collection}"
-      );
-      const noDataTranslated = this.$pgettext(
-        "SEList",
-        "No %{collection} to display"
-      );
-      return {
-        searchPlaceholder: this.$gettextInterpolate(searchTranslated, {
-          collection: this.collectionLabel.toUpperCase()
-        }),
-        itemsPerPageLabel: this.$pgettext("SEList", "Items per page"),
-        noDataPagerLabel: this.$gettextInterpolate(noDataTranslated, {
-          collection: this.collectionLabel
-        })
-      };
+  public collection: any = null;
+  public dataSource: any = null;
+  public filterInput: string = "";
+  public orderBy: string = this.order;
+  public pageSizeOptions: object = [
+    {
+      text: "5",
+      value: 5
     },
-
-    collectionLabel() {
-      if (this.collection && this.collection.title) {
-        return this.collection.title;
-      } else if (this.label) {
-        return this.label;
-      } else {
-        return "";
-      }
+    {
+      text: "10",
+      value: 10
+    },
+    {
+      text: "25",
+      value: 25
+    },
+    {
+      text: "50",
+      value: 50
+    },
+    {
+      text: "100",
+      value: 100
     }
-  },
+  ];
 
-  methods: {
-    _onFilterInput(event) {
-      const customEvent = this.$createComponentEvent(
-        "se-list-filter-input",
-        {
-          detail: [{ filterInput: this.filterInput }]
-        },
-        event
-      );
-      this.$emitAnkEvent("se-list-filter-input", customEvent);
-      this.filterInput = customEvent.detail[0].filterInput;
-    },
-
-    _selectSe(event, se) {
-      const seProperties = Object.assign({}, se.properties);
-      const customEvent = this.$createComponentEvent(
-        "se-selected",
-        { detail: [seProperties] },
-        event
-      );
-      this.$emitAnkEvent("se-selected", customEvent);
-    },
-
-    filterList(filterValue) {
-      this.filterInput = filterValue;
-      if (filterValue) {
-        return this.refreshList()
-          .then()
-          .catch(err => {
-            console.error(err);
-          });
-      } else {
-        return this.clearListFilter();
-      }
-    },
-
-    clearListFilter() {
-      this.filterInput = "";
-      return this.refreshList()
-        .then()
-        .catch(err => {
-          console.error(err);
-        });
-    },
-
-    setCollection(c, opts = null) {
-      this.collection = c;
-      if (opts && opts.order) {
-        this.orderBy = opts.order;
-      } else {
-        this.orderBy = "title:asc";
-      }
-
-      this.dataSource.page(1);
-      return this.refreshList()
-        .then()
-        .catch(err => {
-          console.error(err);
-        });
-    },
-
-    refreshList() {
-      return new Promise((resolve, reject) => {
-        if (this.collection && this.dataSource) {
-          this.dataSource
-            .read({
-              collection: this.collection.initid || this.collection.name
-            })
-            .then(resolve)
-            .catch(reject);
-        } else {
-          reject();
-        }
-      });
+  public get translations() {
+    const searchTranslated = this.$pgettext(
+      "SEList",
+      "Search in : %{collection}"
+    );
+    const noDataTranslated = this.$pgettext(
+      "SEList",
+      "No %{collection} to display"
+    );
+    return {
+      searchPlaceholder: this.$gettextInterpolate(searchTranslated, {
+        collection: this.collectionLabel.toUpperCase()
+      }),
+      itemsPerPageLabel: this.$pgettext("SEList", "Items per page"),
+      noDataPagerLabel: this.$gettextInterpolate(noDataTranslated, {
+        collection: this.collectionLabel
+      })
+    };
+  }
+  public get collectionLabel() {
+    if (this.collection && this.collection.title) {
+      return this.collection.title;
+    } else if (this.label) {
+      return this.label;
+    } else {
+      return "";
     }
   }
-};
+
+  public _onFilterInput(event) {
+    const customEvent = this.$createComponentEvent(
+      "se-list-filter-input",
+      {
+        detail: [{ filterInput: this.filterInput }]
+      },
+      event
+    );
+    this.$emitAnkEvent("se-list-filter-input", customEvent);
+    this.filterInput = customEvent.detail[0].filterInput;
+  }
+
+  public _selectSe(event, se) {
+    const seProperties = Object.assign({}, se.properties);
+    const customEvent = this.$createComponentEvent(
+      "se-selected",
+      { detail: [seProperties] },
+      event
+    );
+    this.$emitAnkEvent("se-selected", customEvent);
+  }
+  public filterList(filterValue) {
+    this.filterInput = filterValue;
+    if (filterValue) {
+      return this.refreshList()
+        .then()
+        .catch(err => {
+          console.error(err);
+        });
+    } else {
+      return this.clearListFilter();
+    }
+  }
+
+  public clearListFilter() {
+    this.filterInput = "";
+    return this.refreshList()
+      .then()
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  public setCollection(c, opts = null) {
+    this.collection = c;
+    if (opts && opts.order) {
+      this.orderBy = opts.order;
+    } else {
+      this.orderBy = "title:asc";
+    }
+
+    this.dataSource.page(1);
+    return this.refreshList()
+      .then()
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  public refreshList() {
+    return new Promise((resolve, reject) => {
+      if (this.collection && this.dataSource) {
+        this.dataSource
+          .read({
+            collection: this.collection.initid || this.collection.name
+          })
+          .then(resolve)
+          .catch(reject);
+      } else {
+        reject();
+      }
+    });
+  }
+}

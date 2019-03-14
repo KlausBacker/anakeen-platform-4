@@ -1,6 +1,5 @@
 import Authent from "./Authent.vue";
-import installVueComponent from "../../utils/installVueComponent";
 
-Authent.install = installVueComponent(Authent);
-
-export default Authent;
+export default function install(Vue) {
+  Vue.component("ank-authent", Authent);
+}

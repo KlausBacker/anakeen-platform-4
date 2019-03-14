@@ -1,6 +1,5 @@
 import Identity from "./Identity.vue";
-import installVueComponent from "../../utils/installVueComponent";
 
-Identity.install = installVueComponent(Identity);
-
-export default Identity;
+export default function install(Vue) {
+  Vue.component("ank-identity", Identity);
+}

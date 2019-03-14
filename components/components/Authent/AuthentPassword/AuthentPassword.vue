@@ -16,7 +16,7 @@
             </div>
     </div>
 </template>
-<script src="./AuthentPassword.component.js"></script>
+<script src="./AuthentPassword.component.ts" lang="ts"></script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
     @import "./AuthentPassword.scss";

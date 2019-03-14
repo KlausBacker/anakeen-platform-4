@@ -33,9 +33,6 @@ import AuthentPassword from "./Authent/AuthentPassword";
 import SmartElement from "./SmartElement";
 import SEList from "./SEList";
 import SETabs from "./SETabs";
-import Notifier from "./Notifier";
-import DockTab from "./Dock/DockTab";
-import Dock from "./Dock";
 import SEGrid from "./Grid";
 
 export const AnkLoading = Loading;
@@ -46,7 +43,4 @@ export const AnkAuthentPassword = AuthentPassword;
 export const AnkSmartElement = SmartElement;
 export const AnkSEList = SEList;
 export const AnkSETabs = SETabs;
-export const AnkNotifier = Notifier;
-export const AnkDockTab = DockTab;
-export const AnkDock = Dock;
 export const AnkSEGrid = SEGrid;

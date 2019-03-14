@@ -1,6 +1,5 @@
 import List from "./seList.vue";
-import installVueComponent from "../../utils/installVueComponent";
 
-List.install = installVueComponent(List);
-
-export default List;
+export default function install(Vue) {
+  Vue.component("ank-se-list", List);
+}

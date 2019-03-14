@@ -6,4 +6,4 @@
   @import './Logout.scss';
 </style>
 
-<script src="./Logout.component.js"></script>
+<script src="./Logout.component.ts" lang="ts"></script>

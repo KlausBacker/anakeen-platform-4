@@ -25,4 +25,4 @@
 <!-- Global CSS -->
 <style lang="scss">
 </style>
-<script src="./seTabs.component.js"></script>
+<script src="./seTabs.component.ts" lang="ts"></script>

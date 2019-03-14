@@ -75,4 +75,4 @@
     @import './Identity.scss';
 </style>
 
-<script src="./Identity.component.js"></script>
+<script src="./Identity.component.ts" lang="ts"></script>
