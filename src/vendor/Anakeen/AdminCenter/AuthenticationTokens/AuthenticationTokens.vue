@@ -7,7 +7,7 @@
       localStorageKey="token-manager-splitter"
     >
       <template slot="left">
-        <div>
+        <div class="token-main">
           <header>
             <kendo-button class="button-filtering k-outline k-primary" @click="flipFiltering">
               <i class="fa " :class="{ 'fa-check': showExpire }"/>
@@ -19,7 +19,10 @@
               <span>Create token</span></kendo-button>
           </header>
 
-          <div ref="tokenGrid" class="token-grid"></div>
+          <div class="token-grid-box">
+            <div ref="tokenGrid" class="token-grid"></div>
+          </div>
+
         </div>
       </template>
       <template slot="right">

@@ -3,18 +3,20 @@
         <ank-splitter ref="vaultSplitter" class="vault-manager-splitter" :panes="panes"
                       localStorageKey="vault-manager-splitter">
             <template slot="left">
-                <div>
+                <div class="vault-main-box">
                     <header>
-                <kendo-button class="k-primary" @click="onCreateVault">
-                    <i class="fa fa-plus"></i>
-                    <span>Create</span>
-                </kendo-button>
+                        <kendo-button class="k-primary" @click="onCreateVault">
+                            <i class="fa fa-plus"></i>
+                            <span>Create</span>
+                        </kendo-button>
                     </header>
-                <div ref="vaultManagerGrid" class="vault-manager-grid"></div>
+                    <div class="vault-grid-box">
+                        <div ref="vaultManagerGrid" class="vault-manager-grid"></div>
+                    </div>
                 </div>
             </template>
             <template slot="right">
-                <ank-vault-info :info="info" class="vault-info"  @vault-updated="refreshVaultGrid"></ank-vault-info>
+                <ank-vault-info :info="info" class="vault-info" @vault-updated="refreshVaultGrid"></ank-vault-info>
             </template>
         </ank-splitter>
         <div ref="createVaultForm" class="vault-manager-form" style="display: none">
@@ -34,9 +36,10 @@
             <div class="vault-buttons">
                 <kendo-button
                         class="k-primary"
-                        @click="requestCreateIt" >Create it</kendo-button >
+                        @click="requestCreateIt">Create it
+                </kendo-button>
 
-                <kendo-button  @click="closeWindow" >Cancel</kendo-button >
+                <kendo-button @click="closeWindow">Cancel</kendo-button>
             </div>
         </div>
 
@@ -44,7 +47,7 @@
             <p>
                 <b>{{ requestMessage }}</b>
             </p>
-            <kendo-button  @click="closeWindow" >Close</kendo-button >
+            <kendo-button @click="closeWindow">Close</kendo-button>
 
         </div>
     </div>
