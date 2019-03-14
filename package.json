@@ -46,7 +46,8 @@
     "src/public/Anakeen/assets/**/*",
     "src/public/Anakeen/ankDll/**/*",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "yarn.lock"
   ],
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
