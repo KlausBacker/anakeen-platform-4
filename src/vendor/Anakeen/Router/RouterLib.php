@@ -74,7 +74,11 @@ class RouterLib
         }
         $data = [];
         foreach (["routes", "accesses", "middlewares", "parameters"] as $topNode) {
-            $data[$topNode] = self::normalizeData($simpleData[0], $topNode);
+            try {
+                $data[$topNode] = self::normalizeData($simpleData[0], $topNode);
+            } catch (\Anakeen\Router\Exception $e) {
+                throw new \Anakeen\Router\Exception($e->getMessage() . " in \"$configFile\" file");
+            }
         }
         return $data;
     }
@@ -101,7 +105,12 @@ class RouterLib
                     }
                 }
                 $key = ($ns) ? ($ns . "::" . $name) : $name;
-                $rawData[$key]["tagName"]=$subNode->getName();
+
+                if ($name && isset($rawData[$key]["tagName"])) {
+                    throw new \Anakeen\Router\Exception("ROUTER0108", $key);
+                }
+                $rawData[$key]["tagName"] = $subNode->getName();
+
 
                 if ($subTagName === "route-access") {
                     $rName = (string)$subNode->attributes()["ref"];
@@ -167,7 +176,7 @@ class RouterLib
 
     protected static function normalizeConfig(array $config, $configFileName)
     {
-        $rootDir=ContextManager::getRootDirectory();
+        $rootDir = ContextManager::getRootDirectory();
         if (!empty($config["routes"])) {
             $routes = $config["routes"];
             $nr = [];

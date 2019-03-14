@@ -39,9 +39,11 @@ class RouterConfig
         $this->parameters = isset($data->parameters) ? $data->parameters : [];
 
 
+        static::sortOverrideAtTheEnd($this->routes);
         $this->uniqueName($this->routes);
         static::sortRoutesByPriority($this->routes);
 
+        static::sortOverrideAtTheEnd($this->middlewares);
         $this->uniqueName($this->middlewares);
         static::sortMiddleByPriority($this->middlewares);
 
@@ -94,6 +96,39 @@ class RouterConfig
         }
     }
 
+
+    protected static function sortOverrideAtTheEnd(array &$routes)
+    {
+        uasort($routes, function ($a, $b) {
+
+            /**
+             * @var RouterInfo $a
+             * @var RouterInfo $b
+             */
+            if (!empty($a->override) && empty($b->override)) {
+                return 1;
+            }
+            if (!empty($b->override) && empty($a->override)) {
+                return -1;
+            }
+            if (isset($a->priority) && isset($b->priority)) {
+                if ($a->priority > $b->priority) {
+                    return 1;
+                }
+                if ($a->priority < $b->priority) {
+                    return -1;
+                }
+            }
+            if (isset($a->priority) && !isset($b->priority)) {
+                return 1;
+            }
+            if (!isset($a->priority) && isset($b->priority)) {
+                return -1;
+            }
+
+            return 0;
+        });
+    }
 
     protected static function sortRoutesByPriority(array &$routes)
     {
