@@ -2,9 +2,6 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.datetimepicker";
-import "@progress/kendo-ui/js/kendo.grid";
-import "@progress/kendo-ui/js/kendo.splitter";
-import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
 import axios from "axios";
 import {
