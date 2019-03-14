@@ -2512,7 +2512,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         $err = '';
         if (\Anakeen\Core\Internal\Autoloader::classExists('Anakeen\TransformationEngine\Manager')
-            && ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE") === "yes") {
+            && \Anakeen\TransformationEngine\Manager::isActivated()) {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
                 $vidout = 0;
