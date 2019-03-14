@@ -14,6 +14,9 @@ export default class SplitterComponent extends Vue {
 
   public splitterEmpty: boolean = true;
   public mounted() {
+    if (this.$refs.ankSplitter) {
+      this.$refs.ankSplitter.kendoWidget().setOptions(this.$attrs);
+    }
     if (this.localStorageKey && window.localStorage) {
       const savedSize = window.localStorage.getItem(this.localStorageKey);
       if (savedSize) {

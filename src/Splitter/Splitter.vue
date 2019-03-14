@@ -1,5 +1,5 @@
 <template>
-  <kendo-splitter ref="ankSplitter" class="splitter-wrapper" v-bind="$attrs">
+  <kendo-splitter ref="ankSplitter" class="ank-splitter splitter-wrapper">
     <slot name="left"></slot>
     <div class="splitter-wrapper-right-content">
       <div class="splitter-empty" v-if="splitterEmpty">
