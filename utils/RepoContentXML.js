@@ -96,10 +96,16 @@ class RepoContentXML extends XMLLoader {
     await xmlLoader.loadFromString(xmlStr);
 
     const rootNode = xmlLoader.data.module;
+    /* Add src attribute... */
+    rootNode.$.src = path.basename(file);
     /* Remove xmlns declaration and unused child nodes */
     delete rootNode.$.xmlns;
     for (let prop of Object.keys(rootNode)) {
-      if (!["$", "description", "requires"].includes(prop)) {
+      if (
+        !["$", "description", "requires", "replaces", "changelog"].includes(
+          prop
+        )
+      ) {
         delete rootNode[prop];
       }
     }
