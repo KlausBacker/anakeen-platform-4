@@ -26,7 +26,8 @@
   "files": [
     "/components/**/*",
     "/components/README.md",
-    "/src/**/*"
+    "/src/**/*",
+    "yarn.lock"
   ],
   "repository": {
     "type": "git",
