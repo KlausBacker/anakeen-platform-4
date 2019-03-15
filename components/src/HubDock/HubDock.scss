@@ -1,8 +1,8 @@
 $tab-height: 3rem;
 
-$background-color: #FFFFFF;
+$background-color: #ffffff;
 $background-color-button: #646464;
-$background-color-button-hovered: #F5F5F5;
+$background-color-button-hovered: #f5f5f5;
 $background-color-tab: #f3f3f3;
 $button-icon-color: #ffffff;
 $border-color: #a9a9a9;
@@ -11,13 +11,11 @@ $selected-color: rgba(21, 126, 251, 0.08);
 $selected-header-footer-color: #777777;
 $green-selected: #8ae234;
 
-
 .hub-dock-component {
   position: relative;
   background-color: $background-color;
   display: flex;
   //overflow: hidden;
-
 
   .hub-dock-content-wrapper {
     display: flex;
@@ -25,11 +23,10 @@ $green-selected: #8ae234;
     overflow: hidden;
   }
 
-
   .hub-dock-transition-wrapper {
     display: flex;
     flex: 1;
-    transition: width .2s ease, height .2s ease;
+    transition: width 0.2s ease, height 0.2s ease;
   }
 
   .hub-dock-header,
@@ -52,7 +49,6 @@ $green-selected: #8ae234;
   // Set flex direction form the position of the dock
   &.hub-dock--left,
   &.hub-dock--right {
-
     &.hub-dock--absolute {
       .hub-dock-content-wrapper {
         z-index: 1000;
@@ -73,7 +69,9 @@ $green-selected: #8ae234;
           min-height: 5rem;
         }
 
-        .hub-dock-center, .hub-dock-header, .hub-dock-footer {
+        .hub-dock-center,
+        .hub-dock-header,
+        .hub-dock-footer {
           flex-direction: inherit;
         }
       }
@@ -88,7 +86,6 @@ $green-selected: #8ae234;
 
   // Display border in function
   &.hub-dock--left {
-
     .hub-dock-section + .hub-dock-section {
       border-top: 1px solid rgba(230, 230, 230, 0.5);
     }
@@ -102,7 +99,6 @@ $green-selected: #8ae234;
   }
 
   &.hub-dock--right {
-
     &.hub-dock--absolute {
       .hub-dock-content-wrapper {
         right: 0;
@@ -122,13 +118,12 @@ $green-selected: #8ae234;
     .hub-dock-entry-component {
       border-right: 3px solid transparent;
       &.entry-selected {
-        border-right:  3px solid $green-selected;
+        border-right: 3px solid $green-selected;
       }
     }
   }
 
   &.hub-dock--top {
-
     .hub-dock-section + .hub-dock-section {
       border-left: 1px solid rgba(230, 230, 230, 0.5);
     }
@@ -136,13 +131,12 @@ $green-selected: #8ae234;
     .hub-dock-entry-component {
       border-top: 3px solid transparent;
       &.entry-selected {
-        border-top:  3px solid $green-selected;
+        border-top: 3px solid $green-selected;
       }
     }
   }
 
   &.hub-dock--bottom {
-
     .hub-dock-section + .hub-dock-section {
       border-left: 1px solid rgba(230, 230, 230, 0.5);
     }
@@ -150,7 +144,7 @@ $green-selected: #8ae234;
     .hub-dock-entry-component {
       border-bottom: 3px solid transparent;
       &.entry-selected {
-        border-bottom:  3px solid $green-selected;
+        border-bottom: 3px solid $green-selected;
       }
     }
   }
@@ -162,7 +156,7 @@ $green-selected: #8ae234;
     .hub-dock-transition-wrapper {
       flex-direction: row;
       .hub-dock-entry-component {
-        transition: width .2s ease;
+        transition: width 0.2s ease;
         min-width: 5rem;
       }
 
@@ -173,7 +167,7 @@ $green-selected: #8ae234;
   }
 
   .hub-dock-collapse-button {
-    color: #BEBEBE;
+    color: #bebebe;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -192,7 +186,7 @@ $green-selected: #8ae234;
       min-width: 5rem;
       &.entry-selected {
         background-color: $selected-color;
-        color: #157EFB;
+        color: #157efb;
         font-weight: bold;
       }
     }

@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import Navigo from 'navigo';
+import Navigo from "navigo";
 import { Store } from "vuex";
 
 interface IVueAxiosInstance extends AxiosInstance {

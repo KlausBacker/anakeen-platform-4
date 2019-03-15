@@ -1,9 +1,9 @@
 // mixin.js
 const urlJoin = require("url-join");
+import Navigo from "navigo";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { IHubStationEntryOptions } from "../../HubStation/HubStationsTypes";
 import { HubElementDisplayTypes } from "../HubElementTypes";
-import Navigo from "navigo";
 
 // You can declare a mixin as the same style as components.
 @Component({
@@ -38,22 +38,22 @@ export default class HubElementMixin extends Vue {
   public registerRoute(route, routeCallback) {
     const router = this.getRouter();
     if (router !== null) {
-      router.on(route, routeCallback)
+      router.on(route, routeCallback);
     }
   }
 
   public registerRoutes(routesHandler) {
     const router = this.getRouter();
     if (router !== null) {
-      router.on(routesHandler)
+      router.on(routesHandler);
     }
   }
 
   public navigate(to) {
-      const router = this.getRouter();
-      if (router !== null) {
-          router.navigate(to, true);
-      }
+    const router = this.getRouter();
+    if (router !== null) {
+      router.navigate(to, true);
+    }
   }
 
   protected getRouter(): Navigo | null {

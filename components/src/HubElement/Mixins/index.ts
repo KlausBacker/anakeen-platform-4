@@ -1,4 +1,4 @@
-import {VueClass} from "vue-class-component/lib/declarations";
+import { VueClass } from "vue-class-component/lib/declarations";
 import { Mixins } from "vue-property-decorator";
 import ElementMixin from "./HubElementMixin";
 
