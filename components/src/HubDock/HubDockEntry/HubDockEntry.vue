@@ -6,10 +6,10 @@
       'entry-selectable': selectable
     }"
     :style="entryStyle"
+    :data-entry-name="name"
     @click="selectEntry"
   >
-    <slot v-if="isCollapsed" name="collapsedContent"></slot>
-    <slot v-else name="expandedContent"></slot>
+    <slot></slot>
   </div>
 </template>
 <!-- CSS to this component only -->

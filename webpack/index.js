@@ -91,9 +91,9 @@ module.exports = () => {
       {
         resolve: {
           alias: {
-            "@anakeen/hub-components": path.resolve(
+            "@anakeen/hub-components/lib/HubStation": path.resolve(
               BASE_DIR,
-              "components/src/index.ts"
+              "components/src/HubStation/HubStation.vue"
             )
           }
         }

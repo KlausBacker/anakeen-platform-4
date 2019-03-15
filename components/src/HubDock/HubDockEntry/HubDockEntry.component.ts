@@ -16,7 +16,7 @@ export default class HubDockEntry extends Vue {
   @Prop({ default: true }) public selectable!: boolean;
   @Prop({ type: [String, Object] }) public route!: string | object;
 
-  public entrySelected: boolean = false;
+  public entrySelected: boolean = this.selected;
 
   @Inject() public hubDock!: any;
 
@@ -51,9 +51,6 @@ export default class HubDockEntry extends Vue {
     if (this.selectable) {
       this.entrySelected = true;
       this.$emit(dockEntryEvents.selected, this.entryConfiguration);
-      if (this.route && this.$router) {
-        this.$router.push(this.route);
-      }
     }
   }
 }

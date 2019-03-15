@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
-import { Route, VueRouter } from "vue-router/types/router";
+import Navigo from 'navigo';
+import { Store } from "vuex";
 
 interface IVueAxiosInstance extends AxiosInstance {
   errorEvents: any;
@@ -8,8 +9,8 @@ interface IVueAxiosInstance extends AxiosInstance {
 declare module "vue/types/vue" {
   // tslint:disable-next-line:interface-name
   interface Vue {
-    $router: VueRouter;
-    $route: Route;
+    $ankHubRouter: Navigo;
     $http: IVueAxiosInstance;
+    $store: Store<any>;
   }
 }

@@ -1,18 +1,21 @@
 const path = require("path");
 const { VueLoaderPlugin } = require("vue-loader");
-
+const NodeExternals = require("webpack-node-externals");
 const BASE_PATH = path.resolve(__dirname, "..");
 const OUTPUT_PATH = {
   lib: path.resolve(BASE_PATH, "lib")
 };
 
-module.exports = {
+module.exports = config => ({
   output: {
+    libraryTarget: "commonjs2",
     path: OUTPUT_PATH.lib
   },
   resolve: {
     extensions: [".ts", ".js"]
   },
+  mode: "development",
+  devtool: "inline-source-map",
   module: {
     rules: [
       { test: /\.vue$/, use: "vue-loader" },
@@ -30,13 +33,6 @@ module.exports = {
       }
     ]
   },
-  externals: [
-    // include only relative assets
-    function(context, request, callback) {
-      if (!request.match(/(?:^|!)(?:\.|\.\.)?\//))
-        return callback(null, `commonjs ${request}`);
-      callback();
-    }
-  ],
+  externals: [NodeExternals({ importType: "commonjs" })],
   plugins: [new VueLoaderPlugin()]
-};
+});

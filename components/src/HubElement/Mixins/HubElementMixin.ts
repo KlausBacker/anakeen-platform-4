@@ -1,11 +1,14 @@
 // mixin.js
-const path = require("path");
+const urlJoin = require("url-join");
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { IHubStationEntryOptions } from "../../HubStation/HubStationsTypes";
 import { HubElementDisplayTypes } from "../HubElementTypes";
+import Navigo from "navigo";
 
 // You can declare a mixin as the same style as components.
-@Component
+@Component({
+  inject: ["$_hubStation"]
+})
 export default class HubElementMixin extends Vue {
   @Prop() public entryOptions!: IHubStationEntryOptions;
   @Prop() public displayType!: HubElementDisplayTypes;
@@ -24,6 +27,39 @@ export default class HubElementMixin extends Vue {
   }
 
   public resolveHubSubPath(subPath) {
-    return path.join(this.parentPath, subPath);
+    return urlJoin(this.parentPath, subPath);
+  }
+
+  public hubNotify(notification = {}) {
+    // @ts-ignore
+    this.$_hubStation.$emit("hubNotify", notification);
+  }
+
+  public registerRoute(route, routeCallback) {
+    const router = this.getRouter();
+    if (router !== null) {
+      router.on(route, routeCallback)
+    }
+  }
+
+  public registerRoutes(routesHandler) {
+    const router = this.getRouter();
+    if (router !== null) {
+      router.on(routesHandler)
+    }
+  }
+
+  public navigate(to) {
+      const router = this.getRouter();
+      if (router !== null) {
+          router.navigate(to, true);
+      }
+  }
+
+  protected getRouter(): Navigo | null {
+    if (this.$ankHubRouter) {
+      return this.$ankHubRouter;
+    }
+    return null;
   }
 }
