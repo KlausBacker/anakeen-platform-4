@@ -1,8 +1,8 @@
 $tab-height: 3rem;
 
-$background-color: #FFFFFF;
+$background-color: #ffffff;
 $background-color-button: #646464;
-$background-color-button-hovered: #F5F5F5;
+$background-color-button-hovered: #f5f5f5;
 $background-color-tab: #f3f3f3;
 $button-icon-color: #ffffff;
 $border-color: #a9a9a9;
@@ -11,43 +11,87 @@ $selected-color: rgba(21, 126, 251, 0.08);
 $selected-header-footer-color: #777777;
 $green-selected: #8ae234;
 
-
 .hub-dock-component {
+  position: relative;
   background-color: $background-color;
   display: flex;
-  transition: width 0.5s ease;
+  //overflow: hidden;
+
+  .hub-dock-content-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .hub-dock-transition-wrapper {
+    display: flex;
+    flex: 1;
+    transition: width 0.2s ease, height 0.2s ease;
+  }
 
   .hub-dock-header,
+  .hub-dock-content,
   .hub-dock-footer {
     display: flex;
   }
 
+  .hub-dock-content {
+    flex: 1;
+    flex-direction: inherit;
+  }
+
+  .hub-dock-center {
+    flex: 1;
+    justify-content: center;
+    display: flex;
+  }
+
+  // Set flex direction form the position of the dock
   &.hub-dock--left,
   &.hub-dock--right {
+    &.hub-dock--absolute {
+      .hub-dock-content-wrapper {
+        z-index: 1000;
+        background: inherit;
+        position: absolute;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+      }
+    }
+
     flex-direction: column;
     height: 100%;
-    .hub-dock-entry-component {
-      min-height: 5rem;
+    .hub-dock-content-wrapper {
+      flex-direction: inherit;
+      .hub-dock-transition-wrapper {
+        flex-direction: inherit;
+
+        .hub-dock-entry-component {
+          min-height: 5rem;
+        }
+
+        .hub-dock-center,
+        .hub-dock-header,
+        .hub-dock-footer {
+          flex-direction: inherit;
+        }
+      }
     }
-    .hub-dock-center {
-      .hub-dock-entries {
-        flex-direction: column;
+
+    &.hub-dock--expanded {
+      .hub-dock-entry-component {
+        justify-content: flex-start;
       }
     }
   }
 
+  // Display border in function
   &.hub-dock--left {
-
-    .hub-dock-header {
+    .hub-dock-section + .hub-dock-section {
       border-top: 1px solid rgba(230, 230, 230, 0.5);
-      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
     }
 
-    .hub-dock-footer {
-      border-top: 1px solid rgba(230, 230, 230, 0.5);
-      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
-    }
     .hub-dock-entry-component {
+      border-left: 3px solid transparent;
       &.entry-selected {
         border-left: 3px solid $green-selected;
       }
@@ -55,58 +99,52 @@ $green-selected: #8ae234;
   }
 
   &.hub-dock--right {
-
-    .hub-dock-header {
-      border-top: 1px solid rgba(230, 230, 230, 0.5);
-      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+    &.hub-dock--absolute {
+      .hub-dock-content-wrapper {
+        right: 0;
+        z-index: 2000;
+      }
     }
 
-    .hub-dock-footer {
+    // Set animation right from left
+    .hub-dock-content-wrapper {
+      align-items: flex-end;
+    }
+
+    .hub-dock-section + .hub-dock-section {
       border-top: 1px solid rgba(230, 230, 230, 0.5);
-      border-bottom: 1px solid rgba(230, 230, 230, 0.5);
     }
 
     .hub-dock-entry-component {
+      border-right: 3px solid transparent;
       &.entry-selected {
-        border-right:  3px solid $green-selected;
+        border-right: 3px solid $green-selected;
       }
     }
   }
 
   &.hub-dock--top {
-
-    .hub-dock-header {
+    .hub-dock-section + .hub-dock-section {
       border-left: 1px solid rgba(230, 230, 230, 0.5);
-      border-right: 1px solid rgba(230, 230, 230, 0.5);
-    }
-
-    .hub-dock-footer {
-      border-left: 1px solid rgba(230, 230, 230, 0.5);
-      border-right: 1px solid rgba(230, 230, 230, 0.5);
     }
 
     .hub-dock-entry-component {
+      border-top: 3px solid transparent;
       &.entry-selected {
-        border-top:  3px solid $green-selected;
+        border-top: 3px solid $green-selected;
       }
     }
   }
 
   &.hub-dock--bottom {
-
-    .hub-dock-header {
+    .hub-dock-section + .hub-dock-section {
       border-left: 1px solid rgba(230, 230, 230, 0.5);
-      border-right: 1px solid rgba(230, 230, 230, 0.5);
-    }
-
-    .hub-dock-footer {
-      border-left: 1px solid rgba(230, 230, 230, 0.5);
-      border-right: 1px solid rgba(230, 230, 230, 0.5);
     }
 
     .hub-dock-entry-component {
+      border-bottom: 3px solid transparent;
       &.entry-selected {
-        border-bottom:  3px solid $green-selected;
+        border-bottom: 3px solid $green-selected;
       }
     }
   }
@@ -115,18 +153,21 @@ $green-selected: #8ae234;
   &.hub-dock--bottom {
     flex-direction: row;
     width: 100%;
-    .hub-dock-entry-component {
-      min-width: 5rem;
-    }
-    .hub-dock-center {
-      .hub-dock-entries {
+    .hub-dock-transition-wrapper {
+      flex-direction: row;
+      .hub-dock-entry-component {
+        transition: width 0.2s ease;
+        min-width: 5rem;
+      }
+
+      .hub-dock-center {
         flex-direction: row;
       }
     }
   }
 
   .hub-dock-collapse-button {
-    color: #BEBEBE;
+    color: #bebebe;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -140,20 +181,13 @@ $green-selected: #8ae234;
     }
   }
 
-  .hub-dock-center {
-    flex: 1;
-    display: flex;
-    .hub-dock-entries {
-      display: flex;
-      flex: 1;
-
-      .hub-dock-entry-component {
-        min-width: 5rem;
-        &.entry-selected {
-          background-color: $selected-color;
-          color: #157EFB;
-          font-weight: bold;
-        }
+  .hub-dock-section {
+    .hub-dock-entry-component {
+      min-width: 5rem;
+      &.entry-selected {
+        background-color: $selected-color;
+        color: #157efb;
+        font-weight: bold;
       }
     }
   }

@@ -1,33 +1,28 @@
 import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
-import AnkNotifier from "@anakeen/internal-components/lib/Notifier";
-
-const nodePath = require("path");
-import AnkComponents from "@anakeen/user-interfaces";
 // Vue class based component export
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import HubDock from "../HubDock/HubDock.vue";
-import HubDockEntry from "../HubDock/HubDockEntry/HubDockEntry.vue";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
-import HubLabel from "../HubLabel/HubLabel.vue";
+import Router from "./HubRouter";
+import HubStationDock from "./HubStationDock/HubStationDock.vue";
 import { IHubStationConfig } from "./HubStationsTypes";
 
 import {
   DockPosition,
-  IAnkDock,
   IHubStationDockConfigs,
-  IHubStationPropConfig,
-  InnerDockPosition
+  IHubStationPropConfig
 } from "./HubStationsTypes";
 
+const urlJoin = require("url-join");
+
 Vue.use(VueAxiosPlugin);
-Vue.use(AnkComponents, { globalVueComponents: true });
 
 @Component({
   components: {
-    "ank-notifier": AnkNotifier,
-    "hub-dock": HubDock,
-    "hub-dock-entry": HubDockEntry,
-    "hub-label": HubLabel
+    "hub-station-dock": HubStationDock
+  },
+  provide: {
+    // @ts-ignore
+    $_hubStation: this
   }
 })
 export default class HubStation extends Vue {
@@ -66,6 +61,26 @@ export default class HubStation extends Vue {
     return "";
   }
 
+  get routeEntries(): object[] {
+    let routeEntries = [];
+    if (this.configData) {
+      Object.keys(this.configData).forEach(key => {
+        const configs = this.configData[key];
+        routeEntries = routeEntries.concat(
+          configs.filter(cfg => {
+            return (
+              cfg.component &&
+              cfg.component.name &&
+              cfg.entryOptions &&
+              cfg.entryOptions.route
+            );
+          })
+        );
+      });
+    }
+    return routeEntries;
+  }
+
   private static capitalize(str: string) {
     if (str) {
       return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
@@ -92,23 +107,19 @@ export default class HubStation extends Vue {
   };
 
   public $refs!: {
-    [key: string]: IAnkDock | any;
+    [key: string]: HubStationDock | any;
   };
 
   // region props
   @Prop({ default: () => ({}), type: Object })
   public config!: IHubStationConfig;
   @Prop({ default: "", type: String }) public baseUrl!: string;
-  @Prop({ default: true, type: Boolean }) public withNotifier!: boolean;
+  @Prop({ default: true, type: Boolean }) public withDefaultRouter!: boolean;
   @Prop({ default: false, type: Boolean }) public injectTag!: boolean;
   // endregion props
 
-  // region watch
-  @Watch("config")
-  public onConfigPropChanged(val: IHubStationConfig) {
-    this.configData = HubStation.organizeData(val.hubElements);
-    this.initRouterConfig(this.configData);
-  }
+  public activeRoute: string | null = null;
+  protected alreadyVisited: object = {};
   // endregion computed
 
   // region hooks
@@ -125,131 +136,116 @@ export default class HubStation extends Vue {
 
   public expandDock(dockPosition) {
     const ref = `dock${HubStation.capitalize(dockPosition)}`;
-    if (this.$refs[ref]) {
-      this.$refs[ref].expand();
+    if (this.$refs[ref] && this.$refs[ref].$refs.innerDock) {
+      this.$refs[ref].$refs.innerDock.expand();
     }
   }
 
   public collapseDock(dockPosition: DockPosition) {
     const ref = `dock${HubStation.capitalize(dockPosition)}`;
-    if (this.$refs[ref]) {
-      this.$refs[ref].contract();
+    if (this.$refs[ref] && this.$refs[ref].$refs.innerDock) {
+      this.$refs[ref].$refs.innerDock.contract();
     }
-  }
-
-  public getDockHeaders(configs: IHubStationPropConfig[]) {
-    return configs.filter(c => {
-      return c.position.innerPosition === InnerDockPosition.HEADER;
-    });
-  }
-
-  public getDockContent(configs: IHubStationPropConfig[]) {
-    return configs.filter(c => {
-      return c.position.innerPosition === InnerDockPosition.CENTER;
-    });
-  }
-
-  public getDockFooter(configs: IHubStationPropConfig[]) {
-    return configs.filter(c => {
-      return c.position.innerPosition === InnerDockPosition.FOOTER;
-    });
-  }
-
-  public initRouterConfig(configData: IHubStationDockConfigs) {
-    Object.keys(configData).forEach(key => {
-      const routes = this.getRoutesConfigs(configData[key]);
-      if (this.$router) {
-        this.$nextTick(() => {
-          this.$router.addRoutes(routes);
-        });
-      }
-    });
-  }
-
-  public getEntryRoutePath(entryOptions) {
-    if (entryOptions && entryOptions.route) {
-      return nodePath.join(this.rootUrl, entryOptions.route);
-    }
-    return "";
-  }
-
-  // noinspection JSMethodCanBeStatic
-  public resizeWindow() {
-    // Need deferred because of animation
-    window.setTimeout(() => {
-      window.dispatchEvent(new Event("resize"));
-    }, 1000);
-  }
-  // noinspection JSMethodCanBeStatic
-  public isSelectableEntry(entry) {
-    if (entry && entry.entryOptions) {
-      return entry.entryOptions.selectable;
-    }
-    return true;
   }
 
   public created() {
     if (this.$http && this.$http.errorEvents) {
       this.$http.errorEvents.on("error", event => {
-        event.defaultPrevented = false;
-        event.preventDefault = function() {
-          this.defaultPrevented = true;
-        };
-        this.$emit("hubError", event);
-        if (this.withNotifier && !event.defaultPrevented) {
-          this.$refs.ankNotifier.publishNotification(
-            new CustomEvent("ankNotification", {
-              detail: [
-                {
-                  content: event.message,
-                  title: event.title,
-                  type: "error"
-                }
-              ]
-            })
-          );
-        }
+        this.$emit("hubNotify", {
+          content: {
+            textContent: event.message,
+            title: event.title
+          },
+          type: "error"
+        });
       });
     }
   }
 
   public mounted() {
-    this.initRouterConfig(this.configData);
+    this.configData = HubStation.organizeData(this.config.hubElements || []);
+    if (this.withDefaultRouter) {
+      this.initRouterConfig(this.configData);
+    }
+  }
+
+  // region watch
+  @Watch("config")
+  protected onConfigPropChanged(val: IHubStationConfig) {
+    this.configData = HubStation.organizeData(val.hubElements);
+    if (this.withDefaultRouter) {
+      this.initRouterConfig(this.configData);
+    }
+  }
+
+  @Watch("activeRoute")
+  protected onActiveRouteChanged(val: string) {
+    this.alreadyVisited[val] = true;
+  }
+
+  protected initRouterConfig(configData: IHubStationDockConfigs) {
+    Vue.use(Router, {
+      root: this.rootUrl
+    });
+    Object.keys(configData).forEach(key => {
+      const routes = this.getRoutesConfigs(configData[key]);
+      if (routes) {
+        this.$ankHubRouter.on(routes).resolve(window.location.pathname);
+      }
+    });
+  }
+
+  protected onHubElementSelected(event) {
+    if (
+      event &&
+      event.entryOptions &&
+      event.entryOptions.route &&
+      this.withDefaultRouter
+    ) {
+      const fullRoutePath = urlJoin(this.rootUrl, event.entryOptions.route);
+      this.$ankHubRouter.navigate(fullRoutePath, true);
+    }
   }
 
   private getRoutesConfigs(configs: IHubStationPropConfig[]) {
-    const routes: any[] = [];
+    let defaultRoute = this.rootUrl;
+    let defaultPriority = Number.NEGATIVE_INFINITY;
+    const routes: { [key: string]: (params, query) => void } = {};
     if (configs && configs.length) {
       configs.forEach(cfg => {
         if (cfg.component && cfg.component.name) {
           const component = Vue.component(cfg.component.name);
           if (component && cfg.entryOptions && cfg.entryOptions.route) {
-            const routeComponent = {
-              // @ts-ignore
-              children: component.options ? component.options.hubRoutes : [],
-              component: {
-                data: () => {
-                  return {
-                    componentName: cfg.component.name,
-                    componentProps: Object.assign({}, cfg.component.props, {
-                      displayType: HubElementDisplayTypes.CONTENT,
-                      parentPath: nodePath.join(
-                        this.rootUrl,
-                        cfg.entryOptions.route
-                      )
-                    })
-                  };
-                },
-                template: `<component :is="componentName" v-bind="componentProps"></component>`
-              },
-              path: nodePath.join(this.rootUrl, cfg.entryOptions.route)
+            const absoluteRoute = urlJoin(this.rootUrl, cfg.entryOptions.route);
+            const priority =
+              cfg.entryOptions.activatedOrder === null ||
+              cfg.entryOptions.activatedOrder === undefined
+                ? Number.NEGATIVE_INFINITY
+                : cfg.entryOptions.activatedOrder;
+            if (
+              cfg.entryOptions.activated === true &&
+              priority >= defaultPriority
+            ) {
+              defaultPriority = priority;
+              defaultRoute = absoluteRoute;
+            }
+            routes[absoluteRoute] = () => {
+              this.activeRoute = cfg.entryOptions.route;
             };
-            routes.push(routeComponent);
+            routes[`${absoluteRoute}/*`] = () => {
+              this.activeRoute = cfg.entryOptions.route;
+            };
           }
         }
       });
     }
-    return routes;
+    if (Object.keys(routes).length) {
+      routes[this.rootUrl] = () => {
+        this.$ankHubRouter.navigate(defaultRoute, true);
+      };
+      return routes;
+    }
+    return null;
   }
   // endregion methods
 }

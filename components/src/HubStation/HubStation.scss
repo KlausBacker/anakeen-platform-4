@@ -11,6 +11,19 @@
       flex: 1;
       overflow: auto;
 
+      .hub-station-route-content {
+        display: none;
+        width: 100%;
+        height: 100%;
+        .hub-station-component-route-wrapper {
+          width: 100%;
+          height: 100%;
+        }
+        &.route-active {
+          display: initial;
+        }
+      }
+
       .hub-station-content-view {
         flex: 1;
       }

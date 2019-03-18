@@ -1,9 +1,11 @@
-import { HubStation } from "@anakeen/hub-components";
+import AnkNotifier from "@anakeen/internal-components/lib/Notifier";
+import HubStation from "@anakeen/hub-components/lib/HubStation";
 import HubEntries from "./utils/hubEntry";
 
 export default {
   name: "ank-hub",
   components: {
+    AnkNotifier,
     HubStation
   },
   data() {
@@ -15,6 +17,17 @@ export default {
   created() {
     this.hubEntries = new HubEntries(this);
     this.hubId = window.AnkHubInstanceId;
+    this.$store.subscribe(mutationPayload => {
+      if (mutationPayload.type === "SET_NOTIFICATION") {
+        if (mutationPayload.payload) {
+          this.$refs.ankNotifier.publishNotification(
+            new CustomEvent("ankNotification", {
+              detail: [mutationPayload.payload]
+            })
+          );
+        }
+      }
+    });
   },
   mounted() {
     this.getConfig();
@@ -40,6 +53,9 @@ export default {
           console.error(error);
           this.$kendo.ui.progress(this.$(this.$el), false);
         });
+    },
+    onNotify(notification) {
+      this.$store.dispatch("hubNotify", notification);
     }
   }
 };

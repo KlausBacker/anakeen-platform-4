@@ -1,5 +1,4 @@
 .hub-station-component {
-
   .hub-station-aside {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 
@@ -10,7 +9,7 @@
       margin: 1rem 1rem 1rem 0;
     }
   }
-  .hub-station-content  {
+  .hub-station-content {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
     margin: 1rem;
   }
@@ -26,11 +25,10 @@
   }
 
   .hub-dock-entry-component {
-    color:#8b8b8b;
+    color: #8b8b8b;
 
     &.entry-selectable:hover {
       background-color: rgba(206, 206, 206, 0.4);
     }
-
   }
 }

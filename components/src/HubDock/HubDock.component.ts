@@ -14,6 +14,70 @@ import {
   }
 })
 export default class HubDock extends Vue {
+  public get faCollapseIcon(): string {
+    let collapseIcon: string = "chevron";
+    let expandIcon: string = "chevron";
+    switch (this.position) {
+      case DockPosition.LEFT:
+        collapseIcon += "-left";
+        expandIcon += "-right";
+        break;
+      case DockPosition.RIGHT:
+        collapseIcon += "-right";
+        expandIcon += "-left";
+        break;
+      case DockPosition.TOP:
+      case DockPosition.BOTTOM:
+        collapseIcon += "-left";
+        expandIcon += "-right";
+        break;
+    }
+    return this.collapsed ? expandIcon : collapseIcon;
+  }
+
+  public get sizeConverted(): string {
+    if (this.currentSize in Number) {
+      return `${this.currentSize}px`;
+    } else {
+      return this.currentSize as string;
+    }
+  }
+
+  public get dockStyle(): object {
+    if (this.superposable) {
+      switch (this.position) {
+        case DockPosition.LEFT:
+        case DockPosition.RIGHT:
+          return {
+            width: this.collapsedSize
+          };
+        default:
+          return {};
+      }
+    }
+    return {};
+  }
+
+  public get dockWrapperStyle(): object {
+    switch (this.position) {
+      case DockPosition.LEFT:
+      case DockPosition.RIGHT:
+        return {
+          width: this.sizeConverted
+        };
+      default:
+        return {};
+    }
+  }
+
+  public get entriesStyle(): object {
+    if (this.evenSpace) {
+      return {
+        "justify-content": "space-evenly"
+      };
+    }
+    return {};
+  }
   private static getHubEntriesInstance(...slots): Vue[] {
     let result: Vue[] = [];
     if (slots && slots.length) {
@@ -37,86 +101,37 @@ export default class HubDock extends Vue {
     return result;
   }
 
-  public get faCollapseIcon(): string {
-    let collapseIcon: string = "chevron";
-    let expandIcon: string = "chevron";
-    switch (this.position) {
-      case DockPosition.LEFT:
-        collapseIcon += "-left";
-        expandIcon += "-right";
-        break;
-      case DockPosition.RIGHT:
-        collapseIcon += "-right";
-        expandIcon += "-left";
-        break;
-      case DockPosition.TOP:
-        collapseIcon += "-up";
-        expandIcon += "-down";
-        break;
-      case DockPosition.BOTTOM:
-        collapseIcon += "-down";
-        expandIcon += "-up";
-        break;
-    }
-    return this.collapsed ? expandIcon : collapseIcon;
-  }
-
-  public get sizeConverted(): string {
-    if (this.currentSize in Number) {
-      return `${this.currentSize}px`;
-    } else {
-      return this.currentSize as string;
-    }
-  }
-
-  public get dockStyle(): object {
-    switch (this.position) {
-      case DockPosition.TOP:
-      case DockPosition.BOTTOM:
-        return {
-          height: this.sizeConverted
-        };
-      case DockPosition.LEFT:
-      case DockPosition.RIGHT:
-        return {
-          width: this.sizeConverted
-        };
-      default:
-        return {};
-    }
-  }
-
-  public get entriesStyle(): object {
-    if (this.evenSpace) {
-      return {
-        "justify-content": "space-evenly"
-      };
-    }
-    return {};
-  }
-
   @Prop({ default: DockPosition.LEFT }) public position!: DockPosition;
   @Prop({ default: true }) public expandable!: boolean;
   @Prop({ default: false }) public expanded!: boolean;
   @Prop({ default: "5rem", type: [String, Number] }) public collapsedSize!:
     | string
     | number;
-  @Prop({ default: "10rem", type: [String, Number] }) public size!:
+  @Prop({ default: "15rem", type: [String, Number] }) public size!:
     | string
     | number;
-  @Prop({ default: true }) public collapseOnSelection!: boolean;
-  @Prop({ default: false }) public superposeDock!: boolean;
-  @Prop({ default: false }) public evenSpace!: boolean;
-  @Prop({ default: false }) public multiselection!: boolean;
-  @Prop(Array) public content!: [];
+  @Prop({ default: true, type: Boolean }) public collapseOnSelection!: boolean;
+  @Prop({ default: false, type: Boolean }) public superposeDock!: boolean;
+  @Prop({ default: false, type: Boolean }) public evenSpace!: boolean;
+  @Prop({ default: true, type: Boolean }) public expandOnHover!: boolean;
+  @Prop({ default: true, type: Boolean }) public superposeOnHover!: boolean;
+  @Prop({ default: 1000, type: Number }) public hoverDelay!: number;
+  @Prop({ default: false, type: Boolean }) public multiselection!: boolean;
+  @Prop({ default: () => [], type: Array }) public content!: object[];
 
   public collapsed: boolean = !this.expanded;
+  public collapsable: boolean = this.expandable;
+  public superposable: boolean = this.superposeDock;
   public currentSize: string | number = this.expanded
     ? this.size
     : this.collapsedSize;
   public selectedItems: object[] = [];
   public hubEntries: Vue[] = [];
 
+  public $refs!: {
+    dockEl: HTMLElement;
+  };
+  protected overTimer: number = -1;
   @Watch("collapsed")
   public onCollapsed(val: boolean) {
     if (val) {
@@ -171,7 +186,7 @@ export default class HubDock extends Vue {
     }
   }
 
-  public onDockEntryEvent(eventName) {
+  protected onDockEntryEvent(eventName) {
     return eventOption => {
       switch (eventName) {
         case dockEntryEvents.selected:
@@ -189,5 +204,48 @@ export default class HubDock extends Vue {
           break;
       }
     };
+  }
+
+  protected onOverDock() {
+    if (this.expandOnHover && this.collapsed && this.overTimer === -1) {
+      this.overTimer = window.setTimeout(() => {
+        if (this.superposeOnHover && !this.superposeDock) {
+          this.superposable = true;
+          this.setDockWrapperAbsoluteSize();
+        }
+        this.expand();
+      }, this.hoverDelay);
+    }
+  }
+
+  protected onLeaveDock() {
+    if (this.expandOnHover) {
+      if (this.superposeOnHover && !this.superposeDock) {
+        this.superposable = false;
+        this.setDockWrapperAbsoluteSize("auto");
+      }
+      if (this.overTimer !== -1) {
+        clearTimeout(this.overTimer);
+        this.overTimer = -1;
+        if (!this.collapsed) {
+          this.collapse();
+        }
+      }
+    }
+  }
+
+  protected setDockWrapperAbsoluteSize(size?) {
+    switch (this.position) {
+      case DockPosition.LEFT:
+      case DockPosition.RIGHT:
+        if (size === undefined) {
+          size = `${this.$refs.dockEl.offsetHeight}px`;
+        }
+        // @ts-ignore
+        this.$refs.dockEl.style.height = size;
+        break;
+      default:
+        break;
+    }
   }
 }

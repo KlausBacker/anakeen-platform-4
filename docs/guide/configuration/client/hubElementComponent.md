@@ -23,6 +23,23 @@ Route d'accès à l'élément parent. Cette propriété doit être utilisé pour
 ### `resolveHubSubPath(path)`
 Retourne le chemin résolu à partir de la propriété `parentPath`.
 
+### `hubNotify(notification)`
+Envoie une notification au Hub Station.
+Le paramètre fourni à cette méthode doit respecter le format suivant : 
+```json5
+{
+  type: "info", // Type de notification parmi: "info", "notice", "success", "warning", "error" 
+  content: {
+    textContent: "Un message d'information", // ou htmlContent: "<em>Un message d'information important</em>"
+    title: "Titre du message",
+  },
+  options: {
+    displayTime: 1000, // temps d'affichage en ms de la notification (5000ms par défaut)
+    closable: false, // La notification peut être fermée via l'ui ou non (true par défaut)
+  }
+}
+```
+
 ## Computed
 ### `isDockCollapsed: boolean`
 Détermine si le composant est affiché dans le dock replié

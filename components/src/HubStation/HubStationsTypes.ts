@@ -16,6 +16,7 @@ export enum InnerDockPosition {
 export interface IHubStationConfigPosition {
   dock: DockPosition;
   innerPosition: InnerDockPosition;
+  order: number;
 }
 
 export interface IHubStationConfigComponentDef {
@@ -26,7 +27,8 @@ export interface IHubStationConfigComponentDef {
 export interface IHubStationEntryOptions {
   route: string;
   selectable: boolean;
-  selected: boolean;
+  activated: boolean;
+  activatedOrder: number | null;
 }
 
 export interface IHubStationDockConfigs {
