@@ -6,9 +6,7 @@ import { IHubStationEntryOptions } from "../../HubStation/HubStationsTypes";
 import { HubElementDisplayTypes } from "../HubElementTypes";
 
 // You can declare a mixin as the same style as components.
-@Component({
-  inject: ["$_hubStation"]
-})
+@Component
 export default class HubElementMixin extends Vue {
   @Prop() public entryOptions!: IHubStationEntryOptions;
   @Prop() public displayType!: HubElementDisplayTypes;
@@ -28,11 +26,6 @@ export default class HubElementMixin extends Vue {
 
   public resolveHubSubPath(subPath) {
     return urlJoin(this.parentPath, subPath);
-  }
-
-  public hubNotify(notification = {}) {
-    // @ts-ignore
-    this.$_hubStation.$emit("hubNotify", notification);
   }
 
   public registerRoute(route, routeCallback) {
