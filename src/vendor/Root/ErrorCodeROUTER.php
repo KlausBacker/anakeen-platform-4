@@ -38,4 +38,9 @@ class ErrorCodeROUTER
      * @see
      */
     const ROUTER0107 = 'Invalid XML file "%s"';
+    /**
+     * @errorCode 2 routes has the same name in the file
+     * @see
+     */
+    const ROUTER0108 = 'Duplicate name "%s" in router config';
 }
