@@ -117,7 +117,7 @@ export default class HubDock extends Vue {
   @Prop({ default: true, type: Boolean }) public superposeOnHover!: boolean;
   @Prop({ default: 1000, type: Number }) public hoverDelay!: number;
   @Prop({ default: false, type: Boolean }) public multiselection!: boolean;
-  @Prop(Array) public content: object[] = [];
+  @Prop({ default: () => [], type: Array }) public content!: object[];
 
   public collapsed: boolean = !this.expanded;
   public collapsable: boolean = this.expandable;

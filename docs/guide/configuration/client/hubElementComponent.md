@@ -24,7 +24,7 @@ Route d'accès à l'élément parent. Cette propriété doit être utilisé pour
 Retourne le chemin résolu à partir de la propriété `parentPath`.
 
 ### `hubNotify(notification)`
-Déclenche l'affichage d'une notification.
+Envoie une notification au Hub Station.
 Le paramètre fourni à cette méthode doit respecter le format suivant : 
 ```json5
 {

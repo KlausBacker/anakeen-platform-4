@@ -12,7 +12,7 @@ import {
   IHubStationPropConfig
 } from "./HubStationsTypes";
 
-import urlJoin from "url-join";
+const urlJoin = require("url-join");
 
 Vue.use(VueAxiosPlugin);
 
