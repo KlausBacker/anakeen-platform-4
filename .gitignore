@@ -3,7 +3,7 @@ src/public/
 Makefile.local
 .idea/
 ide/vendor/
-*app
+*.app
 .php_cs.cache
 yarn-error.log
 *.src
