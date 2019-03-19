@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 /*
  * @author Anakeen
  * @package FDL
@@ -60,7 +60,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             return sprintf(_("folder is locked. Cannot containt modification"));
         }
         // need this privilege
-        $err = $this->Control("modify");
+        $err = $this->controlAccess("modify");
         if ($err != "") {
             return $err;
         }
@@ -182,7 +182,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             return sprintf(_("folder is locked. Cannot containt modification"));
         }
         // need this privilege
-        $err = $this->Control("modify");
+        $err = $this->controlAccess("modify");
         return $err;
     }
 
@@ -248,7 +248,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
 
             $err = $qf->add();
             if ($err == "") {
-                \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Add %s in %s folder"), $doc->title, $this->title));
                 $this->addHistoryEntry(sprintf(_("Document %s inserted"), $doc->title));
                 $doc->addHistoryEntry(sprintf(_("Document inserted in %s folder"), $this->title, \DocHisto::INFO, "MOVEADD"));
 
@@ -405,7 +404,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 if ($insertOne == "") {
                     $insertOne = $qf->add();
                     if ($insertOne == "") {
-                        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Add %s in %s folder"), $tdoc["title"], $this->title));
                         $this->addHistoryEntry(sprintf(_("Document %s inserted"), $tdoc["title"]), \DocHisto::INFO, "MODCONTAIN");
 
                         $this->addLog('addcontent', array(
@@ -506,7 +504,7 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
             return sprintf(_("folder is locked. Cannot containt modification"));
         }
         // need this privilege
-        $err = $this->Control("modify");
+        $err = $this->controlAccess("modify");
         if ($err != "") {
             return $err;
         }
@@ -608,8 +606,6 @@ class DirHooks extends \Anakeen\SmartStructures\Profiles\PDirHooks
                 "prelid"
             ), true);
         }
-
-        \Anakeen\Core\Utils\System::addLogMsg(sprintf(_("Delete %d in %s folder"), $docid, $this->title));
 
         $this->addLog('delcontent', array(
             "insert" => array(

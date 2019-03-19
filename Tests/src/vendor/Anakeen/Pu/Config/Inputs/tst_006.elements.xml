@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<documents>
+    <tst_006 name="tst_006-1">
+        <tst_title>001</tst_title>
+    </tst_006>
+    <tst_006 name="tst_006-2">
+        <tst_title>002</tst_title>
+    </tst_006>
+</documents>

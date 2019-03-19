@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+
+    <accounts:roles>
+        <accounts:role name="r0006-1"/>
+        <accounts:role name="r0006-2"/>
+    </accounts:roles>
+
+    <accounts:users>
+        <accounts:user login="u0006-0"/>
+        <accounts:user login="u0006-1">
+            <accounts:associatedRoles reset="true">
+                <accounts:associatedRole ref="r0006-1"/>
+            </accounts:associatedRoles>
+        </accounts:user>
+        <accounts:user login="u0006-2">
+            <accounts:associatedRoles reset="true">
+                <accounts:associatedRole ref="r0006-2"/>
+            </accounts:associatedRoles>
+        </accounts:user>
+        <accounts:user login="u0006-3">
+            <accounts:associatedRoles reset="true">
+                <accounts:associatedRole ref="r0006-1"/>
+                <accounts:associatedRole ref="r0006-2"/>
+            </accounts:associatedRoles>
+        </accounts:user>
+    </accounts:users>
+</accounts:accounts>

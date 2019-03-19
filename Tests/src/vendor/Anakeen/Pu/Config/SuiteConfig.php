@@ -19,6 +19,7 @@ class SuiteConfig
         $suite->addTestSuite(\Anakeen\Pu\Config\PuStructBasic::class);
         $suite->addTestSuite(\Anakeen\Pu\Config\PuEnums::class);
         $suite->addTestSuite(\Anakeen\Pu\Config\PuTask::class);
+        $suite->addTestSuite(\Anakeen\Pu\Config\PuDisableAccess::class);
 
         return $suite;
     }
