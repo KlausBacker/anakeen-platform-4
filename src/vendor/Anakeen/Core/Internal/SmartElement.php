@@ -6222,7 +6222,7 @@ create unique index i_docir on doc(initid, revision);";
         return '';
     }
 
-    private function controlAccess($aclname, $strict = false)
+    protected function controlAccess($aclname, $strict = false)
     {
         if (!$this->isUnderControl()) {
             return ""; // uncontrolled mode

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="PRF_TST6" label="Hub Profile" profil-type="PDIR">
+        <smart:element-access access="view" account="r0006-1"/>
+        <smart:element-access access="view" account="r0006-2"/>
+        <smart:element-access access="edit" account="r0006-1"/>
+        <smart:element-access access="modify" account="r0006-2"/>
+    </smart:access-configuration>
+    <smart:structure-configuration name="TST_006" label="Test n°6">
+        <smart:extends ref="DIR"/>
+        <smart:fields>
+            <smart:field-set name="tst_f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_title" label="Le titre" access="ReadWrite" is-title="true" is-abstract="true"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:accesses>
+            <smart:element-access-configuration ref="PRF_TST6"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+</smart:config>
