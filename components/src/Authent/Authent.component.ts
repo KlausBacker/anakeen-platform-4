@@ -2,6 +2,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 const a4Password = () => import("./AuthentPassword/AuthentPassword.vue");
 import { IAuthent } from "./IAuthent";
+import { _enableReady} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
 declare var kendo;
 // noinspection JSUnusedGlobalSymbols
@@ -29,6 +30,7 @@ export default class AuthentComponent extends Vue {
   public resetPwd1: string = "";
   public resetPwd2: string = "";
   public authent: IAuthent;
+
   public get translations() {
     return {
       loginPlaceHolder: this.$pgettext("Authent", "Enter your identifier"),
@@ -71,7 +73,7 @@ export default class AuthentComponent extends Vue {
   }
 
   public get redirectUri() {
-    let uri = this.authent._protected.getSearchArg("redirect_uri");
+    let uri = this.authent.getSearchArg("redirect_uri");
     if (!uri) {
       uri = "/";
     }
@@ -79,7 +81,7 @@ export default class AuthentComponent extends Vue {
   }
 
   public beforeMount() {
-    let passKey = this.authent._protected.getSearchArg("passkey");
+    let passKey = this.authent.getSearchArg("passkey");
     let currentLanguage = this.defaultLanguage;
     if (this.defaultLanguage === "auto") {
       let navLanguage = navigator.language || window.navigator["userLanguage"];
@@ -94,59 +96,62 @@ export default class AuthentComponent extends Vue {
 
     if (passKey) {
       this.resetPassword = true;
-      this.login = this.authent._protected.getSearchArg("uid");
+      this.login = this.authent.getSearchArg("uid");
       this.authent.authToken = passKey;
     }
   }
 
   public created() {
-    this.authent._protected.getSearchArg = key => {
-      let result = null;
-      let tmp = [];
-      location.search
-        .substr(1)
-        .split("&")
-        .forEach(item => {
-          tmp = item.split("=");
-          if (tmp[0] === key) result = decodeURIComponent(tmp[1]);
+    this.authent = {
+      authToken: null,
+      getSearchArg: key => {
+        let result = null;
+        let tmp = [];
+        location.search
+          .substr(1)
+          .split("&")
+          .forEach(item => {
+            tmp = item.split("=");
+            if (tmp[0] === key) result = decodeURIComponent(tmp[1]);
+          });
+
+        return result;
+      },
+
+      initForgetElements: () => {
+        let $ = kendo.jQuery;
+        let $forgetForm = $(this.$refs.authentForgetForm);
+        let forgetWindow;
+
+        forgetWindow = $(this.$refs.authentForgetForm)
+          .kendoWindow({
+            visible: false,
+            actions: ["Maximize", "Close"]
+          })
+          .data("kendoWindow");
+
+        $(this.$refs.authentForgetButton).kendoButton({
+          click: () => {
+            forgetWindow
+              .title(this.translations.forgetContentTitle)
+              .center()
+              .open();
+          }
         });
 
-      return result;
-    };
+        $(this.$refs.authentForgetSubmit).kendoButton();
+        $forgetForm.on("submit", this.forgetPassword);
+      },
 
-    this.authent._protected.initForgetElements = () => {
-      let $ = kendo.jQuery;
-      let $forgetForm = $(this.$refs.authentForgetForm);
-      let forgetWindow;
+      initResetPassword: () => {
+        let $ = kendo.jQuery;
+        let $resetForm = $(this.$refs.authentResetPasswordForm);
 
-      forgetWindow = $(this.$refs.authentForgetForm)
-        .kendoWindow({
-          visible: false,
-          actions: ["Maximize", "Close"]
-        })
-        .data("kendoWindow");
+        $(this.$refs.authentResetSubmit).kendoButton();
 
-      $(this.$refs.authentForgetButton).kendoButton({
-        click: () => {
-          forgetWindow
-            .title(this.translations.forgetContentTitle)
-            .center()
-            .open();
-        }
-      });
-
-      $(this.$refs.authentForgetSubmit).kendoButton();
-      $forgetForm.on("submit", this.forgetPassword);
-    };
-
-    this.authent._protected.initResetPassword = () => {
-      let $ = kendo.jQuery;
-      let $resetForm = $(this.$refs.authentResetPasswordForm);
-
-      $(this.$refs.authentResetSubmit).kendoButton();
-
-      $resetForm.on("submit", this.applyResetPassword);
-    };
+        $resetForm.on("submit", this.applyResetPassword);
+      }
+    }
   }
 
   public mounted() {
@@ -184,11 +189,11 @@ export default class AuthentComponent extends Vue {
      */
 
     if (this.resetPassword) {
-      this.authent._protected.initResetPassword();
+      this.authent.initResetPassword();
     } else {
-      this.authent._protected.initForgetElements();
+      this.authent.initForgetElements();
     }
-    this._enableReady();
+    _enableReady();
   }
 
   public createSession(event) {
