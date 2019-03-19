@@ -44,7 +44,7 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.0-dev20190311130636",
+    "@anakeen/hub-components": "^1.0.0-dev20190319153407",
     "@anakeen/internal-components": "^1.0.1-dev20190311085312",
     "@anakeen/user-interfaces": "^2.0.0-dev20190306182547",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",

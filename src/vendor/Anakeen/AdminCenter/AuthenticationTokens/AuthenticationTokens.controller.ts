@@ -3,7 +3,7 @@ import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { IAuthenticationToken } from "./IAuthenticationToken";
 import IsoDates from "./IsoDates";
 
@@ -17,15 +17,6 @@ declare var kendo;
   name: "ank-authentication-tokens"
 })
 export default class AuthenticationTokensController extends Vue {
-  public $refs!: {
-    [key: string]: any;
-  };
-  public tokenInfo: IAuthenticationToken = {
-    token: ""
-  };
-  public showExpire: boolean = false;
-  protected kTokenGrid: any;
-
   // noinspection JSMethodCanBeStatic
   public get panes() {
     return [
@@ -40,13 +31,30 @@ export default class AuthenticationTokensController extends Vue {
         min: "250px",
         resizable: true,
         scrollable: false,
-        size: "25%"
+        size: "500px"
       }
     ];
   }
 
   public get viewToken() {
     return this.tokenInfo.token !== "";
+  }
+  public $refs!: {
+    [key: string]: any;
+  };
+  public tokenInfo: IAuthenticationToken = {
+    token: ""
+  };
+  public showExpire: boolean = false;
+
+  @Prop({ default: "", type: String }) public value!: string;
+  protected kTokenGrid: any;
+
+  @Watch("value")
+  public onSelectedTokenChanged(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      // TODO Select the token info matching newValue token id
+    }
   }
 
   public mounted() {
@@ -183,6 +191,7 @@ export default class AuthenticationTokensController extends Vue {
           {
             command: {
               click: e => {
+                e.preventDefault();
                 this.$refs.splitter.disableEmptyContent();
                 Vue.component("ank-token-info", resolve => {
                   import("./AuthenticationTokenInfo.vue").then(
@@ -209,6 +218,7 @@ export default class AuthenticationTokensController extends Vue {
                   token: dataItem.token,
                   user: dataItem.user
                 };
+                this.$emit("input", dataItem.token.toString());
                 dataItem.routes.forEach(route => {
                   route.methods.forEach(method => {
                     this.tokenInfo.routes.push({
@@ -278,6 +288,6 @@ export default class AuthenticationTokensController extends Vue {
         },
         sortable: true
       })
-      .data("kendo-grid");
+      .data("kendoGrid");
   }
 }
