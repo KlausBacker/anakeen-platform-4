@@ -20,10 +20,9 @@ const DEFAULT_OPTIONS = {
 export default function install(Vue, navigoOptions) {
   const options = merge(DEFAULT_OPTIONS, navigoOptions);
   if (!Vue.prototype[options.vueInject]) {
-    Vue.prototype[options.vueInject] = new Navigo(
-      options.root,
-      options.useHash,
-      options.hash
-    );
+    Vue.prototype[options.vueInject] = {
+      internal: new Navigo(options.root, options.useHash, options.hash),
+      external: new Navigo(options.root, options.useHash, options.hash)
+    };
   }
 }

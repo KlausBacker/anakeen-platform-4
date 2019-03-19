@@ -2,9 +2,12 @@ import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
 // Vue class based component export
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
+import VueSetupPlugin from "../utils/VueSetupPlugin";
 import Router from "./HubRouter";
 import HubStationDock from "./HubStationDock/HubStationDock.vue";
 import { IHubStationConfig } from "./HubStationsTypes";
+
+Vue.use(VueSetupPlugin);
 
 import {
   DockPosition,
@@ -19,10 +22,6 @@ Vue.use(VueAxiosPlugin);
 @Component({
   components: {
     "hub-station-dock": HubStationDock
-  },
-  provide: {
-    // @ts-ignore
-    $_hubStation: this
   }
 })
 export default class HubStation extends Vue {
@@ -30,6 +29,7 @@ export default class HubStation extends Vue {
   get isHeaderEnabled() {
     return this.configData.top.length;
   }
+
   get isFooterEnabled() {
     return this.configData.bottom.length;
   }
@@ -149,6 +149,9 @@ export default class HubStation extends Vue {
   }
 
   public created() {
+    this.$_hubEventBus.on("hubNotify", notification => {
+      this.$emit("hubNotify", notification);
+    });
     if (this.$http && this.$http.errorEvents) {
       this.$http.errorEvents.on("error", event => {
         this.$emit("hubNotify", {
@@ -189,8 +192,12 @@ export default class HubStation extends Vue {
     });
     Object.keys(configData).forEach(key => {
       const routes = this.getRoutesConfigs(configData[key]);
-      if (routes) {
-        this.$ankHubRouter.on(routes).resolve(window.location.pathname);
+      if (routes && routes.length) {
+        routes.forEach(route => {
+          // @ts-ignore
+          this.$ankHubRouter.internal.on(route.pattern, route.handler);
+        });
+        this.$ankHubRouter.internal.resolve(window.location.pathname);
       }
     });
   }
@@ -203,14 +210,17 @@ export default class HubStation extends Vue {
       this.withDefaultRouter
     ) {
       const fullRoutePath = urlJoin(this.rootUrl, event.entryOptions.route);
-      this.$ankHubRouter.navigate(fullRoutePath, true);
+      this.$ankHubRouter.internal.navigate(fullRoutePath, true);
     }
   }
 
   private getRoutesConfigs(configs: IHubStationPropConfig[]) {
     let defaultRoute = this.rootUrl;
     let defaultPriority = Number.NEGATIVE_INFINITY;
-    const routes: { [key: string]: (params, query) => void } = {};
+    const routes: Array<{
+      pattern: string | RegExp;
+      handler: (params, query) => void;
+    }> = [];
     if (configs && configs.length) {
       configs.forEach(cfg => {
         if (cfg.component && cfg.component.name) {
@@ -229,23 +239,27 @@ export default class HubStation extends Vue {
               defaultPriority = priority;
               defaultRoute = absoluteRoute;
             }
-            routes[absoluteRoute] = () => {
-              this.activeRoute = cfg.entryOptions.route;
-            };
-            routes[`${absoluteRoute}/*`] = () => {
-              this.activeRoute = cfg.entryOptions.route;
-            };
+            routes.push({
+              handler: () => {
+                this.activeRoute = cfg.entryOptions.route;
+              },
+              pattern: new RegExp("^" + absoluteRoute)
+            });
           }
         }
       });
     }
-    if (Object.keys(routes).length) {
-      routes[this.rootUrl] = () => {
-        this.$ankHubRouter.navigate(defaultRoute, true);
-      };
-      return routes;
+    if (routes.length) {
+      routes.push({
+        handler: () => {
+          this.$ankHubRouter.internal.navigate(defaultRoute, true);
+        },
+        pattern: this.rootUrl
+      });
+      return routes.reverse();
     }
     return null;
   }
+
   // endregion methods
 }
