@@ -47,7 +47,7 @@ export default class AuthenticationTokensController extends Vue {
   };
   public showExpire: boolean = false;
 
-  @Prop({ default: "", type: String}) public value!: string;
+  @Prop({ default: "", type: String }) public value!: string;
   protected kTokenGrid: any;
 
   @Watch("value")

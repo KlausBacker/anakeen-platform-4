@@ -35,7 +35,7 @@ export default class VaultManagerController extends Vue {
     }
     return human;
   }
-  @Prop({ default: "", type: String}) public value!: string;
+  @Prop({ default: "", type: String }) public value!: string;
   public info: any = [];
   public panes: object[] = [
     {
@@ -248,7 +248,7 @@ export default class VaultManagerController extends Vue {
       })
       .data("kendoGrid");
     if (this.value) {
-      this.selectedFs = this.value
+      this.selectedFs = this.value;
     }
   }
   /**
