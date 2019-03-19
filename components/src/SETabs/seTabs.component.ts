@@ -1,14 +1,11 @@
-// jscs:disable disallowImplicitTypeConversion
-// jscs:disable requirePaddingNewLinesBeforeLineComments
 import Vue from "vue";
 import contentTemplate from "./templates/tab/seTabsContent.template.kd";
 import headerTemplate from "./templates/tab/seTabsHeader.template.kd";
-import openedTabListItemTemplate from "./templates/openedTabList/seOpenedTabListItem.template.kd";
-import AnkMixins from "../../mixins/AnkVueComponentMixin";
+import * as openedTabListItemTemplate from "./templates/openedTabList/seOpenedTabListItem.template.kd";
 import TabModel from "./model/tabModel";
-import { Component, Mixins, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import { ISeTabs } from "./ISeTabs";
-
+import {$emitAnkEvent,_enableReady} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 declare var kendo;
 const Constants = {
   WELCOME_TAB_ID: "welcome_tab_id",
@@ -62,8 +59,7 @@ const smartElementEvents = [
 ];
 
 @Component({
-  name: "ank-se-tabs",
-  mixins: [AnkMixins]
+  name: "ank-se-tabs"
 })
 export default class SeTabsComponent extends Vue {
   @Prop({ type: String, default: "" }) public headerTabTemplate;
@@ -95,7 +91,7 @@ export default class SeTabsComponent extends Vue {
   public welcomeTabConfig: any = null;
   public defaultEmptyImgUrl: string =
     "/CORE/Images/anakeenplatform-logo-fondblanc.svg";
-  public ps: ISeTabs;
+  public privateScope: ISeTabs;
   private documentCss: any;
   private seCss: any;
   public get hasWelcomeTab() {
@@ -146,10 +142,10 @@ export default class SeTabsComponent extends Vue {
   }
 
   public get lazyTabDocument() {
-    const index = this.ps.privateScope.getLazyTabIndex();
+    const index = this.privateScope.getLazyTabIndex();
     if (index > -1) {
       return kendo
-        .jquery(this.tabstrip.contentElement(index))
+        .jQuery(this.tabstrip.contentElement(index))
         .find("ank-smart-element");
     }
     return null;
@@ -165,17 +161,17 @@ export default class SeTabsComponent extends Vue {
   public watchClosable(newValue, oldValue) {
     if (newValue !== oldValue) {
       this.tabstrip.tabGroup.children().each((i, t) => {
-        this.ps.privateScope.configureCloseTab(t, newValue);
+        this.privateScope.configureCloseTab(t, newValue);
       });
     }
   }
   @Watch("addable")
   public watchAddable(newValue) {
-    this.ps.privateScope.setAddTabButton(newValue);
+    this.privateScope.setAddTabButton(newValue);
   }
   @Watch("sortable")
   public watchSortable(newValue) {
-    this.ps.privateScope.configureSortable(newValue);
+    this.privateScope.configureSortable(newValue);
   }
 
   public created() {
@@ -192,40 +188,40 @@ export default class SeTabsComponent extends Vue {
     }
 
     // @ts-ignore
-    this.ps.privateScope = {
+    this.privateScope = {
       createKendoComponents: () => {
-        this.ps.privateScope.createKendoTabStrip();
-        this.ps.privateScope.createKendoOpenedTabsList();
-        this.ps.privateScope.initTabModel();
+        this.privateScope.createKendoTabStrip();
+        this.privateScope.createKendoOpenedTabsList();
+        this.privateScope.initTabModel();
         $(window).resize(() => {
-          this.ps.privateScope.resizeComponents();
+          this.privateScope.resizeComponents();
         });
-        this.ps.privateScope.resizeComponents();
+        this.privateScope.resizeComponents();
       },
 
       createKendoTabStrip: () => {
-        this.tabstripEl = kendo.jquery(this.$refs.tabstrip).kendoTabStrip({
+        this.tabstripEl = kendo.jQuery(this.$refs.tabstrip).kendoTabStrip({
           animation: false,
-          select: this.ps.privateScope.onTabstripSelect
+          select: this.privateScope.onTabstripSelect
         });
         this.tabModel = new TabModel();
-        this.tabModel.on("add", this.ps.privateScope.onModelAddItem);
-        this.tabModel.on("remove", this.ps.privateScope.onModelRemoveItem);
-        this.tabModel.on("itemchange", this.ps.privateScope.onModelItemChange);
+        this.tabModel.on("add", this.privateScope.onModelAddItem);
+        this.tabModel.on("remove", this.privateScope.onModelRemoveItem);
+        this.tabModel.on("itemchange", this.privateScope.onModelItemChange);
       },
 
       createKendoOpenedTabsList: () => {
         this.tabslistSource = new kendo.data.DataSource({
           data: []
         });
-        this.tabslistEl = kendo.jquery(this.$refs.tabsList).kendoDropDownList({
+        this.tabslistEl = kendo.jQuery(this.$refs.tabsList).kendoDropDownList({
           animation: false,
           dataSource: this.tabslistSource,
           template: kendo.template(openedTabListItemTemplate),
           valueTemplate: '<i class="material-icons">list</i>',
-          dataBound: this.ps.privateScope.onOpenedTabsListDataBound,
+          dataBound: this.privateScope.onOpenedTabsListDataBound,
           autoWidth: true,
-          select: this.ps.privateScope.onOpenedTabsListItemClick,
+          select: this.privateScope.onOpenedTabsListItemClick,
           noDataTemplate: this.translations.noSEOpened,
           headerTemplate: `<button class="seTabs__tabsList__list__close__all">
                                         ${this.translations.closeAllSE}
@@ -256,12 +252,12 @@ export default class SeTabsComponent extends Vue {
 
       resizeComponents: () => {
         this.tabstrip.resize();
-        this.ps.privateScope.setTabstripPagination();
+        this.privateScope.setTabstripPagination();
       },
 
       setTabstripPagination: () => {
         const paginatorWidth = kendo
-          .jquery(this.$refs.tabsTools)
+          .jQuery(this.$refs.tabsTools)
           .outerWidth(true);
         let marginRight = paginatorWidth || 0;
         // let marginLeft = 0;
@@ -292,7 +288,7 @@ export default class SeTabsComponent extends Vue {
             { tabId: Constants.WELCOME_TAB_ID },
             this.welcomeTabConfig
           );
-          if (this.ps.privateScope.getLazyTabIndex() > -1) {
+          if (this.privateScope.getLazyTabIndex() > -1) {
             this.tabModel.add(welcomeTab);
           } else {
             this.tabModel.add(welcomeTab, SeTabsComponent.newLazyTab);
@@ -301,8 +297,8 @@ export default class SeTabsComponent extends Vue {
           this.selectIndex(0);
         }
 
-        this.ps.privateScope.configureSortable(this.sortable);
-        this.ps.privateScope.setAddTabButton(this.addable);
+        this.privateScope.configureSortable(this.sortable);
+        this.privateScope.setAddTabButton(this.addable);
       },
 
       canUseLazyTab: () => {
@@ -364,15 +360,15 @@ export default class SeTabsComponent extends Vue {
       },
 
       setAddTabButton: (addable = true) => {
-        let newTabButton = kendo.jquery("#seTabs__new__tab__button");
+        let newTabButton = kendo.jQuery("#seTabs__new__tab__button");
         if (addable) {
           if (!newTabButton.length) {
-            newTabButton = kendo.jquery(
+            newTabButton = kendo.jQuery(
               '<button id="seTabs__new__tab__button" class="tab__new__button">' +
                 '<i class="material-icons">add</i>' +
                 "</button>"
             );
-            newTabButton.on("click", this.ps.privateScope.onAddTabClick);
+            newTabButton.on("click", this.privateScope.onAddTabClick);
           }
 
           this.tabstrip.tabGroup.append(newTabButton);
@@ -395,7 +391,7 @@ export default class SeTabsComponent extends Vue {
           $tab.on(
             "click",
             "[data-type='remove']",
-            this.ps.privateScope.onCloseTabClick
+            this.privateScope.onCloseTabClick
           );
         } else {
           $tab.off("click", "[data-type='remove']");
@@ -405,23 +401,23 @@ export default class SeTabsComponent extends Vue {
 
       loadLazyTabDocument: data => {
         const tab = $(
-          this.tabstrip.items()[this.ps.privateScope.getLazyTabIndex()]
+          this.tabstrip.items()[this.privateScope.getLazyTabIndex()]
         );
         tab.find(".seTab__title").text(data.data.title);
         tab
           .find(".seTab__icon")
           .replaceWith(`<img class="seTab__icon" src="${data.data.icon}" />`);
-        this.ps.privateScope.onAddDocumentTab(this.ps.privateScope.getLazyTabIndex());
-        $(this.tabstrip.items()[this.ps.privateScope.getLazyTabIndex()]).show();
+        this.privateScope.onAddDocumentTab(this.privateScope.getLazyTabIndex());
+        $(this.tabstrip.items()[this.privateScope.getLazyTabIndex()]).show();
         $(this.lazyTabDocument).prop("seValue", JSON.stringify(data.data));
-        this.tabModel.get(this.ps.privateScope.getLazyTabIndex()).tabId =
+        this.tabModel.get(this.privateScope.getLazyTabIndex()).tabId =
           data.tabId;
         this.tabslistSource.add(data);
       },
 
       bindWelcomeTabEvents: ($newTab, index) => {
         $newTab.on("document-creation", e =>
-          this.ps.privateScope.onCreateDocumentClick(e, index)
+          this.privateScope.onCreateDocumentClick(e, index)
         );
         $newTab.on("document-selected", e => {
           this.setSE(e.detail[0], index);
@@ -433,11 +429,11 @@ export default class SeTabsComponent extends Vue {
       getSEEventHandler: eventName => {
         switch (eventName) {
           case "ready":
-            return this.ps.privateScope.onDocumentReady;
+            return this.privateScope.onDocumentReady;
           case "actionClick":
-            return this.ps.privateScope.onDocumentActionClick;
+            return this.privateScope.onDocumentActionClick;
           case "afterSave":
-            return this.ps.privateScope.onDocumentAfterSave;
+            return this.privateScope.onDocumentAfterSave;
           default:
             return noop;
         }
@@ -447,9 +443,9 @@ export default class SeTabsComponent extends Vue {
         const documentComponent = $doc;
         smartElementEvents.forEach(eventName => {
           documentComponent.on(eventName, e => {
-            const cb = this.ps.privateScope.getSEEventHandler(eventName);
+            const cb = this.privateScope.getSEEventHandler(eventName);
             cb.call(this, e, tabIndex);
-            const notCancelled = this.$emitAnkEvent(
+            const notCancelled = $emitAnkEvent(
               `se-${camelToKebab(eventName)}`,
               e,
               tabIndex
@@ -483,16 +479,16 @@ export default class SeTabsComponent extends Vue {
             );
           }
 
-          this.ps.privateScope.onAddGenericTab(index);
+          this.privateScope.onAddGenericTab(index);
           if (
             item.tabId === Constants.NEW_TAB_ID ||
             item.tabId === Constants.WELCOME_TAB_ID
           ) {
-            this.ps.privateScope.onAddWelcomeTab(index);
+            this.privateScope.onAddWelcomeTab(index);
           } else if (item.tabId === Constants.LAZY_TAB_ID) {
-            this.ps.privateScope.onAddLazyTab(index);
+            this.privateScope.onAddLazyTab(index);
           } else {
-            this.ps.privateScope.onAddDocumentTab(index);
+            this.privateScope.onAddDocumentTab(index);
             this.tabslistSource.add(item);
           }
         });
@@ -516,10 +512,10 @@ export default class SeTabsComponent extends Vue {
           this.tabModel.isEmpty() ||
           this.tabModel.findIndex(t => t.tabId !== Constants.LAZY_TAB_ID) === -1
         ) {
-          this.ps.privateScope.initTabModel();
+          this.privateScope.initTabModel();
         }
 
-        this.ps.privateScope.setTabstripPagination();
+        this.privateScope.setTabstripPagination();
         event.items.forEach(i => {
           const deletedEl = this.tabslistSource
             .data()
@@ -534,44 +530,44 @@ export default class SeTabsComponent extends Vue {
         const index = this.tabModel.findIndex(
           d => d.tabId === event.items[0].tabId
         );
-        const props = event.field.split(".");
+        const pr = event.field.split(".");
         let newValue;
         const $indexedItem = $(this.tabstrip.items()[index]);
         switch (event.field) {
           case "data.title":
-            newValue = event.items[0][props[0]][props[1]];
+            newValue = event.items[0][pr[0]][pr[1]];
             $indexedItem.find("span.seTab__title").text(newValue);
             break;
           case "data.icon":
-            newValue = event.items[0][props[0]][props[1]];
+            newValue = event.items[0][pr[0]][pr[1]];
             $indexedItem.find("img.seTab__icon").prop("src", newValue);
             break;
         }
       },
 
       onAddGenericTab: index => {
-        this.ps.privateScope.setAddTabButton(this.addable);
-        this.ps.privateScope.setCloseTabButton(this.tabstrip.items()[index]);
-        this.ps.privateScope.setTabstripPagination();
+        this.privateScope.setAddTabButton(this.addable);
+        this.privateScope.setCloseTabButton(this.tabstrip.items()[index]);
+        this.privateScope.setTabstripPagination();
       },
 
       onAddWelcomeTab: index => {
         const tabContent = this.tabstrip.contentElement(index);
         const $newTab = $(tabContent).find("ank-welcome-tab");
-        this.ps.privateScope.bindWelcomeTabEvents($newTab, index);
+        this.privateScope.bindWelcomeTabEvents($newTab, index);
       },
 
       onAddLazyTab: index => {
         $(this.tabstrip.items()[index]).hide();
         $(this.tabstrip.contentElement(index)).hide();
         const tabContent = this.tabstrip.contentElement(index);
-        this.ps.privateScope.bindLazyTabEvents(tabContent, index);
+        this.privateScope.bindLazyTabEvents(tabContent, index);
       },
 
       onAddDocumentTab: index => {
         const tabContent = this.tabstrip.contentElement(index);
         const $doc = $(tabContent).find("ank-smart-element");
-        this.ps.privateScope.bindDocumentTabEvents($doc, index);
+        this.privateScope.bindDocumentTabEvents($doc, index);
         $doc.one("ready", () => {
           $(tabContent)
             .find(".seTabs__tab__content--se")
@@ -596,7 +592,7 @@ export default class SeTabsComponent extends Vue {
           this.selectIndex(this.tabModel.size() - 1);
         }
 
-        this.$emitAnkEvent("tabs-new-tab");
+        $emitAnkEvent("tabs-new-tab");
       },
 
       onCloseTabClick: e => {
@@ -681,7 +677,7 @@ export default class SeTabsComponent extends Vue {
             );
         }
 
-        const lazyIndex = this.ps.privateScope.getLazyTabIndex();
+        const lazyIndex = this.privateScope.getLazyTabIndex();
         if (lazyIndex != -1) {
           this.tabModel.remove(lazyIndex);
         }
@@ -710,10 +706,10 @@ export default class SeTabsComponent extends Vue {
 
       formatSE: seConfig => {
         let initid = null;
-        let otherProps = {};
+        let otherPr = {};
         if (typeof seConfig === "object") {
           initid = seConfig.initid;
-          otherProps = Object.assign({}, seConfig);
+          otherPr = Object.assign({}, seConfig);
         } else if (
           typeof seConfig === "number" ||
           typeof seConfig === "string"
@@ -727,18 +723,18 @@ export default class SeTabsComponent extends Vue {
             "' must be String|Number or Object with an 'initid' property";
         }
 
-        return Object.assign({}, otherProps, { initid: initid.toString() });
+        return Object.assign({}, otherPr, { initid: initid.toString() });
       }
     };
   }
 
   mounted() {
-    kendo.ui.progress(kendo.jquery(this.$refs.tabsWrapper), true);
+    kendo.ui.progress(kendo.jQuery(this.$refs.tabsWrapper), true);
     const ready = () => {
-      this.ps.privateScope.createKendoComponents();
-      this.$emitAnkEvent("se-tabs-ready");
-      kendo.ui.progress(kendo.jquery(this.$refs.tabsWrapper), false);
-      this._enableReady();
+      this.privateScope.createKendoComponents();
+      $emitAnkEvent("se-tabs-ready");
+      kendo.ui.progress(kendo.jQuery(this.$refs.tabsWrapper), false);
+      _enableReady();
     };
 
     if (document.readyState === "loading") {
@@ -748,7 +744,7 @@ export default class SeTabsComponent extends Vue {
     }
   }
   public addSE(seConfig) {
-    const seFormat = this.ps.privateScope.formatSE(seConfig);
+    const seFormat = this.privateScope.formatSE(seConfig);
     const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
     if (index < 0) {
       const tabData = {
@@ -757,9 +753,9 @@ export default class SeTabsComponent extends Vue {
         contentTemplate,
         data: Object.assign({}, seFormat)
       };
-      if (this.ps.privateScope.canUseLazyTab()) {
+      if (this.privateScope.canUseLazyTab()) {
         // Use preloaded smart element
-        this.ps.privateScope.loadLazyTabDocument(tabData);
+        this.privateScope.loadLazyTabDocument(tabData);
       } else {
         this.tabModel.add(tabData);
       }
@@ -774,7 +770,7 @@ export default class SeTabsComponent extends Vue {
     if (position === undefined) {
       this.addSE(se);
     } else {
-      const seFormat = this.ps.privateScope.formatSE(se);
+      const seFormat = this.privateScope.formatSE(se);
       const index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
       if (index < 0) {
         const tabData = {
@@ -797,19 +793,19 @@ export default class SeTabsComponent extends Vue {
       index = 0;
     }
 
-    this.$emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
+    $emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
 
     this.tabstrip.select(index);
   }
 
   public selectSE(seConfig) {
-    const seFormat = this.ps.privateScope.formatSE(seConfig);
+    const seFormat = this.privateScope.formatSE(seConfig);
     let index = this.tabModel.findIndex(t => t.tabId === seFormat.initid);
     if (index < 0) {
       index = 0;
     }
 
-    this.$emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
+    $emitAnkEvent("se-tab-selected", this.tabModel.get(index), index);
 
     this.tabstrip.select(index);
   }
@@ -828,7 +824,7 @@ export default class SeTabsComponent extends Vue {
 
   public initWithWelcomeTab(tabConfig = null) {
     this.welcomeTabConfig = tabConfig || this.newTabConfig;
-    this.ps.privateScope.initTabModel();
+    this.privateScope.initTabModel();
   }
 
   public addCustomTab(tabConfiguration) {
