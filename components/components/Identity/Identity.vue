@@ -1,7 +1,7 @@
 <template>
     <div class="identity-component" ref="identity-component" v-if="">
-        <div class="identity">
-            <button class="identity-badge" @click="toggleSettingsPopup">
+        <div class="identity" :class="{ interactive: emailAlterable || passwordAlterable}">
+            <button class="identity-badge"  @click="toggleSettingsPopup">
                 <span class="identity-badge-initials" >{{ initials }}</span>
                 <i class="identity-badge-icon fa fa-angle-down" v-if="emailAlterable || passwordAlterable"></i>
             </button>

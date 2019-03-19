@@ -4,12 +4,12 @@
 
     .identity-badge {
       background-color: $ank-ui-color-client;
-      height: $ank-identity-badge-height;
-      border-radius: $ank-identity-badge-height / 2;
+      border-radius: 50%;
     }
 
-    .identity-badge:hover {
+    &.interactive .identity-badge:hover {
       background-color: lighten($ank-ui-color-client, 20%);
+      cursor: pointer;
     }
 
     .identity-badge-initials {
