@@ -1,7 +1,12 @@
 import Vue from "vue";
-const AuthentPassword = () => import("../Authent/AuthentPassword/AuthentPassword.vue");
+const AuthentPassword = () =>
+  import("../Authent/AuthentPassword/AuthentPassword.vue");
 import { Component, Prop } from "vue-property-decorator";
-import { _enableReady,$emitAnkEvent,$createComponentEvent} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
+import {
+  _enableReady,
+  $emitAnkEvent,
+  $createComponentEvent
+} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
 declare var kendo;
 @Component({
@@ -105,20 +110,17 @@ export default class IdentityComponent extends Vue {
             newPassword: this.newPassword
           })
           .then(() => {
-            const afterEvent = $createComponentEvent(
-              "afterPasswordChange",
-              {
-                detail: [
-                  {
-                    email: this.email,
-                    login: this.login,
-                    initials: this.initials,
-                    firstName: this.firstName,
-                    lastName: this.lastName
-                  }
-                ]
-              }
-            );
+            const afterEvent = $createComponentEvent("afterPasswordChange", {
+              detail: [
+                {
+                  email: this.email,
+                  login: this.login,
+                  initials: this.initials,
+                  firstName: this.firstName,
+                  lastName: this.lastName
+                }
+              ]
+            });
             $emitAnkEvent("afterPasswordChange", afterEvent);
 
             // Remove loader + close dialog
@@ -207,7 +209,8 @@ export default class IdentityComponent extends Vue {
   // Open or close the popup that allow the user to change his email and/or password
   public toggleSettingsPopup() {
     if (this.emailAlterable || this.passwordAlterable) {
-      kendo.jQuery(this.$refs.modificationPopup)
+      kendo
+        .jQuery(this.$refs.modificationPopup)
         .data("kendoPopup")
         .toggle();
     }
@@ -215,7 +218,8 @@ export default class IdentityComponent extends Vue {
   // Close the popup that allow the user to change his email and/or password
   public closeSettingsPopup() {
     if (this.emailAlterable || this.passwordAlterable) {
-      kendo.jQuery(this.$refs.modificationPopup)
+      kendo
+        .jQuery(this.$refs.modificationPopup)
         .data("kendoPopup")
         .close();
     }
@@ -286,7 +290,8 @@ export default class IdentityComponent extends Vue {
   }
   // Close dialog to confirm the modification of the email
   public closeEmailModifiedWindow() {
-    kendo.jQuery(this.$refs.emailModifiedWindow)
+    kendo
+      .jQuery(this.$refs.emailModifiedWindow)
       .data("kendoWindow")
       .close();
   }

@@ -1,15 +1,15 @@
 export interface ISeList {
-  replaceTopPagerButton(),
+  replaceTopPagerButton();
 
-  propageKendoDataSourceEvent(eventName: string, eventType ?: string),
+  propageKendoDataSourceEvent(eventName: string, eventType?: string);
 
-  initKendo(),
+  initKendo();
 
-  onPagerChange(event): void,
+  onPagerChange(event): void;
 
-  sendGetRequest(url: string, conf),
+  sendGetRequest(url: string, conf);
 
-  onSelectPageSize(event): void,
+  onSelectPageSize(event): void;
 
-  onSelectSe(event): void,
+  onSelectSe(event): void;
 }

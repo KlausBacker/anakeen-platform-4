@@ -5,7 +5,10 @@ import * as openedTabListItemTemplate from "./templates/openedTabList/seOpenedTa
 import TabModel from "./model/tabModel";
 import { Component, Prop, Watch } from "vue-property-decorator";
 import { ISeTabs } from "./ISeTabs";
-import {$emitAnkEvent,_enableReady} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
+import {
+  $emitAnkEvent,
+  _enableReady
+} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 declare var kendo;
 const Constants = {
   WELCOME_TAB_ID: "welcome_tab_id",
@@ -77,7 +80,8 @@ export default class SeTabsComponent extends Vue {
         return false;
       }
     }
-  }) public seList;
+  })
+  public seList;
 
   @Prop({ type: String, default: "" }) public "se-css";
   @Prop({ type: Boolean, default: true }) public closable;

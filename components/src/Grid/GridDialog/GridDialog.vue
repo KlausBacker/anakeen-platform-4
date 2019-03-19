@@ -73,11 +73,11 @@ export default class GridDialog extends Vue {
   @Prop({ type: String, default: "" }) public title;
   @Watch("colsConfig")
   public watchColsConfig(newValue, oldValue) {
-      this.columns = newValue;
+    this.columns = newValue;
   }
   @Watch("searchInput")
   public watchSearchInput(newValue, oldValue) {
-      this.filter(newValue);
+    this.filter(newValue);
   }
   public changes: object = {};
   public columns: Array<any> = this.colsConfig;
@@ -86,24 +86,25 @@ export default class GridDialog extends Vue {
   public searchInput: string = "";
 
   public get validColumns() {
-      return this.columns.filter(c => !!c.field);
-}
+    return this.columns.filter(c => !!c.field);
+  }
   public get dialogTitle() {
-      return this.title || this.translations.dialogTitle
-    }
+    return this.title || this.translations.dialogTitle;
+  }
   public get translations() {
-      return {
-        cancel: this.$pgettext("GridDialog", "Cancel"),
-        applyChanges: this.$pgettext("GridDialog", "Apply changes"),
-        organize: this.$pgettext("GridDialog", "Organize"),
-        label: this.$pgettext("GridDialog", "Title"),
-        display: this.$pgettext("GridDialog", "Display"),
-        columnSearch: this.$pgettext("GridDialog", "Search a column..."),
-        dialogTitle: this.$pgettext("GridDialog", "Columns management")
-      }
-    }
+    return {
+      cancel: this.$pgettext("GridDialog", "Cancel"),
+      applyChanges: this.$pgettext("GridDialog", "Apply changes"),
+      organize: this.$pgettext("GridDialog", "Organize"),
+      label: this.$pgettext("GridDialog", "Title"),
+      display: this.$pgettext("GridDialog", "Display"),
+      columnSearch: this.$pgettext("GridDialog", "Search a column..."),
+      dialogTitle: this.$pgettext("GridDialog", "Columns management")
+    };
+  }
   public mounted() {
-    this.kendoWindow = kendo.jQuery(this.$refs.kendoWindow)
+    this.kendoWindow = kendo
+      .jQuery(this.$refs.kendoWindow)
       .kendoWindow({
         visible: false,
         width: "50%",
@@ -115,7 +116,7 @@ export default class GridDialog extends Vue {
           this.searchInput = "";
           this.$forceUpdate();
         },
-        open: (e) => {
+        open: e => {
           e.sender.wrapper.find(".k-window-title").css("text-align", "center");
           e.sender.wrapper.find(".k-window-title").css("font-size", "1.5rem");
           e.sender.wrapper.find(".k-window-title").css("color", "#6F6F6F");
@@ -125,44 +126,44 @@ export default class GridDialog extends Vue {
       .data("kendoWindow");
   }
   public filter(filterInput = "") {
-      if (!filterInput) {
-        this.columns = this.colsConfig;
-      } else {
-        this.columns = this.colsConfig.filter(col => {
-          const title = col.title ? col.title.toLowerCase() : col.title;
-          if (title) {
-            return title.includes(filterInput.toLowerCase())
-          }
-          return false;
-        })
-      }
+    if (!filterInput) {
+      this.columns = this.colsConfig;
+    } else {
+      this.columns = this.colsConfig.filter(col => {
+        const title = col.title ? col.title.toLowerCase() : col.title;
+        if (title) {
+          return title.includes(filterInput.toLowerCase());
+        }
+        return false;
+      });
     }
-    public close() {
-      if (this.kendoWindow) {
-        this.kendoWindow.close();
-      }
+  }
+  public close() {
+    if (this.kendoWindow) {
+      this.kendoWindow.close();
     }
-    public open() {
-      if (this.kendoWindow) {
-        this.kendoWindow.center().open();
-      }
+  }
+  public open() {
+    if (this.kendoWindow) {
+      this.kendoWindow.center().open();
     }
-    public resize() {
-      if (this.kendoWindow) {
-        this.kendoWindow.resize();
-      }
+  }
+  public resize() {
+    if (this.kendoWindow) {
+      this.kendoWindow.resize();
     }
-    public acceptChanges() {
-      this.$emit("change", this.changes);
-      this.close();
+  }
+  public acceptChanges() {
+    this.$emit("change", this.changes);
+    this.close();
+  }
+  public onDisplayColumn(e, colConfig) {
+    if (e.target.checked) {
+      this.changes[colConfig.field] = { display: true };
+    } else {
+      this.changes[colConfig.field] = { display: false };
     }
-    public onDisplayColumn(e, colConfig) {
-      if (e.target.checked) {
-        this.changes[colConfig.field] = { display: true};
-      } else {
-        this.changes[colConfig.field] = { display: false};
-      }
-    }
+  }
 }
 </script>
 <style lang="scss"></style>

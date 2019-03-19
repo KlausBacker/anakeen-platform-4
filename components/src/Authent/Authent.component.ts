@@ -2,7 +2,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 const a4Password = () => import("./AuthentPassword/AuthentPassword.vue");
 import { IAuthent } from "./IAuthent";
-import { _enableReady} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
+import { _enableReady } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
 declare var kendo;
 // noinspection JSUnusedGlobalSymbols
@@ -13,7 +13,8 @@ declare var kendo;
   name: "ank-authent"
 })
 export default class AuthentComponent extends Vue {
-  @Prop({ type: String, default: "authent/{login3}/?lang={lang}" }) public loginUrl;
+  @Prop({ type: String, default: "authent/{login3}/?lang={lang}" })
+  public loginUrl;
   @Prop({ type: String, default: "fr_FR, en_US" }) public authentLanguages;
   @Prop({ type: String, default: "fr_FR" }) public defaultLanguage;
   public login: string = "";
@@ -151,7 +152,7 @@ export default class AuthentComponent extends Vue {
 
         $resetForm.on("submit", this.applyResetPassword);
       }
-    }
+    };
   }
 
   public mounted() {

@@ -3,13 +3,17 @@ import VueSetup from "../setup.js";
 import * as SeTemplate from "./seListItem.template.kd";
 import { Component, Prop } from "vue-property-decorator";
 import { ISeList } from "./ISeList";
-import {$createComponentEvent, $emitAnkEvent, _enableReady} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
+import {
+  $createComponentEvent,
+  $emitAnkEvent,
+  _enableReady
+} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
 declare var kendo;
 
 Vue.use(VueSetup);
 @Component({
-  name: "ank-se-list",
+  name: "ank-se-list"
 })
 export default class SeListComponent extends Vue {
   @Prop({ type: String, default: "/CORE/Images/anakeen-logo.svg" })
@@ -43,10 +47,7 @@ export default class SeListComponent extends Vue {
             detail: [e]
           }
         );
-        const notCancelled = $emitAnkEvent(
-          `se-list-${eventName}`,
-          customEvent
-        );
+        const notCancelled = $emitAnkEvent(`se-list-${eventName}`, customEvent);
         if (eventType === "before" && !notCancelled) {
           if (e.preventDefault) {
             e.preventDefault();
@@ -174,15 +175,18 @@ export default class SeListComponent extends Vue {
       onPagerChange: e => {
         const currentPage = this.dataSource.page();
         const newPage = e.index;
-        const customEvent = $createComponentEvent("before-se-list-page-change", {
-          cancelable: true,
-          detail: [
-            {
-              currentPage,
-              newPage
-            }
-          ]
-        });
+        const customEvent = $createComponentEvent(
+          "before-se-list-page-change",
+          {
+            cancelable: true,
+            detail: [
+              {
+                currentPage,
+                newPage
+              }
+            ]
+          }
+        );
         if ($emitAnkEvent("before-se-list-page-change", customEvent)) {
           this.dataSource.page(customEvent.detail[0].newPage);
           this.refreshList()

@@ -45,7 +45,8 @@ export default class GridController extends Vue {
   @Prop({
     type: String,
     default: "/api/v2/grid/config/<collection>"
-  }) public urlConfig;
+  })
+  public urlConfig;
   @Prop({
     type: String,
     default: "/api/v2/grid/export/<transaction>/<collection>"
@@ -135,7 +136,8 @@ export default class GridController extends Vue {
   @Prop({
     type: Boolean,
     default: true
-  }) public persistSelection;
+  })
+  public persistSelection;
 
   public privateScope: IGrid;
   @Watch("urlConfig")
@@ -473,17 +475,14 @@ export default class GridController extends Vue {
   public gridKendoUtils: any = null;
   public allRowsSelectable: boolean = false;
   public uncheckRows: object = {};
-  public dataSource: any = null ;
+  public dataSource: any = null;
   public kendoGrid: any = null;
   public gridConfig: any = null;
   public kendoDataSourceOptions: object = {
     serverPaging: this.serverPaging,
     serverFiltering: this.serverFiltering,
     serverSorting: this.serverSorting,
-    pageSize:
-      this.pageSizes && this.pageSizes.length
-        ? this.pageSizes[0]
-        : 10,
+    pageSize: this.pageSizes && this.pageSizes.length ? this.pageSizes[0] : 10,
     schema: {
       data: response => response.data.data.smartElements,
       total: response => response.data.data.requestParameters.pager.total
@@ -492,10 +491,7 @@ export default class GridController extends Vue {
   public kendoGridOptions: object = {
     filterable: this.filterable
       ? {
-          mode:
-            this.filterable === "inline"
-              ? "menu, row"
-              : this.filterable
+          mode: this.filterable === "inline" ? "menu, row" : this.filterable
         }
       : this.filterable,
     sortable: this.sortable

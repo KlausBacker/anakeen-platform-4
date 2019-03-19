@@ -11,7 +11,8 @@ export default class AnakeenLoadingController extends Vue {
     validator: value => {
       return value === "black" || value === "white";
     }
-  }) public color;
+  })
+  public color;
   @Prop({ type: String, default: "auto" }) public width;
   @Prop({ type: String, default: "auto" }) public height;
 

@@ -10,7 +10,6 @@ const INPUT_TYPES = {
   name: "ank-authent-password"
 })
 export default class AuthentPasswordComponent extends Vue {
-
   @Prop({ type: String, default: "Password" }) public label;
   @Prop({ type: String, default: "" }) public placeholder;
   @Prop({ type: String, default: "" }) public validationMessage;
