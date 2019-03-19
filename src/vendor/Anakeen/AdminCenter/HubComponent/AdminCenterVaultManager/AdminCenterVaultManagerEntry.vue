@@ -7,7 +7,7 @@
             <i class="material-icons hub-icon">storage</i> <span> Vault Manager</span>
         </nav>
         <div v-else-if="isHubContent" class="vault-manager">
-            <admin-center-vault></admin-center-vault>
+            <admin-center-vault v-model="selectedVault"></admin-center-vault>
         </div>
     </div>
 </template>
@@ -20,6 +20,32 @@
     extends: HubElement, // ou mixins: [ HubElementMixins ],
     components: {
       "admin-center-vault": VaultManager
+    },
+    watch: {
+      selectedVault(newValue) {
+        this.navigate(`/admin/vaults/${newValue}`);
+      }
+    },
+    created() {
+      this.registerRoute("/admin/vaults/:vaultId", (params) => {
+        this.hubNotify({
+          type: "info", // Type de notification parmi: "info", "notice", "success", "warning", "error"
+          content: {
+            textContent: "You see the info of the vault "+params.vaultId, // ou htmlContent: "<em>Un message d'information important</em>"
+            title: "VAULTS",
+          },
+          options: {
+            displayTime: 5000, // temps d'affichage en ms de la notification (5000ms par défaut)
+            closable: false, // La notification peut être fermée via l'ui ou non (true par défaut)
+          }
+        });
+        this.selectedVault = params.vaultId;
+      }).resolve(window.location.pathname);
+    },
+    data() {
+      return {
+        selectedVault: ""
+      }
     }
   }
 </script>

@@ -6,6 +6,7 @@ import "@progress/kendo-ui/js/kendo.toolbar.js";
 import axios from "axios";
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Prop, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 Vue.use(DropdownsInstaller);
@@ -34,6 +35,7 @@ export default class VaultManagerController extends Vue {
     }
     return human;
   }
+  @Prop({ default: "", type: String}) public value!: string;
   public info: any = [];
   public panes: object[] = [
     {
@@ -80,6 +82,20 @@ export default class VaultManagerController extends Vue {
 
   private vaultGrid: any;
   private selectedFs: string = "";
+
+  @Watch("selectedFs")
+  public onSelectedFsDataChange(newVal, oldVal) {
+    if (newVal !== oldVal) {
+      this.$emit("input", newVal);
+    }
+  }
+
+  @Watch("value")
+  public onValuePropChanged(newVal, oldVal) {
+    if (newVal !== oldVal) {
+      this.selectedFs = newVal;
+    }
+  }
 
   public refreshVaultGrid() {
     this.vaultsGridData.read();
@@ -187,6 +203,7 @@ export default class VaultManagerController extends Vue {
           {
             command: {
               click: e => {
+                e.preventDefault();
                 Vue.component("ank-vault-info", resolve => {
                   import("./VaultInfo/VaultInfo.vue").then(AnkVaultInfo => {
                     resolve(AnkVaultInfo.default);
@@ -198,7 +215,6 @@ export default class VaultManagerController extends Vue {
                 this.info = dataItem.toJSON();
                 // @ts-ignore
                 this.$refs.vaultSplitter.disableEmptyContent();
-
                 this.selectedFs = dataItem.fsid;
                 $tr
                   .closest("tbody")
@@ -231,6 +247,9 @@ export default class VaultManagerController extends Vue {
         dataSource: this.vaultsGridData
       })
       .data("kendoGrid");
+    if (this.value) {
+      this.selectedFs = this.value
+    }
   }
   /**
    * add token in tr tag to easily select tr
