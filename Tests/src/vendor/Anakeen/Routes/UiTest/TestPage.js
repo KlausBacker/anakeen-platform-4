@@ -1,6 +1,13 @@
-import './TestPage.css';
-const _ = require('underscore');
+import Vue from "vue";
+import TestPage from "./TestPage.vue";
+import LoadScript from "vue-m-loader";
 
-$(document).ready(() => {
+Vue.use(LoadScript);
 
+new Vue({
+  el: "#test",
+  components: {
+    TestPage
+  },
+  template: "<test-page></test-page>"
 });

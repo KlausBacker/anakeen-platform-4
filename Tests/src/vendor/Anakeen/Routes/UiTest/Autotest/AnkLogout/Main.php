@@ -2,6 +2,8 @@
 
 namespace Anakeen\Routes\UiTest\Autotest\AnkLogout;
 
+use Anakeen\Ui\UIGetAssetPath;
+
 class Main
 {
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
@@ -11,12 +13,16 @@ class Main
         $data = [
             "JS_DEPS" => [
                 [
-                    "key" =>"jquery",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSJqueryPath()
+                    "key" => "kendo",
+                    "path" => UIGetAssetPath::getJSKendoPath()
                 ],
                 [
-                    "key" =>"kendo",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoPath()
+                    "key" => "kendoDLL",
+                    "path" => UIGetAssetPath::getJSKendoComponentPath()
+                ],
+                [
+                    "key" => "vueDll",
+                    "path" => UIGetAssetPath::getJSVueComponentPath()
                 ]
             ],
             "JS" => [
