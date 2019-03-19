@@ -54,8 +54,9 @@ export default class HubDock extends Vue {
         default:
           return {};
       }
+    } else {
+      return this.dockWrapperStyle;
     }
-    return {};
   }
 
   public get dockWrapperStyle(): object {
@@ -70,14 +71,6 @@ export default class HubDock extends Vue {
     }
   }
 
-  public get entriesStyle(): object {
-    if (this.evenSpace) {
-      return {
-        "justify-content": "space-evenly"
-      };
-    }
-    return {};
-  }
   private static getHubEntriesInstance(...slots): Vue[] {
     let result: Vue[] = [];
     if (slots && slots.length) {
@@ -112,13 +105,13 @@ export default class HubDock extends Vue {
     | number;
   @Prop({ default: true, type: Boolean }) public collapseOnSelection!: boolean;
   @Prop({ default: false, type: Boolean }) public superposeDock!: boolean;
-  @Prop({ default: false, type: Boolean }) public evenSpace!: boolean;
   @Prop({ default: true, type: Boolean }) public expandOnHover!: boolean;
   @Prop({ default: true, type: Boolean }) public superposeOnHover!: boolean;
   @Prop({ default: 1000, type: Number }) public hoverDelay!: number;
   @Prop({ default: false, type: Boolean }) public multiselection!: boolean;
   @Prop({ default: () => [], type: Array }) public content!: object[];
 
+  public animate: boolean = false;
   public collapsed: boolean = !this.expanded;
   public collapsable: boolean = this.expandable;
   public superposable: boolean = this.superposeDock;
@@ -179,6 +172,17 @@ export default class HubDock extends Vue {
   }
 
   public toggleDock() {
+    if (
+      this.position === DockPosition.BOTTOM ||
+      this.position === DockPosition.TOP
+    ) {
+      // Use opacity animation for top/bottom docks
+      this.animate = true;
+      window.setTimeout(() => {
+        this.animate = false;
+      }, 1000);
+    }
+
     if (this.collapsed) {
       this.expand();
     } else {
