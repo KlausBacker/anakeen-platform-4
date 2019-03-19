@@ -103,7 +103,7 @@ export default class GridDialog extends Vue {
       }
     }
   public mounted() {
-    this.kendoWindow = kendo.jquery(this.$refs.kendoWindow)
+    this.kendoWindow = kendo.jQuery(this.$refs.kendoWindow)
       .kendoWindow({
         visible: false,
         width: "50%",
