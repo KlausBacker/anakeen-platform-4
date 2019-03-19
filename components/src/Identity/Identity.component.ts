@@ -1,15 +1,14 @@
 import Vue from "vue";
-const AuthentPassword = () => import("../Authent/AuthentPassword");
-import { Component, Prop, Mixins } from "vue-property-decorator";
-import AnkMixins from "../../mixins/AnkVueComponentMixin";
+const AuthentPassword = () => import("../Authent/AuthentPassword/AuthentPassword.vue");
+import { Component, Prop } from "vue-property-decorator";
+import { _enableReady,$emitAnkEvent,$createComponentEvent} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
 declare var kendo;
 @Component({
   name: "ank-identity",
   components: {
     "ank-authent-password": AuthentPassword
-  },
-  mixins: [AnkMixins]
+  }
 })
 export default class IdentityComponent extends Vue {
   // Compact badge (just the initials), or large badge (with name and email)
@@ -38,12 +37,12 @@ export default class IdentityComponent extends Vue {
   public passwordWarningMessage: string = "";
 
   public getBaseComponent() {
-    return kendo.jquery(this.$refs["identity-component"]);
+    return kendo.jQuery(this.$refs["identity-component"]);
   }
   // Fetch user's information from the server
   public fetchUser() {
     return this.$http.get("/api/v2/ui/users/current").then(response => {
-      const customEvent = this.$createComponentEvent("beforeUserLoaded", {
+      const customEvent = $createComponentEvent("beforeUserLoaded", {
         cancelable: true,
         detail: [
           {
@@ -52,20 +51,20 @@ export default class IdentityComponent extends Vue {
         ]
       });
 
-      if (this.$emitAnkEvent("beforeUserLoaded", customEvent)) {
+      if ($emitAnkEvent("beforeUserLoaded", customEvent)) {
         this.login = customEvent.detail[0].login;
         this.initials = customEvent.detail[0].initials;
         this.firstName = customEvent.detail[0].firstName;
         this.lastName = customEvent.detail[0].lastName;
         this.email = customEvent.detail[0].email;
-        const afterEvent = this.$createComponentEvent("afterUserLoaded", {
+        const afterEvent = $createComponentEvent("afterUserLoaded", {
           detail: [
             {
               ...customEvent.detail[0]
             }
           ]
         });
-        this.$emitAnkEvent("afterUserLoaded", afterEvent);
+        $emitAnkEvent("afterUserLoaded", afterEvent);
       }
     });
   }
@@ -87,11 +86,11 @@ export default class IdentityComponent extends Vue {
 
   // Send a request to change the password on the server
   public modifyUserPassword() {
-    const customEvent = this.$createComponentEvent("beforePasswordChange", {
+    const customEvent = $createComponentEvent("beforePasswordChange", {
       cancelable: true
     });
 
-    this.$emitAnkEvent("beforePasswordChange", customEvent);
+    $emitAnkEvent("beforePasswordChange", customEvent);
 
     if (!customEvent.defaultPrevented) {
       // Verify if password matches confirmation
@@ -99,14 +98,14 @@ export default class IdentityComponent extends Vue {
         this.newPassword === this.newPasswordConfirmation &&
         this.newPassword !== ""
       ) {
-        kendo.ui.progress(kendo.jquery(this.$refs.passwordModifier), true);
+        kendo.ui.progress(kendo.jQuery(this.$refs.passwordModifier), true);
         this.$http
-          .put("/components/identity/password", {
+          .put("/src/identity/password", {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword
           })
           .then(() => {
-            const afterEvent = this.$createComponentEvent(
+            const afterEvent = $createComponentEvent(
               "afterPasswordChange",
               {
                 detail: [
@@ -120,16 +119,16 @@ export default class IdentityComponent extends Vue {
                 ]
               }
             );
-            this.$emitAnkEvent("afterPasswordChange", afterEvent);
+            $emitAnkEvent("afterPasswordChange", afterEvent);
 
             // Remove loader + close dialog
-            kendo.ui.progress(kendo.jquery(this.$refs.passwordModifier), false);
+            kendo.ui.progress(kendo.jQuery(this.$refs.passwordModifier), false);
             this.openPasswordModifiedWindow();
           })
           .catch(error => {
             // Show a warning message and remove the loader
             this.passwordWarningMessage = error.response.data.userMessage;
-            kendo.ui.progress(kendo.jquery(this.$refs.passwordModifier), false);
+            kendo.ui.progress(kendo.jQuery(this.$refs.passwordModifier), false);
           });
       } else {
         // Show a warning message
@@ -142,7 +141,7 @@ export default class IdentityComponent extends Vue {
 
   // Send a request to change the email on the server
   public modifyUserEmail() {
-    const customEvent = this.$createComponentEvent("beforeMailAddressChange", {
+    const customEvent = $createComponentEvent("beforeMailAddressChange", {
       cancelable: true,
       detail: [
         {
@@ -151,21 +150,21 @@ export default class IdentityComponent extends Vue {
       ]
     });
 
-    this.$emitAnkEvent("beforeMailAddressChange", customEvent);
+    $emitAnkEvent("beforeMailAddressChange", customEvent);
 
     if (!customEvent.defaultPrevented) {
       // Verify if the input is an email ( [string]@[string].[string] )
       if (this.newEmail.match(/\S+@\S+\.\S+/)) {
         kendo.ui.progress($(this.$refs.emailModifier), true);
         this.$http
-          .put("/components/identity/email", {
+          .put("/src/identity/email", {
             email: customEvent.detail[0].newEmail,
             password: this.oldPassword
           })
           .then(response => {
             this.email = response.data.email;
 
-            const customEvent = this.$createComponentEvent(
+            const customEvent = $createComponentEvent(
               "afterMailAddressChange",
               {
                 detail: [
@@ -176,10 +175,10 @@ export default class IdentityComponent extends Vue {
               }
             );
 
-            this.$emitAnkEvent("afterMailAddressChange", customEvent);
+            $emitAnkEvent("afterMailAddressChange", customEvent);
 
             // Remove loader and close dialog
-            kendo.ui.progress(kendo.jquery(this.$refs.emailModifier), false);
+            kendo.ui.progress(kendo.jQuery(this.$refs.emailModifier), false);
             this.openEmailModifiedWindow();
           })
           .catch(error => {
@@ -194,7 +193,7 @@ export default class IdentityComponent extends Vue {
             } else {
               this.emailWarningMessage = this.translations.unkownError;
             }
-            kendo.ui.progress(kendo.jquery(this.$refs.emailModifier), false);
+            kendo.ui.progress(kendo.jQuery(this.$refs.emailModifier), false);
           });
       } else {
         // Show a warning message
@@ -208,7 +207,7 @@ export default class IdentityComponent extends Vue {
   // Open or close the popup that allow the user to change his email and/or password
   public toggleSettingsPopup() {
     if (this.emailAlterable || this.passwordAlterable) {
-      kendo.jquery(this.$refs.modificationPopup)
+      kendo.jQuery(this.$refs.modificationPopup)
         .data("kendoPopup")
         .toggle();
     }
@@ -216,7 +215,7 @@ export default class IdentityComponent extends Vue {
   // Close the popup that allow the user to change his email and/or password
   public closeSettingsPopup() {
     if (this.emailAlterable || this.passwordAlterable) {
-      kendo.jquery(this.$refs.modificationPopup)
+      kendo.jQuery(this.$refs.modificationPopup)
         .data("kendoPopup")
         .close();
     }
@@ -236,7 +235,7 @@ export default class IdentityComponent extends Vue {
         this.emailWarningMessage = "";
       };
 
-      let $emailWindow = kendo.jquery(this.$refs.emailModifier);
+      let $emailWindow = kendo.jQuery(this.$refs.emailModifier);
       $emailWindow
         .kendoWindow({
           minWidth: "100px",
@@ -268,7 +267,7 @@ export default class IdentityComponent extends Vue {
 
   // Open dialog to confirm the modification of the email
   public openEmailModifiedWindow() {
-    let dialog = kendo.jquery(this.$refs.emailModifiedWindow);
+    let dialog = kendo.jQuery(this.$refs.emailModifiedWindow);
     dialog
       .kendoWindow({
         minWidth: "100px",
@@ -287,7 +286,7 @@ export default class IdentityComponent extends Vue {
   }
   // Close dialog to confirm the modification of the email
   public closeEmailModifiedWindow() {
-    kendo.jquery(this.$refs.emailModifiedWindow)
+    kendo.jQuery(this.$refs.emailModifiedWindow)
       .data("kendoWindow")
       .close();
   }
@@ -309,7 +308,7 @@ export default class IdentityComponent extends Vue {
         this.reColorInputs();
       };
 
-      let passwordWindow = kendo.jquery(this.$refs.passwordModifier);
+      let passwordWindow = kendo.jQuery(this.$refs.passwordModifier);
       passwordWindow
         .kendoWindow({
           minWidth: "100px",
@@ -341,7 +340,7 @@ export default class IdentityComponent extends Vue {
 
   // Open dialog to confirm the modification of the password
   public openPasswordModifiedWindow() {
-    let dialog = kendo.jquery(this.$refs.passwordModifiedWindow);
+    let dialog = kendo.jQuery(this.$refs.passwordModifiedWindow);
     dialog
       .kendoWindow({
         minWidth: "100px",
@@ -503,7 +502,7 @@ export default class IdentityComponent extends Vue {
   public mounted() {
     // Init popup to allow email and/or password modification (if allowed in the props)
     if (this.emailAlterable || this.passwordAlterable) {
-      kendo.jquery(this.$refs.modificationPopup).kendoPopup({
+      kendo.jQuery(this.$refs.modificationPopup).kendoPopup({
         anchor: this.getBaseComponent().find(".identity-badge", this.$el),
         origin: "bottom left",
         position: "top left",
@@ -512,7 +511,7 @@ export default class IdentityComponent extends Vue {
       });
     }
     this.fetchUser().then(() => {
-      this._enableReady();
+      _enableReady();
     });
   }
 }
