@@ -13,7 +13,7 @@
 </template>
 <script>
 import AdminCenterParameters from "../../Parameters/AdminCenterParameters.vue";
-import { HubElement } from "@anakeen/hub-components";
+import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 
 export default {
   name: "ank-admin-parameter",

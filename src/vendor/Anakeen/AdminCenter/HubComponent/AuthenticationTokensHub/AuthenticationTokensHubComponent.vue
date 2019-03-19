@@ -13,7 +13,7 @@
 </template>
 <script>
   import AdminCenterAuthentTokens from "../../AuthenticationTokens/AuthenticationTokens";
-  import { HubElement } from "@anakeen/hub-components";
+  import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 
   export default {
     name: "ank-hub-authentication-tokens",

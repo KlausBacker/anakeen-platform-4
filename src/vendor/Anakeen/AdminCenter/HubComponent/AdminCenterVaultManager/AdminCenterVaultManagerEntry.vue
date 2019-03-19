@@ -13,7 +13,7 @@
 </template>
 <script>
   import VaultManager from "../../VaultManager/VaultManager.vue";
-  import { HubElement } from "@anakeen/hub-components";
+  import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 
   export default {
     name: "ank-admin-vault-manager",
