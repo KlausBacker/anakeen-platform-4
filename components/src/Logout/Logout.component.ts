@@ -1,10 +1,9 @@
 import Vue from "vue";
-import AnkMixins from "../../mixins/AnkVueComponentMixin";
-import { Component, Prop, Mixins } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
+import { _enableReady} from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
 @Component({
-  name: "ank-logout",
-  mixins: [AnkMixins],
+  name: "ank-logout"
 })
 export default class LogoutComponent extends Vue {
   @Prop({type: String, default: ""}) public title;
@@ -29,7 +28,7 @@ export default class LogoutComponent extends Vue {
         this.$emit("logoutCanceled");
       } else {
         this.$http
-          .delete("/components/logout/session")
+          .delete("/src/logout/session")
           .then(response => {
             this.$emit("afterLogout", response.data);
             document.location.assign(response.data.location || "/");
@@ -50,6 +49,6 @@ export default class LogoutComponent extends Vue {
       };
     }
   public mounted() {
-    this._enableReady();
+    _enableReady();
   }
 };
