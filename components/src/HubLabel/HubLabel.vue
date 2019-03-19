@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div v-html="label"></div>
+    <nav v-if="isDockCollapsed">
+      <div v-html="label"></div>
+    </nav>
+    <nav v-else-if="isDockExpanded">
+      <div v-html="extendedLabel"></div>
+    </nav>
+
   </div>
 </template>
 
@@ -13,5 +19,6 @@ import HubElementMixins from "../HubElement/Mixins/HubElementMixin";
 })
 export default class HubLabel extends Vue {
   @Prop({ type: String, default: "" }) label;
+  @Prop({ type: String, default: "" }) extendedLabel;
 }
 </script>
