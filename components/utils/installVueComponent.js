@@ -1,4 +1,4 @@
-import VueSetup from "../components/setup";
+import VueSetup from "../src/setup";
 import publicMethods from "../mixins/AnkWebComponentsMixin/publicMethods";
 
 const vueComponentInstall = vueComponent =>

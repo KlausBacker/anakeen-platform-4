@@ -1,6 +1,6 @@
 const path = require("path");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
-const { cssLoader, addDll } = require("@anakeen/webpack-conf/parts");
+const { vueLoader,typeScriptLoader, cssLoader, addDll } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
@@ -25,6 +25,8 @@ module.exports = () => {
     },
     buildPath: PUBLIC_PATH,
     customParts: [
+      vueLoader(),
+      typeScriptLoader(),
       addDll({
         context: BASE_DIR,
         manifest: path.join(

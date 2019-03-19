@@ -7,8 +7,5 @@ declare module "vue/types/vue" {
     _uid: number,
     $http: AxiosInstance,
     $axios: AxiosStatic,
-    _enableReady();
-    $createComponentEvent(...args: any[]);
-    $emitAnkEvent(...args: any[]);
   }
 }

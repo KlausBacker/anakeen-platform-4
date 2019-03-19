@@ -30,7 +30,7 @@ module.exports = () => {
           alias: {
             "@anakeen/user-interfaces": path.resolve(
               BASE_DIR,
-              "components/components/index"
+              "components/src/index"
             )
           }
         }

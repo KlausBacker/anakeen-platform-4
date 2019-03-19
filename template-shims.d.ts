@@ -1,4 +1,4 @@
-declare module "*.kd" {
-  const content: string;
+declare module "*template.kd" {
+  const content: any;
   export default content;
 }
