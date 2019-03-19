@@ -5,6 +5,7 @@
         'hub-dock-component': true,
         'hub-dock--expanded': !collapsed,
         'hub-dock--collapsed': collapsed,
+        'hub-dock--animation': animate,
         'hub-dock--collapsable': collapsable,
         'hub-dock--absolute': superposable
       },
@@ -17,7 +18,7 @@
       ref="dockEl"
       :style="dockWrapperStyle"
     >
-      <div class="hub-dock-transition-wrapper" :style="dockWrapperStyle">
+      <div class="hub-dock-transition-wrapper" :style="dockWrapperStyle" >
         <div
           class="hub-dock-content"
           @mouseover="onOverDock"

@@ -18,12 +18,17 @@ class HubConfigurationLabelBehavior extends \SmartStructure\Hubconfigurationslot
      */
     protected function getComponentConfiguration()
     {
+        $longLabel=$this->getAttributeValue("extended_label");
+        $label=$this->getAttributeValue("label");
+        if (!$longLabel) {
+            $longLabel = $label;
+        }
         return [
             // Name of the Vue.js component
             "name" => "hub-label",
 
             // Properties to use for the components
-            "props" => ["label" => $this->getAttributeValue("label")]
+            "props" => ["label" => $label, "extendedLabel" => $longLabel]
         ];
     }
 }

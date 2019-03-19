@@ -8,6 +8,7 @@
         <smart:fields>
             <smart:field-set name="hub_component_parameters" extended="true">
                 <smart:field-longtext name="label" label="Html label" access="ReadWrite"/>
+                <smart:field-longtext name="extended_label" label="Extended Html label" access="ReadWrite"/>
             </smart:field-set>
         </smart:fields>
 
