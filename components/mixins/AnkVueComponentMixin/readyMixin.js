@@ -1,5 +1,5 @@
 //A mixin to indicate if the component is ready
-const AnkVueReady = {
+export const AnkVueReady = {
   data() {
     return {
       ready: false
