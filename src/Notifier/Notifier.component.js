@@ -654,11 +654,16 @@ export default {
   computed: {
     translations() {
       return {
-        defaultErrorTitle: this.$pgettext("Notifier", "Error"),
-        defaultWarningTitle: this.$pgettext("Notifier", "Warning"),
-        defaultSuccessTitle: this.$pgettext("Notifier", "Success"),
-        defaultInfoTitle: this.$pgettext("Notifier", "Info"),
-        defaultNoticeTitle: this.$pgettext("Notifier", "Notice")
+        // defaultErrorTitle: this.$pgettext("Notifier", "Error"),
+        // defaultWarningTitle: this.$pgettext("Notifier", "Warning"),
+        // defaultSuccessTitle: this.$pgettext("Notifier", "Success"),
+        // defaultInfoTitle: this.$pgettext("Notifier", "Info"),
+        // defaultNoticeTitle: this.$pgettext("Notifier", "Notice")
+        defaultErrorTitle: "Error",
+        defaultWarningTitle: "Warning",
+        defaultSuccessTitle: "Success",
+        defaultInfoTitle: "Info",
+        defaultNoticeTitle: "Notice"
       };
     }
   },
