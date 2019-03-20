@@ -79,7 +79,7 @@ const customEmit = (element, eventName, event) => {
  * @param originalEvent (optionnal) original event
  * @returns CustomEvent<any>
  */
-const createEvent = (eventName, params = {}, originalEvent) => {
+export const createEvent = (eventName, params = {}, originalEvent) => {
   const options = Object.assign({}, DEFAULT_EVENT_PARAMS, params);
   let event;
   if (typeof window.CustomEvent === "function") {
@@ -105,37 +105,30 @@ const createEvent = (eventName, params = {}, originalEvent) => {
  * Mixin that add two functions $createComponentEvent to create events, $emitAnkEvent that emit created event
  * @type {{beforeCreate(): void}}
  */
-const AnkVueEventMixin = {
-  beforeCreate() {
-    this.$createComponentEvent = createEvent;
-    this.$emitAnkEvent = function emit(eventName, ...args) {
-      let componentEvent;
-      if (isEvent(args[0], eventName)) {
-        componentEvent = args[0];
-        const others = args.slice(1);
-        if (others.length) {
-          if (componentEvent.detail && componentEvent.detail.length) {
-            componentEvent.detail = componentEvent.detail.concat(others);
-          } else {
-            componentEvent.detail = [...others];
-          }
-        }
+export const $createComponentEvent = createEvent;
+export const $emitAnkEvent = function emit(eventName, ...args) {
+  let componentEvent;
+  if (isEvent(args[0], eventName)) {
+    componentEvent = args[0];
+    const others = args.slice(1);
+    if (others.length) {
+      if (componentEvent.detail && componentEvent.detail.length) {
+        componentEvent.detail = componentEvent.detail.concat(others);
       } else {
-        componentEvent = createEvent(eventName, {
-          cancelable: true,
-          detail: [...args]
-        });
+        componentEvent.detail = [...others];
       }
-
-      customEmit(this.$el, eventName, componentEvent);
-
-      this.__proto__ &&
-        this.__proto__.$emit.call(this, eventName, componentEvent); // eslint-disable-line no-proto
-
-      // Return false if event is cancelled (dispatchEvent behavior)
-      return !componentEvent.defaultPrevented;
-    };
+    }
+  } else {
+    componentEvent = createEvent(eventName, {
+      cancelable: true,
+      detail: [...args]
+    });
   }
-};
 
-export default AnkVueEventMixin;
+  customEmit(this.$el, eventName, componentEvent);
+
+  //this.__proto__ && this.__proto__.$emit.call(this, eventName, componentEvent); // eslint-disable-line no-proto
+
+  // Return false if event is cancelled (dispatchEvent behavior)
+  return !componentEvent.defaultPrevented;
+};

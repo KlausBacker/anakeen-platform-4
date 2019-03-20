@@ -93,6 +93,7 @@ stub: install-deps
 ########################################################################################################################
 
 buildJS: install-deps
+	$(YARN_BIN) lib
 	@${PRINT_COLOR} "${DEBUG_COLOR}Extract component po $@${RESET_COLOR}\n"
 	make -f pojs.make compile
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build Css $@${RESET_COLOR}\n"

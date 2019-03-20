@@ -1,9 +1,9 @@
 <?php
 
-
 namespace Anakeen\Routes\UiTest;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Ui\UIGetAssetPath;
 
 class TestPage
 {
@@ -14,46 +14,42 @@ class TestPage
         $data = [
             "JS_DEPS" => [
                 [
-                    "key" =>"jquery",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSJqueryPath()
+                    "key" => "kendo",
+                    "path" => UIGetAssetPath::getJSKendoPath()
                 ],
                 [
-                    "key" =>"kendo",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoPath()
+                    "key" => "kendoDLL",
+                    "path" => UIGetAssetPath::getJSKendoComponentPath()
+                ],
+                [
+                    "key" => "vueDll",
+                    "path" => UIGetAssetPath::getJSVueComponentPath()
                 ]
             ],
             "JS" => [
                 [
-                    "key" =>"ankcomponents",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath()
-                ],
-                [
                     "key" => "testPage",
-                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("uiTest")["TestPage"]["js"]
+                    "path" =>  UIGetAssetPath::getElementAssets("uiTest", UIGetAssetPath::isInDebug() ? "dev" : "prod")["TestPage"]["js"]
                 ]
             ],
             "JS_LEGACY" => [
                 [
-                    "key" => "polyfill",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getPolyfill()
-                ],
-                [
-                    "key" =>"ankcomponents",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
-                ],
-                [
                     "key" => "testPage",
-                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("uiTest", "prod")["TestPage"]["js"]
-                ]
+                    "path" =>  UIGetAssetPath::getElementAssets("uiTest", UIGetAssetPath::isInDebug() ? "dev" : "prod")["TestPage"]["js"]
+                ],
             ],
             "CSS" => [
                 [
                     "key" => "bootstrap",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getCssBootstrap()
+                    "path" => UIGetAssetPath::getCssBootstrap()
                 ],
                 [
                     "key" => "kendo",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getCssKendo()
+                    "path" => UIGetAssetPath::getCssKendo()
+                ],
+                [
+                    "key" => "components",
+                    "path" => UIGetAssetPath::getCssSmartWebComponents()
                 ]
             ]
         ];

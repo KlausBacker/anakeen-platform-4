@@ -1,4 +1,4 @@
-import './testRender.css';
+import './testRender.scss';
 
 window.dcp.document.documentController("addEventListener", "ready", {
     "name": "display.render", "documentCheck": function (document)

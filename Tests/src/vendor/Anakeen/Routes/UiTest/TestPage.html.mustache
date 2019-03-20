@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Ui Testing interface</title>
-    <link rel="icon" type="image/png" href="[appicon]"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="../../">
-
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>UI TEST</title>
     {{#CSS}}
     <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
     {{/CSS}}
@@ -13,35 +13,16 @@
         <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
     {{/JS_DEPS}}
     {{#JS}}
-        <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    <script type="module" data-id="{{key}}" src="{{path}}"></script>
     {{/JS}}
-
+    <script lang="js">
+        window.AnkHubInstanceId = "{{hubInstanceId}}";
+    </script>
 </head>
 <body>
-<div class="systemLeft">
-    <ank-se-list class="systemLeftDown" id="seList"
-                 label="Tests UI" smart-collection="TST_RENDER"
-                 logo-url="CORE/Images/anakeen-logo.svg"
-                 bind-event="se-selected: #seTabs.publicMethods.addSE"
-    >
-        <div class="systemListSlot" vue-slot="header">
-            <ank-identity large="true" email-alterable="true" password-alterable="true"></ank-identity>
-            <ank-logout class="systemLeftUpRight"></ank-logout>
-        </div>
-
-    </ank-se-list>
-</div>
-<div class="systemRight">
-    <ank-se-tabs id="seTabs"
-                       bind-event="se-after-save: #seList.publicMethods.refreshList,
-                                      se-after-delete: #seList.publicMethods.refreshList">
-    </ank-se-tabs>
-
-</div>
-
+<div id="test"></div>
 {{#JS_LEGACY}}
-    <script nomodule data-id="{{key}}" src="{{path}}"></script>
+<script nomodule data-id="{{key}}" src="{{path}}"></script>
 {{/JS_LEGACY}}
-
 </body>
 </html>

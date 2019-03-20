@@ -15,30 +15,20 @@ class TestGridPage
         $data = [
             "JS_DEPS" => [
                 [
-                    "key" =>"jquery",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSJqueryPath()
+                    "key" => "kendo",
+                    "path" => UIGetAssetPath::getJSKendoPath()
                 ],
                 [
-                    "key" =>"kendo",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getJSKendoPath()
-                ]
-            ],
-            "JS" => [
-                [
-                    "key" =>"ankcomponents",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath()
-                ]
-            ],
-            "JS_LEGACY" => [
-                [
-                    "key" => "polyfill",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getPolyfill()
+                    "key" => "kendoDLL",
+                    "path" => UIGetAssetPath::getJSKendoComponentPath()
                 ],
                 [
-                    "key" =>"ankcomponents",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
+                    "key" => "vueDll",
+                    "path" => UIGetAssetPath::getJSVueComponentPath()
                 ]
             ],
+            "JS" => [],
+            "JS_LEGACY" => [],
             "CSS" => [
                 [
                     "key" => "bootstrap",

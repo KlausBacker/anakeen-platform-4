@@ -6,3 +6,8 @@ Tests/
 node_modules/
 webpackConfig/
 localpub/
+lib
+components/lib
+components/webpack
+components/public
+ide/

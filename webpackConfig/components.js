@@ -2,6 +2,7 @@ const path = require("path");
 const { prod, legacy, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
+  typeScriptLoader,
   addFalseKendoGlobal,
   addDll
 } = require("@anakeen/webpack-conf/parts");
@@ -29,7 +30,7 @@ module.exports = () => {
           alias: {
             "@anakeen/user-interfaces": path.resolve(
               BASE_DIR,
-              "components/components/index"
+              "components/src/index"
             )
           }
         }
@@ -71,7 +72,8 @@ module.exports = () => {
         )
       }),
       addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
-      vueLoader()
+      vueLoader(),
+      typeScriptLoader()
     ]
   };
   if (process.env.conf === "PROD") {
