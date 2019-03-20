@@ -23,6 +23,7 @@ class RouterLib
      * @throws Exception
      */
     const NS = "sde";
+    protected static $index=0;
 
 
     public static function getRouterConfig()
@@ -98,7 +99,7 @@ class RouterLib
             }
             foreach ($firstNode as $subTagName => $subNode) {
                 $nodeAttrs = $subNode->attributes();
-                $name = "";
+                $name = "$subTagName".self::$index++;
                 foreach ($nodeAttrs as $iAttr => $vAttr) {
                     if ($iAttr === "name") {
                         $name = (string)$vAttr;
