@@ -349,14 +349,13 @@ export default {
       );
 
       // To make close buttons work
-      this.$(".notification-close")
+      $(".notification-close")
         .off("click")
         .on("click", event => {
-          let _this = this;
-          this.$(event.target)
+          $(event.target)
             .closest(".k-notification")
             .fadeOut(200, function() {
-              _this.$(this).unwrap();
+              $(this).unwrap();
               this.remove();
             });
         });
@@ -468,7 +467,7 @@ export default {
       }
 
       // Init notifier, defining static parameters
-      this.kendoNotifier = this.$(".ank-notifier")
+      this.kendoNotifier = $(".ank-notifier")
         .kendoNotification({
           animation: {
             open: {
