@@ -62,7 +62,7 @@ export default class HubStation extends Vue {
   }
 
   get routeEntries(): object[] {
-    let routeEntries = [];
+    let routeEntries: IHubStationPropConfig[] = [];
     if (this.configData) {
       Object.keys(this.configData).forEach(key => {
         const configs = this.configData[key];
@@ -78,6 +78,12 @@ export default class HubStation extends Vue {
         );
       });
     }
+    routeEntries.map(item => {
+      item.entryOptions.completeRoute = urlJoin(
+        this.rootUrl,
+        item.entryOptions.route
+      );
+    });
     return routeEntries;
   }
 
