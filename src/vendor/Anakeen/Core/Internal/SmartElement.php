@@ -26,6 +26,7 @@ use Anakeen\Core\Settings;
 use Anakeen\Core\SmartStructure\Callables\InputArgument;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
 use Anakeen\Core\Utils\Date;
+use Anakeen\Core\Utils\FileMime;
 use Anakeen\Core\Utils\MiscDoc;
 use Anakeen\Core\Utils\Postgres;
 use Anakeen\LogManager;
@@ -5384,6 +5385,7 @@ create unique index i_docir on doc(initid, revision);";
         }
 
         if (preg_match(PREGEXPFILE, $idicon, $reg)) {
+            $rid=$otherId?:$this->id;
             if ($idicon[0] === "!") {
                 if (!$size) {
                     $size = "20";
@@ -5391,7 +5393,7 @@ create unique index i_docir on doc(initid, revision);";
                 $efile = sprintf(
                     "%ssmart-elements/%d/images/%s/-1/sizes/%sx%s.png",
                     $apiURL,
-                    ($otherId == null) ? $this->id : $otherId,
+                    $rid,
                     rawurlencode($reg["name"]),
                     $size,
                     $size
@@ -5400,17 +5402,20 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($size) {
                 $efile = sprintf(
-                    "%simages/recorded/sizes/%sx%sc/%s",
+                    "%ssmart-elements/%d/images/icon/-1/sizes/%sx%sc.png?c=%s",
                     $apiURL,
+                    $rid,
                     $size,
                     $size,
-                    $reg["vid"]
+                    $this->mdate
                 );
             } else {
                 $efile = sprintf(
-                    "%simages/recorded/original/%s",
+                    "%ssmart-elements/%d/files/icon/-1/%s?inline=true&c=%s",
                     $apiURL,
-                    $reg["vid"]
+                    $rid,
+                    sprintf("icon.%s", FileMime::getFileExtension($reg["name"])),
+                    $this->mdate
                 );
             }
             return $efile;

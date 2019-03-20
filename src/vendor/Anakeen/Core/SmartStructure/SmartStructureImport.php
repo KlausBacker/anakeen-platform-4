@@ -622,10 +622,7 @@ class SmartStructureImport
             $msg .= sprintf("Create table 'doc%d'\n", $docid);
             self::createFamilyTable($docid);
 
-            if (self::tableExists("public", "doc$docid")) {
-                /* Re-create family's view */
-                self::recreateFamilyView($docname, $docid);
-            } else {
+            if (!self::tableExists("public", "doc$docid")) {
                 $msg .= sprintf("Could not create table 'doc%d'.\n", $docid);
             }
         }
@@ -732,11 +729,9 @@ class SmartStructureImport
                     }
                 }
             }
-            /* Update family's view if table structure has changed */
-            if ($updateView) {
-                self::recreateFamilyView($docname, $docid);
-            }
         }
+        /* Update family's view  */
+        self::recreateFamilyView($docname, $docid);
         return $msg;
     }
 
@@ -1064,7 +1059,7 @@ class SmartStructureImport
 
     protected static function getTypeFormat($type)
     {
-        $p =self::parseType($type);
+        $p = self::parseType($type);
         return $p['format'];
     }
 
