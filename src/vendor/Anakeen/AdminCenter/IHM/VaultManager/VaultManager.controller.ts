@@ -94,6 +94,7 @@ export default class VaultManagerController extends Vue {
   public onValuePropChanged(newVal, oldVal) {
     if (newVal !== oldVal) {
       this.selectedFs = newVal;
+      this.selectFsRow(this.selectedFs);
     }
   }
 
@@ -233,14 +234,11 @@ export default class VaultManagerController extends Vue {
           this.addRowClassName(grid);
 
           if (!this.selectedFs) {
-            const $viewButtons = $(".k-button.k-grid-Info", this.$el);
             // view first vault
-            $($viewButtons.get(0)).trigger("click");
+            // @ts-ignore
+            this.selectFsRow(grid.dataSource.data().at(0).fsid);
           } else {
-            const $viewButtons = $(this.$el).find(
-              "tr[data-fsid=" + this.selectedFs + "] .k-button.k-grid-Info"
-            );
-            $($viewButtons.get(0)).trigger("click");
+            this.selectFsRow(this.selectedFs);
           }
         },
 
@@ -250,6 +248,13 @@ export default class VaultManagerController extends Vue {
     if (this.value) {
       this.selectedFs = this.value;
     }
+  }
+
+  protected selectFsRow(fsId) {
+    const $viewButtons = $(this.$el).find(
+      "tr[data-fsid=" + fsId + "] .k-button.k-grid-Info"
+    );
+    $($viewButtons.get(0)).trigger("click");
   }
   /**
    * add token in tr tag to easily select tr

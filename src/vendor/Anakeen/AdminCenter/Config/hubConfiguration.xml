@@ -18,6 +18,14 @@
             <hub_instance_cssasset>/Anakeen/adminCenter/assets/adminCenter.css</hub_instance_cssasset>
         </hub_instance_cssassets>
     </hubinstanciation>
+    <hubconfigurationlabel name="HUBA_LABEL">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>Label</hub_title>
+        <hub_order>1</hub_order>
+        <hub_docker_position>TOP_LEFT</hub_docker_position>
+        <hub_activated>FALSE</hub_activated>
+        <label>Admin Center</label>
+    </hubconfigurationlabel>
     <hubadmincenteraccountsvue name="HUBA_ACCOUNTS">
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
         <hub_title>Accounts</hub_title>
