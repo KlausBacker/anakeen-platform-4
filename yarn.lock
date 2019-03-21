@@ -10,10 +10,10 @@
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@^1.0.7":
-  version "1.1.1"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.1.1.tgz#1a7964bd304164e1c36fe7b863516e45b66467ca"
-  integrity sha512-mPLfr5CApmH+3mra0H7UifHjr4HZj4EtAdCci226VVFXQIHJRhhHPNnsGULUpxjFgOzsaPwDqgTP47U7MjwQ5g==
+"@anakeen/anakeen-cli@^1.1.4":
+  version "1.1.4"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.1.4.tgz#6cfc3b5555f3e35fe2794167c8d1a28a91844289"
+  integrity sha512-/fy1pWksAO/4G1KFelS9zcnIR0K9beFRWdXz413MFkaTRbzsOiLraSySKcOq8Fl1wlXZpGIB5PiJDaQhL2w5Ug==
   dependencies:
     "@anakeen/anakeen-module-validation" "^1.0.9"
     form-data "^2.3.3"
@@ -27,10 +27,12 @@
     mustache "^3.0.1"
     node-fetch "^2.3.0"
     opn "^5.4.0"
+    rimraf "^2.6.3"
     sax "^1.2.4"
     semver "^5.6.0"
     signale "^1.3.0"
     streamqueue "^1.1.2"
+    tar "^4.4.8"
     tar-stream "^2.0.0"
     through2 "^3.0.0"
     tmp "^0.0.33"
@@ -47,22 +49,20 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/hub-components@^1.0.0-dev20190307153655":
-  version "1.0.0-dev20190321111828"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190321111828.tgz#a21c3e79d94b9c195f1f46a3e646eed162b4a4f2"
-  integrity sha512-uNjCRxvRMNfxG1zRxx7Yu5fxq563cojeSwh7pA4WI6EcNN5XFtMrQK+aaBECMkd9QqsbUDuDvpEgmD6yunRa7g==
+"@anakeen/hub-components@^1.0.0-dev20190321162918":
+  version "1.0.0-dev20190321162918"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190321162918.tgz#97bf2440a91b9e72f9b14ea805fd069034bce50f"
+  integrity sha512-bcgxNOQuRfrAO06ESeABYSEw3LOnBDByMThjkkkW6wczauRkn71VyL4hOduruu1nxPMPGGIWl38WINvaXrHLMg==
   dependencies:
-    "@anakeen/internal-components" "^1.0.1-dev20190311085312"
-    "@anakeen/user-interfaces" "^2.0.0-dev20190306182547"
+    "@anakeen/internal-components" "^1.0.1-dev20190321161054"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
-    "@progress/kendo-ui" "^2019.1.227"
     "@types/navigo" "^7.0.1"
     "@types/url-join" "^4.0.0"
     axios "^0.18.0"
     jquery "^3.3.1"
     load-css-file "^1.0.0"
     navigo "^7.1.2"
-    typescript "^3.3.3333"
+    typescript "^3.3.4000"
     url-join "^4.0.0"
     vue "2.6.7"
     vue-class-component "^7.0.1"
@@ -71,29 +71,16 @@
     vue-property-decorator "^7.3.0"
     vuex "^3.1.0"
 
-"@anakeen/internal-components@^1.0.1-dev20190311085312":
-  version "1.0.1-dev20190320155712"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190320155712.tgz#a03eabb53e8e050220358065df30fb4370f04595"
-  integrity sha512-KioFE2rDEUf8xeBMLqliKaE9TaYDiJP1+QNbK+PxU3QcjrEKJI5m3xVzBLBYFTym/wa8Kx2tvvMwqRAdmTdqQg==
+"@anakeen/internal-components@^1.0.1-dev20190321161054":
+  version "1.0.1-dev20190321161054"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190321161054.tgz#f8de18c4dd47bd0bc92d5a7cf5b14d5fee9df0ed"
+  integrity sha512-M0BejiPvwh+Bn3XU2iIBPdGHr8k7yJTVK1cVvL+YoO7tKoenuP/m/yd8xuWRDV1YRydP1pmJ5O0cptfkr+8Xbw==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     "@progress/kendo-ui" "^2019.1.227"
     axios "^0.18.0"
     jquery "^3.3.1"
     vue "2.6.7"
-    vue-class-component "^7.0.1"
-    vue-property-decorator "^7.3.0"
-
-"@anakeen/internal-components@^1.0.1-dev20190314101439":
-  version "1.0.1-dev20190314105156"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190314105156.tgz#39ffbc262fc927f810fd4c410e3919203d6625ab"
-  integrity sha512-9Zm6oftO9cOJGWIDMa1GoqpmFqt7XVfehNvq5PzYhuSiDI7hHLp2U+kvRCQkaTAbrlrmuJnrBU2nCSxkkErwnw==
-  dependencies:
-    "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
-    "@progress/kendo-ui" "^2019.1.227"
-    axios "^0.18.0"
-    jquery "^3.3.1"
-    vue "^2.6.7"
     vue-class-component "^7.0.1"
     vue-property-decorator "^7.3.0"
 
@@ -107,14 +94,14 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190306182547":
-  version "2.0.0-dev20190314110118"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190314110118.tgz#aa541cacf2b849896b375df78478efc4a07c4df5"
-  integrity sha512-+Q98kLzbkq1YquiqmDDUgyDZAgjLtcPen79d9tPmyy3qH5/lMazUdS2fCdgctW6achXBlzj7x0rdvUXjKqFm3g==
+"@anakeen/user-interfaces@^2.0.0-dev20190321160045":
+  version "2.0.0-dev20190321160045"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190321160045.tgz#a1cf93b83569aa25ab7407703d55a37139db5827"
+  integrity sha512-navEZozLBpTptP1CNxDAwZXbdxBqW2fa7HYwycqMdOSixoyALKkSFS/gcbLEnMC4iZD6gzTS5BeRJg6F9Ygj3w==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
-    "@progress/kendo-theme-bootstrap" "^3.2.1"
-    "@progress/kendo-ui" "^2019.1.227"
+    "@progress/kendo-theme-bootstrap" "^3.2.3"
+    "@progress/kendo-ui" "^2019.1.313"
     "@webcomponents/webcomponentsjs" "2.2.7"
     axios "^0.18.0"
     bootstrap "^4.3.1"
@@ -122,7 +109,7 @@
     easygettext "^2.7.0"
     jquery "^3.3.1"
     popper.js "^1.14.7"
-    vue "^2.6.7"
+    vue "2.6.7"
     vue-custom-element "^3.2.5"
     vue-gettext "^2.1.0"
 
@@ -940,7 +927,7 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
-"@progress/kendo-theme-bootstrap@^3.2.1":
+"@progress/kendo-theme-bootstrap@^3.2.1", "@progress/kendo-theme-bootstrap@^3.2.3":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.2.3.tgz#405b3aa4af4c8754f56b88ef99c93818d9383c7b"
   integrity sha512-NJfgIWQVAoiUmWiRbSvkjZR+GdzmtEgRoAzvSl2L03L1S0PsBXh72XjqUOnzZSqhH8Ljw0C4Dh196qKmegkFJg==
@@ -956,6 +943,13 @@
   version "2019.1.307"
   resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.307.tgz#17cc6d4f0efbf225f1aa5685c9075f46b580f12f"
   integrity sha512-ZG91Z6jlY5y0zRPWMwrEx8uf9yOGn/zzFfu0nxhYVfqnTDjId2Z/p1tSI96FLMsZmlPk52Rh5ZCF5kn1OEJBog==
+  dependencies:
+    jquery "<=3"
+
+"@progress/kendo-ui@^2019.1.313":
+  version "2019.1.320"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.320.tgz#1170343ece4023c4ec22c815eb9e250d63184be0"
+  integrity sha512-28XscNuHvImJxlTlX4hMNww5r4Lvzx18b7pJCKZLtrC1IpP+KcOoUu1onIXXt5XoafCUI922OGxIoiWsMNfChw==
   dependencies:
     jquery "<=3"
 
@@ -3542,10 +3536,18 @@ eslint-plugin-prettier@^3.0.1:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-scope@^4.0.0, eslint-scope@^4.0.2:
+eslint-scope@^4.0.0:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.2.tgz#5f10cd6cabb1965bf479fa65745673439e21cb0e"
   integrity sha512-5q1+B/ogmHl8+paxtOKx38Z8LtWkVGuNt3+GQNErqwLl6ViNp/gdJGMCjZNxZ8j/VYjDNZ2Fo+eQc1TAVPIzbg==
+  dependencies:
+    esrecurse "^4.1.0"
+    estraverse "^4.1.1"
+
+eslint-scope@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.3.tgz#ca03833310f6889a3264781aa82e63eb9cfe7848"
+  integrity sha512-p7VutNr1O/QrxysMo3E45FjYDTeXBy0iTltPFNSqKAIfjDSXC+4dj+qfyuD8bfAXrW/y6lW3O76VaYNPKfpKrg==
   dependencies:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
@@ -3560,10 +3562,10 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@^5.15.1:
-  version "5.15.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.15.1.tgz#8266b089fd5391e0009a047050795b1d73664524"
-  integrity sha512-NTcm6vQ+PTgN3UBsALw5BMhgO6i5EpIjQF/Xb5tIh3sk9QhrFafujUOczGz4J24JBlzWclSB9Vmx8d+9Z6bFCg==
+eslint@^5.15.3:
+  version "5.15.3"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-5.15.3.tgz#c79c3909dc8a7fa3714fb340c11e30fd2526b8b5"
+  integrity sha512-vMGi0PjCHSokZxE0NLp2VneGw5sio7SSiDNgIUn2tC0XkWJRNOIoHIg3CliLVfXnJsiHxGAYrkw0PieAu8+KYQ==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.9.1"
@@ -3571,7 +3573,7 @@ eslint@^5.15.1:
     cross-spawn "^6.0.5"
     debug "^4.0.1"
     doctrine "^3.0.0"
-    eslint-scope "^4.0.2"
+    eslint-scope "^4.0.3"
     eslint-utils "^1.3.1"
     eslint-visitor-keys "^1.0.0"
     espree "^5.0.1"
@@ -7878,7 +7880,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@2.6.3, rimraf@^2.2.8, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2:
+rimraf@2, rimraf@2.6.3, rimraf@^2.2.8, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@^2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
   integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
@@ -8665,7 +8667,7 @@ tar@^2.0.0:
     fstream "^1.0.2"
     inherits "2"
 
-tar@^4:
+tar@^4, tar@^4.4.8:
   version "4.4.8"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.8.tgz#b19eec3fde2a96e64666df9fdb40c5ca1bc3747d"
   integrity sha512-LzHF64s5chPQQS0IYBn9IN5h3i98c12bo4NCO7e0sGM2llXQ3p2FGC5sdENN4cTW48O915Sh+x+EXx7XW96xYQ==
@@ -8899,10 +8901,10 @@ tslint-config-prettier@^1.18.0:
   resolved "https://registry.yarnpkg.com/tslint-config-prettier/-/tslint-config-prettier-1.18.0.tgz#75f140bde947d35d8f0d238e0ebf809d64592c37"
   integrity sha512-xPw9PgNPLG3iKRxmK7DWr+Ea/SzrvfHtjFt5LBl61gk2UBG/DB9kCXRjv+xyIU1rUtnayLeMUVJBcMX8Z17nDg==
 
-tslint@^5.13.1:
-  version "5.13.1"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.13.1.tgz#fbc0541c425647a33cd9108ce4fd4cd18d7904ed"
-  integrity sha512-fplQqb2miLbcPhyHoMV4FU9PtNRbgmm/zI5d3SZwwmJQM6V0eodju+hplpyfhLWpmwrDNfNYU57uYRb8s0zZoQ==
+tslint@^5.14.0:
+  version "5.14.0"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.14.0.tgz#be62637135ac244fc9b37ed6ea5252c9eba1616e"
+  integrity sha512-IUla/ieHVnB8Le7LdQFRGlVJid2T/gaJe5VkjzRVSRR6pA2ODYrnfR1hmxi+5+au9l50jBwpbBL34txgv4NnTQ==
   dependencies:
     babel-code-frame "^6.22.0"
     builtin-modules "^1.1.1"
@@ -8916,9 +8918,9 @@ tslint@^5.13.1:
     resolve "^1.3.2"
     semver "^5.3.0"
     tslib "^1.8.0"
-    tsutils "^2.27.2"
+    tsutils "^2.29.0"
 
-tsutils@^2.27.2:
+tsutils@^2.29.0:
   version "2.29.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.29.0.tgz#32b488501467acbedd4b85498673a0812aca0b99"
   integrity sha512-g5JVHCIJwzfISaXpXE1qvNalca5Jwob6FjI4AoPlqMusJ6ftFE7IkkFoMhVLRgK+4Kx3gkzb8UZK5t5yTTvEmA==
@@ -8962,10 +8964,15 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.3.3, typescript@^3.3.3333:
+typescript@^3.3.3:
   version "3.3.3333"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.3333.tgz#171b2c5af66c59e9431199117a3bcadc66fdcfd6"
   integrity sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
+
+typescript@^3.3.4000:
+  version "3.3.4000"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.4000.tgz#76b0f89cfdbf97827e1112d64f283f1151d6adf0"
+  integrity sha512-jjOcCZvpkl2+z7JFn0yBOoLQyLoIkNZAs/fYJkUG6VKy6zLPHJGfQJYFHzibB6GJaF/8QrcECtlQ5cpvRHSMEA==
 
 uglify-js@3.4.x:
   version "3.4.9"
@@ -9384,11 +9391,6 @@ vue@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.7.tgz#254f188e7621d2d19ee28d0c0442c6d21b53ae2d"
   integrity sha512-g7ADfQ82QU+j6F/bVDioVQf2ccIMYLuR4E8ev+RsDBlmwRkhGO3HhgF4PF9vpwjdPpxyb1zzLur2nQ2oIMAMEg==
-
-vue@^2.6.7:
-  version "2.6.9"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.9.tgz#415c1cc1a5ed00c8f0acdd0a948139d12b7ea6b3"
-  integrity sha512-t1+tvH8hybPM86oNne3ZozCD02zj/VoZIiojOBPJLjwBn7hxYU5e1gBObFpq8ts1NEn1VhPf/hVXBDAJ3X5ljg==
 
 vuex@^3.1.0:
   version "3.1.0"
