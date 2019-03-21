@@ -1,5 +1,4 @@
 import Vue from "vue";
-import VueSetup from "../setup.js";
 import { Component, Watch, Prop } from "vue-property-decorator";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.filtercell";
