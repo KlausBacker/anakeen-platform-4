@@ -33,7 +33,7 @@ class AllVaultsInfo
                         $fsItem->id_fs,
                         $info["computedMetrics"]["usedSize"],
                         $info["metrics"]["usedSize"]
-                    ));
+                    ), ApiMessage::WARNING);
                 }
                 $fsInfo[] = $info;
                 $fsInfo[$key]["freespace"] = $this->formatBytes($info["metrics"]["totalSize"] - $info["metrics"]["usedSize"], 2);

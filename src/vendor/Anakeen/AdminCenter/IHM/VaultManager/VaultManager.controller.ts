@@ -3,7 +3,6 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
-import axios from "axios";
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
@@ -94,6 +93,7 @@ export default class VaultManagerController extends Vue {
   public onValuePropChanged(newVal, oldVal) {
     if (newVal !== oldVal) {
       this.selectedFs = newVal;
+      this.selectFsRow(this.selectedFs);
     }
   }
 
@@ -113,7 +113,7 @@ export default class VaultManagerController extends Vue {
 
     const newSize: string = $(this.$refs.newSize).val() as string;
     const kSizeUnit: any = this.$refs.kNewSizeUnit as any;
-    axios
+    this.$http
       .post("/api/v2/admin/vaults/", {
         path: $(this.$refs.newPath).val(),
         size: Math.floor(
@@ -139,20 +139,6 @@ export default class VaultManagerController extends Vue {
           .data("kendoWindow")
           .center()
           .open();
-      })
-      .catch(info => {
-        if (info.response && info.response.data && info.response.data.error) {
-          window.alert(info.response.data.error);
-        } else if (
-          info.response &&
-          info.response.data &&
-          info.response.data.message
-        ) {
-          window.alert(info.response.data.message);
-        } else {
-          window.alert("Fail update vault, see console for more details");
-          console.error("reject response", info);
-        }
       });
   }
 
@@ -233,14 +219,11 @@ export default class VaultManagerController extends Vue {
           this.addRowClassName(grid);
 
           if (!this.selectedFs) {
-            const $viewButtons = $(".k-button.k-grid-Info", this.$el);
             // view first vault
-            $($viewButtons.get(0)).trigger("click");
+            // @ts-ignore
+            this.selectFsRow(grid.dataSource.data().at(0).fsid);
           } else {
-            const $viewButtons = $(this.$el).find(
-              "tr[data-fsid=" + this.selectedFs + "] .k-button.k-grid-Info"
-            );
-            $($viewButtons.get(0)).trigger("click");
+            this.selectFsRow(this.selectedFs);
           }
         },
 
@@ -250,6 +233,13 @@ export default class VaultManagerController extends Vue {
     if (this.value) {
       this.selectedFs = this.value;
     }
+  }
+
+  protected selectFsRow(fsId) {
+    const $viewButtons = $(this.$el).find(
+      "tr[data-fsid=" + fsId + "] .k-button.k-grid-Info"
+    );
+    $($viewButtons.get(0)).trigger("click");
   }
   /**
    * add token in tr tag to easily select tr

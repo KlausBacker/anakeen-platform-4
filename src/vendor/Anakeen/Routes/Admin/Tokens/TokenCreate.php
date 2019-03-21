@@ -24,10 +24,9 @@ class TokenCreate
         $this->initParameters($request);
 
         $data = $this->doRequest();
-        $message = new ApiMessage(sprintf("Token \"%s\" is create", $data["token"]));
+        $message = new ApiMessage(sprintf("Token \"%s\" is created", $data["token"]), ApiMessage::SUCCESS);
         return ApiV2Response::withData($response, $data, [$message]);
     }
-
 
     protected function doRequest()
     {

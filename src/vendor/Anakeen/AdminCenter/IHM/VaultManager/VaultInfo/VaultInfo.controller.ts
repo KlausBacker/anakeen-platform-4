@@ -3,7 +3,6 @@ import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { GaugesInstaller } from "@progress/kendo-gauges-vue-wrapper";
 import "@progress/kendo-ui/js/dataviz/chart/chart";
 import "@progress/kendo-ui/js/dataviz/gauge/main";
-import axios from "axios";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import VaultManagerController from "../VaultManager.controller";
 
@@ -225,7 +224,7 @@ export default class VaultInfoController extends Vue {
 
   public requestMoveIt(e) {
     this.closeWindow(e);
-    axios
+    this.$http
       .put(
         "/api/v2/admin/vaults/" + this.info.fsid + "/path/",
         $(this.$refs.newPath).val(),
@@ -252,20 +251,6 @@ export default class VaultInfoController extends Vue {
           .data("kendoWindow")
           .center()
           .open();
-      })
-      .catch(info => {
-        if (info.response && info.response.data && info.response.data.error) {
-          window.alert(info.response.data.error);
-        } else if (
-          info.response &&
-          info.response.data &&
-          info.response.data.message
-        ) {
-          window.alert(info.response.data.message);
-        } else {
-          window.alert("Fail update vault, see console for more details");
-          console.error("reject response", info);
-        }
       });
   }
 
@@ -273,7 +258,7 @@ export default class VaultInfoController extends Vue {
     this.closeWindow(e);
     const newSize: string = $(this.$refs.newSize).val() as string;
     const kSizeUnit: any = this.$refs.kNewSizeUnit as any;
-    axios
+    this.$http
       .put(
         "/api/v2/admin/vaults/" + this.info.fsid + "/size/",
         Math.floor(
@@ -302,20 +287,6 @@ export default class VaultInfoController extends Vue {
           .data("kendoWindow")
           .center()
           .open();
-      })
-      .catch(info => {
-        if (info.response && info.response.data && info.response.data.error) {
-          window.alert(info.response.data.error);
-        } else if (
-          info.response &&
-          info.response.data &&
-          info.response.data.message
-        ) {
-          window.alert(info.response.data.message);
-        } else {
-          window.alert("Fail update vault, see console for more details");
-          console.error("reject response", info);
-        }
       });
   }
 

@@ -50,9 +50,9 @@
     libxmljs "^0.19.5"
 
 "@anakeen/hub-components@^1.0.0-dev20190319153407":
-  version "1.0.0-dev20190319153407"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190319153407.tgz#76e0760950786ed09e20d1812d6c8eba2725226c"
-  integrity sha512-0KVYRI15IdLwwIRnwgilAuLjG51obaeFQcX2QT3ORC1jj/Kqs55sRoOhRsIK2wkAEA0Ea9o5v7pGAHK66hGBoQ==
+  version "1.0.0-dev20190321111828"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190321111828.tgz#a21c3e79d94b9c195f1f46a3e646eed162b4a4f2"
+  integrity sha512-uNjCRxvRMNfxG1zRxx7Yu5fxq563cojeSwh7pA4WI6EcNN5XFtMrQK+aaBECMkd9QqsbUDuDvpEgmD6yunRa7g==
   dependencies:
     "@anakeen/internal-components" "^1.0.1-dev20190311085312"
     "@anakeen/user-interfaces" "^2.0.0-dev20190306182547"

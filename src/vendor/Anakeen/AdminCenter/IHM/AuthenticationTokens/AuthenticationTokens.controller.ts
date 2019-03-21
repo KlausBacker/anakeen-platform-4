@@ -98,6 +98,12 @@ export default class AuthenticationTokensController extends Vue {
     this.kTokenGrid.dataSource.read();
   }
 
+  protected selectTokenRow(tokenId) {
+    const $viewButtons = $(this.$el).find(
+      "tr[data-token=" + tokenId + "] .k-button.k-grid-Info"
+    );
+    $($viewButtons.get(0)).trigger("click");
+  }
   /**
    * add token in tr tag to easily select tr
    * @param grid
@@ -105,19 +111,16 @@ export default class AuthenticationTokensController extends Vue {
   protected addRowClassName(grid) {
     const items = grid.items();
 
-    // Need to defer because kendo treelist delete custom class after expand/collapse
-    window.setTimeout(() => {
-      const nowIsTime = IsoDates.getIsoData(new Date());
-      items.each(function addTypeClass(this: any) {
-        const dataItem = grid.dataItem(this);
-        if (dataItem.token) {
-          $(this).attr("data-token", dataItem.token);
-        }
-        if (dataItem.expire < nowIsTime) {
-          $(this).addClass("token--expired");
-        }
-      });
-    }, 1);
+    const nowIsTime = IsoDates.getIsoData(new Date());
+    items.each(function addTypeClass(this: any) {
+      const dataItem = grid.dataItem(this);
+      if (dataItem.token) {
+        $(this).attr("data-token", dataItem.token);
+      }
+      if (dataItem.expire < nowIsTime) {
+        $(this).addClass("token--expired");
+      }
+    });
   }
 
   protected initTokenGrid(divDom) {
@@ -243,8 +246,12 @@ export default class AuthenticationTokensController extends Vue {
         dataBound: e => {
           const grid = e.sender;
           this.addRowClassName(grid);
+          if (this.value) {
+            this.selectTokenRow(this.value);
+          }
         },
         dataSource: {
+          filter: { field: "token", operator: "contains", value: this.value },
           schema: {
             data: response => {
               return response.data;
