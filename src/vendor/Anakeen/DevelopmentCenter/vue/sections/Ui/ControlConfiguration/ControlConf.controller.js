@@ -1,9 +1,6 @@
-import Vue from "vue";
-import { AnkSEGrid } from "@anakeen/user-interfaces";
-import Splitter from "../../../components/Splitter/Splitter.vue";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
 
-Vue.use(Splitter);
-Vue.use(AnkSEGrid);
+import Splitter from "../../../components/Splitter/Splitter.vue";
 
 export default {
   components: {

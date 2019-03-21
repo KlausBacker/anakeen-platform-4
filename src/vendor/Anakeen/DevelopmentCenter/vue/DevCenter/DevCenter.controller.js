@@ -1,11 +1,10 @@
-import Vue from "vue";
-import { AnkNotifier } from "@anakeen/user-interfaces";
+import AnkNotifier from "@anakeen/internal-components/lib/Notifier";
+
 import DevHeader from "./DevHeader/DevHeader.vue";
 import DevSideMenu from "./DevSideMenu/DevSideMenu.vue";
 
 import { interceptDOMLinks } from "../router/utils";
 import ErrorManager from "./utils/ErrorManager";
-Vue.use(AnkNotifier);
 
 export default {
   name: "dev-center",
