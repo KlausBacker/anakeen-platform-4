@@ -1,0 +1,121 @@
+.te-manager {
+  .te-configuration {
+    label {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      > span {
+        flex: 1;
+      }
+
+      > .k-switch {
+
+      }
+      > span +span,
+      > input {
+        flex: 2;
+        width: 100%
+      }
+
+      > .k-switch {
+        max-width: 4rem;
+      }
+    }
+
+    .te-check-section {
+      display: flex;
+      flex-direction: row;
+      margin: 0.5rem 0;
+
+      .te-check-button {
+        margin-top: 0.5rem;
+        text-align: center;
+        min-width: 17rem;
+      }
+    }
+
+    .te-config-buttons {
+      text-align: right;
+    }
+
+    .te-check {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      border: solid 1px #cecece;
+      margin: 0.5rem 0 0.5rem 0.5rem;
+      padding: 0.5rem;
+
+      .te-checkbar {
+        display: flex;
+        flex-direction: column;
+      }
+
+      ol {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
+      .te-check-log {
+        max-height: 8rem;
+        overflow: auto;
+      }
+
+      .k-progressbar {
+        height: 4rem;
+        background-color: transparent;
+
+        > ul {
+          justify-content: center;
+          align-items: center;
+        }
+
+        .k-item {
+          border-color: transparent;
+          height: 2rem;
+          width: 2rem ! important;
+          /* position: absolute; */
+          border-radius: 50%;
+          margin: 1rem;
+          background: #dadada;
+          box-shadow: none;
+
+          &.k-state-selected {
+            background-color: var(--success);
+          }
+
+          &.k-state-failed {
+            background-color: var(--danger);
+          }
+        }
+      }
+    }
+
+    .k-progressbar .k-state-running {
+      animation: pulse 2s infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background-color: var(--primary);
+  }
+  50% {
+    background-color: var(--white);
+  }
+  100% {
+    background-color: var(--primary);
+  }
+}
+
+@media (max-width: 640px) {
+  .te-manager {
+    .te-configuration {
+      label {
+        flex-direction: column;
+      }
+    }
+  }
+}

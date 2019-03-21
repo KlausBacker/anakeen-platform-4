@@ -8,6 +8,7 @@ CONTROL_URL=$(host)/control/
 CONTROL_CONTEXT=$(ctx)
 
 ##bin
+YARN_BIN=yarn
 COMPOSER=composer
 CBF_BIN=php ./ide/vendor/bin/phpcbf
 CS_BIN=php ./ide/vendor/bin/phpcs
@@ -23,10 +24,14 @@ install-dev:
 ##
 ########################################################################################################################
 
-app: install-dev
+buildJS: install-dev
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildJs
+
+app: install-dev buildJS
 	${ANAKEEN_CLI_BIN} build
 
-app-autorelease: install-dev
+app-autorelease: install-dev buildJS
 	rm -f *app
 	${ANAKEEN_CLI_BIN} build --auto-release
 
@@ -35,7 +40,7 @@ app-autorelease: install-dev
 ## Deploy
 ##
 ########################################################################################################################
-deploy: install-dev
+deploy: install-dev buildJS
 	rm -f smart-data-engine-1*app
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
@@ -65,7 +70,7 @@ beautify:
 lint:
 	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
 	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml ${MK_DIR}/src
+	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
 ########################################################################################################################
 ##

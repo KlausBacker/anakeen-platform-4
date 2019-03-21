@@ -1,6 +1,6 @@
 <?php
 
-namespace Anakeen\TransformationEngine;
+namespace Anakeen\Routes\TransformationEngine;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
@@ -8,6 +8,8 @@ use Anakeen\Core\Utils\Date;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Exception;
+use Anakeen\TransformationEngine\Client;
+use Anakeen\TransformationEngine\Manager;
 use Anakeen\Vault\VaultFile;
 
 /**

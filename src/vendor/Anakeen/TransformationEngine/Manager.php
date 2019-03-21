@@ -16,6 +16,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Utils\System;
 use Anakeen\Router\AuthenticatorManager;
+use Anakeen\Vault\DiskStorage;
 use Anakeen\Vault\VaultFile;
 
 class Manager
@@ -30,7 +31,7 @@ class Manager
      */
     public static function checkParameters()
     {
-        if (ContextParameterManager::getValue(self::Ns, "E_HOST") == ""
+        if (ContextParameterManager::getValue(self::Ns, "TE_HOST") == ""
             || ContextParameterManager::getValue(self::Ns, "TE_PORT") == "") {
             return ___("Please set all TE parameters", "TransformationEngine");
         }
@@ -43,7 +44,7 @@ class Manager
      *
      * @return string error message, if no error empty string
      */
-    public static function isAccessible()
+    public static function isAccessible(&$info)
     {
         $err = self::checkParameters();
         if ($err != '') {
@@ -58,6 +59,15 @@ class Manager
         return '';
     }
 
+    /**
+     * Test is TE parameter is on
+     *
+     * @return bool
+     */
+    public static function isActivated()
+    {
+        return \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE") === "yes";
+    }
 
     /**
      * Generate a conversion of a file
@@ -77,16 +87,15 @@ class Manager
     {
         $err = '';
         if (($vidin > 0) && ($vidout > 0)) {
-            $tea = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\TransformationEngine\Manager::Ns, "TE_ACTIVATE");
-            if ($tea !== "yes") {
+            if (!self::isActivated()) {
                 return '';
             }
-            $of = new \VaultDiskStorage("", $vidin);
+            $of = new DiskStorage("", $vidin);
             $filename = $of->getPath();
             if (!$of->isAffected()) {
                 return "no file $vidin";
             }
-            $ofout = new \VaultDiskStorage("", $vidout);
+            $ofout = new DiskStorage("", $vidout);
             $ofout->teng_state = \Anakeen\TransformationEngine\Client::status_waiting; // in progress
             $ofout->modify();
 
@@ -161,7 +170,8 @@ class Manager
             ContextManager::getCurrentUser(),
             $routes,
             3600 * 24,
-            true
+            true,
+            "Transformation Engine"
         );
         if (strstr($urlindex, '?')) {
             $beg = '&';
@@ -173,7 +183,7 @@ class Manager
         $proto = substr($openurl, 0, 6);
         $tail = str_replace('//', '/', substr($openurl, 6));
 
-        return $proto.$tail;
+        return $proto . $tail;
     }
 
     /**
