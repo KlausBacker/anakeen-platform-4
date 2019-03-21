@@ -1,73 +1,73 @@
 export interface ISeTabs {
-  createKendoComponents(),
+  createKendoComponents();
 
-  createKendoTabStrip(),
+  createKendoTabStrip();
 
-  createKendoOpenedTabsList(),
+  createKendoOpenedTabsList();
 
-  sendGetRequest(url: string, config: any, loadingElement: any),
+  sendGetRequest(url: string, config: any, loadingElement: any);
 
-  resizeComponents(),
+  resizeComponents();
 
-  setTabstripPagination(),
+  setTabstripPagination();
 
-  initTabModel(),
+  initTabModel();
 
-  canUseLazyTab(),
+  canUseLazyTab();
 
-  getLazyTabIndex(),
+  getLazyTabIndex();
 
-  configureSortable(),
+  configureSortable();
 
-  setAddTabButton(addable: Boolean),
+  setAddTabButton(addable: Boolean);
 
-  setCloseTabButton(tab: any, forceClose?: Boolean),
+  setCloseTabButton(tab: any, forceClose?: Boolean);
 
-  loadLazyTabDocument(data: any),
+  loadLazyTabDocument(data: any);
 
-  bindWelcomeTabEvents(newTab: any, index: number),
+  bindWelcomeTabEvents(newTab: any, index: number);
 
-  bindLazyTabEvents(tabContent ?: any, index ?: number),
+  bindLazyTabEvents(tabContent?: any, index?: number);
 
-  getSEEventHandler(eventName: string),
+  getSEEventHandler(eventName: string);
 
-  bindDocumentTabEvents(doc: any, tabIndex: number),
+  bindDocumentTabEvents(doc: any, tabIndex: number);
 
-  onModelAddItem(event),
+  onModelAddItem(event);
 
-  onModelRemoveItem(event),
+  onModelRemoveItem(event);
 
-  onModelItemChange(event),
+  onModelItemChange(event);
 
-  onAddGenericTab(index: number),
+  onAddGenericTab(index: number);
 
-  onAddWelcomeTab(index: number),
+  onAddWelcomeTab(index: number);
 
-  onAddLazyTab(index: number),
+  onAddLazyTab(index: number);
 
-  onAddDocumentTab(index: number),
+  onAddDocumentTab(index: number);
 
-  onAddTabClick(event),
+  onAddTabClick(event);
 
-  onCloseTabClick(event),
+  onCloseTabClick(event);
 
-  onCreateDocumentClick(event, index: number),
+  onCreateDocumentClick(event, index: number);
 
-  onTabstripSelect(event),
+  onTabstripSelect(event);
 
-  onOpenedTabsListDataBound(event),
+  onOpenedTabsListDataBound(event);
 
-  onOpenedTabsListItemClick(event),
+  onOpenedTabsListItemClick(event);
 
-  onDocumentReady(event, position: number),
+  onDocumentReady(event, position: number);
 
-  onDocumentActionClick(event),
+  onDocumentActionClick(event);
 
-  onDocumentAfterSave(event, position: number),
+  onDocumentAfterSave(event, position: number);
 
-  formatSE(config),
+  formatSE(config);
 
-  configureCloseTab(t, newValue),
+  configureCloseTab(t, newValue);
 
-  configureSortable(newValue),
+  configureSortable(newValue);
 }
