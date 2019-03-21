@@ -107,7 +107,7 @@ export default {
       );
     },
     getConfig() {
-      this.$kendo.ui.progress(this.$(this.$el), true);
+      kendo.ui.progress($(this.$el), true);
       this.$http
         .get(`/hub/config/${this.hubId}`)
         .then(response => {
@@ -117,14 +117,14 @@ export default {
             data.hubElements
           );
           this.hubEntries.loadAssets().then(() => {
-            this.$kendo.ui.progress(this.$(this.$el), false);
+            kendo.ui.progress($(this.$el), false);
             this.hubEntries.useComponents();
             this.config = data;
           });
         })
         .catch(error => {
           console.error(error);
-          this.$kendo.ui.progress(this.$(this.$el), false);
+          kendo.ui.progress($(this.$el), false);
         });
     },
     onNotify(notification) {

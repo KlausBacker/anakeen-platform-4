@@ -1,10 +1,10 @@
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
 
-import { AnkSEGrid } from "@anakeen/user-interfaces";
-import { AnkLogout } from "@anakeen/user-interfaces";
-import { AnkIdentity } from "@anakeen/user-interfaces";
-import { AnkSmartElement } from "@anakeen/user-interfaces";
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
+import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout";
+import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity";
+import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 
 export default {
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     toolbarConfig() {
-      this.$(".grid-toolbar-create-action").kendoDropDownList({
+      $(".grid-toolbar-create-action").kendoDropDownList({
         dataTextField: "text",
         dataValueField: "value",
         dataSource: this.hubConfig,

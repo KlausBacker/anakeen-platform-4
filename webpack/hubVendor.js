@@ -15,7 +15,7 @@ module.exports = () => {
   const conf = {
     moduleName: "hubVendor",
     entry: {
-      hubVendor: ["@anakeen/user-interfaces", "tslib", "vue-property-decorator"]
+      hubVendor: ["@anakeen/user-interfaces/components/lib/AnkSEGrid","@anakeen/user-interfaces/components/lib/AnkLogout","@anakeen/user-interfaces/components/lib/AnkIdentity","@anakeen/user-interfaces/components/lib/AnkSmartElement", "tslib", "vue-property-decorator"]
     },
     excludeBabel: [
       /node_modules\/axios/,
