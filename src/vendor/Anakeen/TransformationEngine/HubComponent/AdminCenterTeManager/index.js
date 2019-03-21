@@ -1,5 +1,5 @@
-import VaultManager from "./AdminCenterTeManagerEntry";
+import TeManager from "./AdminCenterTeManagerEntry";
 
 export default function install(Vue) {
-  Vue.component("ank-hub-te-manager", VaultManager);
+  Vue.component("ank-hub-te-manager", TeManager);
 }
