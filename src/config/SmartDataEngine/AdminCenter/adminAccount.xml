@@ -9,6 +9,7 @@
             <sde:description>Get list of group</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminAccount:UserList">
@@ -19,6 +20,7 @@
             <sde:description>Get list of users</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminAccount:Info">
@@ -29,6 +31,7 @@
             <sde:description>Get list of users</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminAccount:disable">
@@ -39,6 +42,7 @@
             <sde:description>Disable account</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminAccount:enable">
@@ -49,6 +53,7 @@
             <sde:description>Enable account</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminAccount:resetLogin">
@@ -59,7 +64,14 @@
             <sde:description>Reset login</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminAccounts">
+            <sde:description>Accounts administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminAccounts" account="accounts_manager_role" />
+    </sde:accesses>
 </sde:config>
