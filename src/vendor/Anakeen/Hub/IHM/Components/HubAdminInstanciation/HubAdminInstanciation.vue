@@ -62,7 +62,7 @@
           </div>
         </template>
         <template slot="right">
-          <smartElem ref="instanceConfig" class="hub-modal"></smartElem>
+          <smart-element ref="instanceConfig" class="hub-modal"></smart-element>
         </template>
       </ank-splitter>
     </div>
