@@ -35,7 +35,6 @@ class VaultResize
             AllVaultsInfo::formatBytes($this->vaultFs->max_size)
         ));
 
-
         return \Anakeen\Router\ApiV2Response::withData($response, $fsInfo, $messages);
     }
 

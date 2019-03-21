@@ -36,7 +36,7 @@ class VaultCreate
             "New vault created. Location is \"%s\", size is %s",
             $this->vaultFs->r_path,
             AllVaultsInfo::formatBytes($this->vaultFs->max_size)
-        ));
+        ), ApiMessage::SUCCESS);
 
 
         return \Anakeen\Router\ApiV2Response::withData($response, $fsInfo, $messages);

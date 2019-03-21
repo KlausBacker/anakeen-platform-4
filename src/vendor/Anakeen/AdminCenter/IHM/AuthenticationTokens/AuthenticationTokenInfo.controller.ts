@@ -3,7 +3,6 @@ import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.button";
 import "@progress/kendo-ui/js/kendo.datetimepicker";
 import "@progress/kendo-ui/js/kendo.window";
-import axios from "axios";
 import {
   IAuthenticationToken,
   IAuthenticationTokenDescription,
@@ -102,26 +101,10 @@ export default class AuthenticationTokenInfoController extends Vue {
       user: this.tokenValues.user
     };
 
-    axios
-      .post("/api/v2/admin/tokens/", tokenData)
-      .then(response => {
-        const data = response.data.data;
-        this.$emit("token-deleted", data);
-      })
-      .catch(info => {
-        if (info.response && info.response.data && info.response.data.error) {
-          window.alert(info.response.data.error);
-        } else if (
-          info.response &&
-          info.response.data &&
-          info.response.data.message
-        ) {
-          window.alert(info.response.data.message);
-        } else {
-          window.alert("Fail delete token, see console for more details");
-          console.error("reject response", info);
-        }
-      });
+    this.$http.post("/api/v2/admin/tokens/", tokenData).then(response => {
+      const data = response.data.data;
+      this.$emit("token-deleted", data);
+    });
   }
   // noinspection JSMethodCanBeStatic
   public onCloseConfirm(e) {
@@ -147,7 +130,7 @@ export default class AuthenticationTokenInfoController extends Vue {
       .closest("[data-role=window]")
       .data("kendoWindow")
       .close();
-    axios
+    this.$http
       .delete("/api/v2/admin/tokens/" + this.info.token)
       .then(response => {
         const data = response.data.data;
@@ -164,20 +147,6 @@ export default class AuthenticationTokenInfoController extends Vue {
           .data("kendoWindow")
           .center()
           .open();
-      })
-      .catch(info => {
-        if (info.response && info.response.data && info.response.data.error) {
-          window.alert(info.response.data.error);
-        } else if (
-          info.response &&
-          info.response.data &&
-          info.response.data.message
-        ) {
-          window.alert(info.response.data.message);
-        } else {
-          window.alert("Fail delete token, see console for more details");
-          console.error("reject response", info);
-        }
       });
   }
 

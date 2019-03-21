@@ -44,21 +44,6 @@ export default {
         const url = (this.routeUrl() + "/:tokenId").replace(/\/\/+/g, "/");
 
         this.registerRoute(url, params => {
-          this.hubNotify({
-            type: "info", // Type de notification parmi: "info", "notice", "success", "warning", "error"
-            content: {
-              textContent:
-                "You see the info of the token " +
-                params.tokenId +
-                " : " +
-                this.routeUrl(), // ou htmlContent: "<em>Un message d'information important</em>"
-              title: "VAULTS"
-            },
-            options: {
-              displayTime: 5000, // temps d'affichage en ms de la notification (5000ms par défaut)
-              closable: false // La notification peut être fermée via l'ui ou non (true par défaut)
-            }
-          });
           this.selectedToken = params.tokenId;
         }).resolve(window.location.pathname);
       }
