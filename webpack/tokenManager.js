@@ -16,7 +16,7 @@ const conf = {
     "token-manager": [
       path.resolve(
         BASE_DIR,
-        "src/vendor/Anakeen/AdminCenter/HubComponent/AuthenticationTokensHub/index.js"
+        "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AuthenticationTokensHub/index.js"
       )
     ]
   },
