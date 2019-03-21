@@ -16,7 +16,7 @@ const conf = {
     "parameter-manager": [
       path.resolve(
         BASE_DIR,
-        "src/vendor/Anakeen/AdminCenter/HubComponent/AdminCenterParameters/index.js"
+        "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterParameters/index.js"
       )
     ]
   },

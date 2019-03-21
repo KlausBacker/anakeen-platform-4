@@ -16,7 +16,7 @@ const conf = {
     "vault-manager": [
       path.resolve(
         BASE_DIR,
-        "src/vendor/Anakeen/AdminCenter/HubComponent/AdminCenterVaultManager/index.js"
+        "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterVaultManager/index.js"
       )
     ]
   },

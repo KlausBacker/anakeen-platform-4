@@ -9,6 +9,7 @@
         <module name="anakeen-hub" version="1.0.x"/>
     </requires>
     <post-install>
+        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterAccounts/**/*.xml"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAuthenticationTokens/**/*.xml"/>
@@ -18,6 +19,7 @@
     </post-install>
 
     <post-upgrade>
+        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/AdminCenter/Accounts/110-AdminCenterRoles.xml"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterAccounts/**/*.xml"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminCenterParameters/**/*.xml"/>
         <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/AdminCenter/SmartStructures/HubAdminVaultManager/**/*.xml"/>

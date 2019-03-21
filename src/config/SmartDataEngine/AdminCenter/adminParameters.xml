@@ -9,6 +9,7 @@
             <sde:description>Get all parameters</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminParameters:SearchUsers">
@@ -19,6 +20,7 @@
             <sde:description>Search users to modify parameters</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminParameters:UserParameters">
@@ -29,6 +31,7 @@
             <sde:description>Get all parameters used for a specific user</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminParameters:AlterParameter">
@@ -39,6 +42,7 @@
             <sde:description>Modify the value of a parameter</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminParameters:AlterUserParameter">
@@ -49,6 +53,7 @@
             <sde:description>Modify the value of a parameter for a specific user</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminParameters:RestoreUserParameterSystemValue">
@@ -59,6 +64,7 @@
             <sde:description>Delete the value of a parameter for a specific user</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminParameters:PreloadUsers">
@@ -69,7 +75,14 @@
             <sde:description>Get the 5 first users</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminParameters">
+            <sde:description>Parameters administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminParameters" account="parameters_manager_role" />
+    </sde:accesses>
 </sde:config>

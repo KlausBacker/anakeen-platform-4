@@ -130,7 +130,7 @@ publishNpm--autorelease:
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
-	rm -fr src/public/Anakeen/accountManager src/public/Anakeen/parameterManagersrc/public/Anakeen/tokenManager src/public/Anakeen/vaultManager src/public/Anakeen/manifest src/public/Anakeen/adminCenter/dev src/public/Anakeen/adminCenter/prod src/public/Anakeen/adminCenter/legacy
+	rm -fr src/public/Anakeen/accountManager src/public/Anakeen/parameterManager src/public/Anakeen/tokenManager src/public/Anakeen/vaultManager src/public/Anakeen/manifest src/public/Anakeen/adminCenter/dev src/public/Anakeen/adminCenter/prod src/public/Anakeen/adminCenter/legacy
 	rm -rf ${MODULE_NAME}*.app
 	rm -rf ${MODULE_NAME}*.src
 

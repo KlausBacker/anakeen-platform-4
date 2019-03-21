@@ -14,7 +14,7 @@ const conf = {
   moduleName: "accountManager",
   libName: "AdminAccountManager",
   entry: {
-    "account-manager": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/HubComponent/AdminCenterAccounts/index.js")]
+    "account-manager": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterAccounts/index.js")]
   },
   buildPath: PUBLIC_PATH,
   excludeBabel: dontParse,

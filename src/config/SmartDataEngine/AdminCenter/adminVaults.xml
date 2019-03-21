@@ -8,6 +8,7 @@
             <sde:description>Get all vaults info</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminVaults:VaultResize">
@@ -17,6 +18,7 @@
             <sde:description>Resize logical volume</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminVaults:VaultMove">
@@ -26,6 +28,7 @@
             <sde:description>Move root vault path</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="AdminVaults:VaultCreate">
@@ -35,7 +38,14 @@
             <sde:description>Create vault</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminVaults">
+            <sde:description>Vaults administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminVaults" account="accounts_manager_role" />
+    </sde:accesses>
 </sde:config>
