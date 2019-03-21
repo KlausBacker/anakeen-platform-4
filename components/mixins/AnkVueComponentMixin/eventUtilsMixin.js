@@ -132,3 +132,16 @@ export const $emitAnkEvent = function emit(eventName, ...args) {
   // Return false if event is cancelled (dispatchEvent behavior)
   return !componentEvent.defaultPrevented;
 };
+
+/**
+ * Mixin that add two functions $createComponentEvent to create events, $emitAnkEvent that emit created event
+ * @type {{beforeCreate(): void}}
+ */
+const AnkVueEventMixin = {
+  beforeCreate() {
+    this.$createComponentEvent = $createComponentEvent;
+    this.$emitAnkEvent = $emitAnkEvent;
+  }
+};
+
+export default AnkVueEventMixin;

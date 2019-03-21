@@ -1,5 +1,4 @@
 import Vue from "vue";
-import VueSetup from "../setup.js";
 import { Component, Watch, Prop } from "vue-property-decorator";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.filtercell";
@@ -18,7 +17,8 @@ import GridVueUtil from "./utils/GridVueUtil";
 import GridKendoUtils from "./utils/GridKendoUtils";
 const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
 import { IGrid } from "./IGrid";
-
+import VueSetup from "../setup.js";
+Vue.use(VueSetup);
 declare var kendo;
 
 Vue.use(VueSetup);

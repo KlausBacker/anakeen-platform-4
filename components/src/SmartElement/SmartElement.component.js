@@ -1,11 +1,11 @@
 /**
  * Dynacase document component object ***
  */
+import Vue from "vue";
+import VueSetup from "../setup.js";
 
-import AnkMixins from "../../mixins/AnkVueComponentMixin";
-
+Vue.use(VueSetup);
 export default {
-  mixins: AnkMixins,
   name: "ank-smart-element",
   data() {
     return {

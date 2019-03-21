@@ -51,15 +51,15 @@ class LoginPage
             ],
             "JS" => [
                 [
-                    "key" => "ankcomponents",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath()
-                ]
+                    "key" => "login",
+                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod")["login"]["js"]
+                ],
             ],
             "JS_LEGACY" => [
                 [
-                    "key" => "ankcomponentses5",
-                    "path" => \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath(true)
-                ]
+                    "key" => "login",
+                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod")["login"]["js"]
+                ],
             ],
             "CSS" => [
                 [

@@ -14,6 +14,7 @@ module.exports = () => {
   const conf = {
     moduleName: "ank-components",
     entry: {
+      "login": [ path.resolve(__dirname, "../src/vendor/Anakeen/Components/Authent/Routes/LoginPage.js")],
       "ank-components": [
         path.resolve(__dirname, "../src/vendor/Anakeen/Components/main.js")
       ]

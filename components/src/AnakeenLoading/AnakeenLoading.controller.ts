@@ -1,6 +1,7 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
-
+import VueSetup from "../setup.js";
+Vue.use(VueSetup);
 @Component({
   name: "ank-loading"
 })
