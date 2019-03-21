@@ -145,4 +145,3 @@ const AnkVueEventMixin = {
 };
 
 export default AnkVueEventMixin;
-
