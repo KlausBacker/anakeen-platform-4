@@ -4,8 +4,8 @@ import "vue-gettext/types/vue";
 
 declare module "vue/types/vue" {
   interface Vue {
-    _uid: number,
-    $http: AxiosInstance,
-    $axios: AxiosStatic,
+    _uid: number;
+    $http: AxiosInstance;
+    $axios: AxiosStatic;
   }
 }
