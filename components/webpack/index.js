@@ -1,6 +1,6 @@
 const path = require("path");
 const merge = require("webpack-merge");
-const { vueLoader } = require("@anakeen/webpack-conf/parts");
+const { vueLoader, typeScriptLoader } = require("@anakeen/webpack-conf/parts");
 
 const baseConfig = require("./base");
 const commonConfig = require("./common");

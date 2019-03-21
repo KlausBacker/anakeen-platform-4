@@ -3,7 +3,8 @@ import { Component, Prop } from "vue-property-decorator";
 const a4Password = () => import("./AuthentPassword/AuthentPassword.vue");
 import { IAuthent } from "./IAuthent";
 import { _enableReady } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
-
+import VueSetup from "../setup.js";
+Vue.use(VueSetup);
 declare var kendo;
 // noinspection JSUnusedGlobalSymbols
 @Component({

@@ -9,6 +9,8 @@ import {
   $emitAnkEvent,
   _enableReady
 } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
+import VueSetup from "../setup.js";
+Vue.use(VueSetup);
 declare var kendo;
 const Constants = {
   WELCOME_TAB_ID: "welcome_tab_id",

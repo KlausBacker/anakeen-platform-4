@@ -40,6 +40,7 @@
     "lint": "npx eslint ./src"
   },
   "files": [
+    "lib/**/*",
     "components/**/*",
     "src/**/*.scss",
     "src/vendor/Anakeen/DOCUMENT/IHM/document.js",
@@ -83,7 +84,7 @@
   "peerDependencies": {
     "@progress/kendo-ui": "^2019.1.213",
     "jquery": "^3.3.1",
-    "vue": "^2.6.7"
+    "vue": "2.6.7"
   },
   "dependencies": {
     "@anakeen/theme-variables": "^0.0.2",

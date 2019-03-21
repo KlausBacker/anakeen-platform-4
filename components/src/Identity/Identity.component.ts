@@ -7,7 +7,8 @@ import {
   $emitAnkEvent,
   $createComponentEvent
 } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
-
+import VueSetup from "../setup.js";
+Vue.use(VueSetup);
 declare var kendo;
 @Component({
   name: "ank-identity",

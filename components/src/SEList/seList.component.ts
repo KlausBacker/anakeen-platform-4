@@ -47,7 +47,7 @@ export default class SeListComponent extends Vue {
             detail: [e]
           }
         );
-        const notCancelled = $emitAnkEvent(`se-list-${eventName}`, customEvent);
+        const notCancelled = $emitAnkEvent.call(this,`se-list-${eventName}`, customEvent);
         if (eventType === "before" && !notCancelled) {
           if (e.preventDefault) {
             e.preventDefault();
