@@ -34,22 +34,7 @@ const bindNetworkCommonsErrors = axiosInstance => {
       return response;
     },
     error => {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        if (
-          error.response.data.message ||
-          error.response.data.exceptionMessage
-        ) {
-          console.error(
-            error.response.data.message || error.response.data.exceptionMessage
-          );
-        }
-        if (error.response.data.error) {
-          console.error(error.response.data.error);
-        }
-        console.error(JSON.stringify(error.response));
-      } else if (error.request) {
+      if (!error.response && error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
@@ -57,9 +42,6 @@ const bindNetworkCommonsErrors = axiosInstance => {
           "Looks like there are some network troubles",
           error.request
         );
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error("Error", error.message);
       }
       return Promise.reject(error);
     }
