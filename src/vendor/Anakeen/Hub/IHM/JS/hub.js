@@ -18,6 +18,6 @@ new Vue({
   components: {
     HubMain
   },
-  template: "<hub-main></hub-main>",
+  template: "<hub-main/>",
   store: Store
 });
