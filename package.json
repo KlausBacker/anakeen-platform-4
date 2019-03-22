@@ -30,8 +30,8 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/hub-components": "^1.0.0-dev20190321162918",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190321160045",
+    "@anakeen/hub-components": "^1.0.0-dev20190322163542",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190322162328",
     "@anakeen/webpack-conf": "^1.2.0-dev20190308083300",
     "@commitlint/config-conventional": "^7.5.0",
     "commitlint": "^7.5.2",
@@ -46,7 +46,7 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
-    "@anakeen/internal-components": "^1.0.1-dev20190311085312",
+    "@anakeen/internal-components": "^1.0.1-dev20190322160440",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
     "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
@@ -56,7 +56,7 @@
     "@progress/kendo-grid-vue-wrapper": "^2019.1.220",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@progress/kendo-treeview-vue-wrapper": "^2019.1.220",
-    "@progress/kendo-ui": "^2019.1.227",
+    "@progress/kendo-ui": "2019.1.320",
     "@types/jquery": "^3.3.29",
     "axios": "^0.18.0",
     "jquery": "^3.3.1",
@@ -64,7 +64,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npx eslint ./ && npx tslint './src/vendor/Anakeen/AdminCenter/**/*.ts' && npx prettier --check './src/vendor/Anakeen/AdminCenter/**/*.ts'",
+      "pre-push": "npx eslint ./ && npx tslint './src/vendor/Anakeen/AdminCenter/**/*.ts' && npx prettier --check './src/vendor/Anakeen/AdminCenter/**/*.ts' && make checkPackage",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }

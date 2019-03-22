@@ -54,6 +54,8 @@ beautify:
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
+checkPackage:
+	${MK_DIR}/.cibuild/targets/autotest/scripts.d/01_checkPackage.sh
 
 ########################################################################################################################
 ##
