@@ -46,6 +46,6 @@
         <sde:access name="AdminVaults">
             <sde:description>Vaults administrator access</sde:description>
         </sde:access>
-        <sde:route-access ref="AdminVaults" account="accounts_manager_role" />
+        <sde:route-access ref="AdminVaults" account="vaults_manager_role" />
     </sde:accesses>
 </sde:config>

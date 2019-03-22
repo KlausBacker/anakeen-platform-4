@@ -36,6 +36,6 @@
         <sde:access name="AdminTokens">
             <sde:description>Tokens administrator access</sde:description>
         </sde:access>
-        <sde:route-access ref="AdminTokens" account="accounts_manager_role" />
+        <sde:route-access ref="AdminTokens" account="tokens_manager_role" />
     </sde:accesses>
 </sde:config>

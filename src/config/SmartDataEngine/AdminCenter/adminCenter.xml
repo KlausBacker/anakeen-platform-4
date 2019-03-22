@@ -15,5 +15,6 @@
         <sde:access name="Admin">
             <sde:description>Administrator access</sde:description>
         </sde:access>
+        <sde:route-access ref="Admin" account="system_administrator" />
     </sde:accesses>
 </sde:config>
