@@ -265,6 +265,7 @@ export default class AdminCenterAccountController extends Vue {
     if (
       window.localStorage.getItem("admin.account.groupSelected") === "@users"
     ) {
+      $("#groupCreateToolbar").text("Create group");
       userToolbar.enable("#changeGroupBtn", false);
       userToolbar.enable("#openGroupBtn", false);
     } else {
@@ -409,11 +410,12 @@ export default class AdminCenterAccountController extends Vue {
   public updateGroupSelected(selectedGroupId) {
     this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
     if (selectedGroupId && selectedGroupId !== "@users") {
+      $("#groupCreateToolbar").text("Create sub group");
       this.selectedGroupDocumentId = selectedGroupId;
       this.displayGroupDocument = true;
       return;
     } else if (selectedGroupId === "@users") {
-      this.$refs.accountSplitter.enableEmptyContent();
+      $("#groupCreateToolbar").text("Create group");
     }
     this.displayGroupDocument = false;
   }
