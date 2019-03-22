@@ -19,13 +19,21 @@ namespace SmartStructure\Fields {
         */ 
         const hub_component_parameters='hub_component_parameters';
         /**
-        * Label
+        * Html label
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
+        * <li> <i>type</i> longtext </li>
         * </ul>
         */ 
         const label='label';
+        /**
+        * Extended Html label
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> longtext </li>
+        * </ul>
+        */ 
+        const extended_label='extended_label';
 
     }
 }

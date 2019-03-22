@@ -6,9 +6,8 @@
         <smart:element-access access="edit" account="hub-admin-role"/>
         <smart:element-access access="icreate" account="hub-admin-role"/>
     </smart:access-configuration>
-    <smart:access-configuration name="PRF_HUB_ACCESS" label="Hub Profile" access-structure="HUBCONFIGURATION">
+    <smart:access-configuration name="PRF_HUB_ACCESS" label="Hub Profile">
         <smart:element-access access="view" account="hub-admin-role"/>
-        <smart:element-access access="view" field="hub_role"/>
         <smart:element-access access="edit" account="hub-admin-role"/>
         <smart:element-access access="delete" account="hub-admin-role"/>
     </smart:access-configuration>

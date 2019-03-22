@@ -32,6 +32,7 @@ namespace SmartStructure\Fields {
         * Hub Station
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> HUBINSTANCIATION </li>
         * <li> <i>type</i> docid </li>
         * </ul>
         */ 
@@ -136,21 +137,25 @@ namespace SmartStructure\Fields {
         */ 
         const hub_security_frame='hub_security_frame';
         /**
-        * Roles
-        * <ul>
-        * <li> <i>type</i> array </li>
-        * <li> <i>access</i> ReadWrite </li>
-        * </ul>
-        */ 
-        const hub_roles='hub_roles';
-        /**
-        * Role
+        * Roles to view component
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>match</i> role </li>
+        * <li> <i>multiple</i> true </li>
         * <li> <i>type</i> account </li>
         * </ul>
         */ 
-        const hub_role='hub_role';
+        const hub_visibility_roles='hub_visibility_roles';
+        /**
+        * Roles to perform component
+        * <ul>
+        * <li> <i>access</i> Read </li>
+        * <li> <i>match</i> role </li>
+        * <li> <i>multiple</i> true </li>
+        * <li> <i>type</i> account </li>
+        * </ul>
+        */ 
+        const hub_execution_roles='hub_execution_roles';
         /**
         * Hub asset parameters
         * <ul>
@@ -196,6 +201,24 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hub_cssasset='hub_cssasset';
+        /**
+        * Security access
+        * <ul>
+        * <li> <i>type</i> frame </li>
+        * <li> <i>access</i> Read </li>
+        * <li> <i>kind</i> Parameter </li>
+        * </ul>
+        */ 
+        const hub_p_securityaccess='hub_p_securityaccess';
+        /**
+        * Mandatory route role
+        * <ul>
+        * <li> <i>access</i> Read </li>
+        * <li> <i>type</i> text </li>
+        * <li> <i>kind</i> Parameter </li>
+        * </ul>
+        */ 
+        const hub_p_routes_role='hub_p_routes_role';
 
     }
 }
