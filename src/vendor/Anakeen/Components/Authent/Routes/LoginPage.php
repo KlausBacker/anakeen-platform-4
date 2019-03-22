@@ -58,7 +58,7 @@ class LoginPage
             "JS_LEGACY" => [
                 [
                     "key" => "login",
-                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "prod")["login"]["js"]
+                    "path" =>  \Anakeen\Ui\UIGetAssetPath::getElementAssets("ank-components", \Anakeen\Ui\UIGetAssetPath::isInDebug() ? "dev" : "legacy")["login"]["js"]
                 ],
             ],
             "CSS" => [
