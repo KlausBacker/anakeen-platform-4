@@ -1,3 +1,6 @@
 node_modules/
 ide/vendor/
 .idea/
+src/public/
+lib/
+Makefile.local
