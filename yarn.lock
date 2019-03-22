@@ -49,12 +49,12 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/hub-components@^1.0.0-dev20190321162918":
-  version "1.0.0-dev20190321162918"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190321162918.tgz#97bf2440a91b9e72f9b14ea805fd069034bce50f"
-  integrity sha512-bcgxNOQuRfrAO06ESeABYSEw3LOnBDByMThjkkkW6wczauRkn71VyL4hOduruu1nxPMPGGIWl38WINvaXrHLMg==
+"@anakeen/hub-components@^1.0.0-dev20190322163542":
+  version "1.0.0-dev20190322163542"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190322163542.tgz#1fb3bdd88d2306edef80b9ebecd36d58eaa48cfa"
+  integrity sha512-SRrWZli52e8XfEgKNQofEL5EjpxN/3FKFJecYVdTJml0Lfh9cZDx5NkQjh/CWWOI/E2i3KNCF/exOWcXPIYAgA==
   dependencies:
-    "@anakeen/internal-components" "^1.0.1-dev20190321161054"
+    "@anakeen/internal-components" "^1.0.1-dev20190322160440"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     "@types/navigo" "^7.0.1"
     "@types/url-join" "^4.0.0"
@@ -71,16 +71,13 @@
     vue-property-decorator "^7.3.0"
     vuex "^3.1.0"
 
-"@anakeen/internal-components@^1.0.1-dev20190321161054":
-  version "1.0.1-dev20190321161054"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190321161054.tgz#f8de18c4dd47bd0bc92d5a7cf5b14d5fee9df0ed"
-  integrity sha512-M0BejiPvwh+Bn3XU2iIBPdGHr8k7yJTVK1cVvL+YoO7tKoenuP/m/yd8xuWRDV1YRydP1pmJ5O0cptfkr+8Xbw==
+"@anakeen/internal-components@^1.0.1-dev20190322160440":
+  version "1.0.1-dev20190322160440"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190322160440.tgz#e9b94b6af80cda32ddd990e32dfc09cfbd54fe23"
+  integrity sha512-EAwdoRhayYW2hZKB2AcXHMrFNybNIGe1/TgCOFc8rlXmFE44QX7giWtdnlAdYU8pr8qwfl1t4JhAIfV5VqG8Qg==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
-    "@progress/kendo-ui" "^2019.1.227"
     axios "^0.18.0"
-    jquery "^3.3.1"
-    vue "2.6.7"
     vue-class-component "^7.0.1"
     vue-property-decorator "^7.3.0"
 
@@ -94,10 +91,10 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190321160045":
-  version "2.0.0-dev20190321160045"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190321160045.tgz#a1cf93b83569aa25ab7407703d55a37139db5827"
-  integrity sha512-navEZozLBpTptP1CNxDAwZXbdxBqW2fa7HYwycqMdOSixoyALKkSFS/gcbLEnMC4iZD6gzTS5BeRJg6F9Ygj3w==
+"@anakeen/user-interfaces@^2.0.0-dev20190322162328":
+  version "2.0.0-dev20190322162328"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190322162328.tgz#dac9264f84785ac3b0d1cfad0f341db70292b732"
+  integrity sha512-MDVpPj8wqT+IIxEjtdUSXERrHtZBMphrQlFfj3htt/qYmNUh4dOfslOCj5MJ7DL9mrZcNIbSmABHMBmr3dVzfw==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@progress/kendo-theme-bootstrap" "^3.2.3"
@@ -939,14 +936,7 @@
   resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.4.0.tgz#bcfffb35c07aa3fdc6242bbbf361f6bf7cfe4cb3"
   integrity sha512-Sij/q1f2ppWQo3IEsElXC7Pi+YJhLcEURSNk3arNHFuKeGkluMeESX1BNAFgo1SHlC++owvZasOwntH9Wl0sew==
 
-"@progress/kendo-ui@^2019.1.227":
-  version "2019.1.307"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.307.tgz#17cc6d4f0efbf225f1aa5685c9075f46b580f12f"
-  integrity sha512-ZG91Z6jlY5y0zRPWMwrEx8uf9yOGn/zzFfu0nxhYVfqnTDjId2Z/p1tSI96FLMsZmlPk52Rh5ZCF5kn1OEJBog==
-  dependencies:
-    jquery "<=3"
-
-"@progress/kendo-ui@^2019.1.313":
+"@progress/kendo-ui@2019.1.320", "@progress/kendo-ui@^2019.1.313":
   version "2019.1.320"
   resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.320.tgz#1170343ece4023c4ec22c815eb9e250d63184be0"
   integrity sha512-28XscNuHvImJxlTlX4hMNww5r4Lvzx18b7pJCKZLtrC1IpP+KcOoUu1onIXXt5XoafCUI922OGxIoiWsMNfChw==
