@@ -20,7 +20,7 @@
                 items: [
                     {name: "id", label: "Identification", hidden: false},
                     {name: "structure", label: "Structure", hidden: true},
-                    {name: "type", label: "Type", hidden: false, width: "8rem"},
+                    {name: "type", label: "Type", hidden: false},
                     {name: "labeltext", label: "Label", hidden: false},
                     {name: "accessibility", label: "Access", hidden: false, width: "9rem"},
                     {name: "ordered", label: "Order", hidden: true, width: "8rem"},
