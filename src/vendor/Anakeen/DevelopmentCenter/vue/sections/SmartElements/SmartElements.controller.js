@@ -1,9 +1,5 @@
-import Vue from "vue";
 import Splitter from "../../components/Splitter/Splitter.vue";
-import { AnkSEGrid } from "@anakeen/user-interfaces";
-
-Vue.use(AnkSEGrid);
-Vue.use(Splitter);
+import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
 
 const parseFilters = filters => {
   const result = {};
