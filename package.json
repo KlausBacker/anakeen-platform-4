@@ -39,7 +39,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/internal-components": "^1.0.1-dev20190321161054",
+    "@anakeen/internal-components": "^1.0.1-dev20190322160440",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@types/navigo": "^7.0.1",
     "@types/url-join": "^4.0.0",
@@ -59,7 +59,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190321160045",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190322150211",
     "@anakeen/webpack-conf": "^1.2.0-dev20190308083300",
     "@commitlint/config-conventional": "^7.5.0",
     "@progress/kendo-ui": "2019.1.320",
@@ -84,7 +84,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npx eslint ./ && npx tslint './components/src/**/*.ts' && npx prettier --check './components/src/**/*.ts' && make lint",
+      "pre-push": "npx eslint ./ && npx tslint './components/src/**/*.ts' && npx prettier --check './components/src/**/*.ts' && make lint && make checkPackage",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
