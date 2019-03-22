@@ -54,6 +54,9 @@ checkXML: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}
 
+checkPackage:
+	${MK_DIR}/.cibuild/targets/autotest/scripts.d/01_checkPackage.sh
+
 ########################################################################################################################
 ##
 ## Po and stub
