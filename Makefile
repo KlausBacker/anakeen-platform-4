@@ -73,6 +73,9 @@ beautify:
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${ANAKEEN_UI_SRC_PATH}/src
 
+checkPackage:
+	${MK_DIR}/.cibuild/targets/autotest/scripts.d/01_checkPackage.sh
+
 ########################################################################################################################
 ##
 ## Po and stub
