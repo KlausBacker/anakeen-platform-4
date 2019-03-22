@@ -23,37 +23,34 @@
   ],
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190321160045",
     "@anakeen/webpack-conf": "^1.2.0-dev20190308083300",
     "@commitlint/config-conventional": "^7.5.0",
+    "@progress/kendo-ui": "^2019.1.213",
     "commitlint": "^7.5.2",
     "eslint": "^5.15.3",
     "eslint-plugin-prettier": "^3.0.1",
     "husky": "^1.3.1",
+    "jquery": "^3.3.1",
     "prettier": "^1.16.4",
     "ts-loader": "^5.3.3",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.4000",
+    "vue": "2.6.7",
     "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.7",
+    "vue-template-compiler": "2.6.7",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
-    "@progress/kendo-ui": "^2019.1.227",
     "axios": "^0.18.0",
-    "jquery": "^3.3.1",
-    "vue": "2.6.7",
     "vue-class-component": "^7.0.1",
     "vue-property-decorator": "^7.3.0"
   },
-  "peerDependencies": {
-    "axios": "^0.18.0",
-    "vue": "^2.6.6"
-  },
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint && npm run prettier",
+      "pre-push": "npm run lint && npm run prettier && ./.cibuild/targets/autotest/scripts.d/01_checkPackage.sh",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }
