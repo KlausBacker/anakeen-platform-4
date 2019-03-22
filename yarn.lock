@@ -49,16 +49,13 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/internal-components@^1.0.1-dev20190321161054":
-  version "1.0.1-dev20190321161054"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190321161054.tgz#f8de18c4dd47bd0bc92d5a7cf5b14d5fee9df0ed"
-  integrity sha512-M0BejiPvwh+Bn3XU2iIBPdGHr8k7yJTVK1cVvL+YoO7tKoenuP/m/yd8xuWRDV1YRydP1pmJ5O0cptfkr+8Xbw==
+"@anakeen/internal-components@^1.0.1-dev20190322160440":
+  version "1.0.1-dev20190322160440"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190322160440.tgz#e9b94b6af80cda32ddd990e32dfc09cfbd54fe23"
+  integrity sha512-EAwdoRhayYW2hZKB2AcXHMrFNybNIGe1/TgCOFc8rlXmFE44QX7giWtdnlAdYU8pr8qwfl1t4JhAIfV5VqG8Qg==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
-    "@progress/kendo-ui" "^2019.1.227"
     axios "^0.18.0"
-    jquery "^3.3.1"
-    vue "2.6.7"
     vue-class-component "^7.0.1"
     vue-property-decorator "^7.3.0"
 
@@ -72,10 +69,10 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190321160045":
-  version "2.0.0-dev20190321160045"
-  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190321160045.tgz#a1cf93b83569aa25ab7407703d55a37139db5827"
-  integrity sha512-navEZozLBpTptP1CNxDAwZXbdxBqW2fa7HYwycqMdOSixoyALKkSFS/gcbLEnMC4iZD6gzTS5BeRJg6F9Ygj3w==
+"@anakeen/user-interfaces@^2.0.0-dev20190322150211":
+  version "2.0.0-dev20190322150211"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190322150211.tgz#0697269422031d09fd48a46a50106d94978573b5"
+  integrity sha512-+61vRQRavqTMVEN0K/pa4BgssgaIeFDwUTlc3AmRdwjrXoWOLDPwVO30lHFhlwFhaSqbeewsC6GLIDIitqhiAw==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@progress/kendo-theme-bootstrap" "^3.2.3"
@@ -900,13 +897,6 @@
   version "2019.1.320"
   resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.320.tgz#1170343ece4023c4ec22c815eb9e250d63184be0"
   integrity sha512-28XscNuHvImJxlTlX4hMNww5r4Lvzx18b7pJCKZLtrC1IpP+KcOoUu1onIXXt5XoafCUI922OGxIoiWsMNfChw==
-  dependencies:
-    jquery "<=3"
-
-"@progress/kendo-ui@^2019.1.227":
-  version "2019.1.227"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-ui/-/kendo-ui-2019.1.227.tgz#1babf7826e2d1c1517679f76ec1818ee6c7556ba"
-  integrity sha512-IHy9oViq+keXiDgfX9sXOazO3H1XWjkzxVZEImkZlfuO4clm7AmSzLsp5SjQUXhL2iUjieCqSOyBwJmmzROlAA==
   dependencies:
     jquery "<=3"
 
