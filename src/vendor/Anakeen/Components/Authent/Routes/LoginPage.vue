@@ -23,7 +23,3 @@
 
   }
 </script>
-<!-- CSS to this component only -->
-<!--<style lang="scss">-->
-    <!--@import "./login-page.scss";-->
-<!--</style>-->
