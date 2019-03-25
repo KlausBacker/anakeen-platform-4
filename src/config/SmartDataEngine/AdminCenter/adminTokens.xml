@@ -6,7 +6,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/tokens/</sde:pattern>
             <sde:description>Get all tokens</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminTokens</sde:access>
             </sde:requiredAccess>
@@ -16,7 +16,7 @@
             <sde:method>DELETE</sde:method>
             <sde:pattern>/api/v2/admin/tokens/{token}</sde:pattern>
             <sde:description>Delete a token</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminTokens</sde:access>
             </sde:requiredAccess>
@@ -26,7 +26,7 @@
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/tokens/</sde:pattern>
             <sde:description>Create a token</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminTokens</sde:access>
             </sde:requiredAccess>

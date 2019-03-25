@@ -6,7 +6,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/vaults/</sde:pattern>
             <sde:description>Get all vaults info</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>
@@ -16,7 +16,7 @@
             <sde:method>PUT</sde:method>
             <sde:pattern>/api/v2/admin/vaults/{vault}/size/</sde:pattern>
             <sde:description>Resize logical volume</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>
@@ -26,7 +26,7 @@
             <sde:method>PUT</sde:method>
             <sde:pattern>/api/v2/admin/vaults/{vault}/path/</sde:pattern>
             <sde:description>Move root vault path</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>
@@ -36,7 +36,7 @@
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/vaults/</sde:pattern>
             <sde:description>Create vault</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminVaults</sde:access>
             </sde:requiredAccess>

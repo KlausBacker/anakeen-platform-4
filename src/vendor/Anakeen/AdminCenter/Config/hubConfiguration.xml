@@ -17,6 +17,9 @@
             <hub_instance_cssasset_type>path</hub_instance_cssasset_type>
             <hub_instance_cssasset>/Anakeen/adminCenter/assets/adminCenter.css</hub_instance_cssasset>
         </hub_instance_cssassets>
+
+        <hub_access_roles name="AC_FUNCADMIN,AC_SYSADMIN"/>
+        <hub_super_role name="AC_SYSADMIN">System administrator</hub_super_role>
     </hubinstanciation>
     <hubconfigurationlabel name="HUBA_LABEL">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>

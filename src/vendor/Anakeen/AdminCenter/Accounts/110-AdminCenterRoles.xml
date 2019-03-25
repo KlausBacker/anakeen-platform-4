@@ -3,6 +3,13 @@
 
         <accounts:role name="system_administrator">
             <accounts:displayName>System administrator</accounts:displayName>
+            <accounts:structure name="AC_SYSADMIN"/>
+        </accounts:role>
+
+
+        <accounts:role name="functional_administrator">
+            <accounts:displayName>Functional administrator</accounts:displayName>
+            <accounts:structure name="AC_FUNCADMIN"/>
         </accounts:role>
 
         <accounts:role name="accounts_manager_role">

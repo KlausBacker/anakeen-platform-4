@@ -6,8 +6,9 @@
             <sde:callable>Anakeen\Routes\Admin\MainPage</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/admin/[{args:.*}]</sde:pattern>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">FunctionalAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
@@ -15,6 +16,10 @@
         <sde:access name="Admin">
             <sde:description>Administrator access</sde:description>
         </sde:access>
+        <sde:access name="FunctionalAdmin">
+            <sde:description>Functional access</sde:description>
+        </sde:access>
         <sde:route-access ref="Admin" account="system_administrator" />
+        <sde:route-access ref="FunctionalAdmin" account="functional_administrator" />
     </sde:accesses>
 </sde:config>
