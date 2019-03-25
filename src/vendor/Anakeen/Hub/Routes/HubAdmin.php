@@ -5,6 +5,9 @@ namespace Anakeen\Hub\Routes;
 use Anakeen\Core\SEManager;
 use Anakeen\Ui\UIGetAssetPath;
 
+/*
+ * @note used by GET /hub/admin/{hubId}
+ */
 class HubAdmin
 {
     /**

@@ -130,6 +130,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_security='hub_security';
         /**
+        * Security Roles
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>

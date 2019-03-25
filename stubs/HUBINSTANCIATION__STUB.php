@@ -167,22 +167,24 @@ namespace SmartStructure\Fields {
         */ 
         const hub_security_frame='hub_security_frame';
         /**
-        * Roles
+        * Roles to access
         * <ul>
-        * <li> <i>type</i> array </li>
         * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>match</i> role </li>
+        * <li> <i>multiple</i> true </li>
+        * <li> <i>type</i> account </li>
         * </ul>
         */ 
-        const hub_roles='hub_roles';
+        const hub_access_roles='hub_access_roles';
         /**
-        * Role
+        * Role to access to any elements
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>match</i> role </li>
         * <li> <i>type</i> account </li>
         * </ul>
         */ 
-        const hub_role='hub_role';
+        const hub_super_role='hub_super_role';
 
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="PRF_HUB_INSTANCEACCESS" label="Hub Element Profile" access-structure="HUBINSTANCIATION">
+        <smart:element-access access="view" account="hub-admin-role"/>
+        <smart:element-access access="view" field="hub_access_roles"/>
+        <smart:element-access access="edit" account="hub-admin-role"/>
+        <smart:element-access access="delete" account="hub-admin-role"/>
+    </smart:access-configuration>
+</smart:config>

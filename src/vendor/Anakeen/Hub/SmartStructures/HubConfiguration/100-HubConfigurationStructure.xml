@@ -28,7 +28,7 @@
                 <smart:field-set name="hub_component_parameters" type="frame" access="ReadWrite" label="Parameters"/>
             </smart:field-set>
             <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
-                <smart:field-set name="hub_security_frame" type="frame" access="ReadWrite">
+                <smart:field-set name="hub_security_frame" label="Security Roles" type="frame" access="ReadWrite">
                     <smart:field-account name="hub_visibility_roles" label="Roles to view component" access="ReadWrite" match="role" multiple="true"/>
                     <smart:field-account name="hub_execution_roles" label="Roles to perform component" access="Read" match="role" multiple="true"/>
                 </smart:field-set>
