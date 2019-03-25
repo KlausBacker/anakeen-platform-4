@@ -9,8 +9,6 @@ import {
   _enableReady
 } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
-declare var kendo;
-
 Vue.use(VueSetup);
 @Component({
   name: "ank-se-list"
@@ -27,6 +25,14 @@ export default class SeListComponent extends Vue {
   public contentUrl;
   public privateScope: ISeList;
   @Prop({ type: String, default: "title:asc" }) public order;
+
+  public $refs!: {
+    wrapper: HTMLElement;
+    summaryPager: HTMLElement;
+    listView: HTMLElement;
+    pager: HTMLElement;
+    pagerCounter: HTMLElement;
+  };
 
   public created() {
     this.privateScope = {
@@ -47,7 +53,11 @@ export default class SeListComponent extends Vue {
             detail: [e]
           }
         );
-        const notCancelled = $emitAnkEvent.call(this,`se-list-${eventName}`, customEvent);
+        const notCancelled = $emitAnkEvent.call(
+          this,
+          `se-list-${eventName}`,
+          customEvent
+        );
         if (eventType === "before" && !notCancelled) {
           if (e.preventDefault) {
             e.preventDefault();
@@ -124,8 +134,7 @@ export default class SeListComponent extends Vue {
           dataSource: this.dataSource,
           template: kendo.template(SeTemplate),
           selectable: "single",
-          change: this.privateScope.onSelectSe,
-          scrollable: true
+          change: this.privateScope.onSelectSe
         });
 
         kendo.jQuery(this.$refs.pager).kendoPager({
@@ -268,7 +277,7 @@ export default class SeListComponent extends Vue {
           .data("kendoListView");
         const selected = $.map(
           listView.select(),
-          item => data[$(item).index()]
+          item => data[$(item as HTMLElement).index()]
         );
         this._selectSe(event, selected[0]);
       }
@@ -375,7 +384,7 @@ export default class SeListComponent extends Vue {
       { detail: [seProperties] },
       event
     );
-    $emitAnkEvent("se-selected", customEvent);
+    $emitAnkEvent.call(this, "se-selected", customEvent);
   }
   public filterList(filterValue) {
     this.filterInput = filterValue;

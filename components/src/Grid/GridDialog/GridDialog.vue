@@ -65,7 +65,6 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
-declare var kendo;
 
 @Component
 export default class GridDialog extends Vue {
@@ -84,6 +83,10 @@ export default class GridDialog extends Vue {
   public kendoWindow: any = null;
   public kendoSortable: any = null;
   public searchInput: string = "";
+
+  public $refs!: {
+    kendoWindow: HTMLElement
+  };
 
   public get validColumns() {
     return this.columns.filter(c => !!c.field);
@@ -108,7 +111,6 @@ export default class GridDialog extends Vue {
       .kendoWindow({
         visible: false,
         width: "50%",
-        maxHeight: "80%",
         actions: [],
         modal: true,
         title: this.dialogTitle,

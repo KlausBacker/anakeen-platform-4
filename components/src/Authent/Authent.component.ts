@@ -5,7 +5,7 @@ import { IAuthent } from "./IAuthent";
 import { _enableReady } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
-declare var kendo;
+
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
@@ -32,6 +32,20 @@ export default class AuthentComponent extends Vue {
   public resetPwd1: string = "";
   public resetPwd2: string = "";
   public authent: IAuthent;
+
+  public $refs!: {
+    authentForgetForm: HTMLElement;
+    authentForm: HTMLElement;
+    authentResetPasswordForm: HTMLElement;
+    authentForgetButton: HTMLElement;
+    authentForgetSubmit: HTMLElement;
+    authentResetSubmit: HTMLElement;
+    authentHelpButton: HTMLElement;
+    loginButton: HTMLElement;
+    authentLocale: HTMLElement;
+    authentHelpContent: HTMLElement;
+    authentGoHome: HTMLElement;
+  };
 
   public get translations() {
     return {
@@ -174,8 +188,8 @@ export default class AuthentComponent extends Vue {
     $connectForm.on("submit", this.createSession);
 
     $(this.$refs.authentLocale).kendoDropDownList({
-      change: function changeLocale() {
-        Vue.config.language = this.value();
+      change(e: kendo.ui.DropDownListChangeEvent) {
+        Vue.config.language = e.sender.value();
       }
     });
 
@@ -200,7 +214,7 @@ export default class AuthentComponent extends Vue {
 
   public createSession(event) {
     let $ = kendo.jQuery;
-
+    $(this.$refs.authentForm);
     kendo.ui.progress($(this.$refs.authentForm), true);
 
     let login = encodeURIComponent(this.login);

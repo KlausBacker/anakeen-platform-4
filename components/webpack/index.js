@@ -7,7 +7,7 @@ const commonConfig = require("./common");
 
 const BASE_PATH = path.resolve(__dirname, "../");
 const ENTRIES_PATH = {
-  SEList: path.resolve(BASE_PATH, "src/SEList/seList.vue"),
+  AnkSEList: path.resolve(BASE_PATH, "src/SEList/seList.vue"),
   AnkLogout: path.resolve(BASE_PATH, "src/Logout/Logout.vue"),
   AnkIdentity: path.resolve(BASE_PATH, "src/Identity/Identity.vue"),
   AnkAuthent: path.resolve(BASE_PATH, "src/Authent/Authent.vue"),
