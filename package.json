@@ -14,8 +14,8 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/internal-components": "^1.0.1-dev20190322160440",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190322162328",
+    "@anakeen/internal-components": "^1.0.1-dev20190326133450",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190326115253",
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
@@ -33,7 +33,7 @@
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.4000",
-    "vue": "2.6.7"
+    "vue": "2.6.10"
   },
   "husky": {
     "hooks": {
@@ -42,7 +42,8 @@
     }
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.0-dev20190322163542",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190305145653"
+    "@anakeen/hub-components": "^1.0.0-dev20190326134828",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
+    "core-js": "3.0.0"
   }
 }
