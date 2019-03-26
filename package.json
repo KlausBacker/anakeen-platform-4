@@ -23,8 +23,8 @@
   ],
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190321160045",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190308083300",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190326115253",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
     "@commitlint/config-conventional": "^7.5.0",
     "@progress/kendo-ui": "^2019.1.213",
     "commitlint": "^7.5.2",
@@ -37,16 +37,17 @@
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.4000",
-    "vue": "2.6.7",
+    "vue": "2.6.10",
     "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "2.6.7",
+    "vue-template-compiler": "2.6.10",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "axios": "^0.18.0",
-    "vue-class-component": "^7.0.1",
-    "vue-property-decorator": "^7.3.0"
+    "core-js": "3.0.0",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.1.0"
   },
   "husky": {
     "hooks": {
