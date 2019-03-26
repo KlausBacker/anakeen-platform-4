@@ -1,4 +1,6 @@
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
+import "@progress/kendo-ui/js/kendo.filtercell";
+import "@progress/kendo-ui/js/kendo.grid";
 import { Component, Vue } from "vue-property-decorator";
 import TeTaskInfo from "./TeTaskInfo.vue";
 import { debounced } from "./TeUtils";
