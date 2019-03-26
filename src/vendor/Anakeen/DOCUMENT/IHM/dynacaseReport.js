@@ -59,7 +59,7 @@
     if (typeof errorReport !== "string") {
       errorReport = JSON.stringify(errorReport);
     }
-    request("?app=DOCUMENT&action=COLLECT_ERROR", errorReport);
+    request("/api/v2/smart-elements/collectError/", errorReport);
   });
 
   window.dcp = window.dcp || {};

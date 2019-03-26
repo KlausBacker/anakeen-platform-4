@@ -148,6 +148,14 @@
             <sde:description>Call callable menu items</sde:description>
             <sde:requiredAccess/>
         </sde:route>
+        <sde:route name="Document:CollectError">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\Ui\CollectError</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/smart-elements/collectError/</sde:pattern>
+            <sde:description>Post JS error of an element</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
     </sde:routes>
     <sde:accesses namespace="Ui">
         <sde:access name="Ui:Admin">
