@@ -61,6 +61,7 @@
     "@anakeen/anakeen-cli": "^1.1.4",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/jquery": "^3.3.29",
+    "@types/kendo-ui": "^2019.1.1",
     "backbone": "^1.4.0",
     "ckeditor": "^4.11.3",
     "commitlint": "^7.5.2",

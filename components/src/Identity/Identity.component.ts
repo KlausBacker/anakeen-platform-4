@@ -9,7 +9,7 @@ import {
 } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
-declare var kendo;
+
 @Component({
   name: "ank-identity",
   components: {
@@ -243,9 +243,9 @@ export default class IdentityComponent extends Vue {
       let $emailWindow = kendo.jQuery(this.$refs.emailModifier);
       $emailWindow
         .kendoWindow({
-          minWidth: "100px",
+          minWidth: 100,
           width: "80%",
-          maxWidth: "500px",
+          maxWidth: 500,
           modal: true,
           title: this.translations.emailChangeAction,
           visible: false,
@@ -275,13 +275,13 @@ export default class IdentityComponent extends Vue {
     let dialog = kendo.jQuery(this.$refs.emailModifiedWindow);
     dialog
       .kendoWindow({
-        minWidth: "100px",
+        minWidth: 100,
         width: "80%",
-        maxWidth: "500px",
+        maxWidth: 500,
         title: this.translations.emailChangeSuccessTitle,
         visible: true,
         modal: true,
-        action: ["Close"],
+        actions: ["Close"],
         close: this.closeEmailModifierWindow
       })
       .data("kendoWindow")
@@ -317,9 +317,9 @@ export default class IdentityComponent extends Vue {
       let passwordWindow = kendo.jQuery(this.$refs.passwordModifier);
       passwordWindow
         .kendoWindow({
-          minWidth: "100px",
+          minWidth: 100,
           width: "80%",
-          maxWidth: "500px",
+          maxWidth: 500,
           modal: true,
           title: this.translations.passwordChangeAction,
           visible: false,
@@ -349,13 +349,13 @@ export default class IdentityComponent extends Vue {
     let dialog = kendo.jQuery(this.$refs.passwordModifiedWindow);
     dialog
       .kendoWindow({
-        minWidth: "100px",
+        minWidth: 100,
         width: "80%",
-        maxWidth: "500px",
+        maxWidth: 500,
         title: this.translations.passwordChangeSuccessTitle,
         visible: true,
         modal: true,
-        action: ["Close"],
+        actions: ["Close"],
         close: this.closePasswordModifierWindow
       })
       .data("kendoWindow")
@@ -509,7 +509,7 @@ export default class IdentityComponent extends Vue {
     // Init popup to allow email and/or password modification (if allowed in the props)
     if (this.emailAlterable || this.passwordAlterable) {
       kendo.jQuery(this.$refs.modificationPopup).kendoPopup({
-        anchor: this.getBaseComponent().find(".identity-badge", this.$el),
+        anchor: this.getBaseComponent().find(".identity-badge"),
         origin: "bottom left",
         position: "top left",
         animation: false,

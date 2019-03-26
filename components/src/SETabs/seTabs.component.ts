@@ -11,7 +11,7 @@ import {
 } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
-declare var kendo;
+
 const Constants = {
   WELCOME_TAB_ID: "welcome_tab_id",
   NEW_TAB_ID: "new_tab_id",
@@ -84,6 +84,13 @@ export default class SeTabsComponent extends Vue {
     }
   })
   public seList;
+
+  public $refs!: {
+    tabsWrapper: HTMLElement;
+    tabstrip: HTMLElement;
+    tabsList: HTMLElement;
+    tabsTools: HTMLElement;
+  };
 
   @Prop({ type: String, default: "" }) public "se-css";
   @Prop({ type: Boolean, default: true }) public closable;

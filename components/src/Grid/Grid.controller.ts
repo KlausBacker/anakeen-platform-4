@@ -19,7 +19,6 @@ const COMPLETE_FIELDS_INFO_URL = "/api/v2/grid/columns/<collection>";
 import { IGrid } from "./IGrid";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
-declare var kendo;
 
 Vue.use(VueSetup);
 
@@ -173,6 +172,11 @@ export default class GridController extends Vue {
       });
     }
   }
+
+  public $refs!: {
+    kendoGrid: HTMLElement;
+    gridWrapper: HTMLElement;
+  };
 
   public created() {
     this.gridActions = new GridActions(this);
