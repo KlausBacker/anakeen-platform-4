@@ -80,8 +80,8 @@
     "@progress/kendo-layout-vue-wrapper/vue": "2.6.7"
   },
   "peerDependencies": {
-    "@anakeen/internal-components": "^1.0.1-dev20190311085312",
-    "vue": "2.6.7"
+    "@anakeen/internal-components": "^1.0.1-dev20190322160440",
+    "vue": "2.6.10"
   },
   "husky": {
     "hooks": {
