@@ -103,6 +103,8 @@ buildJS: install-deps
 	$(YARN_BIN) buildCss
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildAsset
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildPolyfill
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build dll $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildDll
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart element $@${RESET_COLOR}\n"

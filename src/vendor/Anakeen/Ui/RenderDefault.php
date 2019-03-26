@@ -47,6 +47,7 @@ class RenderDefault implements IRenderConfig
         $pubInternalPath = "/uiAssets/anakeen";
         $version = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsRef = [
+            "polyfill" => UIGetAssetPath::getJsPolyfill(),
             "kendoui" => UIGetAssetPath::getJSKendoPath()
         ];
 

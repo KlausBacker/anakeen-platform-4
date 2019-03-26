@@ -37,6 +37,7 @@
     "buildDll:dev": "conf=DEV npx webpack --config ./webpackConfig/dll.js",
     "buildDll:legacy": "conf=LEGACY npx webpack --config ./webpackConfig/dll.js",
     "buildDll": "yarn run buildDll:dev && yarn run buildDll:legacy",
+    "buildPolyfill": "conf=LEGACY npx webpack --config ./webpackConfig/polyfill.js",
     "lint": "npx eslint ./src"
   },
   "files": [
@@ -58,13 +59,12 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190305145653",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/jquery": "^3.3.29",
     "backbone": "^1.4.0",
     "ckeditor": "^4.11.3",
     "commitlint": "^7.5.2",
-    "copy-webpack-plugin": "^5.0.1",
+    "copy-webpack-plugin": "^5.0.2",
     "datatables.net": "^1.10.16",
     "datatables.net-bs4": "^1.10.16",
     "eslint": "^5.15.3",
@@ -78,28 +78,32 @@
     "tracekit": "^0.4.5",
     "underscore": "^1.8.3",
     "vue-m-loader": "^1.0.1",
-    "vue-property-decorator": "^8.0.0",
+    "vue-property-decorator": "^8.1.0",
     "webpack-node-externals": "^1.7.2"
   },
   "peerDependencies": {
-    "@progress/kendo-ui": "^2019.1.213",
-    "jquery": "^3.3.1",
-    "vue": "2.6.7"
+    "@progress/kendo-ui": "2019.1.320",
+    "jquery": "3.3.1",
+    "vue": "2.6.10"
   },
   "dependencies": {
     "@anakeen/theme-variables": "^0.0.2",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
     "@progress/kendo-theme-bootstrap": "^3.2.3",
-    "@progress/kendo-ui": "^2019.1.313",
+    "@progress/kendo-ui": "2019.1.320",
     "@webcomponents/webcomponentsjs": "2.2.7",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
+    "core-js": "3",
     "document-register-element": "^1.11.0",
     "easygettext": "^2.7.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.7",
-    "vue": "2.6.7",
+    "vue": "2.6.10",
     "vue-custom-element": "^3.2.5",
-    "vue-gettext": "^2.1.0"
+    "vue-gettext": "^2.1.0",
+    "vue-template-compiler": "2.6.10",
+    "whatwg-fetch": "^3.0.0"
   },
   "husky": {
     "hooks": {

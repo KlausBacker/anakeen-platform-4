@@ -86,6 +86,16 @@ class UIGetAssetPath
     }
 
 
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public static function getJsPolyfill()
+    {
+        $assets = self::getElementAssets("polyfill", "legacy");
+        return $assets["polyfill"]["js"];
+    }
+
 
     public static function getCssKendo()
     {
