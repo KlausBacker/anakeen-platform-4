@@ -30,9 +30,9 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/hub-components": "^1.0.0-dev20190322163542",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190322162328",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190308083300",
+    "@anakeen/hub-components": "^1.0.0-dev20190326134828",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190326115253",
+    "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
     "@commitlint/config-conventional": "^7.5.0",
     "commitlint": "^7.5.2",
     "document-register-element": "^1.13.1",
@@ -46,7 +46,7 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
-    "@anakeen/internal-components": "^1.0.1-dev20190322160440",
+    "@anakeen/internal-components": "^1.0.1-dev20190326133450",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
     "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
@@ -59,8 +59,9 @@
     "@progress/kendo-ui": "2019.1.320",
     "@types/jquery": "^3.3.29",
     "axios": "^0.18.0",
+    "core-js": "3.0.0",
     "jquery": "^3.3.1",
-    "vue": "2.6.7"
+    "vue": "2.6.10"
   },
   "husky": {
     "hooks": {
