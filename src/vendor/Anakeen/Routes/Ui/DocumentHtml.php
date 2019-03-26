@@ -149,7 +149,8 @@ class DocumentHtml
         foreach ($require as $key => $path) {
             $js[] = array(
                 "key" => $key,
-                "path" => $path
+                "path" => $path,
+                "noModule"=> $key === "polyfill"
             );
         }
         $data["JS_DEPS"] = $js;
