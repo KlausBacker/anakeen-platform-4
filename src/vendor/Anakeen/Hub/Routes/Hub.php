@@ -43,6 +43,11 @@ class Hub
             "hubInstanceId" => $hubId,
             "JS_DEPS" => [
                 [
+                    "key" => "polyfill",
+                    "path" => UIGetAssetPath::getJsPolyfill(),
+                    "noModule" => true
+                ],
+                [
                     "key" => "kendo",
                     "path" => UIGetAssetPath::getJSKendoPath()
                 ],
