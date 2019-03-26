@@ -1,5 +1,6 @@
 import AnkSplitter from "@anakeen/internal-components/src/Splitter/Splitter.vue";
 import "@progress/kendo-ui/js/kendo.button";
+import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
