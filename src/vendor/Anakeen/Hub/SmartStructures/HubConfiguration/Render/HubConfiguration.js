@@ -1,44 +1,4 @@
 import "./HubConfiguration.css";
-import axios from "axios";
-
-axios.create();
-
-window.dcp.document.documentController(
-  "addEventListener",
-  "ready",
-  {
-    name: "set:hub:station:id",
-    documentCheck: documentObject => {
-      return documentObject.renderMode === "edit";
-    },
-    attributeCheck: attributeObject => {
-      return attributeObject.id === "hub_station_id";
-    }
-  },
-  function() {
-    let hubId = $(this).documentController("getCustomClientData", "hubId");
-    $(this).documentController("setValue", "hub_station_id", {
-      value: hubId.hubId,
-      displayValue: hubId.hubTitle
-    });
-  }
-);
-window.dcp.document.documentController(
-  "addEventListener",
-  "afterSave",
-  {
-    name: "passToView",
-    documentCheck: documentObject => {
-      return documentObject.renderMode === "edit";
-    }
-  },
-  function reloadInConsultation(event, currentDocumentObject) {
-    this.documentController("fetchDocument", {
-      initid: currentDocumentObject.id,
-      viewId: "!defaultConsultation"
-    });
-  }
-);
 
 window.dcp.document.documentController(
   "addEventListener",

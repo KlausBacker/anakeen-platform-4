@@ -11,6 +11,7 @@ class HubStationAdmin extends GridContent
 {
     protected $structureName = "";
     protected $structure = null;
+    protected $slice = 1000;
 
     /**
      * @param array $urlArgs

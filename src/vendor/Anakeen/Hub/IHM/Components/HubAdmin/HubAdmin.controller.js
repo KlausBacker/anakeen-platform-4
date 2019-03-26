@@ -1,19 +1,22 @@
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
+import Vue from "vue";
+
+import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout";
-import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+import AnkHubMockup from "./HubAdminMockUp.vue";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
+
+Vue.use(ButtonsInstaller);
 
 export default {
   name: "ank-hub-admin",
   components: {
-    grid: AnkSEGrid,
-    identity: AnkIdentity,
-    logout: AnkLogout,
-    smartElem: AnkSmartElement,
+    "ank-se-grid": AnkSEGrid,
+    "ank-hub-mockup": AnkHubMockup,
+    "smart-element": AnkSmartElement,
     "ank-splitter": AnkSplitter
   },
   data() {
@@ -24,7 +27,9 @@ export default {
       hubId: "",
       hubTitle: "",
       hubIcon: "",
+      mockData: {},
       hubConfig: [],
+      selectedComponent: 0,
       panes: [
         {
           scrollable: false,
@@ -41,6 +46,15 @@ export default {
       ]
     };
   },
+  watch: {
+    selectedComponent: function(val) {
+      if (val > 0) {
+        this.openDetailConfig(val);
+      }
+      this.selectTr(val);
+    }
+  },
+
   created() {
     let route = window.location.href;
     this.hubId = route.match(/\/hub\/admin\/(\w+)/)[1];
@@ -50,6 +64,7 @@ export default {
         this.hubTitle = response.data.data.document.properties.title;
       });
   },
+
   mounted() {
     Object.keys(this.childFam).forEach(key => {
       const elt = this.childFam[key];
@@ -57,6 +72,13 @@ export default {
     });
   },
   methods: {
+    selectTr(seId) {
+      let $trs = $(this.$el).find("tr[data-seid]");
+      let $tr = $(this.$el).find("tr[data-seid=" + seId + "]");
+
+      $trs.removeClass("row--selected");
+      $tr.addClass("row--selected");
+    },
     toolbarConfig() {
       $(".grid-toolbar-create-action").kendoDropDownList({
         dataTextField: "text",
@@ -64,11 +86,11 @@ export default {
         dataSource: this.hubConfig,
         valueTemplate: "Create",
         select: e => {
-          this.selectConfig(e);
+          this.selectCreateConfig(e);
         }
       });
     },
-    selectConfig(e) {
+    selectCreateConfig(e) {
       this.collection = e.dataItem.value;
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
@@ -94,19 +116,104 @@ export default {
         });
       });
     },
-    openConfig(e) {
-      this.$refs.smartConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultConsultation"
+
+    displayMockUp(e) {
+      let data = e.data.content.smartElements;
+      const positionKey = [
+        "TOP_LEFT",
+        "TOP_CENTER",
+        "TOP_RIGHT",
+        "LEFT_TOP",
+        "LEFT_CENTER",
+        "LEFT_BOTTOM",
+        "RIGHT_TOP",
+        "RIGHT_CENTER",
+        "RIGHT_BOTTOM",
+        "BOTTOM_LEFT",
+        "BOTTOM_CENTER",
+        "BOTTOM_RIGHT"
+      ];
+
+      this.mockData = {};
+      positionKey.forEach(pos => {
+        this.mockData[pos] = [];
+      });
+
+      data.sort((a, b) => {
+        const idxa = positionKey.indexOf(
+          a.attributes.hub_docker_position.value
+        );
+        const idxb = positionKey.indexOf(
+          b.attributes.hub_docker_position.value
+        );
+        const posa = a.attributes.hub_order.value || 0;
+        const posb = b.attributes.hub_order.value || 0;
+
+        const pa = idxa * 100 + posa;
+        const pb = idxb * 100 + posb;
+
+        if (pa > pb) {
+          return 1;
+        } else if (pa < pb) {
+          return -1;
+        }
+
+        return 0;
+      });
+
+      data.forEach((datum, k) => {
+        datum.attributes.key = { value: k + 1, displayValue: k + 1 };
+        this.mockData[datum.attributes.hub_docker_position.value].push({
+          key: datum.attributes.key.value,
+          title: datum.properties.title.displayValue,
+          initid: datum.properties.initid
+        });
+      });
+      window.console.log(data, this.mockData);
+      this.addDataOnRow();
+    },
+
+    addDataOnRow() {
+      this.$nextTick(() => {
+        const kgrid = this.$refs.hubGrid.kendoGrid;
+        const items = kgrid.items();
+
+        items.each(function addTypeClass() {
+          const dataItem = kgrid.dataItem(this);
+          if (dataItem.initid) {
+            $(this).attr("data-seid", dataItem.initid);
+          }
+        });
+
+        this.selectTr(this.selectedComponent);
       });
     },
-    modifyConfig(e) {
-      this.$refs.smartConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultEdition"
+
+    openDetailConfig(seid) {
+      let e = new Event("click");
+      e.data = {
+        type: "detail",
+        row: {
+          id: seid
+        }
+      };
+
+      this.$refs.hubAdminSplitter.disableEmptyContent();
+      this.$nextTick(() => {
+        if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
+          this.listenSmartElement(seid);
+        } else {
+          this.$refs.smartConfig.$once("documentLoaded", () => {
+            this.listenSmartElement(seid);
+          });
+        }
       });
-      this.$refs.smartConfig.addEventListener("ready", () => {
-        this.$refs.smartConfig.addCustomClientData({ hubId: this.hubId });
+    },
+
+    openConfig(eid) {
+      this.$refs.smartConfig.fetchSmartElement({
+        initid: eid,
+        viewId: "!defaultConsultation"
       });
     },
     toolbarActionClick(e) {
@@ -116,56 +223,40 @@ export default {
           break;
       }
     },
+    changeSelectComponent(seid) {
+      //noinspection JSUnusedGlobalSymbols
+      this.selectedComponent = seid;
+    },
+
     actionClick(e) {
       e.preventDefault();
-      this.$refs.hubAdminSplitter.disableEmptyContent();
-      this.$nextTick(() => {
-        if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
-          this.$refs.smartConfig.addEventListener("afterSave", () => {
-            if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-              this.$refs.hubGrid.kendoGrid.dataSource.read();
-            }
-          });
-          this.$refs.smartConfig.addEventListener("afterDelete", () => {
-            if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-              this.$refs.hubGrid.kendoGrid.dataSource.read();
-            }
-          });
-          switch (e.data.type) {
-            case "consult":
-              this.openConfig(e.data.row.id);
-              break;
-            case "edit":
-              this.modifyConfig(e.data.row.id);
-              break;
-            default:
-              break;
-          }
-        } else {
-          this.$refs.smartConfig.$once("documentLoaded", () => {
-            this.$refs.smartConfig.addEventListener("afterSave", () => {
-              if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-                this.$refs.hubGrid.kendoGrid.dataSource.read();
-              }
-            });
-            this.$refs.smartConfig.addEventListener("afterDelete", () => {
-              if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-                this.$refs.hubGrid.kendoGrid.dataSource.read();
-              }
-            });
-            switch (e.data.type) {
-              case "consult":
-                this.openConfig(e.data.row.id);
-                break;
-              case "edit":
-                this.modifyConfig(e.data.row.id);
-                break;
-              default:
-                break;
-            }
+      switch (e.data.type) {
+        case "detail":
+          this.selectedComponent = e.data.row.id;
+          break;
+
+        default:
+          break;
+      }
+    },
+    listenSmartElement(eid) {
+      this.$refs.smartConfig.addEventListener("afterSave", (e, d) => {
+        const seId = d.initid;
+        if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+          this.selectedComponent = 0;
+          this.$refs.hubGrid.kendoGrid.dataSource.read().then(() => {
+            this.selectedComponent = seId;
           });
         }
       });
+      this.$refs.smartConfig.addEventListener("afterDelete", () => {
+        if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+          this.$refs.hubGrid.kendoGrid.dataSource.read();
+          this.selectedComponent = 0;
+        }
+      });
+
+      this.openConfig(eid);
     }
   }
 };
