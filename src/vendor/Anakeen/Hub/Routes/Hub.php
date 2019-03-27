@@ -37,9 +37,11 @@ class Hub
         $page = __DIR__ . "/Layout/hub.html.mustache";
         $hubId = $this->getHubInstanceId($request, $response, $args);
         $mustache = new \Mustache_Engine();
-        $title = SEManager::getDocument($hubId)->getTitle();
+        $hub=SEManager::getDocument($hubId);
+        $title = $hub->getTitle();
         $data = [
             "title" => $title,
+            "icon" => $hub->getIcon(),
             "hubInstanceId" => $hubId,
             "JS_DEPS" => [
                 [

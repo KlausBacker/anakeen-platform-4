@@ -35,5 +35,4 @@ trait THubConfigurationCommonRender
         );
         return $options;
     }
-
 }
