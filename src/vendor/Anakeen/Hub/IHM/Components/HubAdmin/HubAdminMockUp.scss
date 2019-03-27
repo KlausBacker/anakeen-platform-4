@@ -19,6 +19,7 @@
 
     &.selected {
       background-color: var(--primary);
+      transition: background-color 1s ease;
     }
   }
 
@@ -27,7 +28,7 @@
     margin: 0.2rem;
 
     > div {
-      border: solid 1px grey;
+      border: solid 1px #ddd;
       padding: 0.2rem;
       display: flex;
       flex-direction: row;

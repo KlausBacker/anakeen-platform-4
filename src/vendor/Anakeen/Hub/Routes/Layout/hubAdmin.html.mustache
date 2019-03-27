@@ -16,7 +16,7 @@
             width: 100vw;
         }
     </style>
-    <link rel="icon" type="image/png" href="/api/v2/hub/station/{{favIconURL}}/" />
+    <link rel="icon" type="image/png" href="{{icon}}/" />
     {{#CSS}}
     <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
     {{/CSS}}
@@ -28,10 +28,8 @@
     {{/JS}}
 </head>
 <body>
-<div id="ank-hub-admin"></div>
-<script>
-    window.ankChildFam = {{{CHILDFAM}}};
-</script>
+<div id="ank-hub-admin" data-hubid="{{hubId}}"></div>
+
 {{#JS_LEGACY}}
 <script nomodule data-id="{{key}}" src="{{path}}"></script>
 {{/JS_LEGACY}}

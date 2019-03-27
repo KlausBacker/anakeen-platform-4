@@ -11,8 +11,14 @@ Vue.prototype.$loadCssFile = Vue.loadCssFile = LoadCss;
 
 new Vue({
   el: "#ank-hub-admin",
-  template: "<ank-hub-admin/>",
+  template: "<ank-hub-admin :hub-id='hubId'/>",
   components: {
     ankHubAdmin
+  },
+  data: {
+    hubId: 0
+  },
+  beforeMount() {
+    this.hubId = this.$el.dataset.hubid;
   }
 });

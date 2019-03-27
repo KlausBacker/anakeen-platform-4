@@ -881,6 +881,20 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
+"@progress/kendo-datasource-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-datasource-vue-wrapper/-/kendo-datasource-vue-wrapper-2019.1.220.tgz#e35a071b2e4725a863d3cf6ecb477dbf4b600c89"
+  integrity sha512-GNQ3AaKFsZJ9/lQk0GYQ1gTxJNKWtJl0nrmAkbPeTcMfC3rXR535EnzcB0GeVYmw+sJ6NayzJ0Fhqf4WNjbRUg==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
+
+"@progress/kendo-dropdowns-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-dropdowns-vue-wrapper/-/kendo-dropdowns-vue-wrapper-2019.1.220.tgz#5913cfb138fd5d2b75b428d04b1235ac645d2a81"
+  integrity sha512-hHphqM2Z5T9WjwE4C0DpxX3Ob72o+aOpr6Z6bgfPrRx19yyFtiKGR6R3FQsnf8d4AB2YV9KNKVmAbyH3cNkdlg==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
+
 "@progress/kendo-layout-vue-wrapper@^2019.1.220":
   version "2019.1.220"
   resolved "https://registry.yarnpkg.com/@progress/kendo-layout-vue-wrapper/-/kendo-layout-vue-wrapper-2019.1.220.tgz#c448b5977c341d37c7ec327f09e64c07206bbe71"

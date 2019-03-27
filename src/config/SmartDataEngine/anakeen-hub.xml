@@ -10,7 +10,7 @@
                 <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
-    
+
         <sde:route name="hubAdmin">
             <sde:callable>Anakeen\Hub\Routes\HubInstanciation</sde:callable>
             <sde:method>GET</sde:method>
@@ -33,7 +33,7 @@
             <sde:callable>Anakeen\Hub\Routes\HubAdmConfigStruct</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/admin/configurationStructures/</sde:pattern>
-            <sde:description>Get inherited Smart Structures of the hub config smart structures </sde:description>
+            <sde:description>Get inherited Smart Structures of the hub config smart structures</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
@@ -56,20 +56,12 @@
                 <sde:access ns="AnakeenHub">HubUser</sde:access>
             </sde:requiredAccess>
         </sde:route>
-        <sde:route name="FAIcon">
-            <sde:callable>Anakeen\Hub\Routes\FontAwesomeIcon</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/hub/font/icons/</sde:pattern>
-            <sde:description>Get font awesome icons</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="AnakeenHub">HubUser</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
+
         <sde:route name="getHubStationAdminInfos">
             <sde:callable>Anakeen\Hub\Routes\HubStationAdmin</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/hub/station/{hubId}/admin/</sde:pattern>
-            <sde:description>Get hub station info </sde:description>
+            <sde:description>Get hub station info</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
@@ -84,12 +76,12 @@
             </sde:requiredAccess>
         </sde:route>
         <sde:route name="getHubFavIcon">
-            <sde:callable>Anakeen\Hub\Routes\HubFavIcon</sde:callable>
+            <sde:callable>Anakeen\Hub\Routes\HubElementStructures</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/api/v2/hub/station/{favIconURL}/</sde:pattern>
-            <sde:description>Get hub station fav icon</sde:description>
+            <sde:pattern>/hub/components/</sde:pattern>
+            <sde:description>Get all component structures</sde:description>
             <sde:requiredAccess>
-                <sde:access ns="AnakeenHub">HubUser</sde:access>
+                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
     </sde:routes>
@@ -104,10 +96,10 @@
         <sde:route-access ref="HubUser" account="hub-user-role"/>
     </sde:accesses>
     <sde:parameters namespace="AnakeenHub">
-            <sde:parameter name="CONFIG">
-                <sde:description>Hub configuration</sde:description>
-                <sde:value>[]</sde:value>
-                <sde:type>JSON</sde:type>
-            </sde:parameter>
+        <sde:parameter name="CONFIG">
+            <sde:description>Hub configuration</sde:description>
+            <sde:value>[]</sde:value>
+            <sde:type>JSON</sde:type>
+        </sde:parameter>
     </sde:parameters>
 </sde:config>

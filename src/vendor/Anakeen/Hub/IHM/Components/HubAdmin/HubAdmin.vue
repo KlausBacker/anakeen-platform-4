@@ -1,24 +1,49 @@
 <template>
   <div class="hub-admin-main-section">
     <header class="hub-admin-header">
-        <div class="hub-admin-header__content">
-          <span
-            >Configuration for -
-            <img
-              :src="`/api/v2/smart-elements/${hubId}/images/icon/-1/sizes/16x16c.png`"
-              alt="favIcon"
-              width="16"
-              height="16"
-            />
-            {{ hubTitle }}</span
-          >
-        </div>
-        <div class="hub-admin-header__content">
-
-        </div>
+      <div class="hub-admin-header__content">
+        <span
+          >Configuration for -
+          <img
+            :src="
+              `/api/v2/smart-elements/${hubId}/images/icon/-1/sizes/16x16c.png`
+            "
+            alt="favIcon"
+            width="16"
+            height="16"
+          />
+          {{ hubElement.properties.title }}</span
+        >
+      </div>
+      <div class="hub-admin-header__content">
+        <kendo-datasource
+          ref="datasource"
+          :transport-read-url="'/hub/components/'"
+        />
+        <kendo-dropdownlist
+                class="k-primary"
+          :data-source-ref="'datasource'"
+          :data-text-field="'text'"
+          :data-value-field="'value'"
+          option-label="Add component"
+          @select="selectCreateConfig"
+          @open="addClassOnSelectorContainer"
+          :options-label="'Select Size...'"
+        />
+        <kendo-button class="k-primary k-outline" @click="openElement"
+          >View main configuration
+        </kendo-button>
+        <kendo-button class="k-primary k-outline" @click="openInterface"
+          >Display interface
+        </kendo-button>
+      </div>
     </header>
     <section>
-      <ank-hub-mockup :info="mockData" :selected-id="selectedComponent" @mock-select="changeSelectComponent"/>
+      <ank-hub-mockup
+        :info="mockData"
+        :selected-id="selectedComponent"
+        @mock-select="changeSelectComponent"
+      />
       <ank-splitter
         ref="hubAdminSplitter"
         class="hub-admin-splitter"
@@ -30,7 +55,6 @@
             <div class="hub-admin-grid">
               <ank-se-grid
                 ref="hubGrid"
-
                 :urlContent="`/api/v2/hub/station/${hubId}/admin/`"
                 :serverPaging="false"
                 :sortable="''"
@@ -40,14 +64,35 @@
                 @after-content-response="displayMockUp"
                 :contextTitles="false"
               >
-                <ank-se-grid-column title="#" field="key" width="3rem"></ank-se-grid-column>
-                <ank-se-grid-column title="Title" field="title"></ank-se-grid-column>
-                <ank-se-grid-column title="Type" field="hub_type"></ank-se-grid-column>
-                <ank-se-grid-column title="Position" field="hub_docker_position" :hidden="true"></ank-se-grid-column>
-                <ank-se-grid-column title="Order" field="hub_order" :hidden="true"></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="#"
+                  field="key"
+                  width="3rem"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Title"
+                  field="title"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Type"
+                  field="hub_type"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Position"
+                  field="hub_docker_position"
+                  :hidden="true"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Order"
+                  field="hub_order"
+                  :hidden="true"
+                ></ank-se-grid-column>
 
                 <ank-se-grid-actions>
-                  <ank-se-grid-action action="detail"  title="Details"></ank-se-grid-action>
+                  <ank-se-grid-action
+                    action="detail"
+                    title="Details"
+                  ></ank-se-grid-action>
                 </ank-se-grid-actions>
               </ank-se-grid>
             </div>

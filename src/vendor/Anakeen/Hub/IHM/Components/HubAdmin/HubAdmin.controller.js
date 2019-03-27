@@ -3,6 +3,8 @@ import "@progress/kendo-ui/js/kendo.grid";
 import Vue from "vue";
 
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
+import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
+import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
@@ -10,7 +12,10 @@ import AnkHubMockup from "./HubAdminMockUp.vue";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 
 Vue.use(ButtonsInstaller);
+Vue.use(DropdownsInstaller);
+Vue.use(DataSourceInstaller);
 
+//noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-hub-admin",
   components: {
@@ -19,17 +24,17 @@ export default {
     "smart-element": AnkSmartElement,
     "ank-splitter": AnkSplitter
   },
+  props: ["hubId"],
   data() {
     return {
       // eslint-disable-next-line no-undef
-      childFam: window.ankChildFam,
       collection: "",
-      hubId: "",
-      hubTitle: "",
+      hubElement: { properties: {} },
       hubIcon: "",
       mockData: {},
       hubConfig: [],
       selectedComponent: 0,
+      isListenActivated: false,
       panes: [
         {
           scrollable: false,
@@ -56,22 +61,21 @@ export default {
   },
 
   created() {
-    let route = window.location.href;
-    this.hubId = route.match(/\/hub\/admin\/(\w+)/)[1];
     this.$http
       .get(`/api/v2/smart-elements/${this.hubId}.json`)
       .then(response => {
-        this.hubTitle = response.data.data.document.properties.title;
+        this.hubElement = response.data.data.document;
       });
   },
 
-  mounted() {
-    Object.keys(this.childFam).forEach(key => {
-      const elt = this.childFam[key];
-      this.hubConfig.push({ text: elt.title, value: elt.name });
-    });
-  },
   methods: {
+    openElement() {
+      this.openDetailConfig(this.hubId);
+      // window.open(`/api/v2/smart-elements/${this.hubId}.html`);
+    },
+    openInterface() {
+      window.open(`/hub/station/${this.hubId}/`);
+    },
     selectTr(seId) {
       let $trs = $(this.$el).find("tr[data-seid]");
       let $tr = $(this.$el).find("tr[data-seid=" + seId + "]");
@@ -79,17 +83,7 @@ export default {
       $trs.removeClass("row--selected");
       $tr.addClass("row--selected");
     },
-    toolbarConfig() {
-      $(".grid-toolbar-create-action").kendoDropDownList({
-        dataTextField: "text",
-        dataValueField: "value",
-        dataSource: this.hubConfig,
-        valueTemplate: "Create",
-        select: e => {
-          this.selectCreateConfig(e);
-        }
-      });
-    },
+
     selectCreateConfig(e) {
       this.collection = e.dataItem.value;
       this.$refs.hubAdminSplitter.disableEmptyContent();
@@ -103,18 +97,24 @@ export default {
         }
       });
     },
+    addClassOnSelectorContainer(e) {
+      e.sender.popup.element.addClass("hub-select-container");
+    },
     createConfig(e) {
       this.$refs.hubAdminSplitter.disableEmptyContent();
-      this.$refs.smartConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultCreation"
-      });
-      this.$refs.smartConfig.addEventListener("ready", () => {
-        this.$refs.smartConfig.addCustomClientData({
-          hubId: this.hubId,
-          hubTitle: this.hubTitle
+      this.$refs.smartConfig
+        .fetchSmartElement({
+          initid: e,
+          viewId: "!defaultCreation"
+        })
+        .then(() => {
+          this.$refs.smartConfig.setValue("hub_station_id", {
+            value: this.hubId,
+            displayValue: this.hubElement.properties.title,
+            icon: this.hubElement.properties.icon
+          });
         });
-      });
+      this.listenSmartElement();
     },
 
     displayMockUp(e) {
@@ -169,7 +169,6 @@ export default {
           initid: datum.properties.initid
         });
       });
-      window.console.log(data, this.mockData);
       this.addDataOnRow();
     },
 
@@ -201,10 +200,12 @@ export default {
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
         if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
-          this.listenSmartElement(seid);
+          this.listenSmartElement();
+          this.openConfig(seid);
         } else {
           this.$refs.smartConfig.$once("documentLoaded", () => {
-            this.listenSmartElement(seid);
+            this.listenSmartElement();
+            this.openConfig(seid);
           });
         }
       });
@@ -216,13 +217,7 @@ export default {
         viewId: "!defaultConsultation"
       });
     },
-    toolbarActionClick(e) {
-      switch (e.data.type) {
-        case "consult":
-          window.open(`/hub/station/${this.hubId}/`);
-          break;
-      }
-    },
+
     changeSelectComponent(seid) {
       //noinspection JSUnusedGlobalSymbols
       this.selectedComponent = seid;
@@ -239,24 +234,25 @@ export default {
           break;
       }
     },
-    listenSmartElement(eid) {
-      this.$refs.smartConfig.addEventListener("afterSave", (e, d) => {
-        const seId = d.initid;
-        if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-          this.selectedComponent = 0;
-          this.$refs.hubGrid.kendoGrid.dataSource.read().then(() => {
-            this.selectedComponent = seId;
-          });
-        }
-      });
-      this.$refs.smartConfig.addEventListener("afterDelete", () => {
-        if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-          this.$refs.hubGrid.kendoGrid.dataSource.read();
-          this.selectedComponent = 0;
-        }
-      });
-
-      this.openConfig(eid);
+    listenSmartElement() {
+      if (!this.isListenActivated) {
+        this.$refs.smartConfig.addEventListener("afterSave", (e, d) => {
+          const seId = d.initid;
+          if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+            this.selectedComponent = 0;
+            this.$refs.hubGrid.kendoGrid.dataSource.read().then(() => {
+              this.selectedComponent = seId;
+            });
+          }
+        });
+        this.$refs.smartConfig.addEventListener("afterDelete", () => {
+          if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+            this.$refs.hubGrid.kendoGrid.dataSource.read();
+            this.selectedComponent = 0;
+          }
+        });
+        this.isListenActivated = true;
+      }
     }
   }
 };

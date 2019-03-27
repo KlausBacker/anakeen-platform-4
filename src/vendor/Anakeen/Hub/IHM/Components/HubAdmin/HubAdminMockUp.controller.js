@@ -4,7 +4,6 @@ export default {
 
   methods: {
     selectConfig(e) {
-      console.log("select", e);
       this.$emit("mock-select", e);
     }
   }

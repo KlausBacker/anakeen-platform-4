@@ -63,6 +63,8 @@
     "@anakeen/webpack-conf": "^1.2.0-dev20190308083300",
     "@commitlint/config-conventional": "^7.5.0",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-dropdowns-vue-wrapper": "^2019.1.220",
     "@progress/kendo-ui": "2019.1.320",
     "@types/node": "^11.11.4",
     "commitlint": "^7.5.2",

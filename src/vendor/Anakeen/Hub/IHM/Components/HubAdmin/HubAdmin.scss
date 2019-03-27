@@ -25,6 +25,11 @@
       flex: 1;
       height: auto;
 
+      .splitter-wrapper-right-content {
+        display:flex;
+      }
+
+
       .grid-widget {
         display: flex !important;
 
@@ -44,6 +49,14 @@
           }
         }
       }
+    }
+  }
+
+
+  .k-dropdown.k-primary {
+    .k-dropdown-wrap {
+      background-color: var(--primary);
+      color: var(--white);
     }
   }
 }
@@ -83,8 +96,6 @@
   }
 }
 
-.hub-admin-splitter {
-}
 
 .hub-modal {
   height: 100%;
@@ -92,3 +103,13 @@
   visibility: visible !important;
 }
 
+.hub-select-container {
+  width:auto!important;
+  .k-list-optionlabel {
+    background-color: #eee;
+    color:#333;
+  }
+  li.k-item {
+    white-space: nowrap;
+  }
+}
