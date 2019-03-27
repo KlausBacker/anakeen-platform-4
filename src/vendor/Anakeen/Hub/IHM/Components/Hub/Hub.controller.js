@@ -116,7 +116,7 @@ export default {
           this.hubEntries.contents = [{ assets: globalAssets }].concat(
             data.hubElements
           );
-          this.hubEntries.loadAssets().then(() => {
+          return this.hubEntries.loadAssets().then(() => {
             kendo.ui.progress($(this.$el), false);
             this.hubEntries.useComponents();
             this.config = data;
@@ -124,6 +124,11 @@ export default {
         })
         .catch(error => {
           console.error(error);
+          this.sendNotif({
+            title: "Loading error",
+            textContent: "The entries components cannot be loaded",
+            type: "error"
+          });
           kendo.ui.progress($(this.$el), false);
         });
     },

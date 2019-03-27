@@ -125,6 +125,11 @@ export default class HubStation extends Vue {
   // endregion props
 
   public activeRoute: string | null = null;
+
+  protected defaultRoute: { priority: number | null; route: string } = {
+    priority: null,
+    route: ""
+  };
   protected alreadyVisited: object = {};
   // endregion computed
 
@@ -203,9 +208,15 @@ export default class HubStation extends Vue {
           // @ts-ignore
           this.$ankHubRouter.internal.on(route.pattern, route.handler);
         });
-        this.$ankHubRouter.internal.resolve(window.location.pathname);
       }
     });
+    if (this.defaultRoute && this.defaultRoute.route) {
+      this.$ankHubRouter.internal.on(this.rootUrl, () => {
+        this.$ankHubRouter.internal.navigate(this.defaultRoute.route, true);
+        this.$ankHubRouter.internal.resolve(window.location.pathname);
+      });
+    }
+    this.$ankHubRouter.internal.resolve(window.location.pathname);
   }
 
   protected onHubElementSelected(event) {
@@ -220,9 +231,17 @@ export default class HubStation extends Vue {
     }
   }
 
+  private isPriorityDefaultRoute(entryOptions, computedPriority) {
+    return (
+      (entryOptions.activated === true &&
+        this.defaultRoute.priority === null) ||
+      (entryOptions.activated === true &&
+        // @ts-ignore
+        computedPriority > this.defaultRoute.priority)
+    );
+  }
+
   private getRoutesConfigs(configs: IHubStationPropConfig[]) {
-    let defaultRoute = this.rootUrl;
-    let defaultPriority = Number.NEGATIVE_INFINITY;
     const routes: Array<{
       pattern: string | RegExp;
       handler: (params, query) => void;
@@ -238,12 +257,9 @@ export default class HubStation extends Vue {
               cfg.entryOptions.activatedOrder === undefined
                 ? Number.NEGATIVE_INFINITY
                 : cfg.entryOptions.activatedOrder;
-            if (
-              cfg.entryOptions.activated === true &&
-              priority >= defaultPriority
-            ) {
-              defaultPriority = priority;
-              defaultRoute = absoluteRoute;
+            if (this.isPriorityDefaultRoute(cfg.entryOptions, priority)) {
+              this.defaultRoute.priority = priority;
+              this.defaultRoute.route = absoluteRoute;
             }
             routes.push({
               handler: () => {
@@ -256,12 +272,6 @@ export default class HubStation extends Vue {
       });
     }
     if (routes.length) {
-      routes.push({
-        handler: () => {
-          this.$ankHubRouter.internal.navigate(defaultRoute, true);
-        },
-        pattern: this.rootUrl
-      });
       return routes.reverse();
     }
     return null;
