@@ -1,30 +1,49 @@
 <template>
-  <div>
-    <div class="hub-admin-parent">
-      <div class="hub-admin-header">
-        <div class="hub-admin-header__content">
-          <span
-            >Hub Station Admin -
-            <img
-              :src="`/api/v2/hub/station/${hubId}/`"
-              alt="favIcon"
-              width="16"
-              height="16"
-            />
-            {{ hubTitle }}</span
-          >
-        </div>
-        <div class="hub-admin-header__content">
-          <identity
-            :large="true"
-            :email-alterable="true"
-            :password-alterable="true"
-          ></identity>
-          <logout></logout>
-        </div>
+  <div class="hub-admin-main-section">
+    <header class="hub-admin-header">
+      <div class="hub-admin-header__content">
+        <span
+          >Configuration for -
+          <img
+            :src="
+              `/api/v2/smart-elements/${hubId}/images/icon/-1/sizes/16x16c.png`
+            "
+            alt="favIcon"
+            width="16"
+            height="16"
+          />
+          {{ hubElement.properties.title }}</span
+        >
       </div>
-    </div>
-    <div>
+      <div class="hub-admin-header__content">
+        <kendo-datasource
+          ref="datasource"
+          :transport-read-url="'/hub/components/'"
+        />
+        <kendo-dropdownlist
+                class="k-primary"
+          :data-source-ref="'datasource'"
+          :data-text-field="'text'"
+          :data-value-field="'value'"
+          option-label="Add component"
+          @select="selectCreateConfig"
+          @open="addClassOnSelectorContainer"
+          :options-label="'Select Size...'"
+        />
+        <kendo-button class="k-primary k-outline" @click="openElement"
+          >View main configuration
+        </kendo-button>
+        <kendo-button class="k-primary k-outline" @click="openInterface"
+          >Display interface
+        </kendo-button>
+      </div>
+    </header>
+    <section>
+      <ank-hub-mockup
+        :info="mockData"
+        :selected-id="selectedComponent"
+        @mock-select="changeSelectComponent"
+      />
       <ank-splitter
         ref="hubAdminSplitter"
         class="hub-admin-splitter"
@@ -34,26 +53,56 @@
         <template slot="left">
           <div class="hub-admin-content">
             <div class="hub-admin-grid">
-              <grid
+              <ank-se-grid
                 ref="hubGrid"
-                :urlConfig="`/api/v2/hub/station/${hubId}/admin/config/`"
-                :pageSizes="[100, 200, 500]"
+                :urlContent="`/api/v2/hub/station/${hubId}/admin/`"
+                :serverPaging="false"
                 :sortable="''"
+                :pageable="false"
                 class="hub-admin"
-                @grid-ready="toolbarConfig"
                 @action-click="actionClick"
-                @toolbar-action-click="toolbarActionClick"
+                @after-content-response="displayMockUp"
                 :contextTitles="false"
               >
-              </grid>
+                <ank-se-grid-column
+                  title="#"
+                  field="key"
+                  width="3rem"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Title"
+                  field="title"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Type"
+                  field="hub_type"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Position"
+                  field="hub_docker_position"
+                  :hidden="true"
+                ></ank-se-grid-column>
+                <ank-se-grid-column
+                  title="Order"
+                  field="hub_order"
+                  :hidden="true"
+                ></ank-se-grid-column>
+
+                <ank-se-grid-actions>
+                  <ank-se-grid-action
+                    action="detail"
+                    title="Details"
+                  ></ank-se-grid-action>
+                </ank-se-grid-actions>
+              </ank-se-grid>
             </div>
           </div>
         </template>
         <template slot="right">
-          <smartElem ref="smartConfig" class="hub-modal"></smartElem>
+          <smart-element ref="smartConfig" class="hub-modal"></smart-element>
         </template>
       </ank-splitter>
-    </div>
+    </section>
   </div>
 </template>
 

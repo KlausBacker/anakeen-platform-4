@@ -2,7 +2,11 @@
 
 namespace Anakeen\Hub\SmartStructures\HubConfiguration;
 
+use Anakeen\Core\Account;
+use Anakeen\Core\AccountManager;
 use Anakeen\Core\SEManager;
+use Anakeen\Exception;
+use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationBehavior extends \Anakeen\SmartElement
@@ -10,7 +14,12 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     public function registerHooks()
     {
         parent::registerHooks();
+        $this->getHooks()->addListener(SmartHooks::PRESTORE, function () {
+            // Copy parameters to simplify render and searches
+            $this->setValue(HubConfigurationFields::hub_execution_roles, $this->getExecutionRoles());
+        });
     }
+
     public function getConfiguration()
     {
         // Config to return
@@ -22,6 +31,23 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
 
         $configuration["entryOptions"] = $this->getEntryOptions();
         return $configuration;
+    }
+
+    protected function getExecutionRoles()
+    {
+        $routeRoleRef = explode(",", $this->getFamilyParameterValue(HubConfigurationFields::hub_p_routes_role));
+        $roles = [];
+        foreach ($routeRoleRef as $roleLogin) {
+            $roleLogin = trim($roleLogin);
+            if ($roleLogin) {
+                $u = AccountManager::getAccount($roleLogin);
+                if (!$u || !$u->fid) {
+                    throw new Exception(sprintf("Role %s not exists", $roleLogin));
+                }
+                $roles[] = $u->fid;
+            }
+        }
+        return $roles;
     }
 
     protected function getPositionConfiguration()
@@ -36,7 +62,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
 
     protected function getEntryOptions()
     {
-        return  [
+        return [
             "activated" => $this->getAttributeValue(HubConfigurationFields::hub_activated) === "TRUE",
             "activatedOrder" => $this->getAttributeValue(HubConfigurationFields::hub_activated_order),
             "selectable" => $this->getAttributeValue(HubConfigurationFields::hub_selectable) === "TRUE"
@@ -83,7 +109,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
 
     protected static function getDockPosition($dockPosition)
     {
-        $position = [ "dock" => "", "innerPosition" => ""];
+        $position = ["dock" => "", "innerPosition" => ""];
         if (!empty($dockPosition)) {
             $tokens = explode("_", $dockPosition);
             if (!empty($tokens) && count($tokens) > 0) {

@@ -15,10 +15,13 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $options = parent::getOptions($document);
 
         $break2 = "33%";
-        $template = file_get_contents(__DIR__."/template/hub_docker_position.template.mustache");
+        $template = file_get_contents(__DIR__ . "/template/hub_docker_position.template.mustache");
         $options->enum(HubConfigurationFields::hub_docker_position)->setTemplate($template);
-        $options->arrayAttribute(HubConfigurationFields::hub_roles)->setCollapse("none");
         $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
+        $options->account(HubConfigurationFields::hub_visibility_roles)->setDescription("Roles mandatory to display this component to the hub station");
+        $options->account(HubConfigurationFields::hub_execution_roles)
+            ->setDescription("Roles required for operation of this component")
+            ->showEmptyContent("No operation roles required");
         $options->text(HubConfigurationFields::hub_title)->setMaxLength(50);
         $options->frame(HubConfigurationFields::hub_security_frame)->setLabelPosition(CommonRenderOptions::nonePosition);
         $options->frame(HubConfigurationFields::hub_activated_frame)->setResponsiveColumns(
@@ -35,11 +38,13 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
     {
         $visibilities = parent::getVisibilities($document, $mask);
         $visibilities->setVisibility(HubConfigurationFields::hub_station_id, RenderAttributeVisibilities::StaticWriteVisibility);
+        $visibilities->setVisibility(HubConfigurationFields::hub_execution_roles, RenderAttributeVisibilities::StaticWriteVisibility);
         return $visibilities;
     }
 
     /**
      * @param \Anakeen\Core\Internal\SmartElement|null $document
+     *
      * @return array|string[]
      * @throws \Anakeen\Ui\Exception
      */

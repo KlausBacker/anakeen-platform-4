@@ -3,8 +3,12 @@
 namespace Anakeen\Hub\Routes;
 
 use Anakeen\Core\SEManager;
+use Anakeen\SmartElementManager;
 use Anakeen\Ui\UIGetAssetPath;
 
+/*
+ * @note used by GET /hub/admin/{hubId}
+ */
 class HubAdmin
 {
     /**
@@ -22,10 +26,12 @@ class HubAdmin
     ) {
         $page = __DIR__ . "/Layout/hubAdmin.html.mustache";
         $mustache = new \Mustache_Engine();
-        $title = SEManager::getDocument($args["hubId"]);
+        $hub = SmartElementManager::getDocument($args["hubId"]);
+
         $data = [
-            "title" => $title->title,
-            "favIconURL" => $args["hubId"],
+            "title" => $hub->getTitle(),
+            "icon" => $hub->getIcon(),
+            "hubId" => $hub->name?:$hub->initid,
             "JS_DEPS" => [
                 [
                     "key" => "kendo",
@@ -81,8 +87,7 @@ class HubAdmin
             ]
         ];
         $template = file_get_contents($page);
-        $fams = array_merge(SEManager::getFamily("HUBCONFIGURATIONSLOT")->getChildFam(), SEManager::getFamily("HUBCONFIGURATIONVUE")->getChildFam());
-        $data["CHILDFAM"] = json_encode($fams);
+
         return $response->write($mustache->render($template, $data));
     }
 }

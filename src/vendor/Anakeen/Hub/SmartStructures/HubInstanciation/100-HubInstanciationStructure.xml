@@ -35,9 +35,8 @@
             </smart:field-set>
             <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
                 <smart:field-set name="hub_security_frame" type="frame" access="ReadWrite">
-                    <smart:field-set name="hub_roles" type="array" label="Roles" access="ReadWrite">
-                        <smart:field-account name="hub_role" label="Role" access="ReadWrite" match="role"/>
-                    </smart:field-set>
+                    <smart:field-account name="hub_access_roles" label="Roles to access" access="ReadWrite" match="role" multiple="true"/>
+                    <smart:field-account name="hub_super_role" label="Role to access to any elements" access="ReadWrite" match="role" />
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>

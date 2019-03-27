@@ -22,7 +22,6 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
 
         $break2 = "33%";
         $break3 = "50%";
-        $options->arrayAttribute(HubConfigurationFields::hub_roles)->setCollapse("none");
         $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
         $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(
             [

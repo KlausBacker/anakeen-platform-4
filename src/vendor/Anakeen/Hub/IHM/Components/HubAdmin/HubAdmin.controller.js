@@ -1,30 +1,40 @@
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
+import Vue from "vue";
+
+import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
+import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
+import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout";
-import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+import AnkHubMockup from "./HubAdminMockUp.vue";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 
+Vue.use(ButtonsInstaller);
+Vue.use(DropdownsInstaller);
+Vue.use(DataSourceInstaller);
+
+//noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-hub-admin",
   components: {
-    grid: AnkSEGrid,
-    identity: AnkIdentity,
-    logout: AnkLogout,
-    smartElem: AnkSmartElement,
+    "ank-se-grid": AnkSEGrid,
+    "ank-hub-mockup": AnkHubMockup,
+    "smart-element": AnkSmartElement,
     "ank-splitter": AnkSplitter
   },
+  props: ["hubId"],
   data() {
     return {
       // eslint-disable-next-line no-undef
-      childFam: window.ankChildFam,
       collection: "",
-      hubId: "",
-      hubTitle: "",
+      hubElement: { properties: {} },
       hubIcon: "",
+      mockData: {},
       hubConfig: [],
+      selectedComponent: 0,
+      isListenActivated: false,
       panes: [
         {
           scrollable: false,
@@ -41,34 +51,40 @@ export default {
       ]
     };
   },
+  watch: {
+    selectedComponent: function(val) {
+      if (val > 0) {
+        this.openDetailConfig(val);
+      }
+      this.selectTr(val);
+    }
+  },
+
   created() {
-    let route = window.location.href;
-    this.hubId = route.match(/\/hub\/admin\/(\w+)/)[1];
     this.$http
       .get(`/api/v2/smart-elements/${this.hubId}.json`)
       .then(response => {
-        this.hubTitle = response.data.data.document.properties.title;
+        this.hubElement = response.data.data.document;
       });
   },
-  mounted() {
-    Object.keys(this.childFam).forEach(key => {
-      const elt = this.childFam[key];
-      this.hubConfig.push({ text: elt.title, value: elt.name });
-    });
-  },
+
   methods: {
-    toolbarConfig() {
-      $(".grid-toolbar-create-action").kendoDropDownList({
-        dataTextField: "text",
-        dataValueField: "value",
-        dataSource: this.hubConfig,
-        valueTemplate: "Create",
-        select: e => {
-          this.selectConfig(e);
-        }
-      });
+    openElement() {
+      this.openDetailConfig(this.hubId);
+      // window.open(`/api/v2/smart-elements/${this.hubId}.html`);
     },
-    selectConfig(e) {
+    openInterface() {
+      window.open(`/hub/station/${this.hubId}/`);
+    },
+    selectTr(seId) {
+      let $trs = $(this.$el).find("tr[data-seid]");
+      let $tr = $(this.$el).find("tr[data-seid=" + seId + "]");
+
+      $trs.removeClass("row--selected");
+      $tr.addClass("row--selected");
+    },
+
+    selectCreateConfig(e) {
       this.collection = e.dataItem.value;
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
@@ -81,91 +97,162 @@ export default {
         }
       });
     },
+    addClassOnSelectorContainer(e) {
+      e.sender.popup.element.addClass("hub-select-container");
+    },
     createConfig(e) {
       this.$refs.hubAdminSplitter.disableEmptyContent();
-      this.$refs.smartConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultCreation"
+      this.$refs.smartConfig
+        .fetchSmartElement({
+          initid: e,
+          viewId: "!defaultCreation"
+        })
+        .then(() => {
+          this.$refs.smartConfig.setValue("hub_station_id", {
+            value: this.hubId,
+            displayValue: this.hubElement.properties.title,
+            icon: this.hubElement.properties.icon
+          });
+        });
+      this.listenSmartElement();
+    },
+
+    displayMockUp(e) {
+      let data = e.data.content.smartElements;
+      const positionKey = [
+        "TOP_LEFT",
+        "TOP_CENTER",
+        "TOP_RIGHT",
+        "LEFT_TOP",
+        "LEFT_CENTER",
+        "LEFT_BOTTOM",
+        "RIGHT_TOP",
+        "RIGHT_CENTER",
+        "RIGHT_BOTTOM",
+        "BOTTOM_LEFT",
+        "BOTTOM_CENTER",
+        "BOTTOM_RIGHT"
+      ];
+
+      this.mockData = {};
+      positionKey.forEach(pos => {
+        this.mockData[pos] = [];
       });
-      this.$refs.smartConfig.addEventListener("ready", () => {
-        this.$refs.smartConfig.addCustomClientData({
-          hubId: this.hubId,
-          hubTitle: this.hubTitle
+
+      data.sort((a, b) => {
+        const idxa = positionKey.indexOf(
+          a.attributes.hub_docker_position.value
+        );
+        const idxb = positionKey.indexOf(
+          b.attributes.hub_docker_position.value
+        );
+        const posa = a.attributes.hub_order.value || 0;
+        const posb = b.attributes.hub_order.value || 0;
+
+        const pa = idxa * 100 + posa;
+        const pb = idxb * 100 + posb;
+
+        if (pa > pb) {
+          return 1;
+        } else if (pa < pb) {
+          return -1;
+        }
+
+        return 0;
+      });
+
+      data.forEach((datum, k) => {
+        datum.attributes.key = { value: k + 1, displayValue: k + 1 };
+        this.mockData[datum.attributes.hub_docker_position.value].push({
+          key: datum.attributes.key.value,
+          title: datum.properties.title.displayValue,
+          initid: datum.properties.initid
         });
       });
+      this.addDataOnRow();
     },
-    openConfig(e) {
-      this.$refs.smartConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultConsultation"
+
+    addDataOnRow() {
+      this.$nextTick(() => {
+        const kgrid = this.$refs.hubGrid.kendoGrid;
+        const items = kgrid.items();
+
+        items.each(function addTypeClass() {
+          const dataItem = kgrid.dataItem(this);
+          if (dataItem.initid) {
+            $(this).attr("data-seid", dataItem.initid);
+          }
+        });
+
+        this.selectTr(this.selectedComponent);
       });
     },
-    modifyConfig(e) {
-      this.$refs.smartConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultEdition"
-      });
-      this.$refs.smartConfig.addEventListener("ready", () => {
-        this.$refs.smartConfig.addCustomClientData({ hubId: this.hubId });
-      });
-    },
-    toolbarActionClick(e) {
-      switch (e.data.type) {
-        case "consult":
-          window.open(`/hub/station/${this.hubId}/`);
-          break;
-      }
-    },
-    actionClick(e) {
-      e.preventDefault();
+
+    openDetailConfig(seid) {
+      let e = new Event("click");
+      e.data = {
+        type: "detail",
+        row: {
+          id: seid
+        }
+      };
+
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
         if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
-          this.$refs.smartConfig.addEventListener("afterSave", () => {
-            if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-              this.$refs.hubGrid.kendoGrid.dataSource.read();
-            }
-          });
-          this.$refs.smartConfig.addEventListener("afterDelete", () => {
-            if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-              this.$refs.hubGrid.kendoGrid.dataSource.read();
-            }
-          });
-          switch (e.data.type) {
-            case "consult":
-              this.openConfig(e.data.row.id);
-              break;
-            case "edit":
-              this.modifyConfig(e.data.row.id);
-              break;
-            default:
-              break;
-          }
+          this.listenSmartElement();
+          this.openConfig(seid);
         } else {
           this.$refs.smartConfig.$once("documentLoaded", () => {
-            this.$refs.smartConfig.addEventListener("afterSave", () => {
-              if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-                this.$refs.hubGrid.kendoGrid.dataSource.read();
-              }
-            });
-            this.$refs.smartConfig.addEventListener("afterDelete", () => {
-              if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
-                this.$refs.hubGrid.kendoGrid.dataSource.read();
-              }
-            });
-            switch (e.data.type) {
-              case "consult":
-                this.openConfig(e.data.row.id);
-                break;
-              case "edit":
-                this.modifyConfig(e.data.row.id);
-                break;
-              default:
-                break;
-            }
+            this.listenSmartElement();
+            this.openConfig(seid);
           });
         }
       });
+    },
+
+    openConfig(eid) {
+      this.$refs.smartConfig.fetchSmartElement({
+        initid: eid,
+        viewId: "!defaultConsultation"
+      });
+    },
+
+    changeSelectComponent(seid) {
+      //noinspection JSUnusedGlobalSymbols
+      this.selectedComponent = seid;
+    },
+
+    actionClick(e) {
+      e.preventDefault();
+      switch (e.data.type) {
+        case "detail":
+          this.selectedComponent = e.data.row.id;
+          break;
+
+        default:
+          break;
+      }
+    },
+    listenSmartElement() {
+      if (!this.isListenActivated) {
+        this.$refs.smartConfig.addEventListener("afterSave", (e, d) => {
+          const seId = d.initid;
+          if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+            this.selectedComponent = 0;
+            this.$refs.hubGrid.kendoGrid.dataSource.read().then(() => {
+              this.selectedComponent = seId;
+            });
+          }
+        });
+        this.$refs.smartConfig.addEventListener("afterDelete", () => {
+          if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
+            this.$refs.hubGrid.kendoGrid.dataSource.read();
+            this.selectedComponent = 0;
+          }
+        });
+        this.isListenActivated = true;
+      }
     }
   }
 };

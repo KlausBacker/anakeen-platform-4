@@ -4,7 +4,7 @@ const Configuration = {
     "scope-enum": [
       2,
       "always",
-      ["config", "route", "i18n", "script", "component"]
+      ["internal", "config", "route", "i18n", "script", "component"]
     ]
   }
 };
