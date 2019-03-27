@@ -226,8 +226,10 @@ export default class HubStation extends Vue {
       event.entryOptions.route &&
       this.withDefaultRouter
     ) {
-      const fullRoutePath = urlJoin(this.rootUrl, event.entryOptions.route);
+      const fullRoutePath =
+        urlJoin(this.rootUrl, event.entryOptions.route) + "/";
       this.$ankHubRouter.internal.navigate(fullRoutePath, true);
+      this.$ankHubRouter.internal.resolve(window.location.pathname);
     }
   }
 
@@ -251,7 +253,8 @@ export default class HubStation extends Vue {
         if (cfg.component && cfg.component.name) {
           const component = Vue.component(cfg.component.name);
           if (component && cfg.entryOptions && cfg.entryOptions.route) {
-            const absoluteRoute = urlJoin(this.rootUrl, cfg.entryOptions.route);
+            const absoluteRoute =
+              urlJoin(this.rootUrl, cfg.entryOptions.route) + "/";
             const priority =
               cfg.entryOptions.activatedOrder === null ||
               cfg.entryOptions.activatedOrder === undefined
