@@ -4,6 +4,7 @@ namespace Anakeen\AdminCenter\SmartStructures\HubAdminCenterAccounts;
 
 use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Hubconfigurationvue;
+
 class HubAdminCenterAccountsVueBehavior extends Hubconfigurationvue
 {
 
