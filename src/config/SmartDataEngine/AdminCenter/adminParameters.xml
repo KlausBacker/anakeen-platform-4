@@ -7,7 +7,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/parameters/</sde:pattern>
             <sde:description>Get all parameters</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
@@ -18,7 +18,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/parameters/users/search/{user}/</sde:pattern>
             <sde:description>Search users to modify parameters</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
@@ -29,7 +29,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/parameters/users/{user}/</sde:pattern>
             <sde:description>Get all parameters used for a specific user</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
@@ -40,7 +40,7 @@
             <sde:method>PUT</sde:method>
             <sde:pattern>/api/v2/admin/parameters/{namespace}/{parameter_name}/</sde:pattern>
             <sde:description>Modify the value of a parameter</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
@@ -51,7 +51,7 @@
             <sde:method>PUT</sde:method>
             <sde:pattern>/api/v2/admin/parameters/{user}/{namespace}/{parameter_name}/</sde:pattern>
             <sde:description>Modify the value of a parameter for a specific user</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
@@ -62,7 +62,7 @@
             <sde:method>DELETE</sde:method>
             <sde:pattern>/api/v2/admin/parameters/{user}/{name_space}/{parameter_name}/</sde:pattern>
             <sde:description>Delete the value of a parameter for a specific user</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>
@@ -73,7 +73,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/parameters/users/</sde:pattern>
             <sde:description>Get the 5 first users</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminParameters</sde:access>
             </sde:requiredAccess>

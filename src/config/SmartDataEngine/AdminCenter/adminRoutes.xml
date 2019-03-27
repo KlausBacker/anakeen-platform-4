@@ -7,7 +7,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/routes/</sde:pattern>
             <sde:description>Get all routes</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>
         </sde:route>
@@ -17,7 +17,7 @@
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/routes/{routeName}/activate/</sde:pattern>
             <sde:description>Activate route</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>
         </sde:route>
@@ -27,7 +27,7 @@
             <sde:method>DELETE</sde:method>
             <sde:pattern>/api/v2/admin/routes/{routeName}/deactivate/</sde:pattern>
             <sde:description>Deactivate route</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>
         </sde:route>
@@ -37,7 +37,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/middlewares/</sde:pattern>
             <sde:description>Get all middlewares</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>
         </sde:route>
@@ -47,7 +47,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/routes/{routeName}/applicMiddlewares/</sde:pattern>
             <sde:description>Retrieve applicable middlewares</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
             </sde:requiredAccess>
         </sde:route>

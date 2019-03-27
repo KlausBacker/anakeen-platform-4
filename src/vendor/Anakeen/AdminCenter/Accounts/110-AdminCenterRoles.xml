@@ -1,5 +1,17 @@
 <accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
     <accounts:roles>
+
+        <accounts:role name="system_administrator">
+            <accounts:displayName>System administrator</accounts:displayName>
+            <accounts:structure name="AC_SYSADMIN"/>
+        </accounts:role>
+
+
+        <accounts:role name="functional_administrator">
+            <accounts:displayName>Functional administrator</accounts:displayName>
+            <accounts:structure name="AC_FUNCADMIN"/>
+        </accounts:role>
+
         <accounts:role name="accounts_manager_role">
             <accounts:displayName>Accounts Manager</accounts:displayName>
         </accounts:role>
@@ -16,4 +28,12 @@
             <accounts:displayName>Vaults Manager</accounts:displayName>
         </accounts:role>
     </accounts:roles>
+    <accounts:groups>
+
+        <accounts:group name="gadmin">
+            <accounts:associatedRoles>
+                <accounts:associatedRole ref="system_administrator"/>
+            </accounts:associatedRoles>
+        </accounts:group>
+    </accounts:groups>
 </accounts:accounts>

@@ -7,7 +7,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/account/groups/</sde:pattern>
             <sde:description>Get list of group</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
@@ -18,7 +18,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/account/users/</sde:pattern>
             <sde:description>Get list of users</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
@@ -29,7 +29,7 @@
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/admin/account/config/</sde:pattern>
             <sde:description>Get list of users</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
@@ -40,7 +40,7 @@
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/account/users/{userSmartId}/disable</sde:pattern>
             <sde:description>Disable account</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
@@ -51,7 +51,7 @@
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/account/users/{userSmartId}/enable</sde:pattern>
             <sde:description>Enable account</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
@@ -62,7 +62,7 @@
             <sde:method>POST</sde:method>
             <sde:pattern>/api/v2/admin/account/users/{userSmartId}/resetLogin</sde:pattern>
             <sde:description>Reset login</sde:description>
-            <sde:requiredAccess>
+            <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
                 <sde:access ns="AdminCenter">AdminAccounts</sde:access>
             </sde:requiredAccess>
