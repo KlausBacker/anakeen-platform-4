@@ -14,7 +14,8 @@ module.exports = () => {
       components: [path.resolve(__dirname, "./scss/components.scss")],
       kendo: [path.resolve(__dirname, "./scss/kendo.scss")],
       smartElement: [path.resolve(__dirname, "./scss/smartElement.scss")],
-      login: [path.resolve(__dirname, "./scss/login.scss")]
+      login: [path.resolve(__dirname, "./scss/login.scss")],
+      colors: [path.resolve(__dirname, "./scss/colors.scss")]
     },
     withoutBabel: true,
     buildPath: PUBLIC_PATH

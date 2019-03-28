@@ -1,0 +1,81 @@
+@import "~@anakeen/theme-variables/scss/variables";
+
+:root {
+  --ank-ui-color-link: #{$ank-ui-color-link};
+  --ank-ui-color-btn-action: #{$ank-ui-color-btn-action};
+  --ank-ui-color-btn-creation: #{$ank-ui-color-btn-creation};
+  --ank-ui-color-selected: #{$ank-ui-color-selected};
+  --ank-ui-color-error: #{$ank-ui-color-error};
+  --ank-ui-color-text: #{$ank-ui-color-text};
+  --ank-ui-color-text-colored: #{$ank-ui-color-text-colored};
+  --ank-ui-color-picto: #{$ank-ui-color-picto};
+  --ank-ui-color-picto-colored: #{$ank-ui-color-picto-colored};
+  --ank-ui-color-hovered: #{$ank-ui-color-hovered};
+  --ank-ui-color-font-document: #{$ank-ui-color-font-document};
+  --ank-ui-color-font-placeholder: #{$ank-ui-color-font-placeholder};
+
+  --ank-ui-color-client: #{$ank-ui-color-client};
+
+  --ank-ui-color-label: #{$ank-ui-color-label};
+  --ank-ui-color-btn-click: #{$ank-ui-color-btn-click};
+
+  --ank-ui-color-body-background: #{$ank-ui-color-body-background};
+  --ank-ui-color-frame-background: #{$ank-ui-color-frame-background};
+
+  --ank-ui-color-font-button: #{$ank-ui-color-font-button};
+  --ank-ui-color-font-title: #{$ank-ui-color-font-title};
+  --ank-ui-color-btn-tool-bg: #{$ank-ui-color-btn-tool-bg};
+  // Button 1
+  --ank-ui-button1-color-background: #{$ank-ui-button1-color-background};
+  --ank-ui-button1-color-text: #{$ank-ui-button1-color-text};
+  --ank-ui-button1-disabled-color-background: #{$ank-ui-button1-disabled-color-background};
+  --ank-ui-button1-disabled-color-text: #{$ank-ui-button1-disabled-color-text};
+  --ank-ui-button1-hover-color-background: #{$ank-ui-button1-hover-color-background};
+  --ank-ui-button1-hover-color-text: #{$ank-ui-button1-hover-color-text};
+  // Button 2
+  --ank-ui-button2-color-text: #{$ank-ui-button2-color-text};
+  --ank-ui-button2-color-background: #{$ank-ui-button2-color-background};
+  --ank-ui-button2-color-border: #{$ank-ui-button2-color-border};
+  --ank-ui-button2-color-hover-text: #{$ank-ui-button2-color-hover-text};
+  --ank-ui-button2-color-hover-background: #{$ank-ui-button2-color-hover-background};
+  --ank-ui-button2-disabled-color-background: #{$ank-ui-button2-disabled-color-background};
+  --ank-ui-button2-disabled-color-text: #{$ank-ui-button2-disabled-color-text};
+  --ank-ui-button2-disabled-hover-color-background: #{$ank-ui-button2-disabled-hover-color-background};
+  --ank-ui-button2-disabled-hover-color-text: #{$ank-ui-button2-disabled-hover-color-text};
+  --ank-ui-button2-disabled-color-border: #{$ank-ui-button2-disabled-color-border};
+  // Button 3
+  --ank-ui-button3-color-border: #{$ank-ui-button3-color-border};
+  --ank-ui-button3-disabled-color-background: #{$ank-ui-button3-disabled-color-background};
+  --ank-ui-button3-disabled-color-text: #{$ank-ui-button3-disabled-color-text};
+  --ank-ui-button3-disabled-hover-color-background: #{$ank-ui-button3-disabled-hover-color-background};
+  --ank-ui-button3-disabled-hover-color-text: #{$ank-ui-button3-disabled-hover-color-text};
+  --ank-ui-button3-color-text: #{$ank-ui-button3-color-text};
+  --ank-ui-button3-color-background: #{$ank-ui-button3-color-background};
+  --ank-ui-button3-color-hover-text: #{$ank-ui-button3-color-hover-text};
+  --ank-ui-button3-color-hover-background: #{$ank-ui-button3-color-hover-background};
+  // Toggle Button
+  --ank-ui-toggle-color-bg-off: #{$ank-ui-toggle-color-bg-off};
+  --ank-ui-toggle-color-text-off: #{$ank-ui-toggle-color-text-off};
+  --ank-ui-toggle-color-bg-on: #{$ank-ui-toggle-color-bg-on};
+  --ank-ui-toggle-color-text-on: #{$ank-ui-toggle-color-text-on};
+  // Radio Button
+  --ank-ui-radio-color-bg: #{$ank-ui-radio-color-bg};
+  --ank-ui-radio-color-checked: #{$ank-ui-radio-color-checked};
+  // Attribute
+  --ank-ui-doc-edit-attribute-color-border: #{$ank-ui-doc-edit-attribute-color-border};
+  --ank-ui-doc-edit-attribute-hover-color: #{$ank-ui-doc-edit-attribute-hover-color};
+  --ank-ui-doc-edit-attribute-focus-color: #{$ank-ui-doc-edit-attribute-focus-color};
+  --ank-ui-doc-edit-attribute-error-color: #{$ank-ui-doc-edit-attribute-error-color};
+  --ank-ui-doc-edit-attribute-error-text-color: #{$ank-ui-doc-edit-attribute-error-text-color};
+  --ank-ui-doc-read-attribute-link-color: #{$ank-ui-doc-read-attribute-link-color};
+  // Frames
+  --ank-ui-frame-color-title: #{$ank-ui-frame-color-title};
+  // Menu
+  --ank-ui-menu-font-color: #{$ank-ui-menu-font-color};
+  --ank-ui-menu-fixed-font-color: #{$ank-ui-menu-fixed-font-color};
+  // Icons
+  --ank-ui-icon-color: #{$ank-ui-icon-color};
+  // Attribute description field
+  --ankAttributeDescriptionBackgroundColor: #{$dcpAttributeDescriptionBackgroundColor};
+
+}
