@@ -50,14 +50,15 @@
     libxmljs "^0.19.5"
 
 "@anakeen/internal-components@^1.0.1-dev20190322160440":
-  version "1.0.1-dev20190322160440"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190322160440.tgz#e9b94b6af80cda32ddd990e32dfc09cfbd54fe23"
-  integrity sha512-EAwdoRhayYW2hZKB2AcXHMrFNybNIGe1/TgCOFc8rlXmFE44QX7giWtdnlAdYU8pr8qwfl1t4JhAIfV5VqG8Qg==
+  version "1.0.1-dev20190328164754"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190328164754.tgz#820c92157d0a70599e17075341f3b6762d4fea55"
+  integrity sha512-dVKsH+M8Hf9UW3p43YJxhui84wdIO7JCNwaVnfFVcVki/i9LjqwiL1/aiWmOlqQdFk2OB4mjYSPfhPE78kHOCA==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     axios "^0.18.0"
-    vue-class-component "^7.0.1"
-    vue-property-decorator "^7.3.0"
+    core-js "3.0.0"
+    vue-class-component "^7.0.2"
+    vue-property-decorator "^8.1.0"
 
 "@anakeen/theme-variables@^0.0.2":
   version "0.0.2"
@@ -9316,11 +9317,6 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-vue-class-component@^6.2.0:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-6.3.2.tgz#e6037e84d1df2af3bde4f455e50ca1b9eec02be6"
-  integrity sha512-cH208IoM+jgZyEf/g7mnFyofwPDJTM/QvBNhYMjqGB8fCsRyTf68rH2ISw/G20tJv+5mIThQ3upKwoL4jLTr1A==
-
 vue-class-component@^7.0.1, vue-class-component@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.0.2.tgz#c5f35a91c0e9341532392b84d606a84911fb13bc"
@@ -9356,13 +9352,6 @@ vue-m-loader@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/vue-m-loader/-/vue-m-loader-1.0.1.tgz#7af7cb81b1ebda934708c990e2b082eb480ed4d0"
   integrity sha512-a0h8H5cdarwrf/r3JJAB6n0NkW+7Wdfh/PhktYeCeeC8jN6aFkCyxQNz1fYmyMfmuO7FmYM/JW6EFyIR9beImg==
-
-vue-property-decorator@^7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-7.3.0.tgz#d50d67f0b0f1c814f9f2fba36d6eeccbcc62dbb6"
-  integrity sha512-HarXfTQ/Nxm4s/APpAaGIGHq5ZzslApImQy8ZrtkfGamw8rUFAVgMS5C50/AQ80+wfw3Wpnf4bNzbmj75m/k2Q==
-  dependencies:
-    vue-class-component "^6.2.0"
 
 vue-property-decorator@^8.1.0:
   version "8.1.0"
