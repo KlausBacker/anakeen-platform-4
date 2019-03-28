@@ -2,6 +2,7 @@ import AnkNotifier from "@anakeen/internal-components/lib/Notifier";
 import HubStation from "@anakeen/hub-components/lib/HubStation";
 import HubEntries from "./utils/hubEntry";
 
+//noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-hub",
   components: {
@@ -81,26 +82,32 @@ export default {
           this.sendNotif({
             textContent: errorMsg,
             type: "error",
-            displayTime: 99990
+            displayTime: 0
           });
           return Promise.reject(error);
         }
       );
     },
-    sendNotif(data) {
+
+    sendNotif({
+      title = "",
+      displayTime = 10000,
+      type = "info",
+      textContent = ""
+    }) {
       this.$refs.ankNotifier.publishNotification(
         new CustomEvent("ankNotification", {
           detail: [
             {
               content: {
-                title: data.title,
-                textContent: data.textContent
+                title: title,
+                textContent: textContent
               },
               options: {
-                displayTime: data.displayTime || 10000,
+                displayTime: displayTime,
                 closable: true
               },
-              type: data.type || "info"
+              type: type
             }
           ]
         })

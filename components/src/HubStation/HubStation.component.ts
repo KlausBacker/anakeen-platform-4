@@ -163,17 +163,6 @@ export default class HubStation extends Vue {
     this.$_hubEventBus.on("hubNotify", notification => {
       this.$emit("hubNotify", notification);
     });
-    if (this.$http && this.$http.errorEvents) {
-      this.$http.errorEvents.on("error", event => {
-        this.$emit("hubNotify", {
-          content: {
-            textContent: event.message,
-            title: event.title
-          },
-          type: "error"
-        });
-      });
-    }
   }
 
   public mounted() {
