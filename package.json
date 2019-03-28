@@ -30,7 +30,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/hub-components": "^1.0.0-dev20190326134828",
+    "@anakeen/hub-components": "^1.0.0-dev20190327150748",
     "@anakeen/user-interfaces": "^2.0.0-dev20190326115253",
     "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
     "@commitlint/config-conventional": "^7.5.0",
