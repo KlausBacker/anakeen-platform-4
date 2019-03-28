@@ -1,5 +1,6 @@
 import "@progress/kendo-ui/js/kendo.notification";
 
+//noinspection JSUnusedGlobalSymbols
 export default {
   name: "ank-notifier",
   props: {
@@ -195,11 +196,11 @@ export default {
       }
 
       // Get displayTime from event or default
+
       let displayTime;
       if (
         eventData &&
         eventData.options &&
-        eventData.options.displayTime &&
         typeof eventData.options.displayTime === "number"
       ) {
         displayTime = eventData.options.displayTime;
@@ -335,9 +336,11 @@ export default {
     },
 
     showNotification(type, title, content, isHtml, displayTime, closable) {
+      // Need to force to 0 - after init because not work before
       this.kendoNotifier.setOptions({
-        autoHideAfter: displayTime
+        autoHideAfter: 0
       });
+
       this.kendoNotifier.show(
         {
           title: title,
@@ -347,18 +350,18 @@ export default {
         },
         type
       );
+      const $lastNotif = $(this.$el)
+        .find(".k-notification")
+        .last();
 
-      // To make close buttons work
-      $(".notification-close")
-        .off("click")
-        .on("click", event => {
-          $(event.target)
-            .closest(".k-notification")
-            .fadeOut(200, function() {
-              $(this).unwrap();
-              this.remove();
-            });
-        });
+      if (displayTime) {
+        // autoHideAfter for each notification
+        window.setTimeout(() => {
+          $lastNotif.fadeOut(2000, function() {
+            this.remove();
+          });
+        }, displayTime);
+      }
     },
 
     // Init kendo component at mount
@@ -467,9 +470,10 @@ export default {
       }
 
       // Init notifier, defining static parameters
-      this.kendoNotifier = $(".ank-notifier")
+      this.kendoNotifier = $(this.$refs.ankNotifier)
         .kendoNotification({
           animation: {
+            autoHideAfter: 0,
             open: {
               effects: animation
             },
@@ -478,6 +482,7 @@ export default {
               reverse: true
             }
           },
+          appendTo: this.$refs.ankNotifier,
           hideOnClick: false,
           position: {
             top: this.positionTop,
@@ -509,6 +514,15 @@ export default {
           ]
         })
         .data("kendoNotification");
+
+      // To make close buttons work
+      $(this.$refs.ankNotifier).on("click", ".notification-close", event => {
+        $(event.target)
+          .closest(".k-notification")
+          .fadeOut(500, function() {
+            this.remove();
+          });
+      });
     },
 
     // Override default parameters with redefined ones in props

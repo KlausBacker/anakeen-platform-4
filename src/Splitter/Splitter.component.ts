@@ -12,6 +12,9 @@ export default class SplitterComponent extends Vue {
   @Prop({ type: String, default: "" })
   public localStorageKey!: string;
 
+  @Prop({ type: Array, default: [] })
+  public panes!: object[];
+
   public splitterEmpty: boolean = true;
   public mounted() {
     if (this.$refs.ankSplitter) {

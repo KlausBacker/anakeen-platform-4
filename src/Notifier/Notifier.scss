@@ -7,140 +7,169 @@ $success-color: #8ae234;
 $info-color: #157efb;
 $notice-color: #878787;
 
-.notification {
-  height: auto;
-  width: 250px;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: flex-start;
-  background-color: $white;
-  padding: 0.9rem;
-  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+.ank-notifier {
 
-  .notification-icon {
-    font-size: 1.5rem;
-    width: 1.5rem;
-    margin-right: 0.7rem;
+  position: absolute;
+  right:1rem;
+  top:3rem;
+  z-index: 10;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  width:25rem;
+  scrollbar-width: thin;
+
+
+  .k-notification {
+    margin: 0.2rem;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
   }
 
-  .notification-content {
-    width: 100%;
+  .notification {
+    height: auto;
+    border-style: solid;
+    border-width:1px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: stretch;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+    background-color: $white;
+    padding: 0.9rem;
 
-    .notification-content-header {
+    .notification-icon {
+      font-size: 1.5rem;
+      width: 1.5rem;
+      margin-right: 0.7rem;
+    }
+
+    .notification-content {
       width: 100%;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: flex-start;
+      justify-content: stretch;
 
-      .notification-title {
-        font-size: 1.4rem;
-        font-weight: bold;
-        margin-bottom: 0.3rem;
+      .notification-content-header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+
+        .notification-title {
+          font-size: 1.4rem;
+          font-weight: bold;
+          margin-bottom: 0.3rem;
+        }
+
+        .notification-close {
+          color: $gray;
+          margin-left: auto;
+          cursor: pointer;
+        }
       }
 
-      .notification-close {
-        margin-left: auto;
-        cursor: pointer;
-      }
-    }
-
-    .notification-message {
-      font-size: 1.2rem;
-      color: $gray;
-    }
-  }
-}
-
-.notification.error-notification {
-  .notification-icon {
-    color: $error-color;
-  }
-
-  .notification-icon::before {
-    content: "highlight_off";
-  }
-
-  .notification-content {
-    .notification-content-header {
-      .notification-title {
-        color: $error-color;
+      .notification-message {
+        word-break: break-word;
+        font-size: 1.2rem;
+        color: $gray;
       }
     }
   }
-}
 
-.notification.warning-notification {
-  .notification-icon {
-    color: $warning-color;
+  .notification {
   }
 
-  .notification-icon::before {
-    content: "error";
-  }
+  .notification.error-notification {
+    border-color:$error-color;
+    .notification-icon {
+      color: $error-color;
+    }
 
-  .notification-content {
-    .notification-content-header {
-      .notification-title {
-        color: $warning-color;
+    .notification-icon::before {
+      content: "error";
+    }
+
+    .notification-content {
+      .notification-content-header {
+        .notification-title {
+          color: $error-color;
+        }
       }
     }
   }
-}
 
-.notification.success-notification {
-  .notification-icon {
-    color: $success-color;
-  }
+  .notification.warning-notification {
+    border-color:$warning-color;
+    .notification-icon {
+      color: $warning-color;
+    }
 
-  .notification-icon::before {
-    content: "check_circle";
-  }
+    .notification-icon::before {
+      content: "warning";
+    }
 
-  .notification-content {
-    .notification-content-header {
-      .notification-title {
-        color: $success-color;
+    .notification-content {
+      .notification-content-header {
+        .notification-title {
+          color: $warning-color;
+        }
       }
     }
   }
-}
 
-.notification.info-notification {
-  .notification-icon {
-    color: $info-color;
-  }
+  .notification.success-notification {
+    border-color:$success-color;
+    .notification-icon {
+      color: $success-color;
+    }
 
-  .notification-icon::before {
-    content: "info";
-  }
+    .notification-icon::before {
+      content: "check_circle";
+    }
 
-  .notification-content {
-    .notification-content-header {
-      .notification-title {
-        color: $info-color;
+    .notification-content {
+      .notification-content-header {
+        .notification-title {
+          color: $success-color;
+        }
       }
     }
   }
-}
 
-.notification.notice-notification {
-  .notification-icon {
-    color: $notice-color;
+  .notification.info-notification {
+    border-color:$info-color;
+    .notification-icon {
+      color: $info-color;
+    }
+
+    .notification-icon::before {
+      content: "info";
+    }
+
+    .notification-content {
+      .notification-content-header {
+        .notification-title {
+          color: $info-color;
+        }
+      }
+    }
   }
 
-  .notification-icon::before {
-    content: "info";
-  }
+  .notification.notice-notification {
+    border-color:$notice-color;
+    .notification-icon {
+      color: $notice-color;
+    }
 
-  .notification-content {
-    .notification-content-header {
-      .notification-title {
-        color: $notice-color;
+    .notification-icon::before {
+      content: "info";
+    }
+
+    .notification-content {
+      .notification-content-header {
+        .notification-title {
+          color: $notice-color;
+        }
       }
     }
   }

@@ -7,11 +7,19 @@
         background: #157efb;
       }
 
-      width: 1.5rem;
+
+      &:hover {
+        background: #157efb;
+      }
+      background-color: #555;
+      color:white;
+
+      width: 0.5rem;
+
 
       .k-icon {
         margin: 0;
-        font-size: 1.75rem;
+        font-size: 1.25rem;
 
         &.k-collapse-prev,
         &.k-expand-next {

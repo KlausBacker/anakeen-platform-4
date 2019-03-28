@@ -1,9 +1,9 @@
 <template>
-  <div
-    class="ank-notifier"
+  <div class="ank-notifier" ref="ankNotifier"
+
     @ankNotification="publishNotification"
-    @ankNotificationClose="closeAllNotification"
-  ></div>
+    @ankNotificationClose="closeAllNotification" >
+  </div>
 </template>
 
 <!-- CSS for notification, should not be scoped because it is not in the component's DOM -->
