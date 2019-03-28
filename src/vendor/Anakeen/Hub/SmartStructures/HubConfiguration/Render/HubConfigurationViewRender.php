@@ -9,6 +9,7 @@ use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
 {
+    use THubConfigurationCommonRender;
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
@@ -20,27 +21,16 @@ class HubConfigurationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
     {
         $options = parent::getOptions($document);
 
-        $break2 = "33%";
-        $break3 = "50%";
         $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
-        $options->frame(HubConfigurationFields::hub_component_parameters)->setResponsiveColumns(
-            [
-                ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
-                ["number" => 3, "minWidth" => $break2, "grow" => false]
-            ]
-        );
-        $options->frame(HubConfigurationFields::hub_slot_parameters)->setResponsiveColumns(
-            [
-                ["number" => 2, "minWidth" => $break2, "maxWidth" => $break3],
-                ["number" => 3, "minWidth" => $break2, "grow" => false]
-            ]
-        );
+
+
         $options->frame(HubConfigurationFields::hub_activated_frame)->setResponsiveColumns(
             [
-                ["number" => 2, "minWidth" => $break2, "grow" => false],
-                ["number" => 3, "minWidth" => $break2, "grow" => false]
+                ["number" => 2, "minWidth" => "50rem", "maxWidth" => "70rem"],
+                ["number" => 3, "minWidth" => "70rem"]
             ]
         );
+        $this->addDescriptions($options);
         return $options;
     }
 

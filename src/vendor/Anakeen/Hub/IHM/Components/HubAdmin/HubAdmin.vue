@@ -87,8 +87,7 @@
                   field="hub_order"
                   :hidden="true"
                 ></ank-se-grid-column>
-
-                <ank-se-grid-actions>
+                <ank-se-grid-actions width="4rem">
                   <ank-se-grid-action
                     action="detail"
                     title="Details"

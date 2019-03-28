@@ -80,7 +80,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "resolutions": {
-    "@progress/kendo-layout-vue-wrapper/vue": "2.6.7"
+    "@progress/kendo-layout-vue-wrapper/vue": "2.6.10"
   },
   "peerDependencies": {
     "@anakeen/internal-components": "^1.0.1-dev20190322160440",

@@ -11,6 +11,8 @@ use SmartStructure\Fields\Hubinstanciation as HubInstanciationFields;
 
 class HubInstanciationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
 {
+    use THubInstanciationCommonRender;
+
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
@@ -24,15 +26,16 @@ class HubInstanciationViewRender extends \Anakeen\Ui\DefaultConfigViewRender
         $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->setRowMinLimit(1);
         $options->arrayAttribute(HubInstanciationFields::hub_instance_titles)->setCollapse("none");
 
+        $this->addDescriptions($options);
         return $options;
     }
 
     public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
     {
-        $menu =parent::getMenu($document);
+        $menu = parent::getMenu($document);
 
         $item = new ItemMenu("adminconfig", ___("Configuration", "hub"));
-        $item->setUrl(sprintf("/hub/admin/%s", $document->name?:$document->id));
+        $item->setUrl(sprintf("/hub/admin/%s", $document->name ?: $document->id));
         // $item->setTarget("_blank");
 
         $menu->appendElement($item);

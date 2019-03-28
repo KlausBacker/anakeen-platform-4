@@ -10,27 +10,28 @@ use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
 class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
 {
+    use THubConfigurationCommonRender;
+
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
 
-        $break2 = "33%";
         $template = file_get_contents(__DIR__ . "/template/hub_docker_position.template.mustache");
         $options->enum(HubConfigurationFields::hub_docker_position)->setTemplate($template);
         $options->arrayAttribute(HubConfigurationFields::hub_component_parameters)->setCollapse("none");
-        $options->account(HubConfigurationFields::hub_visibility_roles)->setDescription("Roles mandatory to display this component to the hub station");
-        $options->account(HubConfigurationFields::hub_execution_roles)
-            ->setDescription("Roles required for operation of this component")
-            ->showEmptyContent("No operation roles required");
+
+
+
         $options->text(HubConfigurationFields::hub_title)->setMaxLength(50);
         $options->frame(HubConfigurationFields::hub_security_frame)->setLabelPosition(CommonRenderOptions::nonePosition);
         $options->frame(HubConfigurationFields::hub_activated_frame)->setResponsiveColumns(
             [
-                ["number" => 2, "minWidth" => $break2, "grow" => false],
-                ["number" => 3, "minWidth" => $break2, "grow" => false]
+                ["number" => 2, "minWidth" => "50rem", "maxWidth" => "70rem", "grow" => false],
+                ["number" => 3, "minWidth" => "70rem", "grow" => false]
             ]
         );
 
+        $this->addDescriptions($options);
         return $options;
     }
 

@@ -7,6 +7,6 @@
         </smart:accesses>
     </smart:structure-configuration>
     <ui:render ref="HUBCONFIGURATIONVUE">
-        <ui:render-access class="Anakeen\Hub\SmartStructures\HubConfiguration\Render\HubConfigurationAccess"/>
+        <ui:render-access class="Anakeen\Hub\SmartStructures\HubConfigurationVue\Render\HubConfigurationVueAccess"/>
     </ui:render>
 </smart:config>

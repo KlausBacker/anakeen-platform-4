@@ -70,32 +70,42 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
 
     protected function userHasAccess(\SmartStructure\Hubconfiguration $hubConfig)
     {
-        $mandatoryRoles = array_merge(
-            $hubConfig->getMultipleRawValues(Fields::hub_execution_roles),
-            $hubConfig->getMultipleRawValues(Fields::hub_visibility_roles)
-        );
-        if (!$mandatoryRoles) {
+
+        $performRoles= $hubConfig->getMultipleRawValues(Fields::hub_execution_roles);
+        $displayRoles = $hubConfig->getMultipleRawValues(Fields::hub_visibility_roles);
+
+        if (!$performRoles && !$displayRoles) {
             return true;
         }
-        $roles = [];
-        foreach ($mandatoryRoles as $mandatoryRole) {
-            $roles[] = SEManager::getRawValue($mandatoryRole, RoleFields::us_whatid);
+        $performRoleRef = [];
+        foreach ($performRoles as $mandatoryRole) {
+            $performRoleRef[] = SEManager::getRawValue($mandatoryRole, RoleFields::us_whatid);
         }
-
-
+        $displayRoleRef=[];
+        foreach ($displayRoles as $mandatoryRole) {
+            $displayRoleRef[] = SEManager::getRawValue($mandatoryRole, RoleFields::us_whatid);
+        }
 
         $user = ContextManager::getCurrentUser();
         if ($user->id == Account::ADMIN_ID) {
             return true;
         }
         $uMembers = $user->getMemberOf();
-        if (!array_diff($roles, $uMembers)) {
-            return true;
+        if (!array_diff($performRoleRef, $uMembers)) {
+            if (!$displayRoles) {
+                return true;
+            } else {
+                // Verify display Access
+                if (array_intersect($displayRoleRef, $uMembers)) {
+                    return true;
+                }
+            }
         }
 
         if ($this->hasSuperRole()) {
             return true;
         }
+
         return false;
     }
     protected function hasSuperRole()

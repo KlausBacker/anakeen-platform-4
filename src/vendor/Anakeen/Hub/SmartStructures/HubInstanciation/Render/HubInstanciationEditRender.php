@@ -11,6 +11,7 @@ use SmartStructure\Fields\Hubinstanciation as HubInstanciationFields;
 
 class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
 {
+    use THubInstanciationCommonRender;
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document): RenderOptions
     {
         $options = parent::getOptions($document);
@@ -25,16 +26,10 @@ class HubInstanciationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
         $options->text(HubInstanciationFields::hub_instance_language)->setMaxLength(15);
         $options->frame(HubInstanciationFields::hub_security_frame)->setLabelPosition(CommonRenderOptions::nonePosition);
 
-        $options->account(HubInstanciationFields::hub_access_roles)
-            ->setDescription(
-                "<p>Mandatory Roles to access to main page of this hub instance</p>" .
-                "<p>User must have one of these roles describe here to access to user interface</p>"
-            );
-        $options->account(HubInstanciationFields::hub_super_role)
-            ->setDescription(
-                "<p>Mandatory Roles to access to all element of the interface. </p>" .
-                "<p>All functionnalities are displayed when user has this role</p>"
-            );
+
+
+        $this->addDescriptions($options);
+
         return $options;
     }
 

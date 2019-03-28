@@ -71,7 +71,7 @@ export default {
   methods: {
     openElement() {
       this.openDetailConfig(this.hubId);
-      // window.open(`/api/v2/smart-elements/${this.hubId}.html`);
+      this.selectedComponent = 0;
     },
     openInterface() {
       window.open(`/hub/station/${this.hubId}/`);
