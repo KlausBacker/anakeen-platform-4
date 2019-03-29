@@ -11,9 +11,11 @@
   <post-install>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubTeManager/**/*.xml"/>
     <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/TransformationEngine/HubComponent/hubConfiguration.xml"/>
+    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/TransformationEngine/HubComponent/TERoles.xml"/>
   </post-install>
   <post-upgrade>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/HubTeManager/**/*.xml"/>
+    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/TransformationEngine/HubComponent/TERoles.xml"/>
   </post-upgrade>
 
   <post-upgrade>

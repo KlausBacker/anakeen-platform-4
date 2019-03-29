@@ -50,9 +50,9 @@
     libxmljs "^0.19.5"
 
 "@anakeen/hub-components@^1.0.0-dev20190326134828":
-  version "1.0.0-dev20190326134828"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190326134828.tgz#0254758c15700f1173141949af04f8e1524a2ab9"
-  integrity sha512-yMmlW7WTJ64NM2KYxzu9y3Yx1O97OkCN0ekhGUwaKPIi7wxYbFbHQOFAlmiwrgfYOgRKwBGUTMR3Nqp7T/EQgw==
+  version "1.0.0-dev20190328170051"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190328170051.tgz#93e3e694a5396fce1665c163bfa8934611300978"
+  integrity sha512-VIDO4T/LZhxPO5niIDt4+IVm+RL7A184bm6V/liedLUlcIRrDluw2S77ZyvmzvA0cP8nPHUAclY2ruRmQcdh9w==
   dependencies:
     "@anakeen/internal-components" "^1.0.1-dev20190322160440"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
@@ -73,9 +73,9 @@
     vuex "^3.1.0"
 
 "@anakeen/internal-components@^1.0.1-dev20190322160440", "@anakeen/internal-components@^1.0.1-dev20190326133450":
-  version "1.0.1-dev20190326133450"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190326133450.tgz#db9c6f7f11d485a3535ba985e2b782f28b8dcf4a"
-  integrity sha512-nNYZNwrGWz5A4nqN355vUDjEL8/oicjlPehaq1SIrt1Bt51cYYW3+xt0Niua6goyXCZmXeBEoQeRZYNFtgrq7g==
+  version "1.0.1-dev20190328164754"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190328164754.tgz#820c92157d0a70599e17075341f3b6762d4fea55"
+  integrity sha512-dVKsH+M8Hf9UW3p43YJxhui84wdIO7JCNwaVnfFVcVki/i9LjqwiL1/aiWmOlqQdFk2OB4mjYSPfhPE78kHOCA==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     axios "^0.18.0"
