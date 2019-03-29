@@ -13,9 +13,10 @@
 
         <smart:hooks/>
         <smart:defaults>
-            <smart:default field="hub_jsasset" reset="true">
+            <smart:initial field="hub_jsasset" reset="true">
                 <smart:field-callable function="Anakeen\SmartStructures\HubTeManager\HubTeManagerVueBehavior::getJSAsset"/>
-            </smart:default>
+            </smart:initial>
+            <smart:initial field="hub_p_routes_role" reset="true">functional_administrator,te_administrator</smart:initial>
         </smart:defaults>
     </smart:structure-configuration>
 </smart:config>
