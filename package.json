@@ -44,6 +44,7 @@
   "dependencies": {
     "@anakeen/hub-components": "^1.0.0-dev20190326134828",
     "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
-    "core-js": "3.0.0"
+    "core-js": "3.0.0",
+    "vue-template-compiler": "2.6.10"
   }
 }
