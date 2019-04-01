@@ -4,7 +4,7 @@
     <sde:route name="Logout:Logout">
       <sde:callable>Anakeen\Components\Logout\Routes\Session</sde:callable>
       <sde:method>DELETE</sde:method>
-      <sde:pattern>/components/logout/session</sde:pattern>
+      <sde:pattern>/components/user/session</sde:pattern>
       <sde:description>Logout returning user informations</sde:description>
       <sde:requiredAccess/>
       <sde:authenticated>true</sde:authenticated>

@@ -29,7 +29,7 @@ export default class LogoutComponent extends Vue {
       this.$emit("logoutCanceled");
     } else {
       this.$http
-        .delete("/logout/session")
+        .delete("/components/user/session")
         .then(response => {
           this.$emit("afterLogout", response.data);
           document.location.assign(response.data.location || "/");
