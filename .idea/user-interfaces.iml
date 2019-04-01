@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/anakeen-ui/src/public" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/doctrine/annotations" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/doctrine/lexer" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/friendsofphp/php-cs-fixer" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/gecko-packages/gecko-php-unit" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/paragonie/random_compat" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/php-cs-fixer/diff" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/psr/log" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/squizlabs/php_codesniffer" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/finder" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/options-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-php70" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/polyfill-php72" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/process" />
+      <excludeFolder url="file://$MODULE_DIR$/ide/vendor/symfony/stopwatch" />
+      <excludeFolder url="file://$MODULE_DIR$/localpub" />
+      <excludeFolder url="file://$MODULE_DIR$/src/public" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
