@@ -1,0 +1,52 @@
+@import "~@anakeen/theme-variables/scss/variables.scss";
+.ank-tabs {
+  display: flex;
+
+  &.ank-tabs--top,
+  &.ank-tabs--bottom {
+    flex-direction: column;
+  }
+
+  &.ank-tabs--left,
+  &.ank-tabs--right {
+    flex-direction: row;
+  }
+
+  .ank-tabs-header {
+    display: flex;
+    align-items: center;
+
+    &.is-top,
+    &.is-bottom {
+      flex-direction: row;
+      .ank-tabs-new-tab {
+        margin-left: 0.5rem;
+      }
+    }
+
+    .ank-tabs-new-tab {
+      flex-shrink: 0;
+      &:active {
+        background-color: $ank-ui-tab-inactive-bg;
+      }
+
+      &:hover {
+        background-color: white;
+        border: 1px solid #ddd;
+      }
+      width: 2.75rem;
+      height: 2.35rem;
+      border-radius: 3px;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+  }
+
+  .ank-tabs-contents {
+    flex: 1;
+  }
+}

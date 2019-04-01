@@ -1,0 +1,114 @@
+@import "~@anakeen/theme-variables/scss/variables.scss";
+
+.ank-tabs-nav-wrap {
+  &.is-top,
+  &.is-bottom {
+    overflow-x: hidden;
+    .ank-tabs-nav-scroll {
+      overflow-x: hidden;
+    }
+  }
+}
+
+.ank-tabs-nav {
+  display: flex;
+  // Common parts
+  .ank-tab-item {
+    background: $ank-ui-tab-inactive-bg;
+    display: flex;
+    padding: 0;
+    cursor: pointer;
+    color: $ank-ui-color-label;
+
+    & /deep/ .ank-tab-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:focus,
+    &:focus:active {
+      outline: none;
+    }
+
+    &:hover {
+      color: $ank-ui-color-selected;
+    }
+
+    &:focus.is-active.is-focus:not(:active) {
+      box-shadow: inset 0 0 2px 2px $ank-ui-color-client;
+      border-radius: 3px;
+    }
+
+    .ank-tab-item-close {
+      &:hover {
+        background: $ank-ui-color-error;
+        i {
+          color: white;
+        }
+      }
+      padding: 0 0.5rem;
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    &.is-disabled {
+      cursor: not-allowed;
+    }
+
+    &.is-active {
+      color: $ank-ui-color-selected;
+      font-weight: 700;
+      background-color: #fafafa;
+      .ank-tab-item-close {
+        &:hover {
+          i {
+            color: white;
+          }
+        }
+        visibility: visible;
+        i {
+          font-size: 1.1667rem;
+          color: $ank-ui-color-error;
+        }
+      }
+    }
+  }
+
+  // TOP / BOTTOM common parts
+  &.is-top,
+  &.is-bottom {
+    flex-direction: row;
+
+    .ank-tab-item {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 16.6667rem;
+      padding-left: 1rem;
+      flex-direction: row;
+      min-height: 3.3333rem;
+      min-width: 6.25rem;
+      max-width: 16.6667rem;
+      width: 16.6667rem;
+      align-items: center;
+      //min-width: rem;
+      justify-content: space-between;
+
+      .ank-tab-item-close {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      &.is-top.is-active {
+        box-shadow: inset 0 3px 0 0 $ank-ui-color-client;
+      }
+
+      & + .ank-tab-item {
+        margin-left: 0.2rem;
+      }
+    }
+  }
+}

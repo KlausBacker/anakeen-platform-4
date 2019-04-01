@@ -1,0 +1,12 @@
+.ank-se-tab-pane {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+
+  iframe {
+    visibility: visible !important;
+    height: 100%;
+    width: 100%;
+  }
+}

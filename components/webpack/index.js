@@ -8,6 +8,9 @@ const commonConfig = require("./common");
 const BASE_PATH = path.resolve(__dirname, "../");
 const ENTRIES_PATH = {
   AnkSEList: path.resolve(BASE_PATH, "src/SEList/seList.vue"),
+  AnkSETabs: path.resolve(BASE_PATH, "src/Tabs/Tabs.vue"),
+  AnkSETab: path.resolve(BASE_PATH, "src/Tabs/SETab/SETab.vue"),
+  AnkTab: path.resolve(BASE_PATH, "src/Tabs/Tab/Tab.vue"),
   AnkLogout: path.resolve(BASE_PATH, "src/Logout/Logout.vue"),
   AnkIdentity: path.resolve(BASE_PATH, "src/Identity/Identity.vue"),
   AnkAuthent: path.resolve(BASE_PATH, "src/Authent/Authent.vue"),

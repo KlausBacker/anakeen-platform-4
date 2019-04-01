@@ -42,7 +42,7 @@
   import Identity from "../../../../../../components/src/Identity/Identity.vue";
   import Logout from "../../../../../../components/src/Logout/Logout.vue";
   import SeList from "../../../../../../components/src/SEList/seList.vue";
-  import SeTabs from "../../../../../../components/src/SETabs/seTabs.vue";
+  import SeTabs from "../../../../../../components/src/Tabs/Tabs.vue";
   import AnkSeGrid from "../../../../../../components/src/Grid/Grid.vue";
   import AnkAuthent from "../../../../../../components/src/Authent/Authent.vue";
 

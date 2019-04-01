@@ -32,7 +32,7 @@ import Authent from "./Authent";
 import AuthentPassword from "./Authent/AuthentPassword";
 import SmartElement from "./SmartElement";
 import SEList from "./SEList";
-import SETabs from "./SETabs";
+import SETabs from "./Tabs";
 import SEGrid from "./Grid";
 
 export const AnkLoading = Loading;
