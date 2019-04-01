@@ -8,36 +8,40 @@
       </div>
 
       <div class="seList__header__wrapper">
-        <div class="seList__header__label">
-          {{ collectionLabel }}
-        </div>
+        <slot name="title">
+          <div class="seList__header__label">
+            {{ collectionLabel }}
+          </div>
+        </slot>
       </div>
 
       <div class="seList__search__wrapper">
-        <div class="seList__search">
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control seList__search__keyword"
-              :placeholder="translations.searchPlaceholder"
-              v-model="filterInput"
-              @change="filterList(filterInput)"
-              @input="_onFilterInput"
-            />
-            <i
-              class="input-group-addon material-icons seList__search__keyword__remove"
-              @click="clearListFilter"
-            >
-              close
-            </i>
-            <i
-              class="input-group-addon material-icons seList__search__button"
-              @click="filterList(filterInput)"
-            >
-              search
-            </i>
+        <slot name="search">
+          <div class="seList__search">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control seList__search__keyword"
+                :placeholder="translations.searchPlaceholder"
+                v-model="filterInput"
+                @change="filterList(filterInput)"
+                @input="_onFilterInput"
+              />
+              <i
+                class="input-group-addon material-icons seList__search__keyword__remove"
+                @click="clearListFilter"
+              >
+                close
+              </i>
+              <i
+                class="input-group-addon material-icons seList__search__button"
+                @click="filterList(filterInput)"
+              >
+                search
+              </i>
+            </div>
           </div>
-        </div>
+        </slot>
       </div>
 
       <div class="seList__summary__wrapper">

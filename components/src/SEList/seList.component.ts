@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueSetup from "../setup.js";
-import * as SeTemplate from "./seListItem.template.kd";
+import SeTemplate from "./seListItem.template.kd";
 import { Component, Prop } from "vue-property-decorator";
 import { ISeList } from "./ISeList";
 import {
@@ -384,7 +384,7 @@ export default class SeListComponent extends Vue {
       { detail: [seProperties] },
       event
     );
-    $emitAnkEvent.call(this, "se-selected", customEvent);
+    this.$emit("se-selected", customEvent);
   }
   public filterList(filterValue) {
     this.filterInput = filterValue;
