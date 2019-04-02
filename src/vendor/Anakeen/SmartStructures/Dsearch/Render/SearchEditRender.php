@@ -4,6 +4,7 @@ namespace Anakeen\SmartStructures\Dsearch\Render;
 use Anakeen\Ui\BarMenu;
 use Anakeen\Ui\RenderAttributeVisibilities;
 use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Dsearch as myAttr;
 use Anakeen\Ui\DefaultEdit;
 use Anakeen\Ui\ItemMenu as ItemMenu;
@@ -28,13 +29,11 @@ class SearchEditRender extends DefaultEdit
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $js = parent::getJsReferences($document);
-
-        $js["smartElementGrid"] = \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath();
-        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
-        if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] =  \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
-        }
-
+        $js["vueDll"] = UIGetAssetPath::getJSVueComponentPath();
+        $js["kendo"] = UIGetAssetPath::getJSKendoPath();
+        $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
+        $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
+        $js["search"] = UIGetAssetPath::getElementAssets("ank-components", UIGetAssetPath::isInDebug() ? "dev": "legacy")["search"]["js"];
         return $js;
     }
 
