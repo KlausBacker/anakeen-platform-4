@@ -20,8 +20,6 @@ import { IGrid } from "./IGrid";
 import VueSetup from "../setup.js";
 Vue.use(VueSetup);
 
-Vue.use(VueSetup);
-
 @Component({
   name: "ank-se-grid",
   components: {
