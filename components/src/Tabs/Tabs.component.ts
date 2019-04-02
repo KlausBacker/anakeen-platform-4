@@ -1,19 +1,7 @@
 import { Component, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import SETabsEvent from "./TabsEvent";
 import SETabsNav from "./TabNav/TabNav.vue";
-
-enum TabPosition {
-  TOP = "top",
-  BOTTOM = "bottom",
-  LEFT = "left",
-  RIGHT = "right"
-}
-
-enum TabTypes {
-  CARD = "card",
-  BORDER_CARD = "border-card",
-  BEZEL = "bezel"
-}
+import { TabPosition, TabTypes } from "./TabsTypes";
 
 @Component({
   // @ts-ignore
@@ -30,6 +18,8 @@ export default class Tabs extends Vue {
   @Prop({ default: false, type: Boolean }) public addable!: boolean;
   @Prop({ default: false, type: Boolean }) public editable!: boolean;
   @Prop({ default: false, type: Boolean }) public sortable!: boolean;
+  @Prop({ default: false, type: Boolean })
+  public forceScrollNavigation!: boolean;
   @Prop({ default: TabPosition.TOP, type: String })
   public tabPosition!: TabPosition;
   @Prop({ default: true, type: Boolean }) public tabsList!: boolean;
@@ -97,6 +87,10 @@ export default class Tabs extends Vue {
   protected onTabAdd() {
     this.$emit("tabEdit", null, "add");
     this.$emit("tabAdd");
+  }
+
+  protected onTabListSelected(pane) {
+    this.selectedTab = pane;
   }
 
   public setSelectedTab(tabName) {

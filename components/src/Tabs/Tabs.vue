@@ -12,6 +12,7 @@
         :class="{ 'ank-tabs-header-inner': true, [`is-${tabPosition}`]: true }"
         :onTabClick="onTabClick"
         :onTabRemove="onTabRemove"
+        @tabListSelected="onTabListSelected"
       ></tabs-nav>
       <span
         class="ank-tabs-new-tab"
