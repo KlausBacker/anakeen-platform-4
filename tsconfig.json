@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "strict": true,
+    "target": "es5",
+    "importHelpers": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "types": ["node", "jquery", "kendo-ui"],
+    "strictNullChecks": false,
+    "sourceMap": true,
+    "lib": ["dom", "esnext", "es6"]
+  },
+  "include": [
+    "./src/**/*.vue",
+    "./src/**/*.ts"
+  ],
+  "files": ["./vue-shims.d.ts", "./vue-type-shims.d.ts"]
+}
