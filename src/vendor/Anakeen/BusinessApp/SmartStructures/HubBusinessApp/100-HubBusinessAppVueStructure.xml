@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBBUSINESSAPP" label="Business App Configuration">
+        <smart:extends ref="HUBCONFIGURATIONVUE"/>
+        <smart:icon file="HubAdminCenterParameters.png"/>
+        <smart:class>Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior</smart:class>
+        <smart:fields>
+            <smart:field-set name="hub_component_parameters" extended="true">
+                <smart:field-set name="hba_collections" type="array" access="ReadWrite" label="Business App collections">
+                    <smart:field-docid access="ReadWrite" name="hba_collection" label="Collection" relation="DSEARCH"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_component_tab" extended="true">
+                <smart:field-set type="frame" name="hba_options" access="ReadWrite" label="Welcome Tab options">
+                    <smart:field-enum access="ReadWrite" name="hba_welcome_option" relation="HBA_YES_NO_ENUM" label="Enable"/>
+                    <smart:field-set name="hba_structure_creation" type="array" access="ReadWrite" label="Smart Structure creation">
+                        <smart:field-docid access="ReadWrite" name="hba_structure" label="Structure" relation="-1"/>
+                    </smart:field-set>
+                    <smart:field-set name="hba_grid_collections" type="array" access="ReadWrite" label="Grid collections">
+                        <smart:field-docid access="ReadWrite" name="hba_grid_collection" label="Grid collection" relation="DSEARCH"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:defaults>
+            <smart:default field="hub_jsasset" reset="true">
+                <smart:field-callable function="Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior::getJSAsset"/>
+            </smart:default>
+            <smart:default field="hba_welcome_option" reset="true">YES</smart:default>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="HBA_YES_NO_ENUM">
+            <smart:enum name="NO" label="No"/>
+            <smart:enum name="YES" label="Yes"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>
