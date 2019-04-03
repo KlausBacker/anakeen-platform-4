@@ -1,0 +1,44 @@
+@import "~@anakeen/theme-variables/scss/variables.scss";
+.ank-business-app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .ank-business-app-splitter {
+    display: flex;
+    flex: 1;
+
+    & /deep/ {
+      .splitter-wrapper-right-content {
+        overflow-y: hidden;
+      }
+    }
+  }
+
+  .ank-business-app-list {
+    height: 100%;
+  }
+
+  .ank-business-app-header {
+    background: white;
+    padding: .5rem;
+  }
+
+  .ank-business-app-tabs {
+    height: 100%;
+  }
+
+  /deep/ .ank-business-app-collection-selector {
+    font-size: 1.15rem;
+    .k-dropdown-wrap {
+      .k-input {
+        color: $ank-ui-color-selected;
+        font-weight: 700;
+      }
+      background: transparent;
+    }
+    width: 100%;
+  }
+
+}
