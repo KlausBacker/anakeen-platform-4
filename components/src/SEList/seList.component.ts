@@ -408,6 +408,21 @@ export default class SeListComponent extends Vue {
       });
   }
 
+  public selectSe(se) {
+    const $kendoList = kendo.jQuery(this.$refs.listView).data("kendoListView");
+    if ($kendoList) {
+      let itemToSelect = null;
+      $kendoList.items().each((index, item) => {
+        if (kendo.jQuery(item).data("seId") == se) {
+          itemToSelect = kendo.jQuery(item);
+        }
+      });
+      if (itemToSelect) {
+        $kendoList.select(itemToSelect);
+      }
+    }
+  }
+
   public setCollection(c, opts = null) {
     this.collection = c;
     if (opts && opts.order) {
