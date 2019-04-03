@@ -46,16 +46,11 @@ Research result in consult mode
                 title: $documentController.documentController("getProperties")
                   .title,
                 content: {
-                  template: `
-                    <ank-se-grid url-config="/api/v2/smartstructures/dsearch/gridConfig/<collection>" 
-                                 collection="${
-                                   $documentController.documentController(
-                                     "getProperties"
-                                   ).id
-                                 }" 
-                                 class="dsearch-result-grid">
-                    </ank-se-grid>`
+                  url: `/api/v2/smartstructures/dsearch/preview/${
+                    $documentController.documentController("getProperties").id
+                  }`
                 },
+                iframe: true,
                 position: {
                   top: 0,
                   left: 0

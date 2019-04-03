@@ -3,16 +3,18 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
+use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Ui\BarMenu;
+use Anakeen\Ui\DefaultView;
 use Anakeen\Ui\DocumentTemplateContext;
 use Anakeen\Ui\ItemMenu as ItemMenu;
 use Anakeen\Ui\UIGetAssetPath;
 
-class SearchViewRender extends \Anakeen\Ui\DefaultView
+class SearchViewRender extends DefaultView
 {
 
-    public function getTemplates(\Anakeen\Core\Internal\SmartElement $document = null)
+    public function getTemplates(SmartElement $document = null)
     {
         $templates = parent::getTemplates($document);
         $templates["sections"]["content"]["file"]
@@ -20,24 +22,19 @@ class SearchViewRender extends \Anakeen\Ui\DefaultView
         return $templates;
     }
 
-    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    public function getJsReferences(SmartElement $document = null)
     {
         $js = parent::getJsReferences($document);
 
-        $js["smartElementGrid"] = \Anakeen\Ui\UIGetAssetPath::getSmartWebComponentsPath();
-
-        $js["dSearch"] = \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "legacy")["Dsearch"]["js"];
-        if (\Anakeen\Ui\UIGetAssetPath::isInDebug()) {
-            $js["dSearch"] =  \Anakeen\Ui\UIGetAssetPath::getElementAssets("smartStructures", "dev")["Dsearch"]["js"];
-        }
-
-        $path = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev" : "legacy");
-        $js["dSearch"] = $path["Dsearch"]["js"];
+        $js["vueDll"] = UIGetAssetPath::getJSVueComponentPath();
+        $js["kendo"] = UIGetAssetPath::getJSKendoPath();
+        $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
+        $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
 
         return $js;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document): BarMenu
+    public function getMenu(SmartElement $document): BarMenu
     {
         $myMenu = parent::getMenu($document);
         $myItem = new ItemMenu("searchview");
@@ -50,7 +47,7 @@ class SearchViewRender extends \Anakeen\Ui\DefaultView
         return $myMenu;
     }
 
-    public function getContextController(\Anakeen\Core\Internal\SmartElement $document): DocumentTemplateContext
+    public function getContextController(SmartElement $document): DocumentTemplateContext
     {
         $controller = parent::getContextController($document);
 
@@ -147,7 +144,7 @@ class SearchViewRender extends \Anakeen\Ui\DefaultView
             $doccollection = new \DocCollection();
             foreach ($doccollection->top as $k => &$tmptop) {
                 if ($k == $func) {
-                    foreach ($tmptop["sdynlabel"] as $i => $label) {
+                    foreach ($tmptop as $i => $label) {
                         if ($i == $type) {
                             $func = _($label);
                             $boolTyped = true;
