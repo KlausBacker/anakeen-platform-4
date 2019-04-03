@@ -1,9 +1,9 @@
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
-import AnkSETabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
 import AnkSETab from "@anakeen/user-interfaces/components/lib/AnkSETab";
+import AnkSETabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
 import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Welcome from "../Welcome/Welcome.vue";
 
 interface IBusinessAppCollectionProp {
@@ -17,16 +17,15 @@ interface IBusinessAppCollectionProp {
   components: {
     AnkSplitter,
     "ank-se-list": AnkSEList,
-    "ank-se-tabs": AnkSETabs,
     "ank-se-tab": AnkSETab,
+    "ank-se-tabs": AnkSETabs,
     "ank-tab": AnkTab,
     "ank-welcome": Welcome
   }
 })
 export default class BusinessApp extends Vue {
-  @Prop({ default: () => [], type: Array }) public collections!: Array<
-    IBusinessAppCollectionProp
-  >;
+  @Prop({ default: () => [], type: Array })
+  public collections!: IBusinessAppCollectionProp[];
   @Prop({ default: false, type: [Boolean, Object] }) public welcomeTab!:
     | boolean
     | object;
@@ -42,20 +41,20 @@ export default class BusinessApp extends Vue {
   public selectedTab: string = "";
   public panes: object[] = [
     {
-      scrollable: false,
       collapsible: true,
+      scrollable: false,
       size: "25%"
     },
     {
-      scrollable: false,
-      collapsible: true
+      collapsible: true,
+      scrollable: false
     }
   ];
   public selectedCollection: string | number = "";
   public collectionDropDownList: kendo.ui.DropDownList = null;
 
   @Watch("selectedCollection")
-  onSelectedCollectionChange(newVal, oldVal) {
+  public onSelectedCollectionChange(newVal, oldVal) {
     if (newVal !== oldVal) {
       if (this.$refs.businessAppList) {
         this.$refs.businessAppList.setCollection({
@@ -73,11 +72,11 @@ export default class BusinessApp extends Vue {
           dataSource: this.collections,
           dataTextField: "title",
           dataValueField: "initid",
-          template: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`,
-          valueTemplate: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`,
           select: (e: kendo.ui.DropDownListSelectEvent) => {
             this.selectedCollection = e.dataItem.initid;
-          }
+          },
+          template: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`,
+          valueTemplate: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`
         })
         .data("kendoDropDownList");
       this.selectedCollection = this.collectionDropDownList.dataItem().initid;
@@ -112,10 +111,10 @@ export default class BusinessApp extends Vue {
 
     // @ts-ignore
     this.addTab({
-      label: seProps.title,
-      name: seProps.id.toString(),
       closable: true,
       icon: seProps.icon,
+      label: seProps.title,
+      name: seProps.id.toString(),
       title: seProps.title
     });
   }
@@ -144,12 +143,12 @@ export default class BusinessApp extends Vue {
 
   protected onCreateElement(createInfo) {
     this.addTab({
+      closable: true,
+      icon: createInfo.icon,
       label: createInfo.title,
       name: createInfo.name,
-      viewId: "!defaultCreation",
       title: `Creation ${createInfo.title}`,
-      icon: createInfo.icon,
-      closable: true
+      viewId: "!defaultCreation"
     });
   }
 }

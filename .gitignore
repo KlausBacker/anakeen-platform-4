@@ -1,4 +1,3 @@
-# Created by .ignore support plugin (hsz.mobi)
 ### Anakeen Platform 4 git ignore file
 
 # IntelliJ project files
@@ -14,6 +13,8 @@ yarn-error.log
 # Public directories
 src/public/
 lib
+.cibuild/targets/*/outputs/*
+ide
 
 # Makefile
 Makefile.local

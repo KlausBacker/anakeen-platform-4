@@ -58,7 +58,8 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         return $entryOptions;
     }
 
-    protected function getCollections() {
+    protected function getCollections()
+    {
         $collectionsInfo = [];
         $collectionsIds = $this->getAttributeValue(HubBusinessAppFields::hba_collection);
         foreach ($collectionsIds as $collectionId) {
@@ -83,7 +84,8 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         return $collectionsInfo;
     }
 
-    protected function getCreationConfig() {
+    protected function getCreationConfig()
+    {
         $creationConfigs = [];
         foreach ($this->getAttributeValue(HubBusinessAppFields::hba_structure) as $structureId) {
             if (!empty($structureId)) {
@@ -99,7 +101,8 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         return $creationConfigs;
     }
 
-    protected function getGridCollections() {
+    protected function getGridCollections()
+    {
         $collectionsInfo = [];
         $collectionsIds = $this->getAttributeValue(HubBusinessAppFields::hba_grid_collection);
         foreach ($collectionsIds as $collectionId) {
@@ -124,7 +127,8 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         return $collectionsInfo;
     }
 
-    protected function getWelcomeTabConfiguration() {
+    protected function getWelcomeTabConfiguration()
+    {
         if ($this->getRawValue(HubBusinessAppFields::hba_welcome_option) === "NO") {
             return false;
         }

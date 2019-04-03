@@ -54,6 +54,9 @@ beautify:
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
+checkPackage:
+	${MK_DIR}/.cibuild/targets/autotest/scripts.d/01_checkPackage.sh
+
 
 ########################################################################################################################
 ##
@@ -64,7 +67,7 @@ po: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} extractPo -s .
 
-stub: install-deps
+stubs: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} generateStubs
 
@@ -106,22 +109,6 @@ deploy: install-deps buildJS
 
 deploy-all: deploy
 
-
-########################################################################################################################
-##
-## publishNpm
-##
-########################################################################################################################
-
-publishNpm:
-	@${PRINT_COLOR} "${DEBUG_COLOR}publishNpm $@${RESET_COLOR}\n"
-	npm publish
-
-publishNpm--autorelease:
-	@${PRINT_COLOR} "${DEBUG_COLOR} publishNpm--autorelase $@${RESET_COLOR}\n"
-	npm version $(VERSION)-$(shell find . -type f -print0 | xargs -0 stat --format '%Y' | sort -nr | cut -d: -f2- | head -1)
-	npm publish || echo "Already published"
-
 ########################################################################################################################
 ##
 ## CLEAN TARGET
@@ -140,7 +127,7 @@ clean: ## clean the local pub
 ##
 ########################################################################################################################
 
-.PHONY: app po deploy install pojs clean cleanAll stub nodePublish
+.PHONY: app po deploy install pojs clean cleanAll stub
 
 PRINT_COLOR = printf
 SUCCESS_COLOR = \033[1;32m

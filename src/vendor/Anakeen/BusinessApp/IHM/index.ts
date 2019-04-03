@@ -1,5 +1,5 @@
-import HubBusinessAppEntry from "../IHM/HubComponent/HubBusinessApp.vue";
 import { VueConstructor } from "vue";
+import HubBusinessAppEntry from "../IHM/HubComponent/HubBusinessApp.vue";
 
 export default function install(Vue: VueConstructor, options) {
   Vue.component("ank-business-app", HubBusinessAppEntry);
