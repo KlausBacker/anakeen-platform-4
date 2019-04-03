@@ -36,7 +36,15 @@ export default class Tabs extends Vue {
 
   @Watch("selectedTab")
   onSelectedTabDataChange(newValue, oldValue) {
-    // TODO auto scroll on selected tab
+    if (this.$refs.nav) {
+      this.$nextTick(() => {
+        // @ts-ignore
+        this.$refs.nav.$nextTick(_ => {
+          // @ts-ignore
+          this.$refs.nav.scrollToActiveTab();
+        });
+      });
+    }
   }
 
   @Provide("rootTabs") rootTabs = this;

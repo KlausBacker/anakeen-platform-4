@@ -34,6 +34,12 @@
           :class="labelClass(slotProps.item)"
         ></vnodes>
         <span
+          v-else-if="slotProps.item.tabNavItemList"
+          :class="labelClass(slotProps.item)"
+          v-html="slotProps.item.tabNavItemList"
+        >
+        </span>
+        <span
           v-else
           :class="labelClass(slotProps.item)"
           :title="slotProps.item.label"
@@ -68,7 +74,8 @@
             'is-active': pane.active,
             'is-disabled': pane.disabled,
             'is-closable': pane.isClosable || rootTabs.editable,
-            'is-focus': isFocus
+            'is-focus': isFocus,
+            'is-dirty': !!pane.isDirty
           }"
           :key="`tab-${index}`"
           :id="`tab-${index}`"
@@ -87,6 +94,12 @@
             :vnodes="pane.$slots.label"
             :class="labelClass(pane)"
           ></vnodes>
+          <span
+            v-else-if="pane.tabNavItemList"
+            :class="labelClass(pane)"
+            v-html="pane.tabNavItemList"
+          >
+          </span>
           <span v-else :class="labelClass(pane)" :title="pane.label">{{
             pane.label
           }}</span>

@@ -37,9 +37,14 @@
       color: #909399;
       & /deep/ {
         .ank-tab-label,
-        .ank-tab-label:hover {
+        .ank-tab-label:hover,
+        a {
           color: #909399;
           text-decoration: none;
+        }
+
+        .is-active {
+          font-weight: bold;
         }
       }
       .ank-tab-item-close {
@@ -91,6 +96,10 @@
       white-space: nowrap;
       color: inherit;
       text-decoration: none;
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
     }
 
     &:focus,
@@ -108,6 +117,7 @@
     }
 
     .ank-tab-item-close {
+      position: relative;
       border-radius: 50%;
       text-align: center;
       &:hover {
@@ -151,6 +161,7 @@
     flex-direction: row;
 
     .ank-tab-item {
+      position: relative;
       flex-grow: 1;
       flex-shrink: 1;
       flex-basis: 16.6667rem;
@@ -172,6 +183,17 @@
 
       &.is-top.is-active {
         box-shadow: inset 0 3px 0 0 $ank-ui-color-client;
+      }
+
+      &.is-dirty {
+        .ank-tab-item-close::before {
+          font-family: FontAwesome;
+          content: "\f069";
+          position: absolute;
+          font-size: 0.7rem;
+          left: -0.5rem;
+          top: -0.5rem;
+        }
       }
 
       & + .ank-tab-item {
