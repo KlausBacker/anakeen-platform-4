@@ -30,6 +30,8 @@ export default class BusinessApp extends Vue {
     | boolean
     | object;
 
+  @Prop({ default: "", type: String }) public selectedElement!: string;
+
   public $refs!: {
     businessAppList: AnkSEList;
     businessAppCollectionSelector: Element;
@@ -38,7 +40,7 @@ export default class BusinessApp extends Vue {
   };
 
   public tabs: object[] = [];
-  public selectedTab: string = "";
+  public selectedTab: string = this.selectedElement;
   public panes: object[] = [
     {
       collapsible: true,
@@ -61,6 +63,13 @@ export default class BusinessApp extends Vue {
           initid: newVal
         });
       }
+    }
+  }
+
+  @Watch("selectedTab")
+  public onSelectedTabDataChange(newVal, oldVal) {
+    if (newVal !== oldVal) {
+      this.$emit("selectedElement", newVal);
     }
   }
 
@@ -87,6 +96,12 @@ export default class BusinessApp extends Vue {
     }
     if (!this.selectedTab) {
       this.selectedTab = "ankWelcomePage";
+    } else {
+      this.addTab({
+        closable: true,
+        name: this.selectedTab
+      });
+      this.$refs.businessAppList.selectSe(this.selectedTab);
     }
   }
 
@@ -150,5 +165,9 @@ export default class BusinessApp extends Vue {
       title: `Creation ${createInfo.title}`,
       viewId: "!defaultCreation"
     });
+  }
+
+  protected onTabClick() {
+    this.$refs.businessAppList.selectSe(this.selectedTab);
   }
 }

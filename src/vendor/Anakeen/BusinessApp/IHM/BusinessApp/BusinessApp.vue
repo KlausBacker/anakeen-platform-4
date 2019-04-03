@@ -35,6 +35,7 @@
           ref="businessAppTabs"
           v-model="selectedTab"
           @tabRemove="onTabRemove"
+          @tabClick="onTabClick"
         >
           <ank-tab
             v-if="hasWelcomeTab"
@@ -56,18 +57,6 @@
             :viewId="tab.viewId || '!defaultConsultation'"
             ref="seTab"
           >
-            <a
-              slot="label"
-              :href="
-                `/api/v2/smart-elements/${tab.name}/views/${tab.viewId ||
-                  '!defaultConsultation'}.html`
-              "
-              :title="tab.title"
-              @click.prevent
-            >
-              <img :src="tab.icon" :alt="`${tab.name} icon`" />
-              <span>{{ tab.title }}</span>
-            </a>
           </ank-se-tab>
         </ank-se-tabs>
       </template>

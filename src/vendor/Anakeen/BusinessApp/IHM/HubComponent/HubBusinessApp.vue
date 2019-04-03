@@ -10,13 +10,15 @@
       <business-app
         :collections="collections"
         :welcomeTab="welcomeTab"
+        :selectedElement="selectedElement"
+        @selectedElement="onElementOpened"
       ></business-app>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 import BusinessApp from "../BusinessApp/BusinessApp.vue";
 
@@ -32,6 +34,38 @@ export default class HubBusinessApp extends Vue {
   @Prop({ default: false, type: [Boolean, Object] }) public welcomeTab!:
     | boolean
     | object;
+
+  public selectedElement: string = "";
+
+  @Watch("selectedElement")
+  onSelectedElementDataChange(newVal, oldVal) {
+    // @ts-ignore
+    this.navigate(this.routeUrl + "/" + newVal);
+  }
+
+  protected onElementOpened(elementId) {
+    this.selectedElement = elementId;
+  }
+
+  public created() {
+    if (this["isHubContent"]) {
+      this.subRouting();
+    }
+  }
+
+  public get routeUrl() {
+    // @ts-ignore
+    return this.entryOptions.completeRoute;
+  }
+
+  protected subRouting() {
+    const url = (this.routeUrl + "/:elementId").replace(/\/\/+/g, "/");
+
+    // @ts-ignore
+    this.registerRoute(url, params => {
+      this.selectedElement = params.elementId;
+    }).resolve(window.location.pathname);
+  }
 }
 </script>
 
