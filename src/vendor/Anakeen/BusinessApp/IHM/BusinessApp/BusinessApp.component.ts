@@ -100,11 +100,11 @@ export default class BusinessApp extends Vue {
   }
 
   protected addTab(tab) {
-      // @ts-ignore
-      if (this.tabs.findIndex(t => t.name === tab.name) === -1) {
-          this.tabs.push(tab);
-      }
-      this.selectedTab = tab.name;
+    // @ts-ignore
+    if (this.tabs.findIndex(t => t.name === tab.name) === -1) {
+      this.tabs.push(tab);
+    }
+    this.selectedTab = tab.name;
   }
 
   protected onSelectListItem(event) {
@@ -112,12 +112,12 @@ export default class BusinessApp extends Vue {
 
     // @ts-ignore
     this.addTab({
-        label: seProps.title,
-        name: seProps.id.toString(),
-        closable: true,
-        icon: seProps.icon,
-        title: seProps.title
-      });
+      label: seProps.title,
+      name: seProps.id.toString(),
+      closable: true,
+      icon: seProps.icon,
+      title: seProps.title
+    });
   }
 
   protected onTabRemove(tabRemoved) {
@@ -143,13 +143,13 @@ export default class BusinessApp extends Vue {
   }
 
   protected onCreateElement(createInfo) {
-      this.addTab({
-          label: createInfo.title,
-          name: createInfo.name,
-          viewId: "!defaultCreation",
-          title: `Creation ${createInfo.title}`,
-          icon: createInfo.icon,
-          closable: true
-      });
+    this.addTab({
+      label: createInfo.title,
+      name: createInfo.name,
+      viewId: "!defaultCreation",
+      title: `Creation ${createInfo.title}`,
+      icon: createInfo.icon,
+      closable: true
+    });
   }
 }

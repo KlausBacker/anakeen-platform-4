@@ -36,8 +36,17 @@
           v-model="selectedTab"
           @tabRemove="onTabRemove"
         >
-          <ank-tab v-if="hasWelcomeTab" label="Welcome" :closable="false" name="ankWelcomePage">
-            <ank-welcome @tabWelcomeCreate="onCreateElement" :creation="welcomeTab.creation" :gridCollections="welcomeTab.gridCollections"></ank-welcome>
+          <ank-tab
+            v-if="hasWelcomeTab"
+            label="Welcome"
+            :closable="false"
+            name="ankWelcomePage"
+          >
+            <ank-welcome
+              @tabWelcomeCreate="onCreateElement"
+              :creation="welcomeTab.creation"
+              :gridCollections="welcomeTab.gridCollections"
+            ></ank-welcome>
           </ank-tab>
           <ank-se-tab
             v-for="(tab, index) in tabs"
@@ -47,8 +56,17 @@
             :viewId="tab.viewId || '!defaultConsultation'"
             ref="seTab"
           >
-            <a slot="label" :href="`/api/v2/smart-elements/${tab.name}/views/${tab.viewId || '!defaultConsultation'}.html`" :title="tab.title" @click.prevent>
-              <img :src="tab.icon" :alt="`${tab.name} icon`"/> <span>{{tab.title}}</span>
+            <a
+              slot="label"
+              :href="
+                `/api/v2/smart-elements/${tab.name}/views/${tab.viewId ||
+                  '!defaultConsultation'}.html`
+              "
+              :title="tab.title"
+              @click.prevent
+            >
+              <img :src="tab.icon" :alt="`${tab.name} icon`" />
+              <span>{{ tab.title }}</span>
             </a>
           </ank-se-tab>
         </ank-se-tabs>
