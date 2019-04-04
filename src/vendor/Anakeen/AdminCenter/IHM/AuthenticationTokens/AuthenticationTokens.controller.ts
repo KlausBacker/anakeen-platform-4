@@ -5,6 +5,7 @@ import "@progress/kendo-ui/js/kendo.grid";
 import "@progress/kendo-ui/js/kendo.treelist";
 import "@progress/kendo-ui/js/kendo.window";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import AnkTokenInfo from "./AuthenticationTokenInfo.vue";
 import { IAuthenticationToken } from "./IAuthenticationToken";
 import IsoDates from "./IsoDates";
 
@@ -13,7 +14,8 @@ declare var kendo;
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "ank-splitter": AnkSplitter
+    "ank-splitter": AnkSplitter,
+    "ank-token-info": AnkTokenInfo
   },
   name: "ank-authentication-tokens"
 })

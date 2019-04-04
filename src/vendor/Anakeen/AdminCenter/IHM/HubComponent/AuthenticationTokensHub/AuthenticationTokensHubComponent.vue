@@ -13,15 +13,14 @@
   </div>
 </template>
 <script>
-import AdminCenterAuthentTokens from "../../AuthenticationTokens/AuthenticationTokens";
+// import AdminCenterAuthentTokens from "../../AuthenticationTokens/AuthenticationTokens";
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import Vue from "vue";
 
 export default {
   name: "ank-hub-authentication-tokens",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
-  components: {
-    "admin-center-authentication-tokens": AdminCenterAuthentTokens
-  },
+
   watch: {
     selectedToken(newValue) {
       if (this.isHubContent) {
@@ -31,7 +30,15 @@ export default {
   },
   created() {
     if (this.isHubContent) {
-      this.subRouting();
+      Vue.component("admin-center-authentication-tokens", resolve => {
+        import("../../AuthenticationTokens/AuthenticationTokens").then(
+          Component => {
+            resolve(Component.default);
+
+            this.subRouting();
+          }
+        );
+      });
     }
   },
   data() {

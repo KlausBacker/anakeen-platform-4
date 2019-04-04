@@ -1,5 +1,5 @@
 const path = require("path");
-const { dontParse, dllPart } = require("./common.part");
+const { dontParse, dllPart, useCache  } = require("./common.part");
 
 const {
   vueLoader,
@@ -19,6 +19,7 @@ const conf = {
   buildPath: PUBLIC_PATH,
   excludeBabel: dontParse,
   customParts: [
+    useCache,
     vueLoader(),
     typeScriptLoader(),
     addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),

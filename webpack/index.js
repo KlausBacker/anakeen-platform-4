@@ -1,5 +1,3 @@
-const path = require("path");
-
 const tokens = require("./tokenManager");
 const vaults = require("./vaultManager");
 const accounts = require("./accountManager");
