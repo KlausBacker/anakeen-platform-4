@@ -28,8 +28,11 @@
           option-label="Add component"
           @select="selectCreateConfig"
           @open="addClassOnSelectorContainer"
-          :options-label="'Select Size...'"
         />
+
+        <kendo-button class="k-primary k-outline" @click="exportConfiguration"
+        >Export configuration
+        </kendo-button>
         <kendo-button class="k-primary k-outline" @click="openElement"
           >View main configuration
         </kendo-button>

@@ -15,11 +15,11 @@ trait THubConfigurationCommonRender
     {
         $options->account(HubConfigurationFields::hub_visibility_roles)->setDescription(
             "<p>Roles mandatory to display this component to the hub station</p>".
-            "<p>User account must have <b>one of this roles</b> to display component</p>"
+            "<p>User account must have <b>one of these roles</b> to display this hub element</p>"
         )->showEmptyContent("No specific roles needed to display component");
         $options->account(HubConfigurationFields::hub_execution_roles)
-            ->setDescription("<p>Roles required for operation of this component</p>".
-                "<p>User account must have <b>each roles</b> to perform component</p>")
+            ->setDescription("<p>Roles required for operation of this hub element</p>".
+                "<p>User account must have <b>each role</b> to perform hub element</p>")
             ->showEmptyContent("No one operation roles required");
 
 

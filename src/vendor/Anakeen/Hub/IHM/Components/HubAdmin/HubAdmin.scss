@@ -47,6 +47,13 @@
           .grid-cell-content {
             background-color: var(--primary);
           }
+           .grid-cell--key .grid-cell-content {
+
+             background-color: #333;
+           }
+          .k-grid-detail {
+            color: var(--white);
+          }
         }
       }
     }

@@ -73,6 +73,9 @@ export default {
       this.openDetailConfig(this.hubId);
       this.selectedComponent = 0;
     },
+    exportConfiguration() {
+      window.open(`/hub/config/${this.hubId}.zip`);
+    },
     openInterface() {
       window.open(`/hub/station/${this.hubId}/`);
     },
