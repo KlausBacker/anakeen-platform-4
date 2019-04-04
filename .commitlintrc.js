@@ -1,7 +1,7 @@
 const Configuration = {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'scope-enum': [2, 'always', ['config', 'route', 'internal', 'script']]
+    'scope-enum': [2, 'always', ['config', 'i18n', 'route', 'internal', 'script']]
   }
 };
 
