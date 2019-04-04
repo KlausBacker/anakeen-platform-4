@@ -35,7 +35,9 @@
         <ank-se-grid
           :collection="gridCollec.name || gridCollec.initid"
           urlConfig="/api/v2/smartstructures/dsearch/gridConfig/<collection>"
-        ></ank-se-grid>
+          @action-click="onActionClick"
+        >
+        </ank-se-grid>
       </div>
     </div>
   </div>

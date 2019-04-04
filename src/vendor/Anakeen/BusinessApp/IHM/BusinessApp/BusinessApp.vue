@@ -45,6 +45,7 @@
           >
             <ank-welcome
               @tabWelcomeCreate="onCreateElement"
+              @tabWelcomeGridConsult="onGridConsult"
               :creation="welcomeTab.creation"
               :gridCollections="welcomeTab.gridCollections"
             ></ank-welcome>

@@ -103,6 +103,9 @@ export default class BusinessApp extends Vue {
       });
       this.$refs.businessAppList.selectSe(this.selectedTab);
     }
+    this.$nextTick(() => {
+      $(window).resize();
+    })
   }
 
   public get isMultiCollection() {
@@ -180,5 +183,12 @@ export default class BusinessApp extends Vue {
         viewId: data.options[1]
       });
     }
+  }
+
+  protected onGridConsult(element) {
+    this.addTab({
+      closable: true,
+      name: element.id.toString()
+    });
   }
 }

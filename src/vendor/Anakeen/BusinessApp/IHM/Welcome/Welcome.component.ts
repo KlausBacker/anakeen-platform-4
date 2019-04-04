@@ -18,4 +18,12 @@ export default class Welcome extends Vue {
   protected onCreateClick(createInfo, event) {
     this.$emit("tabWelcomeCreate", createInfo);
   }
+
+  protected onActionClick(event) {
+    switch (event.data.type) {
+      case "consult":
+        event.preventDefault();
+        this.$emit("tabWelcomeGridConsult", event.data.row);
+    }
+  }
 }
