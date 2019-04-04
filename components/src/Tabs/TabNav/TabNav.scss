@@ -1,11 +1,13 @@
 @import "~@anakeen/theme-variables/scss/variables.scss";
 
+$navScrollSize: 2rem;
+$navListSize: 4rem;
 .ank-tabs-nav-wrap {
   &.scrollable {
     &.is-top,
     &.is-bottom {
-      padding-left: 2rem;
-      padding-right: 4rem;
+      padding-left: $navScrollSize;
+      padding-right: calc(#{$navListSize} + #{$navScrollSize});
     }
   }
 
@@ -22,13 +24,13 @@
 
     .ank-tabs-nav-next {
       box-shadow: -3px -2px 5px 0px #d2d2d2;
-      right: 4rem;
+      right: $navListSize;
     }
 
     .ank-tabs-nav-list {
       right: 0;
       text-align: center;
-      width: 4rem;
+      width: $navListSize;
       //height: 100%;
       z-index: 20;
       position: absolute;
@@ -69,7 +71,7 @@
       align-items: center;
       justify-content: center;
       //height: 100%;
-      width: 2rem;
+      width: $navScrollSize;
       z-index: 20;
       position: absolute;
       cursor: pointer;

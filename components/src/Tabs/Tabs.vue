@@ -8,6 +8,7 @@
   >
     <div :class="{ 'ank-tabs-header': true, [`is-${tabPosition}`]: true }">
       <tabs-nav
+         ref="nav"
         :panes="panes"
         :class="{ 'ank-tabs-header-inner': true, [`is-${tabPosition}`]: true }"
         :onTabClick="onTabClick"

@@ -167,7 +167,7 @@ export default class TabsNav extends Vue {
     // @ts-ignore
     const navScrollBounding = navScroll.getBoundingClientRect();
     // @ts-ignore
-    const maxOffset = nav.offsetWidth - navScrollBounding.width;
+    const maxOffset = nav.scrollWidth - navScrollBounding.width;
     const currentOffset = this.navOffset;
     let newOffset = currentOffset;
     if (activeTabBounding.left < navScrollBounding.left) {
