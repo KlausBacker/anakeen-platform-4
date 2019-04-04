@@ -1,7 +1,7 @@
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
 import AnkSETab from "@anakeen/user-interfaces/components/lib/AnkSETab";
-import AnkSETabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
+import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
 import AnkTab from "@anakeen/user-interfaces/components/lib/AnkTab";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Welcome from "../Welcome/Welcome.vue";
@@ -18,8 +18,8 @@ interface IBusinessAppCollectionProp {
     AnkSplitter,
     "ank-se-list": AnkSEList,
     "ank-se-tab": AnkSETab,
-    "ank-se-tabs": AnkSETabs,
     "ank-tab": AnkTab,
+    "ank-tabs": AnkTabs,
     "ank-welcome": Welcome
   }
 })
@@ -94,8 +94,8 @@ export default class BusinessApp extends Vue {
         this.selectedCollection = this.collections[0].initid;
       }
     }
-    if (!this.selectedTab) {
-      this.selectedTab = "ankWelcomePage";
+    if (!this.selectedTab || this.selectedTab === "welcome") {
+      this.selectedTab = "welcome";
     } else {
       this.addTab({
         closable: true,
@@ -143,7 +143,7 @@ export default class BusinessApp extends Vue {
           this.selectedTab = this.tabs[index - 1].name;
         }
       } else {
-        this.selectedTab = "ankWelcomePage";
+        this.selectedTab = "welcome";
       }
     };
     // @ts-ignore
@@ -169,5 +169,16 @@ export default class BusinessApp extends Vue {
 
   protected onTabClick() {
     this.$refs.businessAppList.selectSe(this.selectedTab);
+  }
+
+  protected onActionClick(event, elementData, data) {
+    event.preventDefault();
+    if (data.eventId === "document.load") {
+      this.addTab({
+        closable: true,
+        name: data.options[0],
+        viewId: data.options[1]
+      });
+    }
   }
 }

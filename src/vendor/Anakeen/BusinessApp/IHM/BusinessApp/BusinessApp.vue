@@ -30,7 +30,7 @@
         </div>
       </template>
       <template slot="right">
-        <ank-se-tabs
+        <ank-tabs
           class="ank-business-app-tabs"
           ref="businessAppTabs"
           v-model="selectedTab"
@@ -41,7 +41,7 @@
             v-if="hasWelcomeTab"
             label="Welcome"
             :closable="false"
-            name="ankWelcomePage"
+            name="welcome"
           >
             <ank-welcome
               @tabWelcomeCreate="onCreateElement"
@@ -56,9 +56,10 @@
             :closable="!!tab.closable"
             :viewId="tab.viewId || '!defaultConsultation'"
             ref="seTab"
+            @seTabActionClick="onActionClick"
           >
           </ank-se-tab>
-        </ank-se-tabs>
+        </ank-tabs>
       </template>
     </ank-splitter>
   </div>
