@@ -105,17 +105,17 @@ class PuDisableAccess extends TestCaseConfig
             [
                 "element" => "tst_006-1",
                 "login" => "u0006-0",
-                "error" => " view "
+                "error" => "\"view\""
             ],
             [
                 "element" => "tst_006-1",
                 "login" => "u0006-1",
-                "error" => " modify "
+                "error" => "\"modify\""
             ],
             [
                 "element" => "tst_006-1",
                 "login" => "u0006-2",
-                "error" => " edit "
+                "error" => "\"edit\""
             ],
             [
                 "element" => "tst_006-1",

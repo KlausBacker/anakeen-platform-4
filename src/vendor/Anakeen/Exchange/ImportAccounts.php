@@ -10,6 +10,7 @@ use Anakeen\Core\Account;
 use Anakeen\Core\DbManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\Utils\Xml;
+use Anakeen\Exception;
 
 class ImportAccounts
 {

@@ -233,7 +233,7 @@ SQL;
                 return doubleval($result["size"]);
             }
         }
-        return -1;
+        return 0.0;
     }
 
 

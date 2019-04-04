@@ -80,7 +80,7 @@ class SmartElementHooks
      * @param mixed  ...$data
      * @return string error message
      */
-    public function trigger(string $hookName, ...$data)
+    public function trigger(string $hookName, &...$data)
     {
         if (!isset($this->document->hooks)) {
             $this->document->hooks = [];

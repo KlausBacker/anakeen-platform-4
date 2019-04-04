@@ -755,7 +755,7 @@ msgstr ""
 #, fuzzy, php-format
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
-msgstr "Pas de privilège %s pour le document %s"
+msgstr "Pas de privilège \"%s\" pour l'élement \"%d\""
 
 #, php-format
 msgid "Not a family [%s]"
@@ -1764,11 +1764,11 @@ msgstr "pas d'opérateur détecté"
 
 #, php-format
 msgid "no privilege %s for %s [%d]"
-msgstr "pas de privilège %s pour le document %s [%d]"
+msgstr "pas de privilège \"%s\" pour l'élement \"%s\" [%d]"
 
 #, php-format
 msgid "no privilege %s for document with id %d"
-msgstr "Pas de privilège %s pour le document %d"
+msgstr "Pas de privilège \"%s\" pour l'élement %d"
 
 msgid "no state specified"
 msgstr "pas d'état spécifié"
