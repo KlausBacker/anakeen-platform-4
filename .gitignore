@@ -14,7 +14,7 @@ yarn-error.log
 src/public/
 lib
 .cibuild/targets/*/outputs/*
-ide
+ide/vendor
 
 # Makefile
 Makefile.local

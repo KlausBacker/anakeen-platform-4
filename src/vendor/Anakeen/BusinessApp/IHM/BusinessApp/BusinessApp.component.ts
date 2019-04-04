@@ -105,7 +105,7 @@ export default class BusinessApp extends Vue {
     }
     this.$nextTick(() => {
       $(window).resize();
-    })
+    });
   }
 
   public get isMultiCollection() {
