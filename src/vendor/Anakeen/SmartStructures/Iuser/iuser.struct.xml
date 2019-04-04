@@ -32,8 +32,8 @@
                         <smart:field-account name="us_roles" label="Rôle" access="ReadWrite">
                             <smart:field-option name="match">role</smart:field-option>
                         </smart:field-account>
-                        <smart:field-enum name="us_rolesorigin" label="Origine" access="ReadWrite" relation="IUSER-us_rolesorigin"/>
-                        <smart:field-account name="us_rolegorigin" label="Groupe" access="ReadWrite" multiple="true">
+                        <smart:field-enum name="us_rolesorigin" label="Origine" access="Read" relation="IUSER-us_rolesorigin"/>
+                        <smart:field-account name="us_rolegorigin" label="Groupe" access="Read" multiple="true">
                             <smart:field-option name="match">group</smart:field-option>
                         </smart:field-account>
                     </smart:field-set>
