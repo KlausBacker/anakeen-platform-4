@@ -12,16 +12,12 @@
   </div>
 </template>
 <script>
-import VaultManager from "../../VaultManager/VaultManager.vue";
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
+import Vue from "vue";
 
 export default {
   name: "ank-admin-vault-manager",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
-  components: {
-    "admin-center-vault": VaultManager
-  },
-
   watch: {
     selectedVault(newValue) {
       if (this.isHubContent) {
@@ -32,7 +28,12 @@ export default {
 
   created() {
     if (this.isHubContent) {
-      this.subRouting();
+      Vue.component("admin-center-vault", resolve => {
+        import("../../VaultManager/VaultManager.vue").then(Component => {
+          resolve(Component.default);
+          this.subRouting();
+        });
+      });
     }
   },
   data() {
@@ -42,7 +43,7 @@ export default {
         return this.entryOptions.completeRoute;
       },
       subRouting: () => {
-        const url = (this.routeUrl() + "/:vaultId").replace(/\/\/+/g, '/');
+        const url = (this.routeUrl() + "/:vaultId").replace(/\/\/+/g, "/");
 
         this.registerRoute(url, params => {
           this.selectedVault = params.vaultId;
