@@ -84,11 +84,20 @@
                 <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>
         </sde:route>
-        <sde:route name="getHubFavIcon">
+        <sde:route name="getHubElements">
             <sde:callable>Anakeen\Hub\Routes\HubElementStructures</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/hub/components/</sde:pattern>
-            <sde:description>Get all component structures</sde:description>
+            <sde:description>Get all hub element info</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="AnakeenHub">HubAdmin</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="getHubInstances">
+            <sde:callable>Anakeen\Hub\Routes\HubInstancesInfo</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/hub/instances/</sde:pattern>
+            <sde:description>Get all instances</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>

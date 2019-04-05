@@ -71,9 +71,9 @@
     roboto-fontface "^0.10.0"
 
 "@anakeen/user-interfaces@^2.0.0-dev20190326115253":
-  version "2.0.0-dev20190401093240"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190401093240.tgz#f21604a2b3c48dbc56273cc40b0b01c2fada480d"
-  integrity sha512-/vk8X54Qosu8EE9vnUB27o6ot8ldqABfd55oYxXcp3ufgyuV8TaNGf6vw6SMIGAx1NuxE8S76CU/W/esBkC7xg==
+  version "2.0.0-dev20190405145514"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190405145514.tgz#9e33db21baf81cc5e9189abf6d50efb687010519"
+  integrity sha512-CFt0q/JQyTFLCztvw0B7Qamg1s6iL05TdhHVmTk3QWSXoiTSZLJmObbfQavYYMuCCUMksyxElrRz+soZYOpDgA==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"

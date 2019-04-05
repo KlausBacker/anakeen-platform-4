@@ -17,12 +17,12 @@
       </div>
       <div class="hub-admin-header__content">
         <kendo-datasource
-          ref="datasource"
+          ref="dataHubElements"
           :transport-read-url="'/hub/components/'"
         />
         <kendo-dropdownlist
                 class="k-primary"
-          :data-source-ref="'datasource'"
+          :data-source-ref="'dataHubElements'"
           :data-text-field="'text'"
           :data-value-field="'value'"
           option-label="Add component"
@@ -42,19 +42,20 @@
       </div>
     </header>
     <section>
-      <ank-hub-mockup
-        :info="mockData"
-        :selected-id="selectedComponent"
-        @mock-select="changeSelectComponent"
-      />
+
       <ank-splitter
         ref="hubAdminSplitter"
         class="hub-admin-splitter"
         :panes="panes"
-        localStorageKey="hub-admin-splitter"
       >
         <template slot="left">
           <div class="hub-admin-content">
+            <ank-hub-mockup
+                    :info="mockData"
+                    :selected-id="selectedComponent"
+                    @mock-select="changeSelectComponent"
+            />
+
             <div class="hub-admin-grid">
               <ank-se-grid
                 ref="hubGrid"
@@ -63,7 +64,6 @@
                 :sortable="''"
                 :pageable="false"
                 class="hub-admin"
-                @action-click="actionClick"
                 @after-content-response="displayMockUp"
                 :contextTitles="false"
               >
@@ -90,12 +90,8 @@
                   field="hub_order"
                   :hidden="true"
                 ></ank-se-grid-column>
-                <ank-se-grid-actions width="4rem">
-                  <ank-se-grid-action
-                    action="detail"
-                    title="Details"
-                  ></ank-se-grid-action>
-                </ank-se-grid-actions>
+
+
               </ank-se-grid>
             </div>
           </div>
