@@ -1,6 +1,7 @@
-import { Component, Inject, Prop, Vue } from "vue-property-decorator";
+import { Component, Inject, Prop, Vue, Watch } from "vue-property-decorator";
 import { VNode } from "vue";
 import { addResizeListener } from "../utils/resizeEvents";
+import DropdownMenu from "./DropdownMenu/DropdownMenu.vue";
 
 function noop() {}
 const firstUpperCase = str => {
@@ -29,7 +30,8 @@ const firstUpperCase = str => {
         }
         return vnodes;
       }
-    }
+    },
+    "dropdown-menu": DropdownMenu
   }
 })
 export default class TabsNav extends Vue {
@@ -44,7 +46,12 @@ export default class TabsNav extends Vue {
   ) => void;
   @Prop({ type: Array }) readonly panes!: Vue[];
 
-  public scrollable: boolean = false;
+  public $refs!: {
+    nav: HTMLElement;
+    navScroll: HTMLElement;
+  };
+
+  public scrollable: boolean | any = false;
   public navOffset: number = 0;
   public isFocus: boolean = false;
   public focusable: boolean = true;
@@ -62,6 +69,17 @@ export default class TabsNav extends Vue {
       ["top", "bottom"].indexOf(this.rootTabs.tabPosition) !== -1 ? "X" : "Y";
     return {
       transform: `translate${dir}(-${this.navOffset}px)`
+    };
+  }
+
+  public get tabsList() {
+    // @ts-ignore
+    return this.rootTabs.tabsList;
+  }
+
+  public get navButtonStyle() {
+    return {
+      height: `${this.$refs.navScroll.offsetHeight}px`
     };
   }
 
@@ -91,18 +109,17 @@ export default class TabsNav extends Vue {
   public update() {
     if (!this.$refs.nav) return;
     const sizeName = this.sizeName;
-    const navSize = this.$refs.nav[`offset${firstUpperCase(sizeName)}`];
+    const navSize = this.$refs.nav[`scroll${firstUpperCase(sizeName)}`];
     const containerSize = this.$refs.navScroll[
       `offset${firstUpperCase(sizeName)}`
     ];
     const currentOffset = this.navOffset;
-    if (containerSize < navSize) {
+    // @ts-ignore
+    if (containerSize < navSize || this.rootTabs.forceScrollNavigation) {
       const currentOffset = this.navOffset;
-      // @ts-ignore
+
       this.scrollable = this.scrollable || {};
-      // @ts-ignore
       this.scrollable.prev = currentOffset;
-      // @ts-ignore
       this.scrollable.next = currentOffset + containerSize < navSize;
       if (navSize - currentOffset < containerSize) {
         this.navOffset = navSize - containerSize;
@@ -127,7 +144,7 @@ export default class TabsNav extends Vue {
   }
 
   public scrollNext() {
-    const navSize = this.$refs.nav[`offset${firstUpperCase(this.sizeName)}`];
+    const navSize = this.$refs.nav[`scroll${firstUpperCase(this.sizeName)}`];
     const containerSize = this.$refs.navScroll[
       `offset${firstUpperCase(this.sizeName)}`
     ];
@@ -150,7 +167,7 @@ export default class TabsNav extends Vue {
     // @ts-ignore
     const navScrollBounding = navScroll.getBoundingClientRect();
     // @ts-ignore
-    const maxOffset = nav.offsetWidth - navScrollBounding.width;
+    const maxOffset = nav.scrollWidth - navScrollBounding.width;
     const currentOffset = this.navOffset;
     let newOffset = currentOffset;
     if (activeTabBounding.left < navScrollBounding.left) {
@@ -242,6 +259,10 @@ export default class TabsNav extends Vue {
     this.setFocus();
   }
 
+  protected onTabListSelected(item) {
+    this.$emit("tabListSelected", item.paneName);
+  }
+
   public updated() {
     this.update();
   }
@@ -251,11 +272,11 @@ export default class TabsNav extends Vue {
     document.addEventListener("visibilitychange", this.visibilityChangeHandler);
     window.addEventListener("blur", this.windowBlurHandler);
     window.addEventListener("focus", this.windowFocusHandler);
-    setTimeout(() => {
+    this.$nextTick(() => {
       this.scrollToActiveTab();
-    }, 0);
+    });
   }
-  beforeDestroy() {
+  public beforeDestroy() {
     document.removeEventListener(
       "visibilitychange",
       this.visibilityChangeHandler

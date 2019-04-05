@@ -1,5 +1,6 @@
 @import "~@anakeen/theme-variables/scss/variables.scss";
 .ank-tabs {
+  user-select: none;
   display: flex;
 
   &.ank-tabs--top,

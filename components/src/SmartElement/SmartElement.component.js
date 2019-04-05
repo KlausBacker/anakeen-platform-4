@@ -3,6 +3,7 @@
  */
 import Vue from "vue";
 import VueSetup from "../setup.js";
+import { SmartElementEvents } from "./SmartElementEvents";
 
 Vue.use(VueSetup);
 export default {
@@ -136,44 +137,7 @@ export default {
      * @returns void
      */
     listenAttributes() {
-      const eventNames = [
-        "beforeRender",
-        "ready",
-        "change",
-        "displayMessage",
-        "displayError",
-        "validate",
-        "attributeBeforeRender",
-        "attributeReady",
-        "attributeHelperSearch",
-        "attributeHelperResponse",
-        "attributeHelperSelect",
-        "attributeArrayChange",
-        "actionClick",
-        "attributeAnchorClick",
-        "beforeClose",
-        "close",
-        "beforeSave",
-        "afterSave",
-        "attributeDownloadFile",
-        "attributeUploadFile",
-        "beforeDelete",
-        "afterDelete",
-        "beforeRestore",
-        "afterRestore",
-        "failTransition",
-        "successTransition",
-        "beforeDisplayTransition",
-        "afterDisplayTransition",
-        "beforeTransition",
-        "beforeTransitionClose",
-        "destroy",
-        "attributeCreateDialogDocumentBeforeSetFormValues",
-        "attributeCreateDialogDocumentBeforeSetTargetValue",
-        "attributeCreateDialogDocumentReady",
-        "attributeCreateDialogDocumentBeforeClose",
-        "attributeCreateDialogDocumentBeforeDestroy"
-      ];
+      const eventNames = SmartElementEvents;
       /* eslint-disable no-underscore-dangle */
       const localListener = this.$options._parentListeners || {};
 

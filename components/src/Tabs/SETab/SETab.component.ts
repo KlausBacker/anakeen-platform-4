@@ -1,5 +1,11 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkSmartElement from "../../SmartElement/SmartElement.vue";
+import { SmartElementEvents } from "../../SmartElement/SmartElementEvents";
+
+const capitalize = str => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 @Component({
   name: "ank-se-tab",
   components: {
@@ -10,7 +16,9 @@ export default class SETab extends Vue {
   @Prop({ default: "Chargement en cours...", type: String })
   public label!: string;
   @Prop({ default: false, type: Boolean }) public disabled!: boolean;
-  @Prop({ type: [Number, String] }) public identifier!: string | number;
+  @Prop({ type: String }) public identifier!: string;
+  @Prop({ type: String, default: "!defaultConsultation" })
+  public viewId!: string;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
   @Prop({ default: false, type: Boolean }) public lazy!: boolean;
 
@@ -21,6 +29,9 @@ export default class SETab extends Vue {
 
   public index: any = null;
   public loaded: boolean = false;
+  public isDirty: boolean = false;
+  public elementIcon: string = `<i class="fa fa-spinner fa-spin"></i>`;
+  public elementTitle: string = this.label;
 
   public $refs!: {
     smartElement: AnkSmartElement;
@@ -38,7 +49,7 @@ export default class SETab extends Vue {
 
   get active() {
     // @ts-ignore
-    const active = this.selectedTab == this.paneName;
+    const active = this.selectedTab === this.paneName;
     if (active) {
       this.loaded = true;
     }
@@ -49,12 +60,35 @@ export default class SETab extends Vue {
     return this.identifier || this.index;
   }
 
+  public get tabNavItemList() {
+    return `<a href="/api/v2/smart-elements/${this.paneName}/views/${this
+      .viewId || "!defaultConsultation"}.html"
+              title="${this.elementTitle}"
+              onclick="return false"
+            >
+              ${this.elementIcon}
+              <span>${this.elementTitle}</span>
+            </a>`;
+  }
+
   protected bindSmartElementEvents() {
     if (this.$refs.smartElement) {
       this.$refs.smartElement.$on("ready", (event, elementData) => {
         $(event.target, this.$el)
           .find(".dcpDocument__header")
           .hide();
+        this.elementIcon = `<img src="${elementData.icon}"/>`;
+        this.elementTitle = elementData.title;
+      });
+      const isDirtyCb = (event, elementData) => {
+        this.isDirty = !!elementData.isModified;
+      };
+      this.$refs.smartElement.$on("change", isDirtyCb);
+      this.$refs.smartElement.$on("close", isDirtyCb);
+      SmartElementEvents.forEach(eventName => {
+        this.$refs.smartElement.$on(eventName, (...args) => {
+          this.$emit(`seTab${capitalize(eventName)}`, ...args);
+        });
       });
     } else {
       console.warn("[AnkSETab]: Smart Element component unfound in template");
@@ -67,7 +101,8 @@ export default class SETab extends Vue {
       const onLoaded = () => {
         // @ts-ignore
         this.$refs.smartElement.fetchSmartElement({
-          initid: this.paneName
+          initid: this.paneName,
+          viewId: this.viewId
         });
       };
       // @ts-ignore
@@ -76,6 +111,20 @@ export default class SETab extends Vue {
       } else {
         this.$refs.smartElement.$on("documentLoaded", onLoaded);
       }
+    }
+  }
+
+  public close() {
+    // @ts-ignore
+    if (this.$refs.smartElement && this.$refs.smartElement.isLoaded()) {
+      try {
+        // @ts-ignore
+        return this.$refs.smartElement.tryToDestroy();
+      } catch (err) {
+        return Promise.resolve();
+      }
+    } else {
+      return Promise.resolve();
     }
   }
 }

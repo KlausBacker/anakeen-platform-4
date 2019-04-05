@@ -10,14 +10,50 @@
       v-if="scrollable"
       :class="{ 'ank-tabs-nav-prev': true, 'is-disabled': scrollable.prev }"
       @click="scrollPrev"
+      :style="navButtonStyle"
       ><i class="fa fa-caret-left"></i
     ></span>
     <span
       v-if="scrollable"
       :class="{ 'ank-tabs-nav-next': true, 'is-disabled': scrollable.next }"
       @click="scrollNext"
+      :style="navButtonStyle"
       ><i class="fa fa-caret-right"></i
     ></span>
+    <dropdown-menu
+      v-if="scrollable && tabsList"
+      :class="{ 'ank-tabs-nav-list': true }"
+      :items="panes"
+      :style="navButtonStyle"
+      @dropdownMenuSelected="onTabListSelected"
+    >
+      <template slot="item" slot-scope="slotProps">
+        <vnodes
+          v-if="slotProps.item.$slots.label"
+          :vnodes="slotProps.item.$slots.label"
+          :class="labelClass(slotProps.item)"
+        ></vnodes>
+        <span
+          v-else-if="slotProps.item.tabNavItemList"
+          :class="labelClass(slotProps.item)"
+          v-html="slotProps.item.tabNavItemList"
+        >
+        </span>
+        <span
+          v-else
+          :class="labelClass(slotProps.item)"
+          :title="slotProps.item.label"
+          >{{ slotProps.item.label }}</span
+        >
+        <span
+          v-if="slotProps.item.isClosable || rootTabs.editable"
+          class="ank-tab-item-close"
+          @click="onClickRemove(slotProps.item, $event)"
+        >
+          <i class="k-icon k-i-x"></i>
+        </span>
+      </template>
+    </dropdown-menu>
     <div class="ank-tabs-nav-scroll" ref="navScroll">
       <div
         :class="{
@@ -38,7 +74,8 @@
             'is-active': pane.active,
             'is-disabled': pane.disabled,
             'is-closable': pane.isClosable || rootTabs.editable,
-            'is-focus': isFocus
+            'is-focus': isFocus,
+            'is-dirty': !!pane.isDirty
           }"
           :key="`tab-${index}`"
           :id="`tab-${index}`"
@@ -57,7 +94,15 @@
             :vnodes="pane.$slots.label"
             :class="labelClass(pane)"
           ></vnodes>
-          <span v-else :class="labelClass(pane)">{{ pane.label }}</span>
+          <span
+            v-else-if="pane.tabNavItemList"
+            :class="labelClass(pane)"
+            v-html="pane.tabNavItemList"
+          >
+          </span>
+          <span v-else :class="labelClass(pane)" :title="pane.label">{{
+            pane.label
+          }}</span>
           <span
             v-if="pane.isClosable || rootTabs.editable"
             class="ank-tab-item-close"
