@@ -1,0 +1,31 @@
+### Anakeen Platform 4 git ignore file
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+# Node JS
+node_modules
+yarn-error.log
+
+# Public directories
+src/public/
+lib
+.cibuild/targets/*/outputs/*
+ide/vendor
+
+# Makefile
+Makefile.local
+
+# PHP Assets
+ide/vendor/
+.php_cs.cache
+
+# Package file
+*.app
+*.src
+
+# Documentation
+docs/.vuepress/dist
