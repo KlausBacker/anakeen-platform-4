@@ -295,7 +295,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
    * @param config - Grid configuration
    */
   prepareKendoGridActions(config) {
-    if (config.actions) {
+    if (config.actions && config.actions.actionConfigs) {
       this.vueComponent.kendoGridOptions.columns.push(
         this.vueComponent.gridDataUtils.formatActionsColumn(config.actions)
       );
