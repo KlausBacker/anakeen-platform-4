@@ -68,6 +68,15 @@ export default {
       });
   },
 
+  mounted() {
+    $(this.$el).on("click", ".grid-cell--key  > .grid-cell-content", e => {
+      //noinspection JSUnusedGlobalSymbols
+      this.selectedComponent = $(e.currentTarget)
+        .closest("tr")
+        .data("seid");
+    });
+    this.openElement();
+  },
   methods: {
     openElement() {
       this.openDetailConfig(this.hubId);
@@ -226,17 +235,6 @@ export default {
       this.selectedComponent = seid;
     },
 
-    actionClick(e) {
-      e.preventDefault();
-      switch (e.data.type) {
-        case "detail":
-          this.selectedComponent = e.data.row.id;
-          break;
-
-        default:
-          break;
-      }
-    },
     listenSmartElement() {
       if (!this.isListenActivated) {
         this.$refs.smartConfig.addEventListener("afterSave", (e, d) => {

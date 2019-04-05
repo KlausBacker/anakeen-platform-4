@@ -1,70 +1,76 @@
 import "@progress/kendo-ui/js/kendo.popup";
 import "@progress/kendo-ui/js/kendo.grid";
+import Vue from "vue";
 
-import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout";
-import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity";
-import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
+import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
+import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+
+Vue.use(ButtonsInstaller);
 
 export default {
   name: "ank-hub-instanciation",
   components: {
-    grid: AnkSEGrid,
-    identity: AnkIdentity,
-    logout: AnkLogout,
-    "smart-element": AnkSmartElement,
+    "ank-smart-element": AnkSmartElement,
+    "ank-se-list": AnkSEList,
     "ank-splitter": AnkSplitter
   },
   data() {
     return {
       collection: "",
       hubConfig: [],
+      selectedHub: 0,
+      displayConfig: false,
       panes: [
         {
           scrollable: false,
           collapsible: true,
           resizable: true,
-          size: "50%"
+          size: "250px"
         },
         {
           scrollable: false,
           collapsible: true,
-          resizable: true,
-          size: "50%"
+          resizable: true
         }
       ]
     };
   },
   methods: {
-    cellRender(event) {
-      if (event.data && event.data.columnConfig) {
-        switch (event.data.columnConfig.field) {
-          case "icon":
-            event.data.cellRender.html(
-              `<img src=${
-                event.data.cellData
-              } alt="instanceIcon" width="16" height="16"/>`
-            );
-        }
-      }
-    },
     createHubStation() {
-      this.$refs.instanceConfig.fetchSmartElement({
+      this.displayConfig = false;
+
+      this.openElementInfo({
         initid: "HUBINSTANCIATION",
         viewId: "!defaultCreation"
       });
     },
     openConfig(e) {
-      this.$refs.instanceConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultConsultation"
-      });
+      let elementID = e.detail[0].initid;
+      this.selectedHub = elementID;
+      this.displayConfig = true;
+
+      this.$refs.hubInstanciationSplitter.disableEmptyContent();
     },
-    modifyConfig(e) {
-      this.$refs.instanceConfig.fetchSmartElement({
-        initid: e,
-        viewId: "!defaultEdition"
+
+    openElementInfo({ initid, viewId = "!defaultConsultation" }) {
+      this.$refs.hubInstanciationSplitter.disableEmptyContent();
+
+      this.$nextTick(() => {
+        if (this.$refs.instanceConfig.isLoaded()) {
+          this.$refs.instanceConfig.fetchSmartElement({
+            initid: initid,
+            viewId: viewId
+          });
+        } else {
+          this.$refs.instanceConfig.$once("documentLoaded", () => {
+            this.$refs.instanceConfig.fetchSmartElement({
+              initid: initid,
+              viewId: viewId
+            });
+          });
+        }
       });
     },
     configureStation: function(e) {
