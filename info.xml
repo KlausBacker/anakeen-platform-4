@@ -4,7 +4,6 @@
     <module name="anakeen-hub" version="1.0.x"/>
   </requires>
   <post-install>
-    <process command="./ank.php --script=registerConfigDir --path=./vendor/Anakeen/BusinessApp/Config"/>
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/BusinessApp/Accounts/110-BusinessAppRoles.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/BusinessApp/SmartStructures/HubBusinessApp/**/*.xml"/>
   </post-install>
