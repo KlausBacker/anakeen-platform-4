@@ -356,10 +356,10 @@ export default class SeListComponent extends Vue {
     };
   }
   public get collectionLabel() {
-    if (this.collection && this.collection.title) {
-      return this.collection.title;
-    } else if (this.label) {
+    if (this.label) {
       return this.label;
+    } else if (this.collection && this.collection.title) {
+      return this.collection.title;
     } else {
       return "";
     }
