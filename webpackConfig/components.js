@@ -15,6 +15,8 @@ module.exports = () => {
     moduleName: "ank-components",
     entry: {
       "login": [ path.resolve(__dirname, "../src/vendor/Anakeen/Components/Authent/Routes/LoginPage.js")],
+      "search": [ path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/searchUISEGrid.js")],
+      "search-view-grid-render": [ path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/searchViewGrid.js")],
       "ank-components": [
         path.resolve(__dirname, "../src/vendor/Anakeen/Components/main.js")
       ]

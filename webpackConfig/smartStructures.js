@@ -1,6 +1,6 @@
 const path = require("path");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
-const { cssLoader, addDll } = require("@anakeen/webpack-conf/parts");
+const { vueLoader, addDll } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "/src/public");
@@ -13,7 +13,7 @@ module.exports = () => {
         path.resolve(
           __dirname,
           "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/dsearch.js"
-        )
+        ),
       ],
       Helppage: [
         path.resolve(
@@ -77,7 +77,7 @@ module.exports = () => {
           }
         }
       },
-      cssLoader()
+      vueLoader()
     ]
   };
   if (process.env.conf === "PROD") {

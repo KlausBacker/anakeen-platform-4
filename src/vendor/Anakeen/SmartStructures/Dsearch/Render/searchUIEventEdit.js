@@ -1,9 +1,6 @@
 /*
  Research result in edit mode
  */
-
-import showGrid from "./searchUISEGrid";
-
 {
   window.dcp.document.documentController(
     "addEventListener",
@@ -21,7 +18,7 @@ import showGrid from "./searchUISEGrid";
         select: function(event) {
           var $li = $(event.item);
           if ($li.hasClass("result-tab")) {
-            showTmpGrid(event, $documentController, $(".result--content"));
+            showTmpGrid(event, $documentController);
           }
           $li
             .parent()
@@ -47,7 +44,7 @@ import showGrid from "./searchUISEGrid";
         function eventButtonEdit(event, document, data) {
           if (data.eventId === "previewEdit") {
             $tab.kendoTabStrip("select", ".result-tab");
-            //showGrid(event, $documentController);
+            showTmpGrid(event, $documentController);
           }
         }
       );
@@ -69,28 +66,8 @@ import showGrid from "./searchUISEGrid";
     }
   );
 
-  window.dcp.document.documentController(
-    "addEventListener",
-    "ready",
-    {
-      name: "searchviewresults",
-      documentCheck: function(document) {
-        return document.type === "search";
-      }
-    },
-    function viewresult(event, document) {
-      var $result = $(".report-result-content");
-      if ($result.length === 1) {
-        showGrid(document.id, $result);
-      }
-    }
-  );
-
-  function showTmpGrid(event, $documentController, $target) {
+  function showTmpGrid(event, $documentController) {
     var $dataJSON = null;
-
-    $target.addClass("result--grid");
-    $target.addClass("result--waiting");
     $dataJSON = $documentController
       .data("dcpDocumentController")
       ._model.toJSON();
@@ -120,15 +97,6 @@ import showGrid from "./searchUISEGrid";
         );
         if (!continueDefault) {
           event.preventDefault();
-        } else {
-          showGrid(docCreated.data.document.properties.id, $target).fail(
-            function(errorMsg) {
-              $documentController.documentController("showMessage", {
-                type: "error",
-                message: errorMsg
-              });
-            }
-          );
         }
       })
       .fail(function failedCreation(jqXHR) {

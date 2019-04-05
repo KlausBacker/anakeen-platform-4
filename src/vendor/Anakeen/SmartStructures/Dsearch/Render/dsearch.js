@@ -8,4 +8,5 @@ $.getJSON("/api/v2/i18n/SEARCH_UI_HTML5").done(catalog => {
   require("./searchUIEventEdit");
   require("./searchUICreationEvent");
   require("./searchUIEventView");
+  require("./searchUISEGrid");
 });
