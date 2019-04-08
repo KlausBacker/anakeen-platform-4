@@ -73,7 +73,10 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
     {
         return [
             "instanceName" => $this->getRawValue(HubinstanciationFields::instance_logical_name),
-            "routerEntry" => $this->getRawValue(HubinstanciationFields::hub_instanciation_router_entry, "/hub/station/".$this->getRawValue(HubinstanciationFields::instance_logical_name)."/"),
+            "routerEntry" => $this->getRawValue(
+                HubinstanciationFields::hub_instanciation_router_entry,
+                "/hub/station/".$this->getRawValue(HubinstanciationFields::instance_logical_name)."/"
+            ),
             "globalAssets" => [
                 "js" => $this->getAttributeValue(HubinstanciationFields::hub_instance_jsasset),
                 "css" => $this->getAttributeValue(HubinstanciationFields::hub_instance_cssasset)
