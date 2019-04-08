@@ -17,7 +17,7 @@
                         <smart:field-docid access="ReadWrite" name="hba_structure" label="Structure" relation="-1"/>
                     </smart:field-set>
                     <smart:field-set name="hba_grid_collections" type="array" access="ReadWrite" label="Grid collections">
-                        <smart:field-docid access="ReadWrite" name="hba_grid_collection" label="Grid collection" relation="DSEARCH"/>
+                        <smart:field-docid access="ReadWrite" name="hba_grid_collection" label="Grid collection" relation="REPORT"/>
                     </smart:field-set>
                 </smart:field-set>
             </smart:field-set>
