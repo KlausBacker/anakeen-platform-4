@@ -16,6 +16,8 @@
 
         <smart:hooks/>
 
-        <smart:defaults/>
+        <smart:defaults>
+            <smart:default field="hub_selectable">TRUE</smart:default>
+        </smart:defaults>
     </smart:structure-configuration>
 </smart:config>
