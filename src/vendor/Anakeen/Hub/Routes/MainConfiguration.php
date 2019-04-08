@@ -55,7 +55,7 @@ class MainConfiguration extends \Anakeen\Components\Grid\Routes\GridContent
             "hubElements" => []
         ];
         if (!empty($this->hubInstance)) {
-            $config = $this->hubInstance->getConfiguration();
+            $config = array_merge($config, $this->hubInstance->getConfiguration());
         }
         /**
          * @var $hubConfig \SmartStructure\Hubconfiguration
