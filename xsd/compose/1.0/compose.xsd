@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://platform.anakeen.com/4/schemas/compose/1.0"
+           elementFormDefault="qualified">
+    <xs:element name="compose">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="config">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="localRepo" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="path"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="localSrc" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:attribute name="path"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="registries">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="registry" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name"/>
+                                    <xs:attribute name="url"/>
+                                    <xs:attribute name="bucket"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="dependencies">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="module" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:attribute name="name"/>
+                                    <xs:attribute name="version"/>
+                                    <xs:attribute name="registry"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
