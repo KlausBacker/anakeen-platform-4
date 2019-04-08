@@ -20,6 +20,11 @@ trait THubInstanciationCommonRender
                 "<p>All functionnalities are displayed when user has this role</p>"
             );
 
+        $options->text(HubInstanciationFields::hub_instanciation_router_entry)
+            ->setDescription(
+                "<p>Url path that gives access to this hub instance.</p>".
+                "<p>If the field is empty, logical name will be used to build the url path '/hub/station/&lt;logical_name&gt;'</p>"
+            );
         return $options;
     }
 }

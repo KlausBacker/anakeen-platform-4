@@ -45,6 +45,11 @@
         </smart:parameters>
 
         <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="instance_logical_name">
+                <smart:field-callable function="::checkLogicalName"/>
+                <smart:field-argument type="field">instance_logical_name</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
         </smart:hooks>
 
         <smart:autocompletion>
@@ -67,6 +72,9 @@
         <smart:defaults>
             <smart:default field="hub_instance_cssasset_type">manifest</smart:default>
             <smart:default field="hub_instance_jsasset_type">manifest</smart:default>
+            <smart:default field="hub_instance_titles" reset="true">
+                <smart:field-callable function="::getDefaultLanguages"/>
+            </smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>

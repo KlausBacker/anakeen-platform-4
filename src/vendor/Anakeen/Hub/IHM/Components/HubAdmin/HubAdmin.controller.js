@@ -121,7 +121,7 @@ export default {
         })
         .then(() => {
           this.$refs.smartConfig.setValue("hub_station_id", {
-            value: this.hubId,
+            value: this.hubElement.properties.initid,
             displayValue: this.hubElement.properties.title,
             icon: this.hubElement.properties.icon
           });

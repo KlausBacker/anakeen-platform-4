@@ -51,7 +51,8 @@
 
 
         <smart:defaults>
-            <smart:default field="hub_activated">TRUE</smart:default>
+            <smart:default field="hub_activated">FALSE</smart:default>
+            <smart:default field="hub_selectable">FALSE</smart:default>
             <smart:default field="hub_docker_position" reset="true">LEFT_TOP</smart:default>
         </smart:defaults>
 
