@@ -13,8 +13,8 @@ const indexFile = path.resolve(__dirname, "index.js");
 const validator = require(indexFile);
 
 if (process.argv.length <= 2) {
-  console.error(usage);
-  throw new Error(`Missing file argument!`);
+  process.stderr.write(`Error: missing file argument!\n${usage}\n`);
+  process.exit(1);
 }
 
 let error = false;
@@ -22,15 +22,15 @@ for (let i = 2; i < process.argv.length; i++) {
   let file = process.argv[i];
   let result = validator.checkFile(file);
   if (result.ok) {
-    console.log(`'${file}': [OK]`);
+    process.stdout.write(`'${file}': [OK]\n`);
   } else if (result.ignore) {
-    console.log(`'${file}': [IGNORED]`);
+    process.stdout.write(`'${file}': [IGNORED]\n`);
   } else {
-    console.log(`'${file}': [ERROR] (Error: ${result.error})`);
+    process.stdout.write(`'${file}': [ERROR] (Error: ${result.error})\n`);
     error = true;
   }
 }
 if (error) {
-  console.log("");
+  process.stdout.write("\n");
   process.exit(1);
 }
