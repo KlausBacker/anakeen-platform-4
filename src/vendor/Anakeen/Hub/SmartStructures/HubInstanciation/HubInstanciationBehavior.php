@@ -16,6 +16,10 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
             SmartHooks::PRESTORE,
             function () {
                 $this->getFavIcon();
+            }
+        )->addListener(
+            SmartHooks::POSTSTORE,
+            function () {
                 $this->affectLogicalName();
             }
         );
@@ -69,10 +73,36 @@ class HubInstanciationBehavior extends \Anakeen\SmartElement
     {
         return [
             "instanceName" => $this->getRawValue(HubinstanciationFields::instance_logical_name),
-            "routerEntry" => $this->getRawValue(HubinstanciationFields::hub_instanciation_router_entry),
+            "routerEntry" => $this->getRawValue(HubinstanciationFields::hub_instanciation_router_entry, "/hub/station/".$this->getRawValue(HubinstanciationFields::instance_logical_name)."/"),
             "globalAssets" => [
                 "js" => $this->getAttributeValue(HubinstanciationFields::hub_instance_jsasset),
                 "css" => $this->getAttributeValue(HubinstanciationFields::hub_instance_cssasset)
+            ]
+        ];
+    }
+
+    public function checkLogicalName($logicalName)
+    {
+        if ($logicalName === $this->name) {
+            return "";
+        }
+        $err = $this->setLogicalName($logicalName, false, true);
+        if (!empty($err)) {
+            return $err;
+        }
+        return "";
+    }
+
+    public function getDefaultLanguages()
+    {
+        return [
+            [
+                HubinstanciationFields::hub_instance_title => "",
+                HubinstanciationFields::hub_instance_language => "English"
+            ],
+            [
+                HubinstanciationFields::hub_instance_title => "",
+                HubinstanciationFields::hub_instance_language => "Français"
             ]
         ];
     }

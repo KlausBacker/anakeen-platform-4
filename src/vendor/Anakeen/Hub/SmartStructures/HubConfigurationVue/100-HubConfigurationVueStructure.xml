@@ -14,7 +14,14 @@
 
         </smart:parameters>
 
-        <smart:hooks/>
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="hub_vue_router_entry">
+                <smart:field-callable function="::checkRouterEntry"/>
+                <smart:field-argument type="field">hub_vue_router_entry</smart:field-argument>
+                <smart:field-argument type="field">hub_station_id</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
 
         <smart:defaults>
             <smart:default field="hub_selectable">TRUE</smart:default>
