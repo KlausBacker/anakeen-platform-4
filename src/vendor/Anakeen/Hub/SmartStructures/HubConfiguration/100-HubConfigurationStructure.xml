@@ -12,7 +12,7 @@
                 </smart:field-set>
 
                 <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Element location">
-                    <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
+                    <smart:field-int name="hub_order" label="Order in dock" access="ReadWrite"/>
                     <smart:field-enum name="hub_docker_position" label="Dock position" relation="Hub_DockerPos"
                                       access="ReadWrite"/>
                 </smart:field-set>
