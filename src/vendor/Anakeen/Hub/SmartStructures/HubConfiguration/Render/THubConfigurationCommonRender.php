@@ -13,6 +13,15 @@ trait THubConfigurationCommonRender
 
     public function addDescriptions(RenderOptions &$options)
     {
+        $options->account(HubConfigurationFields::hub_activated)->setDescription(
+            "<p>Sets the element activated by <b>default</b></p>"
+        );
+        $options->account(HubConfigurationFields::hub_activated_order)->setDescription(
+            "<p>sets the <b>priority</b> of the elements among the <b>activated elements</b></p>"
+        );
+        $options->account(HubConfigurationFields::hub_order)->setDescription(
+            "<p>Sets the position of the hub element from <b>left to right</b> / <b>top to bottom</b> in <b>ascending</b> order<p>"
+        );
         $options->account(HubConfigurationFields::hub_visibility_roles)->setDescription(
             "<p>Roles mandatory to display this component to the hub station</p>".
             "<p>User account must have <b>one of these roles</b> to display this hub element</p>"
