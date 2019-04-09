@@ -40,6 +40,7 @@ class HubConfigurationVueBehavior extends \SmartStructure\Hubconfiguration
         if (!empty($hubInstanceId)) {
             $search = new SearchElements($this->fromname);
             $search->addFilter("%s = '%d'", HubConfigurationVueFields::hub_station_id, $hubInstanceId);
+            $search->addFilter("id <> '%d'", $this->initid);
             $search->addFilter("%s SIMILAR TO '%s'", HubConfigurationVueFields::hub_vue_router_entry, static::getRouterEntryPattern($routerEntry));
             $results = $search->getResults();
             $titles = [];
