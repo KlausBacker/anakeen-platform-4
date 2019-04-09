@@ -43,14 +43,9 @@
         .row--selected {
           background-color: var(--primary);
           color: var(--white);
-
-          .grid-cell-content {
-            background-color: var(--primary);
-          }
-
-          .grid-cell--key .grid-cell-content {
-
-            background-color: #333;
+          & .grid-cell--key .grid-cell-content {
+            background-color: var(--white);
+            color: #333;
           }
 
           .k-grid-detail {
