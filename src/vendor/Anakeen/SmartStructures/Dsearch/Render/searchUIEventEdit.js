@@ -66,6 +66,37 @@
     }
   );
 
+  window.dcp.document.documentController(
+    "addEventListener",
+    "ready",
+    {
+      name: "searchviewresults",
+      documentCheck: function(document) {
+        return document.type === "search";
+      }
+    },
+    function viewresult(event) {
+      var $documentController = $(this);
+      showViewGrid(event, $documentController);
+    }
+  );
+
+  function showViewGrid(event, $documentController) {
+    var continueDefault = $documentController.documentController(
+      "triggerEvent",
+      "custom:content:view",
+      {
+        familyName: $documentController.documentController("getProperties")
+          .family.name,
+        id: $documentController.documentController("getProperties").id,
+        title: $documentController.documentController("getProperties").title
+      }
+    );
+    if (!continueDefault) {
+      event.preventDefault();
+    }
+  }
+
   function showTmpGrid(event, $documentController) {
     var $dataJSON = null;
     $dataJSON = $documentController
