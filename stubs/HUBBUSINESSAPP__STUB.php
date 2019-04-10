@@ -19,6 +19,71 @@ namespace SmartStructure\Fields {
         */ 
         const hub_component_parameters='hub_component_parameters';
         /**
+        * Business App icon type
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> HBA_ICON_TYPES </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hba_icon_type='hba_icon_type';
+        /**
+        * Business App icon
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> image </li>
+        * </ul>
+        */ 
+        const hba_icon_image='hba_icon_image';
+        /**
+        * Business App icon
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> htmltext </li>
+        * </ul>
+        */ 
+        const hba_icon_lib='hba_icon_lib';
+        /**
+        * Business App icon
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> htmltext </li>
+        * </ul>
+        */ 
+        const hba_icon_html='hba_icon_html';
+        /**
+        * Business App icon
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const hba_icon='hba_icon';
+        /**
+        * Business App Titles
+        * <ul>
+        * <li> <i>type</i> array </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const hba_titles='hba_titles';
+        /**
+        * Title
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const hba_title='hba_title';
+        /**
+        * Language
+        * <ul>
+        * <li> <i>access</i> Read </li>
+        * <li> <i>type</i> text </li>
+        * </ul>
+        */ 
+        const hba_language='hba_language';
+        /**
         * Business App collections
         * <ul>
         * <li> <i>type</i> array </li>
@@ -42,7 +107,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_component_tab='hub_component_tab';
         /**
-        * Options
+        * Welcome Tab options
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
@@ -50,7 +115,7 @@ namespace SmartStructure\Fields {
         */ 
         const hba_options='hba_options';
         /**
-        * Welcome tab
+        * Enable
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>relation</i> HBA_YES_NO_ENUM </li>
@@ -59,7 +124,7 @@ namespace SmartStructure\Fields {
         */ 
         const hba_welcome_option='hba_welcome_option';
         /**
-        * Business App structure creation
+        * Smart Structure creation
         * <ul>
         * <li> <i>type</i> array </li>
         * <li> <i>access</i> ReadWrite </li>
@@ -75,6 +140,23 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hba_structure='hba_structure';
+        /**
+        * Grid collections
+        * <ul>
+        * <li> <i>type</i> array </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * </ul>
+        */ 
+        const hba_grid_collections='hba_grid_collections';
+        /**
+        * Grid collection
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>relation</i> REPORT </li>
+        * <li> <i>type</i> docid </li>
+        * </ul>
+        */ 
+        const hba_grid_collection='hba_grid_collection';
 
     }
 }

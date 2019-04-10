@@ -1,22 +1,22 @@
 <template>
   <div class="ank-business-app-welcome">
-    <div class="ank-business-app-welcome-creation card card-default">
+    <div v-if="creation && creation.length" class="ank-business-app-welcome-creation card card-default">
       <div class="ank-business-app-welcome-creation-title card-header">
         <i class="material-icons">add</i> <span class="title">Creation</span>
       </div>
       <div class="ank-business-app-welcome-creation-content">
         <div
-          v-for="(creation, index) in creation"
+          v-for="(item, index) in creation"
           :key="index"
           class="ank-business-app-welcome-creation-button card card-default"
-          @click="onCreateClick(creation, $event)"
+          @click="onCreateClick(item, $event)"
         >
           <span class="button-creation-label"
             ><span class="creation-structure-icon-wrapper"
-              ><img class="creation-structure-icon" :src="creation.icon"
+              ><img class="creation-structure-icon" :src="item.icon"
             /></span>
             <span class="creation-structure-title">{{
-              creation.title || creation.name
+              item.title || item.name
             }}</span></span
           >
         </div>

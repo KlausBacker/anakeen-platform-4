@@ -5,13 +5,16 @@ use Anakeen\Ui\CreateDocumentOptions;
 use Anakeen\Ui\EnumRenderOptions;
 use Anakeen\Ui\FrameRenderOptions;
 use Anakeen\Ui\RenderOptions;
+use Anakeen\Ui\UIGetAssetPath;
 use SmartStructure\Fields\Hubbusinessapp as HubBusinessAppFields;
 
 trait THubBusinessAppRender
 {
     protected function getCommonOptions(RenderOptions $options)
     {
-        $createOptions = new CreateDocumentOptions("DSEARCH");
+        $createOptions = new CreateDocumentOptions("REPORT");
+        $createOptions->windowHeight = "100%";
+        $createOptions->windowWidth = "100%";
         $options->docid(HubBusinessAppFields::hba_collection)->addCreateDocumentButton($createOptions);
         $options->frame(HubBusinessAppFields::hba_options)->setCollapse(FrameRenderOptions::collapseCollapsed);
         $options->enum(HubBusinessAppFields::hba_welcome_option)->setDisplay(EnumRenderOptions::boolDisplay);
@@ -27,5 +30,14 @@ trait THubBusinessAppRender
             Defines which Report is displayed in the <div class=\"welcome_tab_legend\">2</div> area
         ");
         return $options;
+    }
+
+    protected function getCommonJSReferences($js)
+    {
+        $js["businessApp"] = UIGetAssetPath::getElementAssets(
+            "businessAppRender",
+            UIGetAssetPath::isInDebug() ? "dev" : "prod"
+        )["businessApp"]["js"];
+        return $js;
     }
 }
