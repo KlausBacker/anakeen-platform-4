@@ -10,7 +10,10 @@ class HubConfigurationVueBehavior extends \SmartStructure\Hubconfiguration
     protected function getEntryOptions()
     {
         $entryOptions = parent::getEntryOptions();
-        $entryOptions["route"] = $this->getAttributeValue(HubConfigurationVueFields::hub_vue_router_entry);
+        $entryOptions["route"] = $this->getRawValue(
+            HubConfigurationVueFields::hub_vue_router_entry,
+            $this->getRawValue(HubConfigurationVueFields::hub_title)
+        );
         return $entryOptions;
     }
 

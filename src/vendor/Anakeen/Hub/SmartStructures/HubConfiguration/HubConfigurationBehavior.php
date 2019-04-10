@@ -2,10 +2,10 @@
 
 namespace Anakeen\Hub\SmartStructures\HubConfiguration;
 
-use Anakeen\Core\Account;
 use Anakeen\Core\AccountManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
+use Anakeen\Search\SearchElements;
 use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
 
@@ -119,5 +119,24 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
             }
         }
         return $position;
+    }
+
+    public function checkHubElementName($hubElementName, $hubInstanceId)
+    {
+        if (!empty($hubInstanceId)) {
+            $search = new SearchElements($this->fromname);
+            $search->addFilter("%s = '%d'", HubConfigurationFields::hub_station_id, $hubInstanceId);
+            $search->addFilter("id <> '%d'", $this->initid);
+            $search->addFilter("%s SIMILAR TO '%s'", HubConfigurationFields::hub_title, $hubElementName);
+            $results = $search->getResults();
+            $titles = [];
+            foreach ($results as $result) {
+                $titles[] = $result->getTitle();
+            }
+            if (count($results) > 0) {
+                return ___(sprintf("the name '%s' is already affected to '%s'", $hubElementName, implode(",", $titles)), "HubConfigurationVueBehavior");
+            }
+        }
+        return "";
     }
 }
