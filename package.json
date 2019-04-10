@@ -52,7 +52,7 @@
     "url-join": "^4.0.0",
     "vue": "2.6.10",
     "vue-class-component": "^7.0.2",
-    "vue-gettext": "^2.1.2",
+    "vue-gettext": "^2.1.3",
     "vue-m-loader": "^1.0.1",
     "vue-property-decorator": "^8.1.0",
     "vuex": "^3.1.0"
