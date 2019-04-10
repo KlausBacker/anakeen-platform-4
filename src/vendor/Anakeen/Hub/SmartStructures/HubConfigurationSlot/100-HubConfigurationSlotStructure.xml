@@ -11,9 +11,6 @@
         </smart:fields>
 
         <smart:hooks/>
-
-        <smart:defaults>
-        </smart:defaults>
     </smart:structure-configuration>
 
     <smart:enumerates>

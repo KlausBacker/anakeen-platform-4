@@ -37,7 +37,7 @@ class HubConfigurationEditRender extends \Anakeen\Ui\DefaultConfigEditRender
 
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
-        $visibilities = parent::getVisibilities($document, $mask);
+        $visibilities = $this->getCommonVisibilities(parent::getVisibilities($document, $mask), $document, $mask);
         $visibilities->setVisibility(HubConfigurationFields::hub_station_id, RenderAttributeVisibilities::StaticWriteVisibility);
         $visibilities->setVisibility(HubConfigurationFields::hub_execution_roles, RenderAttributeVisibilities::StaticWriteVisibility);
         return $visibilities;
