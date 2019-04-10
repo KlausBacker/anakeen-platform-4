@@ -22,6 +22,8 @@
                     <smart:field-int name="hub_activated_order" label="Priority" access="ReadWrite"/>
                     <smart:field-enum name="hub_selectable" label="Element is selectable" relation="Hub_YesNo"
                                       access="ReadWrite"/>
+                    <smart:field-enum name="hub_expandable" label="Element is expandable" relation="Hub_YesNo"
+                                      access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
             <smart:field-set name="hub_component_tab" type="tab" label="Element parameters" access="ReadWrite">
@@ -54,6 +56,7 @@
             <smart:default field="hub_activated">FALSE</smart:default>
             <smart:default field="hub_selectable">FALSE</smart:default>
             <smart:default field="hub_docker_position" reset="true">LEFT_TOP</smart:default>
+            <smart:default field="hub_expandable" reset="true">FALSE</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>

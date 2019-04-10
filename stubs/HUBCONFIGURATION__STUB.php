@@ -38,10 +38,11 @@ namespace SmartStructure\Fields {
         */ 
         const hub_station_id='hub_station_id';
         /**
-        * Title
+        * Name
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>is-title</i> true </li>
+        * <li> <i>needed</i> true </li>
         * <li> <i>type</i> text </li>
         * </ul>
         */ 
@@ -80,7 +81,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_activated_frame='hub_activated_frame';
         /**
-        * Element is activated
+        * Element is default selected
         * <ul>
         * <li> <i>relation</i> Hub_YesNo </li>
         * <li> <i>access</i> ReadWrite </li>
@@ -97,6 +98,15 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hub_selectable='hub_selectable';
+        /**
+        * Element is expandable
+        * <ul>
+        * <li> <i>relation</i> Hub_YesNo </li>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> enum </li>
+        * </ul>
+        */ 
+        const hub_expandable='hub_expandable';
         /**
         * Priority
         * <ul>
@@ -138,7 +148,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_security_frame='hub_security_frame';
         /**
-        * Roles to view component
+        * Roles to display component
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>match</i> role </li>

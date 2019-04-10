@@ -63,9 +63,10 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     protected function getEntryOptions()
     {
         return [
-            "activated" => $this->getAttributeValue(HubConfigurationFields::hub_activated) === "TRUE",
+            "activated" => $this->getRawValue(HubConfigurationFields::hub_activated) === "TRUE",
             "activatedOrder" => $this->getAttributeValue(HubConfigurationFields::hub_activated_order),
-            "selectable" => $this->getAttributeValue(HubConfigurationFields::hub_selectable) === "TRUE"
+            "selectable" => $this->getRawValue(HubConfigurationFields::hub_selectable) === "TRUE",
+            "expandable" => $this->getRawValue(HubConfigurationFields::hub_expandable) === "TRUE"
         ];
     }
 
