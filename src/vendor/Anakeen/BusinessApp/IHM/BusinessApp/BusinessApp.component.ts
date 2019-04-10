@@ -1,4 +1,3 @@
-import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
 import AnkSETab from "@anakeen/user-interfaces/components/lib/AnkSETab";
 import AnkTabs from "@anakeen/user-interfaces/components/lib/AnkSETabs";
@@ -15,7 +14,6 @@ interface IBusinessAppCollectionProp {
 
 @Component({
   components: {
-    AnkSplitter,
     "ank-se-list": AnkSEList,
     "ank-se-tab": AnkSETab,
     "ank-tab": AnkTab,
@@ -35,7 +33,6 @@ export default class BusinessApp extends Vue {
   public $refs!: {
     businessAppList: AnkSEList;
     businessAppCollectionSelector: Element;
-    businessAppSplitter: AnkSplitter;
     seTab: AnkSETab;
   };
 
@@ -68,13 +65,12 @@ export default class BusinessApp extends Vue {
 
   @Watch("selectedTab")
   public onSelectedTabDataChange(newVal, oldVal) {
-    if (newVal !== oldVal) {
+    if (newVal && newVal !== oldVal) {
       this.$emit("selectedElement", newVal);
     }
   }
 
   public mounted() {
-    this.$refs.businessAppSplitter.disableEmptyContent();
     if (this.isMultiCollection) {
       this.collectionDropDownList = $(this.$refs.businessAppCollectionSelector)
         .kendoDropDownList({
@@ -183,6 +179,16 @@ export default class BusinessApp extends Vue {
         viewId: data.options[1]
       });
     }
+  }
+
+  protected onDisplayMessage(event, doc, message) {
+    event.preventDefault();
+    this.$emit("displayMessage", message);
+  }
+
+  protected onDisplayError(event, doc, message) {
+    event.preventDefault();
+    this.$emit("displayError", message);
   }
 
   protected onGridConsult(element) {

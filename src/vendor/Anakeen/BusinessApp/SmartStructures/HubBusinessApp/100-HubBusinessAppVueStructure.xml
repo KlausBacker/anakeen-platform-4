@@ -6,6 +6,17 @@
         <smart:class>Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior</smart:class>
         <smart:fields>
             <smart:field-set name="hub_component_parameters" extended="true">
+                <smart:field-enum name="hba_icon_type" access="ReadWrite" label="Business App icon type" relation="HBA_ICON_TYPES"/>
+                <smart:field-image name="hba_icon_image" access="ReadWrite" label="Business App icon"/>
+                <smart:field-htmltext name="hba_icon_lib" access="ReadWrite" label="Business App icon"/>
+                <smart:field-htmltext name="hba_icon_html" access="ReadWrite" label="Business App icon"/>
+                <smart:field-htmltext name="hba_icon" access="ReadWrite" label="Business App icon"/>
+                <smart:field-set name="hba_titles" type="array" label="Business App Titles"
+                                 access="ReadWrite">
+                    <smart:field-text name="hba_title" label="Title" access="ReadWrite" needed="true"/>
+                    <smart:field-enum name="hba_language" label="Language" relation="HBA_SUPPORT_LANG"
+                                      access="Read"/>
+                </smart:field-set>
                 <smart:field-set name="hba_collections" type="array" access="ReadWrite" label="Business App collections">
                     <smart:field-docid access="ReadWrite" name="hba_collection" label="Collection" relation="DSEARCH"/>
                 </smart:field-set>
@@ -17,7 +28,7 @@
                         <smart:field-docid access="ReadWrite" name="hba_structure" label="Structure" relation="-1"/>
                     </smart:field-set>
                     <smart:field-set name="hba_grid_collections" type="array" access="ReadWrite" label="Grid collections">
-                        <smart:field-docid access="ReadWrite" name="hba_grid_collection" label="Grid collection" relation="DSEARCH"/>
+                        <smart:field-docid access="ReadWrite" name="hba_grid_collection" label="Grid collection" relation="REPORT"/>
                     </smart:field-set>
                 </smart:field-set>
             </smart:field-set>
@@ -28,6 +39,10 @@
                 <smart:field-callable function="Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior::getJSAsset"/>
             </smart:default>
             <smart:default field="hba_welcome_option" reset="true">YES</smart:default>
+            <smart:default field="hba_icon_type" reset="true">ICON</smart:default>
+            <smart:default field="hba_titles" reset="true">
+                <smart:field-callable function="::getDefaultLanguages"/>
+            </smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>
@@ -35,6 +50,15 @@
         <smart:enum-configuration name="HBA_YES_NO_ENUM">
             <smart:enum name="NO" label="No"/>
             <smart:enum name="YES" label="Yes"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="HBA_ICON_TYPES">
+            <smart:enum name="ICON" label="Icons library"/>
+            <smart:enum name="IMAGE" label="Image file"/>
+            <smart:enum name="HTML" label="Html template"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="HBA_SUPPORT_LANG">
+            <smart:enum name="en_GB" label="English"/>
+            <smart:enum name="fr_FR" label="Français"/>
         </smart:enum-configuration>
     </smart:enumerates>
 </smart:config>

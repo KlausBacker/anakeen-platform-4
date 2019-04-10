@@ -4,6 +4,7 @@ namespace Anakeen\BusinessApp\SmartStructures\HubBusinessApp\Render;
 
 class HubBusinessAppAccess implements \Anakeen\Ui\IRenderConfigAccess
 {
+
     /**
      * @param string                              $mode
      * @param \Anakeen\Core\Internal\SmartElement $document

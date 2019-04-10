@@ -1,0 +1,27 @@
+.welcome_tab_description .welcome_tab_descr_img {
+  width: 50%;
+  float: left;
+}
+
+.welcome_tab_description.welcome_tab_collections_description .welcome_tab_descr_img {
+  width: 25%;
+}
+
+.welcome_tab_description .welcome_tab_descr_text {
+  float: left;
+  text-align: start;
+}
+
+.welcome_tab_description .welcome_tab_legend {
+  margin-right: .5rem;
+}
+
+.welcome_tab_legend {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: inline-block;
+  text-align: center;
+  background-color: #808080;
+  border-radius: 50%;
+  color: white;
+}

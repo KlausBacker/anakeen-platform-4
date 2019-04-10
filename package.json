@@ -10,7 +10,11 @@
     "beautify": "eslint ./src --fix",
     "buildJs:prod": "element=BUSINESS_APP npx webpack --config webpack/index.js",
     "buildJs:dev": "element=BUSINESS_APP dev=DEV npx webpack --config webpack/index.js",
-    "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev"
+    "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev",
+    "buildJsRender:prod": "conf=PROD npx webpack --config ./webpack/render.js",
+    "buildJsRender:dev": "conf=DEV npx webpack --config ./webpack/render.js",
+    "buildJsRender:legacy": "conf=LEGACY npx webpack --config ./webpack/render.js",
+    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy"
   },
   "dependencies": {
     "@anakeen/hub-components": "^1.0.0-dev20190328170051",
