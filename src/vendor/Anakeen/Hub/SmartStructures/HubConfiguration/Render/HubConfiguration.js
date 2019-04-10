@@ -47,7 +47,7 @@ window.dcp.document.documentController(
       return attributeObject.id === "hub_activated";
     }
   },
-  function(event, documentObject, attributeObject, values, $el) {
+  function(event, documentObject, attributeObject, values) {
     const selectedValue = values.current.value;
     if (selectedValue && selectedValue === "TRUE") {
       $(event.target)
