@@ -7,4 +7,8 @@
     <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/BusinessApp/Accounts/110-BusinessAppRoles.xml"/>
     <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/BusinessApp/SmartStructures/HubBusinessApp/**/*.xml"/>
   </post-install>
+  <post-upgrade>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/BusinessApp/SmartStructures/HubBusinessApp/**/*.xml"/>
+  </post-upgrade>
+
 </module>

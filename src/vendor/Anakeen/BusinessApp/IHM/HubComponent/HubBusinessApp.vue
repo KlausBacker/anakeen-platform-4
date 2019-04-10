@@ -1,10 +1,11 @@
 <template>
   <div>
     <nav v-if="isDockCollapsed">
-      <i class="material-icons hub-icon">group</i>
+      <span class="hub-icon" v-html="iconTemplate"></span>
     </nav>
     <nav v-else-if="isDockExpanded" class="business-app-label-expanded">
-      <i class="material-icons hub-icon">group</i> <span>Business App</span>
+      <span class="hub-icon" v-html="iconTemplate"></span>
+      <span class="hub-label">{{ hubLabel }}</span>
     </nav>
     <div v-else-if="isHubContent" class="business-app-entry">
       <business-app
@@ -12,6 +13,8 @@
         :welcomeTab="welcomeTab"
         :selectedElement="selectedElement"
         @selectedElement="onElementOpened"
+        @displayMessage="onDisplayMessage"
+        @displayError="onDisplayError"
       ></business-app>
     </div>
   </div>
@@ -34,6 +37,8 @@ export default class HubBusinessApp extends Vue {
   @Prop({ default: false, type: [Boolean, Object] }) public welcomeTab!:
     | boolean
     | object;
+  @Prop({ default: "", type: String }) public iconTemplate!: string;
+  @Prop({ default: "Business App", type: String }) public hubLabel!: string;
 
   public selectedElement: string = "";
 
@@ -66,16 +71,57 @@ export default class HubBusinessApp extends Vue {
       this.selectedElement = params.elementId;
     }).resolve(window.location.pathname);
   }
+
+  protected onDisplayMessage(message) {
+    // @ts-ignore
+    this.hubNotify({
+      type: "info", // Type de notification parmi: "info", "notice", "success", "warning", "error"
+      content: {
+        textContent: message.message, // ou htmlContent: "<em>Un message d'information important</em>"
+        title: message.title
+      }
+    });
+  }
+
+  protected onDisplayError(message) {
+    // @ts-ignore
+    this.hubNotify({
+      type: "error",
+      content: {
+        textContent: message.message, // ou htmlContent: "<em>Un message d'information important</em>"
+        title: message.title
+      }
+    });
+  }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .business-app-entry {
   width: 100%;
   height: 100%;
 }
+
+.hub-icon {
+  /deep/ i {
+    font-size: 1.5rem;
+  }
+}
+.hub-icon /deep/ p {
+  margin: 0;
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
 .business-app-label-expanded {
   display: flex;
   align-items: center;
+
+  .hub-label,
+  .hub-icon {
+    margin-left: 1rem;
+  }
 }
 </style>

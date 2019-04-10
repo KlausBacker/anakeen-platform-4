@@ -3,21 +3,10 @@
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
-
-  .ank-business-app-splitter {
-    display: flex;
-    flex: 1;
-
-    & /deep/ {
-      .splitter-wrapper-right-content {
-        overflow-y: hidden;
-      }
-    }
-  }
 
   .ank-business-app-list {
-    height: 100%;
+    flex: 0.3;
+    margin-right: 0.2rem;
   }
 
   .ank-business-app-header {
@@ -26,7 +15,7 @@
   }
 
   .ank-business-app-tabs {
-    height: 100%;
+    flex: 1;
   }
 
   /deep/ .ank-business-app-collection-selector {
