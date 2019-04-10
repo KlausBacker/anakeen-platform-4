@@ -11,7 +11,7 @@ node_modules
 yarn-error.log
 
 # Public directories
-src/public/
+src/public/Anakeen
 lib
 .cibuild/targets/*/outputs/*
 ide/vendor
