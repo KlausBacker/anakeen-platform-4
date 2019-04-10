@@ -30,6 +30,7 @@ export interface IHubStationEntryOptions {
   selectable: boolean;
   activated: boolean;
   activatedOrder: number | null;
+  expandable: boolean;
 }
 
 export interface IHubStationDockConfigs {

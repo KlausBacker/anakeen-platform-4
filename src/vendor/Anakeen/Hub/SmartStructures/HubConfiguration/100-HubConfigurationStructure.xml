@@ -8,7 +8,7 @@
             <smart:field-set name="hub_config" type="tab" label="Configuration" access="ReadWrite">
                 <smart:field-set name="hub_station_id_frame" type="frame" label="Identification" access="ReadWrite">
                     <smart:field-docid access="ReadWrite" name="hub_station_id" label="Hub Station" relation="HUBINSTANCIATION"/>
-                    <smart:field-text access="ReadWrite" name="hub_title" label="Title" is-title="true"/>
+                    <smart:field-text access="ReadWrite" name="hub_title" label="Name" is-title="true" needed="true"/>
                 </smart:field-set>
 
                 <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Element location">
@@ -17,10 +17,12 @@
                                       access="ReadWrite"/>
                 </smart:field-set>
                 <smart:field-set name="hub_activated_frame" type="frame" label="Element activation" access="ReadWrite">
-                    <smart:field-enum name="hub_activated" label="Element is activated" relation="Hub_YesNo"
+                    <smart:field-enum name="hub_activated" label="Element is default selected" relation="Hub_YesNo"
                                       access="ReadWrite"/>
                     <smart:field-int name="hub_activated_order" label="Priority" access="ReadWrite"/>
                     <smart:field-enum name="hub_selectable" label="Element is selectable" relation="Hub_YesNo"
+                                      access="ReadWrite"/>
+                    <smart:field-enum name="hub_expandable" label="Element is expandable" relation="Hub_YesNo"
                                       access="ReadWrite"/>
                 </smart:field-set>
             </smart:field-set>
@@ -51,9 +53,10 @@
 
 
         <smart:defaults>
-            <smart:default field="hub_activated">FALSE</smart:default>
-            <smart:default field="hub_selectable">FALSE</smart:default>
+            <smart:default field="hub_activated" reset="true">FALSE</smart:default>
+            <smart:default field="hub_selectable" reset="true">FALSE</smart:default>
             <smart:default field="hub_docker_position" reset="true">LEFT_TOP</smart:default>
+            <smart:default field="hub_expandable" reset="true">FALSE</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>

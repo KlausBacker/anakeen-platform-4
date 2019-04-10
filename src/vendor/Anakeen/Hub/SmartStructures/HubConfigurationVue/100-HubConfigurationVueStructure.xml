@@ -24,7 +24,8 @@
         </smart:hooks>
 
         <smart:defaults>
-            <smart:default field="hub_selectable">TRUE</smart:default>
+            <smart:default field="hub_selectable" reset="true">TRUE</smart:default>
+            <smart:default field="hub_expandable" reset="true">TRUE</smart:default>
         </smart:defaults>
     </smart:structure-configuration>
 </smart:config>

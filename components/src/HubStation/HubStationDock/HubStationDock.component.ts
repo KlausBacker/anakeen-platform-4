@@ -31,7 +31,7 @@ export default class HubStationDock extends Vue {
   };
 
   // region props
-  @Prop({ default: () => ({}), type: Array })
+  @Prop({ default: () => [], type: Array })
   public dockContent!: IHubStationPropConfig[];
   @Prop({ default: DockPosition.LEFT, type: String })
   public position!: DockPosition;
@@ -48,6 +48,18 @@ export default class HubStationDock extends Vue {
   // noinspection JSMethodCanBeStatic
   get HubElementDisplayTypes(): any {
     return HubElementDisplayTypes;
+  }
+
+  get isExpandable(): boolean {
+    let result = false;
+    if (this.dockContent) {
+      this.dockContent.forEach(dC => {
+        if (dC && dC.entryOptions) {
+          result = result || dC.entryOptions.expandable;
+        }
+      });
+    }
+    return result;
   }
 
   public mounted() {

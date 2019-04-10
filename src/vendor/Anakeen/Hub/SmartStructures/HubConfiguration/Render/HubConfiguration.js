@@ -34,3 +34,29 @@ window.dcp.document.documentController(
     });
   }
 );
+
+window.dcp.document.documentController(
+  "addEventListener",
+  "change",
+  {
+    name: "dock_hub_activated_change",
+    documentCheck: documentObject => {
+      return documentObject.renderMode === "edit";
+    },
+    attributeCheck: attributeObject => {
+      return attributeObject.id === "hub_activated";
+    }
+  },
+  function(event, documentObject, attributeObject, values) {
+    const selectedValue = values.current.value;
+    if (selectedValue && selectedValue === "TRUE") {
+      $(event.target)
+        .find(".dcpAttribute[data-attrid=hub_activated_order]")
+        .show();
+    } else {
+      $(event.target)
+        .find(".dcpAttribute[data-attrid=hub_activated_order]")
+        .hide();
+    }
+  }
+);

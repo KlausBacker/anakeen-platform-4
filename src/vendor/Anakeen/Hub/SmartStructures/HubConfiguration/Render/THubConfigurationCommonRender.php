@@ -35,4 +35,16 @@ trait THubConfigurationCommonRender
         );
         return $options;
     }
+
+    public function getCommonVisibilities(RenderAttributeVisibilities $visibilities, \Anakeen\Core\Internal\SmartElement $document, $mask)
+    {
+        $visibilities->setVisibility(HubConfigurationFields::hub_selectable, RenderAttributeVisibilities::HiddenVisibility);
+        if ($document->getRawValue(HubConfigurationFields::hub_selectable) !== "TRUE") {
+            $visibilities->setVisibility(HubConfigurationFields::hub_activated, RenderAttributeVisibilities::HiddenVisibility);
+        }
+        if ($document->getRawValue(HubConfigurationFields::hub_activated) !== "TRUE") {
+            $visibilities->setVisibility(HubConfigurationFields::hub_activated_order, RenderAttributeVisibilities::HiddenVisibility);
+        }
+        return $visibilities;
+    }
 }

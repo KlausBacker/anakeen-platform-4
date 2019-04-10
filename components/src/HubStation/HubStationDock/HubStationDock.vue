@@ -1,5 +1,5 @@
 <template>
-  <hub-dock :position="position" @dockResized="resizeWindow" ref="innerDock">
+  <hub-dock :position="position" @dockResized="resizeWindow" ref="innerDock" :expandable="isExpandable">
     <template slot="header">
       <hub-dock-entry
         v-for="(entry, index) in getDockHeaders(dockContent)"
