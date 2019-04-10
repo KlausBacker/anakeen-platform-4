@@ -6,17 +6,17 @@
         <smart:class>Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationBehavior</smart:class>
         <smart:fields>
             <smart:field-set name="hub_config" type="tab" label="Configuration" access="ReadWrite">
-                <smart:field-set name="hub_station_id_frame" type="frame" label="Identification" access="ReadWrite">
+                <smart:field-set name="hub_station_id_frame" type="frame" label="Identification" access="Read">
                     <smart:field-docid access="ReadWrite" name="hub_station_id" label="Hub Station" relation="HUBINSTANCIATION"/>
                     <smart:field-text access="ReadWrite" name="hub_title" label="Name" is-title="true" needed="true"/>
                 </smart:field-set>
 
-                <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Element location">
-                    <smart:field-int name="hub_order" label="Order in hub" access="ReadWrite"/>
+                <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Dock">
+                    <smart:field-int name="hub_order" label="Order in dock" access="ReadWrite"/>
                     <smart:field-enum name="hub_docker_position" label="Dock position" relation="Hub_DockerPos"
                                       access="ReadWrite"/>
                 </smart:field-set>
-                <smart:field-set name="hub_activated_frame" type="frame" label="Element activation" access="ReadWrite">
+                <smart:field-set name="hub_activated_frame" type="frame" label="Hub element status" access="ReadWrite">
                     <smart:field-enum name="hub_activated" label="Element is default selected" relation="Hub_YesNo"
                                       access="ReadWrite"/>
                     <smart:field-int name="hub_activated_order" label="Priority" access="ReadWrite"/>
@@ -31,8 +31,8 @@
             </smart:field-set>
             <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
                 <smart:field-set name="hub_security_frame" label="Security Roles" type="frame" access="ReadWrite">
-                    <smart:field-account name="hub_visibility_roles" label="Roles to display component" access="ReadWrite" match="role" multiple="true"/>
-                    <smart:field-account name="hub_execution_roles" label="Roles to perform component" access="Read" match="role" multiple="true"/>
+                    <smart:field-account name="hub_visibility_roles" label="Roles to display hub element" access="ReadWrite" match="role" multiple="true"/>
+                    <smart:field-account name="hub_execution_roles" label="Roles to access hub element API" access="Read" match="role" multiple="true"/>
                 </smart:field-set>
             </smart:field-set>
         </smart:fields>
