@@ -4,6 +4,7 @@ namespace Anakeen\Hub\SmartStructures\HubConfiguration\Render;
 
 use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Hubconfiguration as HubConfigurationFields;
+use Anakeen\Ui\RenderAttributeVisibilities as RenderAttributeVisibilities;
 
 trait THubConfigurationCommonRender
 {
