@@ -316,5 +316,25 @@ export default class VaultInfoController extends Vue {
       .open();
   }
 
+  public logicalTemplate() {
+    return `<b>${this.convertBytes(
+      this.info.metrics.usedSize
+    )}</b> used out of <b>${this.convertBytes(
+      this.info.metrics.totalSize
+    )}</b> (<b>${Math.floor(
+      (this.info.metrics.usedSize / this.info.metrics.totalSize) * 100
+    )}%</b>)`;
+  }
+
+  public diskTemplate() {
+    return `<b>${this.convertBytes(
+      this.info.disk.usedSize
+    )}</b> used out of <b>${this.convertBytes(
+      this.info.disk.totalSize
+    )}</b> (<b>${Math.floor(
+      (this.info.disk.usedSize / this.info.disk.totalSize) * 100
+    )}%</b>)`;
+  }
+
   // public mounted() {}
 }

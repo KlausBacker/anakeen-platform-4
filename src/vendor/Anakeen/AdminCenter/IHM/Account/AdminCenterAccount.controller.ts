@@ -22,7 +22,7 @@ declare var kendo;
   }
 })
 export default class AdminCenterAccountController extends Vue {
-  public panes: object[] = [
+  public mainPanes: object[] = [
     {
       collapsible: true,
       resizable: true,
@@ -34,6 +34,20 @@ export default class AdminCenterAccountController extends Vue {
       resizable: true,
       scrollable: false,
       size: "70%"
+    }
+  ];
+  public panes: object[] = [
+    {
+      collapsible: true,
+      resizable: false,
+      scrollable: false,
+      size: "15%"
+    },
+    {
+      collapsible: true,
+      resizable: false,
+      scrollable: false,
+      size: "85%"
     }
   ];
   public $refs!: {
@@ -179,13 +193,17 @@ export default class AdminCenterAccountController extends Vue {
   public groupId: any = false;
   @Watch("groupId")
   public watchGroupId(value) {
-    const toolbar = $(".account-user-toolbar").data("kendoToolBar");
+    const changeBtn = $(".change-group-btn").data("kendoButton");
+    const createGrpBtn = $(".create-group-btn");
+    const toolbar = $(".tree-toolbar").data("kendoToolBar");
     if (value === "@users") {
+      createGrpBtn.text("Create group");
       toolbar.enable("#openGroupBtn", false);
-      toolbar.enable("#changeGroupBtn", false);
+      changeBtn.enable(false);
     } else {
+      createGrpBtn.text("Create sub group");
       toolbar.enable("#openGroupBtn");
-      toolbar.enable("#changeGroupBtn");
+      changeBtn.enable(true);
     }
   }
 
@@ -209,7 +227,7 @@ export default class AdminCenterAccountController extends Vue {
       .then(response => {
         if (response.status === 200 && response.statusText === "OK") {
           this.options = response.data;
-          this.bindToolbars(response.data);
+          // this.bindToolbars(response.data);
         } else {
           throw new Error(response.data);
         }
@@ -217,62 +235,6 @@ export default class AdminCenterAccountController extends Vue {
       .catch(error => {
         console.error("Unable to get options", error);
       });
-  }
-
-  public bindToolbars(element) {
-    const openInCreation = event => {
-      this.$refs.accountSplitter.disableEmptyContent();
-      if (
-        event &&
-        event.target &&
-        event.target[0] &&
-        event.target[0].id &&
-        event.target[0].id !== "changeGroupBtn" &&
-        event.target[0].id !== "openGroupBtn"
-      ) {
-        if (
-          event.target[0].id === "userCreateToolbar" ||
-          event.target[0].id === "groupCreateToolbar"
-        ) {
-          event.preventDefault();
-          $(event.target[0])
-            .parent()
-            .data("kendoPopup")
-            .open();
-          return;
-        }
-        const openDoc = this.$refs.openDoc;
-        openDoc.fetchSmartElement({
-          customClientData: { defaultGroup: this.selectedGroupDocumentId },
-          initid: event.target[0].id,
-          viewId: "!defaultCreation"
-        });
-      }
-    };
-    const userToolbar = this.$refs.userToolbar.kendoWidget();
-    userToolbar.add({
-      id: "groupCreateToolbar",
-      menuButtons: element.group,
-      text: "Create sub group",
-      type: "splitButton"
-    });
-    userToolbar.add({
-      id: "userCreateToolbar",
-      menuButtons: element.user,
-      text: "Create user",
-      type: "splitButton"
-    });
-    if (
-      window.localStorage.getItem("admin.account.groupSelected") === "@users"
-    ) {
-      $("#groupCreateToolbar").text("Create group");
-      userToolbar.enable("#changeGroupBtn", false);
-      userToolbar.enable("#openGroupBtn", false);
-    } else {
-      userToolbar.enable("#changeGroupBtn");
-      userToolbar.enable("#openGroupBtn");
-    }
-    userToolbar.bind("click", openInCreation);
   }
 
   // Bind the tree events
@@ -308,12 +270,14 @@ export default class AdminCenterAccountController extends Vue {
               initid: userId,
               viewId: "!defaultConsultation"
             });
+            this.refreshData(openDoc);
           } else {
             openDoc.$once("documentLoaded", () => {
               openDoc.fetchSmartElement({
                 initid: userId,
                 viewId: "!defaultConsultation"
               });
+              this.refreshData(openDoc);
             });
           }
         }
@@ -369,25 +333,37 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   public bindEditDoc() {
-    const openDoc = this.$refs.openDoc;
-    if (openDoc) {
-      openDoc.$el.addEventListener("afterSave", event => {
-        if (
-          event &&
-          event.detail &&
-          event.detail[1] &&
-          event.detail[1] &&
-          event.detail[1].type &&
-          event.detail[1].type === "folder"
-        ) {
-          this.updateTreeData(true);
-        } else {
-          this.updateGridData();
-        }
-      });
+    if (this.$refs.openDoc) {
+      const openDoc = this.$refs.openDoc;
+      if (openDoc.isLoaded()) {
+        this.eventEditDoc(openDoc);
+      } else {
+        openDoc.$once("documentLoaded", () => {
+          this.eventEditDoc(openDoc);
+        });
+      }
     }
   }
-
+  public eventEditDoc(openDoc) {
+    openDoc.addEventListener("afterSave", event => {
+      if (
+        event &&
+        event.detail &&
+        event.detail[1] &&
+        event.detail[1] &&
+        event.detail[1].type &&
+        event.detail[1].type === "folder"
+      ) {
+        this.updateTreeData(true);
+      } else {
+        this.updateGridData();
+      }
+      this.$refs.groupTreeView.kendoWidget().dataSource.read();
+    });
+    openDoc.addEventListener("afterDelete", () => {
+      this.$refs.groupTreeView.kendoWidget().dataSource.read();
+    });
+  }
   // Manually refresh the tree pane
   public updateTreeData(force?) {
     const filterTitle = this.$refs.filterTree.value
@@ -404,6 +380,7 @@ export default class AdminCenterAccountController extends Vue {
       });
     }
     this.groupTree.filter({});
+    this.$refs.groupTreeView.kendoWidget().dataSource.read();
   }
 
   // Display the selected group in the ank-document
@@ -423,7 +400,7 @@ export default class AdminCenterAccountController extends Vue {
   // Refresh the with the new selected group
   public updateGridData(selectedGroupLogin?) {
     const grid = this.$refs.grid.kendoWidget();
-    grid.clearSelection();
+    grid.dataSource.read();
     if (selectedGroupLogin === "@users") {
       this.gridContent.filter({});
     } else {
@@ -445,11 +422,38 @@ export default class AdminCenterAccountController extends Vue {
             initid: this.groupId,
             viewId: "!defaultConsultation"
           });
+          this.refreshData(openDoc);
         } else {
           openDoc.$once("documentLoaded", () => {
             openDoc.fetchSmartElement({
               initid: this.groupId,
               viewId: "!defaultConsultation"
+            });
+            this.refreshData(openDoc);
+          });
+        }
+      }
+    });
+  }
+  public createAccount(type) {
+    this.$refs.accountSplitter.disableEmptyContent();
+    this.$nextTick(() => {
+      const openDoc = this.$refs.openDoc;
+      if (openDoc) {
+        if (openDoc.isLoaded()) {
+          this.refreshData(openDoc);
+          openDoc.fetchSmartElement({
+            customClientData: { defaultGroup: this.selectedGroupDocumentId },
+            initid: type,
+            viewId: "!defaultCreation"
+          });
+        } else {
+          openDoc.$once("documentLoaded", () => {
+            this.refreshData(openDoc);
+            openDoc.fetchSmartElement({
+              customClientData: { defaultGroup: this.selectedGroupDocumentId },
+              initid: type,
+              viewId: "!defaultCreation"
             });
           });
         }
@@ -474,6 +478,7 @@ export default class AdminCenterAccountController extends Vue {
               initid: this.groupId,
               viewId: "changeGroup"
             });
+            this.refreshData(openDoc);
           });
         }
       }
@@ -513,6 +518,16 @@ export default class AdminCenterAccountController extends Vue {
       );
     };
     window.setTimeout(saveTreeView, 100);
+  }
+  public refreshData(openDoc) {
+    openDoc.addEventListener("afterSave", () => {
+      this.updateGridData();
+      this.updateTreeData(true);
+    });
+    openDoc.addEventListener("afterDelete", () => {
+      this.updateGridData();
+      this.updateTreeData(true);
+    });
   }
 
   // Close all the leafs

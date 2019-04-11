@@ -14,7 +14,7 @@
                 <div
                   class="accountManager_treeViewPart_wrapper_topPart_btnPart"
                 >
-                  <kendo-toolbar>
+                  <kendo-toolbar class="tree-toolbar">
                     <kendo-toolbar-item
                       type="button"
                       icon="refresh"
@@ -29,6 +29,8 @@
                       type="button"
                       icon="sort-desc-sm"
                       @click="expandAll"
+                    ></kendo-toolbar-item>
+                    <kendo-toolbar-item type="button" @click="openGroup" id="openGroupBtn" icon="folder-open"
                     ></kendo-toolbar-item>
                   </kendo-toolbar>
                 </div>
@@ -58,86 +60,82 @@
           </div>
         </template>
         <template slot="right">
-          <ank-splitter
-            ref="accountSplitter"
-            class="account-manager-splitter"
-            :panes="panes"
-            localStorageKey="account-manager-splitter"
-          >
-            <template slot="left">
-              <div class="accountManager_contentPart_gridPart">
-                <kendo-toolbar ref="userToolbar" class="account-user-toolbar">
-                  <kendo-toolbar-item
-                    id="changeGroupBtn"
-                    type="button"
-                    text="Change group"
-                    @click="openChangeGroup"
-                  ></kendo-toolbar-item>
-                  <kendo-toolbar-item
-                    id="openGroupBtn"
-                    type="button"
-                    text="Open group"
-                    @click="openGroup"
-                  ></kendo-toolbar-item>
-                </kendo-toolbar>
-                <kendo-grid
-                  ref="grid"
-                  class="account-user-grid"
-                  :data-source="gridContent"
-                  :pageable="{ alwaysVisible: true, pageSizes: [10, 20, 100] }"
-                  :sortable="true"
-                  :filterable="{
+          <div class="admin-account-main-section">
+            <header class="admin-account-header">
+              <div class="admin-account-header__content">
+                  <kendo-button class="k-primary k-outline change-group-btn" @click="openChangeGroup"> Change parent group</kendo-button>
+                  <kendo-button class="k-primary k-outline create-user-btn" @click="createAccount('IUSER')"> Create user</kendo-button>
+                  <kendo-button class="k-primary k-outline create-group-btn" @click="createAccount('IGROUP')">Create sub group</kendo-button>
+              </div>
+            </header>
+            <section>
+              <ank-splitter
+                      ref="accountSplitter"
+                      class="account-manager-splitter"
+                      :panes="mainPanes"
+                      localStorageKey="account-manager-splitter">
+                <template slot="left">
+                  <div class="accountManager_contentPart_gridPart">
+                    <kendo-grid
+                            ref="grid"
+                            class="account-user-grid"
+                            :data-source="gridContent"
+                            :pageable="{ alwaysVisible: true, pageSizes: [10, 20, 100] }"
+                            :sortable="true"
+                            :filterable="{
                     extra: false,
                     operators: { string: { contains: 'contains' } }
                   }"
-                  :persistSelection="true"
-                  :autoBind="false"
-                >
-                  <kendo-grid-column
-                    field="id"
-                    :hidden="true"
-                  ></kendo-grid-column>
-                  <kendo-grid-column
-                    field="login"
-                    title="Login"
-                    type="string"
-                  ></kendo-grid-column>
-                  <kendo-grid-column
-                    field="firstname"
-                    title="First name"
-                    type="string"
-                  ></kendo-grid-column>
-                  <kendo-grid-column
-                    field="lastname"
-                    title="Last name"
-                    type="string"
-                  ></kendo-grid-column>
-                  <kendo-grid-column
-                    field="mail"
-                    title="E-mail"
-                    type="string"
-                  ></kendo-grid-column>
-                  <kendo-grid-column
-                    :command="{ text: 'Consult', click: openUser }"
-                    :filterable="false"
-                    :width="'10rem'"
-                  ></kendo-grid-column>
-                </kendo-grid>
-              </div>
-            </template>
-            <template slot="right">
-              <ank-smart-element
-                ref="openDoc"
-                class="open-element-content"
-              ></ank-smart-element>
-            </template>
-          </ank-splitter>
+                            :persistSelection="true"
+                            :autoBind="false"
+                    >
+                      <kendo-grid-column
+                              field="id"
+                              :hidden="true"
+                      ></kendo-grid-column>
+                      <kendo-grid-column
+                              field="login"
+                              title="Login"
+                              type="string"
+                      ></kendo-grid-column>
+                      <kendo-grid-column
+                              field="firstname"
+                              title="First name"
+                              type="string"
+                      ></kendo-grid-column>
+                      <kendo-grid-column
+                              field="lastname"
+                              title="Last name"
+                              type="string"
+                      ></kendo-grid-column>
+                      <kendo-grid-column
+                              field="mail"
+                              title="E-mail"
+                              type="string"
+                      ></kendo-grid-column>
+                      <kendo-grid-column
+                              :command="{ text: 'Consult', click: openUser }"
+                              :filterable="false"
+                              :width="'10rem'"
+                      ></kendo-grid-column>
+                    </kendo-grid>
+                  </div>
+                </template>
+                <template slot="right">
+                  <div class="ank-se-parent">
+                    <ank-smart-element ref="openDoc" class="open-element-content"></ank-smart-element>
+                  </div>
+                </template>
+              </ank-splitter>
+            </section>
+          </div>
         </template>
       </ank-splitter>
     </div>
   </div>
 </template>
-<style>
-@import "./AdminCenterAccount.css";
+<style lang="scss">
+@import "./AdminCenterAccount.scss";
 </style>
-<script src="./AdminCenterAccount.controller.ts" lang="ts"></script>
+<script src="./AdminCenterAccount.controller.ts" lang="ts">
+</script>
