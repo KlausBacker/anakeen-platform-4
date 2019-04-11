@@ -1,50 +1,6 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
     <div class="vault-pie-chart">
-        <div class="vault-graphs">
-            <div class="disk-gauges">
-                <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
-                    <p class="arc-title">Logical vault capacity</p>
-                    <kendo-radialgauge ref="logicalGauge"
-                                       class="logical-gauge arc-gauge"
-                                       :scale-min="0"
-                                       :scale-max="getGaugeLogicalMax"
-                                       :scale-labels-format="getGaugeLogicalRangeLabel"
-                                       :scale-ranges="getGaugeLogicalRanges">
-                        <kendo-radialgauge-pointer :value="getGaugeLogicalUsed" :color="'#ff6358'"/>
-                    </kendo-radialgauge>
-                </div>
-                <div class="disk-gauge" :class="{ diskerror: info.disk.totalSize === 0 }">
-                    <p class="arc-title">Physical disk capacity</p>
-                    <kendo-radialgauge ref="diskGauge"
-                                       class="physical-gauge arc-gauge"
-                                       :scale-min="0"
-                                       :scale-max="getGaugeDiskMax"
-                                       :scale-labels-format="getGaugeDiskRangeLabel"
-                                       :scale-ranges="getGaugeDiskRanges">
-                        <kendo-radialgauge-pointer :value="getGaugeDiskUsed" :color="'#ff6358'"/>
-                    </kendo-radialgauge>
-                </div>
-                <div class="disk-chart">
-                    <kendo-chart ref="chart"
-                                 class="vault-chart"
-                                 :title-text="'Vault disk usage'"
-                                 :title-position="'top'"
-                                 :chart-area-background="''"
-                                 :legend-visible="false"
-                                 :series="getSeries"
-                                 :series-defaults-labels-visible="true"
-                                 :series-defaults-labels-position="'outsideEnd'"
-                                 :series-defaults-labels-background="'transparent'"
-                                 :series-defaults-labels-template="labelTemplate"
-                                 :tooltip-visible="false"
-                                 :theme="'sass'">
-                    </kendo-chart>
-                </div>
-            </div>
-        </div>
-
-
         <div class="vault-infos card">
 
             <div class="vault-infos-content">
@@ -69,8 +25,6 @@
                                 <span class="vault-card-content-item-label">Disk capacity used:&nbsp</span>
                                 <span class="vault-card-content-item-value">{{convertBytes(info.disk.usedSize)}}</span>
                             </span>
-
-
                         </div>
                     </div>
                 </div>
@@ -92,6 +46,63 @@
                     <div class="col-md">
                         <kendo-button class="k-primary" @click="onResizeDisk">Resize</kendo-button>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="vault-graphs">
+            <div class="disk-gauges">
+                <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
+                    <p class="arc-title">Logical vault capacity</p>
+                    <kendo-arcgauge ref="logicalGauge"
+                                       class="logical-gauge arc-gauge"
+                                       :scale-min="0"
+                                       :value="getGaugeLogicalUsed"
+                                       :scale-max="getGaugeLogicalMax"
+                                       :scale-ranges="getGaugeLogicalRanges"
+                                       :centerTemplate="logicalTemplate">
+                        <kendo-arcgauge-color :to="info.metrics.totalSize * 0.75"
+                                              :color="'#28a745'"></kendo-arcgauge-color>
+                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.75"
+                                              :to="info.metrics.totalSize * 0.90"
+                                              :color="'#ffc107'"></kendo-arcgauge-color>
+                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.90"
+                                              :color="'#dc3545'"></kendo-arcgauge-color>
+                    </kendo-arcgauge>
+                </div>
+                <div class="disk-gauge" :class="{ diskerror: info.disk.totalSize === 0 }">
+                    <p class="arc-title">Physical disk capacity</p>
+                    <kendo-arcgauge ref="diskGauge"
+                                       class="physical-gauge arc-gauge"
+                                       :scale-min="0"
+                                       :value="getGaugeDiskUsed"
+                                       :scale-max="getGaugeDiskMax"
+                                       :scale-ranges="getGaugeDiskRanges"
+                                       :centerTemplate="diskTemplate">
+                        <kendo-arcgauge-color :to="info.metrics.totalSize * 0.75"
+                                              :color="'#28a745'"></kendo-arcgauge-color>
+                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.75"
+                                              :to="info.metrics.totalSize * 0.90"
+                                              :color="'#ffc107'"></kendo-arcgauge-color>
+                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.90"
+                                              :color="'#dc3545'"></kendo-arcgauge-color>
+
+                    </kendo-arcgauge>
+                </div>
+                <div class="disk-chart">
+                    <kendo-chart ref="chart"
+                                 class="vault-chart"
+                                 :title-text="'Vault disk file repartition'"
+                                 :title-position="'top'"
+                                 :chart-area-background="''"
+                                 :legend-visible="false"
+                                 :series="getSeries"
+                                 :series-defaults-labels-visible="true"
+                                 :series-defaults-labels-position="'outsideEnd'"
+                                 :series-defaults-labels-background="'transparent'"
+                                 :series-defaults-labels-template="labelTemplate"
+                                 :tooltip-visible="false"
+                                 :theme="'sass'">
+                    </kendo-chart>
                 </div>
             </div>
         </div>
@@ -149,4 +160,3 @@
     @import "./VaultInfo.scss";
 </style>
 <script src="./VaultInfo.controller.ts" lang="ts">
-</script>
