@@ -40,7 +40,7 @@ export default class HubBusinessApp extends Vue {
   @Prop({ default: "", type: String }) public iconTemplate!: string;
   @Prop({ default: "Business App", type: String }) public hubLabel!: string;
 
-  public selectedElement: string = "";
+  public selectedElement: string = "welcome";
 
   @Watch("selectedElement")
   onSelectedElementDataChange(newVal, oldVal) {
@@ -49,7 +49,9 @@ export default class HubBusinessApp extends Vue {
   }
 
   protected onElementOpened(elementId) {
-    this.selectedElement = elementId;
+    if (elementId) {
+      this.selectedElement = elementId;
+    }
   }
 
   public created() {

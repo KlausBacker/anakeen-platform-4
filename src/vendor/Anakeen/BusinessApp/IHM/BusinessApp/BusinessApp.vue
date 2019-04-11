@@ -19,39 +19,41 @@
         </div>
       </ank-se-list>
     </div>
-    <ank-tabs
-      class="ank-business-app-tabs"
-      ref="businessAppTabs"
-      v-model="selectedTab"
-      @tabRemove="onTabRemove"
-      @tabClick="onTabClick"
-    >
-      <ank-tab
-        v-if="hasWelcomeTab"
-        label="Welcome"
-        :closable="false"
-        name="welcome"
+    <div class="ank-business-app-tabs-wrapper">
+      <ank-tabs
+        class="ank-business-app-tabs"
+        ref="businessAppTabs"
+        v-model="selectedTab"
+        @tabRemove="onTabRemove"
+        @tabClick="onTabClick"
       >
-        <ank-welcome
-          @tabWelcomeCreate="onCreateElement"
-          @tabWelcomeGridConsult="onGridConsult"
-          :creation="welcomeTab.creation"
-          :gridCollections="welcomeTab.gridCollections"
-        ></ank-welcome>
-      </ank-tab>
-      <ank-se-tab
-        v-for="(tab, index) in tabs"
-        :identifier="tab.name"
-        :key="tab.name"
-        :closable="!!tab.closable"
-        :viewId="tab.viewId || '!defaultConsultation'"
-        ref="seTab"
-        @seTabActionClick="onActionClick"
-        @seTabDisplayError="onDisplayError"
-        @seTabDisplayMessage="onDisplayMessage"
-      >
-      </ank-se-tab>
-    </ank-tabs>
+        <ank-tab
+          v-if="hasWelcomeTab"
+          label="Welcome"
+          :closable="false"
+          name="welcome"
+        >
+          <ank-welcome
+            @tabWelcomeCreate="onCreateElement"
+            @tabWelcomeGridConsult="onGridConsult"
+            :creation="welcomeTab.creation"
+            :gridCollections="welcomeTab.gridCollections"
+          ></ank-welcome>
+        </ank-tab>
+        <ank-se-tab
+          v-for="(tab, index) in tabs"
+          :identifier="tab.name"
+          :key="tab.name"
+          :closable="!!tab.closable"
+          :viewId="tab.viewId || '!defaultConsultation'"
+          ref="seTab"
+          @seTabActionClick="onActionClick"
+          @seTabDisplayError="onDisplayError"
+          @seTabDisplayMessage="onDisplayMessage"
+        >
+        </ank-se-tab>
+      </ank-tabs>
+    </div>
   </div>
 </template>
 <!-- CSS to this component only -->
