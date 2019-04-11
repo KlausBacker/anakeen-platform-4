@@ -18,10 +18,10 @@
     "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy"
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.0-dev20190328170051",
+    "@anakeen/hub-components": "^1.0.0-dev20190411092216",
     "@anakeen/internal-components": "^1.0.1-dev20190328164754",
     "@anakeen/theme-variables": "^0.0.2",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190401092219",
+    "@anakeen/user-interfaces": "^2.0.0-dev20190411085531",
     "@types/jquery": "^3.3.29",
     "@types/kendo-ui": "^2019.1.1",
     "vue": "2.6.10",
@@ -38,7 +38,7 @@
     "ts-loader": "^5.3.3",
     "tslint": "^5.15.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.3.4000"
+    "typescript": "^3.4.3"
   },
   "husky": {
     "hooks": {
