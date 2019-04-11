@@ -14,8 +14,13 @@
     padding: 0.5rem;
   }
 
-  .ank-business-app-tabs {
+  .ank-business-app-tabs-wrapper {
     flex: 1;
+    overflow: hidden;
+
+    .ank-business-app-tabs {
+      height: 100%;
+    }
   }
 
   /deep/ .ank-business-app-collection-selector {
