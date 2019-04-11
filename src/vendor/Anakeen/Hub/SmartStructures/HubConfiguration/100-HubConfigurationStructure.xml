@@ -6,7 +6,7 @@
         <smart:class>Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationBehavior</smart:class>
         <smart:fields>
             <smart:field-set name="hub_config" type="tab" label="Configuration" access="ReadWrite">
-                <smart:field-set name="hub_station_id_frame" type="frame" label="Identification" access="Read">
+                <smart:field-set name="hub_station_id_frame" type="frame" label="Identification" access="ReadWrite">
                     <smart:field-docid access="ReadWrite" name="hub_station_id" label="Hub Station" relation="HUBINSTANCIATION"/>
                     <smart:field-text access="ReadWrite" name="hub_title" label="Name" is-title="true" needed="true"/>
                 </smart:field-set>
