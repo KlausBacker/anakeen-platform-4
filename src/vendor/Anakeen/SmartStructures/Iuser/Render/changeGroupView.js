@@ -127,7 +127,14 @@ import "./changeGroupView.css";
       }
     }
   );
-
+  window.dcp.document.documentController(
+    "addEventListener",
+    "afterSave",
+    { name: "changeGroupSave.changeGroup" },
+    function reloadInConsultation() {
+      getGroupTreeSource = initTreeGroup(getGroups());
+    }
+  );
   window.dcp.document.documentController(
     "addEventListener",
     "ready",
@@ -198,7 +205,6 @@ import "./changeGroupView.css";
       };
 
       let updateListOfGroup;
-
       $("#listOfGroups").kendoTreeView({
         checkboxes: true,
         dataSource: getGroupTreeSource(),
