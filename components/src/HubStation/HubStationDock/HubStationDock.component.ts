@@ -126,7 +126,7 @@ export default class HubStationDock extends Vue {
   // noinspection JSMethodCanBeStatic
   protected isSelectedEntry(entry) {
     if (entry && entry.entryOptions && entry.entryOptions.route) {
-      return window.location.pathname.indexOf(this.getEntryRoute(entry)) > -1;
+      return this.getEntryRoute(entry) === urlJoin(window.location.pathname);
     } else if (entry && entry.entryOptions) {
       return entry.entryOptions.activated;
     }
@@ -139,7 +139,7 @@ export default class HubStationDock extends Vue {
 
   protected getEntryRoute(entry) {
     if (entry && entry.entryOptions && entry.entryOptions.route) {
-      return urlJoin("/", this.rootUrl, entry.entryOptions.route);
+      return urlJoin("/", this.rootUrl, entry.entryOptions.route, "/");
     }
     return "";
   }
