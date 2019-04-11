@@ -336,10 +336,10 @@ export default class AdminCenterAccountController extends Vue {
     if (this.$refs.openDoc) {
       const openDoc = this.$refs.openDoc;
       if (openDoc.isLoaded()) {
-        this.eventEditDoc(openDoc)
+        this.eventEditDoc(openDoc);
       } else {
         openDoc.$once("documentLoaded", () => {
-          this.eventEditDoc(openDoc)
+          this.eventEditDoc(openDoc);
         });
       }
     }
@@ -446,7 +446,7 @@ export default class AdminCenterAccountController extends Vue {
             customClientData: { defaultGroup: this.selectedGroupDocumentId },
             initid: type,
             viewId: "!defaultCreation"
-          })
+          });
         } else {
           openDoc.$once("documentLoaded", () => {
             this.refreshData(openDoc);
@@ -454,8 +454,8 @@ export default class AdminCenterAccountController extends Vue {
               customClientData: { defaultGroup: this.selectedGroupDocumentId },
               initid: type,
               viewId: "!defaultCreation"
-            })
-          })
+            });
+          });
         }
       }
     });
@@ -472,7 +472,6 @@ export default class AdminCenterAccountController extends Vue {
             initid: this.groupId,
             viewId: "changeGroup"
           });
-
         } else {
           openDoc.$once("documentLoaded", () => {
             openDoc.fetchSmartElement({
