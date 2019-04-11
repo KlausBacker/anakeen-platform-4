@@ -1,6 +1,7 @@
 {
   "name": "@anakeen/business-app",
   "version": "1.0.0",
+  "autorelease": true,
   "description": "Anakeen Hub Business App",
   "main": "src/vendor/Anakeen/BusinessApp/IHM/index.js",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/users/aurelien.brugalieres/anakeen-hub-business-app.git",
