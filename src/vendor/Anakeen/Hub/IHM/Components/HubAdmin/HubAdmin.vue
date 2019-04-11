@@ -25,19 +25,19 @@
           :data-source-ref="'dataHubElements'"
           :data-text-field="'text'"
           :data-value-field="'value'"
-          option-label="Add component"
+          option-label="Add hub element"
           @select="selectCreateConfig"
           @open="addClassOnSelectorContainer"
         />
 
         <kendo-button class="k-primary k-outline" @click="exportConfiguration"
-        >Export configuration
+        >Export hub instance configuration
         </kendo-button>
         <kendo-button class="k-primary k-outline" @click="openElement"
-          >View main configuration
+          >View current hub instance
         </kendo-button>
         <kendo-button class="k-primary k-outline" @click="openInterface"
-          >Display interface
+          >Display hub instance
         </kendo-button>
       </div>
     </header>
@@ -57,6 +57,7 @@
             />
 
             <div class="hub-admin-grid">
+              <span>List of the hub elements of {{ hubElement.properties.title }}</span>
               <ank-se-grid
                 ref="hubGrid"
                 :urlContent="`/api/v2/hub/station/${hubId}/admin/`"
@@ -90,8 +91,6 @@
                   field="hub_order"
                   :hidden="true"
                 ></ank-se-grid-column>
-
-
               </ank-se-grid>
             </div>
           </div>

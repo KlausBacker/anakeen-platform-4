@@ -14,11 +14,11 @@
         <template slot="left">
           <div class="hub-instanciation-content">
             <div class="hub-instanciation-grid">
-              <ank-se-list smart-collection="HUBINSTANCIATION" label="Hub Configuration Center" @se-selected="openConfig">
+              <ank-se-list smart-collection="HUBINSTANCIATION" label="Hub Instance" @se-selected="openConfig">
                 <div slot="header">
                 </div>
                 <div slot="search">
-                  <kendo-button class="k-primary k-outline" @click="createHubStation"  >Create new hub interface
+                  <kendo-button class="k-primary k-outline" @click="createHubStation"  >Create new hub instance
                   </kendo-button>
 
                 </div>
