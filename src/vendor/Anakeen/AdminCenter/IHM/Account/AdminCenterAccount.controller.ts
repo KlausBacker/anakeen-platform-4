@@ -191,6 +191,16 @@ export default class AdminCenterAccountController extends Vue {
   public selectedGroupLogin: boolean = false;
   public options: object = {};
   public groupId: any = false;
+  public groupTitle: any = false;
+  @Watch("groupTitle")
+  public watchGroupTitle(value) {
+    const changeBtn = $(".change-group-btn").data("kendoButton");
+    if (value === "Main Group" || value === "Administrators") {
+      changeBtn.enable(false);
+    } else {
+      changeBtn.enable(true);
+    }
+  }
   @Watch("groupId")
   public watchGroupId(value) {
     const changeBtn = $(".change-group-btn").data("kendoButton");
@@ -203,7 +213,6 @@ export default class AdminCenterAccountController extends Vue {
     } else {
       createGrpBtn.text("Create sub group");
       toolbar.enable("#openGroupBtn");
-      changeBtn.enable(true);
     }
   }
 
@@ -498,6 +507,7 @@ export default class AdminCenterAccountController extends Vue {
     );
     this.updateGroupSelected(selectedElement.documentId);
     this.updateGridData(selectedElement.login);
+    this.groupTitle = selectedElement.title;
     this.groupId = selectedElement.documentId;
   }
 
