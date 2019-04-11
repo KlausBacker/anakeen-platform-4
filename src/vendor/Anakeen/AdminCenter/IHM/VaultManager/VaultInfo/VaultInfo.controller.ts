@@ -336,6 +336,5 @@ export default class VaultInfoController extends Vue {
     )}%</b>)`;
   }
 
-
   // public mounted() {}
 }
