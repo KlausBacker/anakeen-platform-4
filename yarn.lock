@@ -49,10 +49,10 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/hub-components@^1.0.0-dev20190328170051":
-  version "1.0.0-dev20190328170051"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190328170051.tgz#93e3e694a5396fce1665c163bfa8934611300978"
-  integrity sha512-VIDO4T/LZhxPO5niIDt4+IVm+RL7A184bm6V/liedLUlcIRrDluw2S77ZyvmzvA0cP8nPHUAclY2ruRmQcdh9w==
+"@anakeen/hub-components@^1.0.0-dev20190411092216":
+  version "1.0.0-dev20190411092216"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190411092216.tgz#5c7da106631b281762c2bc5ab3863c8d89fd8a30"
+  integrity sha512-mTAOhcpTf8I5gsqO7zPwtni6ANUyQAqA5a1Iu9ERCRDnJDXoZkcFspNYMDDAWg/wgsdyZc8wSzNaE2eCYVvpCw==
   dependencies:
     "@anakeen/internal-components" "^1.0.1-dev20190322160440"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
@@ -67,7 +67,7 @@
     url-join "^4.0.0"
     vue "2.6.10"
     vue-class-component "^7.0.2"
-    vue-gettext "^2.1.2"
+    vue-gettext "^2.1.3"
     vue-m-loader "^1.0.1"
     vue-property-decorator "^8.1.0"
     vuex "^3.1.0"
@@ -104,10 +104,10 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190401092219":
-  version "2.0.0-dev20190401092219"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190401092219.tgz#3e6fcd340db2d447bdd7a467e18e5427fde07e8a"
-  integrity sha512-VQTPjv3vDuN0kPh9PqGxnoabVmXCFzgvnRSxWNSNa5wg9JnAuHQNTCY3caUN4XV6kOyAYbmBvx4s9M6qd36ilg==
+"@anakeen/user-interfaces@^2.0.0-dev20190411085531":
+  version "2.0.0-dev20190411085531"
+  resolved "http://npm.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190411085531.tgz#e2ed6f68633c32914bede30b256a46f9d524370d"
+  integrity sha512-o/LblP/IdGegjDMhEKgyo7qC5yVQU7fhFqNuvmq46I157NnIzKMA74I6Z8oXKP4j3zN3Rbw3nH1AAVxOfZJq4w==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
@@ -8787,6 +8787,11 @@ typescript@^3.3.4000:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.4000.tgz#76b0f89cfdbf97827e1112d64f283f1151d6adf0"
   integrity sha512-jjOcCZvpkl2+z7JFn0yBOoLQyLoIkNZAs/fYJkUG6VKy6zLPHJGfQJYFHzibB6GJaF/8QrcECtlQ5cpvRHSMEA==
 
+typescript@^3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.3.tgz#0eb320e4ace9b10eadf5bc6103286b0f8b7c224f"
+  integrity sha512-FFgHdPt4T/duxx6Ndf7hwgMZZjZpB+U0nMNGVCYPq0rEzWKjEDobm4J6yb3CS7naZ0yURFqdw9Gwc7UOh/P9oQ==
+
 uglify-js@3.4.x:
   version "3.4.10"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.4.10.tgz#9ad9563d8eb3acdfb8d38597d2af1d815f6a755f"
@@ -9133,10 +9138,15 @@ vue-custom-element@^3.2.5:
   resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.6.tgz#9e3f52eb5c5014c298cad731321ed64487fada0b"
   integrity sha512-tNWsax/Rq4Sr1QHj0pi4CWaBnAYfva75rlQg2fBKGja35+6AmdcZre/ztoiBWCSlSJ7APsMakG5R0A+GWBAc4Q==
 
-vue-gettext@^2.1.0, vue-gettext@^2.1.2:
+vue-gettext@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.2.tgz#b6b5160bed8ce61b6ead6adf5f4029ff04f57720"
   integrity sha512-issGZfHvGntflaoLd+46Ru305lWOVEG/0vTI7uB5zvq/4JVGoF7J/+DUrcYswowiCKpJluYqf6inILat2HNeRQ==
+
+vue-gettext@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.3.tgz#c9d9bda0fcc533f96f0ce0027ae3458c0afb5f27"
+  integrity sha512-eIrXC2iK3KWMu2GbHMX/maskOBkYkxNKdJ4OlTjKjIgj+U9R08fES/I1AUJXjO0squ0W+oFOMVZuVxlR9TBu1g==
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"
