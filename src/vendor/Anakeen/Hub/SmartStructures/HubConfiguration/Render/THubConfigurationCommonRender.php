@@ -22,7 +22,7 @@ trait THubConfigurationCommonRender
         );
         $options->account(HubConfigurationFields::hub_visibility_roles)->setDescription(
             "<p>Roles mandatory to display the hub element to the hub station</p>".
-            "<p>User account must have <b>one of these roles</b> to display the hub element</p>"
+            "<p>User account must have one of <b>these</b> roles to display the <b>hub element</b></p>"
         )->showEmptyContent("No roles needed to display hub element");
         $options->account(HubConfigurationFields::hub_execution_roles)
             ->setDescription("<p>Roles required to operate this hub element</p>".
