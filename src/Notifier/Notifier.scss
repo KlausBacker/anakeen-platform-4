@@ -62,7 +62,7 @@ $notice-color: #878787;
         }
 
         .notification-close {
-          color: $gray;
+          color: $white;
           margin-left: auto;
           cursor: pointer;
         }
@@ -71,7 +71,7 @@ $notice-color: #878787;
       .notification-message {
         word-break: break-word;
         font-size: 1.2rem;
-        color: $gray;
+        color: $white;
       }
     }
   }
@@ -81,8 +81,10 @@ $notice-color: #878787;
 
   .notification.error-notification {
     border-color:$error-color;
+    background-color: $error-color;
     .notification-icon {
-      color: $error-color;
+      color: $white;
+      background-color: $error-color;
     }
 
     .notification-icon::before {
@@ -92,7 +94,8 @@ $notice-color: #878787;
     .notification-content {
       .notification-content-header {
         .notification-title {
-          color: $error-color;
+          color: $white;
+          background-color: $error-color;
         }
       }
     }
@@ -100,8 +103,10 @@ $notice-color: #878787;
 
   .notification.warning-notification {
     border-color:$warning-color;
+    background-color: $warning-color;
     .notification-icon {
-      color: $warning-color;
+      color: $white;
+      background-color: $warning-color;
     }
 
     .notification-icon::before {
@@ -111,7 +116,8 @@ $notice-color: #878787;
     .notification-content {
       .notification-content-header {
         .notification-title {
-          color: $warning-color;
+          color: $white;
+          background-color: $warning-color;
         }
       }
     }
@@ -119,8 +125,10 @@ $notice-color: #878787;
 
   .notification.success-notification {
     border-color:$success-color;
+    background-color: $success-color;
     .notification-icon {
-      color: $success-color;
+      color: $white;
+      background-color: $success-color;
     }
 
     .notification-icon::before {
@@ -130,7 +138,8 @@ $notice-color: #878787;
     .notification-content {
       .notification-content-header {
         .notification-title {
-          color: $success-color;
+          color: $white;
+          background-color: $success-color;
         }
       }
     }
@@ -138,8 +147,10 @@ $notice-color: #878787;
 
   .notification.info-notification {
     border-color:$info-color;
+    background-color: $info-color;
     .notification-icon {
-      color: $info-color;
+      color: $white;
+      background-color: $info-color;
     }
 
     .notification-icon::before {
@@ -149,7 +160,8 @@ $notice-color: #878787;
     .notification-content {
       .notification-content-header {
         .notification-title {
-          color: $info-color;
+          color: $white;
+          background-color: $info-color;
         }
       }
     }
@@ -157,8 +169,10 @@ $notice-color: #878787;
 
   .notification.notice-notification {
     border-color:$notice-color;
+    background-color: $notice-color;
     .notification-icon {
-      color: $notice-color;
+      color: $white;
+      background-color: $notice-color;
     }
 
     .notification-icon::before {
@@ -168,7 +182,8 @@ $notice-color: #878787;
     .notification-content {
       .notification-content-header {
         .notification-title {
-          color: $notice-color;
+          color: $white;
+          background-color: $notice-color;
         }
       }
     }
