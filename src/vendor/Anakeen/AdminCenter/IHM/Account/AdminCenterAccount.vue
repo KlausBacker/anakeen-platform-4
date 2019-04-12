@@ -63,9 +63,10 @@
           <div class="admin-account-main-section">
             <header class="admin-account-header">
               <div class="admin-account-header__content">
-                  <kendo-button class="k-primary k-outline change-group-btn" @click="openChangeGroup"> Change parent group</kendo-button>
-                  <kendo-button class="k-primary k-outline create-user-btn" @click="createAccount('IUSER')"> Create user</kendo-button>
-                  <kendo-button class="k-primary k-outline create-group-btn" @click="createAccount('IGROUP')">Create sub group</kendo-button>
+                  <kendo-button class="k-primary change-group-btn" @click="openChangeGroup"> Change parent group</kendo-button>
+                  <kendo-button class="k-primary create-user-btn" @click="createAccount('IUSER')"> Create user</kendo-button>
+                  <kendo-button class="k-primary create-group-btn" @click="createAccount('IGROUP')">Create sub group</kendo-button>
+
               </div>
             </header>
             <section>
