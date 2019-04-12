@@ -110,14 +110,14 @@
 
 .accountManager_treeViewPart_wrapper
   .accountManager_treeViewPart_wrapper_content {
-  height: calc(100% - 6em);
+  height: 100%;
   width: 100%;
   overflow-y: auto;
 }
 
 .accountManager_contentPart_groupPart iframe,
 .accountManager_userPart iframe {
-  height: calc(100% - 3.8rem);
+  height: 100%;
   width: 100%;
 }
 
@@ -132,4 +132,16 @@
 }
 .apDocumentWrapper {
   height: 100px;
+}
+
+.tree-toolbar {
+  justify-content: center;
+}
+
+.account-user-grid {
+  .k-grid-content {
+    tr {
+      word-break: break-all;
+    }
+  }
 }
