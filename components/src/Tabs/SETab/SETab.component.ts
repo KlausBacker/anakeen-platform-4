@@ -60,6 +60,10 @@ export default class SETab extends Vue {
     return this.identifier || this.index;
   }
 
+  public get tabTitle() {
+    return this.elementTitle;
+  }
+
   public get tabNavItemList() {
     return `<a href="/api/v2/smart-elements/${this.paneName}/views/${this
       .viewId || "!defaultConsultation"}.html"
