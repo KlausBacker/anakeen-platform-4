@@ -29,7 +29,7 @@ $green-selected: #8ae234;
 
   &.hub-dock--animation {
     .hub-dock-entry-component {
-      opacity:0;
+      opacity: 0;
       animation: dock-opacities 2s;
     }
   }
@@ -43,8 +43,6 @@ $green-selected: #8ae234;
   .hub-dock-transition-wrapper {
     display: flex;
     flex: 1;
-
-
   }
 
   .hub-dock-header,
@@ -104,10 +102,6 @@ $green-selected: #8ae234;
 
   // Display border in function
   &.hub-dock--left {
-    .hub-dock-section + .hub-dock-section {
-      border-top: 1px solid rgba(230, 230, 230, 0.5);
-    }
-
     .hub-dock-entry-component {
       border-left: 3px solid transparent;
       &.entry-selected {
@@ -117,7 +111,6 @@ $green-selected: #8ae234;
   }
 
   &.hub-dock--right {
-
     // Set animation right from left
     align-items: flex-end;
     &.hub-dock--absolute {
@@ -130,10 +123,6 @@ $green-selected: #8ae234;
     .hub-dock-content-wrapper {
     }
 
-    .hub-dock-section + .hub-dock-section {
-      border-top: 1px solid rgba(230, 230, 230, 0.5);
-    }
-
     .hub-dock-entry-component {
       border-right: 3px solid transparent;
       &.entry-selected {
@@ -143,10 +132,6 @@ $green-selected: #8ae234;
   }
 
   &.hub-dock--top {
-    .hub-dock-section + .hub-dock-section {
-      border-left: 1px solid rgba(230, 230, 230, 0.5);
-    }
-
     .hub-dock-entry-component {
       border-top: 3px solid transparent;
       &.entry-selected {
@@ -156,10 +141,6 @@ $green-selected: #8ae234;
   }
 
   &.hub-dock--bottom {
-    .hub-dock-section + .hub-dock-section {
-      border-left: 1px solid rgba(230, 230, 230, 0.5);
-    }
-
     .hub-dock-entry-component {
       border-bottom: 3px solid transparent;
       &.entry-selected {
