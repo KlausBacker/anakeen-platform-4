@@ -88,6 +88,7 @@
           @blur="removeFocus"
           @click="onClickNavItem(pane, pane.paneName || index, $event)"
           @keydown="onKeydownNavItem(pane, $event)"
+          :title="pane.tabTitle || pane.label"
         >
           <vnodes
             v-if="pane.$slots.label"
