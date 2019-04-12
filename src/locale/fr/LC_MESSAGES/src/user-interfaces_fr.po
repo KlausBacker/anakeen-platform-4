@@ -47,15 +47,15 @@ msgstr "Accès interdit au compte"
 
 msgctxt "smart iuser"
 msgid "Account has been activated"
-msgstr ""
+msgstr "Le compte a été activé"
 
 msgctxt "smart iuser"
 msgid "Account has been deactivated"
-msgstr ""
+msgstr "Le compte a été désactivé"
 
 msgctxt "smart iuser"
 msgid "Account management"
-msgstr ""
+msgstr "Gestion de compte"
 
 msgctxt "smart iuser"
 msgid "Activate account"
@@ -76,7 +76,7 @@ msgstr "Chacun des textes contient"
 #, php-format
 msgctxt "authent"
 msgid "An email has been sent to user \"%s\""
-msgstr ""
+msgstr "Un courriel a été envoyé à l'utilisateur \"%s\""
 
 msgctxt "grid-component"
 msgid "Any values is after than or equal to"
@@ -298,11 +298,11 @@ msgstr ""
 
 msgctxt "smart exec"
 msgid "Execution failed"
-msgstr ""
+msgstr "L'exécution a échoué"
 
 msgctxt "smart exec"
 msgid "Execution succeeded"
-msgstr ""
+msgstr "Exécution réussie"
 
 msgctxt "ddui"
 msgid "Family View"
@@ -317,8 +317,8 @@ msgid "Goto next activity"
 msgstr "Passer à l'étape suivante"
 
 msgctxt "smart iuser"
-msgid "Group are be updated"
-msgstr ""
+msgid "Group has been updated"
+msgstr "Les groupes ont été mis à jour"
 
 msgctxt "UiMenu"
 msgid "Help"
