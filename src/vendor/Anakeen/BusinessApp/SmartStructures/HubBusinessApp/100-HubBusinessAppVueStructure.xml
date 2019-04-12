@@ -57,7 +57,7 @@
             <smart:enum name="HTML" label="Html template"/>
         </smart:enum-configuration>
         <smart:enum-configuration name="HBA_SUPPORT_LANG">
-            <smart:enum name="en_GB" label="English"/>
+            <smart:enum name="en_US" label="English"/>
             <smart:enum name="fr_FR" label="Français"/>
         </smart:enum-configuration>
     </smart:enumerates>
