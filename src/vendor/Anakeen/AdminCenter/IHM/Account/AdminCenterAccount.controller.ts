@@ -27,13 +27,13 @@ export default class AdminCenterAccountController extends Vue {
       collapsible: true,
       resizable: true,
       scrollable: false,
-      size: "30%"
+      size: "50%"
     },
     {
       collapsible: true,
       resizable: true,
       scrollable: false,
-      size: "70%"
+      size: "50%"
     }
   ];
   public panes: object[] = [
@@ -41,13 +41,13 @@ export default class AdminCenterAccountController extends Vue {
       collapsible: true,
       resizable: false,
       scrollable: false,
-      size: "15%"
+      size: "20%"
     },
     {
       collapsible: true,
       resizable: false,
       scrollable: false,
-      size: "85%"
+      size: "80%"
     }
   ];
   public $refs!: {
@@ -396,12 +396,9 @@ export default class AdminCenterAccountController extends Vue {
   public updateGroupSelected(selectedGroupId) {
     this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
     if (selectedGroupId && selectedGroupId !== "@users") {
-      $("#groupCreateToolbar").text("Create sub group");
       this.selectedGroupDocumentId = selectedGroupId;
       this.displayGroupDocument = true;
       return;
-    } else if (selectedGroupId === "@users") {
-      $("#groupCreateToolbar").text("Create group");
     }
     this.displayGroupDocument = false;
   }
