@@ -160,7 +160,7 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         return [
             [
                 HubBusinessAppFields::hba_title => "",
-                HubBusinessAppFields::hba_language => "en_GB"
+                HubBusinessAppFields::hba_language => "en_US"
             ],
             [
                 HubBusinessAppFields::hba_title => "",
@@ -193,7 +193,7 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
                     $src = 'data: '.$fileInfo["mime_s"].';base64,'.$imgValue;
                     $this->setValue(
                         HubBusinessAppFields::hba_icon,
-                        "<img src='" .$src. "'/>"
+                        "<img src='" .$src. "' width='32' height='32'/>"
                     );
                 }
                 break;
