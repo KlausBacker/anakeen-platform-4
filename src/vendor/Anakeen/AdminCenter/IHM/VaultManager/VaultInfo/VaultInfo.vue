@@ -88,22 +88,22 @@
 
                     </kendo-arcgauge>
                 </div>
-                <div class="disk-chart">
-                    <kendo-chart ref="chart"
-                                 class="vault-chart"
-                                 :title-text="'Vault disk file repartition'"
-                                 :title-position="'top'"
-                                 :chart-area-background="''"
-                                 :legend-visible="false"
-                                 :series="getSeries"
-                                 :series-defaults-labels-visible="true"
-                                 :series-defaults-labels-position="'outsideEnd'"
-                                 :series-defaults-labels-background="'transparent'"
-                                 :series-defaults-labels-template="labelTemplate"
-                                 :tooltip-visible="false"
-                                 :theme="'sass'">
-                    </kendo-chart>
-                </div>
+            </div>
+            <div class="disk-chart">
+                <kendo-chart ref="chart"
+                             class="vault-chart"
+                             :title-text="'Vault disk file repartition'"
+                             :title-position="'top'"
+                             :chart-area-background="''"
+                             :legend-visible="false"
+                             :series="getSeries"
+                             :series-defaults-labels-visible="true"
+                             :series-defaults-labels-position="'outsideEnd'"
+                             :series-defaults-labels-background="'transparent'"
+                             :series-defaults-labels-template="labelTemplate"
+                             :tooltip-visible="false"
+                             :theme="'sass'">
+                </kendo-chart>
             </div>
         </div>
         <div ref="movePathForm" class="vault-move-form" style="display: none">
