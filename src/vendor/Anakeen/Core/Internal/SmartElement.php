@@ -6474,7 +6474,7 @@ create unique index i_docir on doc(initid, revision);";
                     if ($oattr->type == "array") {
                         if ($method) {
                             $values = $dval;
-                            if (is_string($values) && $values[0] === ':') {
+                            if (is_string($values) && strpos($values, '::') !== false) {
                                 $values = $this->applyMethod($dval, null);
                                 if ($values === null) {
                                     throw new \Anakeen\Exception("DFLT0007", $aid, $dval, $this->fromname);
