@@ -8,7 +8,7 @@
         localStorageKey="account-manager-tree-splitter"
       >
         <template slot="left">
-          <div ref="treeViewPart">
+          <div ref="treeViewPart" class="tree-view-part">
             <div class="accountManager_treeViewPart_wrapper">
               <div class="accountManager_treeViewPart_wrapper_topPart">
                 <div
