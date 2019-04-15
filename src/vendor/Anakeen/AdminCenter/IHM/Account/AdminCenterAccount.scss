@@ -58,11 +58,6 @@
   height: 100%;
 }
 
-.accountManager {
-  height: 100%;
-  width: 100%;
-}
-
 .accountManager_wrapper {
   height: 100%;
 }
@@ -132,6 +127,7 @@
 .ank-se-parent {
   height: 100%;
   width: 100%;
+  overflow-y: hidden;
 }
 .apDocumentWrapper {
   height: 100px;

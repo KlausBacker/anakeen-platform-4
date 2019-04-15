@@ -1,5 +1,4 @@
 <template>
-  <div class="accountManager">
     <div class="accountManager_wrapper" ref="accountManager_wrapper">
       <ank-splitter
         ref="accountTreeSplitter"
@@ -133,7 +132,6 @@
         </template>
       </ank-splitter>
     </div>
-  </div>
 </template>
 <style lang="scss">
 @import "./AdminCenterAccount.scss";
