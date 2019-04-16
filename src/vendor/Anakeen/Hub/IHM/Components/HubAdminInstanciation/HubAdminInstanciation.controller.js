@@ -6,6 +6,7 @@ import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import AnkSEList from "@anakeen/user-interfaces/components/lib/AnkSEList";
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
+import AnkHubAdmin from "../HubAdmin/HubAdmin.vue";
 
 Vue.use(ButtonsInstaller);
 
@@ -14,7 +15,8 @@ export default {
   components: {
     "ank-smart-element": AnkSmartElement,
     "ank-se-list": AnkSEList,
-    "ank-splitter": AnkSplitter
+    "ank-splitter": AnkSplitter,
+    "ank-hub-admin": AnkHubAdmin
   },
   data() {
     return {
@@ -50,7 +52,28 @@ export default {
       let elementID = e.detail[0].initid;
       this.selectedHub = elementID;
       this.displayConfig = true;
-
+      this.$nextTick(() => {
+        const element = this.$refs.ankHubAdmin.$refs.smartConfig;
+        if (element) {
+          if (element.isLoaded()) {
+            element.addEventListener("afterSave", () => {
+              this.$refs.hubInstanciationList.refreshList();
+            });
+            element.addEventListener("afterDelete", () => {
+              this.$refs.hubInstanciationList.refreshList();
+            });
+          } else {
+            element.$on("documentLoaded", () => {
+              element.addEventListener("afterSave", () => {
+                this.$refs.hubInstanciationList.refreshList();
+              });
+              element.addEventListener("afterDelete", () => {
+                this.$refs.hubInstanciationList.refreshList();
+              });
+            });
+          }
+        }
+      });
       this.$refs.hubInstanciationSplitter.disableEmptyContent();
     },
 
@@ -59,12 +82,32 @@ export default {
 
       this.$nextTick(() => {
         if (this.$refs.instanceConfig.isLoaded()) {
+          this.$refs.instanceConfig.addEventListener("afterSave", () => {
+            if (this.$refs.hubInstanciationList) {
+              this.$refs.hubInstanciationList.refreshList();
+            }
+          });
+          this.$refs.instanceConfig.addEventListener("afterDelete", () => {
+            if (this.$refs.hubInstanciationList) {
+              this.$refs.hubInstanciationList.refreshList();
+            }
+          });
           this.$refs.instanceConfig.fetchSmartElement({
             initid: initid,
             viewId: viewId
           });
         } else {
           this.$refs.instanceConfig.$once("documentLoaded", () => {
+            this.$refs.instanceConfig.addEventListener("afterSave", () => {
+              if (this.$refs.hubInstanciationList) {
+                this.$refs.hubInstanciationList.refreshList();
+              }
+            });
+            this.$refs.instanceConfig.addEventListener("afterDelete", () => {
+              if (this.$refs.hubInstanciationList) {
+                this.$refs.hubInstanciationList.refreshList();
+              }
+            });
             this.$refs.instanceConfig.fetchSmartElement({
               initid: initid,
               viewId: viewId
@@ -93,76 +136,70 @@ export default {
         default:
           break;
       }
-    },
-    actionClick(e) {
-      e.preventDefault();
-      if (e.data.type === "configure") {
-        this.configureStation(e.data.row.id);
-      } else {
-        this.$refs.hubInstanciationSplitter.disableEmptyContent();
-        this.$nextTick(() => {
-          if (
-            this.$refs.instanceConfig &&
-            this.$refs.instanceConfig.isLoaded()
-          ) {
-            this.$refs.instanceConfig.addEventListener("afterSave", () => {
-              if (
-                this.$refs.hubInstanciationGrid &&
-                this.$refs.hubInstanciationGrid.dataSource
-              ) {
-                this.$refs.hubInstanciationGrid.kendoGrid.dataSource.read();
-              }
-            });
-            this.$refs.instanceConfig.addEventListener("afterDelete", () => {
-              if (
-                this.$refs.hubInstanciationGrid &&
-                this.$refs.hubInstanciationGrid.dataSource
-              ) {
-                this.$refs.hubInstanciationGrid.kendoGrid.dataSource.read();
-              }
-            });
-            switch (e.data.type) {
-              case "consult":
-                this.openConfig(e.data.row.id);
-                break;
-              case "edit":
-                this.modifyConfig(e.data.row.id);
-                break;
-              default:
-                break;
-            }
-          } else {
-            this.$refs.instanceConfig.$once("documentLoaded", () => {
-              this.$refs.instanceConfig.addEventListener("afterSave", () => {
-                if (
-                  this.$refs.hubInstanciationGrid &&
-                  this.$refs.hubInstanciationGrid.dataSource
-                ) {
-                  this.$refs.hubInstanciationGrid.kendoGrid.dataSource.read();
-                }
-              });
-              this.$refs.instanceConfig.addEventListener("afterDelete", () => {
-                if (
-                  this.$refs.hubInstanciationGrid &&
-                  this.$refs.hubInstanciationGrid.dataSource
-                ) {
-                  this.$refs.hubInstanciationGrid.kendoGrid.dataSource.read();
-                }
-              });
-              switch (e.data.type) {
-                case "consult":
-                  this.openConfig(e.data.row.id);
-                  break;
-                case "edit":
-                  this.modifyConfig(e.data.row.id);
-                  break;
-                default:
-                  break;
-              }
-            });
-          }
-        });
-      }
     }
+    // },
+    // actionClick(e) {
+    //   e.preventDefault();
+    //   if (e.data.type === "configure") {
+    //     this.configureStation(e.data.row.id);
+    //   } else {
+    //     this.$refs.hubInstanciationSplitter.disableEmptyContent();
+    //     this.$nextTick(() => {
+    //       console.log("coucou");
+    //       if (this.$refs.instanceConfig) {
+    //         console.log("ofejojofeojg");
+    //         if (this.$refs.instanceConfig.isLoaded()) {
+    //           this.$refs.instanceConfig.addEventListener("afterSave", () => {
+    //             console.log("coucou");
+    //             if (this.$refs.hubInstanciationList) {
+    //               this.$refs.hubInstanciationList.refreshList();
+    //             }
+    //           });
+    //           this.$refs.instanceConfig.addEventListener("afterDelete", () => {
+    //             if (this.$refs.hubInstanciationList) {
+    //               this.$refs.hubInstanciationList.refreshList();
+    //             }
+    //           });
+    //           switch (e.data.type) {
+    //             case "consult":
+    //               this.openConfig(e.data.row.id);
+    //               break;
+    //             case "edit":
+    //               this.modifyConfig(e.data.row.id);
+    //               break;
+    //             default:
+    //               break;
+    //           }
+    //         } else {
+    //           this.$refs.instanceConfig.$once("documentLoaded", () => {
+    //             this.$refs.instanceConfig.addEventListener("afterSave", () => {
+    //               console.log("coucou");
+    //               if (this.$refs.hubInstanciationList) {
+    //                 this.$refs.hubInstanciationList.refreshList();
+    //               }
+    //             });
+    //             this.$refs.instanceConfig.addEventListener(
+    //               "afterDelete",
+    //               () => {
+    //                 if (this.$refs.hubInstanciationList) {
+    //                   this.$refs.hubInstanciationList.refreshList();
+    //                 }
+    //               }
+    //             );
+    //             switch (e.data.type) {
+    //               case "consult":
+    //                 this.openConfig(e.data.row.id);
+    //                 break;
+    //               case "edit":
+    //                 this.modifyConfig(e.data.row.id);
+    //                 break;
+    //               default:
+    //                 break;
+    //             }
+    //           });
+    //         }
+    //       }
+    //     });
+    //   }
   }
 };
