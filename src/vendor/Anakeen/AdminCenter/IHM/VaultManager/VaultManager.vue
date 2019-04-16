@@ -22,16 +22,18 @@
         <div ref="createVaultForm" class="vault-manager-form" style="display: none">
             <input ref="newPath" class="k-textbox" placeholder="Server path">
             <div class="vault-resize-inputs">
-                <input ref="newSize" class="k-textbox" placeholder="Logical max size">
+                <div class="vault-resize-inputs__content">
+                    <input ref="newSize" class="k-textbox" placeholder="Logical max size">
 
-                <kendo-dropdownlist
-                        ref="kNewSizeUnit"
-                        :data-source="sizeOptions"
-                        value="1048576"
-                        :data-text-field="'text'"
-                        :data-value-field="'value'"
-                        :options-label="'Select Size...'">
-                </kendo-dropdownlist>
+                    <kendo-dropdownlist
+                            ref="kNewSizeUnit"
+                            :data-source="sizeOptions"
+                            value="1048576"
+                            :data-text-field="'text'"
+                            :data-value-field="'value'"
+                            :options-label="'Select Size...'">
+                    </kendo-dropdownlist>
+                </div>
             </div>
             <div class="vault-buttons">
                 <kendo-button
