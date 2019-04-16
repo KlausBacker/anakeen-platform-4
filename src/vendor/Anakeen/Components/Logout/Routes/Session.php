@@ -3,6 +3,7 @@
 namespace Anakeen\Components\Logout\Routes;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Router\ApiV2Response;
 
 /**
  * Class Session
@@ -24,6 +25,6 @@ class Session
         $jsonData["firstName"] = $currentUser->firstname;
         $jsonData["lastName"] = $currentUser->lastname;
 
-        return $response->withJson($jsonData);
+        return ApiV2Response::withData($response, $jsonData);
     }
 }
