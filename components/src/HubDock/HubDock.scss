@@ -16,7 +16,15 @@ $green-selected: #8ae234;
   background-color: $background-color;
   display: flex;
 
-  &.hub-dock--collapsed {
+  .hub-dock-section {
+   // flex:1;
+
+  }
+  .hub-dock-content {
+    flex:1;
+  }
+
+    &.hub-dock--collapsed {
     .hub-dock-transition-wrapper {
       transition: width $transitionDelay ease, height $transitionDelay ease;
     }
@@ -50,6 +58,12 @@ $green-selected: #8ae234;
   .hub-dock-footer {
     display: flex;
   }
+  .hub-dock-content-outside {
+    flex: 1;
+    flex-direction: inherit;
+    justify-content: space-between;
+
+  }
 
   .hub-dock-content {
     flex: 1;
@@ -74,8 +88,9 @@ $green-selected: #8ae234;
       }
     }
 
+
     flex-direction: column;
-    height: 100%;
+    flex: 1;
     .hub-dock-content-wrapper {
       flex-direction: inherit;
       .hub-dock-transition-wrapper {

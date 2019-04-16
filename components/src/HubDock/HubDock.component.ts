@@ -1,10 +1,13 @@
 /* eslint-disable*/
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import Vuebar from "vuebar";
 import { DockPosition } from "../HubStation/HubStationsTypes";
 import {
   dockEntryEvents,
   HUB_DOCK_ENTRY_NAME
 } from "./HubDockEntry/HubDockEntry.component";
+
+Vue.use(Vuebar);
 
 @Component({
   provide() {
@@ -93,6 +96,7 @@ export default class HubDock extends Vue {
     }
     return result;
   }
+  public $vuebar: any;
 
   @Prop({ default: DockPosition.LEFT }) public position!: DockPosition;
   @Prop({ default: true }) public expandable!: boolean;
@@ -123,6 +127,7 @@ export default class HubDock extends Vue {
 
   public $refs!: {
     dockEl: HTMLElement;
+    dockContent: HTMLElement;
   };
   protected overTimer: number = -1;
   @Watch("collapsed")
@@ -157,6 +162,13 @@ export default class HubDock extends Vue {
         });
       }
     });
+
+    if (
+      this.position === DockPosition.LEFT ||
+      this.position === DockPosition.RIGHT
+    ) {
+      this.$vuebar.initScrollbar(this.$refs.dockContent, {});
+    }
   }
 
   public expand() {
@@ -212,13 +224,18 @@ export default class HubDock extends Vue {
 
   protected onOverDock() {
     if (this.expandOnHover && this.collapsed && this.overTimer === -1) {
-      this.overTimer = window.setTimeout(() => {
-        if (this.superposeOnHover && !this.superposeDock) {
-          this.superposable = true;
-          this.setDockWrapperAbsoluteSize();
-        }
-        this.expand();
-      }, this.hoverDelay);
+      if (
+        this.position === DockPosition.LEFT ||
+        this.position === DockPosition.RIGHT
+      ) {
+        this.overTimer = window.setTimeout(() => {
+          if (this.superposeOnHover && !this.superposeDock) {
+            this.superposable = true;
+            this.setDockWrapperAbsoluteSize();
+          }
+          this.expand();
+        }, this.hoverDelay);
+      }
     }
   }
 

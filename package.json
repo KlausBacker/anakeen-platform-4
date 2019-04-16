@@ -76,6 +76,7 @@
     "ts-loader": "^5.3.3",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
+    "vuebar": "^0.0.20",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2"
   },
