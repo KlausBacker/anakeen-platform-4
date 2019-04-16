@@ -15,7 +15,7 @@
                 <smart:field-set name="hub_instance_label_frame" type="frame" label="Label" access="ReadWrite">
                     <smart:field-set name="hub_instance_titles" type="array" label="Hub Station Titles"
                                      access="ReadWrite">
-                        <smart:field-text name="hub_instance_title" label="Title" access="ReadWrite"/>
+                        <smart:field-text name="hub_instance_title" label="Title" access="ReadWrite" needed="true"/>
                         <smart:field-text name="hub_instance_language" label="Language"
                                           access="Read"/>
                     </smart:field-set>
