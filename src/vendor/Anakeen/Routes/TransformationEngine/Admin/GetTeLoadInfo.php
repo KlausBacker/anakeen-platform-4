@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\TransformationEngine\Admin;
 
+use Anakeen\Exception;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\TransformationEngine\Client;
 
@@ -39,7 +40,12 @@ class GetTeLoadInfo
     public function getTeLoadInfo()
     {
         $te = new Client();
-        $te->retrieveServerInfo($info, true);
+        $err=$te->retrieveServerInfo($info, true);
+        if ($err) {
+            $e=new Exception("Te Error");
+            $e->setUserMessage($err);
+            throw $e;
+        }
         return $info;
     }
 }

@@ -170,20 +170,31 @@ export default class TeSupervision extends Vue {
           pageSize: 25,
           schema: {
             data: response => {
-              return response.data.tasks;
+              return response.data.data.tasks;
             },
             model: {
               id: "tid"
             },
-            total: "data.total"
+            total: "data.data.total"
           },
 
           serverFiltering: true,
           serverPaging: true,
           serverSorting: true,
           transport: {
-            read: {
-              url: `/api/admin/transformationengine/tasks/`
+            read: options => {
+              this.$http
+                .get(`/api/admin/transformationengine/tasks/`, {
+                  params: options.data
+                })
+                .then(result => {
+                  // notify the data source that the request succeeded
+                  options.success(result);
+                })
+                .catch(result => {
+                  // notify the data source that the request failed
+                  options.error(result);
+                });
             }
           }
         },
