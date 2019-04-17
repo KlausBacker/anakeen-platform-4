@@ -52,11 +52,11 @@ class IuserChangeGroup extends DefaultConfigEditRender
 
     public function getMessages(\Anakeen\Core\Internal\SmartElement $userAccount)
     {
-        $data=$this->customClientData;
-        $msg=parent::getMessages($userAccount);
+        $data = $this->customClientData;
+        $msg = parent::getMessages($userAccount);
         if (isset($data["parentGroups"])) {
             $newGroups = array_keys($data["parentGroups"]);
-            /* @var Iuser $userAccount  */
+            /* @var Iuser $userAccount */
             $account = $userAccount->getAccount();
             $oldGroups = $account->getGroupsId();
             $groupsToAdd = array_diff($newGroups, $oldGroups);
@@ -65,7 +65,7 @@ class IuserChangeGroup extends DefaultConfigEditRender
             array_walk($groupsToDelete, function ($currentGroupId) use ($currentUserSEId) {
                 $group = new \Anakeen\Core\Account("", $currentGroupId);
                 $groupSE = SmartElementManager::getDocument($group->fid);
-                /* @var \SmartStructure\Igroup $groupSE  */
+                /* @var \SmartStructure\Igroup $groupSE */
                 $groupSE->removeDocument($currentUserSEId);
             });
             array_walk($groupsToAdd, function ($currentGroupId) use ($currentUserSEId) {
@@ -75,9 +75,9 @@ class IuserChangeGroup extends DefaultConfigEditRender
                 $groupSE->insertDocument($currentUserSEId);
             });
 
-          //  $userAccount->updateFromSystem();
+            //  $userAccount->updateFromSystem();
             $userAccount->store();
-            $msg[]=new ApiMessage(___("Group are be updated", "smart iuser"), ApiMessage::SUCCESS);
+            $msg[] = new ApiMessage(sprintf(___("Groups of \"%s\" has been updated", "smart iuser"), $userAccount->getTitle()), ApiMessage::SUCCESS);
         }
         return $msg;
     }
