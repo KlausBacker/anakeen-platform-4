@@ -19,6 +19,7 @@
     "@commitlint/config-conventional": "^7.3.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-dropdowns-vue-wrapper": "^2019.1.220",
     "@progress/kendo-inputs-vue-wrapper": "^2019.1.220",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@progress/kendo-ui": "2019.1.320",

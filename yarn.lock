@@ -72,10 +72,21 @@
     vue-property-decorator "^8.1.0"
     vuex "^3.1.0"
 
-"@anakeen/internal-components@^1.0.1-dev20190322160440", "@anakeen/internal-components@^1.0.1-dev20190326133450":
+"@anakeen/internal-components@^1.0.1-dev20190322160440":
   version "1.0.1-dev20190328164754"
   resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190328164754.tgz#820c92157d0a70599e17075341f3b6762d4fea55"
   integrity sha512-dVKsH+M8Hf9UW3p43YJxhui84wdIO7JCNwaVnfFVcVki/i9LjqwiL1/aiWmOlqQdFk2OB4mjYSPfhPE78kHOCA==
+  dependencies:
+    "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
+    axios "^0.18.0"
+    core-js "3.0.0"
+    vue-class-component "^7.0.2"
+    vue-property-decorator "^8.1.0"
+
+"@anakeen/internal-components@^1.0.1-dev20190326133450":
+  version "1.0.1-dev20190412123917"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190412123917.tgz#bb6e98782c627684a60d296f65aa0867cdc2a756"
+  integrity sha512-5lyFYkMaSUI7a6fneh9HdpGBFDtP9Mnaw3zHLameRqoCxNk280RAF7DubZMX4NF66G2DJUXdbqw6KF0+LldsTA==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     axios "^0.18.0"
@@ -94,9 +105,9 @@
     roboto-fontface "^0.10.0"
 
 "@anakeen/user-interfaces@^2.0.0-dev20190326115253":
-  version "2.0.0-dev20190326115253"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190326115253.tgz#b725057048c56d601b77075be321351e69638c56"
-  integrity sha512-nI+6NrfPcfGaZ1Tq4Ma/nWbSY+NJewIhM3eRpDZSiNfJQ2qzvCG7QVRSIL6SAnFHRCB0JZdBoiOLYpE31ekOoA==
+  version "2.0.0-dev20190417071208"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190417071208.tgz#a682680374f4bfa70aa90739e053f476bae82485"
+  integrity sha512-Q66sg7FULVSlITYn5lVyx6fsfdTHiKXSJdvalHPr8PEffgYrqEWbrnHugClobVrRXMz8Pk6YnJZkDjJ1Y57+Dw==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
@@ -919,6 +930,13 @@
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
+"@progress/kendo-dropdowns-vue-wrapper@^2019.1.220":
+  version "2019.1.220"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-dropdowns-vue-wrapper/-/kendo-dropdowns-vue-wrapper-2019.1.220.tgz#5913cfb138fd5d2b75b428d04b1235ac645d2a81"
+  integrity sha512-hHphqM2Z5T9WjwE4C0DpxX3Ob72o+aOpr6Z6bgfPrRx19yyFtiKGR6R3FQsnf8d4AB2YV9KNKVmAbyH3cNkdlg==
+  dependencies:
+    "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
+
 "@progress/kendo-inputs-vue-wrapper@^2019.1.220":
   version "2019.1.220"
   resolved "https://registry.yarnpkg.com/@progress/kendo-inputs-vue-wrapper/-/kendo-inputs-vue-wrapper-2019.1.220.tgz#8900a5de4e137978f32584d72a0b73dba0f52f15"
@@ -934,16 +952,16 @@
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
 "@progress/kendo-theme-bootstrap@^3.2.1", "@progress/kendo-theme-bootstrap@^3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.2.3.tgz#405b3aa4af4c8754f56b88ef99c93818d9383c7b"
-  integrity sha512-NJfgIWQVAoiUmWiRbSvkjZR+GdzmtEgRoAzvSl2L03L1S0PsBXh72XjqUOnzZSqhH8Ljw0C4Dh196qKmegkFJg==
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.3.1.tgz#e730d4d3dad8bf82a8720ebbd46d30bc3c854a45"
+  integrity sha512-l43dqJHEILy8EsUWjBpWZG++4QofpLKFvMYToXoGU/RSGPhk9uboxYin6J/VdMeURuWN1R4pSRzqoMIgcy94zg==
   dependencies:
-    "@progress/kendo-theme-default" "^3.4.0"
+    "@progress/kendo-theme-default" "^3.5.1"
 
-"@progress/kendo-theme-default@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.4.0.tgz#bcfffb35c07aa3fdc6242bbbf361f6bf7cfe4cb3"
-  integrity sha512-Sij/q1f2ppWQo3IEsElXC7Pi+YJhLcEURSNk3arNHFuKeGkluMeESX1BNAFgo1SHlC++owvZasOwntH9Wl0sew==
+"@progress/kendo-theme-default@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.5.1.tgz#2f923a33dbfea50b5729fe481c407940f14b2e1a"
+  integrity sha512-S2Jts5/7ns3IU+xCSB2zPKz01BMp/VbiL4Tw+pkb7/eF/aoTbjRoZS4IzvJrqZOLZ6aVybrFCDJZqDRZcQNIuw==
 
 "@progress/kendo-ui@2019.1.320":
   version "2019.1.320"
@@ -977,9 +995,9 @@
   integrity sha512-auXcoS/pc39onGyf6fr2V3J3BEHUqH0a1Sa1psuGrVkCat+2D592DA7hdXY73lwCUyhGPzkf0lrcE5jH0OFeJg==
 
 "@types/node@*":
-  version "11.11.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.11.3.tgz#7c6b0f8eaf16ae530795de2ad1b85d34bf2f5c58"
-  integrity sha512-wp6IOGu1lxsfnrD+5mX6qwSwWuqsdkKKxTN4aQc4wByHAKZJf9/D4KXPQ1POUjEbnCP5LMggB0OEFNY9OTsMqg==
+  version "11.13.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.4.tgz#f83ec3c3e05b174b7241fadeb6688267fe5b22ca"
+  integrity sha512-+rabAZZ3Yn7tF/XPGHupKIL5EcAbrLxnTr/hgQICxbeuAfWtT0UZSfULE+ndusckBItcv4o6ZeOJplQikVcLvQ==
 
 "@types/q@^1.5.1":
   version "1.5.1"
@@ -1893,7 +1911,12 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.1.1, bluebird@^3.5.3:
+bluebird@^3.1.1:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.4.tgz#d6cc661595de30d5b3af5fcedd3c0b3ef6ec5714"
+  integrity sha512-FG+nFEZChJrbQ9tIccIfZJBz3J7mLrAhxakAbnrJWn8d7aKOC+LWifa0G+p4ZqKp4y13T7juYvdhq9NzKdsrjw==
+
+bluebird@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
   integrity sha512-/qKPUQlaW1OyR51WeCPBvRnAlnZFUJkCSG5HzGnuIqhgyJtF+T94lFnn33eiazjRm2LAHVy2guNnaq48X9SJuw==
@@ -2304,12 +2327,12 @@ chardet@^0.7.0:
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
 cheerio@^1.0.0-rc.2:
-  version "1.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.2.tgz#4b9f53a81b27e4d5dac31c0ffd0cfa03cc6830db"
-  integrity sha1-S59TqBsn5NXawxwP/Qz6A8xoMNs=
+  version "1.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.3.tgz#094636d425b2e9c0f4eb91a46c05630c9a1a8bf6"
+  integrity sha512-0td5ijfUPuubwLUu0OBoe98gZj8C/AA+RW3v67GPlGOrvxWjZmBXiBCRU+I8VEiNyJzjth40POfHiz2RB3gImA==
   dependencies:
     css-select "~1.2.0"
-    dom-serializer "~0.1.0"
+    dom-serializer "~0.1.1"
     entities "~1.1.1"
     htmlparser2 "^3.9.1"
     lodash "^4.15.0"
@@ -2741,7 +2764,12 @@ core-js-pure@3.0.0:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.0.0.tgz#a5679adb4875427c8c0488afc93e6f5b7125859b"
   integrity sha512-yPiS3fQd842RZDgo/TAKGgS0f3p2nxssF1H65DIZvZv0Od5CygP8puHXn3IQiM/39VAvgCbdaMQpresrbGgt9g==
 
-core-js@3, core-js@3.0.0, core-js@^3.0.0:
+core-js@3:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.0.1.tgz#1343182634298f7f38622f95e73f54e48ddf4738"
+  integrity sha512-sco40rF+2KlE0ROMvydjkrVMMG1vYilP2ALoRXcYR4obqbYIuV3Bg+51GEDW+HF8n7NRA+iaA4qD0nD9lo9mew==
+
+core-js@3.0.0, core-js@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.0.0.tgz#a8dbfa978d29bfc263bfb66c556d0ca924c28957"
   integrity sha512-WBmxlgH2122EzEJ6GH8o9L/FeoUKxxxZ6q6VUxoTlsE4EvbTWKJb447eyVxTEuq0LpXjlq/kCB2qgBvsYRkLvQ==
@@ -3310,7 +3338,7 @@ dom-converter@^0.2:
   dependencies:
     utila "~0.4"
 
-dom-serializer@0, dom-serializer@~0.1.0:
+dom-serializer@0, dom-serializer@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-0.1.1.tgz#1ec4059e284babed36eec2941d4a970a189ce7c0"
   integrity sha512-l0IU0pPzLWSHBcieZbpOKgkIn3ts3vAh7ZuFyXNwJxJXk/c4Gwj9xaTJwIDVQCXawWD0qb3IzMGH5rglQaO0XA==
@@ -6843,9 +6871,9 @@ pofile@^1.0.10:
   integrity sha512-Vy9eH1dRD9wHjYt/QqXcTz+RnX/zg53xK+KljFSX30PvdDMb2z+c6uDUeblUGqqJgz3QFsdlA0IJvHziPmWtQg==
 
 popper.js@^1.14.7:
-  version "1.14.7"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.7.tgz#e31ec06cfac6a97a53280c3e55e4e0c860e7738e"
-  integrity sha512-4q1hNvoUre/8srWsH7hnoSJ5xVmIL4qgz+s4qf2TnJIMyZFUFMGH+9vE7mXynAlHSZ/NdTmmow86muD0myUkVQ==
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
+  integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
 
 portfinder@^1.0.9:
   version "1.0.20"
@@ -7208,7 +7236,12 @@ prettier@1.16.3:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.3.tgz#8c62168453badef702f34b45b6ee899574a6a65d"
   integrity sha512-kn/GU6SMRYPxUakNXhpP0EedT/KmaPzr0H5lIsDogrykbaxOpOfAFfk5XA7DZrJyMAv1wlMV3CPcZruGXVVUZw==
 
-prettier@^1.13.0, prettier@^1.16.1:
+prettier@^1.13.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.17.0.tgz#53b303676eed22cc14a9f0cec09b477b3026c008"
+  integrity sha512-sXe5lSt2WQlCbydGETgfm1YBShgOX4HxQkFPvbxkcwgDvGDeqVau8h+12+lmSVlP3rHPz0oavfddSZg/q+Szjw==
+
+prettier@^1.16.1:
   version "1.16.4"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.4.tgz#73e37e73e018ad2db9c76742e2647e21790c9717"
   integrity sha512-ZzWuos7TI5CKUeQAtFd6Zhm2s6EpAD/ZLApIhsF9pRvRtM1RFo61dM/4MSRUA0SuLugA/zgrZD8m0BaY46Og7g==
@@ -7591,10 +7624,19 @@ read-pkg@^4.0.1:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-"readable-stream@2 || 3", readable-stream@^3.0.1, readable-stream@^3.0.6, readable-stream@^3.1.1:
+"readable-stream@2 || 3", readable-stream@^3.0.1, readable-stream@^3.0.6:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.2.0.tgz#de17f229864c120a9f56945756e4f32c4045245d"
   integrity sha512-RV20kLjdmpZuTF1INEb9IA3L68Nmi+Ri7ppZqo78wj//Pn62fCoJyV9zalccNzDD/OuJpMG4f+pfMl8+L6QdGw==
+  dependencies:
+    inherits "^2.0.3"
+    string_decoder "^1.1.1"
+    util-deprecate "^1.0.1"
+
+readable-stream@^3.1.1:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.3.0.tgz#cb8011aad002eb717bf040291feba8569c986fb9"
+  integrity sha512-EsI+s3k3XsW+fU8fQACLN59ky34AZ14LoeVZpYwmZvldCFo0r0gnelwF2TcMjLor/BTL5aDJVBMkss0dthToPw==
   dependencies:
     inherits "^2.0.3"
     string_decoder "^1.1.1"
@@ -9360,7 +9402,12 @@ vue-custom-element@^3.2.5:
   resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.6.tgz#9e3f52eb5c5014c298cad731321ed64487fada0b"
   integrity sha512-tNWsax/Rq4Sr1QHj0pi4CWaBnAYfva75rlQg2fBKGja35+6AmdcZre/ztoiBWCSlSJ7APsMakG5R0A+GWBAc4Q==
 
-vue-gettext@^2.1.0, vue-gettext@^2.1.2:
+vue-gettext@^2.1.0:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.3.tgz#c9d9bda0fcc533f96f0ce0027ae3458c0afb5f27"
+  integrity sha512-eIrXC2iK3KWMu2GbHMX/maskOBkYkxNKdJ4OlTjKjIgj+U9R08fES/I1AUJXjO0squ0W+oFOMVZuVxlR9TBu1g==
+
+vue-gettext@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.2.tgz#b6b5160bed8ce61b6ead6adf5f4029ff04f57720"
   integrity sha512-issGZfHvGntflaoLd+46Ru305lWOVEG/0vTI7uB5zvq/4JVGoF7J/+DUrcYswowiCKpJluYqf6inILat2HNeRQ==

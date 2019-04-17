@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\TransformationEngine\Admin;
 
+use Anakeen\Exception;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\TransformationEngine\Client;
 use Anakeen\Ui\DataSource;
@@ -67,7 +68,12 @@ class GetTeTasks
     public function getTetask()
     {
         $te = new Client();
-        $te->retrieveTasks($task, $this->start, $this->slice, "cdate", "desc", $this->filters);
+        $err=$te->retrieveTasks($task, $this->start, $this->slice, "cdate", "desc", $this->filters);
+        if ($err) {
+            $e=new Exception("Te Error");
+            $e->setUserMessage($err);
+            throw $e;
+        }
 
         return $task;
     }

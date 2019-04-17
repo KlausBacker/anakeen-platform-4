@@ -1,9 +1,11 @@
 import { ChartInstaller, KendoChart } from "@progress/kendo-charts-vue-wrapper";
-
+import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import "@progress/kendo-ui/js/dataviz/chart/chart";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 Vue.use(ChartInstaller);
+Vue.use(DropdownsInstaller);
+
 // noinspection JSUnusedGlobalSymbols
 @Component({
   name: "TeServerLoad"
@@ -126,40 +128,49 @@ export default class TeServerLoad extends Vue {
     }
   }
   public updateLoadInfo() {
-    this.$http.get("/api/admin/transformationengine/load").then(response => {
-      // update Load Cpu graph
-      response.data.data.load.forEach((key, index) => {
-        this.kCpuLoad.options.series[index].data.push(
-          response.data.data.load[index] || 0
-        );
-
-        if (
-          this.kCpuLoad.options.series[index].data.length > this.statusMaxRange
-        ) {
-          this.kCpuLoad.options.series[index].data.shift();
-        }
-      });
-
-      // update Status graph
-      if (response.data.data.status_breakdown) {
-        const statusKeys = ["P", "W", "T"];
-
-        statusKeys.forEach((key, index) => {
-          this.kStatusChart.options.series[index].data.push(
-            response.data.data.status_breakdown[key] || 0
+    this.$http
+      .get("/api/admin/transformationengine/load")
+      .then(response => {
+        // update Load Cpu graph
+        response.data.data.load.forEach((key, index) => {
+          this.kCpuLoad.options.series[index].data.push(
+            response.data.data.load[index] || 0
           );
 
           if (
-            this.kStatusChart.options.series[index].data.length >
+            this.kCpuLoad.options.series[index].data.length >
             this.statusMaxRange
           ) {
-            this.kStatusChart.options.series[index].data.shift();
+            this.kCpuLoad.options.series[index].data.shift();
           }
         });
-      }
-      this.kCpuLoad.refresh();
-      this.kStatusChart.refresh();
-    });
+
+        // update Status graph
+        if (response.data.data.status_breakdown) {
+          const statusKeys = ["P", "W", "T"];
+
+          statusKeys.forEach((key, index) => {
+            this.kStatusChart.options.series[index].data.push(
+              response.data.data.status_breakdown[key] || 0
+            );
+
+            if (
+              this.kStatusChart.options.series[index].data.length >
+              this.statusMaxRange
+            ) {
+              this.kStatusChart.options.series[index].data.shift();
+            }
+          });
+        }
+        this.kCpuLoad.refresh();
+        this.kStatusChart.refresh();
+      })
+      .catch(() => {
+        this.updateInterval = 0;
+        if (this.currentTimeout) {
+          window.clearTimeout(this.currentTimeout);
+        }
+      });
     if (this.updateInterval > 0) {
       this.currentTimeout = window.setTimeout(() => {
         this.updateLoadInfo();
