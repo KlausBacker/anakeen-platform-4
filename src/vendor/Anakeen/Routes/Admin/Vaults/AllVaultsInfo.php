@@ -20,7 +20,7 @@ class AllVaultsInfo
         $fsInfo = [];
         $messages = [];
         $q = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Vault\DiskFsStorage::class);
-        $q->order_by="id_fs";
+        $q->order_by = "id_fs";
         $fsList = $q->query();
         if ($q->nb > 0) {
             /** @var \Anakeen\Vault\DiskFsStorage $fsItem */
@@ -37,6 +37,18 @@ class AllVaultsInfo
                 }
                 $fsInfo[] = $info;
                 $fsInfo[$key]["freespace"] = $this->formatBytes($info["metrics"]["totalSize"] - $info["metrics"]["usedSize"], 2);
+                if ($info["disk"]["totalSize"] === 0) {
+                    $messages[] = new ApiMessage(sprintf(
+                        "Disk \"%s\" is unreachable",
+                        $info["path"]
+                    ), ApiMessage::WARNING);
+                }
+                if ($info["metrics"]["usedSize"] > $info["metrics"]["totalSize"]) {
+                    $messages[] = new ApiMessage(sprintf(
+                        "Disk \"%s\" is full",
+                        $info["path"]
+                    ), ApiMessage::WARNING);
+                }
             }
         }
         return \Anakeen\Router\ApiV2Response::withData($response, $fsInfo, $messages);
