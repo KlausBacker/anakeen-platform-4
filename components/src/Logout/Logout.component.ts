@@ -9,6 +9,7 @@ Vue.use(VueSetup);
 export default class LogoutComponent extends Vue {
   @Prop({ type: String, default: "" }) public title;
   public logout() {
+    kendo.ui.progress(kendo.jQuery("body"), true);
     let eventName = "beforeLogout";
     let options = { cancelable: true, bubbles: false, detail: false };
     let event;
@@ -24,6 +25,7 @@ export default class LogoutComponent extends Vue {
       );
     }
 
+
     this.$el.parentNode.dispatchEvent(event);
     if (event.defaultPrevented) {
       this.$emit("logoutCanceled");
@@ -33,6 +35,7 @@ export default class LogoutComponent extends Vue {
         .then(response => {
           this.$emit("afterLogout", response.data);
           document.location.assign(response.data.location || "/");
+          kendo.ui.progress(kendo.jQuery("body"), false);
         })
         .catch(error => {
           if (error.status === 401) {
