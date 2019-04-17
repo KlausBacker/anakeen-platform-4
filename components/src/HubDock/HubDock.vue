@@ -18,20 +18,23 @@
       ref="dockEl"
       :style="dockWrapperStyle"
     >
-      <div class="hub-dock-transition-wrapper" :style="dockWrapperStyle" >
+      <div class="hub-dock-transition-wrapper" :style="dockWrapperStyle">
         <div
-          class="hub-dock-content"
+          ref="dockContent"
+          class="hub-dock-content-outside"
           @mouseover="onOverDock"
           @mouseleave="onLeaveDock"
         >
-          <div class="hub-dock-section hub-dock-header">
-            <slot name="header"></slot>
-          </div>
-          <div class="hub-dock-section hub-dock-center">
-            <slot></slot>
-          </div>
-          <div class="hub-dock-section hub-dock-footer">
-            <slot name="footer"></slot>
+          <div class="hub-dock-content">
+            <div class="hub-dock-section hub-dock-header">
+              <slot name="header"></slot>
+            </div>
+            <div class="hub-dock-section hub-dock-center">
+              <slot></slot>
+            </div>
+            <div class="hub-dock-section hub-dock-footer">
+              <slot name="footer"></slot>
+            </div>
           </div>
         </div>
         <div
@@ -48,6 +51,9 @@
 <!-- CSS to this component only -->
 <style scoped lang="scss">
 @import "./HubDock.scss";
+</style>
+<style lang="scss">
+@import "./VueBar.scss";
 </style>
 <!-- Global CSS -->
 <style lang="scss"></style>
