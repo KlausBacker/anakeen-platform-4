@@ -144,3 +144,30 @@
     }
   }
 }
+
+.admin-account-header__content {
+  display: flex;
+  flex-direction: row;
+}
+
+
+.k-dropdown.k-primary {
+  .k-dropdown-wrap {
+    background-color: var(--primary);
+    color: var(--white);
+  }
+}
+
+.select-container {
+  width: auto !important;
+
+  .k-list-optionlabel {
+    background-color: #eee;
+    color: #333;
+  }
+
+  li.k-item {
+    white-space: nowrap;
+  }
+}
+

@@ -1,6 +1,8 @@
 import AnkSplitter from "@anakeen/internal-components/lib/Splitter";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
+import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
+import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 import { TreeViewInstaller } from "@progress/kendo-treeview-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.grid";
@@ -12,6 +14,8 @@ import { Component, Watch } from "vue-property-decorator";
 Vue.use(ButtonsInstaller);
 Vue.use(GridInstaller);
 Vue.use(TreeViewInstaller);
+Vue.use(DropdownsInstaller);
+Vue.use(DataSourceInstaller);
 declare var $;
 declare var kendo;
 
@@ -192,27 +196,19 @@ export default class AdminCenterAccountController extends Vue {
   public options: object = {};
   public groupId: any = false;
   public groupTitle: any = false;
-  @Watch("groupTitle")
-  public watchGroupTitle(value) {
-    const changeBtn = $(".change-group-btn").data("kendoButton");
-    if (value === "Main Group" || value === "Administrators") {
-      changeBtn.enable(false);
-    } else {
-      changeBtn.enable(true);
-    }
-  }
   @Watch("groupId")
   public watchGroupId(value) {
     const changeBtn = $(".change-group-btn").data("kendoButton");
-    const createGrpBtn = $(".create-group-btn");
+    const createGrpBtn = this.$refs.groupList.kendoWidget();
     const toolbar = $(".tree-toolbar").data("kendoToolBar");
     if (value === "@users") {
-      createGrpBtn.text("Create group");
+      createGrpBtn.setOptions({ optionLabel: "Create group" });
       toolbar.enable("#openGroupBtn", false);
       changeBtn.enable(false);
     } else {
-      createGrpBtn.text("Create sub group");
+      createGrpBtn.setOptions({ optionLabel: "Create sub group" });
       toolbar.enable("#openGroupBtn");
+      changeBtn.enable(true);
     }
   }
 
@@ -245,7 +241,6 @@ export default class AdminCenterAccountController extends Vue {
         console.error("Unable to get options", error);
       });
   }
-
   // Bind the tree events
   public bindTree() {
     const treeview = this.$refs.groupTreeView.kendoWidget();
@@ -261,7 +256,12 @@ export default class AdminCenterAccountController extends Vue {
       }
     });
   }
-
+  public parseCreateUser(data) {
+    return data.user;
+  }
+  public parseCreateGroup(data) {
+    return data.group;
+  }
   // Bind the grid events (click to open an user)
   public openUser(event) {
     this.$refs.accountSplitter.disableEmptyContent();
@@ -440,6 +440,67 @@ export default class AdminCenterAccountController extends Vue {
         }
       }
     });
+  }
+  public selectCreateUserConfig(e) {
+    if (e.dataItem.canCreate) {
+      this.$refs.accountSplitter.disableEmptyContent();
+      this.$nextTick(() => {
+        const openDoc = this.$refs.openDoc;
+        if (openDoc) {
+          if (openDoc.isLoaded()) {
+            this.refreshData(openDoc);
+            openDoc.fetchSmartElement({
+              customClientData: { defaultGroup: this.selectedGroupDocumentId },
+              initid: e.dataItem.id,
+              viewId: "!defaultCreation"
+            });
+          } else {
+            openDoc.$once("documentLoaded", () => {
+              this.refreshData(openDoc);
+              openDoc.fetchSmartElement({
+                customClientData: {
+                  defaultGroup: this.selectedGroupDocumentId
+                },
+                initid: e.dataItem.id,
+                viewId: "!defaultCreation"
+              });
+            });
+          }
+        }
+      });
+    }
+  }
+  public addClassOnSelectorContainer(e) {
+    e.sender.popup.element.addClass("select-container");
+  }
+  public selectCreateGroupConfig(e) {
+    if (e.dataItem.canCreate) {
+      this.$refs.accountSplitter.disableEmptyContent();
+      this.$nextTick(() => {
+        const openDoc = this.$refs.openDoc;
+        if (openDoc) {
+          if (openDoc.isLoaded()) {
+            this.refreshData(openDoc);
+            openDoc.fetchSmartElement({
+              customClientData: { defaultGroup: this.selectedGroupDocumentId },
+              initid: e.dataItem.id,
+              viewId: "!defaultCreation"
+            });
+          } else {
+            openDoc.$once("documentLoaded", () => {
+              this.refreshData(openDoc);
+              openDoc.fetchSmartElement({
+                customClientData: {
+                  defaultGroup: this.selectedGroupDocumentId
+                },
+                initid: e.dataItem.id,
+                viewId: "!defaultCreation"
+              });
+            });
+          }
+        }
+      });
+    }
   }
   public createAccount(type) {
     this.$refs.accountSplitter.disableEmptyContent();
