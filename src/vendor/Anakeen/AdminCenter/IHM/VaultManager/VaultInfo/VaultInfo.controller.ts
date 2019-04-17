@@ -227,7 +227,14 @@ export default class VaultInfoController extends Vue {
 
   // noinspection JSMethodCanBeStatic
   public closeWindow(e) {
-    e.sender.element
+    let sender;
+    if (e.sender) {
+      sender = e.sender.element;
+    } else {
+      sender = $(e.target);
+    }
+
+    sender
       .closest("[data-role=window]")
       .data("kendoWindow")
       .close();
@@ -249,19 +256,7 @@ export default class VaultInfoController extends Vue {
         if (data && response.data.messages) {
           this.requestMessage = response.data.messages[0].contentText;
         }
-        $(this.$refs.infoUpdate)
-          .kendoWindow({
-            actions: ["Close"],
-            close: () => {
-              this.$emit("vault-updated", data);
-            },
-            modal: true,
-            title: "Vault updated",
-            visible: false
-          })
-          .data("kendoWindow")
-          .center()
-          .open();
+        this.$emit("vault-updated", data);
       });
   }
 
@@ -285,19 +280,7 @@ export default class VaultInfoController extends Vue {
         if (data && response.data.messages) {
           this.requestMessage = response.data.messages[0].contentText;
         }
-        $(this.$refs.infoUpdate)
-          .kendoWindow({
-            actions: ["Close"],
-            close: () => {
-              this.$emit("vault-updated", data);
-            },
-            modal: true,
-            title: "Vault updated",
-            visible: false
-          })
-          .data("kendoWindow")
-          .center()
-          .open();
+        this.$emit("vault-updated", data);
       });
   }
 

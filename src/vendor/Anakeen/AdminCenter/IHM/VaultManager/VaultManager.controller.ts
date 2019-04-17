@@ -174,9 +174,7 @@ export default class VaultManagerController extends Vue {
                 "<div class='vault-grid-sizes" +
                 vaultErrorClass +
                 "'> (" +
-                VaultManagerController.convertBytes(
-                  dataItem.metrics.totalSize - dataItem.metrics.usedSize
-                ) +
+                VaultManagerController.convertBytes(dataItem.metrics.usedSize) +
                 " / " +
                 VaultManagerController.convertBytes(
                   dataItem.metrics.totalSize

@@ -81,9 +81,9 @@
                 </div>
             </div>
             <div class="disk-chart">
+                <p class="disk-chart-legend">Vault disk file repartition</p>
                 <kendo-chart ref="chart"
                              class="vault-chart"
-                             :title-text="'Vault disk file repartition'"
                              :title-position="'top'"
                              :chart-area-background="''"
                              :legend-visible="false"
@@ -117,7 +117,8 @@
             <pre><b>{{ convertBytes(info.metrics.totalSize) }}</b></pre>
 
             <div class="vault-resize-inputs">
-                <input ref="newSize" class="k-textbox" placeholder="New size">
+                <input ref="newSize"
+                       @keyup.enter="requestResizeIt" class="k-textbox" placeholder="New size">
 
                 <kendo-dropdownlist
                         ref="kNewSizeUnit"

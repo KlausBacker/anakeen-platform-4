@@ -3,6 +3,8 @@
   flex-direction: column;
   margin-bottom: 1rem;
   padding: 1rem;
+  overflow: auto;
+  min-height: 5rem;
 
   .vault-infos-content {
     padding: 2px 16px;
@@ -66,8 +68,10 @@
     overflow: auto;
     display: flex;
     flex-direction: column;
+    min-height: 10rem;
     // flex-wrap: wrap;
     justify-content: space-between;
+    border:solid 1px #D2D2D2;
 
     > .disk-gauges {
       flex-direction: row;
@@ -99,14 +103,19 @@
     > .disk-chart {
       display: flex;
       flex: 1;
-      flex-wrap: wrap;
+      flex-direction: column;
       min-width: 50%;
 
+      .disk-chart-legend {
+        text-align: center;
+        font-weight: bold;
+      }
       .vault-chart {
         flex: 1;
         min-width: 50%;
         min-height: 20rem;
         max-width: 100%;
+
       }
     }
 
@@ -120,16 +129,12 @@
   height: 2rem;
 }
 
-.vault-chart {
-  height: 100%;
-  border: solid 1px #dedede;
-}
 
 
 .disk-gauges {
 
   .disk-gauge {
-    border: solid 1px #dedede;
+    border-bottom: solid 1px #D2D2D2;
     position: relative;
 
     > .k-gauge > div {
@@ -217,5 +222,5 @@
 .vault-resize-inputs {
   display: flex;
   margin: 0.3rem 0;
-  align-items: baseline;
+  align-items: center;
 }
