@@ -98,6 +98,8 @@
 }
 
 .vault-resize-inputs {
-  display: flex;
-  flex-direction: row;
+  .vault-resize-inputs__content {
+    display: flex;
+  }
+
 }
