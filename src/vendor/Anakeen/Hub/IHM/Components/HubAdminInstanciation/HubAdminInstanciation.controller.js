@@ -53,8 +53,16 @@ export default {
       this.selectedHub = elementID;
       this.displayConfig = true;
       this.$nextTick(() => {
-        const element = this.$refs.ankHubAdmin.$refs.smartConfig;
-        if (element) {
+        this.listenElement();
+      });
+      this.$refs.hubInstanciationSplitter.disableEmptyContent();
+    },
+    listenElement() {
+      if (this.$refs.ankHubAdmin) {
+        const hAdmin = this.$refs.ankHubAdmin;
+        if (hAdmin.$refs.smartConfig) {
+          hAdmin.openElement();
+          const element = this.$refs.ankHubAdmin.$refs.smartConfig;
           if (element.isLoaded()) {
             element.addEventListener("afterSave", () => {
               this.$refs.hubInstanciationList.refreshList();
@@ -73,23 +81,33 @@ export default {
             });
           }
         }
-      });
-      this.$refs.hubInstanciationSplitter.disableEmptyContent();
+      }
     },
-
     openElementInfo({ initid, viewId = "!defaultConsultation" }) {
       this.$refs.hubInstanciationSplitter.disableEmptyContent();
 
       this.$nextTick(() => {
         if (this.$refs.instanceConfig.isLoaded()) {
-          this.$refs.instanceConfig.addEventListener("afterSave", () => {
+          this.$refs.instanceConfig.addEventListener("afterSave", (e, doc) => {
             if (this.$refs.hubInstanciationList) {
               this.$refs.hubInstanciationList.refreshList();
-            }
-          });
-          this.$refs.instanceConfig.addEventListener("afterDelete", () => {
-            if (this.$refs.hubInstanciationList) {
-              this.$refs.hubInstanciationList.refreshList();
+              this.displayConfig = true;
+              this.selectedHub = doc.id;
+              if (this.$refs.ankHubAdmin) {
+                const hAdmin = this.$refs.ankHubAdmin;
+                if (hAdmin.$refs.smartConfig) {
+                  const element = hAdmin.$refs.smartConfig;
+                  if (element.isLoaded()) {
+                    element.addEventListener("afterDelete", () => {
+                      this.$refs.hubInstanciationList.refreshList();
+                    });
+                  } else {
+                    element.$once("documentLoaded", () => {
+                      this.$refs.hubInstanciationList.refreshList();
+                    });
+                  }
+                }
+              }
             }
           });
           this.$refs.instanceConfig.fetchSmartElement({
@@ -98,16 +116,16 @@ export default {
           });
         } else {
           this.$refs.instanceConfig.$once("documentLoaded", () => {
-            this.$refs.instanceConfig.addEventListener("afterSave", () => {
-              if (this.$refs.hubInstanciationList) {
-                this.$refs.hubInstanciationList.refreshList();
+            this.$refs.instanceConfig.addEventListener(
+              "afterSave",
+              (e, doc) => {
+                if (this.$refs.hubInstanciationList) {
+                  this.$refs.hubInstanciationList.refreshList();
+                  this.displayConfig = true;
+                  this.selectedHub = doc.id;
+                }
               }
-            });
-            this.$refs.instanceConfig.addEventListener("afterDelete", () => {
-              if (this.$refs.hubInstanciationList) {
-                this.$refs.hubInstanciationList.refreshList();
-              }
-            });
+            );
             this.$refs.instanceConfig.fetchSmartElement({
               initid: initid,
               viewId: viewId
@@ -137,69 +155,5 @@ export default {
           break;
       }
     }
-    // },
-    // actionClick(e) {
-    //   e.preventDefault();
-    //   if (e.data.type === "configure") {
-    //     this.configureStation(e.data.row.id);
-    //   } else {
-    //     this.$refs.hubInstanciationSplitter.disableEmptyContent();
-    //     this.$nextTick(() => {
-    //       console.log("coucou");
-    //       if (this.$refs.instanceConfig) {
-    //         console.log("ofejojofeojg");
-    //         if (this.$refs.instanceConfig.isLoaded()) {
-    //           this.$refs.instanceConfig.addEventListener("afterSave", () => {
-    //             console.log("coucou");
-    //             if (this.$refs.hubInstanciationList) {
-    //               this.$refs.hubInstanciationList.refreshList();
-    //             }
-    //           });
-    //           this.$refs.instanceConfig.addEventListener("afterDelete", () => {
-    //             if (this.$refs.hubInstanciationList) {
-    //               this.$refs.hubInstanciationList.refreshList();
-    //             }
-    //           });
-    //           switch (e.data.type) {
-    //             case "consult":
-    //               this.openConfig(e.data.row.id);
-    //               break;
-    //             case "edit":
-    //               this.modifyConfig(e.data.row.id);
-    //               break;
-    //             default:
-    //               break;
-    //           }
-    //         } else {
-    //           this.$refs.instanceConfig.$once("documentLoaded", () => {
-    //             this.$refs.instanceConfig.addEventListener("afterSave", () => {
-    //               console.log("coucou");
-    //               if (this.$refs.hubInstanciationList) {
-    //                 this.$refs.hubInstanciationList.refreshList();
-    //               }
-    //             });
-    //             this.$refs.instanceConfig.addEventListener(
-    //               "afterDelete",
-    //               () => {
-    //                 if (this.$refs.hubInstanciationList) {
-    //                   this.$refs.hubInstanciationList.refreshList();
-    //                 }
-    //               }
-    //             );
-    //             switch (e.data.type) {
-    //               case "consult":
-    //                 this.openConfig(e.data.row.id);
-    //                 break;
-    //               case "edit":
-    //                 this.modifyConfig(e.data.row.id);
-    //                 break;
-    //               default:
-    //                 break;
-    //             }
-    //           });
-    //         }
-    //       }
-    //     });
-    //   }
   }
 };
