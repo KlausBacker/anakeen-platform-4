@@ -18,17 +18,16 @@
                 <div slot="header">
                 </div>
                 <div slot="search">
-                  <kendo-button class="k-primary k-outline" @click="createHubStation"  >Create new hub instance
+                  <kendo-button class="k-primary k-outline" @click="createHubStation">Create new hub instance
                   </kendo-button>
-
                 </div>
               </ank-se-list>
             </div>
           </div>
         </template>
         <template slot="right">
-          <ank-hub-admin ref="ankHubAdmin" :hubId="selectedHub" class="hub-modal" v-if="this.displayConfig && this.selectedHub"></ank-hub-admin>
-          <ank-smart-element v-show="!this.displayConfig" ref="instanceConfig" class="hub-modal"></ank-smart-element>
+          <ank-hub-admin ref="ankHubAdmin" :hubId="selectedHub" class="hub-modal" v-if="displayConfig && selectedHub"></ank-hub-admin>
+          <ank-smart-element v-show="!displayConfig" ref="instanceConfig" class="hub-modal"></ank-smart-element>
         </template>
       </ank-splitter>
     </div>

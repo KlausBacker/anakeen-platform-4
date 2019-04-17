@@ -52,6 +52,11 @@ export default {
     };
   },
   watch: {
+    hubId: function(val, oldVal) {
+      if (val !== oldVal) {
+        this.initHub(val);
+      }
+    },
     selectedComponent: function(val) {
       if (val > 0) {
         this.openDetailConfig(val);
@@ -78,6 +83,11 @@ export default {
     this.openElement();
   },
   methods: {
+    initHub(id) {
+      this.$http.get(`/api/v2/smart-elements/${id}.json`).then(response => {
+        this.hubElement = response.data.data.document;
+      });
+    },
     openElement() {
       this.openDetailConfig(this.hubId);
       this.selectedComponent = 0;
@@ -224,10 +234,23 @@ export default {
     },
 
     openConfig(eid) {
-      this.$refs.smartConfig.fetchSmartElement({
-        initid: eid,
-        viewId: "!defaultConsultation"
-      });
+      if (this.$refs.smartConfig) {
+        if (this.$refs.smartConfig.isLoaded()) {
+          this.$refs.smartConfig.fetchSmartElement({
+            initid: eid,
+            viewId: "!defaultConsultation"
+          });
+          this.$refs.hubGrid.privateScope.initGrid();
+        } else {
+          this.$refs.smartConfig.$once("documentLoaded", () => {
+            this.$refs.smartConfig.fetchSmartElement({
+              initid: eid,
+              viewId: "!defaultConsultation"
+            });
+            this.$refs.hubGrid.privateScope.initGrid();
+          });
+        }
+      }
     },
 
     changeSelectComponent(seid) {
