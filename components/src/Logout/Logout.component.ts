@@ -42,8 +42,10 @@ export default class LogoutComponent extends Vue {
             this.$emit("afterLogout", error.data);
             document.location.assign(error.data.location || "/");
           } else {
-            document.location.reload();
+            this.$emit("afterLogout", "networkError");
+            kendo.ui.progress(kendo.jQuery("body"), false);
           }
+
         });
     }
   }
