@@ -202,11 +202,11 @@ export default class AdminCenterAccountController extends Vue {
     const createGrpBtn = this.$refs.groupList.kendoWidget();
     const toolbar = $(".tree-toolbar").data("kendoToolBar");
     if (value === "@users") {
-      createGrpBtn.setOptions({optionLabel: "Create group"});
+      createGrpBtn.setOptions({ optionLabel: "Create group" });
       toolbar.enable("#openGroupBtn", false);
       changeBtn.enable(false);
     } else {
-      createGrpBtn.setOptions({optionLabel: "Create sub group"});
+      createGrpBtn.setOptions({ optionLabel: "Create sub group" });
       toolbar.enable("#openGroupBtn");
       changeBtn.enable(true);
     }
@@ -458,7 +458,9 @@ export default class AdminCenterAccountController extends Vue {
             openDoc.$once("documentLoaded", () => {
               this.refreshData(openDoc);
               openDoc.fetchSmartElement({
-                customClientData: { defaultGroup: this.selectedGroupDocumentId },
+                customClientData: {
+                  defaultGroup: this.selectedGroupDocumentId
+                },
                 initid: e.dataItem.id,
                 viewId: "!defaultCreation"
               });
@@ -488,7 +490,9 @@ export default class AdminCenterAccountController extends Vue {
             openDoc.$once("documentLoaded", () => {
               this.refreshData(openDoc);
               openDoc.fetchSmartElement({
-                customClientData: { defaultGroup: this.selectedGroupDocumentId },
+                customClientData: {
+                  defaultGroup: this.selectedGroupDocumentId
+                },
                 initid: e.dataItem.id,
                 viewId: "!defaultCreation"
               });
