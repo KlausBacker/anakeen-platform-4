@@ -177,38 +177,49 @@ export default class VaultInfoController extends Vue {
     );
 
     freeSize = Math.max(100 - orphanPc - trashPc - referencedPc, 0);
+    const data = [];
+    if (referencedPc) {
+      data.push({
+        category: "Referenced",
+        color: "#17a2b8",
+        nbFiles: this.info.metrics.repartition.usefulCount,
+        sizeFiles: this.info.metrics.repartition.usefulSize,
+        value: referencedPc
+      });
+    }
+
+    if (trashPc > 0) {
+      data.push({
+        category: "Trash can",
+        color: "#dc5c8c",
+        nbFiles: this.info.metrics.repartition.trashCount,
+        sizeFiles: this.info.metrics.repartition.trashSize,
+        value: trashPc
+      });
+    }
+
+    if (orphanPc > 0) {
+      data.push({
+        category: "Orphans",
+        color: "#ffc107",
+        nbFiles: this.info.metrics.repartition.orphanCount,
+        sizeFiles: this.info.metrics.repartition.orphanSize,
+        value: orphanPc
+      });
+    }
+
+    if (freeSize > 0) {
+      data.push({
+        category: "Free",
+        color: "#28a644",
+        nbFiles: 0,
+        sizeFiles: totalSize - this.info.metrics.usedSize,
+        value: freeSize
+      });
+    }
     return [
       {
-        data: [
-          {
-            category: "Referenced",
-            color: "#17a2b8",
-            nbFiles: this.info.metrics.repartition.usefulCount,
-            sizeFiles: this.info.metrics.repartition.usefulSize,
-            value: referencedPc
-          },
-          {
-            category: "Trash can",
-            color: "#dc5c8c",
-            nbFiles: this.info.metrics.repartition.trashCount,
-            sizeFiles: this.info.metrics.repartition.trashSize,
-            value: trashPc
-          },
-          {
-            category: "Orphans",
-            color: "#ffc107",
-            nbFiles: this.info.metrics.repartition.orphanCount,
-            sizeFiles: this.info.metrics.repartition.orphanSize,
-            value: orphanPc
-          },
-          {
-            category: "Free",
-            color: "#28a644",
-            nbFiles: 0,
-            sizeFiles: totalSize - this.info.metrics.usedSize,
-            value: freeSize
-          }
-        ],
+        data,
         type: "pie"
       }
     ];
