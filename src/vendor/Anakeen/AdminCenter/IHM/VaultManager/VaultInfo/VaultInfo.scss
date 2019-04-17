@@ -1,9 +1,8 @@
 .vault-infos {
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  margin-bottom: 1rem;
   padding: 1rem;
-
 
   .vault-infos-content {
     padding: 2px 16px;
@@ -66,24 +65,34 @@
     flex: 1;
     overflow: auto;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    // flex-wrap: wrap;
     justify-content: space-between;
 
     > .disk-gauges {
-      flex-direction: column;
+      flex-direction: row;
       flex-wrap: wrap;
+      justify-content: center;
       display: flex;
 
       .disk-gauge {
-        min-width: 20rem;
-        min-height: 20rem;
-        max-width: 40%;
-        flex: 1;
+
+        min-width: 40rem;
+
+        flex:1;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
         flex-wrap: wrap;
+
+        .arc-gauge {
+          display:flex;
+          div[data-role=surface] {
+            width: auto!important;
+            flex:1;
+          }
+        }
       }
     }
 
@@ -105,10 +114,6 @@
 }
 
 
-.vault-title {
-  text-align: right;
-  line-height: 2;
-}
 
 .vault-progress {
   width: 100%;
@@ -140,11 +145,11 @@
     font-weight: bold;
     text-align: center;
   }
+  .arc-legend{
+    text-align: center;
+  }
 }
 
-.arc-gauge {
-  width: 100%;
-}
 
 .vault-row {
   justify-content: center;
@@ -184,12 +189,16 @@
 }
 
 .vault-buttons {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 0.5rem;
   button {
     min-width: 9rem;
   }
 
-  .row {
-    margin: 0.2rem 0;
+
+  .vault-action {
   }
 }
 

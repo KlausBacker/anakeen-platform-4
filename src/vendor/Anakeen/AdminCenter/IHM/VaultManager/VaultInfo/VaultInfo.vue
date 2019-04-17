@@ -30,63 +30,54 @@
                 </div>
             </div>
             <div class="vault-buttons container-fluid">
-                <div class="row">
-                    <div class="col-md vault-title">
-                        Vault server path:&nbsp;<b>{{info.path}}</b>
-                    </div>
-                    <div class="col-md">
-
+                <div class="vault-action">
+                    Logical capacity:&nbsp;<b>{{convertBytes(info.metrics.totalSize)}}</b>&nbsp;:
+                    <kendo-button class="k-primary" @click="onResizeDisk">Resize</kendo-button>
+                </div>
+                    <div class="vault-action">
+                        Vault server path:&nbsp;<b>{{info.path}}</b>&nbsp;:
                         <kendo-button class="k-primary" @click="onMovePath">Move</kendo-button>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md vault-title">
-                        Logical capacity:&nbsp;<b>{{convertBytes(info.metrics.totalSize)}}</b>
-                    </div>
-                    <div class="col-md">
-                        <kendo-button class="k-primary" @click="onResizeDisk">Resize</kendo-button>
-                    </div>
-                </div>
+
             </div>
         </div>
         <div class="vault-graphs">
             <div class="disk-gauges">
                 <div class="disk-gauge" :class="{ diskerror: info.metrics.totalSize < info.metrics.usedSize }">
+
                     <p class="arc-title">Logical vault capacity</p>
-                    <kendo-arcgauge ref="logicalGauge"
+                    <kendo-lineargauge ref="logicalGauge"
                                        class="logical-gauge arc-gauge"
                                        :scale-min="0"
-                                       :value="getGaugeLogicalUsed"
+                                       :scale-vertical="false"
                                        :scale-max="getGaugeLogicalMax"
                                        :scale-ranges="getGaugeLogicalRanges"
-                                       :centerTemplate="logicalTemplate">
-                        <kendo-arcgauge-color :to="info.metrics.totalSize * 0.75"
-                                              :color="'#28a745'"></kendo-arcgauge-color>
-                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.75"
-                                              :to="info.metrics.totalSize * 0.90"
-                                              :color="'#ffc107'"></kendo-arcgauge-color>
-                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.90"
-                                              :color="'#dc3545'"></kendo-arcgauge-color>
-                    </kendo-arcgauge>
+                                       :scale-labels-format="getGaugeLogicalRangeLabel"
+                                       >
+                        <kendo-lineargauge-pointer :value="getGaugeLogicalUsed"
+                                                   color="#5047E1AA"
+                                                   :size="20"
+                                                   shape="arrow"/>
+
+                    </kendo-lineargauge>
+                    <p class="arc-legend" v-html="logicalTemplate()"></p>
                 </div>
                 <div class="disk-gauge" :class="{ diskerror: info.disk.totalSize === 0 }">
                     <p class="arc-title">Physical disk capacity</p>
-                    <kendo-arcgauge ref="diskGauge"
+                    <kendo-lineargauge ref="diskGauge"
                                        class="physical-gauge arc-gauge"
                                        :scale-min="0"
-                                       :value="getGaugeDiskUsed"
+                                       :scale-vertical="false"
                                        :scale-max="getGaugeDiskMax"
                                        :scale-ranges="getGaugeDiskRanges"
-                                       :centerTemplate="diskTemplate">
-                        <kendo-arcgauge-color :to="info.metrics.totalSize * 0.75"
-                                              :color="'#28a745'"></kendo-arcgauge-color>
-                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.75"
-                                              :to="info.metrics.totalSize * 0.90"
-                                              :color="'#ffc107'"></kendo-arcgauge-color>
-                        <kendo-arcgauge-color :from="info.metrics.totalSize * 0.90"
-                                              :color="'#dc3545'"></kendo-arcgauge-color>
+                                       :scale-labels-format="getGaugeDiskRangeLabel">
+                        <kendo-lineargauge-pointer :value="getGaugeDiskUsed"
+                                                   color="#5047E1AA"
+                                                   :size="20"
+                                                   shape="arrow"/>
 
-                    </kendo-arcgauge>
+                    </kendo-lineargauge>
+                    <p class="arc-legend" v-html="diskTemplate()"></p>
                 </div>
             </div>
             <div class="disk-chart">
@@ -159,4 +150,4 @@
 <style lang="scss">
     @import "./VaultInfo.scss";
 </style>
-<script src="./VaultInfo.controller.ts" lang="ts">
+<script src="./VaultInfo.controller.ts" lang="ts"/>
