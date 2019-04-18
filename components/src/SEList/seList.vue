@@ -3,7 +3,7 @@
     <div class="seList">
       <div class="seList__header__slot">
         <slot name="header">
-          <img class="seList__logo__img" :src="logoUrl" />
+<!--          <img class="seList__logo__img" :src="logoUrl" />-->
         </slot>
       </div>
 

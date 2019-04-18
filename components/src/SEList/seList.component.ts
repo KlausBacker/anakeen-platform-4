@@ -1,11 +1,10 @@
 import Vue from "vue";
 import VueSetup from "../setup.js";
 import SeTemplate from "./seListItem.template.kd";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import { ISeList } from "./ISeList";
 import {
   $createComponentEvent,
-  $emitAnkEvent,
   _enableReady
 } from "../../mixins/AnkVueComponentMixin/IeventUtilsMixin";
 
@@ -25,6 +24,7 @@ export default class SeListComponent extends Vue {
   public contentUrl;
   public privateScope: ISeList;
   @Prop({ type: String, default: "title:asc" }) public order;
+  @Prop({ type: Number, default: 1 }) public page;
 
   public $refs!: {
     wrapper: HTMLElement;
@@ -33,6 +33,12 @@ export default class SeListComponent extends Vue {
     pager: HTMLElement;
     pagerCounter: HTMLElement;
   };
+
+  @Watch("page")
+  onPagePropChange(newVal) {
+    this.dataSource.page(newVal);
+    this.refreshList();
+  }
 
   public created() {
     this.privateScope = {
@@ -53,19 +59,15 @@ export default class SeListComponent extends Vue {
             detail: [e]
           }
         );
-        const notCancelled = $emitAnkEvent.call(
-          this,
-          `se-list-${eventName}`,
-          customEvent
-        );
-        if (eventType === "before" && !notCancelled) {
+        this.$emit(`se-list-${eventName}`, customEvent);
+        if (eventType === "before" && customEvent.defaultPrevented) {
           if (e.preventDefault) {
             e.preventDefault();
           }
         }
       },
 
-      initKendo: () => {
+      initDataSource: () => {
         const _this = this;
         this.dataSource = new kendo.data.DataSource({
           error: this.privateScope.propageKendoDataSourceEvent("error"),
@@ -122,6 +124,7 @@ export default class SeListComponent extends Vue {
             }
           },
           pageSize: this.pageSizeOptions[1].value,
+          page: this.page,
           serverPaging: true,
           schema: {
             total: response => response.data.data.resultMax,
@@ -129,12 +132,15 @@ export default class SeListComponent extends Vue {
             data: response => response.data.data.documents
           }
         });
+      },
 
+      initKendoWidgets: () => {
         kendo.jQuery(this.$refs.listView).kendoListView({
           dataSource: this.dataSource,
           template: kendo.template(SeTemplate),
           selectable: "single",
-          change: this.privateScope.onSelectSe
+          change: this.privateScope.onSelectSe,
+          dataBound: this.privateScope.propageKendoDataSourceEvent("dataBound")
         });
 
         kendo.jQuery(this.$refs.pager).kendoPager({
@@ -196,15 +202,18 @@ export default class SeListComponent extends Vue {
             ]
           }
         );
-        if ($emitAnkEvent("before-se-list-page-change", customEvent)) {
+        this.$emit("before-se-list-page-change", customEvent);
+        if (!customEvent.defaultPrevented) {
           this.dataSource.page(customEvent.detail[0].newPage);
           this.refreshList()
             .then(() => {
               const customAfterEvent = $createComponentEvent(
                 "after-se-list-page-change",
-                customEvent.detail
+                {
+                  detail: customEvent.detail
+                }
               );
-              $emitAnkEvent("after-se-list-page-change", customAfterEvent);
+              this.$emit("after-se-list-page-change", customAfterEvent);
             })
             .catch(err => {
               console.error(err);
@@ -247,7 +256,8 @@ export default class SeListComponent extends Vue {
           },
           e
         );
-        if ($emitAnkEvent("before-se-list-pagesize-change", customEvent)) {
+        this.$emit("before-se-list-pagesize-change", customEvent);
+        if (!customEvent.defaultPrevented) {
           this.dataSource.pageSize(customEvent.detail[0].newPageSize);
           this.refreshList()
             .then(() => {
@@ -262,7 +272,7 @@ export default class SeListComponent extends Vue {
                   ]
                 }
               );
-              $emitAnkEvent("after-se-list-pagesize-change", customEvent);
+              this.$emit("after-se-list-pagesize-change", customEvent);
             })
             .catch(err => {
               console.error(err);
@@ -282,11 +292,12 @@ export default class SeListComponent extends Vue {
         this._selectSe(event, selected[0]);
       }
     };
+    this.privateScope.initDataSource();
   }
   public mounted() {
     kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), true);
     const ready = () => {
-      this.privateScope.initKendo();
+      this.privateScope.initKendoWidgets();
       this.privateScope.replaceTopPagerButton();
       kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), false);
 
@@ -373,7 +384,7 @@ export default class SeListComponent extends Vue {
       },
       event
     );
-    $emitAnkEvent("se-list-filter-input", customEvent);
+    this.$emit("se-list-filter-input", customEvent);
     this.filterInput = customEvent.detail[0].filterInput;
   }
 
@@ -419,6 +430,7 @@ export default class SeListComponent extends Vue {
       });
       if (itemToSelect) {
         $kendoList.select(itemToSelect);
+        this.scrollToActiveItem();
       }
     }
   }
@@ -452,5 +464,10 @@ export default class SeListComponent extends Vue {
         reject();
       }
     });
+  }
+
+  public scrollToActiveItem() {
+    const activeItem = this.$el.querySelector(".k-state-selected");
+    activeItem.scrollIntoView();
   }
 }
