@@ -3,7 +3,7 @@
     <div class="seList">
       <div class="seList__header__slot">
         <slot name="header">
-          <img class="seList__logo__img" :src="logoUrl" />
+<!--          <img class="seList__logo__img" :src="logoUrl" />-->
         </slot>
       </div>
 
@@ -29,7 +29,7 @@
               />
               <i
                 class="input-group-addon material-icons seList__search__keyword__remove"
-                @click="clearListFilter"
+                @click="filterList('')"
               >
                 close
               </i>

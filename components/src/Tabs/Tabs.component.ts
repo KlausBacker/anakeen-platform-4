@@ -18,6 +18,7 @@ export default class Tabs extends Vue {
   @Prop({ default: false, type: Boolean }) public addable!: boolean;
   @Prop({ default: false, type: Boolean }) public editable!: boolean;
   @Prop({ default: false, type: Boolean }) public sortable!: boolean;
+  @Prop({ default: "12rem", type: String }) public minTabSize!: string;
   @Prop({ default: false, type: Boolean })
   public forceScrollNavigation!: boolean;
   @Prop({ default: TabPosition.TOP, type: String })

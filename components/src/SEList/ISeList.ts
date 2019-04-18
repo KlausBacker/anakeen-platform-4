@@ -3,7 +3,9 @@ export interface ISeList {
 
   propageKendoDataSourceEvent(eventName: string, eventType?: string);
 
-  initKendo();
+  initKendoWidgets();
+
+  initDataSource();
 
   onPagerChange(event): void;
 

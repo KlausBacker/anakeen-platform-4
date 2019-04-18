@@ -83,6 +83,13 @@ export default class TabsNav extends Vue {
     };
   }
 
+  public get itemStyle() {
+    return {
+      // @ts-ignore
+      minWidth: this.rootTabs.minTabSize
+    };
+  }
+
   public labelClass(pane) {
     return {
       "ank-tab-label": true,
