@@ -6,6 +6,7 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
+use Anakeen\SmartElementManager;
 
 /**
  * Class FamilyDocumentCreation
@@ -53,7 +54,7 @@ class FamilyDocumentCreation extends DocumentUpdateData
     public function create(\Slim\Http\request $request, SmartStructure $family, &$messages)
     {
         try {
-            $this->_document = SEManager::createDocument($family->id);
+            $this->_document = SmartElementManager::createDocument($family->id);
         } catch (Exception $exception) {
             if ($exception->getDcpCode() === "APIDM0003") {
                 $exception = new Exception("API0204", $family->name);
