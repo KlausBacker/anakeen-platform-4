@@ -160,19 +160,6 @@ export default class GlobalParametersController extends Vue {
           .read()
           .then(() => {
             kendo.ui.progress($(".parameters-tree", this.$el), false);
-            document.querySelector(".ank-notifier").dispatchEvent(
-              new CustomEvent("ankNotification", {
-                detail: [
-                  {
-                    content: {
-                      textContent: "Parameters successfully loaded from server",
-                      title: "Parameters loaded"
-                    },
-                    type: "success"
-                  }
-                ]
-              })
-            );
           })
           .catch(() => {
             kendo.ui.progress($(".parameters-tree", this.$el), false);

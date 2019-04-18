@@ -40,9 +40,10 @@ export default class AdminCenterAccountController extends Vue {
       size: "50%"
     }
   ];
+
   public panes: object[] = [
     {
-      collapsible: true,
+      collapsible: false,
       resizable: false,
       scrollable: false,
       size: "20%"
