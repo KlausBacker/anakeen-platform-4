@@ -8,6 +8,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Router\Exception;
 use Anakeen\Core\SEManager;
 use Anakeen\Routes\Core\Lib\DocumentDataFormatter;
+use Anakeen\Search\Filters\TitleContains;
 
 /**
  * Class DocumentsList
@@ -82,7 +83,7 @@ class DocumentsPager extends DocumentList
                 throw $exception;
         }
         if (!empty($this->filter)) {
-            $this->_searchDoc->addFilter("title ~* '%s'", preg_quote($this->filter));
+            $this->_searchDoc->addFilter(new TitleContains($this->filter, TitleContains::NODIACRITIC | TitleContains::NOCASE));
         }
     }
 

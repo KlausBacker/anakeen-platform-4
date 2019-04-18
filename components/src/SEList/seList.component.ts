@@ -398,6 +398,14 @@ export default class SeListComponent extends Vue {
     this.$emit("se-selected", customEvent);
   }
   public filterList(filterValue) {
+    const customEvent = $createComponentEvent(
+      "se-list-filter-change",
+      {
+        detail: [{ filterInput: filterValue }]
+      },
+      event
+    );
+    this.$emit("se-list-filter-change", customEvent);
     this.filterInput = filterValue;
     if (filterValue) {
       return this.refreshList()

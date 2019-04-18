@@ -29,7 +29,7 @@
               />
               <i
                 class="input-group-addon material-icons seList__search__keyword__remove"
-                @click="clearListFilter"
+                @click="filterList('')"
               >
                 close
               </i>
