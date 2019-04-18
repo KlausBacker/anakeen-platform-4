@@ -1,14 +1,13 @@
 .seList__wrapper {
-  background-color: #FBFBFB;
-
   .k-loading-mask {
     background-color: #000000;
     opacity: 0.6;
     z-index: 2000;
 
     .k-loading-image {
-      &:before, &:after {
-        color: #FFFFFF;
+      &:before,
+      &:after {
+        color: #ffffff;
       }
     }
   }
@@ -23,11 +22,10 @@
 
 .seList,
 .seList__list.k-widget {
-  background-color: #FBFBFB;
+  background-color: #fbfbfb;
 }
 
 .seList__header__slot {
-
   // Default slot anakeen img
   .seList__logo__img {
     width: 100%;
@@ -52,56 +50,56 @@
 }
 
 .seList__search__wrapper {
-  background-color: #F5F5F5;
   margin-bottom: 0.6667rem;
 }
 
 .seList__search__button {
-  background-color: #F1F1F1;
   color: #878787;
-  position: relative;
-  left: -1rem;
+  border: 1px solid #ced4da;
   border-left: 0;
+  padding: 0 0.2rem;
+  border-radius: 0 0.25rem 0.25rem 0;
 
   &:hover {
-    background-color: #F1F1F1;
+    background-color: #f1f1f1;
     color: #000000;
     cursor: pointer;
   }
 }
 
 .seList__search {
-  padding: .5rem 0.83rem;
+  padding: 0.5rem;
 
   .seList__search__keyword {
     flex: 1;
   }
 
-    .input-group-addon.material-icons.seList__search__keyword__remove {
-      border: 0;
-      margin: auto;
-      width: 1.5rem;
-      height: 1.5rem;
-      font-size: 1.5rem;
-      line-height: 1;
-      border-radius: 50%;
-      background: transparent;
-      position: relative;
-      z-index: 10;
-      padding: 0;
-      left: -2rem;
-      cursor: pointer;
-      &:hover {
-        background-color: #FF542C;
-        color: #FFFFFF;
-      }
+  .input-group-addon.material-icons.seList__search__keyword__remove {
+    border: 0;
+    margin: auto;
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    border-radius: 50%;
+    background: transparent;
+    position: absolute;
+    z-index: 5;
+    padding: 0;
+    right: 3rem;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+    &:hover {
+      background-color: #ff542c;
+      color: #ffffff;
     }
+  }
 }
 
 .seList__summary__wrapper {
   padding-bottom: 0.6667rem;
 }
-
 
 .seList__summary.k-widget {
   padding-right: 10px;
@@ -115,11 +113,12 @@
     overflow: visible;
   }
 
-  .k-pager-first, .k-pager-last {
+  .k-pager-first,
+  .k-pager-last {
     display: none;
   }
   .k-pager-info.k-label {
-    font-weight:bold;
+    font-weight: bold;
     flex: 0 1 auto;
   }
 
@@ -137,20 +136,17 @@
   border: none;
   display: flex;
   flex-direction: column;
-  //align-items: center;
   overflow-y: auto;
 }
 
 .seList__listItem {
-  //height: 45px;
   min-height: 3.5rem;
-  //position: relative;
   border-style: none;
   cursor: pointer;
   line-height: 1.3em;
   color: #505050;
   background-size: 100% 100%;
-  opacity: 0.80;
+  opacity: 0.8;
   border-bottom: 1px solid #ccc;
 
   &.seList__listItem__full {
@@ -162,8 +158,8 @@
   }
 
   &.k-state-selected {
-    box-shadow: inset 3px 0px 0px 0px #8AE234;
-    background-color: #F4F4F4;
+    box-shadow: inset 3px 0px 0px 0px #8ae234;
+    background-color: #f4f4f4;
     border-bottom: 1px solid #ccc;
     color: #00b4fc;
     font-weight: 600;
@@ -200,7 +196,6 @@
     margin-top: 1%;
   }
 
-
   .seList__listItem__heading__state--color {
     border-radius: 20%;
     width: 0.6rem;
@@ -230,13 +225,13 @@
 
   border-top: 0.0833rem solid #dde2e7;
 
-  .seList__list__pagerCounter  {
+  .seList__list__pagerCounter {
     min-width: 4rem;
     margin-top: -0.0833rem;
     flex: 1;
     .k-dropdown-wrap {
-      background-color: #BFBFBF;
-      color: #FFFFFF;
+      background-color: #bfbfbf;
+      color: #ffffff;
       border: 0;
       border-radius: 0;
       display: flex;
@@ -248,7 +243,7 @@
       }
       .k-select {
         .k-icon {
-          color: #FFFFFF;
+          color: #ffffff;
         }
       }
     }
@@ -270,10 +265,11 @@
   padding-right: 0;
   border: 0;
   .k-pager-input.k-label {
-    height:100%;
+    color: #777;
+    height: 100%;
     display: flex;
     justify-content: start;
-    padding-right: .3rem;
+    padding-right: 0.3rem;
     margin: 0;
     flex: 1;
     min-width: 5.5rem; // Min width for page input and  total page text
@@ -283,24 +279,22 @@
     .k-textbox {
       width: 60%;
       text-align: center;
-      margin: 0 12% 0 0;
-  //    height: calc(100% - 2px);
+      margin: 0 10% 0 0;
+      //    height: calc(100% - 2px);
       border-radius: 0;
       border-top-style: none;
       border-bottom-style: none;
-      border-right-style: dashed;
+      border-right-style: none;
       &:hover {
         border-top-style: solid;
         border-bottom-style: solid;
+        border-right-style: solid;
       }
     }
   }
 
-  .k-pager-first, .k-pager-last {
-    background-color: #E0E0E0;
-  }
-
   .k-pager-nav {
+    background-color: #e0e0e0;
     display: flex;
     flex: 1;
     padding: 0;
@@ -320,6 +314,6 @@
 
 .seList__pagination__pageSize {
   padding: 10px 20px;
-  border-top: 1px solid #E6E6E6;
+  border-top: 1px solid #e6e6e6;
   width: 100%;
 }
