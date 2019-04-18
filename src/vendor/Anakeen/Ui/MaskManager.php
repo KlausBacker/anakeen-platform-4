@@ -6,7 +6,6 @@ use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\BasicAttribute;
 use Anakeen\Core\SmartStructure\FieldAccessManager;
-use Anakeen\Ui\Exception;
 use SmartStructure\Fields\Cvdoc as CvdocFields;
 
 class MaskManager
@@ -33,6 +32,7 @@ class MaskManager
     /**
      * set visibility mask
      * Apply primary mask first if is set in view control of element
+     *
      * @param int $mid Mask identifier
      *
      * @return void
@@ -45,7 +45,9 @@ class MaskManager
 
     /**
      * Apply a mask over current visibilities
+     *
      * @param string|int $mid Mask identifier
+     *
      * @throws Exception
      */
     public function addUiMask($mid)
@@ -58,6 +60,7 @@ class MaskManager
 
     /**
      * @param SmartElement $smartElement
+     *
      * @return MaskManager
      */
     public function setSmartElement(SmartElement $smartElement)
@@ -68,6 +71,7 @@ class MaskManager
 
     /**
      * Return the primary mask refrerenced in associated primary control
+     *
      * @return int|string the primary mask id (0 if not found)
      * @throws \Anakeen\Core\DocManager\Exception
      */
@@ -85,6 +89,7 @@ class MaskManager
 
     /**
      * Init visibilities with access field control
+     *
      * @throws Exception
      */
     protected function initVisibilities()
@@ -281,7 +286,9 @@ class MaskManager
 
     /**
      * Get default visibility from access
+     *
      * @param BasicAttribute $v
+     *
      * @return string
      * @throws Exception
      */
@@ -390,5 +397,29 @@ class MaskManager
             }
         }
         return 0;
+    }
+
+    public static function getVisibilitiesConformToAccess(array $visibilities, SmartElement $elt)
+    {
+        foreach ($visibilities as $fieldId => &$visibility) {
+            $oa = $elt->getAttribute($fieldId);
+            if ($oa) {
+                $visibility = self::getVisibilityConformToAccess($visibility, FieldAccessManager::getAccess($elt, $oa));
+            }
+        }
+
+        return $visibilities;
+    }
+
+    protected static function getVisibilityConformToAccess($visibility, $access)
+    {
+        if ($access === BasicAttribute::NONE_ACCESS || ($access === BasicAttribute::WRITE_ACCESS && $visibility === "R")) {
+            return "H";
+        }
+
+        if ($access === BasicAttribute::READ_ACCESS && ($visibility === "W" || $visibility === "O")) {
+            return "S";
+        }
+        return $visibility;
     }
 }

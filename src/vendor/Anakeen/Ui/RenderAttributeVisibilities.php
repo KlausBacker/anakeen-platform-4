@@ -2,8 +2,6 @@
 
 namespace Anakeen\Ui;
 
-use Anakeen\Ui\MaskManager;
-
 class RenderAttributeVisibilities implements \JsonSerializable
 {
     const HiddenVisibility = "H";
@@ -36,9 +34,12 @@ class RenderAttributeVisibilities implements \JsonSerializable
      * Apply a mask on current visibilities
      * Several masks can be applyed
      * If smart element has a view control with a primary mask, the primary mask is applyied first
+     *
      * @note Mask is applyed before setVibility() , setVisibility overrides mask visibilities
-     * @see  RenderAttributeVisibilities::setVisibility()
+     *
      * @param \SmartStructure\Mask $mask
+     *
+     * @see  RenderAttributeVisibilities::setVisibility()
      */
     public function withMask(\SmartStructure\Mask $mask)
     {
@@ -47,6 +48,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
 
     /**
      * Return visibilities array, indexed by attribute identifier
+     *
      * @return array
      */
     public function getVisibilities()
@@ -54,14 +56,16 @@ class RenderAttributeVisibilities implements \JsonSerializable
         $this->refreshVisibility();
         unset($this->finalVisibilities[\Anakeen\Core\SmartStructure\Attributes::HIDDENFIELD]);
 
-        return $this->finalVisibilities;
+        return MaskManager::getVisibilitiesConformToAccess($this->finalVisibilities, $this->document);
     }
 
     /**
      * Affect new visibility to an attribute
      * This visibility is more prioritary than mask
+     *
      * @param string $attributeId attribute identifier
      * @param string $visibility  one of I,H,O,R,W,S
+     *
      * @return $this
      * @throws Exception
      */
@@ -134,6 +138,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
 
     /**
      * Recompute attribute visibility according to parent visibility
+     *
      * @param \Anakeen\Core\SmartStructure\BasicAttribute $oa attribute to recompute
      */
     protected function computeVisibility(\Anakeen\Core\SmartStructure\BasicAttribute $oa)
@@ -148,6 +153,7 @@ class RenderAttributeVisibilities implements \JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON
+     *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
