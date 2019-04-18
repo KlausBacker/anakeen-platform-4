@@ -13,10 +13,6 @@ declare var kendo;
   name: "admin-center-user-parameters"
 })
 export default class UserParametersController extends Vue {
-  // Used in template to enable/disable the search input
-  get isSearchButtonDisabled() {
-    return this.inputSearchValue === "";
-  }
 
   // Destroy editor component
   public static destroyEditor() {
@@ -411,6 +407,25 @@ export default class UserParametersController extends Vue {
           read: options => {
             this.$http
               .get("api/v2/admin/parameters/users/search/" + user + "/")
+              .then(options.success)
+              .catch(options.error);
+          }
+        }
+      });
+      this.usersGrid.setDataSource(usersDataSource);
+    }
+    if (this.inputSearchValue === "") {
+      const usersDataSource = new kendo.data.DataSource({
+        pageSize: 10,
+        schema: {
+          data: response => response.data.data.users,
+          total: response => response.data.data.total
+        },
+        serverPaging: true,
+        transport: {
+          read: options => {
+            this.$http
+              .get("api/v2/admin/parameters/users/")
               .then(options.success)
               .catch(options.error);
           }

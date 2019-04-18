@@ -31,7 +31,6 @@
               <button
                 class="btn btn-secondary"
                 @click.stop="searchUser"
-                :disabled="isSearchButtonDisabled"
               >
                 Search
               </button>
