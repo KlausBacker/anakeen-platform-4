@@ -13,7 +13,6 @@ declare var kendo;
   name: "admin-center-user-parameters"
 })
 export default class UserParametersController extends Vue {
-
   // Destroy editor component
   public static destroyEditor() {
     const editor = $(".edition-window").data("kendoWindow");
