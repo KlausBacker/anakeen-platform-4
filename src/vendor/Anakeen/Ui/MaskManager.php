@@ -391,4 +391,27 @@ class MaskManager
         }
         return 0;
     }
+    public static function getVisibilitiesConformToAccess(array $visibilities, SmartElement $elt)
+    {
+        foreach ($visibilities as $fieldId => &$visibility) {
+            $oa = $elt->getAttribute($fieldId);
+            if ($oa) {
+                $visibility = self::getVisibilityConformToAccess($visibility, FieldAccessManager::getAccess($elt, $oa));
+            }
+        }
+
+        return $visibilities;
+    }
+
+    protected static function getVisibilityConformToAccess($visibility, $access)
+    {
+        if ($access === BasicAttribute::NONE_ACCESS || ($access === BasicAttribute::WRITE_ACCESS && $visibility === "R")) {
+            return "H";
+        }
+
+        if ($access === BasicAttribute::READ_ACCESS && ($visibility === "W" || $visibility === "O")) {
+            return "S";
+        }
+        return $visibility;
+    }
 }
