@@ -32,7 +32,7 @@ $navListSize: 4rem;
       text-align: center;
       width: $navListSize;
       //height: 100%;
-      z-index: 20;
+      z-index: 2;
       position: absolute;
       cursor: pointer;
       font-size: 1.3rem;
@@ -170,11 +170,9 @@ $navListSize: 4rem;
       padding-left: 1rem;
       flex-direction: row;
       min-height: 3.3333rem;
-      min-width: 6.25rem;
       max-width: 16.6667rem;
       width: 16.6667rem;
       align-items: center;
-      //min-width: rem;
       justify-content: space-between;
 
       .ank-tab-item-close {

@@ -17,6 +17,7 @@ export default class SETab extends Vue {
   public label!: string;
   @Prop({ default: false, type: Boolean }) public disabled!: boolean;
   @Prop({ type: String }) public identifier!: string;
+  @Prop({ type: String }) public tabId!: string;
   @Prop({ type: String, default: "!defaultConsultation" })
   public viewId!: string;
   @Prop({ default: false, type: Boolean }) public closable!: boolean;
@@ -57,7 +58,7 @@ export default class SETab extends Vue {
   }
 
   get paneName() {
-    return this.identifier || this.index;
+    return this.tabId || this.identifier || this.index;
   }
 
   public get tabTitle() {
@@ -65,7 +66,7 @@ export default class SETab extends Vue {
   }
 
   public get tabNavItemList() {
-    return `<a href="/api/v2/smart-elements/${this.paneName}/views/${this
+    return `<a href="/api/v2/smart-elements/${this.identifier}/views/${this
       .viewId || "!defaultConsultation"}.html"
               title="${this.elementTitle}"
               onclick="return false"
@@ -105,7 +106,7 @@ export default class SETab extends Vue {
       const onLoaded = () => {
         // @ts-ignore
         this.$refs.smartElement.fetchSmartElement({
-          initid: this.paneName,
+          initid: this.identifier,
           viewId: this.viewId
         });
       };

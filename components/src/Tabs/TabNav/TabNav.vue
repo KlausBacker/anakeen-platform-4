@@ -77,6 +77,7 @@
             'is-focus': isFocus,
             'is-dirty': !!pane.isDirty
           }"
+          :style="itemStyle"
           :key="`tab-${index}`"
           :id="`tab-${index}`"
           :aria-controls="`tab-${index}`"
