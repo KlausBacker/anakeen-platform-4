@@ -234,19 +234,6 @@ export default class UserParametersController extends Vue {
           .read()
           .then(() => {
             kendo.ui.progress($(".user-parameters-tree", this.$el), false);
-            document.querySelector(".ank-notifier").dispatchEvent(
-              new CustomEvent("ankNotification", {
-                detail: [
-                  {
-                    content: {
-                      textContent: "Parameters successfully loaded from server",
-                      title: "Parameters loaded"
-                    },
-                    type: "success"
-                  }
-                ]
-              })
-            );
           })
           .catch(() => {
             kendo.ui.progress($(".user-parameters-tree", this.$el), false);
