@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/user-interfaces",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "scripts": {
     "beautify": "npx eslint ./src --fix",

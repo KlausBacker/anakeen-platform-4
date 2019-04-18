@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="user-interfaces" version="1.0.4" vendor="Anakeen"
+        name="user-interfaces" version="1.0.5" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0">
 
     <description>Anakeen Platform : User interfaces</description>
