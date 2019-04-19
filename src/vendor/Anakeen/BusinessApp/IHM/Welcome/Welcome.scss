@@ -5,7 +5,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
+  overflow-y: auto;
 
   .ank-business-app-welcome-creation,
   .ank-business-app-welcome-grid {
@@ -19,8 +19,17 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
   }
 
-  .ank-business-app-welcome-grid {
+  .ank-business-app-welcome-grid,
+  .ank-business-app-welcome-grid-content {
     flex: 1;
+  }
+
+  .ank-business-app-welcome-grid {
+    min-height: 15rem;
+  }
+
+  .ank-business-app-welcome-grid-content {
+    min-height: 9rem;
   }
 
   .ank-business-app-welcome-creation-title,
@@ -36,14 +45,25 @@
     margin: 0 0 1.25rem 0;
     display: flex;
     align-items: center;
-    i {
+    justify-content: space-between;
+    i.title-icon {
       margin-right: 0.7rem;
       font-size: 1rem;
     }
+
+    .ank-business-app-welcome-grid-reload {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 0.083rem solid #d8d9da;
+      background: transparent;
+      &:hover {
+        background: lighten(#d8d9da, 10);
+      }
+    }
   }
 
-  .ank-business-app-welcome-creation-content,
-  .ank-business-app-welcome-grid-content {
+  .ank-business-app-welcome-creation-content {
     overflow-y: auto;
     display: flex;
     flex-wrap: wrap;

@@ -41,6 +41,7 @@
             @tabWelcomeGridConsult="onGridConsult"
             :creation="welcomeTab.creation"
             :gridCollections="welcomeTab.gridCollections"
+            ref="businessWelcomeTab"
           ></ank-welcome>
         </ank-tab>
         <ank-se-tab

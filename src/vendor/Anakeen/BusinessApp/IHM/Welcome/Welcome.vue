@@ -2,7 +2,9 @@
   <div class="ank-business-app-welcome">
     <div v-if="creation && creation.length" class="ank-business-app-welcome-creation card card-default">
       <div class="ank-business-app-welcome-creation-title card-header">
-        <i class="material-icons">add</i> <span class="title">Creation</span>
+        <span class="ank-business-app-welcome-grid-title-label">
+          <i class="title-icon material-icons">add</i> <span class="title">Creation</span>
+        </span>
       </div>
       <div class="ank-business-app-welcome-creation-content">
         <div
@@ -28,14 +30,18 @@
       class="ank-business-app-welcome-grid card card-default"
     >
       <div class="ank-business-app-welcome-grid-title card-header">
-        <i class="material-icons">grid_on</i>
-        <span class="title">{{ gridCollec.title }}</span>
+        <span class="ank-business-app-welcome-grid-title-label">
+          <i class="title-icon material-icons">grid_on</i>
+          <span class="title">{{ gridCollec.title }}</span>
+        </span>
+        <button @click="reloadGrid(index)" class="ank-business-app-welcome-grid-reload k-button"><i class="fa fa-refresh"></i></button>
       </div>
       <div class="ank-business-app-welcome-grid-content">
         <ank-se-grid
           :collection="gridCollec.name || gridCollec.initid"
           urlConfig="/api/v2/smartstructures/dsearch/gridConfig/<collection>"
           @action-click="onActionClick"
+          ref="grids"
         >
         </ank-se-grid>
       </div>
