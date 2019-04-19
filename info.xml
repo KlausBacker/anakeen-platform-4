@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module xmlns="https://platform.anakeen.com/4/schemas/app/1.0"
-        name="smart-data-engine" version="1.0.3" vendor="Anakeen"
+        name="smart-data-engine" version="1.0.4" vendor="Anakeen"
         license="http://www.gnu.org/licenses/lgpl-3.0.txt GNU Lesser General Public License v3.0" basecomponent="Y">
 
     <description>Smart Data Engine</description>
