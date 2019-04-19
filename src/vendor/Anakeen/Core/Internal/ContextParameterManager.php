@@ -104,8 +104,7 @@ class ContextParameterManager
         if (!self::$cache) {
             self::initCache();
         }
-        $u = ContextManager::getCurrentUser();
-        if ($u) {
+        if (ContextManager::isAuthenticated()) {
             if (!self::$cacheUser) {
                 self::initCacheUser();
             }

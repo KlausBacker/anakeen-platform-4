@@ -146,5 +146,4 @@ class PuDisableAccess extends TestCaseConfig
             ]
         ];
     }
-
 }

@@ -8,10 +8,10 @@ use Anakeen\Router\RouterLib;
 class Authent
 {
     /**
-     * @param       \Slim\Http\request  $request
-     * @param       \Slim\Http\response $response
-     * @param       Callable            $next
-     * @param array                     $args
+     * @param \Slim\Http\request  $request
+     * @param \Slim\Http\response $response
+     * @param Callable            $next
+     * @param array               $args
      *
      * @return mixed
      */
@@ -28,9 +28,10 @@ class Authent
             return $next($request, $response);
         }
 
-        $user = \Anakeen\Core\ContextManager::getCurrentUser();
-        if (!$user) {
+        if (!\Anakeen\Core\ContextManager::isAuthenticated()) {
             $user = \Anakeen\Core\ContextManager::authentUser();
+        } else {
+            $user = \Anakeen\Core\ContextManager::getCurrentUser();
         }
 
         \Anakeen\Core\ContextManager::initContext(

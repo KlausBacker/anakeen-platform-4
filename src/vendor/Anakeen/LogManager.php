@@ -38,7 +38,7 @@ class LogManager
                 [$sysHandler, $phpErrorHandler],
                 [
                     function ($record) {
-                        if (ContextManager::getCurrentUser()) {
+                        if (ContextManager::isAuthenticated()) {
                             $record["user"] = ContextManager::getCurrentUser()->login;
                         }
                         return $record;
