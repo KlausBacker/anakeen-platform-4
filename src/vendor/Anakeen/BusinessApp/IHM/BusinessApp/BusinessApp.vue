@@ -5,6 +5,8 @@
         ref="businessAppList"
         class="ank-business-app-list-widget"
         @se-selected="onSelectListItem"
+        @after-se-list-page-change="afterPageChange"
+        @se-list-filter-change="onListFilterChange"
       >
         <div
           v-if="isMultiCollection"
@@ -43,10 +45,13 @@
         <ank-se-tab
           v-for="(tab, index) in tabs"
           :identifier="tab.name"
-          :key="tab.name"
+          :key="tab.tabId"
+          :tabId="tab.tabId"
           :closable="!!tab.closable"
           :viewId="tab.viewId || '!defaultConsultation'"
           ref="seTab"
+          @seTabAfterSave="onAfterSave"
+          @seTabAfterDelete="onAfterDelete"
           @seTabActionClick="onActionClick"
           @seTabDisplayError="onDisplayError"
           @seTabDisplayMessage="onDisplayMessage"

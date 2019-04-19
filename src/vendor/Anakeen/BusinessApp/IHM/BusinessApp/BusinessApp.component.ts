@@ -29,6 +29,9 @@ export default class BusinessApp extends Vue {
     | object;
 
   @Prop({ default: "", type: String }) public selectedElement!: string;
+  @Prop({ default: "", type: String }) public collection!: string;
+  @Prop({ default: 1, type: Number }) public page!: number;
+  @Prop({ default: "", type: String }) public filter!: string;
 
   public $refs!: {
     businessAppList: AnkSEList;
@@ -51,15 +54,14 @@ export default class BusinessApp extends Vue {
   ];
   public selectedCollection: string | number = "";
   public collectionDropDownList: kendo.ui.DropDownList = null;
+  public currentListPage: number = 0;
+  public currentListFilter: string = "";
+  private creationCounter: number = 0;
 
   @Watch("selectedCollection")
-  public onSelectedCollectionChange(newVal, oldVal) {
+  public onSelectedCollectionDataChange(newVal, oldVal) {
     if (newVal !== oldVal) {
-      if (this.$refs.businessAppList) {
-        this.$refs.businessAppList.setCollection({
-          initid: newVal
-        });
-      }
+      this.$emit("selectedCollection", newVal);
     }
   }
 
@@ -70,38 +72,33 @@ export default class BusinessApp extends Vue {
     }
   }
 
+  @Watch("currentListPage")
+  public onCurrentListPageDataChange(newVal, oldVal) {
+    if (newVal && newVal !== oldVal) {
+      this.$emit("pageChanged", newVal);
+    }
+  }
+
+  @Watch("currentListFilter")
+  public onCurrentListFilterDataChange(newVal, oldVal) {
+    if (newVal !== oldVal) {
+      this.$emit("filterChanged", newVal);
+    }
+  }
+
   public mounted() {
     if (this.isMultiCollection) {
-      this.collectionDropDownList = $(this.$refs.businessAppCollectionSelector)
-        .kendoDropDownList({
-          dataSource: this.collections,
-          dataTextField: "title",
-          dataValueField: "initid",
-          select: (e: kendo.ui.DropDownListSelectEvent) => {
-            this.selectedCollection = e.dataItem.initid;
-          },
-          template: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`,
-          valueTemplate: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`
-        })
-        .data("kendoDropDownList");
+      this.initCollectionSelector();
       this.selectedCollection = this.collectionDropDownList.dataItem().initid;
     } else {
-      if (this.collections && this.collections.length) {
+      if (this.collection) {
+        this.selectedCollection = this.collection;
+      } else if (this.collections && this.collections.length) {
         this.selectedCollection = this.collections[0].initid;
       }
     }
-    if (!this.selectedTab || this.selectedTab === "welcome") {
-      this.selectedTab = "welcome";
-    } else {
-      this.addTab({
-        closable: true,
-        name: this.selectedTab
-      });
-      this.$refs.businessAppList.selectSe(this.selectedTab);
-    }
-    this.$nextTick(() => {
-      $(window).resize();
-    });
+    this.initSEList();
+    this.initSETabs();
   }
 
   public get isMultiCollection() {
@@ -113,11 +110,14 @@ export default class BusinessApp extends Vue {
   }
 
   protected addTab(tab) {
+    if (tab.tabId === undefined) {
+      tab.tabId = tab.name;
+    }
     // @ts-ignore
-    if (this.tabs.findIndex(t => t.name === tab.name) === -1) {
+    if (this.tabs.findIndex(t => t.tabId === tab.tabId) === -1) {
       this.tabs.push(tab);
     }
-    this.selectedTab = tab.name;
+    this.selectedTab = tab.tabId;
   }
 
   protected onSelectListItem(event) {
@@ -139,14 +139,14 @@ export default class BusinessApp extends Vue {
       if (index !== 0) {
         if (this.selectedTab === tabRemoved) {
           // @ts-ignore
-          this.selectedTab = this.tabs[index - 1].name;
+          this.selectedTab = this.tabs[index - 1].tabId;
         }
       } else {
         this.selectedTab = "welcome";
       }
     };
     // @ts-ignore
-    const index = this.tabs.findIndex(t => t.name === tabRemoved);
+    const index = this.tabs.findIndex(t => t.tabId === tabRemoved);
     const vueTab = this.$refs.seTab[index];
     if (vueTab && vueTab.close) {
       vueTab.close().then(() => {
@@ -161,6 +161,7 @@ export default class BusinessApp extends Vue {
       icon: createInfo.icon,
       label: createInfo.title,
       name: createInfo.name,
+      tabId: `CREATION_${createInfo.name}_${this.creationCounter++}`,
       title: `Creation ${createInfo.title}`,
       viewId: "!defaultCreation"
     });
@@ -196,5 +197,79 @@ export default class BusinessApp extends Vue {
       closable: true,
       name: element.id.toString()
     });
+  }
+
+  protected afterPageChange(event) {
+    const page = event.detail && event.detail.length ? event.detail[0] : {};
+    this.currentListPage = page.currentPage;
+  }
+
+  protected onListFilterChange(event) {
+    const filter = event.detail && event.detail.length ? event.detail[0] : "";
+    this.currentListFilter = filter.filterInput;
+  }
+
+  private initCollectionSelector() {
+    this.collectionDropDownList = $(this.$refs.businessAppCollectionSelector)
+      .kendoDropDownList({
+        dataSource: this.collections,
+        dataTextField: "title",
+        dataValueField: "initid",
+        select: (e: kendo.ui.DropDownListSelectEvent) => {
+          this.selectedCollection = e.dataItem.initid;
+          this.$refs.businessAppList.setCollection({
+            initid: this.selectedCollection
+          });
+          this.currentListPage = 1;
+        },
+        template: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`,
+        value: this.collection || "",
+        valueTemplate: `<span style="display: flex; align-items: center;"><img style="margin-right: 1rem;" src="#:displayIcon#"/> <span>#:title#</span></span>`
+      })
+      .data("kendoDropDownList");
+  }
+
+  private initSEList() {
+    if (this.$refs.businessAppList) {
+      this.$refs.businessAppList.setCollection({
+        initid: this.selectedCollection
+      });
+      this.$refs.businessAppList.$once("se-list-dataBound", () => {
+        if (this.page) {
+          this.currentListPage = this.page;
+          this.$refs.businessAppList.dataSource.page(this.page);
+        }
+        if (this.filter) {
+          this.currentListFilter = this.filter;
+          this.$refs.businessAppList.filterList(this.filter);
+        }
+        this.$refs.businessAppList.refreshList().then(() => {
+          if (this.selectedTab) {
+            this.$refs.businessAppList.selectSe(this.selectedTab);
+          }
+        });
+      });
+    }
+  }
+
+  private initSETabs() {
+    if (!this.selectedTab || this.selectedTab === "welcome") {
+      this.selectedTab = "welcome";
+    } else {
+      const match = this.selectedTab.match(/CREATION_([A-Z0-9a-z]+)_\d+/);
+      if (match && match.length > 1) {
+        this.addTab({
+          closable: true,
+          name: match[1],
+          tabId: `CREATION_${match[1]}_${this.creationCounter++}`,
+          viewId: "!defaultCreation"
+        });
+      } else {
+        this.addTab({
+          closable: true,
+          name: this.selectedTab
+        });
+      }
+    }
   }
 }

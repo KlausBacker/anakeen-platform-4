@@ -7,11 +7,18 @@
   .ank-business-app-list {
     flex: 0.3;
     margin-right: 0.2rem;
+
   }
 
   .ank-business-app-header {
     background: white;
     padding: 0.5rem;
+  }
+
+  .ank-business-app-welcome-title {
+    /deep/ p {
+      margin: 0;
+    }
   }
 
   .ank-business-app-tabs-wrapper {
@@ -30,7 +37,7 @@
         color: $ank-ui-color-selected;
         font-weight: 700;
       }
-      background: transparent;
+      background: #f1f1f1;
     }
     width: 100%;
   }

@@ -11,13 +11,7 @@ const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "src/public");
 
 const conf = {
-  moduleName: "businessApp",
-  libName: "HubBusinessApp",
-  entry: {
-    "business-app": [path.resolve(BASE_DIR, "src/vendor/Anakeen/BusinessApp/IHM/index.ts")]
-  },
   buildPath: PUBLIC_PATH,
-  excludeBabel: dontParse,
   customParts: [
     vueLoader(),
     typeScriptLoader(),
@@ -27,7 +21,15 @@ const conf = {
         extensions: [".js", ".vue", ".json", ".ts", ".tsx"]
       }
     }
-  ]
+  ],
+  entry: {
+    "business-app": [
+      path.resolve(BASE_DIR, "src/vendor/Anakeen/BusinessApp/IHM/index.ts")
+    ]
+  },
+  excludeBabel: dontParse,
+  libName: "HubBusinessApp",
+  moduleName: "businessApp"
 };
 
 conf.customParts = [...conf.customParts, ...dllPart];
