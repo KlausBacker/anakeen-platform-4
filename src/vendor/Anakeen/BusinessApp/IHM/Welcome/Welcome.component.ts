@@ -15,6 +15,11 @@ export default class Welcome extends Vue {
       $(window).trigger("resize");
     });
   }
+
+  public refresh() {
+    this.refreshGrids();
+  }
+
   protected onCreateClick(createInfo, event) {
     this.$emit("tabWelcomeCreate", createInfo);
   }
@@ -24,6 +29,27 @@ export default class Welcome extends Vue {
       case "consult":
         event.preventDefault();
         this.$emit("tabWelcomeGridConsult", event.data.row);
+    }
+  }
+
+  private refreshGrids() {
+    if (Array.isArray(this.$refs.grids)) {
+      this.$refs.grids.forEach(grid => {
+        grid.dataSource.read();
+      });
+    } else {
+      // @ts-ignore
+      this.$refs.grids.dataSource.read();
+    }
+  }
+
+  private reloadGrid(index) {
+    if (Array.isArray(this.$refs.grids)) {
+      // @ts-ignore
+      this.$refs.grids[index].dataSource.read();
+    } else if (index === 0) {
+      // @ts-ignore
+      this.$refs.grids.dataSource.read();
     }
   }
 }

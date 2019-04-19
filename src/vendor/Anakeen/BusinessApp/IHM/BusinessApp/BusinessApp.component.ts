@@ -35,6 +35,7 @@ export default class BusinessApp extends Vue {
 
   public $refs!: {
     businessAppList: AnkSEList;
+    businessWelcomeTab: Welcome;
     businessAppCollectionSelector: Element;
     seTab: AnkSETab;
   };
@@ -201,10 +202,18 @@ export default class BusinessApp extends Vue {
 
   protected onAfterSave() {
     this.$refs.businessAppList.refreshList();
+    if (this.$refs.businessWelcomeTab) {
+      // @ts-ignore
+      this.$refs.businessWelcomeTab.refresh();
+    }
   }
 
   protected onAfterDelete() {
     this.$refs.businessAppList.refreshList();
+    if (this.$refs.businessWelcomeTab) {
+      // @ts-ignore
+      this.$refs.businessWelcomeTab.refresh();
+    }
   }
 
   protected afterPageChange(event) {

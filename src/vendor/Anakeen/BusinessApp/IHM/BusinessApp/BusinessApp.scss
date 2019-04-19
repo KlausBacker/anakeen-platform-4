@@ -26,6 +26,9 @@
 
     .ank-business-app-tabs {
       height: 100%;
+      /deep/ .ank-tabs-contents {
+        overflow: hidden;
+      }
     }
   }
 
