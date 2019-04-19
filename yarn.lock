@@ -50,9 +50,9 @@
     libxmljs "^0.19.5"
 
 "@anakeen/hub-components@^1.0.0-dev20190411092216":
-  version "1.0.0-dev20190419102123"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190419102123.tgz#64563fd1dcce84836e5aeab7fd19d6b811634113"
-  integrity sha512-PVBNo8yj5G2a9JkHXGVIRw6cN7RXlM3nMpyThOsT0LfyG/3qI+1vjywL+wBusY9xCDwhyWsEbEZ+AP8w/QEDPg==
+  version "1.0.0-dev20190419131617"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190419131617.tgz#fe65679f22dd4d119603e48fa4325a277b43dd27"
+  integrity sha512-1n9uGkWLuSig5jOHylVCGtMhDxhhzy1iTUKlfLxsjqbmg7rEuJaeSV9mB0khdE5Yf/F/z6zLjEtwk0x4dx7KhA==
   dependencies:
     "@anakeen/internal-components" "^1.0.1-dev20190412123917"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
@@ -71,17 +71,6 @@
     vue-m-loader "^1.0.1"
     vue-property-decorator "^8.1.0"
     vuex "^3.1.0"
-
-"@anakeen/internal-components@^1.0.1-dev20190328164754":
-  version "1.0.1-dev20190328164754"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190328164754.tgz#820c92157d0a70599e17075341f3b6762d4fea55"
-  integrity sha512-dVKsH+M8Hf9UW3p43YJxhui84wdIO7JCNwaVnfFVcVki/i9LjqwiL1/aiWmOlqQdFk2OB4mjYSPfhPE78kHOCA==
-  dependencies:
-    "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
-    axios "^0.18.0"
-    core-js "3.0.0"
-    vue-class-component "^7.0.2"
-    vue-property-decorator "^8.1.0"
 
 "@anakeen/internal-components@^1.0.1-dev20190412123917":
   version "1.0.1-dev20190412123917"
@@ -105,9 +94,9 @@
     roboto-fontface "^0.10.0"
 
 "@anakeen/user-interfaces@^2.0.0-dev20190411085531":
-  version "2.0.0-dev20190418153339"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190418153339.tgz#5998c8ca849f24c94337d02c843ff408e012b19c"
-  integrity sha512-N5/qXOfJAEVtgrXM3vnrrvWYjFppoUu2Ftw6Jb21qAT1dUbrVQhMghqb49Rcr7Db7RNezIcTDzOhrlVwIvc/VQ==
+  version "2.0.0-dev20190419130547"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190419130547.tgz#fa616e80ad97b68c7e77288abb219cba13c73b8e"
+  integrity sha512-nHx/OJTZp3U0stHKS8Yvwtq/24Kw3xTzVUox/qA+kXeEdAeqFC9tipa8XCQzpCv0qqmJOg5oFxta6p0uTifPKg==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"

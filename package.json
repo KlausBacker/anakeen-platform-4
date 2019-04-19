@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@anakeen/hub-components": "^1.0.0-dev20190411092216",
-    "@anakeen/internal-components": "^1.0.1-dev20190328164754",
     "@anakeen/theme-variables": "^0.0.2",
     "@anakeen/user-interfaces": "^2.0.0-dev20190411085531",
     "@types/jquery": "^3.3.29",
