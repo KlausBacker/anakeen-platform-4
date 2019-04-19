@@ -29,12 +29,13 @@
         @tabRemove="onTabRemove"
         @tabClick="onTabClick"
       >
-        <ank-tab
-          v-if="hasWelcomeTab"
-          label="Welcome"
-          :closable="false"
-          name="welcome"
-        >
+        <ank-tab v-if="hasWelcomeTab" :closable="false" name="welcome">
+          <template slot="label">
+            <span
+              class="ank-business-app-welcome-title"
+              v-html="welcomeTab.title"
+            ></span>
+          </template>
           <ank-welcome
             @tabWelcomeCreate="onCreateElement"
             @tabWelcomeGridConsult="onGridConsult"

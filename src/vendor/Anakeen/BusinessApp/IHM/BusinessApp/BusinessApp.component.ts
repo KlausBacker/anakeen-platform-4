@@ -199,6 +199,14 @@ export default class BusinessApp extends Vue {
     });
   }
 
+  protected onAfterSave() {
+    this.$refs.businessAppList.refreshList();
+  }
+
+  protected onAfterDelete() {
+    this.$refs.businessAppList.refreshList();
+  }
+
   protected afterPageChange(event) {
     const page = event.detail && event.detail.length ? event.detail[0] : {};
     this.currentListPage = page.currentPage;
