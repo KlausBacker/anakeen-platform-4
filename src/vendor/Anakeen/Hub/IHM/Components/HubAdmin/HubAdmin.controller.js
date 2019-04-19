@@ -5,6 +5,7 @@ import Vue from "vue";
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import { DropdownsInstaller } from "@progress/kendo-dropdowns-vue-wrapper";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
+const urlJoin = require("url-join");
 
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
 import AnkSmartElement from "@anakeen/user-interfaces/components/lib/AnkSmartElement";
@@ -84,9 +85,11 @@ export default {
   },
   methods: {
     initHub(id) {
-      this.$http.get(`/api/v2/smart-elements/${id}.json`).then(response => {
-        this.hubElement = response.data.data.document;
-      });
+      return this.$http
+        .get(`/api/v2/smart-elements/${id}.json`)
+        .then(response => {
+          this.hubElement = response.data.data.document;
+        });
     },
     openElement() {
       this.openDetailConfig(this.hubId);
@@ -96,7 +99,23 @@ export default {
       window.open(`/hub/config/${this.hubId}.zip`);
     },
     openInterface() {
-      window.open(`/hub/station/${this.hubId}/`);
+      let routeEntry = `/hub/station/${this.hubId}/`;
+      if (this.$refs.smartConfig) {
+        const routerEntry = this.$refs.smartConfig.getValue(
+          "hub_instanciation_router_entry"
+        );
+        if (routerEntry && routerEntry.value) {
+          routeEntry = urlJoin("/", routerEntry.value);
+        } else {
+          const instanceLogicalName = this.$refs.smartConfig.getValue(
+            "instance_logical_name"
+          );
+          if (instanceLogicalName && instanceLogicalName.value) {
+            routeEntry = `/hub/station/${instanceLogicalName.value}/`;
+          }
+        }
+      }
+      window.open(routeEntry);
     },
     selectTr(seId) {
       let $trs = $(this.$el).find("tr[data-seid]");
