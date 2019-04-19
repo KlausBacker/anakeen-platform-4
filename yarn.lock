@@ -71,9 +71,9 @@
     roboto-fontface "^0.10.0"
 
 "@anakeen/user-interfaces@^2.0.0-dev20190412121959":
-  version "2.0.0-dev20190417071208"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190417071208.tgz#a682680374f4bfa70aa90739e053f476bae82485"
-  integrity sha512-Q66sg7FULVSlITYn5lVyx6fsfdTHiKXSJdvalHPr8PEffgYrqEWbrnHugClobVrRXMz8Pk6YnJZkDjJ1Y57+Dw==
+  version "2.0.0-dev20190419074736"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190419074736.tgz#797cc897f112e2c1d6f442dab917a6de67ed85a6"
+  integrity sha512-X/bg+AYixHr4LVkrVbYLLa0/a9QGSDvbh+IPovaNzdAP6QsT6aULDPweDcBIh4PRcia0W1hmdeezlYaM3rDuEw==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
@@ -947,9 +947,9 @@
   integrity sha512-auXcoS/pc39onGyf6fr2V3J3BEHUqH0a1Sa1psuGrVkCat+2D592DA7hdXY73lwCUyhGPzkf0lrcE5jH0OFeJg==
 
 "@types/node@*":
-  version "11.13.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.4.tgz#f83ec3c3e05b174b7241fadeb6688267fe5b22ca"
-  integrity sha512-+rabAZZ3Yn7tF/XPGHupKIL5EcAbrLxnTr/hgQICxbeuAfWtT0UZSfULE+ndusckBItcv4o6ZeOJplQikVcLvQ==
+  version "11.13.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.5.tgz#266564afa8a6a09dc778dfacc703ed3f09c80516"
+  integrity sha512-/OMMBnjVtDuwX1tg2pkYVSqRIDSmNTnvVvmvP/2xiMAAWf4a5+JozrApCrO4WCAILmXVxfNoQ3E+0HJbNpFVGg==
 
 "@types/node@^11.11.7":
   version "11.11.7"
@@ -3278,11 +3278,11 @@ doctypes@^1.1.0:
   integrity sha1-6oCxBqh1OHdOijpKWv4pPeSJ4Kk=
 
 document-register-element@^1.11.0:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.13.1.tgz#dad8cb7be38e04ee3f56842e6cf81af46c1249ba"
-  integrity sha512-92ZyLDKg9j4rOll//NNXj25f+8rAzOkYsGJonhugKwXfeqH7bzs8Ucpvey0WzZ2ZzKdrvW9RnUw3UyOZ/uhBFw==
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/document-register-element/-/document-register-element-1.13.2.tgz#e1773941f6e39345aefec909cc753e82993b415d"
+  integrity sha512-zFmrflJsehS9r86gNiBdvShz+Iuvg8Xnxq715+mrTuHNBway5c24ldTdVmqKxpD4WQBo1HnSflvSJdPgSBb11A==
   dependencies:
-    lightercollective "^0.1.0"
+    lightercollective "^0.3.0"
 
 dom-converter@^0.2:
   version "0.2.0"
@@ -5461,10 +5461,10 @@ liftoff@^2.5.0:
     rechoir "^0.6.2"
     resolve "^1.1.7"
 
-lightercollective@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.1.0.tgz#70df102c530dcb8d0ccabfe6175a8d00d5f61300"
-  integrity sha512-J9tg5uraYoQKaWbmrzDDexbG6hHnMcWS1qLYgJSWE+mpA3U5OCSeMUhb+K55otgZJ34oFdR0ECvdIb3xuO5JOQ==
+lightercollective@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.3.0.tgz#1f07638642ec645d70bdb69ab2777676f35a28f0"
+  integrity sha512-RFOLSUVvwdK3xA0P8o6G7QGXLIyy1L2qv5caEI7zXN5ciaEjbAriRF182kbsoJ1S1TgvpyGcN485fMky6qxOPw==
 
 load-css-file@^1.0.0:
   version "1.0.0"
