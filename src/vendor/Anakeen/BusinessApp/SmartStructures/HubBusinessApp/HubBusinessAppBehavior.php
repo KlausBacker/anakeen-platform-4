@@ -151,7 +151,8 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         }
         return [
             "creation" => $this->getCreationConfig(),
-            "gridCollections" => $this->getGridCollections()
+            "gridCollections" => $this->getGridCollections(),
+            "title" => $this->getRawValue(HubBusinessAppFields::hba_welcome_title, "Welcome")
         ];
     }
 

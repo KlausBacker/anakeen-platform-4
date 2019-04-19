@@ -24,6 +24,7 @@
             <smart:field-set name="hub_component_tab" extended="true">
                 <smart:field-set type="frame" name="hba_options" access="ReadWrite" label="Welcome Tab options">
                     <smart:field-enum access="ReadWrite" name="hba_welcome_option" relation="HBA_YES_NO_ENUM" label="Enable"/>
+                    <smart:field-longtext access="ReadWrite" name="hba_welcome_title" label="Title HTML template"/>
                     <smart:field-set name="hba_structure_creation" type="array" access="ReadWrite" label="Smart Structure creation">
                         <smart:field-docid access="ReadWrite" name="hba_structure" label="Structure" relation="-1"/>
                     </smart:field-set>
@@ -39,6 +40,7 @@
                 <smart:field-callable function="Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior::getJSAsset"/>
             </smart:default>
             <smart:default field="hba_welcome_option" reset="true">YES</smart:default>
+            <smart:default field="hba_welcome_title" reset="true">Welcome</smart:default>
             <smart:default field="hba_icon_type" reset="true">ICON</smart:default>
             <smart:default field="hba_titles" reset="true">
                 <smart:field-callable function="::getDefaultLanguages"/>

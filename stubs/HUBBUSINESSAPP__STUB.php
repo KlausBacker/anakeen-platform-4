@@ -55,7 +55,7 @@ namespace SmartStructure\Fields {
         * Business App icon
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> text </li>
+        * <li> <i>type</i> htmltext </li>
         * </ul>
         */ 
         const hba_icon='hba_icon';
@@ -71,6 +71,7 @@ namespace SmartStructure\Fields {
         * Title
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>needed</i> true </li>
         * <li> <i>type</i> text </li>
         * </ul>
         */ 
@@ -78,8 +79,9 @@ namespace SmartStructure\Fields {
         /**
         * Language
         * <ul>
+        * <li> <i>relation</i> HBA_SUPPORT_LANG </li>
         * <li> <i>access</i> Read </li>
-        * <li> <i>type</i> text </li>
+        * <li> <i>type</i> enum </li>
         * </ul>
         */ 
         const hba_language='hba_language';
@@ -123,6 +125,13 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hba_welcome_option='hba_welcome_option';
+        /**
+        * <ul>
+        * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>type</i> htmltext </li>
+        * </ul>
+        */ 
+        const hba_welcome_title='hba_welcome_title';
         /**
         * Smart Structure creation
         * <ul>

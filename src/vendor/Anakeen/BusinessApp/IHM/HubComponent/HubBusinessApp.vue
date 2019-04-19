@@ -13,6 +13,12 @@
         :welcomeTab="welcomeTab"
         :selectedElement="selectedElement"
         @selectedElement="onElementOpened"
+        :collection="selectedCollection"
+        @selectedCollection="onCollectionChanged"
+        :page="selectedPage"
+        @pageChanged="onPageChanged"
+        :filter="currentFilter"
+        @filterChanged="onFilterChanged"
         @displayMessage="onDisplayMessage"
         @displayError="onDisplayError"
       ></business-app>
@@ -41,11 +47,32 @@ export default class HubBusinessApp extends Vue {
   @Prop({ default: "Business App", type: String }) public hubLabel!: string;
 
   public selectedElement: string = "welcome";
+  public selectedCollection: string = "";
+  public selectedPage: number = 1;
+  public currentFilter: string = "";
 
   @Watch("selectedElement")
-  onSelectedElementDataChange(newVal, oldVal) {
+  onSelectedElementDataChange(newVal) {
     // @ts-ignore
-    this.navigate(this.routeUrl + "/" + newVal);
+    this.navigate(this.getComputedRoute({ selectedElement: newVal }));
+  }
+
+  @Watch("selectedCollection")
+  onSelectedCollectionDataChange(newVal) {
+    // @ts-ignore
+    this.navigate(this.getComputedRoute({ collection: newVal }));
+  }
+
+  @Watch("selectedPage")
+  onSelectedPageDataChange(newVal) {
+    // @ts-ignore
+    this.navigate(this.getComputedRoute({ page: newVal }));
+  }
+
+  @Watch("currentFilter")
+  onCurrentFilterDataChange(newVal) {
+    // @ts-ignore
+    this.navigate(this.getComputedRoute({ filter: newVal }));
   }
 
   protected onElementOpened(elementId) {
@@ -54,6 +81,21 @@ export default class HubBusinessApp extends Vue {
     }
   }
 
+  protected onCollectionChanged(collection) {
+    if (collection) {
+      this.selectedCollection = collection;
+    }
+  }
+
+  protected onPageChanged(page) {
+    if (page) {
+      this.selectedPage = page;
+    }
+  }
+
+  protected onFilterChanged(filterValue) {
+    this.currentFilter = filterValue;
+  }
   public created() {
     if (this["isHubContent"]) {
       this.subRouting();
@@ -65,12 +107,42 @@ export default class HubBusinessApp extends Vue {
     return this.entryOptions.completeRoute;
   }
 
+  private getComputedRoute({ collection, selectedElement, page, filter }) {
+    const collectionVal = collection || this.selectedCollection;
+    const selectedElVal = selectedElement || this.selectedElement;
+    const pageVal = page || this.selectedPage;
+    const filterVal = filter || this.currentFilter;
+    return (
+      this.routeUrl +
+      "/" +
+      collectionVal +
+      "/" +
+      selectedElVal +
+      "?page=" +
+      pageVal +
+      (filterVal ? "&filter=" + encodeURI(filterVal) : "")
+    );
+  }
+
   protected subRouting() {
-    const url = (this.routeUrl + "/:elementId").replace(/\/\/+/g, "/");
+    const url = (this.routeUrl + "/:collection/:elementId").replace(
+      /\/\/+/g,
+      "/"
+    );
 
     // @ts-ignore
-    this.registerRoute(url, params => {
+    this.registerRoute(url, (params, ...args) => {
+      // @ts-ignore
+      this.selectedCollection = params.collection;
       this.selectedElement = params.elementId;
+      const page = window.location.search.match(/page=(\d+)/);
+      if (page && page.length > 1) {
+        this.selectedPage = parseInt(page[1]);
+      }
+      const filter = window.location.search.match(/filter=([^&]+)/);
+      if (filter && filter.length > 1) {
+        this.currentFilter = decodeURI(filter[1]);
+      }
     }).resolve(window.location.pathname);
   }
 
