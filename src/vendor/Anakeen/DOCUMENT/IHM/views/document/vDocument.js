@@ -1310,7 +1310,10 @@ define([
       if (saveDocument && saveDocument.then) {
         saveDocument.then(function vDocumentSaveDisplaySuccess() {
           currentView.trigger("showSuccess", {
-            title: i18n.___("Document Recorded", "ddui")
+            htmlMessage: Mustache.render(
+              i18n.___("<b>{{title}}</b> is recorded", "ddui"),
+              { title: currentView.model.get("properties").get("title") }
+            )
           });
         });
       }

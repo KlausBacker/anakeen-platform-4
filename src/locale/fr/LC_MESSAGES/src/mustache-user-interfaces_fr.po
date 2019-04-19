@@ -81,11 +81,6 @@ msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Créée le"
 
-#: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
-msgctxt "dsearch"
-msgid "Searching ..."
-msgstr "Recherche en cours"
-
 #: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Select line"
@@ -95,3 +90,7 @@ msgstr "Sélectionner la ligne"
 msgctxt "ddui"
 msgid "Unable to load try again"
 msgstr "Impossible de charger la page, veuillez essayer à nouveau."
+
+#~ msgctxt "dsearch"
+#~ msgid "Searching ..."
+#~ msgstr "Recherche en cours"
