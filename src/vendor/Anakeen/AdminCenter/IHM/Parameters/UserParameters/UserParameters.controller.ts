@@ -567,6 +567,24 @@ export default class UserParametersController extends Vue {
   // Empty the value of the search input
   public clearSearchInput() {
     $(".user-search-input", this.$el).val("");
+
+    const usersDataSource = new kendo.data.DataSource({
+      pageSize: 10,
+      schema: {
+        data: response => response.data.data.users,
+        total: response => response.data.data.total
+      },
+      serverPaging: true,
+      transport: {
+        read: options => {
+          this.$http
+            .get("api/v2/admin/parameters/users/")
+            .then(options.success)
+            .catch(options.error);
+        }
+      }
+    });
+    this.usersGrid.setDataSource(usersDataSource);
   }
 
   // Destroy the parameter editor if it exists and emit event to display System parameters
