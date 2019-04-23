@@ -829,6 +829,8 @@ define([
           return $.fn.dcpDouble;
         case "money":
           return $.fn.dcpMoney;
+        case "xml":
+        case "json":
         case "longtext":
           return $.fn.dcpLongtext;
         case "htmltext":
