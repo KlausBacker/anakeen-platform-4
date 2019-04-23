@@ -34,7 +34,7 @@ class CheckAttr extends CheckData
         "double",
         "money",
         "password",
-        "ifile",
+        "json",
         "xml",
         "thesaurus",
         "tab",
