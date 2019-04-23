@@ -486,7 +486,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
             ));
             $oattr->docid = $cid;
             $oattr->accessibility = "ReadWrite";
-            $oattr->type = 'docid("PROFIL")';
+            $oattr->type = 'docid("PDOC")';
             $oattr->id = $aidprofilid;
             $oattr->labeltext = sprintf(_("%s profile"), $this->getStateLabel($state));
             $oattr->link = "";

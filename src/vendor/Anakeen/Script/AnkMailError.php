@@ -78,8 +78,10 @@ class AnkMailError
      */
     public function autosend()
     {
-        $user = \Anakeen\Core\ContextManager::getCurrentUser();
-        $from = (!empty($user) ? $user->getMail() : '');
+        if (\Anakeen\Core\ContextManager::isAuthenticated()) {
+            $user = \Anakeen\Core\ContextManager::getCurrentUser();
+            $from = (!empty($user) ? $user->getMail() : '');
+        }
         if ($from == '') {
             $from = ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, 'SMTP_FROM');
         }

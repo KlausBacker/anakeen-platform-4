@@ -5,6 +5,8 @@
 */
 namespace {
 
+    use Anakeen\Core\ContextManager;
+
     /**
      * global Error Code
      * @class ErrorCodeCORE
@@ -111,5 +113,10 @@ namespace {
          * @errorCode Try to register another pat for config files
          */
         const CORE0025 = 'Connot register config directory "%s" : this directory not exists';
+        /**
+         * @errorCode Try to get current user
+         * @see ContextManager::getCurrentUser()
+         */
+        const CORE0026 = 'User not authenticated';
     }
 }

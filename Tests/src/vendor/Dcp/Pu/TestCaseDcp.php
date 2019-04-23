@@ -100,8 +100,7 @@ class TestCaseDcp extends \PHPUnit\Framework\TestCase
      */
     protected static function connectUser($login = "admin")
     {
-        $user = ContextManager::getCurrentUser();
-        if (!$user) {
+        if (!ContextManager::isAuthenticated()) {
             $u = new \Anakeen\Core\Account();
             $u->setLoginName($login);
             \Anakeen\Core\ContextManager::initContext($u);

@@ -152,8 +152,8 @@ class ContextManager
      *
      * @param string $lang like fr_FR, en_US
      *
-     * @throws \Exception
      * @return string the po header
+     * @throws \Exception
      */
     public static function setLanguage($lang)
     {
@@ -215,6 +215,7 @@ class ContextManager
 
     /**
      * @param Account $account
+     *
      * @return Account previous account login
      * @throws \Exception
      */
@@ -244,8 +245,9 @@ class ContextManager
      * @param bool $original use origin logged account even sudo is used
      *
      * @return \Anakeen\Core\Account|null
+     * @throws \Anakeen\Exception code : CORE0026
      */
-    public static function getCurrentUser(bool $original = false) : ?\Anakeen\Core\Account
+    public static function getCurrentUser(bool $original = false): \Anakeen\Core\Account
     {
         if (self::$coreUser) {
             if ($original === true && self::$originalUser) {
@@ -253,9 +255,17 @@ class ContextManager
             }
             return self::$coreUser;
         }
-        return null;
+        throw new \Anakeen\Exception("CORE0026");
     }
 
+    /**
+     * Verify if user is authenticated
+     * @return bool
+     */
+    public static function isAuthenticated(): bool
+    {
+        return (self::$coreUser !== null);
+    }
 
     /**
      * @return Internal\Session
@@ -272,9 +282,9 @@ class ContextManager
      * @param bool   $exit    if false , no exit are pêrformed
      * @param string $code    error code (ref to error log)
      *
+     * @return void
      * @throws \Anakeen\Core\Exception
      * @api abort action execution
-     * @return void
      */
     public static function exitError($texterr, $exit = true, $code = "")
     {
@@ -305,7 +315,7 @@ class ContextManager
     /**
      * return value of an context application parameter
      *
-     * @param string $ns parameter namespace
+     * @param string $ns   parameter namespace
      * @param string $name parameter name
      * @param string $def  default value if value is empty
      *
@@ -321,7 +331,6 @@ class ContextManager
     {
         ContextParameterManager::setValue($ns, $name, $value);
     }
-
 
 
     public static function getRootDirectory()
