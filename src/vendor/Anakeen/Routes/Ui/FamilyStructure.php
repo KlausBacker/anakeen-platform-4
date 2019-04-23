@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Ui;
 
 use Anakeen\Core\DbManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -23,8 +24,9 @@ class FamilyStructure extends \Anakeen\Routes\Core\DocumentData
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $resourceId = $args["family"];
-        $this->setDocument($resourceId);
-        if ($this->_document->doctype !== "C") {
+
+        $this->_document=SEManager::getFamily($resourceId);
+        if (!$this->_document) {
             throw new \Anakeen\Ui\Exception("CRUDUI0013", $resourceId);
         }
 

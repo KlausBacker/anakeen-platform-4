@@ -84,11 +84,6 @@ msgctxt "ddui"
 msgid "RevisionCreated"
 msgstr "Revision created at"
 
-#: src/vendor/Anakeen/SmartStructures/Report/Render/reportHTML5_edit.mustache
-msgctxt "dsearch"
-msgid "Searching ..."
-msgstr ""
-
 #: src/vendor/Anakeen/DOCUMENT/IHM/widgets/attributes/array/line.mustache
 msgctxt "ddui"
 msgid "Select line"
