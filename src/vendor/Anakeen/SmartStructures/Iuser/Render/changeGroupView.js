@@ -4,7 +4,8 @@ import "./changeGroupView.css";
 {
   let getGroupTreeSource;
   let checkedGroups;
-
+  let currentDoc;
+  let notified = false;
   const getGroups = () => {
     return fetch("/api/v2/admin/account/groups/", {
       credentials: "same-origin"
@@ -90,7 +91,6 @@ import "./changeGroupView.css";
                 }, false);
               };
               hasChildChecked(groups);
-
               options.success(groups);
             })
             .catch(error => {
@@ -144,6 +144,7 @@ import "./changeGroupView.css";
         const serverData = window.dcp.document.documentController(
           "getCustomServerData"
         );
+        currentDoc = documentObject.id;
         return (
           documentObject.renderMode === "edit" && serverData["GROUP_ANALYZE"]
         );
@@ -216,15 +217,31 @@ import "./changeGroupView.css";
         check: function onTreeCheck(event) {
           const eventNode = this.dataItem(event.node);
           const checked = {};
-          getChecked(checked)(eventNode)(event.sender.dataSource);
-          checkedGroups = checked;
-          window.dcp.document.documentController("addCustomClientData", {
-            parentGroups: checkedGroups
-          });
-          updateListOfGroup(true);
+          if (
+            eventNode.documentId !== currentDoc.toString() &&
+            !eventNode.id.includes(currentDoc.toString())
+          ) {
+            getChecked(checked)(eventNode)(event.sender.dataSource);
+            checkedGroups = checked;
+            window.dcp.document.documentController("addCustomClientData", {
+              parentGroups: checkedGroups
+            });
+            updateListOfGroup(true);
+          } else {
+            if (!notified) {
+              $("body").dcpNotification("showError", {
+                title: "Move group",
+                message: "Can't set self or children groups as parent group"
+              });
+              notified = true;
+            }
+            $("#listOfGroups input.k-checkbox[id=_" + eventNode.uid + "]")
+              .prop("checked", false)
+              .trigger("change");
+          }
+          notified = false;
         }
       });
-
       $("#formFilter").on("submit", event => {
         event.preventDefault();
         filterTitle = document.getElementById("filterTree").value
