@@ -22,9 +22,10 @@ trait THubInstanciationCommonRender
 
         $options->text(HubInstanciationFields::hub_instanciation_router_entry)
             ->setDescription(
-                "<p>Url path that gives access to this hub instance.</p>".
+                "<p>Url path that gives access to this hub instance (only for custom path).</p>".
                 "<p>If the field is empty, logical name will be used to build the url path '/hub/station/&lt;logical_name&gt;'</p>"
             );
+        $options->frame(HubInstanciationFields::hub_instance_advanced_settings)->setCollapse(true);
         return $options;
     }
 }

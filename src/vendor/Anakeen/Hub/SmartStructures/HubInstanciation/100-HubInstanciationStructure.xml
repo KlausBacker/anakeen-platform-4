@@ -20,6 +20,9 @@
                                           access="Read"/>
                     </smart:field-set>
                 </smart:field-set>
+                <smart:field-set name="hub_instance_advanced_settings" type="frame" access="ReadWrite" label="Advanced Settings">
+                    <smart:field-text access="ReadWrite" name="hub_instanciation_router_entry" label="Router entry"/>
+                </smart:field-set>
             </smart:field-set>
             <smart:field-set name="hub_instance_tab_assets" type="tab" label="Global assets" access="ReadWrite">
                 <smart:field-set name="hub_instance_fr_assets" type="frame" label="Hub instance global assets" access="ReadWrite">
