@@ -72,7 +72,7 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     }
 
 
-    protected static function getAssets($structureName)
+    protected function getAssets($structureName)
     {
         $assets = [];
         $assets["js"] = SEManager::getFamily($structureName)->getFamilyParameterValue("hub_jsasset", []);
