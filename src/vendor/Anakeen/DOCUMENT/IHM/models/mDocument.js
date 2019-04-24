@@ -1169,14 +1169,13 @@ define([
      * To launch beforeRender and beforeRenderAttribute
      */
     injectCurrentDocJS: function mDocumentInjectCurrentDocJS() {
-      var allInjectPromises = [],
-        injectPromise = this._promiseCallback(),
+      var injectPromise = Promise.resolve(),
         customJS = _.pluck(this.get("customJS"), "path");
 
       _.each(customJS, function injectElement(currentPath) {
         if ($('script[src="' + currentPath + '"]').length === 0) {
-          allInjectPromises.push(
-            new Promise(function addJs(resolve, reject) {
+          injectPromise = injectPromise.then(function() {
+            return new Promise(function addJs(resolve, reject) {
               load(currentPath, function addJsDone(err) {
                 if (err) {
                   reject(err);
@@ -1184,16 +1183,12 @@ define([
                   resolve();
                 }
               });
-            })
-          );
+            });
+          });
         }
       });
 
-      Promise.all(allInjectPromises)
-        .then(injectPromise.success)
-        .catch(injectPromise.error);
-
-      return injectPromise.promise;
+      return injectPromise;
     },
 
     /**
@@ -1203,14 +1198,14 @@ define([
      * @return Promise
      */
     injectJS: function mDocumentInjectJs(jsToInject) {
-      var allInjectPromises = [];
+      var injectPromise = Promise.resolve();
       if (!_.isArray(jsToInject)) {
         throw new Error("The js to inject must be an array of string path");
       }
       _.each(jsToInject, function injectElement(currentPath) {
         if ($('script[src="' + currentPath + '"]').length === 0) {
-          allInjectPromises.push(
-            new Promise(function addJs(resolve, reject) {
+          injectPromise = injectPromise.then(function() {
+            return new Promise(function addJs(resolve, reject) {
               load(currentPath, function addJsDone(err) {
                 if (err) {
                   reject(err);
@@ -1218,11 +1213,12 @@ define([
                   resolve();
                 }
               });
-            })
-          );
+            });
+          });
         }
       });
-      return Promise.all(allInjectPromises);
+
+      return injectPromise;
     },
 
     /**
