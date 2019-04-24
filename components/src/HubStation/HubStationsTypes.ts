@@ -25,6 +25,7 @@ export interface IHubStationConfigComponentDef {
 }
 
 export interface IHubStationEntryOptions {
+  name: string;
   route: string;
   completeRoute: string;
   selectable: boolean;

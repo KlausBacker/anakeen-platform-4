@@ -158,7 +158,7 @@ export default {
       this.listenSmartElement();
     },
 
-    displayMockUp(e) {
+    displayMockUp: function(e) {
       let data = e.data.content.smartElements;
       const positionKey = [
         "TOP_LEFT",
@@ -197,8 +197,18 @@ export default {
           return 1;
         } else if (pa < pb) {
           return -1;
+        } else if (pa === pb) {
+          const sortTitle = a.properties.title.value.localeCompare(
+            b.properties.title.value
+          );
+          if (sortTitle > 0) {
+            return 1;
+          } else if (sortTitle < 0) {
+            return -1;
+          } else {
+            return 0;
+          }
         }
-
         return 0;
       });
 
