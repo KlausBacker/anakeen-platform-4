@@ -1,19 +1,9 @@
 <?xml version="1.0"?>
 <sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
     <sde:routes namespace="Uitest">
-        <sde:route name="Page">
-            <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\TestPage</sde:callable>
-            <sde:method>GET</sde:method>
-            <sde:pattern>/apps/uitest/</sde:pattern>
-            <sde:description>Test Ui Page</sde:description>
-            <sde:requiredAccess>
-                <sde:access ns="Uitest">user</sde:access>
-            </sde:requiredAccess>
-        </sde:route>
         <sde:route name="GridPage">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\TestGridPage</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\TestGridPage</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/apps/uitest/grid</sde:pattern>
             <sde:description>Test UI Grid Page</sde:description>
@@ -23,7 +13,7 @@
         </sde:route>
         <sde:route name="AllTypeGridPage">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\TestAllTypeGridPage</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\TestAllTypeGridPage</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/apps/uitest/grid/alltypes</sde:pattern>
             <sde:description>Test UI Grid Page</sde:description>
@@ -33,7 +23,7 @@
         </sde:route>
         <sde:route name="GridPageConfig">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\TestGridConfig</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\TestGridConfig</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/uitest/gridConfig/{collectionId}</sde:pattern>
             <sde:description>Test Grid Page Config</sde:description>
@@ -43,7 +33,7 @@
         </sde:route>
         <sde:route name="ExportData">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\ExportData</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\ExportData</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/api/v2/uitest/data</sde:pattern>
             <sde:description>Test Ui Export Test Description</sde:description>

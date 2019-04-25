@@ -161,13 +161,15 @@ class SearchViewRender extends DefaultView
                     }
                 }
             }
-            $leftfunc = explode("{left}", $func)[0];
-            $rightfunc = explode("{left}", $func)[1];
-            $rightfunc = explode("{right}", $rightfunc)[0];
+            if ($func) {
+                $leftfunc = explode("{left}", $func)[0];
+                $rightfunc = explode("{left}", $func)[1];
+                $rightfunc = explode("{right}", $rightfunc)[0];
 
-            if ($index == 0) {
-                $operand = "";
-                $leftfunc = ucfirst($leftfunc);
+                if ($index == 0) {
+                    $operand = "";
+                    $leftfunc = ucfirst($leftfunc);
+                }
             }
 
 
@@ -215,10 +217,12 @@ class SearchViewRender extends DefaultView
                 $key = $document->getAttributeValue("se_keys")[$index];
             }
 
-            if (strripos($func, "{right}") === false) {
-                $tabConditions[] = array("myList" => $operand . " " . $leftp . $leftfunc . " [" . $attr . "] " . $rightfunc . $rightp);
-            } else {
-                $tabConditions[] = array("myList" => $operand . " " . $leftp . $leftfunc . " [" . $attr . "] " . $rightfunc . " \"" . $key . "\" " . $rightp);
+            if ($func) {
+                if (strripos($func, "{right}") === false) {
+                    $tabConditions[] = array("myList" => $operand . " " . $leftp . $leftfunc . " [" . $attr . "] " . $rightfunc . $rightp);
+                } else {
+                    $tabConditions[] = array("myList" => $operand . " " . $leftp . $leftfunc . " [" . $attr . "] " . $rightfunc . " \"" . $key . "\" " . $rightp);
+                }
             }
         }
 

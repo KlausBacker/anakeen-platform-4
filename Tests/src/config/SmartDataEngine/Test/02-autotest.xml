@@ -3,7 +3,7 @@
     <sde:routes namespace="autotest">
         <sde:route name="welcome">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\Autotest\Welcome\Main</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\Autotest\Welcome\Main</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/autotest/welcome</sde:pattern>
             <sde:description>autotest welcome</sde:description>
@@ -13,7 +13,7 @@
         </sde:route>
         <sde:route name="anklogout">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\Autotest\AnkLogout\Main</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\Autotest\AnkLogout\Main</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/autotest/anklogout</sde:pattern>
             <sde:description>autotest logout</sde:description>
@@ -23,7 +23,7 @@
         </sde:route>
         <sde:route name="ankidentity">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\Autotest\AnkIdentity\Main</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\Autotest\AnkIdentity\Main</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/autotest/ankidentity</sde:pattern>
             <sde:description>autotest ankidentity</sde:description>
@@ -33,7 +33,7 @@
         </sde:route>
         <sde:route name="ankselist">
             <sde:priority>1</sde:priority>
-            <sde:callable>\Anakeen\Routes\UiTest\Autotest\AnkSeList\Main</sde:callable>
+            <sde:callable>Anakeen\Routes\UiTest\Autotest\AnkSeList\Main</sde:callable>
             <sde:method>GET</sde:method>
             <sde:pattern>/autotest/ankselist</sde:pattern>
             <sde:description>autotest ankselist</sde:description>
