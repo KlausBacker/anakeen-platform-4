@@ -2,7 +2,7 @@
   <hub-dock :position="position" @dockResized="resizeWindow" ref="innerDock" :expandable="isExpandable">
     <template slot="header">
       <hub-dock-entry
-        v-for="(entry, index) in getDockHeaders(dockContent)"
+        v-for="(entry, index) in getDock(InnerDockPosition.HEADER, dockContent)"
         :key="`${position.toLowerCase()}-header-${index}`"
         :name="`${position.toLowerCase()}-header-${index}`"
         :selectable="isSelectableEntry(entry)"
@@ -19,7 +19,7 @@
       </hub-dock-entry>
     </template>
     <hub-dock-entry
-      v-for="(entry, index) in getDockCenter(dockContent)"
+      v-for="(entry, index) in getDock(InnerDockPosition.CENTER, dockContent)"
       :key="`${position.toLowerCase()}-center-${index}`"
       :name="`${position.toLowerCase()}-center-${index}`"
       :selectable="isSelectableEntry(entry)"
@@ -36,7 +36,7 @@
     </hub-dock-entry>
     <template slot="footer">
       <hub-dock-entry
-        v-for="(entry, index) in getDockFooter(dockContent)"
+        v-for="(entry, index) in getDock(InnerDockPosition.FOOTER, dockContent)"
         :key="`${position.toLowerCase()}-footer-${index}`"
         :name="`${position.toLowerCase()}-footer-${index}`"
         :selectable="isSelectableEntry(entry)"

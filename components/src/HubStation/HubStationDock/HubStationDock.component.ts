@@ -39,7 +39,9 @@ export default class HubStationDock extends Vue {
   // endregion props
 
   protected dockIsCollapsed: boolean = true;
-
+  get InnerDockPosition() {
+    return InnerDockPosition;
+  }
   get dockState() {
     return this.dockIsCollapsed
       ? HubElementDisplayTypes.COLLAPSED
@@ -67,42 +69,32 @@ export default class HubStationDock extends Vue {
   }
 
   // region methods
-  protected getDockHeaders(configs: IHubStationPropConfig[]) {
+  protected getDock(type, configs: IHubStationPropConfig[]) {
     return configs
       .filter(c => {
-        return c.position.innerPosition === InnerDockPosition.HEADER;
+        return c.position.innerPosition === type;
       })
       .sort((a, b) => {
-        if (a.position && a.position.order && b.position && b.position.order) {
-          return a.position.order - b.position.order;
+        const posa = a.position.order || 0;
+        const posb = b.position.order || 0;
+        if (posa > posb) {
+          return 1;
+        } else if (posa < posb) {
+          return -1;
+        } else if (posa === posb) {
+          const sortTitle = a.entryOptions.name.localeCompare(
+            b.entryOptions.name
+          );
+          if (sortTitle > 0) {
+            return 1;
+          } else if (sortTitle < 0) {
+            return -1;
+          } else {
+            return 0;
+          }
+        } else {
+          return 0;
         }
-        return 0;
-      });
-  }
-
-  protected getDockCenter(configs: IHubStationPropConfig[]) {
-    return configs
-      .filter(c => {
-        return c.position.innerPosition === InnerDockPosition.CENTER;
-      })
-      .sort((a, b) => {
-        if (a.position && a.position.order && b.position && b.position.order) {
-          return a.position.order - b.position.order;
-        }
-        return 0;
-      });
-  }
-
-  protected getDockFooter(configs: IHubStationPropConfig[]) {
-    return configs
-      .filter(c => {
-        return c.position.innerPosition === InnerDockPosition.FOOTER;
-      })
-      .sort((a, b) => {
-        if (a.position && a.position.order && b.position && b.position.order) {
-          return a.position.order - b.position.order;
-        }
-        return 0;
       });
   }
 
@@ -143,6 +135,5 @@ export default class HubStationDock extends Vue {
     }
     return "";
   }
-
   // endregion methods
 }
