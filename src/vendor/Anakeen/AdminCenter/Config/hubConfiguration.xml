@@ -29,42 +29,82 @@
         <hub_activated>FALSE</hub_activated>
         <label>Admin Center</label>
     </hubconfigurationlabel>
-    <hubadmincenteraccountsvue name="HUBA_ACCOUNTS">
-        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
-        <hub_title>Accounts</hub_title>
+    <hubconfigurationgeneric name="HGEA_ACCOUNTS">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>ADMINACCOUNTS</hub_title>
         <hub_order>1</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>accounts</hub_vue_router_entry>
         <hub_activated>TRUE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
-    </hubadmincenteraccountsvue>
-    <hubadmincenterparametersvue  name="HUBA_PARAMETERS">
-        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
-        <hub_title>Parameters</hub_title>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                /Anakeen/manifest/accountManager/prod.json#account-manager
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_libname>AdminAccountManager</hge_component_libname>
+        <hge_component_tag>ank-admin-account</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_ACCOUNTSMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="HGEA_PARAMETERS">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>ADMINPARAMETERS</hub_title>
         <hub_order>2</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>parameters</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
-    </hubadmincenterparametersvue>
-    <hubauthenticationtokensvue >
-        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
-        <hub_title>Tokens</hub_title>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                /Anakeen/manifest/parameterManager/prod.json#parameter-manager
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_libname>AdminParametersManager</hge_component_libname>
+        <hge_component_tag>ank-admin-parameter</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_PARAMETERSMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="HGEA_TOKENS">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>ADMINTOKENS</hub_title>
         <hub_order>3</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>tokens</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
-    </hubauthenticationtokensvue>
-    <hubadmincentervaultvue>
-        <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
-        <hub_title>Vault Manager</hub_title>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                /Anakeen/manifest/tokenManager/prod.json#token-manager
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_libname>AdminTokenManager</hge_component_libname>
+        <hge_component_tag>ank-hub-authentication-tokens</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_TOKENSMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="HGEA_VAULTS">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>ADMINVAULT</hub_title>
         <hub_order>4</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
         <hub_vue_router_entry>vaults</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
-    </hubadmincentervaultvue>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                /Anakeen/manifest/vaultManager/prod.json#vault-manager
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_libname>AdminVaultManager</hge_component_libname>
+        <hge_component_tag>ank-admin-vault-manager</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_VAULTSMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
     <hubconfigurationlabel name="HUBA_LABEL">
         <hub_station_id name="ADMINCENTER">Admin Center/Admin Center</hub_station_id>
         <hub_title>Admin Center</hub_title>
