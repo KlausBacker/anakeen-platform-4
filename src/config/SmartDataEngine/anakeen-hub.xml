@@ -50,8 +50,8 @@
         <sde:route name="hubXmlConfig">
             <sde:callable>Anakeen\Hub\Routes\ExportConfiguration</sde:callable>
             <sde:method>GET</sde:method>
-            <sde:pattern>/hub/config/{hubId}.zip</sde:pattern>
-            <sde:description>Export config of the hub in XML format in zip archive</sde:description>
+            <sde:pattern>/hub/config/{hubId}.xml</sde:pattern>
+            <sde:description>Export config of the hub in XML format</sde:description>
             <sde:requiredAccess>
                 <sde:access ns="AnakeenHub">HubAdmin</sde:access>
             </sde:requiredAccess>

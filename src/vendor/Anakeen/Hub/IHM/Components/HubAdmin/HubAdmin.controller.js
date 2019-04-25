@@ -96,7 +96,7 @@ export default {
       this.selectedComponent = 0;
     },
     exportConfiguration() {
-      window.open(`/hub/config/${this.hubId}.zip`);
+      window.open(`/hub/config/${this.hubId}.xml`);
     },
     openInterface() {
       let routeEntry = `/hub/station/${this.hubId}/`;

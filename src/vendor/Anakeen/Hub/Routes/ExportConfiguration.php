@@ -13,7 +13,7 @@ use SmartStructure\Fields\Hubconfiguration as Fields;
 
 /**
  *
- * @note used by route /hub/config/{hubId}.zip
+ * @note used by route /hub/config/{hubId}.xml
  */
 class ExportConfiguration
 {
@@ -44,21 +44,44 @@ class ExportConfiguration
 
         $this->hubInstance = SmartElementManager::getDocument($this->structureName);
 
-
-        $zipFile = $this->getTmpDir() . "hubConfig.zip";
-
-        $zip = new \ZipArchive();
-        $zip->open($zipFile, \ZipArchive::CREATE);
-        $zip->addFile($this->exportMain(), "hubConfiguration.xml");
-        $zip->addFile($this->exportHubElement(), "hubElements.xml");
+        $hubFile = $this->exportHubElement();
+        $outputFile = $this->exportMain();
         if ($this->extraIds) {
-            $zip->addFile($this->exportExtraElement(), "hubExtra.xml");
+            $this->appendXmlFile($outputFile, $this->exportExtraElement());
         }
-        $zip->close();
 
-        $response = ApiV2Response::withFile($response, $zipFile, sprintf("%s.zip", $this->hubInstance->getTitle()));
-        unlink($zipFile);
+        $this->appendXmlFile($outputFile, $hubFile);
+
+
+        $this->prettyXml($outputFile, $this->hubInstance->getTitle());
+        $response = ApiV2Response::withFile($response, $outputFile, sprintf("%s.xml", $this->hubInstance->getTitle()), false);
+        unlink($outputFile);
         return $response;
+    }
+
+    protected function appendXmlFile($file, $fileToAppend)
+    {
+        $dom1 = new \DOMDocument();
+        $dom1->formatOutput = true;
+        $dom1->preserveWhiteSpace = false;
+        $dom1->load($file);
+
+        $root = $dom1->documentElement;
+
+        $dom2 = new \DOMDocument();
+        $dom2->load($fileToAppend);
+
+
+        $root2 = $dom2->documentElement;
+
+        foreach ($root2->childNodes as $childs) {
+            if (get_class($childs) === \DOMElement::class) {
+                $node = $dom1->importNode($childs, true);
+                $root->appendChild($node);
+            }
+        }
+
+        $dom1->save($file);
     }
 
     protected function exportMain()
@@ -77,7 +100,6 @@ class ExportConfiguration
         $ec->setOutputFilePath($outFile);
         $ec->export();
 
-        $this->prettyXml($outFile);
         return $outFile;
     }
 
@@ -119,7 +141,6 @@ class ExportConfiguration
         $ec->setOutputFilePath($outFile);
         $ec->export();
 
-        $this->prettyXml($outFile);
 
         return $outFile;
     }
@@ -157,7 +178,6 @@ class ExportConfiguration
         $ec->setOutputFilePath($outFile);
         $ec->export();
 
-        $this->prettyXml($outFile);
 
         return $outFile;
     }
@@ -170,12 +190,15 @@ class ExportConfiguration
         $this->extraIds = array_merge($this->extraIds, $dataIds);
     }
 
-    protected function prettyXml($file)
+    protected function prettyXml($file, $title)
     {
         $dom = new \DOMDocument("1.0", "UTF-8");
         $dom->formatOutput = true;
         $dom->preserveWhiteSpace = false;
         $dom->load($file);
+
+        $dom->documentElement->setAttribute("name", $title);
+
         $dom->save($file);
     }
 
