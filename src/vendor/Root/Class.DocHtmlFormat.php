@@ -847,8 +847,8 @@ class DocHtmlFormat
                 if (trim($vv) == "") {
                     $thval[] = $vv;
                 } else {
-                    $thc = new_doc($this->doc->dbaccess, trim($vv));
-                    if ($thc->isAlive()) {
+                    $thc = \Anakeen\Core\SEManager::getDocument(trim($vv));
+                    if ($thc && $thc->isAlive()) {
                         $thval[] = $this->doc->getDocAnchor(trim($vv), $this->target, $this->htmlLink, $thc->getCustomTitle());
                     } else {
                         $thval[] = "th error1 $vv";
@@ -861,8 +861,8 @@ class DocHtmlFormat
                 $htmlval = $avalue;
             } else {
                 $avalue = trim($avalue);
-                $thc = new_doc($this->doc->dbaccess, $avalue);
-                if ($thc->isAlive()) {
+                $thc = \Anakeen\Core\SEManager::getDocument($avalue);
+                if ($thc && $thc->isAlive()) {
                     $htmlval = $this->doc->getDocAnchor(trim($avalue), $this->target, $this->htmlLink, $thc->getCustomTitle());
                 } else {
                     $htmlval = "th error2 [$avalue]";

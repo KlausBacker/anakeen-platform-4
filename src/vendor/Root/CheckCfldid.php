@@ -34,8 +34,8 @@ class CheckCfldid extends CheckData
     protected function checkSearch()
     {
         if ($this->folderName) {
-            $d = new_doc('', $this->folderName);
-            if (!$d->isAlive()) {
+            $d = \Anakeen\Core\SEManager::getDocument($this->folderName);
+            if (!$d || !$d->isAlive()) {
                 $this->addError(ErrorCode::getError('CFLD0001', $this->folderName, $this->doc->name));
             } elseif (!is_a($d, \Anakeen\SmartStructures\Search\SearchHooks::class)) {
                 $this->addError(ErrorCode::getError('CFLD0002', $this->folderName, $this->doc->name));

@@ -6,7 +6,7 @@
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen
+ * @author  Anakeen
  * @version $Id: fdl_trigger.php,v 1.8 2007/05/22 16:06:29 eric Exp $
  * @package FDL
  * @subpackage
@@ -27,28 +27,27 @@ $drop = ($trigger == "N");
 $usage->verify();
 
 
-
-if ($docid != - 1) {
+if ($docid != -1) {
     $query = new \Anakeen\Core\Internal\QueryDb("", \Anakeen\Core\Internal\SmartElement::class);
     $query->AddQuery("doctype='C'");
-    
+
     if ($docid > 0) {
         $query->AddQuery("id=$docid");
     }
-    
+
     $table1 = $query->Query(0, 0, "TABLE");
-    
+
     if ($query->nb > 0) {
         $pubdir = DEFAULT_PUBDIR;
-        
+
         foreach ($table1 as $k => $v) {
-            $doc = createDoc("", $v["id"]);
-            
+            $doc = \Anakeen\Core\SEManager::createDocument($v["id"]);
+
             if ($trig) {
                 print $doc->sqltrigger($drop) . "\n";
             } else {
                 $triggers = $doc->sqltrigger(false, true);
-                
+
                 if (is_array($triggers)) {
                     print implode(";\n", $triggers);
                 } else {
@@ -60,9 +59,9 @@ if ($docid != - 1) {
     }
 }
 
-if (($docid == - 1) || ($docid == 0)) {
+if (($docid == -1) || ($docid == 0)) {
     $doc = new \Anakeen\Core\SmartStructure();
-    
+
     $doc->doctype = 'C';
     $doc->fromid = 'fam';
     if ($trig) {

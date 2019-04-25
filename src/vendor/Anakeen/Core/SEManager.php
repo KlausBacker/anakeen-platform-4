@@ -21,9 +21,9 @@ class SEManager
      * @param bool       $latest
      * @param bool       $useCache
      *
+     * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception
      * @api Get document object from identifier
-     * @return \Anakeen\Core\Internal\SmartElement
      */
     public static function getDocument($documentIdentifier, $latest = true, $useCache = true)
     {
@@ -62,9 +62,9 @@ class SEManager
      * @param int|string $familyIdentifier
      * @param bool       $useCache to use and to add family in cache if not
      *
+     * @return \Anakeen\Core\SmartStructure return null if id not match a family identifier
      * @throws Exception
      * @api Get document object from identifier
-     * @return \Anakeen\Core\SmartStructure return null if id not match a family identifier
      */
     public static function getFamily($familyIdentifier, $useCache = true)
     {
@@ -98,8 +98,8 @@ class SEManager
      *
      * @param int $initid document identificator
      *
-     * @throws Exception
      * @return int|null identifier relative to latest revision
+     * @throws Exception
      */
     protected static function getLatestDocumentId($initid)
     {
@@ -178,8 +178,8 @@ class SEManager
      * @param int $initid document identificator
      * @param int $revision
      *
-     * @throws Exception
      * @return int|null identifier relative to latest revision
+     * @throws Exception
      */
     public static function getRevisedDocumentId($initid, $revision)
     {
@@ -251,8 +251,8 @@ class SEManager
      *
      * @param int|string $structureIdentifier
      *
-     * @throws Exception
      * @return \Anakeen\Core\Internal\SmartElement
+     * @throws Exception
      */
     public static function initializeDocument($structureIdentifier)
     {
@@ -281,7 +281,7 @@ class SEManager
 
         $doc->icon = $family->icon; // inherit from its familly
         $doc->usefor = $family->usefor; // inherit from its familly
-        
+
 
         return $doc;
     }
@@ -303,8 +303,8 @@ class SEManager
      * @param int|string $structureIdentifier
      * @param bool       $useDefaultValues
      *
-     * @throws Exception
      * @return \Anakeen\Core\Internal\SmartElement
+     * @throws Exception
      */
     public static function createDocument($structureIdentifier, $useDefaultValues = true)
     {
@@ -360,8 +360,8 @@ class SEManager
      * @param int|string $documentIdentifier
      * @param bool       $latest
      *
-     * @api Get indexed array with property values and attribute values
      * @return string[] indexed properties and attributes values
+     * @api Get indexed array with property values and attribute values
      */
     public static function getRawDocument($documentIdentifier, $latest = true)
     {
@@ -391,8 +391,8 @@ class SEManager
      *
      * @param string[] $rawDocument
      *
-     * @throws Exception APIDM0104, APIDM0105
      * @return \Anakeen\Core\Internal\SmartElement
+     * @throws Exception APIDM0104, APIDM0105
      */
     public static function getDocumentFromRawDocument(array $rawDocument)
     {
@@ -419,12 +419,12 @@ class SEManager
      * No use any cache
      * No use \Anakeen\Core\Internal\SmartElement::getCustomTitle(), so dynamic title cannot be get with this method
      *
-     * @see \Anakeen\Core\Internal\SmartElement::getTitle()
-     *
      * @param int|string $documentIdentifier
      * @param bool       $latest
      *
      * @return string|null
+     * @see \Anakeen\Core\Internal\SmartElement::getTitle()
+     *
      */
     public static function getTitle($documentIdentifier, $latest = true)
     {
@@ -540,13 +540,19 @@ class SEManager
             }
             //$sql=sprintf("select avalues->'%s' from docread where id=%d", pg_escape_string($dataIdentifier), $id); // best perfo but cannot distinct null values and id not exists
             $fromid = self::getFromId($id);
-            if ($fromid > 0) {
+
+            if ($fromid !== null) {
                 $selects = [];
                 foreach ($dataIdentifiers as $dataIdentifier) {
                     $selects[] = pg_escape_identifier($dataIdentifier);
                 }
 
-                $sql = sprintf("select %s from doc%d where id=%d", implode(",", $selects), $fromid, $id);
+                if ($fromid === -1) {
+                    $table = "docfam";
+                } else {
+                    $table = sprintf("doc%d", $fromid);
+                }
+                $sql = sprintf("select %s from %s where id=%d", implode(",", $selects), $table, $id);
                 DbManager::query($sql, $result, false, true);
                 if ($result === false) {
                     $result = null;
@@ -591,9 +597,9 @@ class SEManager
      *
      * @param string $documentName
      *
+     * @return int (return 0 if not found)
      * @throws Exception
      * @api Get document identifier fro logical name
-     * @return int (return 0 if not found)
      */
     public static function getIdFromName($documentName)
     {
@@ -642,8 +648,8 @@ class SEManager
      *
      * @param int $documentId
      *
-     * @api Get logical name of a document
      * @return string|null return null if id not found
+     * @api Get logical name of a document
      */
     public static function getNameFromId($documentId)
     {

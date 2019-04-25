@@ -13,9 +13,11 @@ class CheckDocATag extends CheckData
      */
     protected $doc;
     protected $firstATag = '';
+
     /**
-     * @param array $data
+     * @param array                               $data
      * @param \Anakeen\Core\Internal\SmartElement $doc
+     *
      * @return CheckDocATag
      */
     public function check(array $data, &$doc = null)
@@ -36,8 +38,10 @@ class CheckDocATag extends CheckData
         }
         return $this;
     }
+
     /**
      * check if doc is alive
+     *
      * @return void
      */
     protected function checkDocid()
@@ -45,14 +49,16 @@ class CheckDocATag extends CheckData
         if (!$this->docid) {
             $this->addError(ErrorCode::getError('ATAG0002', $this->firstATag));
         }
-        
-        $this->doc = new_doc("", $this->docid);
-        if (!$this->doc->isAlive()) {
+
+        $this->doc = \Anakeen\Core\SEManager::getDocument($this->docid);
+        if (!$this->doc || !$this->doc->isAlive()) {
             $this->addError(ErrorCode::getError('ATAG0003', $this->docid));
         }
     }
+
     /**
      * check if action is available
+     *
      * @return void
      */
     protected function checkAction()
@@ -62,7 +68,7 @@ class CheckDocATag extends CheckData
             $this->addError(ErrorCode::getError('ATAG0001', $this->tagAction, $this->doc->getTitle(), implode(",", $allowedAction)));
         }
     }
-    
+
     protected function checkTagContent($data)
     {
         $i = 4;

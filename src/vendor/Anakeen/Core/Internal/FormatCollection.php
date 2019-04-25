@@ -1014,6 +1014,10 @@ class FormatCollection
                     $info = new Format\HtmltextAttributeValue($oa, $value, $this->stripHtmlTag);
                     break;
 
+                case 'json':
+                    $info = new Format\JsonAttributeValue($oa, $value);
+                    break;
+
                 default:
                     $info = new Format\StandardAttributeValue($oa, $value);
                     break;

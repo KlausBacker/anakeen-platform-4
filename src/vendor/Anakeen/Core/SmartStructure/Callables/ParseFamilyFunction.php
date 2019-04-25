@@ -67,8 +67,10 @@ class ParseFamilyFunction
 
     /**
      * @static
+     *
      * @param      $methCall
      * @param bool $noOut
+     *
      * @return parseFamilyFunction
      */
     public function parse($methCall, $noOut = false)
@@ -128,9 +130,15 @@ class ParseFamilyFunction
             $this->outputString = trim(substr($this->funcCall, $this->lastSemiColumn + 1));
         }
         if ($this->outputString) {
-            $this->outputs = explode(',', $this->outputString);
-            foreach ($this->outputs as & $output) {
+            $outputs = explode(',', $this->outputString);
+
+            foreach ($outputs as $output) {
                 $output = trim($output);
+                if (preg_match("/(.*)\{(.*)\}/", $output, $reg)) {
+                    $this->outputs[$reg[2]] = $reg[1];
+                } else {
+                    $this->outputs[count($this->outputs)] = $output;
+                }
                 if (!$this->isAlphaNumOutAttribute($output)) {
                     $this->setError(\ErrorCode::getError('ATTR1207', $this->funcCall));
                 }
@@ -176,7 +184,9 @@ class ParseFamilyFunction
 
     /**
      * analyze single misc argument
+     *
      * @param int $index index to start analysis string
+     *
      * @return void
      */
     protected function parseArgument(&$index)
@@ -194,7 +204,7 @@ class ParseFamilyFunction
         $index = $i;
         $arg = trim($arg);
 
-        $key=null;
+        $key = null;
         if (preg_match('/^{([a-z_][a-z0-9_]+)}(.*)$/i', $arg, $reg)) {
             $key = $reg[1];
             $arg = $reg[2];
@@ -203,7 +213,7 @@ class ParseFamilyFunction
         if (preg_match('/^[a-z_][a-z0-9_]*$/i', $arg)) {
             $type = "any";
         } else {
-            $arg=trim($arg, '"');
+            $arg = trim($arg, '"');
             $type = "string";
         }
 
@@ -216,7 +226,9 @@ class ParseFamilyFunction
 
     /**
      * analyze single double quoted text argument
+     *
      * @param int $index index to start analysis string
+     *
      * @return void
      */
     protected function parseDoubleQuote(&$index)
@@ -251,7 +263,7 @@ class ParseFamilyFunction
             $index++;
             $this->gotoNextArgument($index);
         }
-        $key=null;
+        $key = null;
         if (preg_match('/^{([a-z_][a-z0-9_]+)}(.*)$/i', $arg, $reg)) {
             $key = $reg[1];
             $arg = $reg[2];
@@ -265,7 +277,9 @@ class ParseFamilyFunction
 
     /**
      * analyze single simple quoted text argument
+     *
      * @param int $index index to start analysis string
+     *
      * @return void
      */
     protected function parseSimpleQuote(&$index)
@@ -304,7 +318,7 @@ class ParseFamilyFunction
             $arg = substr($arg, 0, $r);
         }
         $index = $i;
-        $key=null;
+        $key = null;
         if (preg_match('/^{([a-z_][a-z0-9_]+)}(.*)$/i', $arg, $reg)) {
             $key = $reg[1];
             $arg = $reg[2];

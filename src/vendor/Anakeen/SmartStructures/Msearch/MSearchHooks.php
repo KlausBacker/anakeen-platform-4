@@ -8,6 +8,8 @@
  */
 namespace Anakeen\SmartStructures\MSearch;
 
+use Anakeen\Core\SEManager;
+
 class MSearchHooks extends \SmartStructure\Search
 {
     public $defaultedit = "FDL:EDITBODYCARD";
@@ -22,7 +24,7 @@ class MSearchHooks extends \SmartStructure\Search
             /**
              * @var \SmartStructure\Search $doc
              */
-            $doc = new_Doc($this->dbaccess, $v);
+            $doc = SEManager::getDocument($v);
             $err = $doc->control("execute");
             
             if ($err == "" && method_exists($doc, "getQuery")) {
