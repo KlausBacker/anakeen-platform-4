@@ -457,7 +457,7 @@
             <xs:element type="v1:tagType" name="tag" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:attributesType" name="fields" minOccurs="0"/>
             <xs:element type="v1:attributesType" name="parameters" minOccurs="0"/>
-            <xs:element type="v1:field-overrideType" name="field-override" minOccurs="0"/>
+            <xs:element type="v1:field-overrideType" name="field-override" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:hooksType" name="hooks" minOccurs="0"/>
             <xs:element type="v1:extendsType" name="default-workflow" minOccurs="0"/>
             <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
