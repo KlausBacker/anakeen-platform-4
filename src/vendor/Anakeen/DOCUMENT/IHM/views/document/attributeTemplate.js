@@ -361,7 +361,9 @@ define(function attributeTemplate(require /*, exports, module*/) {
             attributeLabel = currentAttribute.getOption("attributeLabel");
           }
           templateInfo.content[attributeId] = {};
-          templateInfo.content[attributeId].attributeValue = {
+          templateInfo.content[
+            attributeId
+          ].attributeValue = currentAttribute.get("attributeValue")[index] || {
             value: null, // No value for the moment. Value will be set by array view with default values
             displayValue: ""
           };
