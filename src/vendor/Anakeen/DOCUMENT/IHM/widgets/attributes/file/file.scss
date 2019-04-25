@@ -9,6 +9,12 @@
 .dcpAttribute__value--transferring {
   background-color: $info;
 }
+.k-autocomplete.form-control.dcpAttribute__value.dcpAttribute__value--edit.dcpAttribute__value--fileicon {
+  input.dcpAttribute__value--fileicon {
+    padding-left: 3rem;
+    background-image: none!important;
+  }
+}
 
 /**
 * force repead to inhib --fileicon when recording
