@@ -1,8 +1,6 @@
 import Vue from "vue";
 import VueSetup from "../setup.js";
-import SeTemplate from "./seListItem.template.kd";
 import { Component, Prop, Watch } from "vue-property-decorator";
-import { ISeList } from "./ISeList";
 import {
   $createComponentEvent,
   _enableReady
@@ -22,14 +20,12 @@ export default class SeListComponent extends Vue {
     default: "/components/selist/pager/{collection}/pages/{page}"
   })
   public contentUrl;
-  public privateScope: ISeList;
   @Prop({ type: String, default: "title:asc" }) public order;
   @Prop({ type: Number, default: 1 }) public page;
+  @Prop({ type: String, default: "Aucun contenu" }) public emptyMessage;
 
   public $refs!: {
     wrapper: HTMLElement;
-    summaryPager: HTMLElement;
-    listView: HTMLElement;
     pager: HTMLElement;
     pagerCounter: HTMLElement;
   };
@@ -40,265 +36,25 @@ export default class SeListComponent extends Vue {
     this.refreshList();
   }
 
+  @Watch("filterInput")
+  onFilterInputDataChange(newVal, oldVal) {
+    const customEvent = $createComponentEvent(
+      "se-list-filter-input",
+      {
+        detail: [{ filterInput: newVal, oldFilterInput: oldVal }]
+      },
+      event
+    );
+    this.$emit("se-list-filter-input", customEvent);
+  }
+
   public created() {
-    this.privateScope = {
-      replaceTopPagerButton: () => {
-        const $pager = kendo.jQuery(this.$refs.summaryPager);
-        const buttons = $pager.find(
-          ".k-pager-nav:not(.k-pager-last):not(.k-pager-first)"
-        );
-        const label = $pager.find("span.k-pager-info");
-        label.insertBefore(buttons[1]);
-      },
-
-      propageKendoDataSourceEvent: (eventName, eventType = "") => e => {
-        const customEvent = $createComponentEvent(
-          `${eventType}${eventType !== "" ? "-" : ""}se-list-${eventName}`,
-          {
-            cancelable: eventType === "before",
-            detail: [e]
-          }
-        );
-        this.$emit(`se-list-${eventName}`, customEvent);
-        if (eventType === "before" && customEvent.defaultPrevented) {
-          if (e.preventDefault) {
-            e.preventDefault();
-          }
-        }
-      },
-
-      initDataSource: () => {
-        const _this = this;
-        this.dataSource = new kendo.data.DataSource({
-          error: this.privateScope.propageKendoDataSourceEvent("error"),
-          requestStart: this.privateScope.propageKendoDataSourceEvent(
-            "request",
-            "before"
-          ),
-          requestEnd: this.privateScope.propageKendoDataSourceEvent(
-            "request",
-            "after"
-          ),
-          change: this.privateScope.propageKendoDataSourceEvent("change"),
-          transport: {
-            read: options => {
-              if (options.data.collection) {
-                const params = {
-                  slice: options.data.take,
-                  orderBy: this.orderBy,
-                  filter: ""
-                };
-                if (this.filterInput) {
-                  params.filter = this.filterInput;
-                }
-
-                const request = this.contentUrl
-                  .replace("{collection}", options.data.collection)
-                  .replace("{page}", options.data.page);
-                _this.privateScope
-                  .sendGetRequest(request, {
-                    params
-                  })
-                  .then(response => {
-                    const apiData = response.data.data;
-                    if (
-                      apiData &&
-                      apiData.collection &&
-                      apiData.collection.properties
-                    ) {
-                      _this.collection = Object.assign(
-                        {},
-                        _this.collection,
-                        apiData.collection.properties
-                      );
-                    }
-
-                    options.success(response);
-                  })
-                  .catch(response => {
-                    options.error(response);
-                  });
-              } else {
-                options.error();
-              }
-            }
-          },
-          pageSize: this.pageSizeOptions[1].value,
-          page: this.page,
-          serverPaging: true,
-          schema: {
-            total: response => response.data.data.resultMax,
-
-            data: response => response.data.data.documents
-          }
-        });
-      },
-
-      initKendoWidgets: () => {
-        kendo.jQuery(this.$refs.listView).kendoListView({
-          dataSource: this.dataSource,
-          template: kendo.template(SeTemplate),
-          selectable: "single",
-          change: this.privateScope.onSelectSe,
-          dataBound: this.privateScope.propageKendoDataSourceEvent("dataBound")
-        });
-
-        kendo.jQuery(this.$refs.pager).kendoPager({
-          dataSource: this.dataSource,
-          numeric: false,
-          input: true,
-          info: false,
-          pageSizes: false,
-          change: this.privateScope.onPagerChange,
-          messages: {
-            page: "",
-            of: "/ {0}",
-            empty: this.translations.noDataPagerLabel
-          }
-        });
-        kendo.jQuery(this.$refs.summaryPager).kendoPager({
-          dataSource: this.dataSource,
-          numeric: false,
-          input: false,
-          info: true,
-          change: this.privateScope.onPagerChange,
-          messages: {
-            display: `{0} - {1} ${this.$pgettext("SEList", "of")} {2}`,
-            empty: this.translations.noDataPagerLabel
-          }
-        });
-
-        kendo
-          .jQuery(this.$refs.pagerCounter)
-          .kendoDropDownList({
-            dataSource: this.pageSizeOptions,
-            dataTextField: "text",
-            dataValueField: "value",
-            animation: false,
-            index: 1,
-            change: this.privateScope.onSelectPageSize,
-            headerTemplate: `<li class="dropdown-header">${
-              this.translations.itemsPerPageLabel
-            }</li>`,
-            template:
-              '<span class="seList__pagination__pageSize">#= data.text#</span>'
-          })
-          .data("kendoDropDownList")
-          .list.addClass("seList__pagination__list");
-      },
-
-      onPagerChange: e => {
-        const currentPage = this.dataSource.page();
-        const newPage = e.index;
-        const customEvent = $createComponentEvent(
-          "before-se-list-page-change",
-          {
-            cancelable: true,
-            detail: [
-              {
-                currentPage,
-                newPage
-              }
-            ]
-          }
-        );
-        this.$emit("before-se-list-page-change", customEvent);
-        if (!customEvent.defaultPrevented) {
-          this.dataSource.page(customEvent.detail[0].newPage);
-          this.refreshList()
-            .then(() => {
-              const customAfterEvent = $createComponentEvent(
-                "after-se-list-page-change",
-                {
-                  detail: customEvent.detail
-                }
-              );
-              this.$emit("after-se-list-page-change", customAfterEvent);
-            })
-            .catch(err => {
-              console.error(err);
-            });
-        }
-      },
-
-      sendGetRequest: (url, conf) => {
-        const element = kendo.jQuery(this.$refs.wrapper);
-        kendo.ui.progress(element, true);
-        return new Promise((resolve, reject) => {
-          this.$http
-            .get(url, conf)
-            .then(response => {
-              kendo.ui.progress(element, false);
-              resolve(response);
-            })
-            .catch(error => {
-              kendo.ui.progress(element, false);
-              reject(error);
-            });
-        });
-      },
-
-      onSelectPageSize: e => {
-        const counter = kendo
-          .jQuery(this.$refs.pagerCounter)
-          .data("kendoDropDownList");
-        const newPageSize = counter.dataItem(e.item).value;
-        const customEvent = $createComponentEvent(
-          "before-se-list-pagesize-change",
-          {
-            cancelable: true,
-            detail: [
-              {
-                newPageSize,
-                currentPageSize: this.dataSource.pageSize()
-              }
-            ]
-          },
-          e
-        );
-        this.$emit("before-se-list-pagesize-change", customEvent);
-        if (!customEvent.defaultPrevented) {
-          this.dataSource.pageSize(customEvent.detail[0].newPageSize);
-          this.refreshList()
-            .then(() => {
-              const customEvent = $createComponentEvent(
-                "after-se-list-pagesize-change",
-                {
-                  detail: [
-                    {
-                      newPageSize,
-                      currentPageSize: this.dataSource.pageSize()
-                    }
-                  ]
-                }
-              );
-              this.$emit("after-se-list-pagesize-change", customEvent);
-            })
-            .catch(err => {
-              console.error(err);
-            });
-        }
-      },
-
-      onSelectSe: event => {
-        const data = this.dataSource.view();
-        const listView = kendo
-          .jQuery(this.$refs.listView)
-          .data("kendoListView");
-        const selected = $.map(
-          listView.select(),
-          item => data[$(item as HTMLElement).index()]
-        );
-        this._selectSe(event, selected[0]);
-      }
-    };
-    this.privateScope.initDataSource();
+    this.initDataSource();
   }
   public mounted() {
     kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), true);
     const ready = () => {
-      this.privateScope.initKendoWidgets();
-      this.privateScope.replaceTopPagerButton();
+      this.initKendoWidgets();
       kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), false);
 
       if (this.smartCollection) {
@@ -321,7 +77,8 @@ export default class SeListComponent extends Vue {
   }
 
   public collection: any = null;
-  public dataSource: any = null;
+  public dataSource: kendo.data.DataSource = null;
+  public selectedItem: string | number = "";
   public filterInput: string = "";
   public orderBy: string = this.order;
   public pageSizeOptions: object = [
@@ -347,6 +104,20 @@ export default class SeListComponent extends Vue {
     }
   ];
 
+  public get dataSourceItems() {
+    if (this.dataSource) {
+      const view = this.dataSource.view();
+      if (view.length) {
+        const customEvent = $createComponentEvent(`se-list-dataBound`, {
+          cancelable: false,
+          detail: [view.toJSON()]
+        });
+        this.$emit(`se-list-dataBound`, customEvent);
+        return view.toJSON();
+      }
+    }
+    return [];
+  }
   public get translations() {
     const searchTranslated = this.$pgettext(
       "SEList",
@@ -376,27 +147,6 @@ export default class SeListComponent extends Vue {
     }
   }
 
-  public _onFilterInput(event) {
-    const customEvent = $createComponentEvent(
-      "se-list-filter-input",
-      {
-        detail: [{ filterInput: this.filterInput }]
-      },
-      event
-    );
-    this.$emit("se-list-filter-input", customEvent);
-    this.filterInput = customEvent.detail[0].filterInput;
-  }
-
-  public _selectSe(event, se) {
-    const seProperties = Object.assign({}, se.properties);
-    const customEvent = $createComponentEvent(
-      "se-selected",
-      { detail: [seProperties] },
-      event
-    );
-    this.$emit("se-selected", customEvent);
-  }
   public filterList(filterValue) {
     const customEvent = $createComponentEvent(
       "se-list-filter-change",
@@ -408,6 +158,7 @@ export default class SeListComponent extends Vue {
     this.$emit("se-list-filter-change", customEvent);
     this.filterInput = filterValue;
     if (filterValue) {
+      this.dataSource.page(1);
       return this.refreshList()
         .then()
         .catch(err => {
@@ -419,6 +170,15 @@ export default class SeListComponent extends Vue {
   }
 
   public clearListFilter() {
+    const customEvent = $createComponentEvent(
+      "se-list-filter-change",
+      {
+        detail: [{ filterInput: "" }]
+      },
+      event
+    );
+    this.$emit("se-list-filter-change", customEvent);
+    this.$emit("se-list-filter-clear", customEvent);
     this.filterInput = "";
     return this.refreshList()
       .then()
@@ -427,19 +187,21 @@ export default class SeListComponent extends Vue {
       });
   }
 
-  public selectSe(se) {
-    const $kendoList = kendo.jQuery(this.$refs.listView).data("kendoListView");
-    if ($kendoList) {
-      let itemToSelect = null;
-      $kendoList.items().each((index, item) => {
-        if (kendo.jQuery(item).data("seId") == se) {
-          itemToSelect = kendo.jQuery(item);
-        }
-      });
-      if (itemToSelect) {
-        $kendoList.select(itemToSelect);
+  public selectSe(seId) {
+    const seSelected = this.dataSourceItems.find(
+      i => i.properties.initid == seId
+    );
+    if (seSelected) {
+      const customEvent = $createComponentEvent(
+        "se-selected",
+        { detail: [seSelected.properties] },
+        event
+      );
+      this.$emit("se-selected", customEvent);
+      this.selectedItem = seId;
+      this.$nextTick(() => {
         this.scrollToActiveItem();
-      }
+      });
     }
   }
 
@@ -475,7 +237,223 @@ export default class SeListComponent extends Vue {
   }
 
   public scrollToActiveItem() {
-    const activeItem = this.$el.querySelector(".k-state-selected");
-    activeItem.scrollIntoView();
+    const activeItem = this.$el.querySelector(".is-active");
+    if (activeItem) {
+      activeItem.scrollIntoView();
+    }
+  }
+
+  protected onClickSE(item) {
+    const customEvent = $createComponentEvent(
+      "se-clicked",
+      { detail: [item.properties] },
+      event
+    );
+    this.$emit("se-clicked", customEvent);
+    this.selectSe(item.properties.initid);
+  }
+
+  protected propageKendoDataSourceEvent(eventName, eventType = "") {
+    return e => {
+      const customEvent = $createComponentEvent(
+        `${eventType}${eventType !== "" ? "-" : ""}se-list-${eventName}`,
+        {
+          cancelable: eventType === "before",
+          detail: [e]
+        }
+      );
+      this.$emit(`se-list-${eventName}`, customEvent);
+      if (eventType === "before" && customEvent.defaultPrevented) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+      }
+    };
+  }
+
+  protected initDataSource() {
+    const _this = this;
+    this.dataSource = new kendo.data.DataSource({
+      error: this.propageKendoDataSourceEvent("error"),
+      requestStart: this.propageKendoDataSourceEvent("request", "before"),
+      requestEnd: this.propageKendoDataSourceEvent("request", "after"),
+      change: this.propageKendoDataSourceEvent("change"),
+      transport: {
+        read: options => {
+          if (options.data.collection) {
+            const params = {
+              slice: options.data.take,
+              orderBy: this.orderBy,
+              filter: ""
+            };
+            if (this.filterInput) {
+              params.filter = this.filterInput;
+            }
+
+            const request = this.contentUrl
+              .replace("{collection}", options.data.collection)
+              .replace("{page}", options.data.page);
+            _this
+              .sendGetRequest(request, {
+                params
+              })
+              .then(response => {
+                // @ts-ignore
+                const apiData = response.data.data;
+                if (
+                  apiData &&
+                  apiData.collection &&
+                  apiData.collection.properties
+                ) {
+                  _this.collection = Object.assign(
+                    {},
+                    _this.collection,
+                    apiData.collection.properties
+                  );
+                }
+
+                options.success(response);
+              })
+              .catch(response => {
+                options.error(response);
+              });
+          } else {
+            options.error();
+          }
+        }
+      },
+      pageSize: this.pageSizeOptions[1].value,
+      page: this.page,
+      serverPaging: true,
+      schema: {
+        total: response => response.data.data.resultMax,
+
+        data: response => response.data.data.documents
+      }
+    });
+  }
+
+  protected initKendoWidgets() {
+    kendo.jQuery(this.$refs.pager).kendoPager({
+      dataSource: this.dataSource,
+      numeric: false,
+      input: true,
+      info: false,
+      pageSizes: false,
+      change: this.onPagerChange,
+      messages: {
+        page: "",
+        of: "/ {0}",
+        empty: this.translations.noDataPagerLabel
+      }
+    });
+
+    kendo
+      .jQuery(this.$refs.pagerCounter)
+      .kendoDropDownList({
+        dataSource: this.pageSizeOptions,
+        dataTextField: "text",
+        dataValueField: "value",
+        animation: false,
+        index: 1,
+        change: this.onSelectPageSize,
+        headerTemplate: `<li class="dropdown-header">${
+          this.translations.itemsPerPageLabel
+        }</li>`,
+        template:
+          '<span class="seList__pagination__pageSize">#= data.text#</span>'
+      })
+      .data("kendoDropDownList")
+      .list.addClass("seList__pagination__list");
+  }
+
+  protected onPagerChange(e) {
+    const currentPage = this.dataSource.page();
+    const newPage = e.index;
+    const customEvent = $createComponentEvent("before-se-list-page-change", {
+      cancelable: true,
+      detail: [
+        {
+          currentPage,
+          newPage
+        }
+      ]
+    });
+    this.$emit("before-se-list-page-change", customEvent);
+    if (!customEvent.defaultPrevented) {
+      this.dataSource.page(customEvent.detail[0].newPage);
+      this.refreshList()
+        .then(() => {
+          const customAfterEvent = $createComponentEvent(
+            "after-se-list-page-change",
+            {
+              detail: customEvent.detail
+            }
+          );
+          this.$emit("after-se-list-page-change", customAfterEvent);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  }
+
+  protected sendGetRequest(url, conf) {
+    const element = kendo.jQuery(this.$refs.wrapper);
+    kendo.ui.progress(element, true);
+    return new Promise((resolve, reject) => {
+      this.$http
+        .get(url, conf)
+        .then(response => {
+          kendo.ui.progress(element, false);
+          resolve(response);
+        })
+        .catch(error => {
+          kendo.ui.progress(element, false);
+          reject(error);
+        });
+    });
+  }
+
+  protected onSelectPageSize(e) {
+    const counter = kendo
+      .jQuery(this.$refs.pagerCounter)
+      .data("kendoDropDownList");
+    const newPageSize = counter.dataItem(e.item).value;
+    const customEvent = $createComponentEvent(
+      "before-se-list-pagesize-change",
+      {
+        cancelable: true,
+        detail: [
+          {
+            newPageSize,
+            currentPageSize: this.dataSource.pageSize()
+          }
+        ]
+      },
+      e
+    );
+    this.$emit("before-se-list-pagesize-change", customEvent);
+    if (!customEvent.defaultPrevented) {
+      this.dataSource.pageSize(customEvent.detail[0].newPageSize);
+      this.refreshList()
+        .then(() => {
+          const customEvent = $createComponentEvent(
+            "after-se-list-pagesize-change",
+            {
+              detail: [
+                {
+                  newPageSize,
+                  currentPageSize: this.dataSource.pageSize()
+                }
+              ]
+            }
+          );
+          this.$emit("after-se-list-pagesize-change", customEvent);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
   }
 }

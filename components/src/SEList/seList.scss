@@ -55,15 +55,18 @@
 
 .seList__search__button {
   color: #878787;
+  background: white;
+  padding: 0 0.5rem;
+  border-radius: 0.25rem  0 0 0.25rem;
   border: 1px solid #ced4da;
-  border-left: 0;
-  padding: 0 0.2rem;
-  border-radius: 0 0.25rem 0.25rem 0;
-
+  border-right: 0;
+  font-size: 1.75rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   &:hover {
-    background-color: #f1f1f1;
-    color: #000000;
-    cursor: pointer;
+    color: black;
   }
 }
 
@@ -71,63 +74,26 @@
   padding: 0.5rem;
 
   .seList__search__keyword {
+    border-left: 0;
     flex: 1;
+    &::placeholder {
+      color: #BBB;
+    }
   }
 
-  .input-group-addon.material-icons.seList__search__keyword__remove {
-    border: 0;
-    margin: auto;
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 1.5rem;
-    line-height: 1;
-    border-radius: 50%;
-    background: transparent;
+  .seList__search__keyword__remove {
     position: absolute;
-    z-index: 5;
-    padding: 0;
-    right: 3rem;
-    top: 0;
-    bottom: 0;
+    right: .5rem;
+    font-size: 1.1667rem;
     cursor: pointer;
+    border-radius: 50%;
+    z-index: 5;
+    top: 25%;
+
     &:hover {
       background-color: #ff542c;
       color: #ffffff;
     }
-  }
-}
-
-.seList__summary__wrapper {
-  padding-bottom: 0.6667rem;
-}
-
-.seList__summary.k-widget {
-  padding-right: 10px;
-  text-align: right;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  min-height: 2.3rem;
-
-  &.k-pager-wrap {
-    overflow: visible;
-  }
-
-  .k-pager-first,
-  .k-pager-last {
-    display: none;
-  }
-  .k-pager-info.k-label {
-    font-weight: bold;
-    flex: 0 1 auto;
-  }
-
-  .k-pager-nav + .k-pager-nav {
-    border-right: 0;
-  }
-
-  .k-pager-nav {
-    background-color: none;
   }
 }
 
@@ -157,13 +123,11 @@
     color: #00b4fc;
   }
 
-  &.k-state-selected {
+  &.is-active {
     box-shadow: inset 3px 0px 0px 0px #8ae234;
     background-color: #f4f4f4;
-    border-bottom: 1px solid #ccc;
     color: #00b4fc;
-    font-weight: 600;
-    opacity: 1;
+    font-weight: bold;
   }
 }
 .seList__listItem__body {
@@ -191,18 +155,15 @@
   font-size: 0.95rem;
   display: flex;
   align-items: center;
-  padding-left: 2.5rem;
-  .seList__listItem__heading__state--label {
-    margin-top: 1%;
-  }
+  justify-content: flex-end;
+  margin-right: 1rem;
 
   .seList__listItem__heading__state--color {
-    border-radius: 20%;
-    width: 0.6rem;
-    height: 0.7rem;
-    background-color: black;
-    margin-right: 3%;
-    margin-top: 1%;
+    border-radius: 25%;
+    width: .8rem;
+    height: .8rem;
+    margin-right: .5rem;
+    background-color: transparent;
   }
 }
 
@@ -222,12 +183,12 @@
 .seList__list__pager_wraper {
   display: flex;
   flex-direction: row;
-
-  border-top: 0.0833rem solid #dde2e7;
+  margin: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #bfbfbf;
 
   .seList__list__pagerCounter {
     min-width: 4rem;
-    margin-top: -0.0833rem;
     flex: 1;
     .k-dropdown-wrap {
       background-color: #bfbfbf;
@@ -265,11 +226,12 @@
   padding-right: 0;
   border: 0;
   .k-pager-input.k-label {
-    color: #777;
     height: 100%;
     display: flex;
     justify-content: start;
     padding-right: 0.3rem;
+    background: #bfbfbf;
+    color: white;
     margin: 0;
     flex: 1;
     min-width: 5.5rem; // Min width for page input and  total page text
@@ -278,26 +240,27 @@
     white-space: nowrap;
     .k-textbox {
       width: 60%;
+      background: white;
       text-align: center;
-      margin: 0 10% 0 0;
-      //    height: calc(100% - 2px);
-      border-radius: 0;
-      border-top-style: none;
-      border-bottom-style: none;
-      border-right-style: none;
-      &:hover {
-        border-top-style: solid;
-        border-bottom-style: solid;
-        border-right-style: solid;
+      margin: 0.166666667rem 10% 0.166666667rem 0.166666667rem;
+      border-radius: .25rem;
+      border-color: transparent;
+      &:hover, &:focus {
+        border-color: #157EFB;
       }
     }
   }
 
   .k-pager-nav {
     background-color: #e0e0e0;
+    border: 0;
     display: flex;
     flex: 1;
     padding: 0;
+    & + .k-pager-nav {
+      margin-left: 0;
+      border-left: 1px solid #bfbfbf;
+    }
   }
 }
 
