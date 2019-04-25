@@ -212,6 +212,10 @@ class ErrorCodeATTR
      */
     const ATTR1101 = 'the input help file "%s" is not parsable, in attribute "%s" : %s';
     /**
+     * @errorCode  The autocomplete response results indexes must be compatioble with description
+     */
+    const ATTR1102 = 'the autocomplete send less data as specified, missing index "%s" for field "%s"';
+    /**
      * @errorCode  The option name are composed only of alpha characters
      */
     const ATTR1500 = 'the option name "%s" is not valid in attribute "%s"';

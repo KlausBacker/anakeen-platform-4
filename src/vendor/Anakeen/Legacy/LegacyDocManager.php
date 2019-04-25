@@ -20,16 +20,6 @@ use Anakeen\Core\SEManager;
 use Anakeen\Core\DbManager;
 
 /**
- * @deprecated use DbManager::getSqlOrCond
- * @return string
- */
-function GetSqlCond($Table, $column, $integer = false)
-{
-    return DbManager::getSqlOrCond($Table, $column, $integer);
-}
-
-
-/**
  * clear all cache used by new_doc function
  *
  * @deprecated use SEManager::cache()
@@ -522,7 +512,6 @@ function getLatestDocId($dbaccess, $initid)
  */
 function getRevTDoc($dbaccess, $initid, $rev)
 {
-
     if (!($initid > 0)) {
         return false;
     }
