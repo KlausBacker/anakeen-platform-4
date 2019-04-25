@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2019-04-25T12:06:17" author="Anakeen Platform Master" name="Custom '&quot;export">
+  <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="report.xsd" name="HUBEXT_2108" title="Test" revision="0" modification-date="2019-04-24 17:21:08.460713" version="" state="">
+    <fr_basic>
+      <ba_title>Test</ba_title>
+      <se_author name="USER_ADMIN">Master Anakeen Platform</se_author>
+    </fr_basic>
+    <se_crit>
+      <se_key xsi:nil="true"/>
+      <se_latest>yes</se_latest>
+      <se_case xsi:nil="true"/>
+      <se_famid id="TST_RENDER">TST_RENDER</se_famid>
+      <se_idfld xsi:nil="true"/>
+      <se_trash xsi:nil="true"/>
+      <se_sysfam>no</se_sysfam>
+      <se_sublevel xsi:nil="true"/>
+      <se_sqlselect>select doc1969.* from  doc1969  where   (doc1969.doctype != 'T') and (doc1969.locked != -1) and (true)</se_sqlselect>
+      <se_idcfld xsi:nil="true"/>
+      <se_orderby xsi:nil="true"/>
+      <se_famonly>no</se_famonly>
+      <se_acl xsi:nil="true"/>
+      <se_static xsi:nil="true"/>
+    </se_crit>
+    <se_fr_detail>
+      <se_ol>and</se_ol>
+      <se_t_detail>
+        <se_ols>and</se_ols>
+        <se_leftp>no</se_leftp>
+        <se_attrids xsi:nil="true"/>
+        <se_funcs xsi:nil="true"/>
+        <se_keys xsi:nil="true"/>
+        <se_rightp>no</se_rightp>
+      </se_t_detail>
+      <se_t_filters>
+        <se_filter>&lt;filter&gt;&lt;family&gt;1969&lt;/family&gt;&lt;/filter&gt;</se_filter>
+        <se_typefilter>generated</se_typefilter>
+      </se_t_filters>
+    </se_fr_detail>
+    <rep_tab_presentation>
+      <rep_fr_presentation>
+        <rep_caption xsi:nil="true"/>
+        <rep_sort xsi:nil="true"/>
+        <rep_idsort xsi:nil="true"/>
+        <rep_ordersort xsi:nil="true"/>
+        <rep_limit xsi:nil="true"/>
+      </rep_fr_presentation>
+    </rep_tab_presentation>
+  </report>
+</documents>

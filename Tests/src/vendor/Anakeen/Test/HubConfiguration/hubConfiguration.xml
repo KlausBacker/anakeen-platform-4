@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2019-04-25T12:06:17" author="Anakeen Platform Master" name="Custom '&quot;export">
+  <hubinstanciation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="hubinstanciation.xsd" name="UI_TEST" title="Test" revision="0" modification-date="2019-04-24 17:19:31.604419" version="" state="">
+    <hub_instance_config>
+      <hub_instance>
+        <instance_logical_name>UI_TEST</instance_logical_name>
+        <hub_instanciation_icone mime="" title="" xsi:nil="true"/>
+      </hub_instance>
+      <hub_instance_label_frame>
+        <hub_instance_titles>
+          <hub_instance_title>Test</hub_instance_title>
+          <hub_instance_language>English</hub_instance_language>
+        </hub_instance_titles>
+        <hub_instance_titles>
+          <hub_instance_title>Test</hub_instance_title>
+          <hub_instance_language>Français</hub_instance_language>
+        </hub_instance_titles>
+      </hub_instance_label_frame>
+      <hub_instance_advanced_settings>
+        <hub_instanciation_router_entry xsi:nil="true"/>
+      </hub_instance_advanced_settings>
+    </hub_instance_config>
+    <hub_instance_tab_assets>
+      <hub_instance_fr_assets>
+        <hub_instance_jsassets>
+          <hub_instance_jsasset_type>manifest</hub_instance_jsasset_type>
+          <hub_instance_jsasset xsi:nil="true"/>
+        </hub_instance_jsassets>
+        <hub_instance_cssassets>
+          <hub_instance_cssasset_type>manifest</hub_instance_cssasset_type>
+          <hub_instance_cssasset xsi:nil="true"/>
+        </hub_instance_cssassets>
+      </hub_instance_fr_assets>
+    </hub_instance_tab_assets>
+    <hub_security>
+      <hub_security_frame>
+        <hub_access_roles xsi:nil="true"/>
+        <hub_super_role xsi:nil="true"/>
+      </hub_security_frame>
+    </hub_security>
+  </hubinstanciation>
+</documents>

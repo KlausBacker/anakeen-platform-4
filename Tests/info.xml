@@ -7,6 +7,8 @@
         <module name="user-interfaces" version="2.0.x"/>
         <module name="smart-data-engine-test" version="2.0.x"/>
         <module name="anakeen-dev-data"/>
+        <module name="anakeen-hub" version="1.0.x"/>
+        <module name="anakeen-hub-business-app" version="1.0.x"/>
     </requires>
 
     <post-install>
@@ -35,6 +37,13 @@
 
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/tst_ddui_employee.views.xml"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiColor/tst_ddui_color.views.xml"/>
+        <!-- init hub -->
+        <process
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubConfiguration.xml"/>
+        <process
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubExtra.xml"/>
+        <process
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubElements.xml"/>
 
     </post-install>
     <post-upgrade>
@@ -63,5 +72,11 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TEST_DDUI_INIT_DATA4.csv"/>
         <process command="./ank.php --system --localeGen"/>
+        <process
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubConfiguration.xml"/>
+        <process
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubExtra.xml"/>
+        <process
+                command="./ank.php --script=importDocuments --file=./vendor/Anakeen/Test/HubConfiguration/hubElements.xml"/>
     </post-upgrade>
 </module>

@@ -15,12 +15,6 @@ module.exports = () => {
           __dirname,
           "../Tests/src/vendor/Anakeen/SmartStructures/UiTest/TestRender/testRender.js"
         )
-      ],
-      TestPage: [
-        path.resolve(
-          __dirname,
-          "../Tests/src/vendor/Anakeen/Routes/UiTest/TestPage.js"
-        )
       ]
     },
     buildPath: PUBLIC_PATH,
