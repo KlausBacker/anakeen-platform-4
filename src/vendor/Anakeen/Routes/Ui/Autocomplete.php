@@ -2,14 +2,12 @@
 
 namespace Anakeen\Routes\Ui;
 
-use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 use Anakeen\Core\SmartStructure\NormalAttribute;
 use Anakeen\Router\Exception;
 use Anakeen\SmartAutocompleteRequest;
 use Anakeen\SmartAutocompleteResponse;
 use Anakeen\SmartElementManager;
-use Dcp\Core\AutocompleteLib;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 
@@ -32,6 +30,14 @@ class Autocomplete
      * @var \Slim\Http\request
      */
     protected $httpRequest;
+    /**
+     * @var NormalAttribute
+     */
+    protected $currentField;
+    /**
+     * @var \Anakeen\Core\SmartStructure|\Anakeen\SmartElement
+     */
+    protected $currentElement;
 
     /**
      * Use Create but it is a GET
@@ -64,17 +70,17 @@ class Autocomplete
 
 
         if ($documentId !== "0") {
-            $doc = SmartElementManager::getDocument($documentId);
+            $this->currentElement = SmartElementManager::getDocument($documentId);
         } else {
             $fromid = $this->contentParameters["fromid"];
-            $doc = SEManager::getFamily($fromid);
+            $this->currentElement = SEManager::getFamily($fromid);
         }
 
-        if (!$doc) {
+        if (!$this->currentElement) {
             throw new Exception(sprintf(___("Document \"%s\" not found ", "ddui"), $documentId));
         }
 
-        $attributeObject = $doc->getAttribute($attrId);
+        $attributeObject = $this->currentElement->getAttribute($attrId);
         if (!$attributeObject) {
             throw new Exception(sprintf(___("Attribute \"%s\" not found ", "ddui"), $attrId));
         }
@@ -84,7 +90,7 @@ class Autocomplete
         } elseif (!$attributeObject->phpfile) {
             return $this->defaultAutocomplete($attributeObject);
         } else {
-            return $this->legacyAutocomplete($doc, $attributeObject);
+            throw new Exception(sprintf("Legacy autocomplete not supported for \"%s\" field ", $attrId));
         }
     }
 
@@ -153,6 +159,7 @@ class Autocomplete
     {
         $parse = new ParseFamilyMethod();
         $parse->parse($attributeObject->properties->autocomplete);
+        $this->currentField = $attributeObject;
 
         return $this->callAutocomplete($parse);
     }
@@ -166,8 +173,8 @@ class Autocomplete
 
         try {
             if ($parse->methodName === "__invoke") {
-                $className=$parse->className;
-                $callable= new $className();
+                $className = $parse->className;
+                $callable = new $className();
             } else {
                 $callable = sprintf("%s::%s", $parse->className, $parse->methodName);
             }
@@ -179,9 +186,6 @@ class Autocomplete
             $response->setOutputs($parse->outputs);
             $args = $this->getArgs($parse);
 
-            /**
-             * @var SmartAutocompleteResponse $result
-             */
             $response = call_user_func($callable, $request, $response, $args);
             if ($response === null) {
                 throw new Exception("Autocomplete error. Cannot call method :" . $callable);
@@ -191,6 +195,9 @@ class Autocomplete
                 throw new Exception("Autocomplete error. Must return SmartAutocompleteResponse object :" . $callable);
             }
 
+            /**
+             * @var SmartAutocompleteResponse $response
+             */
             $return["error"] = $response->getError();
             $return["data"] = $response->getData();
             if ($return["error"]) {
@@ -233,10 +240,12 @@ class Autocomplete
 
     protected function getInputValue($name)
     {
+        $index = -1;
         if (isset($this->contentParameters["index"])) {
-            $index = intval($this->contentParameters["index"]);
-        } else {
-            $index = -1;
+            $field = $this->currentElement->getAttribute($name);
+            if ($field && $field->fieldSet->id === $this->currentField->fieldSet->id) {
+                $index = intval($this->contentParameters["index"]);
+            }
         }
         $attributes = $this->contentParameters["attributes"];
         $attrName = strtolower($name);
@@ -273,164 +282,6 @@ class Autocomplete
             }
         }
         throw new \Anakeen\Exception(sprintf("No find attribute argument \"%s\" for autocomplete", $name));
-    }
-
-    protected function legacyAutocomplete(SmartElement $doc, NormalAttribute $attributeObject)
-    {
-        $return = array(
-            "error" => array(),
-            "data" => array()
-        );
-
-        try {
-            $err = "";
-            $index = $this->contentParameters["index"];
-            $attributeName = $attributeObject->id;
-            $famid = $attributeObject->format;
-
-            if (!$attributeObject->phpfile) {
-                // in coherence with editutil.php
-                $filter = array(); //no filter by default
-                $idType = "initid"; //if there's no docrev option (or it's present but not fixed), use initid to have the latest.
-                $docrev = $attributeObject->getOption("docrev", "latest");
-                if ($docrev === "fixed") {
-                    $idType = "id";
-                } elseif ($docrev !== "latest") {
-                    $idType = "id";
-                    //if $docrev is neither fixed nor latest it should be state=...
-                    //if not, we'll just ignore the option
-                    $matches = array();
-                    if (preg_match('/^state\(([a-zA-Z0-9_:-]+)\)/', $docrev, $matches)) {
-                        $filter[] = "state='" . pg_escape_string($matches[1]) . "'";
-                    }
-                }
-                //make $filter safe to pass in a string for getResPhpFunc.
-                $serializedFilter = serialize($filter);
-
-                if ($attributeObject->type === "thesaurus") {
-                    $th = $attributeObject->format;
-                    $attributeObject->phpfunc = "getThConcept(D,$th,CT):${attributeName},CT";
-                    $attributeObject->phpfile = "thesaurus.php";
-                } else {
-                    $attributeObject->phpfunc = "lfamily(D,'$famid',CT,0,$serializedFilter,'$idType):${attributeName},CT";
-                    $attributeObject->phpfile = "fdl.php";
-                }
-            }
-            //BEWARE SET LOT OF HTTPVAR
-            //@todo rewrite this part to be less invasive
-            $this->compatOriginalFormPost($this->contentParameters["filter"], $this->contentParameters["attributes"], $attributeObject->id, $index);
-            $result = AutocompleteLib::getResPhpFunc($doc, $attributeObject, $rargids, $tselect, $tval, true, $index);
-            if (!is_array($result)) {
-                if ($result == "") {
-                    throw new Exception(sprintf(___("wrong return type when calling function %s\n%s", "ddui"), $attributeObject->phpfunc, $result));
-                }
-                $err = $result;
-                $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
-                $message->contentHtml = $result;
-                $this->messages[] = $message;
-            }
-            if (!$err) {
-                foreach ($result as $currentResult) {
-                    $title = array_shift($currentResult);
-                    $values = array();
-                    foreach ($rargids as $key => $argName) {
-                        if ($argName === "CT") {
-                            $values[$attributeObject->id]["displayValue"] = isset($currentResult[$key]) ? $currentResult[$key] : null;
-                        } else {
-                            if ($argName === "?" || substr($argName, 0, 3) === "CT[") {
-                                continue;
-                            }
-                            $values[strtolower($argName)]["value"] = isset($currentResult[$key]) ? $currentResult[$key] : null;
-                            $values[strtolower($argName)]["value"] = $values[strtolower($argName)]["value"] === "" ? null : $values[strtolower($argName)]["value"];
-
-                            $ctKey = array_search("CT[" . $argName . "]", $rargids);
-                            if ($ctKey !== false) {
-                                $values[strtolower($argName)]["displayValue"] = isset($currentResult[$ctKey]) ? $currentResult[$ctKey] : null;
-                            }
-                        }
-                    }
-
-                    $return["data"][] = array(
-                        "title" => $title,
-                        "values" => $values
-                    );
-                }
-            }
-            if (count($return["data"]) === 0) {
-                $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
-                $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::MESSAGE;
-
-                if (!empty($this->contentParameters["filter"]["filters"][0]["value"])) {
-                    $message->contentHtml = sprintf(___("No matches \"<i>%s</i>\"", "ddui"), htmlspecialchars($this->contentParameters["filter"]["filters"][0]["value"]));
-                } else {
-                    $message->contentText = ___("No result found", "ddui");
-                }
-                $this->messages[] = $message;
-            }
-        } catch (Exception $e) {
-            $message = new \Anakeen\Routes\Core\Lib\ApiMessage();
-            $message->type = \Anakeen\Routes\Core\Lib\ApiMessage::ERROR;
-            $message->contentText = $e->getMessage();
-            $this->messages[] = $message;
-        }
-
-        return $return["data"];
-    }
-
-    /**
-     * Compatibility function to set in global ZONE_ARGS all values sended in request
-     *
-     * @param array  $filters
-     * @param array  $attributes
-     * @param string $currentAid
-     * @param int    $index
-     */
-    protected function compatOriginalFormPost($filters, $attributes, $currentAid, $index)
-    {
-        $this->dduiSetHttpVar("_ct", " ");
-
-        if (is_array($attributes)) {
-            foreach ($attributes as $aid => $formatValue) {
-                if ($formatValue) {
-                    $first = current($formatValue);
-                    if (isset($first) && is_array($first)) {
-                        $rawValue = array();
-                        foreach ($formatValue as $fmtValue) {
-                            if (!isset($fmtValue["value"])) {
-                                $secondValue = array();
-                                foreach ($fmtValue as $fmtValue2) {
-                                    $secondValue[] = $fmtValue2["value"];
-                                }
-                                $rawValue[] = $secondValue;
-                            } else {
-                                $rawValue[] = $fmtValue["value"];
-                            }
-                        }
-                        $this->dduiSetHttpVar("_$aid", $rawValue);
-                    } else {
-                        if (isset($formatValue["value"])) {
-                            $this->dduiSetHttpVar("_$aid", $formatValue["value"]);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (is_array($filters)) {
-            if (isset($filters["filters"][0]["value"])) {
-                $ct = $filters["filters"][0]["value"];
-                $this->dduiSetHttpVar("_ct", $ct);
-                if ($index >= 0) {
-                    $current = getHttpVars("_$currentAid");
-                    if (is_array($current)) {
-                        $current[$index] = $ct;
-                        $this->dduiSetHttpVar("_$currentAid", $current);
-                    }
-                } else {
-                    $this->dduiSetHttpVar("_$currentAid", $ct);
-                }
-            }
-        }
     }
 
     protected function dduiSetHttpVar($name, $def)
