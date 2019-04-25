@@ -228,7 +228,7 @@
 
         this.element.on(
           "click" + this.eventNamespace,
-          ".dcpAttribute__value",
+          "input.dcpAttribute__value",
           function wFileOnClick() {
             inputFile.trigger("click");
           }
@@ -470,6 +470,10 @@
 
       if (this.getMode() === "write" && this.uploadingFiles === 0) {
         this.redraw();
+        if (this.options.hasAutocomplete) {
+          //$.dcp.dcpAttribute.prototype._initChangeEvent.apply(this, []);
+          this.activateAutocomplete(this.kendoWidget);
+        }
       }
 
       $inputFile.attr("fileValue", value ? value.value : null);

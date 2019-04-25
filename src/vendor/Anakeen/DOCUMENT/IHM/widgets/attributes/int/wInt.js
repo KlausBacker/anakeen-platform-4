@@ -114,15 +114,18 @@
       $.dcp.dcpAttribute.prototype.setValue.apply(this, [value]);
 
       if (this.getMode() === "write") {
-        var originalValue = this.kendoWidget
-          .data("kendoNumericTextBox")
-          .value();
-        // : explicit lazy equal
-        //noinspection JSHint
-        if (originalValue != value.value) {
-          this.kendoWidget.data("kendoNumericTextBox").value(value.value);
-          // Modify value only if different
-          this.flashElement();
+        let kNumeric = this.kendoWidget.data("kendoNumericTextBox");
+        if (kNumeric) {
+          let originalValue = kNumeric.value();
+          // : explicit lazy equal
+          //noinspection JSHint
+          if (originalValue != value.value) {
+            kNumeric.value(value.value);
+            // Modify value only if different
+            this.flashElement();
+          }
+        } else {
+          this._super(value);
         }
       } else {
         if (this.getMode() === "read") {

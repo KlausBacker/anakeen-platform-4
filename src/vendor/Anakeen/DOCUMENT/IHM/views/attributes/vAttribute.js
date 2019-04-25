@@ -383,13 +383,12 @@ define([
                 );
               }
             } else {
-              attrModel.setValue(
-                {
-                  value: attributeValue.value,
-                  displayValue: attributeValue.displayValue
-                },
-                valueIndex
-              );
+              let newValue = Object.assign({}, attributeValue, {
+                value: attributeValue.value,
+                displayValue: attributeValue.displayValue
+              });
+
+              attrModel.setValue(newValue, valueIndex);
             }
           } else {
             console.error("Unable to find " + attributeId);
