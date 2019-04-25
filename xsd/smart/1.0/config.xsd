@@ -49,6 +49,16 @@
 
     <xs:complexType name="field-returnType">
         <xs:attribute type="v1:fieldNameType" name="field"/>
+        <xs:attribute type="xs:token" name="name">
+            <xs:annotation>
+                <xs:documentation>
+                    <h1>
+                        <b>Name index for return key</b>
+                    </h1>
+                    <p>This index must be used in <pre>SmartAutocompleteResponse::appendEntry()</pre> method to set results into the appropriate index</p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="field-overrideType">
@@ -71,7 +81,13 @@
 
     <xs:simpleType name="attrReturnArgType">
         <xs:annotation>
-            <xs:documentation>Type of argument</xs:documentation>
+            <xs:documentation>
+                <h1>Type of argument</h1>
+                <ul>
+                    <li><code>field</code>: reference field of structure, the argument is the field value in the form</li>
+                    <li><code>string</code>: static text use as value in arg</li>
+                </ul>
+            </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:enumeration value="field"/>
@@ -154,7 +170,7 @@
                 </xs:annotation>
             </xs:element>
         </xs:choice>
-        <xs:attribute type="xs:token" name="name"/>
+        <xs:attribute type="xs:token" name="name" use="required"/>
         <xs:attribute type="xs:boolean" name="extendable" default="false"/>
     </xs:complexType>
 
@@ -441,7 +457,7 @@
             <xs:element type="v1:tagType" name="tag" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:attributesType" name="fields" minOccurs="0"/>
             <xs:element type="v1:attributesType" name="parameters" minOccurs="0"/>
-            <xs:element type="v1:field-overrideType" name="field-override" minOccurs="0"/>
+            <xs:element type="v1:field-overrideType" name="field-override" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:hooksType" name="hooks" minOccurs="0"/>
             <xs:element type="v1:extendsType" name="default-workflow" minOccurs="0"/>
             <xs:element type="v1:autocompletionType" name="autocompletion" minOccurs="0"/>
