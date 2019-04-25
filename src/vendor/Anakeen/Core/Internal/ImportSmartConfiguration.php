@@ -505,8 +505,8 @@ class ImportSmartConfiguration
         $data = [];
 
         // Search Constraint and Computed
-        $autocompletes = $this->getNodes($config, "field-hook");
-        foreach ($autocompletes as $hookNode) {
+        $hookNodes = $this->getNodes($config, "field-hook");
+        foreach ($hookNodes as $hookNode) {
             /**
              * @var \DOMElement $hookNode
              */
@@ -1052,7 +1052,12 @@ class ImportSmartConfiguration
         foreach ($returnNodes as $returnNode) {
             $attridreturn = $returnNode->getAttribute("field");
             if ($attridreturn) {
-                $returns[] = strtolower($attridreturn);
+                $attridreturn=strtolower($attridreturn);
+                $returnName = $returnNode->getAttribute("name");
+                if ($returnName) {
+                    $attridreturn.=sprintf("{%s}", $returnName);
+                }
+                $returns[] = $attridreturn;
             }
         }
 
