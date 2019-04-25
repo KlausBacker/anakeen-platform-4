@@ -12,7 +12,7 @@ class setTemplate extends \Anakeen\Ui\DefaultEdit
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.css?ws=" . $version;
+        $cssReferences["tstAddButtonCSS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.css?ws=" . $version;
         return $cssReferences;
     }
 
@@ -20,7 +20,7 @@ class setTemplate extends \Anakeen\Ui\DefaultEdit
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
-        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.js?ws=" . $version;
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/setTemplate.js?ws=" . $version;
         return $js;
     }
 
@@ -44,9 +44,9 @@ class setTemplate extends \Anakeen\Ui\DefaultEdit
         $options->int()->setTemplate("<h2>Des entiers</h2>");
 
         $options->text()->setTemplate("<h2>Des textes</h2>");
-        $options->arrayAttribute("test_ddui_all__array_account")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfoArray.mustache"));
-        $options->text("test_ddui_all__longtext")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfo.mustache"));
-        $options->account("test_ddui_all__account_multiple")->setTemplate(file_get_contents(__DIR__ . "/Templates/myInfoMultiple.mustache"));
+        $options->arrayAttribute("test_ddui_all__array_account")->setTemplate(file_get_contents(__DIR__ . "/../Templates/myInfoArray.mustache"));
+        $options->text("test_ddui_all__longtext")->setTemplate(file_get_contents(__DIR__ . "/../Templates/myInfo.mustache"));
+        $options->account("test_ddui_all__account_multiple")->setTemplate(file_get_contents(__DIR__ . "/../Templates/myInfoMultiple.mustache"));
 
         return $options;
 
