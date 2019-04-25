@@ -36,18 +36,28 @@ $navListSize: 4rem;
       position: absolute;
       cursor: pointer;
       font-size: 1.3rem;
-      color: #909399;
+      color: #157EFB;
       & /deep/ {
+        .anchor {
+          color: #157EFB;
+        }
+
         .ank-tab-label,
-        .ank-tab-label:hover,
         a {
           color: #909399;
           text-decoration: none;
+
+          &:hover {
+            color: #00B4FC;
+          }
+
+          &.is-active, &.is-active a {
+            font-weight: bold;
+            color: #00B4FC;
+          }
         }
 
-        .is-active {
-          font-weight: bold;
-        }
+
       }
       .ank-tab-item-close {
         border-radius: 50%;
@@ -76,7 +86,7 @@ $navListSize: 4rem;
       position: absolute;
       cursor: pointer;
       font-size: 1.3rem;
-      color: #909399;
+      color: #157EFB;
     }
   }
 }
@@ -86,7 +96,7 @@ $navListSize: 4rem;
   transition: transform 0.2s ease;
   // Common parts
   .ank-tab-item {
-    background: $ank-ui-tab-inactive-bg;
+    background: #ECECEC;
     display: flex;
     padding: 0;
     cursor: pointer;
