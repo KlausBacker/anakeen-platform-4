@@ -8,6 +8,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\SmartElementManager;
+use Anakeen\Vault\FileInfo;
 
 /**
  * Class FileAttribute
@@ -132,8 +133,13 @@ class FileAttribute
                 throw new Exception("ROUTES0120", $attrid, $index, $resourceId);
             } else {
                 // Redirect to public icon
-                // @TODO Special case when attrid is "icon"
-                throw new Exception("Not yet icon implemented");
+                $fileInfo = new FileInfo();
+                $fileInfo->id_file="ICON".$this->_document->id;
+                $fileInfo->path = sprintf("%s/public/Images/%s", ContextManager::getRootDirectory(), $this->_document->icon);
+                if (!file_exists($fileInfo->path)) {
+                    $fileInfo->path = sprintf("%s/public/Images/%s", ContextManager::getRootDirectory(), ImageAsset::DEFAULTIMG);
+                }
+                return $fileInfo;
             }
         }
         $vaultid = $reg["vid"];
