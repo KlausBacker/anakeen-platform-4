@@ -14,18 +14,22 @@
 
         <accounts:role name="accounts_manager_role">
             <accounts:displayName>Accounts Manager</accounts:displayName>
+            <accounts:structure name="AC_ACCOUNTSMANAGER"/>
         </accounts:role>
 
         <accounts:role name="parameters_manager_role">
             <accounts:displayName>Parameters Manager</accounts:displayName>
+            <accounts:structure name="AC_PARAMETERSMANAGER"/>
         </accounts:role>
 
         <accounts:role name="tokens_manager_role">
             <accounts:displayName>Tokens Manager</accounts:displayName>
+            <accounts:structure name="AC_TOKENSMANAGER"/>
         </accounts:role>
 
         <accounts:role name="vaults_manager_role">
             <accounts:displayName>Vaults Manager</accounts:displayName>
+            <accounts:structure name="AC_VAULTSMANAGER"/>
         </accounts:role>
     </accounts:roles>
     <accounts:groups>
