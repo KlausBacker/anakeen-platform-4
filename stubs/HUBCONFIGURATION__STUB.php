@@ -48,7 +48,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_title='hub_title';
         /**
-        * Element location
+        * Dock
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
@@ -56,7 +56,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_slot_parameters='hub_slot_parameters';
         /**
-        * Order in hub
+        * Order in dock
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>type</i> int </li>
@@ -73,7 +73,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_docker_position='hub_docker_position';
         /**
-        * Element activation
+        * Hub element status
         * <ul>
         * <li> <i>type</i> frame </li>
         * <li> <i>access</i> ReadWrite </li>
@@ -148,7 +148,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_security_frame='hub_security_frame';
         /**
-        * Roles to display component
+        * Roles to display hub element
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
         * <li> <i>match</i> role </li>
@@ -158,7 +158,7 @@ namespace SmartStructure\Fields {
         */ 
         const hub_visibility_roles='hub_visibility_roles';
         /**
-        * Roles to perform component
+        * Roles to access hub element API
         * <ul>
         * <li> <i>access</i> Read </li>
         * <li> <i>match</i> role </li>

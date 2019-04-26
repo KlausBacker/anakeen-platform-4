@@ -22,6 +22,7 @@ namespace SmartStructure\Fields {
         * Html label
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>needed</i> true </li>
         * <li> <i>type</i> longtext </li>
         * </ul>
         */ 

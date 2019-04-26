@@ -73,6 +73,7 @@ namespace SmartStructure\Fields {
         * Title
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
+        * <li> <i>needed</i> true </li>
         * <li> <i>type</i> text </li>
         * </ul>
         */ 
