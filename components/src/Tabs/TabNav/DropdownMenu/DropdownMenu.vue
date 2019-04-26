@@ -5,7 +5,10 @@
     </button>
     <div v-if="showMenu" class="menu">
       <div
-        class="menu-item"
+        :class="{'menu-item': true, 'is-active': item.active,
+            'is-disabled': item.disabled,
+            'is-closable': item.isClosable,
+            'is-dirty': !!item.isDirty}"
         v-for="item in this.items"
         @click="itemClicked(item)"
       >
