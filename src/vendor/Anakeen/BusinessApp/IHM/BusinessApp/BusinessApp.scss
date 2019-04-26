@@ -6,7 +6,16 @@
 
   .ank-business-app-list {
     flex: 0.3;
-    margin-right: 0.2rem;
+    margin-right: 0.283333rem;
+
+    /deep/ {
+      .seList__listItem.is-active {
+        box-shadow: none;
+        background-color: initial;
+        color: #505050;
+        font-weight: normal;
+      }
+    }
   }
 
   .ank-business-app-header {
