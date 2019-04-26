@@ -26,11 +26,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      *
      * @var array
      */
-    public $acls = array(
-        "view",
-        "edit",
-        "delete"
-    );
+    public $acls
+        = array(
+            "view",
+            "edit",
+            "delete"
+        );
 
     public $usefor = 'SW';
     public $defDoctype = 'W';
@@ -39,6 +40,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * state's activities labels
+     *
      * @var array
      */
     public $stepLabels = array(); // label of steps
@@ -62,6 +64,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     private $pdoc = null;
     /**
      * document instance
+     *
      * @var \Anakeen\Core\Internal\SmartElement
      */
     public $doc = null;
@@ -106,8 +109,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * affect document instance
+     *
      * @param \Anakeen\Core\Internal\SmartElement $doc   document to use for workflow
      * @param bool                                $force set to true to force a doc reset
+     *
      * @return void
      */
     public function set(\Anakeen\Core\Internal\SmartElement & $doc, $force = false)
@@ -129,6 +134,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * Get the current associated smart element
+     *
      * @return \Anakeen\Core\Internal\SmartElement
      */
     public function getSmartElement()
@@ -138,7 +144,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * change profil according to state
+     *
      * @param string $newstate new \state of document
+     *
      * @return string
      */
     public function changeProfil($newstate)
@@ -168,6 +176,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * change cv according to state
+     *
      * @param string $newstate new \state of document
      */
     public function changeCv($newstate)
@@ -226,7 +235,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the profile id according to state
+     *
      * @param string $state
+     *
      * @return string
      */
     public function getStateProfil($state)
@@ -241,7 +252,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the field access list id according to state
+     *
      * @param string $state
+     *
      * @return string
      */
     public function getStateFall($state)
@@ -256,7 +269,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the attribute id for profile id according to state
+     *
      * @param string $state
+     *
      * @return string
      */
     public function getStateProfilAttribute($state)
@@ -266,7 +281,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the mask id according to state
+     *
      * @param string $state
+     *
      * @return string
      */
     public function getStateMask($state)
@@ -281,7 +298,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the view control id according to state
+     *
      * @param string $state
+     *
      * @return string
      */
     public function getStateViewControl($state)
@@ -296,7 +315,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the timers ids according to state
+     *
      * @param string $state
+     *
      * @return string
      */
     public function getStateTimer($state)
@@ -311,7 +332,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the timers ids according to transition
+     *
      * @param string $transName transition name
+     *
      * @return array
      */
     public function getTransitionTimers($transName)
@@ -361,7 +384,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the mail ids according to transition
+     *
      * @param string $transName transition name
+     *
      * @return array
      */
     public function getTransitionMailTemplates($transName)
@@ -376,7 +401,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get the mail templates ids according to state
+     *
      * @param string $state
+     *
      * @return array
      */
     public function getStateMailTemplate($state)
@@ -392,6 +419,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * Return transition object referenced by name
+     *
      * @param string $transitionName
      *
      * @return Transition|null
@@ -409,6 +437,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * @param string $mIndex m0, m1, m2, m3
      *
      * @param array  $args   the three arguments $nextState, $previousState, $comment
+     *
      * @return false|string error message (empty if no errors)
      */
     public function executeTransitionM(string $transitionName, string $mIndex, ...$args)
@@ -435,7 +464,9 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * create of parameters attributes of workflow
+     *
      * @param int $cid
+     *
      * @return string error message
      */
     public function createProfileAttribute($cid = 0)
@@ -759,6 +790,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     /**
      * change state of a document
      * the method {@link set()} must be call before
+     *
      * @param string $newstate    the next state
      * @param string $addcomment  comment to be set in history (describe why change state)
      * @param bool   $force       is true when it is the second passage (without interactivity)
@@ -769,6 +801,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
      * @param bool   $wm0         set to false if you want to not apply m0 methods
      * @param bool   $wm3         set to false if you want to not apply m3 methods
      * @param string $msg         return message from m2 or m3 methods
+     *
      * @return string error message, if no error empty string
      */
     public function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
@@ -871,6 +904,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         // change the state
         $oldstate = $this->doc->state == "" ? " " : $this->doc->state;
+        $previousState = $this->doc->state;
         $this->doc->state = $newstate;
         $this->changeProfil($newstate);
         $this->changeCv($newstate);
@@ -907,20 +941,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         // post action
         $msg2 = '';
         if ($wm2 && (!empty($tr["m2"]))) {
-            $msg2 = $this->executeTransitionM($tname, "m2", $newstate, $this->doc->state, $addcomment);
+            $msg2 = $this->executeTransitionM($tname, "m2", $newstate, $previousState, $addcomment);
 
             if ($msg2) {
                 $this->doc->addHistoryEntry($msg2);
             }
         }
-        $this->doc->addLog("state", array(
-            "id" => $this->id,
-            "initid" => $this->initid,
-            "revision" => $this->revision,
-            "title" => $this->title,
-            "state" => $this->state,
-            "message" => $msg2
-        ));
+
         $this->doc->disableAccessControl();
         $this->doc->unlock(false, true);
 
@@ -929,7 +956,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         // post action
         $msg3 = '';
         if ($wm3 && (!empty($tr["m3"]))) {
-            $msg3 = $this->executeTransitionM($tname, "m3", $newstate, $this->doc->state, $addcomment);
+            $msg3 = $this->executeTransitionM($tname, "m3", $newstate, $previousState, $addcomment);
             if ($msg3) {
                 $this->doc->addHistoryEntry($msg3);
             }
@@ -940,11 +967,13 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         }
         $msg .= $msg3;
         $this->doc->restoreAccessControl();
+        $this->logChangeState($tname, $previousState, $msg2, $msg3);
         return $err;
     }
 
     /**
      * return an array of next states availables from current state
+     *
      * @return array
      */
     public function getFollowingStates()
@@ -978,6 +1007,7 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * return an array of all states availables for the workflow
+     *
      * @return array
      */
     public function getStates()
@@ -1001,8 +1031,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get associated color of a state
+     *
      * @param string $state the state
      * @param string $def   default value if not set
+     *
      * @return string the color (#RGB)
      */
     public function getColor($state, $def = "")
@@ -1019,8 +1051,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get activity (localized language)
+     *
      * @param string $state the state
      * @param string $def   default value if not set
+     *
      * @return string the text of action
      */
     public function getActivity($state, $def = "")
@@ -1039,9 +1073,11 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * send associated mail of a state
+     *
      * @param string $state   the state
      * @param string $comment reason of change state
      * @param string $tname   transition name
+     *
      * @return string
      */
     public function workflowSendMailTemplate($state, $comment = "", $tname = "")
@@ -1127,39 +1163,45 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
         $transition = $this->getTransition($tname);
         if ($transition) {
             $askes = $transition->getAsks();
-            foreach ($askes as $oa) {
-                if ($oa->type === "array") {
-                    $elem = $this->attributes->getArrayElements($oa->id);
-                    foreach ($elem as $aid => $arrayAttribute) {
-                        if ($oa->type == "password") {
-                            $displayValue = "*****";
-                        } else {
-                            $displayValue = str_replace("\n", ", ", $this->getAskValue($arrayAttribute->id));
-                        }
-                        $revcomment = sprintf("\n-%s : %s", $arrayAttribute->getLabel(), $displayValue);
-                    }
-                } else {
-                    $pv = $this->getAskValue($oa->id);
-                    if ($pv != "") {
-                        if ($oa->type == "password") {
-                            $pv = "*****";
-                        }
-
-                        if (is_array($pv)) {
-                            $pv = implode(", ", $pv);
-                        }
-                        $revcomment .= sprintf("\n-%s : %s", $oa->getLabel(), $pv);
-                    }
+            if ($askes) {
+                $askLabels = [];
+                foreach ($askes as $oa) {
+                    $askLabels[] = $oa->getLabel();
                 }
+                $revcomment = sprintf("\n%s : %s", ___("Ask for", "wdoc"), implode(", ", $askLabels));
             }
         }
         return $revcomment;
     }
 
+    protected function logChangeState($transitionId, $previousState, $msg2, $msg3)
+    {
+        $askValues = [];
+        if ($transitionId) {
+            $asks = $this->getTransition($transitionId)->getAsks();
+            foreach ($asks as $askField) {
+                $askValues[$askField->id] = $this->getAskValue($askField->id);
+            }
+        }
+        $this->doc->addLog("state", array(
+            "wid" => $this->initid,
+            "revision" => $this->doc->revision,
+            "title" => $this->doc->title,
+            "state" => $this->doc->state,
+            "transition" => $transitionId,
+            "previousState" => $previousState,
+            "asks" => $askValues,
+            "m2message" => $msg2,
+            "m3message" => $msg3
+        ));
+    }
+
     /**
      * attach timer to a document
+     *
      * @param string $state the state
      * @param string $tname transition name
+     *
      * @return string
      */
     public function workflowAttachTimer($state, $tname = "")
@@ -1212,8 +1254,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * get transition array for the transition between $to and $from states
+     *
      * @param string $to   first state
      * @param string $from next state
+     *
      * @return array|false transition array (false if not found)
      */
     public function searchTransition($from, $to)
@@ -1230,10 +1274,12 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * explicit original doc control
+     *
      * @param      $aclname
      * @param bool $strict
-     * @see \Anakeen\Core\Internal\SmartElement::control()
+     *
      * @return string
+     * @see \Anakeen\Core\Internal\SmartElement::control()
      */
     public function docControl($aclname, $strict = false)
     {
@@ -1242,8 +1288,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
 
     /**
      * Special control in case of dynamic controlled profil
+     *
      * @param string $aclname
      * @param bool   $strict set to true to not use substitute informations
+     *
      * @return string error message
      */
     public function control($aclname, $strict = false)
@@ -1273,8 +1321,10 @@ class WDocHooks extends \Anakeen\Core\Internal\SmartElement
     /**
      * /**
      * get value of instanced document
+     *
      * @param string $attrid attribute identifier
      * @param bool   $def    default value if no value
+     *
      * @return string return the value, false if attribute not exist or document not set
      */
     public function getInstanceValue($attrid, $def = false)
