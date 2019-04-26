@@ -67,11 +67,7 @@ export default {
   },
 
   created() {
-    this.$http
-      .get(`/api/v2/smart-elements/${this.hubId}.json`)
-      .then(response => {
-        this.hubElement = response.data.data.document;
-      });
+    this.initHub(this.hubId);
   },
 
   mounted() {
@@ -100,18 +96,16 @@ export default {
     },
     openInterface() {
       let routeEntry = `/hub/station/${this.hubId}/`;
-      if (this.$refs.smartConfig) {
-        const routerEntry = this.$refs.smartConfig.getValue(
-          "hub_instanciation_router_entry"
-        );
+      if (this.hubElement) {
+        const routerEntry = this.hubElement.attributes
+          ? this.hubElement.attributes.hub_instanciation_router_entry
+          : null;
         if (routerEntry && routerEntry.value) {
           routeEntry = urlJoin("/", routerEntry.value);
         } else {
-          const instanceLogicalName = this.$refs.smartConfig.getValue(
-            "instance_logical_name"
-          );
-          if (instanceLogicalName && instanceLogicalName.value) {
-            routeEntry = `/hub/station/${instanceLogicalName.value}/`;
+          const instanceLogicalName = this.hubElement.properties.name;
+          if (instanceLogicalName) {
+            routeEntry = `/hub/station/${instanceLogicalName}/`;
           }
         }
       }
@@ -291,6 +285,9 @@ export default {
       if (!this.isListenActivated) {
         this.$refs.smartConfig.addEventListener("afterSave", (e, d) => {
           const seId = d.initid;
+          if (d.family.name === "HUBINSTANCIATION") {
+            this.initHub(seId);
+          }
           if (this.$refs.hubGrid && this.$refs.hubGrid.dataSource) {
             this.selectedComponent = 0;
             this.$refs.hubGrid.kendoGrid.dataSource.read().then(() => {
