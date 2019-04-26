@@ -1,0 +1,25 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="DbMigrationRules.xsd">
+
+    <action id="docLog" title="Add data column on doclog table">
+        <condition>
+            <sql-assert-empty>
+                select * from information_schema.columns where table_schema = 'public' and column_name='data';
+            </sql-assert-empty>
+            <sql-assert-not-empty>
+                select * from information_schema.columns where table_schema = 'public' and column_name='arg';
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <sql-query stop-on-error="true" title="Add data column">
+                alter table doclog add column data jsonb;
+            </sql-query>
+            <php method="Anakeen\Database\Migrations\DocLogConvert::__invoke()" load-context="false"/>
+        </process>
+        <check>
+            <sql-assert-not-empty>
+                select * from information_schema.columns where table_schema = 'public' and column_name='data';
+            </sql-assert-not-empty>
+        </check>
+    </action>
+</migration>

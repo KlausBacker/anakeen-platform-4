@@ -4389,7 +4389,7 @@ create unique index i_docir on doc(initid, revision);";
         $h->level = $level ? $level : \DocLog::LOG_NOTIFY;
         $h->code = $code;
         if ($arg) {
-            $h->arg = serialize($arg);
+            $h->data = json_encode($arg);
         }
 
         $err = $h->add();

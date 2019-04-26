@@ -33,7 +33,7 @@ class DocLog extends DbObj
         "uname", // use name
         "level", // log level
         "code", // code log
-        "arg", // arg serialized object
+        "data", // data json
         "comment"
         // comment text
         
@@ -70,10 +70,10 @@ class DocLog extends DbObj
      */
     public $level;
     /**
-     * arg of code
-     * @public text serialize object
+     * data for code
+     * @public data object
      */
-    public $arg;
+    public $data;
     
     public $initid;
     /**
@@ -99,7 +99,7 @@ create table doclog ( id int not null,
                    date timestamp default now(),
                    level int,
                    code text not null,
-                   arg text,
+                   data jsonb,
                    comment text  );
 create index i_doclog on doclog(id);
 create index in_doclog on doclog(initid);
