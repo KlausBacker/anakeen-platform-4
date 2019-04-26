@@ -21,7 +21,7 @@ msgstr "Attrid"
 #, fuzzy
 msgctxt "MASK"
 msgid "msk_famid"
-msgstr "Famille"
+msgstr "Smart Structure"
 
 #: src/vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
 #, fuzzy

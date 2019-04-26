@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-14 17:03+0100\n"
+"POT-Creation-Date: 2019-04-26 12:03+0200\n"
 "PO-Revision-Date: 2018-10-08 12:43+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -18,28 +18,30 @@ msgstr "Création %s"
 
 msgctxt " smart iuser"
 msgid "<p>Set to \"<b>-1</b>\"  to cancel expiration</p>"
-msgstr ""
+msgstr "<p>Mettre \"<b>-1</b>\"  pour annuler l'expiration</p>"
 
 msgctxt " smart iuser"
 msgid ""
 "<p>Set to \"<b>-</b>\" (<i>minus</i>) to explicit create user without login</"
 "p>"
 msgstr ""
+"<p>Mettre la valeur à \"<b>-</b>\" (<i>minus</i>) pour créer un utilisateur "
+"sans login</p>"
 
 #, php-format
 msgctxt "ddui"
 msgid "Access not granted for document #%s"
-msgstr "Accès non autorisé pour le document n°%s"
+msgstr "Accès non autorisé pour créer #°%s"
 
 #, php-format
 msgctxt "ddui"
 msgid "Access not granted to create \"%s\" document"
-msgstr "Accès non autorisé pour créer un document \"%s\""
+msgstr "Accès non autorisé pour créer \"%s\""
 
 #, php-format
 msgctxt "smart iuser"
 msgid "Account #%d does not exist"
-msgstr ""
+msgstr "Le compte #%d does not exist"
 
 msgctxt "ddui"
 msgid "Account access deny"
@@ -64,10 +66,6 @@ msgstr "Activer du compte"
 msgctxt "ddui"
 msgid "Add a note to the history"
 msgstr "Ajouter une note à consigner dans l'historique"
-
-msgctxt "UiMenu"
-msgid "Advanced"
-msgstr "Autres"
 
 msgctxt "grid-component"
 msgid "All text contains"
@@ -139,17 +137,17 @@ msgstr "Choisissez une image"
 #, php-format
 msgctxt "smartCvdoc"
 msgid "Class \"%s\" not exists"
-msgstr ""
+msgstr "La classe \"%s\" n'existe pas"
 
 #, php-format
 msgctxt "smartCvdoc"
 msgid "Class \"%s\" not implement %s"
-msgstr ""
+msgstr "La classe \"%s\" n'implémente pas %s"
 
 #, php-format
 msgctxt "smartCvdoc"
 msgid "Class \"%s\" problem : %s"
-msgstr ""
+msgstr "Classe \"%s\" problême : %s"
 
 msgctxt "ddui-file"
 msgid "Click to upload file"
@@ -177,7 +175,7 @@ msgstr "Fermer le message"
 
 msgctxt "ddui"
 msgid "Confidential document"
-msgstr "Document confidentiel"
+msgstr "Smart Element confidentiel"
 
 msgctxt "UiMenu"
 msgid "Confirm"
@@ -234,7 +232,7 @@ msgstr "Créer et insérer dans \"{{label}}\""
 
 msgctxt "UiMenu"
 msgid "Create new document to server"
-msgstr "Créer un nouveau document sur le serveur"
+msgstr "Créer sur le serveur"
 
 msgctxt "UiMenu"
 msgid "Create to server and view document"
@@ -258,17 +256,17 @@ msgstr "Afficher le formulaire de modification"
 
 msgctxt "UiMenu"
 msgid "Display latest document revision"
-msgstr "Voir la dernière révision du document"
+msgstr "Voir la dernière révision"
 
 #, php-format
 msgctxt "ddui"
 msgid "Document \"%s\" not found "
-msgstr "Document \"%s\" non trouvé"
+msgstr "Smart Element \"%s\" non trouvé"
 
 #, php-format
 msgctxt "ddui"
 msgid "Document identifier \"%s\"not found"
-msgstr "Identifiant de document \"%s\" non trouvé"
+msgstr "Identifiant de smart element \"%s\" non trouvé"
 
 msgctxt "ddui-file"
 msgid "Download file"
@@ -293,19 +291,16 @@ msgstr "L'adresse email \"%s\" n'est pas valide"
 
 msgctxt "smart exec"
 msgid "Execute now"
-msgstr ""
+msgstr "Démarrer la tâche"
 
+#, fuzzy, php-format
 msgctxt "smart exec"
-msgid "Execution failed"
-msgstr "L'exécution a échoué"
-
-msgctxt "smart exec"
-msgid "Execution succeeded"
-msgstr "Exécution réussie"
+msgid "Execute now the task %s"
+msgstr "Démarrer la tâche"
 
 msgctxt "ddui"
 msgid "Family View"
-msgstr "Vue de famille"
+msgstr "Vue de Smart Structure"
 
 msgctxt "ddui"
 msgid "Force transition"
@@ -315,8 +310,9 @@ msgctxt "UiMenu"
 msgid "Goto next activity"
 msgstr "Passer à l'étape suivante"
 
+#, fuzzy, php-format
 msgctxt "smart iuser"
-msgid "Group has been updated"
+msgid "Groups of \"%s\" has been updated"
 msgstr "Les groupes ont été mis à jour"
 
 msgctxt "UiMenu"
@@ -328,10 +324,10 @@ msgid "Historic"
 msgstr "Historique"
 
 msgid "Impossible to have several identical names"
-msgstr ""
+msgstr "Impossible d'avoir plusieurs noms identiques"
 
 msgid "Impossible to name a view like a control acl"
-msgstr ""
+msgstr "Impossible de nommer une vue comme une ACL de control"
 
 msgctxt "ddui"
 msgid "In progress transition"
@@ -340,7 +336,7 @@ msgstr "Transition en cours"
 #, php-format
 msgctxt "autocomplete"
 msgid "Incompatible type \"%s\" for autocomplete"
-msgstr ""
+msgstr "Le type \"%s\" est incompatible avec l'autocomplétion"
 
 msgctxt "ddui"
 msgid "Information access deny"
@@ -411,11 +407,11 @@ msgid "Is not equal to"
 msgstr "Est différent de"
 
 msgid "Label must not be empty"
-msgstr ""
+msgstr "Le label ne doit pas être vide"
 
 msgctxt " smart cvdoc"
 msgid "Label of menu list"
-msgstr ""
+msgstr "Label du menu"
 
 msgctxt "ddui helppage"
 msgid "Lang"
@@ -435,12 +431,12 @@ msgstr "Verrouillé par"
 
 msgctxt "smart iuser"
 msgid "Login fail count reseted"
-msgstr ""
+msgstr "Impossible de remettre le compteur d'échec de connexion à zéro"
 
 #, php-format
 msgctxt "ui"
 msgid "Menu \"%s\" : Method mismatch need \"%s\" and has \"%s\""
-msgstr ""
+msgstr "Menu \"%s\" : Méthodes incohérentes : attendu : \"%s\" obtenu : \"%s\""
 
 #, php-format
 msgctxt "ddui"
@@ -450,7 +446,7 @@ msgstr "Menu \"%s\" non trouvé"
 #, php-format
 msgctxt "ui"
 msgid "Menu id \"%s\" not found "
-msgstr ""
+msgstr "Menu pas trouvé \"%s\" "
 
 msgctxt "ddui"
 msgid "Min row limit is {{limit}}"
@@ -464,12 +460,13 @@ msgctxt "ddui"
 msgid "Modifying by"
 msgstr "En cours de modification par"
 
+msgctxt "mask"
 msgid "N"
 msgstr ""
 
 msgctxt "smart iuser"
 msgid "No groups"
-msgstr ""
+msgstr "Pas de groupes"
 
 #, php-format
 msgctxt "ddui"
@@ -494,11 +491,11 @@ msgstr "Pas de résultat"
 
 msgctxt "smart igroup"
 msgid "No roles"
-msgstr ""
+msgstr "Pas de roles"
 
 msgctxt "smart iuser"
 msgid "No roles"
-msgstr ""
+msgstr "Pas de roles"
 
 msgctxt "grid-component"
 msgid "Not contains"
@@ -510,7 +507,7 @@ msgstr "Notification"
 
 msgctxt "smart report"
 msgid "Number maximum of displayed elements"
-msgstr ""
+msgstr "Nombre maximum d'éléments affichés"
 
 msgctxt "grid-component"
 msgid "One of values equal to"
@@ -538,7 +535,7 @@ msgstr "Un des textes contient"
 
 msgctxt " smart cvdoc"
 msgid "Order for control access"
-msgstr ""
+msgstr "Ordre des contrôles d'accès"
 
 msgctxt " smart cvdoc"
 msgid "PHP Access render class used to fork the appropriate render config"
@@ -546,7 +543,7 @@ msgstr ""
 
 msgctxt " smart cvdoc"
 msgid "PHP Config render class used to custom render"
-msgstr ""
+msgstr "Classe PHP utilisée pour le render"
 
 #, php-format
 msgctxt "authent"
@@ -563,19 +560,19 @@ msgstr "Propriétés"
 
 msgctxt "UiMenu"
 msgid "Put document to the trash"
-msgstr "Mettre le document à la poubelle"
+msgstr "Mettre le Smart Element à la poubelle"
 
 msgctxt "ddui"
 msgid "Read only document"
-msgstr "Document en lecture seule"
+msgstr "Smart Element en lecture seule"
 
 msgctxt "UiMenu"
 msgid "Record document to server"
-msgstr "Enregistrer le document et laisser le formulaire ouvert"
+msgstr "Enregistrer et laisser le formulaire ouvert"
 
 msgctxt "UiMenu"
 msgid "Record document without constraint check"
-msgstr "Enregistrer le document sans tenir compte des contraintes"
+msgstr "Enregistrer sans tenir compte des contraintes"
 
 msgctxt "UiMenu"
 msgid "Record to server and view document"
@@ -595,7 +592,7 @@ msgstr "Restaurer"
 
 msgctxt "UiMenu"
 msgid "Restore document from the trash"
-msgstr "Retirer le document de la poubelle"
+msgstr "Retirer de la poubelle"
 
 msgctxt "ddui"
 msgid "Retry transition"
@@ -640,7 +637,7 @@ msgstr "Valider cet autre choix"
 
 msgctxt "ddui"
 msgid "Smart ELement"
-msgstr ""
+msgstr "Smart Element"
 
 msgctxt "grid-component"
 msgid "Start with"
@@ -649,6 +646,8 @@ msgstr "Commence par"
 msgctxt " smart cvdoc"
 msgid "Structure used to configure access profil with account attributes"
 msgstr ""
+"Structure utilisée pour configurer les accès des profils avec des smart "
+"fields accounts"
 
 #, php-format
 msgctxt "UiMenu"
@@ -659,9 +658,14 @@ msgctxt "UiMenu"
 msgid "System"
 msgstr "Système"
 
+#, php-format
+msgctxt "smart-task"
+msgid "Task \"%s\" is executed."
+msgstr "La tâche \"%s\" est exécutée."
+
 msgctxt "smart iuser"
 msgid "This account has no system identifier"
-msgstr ""
+msgstr "Ce compte n'a pas "
 
 msgctxt " smart group"
 msgid "To avoid compute mail addresses when group has lot of members"
@@ -681,11 +685,11 @@ msgstr "Transition réussie"
 
 #, php-format
 msgid "Unlabeled menu (%s)"
-msgstr ""
+msgstr "Menu sans label (%s)"
 
 #, php-format
 msgid "Unlabeled view (%s)"
-msgstr ""
+msgstr "Vue sans label (%s)"
 
 msgctxt "UiMenu"
 msgid "Unlock"
@@ -693,36 +697,36 @@ msgstr "Déverrouiller"
 
 msgctxt "ddui"
 msgid "Unlock document"
-msgstr "Déverrouiller le document"
+msgstr "Déverrouiller"
 
 #, php-format
 msgctxt "smart iuser"
 msgid "User #%d does not exist"
-msgstr ""
+msgstr "L'utilisateur #%d n'existe pas"
 
 msgctxt "smart iuser"
 msgid "User has no record password. It cannot be connected"
-msgstr ""
+msgstr "L'utilisateur n'a pas de mot de passe."
 
 msgctxt "smart iuser"
 msgid "User is deactivated"
-msgstr ""
+msgstr "L'utilisateur est désactivé"
 
 msgctxt "smart:dsearch"
 msgid "View"
-msgstr ""
+msgstr "Voir"
 
 msgctxt "UiMenu"
 msgid "View current revision"
 msgstr "Voir la version actuelle"
 
+msgctxt "smart exec"
+msgid "View previous results"
+msgstr "Voir les résultats précédents"
+
 msgctxt "UiMenu"
 msgid "View transition graph"
 msgstr "Prochaines étapes ..."
-
-msgctxt "UiMenu"
-msgid "View workflow graph"
-msgstr "Graphique du processus"
 
 #, php-format
 msgctxt "ddui"
@@ -739,8 +743,9 @@ msgctxt "ddui"
 msgid "Workflow Transition Comment"
 msgstr "Commentaire de transition du cycle de vie"
 
+msgctxt "mask"
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 msgctxt "identityComponent"
 msgid "You entered an invalid current password"
@@ -754,6 +759,11 @@ msgstr "Vous avez entré un mot de passe invalide"
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
 msgstr ""
 
+msgid "activity"
+msgstr "Activité"
+
+#, fuzzy
+msgctxt "dsearch"
 msgid "activity"
 msgstr "Activité"
 
@@ -774,6 +784,7 @@ msgctxt "searchui"
 msgid "doctitle"
 msgstr "Titre"
 
+msgctxt "mask"
 msgid "hidden"
 msgstr ""
 
@@ -785,6 +796,7 @@ msgctxt "searchui"
 msgid "id owner"
 msgstr "Identifiant propriétaire"
 
+msgctxt "mask"
 msgid "invisible"
 msgstr ""
 
@@ -796,12 +808,15 @@ msgctxt "searchui"
 msgid "mdate"
 msgstr "Date de modification"
 
+msgctxt "mask"
 msgid "read disabled"
 msgstr ""
 
+msgctxt "mask"
 msgid "read only"
 msgstr ""
 
+msgctxt "mask"
 msgid "read write"
 msgstr ""
 
@@ -812,28 +827,30 @@ msgstr "Révision"
 msgid "state"
 msgstr "État"
 
+#, fuzzy
+msgctxt "dsearch"
+msgid "state"
+msgstr "État"
+
+msgctxt "mask"
 msgid "static array"
 msgstr ""
 
 msgid "step"
 msgstr "Étape"
 
+#, fuzzy
+msgctxt "dsearch"
+msgid "step"
+msgstr "Étape"
+
 msgid "workflow"
 msgstr "Cycle de vie"
 
+msgctxt "mask"
 msgid "write only"
 msgstr ""
-
-#, php-format
-msgctxt "ddui"
-msgid ""
-"wrong return type when calling function %s\n"
-"%s"
-msgstr ""
-"Erreur de retour lors de l'appel à %s\n"
-"%s"
 
 msgctxt "ddui-enum"
 msgid "{{value}} **"
 msgstr "{{value}} (autre choix)"
-
