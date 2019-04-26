@@ -26,19 +26,6 @@ const urlJoin = require("url-join");
   name: "hub-station-dock"
 })
 export default class HubStationDock extends Vue {
-  public $refs!: {
-    innerDock: HubDock | any;
-  };
-
-  // region props
-  @Prop({ default: () => [], type: Array })
-  public dockContent!: IHubStationPropConfig[];
-  @Prop({ default: DockPosition.LEFT, type: String })
-  public position!: DockPosition;
-  @Prop({ default: "", type: String }) public rootUrl!: string;
-  // endregion props
-
-  protected dockIsCollapsed: boolean = true;
   get InnerDockPosition() {
     return InnerDockPosition;
   }
@@ -63,6 +50,23 @@ export default class HubStationDock extends Vue {
     }
     return result;
   }
+
+  protected static normalizeUrl(...url) {
+    return urlJoin("/", ...url, "/");
+  }
+  public $refs!: {
+    innerDock: HubDock | any;
+  };
+
+  // region props
+  @Prop({ default: () => [], type: Array })
+  public dockContent!: IHubStationPropConfig[];
+  @Prop({ default: DockPosition.LEFT, type: String })
+  public position!: DockPosition;
+  @Prop({ default: "", type: String }) public rootUrl!: string;
+  // endregion props
+
+  protected dockIsCollapsed: boolean = true;
 
   public mounted() {
     this.dockIsCollapsed = this.$refs.innerDock.collapsed;
@@ -118,7 +122,11 @@ export default class HubStationDock extends Vue {
   // noinspection JSMethodCanBeStatic
   protected isSelectedEntry(entry) {
     if (entry && entry.entryOptions && entry.entryOptions.route) {
-      return this.getEntryRoute(entry) === urlJoin(window.location.pathname);
+      return (
+        HubStationDock.normalizeUrl(window.location.pathname).indexOf(
+          this.getEntryRoute(entry)
+        ) > -1
+      );
     } else if (entry && entry.entryOptions) {
       return entry.entryOptions.activated;
     }
@@ -131,7 +139,10 @@ export default class HubStationDock extends Vue {
 
   protected getEntryRoute(entry) {
     if (entry && entry.entryOptions && entry.entryOptions.route) {
-      return urlJoin("/", this.rootUrl, entry.entryOptions.route, "/");
+      return HubStationDock.normalizeUrl(
+        this.rootUrl,
+        entry.entryOptions.route
+      );
     }
     return "";
   }
