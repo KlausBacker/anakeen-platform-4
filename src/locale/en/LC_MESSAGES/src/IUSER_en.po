@@ -11,179 +11,179 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "title"
 msgstr "User Account"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_accexpiredate"
 msgstr "Account expiration date"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_daydelay"
 msgstr "Expiration deadline in day"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_defaultgroup"
 msgstr "Default group"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_expires"
 msgstr "Expiration date epoch"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_expiresd"
 msgstr "Expiration date"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_expirest"
 msgstr "Expiration hour"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_extmail"
 msgstr "Main mail"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_fname"
 msgstr "First name"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_fr_default"
 msgstr "Parameter"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_fr_ident"
 msgstr "Civil status"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_fr_intranet"
 msgstr "Intranet login"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_fr_security"
 msgstr "Security"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_fr_substitute"
 msgstr "Substitute"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 #, fuzzy
 msgctxt "IUSER"
 msgid "us_fr_sysident"
 msgstr "Civil status"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_fr_userchange"
 msgstr "Password"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_group"
 msgstr "Group (title)"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_groups"
 msgstr "User groups"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_idgroup"
 msgstr "Group"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_incumbents"
 msgstr "Holders"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_lname"
 msgstr "Name"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_login"
 msgstr "Login"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_loginfailure"
 msgstr "Login failures"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_mail"
 msgstr "Mail"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_meid"
 msgstr "User id"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_passdelay"
 msgstr "Deadline epoch"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_rolegorigin"
 msgstr "Group"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_roles"
 msgstr "Role"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_rolesorigin"
 msgstr "Origin"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_status"
 msgstr "Account status"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_substitute"
 msgstr "Substitute"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_t_roles"
 msgstr "Roles"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 #, fuzzy
 msgctxt "IUSER"
 msgid "us_tab_sysinfo"
 msgstr "System"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_tab_system"
 msgstr "System"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 msgctxt "IUSER"
 msgid "us_whatid"
 msgstr "Identifier"

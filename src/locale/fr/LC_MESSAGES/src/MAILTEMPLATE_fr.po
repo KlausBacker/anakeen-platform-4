@@ -11,115 +11,115 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "title"
 msgstr "Modèle de mail"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_attach"
 msgstr "Attachement"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_body"
 msgstr "Corps"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_copymode"
 msgstr "-"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_dest"
 msgstr "Destinataires"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_desttype"
 msgstr "Type"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_family"
 msgstr "Famille"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fr"
 msgstr "Entête"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fr_content"
 msgstr "Contenu"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_from"
 msgstr "De"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_fromtype"
 msgstr "type"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_recip"
 msgstr "Destinataire"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_savecopy"
 msgstr "Enregistrer une copie"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_subject"
 msgstr "Sujet"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_t_attach"
 msgstr "Attachements"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_t_from"
 msgstr "Émetteur"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_title"
 msgstr "Titre"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_ulink"
 msgstr "Avec liens"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE"
 msgid "tmail_workflow"

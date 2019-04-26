@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL-mail_savecopy"
 msgid "no"
 msgstr "Pas de copie"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL-mail_savecopy"
 msgid "yes"

@@ -11,68 +11,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_cm"
 msgstr "Comment"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL"
 msgid "mail_copymode"
 msgstr "Cc"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_dest"
 msgstr "Recipients"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_format"
 msgstr "Format"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_fr"
 msgstr "Address"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_fr_cm"
 msgstr "Comment"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_from"
 msgstr "From"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_recip"
 msgstr "Recipient"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_recipid"
 msgstr "ID recipient"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_savecopy"
 msgstr "Save a copy"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_sendformat"
 msgstr "Notif."
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "mail_subject"
 msgstr "Subject"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 msgctxt "MAIL"
 msgid "title"
 msgstr "Mail"

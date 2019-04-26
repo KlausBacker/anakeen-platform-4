@@ -11,27 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/File/file.struct.xml
+#: src/vendor/Anakeen/SmartStructures/File/file.struct.xml
 msgctxt "FILE"
 msgid "fi_file"
 msgstr "Main file"
 
-#: vendor/Anakeen/SmartStructures/File/file.struct.xml
+#: src/vendor/Anakeen/SmartStructures/File/file.struct.xml
 msgctxt "FILE"
 msgid "fi_frdesc"
 msgstr "Description"
 
-#: vendor/Anakeen/SmartStructures/File/file.struct.xml
+#: src/vendor/Anakeen/SmartStructures/File/file.struct.xml
 msgctxt "FILE"
 msgid "fi_title"
 msgstr "Title"
 
-#: vendor/Anakeen/SmartStructures/File/file.struct.xml
+#: src/vendor/Anakeen/SmartStructures/File/file.struct.xml
 msgctxt "FILE"
 msgid "fi_titlew"
 msgstr "Title"
 
-#: vendor/Anakeen/SmartStructures/File/file.struct.xml
+#: src/vendor/Anakeen/SmartStructures/File/file.struct.xml
 msgctxt "FILE"
 msgid "title"
 msgstr "Files"

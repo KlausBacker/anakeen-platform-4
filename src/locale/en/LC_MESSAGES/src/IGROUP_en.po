@@ -11,32 +11,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "grp_fr_intranet"
 msgstr "System"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "grp_roles"
 msgstr "Associated roles"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "title"
 msgstr "Users' group"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_login"
 msgstr "Login"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_meid"
 msgstr "Group id"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 msgctxt "IGROUP"
 msgid "us_whatid"
 msgstr "Id system"

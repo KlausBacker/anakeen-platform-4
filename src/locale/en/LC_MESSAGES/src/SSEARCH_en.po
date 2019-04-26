@@ -11,27 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
 msgctxt "SSEARCH"
 msgid "se_fr_function"
 msgstr "Function"
 
-#: vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
 msgctxt "SSEARCH"
 msgid "se_phparg"
 msgstr "PHP arguments"
 
-#: vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
 msgctxt "SSEARCH"
 msgid "se_phpfile"
 msgstr "PHP file"
 
-#: vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
 msgctxt "SSEARCH"
 msgid "se_phpfunc"
 msgstr "PHP function"
 
-#: vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Ssearch/ssearch.struct.xml
 msgctxt "SSEARCH"
 msgid "title"
 msgstr "Specialized search"

@@ -11,67 +11,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_attrids"
 msgstr "Attributes"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_filter"
 msgstr "Filter"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_fr_detail"
 msgstr "Conditions"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_funcs"
 msgstr "Functions"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_keys"
 msgstr "Keywords"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_leftp"
 msgstr "Left parenthesis"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_ol"
 msgstr "Condition"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_ols"
 msgstr "Operator"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_rightp"
 msgstr "Right parenthesis"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_t_detail"
 msgstr "Conditions"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_t_filters"
 msgstr "Filters"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "se_typefilter"
 msgstr "Type"
 
-#: vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
 msgctxt "DSEARCH"
 msgid "title"
 msgstr "Detailed search"

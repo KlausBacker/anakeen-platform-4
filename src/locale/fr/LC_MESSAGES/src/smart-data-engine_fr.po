@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-26 16:15+0100\n"
-"PO-Revision-Date: 2018-01-12 15:56+0100\n"
+"POT-Creation-Date: 2019-04-26 14:13+0200\n"
+"PO-Revision-Date: 2019-04-26 14:20+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -21,12 +21,54 @@ msgid "\"%s\" is not a structure"
 msgstr "%s n'est pas un attribut de type tableau"
 
 #, php-format
-msgid "%s (as substitute)"
-msgstr "%s (suppléant)"
+msgid "%.02f GB"
+msgstr ""
 
 #, php-format
-msgid "%s activity"
-msgstr "activité %s"
+msgid "%.02f KB"
+msgstr ""
+
+#, php-format
+msgid "%.02f MB"
+msgstr ""
+
+#, php-format
+msgid "%d GB"
+msgstr ""
+
+#, php-format
+msgid "%d KB"
+msgstr ""
+
+#, php-format
+msgid "%d MB"
+msgstr ""
+
+#, php-format
+msgid "%d TB"
+msgstr ""
+
+#, php-format
+msgid "%d bytes"
+msgstr ""
+
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "%d document detected"
+msgid_plural "%d documents detected"
+msgstr[0] "%d document détecté"
+msgstr[1] "%d documents détectés"
+
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "%d document processed"
+msgid_plural "%d documents processed"
+msgstr[0] "%d document traité"
+msgstr[1] "%d documents traités"
+
+#, php-format
+msgid "%s (as substitute)"
+msgstr "%s (suppléant)"
 
 #, php-format
 msgid "%s color"
@@ -81,7 +123,8 @@ msgid "%s needed\n"
 msgstr "%s doit être rempli\n"
 
 #, fuzzy, php-format
-msgid "%s new \\state %s"
+msgctxt "sde"
+msgid "%s new state %s"
 msgstr "%s changement d'état vers %s"
 
 #, php-format
@@ -150,16 +193,6 @@ msgstr "L'utilisateur courant ne peut désactiver le compte"
 msgid "Account Type \"%s\""
 msgstr "Type du compte \"%s\""
 
-#, fuzzy
-msgctxt "authent"
-msgid "Account access not granted, please contact your system administrator"
-msgstr ""
-"Vous n'avez accès à aucun contenu. Veuillez contacter votre administrateur."
-
-#, php-format
-msgid "Add %s in %s folder"
-msgstr "Ajout %s dans dossier %s"
-
 #, php-format
 msgid "Add atags \"%s\""
 msgstr "Ajout atags \"%s\""
@@ -185,6 +218,10 @@ msgstr "Affectation pour %s"
 #, php-format
 msgid "Affected to %s %s"
 msgstr "Affectation à %s %s"
+
+msgctxt "wdoc"
+msgid "Ask for"
+msgstr "Informations demandées"
 
 #, php-format
 msgid ""
@@ -249,6 +286,12 @@ msgctxt "HTTPAPI_V1"
 msgid "Cannot store file because vault size limit is reached"
 msgstr ""
 
+#, fuzzy, php-format
+msgctxt "sde"
+msgid ""
+"Cannot update element \"%s\" (rev %d) : is fixed. Get the latest version"
+msgstr "le fichier %s (rév. %d) est figé. Utilisez la dernière version"
+
 #, php-format
 msgid "Change profil to default document profil : %d"
 msgstr ""
@@ -258,13 +301,15 @@ msgstr ""
 msgid "Change profil to default subfolder profil : %d"
 msgstr "Changement du profil avec le profil par défaut du dossier: %d"
 
-#, php-format
+#, fuzzy, php-format
+msgctxt "sde"
 msgid "ChangeState :: the initial state '%s' is not known"
 msgstr "Changement d'état: l'état initial '%s' est inconnu"
 
 #, fuzzy, php-format
+msgctxt "sde"
 msgid ""
-"ChangeState :: the new \\state '%s' is not known or is not allowed from %s"
+"ChangeState :: the new state '%s' is not known or is not allowed from %s"
 msgstr ""
 "Changement d'état: le nouvel état '%s' n'est pas connu ou n'est pas autorisé "
 "depuis %s"
@@ -324,10 +369,6 @@ msgstr "DbObj::Adds erreur dans insertion multiple"
 #, php-format
 msgid "Del atags \"%s\""
 msgstr "Suppression atags \"%s\""
-
-#, php-format
-msgid "Delete %d in %s folder"
-msgstr "Suppression n°%d du dossier %s"
 
 #, fuzzy, php-format
 msgctxt "sde"
@@ -403,10 +444,6 @@ msgid "Document %s inserted"
 msgstr "Insertion document %s "
 
 #, php-format
-msgid "Document %s is in edition by %s."
-msgstr "Document %s est en cours de modification par %s"
-
-#, php-format
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
 
@@ -465,6 +502,11 @@ msgstr "Le modèle dynamique %s n'a pas été trouvé"
 msgid "ERROR %s\n"
 msgstr "ERREUR %s\n"
 
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "Element %s is in edition by %s."
+msgstr "Document %s est en cours de modification par %s"
+
 #, php-format
 msgid ""
 "Element can't be perfectly analyze, some error might occur or be corrected "
@@ -494,18 +536,6 @@ msgstr "Erreur : %s"
 #, php-format
 msgid "Error : %s\n"
 msgstr "Erreur : %s\n"
-
-#, php-format
-msgid "Error : Process %s [%d]: status %d"
-msgstr "Erreur : Processus %s [%d]: statut %d"
-
-#, php-format
-msgid "Error : Process %s [%d]: status %d in %.03f seconds"
-msgstr "Erreur : Processus %s [%d]: statut %d en %.03f secondes"
-
-#, php-format
-msgid "Error : need edit privilege to execute"
-msgstr "Erreur ; privilege edit requis pour l'exécution"
 
 #, php-format
 msgid "Error converting HTML from attribute '%s' from document '%s': %s"
@@ -615,18 +645,6 @@ msgctxt "HTTPAPI_V1"
 msgid "File not recorded, File size transfert limited to %d Mb"
 msgstr ""
 
-msgid "File:: Processing"
-msgstr "Conversion en cours"
-
-msgid "File:: Waiting"
-msgstr "Conversion en attente"
-
-msgid "File:: converted"
-msgstr "Conversion réussie"
-
-msgid "File:: failed"
-msgstr "Échec de la conversion"
-
 #, php-format
 msgid "Fix multiple alive document #%s"
 msgstr "Verrouillage des révisions vivantes concurrentes #%s"
@@ -659,6 +677,11 @@ msgctxt "fuserimport"
 msgid "Import end"
 msgstr "Fin de l'importation"
 
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "Import file '%s' is not found"
+msgstr "fichier d'importation %s non trouvé"
+
 #, php-format
 msgctxt "fuserimport"
 msgid "Import group (%d/%d)"
@@ -686,14 +709,6 @@ msgstr "Répertoire non valide '%s'."
 msgctxt "smart iuser"
 msgid "It must contains at least %d characters (total length)"
 msgstr "Il doit contenir au moins %d caractères"
-
-#, php-format
-msgid "LDAP Attribute added to %s %s"
-msgstr "Attribut LDAP ajouté à %s %s"
-
-#, php-format
-msgid "LDAP Attribute modified to %s %s"
-msgstr "Attribut LDAP modifié %s %s"
 
 #, php-format
 msgid "Layout \"%s\" : Controller not allowed"
@@ -810,14 +825,6 @@ msgctxt "authentOpen"
 msgid "Private key identifier is not valid"
 msgstr "La clef d'authentification n'est pas valide"
 
-#, php-format
-msgid "Process %s [%d] executed"
-msgstr "Processus %s [%d] exécuté"
-
-#, php-format
-msgid "Process %s [%d] executed in %.03f seconds"
-msgstr "Processus %s [%d] exécuté en %.03f secondes"
-
 #, fuzzy
 msgctxt "ank"
 msgid "Profil not configured"
@@ -928,7 +935,7 @@ msgstr "attribut %s non trouvé"
 
 msgctxt "autocomplete"
 msgid "Smart Structure must be set"
-msgstr ""
+msgstr "La Smart Strcuture doit être initialisée"
 
 #, php-format
 msgid ""
@@ -949,9 +956,6 @@ msgstr "Cet utilisateur système n epeut être supprimé"
 #, php-format
 msgid "Syntax error in file '%s': %s"
 msgstr "Erreur de syntaxe dans le fichier '%s' : %s"
-
-msgid "TE not activated"
-msgstr "TE non activé"
 
 #, php-format
 msgid "Template [%s] not found"
@@ -1033,10 +1037,6 @@ msgstr "WID : '%s' n'est pas un cycle"
 msgid "WID : workflow '%s' not found"
 msgstr "WID : cycle '%s' introuvable"
 
-#, php-format
-msgid "Warning : %s"
-msgstr "Avertissement : %s"
-
 msgctxt "dcp"
 msgid "Whoops, looks like something went wrong"
 msgstr "Aïe aïe aïe, on dirait que quelque chose s'est mal passé"
@@ -1065,6 +1065,12 @@ msgstr "importation XML : Le fichier %s ne peut être crée"
 msgid "Xml import file %s not found"
 msgstr "importation XML : fichier %s introuvable"
 
+#, fuzzy, php-format
+msgctxt "sde"
+msgid ""
+"You are not allowed to update the element \"%s\" (# %d) is locked by \"%s\"."
+msgstr "le fichier %s (rév. %d) est verrouillé par %s."
+
 #, php-format
 msgid "Your password is not secure."
 msgstr "Votre de mot de passe n'est pas valide"
@@ -1091,6 +1097,11 @@ msgstr "[%s] doit être supérieur à %s"
 #, php-format
 msgid "[%s] must be lower than %s"
 msgstr "[%s] doit être inférieur à %s"
+
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "[%s] the method '%s' is not known for the object class %s"
+msgstr "La méthode '%s' n'est pas connu de la classe d'objet %s"
 
 #, php-format
 msgid "add %s for %s"
@@ -1238,10 +1249,6 @@ msgid "cannot create from family [%s]"
 msgstr "création impossible depuis la famille [%s]"
 
 #, php-format
-msgid "cannot create user %s: %s"
-msgstr "Ne peut créer l'utilisateur %s : %s"
-
-#, php-format
 msgid "cannot delete link : initial query not found for doc %d in folder %d"
 msgstr ""
 "le document %d n'existe plus dans le dossier %d.\n"
@@ -1311,10 +1318,6 @@ msgstr "Ne peut être suppléant de soi"
 msgid "cannot unlock"
 msgstr "ne peut pas déverrouiller"
 
-#, php-format
-msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
-msgstr "le fichier %s (rév. %d) est figé. Utilisez la dernière version"
-
 msgid "cannot update inconsistent document"
 msgstr "ne peut mettre à jour un document inconsistent"
 
@@ -1355,7 +1358,7 @@ msgstr "affecte l'utilisation spéciale à '%s'"
 
 #, php-format
 msgid "change state : %s to %s"
-msgstr "changement d'état de %s vers %s"
+msgstr "Changement d'état de \"%s\" vers \"%s\""
 
 #, php-format
 msgid "change tagable parameter to '%s'"
@@ -1432,9 +1435,6 @@ msgstr "création : cycle de vie %s n'existe pas"
 msgid "csv file <%s> wroted"
 msgstr "fichier csv <%s> écrit"
 
-msgid "cycle family must be defined"
-msgstr "la famille cycle doit être renseignée"
-
 msgid "default folder"
 msgstr "dossier par défaut"
 
@@ -1477,10 +1477,6 @@ msgstr "document supprimé"
 msgid "document id"
 msgstr "Identifiant"
 
-#, php-format
-msgid "document is booked in domain %s"
-msgstr "Le document est enregistré dans le domaine %s"
-
 msgid "document is not controlled by a workflow"
 msgstr "Le document n'est pas controllé par un cycle de vie"
 
@@ -1492,27 +1488,8 @@ msgstr "le document n'existe pas encore"
 msgid "document too big (%dKo): no highlight"
 msgstr "Document trop volumineux (%dKo): pas de mise en évidence"
 
-msgid "dynacase cron try execute"
-msgstr "Dynacase cron essai d'exécution"
-
 msgid "electronic messages cannot be modified"
 msgstr "les courriels ne peuvent être modifiés"
-
-#, php-format
-msgid ""
-"errldapadd:%s\n"
-"%s\n"
-"%d\n"
-msgstr ""
-"La fiche n'a pue être modifiée dans le serveur LDAP : %s\n"
-"%s\n"
-"%d\n"
-
-msgid "errldapconnect"
-msgstr "Le server LDAP n'a pas pu être contacté"
-
-msgid "errldaporginit"
-msgstr "Le server LDAP n'a pas pu être contacté"
 
 #, php-format
 msgid "error in import keys : %s"
@@ -1528,38 +1505,8 @@ msgstr ""
 "Erreur lors de l'enregistrement des propriétés de configuration (%s, %s, %s)"
 
 #, php-format
-msgid "execution by %s done %s"
-msgstr "execution faite par %s a donné %s"
-
-#, php-format
-msgid "family %s does not implement IMailRecipent - missing getMail method"
-msgstr ""
-"La famille %s n'implémente pas IMailRecipient - il manque la méthode getMail"
-
-#, php-format
-msgid ""
-"family %s does not implement IMailRecipent - missing getMailAttribute method"
-msgstr ""
-"La structure %s n'implémente pas IMailRecipient - il manque la méthode "
-"getMailAttribute"
-
-#, php-format
-msgid ""
-"family %s does not implement IMailRecipient - missing getMailTitle method"
-msgstr ""
-"La structure %s n'implémente pas IMailRecipient - il manque la méthode "
-"getMailTitle"
-
-#, php-format
 msgid "family %s not found"
 msgstr "structure %s non trouvée"
-
-msgid "family must be defined"
-msgstr "la structure doit être précisée"
-
-#, php-format
-msgid "file %d"
-msgstr "fichier %d"
 
 #, php-format
 msgid "file %s not found"
@@ -1597,10 +1544,6 @@ msgid "folder/search %s not found"
 msgstr "Dossier/Recherche %s introuvable"
 
 #, php-format
-msgid "function '%s' declared in %s is not found"
-msgstr "fonction '%s' déclaré dans le %s est introuvable"
-
-#, php-format
 msgid "generate version '%s'"
 msgstr "version de génération '%s'"
 
@@ -1630,14 +1573,6 @@ msgstr "fichier d'importation %s non trouvé"
 #, php-format
 msgid "import file '%s' is not a valid file"
 msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
-
-#, fuzzy, php-format
-msgctxt "sde"
-msgid "import file '%s' is not a valid file"
-msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
-
-msgid "impossible conversion"
-msgstr "conversion impossible"
 
 #, php-format
 msgid "incorrect conversion HTML to ODT %s"
@@ -1715,10 +1650,6 @@ msgid "need privilege delete to restore %s"
 msgstr "Le privilège delete est nécessaire pour restaurer %s"
 
 #, php-format
-msgid "need to select workflow"
-msgstr "le cycle doit être sélectionné"
-
-#, php-format
 msgid "new column order %s"
 msgstr "nouvel ordre des colonnes %s"
 
@@ -1733,10 +1664,6 @@ msgstr "pas de changement d'icône : document %s pas trouvé"
 #, php-format
 msgid "no compatible type with operator %s"
 msgstr "type incompatible avec l'opérateur %s"
-
-#, php-format
-msgid "no document match '%s'"
-msgstr "aucun de document ne correspond à '%s'"
 
 msgid "no empty vault file system found"
 msgstr "Tous les coffres de fichiers sont saturés"
@@ -1773,9 +1700,6 @@ msgstr "Pas de privilège \"%s\" pour l'élement %d"
 msgid "no state specified"
 msgstr "pas d'état spécifié"
 
-msgid "no task identificator"
-msgstr "Pas d'identificateur de tâche trouvé"
-
 msgid "no user tag specified"
 msgstr "pas d'étiquette utilisateur spécifiée"
 
@@ -1784,10 +1708,6 @@ msgstr "Pas de système de fichier trouvé"
 
 msgid "no vault file system found"
 msgstr "Pas de système de fichier trouvé"
-
-#, php-format
-msgid "no workflow for this document"
-msgstr "pas de cycle de vie pour ce document"
 
 #, php-format
 msgid "none families are described to be used as recipient"
@@ -1889,9 +1809,6 @@ msgstr "chemin ldap"
 
 msgid "prop_lmodify"
 msgstr "tag indiquant la modification"
-
-msgid "prop_lockdomainid"
-msgstr "Identifiant du domaine du verrou"
 
 #, fuzzy
 msgid "prop_mdate"
@@ -2083,31 +2000,11 @@ msgid "template file (layout [%s]) not found"
 msgstr "Fichier modèle (zone [%s]) non trouvé"
 
 #, php-format
-msgid "the date %s is in the past: today is %s"
-msgstr "La date %s est dans le passé. La date d'aujourd'hui est %s"
-
-msgid "the date syntax must be like : AAAA-MM-DD"
-msgstr "la date doit être de la forme : AAAA-MM-JJ"
-
-#, php-format
 msgid "the document of %s family cannot be revised"
 msgstr "lee documents de la structure %s ne peuvent être révisés"
 
-#, php-format
-msgid "the external pluggin file %s cannot be read"
-msgstr "le fichier externe %s ne peut être lu"
-
 msgid "the login must not be empty"
 msgstr "Le login ne doit pas être vide"
-
-#, php-format
-msgid "the method '%s' is not known for the object class %s"
-msgstr "La méthode '%s' n'est pas connu de la classe d'objet %s"
-
-#, php-format
-msgid "the pluggins function description '%s' is not conform for %s attribut"
-msgstr ""
-"La description de la fonction externe '%s' est incorrect pour l'attribut %s"
 
 msgid "this login exists"
 msgstr "Cet identifiant de connexion existe"
@@ -2152,6 +2049,13 @@ msgstr "Mo"
 
 msgid "unit:TB"
 msgstr "To"
+
+#, fuzzy
+msgctxt "sde"
+msgid "unit:byte"
+msgid_plural "unit:bytes"
+msgstr[0] "octet"
+msgstr[1] "octets"
 
 msgid "unit:kB"
 msgstr "ko"
@@ -2300,10 +2204,6 @@ msgid "yesterday"
 msgstr "hier"
 
 #, php-format
-msgid "you are not allowed to update the file %s (rev %d) is locked by %s."
-msgstr "le fichier %s (rév. %d) est verrouillé par %s."
-
-#, php-format
 msgid "you cannot create this kind [%s] of document"
 msgstr "vous n'avez pas la permission de créer ce type [%s] de document"
 
@@ -2407,16 +2307,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "%d days"
 #~ msgstr "%d jours"
 
-#~ msgid "%d document detected"
-#~ msgid_plural "%d documents detected"
-#~ msgstr[0] "%d document détecté"
-#~ msgstr[1] "%d documents détectés"
-
-#~ msgid "%d document processed"
-#~ msgid_plural "%d documents processed"
-#~ msgstr[0] "%d document traité"
-#~ msgstr[1] "%d documents traités"
-
 #~ msgid "%d documents"
 #~ msgstr "%d documents"
 
@@ -2452,6 +2342,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "%s Authentification"
 #~ msgstr "%s Authentification"
+
+#~ msgid "%s activity"
+#~ msgstr "activité %s"
 
 #~ msgid "%s affectation"
 #~ msgstr "affectation %s"
@@ -2623,6 +2516,13 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Accord"
 #~ msgstr "Accord"
 
+#, fuzzy
+#~ msgctxt "authent"
+#~ msgid "Account access not granted, please contact your system administrator"
+#~ msgstr ""
+#~ "Vous n'avez accès à aucun contenu. Veuillez contacter votre "
+#~ "administrateur."
+
 #~ msgid "Acl [%s] not available for App %s"
 #~ msgstr "ACL %s non valable pour l'application %s"
 
@@ -2646,6 +2546,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "Add %d document(s)"
 #~ msgstr "Ajout de %d document(s)"
+
+#~ msgid "Add %s in %s folder"
+#~ msgstr "Ajout %s dans dossier %s"
 
 #~ msgid "Add Attributes : %s"
 #~ msgstr "Ajout des attributs : %s"
@@ -3408,6 +3311,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Default value recorded"
 #~ msgstr "La valeur par défaut est enregistrée"
 
+#~ msgid "Delete %d in %s folder"
+#~ msgstr "Suppression n°%d du dossier %s"
+
 #~ msgid "Delete acl %s for %s"
 #~ msgstr "Suppression Acl %s pour %s"
 
@@ -3763,11 +3669,20 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "EnumWidget:tooltip order"
 #~ msgstr "Rang de présentation de l'élément"
 
+#~ msgid "Error : Process %s [%d]: status %d"
+#~ msgstr "Erreur : Processus %s [%d]: statut %d"
+
+#~ msgid "Error : Process %s [%d]: status %d in %.03f seconds"
+#~ msgstr "Erreur : Processus %s [%d]: statut %d en %.03f secondes"
+
 #~ msgid "Error : User [%s] doesn't exists\n"
 #~ msgstr "Erreur : L'utilisateur %s n'existe pas\n"
 
 #~ msgid "Error : User account [%s] is desactivated\n"
 #~ msgstr "Erreur : Le compte de l'utilisateur %s est désactivé\n"
+
+#~ msgid "Error : need edit privilege to execute"
+#~ msgstr "Erreur ; privilege edit requis pour l'exécution"
 
 #~ msgid "Error converting HTML from attribute '%s' from document '%s'"
 #~ msgstr "Erreur de conversion du HTML de l'attribut '%s' du document '%s'"
@@ -4246,6 +4161,18 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "File not found at index '%s'"
 #~ msgstr "Fichier non trouvé à l'index '%s'"
 
+#~ msgid "File:: Processing"
+#~ msgstr "Conversion en cours"
+
+#~ msgid "File:: Waiting"
+#~ msgstr "Conversion en attente"
+
+#~ msgid "File:: converted"
+#~ msgstr "Conversion réussie"
+
+#~ msgid "File:: failed"
+#~ msgstr "Échec de la conversion"
+
 #~ msgid "Filename '%s' cannot be transmitted (%d)."
 #~ msgstr "Le fichier '%s' n'a pu être transmis (%d)."
 
@@ -4658,6 +4585,12 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Key already exists, must be unique"
 #~ msgstr ""
 #~ "Cette clé existe déjà pour cet énuméré, les clés doivent être uniques"
+
+#~ msgid "LDAP Attribute added to %s %s"
+#~ msgstr "Attribut LDAP ajouté à %s %s"
+
+#~ msgid "LDAP Attribute modified to %s %s"
+#~ msgstr "Attribut LDAP modifié %s %s"
 
 #~ msgid "LDAP activated"
 #~ msgstr "Activation LDAP"
@@ -5264,6 +5197,12 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "Privilege view"
 #~ msgstr "Statut"
 
+#~ msgid "Process %s [%d] executed"
+#~ msgstr "Processus %s [%d] exécuté"
+
+#~ msgid "Process %s [%d] executed in %.03f seconds"
+#~ msgstr "Processus %s [%d] exécuté en %.03f secondes"
+
 #~ msgid "Processes plan"
 #~ msgstr "Planification des processus"
 
@@ -5818,6 +5757,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "TE engine is not activate"
 #~ msgstr "Moteur TE n'est pas activé"
 
+#~ msgid "TE not activated"
+#~ msgstr "TE non activé"
+
 #~ msgid "TEST_EXTRA:Extra state not found"
 #~ msgstr "État extra introuvable"
 
@@ -6223,6 +6165,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "WSH error mail subject"
 #~ msgstr "Sujet des messages d'erreurs de WSH"
+
+#~ msgid "Warning : %s"
+#~ msgstr "Avertissement : %s"
 
 #~ msgid "WebDav FREEDOM system file"
 #~ msgstr "Système de fichiers WebDAV DYNACASE"
@@ -6684,6 +6629,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "cannot create document for family [%s]"
 #~ msgstr "création de document impossible pour la structure [%s]"
 
+#~ msgid "cannot create user %s: %s"
+#~ msgstr "Ne peut créer l'utilisateur %s : %s"
+
 #~ msgid "cannot delete family"
 #~ msgstr "Les familles ne peuvent être supprimées"
 
@@ -7063,6 +7011,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "current (<em>%s</em>)"
 #~ msgstr "courant (<em>%s</em>)"
 
+#~ msgid "cycle family must be defined"
+#~ msgstr "la famille cycle doit être renseignée"
+
 #~ msgid "data:document %s is not a family"
 #~ msgstr "Le document %s n'est pas une structure"
 
@@ -7253,6 +7204,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "document id %d not found"
 #~ msgstr "identificateur %d du document non trouvé"
 
+#~ msgid "document is booked in domain %s"
+#~ msgstr "Le document est enregistré dans le domaine %s"
+
 #~ msgid "document not alive %s"
 #~ msgstr "document %s inexistant"
 
@@ -7327,6 +7281,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "duration for log conservation (in days)"
 #~ msgstr "durée de conservation des logs (en jours)"
+
+#~ msgid "dynacase cron try execute"
+#~ msgstr "Dynacase cron essai d'exécution"
 
 #~ msgid "dynamic control"
 #~ msgstr "contrôle dynamique"
@@ -7442,6 +7399,21 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "err"
 #~ msgstr "err"
 
+#~ msgid ""
+#~ "errldapadd:%s\n"
+#~ "%s\n"
+#~ "%d\n"
+#~ msgstr ""
+#~ "La fiche n'a pue être modifiée dans le serveur LDAP : %s\n"
+#~ "%s\n"
+#~ "%d\n"
+
+#~ msgid "errldapconnect"
+#~ msgstr "Le server LDAP n'a pas pu être contacté"
+
+#~ msgid "errldaporginit"
+#~ msgstr "Le server LDAP n'a pas pu être contacté"
+
 #~ msgid "errno_bug_639_message"
 #~ msgstr ""
 #~ "<p>Vous devez réinitialiser votre mot de passe.</p>\n"
@@ -7488,6 +7460,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "execute timer %s (level %d) : %s"
 #~ msgstr "exécution du minuteur %s (niveau %d) : %s"
 
+#~ msgid "execution by %s done %s"
+#~ msgstr "execution faite par %s a donné %s"
+
 #~ msgid "existing key item %s"
 #~ msgstr "clef dèjà existante : %s"
 
@@ -7533,6 +7508,24 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "familly"
 #~ msgstr "structure"
 
+#~ msgid "family %s does not implement IMailRecipent - missing getMail method"
+#~ msgstr ""
+#~ "La famille %s n'implémente pas IMailRecipient - il manque la méthode "
+#~ "getMail"
+
+#~ msgid ""
+#~ "family %s does not implement IMailRecipent - missing getMailAttribute "
+#~ "method"
+#~ msgstr ""
+#~ "La structure %s n'implémente pas IMailRecipient - il manque la méthode "
+#~ "getMailAttribute"
+
+#~ msgid ""
+#~ "family %s does not implement IMailRecipient - missing getMailTitle method"
+#~ msgstr ""
+#~ "La structure %s n'implémente pas IMailRecipient - il manque la méthode "
+#~ "getMailTitle"
+
 #~ msgid "family %s not exists"
 #~ msgstr "la structure %s n'existe pas"
 
@@ -7544,6 +7537,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "family manual"
 #~ msgstr "Manuel de description de structure"
+
+#~ msgid "family must be defined"
+#~ msgstr "la structure doit être précisée"
 
 #~ msgid "family search result"
 #~ msgstr "Structure"
@@ -7565,6 +7561,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "file"
 #~ msgstr "fichier"
+
+#~ msgid "file %d"
+#~ msgstr "fichier %d"
 
 #~ msgid "file %s : %s"
 #~ msgstr "fichier %s : %s"
@@ -7718,6 +7717,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "func"
 #~ msgstr "ft"
+
+#~ msgid "function '%s' declared in %s is not found"
+#~ msgstr "fonction '%s' déclaré dans le %s est introuvable"
 
 #~ msgid "function [%s] not exists"
 #~ msgstr "la fonction [%s] n'existe pas"
@@ -7901,6 +7903,11 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "import edition"
 #~ msgstr "modification de l'importation"
 
+#, fuzzy
+#~ msgctxt "sde"
+#~ msgid "import file '%s' is not a valid file"
+#~ msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
+
 #~ msgid "import file:"
 #~ msgstr "Fichier à importer :"
 
@@ -7909,6 +7916,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "import results"
 #~ msgstr "Résultats de l'importation"
+
+#~ msgid "impossible conversion"
+#~ msgstr "conversion impossible"
 
 #~ msgid "in domain %s"
 #~ msgstr "dans le domain %s"
@@ -8241,6 +8251,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "need to select the document with the list"
 #~ msgstr "Vous devez sélectionner le document dans la liste proposée"
 
+#~ msgid "need to select workflow"
+#~ msgstr "le cycle doit être sélectionné"
+
 #~ msgid "nestcape site"
 #~ msgstr "Site de Netscape"
 
@@ -8349,6 +8362,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "no document family"
 #~ msgstr "Aucune structure de document"
 
+#~ msgid "no document match '%s'"
+#~ msgstr "aucun de document ne correspond à '%s'"
+
 #~ msgid "no document reference"
 #~ msgstr "pas de référence au document"
 
@@ -8441,6 +8457,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "no subject"
 #~ msgstr "pas de sujet"
 
+#~ msgid "no task identificator"
+#~ msgstr "Pas d'identificateur de tâche trouvé"
+
 #~ msgid "no task identifier found"
 #~ msgstr "Pas d'identificateur de tâche trouvé"
 
@@ -8455,6 +8474,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "no workflow"
 #~ msgstr "pas de cycle de vie"
+
+#~ msgid "no workflow for this document"
+#~ msgstr "pas de cycle de vie pour ce document"
 
 #~ msgid "no zone specified"
 #~ msgstr "pas de zone spécifiée"
@@ -8697,6 +8719,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "prop_domainid"
 #~ msgstr "Identifiant du domaine"
+
+#~ msgid "prop_lockdomainid"
+#~ msgstr "Identifiant du domaine du verrou"
 
 #~ msgid "prop_locked"
 #~ msgstr "propriétaire du verrou"
@@ -9137,6 +9162,12 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "the attribute %s"
 #~ msgstr "l'attribut \"%s\""
 
+#~ msgid "the date %s is in the past: today is %s"
+#~ msgstr "La date %s est dans le passé. La date d'aujourd'hui est %s"
+
+#~ msgid "the date syntax must be like : AAAA-MM-DD"
+#~ msgstr "la date doit être de la forme : AAAA-MM-JJ"
+
 #~ msgid ""
 #~ "the document %s has not be sended :\n"
 #~ " %s"
@@ -9181,6 +9212,15 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "the end date (%s) is before the begin date (%s)"
 #~ msgstr "La date de fin (%s) est antérieure à la date de début (%s)"
+
+#~ msgid "the external pluggin file %s cannot be read"
+#~ msgstr "le fichier externe %s ne peut être lu"
+
+#~ msgid ""
+#~ "the pluggins function description '%s' is not conform for %s attribut"
+#~ msgstr ""
+#~ "La description de la fonction externe '%s' est incorrect pour l'attribut "
+#~ "%s"
 
 #~ msgid "the state will be removed"
 #~ msgstr "L'état va être supprimé"
@@ -9271,11 +9311,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "uncomplete request"
 #~ msgstr "requête incomplète"
-
-#~ msgid "unit:byte"
-#~ msgid_plural "unit:bytes"
-#~ msgstr[0] "octet"
-#~ msgstr[1] "octets"
 
 #~ msgid "unknow attribute %s (family %s)"
 #~ msgstr "attribut inconnu %s (structure  %s)"

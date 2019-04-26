@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_copymode"
 msgid "bcc"
 msgstr "Bcc"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_copymode"
 msgid "cc"
 msgstr "Cc"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_copymode"
 msgid "to"
