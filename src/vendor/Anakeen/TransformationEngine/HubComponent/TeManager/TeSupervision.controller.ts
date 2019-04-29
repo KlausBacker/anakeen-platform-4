@@ -39,27 +39,33 @@ export default class TeSupervision extends Vue {
     this.selectedTask = "";
 
     this.$refs.teSplitter.enableEmptyContent();
-    this.kSupervisionGrid.dataSource.read();
+    const kendoGrid = $(this.$refs.teSupervisionGrid).data("kendoGrid");
+    if (kendoGrid) {
+      kendoGrid.dataSource.read();
+    }
   }
 
   public resizeGrid(): void {
-    if (!this.kSupervisionGrid || !this.kSupervisionGrid.element) {
+    const kendoGrid = $(this.$refs.teSupervisionGrid).data("kendoGrid");
+    if (!kendoGrid|| !kendoGrid.element) {
       return;
     }
-    const $grid = this.kSupervisionGrid.element;
+    const $grid = kendoGrid.element;
     const $box = $grid.closest(".te-grid-box");
 
     $grid.css("height", $box.height());
     window.setTimeout(() => {
-      this.kSupervisionGrid.resize();
+      if (kendoGrid) {
+        kendoGrid.resize();
+      }
     }, 100);
   }
   public initGrid(): void {
-    if (this.kSupervisionGrid) {
+    const $grid = $(this.$refs.teSupervisionGrid);
+    if ($grid.data("kendoGrid")) {
       return;
     }
-    const $grid = $(this.$refs.teSupervisionGrid);
-    this.kSupervisionGrid = $grid
+    $grid
       .kendoGrid({
         autoBind: true,
         columns: [
@@ -146,9 +152,10 @@ export default class TeSupervision extends Vue {
                 // Hello
                 this.$refs.teSplitter.disableEmptyContent();
                 const $tr = $(e.currentTarget).closest("tr");
-                this.selectedTask = this.kSupervisionGrid
-                  .dataItem($tr)
-                  .toJSON();
+                // @ts-ignore
+                this.selectedTask = $(this.$refs.teSupervisionGrid).data("kendoGrid").dataItem($tr)
+                    .toJSON();
+
                 $tr
                   .closest("tbody")
                   .find("tr")
@@ -223,5 +230,9 @@ export default class TeSupervision extends Vue {
         this.resizeGrid();
       })
     );
+  }
+
+  public updated() {
+    this.initGrid();
   }
 }
