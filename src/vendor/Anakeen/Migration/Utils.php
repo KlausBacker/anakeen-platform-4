@@ -5,7 +5,6 @@ namespace Anakeen\Migration;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Router\Exception;
-use Anakeen\Routes\Migration\Database\ConfigStructureTransfert;
 
 class Utils
 {
@@ -66,15 +65,30 @@ class Utils
         // $output contains the output string
         $output = curl_exec($ch);
 
+
+        if (!$output) {
+            if ($errno = curl_errno($ch)) {
+                $error_message = curl_strerror($errno);
+                // close curl resource to free up system resources
+                curl_close($ch);
+                throw new \Anakeen\Exception(sprintf("Request %s fail : %s", $sendUrl, $error_message));
+            }
+            // close curl resource to free up system resources
+            curl_close($ch);
+            throw new \Anakeen\Exception(sprintf("Request %s fail", $sendUrl));
+        }
+
         // close curl resource to free up system resources
         curl_close($ch);
+        $data = json_decode($output, true);
 
-        $data=json_decode($output, true);
-
+        if ($data["success"] === false) {
+            throw new \Anakeen\Exception(sprintf("Request %s fail : %s", $sendUrl, $data["exceptionMessage"]));
+        }
         if ($data) {
             return $data;
         }
-        return $output;
 
+        return $output;
     }
 }
