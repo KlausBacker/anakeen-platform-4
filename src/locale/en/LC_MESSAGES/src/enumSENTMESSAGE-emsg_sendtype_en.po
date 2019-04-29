@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE-emsg_sendtype"
 msgid "bcc"
 msgstr "Copie cachée"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE-emsg_sendtype"
 msgid "cc"
 msgstr "Copie"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 #, fuzzy
 msgctxt "SENTMESSAGE-emsg_sendtype"
 msgid "to"

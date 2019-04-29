@@ -11,55 +11,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "A"
 msgstr "Attribut texte"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "D"
 msgstr "Attribut relation"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "DE"
 msgstr "Paramètre de famille relation"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "E"
 msgstr "Paramètre de famille texte"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "F"
 msgstr "Adresse fixe"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "P"
 msgstr "Paramètres globaux"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WA"
 msgstr "Attribut cycle"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WD"
 msgstr "Relation cycle"
 
-#: vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
 #, fuzzy
 msgctxt "MAILTEMPLATE-tmail_fromtype"
 msgid "WE"

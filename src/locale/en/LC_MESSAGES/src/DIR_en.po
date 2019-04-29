@@ -11,67 +11,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "ba_desc"
 msgstr "Description"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_allbut"
 msgstr "All or nothing"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fam"
 msgstr "Families (title)"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_famids"
 msgstr "Families"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fr_prof"
 msgstr "Profiles by default"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_fr_rest"
 msgstr "Restrictions"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_pdirid"
 msgstr "Default directory profile"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_pdocid"
 msgstr "Default document profile"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_subfam"
 msgstr "Sub family restriction"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fld_tfam"
 msgstr "Filtered families"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "fr_basic"
 msgstr ""
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "gui_color"
 msgstr "Guide color"
 
-#: vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Dir/dir.struct.xml
 msgctxt "DIR"
 msgid "title"
 msgstr "Directory"

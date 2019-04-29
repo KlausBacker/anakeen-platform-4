@@ -11,27 +11,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: vendor/Anakeen/SmartStructures/Role/role.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
 msgctxt "ROLE"
 msgid "role_fr_ident"
 msgstr "Identification"
 
-#: vendor/Anakeen/SmartStructures/Role/role.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
 msgctxt "ROLE"
 msgid "role_login"
 msgstr "Référence"
 
-#: vendor/Anakeen/SmartStructures/Role/role.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
 msgctxt "ROLE"
 msgid "role_name"
 msgstr "Libellé"
 
-#: vendor/Anakeen/SmartStructures/Role/role.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
 msgctxt "ROLE"
 msgid "title"
 msgstr "Rôle"
 
-#: vendor/Anakeen/SmartStructures/Role/role.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
 msgctxt "ROLE"
 msgid "us_whatid"
 msgstr "Identifiant système"

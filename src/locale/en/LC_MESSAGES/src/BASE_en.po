@@ -11,17 +11,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Base/base.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Base/base.struct.xml
 msgctxt "BASE"
 msgid "ba_title"
 msgstr "Title"
 
-#: vendor/Anakeen/SmartStructures/Base/base.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Base/base.struct.xml
 msgctxt "BASE"
 msgid "fr_basic"
 msgstr "Basic"
 
-#: vendor/Anakeen/SmartStructures/Base/base.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Base/base.struct.xml
 msgctxt "BASE"
 msgid "title"
 msgstr "Basic"

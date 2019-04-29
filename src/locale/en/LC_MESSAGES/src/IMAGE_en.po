@@ -11,22 +11,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
 msgctxt "IMAGE"
 msgid "img_file"
 msgstr "Picture"
 
-#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
 msgctxt "IMAGE"
 msgid "img_frfile"
 msgstr "Picture"
 
-#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
 msgctxt "IMAGE"
 msgid "img_title"
 msgstr "Title"
 
-#: vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
 msgctxt "IMAGE"
 msgid "title"
 msgstr "Picture"

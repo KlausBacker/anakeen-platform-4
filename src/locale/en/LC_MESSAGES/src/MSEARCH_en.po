@@ -11,27 +11,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "se_crit"
 msgstr "Criteria"
 
-#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "se_fr_searches"
 msgstr "Searches"
 
-#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "seg_idcond"
 msgstr "Search"
 
-#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "seg_t_cond"
 msgstr "Search ensemble"
 
-#: vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
 msgctxt "MSEARCH"
 msgid "title"
 msgstr "Grouped search"

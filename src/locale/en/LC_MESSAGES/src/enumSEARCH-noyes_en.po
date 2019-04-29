@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-noyes"
 msgid "no"
 msgstr "Non"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH-noyes"
 msgid "yes"

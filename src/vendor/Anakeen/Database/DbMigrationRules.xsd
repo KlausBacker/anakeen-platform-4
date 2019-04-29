@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    <xs:element name="migration" type="migrationType"/>
+    <xs:complexType name="processType">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element type="bashCodeType" name="bash-code" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="sql-queryType" name="sql-query" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element type="phpMethodType" name="php"/>
+            <xs:element type="phpCodeType" name="php-code"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="label"/>
+    </xs:complexType>
+    <xs:complexType name="migrationType">
+        <xs:sequence>
+            <xs:element type="actionType" name="action" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="conditionType">
+
+        <xs:choice maxOccurs="unbounded">
+            <xs:element type="LabelStringType" name="sql-assert-false"/>
+            <xs:element type="LabelStringType" name="sql-assert-true"/>
+            <xs:element type="LabelStringType" name="sql-assert-not-empty"/>
+            <xs:element type="LabelStringType" name="sql-assert-empty"/>
+            <xs:element type="phpCodeType" name="php-assert-code-return-false"/>
+            <xs:element type="phpCodeType" name="php-assert-code-return-true"/>
+            <xs:element type="phpMethodType" name="php-assert-true"/>
+            <xs:element type="phpMethodType" name="php-assert-false"/>
+        </xs:choice>
+
+        <xs:attribute type="andol" name="ol"/>
+    </xs:complexType>
+
+    <xs:simpleType name="andol">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Logical operator if "or" , stop at the first true. If "and" stop at the first false
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="or"/>
+            <xs:enumeration value="and"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="sql-queryType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Execute an query to database
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="file">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            Insert sql file before run sql query
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute type="xs:boolean" name="stop-on-error" default="true"/>
+                <xs:attribute type="xs:string" name="label" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="LabelStringType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="label" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="actionType">
+        <xs:sequence>
+            <xs:element type="conditionType" name="condition">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Define list of assertion to verify
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="processType" name="process">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Define processes to execute
+                    </xs:documentation>
+                </xs:annotation>
+
+            </xs:element>
+            <xs:element type="conditionType" name="check">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Define assertions to verify that process has succeced
+                    </xs:documentation>
+                </xs:annotation>
+
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute type="xs:string" name="id"/>
+        <xs:attribute type="xs:string" name="label"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="bashCodeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Shell BASH command
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="label"/>
+                <xs:attribute type="xs:boolean" name="stop-on-error" default="true"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:complexType name="phpMethodType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                PHP Method
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute type="xs:string" name="label" use="required"/>
+        <xs:attribute type="xs:boolean" name="stop-on-error" default="true"/>
+        <xs:attribute type="callableType" name="callable" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    <p>Callable like
+                        <code>My\MyClass::MyMethod()</code>
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute type="xs:boolean" name="load-context" default="true">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">
+                    Load Anakeen Context
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="phpCodeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                PHP Code
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="LabelStringType">
+                <xs:attribute type="xs:boolean" name="stop-on-error" default="true"/>
+                <xs:attribute type="xs:boolean" name="load-context" default="true">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            Load Anakeen Platform context
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+
+    <xs:simpleType name="callableType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z_][a-zA-Z0-1_\\]*::[a-zA-Z0-1_]+\(.*\)"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

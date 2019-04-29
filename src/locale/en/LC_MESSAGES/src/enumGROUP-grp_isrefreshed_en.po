@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 #, fuzzy
 msgctxt "GROUP-grp_isrefreshed"
 msgid "0"
 msgstr "non"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 #, fuzzy
 msgctxt "GROUP-grp_isrefreshed"
 msgid "1"

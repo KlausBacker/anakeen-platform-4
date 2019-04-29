@@ -11,108 +11,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 msgctxt "SEARCH"
 msgid "fr_basic"
 msgstr ""
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_acl"
 msgstr "Document"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_author"
 msgstr "Auteur"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_case"
 msgstr "Mode "
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_crit"
 msgstr "Critère"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_famid"
 msgstr "Famille (id)"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_famonly"
 msgstr "Sans sous famille"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_idcfld"
 msgstr "Id dossier père courant"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_idfld"
 msgstr "Dossier racine"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_key"
 msgstr "Mot-clef"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_latest"
 msgstr "Révision"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_orderby"
 msgstr "Trié par"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_sqlselect"
 msgstr "Requête sql"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_static"
 msgstr "Requête statique"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_sublevel"
 msgstr "Profondeur de recherche"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_sysfam"
 msgstr "Inclure les documents système"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "se_trash"
 msgstr "Dans la poubelle"
 
-#: vendor/Anakeen/SmartStructures/Search/search.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Search/search.struct.xml
 #, fuzzy
 msgctxt "SEARCH"
 msgid "title"

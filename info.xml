@@ -433,6 +433,9 @@
         <process command="programs/core_accessUpdate">
             <label>Resync dbaccess config</label>
         </process>
+        <process command="./programs/DbMigration.php --file=./vendor/Anakeen/Database/DbMigrationRules.xml">
+            <label>Apply Migrate Database Rules</label>
+        </process>
         <process command="programs/app_post CORE U"/>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Structure</label>

@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 #, fuzzy
 msgctxt "IUSER-us_status"
 msgid "A"
 msgstr "Activé"
 
-#: vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
 #, fuzzy
 msgctxt "IUSER-us_status"
 msgid "D"

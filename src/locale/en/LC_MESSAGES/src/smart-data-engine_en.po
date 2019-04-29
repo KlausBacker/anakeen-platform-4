@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-26 16:15+0100\n"
+"POT-Creation-Date: 2019-04-26 14:13+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -18,11 +18,53 @@ msgid "\"%s\" is not a structure"
 msgstr ""
 
 #, php-format
-msgid "%s (as substitute)"
+msgid "%.02f GB"
 msgstr ""
 
 #, php-format
-msgid "%s activity"
+msgid "%.02f KB"
+msgstr ""
+
+#, php-format
+msgid "%.02f MB"
+msgstr ""
+
+#, php-format
+msgid "%d GB"
+msgstr ""
+
+#, php-format
+msgid "%d KB"
+msgstr ""
+
+#, php-format
+msgid "%d MB"
+msgstr ""
+
+#, php-format
+msgid "%d TB"
+msgstr ""
+
+#, php-format
+msgid "%d bytes"
+msgstr ""
+
+#, php-format
+msgctxt "sde"
+msgid "%d document detected"
+msgid_plural "%d documents detected"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgctxt "sde"
+msgid "%d document processed"
+msgid_plural "%d documents processed"
+msgstr[0] ""
+msgstr[1] ""
+
+#, php-format
+msgid "%s (as substitute)"
 msgstr ""
 
 #, php-format
@@ -77,9 +119,10 @@ msgstr ""
 msgid "%s needed\n"
 msgstr ""
 
-#, php-format
-msgid "%s new \\state %s"
-msgstr ""
+#, fuzzy, php-format
+msgctxt "sde"
+msgid "%s new state %s"
+msgstr "Next step to"
 
 #, php-format
 msgid "%s persistent timer"
@@ -144,14 +187,6 @@ msgstr ""
 msgid "Account Type \"%s\""
 msgstr ""
 
-msgctxt "authent"
-msgid "Account access not granted, please contact your system administrator"
-msgstr ""
-
-#, php-format
-msgid "Add %s in %s folder"
-msgstr ""
-
 #, php-format
 msgid "Add atags \"%s\""
 msgstr ""
@@ -176,6 +211,10 @@ msgstr ""
 
 #, php-format
 msgid "Affected to %s %s"
+msgstr ""
+
+msgctxt "wdoc"
+msgid "Ask for"
 msgstr ""
 
 #, php-format
@@ -236,6 +275,12 @@ msgid "Cannot store file because vault size limit is reached"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
+msgid ""
+"Cannot update element \"%s\" (rev %d) : is fixed. Get the latest version"
+msgstr ""
+
+#, php-format
 msgid "Change profil to default document profil : %d"
 msgstr ""
 
@@ -244,12 +289,14 @@ msgid "Change profil to default subfolder profil : %d"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
 msgid "ChangeState :: the initial state '%s' is not known"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
 msgid ""
-"ChangeState :: the new \\state '%s' is not known or is not allowed from %s"
+"ChangeState :: the new state '%s' is not known or is not allowed from %s"
 msgstr ""
 
 #, php-format
@@ -299,10 +346,6 @@ msgstr ""
 
 #, php-format
 msgid "Del atags \"%s\""
-msgstr ""
-
-#, php-format
-msgid "Delete %d in %s folder"
 msgstr ""
 
 #, php-format
@@ -373,10 +416,6 @@ msgid "Document %s inserted"
 msgstr ""
 
 #, php-format
-msgid "Document %s is in edition by %s."
-msgstr ""
-
-#, php-format
 msgid "Document %s umounted"
 msgstr ""
 
@@ -433,6 +472,11 @@ msgid "ERROR %s\n"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
+msgid "Element %s is in edition by %s."
+msgstr ""
+
+#, php-format
 msgid ""
 "Element can't be perfectly analyze, some error might occur or be corrected "
 "when importing"
@@ -456,18 +500,6 @@ msgstr ""
 
 #, php-format
 msgid "Error : %s\n"
-msgstr ""
-
-#, php-format
-msgid "Error : Process %s [%d]: status %d"
-msgstr ""
-
-#, php-format
-msgid "Error : Process %s [%d]: status %d in %.03f seconds"
-msgstr ""
-
-#, php-format
-msgid "Error : need edit privilege to execute"
 msgstr ""
 
 #, php-format
@@ -576,18 +608,6 @@ msgctxt "HTTPAPI_V1"
 msgid "File not recorded, File size transfert limited to %d Mb"
 msgstr ""
 
-msgid "File:: Processing"
-msgstr ""
-
-msgid "File:: Waiting"
-msgstr ""
-
-msgid "File:: converted"
-msgstr ""
-
-msgid "File:: failed"
-msgstr ""
-
 #, php-format
 msgid "Fix multiple alive document #%s"
 msgstr ""
@@ -619,6 +639,11 @@ msgid "Import end"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
+msgid "Import file '%s' is not found"
+msgstr ""
+
+#, php-format
 msgctxt "fuserimport"
 msgid "Import group (%d/%d)"
 msgstr ""
@@ -644,14 +669,6 @@ msgstr ""
 #, php-format
 msgctxt "smart iuser"
 msgid "It must contains at least %d characters (total length)"
-msgstr ""
-
-#, php-format
-msgid "LDAP Attribute added to %s %s"
-msgstr ""
-
-#, php-format
-msgid "LDAP Attribute modified to %s %s"
 msgstr ""
 
 #, php-format
@@ -756,14 +773,6 @@ msgstr ""
 
 msgctxt "authentOpen"
 msgid "Private key identifier is not valid"
-msgstr ""
-
-#, php-format
-msgid "Process %s [%d] executed"
-msgstr ""
-
-#, php-format
-msgid "Process %s [%d] executed in %.03f seconds"
 msgstr ""
 
 msgctxt "ank"
@@ -887,9 +896,6 @@ msgstr ""
 msgid "Syntax error in file '%s': %s"
 msgstr ""
 
-msgid "TE not activated"
-msgstr ""
-
 #, php-format
 msgid "Template [%s] not found"
 msgstr ""
@@ -965,10 +971,6 @@ msgstr ""
 msgid "WID : workflow '%s' not found"
 msgstr ""
 
-#, php-format
-msgid "Warning : %s"
-msgstr ""
-
 msgctxt "dcp"
 msgid "Whoops, looks like something went wrong"
 msgstr ""
@@ -997,6 +999,12 @@ msgid "Xml import file %s not found"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
+msgid ""
+"You are not allowed to update the element \"%s\" (# %d) is locked by \"%s\"."
+msgstr ""
+
+#, php-format
 msgid "Your password is not secure."
 msgstr ""
 
@@ -1021,6 +1029,11 @@ msgstr ""
 
 #, php-format
 msgid "[%s] must be lower than %s"
+msgstr ""
+
+#, php-format
+msgctxt "sde"
+msgid "[%s] the method '%s' is not known for the object class %s"
 msgstr ""
 
 #, php-format
@@ -1162,10 +1175,6 @@ msgid "cannot create from family [%s]"
 msgstr ""
 
 #, php-format
-msgid "cannot create user %s: %s"
-msgstr ""
-
-#, php-format
 msgid "cannot delete link : initial query not found for doc %d in folder %d"
 msgstr ""
 
@@ -1228,10 +1237,6 @@ msgid "cannot substitute itself"
 msgstr ""
 
 msgid "cannot unlock"
-msgstr ""
-
-#, php-format
-msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
 msgstr ""
 
 msgid "cannot update inconsistent document"
@@ -1351,9 +1356,6 @@ msgstr ""
 msgid "csv file <%s> wroted"
 msgstr ""
 
-msgid "cycle family must be defined"
-msgstr ""
-
 msgid "default folder"
 msgstr ""
 
@@ -1396,10 +1398,6 @@ msgstr ""
 msgid "document id"
 msgstr ""
 
-#, php-format
-msgid "document is booked in domain %s"
-msgstr ""
-
 msgid "document is not controlled by a workflow"
 msgstr ""
 
@@ -1411,23 +1409,7 @@ msgstr ""
 msgid "document too big (%dKo): no highlight"
 msgstr ""
 
-msgid "dynacase cron try execute"
-msgstr ""
-
 msgid "electronic messages cannot be modified"
-msgstr ""
-
-#, php-format
-msgid ""
-"errldapadd:%s\n"
-"%s\n"
-"%d\n"
-msgstr ""
-
-msgid "errldapconnect"
-msgstr "LDAP server cannot be contacted"
-
-msgid "errldaporginit"
 msgstr ""
 
 #, php-format
@@ -1443,32 +1425,7 @@ msgid "error storing configuration property (%s, %s, %s)"
 msgstr ""
 
 #, php-format
-msgid "execution by %s done %s"
-msgstr ""
-
-#, php-format
-msgid "family %s does not implement IMailRecipent - missing getMail method"
-msgstr ""
-
-#, php-format
-msgid ""
-"family %s does not implement IMailRecipent - missing getMailAttribute method"
-msgstr ""
-
-#, php-format
-msgid ""
-"family %s does not implement IMailRecipient - missing getMailTitle method"
-msgstr ""
-
-#, php-format
 msgid "family %s not found"
-msgstr ""
-
-msgid "family must be defined"
-msgstr ""
-
-#, php-format
-msgid "file %d"
 msgstr ""
 
 #, php-format
@@ -1507,10 +1464,6 @@ msgid "folder/search %s not found"
 msgstr ""
 
 #, php-format
-msgid "function '%s' declared in %s is not found"
-msgstr ""
-
-#, php-format
 msgid "generate version '%s'"
 msgstr ""
 
@@ -1538,14 +1491,6 @@ msgstr ""
 
 #, php-format
 msgid "import file '%s' is not a valid file"
-msgstr ""
-
-#, php-format
-msgctxt "sde"
-msgid "import file '%s' is not a valid file"
-msgstr ""
-
-msgid "impossible conversion"
 msgstr ""
 
 #, php-format
@@ -1622,10 +1567,6 @@ msgid "need privilege delete to restore %s"
 msgstr ""
 
 #, php-format
-msgid "need to select workflow"
-msgstr ""
-
-#, php-format
 msgid "new column order %s"
 msgstr ""
 
@@ -1639,10 +1580,6 @@ msgstr ""
 
 #, php-format
 msgid "no compatible type with operator %s"
-msgstr ""
-
-#, php-format
-msgid "no document match '%s'"
 msgstr ""
 
 msgid "no empty vault file system found"
@@ -1679,9 +1616,6 @@ msgstr ""
 msgid "no state specified"
 msgstr ""
 
-msgid "no task identificator"
-msgstr ""
-
 msgid "no user tag specified"
 msgstr ""
 
@@ -1689,10 +1623,6 @@ msgid "no vault directory found"
 msgstr ""
 
 msgid "no vault file system found"
-msgstr ""
-
-#, php-format
-msgid "no workflow for this document"
 msgstr ""
 
 #, php-format
@@ -1794,10 +1724,6 @@ msgstr "ldap DN"
 
 msgid "prop_lmodify"
 msgstr "is modified"
-
-#, fuzzy
-msgid "prop_lockdomainid"
-msgstr "lock"
 
 #, fuzzy
 msgid "prop_mdate"
@@ -1981,29 +1907,10 @@ msgid "template file (layout [%s]) not found"
 msgstr ""
 
 #, php-format
-msgid "the date %s is in the past: today is %s"
-msgstr ""
-
-msgid "the date syntax must be like : AAAA-MM-DD"
-msgstr ""
-
-#, php-format
 msgid "the document of %s family cannot be revised"
 msgstr ""
 
-#, php-format
-msgid "the external pluggin file %s cannot be read"
-msgstr ""
-
 msgid "the login must not be empty"
-msgstr ""
-
-#, php-format
-msgid "the method '%s' is not known for the object class %s"
-msgstr ""
-
-#, php-format
-msgid "the pluggins function description '%s' is not conform for %s attribut"
 msgstr ""
 
 msgid "this login exists"
@@ -2047,6 +1954,13 @@ msgstr "MB"
 
 msgid "unit:TB"
 msgstr "TB"
+
+#, fuzzy
+msgctxt "sde"
+msgid "unit:byte"
+msgid_plural "unit:bytes"
+msgstr[0] "byte"
+msgstr[1] "bytes"
 
 msgid "unit:kB"
 msgstr "kB"
@@ -2193,10 +2107,6 @@ msgid "yesterday"
 msgstr ""
 
 #, php-format
-msgid "you are not allowed to update the file %s (rev %d) is locked by %s."
-msgstr ""
-
-#, php-format
 msgid "you cannot create this kind [%s] of document"
 msgstr ""
 
@@ -2260,9 +2170,6 @@ msgstr ""
 
 #~ msgid "Change state"
 #~ msgstr "Next step"
-
-#~ msgid "Change state to"
-#~ msgstr "Next step to"
 
 #~ msgid "Common function for FREEDOM client API"
 #~ msgstr "Common function for Dynacase Platform client API"
@@ -3208,6 +3115,9 @@ msgstr ""
 #~ msgid "edit"
 #~ msgstr "Edit"
 
+#~ msgid "errldapconnect"
+#~ msgstr "LDAP server cannot be contacted"
+
 #~ msgid "errno_bug_639_message"
 #~ msgstr ""
 #~ "<p>You must re-initialize your password.</p>\n"
@@ -3276,6 +3186,10 @@ msgstr ""
 
 #~ msgid "prop_comment"
 #~ msgstr "comment"
+
+#, fuzzy
+#~ msgid "prop_lockdomainid"
+#~ msgstr "lock"
 
 #~ msgid "prop_revdate"
 #~ msgstr "modfication date"
@@ -3351,11 +3265,6 @@ msgstr ""
 
 #~ msgid "switch search mode (basic/advanced)"
 #~ msgstr "basic/advanced mode"
-
-#~ msgid "unit:byte"
-#~ msgid_plural "unit:bytes"
-#~ msgstr[0] "byte"
-#~ msgstr[1] "bytes"
 
 #~ msgid "updateldap"
 #~ msgstr "Update LDAP server"

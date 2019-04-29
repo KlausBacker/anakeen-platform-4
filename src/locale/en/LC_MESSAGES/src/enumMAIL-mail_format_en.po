@@ -11,19 +11,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL-mail_format"
 msgid "html"
 msgstr "HTML"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL-mail_format"
 msgid "htmlpdf"
 msgstr "HTML & PDF"
 
-#: vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
 #, fuzzy
 msgctxt "MAIL-mail_format"
 msgid "pdf"

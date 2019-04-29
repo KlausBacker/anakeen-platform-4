@@ -11,13 +11,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 #, fuzzy
 msgctxt "dir-fld_subfam"
 msgid "no"
 msgstr "ne pas inclure les sous familles"
 
-#: vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Igroup/igroup.struct.xml
 #, fuzzy
 msgctxt "dir-fld_subfam"
 msgid "yes"

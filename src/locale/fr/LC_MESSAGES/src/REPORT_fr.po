@@ -11,103 +11,103 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_caption"
 msgstr "Description"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_colors"
 msgstr "Couleur"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_displayoption"
 msgstr "Option de présentation"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_foots"
 msgstr "Pied de tableau"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_fr_param"
 msgstr "Paramètres"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_fr_presentation"
 msgstr "Présentation"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_idcols"
 msgstr "Id colonnes"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_idsort"
 msgstr "Id tri"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_lcols"
 msgstr "Label"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_limit"
 msgstr "Limite"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_maxdisplaylimit"
 msgstr "Limite d'affichage pour le nombre de rangées"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_noaccesstext"
 msgstr "Texte à afficher pour les valeurs protégées"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_ordersort"
 msgstr "Ordre"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_sort"
 msgstr "Tri"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_tab_presentation"
 msgstr "Présentation"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "rep_tcols"
 msgstr "Colonnes"
 
-#: vendor/Anakeen/SmartStructures/Report/report.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Report/report.struct.xml
 #, fuzzy
 msgctxt "REPORT"
 msgid "title"

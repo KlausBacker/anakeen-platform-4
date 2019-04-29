@@ -11,87 +11,87 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_attach"
 msgstr "File"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_date"
 msgstr "Date"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_editcontrol"
 msgstr "Force read-only"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_bodies"
 msgstr "Message body"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_ident"
 msgstr "Identification"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_fr_parameters"
 msgstr "Parameters"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_from"
 msgstr "From"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_htmlbody"
 msgstr "Formatted text"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_recipient"
 msgstr "Recipient"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_refid"
 msgstr "Referent document"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_sendtype"
 msgstr "Type"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_size"
 msgstr "Size"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_subject"
 msgstr "Subject"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_attach"
 msgstr "Attachments"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_t_recipient"
 msgstr "Recipients"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "emsg_textbody"
 msgstr "Text"
 
-#: vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
 msgctxt "SENTMESSAGE"
 msgid "title"
 msgstr "Sent message"

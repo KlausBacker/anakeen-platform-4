@@ -11,43 +11,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "ba_desc"
 msgstr "Description"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "ba_title"
 msgstr "Profil de document"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_fam"
 msgstr "Famille"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_famid"
 msgstr "Famille (id)"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "dpdoc_fr_dyn"
 msgstr "Dynamique"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "fr_basic"
 msgstr "Basique"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PDOC"
 msgid "title"

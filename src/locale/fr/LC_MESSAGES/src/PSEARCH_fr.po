@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
+#: src/vendor/Anakeen/SmartStructures/Profiles/pdoc.struct.xml
 #, fuzzy
 msgctxt "PSEARCH"
 msgid "title"
