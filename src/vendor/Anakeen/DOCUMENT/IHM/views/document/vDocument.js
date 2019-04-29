@@ -1347,7 +1347,11 @@ define([
       if (saveDocument && saveDocument.then) {
         saveDocument.then(function vDocumentCreateDisplaySuccess() {
           currentView.trigger("showSuccess", {
-            title: i18n.___("Document Created", "ddui")
+            title: Mustache.render(i18n.___("{{title}} Created", "ddui"), {
+              title:
+                currentView.model.getModelProperties("title").title ||
+                "Smart Element"
+            })
           });
         });
       }

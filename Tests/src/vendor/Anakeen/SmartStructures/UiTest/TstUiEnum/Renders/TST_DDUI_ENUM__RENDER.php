@@ -32,7 +32,7 @@ class EnumRenderConfigEditDefault extends \Anakeen\Ui\DefaultEdit
     {
         $version =  ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
+        $css["tstotherenum"] = "/TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
         return $css;
     }
 }
@@ -274,7 +274,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumhorizontal.css";
+        $css["tstenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumhorizontal.css";
         return $css;
     }
 }
@@ -298,7 +298,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css";
+        $css["tstenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css";
         return $css;
     }
 }
@@ -333,7 +333,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
     {
         $version =  ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tsteditverticalenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css?ws=".$version;
+        $css["tsteditverticalenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css?ws=".$version;
         return $css;
     }
 }
@@ -359,15 +359,15 @@ class EnumRenderConfigView extends \Anakeen\Ui\DefaultView
     {
         $version =  ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.css?ws=".$version;
-        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
+        $css["tstviewenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.css?ws=".$version;
+        $css["tstotherenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testOtherEnum.css?ws=".$version;
         return $css;
     }
     public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $version =  ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsReferences = parent::getJsReferences($document);
-        $jsReferences["tstviewenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.js?ws=".$version;
+        $jsReferences["tstviewenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/testViewEnum.js?ws=".$version;
         return $jsReferences;
     }
 }
