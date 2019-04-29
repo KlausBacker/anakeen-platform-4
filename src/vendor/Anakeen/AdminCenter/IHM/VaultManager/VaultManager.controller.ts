@@ -13,7 +13,13 @@ Vue.use(DropdownsInstaller);
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "ank-splitter": AnkSplitter
+    "ank-splitter": AnkSplitter,
+    "ank-vault-info": () =>
+      new Promise(resolve => {
+        import("./VaultInfo/VaultInfo.vue").then(AnkVaultInfo => {
+          resolve(AnkVaultInfo.default);
+        });
+      })
   }
 })
 export default class VaultManagerController extends Vue {
@@ -35,7 +41,7 @@ export default class VaultManagerController extends Vue {
     return human;
   }
   @Prop({ default: "", type: String }) public value!: string;
-  public info: any = [];
+  public info: any = {};
   public panes: object[] = [
     {
       collapsible: true,
@@ -155,79 +161,12 @@ export default class VaultManagerController extends Vue {
       .open();
   }
 
+  public updated() {
+    this.initKendoGrid();
+  }
+
   public mounted() {
-    this.vaultGrid = $(this.$refs.vaultManagerGrid)
-      .kendoGrid({
-        columns: [
-          {
-            field: "path",
-            template: dataItem => {
-              let vaultErrorClass = "";
-              if (
-                dataItem.disk.totalSize === 0 ||
-                dataItem.metrics.totalSize < dataItem.metrics.usedSize
-              ) {
-                vaultErrorClass = " vault-grid--error";
-              }
-              return (
-                dataItem.path +
-                "<div class='vault-grid-sizes" +
-                vaultErrorClass +
-                "'> (" +
-                VaultManagerController.convertBytes(dataItem.metrics.usedSize) +
-                " / " +
-                VaultManagerController.convertBytes(
-                  dataItem.metrics.totalSize
-                ) +
-                ") </div>"
-              );
-            },
-            title: "Vault"
-          },
-          {
-            command: {
-              click: e => {
-                e.preventDefault();
-                Vue.component("ank-vault-info", resolve => {
-                  import("./VaultInfo/VaultInfo.vue").then(AnkVaultInfo => {
-                    resolve(AnkVaultInfo.default);
-                  });
-                });
-                const $tr = $(e.currentTarget).closest("tr");
-                const dataItem = this.vaultGrid.dataItem($tr);
-                // @ts-ignore
-                this.info = dataItem.toJSON();
-                // @ts-ignore
-                this.$refs.vaultSplitter.disableEmptyContent();
-                this.selectedFs = dataItem.fsid;
-                $tr
-                  .closest("tbody")
-                  .find("tr")
-                  .removeClass("vault--selected");
-                $tr.addClass("vault--selected");
-              },
-              text: "Info"
-            },
-            width: "10rem"
-          }
-        ],
-
-        dataBound: e => {
-          const grid = e.sender;
-          this.addRowClassName(grid);
-
-          if (!this.selectedFs) {
-            // view first vault
-            // @ts-ignore
-            this.selectFsRow(grid.dataSource.data().at(0).fsid);
-          } else {
-            this.selectFsRow(this.selectedFs);
-          }
-        },
-
-        dataSource: this.vaultsGridData
-      })
-      .data("kendoGrid");
+    this.initKendoGrid();
     if (this.value) {
       this.selectedFs = this.value;
     }
@@ -252,5 +191,83 @@ export default class VaultManagerController extends Vue {
         $(this).attr("data-fsid", dataItem.fsid);
       }
     });
+  }
+
+  protected initKendoGrid() {
+    if (!$(this.$refs.vaultManagerGrid).data("kendoGrid")) {
+      $(this.$refs.vaultManagerGrid)
+        .kendoGrid({
+          columns: [
+            {
+              field: "path",
+              template: dataItem => {
+                let vaultErrorClass = "";
+                if (
+                  dataItem.disk.totalSize === 0 ||
+                  dataItem.metrics.totalSize < dataItem.metrics.usedSize
+                ) {
+                  vaultErrorClass = " vault-grid--error";
+                }
+                return (
+                  dataItem.path +
+                  "<div class='vault-grid-sizes" +
+                  vaultErrorClass +
+                  "'> (" +
+                  VaultManagerController.convertBytes(
+                    dataItem.metrics.usedSize
+                  ) +
+                  " / " +
+                  VaultManagerController.convertBytes(
+                    dataItem.metrics.totalSize
+                  ) +
+                  ") </div>"
+                );
+              },
+              title: "Vault"
+            },
+            {
+              command: {
+                click: e => {
+                  e.preventDefault();
+                  const $tr = $(e.currentTarget).closest("tr");
+                  const kendoGrid = $(this.$refs.vaultManagerGrid).data(
+                    "kendoGrid"
+                  );
+                  const dataItem = kendoGrid.dataItem($tr);
+                  // @ts-ignore
+                  this.info = dataItem.toJSON();
+                  // @ts-ignore
+                  this.$refs.vaultSplitter.disableEmptyContent();
+                  // @ts-ignore
+                  this.selectedFs = dataItem.fsid;
+                  $tr
+                    .closest("tbody")
+                    .find("tr")
+                    .removeClass("vault--selected");
+                  $tr.addClass("vault--selected");
+                },
+                text: "Info"
+              },
+              width: "10rem"
+            }
+          ],
+
+          dataBound: e => {
+            const grid = e.sender;
+            this.addRowClassName(grid);
+
+            if (!this.selectedFs) {
+              // view first vault
+              // @ts-ignore
+              this.selectFsRow(grid.dataSource.data().at(0).fsid);
+            } else {
+              this.selectFsRow(this.selectedFs);
+            }
+          },
+
+          dataSource: this.vaultsGridData
+        })
+        .data("kendoGrid");
+    }
   }
 }
