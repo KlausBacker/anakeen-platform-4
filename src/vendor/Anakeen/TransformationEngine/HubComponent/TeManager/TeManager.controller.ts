@@ -3,7 +3,6 @@ import { LayoutInstaller } from "@progress/kendo-layout-vue-wrapper";
 
 import { Component, Vue } from "vue-property-decorator";
 
-import TeConfig from "./TeConfig.vue";
 import TeServerLoad from "./TeServerLoad.vue";
 import TeSupervision from "./TeSupervision.vue";
 
@@ -13,9 +12,24 @@ Vue.use(ButtonsInstaller);
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "te-config": TeConfig,
-    "te-server-load": TeServerLoad,
-    "te-supervision": TeSupervision
+    "te-config": () =>
+      new Promise(resolve => {
+        import("./TeConfig.vue").then(component => {
+          resolve(component.default);
+        });
+      }),
+    "te-server-load": () =>
+      new Promise(resolve => {
+        import("./TeServerLoad.vue").then(component => {
+          resolve(component.default);
+        });
+      }),
+    "te-supervision": () =>
+      new Promise(resolve => {
+        import("./TeSupervision.vue").then(component => {
+          resolve(component.default);
+        });
+      })
   }
 })
 export default class TeManagerController extends Vue {

@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <documents>
-    <hubtemanagervue name="HUBA_TE"  >
+    <hubconfigurationgeneric>
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
-        <hub_title>Tranformation Engine</hub_title>
+        <hub_title>ADMINTE</hub_title>
         <hub_order>5</hub_order>
         <hub_docker_position>LEFT_TOP</hub_docker_position>
-        <hub_vue_router_entry>/te</hub_vue_router_entry>
+        <hub_vue_router_entry>te</hub_vue_router_entry>
         <hub_activated>FALSE</hub_activated>
         <hub_selectable>TRUE</hub_selectable>
-    </hubtemanagervue>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("teManager", "te-manager")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_libname>AdminTeManager</hge_component_libname>
+        <hge_component_tag>ank-hub-te-manager</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_TEMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
 </documents>

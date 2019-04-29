@@ -2,6 +2,7 @@
     <accounts:roles>
         <accounts:role name="te_administrator">
             <accounts:displayName>Transformation Engine administrator</accounts:displayName>
+            <accounts:structure name="AC_TEMANAGER"/>
         </accounts:role>
     </accounts:roles>
 </accounts:accounts>
