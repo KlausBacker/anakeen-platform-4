@@ -33,7 +33,6 @@ class SearchEditRender extends DefaultEdit
         $js["kendo"] = UIGetAssetPath::getJSKendoPath();
         $js["kendoDLL"] = UIGetAssetPath::getJSKendoComponentPath();
         $js["dSearch"] = UIGetAssetPath::getElementAssets("smartStructures", UIGetAssetPath::isInDebug() ? "dev": "legacy")["Dsearch"]["js"];
-        $js["search"] = UIGetAssetPath::getElementAssets("ank-components", UIGetAssetPath::isInDebug() ? "dev": "legacy")["search"]["js"];
         return $js;
     }
 
