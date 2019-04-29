@@ -47,7 +47,7 @@ export default class TeSupervision extends Vue {
 
   public resizeGrid(): void {
     const kendoGrid = $(this.$refs.teSupervisionGrid).data("kendoGrid");
-    if (!kendoGrid|| !kendoGrid.element) {
+    if (!kendoGrid || !kendoGrid.element) {
       return;
     }
     const $grid = kendoGrid.element;
@@ -153,8 +153,10 @@ export default class TeSupervision extends Vue {
                 this.$refs.teSplitter.disableEmptyContent();
                 const $tr = $(e.currentTarget).closest("tr");
                 // @ts-ignore
-                this.selectedTask = $(this.$refs.teSupervisionGrid).data("kendoGrid").dataItem($tr)
-                    .toJSON();
+                this.selectedTask = $(this.$refs.teSupervisionGrid)
+                  .data("kendoGrid")
+                  .dataItem($tr)
+                  .toJSON();
 
                 $tr
                   .closest("tbody")

@@ -12,21 +12,24 @@ Vue.use(ButtonsInstaller);
 // noinspection JSUnusedGlobalSymbols
 @Component({
   components: {
-    "te-config": () => new Promise((resolve) => {
-        import("./TeConfig.vue").then((component) => {
+    "te-config": () =>
+      new Promise(resolve => {
+        import("./TeConfig.vue").then(component => {
           resolve(component.default);
         });
-    }),
-    "te-server-load": () => new Promise((resolve) => {
-      import("./TeServerLoad.vue").then((component) => {
-        resolve(component.default);
-      });
-    }),
-    "te-supervision": () => new Promise((resolve) => {
-      import("./TeSupervision.vue").then((component) => {
-        resolve(component.default);
-      });
-    }),
+      }),
+    "te-server-load": () =>
+      new Promise(resolve => {
+        import("./TeServerLoad.vue").then(component => {
+          resolve(component.default);
+        });
+      }),
+    "te-supervision": () =>
+      new Promise(resolve => {
+        import("./TeSupervision.vue").then(component => {
+          resolve(component.default);
+        });
+      })
   }
 })
 export default class TeManagerController extends Vue {
