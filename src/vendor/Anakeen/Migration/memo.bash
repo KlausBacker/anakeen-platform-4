@@ -21,10 +21,17 @@ do
 done
 
 
-for S in  QueryDir VaultDiskDirStorage VaultDiskStorage VaultDiskFsStorage DocVaultIndex DocUTag UserToken DocPerm DocPermExt DocTimer DocRel
+for S in  QueryDir DocVaultIndex DocUTag UserToken DocPerm DocPermExt DocTimer DocRel
 do
     ./ank.php --route=Migration::TableTransfert --method=POST --query=clear=all --class=$S
 done
+
+
+for S in Anakeen\\Vault\\DiskFsStorage Anakeen\\Vault\\DiskDirStorage Anakeen\\Vault\\DiskStorage
+do
+    ./ank.php --route=Migration::TableTransfert --method=POST --query=clear=all --class=$S
+done
+
 
 
 # (ccfd32) update dynacase.docattr set ordered=483 where id='rapm_ctxt_array'; --correct order in source
