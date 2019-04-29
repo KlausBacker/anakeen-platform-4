@@ -15,11 +15,11 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
         $this->getHooks()->removeListeners(SmartHooks::PRESTORE);
     }
 
-    protected function getAssets($structureName)
+    protected function getAssets()
     {
-        $assets = [];
-        $assets["js"] = $this->resolveAssets("js");
-        $assets["css"] = $this->resolveAssets("css");
+        $assets = parent::getAssets();
+        $assets["js"][] = $this->resolveAssets("js");
+        $assets["css"][] = $this->resolveAssets("css");
         return $assets;
     }
 
