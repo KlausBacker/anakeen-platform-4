@@ -18,16 +18,13 @@ import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 export default {
   name: "ank-admin-account",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
-
-  created() {
-    if (this.isHubContent) {
-      Vue.component("admin-center-account", resolve => {
-        import("../../Account/AdminCenterAccount.vue").then(Component => {
-          resolve(Component.default);
-        });
+  components: {
+    "admin-center-account": () => new Promise(resolve => {
+      import("../../Account/AdminCenterAccount.vue").then(Component => {
+        resolve(Component.default);
       });
-    }
-  }
+    })
+  },
 };
 </script>
 <style>

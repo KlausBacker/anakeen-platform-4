@@ -64,6 +64,12 @@ export default class AuthenticationTokensController extends Vue {
     this.initTokenGrid(this.$refs.tokenGrid);
   }
 
+  public updated() {
+    if (!$(this.$refs.tokenGrid).data("kendoGrid")) {
+      this.initTokenGrid(this.$refs.tokenGrid);
+    }
+  }
+
   public flipFiltering() {
     this.showExpire = !this.showExpire;
     this.refreshList();
@@ -98,7 +104,9 @@ export default class AuthenticationTokensController extends Vue {
     this.tokenInfo = {
       token: ""
     };
-    this.kTokenGrid.dataSource.read();
+    $(this.$refs.tokenGrid)
+      .data("kendoGrid")
+      .dataSource.read();
   }
 
   protected selectTokenRow(tokenId) {
@@ -127,7 +135,7 @@ export default class AuthenticationTokensController extends Vue {
   }
 
   protected initTokenGrid(divDom) {
-    this.kTokenGrid = $(divDom)
+    $(divDom)
       .kendoGrid({
         columns: [
           {

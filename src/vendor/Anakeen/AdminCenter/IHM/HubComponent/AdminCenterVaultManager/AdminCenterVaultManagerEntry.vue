@@ -13,11 +13,17 @@
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
-import Vue from "vue";
 
 export default {
   name: "ank-admin-vault-manager",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
+  components: {
+    "admin-center-vault": () => new Promise((resolve) => {
+      import("../../VaultManager/VaultManager.vue").then(Component => {
+        resolve(Component.default);
+      });
+    })
+  },
   watch: {
     selectedVault(newValue) {
       if (this.isHubContent) {
@@ -28,12 +34,7 @@ export default {
 
   created() {
     if (this.isHubContent) {
-      Vue.component("admin-center-vault", resolve => {
-        import("../../VaultManager/VaultManager.vue").then(Component => {
-          resolve(Component.default);
-          this.subRouting();
-        });
-      });
+      this.subRouting();
     }
   },
   data() {

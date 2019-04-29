@@ -265,13 +265,16 @@ export default class AdminCenterAccountController extends Vue {
   }
   // Bind the grid events (click to open an user)
   public openUser(event) {
+    event.preventDefault();
     this.$refs.accountSplitter.disableEmptyContent();
+    const grid = this.$refs.grid.kendoWidget();
+    const $tr = $(event.currentTarget).closest("tr");
+    const dataItem = grid.dataItem($tr);
+    const userId = dataItem.id;
     this.$nextTick(() => {
-      event.preventDefault();
-      const grid = $(".account-user-grid").data("kendoGrid");
-      const userId = grid.dataItem(
-        kendo.jQuery(event.currentTarget).closest("tr")
-      ).id;
+      if (!this.$refs.grid.kendoWidget()._data) {
+        this.gridContent.read();
+      }
       if (userId) {
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
