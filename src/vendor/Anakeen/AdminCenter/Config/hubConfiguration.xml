@@ -41,7 +41,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                /Anakeen/manifest/accountManager/prod.json#account-manager
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("accountManager", "account-manager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_libname>AdminAccountManager</hge_component_libname>
@@ -60,7 +60,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                /Anakeen/manifest/parameterManager/prod.json#parameter-manager
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("parameterManager", "parameter-manager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_libname>AdminParametersManager</hge_component_libname>
@@ -79,7 +79,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                /Anakeen/manifest/tokenManager/prod.json#token-manager
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("tokenManager", "token-manager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_libname>AdminTokenManager</hge_component_libname>
@@ -98,7 +98,7 @@
         <hge_jsassets>
             <hge_jsasset_type>MANIFEST</hge_jsasset_type>
             <hge_jsasset>
-                /Anakeen/manifest/vaultManager/prod.json#vault-manager
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("vaultManager", "vault-manager")
             </hge_jsasset>
         </hge_jsassets>
         <hge_component_libname>AdminVaultManager</hge_component_libname>
