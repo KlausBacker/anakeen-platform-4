@@ -81,20 +81,23 @@ class DbMigration
     protected function parseFile($xmlFile)
     {
         $content = file_get_contents($xmlFile);
-        return preg_replace_callback("/@([^@]*)@/", function ($matches) {
-            $p = $matches[1];
-            switch ($p) {
-                case "PUBDIR":
-                    return getenv("wpub");
-                case "PGSERVICE":
-                    return getenv("pgservice_core");
-                default:
-                    /** @noinspection PhpUndefinedFunctionInspection */
-                    $wv = \wiff_getParamValue($p);
-                    return $wv;
-            }
-        }
-            , $content);
+        return preg_replace_callback(
+            "/@([^@]*)@/",
+            function ($matches) {
+                $p = $matches[1];
+                switch ($p) {
+                    case "PUBDIR":
+                        return getenv("wpub");
+                    case "PGSERVICE":
+                        return getenv("pgservice_core");
+                    default:
+                        /** @noinspection PhpUndefinedFunctionInspection */
+                        $wv = \wiff_getParamValue($p);
+                        return $wv;
+                }
+            },
+            $content
+        );
     }
 
     /**
@@ -106,7 +109,7 @@ class DbMigration
      * @return bool
      * @throws \DOMException
      */
-    public static function HandleXmlError($errno, $errstr)
+    public static function handleXmlError($errno, $errstr)
     {
         if ($errno == E_WARNING && (substr_count($errstr, "DOMDocument::load") > 0)) {
             throw new \DOMException($errstr);
@@ -126,7 +129,7 @@ class DbMigration
     {
         set_error_handler(array(
             __CLASS__,
-            "HandleXmlError"
+            "handleXmlError"
         ));
         $this->dom->loadXml($strXml);
         restore_error_handler();
@@ -142,17 +145,17 @@ class DbMigration
      */
     protected function analyzeAction(\DOMElement $action)
     {
+        if ($this->verbose > 0) {
+            printf("Process [%s] \"%s\" \n", $action->getAttribute("id"), $action->getAttribute("label"));
+        }
         if ($this->verifyConditions($action)) {
-            if ($this->verbose > 0) {
-                printf("Process [%s] \"%s\" \n", $action->getAttribute("id"), $action->getAttribute("title"));
-            }
             $this->doProcess($action);
             if (!$this->verifyCheck($action)) {
-                throw new \Exception(sprintf("check fail [%s] \"%s\"", $action->getAttribute("id"), $action->getAttribute("title")));
+                throw new \Exception(sprintf("check fail [%s] \"%s\"", $action->getAttribute("id"), $action->getAttribute("label")));
             }
         } else {
             if ($this->verbose > 0) {
-                printf("Skip [%s] \"%s\" \n", $action->getAttribute("id"), $action->getAttribute("title"));
+                printf("Skip [%s] \"%s\" \n", $action->getAttribute("id"), $action->getAttribute("label"));
             }
         }
     }
@@ -184,12 +187,25 @@ class DbMigration
         return $this->verifyAssertion($action, $conditionTag);
     }
 
+    protected function verboseCondition(\DOMElement $aTest)
+    {
+        if ($this->verbose > 1) {
+            $content = $aTest->textContent;
+            $conditionName = $aTest->parentNode->tagName;
+            printf("\tVerify %s/%s \"%s\"", $conditionName, $aTest->nodeName, $aTest->getAttribute("label"));
+            if ($content && $this->verbose > 2) {
+                printf("\n\t\t[%s]", $content);
+            }
+        }
+    }
+
     /**
-     * @param \DOMElement $action
+     * @param \DOMElement  $action
+     *
+     * @param \DOMNodeList $topAssertTag
      *
      * @return bool return true if all conditions are verified
      * @throws \Exception
-     *
      */
     protected function verifyAssertion(\DOMElement $action, \DOMNodeList $topAssertTag)
     {
@@ -210,92 +226,107 @@ class DbMigration
                 if ($aTest->nodeType !== XML_ELEMENT_NODE) {
                     continue;
                 }
+
                 /**
                  * @var \DOMElement $aTest
                  */
                 switch ($aTest->nodeName) {
                     case "sql-assert-not-empty":
                         $sql = $aTest->textContent;
+                        $this->verboseCondition($aTest);
+
                         $this->simpleQuery($sql, $return, true, true);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $sql, $return);
-                        }
+
                         $condition = ($return !== false);
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
                         break;
 
                     case "sql-assert-empty":
                         $sql = $aTest->textContent;
+                        $this->verboseCondition($aTest);
                         $this->simpleQuery($sql, $return, true, true);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $sql, $return);
-                        }
+
 
                         $condition = ($return === false);
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
                         break;
 
                     case "sql-assert-false":
                         $sql = $aTest->textContent;
+                        $this->verboseCondition($aTest);
                         $this->simpleQuery($sql, $return, true, true);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $sql, $return);
-                        }
 
                         $condition = ($return === 'f');
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
                         break;
 
                     case "sql-assert-true":
                         $sql = $aTest->textContent;
+                        $this->verboseCondition($aTest);
                         $this->simpleQuery($sql, $return, true, true);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $sql, $return);
-                        }
+
 
                         $condition = ($return === 't');
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
 
                         break;
 
                     case "php-assert-false":
-                        $method = $aTest->getAttribute("method");
+                        $this->verboseCondition($aTest);
+                        $method = $aTest->getAttribute("callable");
                         $loadContext = ($aTest->getAttribute("load-context") !== "false");
                         $return = $this->callMethod($method, $loadContext);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $method, $return);
-                        }
+
 
                         $condition = ($return === false);
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
                         break;
 
                     case "php-assert-true":
-                        $method = $aTest->getAttribute("method");
+                        $this->verboseCondition($aTest);
+                        $method = $aTest->getAttribute("callable");
                         $loadContext = ($aTest->getAttribute("load-context") !== "false");
                         $return = $this->callMethod($method, $loadContext);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $method, $return);
-                        }
+
 
                         $condition = ($return === true);
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
                         break;
 
                     case "php-assert-code-return-false":
+                        $this->verboseCondition($aTest);
                         $code = $aTest->textContent;
                         $loadContext = ($aTest->getAttribute("load-context") !== "false");
                         $return = $this->callPhpCode($code, $loadContext);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $code, $return);
-                        }
 
                         $condition = ($return === false);
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
                         break;
 
                     case "php-assert-code-return-true":
+                        $this->verboseCondition($aTest);
                         $code = $aTest->textContent;
                         $loadContext = ($aTest->getAttribute("load-context") !== "false");
                         $return = $this->callPhpCode($code, $loadContext);
-                        if ($this->verbose > 1) {
-                            printf("\tVerify %s/%s [%s] : %s\n", $aCondition->nodeName, $aTest->nodeName, $code, $return);
-                        }
 
                         $condition = ($return === true);
+                        if ($this->verbose > 1) {
+                            printf(" : %s\n", $condition ? "OK" : "KO");
+                        }
                         break;
 
                     default:
@@ -346,7 +377,10 @@ class DbMigration
         }
         $return = $doc->applyMethod($method, $def = "", $index = -1, $bargs = array(), $mapArgs = array(), $err);
         if ($err) {
-            throw new \Anakeen\Exception(sprintf("Unknow method type \"%s\"", $method));
+            throw new \Anakeen\Exception(sprintf("Error when call \"%s\"", $method));
+        }
+        if ($this->verbose > 1) {
+            print " : OK\n";
         }
         return $return;
     }
@@ -364,7 +398,21 @@ class DbMigration
         if ($initContext) {
             $this->initContext();
         }
-        $return = eval($code);
+        try {
+            $return = eval($code);
+            if ($this->verbose > 1) {
+                print " : OK\n";
+            }
+        } catch (\Exception $e) {
+            if ($this->verbose > 1) {
+                if ($this->verbose > 2) {
+                    throw $e;
+                } else {
+                    printf(" : KO : %s\n", $e->getMessage());
+                    throw new \Anakeen\Exception("Fail eval code");
+                }
+            }
+        }
         return $return;
     }
 
@@ -393,8 +441,10 @@ class DbMigration
                  * @var \DOMElement $aProc
                  */
                 $stopOnError = ($aProc->getAttribute("stop-on-error") !== "false");
+                if ($this->verbose > 1) {
+                    printf("\tProcess %s \"%s\"", $aProc->nodeName, $aProc->getAttribute("label"));
+                }
                 try {
-
                     switch ($aProc->nodeName) {
                         case "sql-query":
                             $sql = $aProc->textContent;
@@ -403,39 +453,19 @@ class DbMigration
                                 $sql = file_get_contents(sprintf("%s/%s", getenv("wpub"), $sqlFile)) . $sql;
                             }
                             $this->simpleQuery($sql, $return, true, true);
-                            if ($this->verbose > 1) {
-                                if ($sqlFile) {
-                                    $sqlCmd = "\\i " . $sqlFile . "\n" . $aProc->textContent;
-                                } else {
-                                    $sqlCmd = $aProc->textContent;
-                                }
-                                printf("Process %s [%s] : %s\n", $aProc->nodeName, $sqlCmd, $return);
-                            }
+
 
                             break;
 
-                        case "wsh":
-                            $api = $aProc->getAttribute("api");
-                            $app = $aProc->getAttribute("api");
-                            if (!$api && !$app) {
-                                throw new \Exception(sprintf("No api or app set in wsh \"%s\"\n%s", $aProc->nodeName, $action->ownerDocument->saveXML($aProcess)));
-                            }
-                            $args = array();
-                            foreach ($aProc->attributes as $attr) {
-                                $args[$attr->nodeName] = $attr->nodeValue;
-                            }
-                            $this->wshApi($args);
 
-                            break;
-
-                        case "bash":
+                        case "bash-code":
                             $bash = $aProc->textContent;
-                            $this->bashExec($bash);
+                            $this->shellExec($bash);
 
                             break;
 
                         case "php":
-                            $method = $aProc->getAttribute("method");
+                            $method = $aProc->getAttribute("callable");
                             $loadContext = ($aProc->getAttribute("load-context") !== "false");
 
                             $this->callMethod($method, $loadContext);
@@ -456,9 +486,7 @@ class DbMigration
                 } catch (Exception $e) {
                     if ($stopOnError) {
                         throw $e; // resend else continue
-
                     } else {
-
                         if ($this->verbose > 0) {
                             printf("Error process  : %s\n", $e->getMessage());
                         }
@@ -470,63 +498,32 @@ class DbMigration
     }
 
     /**
-     * Execute bash process
+     * Execute Shell command
      *
      * @param string $cmd
      *
      * @return bool
      * @throws \Exception
      */
-    protected function bashExec($cmd)
+    protected function shellExec($cmd)
     {
-        if ($this->verbose > 1) {
-            printf("\tExecute %s\n", $cmd);
+        if ($this->verbose > 2) {
+            printf("\n\t\tExecute %s\n", $cmd);
         }
         exec($cmd, $output, $return);
 
         if ($this->verbose > 2) {
-            printf("\t Output %s\n", print_r($output, true));
+            printf("\t\t Output %s\n\t\t", print_r($output, true));
         }
         if ($this->verbose > 1) {
-            printf("\t Return status %s\n", ($return === 0) ? "OK" : $return);
+            printf(" : %s\n", ($return === 0) ? "OK" : $return);
         }
         if ($return !== 0) {
-            throw new \Exception(sprintf("Bash Error [%s] : %s", $cmd, print_r($output, true)));
+            throw new \Exception(sprintf("Shell Error [%s] : %s", $cmd, print_r($output, true)));
         }
         return ($return === 0);
     }
 
-    /**
-     * Execute wsh process
-     *
-     * @param array $args indexed parameters for wsh
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    protected function wshApi(array $args)
-    {
-
-        $cmd = sprintf("%s/wsh.php", getenv("wpub"));
-        foreach ($args as $k => $v) {
-            $cmd .= sprintf(" --%s=%s", $k, escapeshellarg($v));
-        }
-        if ($this->verbose > 1) {
-            printf("\tExecute %s\n", $cmd);
-        }
-        exec($cmd, $output, $return);
-
-        if ($this->verbose > 2) {
-            printf("\t Output %s\n", print_r($output, true));
-        }
-        if ($this->verbose > 1) {
-            printf("\t Return status %s\n", ($return === 0) ? "OK" : $return);
-        }
-        if ($return !== 0) {
-            throw new \Exception(sprintf("Wsh Error [%s] : %s", $cmd, print_r($output, true)));
-        }
-        return ($return === 0);
-    }
 
     /**
      * Send sql query to database
@@ -536,54 +533,11 @@ class DbMigration
      * @param bool   $singlecolumn
      * @param bool   $singleresult
      *
-     * @return string
+     * @return void
      * @throws \Exception
      */
     protected function simpleQuery($query, &$result = array(), $singlecolumn = false, $singleresult = false)
     {
         DbManager::query($query, $result, $singlecolumn, $singleresult);
-        return;
-        static $dbid = null;
-
-        if ($dbid === null) {
-            $dbaccess = getenv("pgservice_core");
-            if (!$dbaccess) {
-                throw new \Exception(sprintf("Cannot access \"pgservice_core\" en variable"));
-            }
-            $dbid = pg_connect(sprintf('service=%s', $dbaccess));
-            if (!$dbid) {
-                throw new \Exception(sprintf("Cannot connect to database  \"%s\"", $dbaccess));
-            }
-        }
-
-        $err = '';
-
-        $result = array();
-        $r = pg_query($dbid, $query);
-        if ($r) {
-            if (pg_numrows($r) > 0) {
-                if ($singlecolumn) {
-                    $result = pg_fetch_all_columns($r, 0);
-                } else {
-                    $result = pg_fetch_all($r);
-                }
-                if ($singleresult) {
-                    $result = $result[0];
-                }
-            } else {
-                if ($singleresult && $singlecolumn) {
-                    $result = false;
-                }
-            }
-        } else {
-            $err = sprintf("%s [%s]", pg_last_error($dbid), $query);
-        }
-
-        if ($err) {
-
-            throw new \Exception($err);
-        }
-
-        return $err;
     }
 }

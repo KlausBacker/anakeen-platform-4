@@ -1,23 +1,23 @@
 <migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="DbMigrationRules.xsd">
 
-    <action id="docLog" title="Add data column on doclog table">
+    <action id="docLog" label="Add data column on doclog table">
         <condition>
-            <sql-assert-empty>
+            <sql-assert-empty label="verify column data of table doclog not exists">
                 select * from information_schema.columns where table_schema = 'public' and column_name='data';
             </sql-assert-empty>
-            <sql-assert-not-empty>
+            <sql-assert-not-empty label="verify column arg of table doclog exists">
                 select * from information_schema.columns where table_schema = 'public' and column_name='arg';
             </sql-assert-not-empty>
         </condition>
         <process>
-            <sql-query stop-on-error="true" title="Add data column">
+            <sql-query label="Add data column">
                 alter table doclog add column data jsonb;
             </sql-query>
-            <php method="Anakeen\Database\Migrations\DocLogConvert::__invoke()" load-context="false"/>
+            <php label="Transfert values from arg column to data column" callable="Anakeen\Database\Migrations\DocLogConvert::__invoke()" load-context="false"/>
         </process>
         <check>
-            <sql-assert-not-empty>
+            <sql-assert-not-empty label="verify column data of table doclog has been created">
                 select * from information_schema.columns where table_schema = 'public' and column_name='data';
             </sql-assert-not-empty>
         </check>
