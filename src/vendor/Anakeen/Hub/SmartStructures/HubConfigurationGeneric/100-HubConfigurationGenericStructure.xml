@@ -26,6 +26,21 @@
         <smart:field-override access="ReadWrite" field="hub_component_tab" label="Component"/>
         <smart:field-override access="ReadWrite" field="hub_execution_roles"/>
 
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="hge_jsasset">
+                <smart:field-callable function="::checkAssetCallable"/>
+                <smart:field-argument type="field">hge_jsasset_type</smart:field-argument>
+                <smart:field-argument type="field">hge_jsasset</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="hge_cssasset">
+                <smart:field-callable function="::checkAssetCallable"/>
+                <smart:field-argument type="field">hge_cssasset_type</smart:field-argument>
+                <smart:field-argument type="field">hge_cssasset</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
+
         <smart:defaults>
             <smart:default reset="true" field="hge_jsasset_type">PATH</smart:default>
             <smart:default reset="true" field="hge_cssasset_type">PATH</smart:default>

@@ -2,6 +2,8 @@
 
 namespace Anakeen\Hub\SmartStructures\HubConfigurationGeneric;
 
+use Anakeen\Core\SmartStructure\Callables\InputArgument;
+use Anakeen\Core\SmartStructure\Callables\ParseFamilyMethod;
 use Anakeen\Exception;
 use Anakeen\SmartHooks;
 use SmartStructure\Fields\Hubconfigurationgeneric as HubConfigurationGenericFields;
@@ -38,6 +40,23 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
         ];
     }
 
+    public function checkAssetCallable($assetType, $assetValue)
+    {
+        if ($assetType === "MANIFEST") {
+            $parseMethod = new ParseFamilyMethod();
+            $parsed = $parseMethod->parse($assetValue);
+            if (empty($parsed->className) || !is_subclass_of($parsed->className, AssetPath::class)) {
+                return ___(
+                    sprintf("The callable must be a static method of a class
+                 that implements Anakeen\Hub\SmartStructures\HubConfigurationGeneric\AssetPath"),
+                    "HubConfigurationGenericBehavior"
+                );
+            }
+            return "";
+        }
+        return "";
+    }
+
     protected function resolveAssets($type)
     {
         $prefix = sprintf("hge_%s", $type);
@@ -50,20 +69,20 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
                     return null;
                 }
                 if ($assetType === "MANIFEST") {
-                    $tokens = explode("#", $assetPath);
-                    $manifestPath = preg_replace("/\/\//", "/", PUBLIC_DIR."/".$tokens[0]);
-                    if (!file_exists($manifestPath)) {
-                        throw new Exception("HUB0001", $manifestPath);
+                    $parseMethod = new ParseFamilyMethod();
+                    $parsed = $parseMethod->parse($assetPath);
+                    $args = array_map(function (InputArgument $input) {
+                        return $input->name;
+                    }, $parsed->inputs);
+                    $result = forward_static_call(
+                        sprintf("%s::%s", $parsed->className, $parsed->methodName),
+                        ...$args
+                    );
+                    if (!$result) {
+                        throw new Exception("HUB0001", $assetPath);
+                    } else {
+                        return $result;
                     }
-                    if (!empty($tokens)) {
-                        $manifest = json_decode(file_get_contents($manifestPath), true);
-                        if (!empty($tokens[1])) {
-                            return $manifest[$tokens[1]][$type];
-                        } else {
-                            return $manifest[$type];
-                        }
-                    }
-                    return null;
                 } else {
                     if (!file_exists($assetPath)) {
                         throw new Exception("HUB0001", $assetPath);
