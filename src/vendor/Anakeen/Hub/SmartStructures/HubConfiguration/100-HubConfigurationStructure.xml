@@ -38,14 +38,6 @@
         </smart:fields>
 
         <smart:parameters>
-            <smart:field-set name="hub_fr_assets" type="frame" label="Hub asset parameters" access="ReadWrite">
-                <smart:field-set name="hub_jsassets" type="array" label="Javascript assets" access="ReadWrite">
-                    <smart:field-text name="hub_jsasset" label="Javascript Url" access="ReadWrite"/>
-                </smart:field-set>
-                <smart:field-set name="hub_cssassets" type="array" label="CSS assets" access="ReadWrite">
-                    <smart:field-text name="hub_cssasset" label="Css Url" access="ReadWrite"/>
-                </smart:field-set>
-            </smart:field-set>
             <smart:field-set name="hub_p_securityaccess" type="frame" label="Security access" access="Read">
                 <smart:field-text name="hub_p_routes_role" label="Mandatory route role" access="Read"/>
             </smart:field-set>

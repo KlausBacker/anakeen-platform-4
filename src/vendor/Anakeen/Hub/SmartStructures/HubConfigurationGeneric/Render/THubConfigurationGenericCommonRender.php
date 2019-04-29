@@ -11,7 +11,7 @@ trait THubConfigurationGenericCommonRender
     {
         $assetPathDescription = function ($type) {
             return "<p>Give the url of the $type asset. The url is relative to the public directory</p>".
-            "<p>If a manifest path is given, the manifest key to use can be given with the format : <b>/the/manifest.json#manifest-key</p></b>";
+            "<p>If manifest is given, you have to specify a public static method call.</p>";
         };
 
         $options->text(HubConfigurationGenericFields::hge_cssasset)
