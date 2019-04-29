@@ -50,20 +50,24 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         ];
     }
 
+    protected function getAssets()
+    {
+        $assets = parent::getAssets();
+        $assets["js"][] = static::getJSAsset();
+        return $assets;
+    }
+
     /**
      * @return array
      * @throws \Anakeen\Ui\Exception
      */
-    public static function getJSAsset()
+    private static function getJSAsset()
     {
         $asset = UIGetAssetPath::getElementAssets("businessApp", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         if (isset($asset["business-app"]["js"])) {
-            return [
-                $asset["business-app"]["js"]
-            ];
+            return $asset["business-app"]["js"];
         }
-        $assets = parent::getAssets(\SmartStructure\Hubadmincenteraccountsvue::familyName);
-        return $assets["js"];
+        return null;
     }
 
     protected function getEntryOptions()

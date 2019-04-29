@@ -36,9 +36,6 @@
         </smart:fields>
 
         <smart:defaults>
-            <smart:default field="hub_jsasset" reset="true">
-                <smart:field-callable function="Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior::getJSAsset"/>
-            </smart:default>
             <smart:default field="hba_welcome_option" reset="true">YES</smart:default>
             <smart:default field="hba_welcome_title" reset="true">Welcome</smart:default>
             <smart:default field="hba_icon_type" reset="true">ICON</smart:default>
