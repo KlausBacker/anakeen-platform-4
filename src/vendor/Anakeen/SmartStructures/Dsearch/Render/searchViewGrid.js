@@ -2,7 +2,7 @@ import Vue from "vue";
 import SearchViewGrid from "./searchViewGrid.vue";
 
 new Vue({
-  el: "#search-ui-view",
+  el: ".search-ui-view",
   components: {
     "search-ui-view": SearchViewGrid
   },

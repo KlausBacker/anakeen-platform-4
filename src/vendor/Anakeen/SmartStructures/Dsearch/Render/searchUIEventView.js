@@ -46,9 +46,9 @@ Research result in consult mode
                 title: $documentController.documentController("getProperties")
                   .title,
                 content: {
-                  url: `/api/v2/smartstructures/dsearch/preview/${
-                    $documentController.documentController("getProperties").id
-                  }`
+                  url: `/api/v2/smartstructures/dsearch/preview/${$documentController
+                    .documentController("getProperties")
+                    .id.toString()}`
                 },
                 iframe: true,
                 position: {

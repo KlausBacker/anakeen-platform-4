@@ -12,8 +12,14 @@
       },
       data() {
         return {
-          searchId: window.ankGridSearchId
+          searchId: window.ankGridSearchId.toString()
         };
       }
     }
 </script>
+<style>
+    .dsearch-result-grid {
+        height: 100%;
+        width: 100%;
+    }
+</style>
