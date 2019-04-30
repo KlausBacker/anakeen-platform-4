@@ -4,7 +4,6 @@
       ref="accountTreeSplitter"
       class="account-manager-splitter"
       :panes="panes"
-      localStorageKey="account-manager-tree-splitter"
     >
       <template slot="left">
         <div ref="treeViewPart" class="tree-view-part">
@@ -19,12 +18,12 @@
                   ></kendo-toolbar-item>
                   <kendo-toolbar-item
                     type="button"
-                    icon="sort-asc-sm"
+                    icon="arrow-60-up"
                     @click="collapseAll"
                   ></kendo-toolbar-item>
                   <kendo-toolbar-item
                     type="button"
-                    icon="sort-desc-sm"
+                    icon="arrow-60-down"
                     @click="expandAll"
                   ></kendo-toolbar-item>
                   <kendo-toolbar-item
@@ -106,7 +105,6 @@
               ref="accountSplitter"
               class="account-manager-splitter"
               :panes="mainPanes"
-              localStorageKey="account-manager-splitter"
             >
               <template slot="left">
                 <div class="accountManager_contentPart_gridPart">
@@ -153,7 +151,7 @@
                     <kendo-grid-column
                       :command="{ text: 'Consult', click: openUser }"
                       :filterable="false"
-                      :width="'10rem'"
+                      width="8rem"
                     ></kendo-grid-column>
                   </kendo-grid>
                 </div>
