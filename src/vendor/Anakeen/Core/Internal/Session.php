@@ -9,6 +9,7 @@ class Session extends DbObj
     const SESSION_CT_CLOSE = 2;
     const SESSION_CT_ARGS = 3;
     const SESSION_MIN_BYTE_LENGTH = 16; /* 16 bytes = 128 bits */
+    const SESSION_SUBDIR='var/session';
     public $fields = array(
         "id",
         "userid",
@@ -505,7 +506,7 @@ class Session extends DbObj
 
     public function sessionDirExistsAndIsWritable()
     {
-        $sessionDir = sprintf("%s/var/session", DEFAULT_PUBDIR);
+        $sessionDir = sprintf("%s/%s", DEFAULT_PUBDIR, self::SESSION_SUBDIR);
         if (!is_dir($sessionDir)) {
             trigger_error(sprintf("Session directory '%s' does not exists.", $sessionDir));
             return false;
@@ -536,7 +537,7 @@ class Session extends DbObj
         if ($sessid === null) {
             $sessid = $this->id;
         }
-        $sessionFile = sprintf("%s/var/session/sess_%s", DEFAULT_PUBDIR, $sessid);
+        $sessionFile = sprintf("%s/%s/sess_%s", DEFAULT_PUBDIR, self::SESSION_SUBDIR, $sessid);
         if (file_exists($sessionFile)) {
             unlink($sessionFile);
         }

@@ -82,7 +82,7 @@ class SessionUtils
         }
         $maxage = time() - $session_maxage;
 
-        $sessionDir = sprintf("%s/var/session", DEFAULT_PUBDIR);
+        $sessionDir = sprintf("%s/%s", DEFAULT_PUBDIR, \Anakeen\Core\Internal\Session::SESSION_SUBDIR);
         $dir = opendir($sessionDir);
         if ($dir === false) {
             $err = sprintf("Error opening directory '%s'.", $sessionDir);
