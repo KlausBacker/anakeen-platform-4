@@ -13,9 +13,7 @@
     justify-content: center;
     flex: 1;
 
-
     .vault-infos-card {
-
       .vault-infos-card-title {
         font-weight: bold;
         font-size: 1.5rem;
@@ -23,10 +21,9 @@
       }
 
       margin: auto;
-      padding: .5rem;
+      padding: 0.5rem;
       border-bottom: 1px solid rgb(210, 210, 210);
       display: inline-block;
-
 
       .vault-infos-card-content {
         font-size: 1.1rem;
@@ -49,7 +46,7 @@
 
         .vault-infos-card-content-item-label {
           font-weight: bold;
-          margin-right: .5rem;
+          margin-right: 0.5rem;
         }
       }
     }
@@ -71,7 +68,7 @@
     min-height: 10rem;
     // flex-wrap: wrap;
     justify-content: space-between;
-    border:solid 1px #D2D2D2;
+    border: solid 1px #d2d2d2;
 
     > .disk-gauges {
       flex-direction: row;
@@ -80,10 +77,9 @@
       display: flex;
 
       .disk-gauge {
-
         min-width: 40rem;
 
-        flex:1;
+        flex: 1;
 
         display: flex;
         flex-direction: column;
@@ -91,10 +87,10 @@
         flex-wrap: wrap;
 
         .arc-gauge {
-          display:flex;
-          div[data-role=surface] {
-            width: auto!important;
-            flex:1;
+          display: flex;
+          div[data-role="surface"] {
+            width: auto !important;
+            flex: 1;
           }
         }
       }
@@ -115,26 +111,19 @@
         min-width: 50%;
         min-height: 20rem;
         max-width: 100%;
-
       }
     }
-
   }
 }
-
-
 
 .vault-progress {
   width: 100%;
   height: 2rem;
 }
 
-
-
 .disk-gauges {
-
   .disk-gauge {
-    border-bottom: solid 1px #D2D2D2;
+    border-bottom: solid 1px #d2d2d2;
     position: relative;
 
     > .k-gauge > div {
@@ -150,11 +139,10 @@
     font-weight: bold;
     text-align: center;
   }
-  .arc-legend{
+  .arc-legend {
     text-align: center;
   }
 }
-
 
 .vault-row {
   justify-content: center;
@@ -171,14 +159,14 @@
 }
 
 .k-grid-add:hover {
-  color: #157EFB !important;
+  color: #157efb !important;
   background-color: transparent;
   font-weight: bold;
 }
 
 .k-grid-add {
   color: white !important;
-  background-color: #157EFB;
+  background-color: #157efb;
   font-weight: bold;
 }
 
@@ -194,14 +182,13 @@
 }
 
 .vault-buttons {
-  display:flex;
+  display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin-top: 0.5rem;
   button {
     min-width: 9rem;
   }
-
 
   .vault-action {
   }

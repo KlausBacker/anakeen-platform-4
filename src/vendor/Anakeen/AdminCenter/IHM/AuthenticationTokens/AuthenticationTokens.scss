@@ -22,12 +22,12 @@
     flex-direction: column;
 
     .token-grid-box {
-      flex:1;
+      flex: 1;
       display: flex;
       flex-direction: column;
     }
     .token-grid {
-      height:100%;
+      height: 100%;
       table {
         // table-layout: auto;
       }
@@ -55,7 +55,6 @@
     flex-grow: 1;
   }
 
-
   .token-logo {
     display: flex;
     height: 100%;
@@ -72,7 +71,7 @@
       color: white;
     }
     a.k-button {
-        background-color: transparent;
+      background-color: transparent;
     }
   }
 }

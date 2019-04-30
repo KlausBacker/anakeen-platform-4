@@ -18,11 +18,12 @@ export default {
   name: "ank-admin-vault-manager",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-    "admin-center-vault": () => new Promise((resolve) => {
-      import("../../VaultManager/VaultManager.vue").then(Component => {
-        resolve(Component.default);
-      });
-    })
+    "admin-center-vault": () =>
+      new Promise(resolve => {
+        import("../../VaultManager/VaultManager.vue").then(Component => {
+          resolve(Component.default);
+        });
+      })
   },
   watch: {
     selectedVault(newValue) {

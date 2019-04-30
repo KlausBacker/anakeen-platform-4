@@ -102,8 +102,8 @@
 }
 
 .ank-admin-account
-.accountManager_treeViewPart_wrapper
-.accountManager_treeViewPart_wrapper_topPart {
+  .accountManager_treeViewPart_wrapper
+  .accountManager_treeViewPart_wrapper_topPart {
   height: 6em;
   width: 100%;
 }
@@ -114,7 +114,7 @@
 }
 
 .accountManager_treeViewPart_wrapper
-.accountManager_treeViewPart_wrapper_content {
+  .accountManager_treeViewPart_wrapper_content {
   height: 100%;
   width: 100%;
   overflow-y: auto;
@@ -157,7 +157,6 @@
   display: flex;
   flex-direction: row;
 }
-
 
 .k-dropdown.k-primary {
   .k-dropdown-wrap {

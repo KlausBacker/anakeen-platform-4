@@ -11,5 +11,5 @@
 </script>
 
 <style scoped>
-    @import "./GlobalParameters.scss";
+@import "./GlobalParameters.scss";
 </style>

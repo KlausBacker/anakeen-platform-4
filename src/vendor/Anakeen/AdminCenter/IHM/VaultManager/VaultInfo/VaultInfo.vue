@@ -149,6 +149,6 @@
     </div>
 </template>
 <style lang="scss">
-    @import "./VaultInfo.scss";
+@import "./VaultInfo.scss";
 </style>
 <script src="./VaultInfo.controller.ts" lang="ts"/>

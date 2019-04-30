@@ -19,12 +19,13 @@ export default {
   name: "ank-admin-account",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
   components: {
-    "admin-center-account": () => new Promise(resolve => {
-      import("../../Account/AdminCenterAccount.vue").then(Component => {
-        resolve(Component.default);
-      });
-    })
-  },
+    "admin-center-account": () =>
+      new Promise(resolve => {
+        import("../../Account/AdminCenterAccount.vue").then(Component => {
+          resolve(Component.default);
+        });
+      })
+  }
 };
 </script>
 <style>

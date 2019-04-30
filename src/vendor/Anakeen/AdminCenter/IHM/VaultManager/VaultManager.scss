@@ -1,11 +1,11 @@
 .vault-main-box {
-  display:flex;
+  display: flex;
   flex-direction: column;
   > header {
     flex: 0;
   }
   > .vault-grid-box {
-    flex:1;
+    flex: 1;
     display: flex;
     flex-direction: column;
   }
@@ -13,11 +13,10 @@
 
 .vault-manager-grid {
   height: 100%;
-  width:100%;
+  width: 100%;
   tr {
     word-break: break-word;
     td {
-
     }
   }
 }
@@ -61,7 +60,8 @@
   tr {
     word-break: break-word;
   }
-  .k-grid-consult,.k-grid-edit {
+  .k-grid-consult,
+  .k-grid-edit {
     padding: 0.5rem 2.25rem !important;
   }
 }
@@ -77,7 +77,7 @@
 }
 
 .consult-btn {
-  color: #157EFB !important;
+  color: #157efb !important;
   font-weight: bold;
   background-color: transparent;
   box-shadow: none;
@@ -87,7 +87,7 @@
 .consult-btn:hover {
   color: white !important;
   font-weight: bold;
-  background-color: #157EFB;
+  background-color: #157efb;
   box-shadow: none;
   border: none;
 }
@@ -101,5 +101,4 @@
   .vault-resize-inputs__content {
     display: flex;
   }
-
 }

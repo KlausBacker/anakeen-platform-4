@@ -1,5 +1,17 @@
 import AccountManager from "./AdminCenterAccountsEntry.vue";
 
-export default function install(Vue) {
-  Vue.component("ank-admin-account", AccountManager);
+if (
+  window &&
+  // @ts-ignore
+  window.ank &&
+  // @ts-ignore
+  window.ank.hub &&
+  // @ts-ignore
+  window.ank.hub.AdminAccountManager
+) {
+  // @ts-ignore
+  window.ank.hub.AdminAccountManager.resolve(
+    AccountManager,
+    "ank-admin-account"
+  );
 }

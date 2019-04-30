@@ -1,5 +1,17 @@
 import TokenManager from "./AuthenticationTokensHubComponent";
 
-export default function install(Vue) {
-  Vue.component("ank-hub-authentication-tokens", TokenManager);
+if (
+  window &&
+  // @ts-ignore
+  window.ank &&
+  // @ts-ignore
+  window.ank.hub &&
+  // @ts-ignore
+  window.ank.hub.AdminTokenManager
+) {
+  // @ts-ignore
+  window.ank.hub.AdminTokenManager.resolve(
+    TokenManager,
+    "ank-hub-authentication-tokens"
+  );
 }

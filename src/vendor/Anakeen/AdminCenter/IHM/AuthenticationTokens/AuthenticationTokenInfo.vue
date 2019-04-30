@@ -163,4 +163,5 @@
 @import "./AuthenticationTokenInfo.scss";
 </style>
 
-<script src="./AuthenticationTokenInfo.controller.ts" lang="ts"></script>
+<script src="./AuthenticationTokenInfo.controller.ts" lang="ts">
+</script>

@@ -55,6 +55,7 @@
     </div>
 </template>
 <style lang="scss">
-    @import "./VaultManager.scss";
+@import "./VaultManager.scss";
 </style>
-<script src="./VaultManager.controller.ts" lang="ts"></script>
+<script src="./VaultManager.controller.ts" lang="ts">
+</script>
