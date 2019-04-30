@@ -49,6 +49,26 @@
         color: inherit;
       }
     }
+    .k-command-cell {
+      text-align: center;
+      .k-button {
+        color: #157efb;
+        font-weight: bold;
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        padding-right:0.5rem;
+        padding-left:0.5rem;
+      }
+
+      .k-button:hover {
+        color: white;
+        font-weight: bold;
+        background-color: #157efb;
+        box-shadow: none;
+        border: none;
+      }
+    }
   }
 
   > .ank-token-splitter {

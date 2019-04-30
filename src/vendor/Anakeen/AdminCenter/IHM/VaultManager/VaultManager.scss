@@ -9,6 +9,37 @@
     display: flex;
     flex-direction: column;
   }
+  .k-command-cell {
+    text-align: center;
+    .k-button {
+      color: #157efb;
+      font-weight: bold;
+      background-color: transparent;
+      box-shadow: none;
+      border: none;
+      padding-right:0.5rem;
+      padding-left:0.5rem;
+
+
+      &:hover {
+        color: white;
+        font-weight: bold;
+        background-color: #157efb;
+        box-shadow: none;
+        border: none;
+
+      }
+    }
+
+    &.vault--selected {
+      color: white;
+      .k-button {
+        color: white;
+        border:solid 1px white;
+      }
+    }
+
+  }
 }
 
 .vault-manager-grid {
@@ -34,6 +65,10 @@
     }
     a.k-button {
       background-color: transparent;
+      color: white;
+      &:hover {
+        border: solid 1px white;
+      }
     }
   }
   .vault-grid--error {
