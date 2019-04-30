@@ -47,4 +47,5 @@
 @import "./AuthenticationTokens.scss";
 </style>
 
-<script src="./AuthenticationTokens.controller.ts" lang="ts"></script>
+<script src="./AuthenticationTokens.controller.ts" lang="ts">
+</script>

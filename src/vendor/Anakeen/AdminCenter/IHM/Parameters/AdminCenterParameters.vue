@@ -17,4 +17,5 @@
 @import "./AdminCenterParameters.css";
 </style>
 
-<script src="./AdminCenterParameters.controller.ts" lang="ts"></script>
+<script src="./AdminCenterParameters.controller.ts" lang="ts">
+</script>

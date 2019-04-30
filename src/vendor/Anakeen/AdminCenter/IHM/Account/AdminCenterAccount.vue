@@ -176,4 +176,5 @@
 <style lang="scss">
 @import "./AdminCenterAccount.scss";
 </style>
-<script src="./AdminCenterAccount.controller.ts" lang="ts"></script>
+<script src="./AdminCenterAccount.controller.ts" lang="ts">
+</script>

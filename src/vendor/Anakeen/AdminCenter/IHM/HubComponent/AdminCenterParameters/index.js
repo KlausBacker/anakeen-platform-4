@@ -1,5 +1,13 @@
 import ParameterManager from "./AdminCenterParametersEntry.vue";
 
-export default function install(Vue) {
-  Vue.component("ank-admin-parameter", ParameterManager);
+if (
+  window &&
+  window.ank &&
+  window.ank.hub &&
+  window.ank.hub.AdminParametersManager
+) {
+  window.ank.hub.AdminParametersManager.resolve(
+    ParameterManager,
+    "ank-admin-parameter"
+  );
 }

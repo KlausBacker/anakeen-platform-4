@@ -20,9 +20,10 @@ export default class UserParametersController extends Vue {
       editor.destroy();
     }
   }
-  @Prop({ type: Boolean }) public globalParameters;
+  @Prop({ type: Boolean })
+  public globalParameters;
   // Data source for user parameters treeList
-  public userParametersDataSource: IuserParametersDataSource;
+  public userParametersDataSource: IUserParametersDataSource;
 
   // Current edited item and route url to modify it
   public editedItem: any = null;

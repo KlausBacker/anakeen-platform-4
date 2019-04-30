@@ -1,5 +1,4 @@
 .authentication-token-info {
-
   &.tokenExpired > p.token-expired {
     background: var(--warning);
   }
@@ -82,7 +81,7 @@
       }
       button[data-active] {
         background: var(--primary);
-        color:  var(--white);
+        color: var(--white);
       }
     }
     .token-buttons {
