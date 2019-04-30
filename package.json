@@ -1,6 +1,6 @@
 {
   "name": "migration-tools",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Migration tools to migrate data from Dynacase to Anakeen Platform",
   "main": "index.js",
   "scripts": {

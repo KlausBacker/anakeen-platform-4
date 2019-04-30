@@ -2,10 +2,12 @@
 
 namespace Anakeen\Routes\Migration\Module;
 
+use Anakeen\Accounts\SearchAccounts;
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\Internal\ContextParameterManager;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SmartStructure;
+use Anakeen\Exchange\ExportAccounts;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Config\RouterInfo;
 use Anakeen\Router\Exception;
@@ -16,7 +18,6 @@ use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Anakeen\Ui\ExportRenderAccessConfiguration;
 use Anakeen\Workflow\ExportElementConfiguration;
 use Anakeen\Workflow\ExportWorkflowConfiguration;
-use Dcp\Core\ExportAccounts;
 
 class Download
 {
@@ -127,14 +128,13 @@ class Download
         $this->addCvdocsConfig($structure);
         $this->addFieldAccessConfig($structure);
         $this->addWorkflowConfig($structure);
-
     }
 
     protected function addRoles()
     {
         $e = new ExportAccounts();
-        $sAccounts = new \SearchAccount();
-        $sAccounts->setTypeFilter(\SearchAccount::roleType);
+        $sAccounts = new SearchAccounts();
+        $sAccounts->setTypeFilter(SearchAccounts::roleType);
         $e->setSearchAccount($sAccounts);
         $e->setExportDocument(false);
         $xmlFile = sprintf("%s/Accounts/100-Roles.xml", $this->outputPath);
@@ -144,8 +144,8 @@ class Download
     protected function addGroups()
     {
         $e = new ExportAccounts();
-        $sAccounts = new \SearchAccount();
-        $sAccounts->setTypeFilter(\SearchAccount::groupType);
+        $sAccounts = new SearchAccounts();
+        $sAccounts->setTypeFilter(SearchAccounts::groupType);
         $e->setSearchAccount($sAccounts);
         $e->setExportDocument(false);
         $xmlFile = sprintf("%s/Accounts/110-Groups.xml", $this->outputPath);
@@ -259,7 +259,7 @@ class Download
             $e->extractWorkflow(
                 ExportWorkflowConfiguration::X_CONFIGACCESS
             );
-            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/130-%sWorkflowPermissions.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
+            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/530-%sWorkflowPermissions.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
             $this->zip->addFromString($xmlFile, $e->toXml());
 
 
@@ -267,7 +267,7 @@ class Download
             $e->extractWorkflow(
                 ExportWorkflowConfiguration::X_WFLACCESS
             );
-            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/140-%sWorkflowAccess.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
+            $xmlFile = sprintf("%s/SmartStructures/%s/Workflows/540-%sWorkflowAccess.xml", $this->outputPath, $structName, self::getLogicalName($workflow));
             $this->zip->addFromString($xmlFile, $e->toXml());
         }
 

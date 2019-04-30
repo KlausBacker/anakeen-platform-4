@@ -6,7 +6,7 @@ use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
-use Dcp\Exception;
+use Anakeen\Exception;
 
 /**
  * Class StructureTransfert
@@ -41,6 +41,9 @@ class InitTransfert
     {
         $data = [];
 
+        // Testing connexion with foreign server first
+        Utils::importForeignTable("docfam");
+
         DbManager::query("create schema if not exists dynacase;");
         $tools = file_get_contents(__DIR__ . "/../../../Migration/Tools.sql");
         DbManager::query($tools);
@@ -65,16 +68,17 @@ class InitTransfert
                 DbManager::query($sql);
             }
         }
-        $sql = "select id from docfam where id > 899";
-        DbManager::query($sql, $ids, true, false);
-        foreach ($ids as $id) {
-            $id = intval($id);
-            $sql = sprintf("alter table doc%d rename to doc%d", $id + 100, $id);
-            DbManager::query($sql);
-            $sql = sprintf("alter sequence seq_doc%d rename to seq_doc%d", $id + 100, $id);
-            DbManager::query($sql);
+        if ($ids) {
+            $sql = "select id from docfam where id > 899";
+            DbManager::query($sql, $ids, true, false);
+            foreach ($ids as $id) {
+                $id = intval($id);
+                $sql = sprintf("alter table doc%d rename to doc%d", $id + 100, $id);
+                DbManager::query($sql);
+                $sql = sprintf("alter sequence seq_doc%d rename to seq_doc%d", $id + 100, $id);
+                DbManager::query($sql);
+            }
         }
-
         DbManager::query("commit");
     }
 
@@ -201,6 +205,8 @@ SQL;
 
         $sqls[] = sprintf("update family.cvdoc set cv_mskid=array_replace(cv_mskid::int[], %d, %d)::int[]", $idFrom, $idTo);
         $sqls[] = sprintf("update family.fieldaccesslayerlist set fall_layer=array_replace(fall_layer::int[], %d, %d)::int[]", $idFrom, $idTo);
+        $sqls[] = sprintf("update family.hubconfiguration set hub_station_id='%d' where hub_station_id::int = '%d'", $idTo, $idFrom);
+        $sqls[] = sprintf("update family.hubconfiguration set hub_execution_roles=array_replace(hub_execution_roles::int[], %d, %d)::int[]", $idFrom, $idTo);
         return $sqls;
     }
 }

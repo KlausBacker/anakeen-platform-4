@@ -9,7 +9,7 @@ use Anakeen\Core\SmartStructure;
 use Anakeen\Migration\Utils;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
-use Dcp\Ui\RenderConfigManager;
+use Anakeen\Ui\RenderConfigManager;
 
 /**
  * Class StructureTransfert
