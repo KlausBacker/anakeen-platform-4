@@ -30,6 +30,32 @@ class HubEntries {
   loadAssets() {
     return Promise.all(
       this.contents.map(dockContent => {
+        if (dockContent.entryOptions && dockContent.entryOptions.libName) {
+          window.ank = window.ank || {};
+          window.ank.hub = window.ank.hub || {};
+          if (!window.ank.hub[dockContent.entryOptions.libName]) {
+            let hubElementOk, hubElementKo;
+            const hubElementPromise = new Promise((resolve, reject) => {
+              hubElementOk = (
+                vueComponent,
+                name = dockContent.entryOptions.libName
+              ) => {
+                resolve({
+                  name,
+                  component: vueComponent
+                });
+              };
+              hubElementKo = error => {
+                reject(error);
+              };
+            });
+            window.ank.hub[dockContent.entryOptions.libName] = {
+              promise: hubElementPromise,
+              resolve: hubElementOk,
+              reject: hubElementKo
+            };
+          }
+        }
         if (dockContent.assets) {
           const assets = dockContent.assets;
           const assetsPromises = [];
@@ -65,20 +91,18 @@ class HubEntries {
   }
 
   useComponents() {
-    this.contents.map(dockContent => {
-      let libName;
-      if (dockContent && dockContent.entryOptions && dockContent.component) {
-        // Use js module (that defines the vue component)
-        if (dockContent.entryOptions.libName) {
-          libName = dockContent.entryOptions.libName;
-          // Use the vue plugin available in global space
-          const lib = window[libName] || global[libName];
-          if (lib) {
-            Vue.use(lib);
-          }
-        }
-      }
-    });
+    if (window && window.ank && window.ank.hub) {
+      return Promise.all(
+        Object.values(window.ank.hub).map(
+          currentElement => currentElement.promise
+        )
+      ).then(hubElement => {
+        hubElement.map(currentElement => {
+          Vue.component(currentElement.name, currentElement.component);
+        });
+      });
+    }
+    return Promise.resolve();
   }
 }
 
