@@ -1,5 +1,6 @@
 import TeManager from "./AdminCenterTeManagerEntry";
 
-export default function install(Vue) {
-  Vue.component("ank-hub-te-manager", TeManager);
+if (window && window.ank && window.ank.hub && window.ank.hub.AdminTeManager) {
+  // @ts-ignore
+  window.ank.hub.AdminTeManager.resolve(TeManager, "ank-hub-te-manager");
 }
