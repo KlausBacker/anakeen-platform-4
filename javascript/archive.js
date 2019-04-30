@@ -243,7 +243,7 @@ function updateArchiveList_success(responseObject, select) {
                                                                     .getValue()) {
                                                                     Ext.Msg
                                                                         .alert(
-                                                                            'Dynacase Control',
+                                                                            'Anakeen Control',
                                                                             'A name must be provided.');
                                                                     return;
                                                                 }
@@ -255,7 +255,7 @@ function updateArchiveList_success(responseObject, select) {
                                                                     .getValue()) {
                                                                     Ext.Msg
                                                                         .alert(
-                                                                            'Dynacase Control',
+                                                                            'Anakeen Control',
                                                                             'A root must be provided.');
                                                                     return;
                                                                 }
@@ -267,7 +267,7 @@ function updateArchiveList_success(responseObject, select) {
                                                                     .getValue()) {
                                                                     Ext.Msg
                                                                         .alert(
-                                                                            'Dynacase Control',
+                                                                            'Anakeen Control',
                                                                             'A vault path must be provided.');
                                                                     return;
                                                                 }
@@ -279,7 +279,7 @@ function updateArchiveList_success(responseObject, select) {
                                                                     .getValue()) {
                                                                     Ext.Msg
                                                                         .alert(
-                                                                            'Dynacase Control',
+                                                                            'Anakeen Control',
                                                                             'A database service must be provided.');
                                                                     return;
                                                                 }
@@ -296,7 +296,7 @@ function updateArchiveList_success(responseObject, select) {
                                                                         .getValue()) {
                                                                         Ext.Msg
                                                                             .alert(
-                                                                                'Dynacase Control',
+                                                                                'Anakeen Control',
                                                                                 'If you remove profiles, you must specify a user login.');
                                                                         return;
                                                                     }
@@ -307,7 +307,7 @@ function updateArchiveList_success(responseObject, select) {
                                                                         .getValue()) {
                                                                         Ext.Msg
                                                                             .alert(
-                                                                                'Dynacase Control',
+                                                                                'Anakeen Control',
                                                                                 'If you remove profiles, you must specify a user password.');
                                                                         return;
                                                                     }
@@ -605,7 +605,7 @@ function end_restore() {
     wstart_cb(function (context, response) {
         Ext.Msg
             .alert(
-                'Dynacase Control',
+                'Anakeen Control',
                 'Context '
                 + currentContext
                 + ' successfully created',
@@ -829,7 +829,7 @@ function end_archive() {
     wstart_cb(function (context, response) {
         Ext.Msg
             .alert(
-            'Dynacase Control',
+            'Anakeen Control',
             'Context successfully archived',
             function () {
                 (function () {
@@ -895,7 +895,7 @@ function deleteArchive_success(responseObject) {
     if (response.error) {
         Ext.Msg.alert('Server Error', response.error);
     } else {
-        Ext.Msg.alert('Dynacase Control', 'Archive deleted.', function () {
+        Ext.Msg.alert('Anakeen Control', 'Archive deleted.', function () {
             updateArchiveList('select-last');
         });
     }
