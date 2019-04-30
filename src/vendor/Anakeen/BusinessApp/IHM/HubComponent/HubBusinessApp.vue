@@ -32,10 +32,10 @@ import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 import BusinessApp from "../BusinessApp/BusinessApp.vue";
 
 @Component({
-  name: "HubBusinessApp",
+  name: "ank-business-app",
   extends: HubElement,
   components: {
-    BusinessApp
+    "business-app": BusinessApp
   }
 })
 export default class HubBusinessApp extends Vue {
