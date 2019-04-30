@@ -183,7 +183,10 @@ export default class HubStation extends Vue {
 
   @Watch("activeRoute")
   protected onActiveRouteChanged(val: string) {
-    this.alreadyVisited[val] = true;
+    // reaffect alreadyVisited to make it reactive for vue
+    this.alreadyVisited = Object.assign({}, this.alreadyVisited, {
+      [val]: true
+    });
   }
 
   protected initRouterConfig(configData: IHubStationDockConfigs) {
