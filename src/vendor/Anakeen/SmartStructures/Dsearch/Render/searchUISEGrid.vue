@@ -1,11 +1,9 @@
 <template>
-    <div class="grid-parent">
-        <ank-se-grid v-if="searchId" url-config="/api/v2/smartstructures/dsearch/gridConfig/<collection>"
-                     :server-paging="true"
-                     :server-sorting="true" :server-filtering="true" :collection="searchId" class="search-grid"
-                     :contextTitles="false" ref="searchGrid">
-        </ank-se-grid>
-    </div>
+    <ank-se-grid v-if="searchId" url-config="/api/v2/smartstructures/dsearch/gridConfig/<collection>"
+                 :server-paging="true"
+                 :server-sorting="true" :server-filtering="true" :collection="searchId" class="search-grid"
+                 :contextTitles="false" ref="searchGrid">
+    </ank-se-grid>
 </template>
 <script>
   import AnkSEGrid from "../../../../../../components/lib/AnkSEGrid";
@@ -56,8 +54,7 @@
   };
 </script>
 <style lang="scss">
-    .grid-parent {
+    .search-grid {
         height: 100%;
-        width: 100%;
     }
 </style>
