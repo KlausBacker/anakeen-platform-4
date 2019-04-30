@@ -3,7 +3,19 @@
   height: 100%;
   width: 100%;
   overflow-y: hidden;
+  background-color: white;
 
+
+  .ank-loading {
+    background: transparent;
+    margin-top: 3px;
+
+    /deep/ {
+      .main-logo *, .text-logo * {
+        fill: black !important;
+      }
+    }
+  }
   iframe {
     visibility: visible !important;
     height: 100%;

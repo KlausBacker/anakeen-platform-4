@@ -8,12 +8,21 @@
     :id="`se-pane-${paneName}`"
     :aria-labelledby="`se-tab-${paneName}`"
   >
-    <slot
-      ><ank-smart-element
+    <slot>
+      <ank-smart-element
+        v-show="documentLoaded"
         class="ank-se-tab-element"
         ref="smartElement"
-      ></ank-smart-element
-    ></slot>
+        @documentLoaded="onDocumentLoaded"
+      ></ank-smart-element>
+      <ank-loading
+        class="ank-loading"
+        :fullLabel="false"
+        height="30px"
+        fontColor="black"
+        v-if="!documentLoaded"
+      ></ank-loading>
+    </slot>
   </div>
 </template>
 <!-- CSS to this component only -->
