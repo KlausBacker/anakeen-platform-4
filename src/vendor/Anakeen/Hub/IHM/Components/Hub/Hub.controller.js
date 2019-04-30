@@ -124,9 +124,10 @@ export default {
             data.hubElements
           );
           return this.hubEntries.loadAssets().then(() => {
-            kendo.ui.progress($(this.$el), false);
-            this.hubEntries.useComponents();
-            this.config = data;
+            return this.hubEntries.useComponents().then(() => {
+              this.config = data;
+              kendo.ui.progress($(this.$el), false);
+            });
           });
         })
         .catch(error => {
