@@ -1,5 +1,6 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import AnkSmartElement from "../../SmartElement/SmartElement.vue";
+import AnkLoading from "../../AnakeenLoading/AnakeenLoading.vue";
 import { SmartElementEvents } from "../../SmartElement/SmartElementEvents";
 
 const capitalize = str => {
@@ -9,7 +10,8 @@ const capitalize = str => {
 @Component({
   name: "ank-se-tab",
   components: {
-    "ank-smart-element": AnkSmartElement
+    "ank-smart-element": AnkSmartElement,
+    "ank-loading": AnkLoading
   }
 })
 export default class SETab extends Vue {
@@ -33,6 +35,7 @@ export default class SETab extends Vue {
   public isDirty: boolean = false;
   public elementIcon: string = `<i class="fa fa-spinner fa-spin"></i>`;
   public elementTitle: string = this.label;
+  public documentLoaded: boolean = false;
 
   public $refs!: {
     smartElement: AnkSmartElement;
@@ -131,5 +134,9 @@ export default class SETab extends Vue {
     } else {
       return Promise.resolve();
     }
+  }
+
+  private onDocumentLoaded() {
+    this.documentLoaded = true;
   }
 }

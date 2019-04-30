@@ -36,7 +36,7 @@ $navListSize: 4rem;
       position: absolute;
       cursor: pointer;
       font-size: 1.3rem;
-      color: #157EFB;
+      //color: #157EFB;
       & /deep/ {
         .anchor {
           color: #157EFB;
@@ -46,6 +46,8 @@ $navListSize: 4rem;
         a {
           color: #909399;
           text-decoration: none;
+          text-overflow: ellipsis;
+          overflow: hidden;
 
           &:hover {
             color: #00B4FC;
@@ -57,6 +59,14 @@ $navListSize: 4rem;
           }
         }
 
+        .menu {
+          max-width: 25rem;
+          .menu-item.is-active {
+            .ank-tab-item-close {
+              color: #FF542C;
+            }
+          }
+        }
 
       }
       .ank-tab-item-close {
