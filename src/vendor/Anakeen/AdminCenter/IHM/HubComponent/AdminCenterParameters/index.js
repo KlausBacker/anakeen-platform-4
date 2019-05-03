@@ -4,9 +4,9 @@ if (
   window &&
   window.ank &&
   window.ank.hub &&
-  window.ank.hub.AdminParametersManager
+  window.ank.hub["ank-admin-parameter"]
 ) {
-  window.ank.hub.AdminParametersManager.resolve(
+  window.ank.hub["ank-admin-parameter"].resolve(
     ParameterManager,
     "ank-admin-parameter"
   );

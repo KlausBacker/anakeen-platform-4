@@ -7,10 +7,10 @@ if (
   // @ts-ignore
   window.ank.hub &&
   // @ts-ignore
-  window.ank.hub.AdminTokenManager
+  window.ank.hub["ank-hub-authentication-tokens"]
 ) {
   // @ts-ignore
-  window.ank.hub.AdminTokenManager.resolve(
+  window.ank.hub["ank-hub-authentication-tokens"].resolve(
     TokenManager,
     "ank-hub-authentication-tokens"
   );
