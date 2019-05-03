@@ -1,6 +1,5 @@
 import AnkNotifier from "@anakeen/internal-components/lib/Notifier";
 import HubStation from "@anakeen/hub-components/lib/HubStation";
-import HubEntries from "./utils/hubEntry";
 
 //noinspection JSUnusedGlobalSymbols
 export default {
@@ -11,12 +10,11 @@ export default {
   },
   data() {
     return {
-      config: {},
+      config: window.ank.hub.initialData || {},
       hubId: ""
     };
   },
   created() {
-    this.hubEntries = new HubEntries(this);
     this.hubId = window.AnkHubInstanceId;
     this.$store.subscribe(mutationPayload => {
       if (mutationPayload.type === "SET_NOTIFICATION") {
@@ -31,7 +29,6 @@ export default {
     });
   },
   mounted() {
-    this.getConfig();
     this.interceptRequest();
   },
 
