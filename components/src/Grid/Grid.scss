@@ -1,6 +1,7 @@
 .smart-element-grid {
 
   height: 100%;
+  max-height: 100%;
   width: 100%;
   .k-grid {
     tr.k-state-selected, th.k-state-selected, td.k-state-selected {
@@ -66,9 +67,11 @@
     display: flex;
     flex: 1;
     flex-direction: row;
+    height: 100%;
     min-height: 0;
 
     > .k-grid {
+      min-height: 0;
       height: 100%;
       flex: 1;
       display: flex !important;
@@ -83,6 +86,7 @@
     padding: 0;
     border-width: 0;
     height: 100%;
+    min-height: 0;
   }
 
   th[data-role=columnsorter]:not(.k-sorted) {

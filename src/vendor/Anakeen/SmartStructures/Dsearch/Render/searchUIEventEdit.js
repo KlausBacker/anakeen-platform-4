@@ -43,8 +43,12 @@
         },
         function eventButtonEdit(event, document, data) {
           if (data.eventId === "previewEdit") {
-            $tab.kendoTabStrip("select", ".result-tab");
-            showTmpGrid(event, $documentController);
+            var currentTab = $tab.data("kendoTabStrip").select()[0].className;
+            if (currentTab.includes("result-tab")) {
+              showTmpGrid(event, $documentController);
+            } else {
+              $tab.kendoTabStrip("select", ".result-tab");
+            }
           }
         }
       );

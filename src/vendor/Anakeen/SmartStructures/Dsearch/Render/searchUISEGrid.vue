@@ -54,7 +54,4 @@
   };
 </script>
 <style lang="scss">
-    .search-grid {
-        height: 100%;
-    }
 </style>
