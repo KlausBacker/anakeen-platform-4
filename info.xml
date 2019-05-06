@@ -498,13 +498,14 @@
     </post-upgrade>
 
     <post-restore>
-        <process command="ank.php --script=manageContextCrontab --cmd=register --file=FREEDOM/freedom.cron"/>
-        <process command="programs/reconfigure_core_tmpdir reconfigure CORE_TMPDIR"/>
-        <process command="programs/reconfigure_core_tmpdir reconfigure FREEDOM_UPLOADDIR"/>
+        <process command="./ank.php --script=manageContextCrontab --cmd=register --file=vendor/Anakeen/anakeen.cron"/>
     </post-restore>
 
     <reconfigure>
-        <process command="programs/toolbox_reconfigure"/>
+        <process command="programs/reconfigure_config.php"/>
+        <process command="programs/reconfigure_config.bash"/>
+        <process command="programs/config.php --set dbService '@{core_db}'"/>
+        <process command="programs/core_accessUpdate"/>
     </reconfigure>
 
     <pre-delete>

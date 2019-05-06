@@ -116,10 +116,9 @@ class HtmlAuthenticator extends Authenticator
      */
     public function getAuthUrl(array $extendedArg = array())
     {
-
         $hasArgs = false;
-        $location = \Anakeen\Core\Internal\Session::getWebRootPath();
-        $location .= "./login/";
+
+        $location = "/login/";
         if (!empty($this->parms['auth']['args'])) {
             $location .= '?' . $this->parms['auth']['args'];
             $hasArgs = true;
