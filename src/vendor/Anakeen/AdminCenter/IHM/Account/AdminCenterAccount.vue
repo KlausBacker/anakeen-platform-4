@@ -10,7 +10,7 @@
           <div class="accountManager_treeViewPart_wrapper">
             <div class="accountManager_treeViewPart_wrapper_topPart">
               <div class="accountManager_treeViewPart_wrapper_topPart_btnPart">
-                <kendo-toolbar class="tree-toolbar">
+                <kendo-toolbar ref="treeToolbar" class="tree-toolbar">
                   <kendo-toolbar-item
                     type="button"
                     icon="refresh"
@@ -25,12 +25,6 @@
                     type="button"
                     icon="arrow-60-down"
                     @click="expandAll"
-                  ></kendo-toolbar-item>
-                  <kendo-toolbar-item
-                    type="button"
-                    @click="openGroup"
-                    id="openGroupBtn"
-                    icon="folder-open"
                   ></kendo-toolbar-item>
                 </kendo-toolbar>
               </div>
@@ -65,6 +59,7 @@
             <div class="admin-account-header__content">
               <kendo-button
                 class="k-primary change-group-btn"
+                :disabled="!this.groupId || this.groupId === '@users'"
                 @click="openChangeGroup"
                 >Move group
               </kendo-button>
@@ -98,6 +93,12 @@
                 @select="selectCreateGroupConfig"
                 @open="addClassOnSelectorContainer"
               />
+              <kendo-button
+                      class="k-primary change-group-btn"
+                      :disabled="!this.groupId || this.groupId === '@users'"
+                      @click="openGroup"
+              >Group info
+              </kendo-button>
             </div>
           </header>
           <section>
@@ -149,7 +150,7 @@
                       type="string"
                     ></kendo-grid-column>
                     <kendo-grid-column
-                      :command="{ text: 'Consult', click: openUser }"
+                      :command="{ text: 'Display', click: openUser }"
                       :filterable="false"
                       width="8rem"
                     ></kendo-grid-column>

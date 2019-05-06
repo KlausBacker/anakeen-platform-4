@@ -248,9 +248,8 @@ export default class AuthenticationTokensController extends Vue {
                   .removeClass("token--selected");
                 $tr.addClass("token--selected");
               },
-              text: "Info"
+              text: "Display"
             },
-
             width: "10rem"
           }
         ],
@@ -263,7 +262,14 @@ export default class AuthenticationTokensController extends Vue {
           }
         },
         dataSource: {
-          filter: { field: "token", operator: "contains", value: this.value },
+          filter: this.value
+            ? {
+                field: "token",
+                operator: "contains",
+                value: this.value
+              }
+            : {},
+
           schema: {
             data: response => {
               return response.data;
@@ -294,7 +300,13 @@ export default class AuthenticationTokensController extends Vue {
 
         filterable: {
           extra: false,
-          mode: "row"
+          operators: {
+            string: {
+              contains: "Contains"
+            }
+          }
+
+          // mode: "row"
         },
         pageable: {
           alwaysVisible: true,

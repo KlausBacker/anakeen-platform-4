@@ -198,17 +198,12 @@ export default class AdminCenterAccountController extends Vue {
   public groupTitle: any = false;
   @Watch("groupId")
   public watchGroupId(value) {
-    const changeBtn = $(".change-group-btn").data("kendoButton");
     const createGrpBtn = this.$refs.groupList.kendoWidget();
-    const toolbar = $(".tree-toolbar").data("kendoToolBar");
+    const toolbar = $(this.$refs.treeToolbar).data("kendoToolBar");
     if (value === "@users") {
       createGrpBtn.setOptions({ optionLabel: "Create group" });
-      toolbar.enable("#openGroupBtn", false);
-      changeBtn.enable(false);
     } else {
       createGrpBtn.setOptions({ optionLabel: "Create sub group" });
-      toolbar.enable("#openGroupBtn");
-      changeBtn.enable(true);
     }
   }
 
