@@ -991,7 +991,7 @@ EOF;
         $archiveContext['error'] = $errorMsg;
         $archivedContextList[] = $archiveContext;
     }
-    
+
     public function getArchivedContextList()
     {
         $archivedContextList = array();
@@ -1168,7 +1168,7 @@ EOF;
     {
         $archiveList = $this->getArchivedContextList();
         foreach ($archiveList as $archive) {
-            if ($archive['id'] === $archiveId) {
+            if (isset($archive['id']) && ($archive['id'] === $archiveId)) {
                 return $archive;
             }
         }
@@ -1622,8 +1622,9 @@ WITH
         SELECT 'SEQUENCE'::text AS type, sequence_schema AS schema, sequence_name AS name FROM information_schema.sequences, schemas WHERE sequence_schema = schema_name
     ),
     routines AS (
-        SELECT 'ROUTINE'::text AS type, routine_schema AS schema, routine_name AS name FROM information_schema.routines, schemas WHERE routine_schema = schema_name
+        SELECT 'ROUTINE'::text AS type, routine_schema AS schema, routine_name AS name FROM information_schema.routines, schemas WHERE routine_schema = schema_name and routine_type <> 'FUNCTION'
     ),
+    
     triggers AS (
         SELECT 'TRIGGER'::text AS type, trigger_schema AS schema, trigger_name AS name FROM information_schema.triggers, schemas WHERE trigger_schema = schema_name 
     ),

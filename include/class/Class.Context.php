@@ -1429,8 +1429,7 @@ class Context extends ContextProperties
      */
     public function setParamByName($paramName, $paramValue)
     {
-        require_once __DIR__.'./Class.WIFF.php';
-
+        require_once __DIR__.'/Class.WIFF.php';
         $wiff = WIFF::getInstance();
 
         $xml = $wiff->loadContextsDOMDocument();
@@ -1871,9 +1870,12 @@ class Context extends ContextProperties
             $this->writeArchiveError($archiveId, $archived_tmp_dir);
             return false;
         }
+
         $tarExcludeOpts = '';
         $tarExcludeList = array(
-            sprintf("--exclude %s", escapeshellarg('.' . DIRECTORY_SEPARATOR . 'var'))
+            sprintf("--exclude %s", escapeshellarg('.' . DIRECTORY_SEPARATOR . 'var/tmp')),
+            sprintf("--exclude %s", escapeshellarg('.' . DIRECTORY_SEPARATOR . 'var/session')),
+            sprintf("--exclude %s", escapeshellarg('.' . DIRECTORY_SEPARATOR . 'var/cache'))
         );
         foreach ($vaultList as $vault) {
             $r_path = $vault['r_path'];
@@ -2042,6 +2044,7 @@ class Context extends ContextProperties
 
         $zip->close();
 
+        printf("\rWrote \"%s\"\n", $zipfile);
         return $archiveId;
     }
 
@@ -2550,7 +2553,7 @@ class Context extends ContextProperties
          * to check the existence of the target but really want to check the existence
          * of the symlink itself.
          */
-        if (lstat($path) === false) {
+        if (@lstat($path) === false) {
             return true;
         }
 

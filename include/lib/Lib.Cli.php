@@ -2643,7 +2643,7 @@ function wiff_context_archive(&$context, $argv)
     $modules = $context->getInstalledModuleList();
     /* pre-archive */
     foreach ($modules as & $module) {
-        printf("Doing '%s' of module '%s'.\n", 'pre-archive', $module->name);
+        printf("\rDoing '%s' of module '%-40s'.", 'pre-archive', $module->name);
         if (($ret = executeModulePhase($module, 'pre-archive', $options)) != 0) {
             $context->wstart($output, array('-m'));
             return $ret;
@@ -2651,6 +2651,8 @@ function wiff_context_archive(&$context, $argv)
     }
     unset($module);
     /* archive */
+
+    printf("\r%-60s", "Archiving ...");
     $archiveId = $context->archiveContext($archiveName, $archiveDesc, $excludeVault);
     if ($archiveId === false) {
         printerr(sprintf("Error: could not archive context: %s\n", $context->errorMessage));
@@ -2659,7 +2661,7 @@ function wiff_context_archive(&$context, $argv)
     }
     /* post-archive */
     foreach ($modules as & $module) {
-        printf("Doing '%s' of module '%s'.\n", 'post-archive', $module->name);
+        printf("\rDoing '%s' of module '%40s'.", 'post-archive', $module->name);
         if (($ret = executeModulePhase($module, 'post-archive', $options)) != 0) {
             $context->wstart($output, array('-m'));
             return $ret;
@@ -2669,7 +2671,7 @@ function wiff_context_archive(&$context, $argv)
 
     $context->wstart($output, array('-m'));
 
-    printf("%s\n", $archiveId);
+    printf("\rArchive \"%s\" %40s\n", $archiveId, "");
     return 0;
 }
 
@@ -2841,16 +2843,17 @@ function wiff_archive_info($archiveId, &$argv)
 }
 
 /**
- * @param $argv
  *
  * @return int
  */
-function wiff_list_archive(&$argv)
+function wiff_list_archive()
 {
     $wiff = WIFF::getInstance();
     $archiveList = $wiff->getArchivedContextList();
     foreach ($archiveList as $archive) {
-        printf("%s\n", $archive['id']);
+        if (isset($archive['id'])) {
+            printf("%s\n", $archive['id']);
+        }
     }
     return 0;
 }
