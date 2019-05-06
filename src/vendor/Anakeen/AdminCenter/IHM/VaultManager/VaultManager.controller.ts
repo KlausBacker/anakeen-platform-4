@@ -247,7 +247,7 @@ export default class VaultManagerController extends Vue {
                     .removeClass("vault--selected");
                   $tr.addClass("vault--selected");
                 },
-                text: "Info"
+                text: "Display"
               },
               width: "10rem"
             }
