@@ -506,6 +506,7 @@ export default class GridController extends Vue {
         }
       : this.sortable,
     reorderable: this.reorderable,
+    height: "calc(100% - 2rem)",
     pageable: this.pageable
       ? {
           pageSizes: this.pageSizes,
@@ -528,7 +529,6 @@ export default class GridController extends Vue {
     this.dataSource = new kendo.data.DataSource({
       data: this.gridDataUtils.parseData(data)
     });
-    console.log(this.dataSource);
   }
   public onSettingsChange(changes) {
     if (changes) {

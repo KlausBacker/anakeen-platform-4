@@ -36,13 +36,13 @@
         {
           name: "getTmpViewId",
           documentCheck: function isReport(document) {
-            return document.renderMode === "view" && document.type === "search";
+            return document.type === "search";
           }
         },
         function prepareResultViewEvents(event, data) {
           that.searchId = data.id.toString();
           if (that.$refs.searchGrid) {
-            that.$refs.searchGrid.privateScope.initGrid();
+              that.$refs.searchGrid.kendoGrid.dataSource.read();
           }
         });
     },
@@ -54,7 +54,4 @@
   };
 </script>
 <style lang="scss">
-    .search-grid {
-        height: 100%;
-    }
 </style>

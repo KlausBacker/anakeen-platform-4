@@ -2,6 +2,10 @@
  Research result in edit mode
  */
 {
+  var docFamid = window.dcp.document.documentController(
+    "getAttribute",
+    "se_famid"
+  )._attributeModel.attributes.attributeValue.value;
   window.dcp.document.documentController(
     "addEventListener",
     "ready",
@@ -43,8 +47,21 @@
         },
         function eventButtonEdit(event, document, data) {
           if (data.eventId === "previewEdit") {
-            $tab.kendoTabStrip("select", ".result-tab");
-            showTmpGrid(event, $documentController);
+            var currentTab = $tab.data("kendoTabStrip").select()[0].className;
+            if (currentTab.includes("result-tab")) {
+              var newFamid = window.dcp.document.documentController(
+                "getAttribute",
+                "se_famid"
+              )._attributeModel.attributes.attributeValue.value;
+              if (docFamid !== newFamid) {
+                showTmpGrid(event, $documentController);
+                docFamid = newFamid;
+              } else {
+                showViewGrid(event, $documentController);
+              }
+            } else {
+              $tab.kendoTabStrip("select", ".result-tab");
+            }
           }
         }
       );

@@ -182,8 +182,10 @@
 
 }
 .result--content {
+    height: 100%;
     overflow:visible!important;
 }
+
 .result--waiting.result--grid .dataTables_wrapper {
     visibility:hidden;
 }
@@ -294,4 +296,8 @@ thead.tableFloatingHeaderOriginal th {
     .dcpSearch-desc {
     flex-direction: column;
   }
+}
+
+.result--content {
+    height: 100% !important;
 }
