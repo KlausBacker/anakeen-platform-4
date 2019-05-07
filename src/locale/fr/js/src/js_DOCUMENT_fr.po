@@ -337,7 +337,7 @@ msgstr "Cycle de vie"
 
 msgctxt "ddui"
 msgid "Your navigator seems offline, try later"
-msgstr "Votre navigateur semble déconnecté, veuillez ré-essayer plus tard."
+msgstr "Votre navigateur semble déconnecté, veuillez réessayer plus tard."
 
 msgctxt "historyUi"
 msgid "past Revision"

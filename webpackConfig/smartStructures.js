@@ -1,4 +1,6 @@
 const path = require("path");
+const { useCache  } = require("./common");
+
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const { vueLoader, addDll } = require("@anakeen/webpack-conf/parts");
 
@@ -13,7 +15,7 @@ module.exports = () => {
         path.resolve(
           __dirname,
           "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/dsearch.js"
-        ),
+        )
       ],
       Helppage: [
         path.resolve(
@@ -47,10 +49,9 @@ module.exports = () => {
       ]
     },
     buildPath: PUBLIC_PATH,
-    excludeBabel: [
-      /node_modules\/style-loader/
-    ],
+    excludeBabel: [/node_modules\/style-loader/],
     customParts: [
+      useCache,
       addDll({
         context: BASE_DIR,
         manifest: path.join(

@@ -1,4 +1,5 @@
 const path = require("path");
+const { useCache } = require("./common");
 const { deps } = require("@anakeen/webpack-conf");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { clean } = require("@anakeen/webpack-conf/parts");
@@ -15,6 +16,7 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     withoutBabel: true,
     customParts: [
+      useCache,
       {
         module: {
           rules: [
@@ -40,7 +42,7 @@ module.exports = () => {
         plugins: [
           new CopyWebpackPlugin([
             {
-              //dynacase-report
+              //smart element report
               context: path.resolve(
                 __dirname,
                 "../src/vendor/Anakeen/DOCUMENT/IHM/"
