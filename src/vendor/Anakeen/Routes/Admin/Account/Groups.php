@@ -4,6 +4,9 @@ namespace Anakeen\Routes\Admin\Account;
 
 use Anakeen\Core\DbManager;
 
+/**
+ * @note use by route GET /api/v2/admin/account/groups/
+ */
 class Groups
 {
 
@@ -40,7 +43,7 @@ class Groups
                 "documentId" => $currentAccount->fid,
                 "accountId" => $currentAccount->id,
                 "parents" => $currentAccount->getGroupsId(),
-                "title" => \DocTitle::getTitle($currentAccount->fid),
+                "title" => $currentAccount->getAccountName(),
                 "nbUser" => $nbUser,
                 "items" => []
             ];

@@ -86,7 +86,6 @@ export default class VaultManagerController extends Vue {
     }
   ];
 
-  private vaultGrid: any;
   private selectedFs: string = "";
 
   @Watch("selectedFs")
@@ -175,7 +174,7 @@ export default class VaultManagerController extends Vue {
 
   protected selectFsRow(fsId) {
     const $viewButtons = $(this.$el).find(
-      "tr[data-fsid=" + fsId + "] .k-button.k-grid-Info"
+      "tr[data-fsid=" + fsId + "] .k-command-cell .k-button"
     );
     $($viewButtons.get(0)).trigger("click");
   }
@@ -256,14 +255,15 @@ export default class VaultManagerController extends Vue {
           dataBound: e => {
             const grid = e.sender;
             this.addRowClassName(grid);
-
-            if (!this.selectedFs) {
-              // view first vault
-              // @ts-ignore
-              this.selectFsRow(grid.dataSource.data().at(0).fsid);
-            } else {
-              this.selectFsRow(this.selectedFs);
-            }
+            this.$nextTick(() => {
+              if (!this.selectedFs) {
+                // view first vault
+                // @ts-ignore
+                this.selectFsRow(grid.dataSource.data().at(0).fsid);
+              } else {
+                this.selectFsRow(this.selectedFs);
+              }
+            });
           },
 
           dataSource: this.vaultsGridData
