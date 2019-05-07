@@ -196,10 +196,11 @@ export default class AdminCenterAccountController extends Vue {
   public options: object = {};
   public groupId: any = false;
   public groupTitle: any = false;
+  private smartTriggerActivated: boolean = false;
+
   @Watch("groupId")
   public watchGroupId(value) {
     const createGrpBtn = this.$refs.groupList.kendoWidget();
-    const toolbar = $(this.$refs.treeToolbar).data("kendoToolBar");
     if (value === "@users") {
       createGrpBtn.setOptions({ optionLabel: "Create group" });
     } else {
@@ -216,7 +217,6 @@ export default class AdminCenterAccountController extends Vue {
       this.fetchConfig();
       this.bindTree();
       this.bindSplitter();
-      this.bindEditDoc();
     });
   }
 
@@ -242,11 +242,16 @@ export default class AdminCenterAccountController extends Vue {
     treeview.bind("dataBound", () => {
       const selectedElement = treeview.dataItem(treeview.select());
       if (selectedElement) {
+        console.log(this.selectedGroupLogin, selectedElement);
+
+        if (
+          selectedElement.login &&
+          this.selectedGroupLogin !== selectedElement.documentId
+        ) {
+          this.updateGridData(selectedElement.login);
+        }
         if (selectedElement.documentId) {
           this.updateGroupSelected(selectedElement.documentId);
-        }
-        if (selectedElement.login) {
-          this.updateGridData(selectedElement.login);
         }
       }
     });
@@ -339,38 +344,6 @@ export default class AdminCenterAccountController extends Vue {
     });
   }
 
-  public bindEditDoc() {
-    if (this.$refs.openDoc) {
-      const openDoc = this.$refs.openDoc;
-      if (openDoc.isLoaded()) {
-        this.eventEditDoc(openDoc);
-      } else {
-        openDoc.$once("documentLoaded", () => {
-          this.eventEditDoc(openDoc);
-        });
-      }
-    }
-  }
-  public eventEditDoc(openDoc) {
-    openDoc.addEventListener("afterSave", event => {
-      if (
-        event &&
-        event.detail &&
-        event.detail[1] &&
-        event.detail[1] &&
-        event.detail[1].type &&
-        event.detail[1].type === "folder"
-      ) {
-        this.updateTreeData(true);
-      } else {
-        this.updateGridData();
-      }
-      this.$refs.groupTreeView.kendoWidget().dataSource.read();
-    });
-    openDoc.addEventListener("afterDelete", () => {
-      this.$refs.groupTreeView.kendoWidget().dataSource.read();
-    });
-  }
   // Manually refresh the tree pane
   public updateTreeData(force?) {
     const filterTitle = this.$refs.filterTree.value
@@ -386,8 +359,6 @@ export default class AdminCenterAccountController extends Vue {
         value: filterTitle
       });
     }
-    this.groupTree.filter({});
-    this.$refs.groupTreeView.kendoWidget().dataSource.read();
   }
 
   // Display the selected group in the ank-document
@@ -403,8 +374,6 @@ export default class AdminCenterAccountController extends Vue {
 
   // Refresh the with the new selected group
   public updateGridData(selectedGroupLogin?) {
-    const grid = this.$refs.grid.kendoWidget();
-    grid.dataSource.read();
     if (selectedGroupLogin === "@users") {
       this.gridContent.filter({});
     } else {
@@ -500,31 +469,6 @@ export default class AdminCenterAccountController extends Vue {
       });
     }
   }
-  public createAccount(type) {
-    this.$refs.accountSplitter.disableEmptyContent();
-    this.$nextTick(() => {
-      const openDoc = this.$refs.openDoc;
-      if (openDoc) {
-        if (openDoc.isLoaded()) {
-          this.refreshData(openDoc);
-          openDoc.fetchSmartElement({
-            customClientData: { defaultGroup: this.selectedGroupDocumentId },
-            initid: type,
-            viewId: "!defaultCreation"
-          });
-        } else {
-          openDoc.$once("documentLoaded", () => {
-            this.refreshData(openDoc);
-            openDoc.fetchSmartElement({
-              customClientData: { defaultGroup: this.selectedGroupDocumentId },
-              initid: type,
-              viewId: "!defaultCreation"
-            });
-          });
-        }
-      }
-    });
-  }
 
   // Open group selected in group change mode
   public openChangeGroup() {
@@ -561,8 +505,8 @@ export default class AdminCenterAccountController extends Vue {
       "admin.account.groupSelected.id",
       selectedElement.documentId
     );
-    this.updateGroupSelected(selectedElement.documentId);
     this.updateGridData(selectedElement.login);
+    this.updateGroupSelected(selectedElement.documentId);
     this.groupTitle = selectedElement.title;
     this.groupId = selectedElement.documentId;
   }
@@ -586,14 +530,17 @@ export default class AdminCenterAccountController extends Vue {
     window.setTimeout(saveTreeView, 100);
   }
   public refreshData(openDoc) {
-    openDoc.addEventListener("afterSave", () => {
-      this.updateGridData();
-      this.updateTreeData(true);
-    });
-    openDoc.addEventListener("afterDelete", () => {
-      this.updateGridData();
-      this.updateTreeData(true);
-    });
+    if (!this.smartTriggerActivated) {
+      openDoc.addEventListener("afterSave", () => {
+        this.gridContent.read();
+        this.updateTreeData(true);
+      });
+      openDoc.addEventListener("afterDelete", () => {
+        this.updateGridData();
+        this.updateTreeData(true);
+      });
+      this.smartTriggerActivated = true;
+    }
   }
 
   // Close all the leafs
