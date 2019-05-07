@@ -1,4 +1,5 @@
 const path = require("path");
+const { useCache  } = require("./common");
 const { prod, legacy, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,

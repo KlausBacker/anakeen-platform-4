@@ -1,4 +1,6 @@
 const path = require("path");
+const { useCache  } = require("./common");
+
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const webpack = require("webpack");
 const {
@@ -30,6 +32,7 @@ module.exports = () => {
     buildPath: PUBLIC_PATH,
     excludeBabel: [/node_modules\/ckeditor/],
     customParts: [
+      useCache,
       {
         resolve: {
           extensions: [".js"],
