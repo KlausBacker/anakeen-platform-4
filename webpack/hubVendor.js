@@ -1,4 +1,5 @@
 const path = require("path");
+const { useCache } = require("./common");
 const { deps } = require("@anakeen/webpack-conf");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -25,6 +26,7 @@ module.exports = () => {
     ],
     buildPath: PUBLIC_PATH,
     customParts: [
+      useCache,
       vueLoader(),
       addDll({
         context: BASE_DIR,
