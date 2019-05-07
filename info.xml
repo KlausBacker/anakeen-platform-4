@@ -6,7 +6,7 @@
     <description>Smart Data Engine</description>
 
     <requires>
-        <installer version="2.2.x"/>
+        <installer version="2.x.x"/>
     </requires>
 
     <parameters>
