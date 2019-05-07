@@ -795,6 +795,13 @@ class DocumentView
             $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $document->id);
             DbManager::query($sql, $lastTab, true, true);
             $result[] = $lastTab;
+        } else {
+            $values = $document->getValues();
+            foreach ($values as $fieldId => $fieldValue) {
+                if ($fieldValue !== "") {
+                    $result[] = $fieldId . ":" . $fieldValue;
+                }
+            }
         }
 
         if ($result["cvid"]) {
@@ -805,6 +812,7 @@ class DocumentView
         // Necessary only when use family.structure
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
+
 
         return join(" ", $result);
     }
