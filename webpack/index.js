@@ -1,4 +1,5 @@
 const path = require("path");
+const { useCache } = require("./common");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
@@ -39,6 +40,7 @@ module.exports = () => {
     ],
     buildPath: PUBLIC_PATH,
     customParts: [
+      useCache,
       addDll({
         context: BASE_DIR,
         manifest: path.join(

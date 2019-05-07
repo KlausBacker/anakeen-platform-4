@@ -1,4 +1,5 @@
 const path = require("path");
+const { useCache } = require("./common");
 const { lib } = require("@anakeen/webpack-conf");
 const {
   useVueLoader
@@ -16,6 +17,7 @@ module.exports = () => {
     },
     buildPath: PUBLIC_PATH,
     customParts: [
+      useCache,
       useVueLoader()
     ]
   };
