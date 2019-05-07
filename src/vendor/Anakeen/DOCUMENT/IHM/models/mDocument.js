@@ -1539,8 +1539,6 @@ define([
                   lockCallback.success();
                 }
               });
-
-              lockCallback.success();
             } else {
               lockModel = new DocumentLock({
                 initid: needToUnlock.initid,
