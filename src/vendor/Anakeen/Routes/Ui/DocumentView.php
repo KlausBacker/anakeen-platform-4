@@ -52,18 +52,19 @@ class DocumentView
      */
     protected $revision = -1;
 
-    protected $fields = array(
-        self::fieldCustomClientData,
-        self::fieldRenderOptions,
-        self::fieldRenderLabel,
-        self::fieldCustomServerData,
-        self::fieldMenu,
-        self::fieldTemplate,
-        self::fieldDocumentData,
-        self::fieldLocale,
-        self::fieldStyle,
-        self::fieldScript
-    );
+    protected $fields
+        = array(
+            self::fieldCustomClientData,
+            self::fieldRenderOptions,
+            self::fieldRenderLabel,
+            self::fieldCustomServerData,
+            self::fieldMenu,
+            self::fieldTemplate,
+            self::fieldDocumentData,
+            self::fieldLocale,
+            self::fieldStyle,
+            self::fieldScript
+        );
     protected $needSendFamilyStructure = false;
     /**
      * @var \Anakeen\Core\Internal\SmartElement current document
@@ -78,9 +79,11 @@ class DocumentView
 
     /**
      * Read a resource
+     *
      * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
      * @param                     $args
+     *
      * @return mixed
      * @throws Exception
      */
@@ -88,8 +91,15 @@ class DocumentView
     {
         $this->initParameters($request, $args);
 
-
-        $etag = $this->getEtagInfo($this->documentId);
+        if ($this->viewIdentifier !== self::coreViewCreationId && $this->viewIdentifier !== self::defaultViewCreationId) {
+            $etag = $this->getEtagInfo($this->documentId);
+        } else {
+            /**
+             * @var \Anakeen\Core\SmartStructure $family
+             */
+            $this->createDocument($this->documentId);
+            $etag = $this->getEtagInfo(0);
+        }
         if ($etag) {
             $response = ApiV2Response::withEtag($request, $response, $etag);
             if (ApiV2Response::matchEtag($request, $etag)) {
@@ -104,7 +114,8 @@ class DocumentView
                 self::defaultViewCreationId,
                 self::coreViewConsultationId,
                 self::coreViewEditionId
-            )) && !$this->document->cvid) {
+            ))
+            && !$this->document->cvid) {
             $exception = new Exception("CRUDUI0001", $this->viewIdentifier, $this->documentId);
             $exception->setHttpStatus("404", "View not found");
             throw $exception;
@@ -161,7 +172,6 @@ class DocumentView
              * @var \Anakeen\Core\SmartStructure $family
              */
             $family = SEManager::getFamily($this->documentId);
-            $this->createDocument($this->documentId);
             $creationMode = true;
         } else {
             $this->getDocument($this->documentId);
@@ -219,6 +229,7 @@ class DocumentView
      * Compute abstract standard view
      *
      * @param \Anakeen\Core\Internal\SmartElement $document
+     *
      * @return array
      */
     protected function getCoreViews(\Anakeen\Core\Internal\SmartElement $document)
@@ -280,6 +291,7 @@ class DocumentView
      *
      * @param \SmartStructure\Cvdoc $controlView
      * @param array                 $viewInfo
+     *
      * @return array
      */
     protected function getViewProperties(\SmartStructure\Cvdoc $controlView, array $viewInfo)
@@ -303,6 +315,7 @@ class DocumentView
     /**
      * @param string       $viewId view identifier
      * @param ApiMessage[] $messages
+     *
      * @return array
      * @throws Exception
      * @throws \Anakeen\Ui\Exception
@@ -371,6 +384,7 @@ class DocumentView
 
     /**
      * @param $viewId
+     *
      * @return \SmartStructure\Mask
      * @throws \Anakeen\Core\DocManager\Exception
      * @throws \Anakeen\Exception
@@ -400,8 +414,9 @@ class DocumentView
     }
 
     /**
-     * @param \Anakeen\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig           $config
      * @param \Anakeen\Core\Internal\SmartElement $document
+     *
      * @return array|bool
      */
     protected function getStyleData($config, $document)
@@ -421,10 +436,11 @@ class DocumentView
     }
 
     /**
-     * @param \Anakeen\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig           $config
      * @param \Anakeen\Core\Internal\SmartElement $document
-     * @throws Exception
+     *
      * @return array|bool
+     * @throws Exception
      */
     protected function getScriptData($config, $document)
     {
@@ -447,8 +463,9 @@ class DocumentView
 
 
     /**
-     * @param \Anakeen\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig           $config
      * @param \Anakeen\Core\Internal\SmartElement $document
+     *
      * @return ApiMessage[]
      */
     protected function getMessages($config, $document)
@@ -473,6 +490,7 @@ class DocumentView
      * Get the document from the standard CRUD
      *
      * @param \Anakeen\Core\Internal\SmartElement $document
+     *
      * @return mixed
      */
     protected function renderDocument($document)
@@ -498,7 +516,9 @@ class DocumentView
     /**
      * Get the current document,
      * record to document protected attribute
+     *
      * @param $resourceId
+     *
      * @return \Anakeen\Core\Internal\SmartElement
      * @throws Exception
      */
@@ -542,6 +562,7 @@ class DocumentView
             }
         }
 
+
         $this->document->setDefaultValues($family->getDefValues());
 
         $this->document->title = sprintf(
@@ -560,7 +581,7 @@ class DocumentView
     }
 
     /**
-     * @param \Anakeen\Ui\IRenderConfig               $config
+     * @param \Anakeen\Ui\IRenderConfig           $config
      * @param \Anakeen\Core\Internal\SmartElement $document
      *
      * @return string
@@ -616,6 +637,7 @@ class DocumentView
 
     /**
      * @param string $vid
+     *
      * @return \Anakeen\Ui\IRenderConfig
      * @throws Exception
      * @throws \Anakeen\Ui\Exception
@@ -698,6 +720,7 @@ class DocumentView
      * Return etag info
      *
      * @param string $docid
+     *
      * @return null|string
      */
     protected function getEtagInfo($docid)
@@ -719,6 +742,9 @@ class DocumentView
         $this->getDocument($id);
 
         $refreshMsg = $this->setRefresh();
+        if ($refreshMsg !== null) {
+            return null;
+        }
 
         $disableEtag = \Anakeen\Ui\RenderConfigManager::getRenderParameter(($this->document->doctype === "C") ? $this->document->name : $this->document->fromname, "disableEtag");
 
@@ -726,11 +752,15 @@ class DocumentView
             return null;
         }
         $viewId = $this->viewIdentifier;
-        if ($viewId !== self::coreViewCreationId && $this->document->doctype !== "C") {
+        if ($viewId !== self::coreViewCreationId) {
             $config = $this->getRenderConfig($viewId);
             $renderEtag = $config->getEtag($this->document);
+            if ($renderEtag === null) {
+                // No etag to send
+                return null;
+            }
             if ($renderEtag !== "") {
-                return $renderEtag . $refreshMsg;
+                return $renderEtag;
             }
         }
 
@@ -761,9 +791,18 @@ class DocumentView
         DbManager::query($sql, $familyMdate, true, true);
         $result[] = $familyMdate;
 
-        $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $document->id);
-        DbManager::query($sql, $lastTab, true, true);
-        $result[] = $lastTab;
+        if ($document->id) {
+            $sql = sprintf("select comment from docutag where tag='lasttab' and id = %d", $document->id);
+            DbManager::query($sql, $lastTab, true, true);
+            $result[] = $lastTab;
+        } else {
+            $values = $document->getValues();
+            foreach ($values as $fieldId => $fieldValue) {
+                if ($fieldValue !== "") {
+                    $result[] = $fieldId . ":" . $fieldValue;
+                }
+            }
+        }
 
         if ($result["cvid"]) {
             $sql = sprintf("select mdate from docread where id = %d", $result["cvid"]);
@@ -774,24 +813,26 @@ class DocumentView
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
         $result[] = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
 
+
         return join(" ", $result);
     }
 
     /**
-     * Apply refresh if application manager indicate applyRefresh for family
-     * @return string refresh message
+     * Apply refresh if application manager indicate applyRefresh for smart Structure
+     *
+     * @return string refresh message, null if no refresh
      */
     protected function setRefresh()
     {
         static $onlyOne = false;
-        static $refreshMsg = '';
+        static $refreshMsg = null;
 
         if (!$onlyOne) {
+            $onlyOne = true;
             $applyRefresh = \Anakeen\Ui\RenderConfigManager::getRenderParameter($this->document->fromname, "applyRefresh");
             if ($applyRefresh) {
                 $refreshMsg = $this->document->refresh();
             }
-            $onlyOne = true;
         }
         return $refreshMsg;
     }
