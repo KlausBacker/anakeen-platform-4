@@ -1924,7 +1924,7 @@ define([
      * @param options object {"success": fct, "error", fct}
      */
     fetchDocument: function documentControllerFetchDocument(values, options) {
-      var documentPromise, callBackPromise;
+      var documentPromise;
       var currentWidget = this;
       values = _.isUndefined(values) ? {} : values;
       options = options || {};
@@ -1964,7 +1964,10 @@ define([
         if (values.customClientData) {
           this._model._customClientData = values.customClientData;
         }
-        documentPromise = this._model.fetchDocument(this._getModelValue(), options);
+        documentPromise = this._model.fetchDocument(
+          this._getModelValue(),
+          options
+        );
       }
       return this._registerOutputPromise(documentPromise, options);
     },
