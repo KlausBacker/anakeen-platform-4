@@ -832,6 +832,10 @@ define([
 
       this.initialProperties = _.defaults(
         {
+          initid:
+            response.data.properties.creationView === true
+              ? null
+              : view.documentData.document.properties.initid,
           renderMode: renderMode || "view",
           viewId: response.data.properties.requestIdentifier
         },
