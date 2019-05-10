@@ -9,6 +9,7 @@
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
 use Anakeen\Components\Grid\Routes\GridConfig;
+use Anakeen\Core\Internal\FormatCollection;
 use SmartStructure\Fields\Report;
 
 class SearchGridConfig extends GridConfig
@@ -37,6 +38,8 @@ class SearchGridConfig extends GridConfig
         $cols = $document->getMultipleRawValues(Report::rep_idcols);
         $foots = $document->getMultipleRawValues(Report::rep_foots);
         //$return[] = array("id" => "title","withIcon" => "true");
+
+       // print_r($foots);
         foreach ($foots as $k => $function) {
             switch ($function) {
                 case "CARD":
@@ -62,7 +65,11 @@ class SearchGridConfig extends GridConfig
                     if ($function === "MOY") {
                         $sum = $sum / count($results);
                     }
-                    $return[$cols[$k]] = $document->getHtmlValue($this->structureRef->getAttribute($attrid), $sum);
+                    $oa=$this->structureRef->getAttribute($attrid);
+                    if ($oa) {
+                        $sum = $document->getHtmlValue($this->structureRef->getAttribute($attrid), $sum);
+                    }
+                    $return[$cols[$k]] =$sum;
                     break;
                 default:
                     $return[$cols[$k]] = null;

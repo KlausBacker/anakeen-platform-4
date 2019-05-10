@@ -8,6 +8,7 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
+use Anakeen\Core\Internal\SmartCollectionOperators;
 use Anakeen\Router\ApiV2Response;
 
 /**
@@ -46,14 +47,14 @@ class Operators
             "htmltext[]",
             "account[]"
         );
-        $doccollection = new \DocCollection();
 
-        foreach ($doccollection->top as & $tmptop) {
+        $operators=SmartCollectionOperators::getOperators();
+        foreach ($operators as & $tmptop) {
             $tmpTypedLabel = array();
             $tmpTypedTitle = array();
             $tmpTypeArray = array();
             $tmpCompatibleTypes = isset($tmptop["type"]) ? $tmptop["type"] : null;
-            $tmpId = array_search($tmptop, $doccollection->top);
+            $tmpId = array_search($tmptop, $operators);
 
             if (is_array($tmpCompatibleTypes)) {
                 foreach ($tmpCompatibleTypes as $k => $type) {

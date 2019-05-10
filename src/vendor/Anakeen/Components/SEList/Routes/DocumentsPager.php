@@ -18,7 +18,7 @@ use Anakeen\Search\Filters\TitleContains;
 class DocumentsPager extends DocumentList
 {
     /**
-     * @var \DocCollection definition of current collection
+     * @var \Anakeen\Core\Internal\SmartCollection definition of current collection
      */
     protected $collection = null;
     /**

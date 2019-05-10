@@ -2,8 +2,7 @@
  Research result in edit mode
  */
 {
-  var docFamid = window.dcp.document.documentController("getValue", "se_famid")
-    .value;
+
   window.dcp.document.documentController(
     "addEventListener",
     "ready",
@@ -34,35 +33,7 @@
         }
       });
 
-      $(this).documentController(
-        "addEventListener",
-        "actionClick",
-        {
-          name: "previewEdit.editEvent",
-          documentCheck: function isDSearch(document) {
-            return document.type === "search" && document.renderMode === "edit";
-          }
-        },
-        function eventButtonEdit(event, document, data) {
-          if (data.eventId === "previewEdit") {
-            var currentTab = $tab.data("kendoTabStrip").select()[0].className;
-            if (currentTab.includes("result-tab")) {
-              var newFamid = window.dcp.document.documentController(
-                "getValue",
-                "se_famid"
-              ).value;
-              if (docFamid !== newFamid) {
-                showTmpGrid(event, $documentController);
-                docFamid = newFamid;
-              } else {
-                showViewGrid(event, $documentController);
-              }
-            } else {
-              $tab.kendoTabStrip("select", ".result-tab");
-            }
-          }
-        }
-      );
+
     }
   );
 
@@ -81,36 +52,6 @@
     }
   );
 
-  window.dcp.document.documentController(
-    "addEventListener",
-    "ready",
-    {
-      name: "searchviewresults",
-      documentCheck: function(document) {
-        return document.type === "search";
-      }
-    },
-    function viewresult(event) {
-      var $documentController = $(this);
-      showViewGrid(event, $documentController);
-    }
-  );
-
-  function showViewGrid(event, $documentController) {
-    var continueDefault = $documentController.documentController(
-      "triggerEvent",
-      "custom:content:view",
-      {
-        familyName: $documentController.documentController("getProperties")
-          .family.name,
-        id: $documentController.documentController("getProperties").id,
-        title: $documentController.documentController("getProperties").title
-      }
-    );
-    if (!continueDefault) {
-      event.preventDefault();
-    }
-  }
 
   function showTmpGrid(event, $documentController) {
     var $dataJSON = null;

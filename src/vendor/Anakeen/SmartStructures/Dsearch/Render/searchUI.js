@@ -879,7 +879,7 @@ import searchAttributes from "./searchAttributes";
           documentCheck: function isDSearch(document) {
             return document.type === "search" && document.renderMode === "edit";
           },
-          attributeCheck: function isFamily(attribute) {
+          attributeCheck: function isSeOl(attribute) {
             if (attribute.id === "se_ol") {
               return true;
             }

@@ -36,16 +36,6 @@ class SearchEditRender extends DefaultEdit
         return $js;
     }
 
-    public function getMenu(\Anakeen\Core\Internal\SmartElement $document):BarMenu
-    {
-        $myMenu = parent::getMenu($document);
-        $myItem = new ItemMenu("view", "");
-        $myItem->setTextLabel(___("consult", "searchUi"));
-        $myItem->setUrl("#action/previewEdit");
-        $myMenu->appendElement($myItem);
-
-        return $myMenu;
-    }
 
     public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
     {

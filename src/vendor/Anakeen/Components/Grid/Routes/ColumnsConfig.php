@@ -145,9 +145,11 @@ class ColumnsConfig
         }
 
         foreach ($cols as $attrid) {
-            $config = self::getColumnConfig($attrid, $structRef);
-            if (!empty($config)) {
-                $return[] = $config;
+            if ($attrid) {
+                $config = self::getColumnConfig($attrid, $structRef);
+                if (!empty($config)) {
+                    $return[] = $config;
+                }
             }
         }
         return $return;
@@ -268,7 +270,7 @@ class ColumnsConfig
                 if (isset($properties[$fieldId])) {
                     return $properties[$fieldId];
                 } else {
-                    throw new Exception(sprintf("Unknown id %s, famId %s", $fieldId, $smartEl->id));
+                    throw new Exception(sprintf("Unknown field \"%s\", structure \"%s\"", $fieldId, $smartEl->id));
                 }
             }
         }

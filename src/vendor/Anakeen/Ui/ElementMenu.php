@@ -268,7 +268,7 @@ class ElementMenu implements \JsonSerializable
     {
         if ($this->iconPath) {
             if ($this->iconSize > 0) {
-                return sprintf('api/v2/images/assets/sizes/%d/%s', $this->iconSize, $this->iconPath);
+                return sprintf('/api/v2/images/assets/sizes/%d/%s', $this->iconSize, $this->iconPath);
             }
         }
         return $this->iconPath;

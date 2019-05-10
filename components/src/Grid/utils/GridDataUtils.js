@@ -72,6 +72,7 @@ export default class GridDataUtils extends AbstractGridUtil {
       let resultRender = "";
       let currentValue = null;
       const type = colConfig.smartType;
+
       if (dataItem.rowData) {
         currentValue = dataItem.rowData[colConfig.field];
         // Convert kendo dataItem object in js array if multiple attribute
@@ -163,10 +164,24 @@ export default class GridDataUtils extends AbstractGridUtil {
                   // Second level of multiplicity
                   const secondLevelRender = elem
                     .map(subElem => {
+                      if (
+                        empty(subElem) ||
+                        (typeof subElem === "object" && subElem.value === null)
+                      ) {
+                        // Empty value case
+                        return emptyValue;
+                      }
                       return kendo.template(unitValueTemplate)(subElem);
                     })
                     .join("<div class='grid-cell-content-br'></div>");
                   return `<div class="grid-cell-multiple-value">${secondLevelRender}</div>`;
+                }
+                if (
+                  empty(elem) ||
+                  (typeof elem === "object" && elem.value === null)
+                ) {
+                  // Empty value case
+                  return emptyValue;
                 }
                 return kendo.template(unitValueTemplate)(elem);
               })
