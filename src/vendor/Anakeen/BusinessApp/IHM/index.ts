@@ -7,10 +7,10 @@ if (
   // @ts-ignore
   window.ank.hub &&
   // @ts-ignore
-  window.ank.hub.HubBusinessApp
+  window.ank.hub["ank-business-app"]
 ) {
   // @ts-ignore
-  window.ank.hub.HubBusinessApp.resolve(
+  window.ank.hub["ank-business-app"].resolve(
     HubBusinessAppEntry,
     "ank-business-app"
   );
