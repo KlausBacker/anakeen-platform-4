@@ -44,7 +44,6 @@
                 Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("accountManager", "account-manager")
             </hge_jsasset>
         </hge_jsassets>
-        <hge_component_libname>AdminAccountManager</hge_component_libname>
         <hge_component_tag>ank-admin-account</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_ACCOUNTSMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
@@ -63,7 +62,6 @@
                 Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("parameterManager", "parameter-manager")
             </hge_jsasset>
         </hge_jsassets>
-        <hge_component_libname>AdminParametersManager</hge_component_libname>
         <hge_component_tag>ank-admin-parameter</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_PARAMETERSMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
@@ -82,7 +80,6 @@
                 Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("tokenManager", "token-manager")
             </hge_jsasset>
         </hge_jsassets>
-        <hge_component_libname>AdminTokenManager</hge_component_libname>
         <hge_component_tag>ank-hub-authentication-tokens</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_TOKENSMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
@@ -101,7 +98,6 @@
                 Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("vaultManager", "vault-manager")
             </hge_jsasset>
         </hge_jsassets>
-        <hge_component_libname>AdminVaultManager</hge_component_libname>
         <hge_component_tag>ank-admin-vault-manager</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_VAULTSMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
