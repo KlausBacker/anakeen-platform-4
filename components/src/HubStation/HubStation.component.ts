@@ -190,9 +190,7 @@ export default class HubStation extends Vue {
   }
 
   protected initRouterConfig(configData: IHubStationDockConfigs) {
-    Vue.use(Router, {
-      root: this.rootUrl
-    });
+    Vue.use(Router);
     Object.keys(configData).forEach(key => {
       const routes = this.getRoutesConfigs(configData[key]);
       if (routes && routes.length) {
