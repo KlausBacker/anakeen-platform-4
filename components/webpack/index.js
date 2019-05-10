@@ -8,6 +8,7 @@ const BASE_PATH = path.resolve(__dirname, "..");
 const ENTRIES_PATH = {
   HubElement: path.resolve(BASE_PATH, "src/HubElement/HubElement.vue"),
   HubElementMixin: path.resolve(BASE_PATH, "src/HubElement/Mixins/index.ts"),
+  HubEntriesUtil: path.resolve(BASE_PATH, "src/utils/HubEntriesUtil.js"),
   HubStation: path.resolve(BASE_PATH, "src/HubStation/HubStation.vue")
 };
 

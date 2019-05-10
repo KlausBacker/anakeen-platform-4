@@ -8,9 +8,15 @@ export default {
     AnkNotifier,
     HubStation
   },
+  props: {
+    initialData: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
-      config: window.ank.hub.initialData || {},
+      config: this.initialData,
       hubId: ""
     };
   },
@@ -109,33 +115,6 @@ export default {
           ]
         })
       );
-    },
-    getConfig() {
-      kendo.ui.progress($(this.$el), true);
-      this.$http
-        .get(`/hub/config/${this.hubId}`)
-        .then(response => {
-          const data = response.data.data;
-          const globalAssets = data.globalAssets || [];
-          this.hubEntries.contents = [{ assets: globalAssets }].concat(
-            data.hubElements
-          );
-          return this.hubEntries.loadAssets().then(() => {
-            return this.hubEntries.useComponents().then(() => {
-              this.config = data;
-              kendo.ui.progress($(this.$el), false);
-            });
-          });
-        })
-        .catch(error => {
-          console.error(error);
-          this.sendNotif({
-            title: "Loading error",
-            textContent: "The entries components cannot be loaded",
-            type: "error"
-          });
-          kendo.ui.progress($(this.$el), false);
-        });
     },
     onNotify(notification) {
       this.$store.dispatch("hubNotify", notification);

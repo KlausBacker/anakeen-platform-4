@@ -3,6 +3,7 @@
 namespace Anakeen\Hub\SmartStructures\HubConfiguration;
 
 use Anakeen\Core\AccountManager;
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\SEManager;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
@@ -63,7 +64,9 @@ class HubConfigurationBehavior extends \Anakeen\SmartElement
     protected function getEntryOptions()
     {
         return [
+            "internal" => false,
             "name" => $this->getRawValue(HubConfigurationFields::hub_title),
+            "loadingTimeout" => intval(ContextManager::getParameterValue("AnakeenHub", "HUB_LOADING_TIMEOUT")),
             "activated" => $this->getRawValue(HubConfigurationFields::hub_activated) === "TRUE",
             "activatedOrder" => $this->getAttributeValue(HubConfigurationFields::hub_activated_order),
             "selectable" => $this->getRawValue(HubConfigurationFields::hub_selectable) === "TRUE",

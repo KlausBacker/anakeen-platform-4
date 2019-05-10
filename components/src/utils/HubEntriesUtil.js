@@ -1,7 +1,7 @@
 const loadCss = require("fg-loadcss");
 const littleLoader = require("little-loader");
 
-class HubEntries {
+class HubEntriesUtil {
   /**
    * HubEntries constructor.
    * @param {String} hubId
@@ -48,7 +48,7 @@ class HubEntries {
           dockContent.component &&
           dockContent.component.name &&
           dockContent.entryOptions &&
-          dockContent.entryOptions.libName
+          !dockContent.component.internal
         ) {
           window.ank = window.ank || {};
           window.ank.hub = window.ank.hub || {};
@@ -65,7 +65,8 @@ class HubEntries {
             window.ank.hub[dockContent.component.name] = {
               promise: hubElementPromise,
               resolve: hubElementOk,
-              reject: hubElementKo
+              reject: hubElementKo,
+              timeout: dockContent.entryOptions.loadingTimeout
             };
           }
         }
@@ -105,4 +106,4 @@ class HubEntries {
   }
 }
 
-export default HubEntries;
+export default HubEntriesUtil;

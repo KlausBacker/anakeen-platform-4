@@ -114,10 +114,10 @@
         <sde:route-access ref="HubUser" account="hub-user-role"/>
     </sde:accesses>
     <sde:parameters namespace="AnakeenHub">
-        <sde:parameter name="CONFIG">
-            <sde:description>Hub configuration</sde:description>
-            <sde:value>[]</sde:value>
-            <sde:type>JSON</sde:type>
+        <sde:parameter name="HUB_LOADING_TIMEOUT">
+            <sde:description>Hub component loading timeout in milliseconds</sde:description>
+            <sde:value>10000</sde:value>
+            <sde:type>integer</sde:type>
         </sde:parameter>
     </sde:parameters>
 </sde:config>
