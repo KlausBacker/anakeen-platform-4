@@ -1,21 +1,27 @@
 import Vue from "vue";
-import LoadScript from "vue-m-loader";
-import LoadCss from "load-css-file";
 
 import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
 import HubMain from "../Components/Hub/Hub.vue";
 import Store from "../Components/HubStateManager";
+import HubEntry from "../Components/Hub/utils/hubEntry";
 
 Vue.use(VueAxiosPlugin);
-Vue.use(LoadScript);
 
-Vue.prototype.$loadCssFile = Vue.loadCssFile = LoadCss;
+const hubConf = new HubEntry(window.AnkHubInstanceId);
 
-new Vue({
-  el: "#ank-hub",
-  components: {
-    HubMain
-  },
-  template: "<hub-main/>",
-  store: Store
+hubConf.fetchConfiguration().then(() => {
+  hubConf.loadAssets().then(() => {
+    Object.keys(window.ank.hub).map(currentKey => {
+      Vue.component(currentKey, () => {
+        return window.ank.hub[currentKey].promise;
+      });
+    });
+    window.ank.hub.initialData = hubConf.data;
+    new Vue({
+      el: "#ank-hub",
+      components: { "hub-main": HubMain },
+      template: "<hub-main/>",
+      store: Store
+    });
+  });
 });

@@ -1,55 +1,68 @@
-import Vue from "vue";
+const loadCss = require("fg-loadcss");
+const littleLoader = require("little-loader");
 
 class HubEntries {
   /**
    * HubEntries constructor.
-   * @param {Object} hubInstance
-   * @param {Array} contents
-   * @param {string} baseUrl
+   * @param {String} hubId
+   * @param {string} baseFetch
    */
-  constructor(hubInstance, contents = [], baseUrl = "/hub/station") {
+  constructor(hubId, baseFetch = "/hub/config") {
     /**
      * The hub vue instance reference
-     * @type {Object}
+     * @type {String}
      */
-    this.hubInstance = hubInstance;
-
-    /**
-     * The hub entries contents
-     * @type {Array}
-     */
-    this.contents = contents;
+    this.hubId = hubId;
 
     /**
      * The hub base url
      * @type {String}
      */
-    this.baseUrl = baseUrl;
+    this.baseFetch = baseFetch;
+  }
+
+  fetchConfiguration() {
+    const currentConf = this;
+    return fetch(`${this.baseFetch}/${window.encodeURIComponent(this.hubId)}`, {
+      credentials: "same-origin"
+    })
+      .then(response => response.json())
+      .then(response => {
+        const data = response.data;
+        this.data = data;
+        const globalAssets = data.globalAssets || [];
+        currentConf.contents = [{ assets: globalAssets }].concat(
+          data.hubElements
+        );
+      })
+      .catch(error => {
+        console.error(error);
+        throw error;
+      });
   }
 
   loadAssets() {
     return Promise.all(
       this.contents.map(dockContent => {
-        if (dockContent.entryOptions && dockContent.entryOptions.libName) {
+        if (
+          dockContent.component &&
+          dockContent.component.name &&
+          dockContent.entryOptions &&
+          dockContent.entryOptions.libName
+        ) {
           window.ank = window.ank || {};
           window.ank.hub = window.ank.hub || {};
-          if (!window.ank.hub[dockContent.entryOptions.libName]) {
+          if (!window.ank.hub[dockContent.component.name]) {
             let hubElementOk, hubElementKo;
             const hubElementPromise = new Promise((resolve, reject) => {
-              hubElementOk = (
-                vueComponent,
-                name = dockContent.entryOptions.libName
-              ) => {
-                resolve({
-                  name,
-                  component: vueComponent
-                });
+              hubElementOk = vueComponent => {
+                resolve(vueComponent);
               };
               hubElementKo = error => {
                 reject(error);
               };
             });
-            window.ank.hub[dockContent.entryOptions.libName] = {
+            window.ank.hub[dockContent.component.name] = {
               promise: hubElementPromise,
               resolve: hubElementOk,
               reject: hubElementKo
@@ -62,21 +75,22 @@ class HubEntries {
           if (assets.js && assets.js.length) {
             assets.js.forEach(jsUrl => {
               if (jsUrl) {
-                assetsPromises.push(
-                  this.hubInstance.$loader({
-                    url: jsUrl,
-                    library: dockContent.entryOptions
-                      ? dockContent.entryOptions.libName
-                      : undefined
-                  })
-                );
+                const insertElement = new Promise((resolve, reject) => {
+                  littleLoader(jsUrl, err => {
+                    if (err) {
+                      return reject(err);
+                    }
+                    resolve();
+                  });
+                });
+                assetsPromises.push(insertElement);
               }
             });
           }
           if (assets.css && assets.css.length) {
             assets.css.forEach(cssUrl => {
               if (cssUrl) {
-                this.hubInstance.$loadCssFile(cssUrl);
+                loadCss.loadCSS(cssUrl);
               }
             });
           }
@@ -88,21 +102,6 @@ class HubEntries {
         }
       })
     );
-  }
-
-  useComponents() {
-    if (window && window.ank && window.ank.hub) {
-      return Promise.all(
-        Object.values(window.ank.hub).map(
-          currentElement => currentElement.promise
-        )
-      ).then(hubElement => {
-        hubElement.map(currentElement => {
-          Vue.component(currentElement.name, currentElement.component);
-        });
-      });
-    }
-    return Promise.resolve();
   }
 }
 
