@@ -53,7 +53,7 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
     protected function getAssets()
     {
         $assets = parent::getAssets();
-        $assets["js"][] = static::getJSAsset();
+        $assets["js"][] = self::getJSAsset();
         return $assets;
     }
 
@@ -61,7 +61,7 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
      * @return array
      * @throws \Anakeen\Ui\Exception
      */
-    private static function getJSAsset()
+    protected static function getJSAsset()
     {
         $asset = UIGetAssetPath::getElementAssets("businessApp", UIGetAssetPath::isInDebug() ? "dev" : "prod");
         if (isset($asset["business-app"]["js"])) {
