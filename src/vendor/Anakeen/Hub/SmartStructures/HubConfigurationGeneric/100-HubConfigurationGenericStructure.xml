@@ -17,7 +17,6 @@
                     </smart:field-set>
                 </smart:field-set>
                 <smart:field-set type="frame" name="hge_fr_identification" access="ReadWrite" label="Identification">
-                    <smart:field-text name="hge_component_libname" label="Library name" access="ReadWrite" needed="true"/>
                     <smart:field-text name="hge_component_tag" label="Component tag" access="ReadWrite" needed="true"/>
                     <smart:field-json name="hge_component_props" label="Component properties" access="ReadWrite"/>
                 </smart:field-set>
@@ -42,8 +41,8 @@
         </smart:hooks>
 
         <smart:defaults>
-            <smart:default reset="true" field="hge_jsasset_type">PATH</smart:default>
-            <smart:default reset="true" field="hge_cssasset_type">PATH</smart:default>
+            <smart:default field="hge_jsasset_type">PATH</smart:default>
+            <smart:default field="hge_cssasset_type">PATH</smart:default>
         </smart:defaults>
     </smart:structure-configuration>
     <smart:enumerates>

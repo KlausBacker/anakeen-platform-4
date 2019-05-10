@@ -25,13 +25,6 @@ class HubConfigurationGenericBehavior extends \SmartStructure\Hubconfigurationvu
         return $assets;
     }
 
-    protected function getEntryOptions()
-    {
-        $options = parent::getEntryOptions();
-        $options["libName"] = $this->getRawValue(HubConfigurationGenericFields::hge_component_libname);
-        return $options;
-    }
-
     protected function getComponentConfiguration()
     {
         return [

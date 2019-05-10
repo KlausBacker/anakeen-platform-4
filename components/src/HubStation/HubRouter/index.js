@@ -11,9 +11,9 @@ const merge = (opts, newOpts) => {
 };
 
 const DEFAULT_OPTIONS = {
+  hash: "#",
   root: null,
   useHash: false,
-  hash: "#",
   vueInject: "$ankHubRouter"
 };
 
@@ -21,8 +21,8 @@ export default function install(Vue, navigoOptions) {
   const options = merge(DEFAULT_OPTIONS, navigoOptions);
   if (!Vue.prototype[options.vueInject]) {
     Vue.prototype[options.vueInject] = {
-      internal: new Navigo(options.root, options.useHash, options.hash),
-      external: new Navigo(options.root, options.useHash, options.hash)
+      external: new Navigo(options.root, options.useHash, options.hash),
+      internal: new Navigo(options.root, options.useHash, options.hash)
     };
   }
 }

@@ -96,6 +96,10 @@ module.exports = () => {
             "@anakeen/hub-components/lib/HubStation": path.resolve(
               BASE_DIR,
               "components/src/HubStation/HubStation.vue"
+            ),
+            "@anakeen/hub-components/lib/HubEntriesUtil": path.resolve(
+              BASE_DIR,
+              "components/src/utils/HubEntriesUtil.js"
             )
           }
         }

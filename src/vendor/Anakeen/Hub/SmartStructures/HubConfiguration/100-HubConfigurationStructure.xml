@@ -45,11 +45,11 @@
 
 
         <smart:defaults>
-            <smart:default field="hub_activated" reset="true">FALSE</smart:default>
-            <smart:default field="hub_selectable" reset="true">FALSE</smart:default>
-            <smart:default field="hub_docker_position" reset="true">LEFT_TOP</smart:default>
-            <smart:default field="hub_expandable" reset="true">FALSE</smart:default>
-            <smart:default field="hub_order" reset="true">0</smart:default>
+            <smart:default field="hub_activated">FALSE</smart:default>
+            <smart:default field="hub_selectable">FALSE</smart:default>
+            <smart:default field="hub_docker_position">LEFT_TOP</smart:default>
+            <smart:default field="hub_expandable">FALSE</smart:default>
+            <smart:default field="hub_order">0</smart:default>
         </smart:defaults>
 
     </smart:structure-configuration>
