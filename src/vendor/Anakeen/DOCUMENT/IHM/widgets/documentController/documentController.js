@@ -1924,7 +1924,7 @@ define([
      * @param options object {"success": fct, "error", fct}
      */
     fetchDocument: function documentControllerFetchDocument(values, options) {
-      var documentPromise, callBackPromise;
+      var documentPromise;
       var currentWidget = this;
       values = _.isUndefined(values) ? {} : values;
       options = options || {};
@@ -1964,17 +1964,10 @@ define([
         if (values.customClientData) {
           this._model._customClientData = values.customClientData;
         }
-
-        if (this._model.isModified() && options.force === false) {
-          callBackPromise = this._model._promiseCallback();
-          this._model.trigger("loadDocument", this._getModelValue(), {
-            success: callBackPromise.success,
-            error: callBackPromise.error
-          });
-          documentPromise = callBackPromise.promise;
-        } else {
-          documentPromise = this._model.fetchDocument(this._getModelValue());
-        }
+        documentPromise = this._model.fetchDocument(
+          this._getModelValue(),
+          options
+        );
       }
       return this._registerOutputPromise(documentPromise, options);
     },
