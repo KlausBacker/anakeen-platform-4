@@ -50,9 +50,9 @@
     libxmljs "^0.19.5"
 
 "@anakeen/hub-components@^1.0.0-dev20190430102957":
-  version "1.0.0-dev20190430102957"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190430102957.tgz#f38a05abb2b4f8c87f4fcca7b4832903ef58d346"
-  integrity sha512-Zq1kTnj2Imh4Hb7ibpOdhavuBj06NcsgjgeoabiElckXBaKpWmY8ZYYlP3IY0pm4BypjD198t3moKsDIlFUWwQ==
+  version "1.0.0-dev20190510095848"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190510095848.tgz#506735cdddb6aba7e6e09d2d25c8b8c7a2f7146a"
+  integrity sha512-WGOeXseoEIdFTY2YxYRXiBpjopSQIu5WfIZoiKEn6MXukJMBua1YI3ZZLMmUxzeCtrY1F6Pwkjctor8CS7QPeA==
   dependencies:
     "@anakeen/internal-components" "^1.0.1-dev20190412123917"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
@@ -61,14 +61,12 @@
     axios "^0.18.0"
     core-js "3.0.0"
     jquery "^3.3.1"
-    load-css-file "^1.0.0"
     navigo "^7.1.2"
     typescript "^3.3.4000"
     url-join "^4.0.0"
     vue "2.6.10"
     vue-class-component "^7.0.2"
     vue-gettext "^2.1.3"
-    vue-m-loader "^1.0.1"
     vue-property-decorator "^8.1.0"
     vuex "^3.1.0"
 
@@ -94,9 +92,9 @@
     roboto-fontface "^0.10.0"
 
 "@anakeen/user-interfaces@^2.0.0-dev20190430094508":
-  version "2.0.0-dev20190430094508"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190430094508.tgz#2b3004dfbbc0996173d5da2b74298ed6390ddc88"
-  integrity sha512-XlrLdzrkU1g3K7xGzNgh3JE9BgGteM2sYAxB9ORj+Jpl4F9Q7NG7LrTZRnaqwj+JeRD2QfjjXwFxbOFHp+CUwA==
+  version "2.0.0-dev20190510085942"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190510085942.tgz#28d82b116dfda70cf772291f296b56ef2039382b"
+  integrity sha512-NL4d+5n3hQGWEuSQRQWx62qOJj1OfXnrLBe5rD+ei6kOoydI7zkn3vSNTHUl+JdHUMLKCI+nZCXJUsaViqCfWg==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
@@ -970,9 +968,9 @@
   integrity sha512-auXcoS/pc39onGyf6fr2V3J3BEHUqH0a1Sa1psuGrVkCat+2D592DA7hdXY73lwCUyhGPzkf0lrcE5jH0OFeJg==
 
 "@types/node@*":
-  version "11.13.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.7.tgz#85dbb71c510442d00c0631f99dae957ce44fd104"
-  integrity sha512-suFHr6hcA9mp8vFrZTgrmqW2ZU3mbWsryQtQlY/QvwTISCw7nw/j+bCQPPohqmskhmqa5wLNuMHTTsc+xf1MQg==
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.0.tgz#d11813b9c0ff8aaca29f04cbc12817f4c7d656e5"
+  integrity sha512-Jrb/x3HT4PTJp6a4avhmJCDEVrPdqLfl3e8GGMbpkGGdwAV5UGlIs4vVEfsHHfylZVOKZWpOqmqFH8CbfOZ6kg==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -5103,9 +5101,9 @@ istextorbinary@2.2.1:
     textextensions "2"
 
 jquery@<=3, jquery@^3.3.1:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.0.tgz#8de513fa0fa4b2c7d2e48a530e26f0596936efdf"
-  integrity sha512-ggRCXln9zEqv6OqAGXFEcshF5dSBvCkzj6Gm2gzuR5fWawaX8t7cxKVkkygKODrDAzKdoYw3l/e3pm3vlT4IbQ==
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
 js-base64@^2.1.8:
   version "2.5.1"
@@ -5337,11 +5335,6 @@ lightercollective@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.3.0.tgz#1f07638642ec645d70bdb69ab2777676f35a28f0"
   integrity sha512-RFOLSUVvwdK3xA0P8o6G7QGXLIyy1L2qv5caEI7zXN5ciaEjbAriRF182kbsoJ1S1TgvpyGcN485fMky6qxOPw==
-
-load-css-file@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/load-css-file/-/load-css-file-1.0.0.tgz#dac097ead6470f4c3f23d4bc5b9ff2c3decb212f"
-  integrity sha1-2sCX6tZHD0w/I9S8W5/yw97LIS8=
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -9170,15 +9163,20 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-vue-class-component@^7.0.1, vue-class-component@^7.0.2:
+vue-class-component@^7.0.1:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.0.2.tgz#c5f35a91c0e9341532392b84d606a84911fb13bc"
   integrity sha512-8xw/wkZI2tgHcwvkSRC1ax7GeP1CG27wKhedvOAdjdASm05VU4RijGsCYti6s6CzBioBL5BQUmntQQTCsp1wnQ==
 
+vue-class-component@^7.0.2:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.1.0.tgz#b33efcb10e17236d684f70b1e96f1946ec793e87"
+  integrity sha512-G9152NzUkz0i0xTfhk0Afc8vzdXxDR1pfN4dTwE72cskkgJtdXfrKBkMfGvDuxUh35U500g5Ve4xL8PEGdWeHg==
+
 vue-custom-element@^3.2.5:
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.6.tgz#9e3f52eb5c5014c298cad731321ed64487fada0b"
-  integrity sha512-tNWsax/Rq4Sr1QHj0pi4CWaBnAYfva75rlQg2fBKGja35+6AmdcZre/ztoiBWCSlSJ7APsMakG5R0A+GWBAc4Q==
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.7.tgz#ee1fd9d5e720e8c89bf94af6f845ce4abaac849a"
+  integrity sha512-jBtPXqm5WuIovoWsuoyYG+n8QGfhPOEyMuVVdWOydarcaU7YlsWfAt1lghi66ohJl4lMjyF71doTX5DHVBuUvg==
 
 vue-gettext@^2.1.0, vue-gettext@^2.1.3:
   version "2.1.4"
@@ -9200,11 +9198,6 @@ vue-loader@^15.7.0:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
-
-vue-m-loader@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vue-m-loader/-/vue-m-loader-1.0.1.tgz#7af7cb81b1ebda934708c990e2b082eb480ed4d0"
-  integrity sha512-a0h8H5cdarwrf/r3JJAB6n0NkW+7Wdfh/PhktYeCeeC8jN6aFkCyxQNz1fYmyMfmuO7FmYM/JW6EFyIR9beImg==
 
 vue-property-decorator@^8.1.0:
   version "8.1.0"
@@ -9240,9 +9233,9 @@ vue@2.6.10:
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
 vuex@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.0.tgz#634b81515cf0cfe976bd1ffe9601755e51f843b9"
-  integrity sha512-mdHeHT/7u4BncpUZMlxNaIdcN/HIt1GsGG5LKByArvYG/v6DvHcOxvDCts+7SRdCoIRGllK8IMZvQtQXLppDYg==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.1.tgz#0c264bfe30cdbccf96ab9db3177d211828a5910e"
+  integrity sha512-ER5moSbLZuNSMBFnEBVGhQ1uCBNJslH9W/Dw2W7GZN23UQA69uapP5GTT9Vm8Trc0PzBSVt6LzF3hGjmv41xcg==
 
 walkdir@^0.0.11:
   version "0.0.11"
