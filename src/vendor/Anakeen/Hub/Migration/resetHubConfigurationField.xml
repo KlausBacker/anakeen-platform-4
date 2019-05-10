@@ -1,0 +1,22 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="DbMigrationRules.xsd">
+
+    <action id="hubGenericConfiguration" label="Remove hge_component_libname field from HubGenericConfiguration">
+        <condition>
+            <sql-assert-not-empty label="verify hge_component_libname field exists">
+                select * from docattr where id='hge_component_libname';
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <sql-query label="Remove hge_component_libname field">
+                delete from docattr where id='hge_component_libname';
+            </sql-query>
+
+        </process>
+        <check>
+            <sql-assert-empty label="verify hge_component_libname field has been removed">
+                select * from docattr where id='hge_component_libname';
+            </sql-assert-empty>
+        </check>
+    </action>
+</migration>
