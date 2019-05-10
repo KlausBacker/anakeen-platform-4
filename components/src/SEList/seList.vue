@@ -29,6 +29,7 @@
                 class="form-control seList__search__keyword"
                 :placeholder="translations.searchPlaceholder"
                 v-model="filterInput"
+                @change="filterList(filterInput)"
               />
               <i
                 v-show="filterInput"
