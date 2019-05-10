@@ -1964,17 +1964,7 @@ define([
         if (values.customClientData) {
           this._model._customClientData = values.customClientData;
         }
-
-        if (this._model.isModified() && options.force === false) {
-          callBackPromise = this._model._promiseCallback();
-          this._model.trigger("loadDocument", this._getModelValue(), {
-            success: callBackPromise.success,
-            error: callBackPromise.error
-          });
-          documentPromise = callBackPromise.promise;
-        } else {
-          documentPromise = this._model.fetchDocument(this._getModelValue());
-        }
+        documentPromise = this._model.fetchDocument(this._getModelValue(), options);
       }
       return this._registerOutputPromise(documentPromise, options);
     },

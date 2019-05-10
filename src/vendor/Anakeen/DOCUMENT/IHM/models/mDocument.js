@@ -1380,6 +1380,7 @@ define([
       var globalCallback = this._promiseCallback(),
         documentCallback = this._promiseCallback(),
         serverProperties = this.getServerProperties(),
+        changeDocument,
         currentModel = this,
         needToUnlock = {},
         beforeCloseReturn = { prevent: false },
@@ -1388,6 +1389,113 @@ define([
         security,
         previousMode,
         lockCallback = this._promiseCallback();
+
+      changeDocument = function mDocumentfetchUserOK() {
+        currentModel.trigger("displayLoading");
+
+        //***********Lock Part*********************************************************************************
+
+        // Verify if current document need to be unlocked before fetch another
+        security = currentModel.get("properties")
+          ? currentModel.get("properties").get("security")
+          : null;
+        previousMode = currentModel.get("renderMode");
+
+        if (
+          previousMode === "edit" &&
+          security &&
+          security.lock &&
+          security.lock.temporary
+        ) {
+          needToUnlock = {
+            initid: serverProperties.initid
+          };
+        }
+        //Compute the next view
+        nextView = values.viewId;
+
+        if (!nextView) {
+          nextView =
+            currentModel.get("renderMode") === "edit"
+              ? "!defaultEdition"
+              : "!defaultConsultation";
+        }
+
+        if (
+          nextView !== "!defaultConsultation" &&
+          nextView !== "!coreCreation" &&
+          nextView !== "!defaultCreation" &&
+          currentModel.get("renderMode") !== "create"
+        ) {
+          //if the document is locked and the next view doesn't need the same lock delete it
+          if (needToUnlock.initid && needToUnlock.initid !== values.initid) {
+            lockModel = new DocumentLock({
+              initid: needToUnlock.initid,
+              type: "temporary"
+            });
+            lockModel.destroy();
+          }
+          // The next view needs a lock, ask for it and fetch the document after
+          lockModel = new DocumentLock({
+            initid: values.initid,
+            viewId: nextView,
+            type: "temporary"
+          });
+          lockModel.save({}, lockCallback);
+        } else {
+          if (needToUnlock) {
+            if (needToUnlock.initid === values.initid) {
+              // If same document "get" must be perform after unlock
+              lockModel = new DocumentLock({
+                initid: needToUnlock.initid,
+                type: "temporary"
+              });
+              lockModel.destroy({
+                success: function() {
+                  lockCallback.success();
+                },
+                error: function() {
+                  currentModel.trigger("showMessage", {
+                    title: i18n.___(
+                      "Document has been locked by someone else.",
+                      "ddui"
+                    ),
+                    type: "info"
+                  });
+                  lockCallback.success();
+                }
+              });
+
+              lockCallback.success();
+            } else {
+              lockModel = new DocumentLock({
+                initid: needToUnlock.initid,
+                type: "temporary"
+              });
+              lockModel.destroy();
+              lockCallback.success();
+            }
+          } else {
+            lockCallback.success();
+          }
+        }
+
+        lockCallback.promise.then(
+          function mdocument_lockSucess() {
+            //save the new options in the currentDocument for the fetch
+            _.each(
+              _.pick(values, "initid", "revision", "viewId"),
+              function mDocument_SetNewOptions(value, key) {
+                currentModel.set(key, value);
+              }
+            );
+            currentModel.fetch(documentCallback);
+          },
+          function mDocument_lockFail() {
+            globalCallback.error.apply(currentModel, arguments);
+          }
+        );
+      };
 
       options = options || {};
       values = values || {};
@@ -1467,110 +1575,20 @@ define([
       );
 
       if (beforeCloseReturn.prevent === false) {
-        this.trigger("displayLoading");
-
-        //***********Lock Part*********************************************************************************
-
-        // Verify if current document need to be unlocked before fetch another
-        security = this.get("properties")
-          ? this.get("properties").get("security")
-          : null;
-        previousMode = this.get("renderMode");
-
-        if (
-          previousMode === "edit" &&
-          security &&
-          security.lock &&
-          security.lock.temporary
-        ) {
-          needToUnlock = {
-            initid: serverProperties.initid
-          };
-        }
-        //Compute the next view
-        nextView = values.viewId;
-
-        if (!nextView) {
-          nextView =
-            this.get("renderMode") === "edit"
-              ? "!defaultEdition"
-              : "!defaultConsultation";
-        }
-
-        if (
-          nextView !== "!defaultConsultation" &&
-          nextView !== "!coreCreation" &&
-          nextView !== "!defaultCreation" &&
-          this.get("renderMode") !== "create"
-        ) {
-          //if the document is locked and the next view doesn't need the same lock delete it
-          if (needToUnlock.initid && needToUnlock.initid !== values.initid) {
-            lockModel = new DocumentLock({
-              initid: needToUnlock.initid,
-              type: "temporary"
-            });
-            lockModel.destroy();
-          }
-          // The next view needs a lock, ask for it and fetch the document after
-          lockModel = new DocumentLock({
-            initid: values.initid,
-            viewId: nextView,
-            type: "temporary"
-          });
-          lockModel.save({}, lockCallback);
+        if (options.force === true) {
+          changeDocument();
         } else {
-          if (needToUnlock) {
-            if (needToUnlock.initid === values.initid) {
-              // If same document "get" must be perform after unlock
-              lockModel = new DocumentLock({
-                initid: needToUnlock.initid,
-                type: "temporary"
-              });
-              lockModel.destroy({
-                success: function() {
-                  lockCallback.success();
-                },
-                error: function() {
-                  currentModel.trigger("showMessage", {
-                    title: i18n.___(
-                      "Document has been locked by someone else.",
-                      "ddui"
-                    ),
-                    type: "info"
-                  });
-                  lockCallback.success();
-                }
-              });
-
-              lockCallback.success();
-            } else {
-              lockModel = new DocumentLock({
-                initid: needToUnlock.initid,
-                type: "temporary"
-              });
-              lockModel.destroy();
-              lockCallback.success();
+          this.trigger(
+            "displayCloseDocument",
+            changeDocument,
+            function mDocumentFetchUserCancel(error) {
+              //Reinit properties
+              currentModel.set(serverProperties);
+              //Indicate success to the promise object
+              globalCallback.error(error);
             }
-          } else {
-            lockCallback.success();
-          }
+          );
         }
-
-        lockCallback.promise.then(
-          function mdocument_lockSucess() {
-            //save the new options in the currentDocument for the fetch
-            _.each(
-              _.pick(values, "initid", "revision", "viewId"),
-              function mDocument_SetNewOptions(value, key) {
-                currentModel.set(key, value);
-              }
-            );
-            currentModel.fetch(documentCallback);
-          },
-          function mDocument_lockFail() {
-            globalCallback.error.apply(currentModel, arguments);
-          }
-        );
       } else {
         //Reinit properties
         currentModel.set(serverProperties);
