@@ -147,11 +147,22 @@ export default class HubBusinessApp extends Vue {
   }
 
   protected onDisplayMessage(message) {
+    let type = "info";
+    if (message.type) {
+      type = message.type;
+    }
+    let contentHtml = "";
+    if (message.message) {
+      contentHtml += `<p>${escape(message.message)}</p>`;
+    }
+    if (message.htmlMessage) {
+      contentHtml += `<p>${message.htmlMessage}</p>`;
+    }
     // @ts-ignore
     this.hubNotify({
-      type: "info", // Type de notification parmi: "info", "notice", "success", "warning", "error"
+      type,
       content: {
-        textContent: message.message, // ou htmlContent: "<em>Un message d'information important</em>"
+        htmlContent: contentHtml, // ou htmlContent: "<em>Un message d'information important</em>"
         title: message.title
       }
     });
