@@ -28,8 +28,7 @@ class GridContent extends DataSource
             "skip" => intval($this->_searchDoc->start),
             "take" => intval($this->_searchDoc->slice),
             "pageSize" => intval($this->pageSize),
-            "total" => intval($this->_searchDoc->onlyCount()),
-            "debug" => $this->_searchDoc->getSearchInfo()
+            "total" => intval($this->_searchDoc->onlyCount())
         );
 
 

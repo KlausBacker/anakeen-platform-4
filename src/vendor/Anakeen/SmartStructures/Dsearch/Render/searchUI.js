@@ -1423,7 +1423,7 @@ import searchAttributes from "./searchAttributes";
     } else {
       $atype = "";
     }
-    if (!$atype && myAttribute.value === "activity") {
+    if (!$atype && myAttribute && myAttribute.value === "activity") {
       $atype = "wid";
       myAttribute.value = "state";
     }

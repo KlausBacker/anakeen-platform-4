@@ -2,7 +2,6 @@
  Research result in edit mode
  */
 {
-
   window.dcp.document.documentController(
     "addEventListener",
     "ready",
@@ -32,8 +31,6 @@
           $(window).trigger("resize");
         }
       });
-
-
     }
   );
 
@@ -52,10 +49,8 @@
     }
   );
 
-
   function showTmpGrid(event, $documentController) {
-    var $dataJSON = null;
-    $dataJSON = $documentController
+    const $dataJSON = $documentController
       .data("dcpDocumentController")
       ._model.toJSON();
     $dataJSON.document.attributes = $documentController

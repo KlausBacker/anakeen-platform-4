@@ -119,13 +119,13 @@ export default class GridDataUtils extends AbstractGridUtil {
               unitValueTemplate = `<div class="color-value" style="display: flex; align-items: center"><span style="background-color: #= value#; border-radius: 50%; width: 16px; height: 16px; margin-right: .5rem"></span> <span> #= displayValue#</span></div>`;
               break;
             case "int":
-              unitValueTemplate = `#= kendo.toString(data.value, 'n0') #`;
+              unitValueTemplate = `#= kendo.toString(parseInt(data.value), '\\#\\#,\\#') #`;
               break;
             case "double":
-              unitValueTemplate = `#= kendo.toString(data.value, '\\#\\#\\#,\\#\\#\\#.\\#\\#\\#\\#\\#\\#') #`;
+              unitValueTemplate = `#= kendo.toString(parseFloat(data.value), '\\#\\#\\#,\\#\\#\\#.\\#\\#\\#\\#\\#\\#') #`;
               break;
             case "money":
-              unitValueTemplate = `#= kendo.toString(data.value, 'c2') #`;
+              unitValueTemplate = `#= kendo.toString(parseFloat(data.value), 'c2') #`;
               break;
             case "date":
               unitValueTemplate =

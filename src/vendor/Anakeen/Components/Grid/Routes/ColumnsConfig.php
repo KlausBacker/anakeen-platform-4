@@ -134,6 +134,7 @@ class ColumnsConfig
     {
         $return = [];
         $cols = $collection->getMultipleRawValues(ReportFields::rep_idcols);
+        $displayOptions = $collection->getMultipleRawValues(ReportFields::rep_displayoption);
         if (empty($cols)) {
             $cols = self::DEFAULT_COLUMNS;
         }
@@ -144,10 +145,23 @@ class ColumnsConfig
             });
         }
 
-        foreach ($cols as $attrid) {
+        foreach ($cols as $kf => $attrid) {
             if ($attrid) {
                 $config = self::getColumnConfig($attrid, $structRef);
                 if (!empty($config)) {
+                    if ($displayOptions[$kf]) {
+                        switch ($displayOptions[$kf]) {
+                            case "docid":
+                                $config["title"] .= sprintf(" (%s)", ___("id", "Report"));
+                                $config["smartType"] = "int";
+                                $config["filterable"]["cell"]["enable"]=false;
+                                break;
+                            case "title":
+                                $config["title"] .= sprintf(" (%s)", ___("title", "Report"));
+                                $config["smartType"] = "text";
+                                break;
+                        }
+                    }
                     $return[] = $config;
                 }
             }

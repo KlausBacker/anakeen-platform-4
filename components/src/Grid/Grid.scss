@@ -4,6 +4,20 @@
   max-height: 100%;
   width: 100%;
   .k-grid {
+
+    display: flex!important; // To override important kendo rule
+    flex:1;
+
+    .grid-header--subtitle {
+      color: #666;
+      font-style:italic;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .grid-header--title {
+      display:inline-block;
+    }
+
     tr.k-state-selected, th.k-state-selected, td.k-state-selected {
       font-weight: bold;
     }
@@ -66,8 +80,9 @@
     max-height: inherit;
     display: flex;
     flex: 1;
-    flex-direction: row;
-    height: 100%;
+    flex-direction: column;
+    border: solid 1px #fafafa;
+
     min-height: 0;
 
     > .k-grid {
@@ -85,8 +100,9 @@
     margin: 0;
     padding: 0;
     border-width: 0;
-    height: 100%;
     min-height: 0;
+    display:flex;
+    flex-direction: column;
   }
 
   th[data-role=columnsorter]:not(.k-sorted) {
@@ -110,6 +126,7 @@
         top: .15rem;
         content: "\e116";
         font-family: "WebComponentsIcons";
+        font-size:0.9rem;
         margin-left: .5rem;
         bottom: 10px;
       }
@@ -449,7 +466,7 @@
     }
 
     .k-header, .k-header > .k-link {
-      text-transform: capitalize;
+
     }
   }
 
