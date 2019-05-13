@@ -16,37 +16,50 @@ const enableLoader = (enable = true, element = "body") => {
 };
 
 enableLoader();
-hubConf.fetchConfiguration().then(() => {
-  hubConf.loadAssets().then(() => {
-    Object.keys(window.ank.hub).map(currentKey => {
-      Vue.component(currentKey, () => {
-        const componentConfig = {
-          component: window.ank.hub[currentKey].promise,
-          loading: HubLoading,
-          error: HubError,
-          delay: 100
-        };
-        if (window.ank.hub[currentKey].timeout) {
-          componentConfig["timeout"] = parseInt(
-            window.ank.hub[currentKey].timeout
-          );
+hubConf
+  .fetchConfiguration()
+  .then(() => {
+    hubConf.loadAssets().then(() => {
+      Object.keys(window.ank.hub).map(currentKey => {
+        Vue.component(currentKey, () => {
+          const componentConfig = {
+            component: window.ank.hub[currentKey].promise,
+            loading: HubLoading,
+            error: HubError,
+            delay: 100
+          };
+          if (window.ank.hub[currentKey].timeout) {
+            componentConfig["timeout"] = parseInt(
+              window.ank.hub[currentKey].timeout
+            );
+          }
+          return componentConfig;
+        });
+      });
+      new Vue({
+        el: "#ank-hub",
+        components: { "hub-main": HubMain },
+        template: "<hub-main :initialData='initialData'/>",
+        store: Store,
+        data() {
+          return {
+            initialData: hubConf.data
+          };
+        },
+        mounted() {
+          enableLoader(false);
         }
-        return componentConfig;
       });
     });
+  })
+  .catch(error => {
+    // Display an error message
     new Vue({
       el: "#ank-hub",
-      components: { "hub-main": HubMain },
-      template: "<hub-main :initialData='initialData'/>",
-      store: Store,
-      data() {
-        return {
-          initialData: hubConf.data
-        };
-      },
+      template: `<div style="width: 100%; padding: 2rem 1rem 2rem 10rem; font-size: 1.333rem; font-weight: bold; color: white; background: #b0413e">${error}</div>`,
       mounted() {
         enableLoader(false);
       }
     });
+    throw error;
   });
-});

@@ -26,7 +26,15 @@ class HubEntriesUtil {
     return fetch(`${this.baseFetch}/${window.encodeURIComponent(this.hubId)}`, {
       credentials: "same-origin"
     })
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.text().then(error => {
+            throw error;
+          });
+        }
+      })
       .then(response => {
         const data = response.data;
         this.data = data;
