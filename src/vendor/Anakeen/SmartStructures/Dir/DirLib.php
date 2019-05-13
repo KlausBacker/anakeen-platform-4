@@ -164,7 +164,7 @@ class DirLib
                 $hasFilters = false;
                 if ($fld && method_exists($fld, "getSpecificFilters")) {
                     /**
-                     * @var \DocCollection $fld
+                     * @var \Anakeen\Core\Internal\SmartCollection $fld
                      */
                     $specFilters = $fld->getSpecificFilters();
                     if (is_array($specFilters) && (count($specFilters) > 0)) {
@@ -390,7 +390,7 @@ class DirLib
         }
         if (($fromid == "") && ($dirid != 0) && ($qtype == "TABLE")) {
             /**
-             * @var \DocCollection $fld
+             * @var \Anakeen\Core\Internal\SmartCollection $fld
              */
             $fld = SEManager::getDocument($dirid);
 

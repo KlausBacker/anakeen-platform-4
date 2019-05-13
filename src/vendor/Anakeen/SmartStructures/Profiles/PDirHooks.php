@@ -7,7 +7,7 @@
 
 namespace Anakeen\SmartStructures\Profiles;
 
-class PDirHooks extends \DocCollection
+class PDirHooks extends \Anakeen\Core\Internal\SmartCollection
 {
     // --------------------------------------------------------------------
     //---------------------- OBJECT CONTROL PERMISSION --------------------

@@ -41,7 +41,7 @@ class ExportCollection
      */
     protected $exportStatusId = '';
     /**
-     * @var \DocCollection $collectionDocument
+     * @var \Anakeen\Core\Internal\SmartCollection $collectionDocument
      */
     protected $collectionDocument = null;
     /**
@@ -78,9 +78,9 @@ class ExportCollection
      *
      * @see ExportCollection::setDocumentlist
      *
-     * @param \DocCollection $collectionDocument
+     * @param \Anakeen\Core\Internal\SmartCollection $collectionDocument
      */
-    public function setCollectionDocument(\DocCollection $collectionDocument)
+    public function setCollectionDocument(\Anakeen\Core\Internal\SmartCollection $collectionDocument)
     {
         $this->collectionDocument = $collectionDocument;
         $this->documentList = $this->collectionDocument->getDocumentList();

@@ -32,7 +32,7 @@ class TemporaryFile
         if (count($_FILES) === 0) {
             $exception = new Exception("CRUD0302", "");
             $exception->setUserMessage(sprintf(
-                ___("File not recorded, File size transfert limited to %d Mb", "HTTPAPI_V1"),
+                ___("File not recorded, File size transfert limited to %d Mb", "sde"),
                 $this->getUploadLimit() / 1024 / 1024
             ));
             throw $exception;
@@ -55,7 +55,7 @@ class TemporaryFile
             switch ($exception->getDcpCode()) {
                 case "VAULT0002":
                     $newException->setUserMessage(
-                        ___("Cannot store file because vault size limit is reached", "HTTPAPI_V1")
+                        ___("Cannot store file because vault size limit is reached", "sde")
                     );
                     break;
 

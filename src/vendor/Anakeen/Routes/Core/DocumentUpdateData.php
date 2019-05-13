@@ -44,7 +44,7 @@ class DocumentUpdateData extends DocumentData
         $err = $this->_document->canEdit();
         if ($err) {
             $exception = new Exception("CRUD0201", $docid, $err);
-            $exception->setUserMessage(___("Update forbidden", "HTTPAPI_V1"));
+            $exception->setUserMessage(___("Update forbidden", "sde"));
             $exception->setHttpStatus("403", "Forbidden");
             throw $exception;
         }
