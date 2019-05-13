@@ -2,10 +2,8 @@
  Research result in edit mode
  */
 {
-  var docFamid = window.dcp.document.documentController(
-    "getAttribute",
-    "se_famid"
-  )._attributeModel.attributes.attributeValue.value;
+  var docFamid = window.dcp.document.documentController("getValue", "se_famid")
+    .value;
   window.dcp.document.documentController(
     "addEventListener",
     "ready",
@@ -50,9 +48,9 @@
             var currentTab = $tab.data("kendoTabStrip").select()[0].className;
             if (currentTab.includes("result-tab")) {
               var newFamid = window.dcp.document.documentController(
-                "getAttribute",
+                "getValue",
                 "se_famid"
-              )._attributeModel.attributes.attributeValue.value;
+              ).value;
               if (docFamid !== newFamid) {
                 showTmpGrid(event, $documentController);
                 docFamid = newFamid;
