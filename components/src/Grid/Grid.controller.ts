@@ -185,7 +185,7 @@ export default class GridController extends Vue {
     this.gridKendoUtils = new GridKendoUtils(this);
     this.privateScope = {
       getQueryParamsData: (columns, kendoPagerInfo) => {
-        const result = { fields: [] };
+        const result = { abstractFields: [], fields: [] };
         if (kendoPagerInfo) {
           Object.keys(kendoPagerInfo).forEach(key => {
             if (kendoPagerInfo[key] !== undefined) {
@@ -203,8 +203,21 @@ export default class GridController extends Vue {
               return `document.attributes.${fieldConfig.field}`;
             })
             .join(",");
+
+          const abstracts = columns
+            .filter(c => c.abstract)
+            .map(fieldConfig => {
+              if (fieldConfig.property) {
+                return `document.properties.${fieldConfig.field}`;
+              }
+              return `document.attributes.${fieldConfig.field}`;
+            })
+            .join(",");
           if (fields) {
             result.fields = fields;
+          }
+          if (abstracts) {
+            result.abstractFields = abstracts;
           }
         }
         return result;
@@ -506,7 +519,6 @@ export default class GridController extends Vue {
         }
       : this.sortable,
     reorderable: this.reorderable,
-    height: "calc(100% - 2rem)",
     pageable: this.pageable
       ? {
           pageSizes: this.pageSizes,

@@ -1,6 +1,7 @@
 <template>
-    <ank-se-grid v-if="searchId" url-config="/api/v2/smartstructures/dsearch/gridConfig/<collection>"
+    <ank-se-grid v-if="searchId" :url-config="`/api/v2/smartstructures/dsearch/gridConfig/${searchId}`"
                  :server-paging="true"
+                 :page-sizes="[50, 100, 500]"
                  :server-sorting="true" :server-filtering="true" :collection="searchId" class="search-grid"
                  :contextTitles="false" ref="searchGrid">
     </ank-se-grid>
@@ -26,9 +27,6 @@
         },
         function prepareResultEditEvents(event, data) {
           that.searchId = data.id.toString();
-          if (that.$refs.searchGrid) {
-            that.$refs.searchGrid.privateScope.initGrid();
-          }
         });
       window.dcp.document.documentController(
         "addEventListener",
@@ -41,9 +39,6 @@
         },
         function prepareResultViewEvents(event, data) {
           that.searchId = data.id.toString();
-          if (that.$refs.searchGrid) {
-              that.$refs.searchGrid.kendoGrid.dataSource.read();
-          }
         });
     },
     data() {

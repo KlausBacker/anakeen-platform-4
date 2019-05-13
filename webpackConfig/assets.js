@@ -50,6 +50,19 @@ module.exports = () => {
               from: "dynacaseReport.js",
               to: path.resolve(__dirname, "../src/public/uiAssets/anakeen/")
             },
+  
+            {
+              //Images : Copy SmartStructures/<SST>/Images/<IMG> to public/Images/<SST>/<IMG>
+              context: path.resolve(
+                __dirname,
+                "../src/vendor/Anakeen/SmartStructures/"
+              ),
+              from: "*/Images/**",
+              transformPath(targetPath, absolutePath) {
+                return targetPath.replace('/Images','').replace('TargetImages','Images');
+              },
+              to: path.resolve(__dirname, "../src/public/TargetImages/")
+            },
             //datatables
             {
               from: "./node_modules/datatables.net-bs4/css",

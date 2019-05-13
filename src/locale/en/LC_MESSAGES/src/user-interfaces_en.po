@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:03+0200\n"
+"POT-Creation-Date: 2019-05-13 09:33+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -247,6 +247,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Delete"
+msgstr ""
+
+msgctxt "smart:dsearch"
+msgid "Display"
 msgstr ""
 
 msgctxt "UiMenu"
@@ -709,10 +713,6 @@ msgctxt "smart iuser"
 msgid "User is deactivated"
 msgstr ""
 
-msgctxt "smart:dsearch"
-msgid "View"
-msgstr ""
-
 msgctxt "UiMenu"
 msgid "View current revision"
 msgstr ""
@@ -785,6 +785,10 @@ msgctxt "mask"
 msgid "hidden"
 msgstr ""
 
+msgctxt "Report"
+msgid "id"
+msgstr ""
+
 msgctxt "searchui"
 msgid "id locked"
 msgstr "Lock id"
@@ -840,6 +844,11 @@ msgstr "Step"
 msgctxt "dsearch"
 msgid "step"
 msgstr "Step"
+
+#, fuzzy
+msgctxt "Report"
+msgid "title"
+msgstr "Title"
 
 msgid "workflow"
 msgstr "Workflow"

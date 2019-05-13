@@ -9,6 +9,8 @@
 namespace Anakeen\SmartStructures\Dsearch\Routes;
 
 use Anakeen\Components\Grid\Routes\GridConfig;
+use Anakeen\Core\Internal\FormatCollection;
+use Anakeen\Core\Utils\Postgres;
 use SmartStructure\Fields\Report;
 
 class SearchGridConfig extends GridConfig
@@ -20,7 +22,7 @@ class SearchGridConfig extends GridConfig
         $config["actions"] = [
             "title" => "Actions",
             "actionConfigs" => [
-                [ "action" => "consult", "title" => ___("View", "smart:dsearch") ]
+                [ "action" => "consult", "title" => ___("Display", "smart:dsearch") ]
             ]
         ];
         if (is_a($this->collectionDoc, \SmartStructure\Report::class)) {
@@ -37,6 +39,8 @@ class SearchGridConfig extends GridConfig
         $cols = $document->getMultipleRawValues(Report::rep_idcols);
         $foots = $document->getMultipleRawValues(Report::rep_foots);
         //$return[] = array("id" => "title","withIcon" => "true");
+
+       // print_r($foots);
         foreach ($foots as $k => $function) {
             switch ($function) {
                 case "CARD":
@@ -54,15 +58,26 @@ class SearchGridConfig extends GridConfig
                     $s->returnsOnly([$attrid]);
                     $results = $s->search();
 
+                    $oa=$this->structureRef->getAttribute($attrid);
                     $sum = 0;
                     foreach ($results as $result) {
-                        $sum += floatval($result[$attrid]);
+                        if ($result[$attrid]) {
+                            if ($oa && $oa->isMultiple()) {
+                                $sum += array_sum(Postgres::stringToArray($result[$attrid]));
+                            } else {
+                                $sum += floatval($result[$attrid]);
+                            }
+                        }
                     }
+
                     // $return[]="$function $attrid $sum";
                     if ($function === "MOY") {
                         $sum = $sum / count($results);
                     }
-                    $return[$cols[$k]] = $document->getHtmlValue($this->structureRef->getAttribute($attrid), $sum);
+                    if ($oa) {
+                        $sum = $document->getHtmlValue($this->structureRef->getAttribute($attrid), $sum);
+                    }
+                    $return[$cols[$k]] =$sum;
                     break;
                 default:
                     $return[$cols[$k]] = null;

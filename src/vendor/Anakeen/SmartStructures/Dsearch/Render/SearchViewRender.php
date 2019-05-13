@@ -3,6 +3,7 @@
 
 namespace Anakeen\SmartStructures\Dsearch\Render;
 
+use Anakeen\Core\Internal\SmartCollectionOperators;
 use Anakeen\Core\Internal\SmartElement;
 use Anakeen\Core\SEManager;
 use Anakeen\Ui\BarMenu;
@@ -141,8 +142,8 @@ class SearchViewRender extends DefaultView
              * get function label
              */
             $boolTyped = false;
-            $doccollection = new \DocCollection();
-            foreach ($doccollection->top as $k => &$tmptop) {
+            $operators=SmartCollectionOperators::getOperators();
+            foreach ($operators as $k => &$tmptop) {
                 if ($k == $func) {
                     foreach ($tmptop as $i => $label) {
                         if ($i == $type) {
@@ -162,13 +163,18 @@ class SearchViewRender extends DefaultView
                 }
             }
             if ($func) {
-                $leftfunc = explode("{left}", $func)[0];
-                $rightfunc = explode("{left}", $func)[1];
-                $rightfunc = explode("{right}", $rightfunc)[0];
+                $parts=explode("{left}", $func);
+                if (count($parts)>1) {
+                    $leftfunc = $parts[0];
+                    $rightfunc = explode("{left}", $func)[1];
+                    $rightfunc = explode("{right}", $rightfunc)[0];
 
-                if ($index == 0) {
-                    $operand = "";
-                    $leftfunc = ucfirst($leftfunc);
+                    if ($index == 0) {
+                        $operand = "";
+                        $leftfunc = ucfirst($leftfunc);
+                    }
+                } else {
+                    $leftfunc = $rightfunc = "";
                 }
             }
 
@@ -187,8 +193,11 @@ class SearchViewRender extends DefaultView
                     $key = $oa->getEnumLabel($key);
                 } else {
                     if ($type == "date") {
-                        if (strripos($key, "(") === false) {
-                            $key = explode("-", $key)[2] . "/" . explode("-", $key)[1] . "/" . explode("-", $key)[0];
+                        if (strripos($key, "(") === false && $key) {
+                            $parts=explode("-", $key);
+                            if (count($parts)>2) {
+                                $key = $parts[2] . "/" . $parts[1] . "/" . $parts[0];
+                            }
                         }
                     } else {
                         if ($attribute == "state") {

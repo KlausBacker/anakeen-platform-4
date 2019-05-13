@@ -139,6 +139,11 @@ export default class GridKendoUtils extends AbstractGridUtil {
     }
   }
 
+  decodeHtml(html) {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
+  }
   /**
    * Format column to the Kendo Grid Column object format
    * @param {object} col - Column configuration
@@ -160,7 +165,12 @@ export default class GridKendoUtils extends AbstractGridUtil {
       };
     }
 
-    if (col.filterable && this.vueComponent.filterable === "menu") {
+    if (
+      col.filterable &&
+      col.filterable.cell &&
+      col.filterable.cell.enable === true &&
+      this.vueComponent.filterable === "menu"
+    ) {
       if (col.headerAttributes && col.headerAttributes.class) {
         col.headerAttributes.class += " grid-column-menu-filter";
       } else {
@@ -197,25 +207,32 @@ export default class GridKendoUtils extends AbstractGridUtil {
         return this.vueComponent.gridFilter.getColumnFilterTemplate(e, col);
       };
     }
-
+    col.subTitle = "";
     if (
       this.vueComponent.contextTitles &&
       col.withContext &&
       col.context &&
       col.context.length
     ) {
-      const titleWords = col.context.slice();
       const title = col.title || col.field;
-      titleWords.push(title);
-      col.title = titleWords.join(
+      const titleWords = col.context.join(
         ` ${this.vueComponent.contextTitlesSeparator} `
       );
+      col.title = title;
+      col.subTitle = titleWords;
     }
     if (!col.template) {
       col.template = this.vueComponent.gridDataUtils.formatAnkAttributesValue(
         col
       );
     }
+
+    if (!col.headerTemplate) {
+      col.headerTemplate = kendo.template(
+        `<div class="grid-header--subtitle">#: subTitle #</div><div class="grid-header--title"> #: title # </div>`
+      )(col);
+    }
+
     if (config.footer && config.footer[col.field]) {
       col.footerTemplate = `${config.footer[col.field]}`;
     }

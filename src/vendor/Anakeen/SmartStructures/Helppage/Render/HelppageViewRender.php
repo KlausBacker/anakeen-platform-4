@@ -79,11 +79,11 @@ class HelppageViewRender extends \Anakeen\Ui\DefaultView
         foreach ($all_lang_keys as $i => $key) {
             $menuItem = new \Anakeen\Ui\ItemMenu("helppage-lang-" . $key, Strings::mbUcfirst($all_lang_texts[$i]));
             $lang = strtolower(substr($key, 3, 2));
-            $menuItem->setIcon(sprintf("flags/%s.png", $lang));
+            $menuItem->setIcon(sprintf("Helppage/flags/%s.png", $lang));
             $menuItem->setUrl("#action/helppage.lang:" . $key);
 
             if (substr($key, 0, 2) === $currentLocale["locale"]) {
-                $langMenuList->setIcon(sprintf("flags/%s.png", $lang));
+                $langMenuList->setIcon(sprintf("Helppage/flags/%s.png", $lang));
                 $langMenuList->setHtmlLabel(sprintf("(%s) ", substr($key, 0, 2)));
             }
 

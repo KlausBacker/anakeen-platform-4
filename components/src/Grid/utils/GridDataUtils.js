@@ -72,6 +72,7 @@ export default class GridDataUtils extends AbstractGridUtil {
       let resultRender = "";
       let currentValue = null;
       const type = colConfig.smartType;
+
       if (dataItem.rowData) {
         currentValue = dataItem.rowData[colConfig.field];
         // Convert kendo dataItem object in js array if multiple attribute
@@ -118,13 +119,13 @@ export default class GridDataUtils extends AbstractGridUtil {
               unitValueTemplate = `<div class="color-value" style="display: flex; align-items: center"><span style="background-color: #= value#; border-radius: 50%; width: 16px; height: 16px; margin-right: .5rem"></span> <span> #= displayValue#</span></div>`;
               break;
             case "int":
-              unitValueTemplate = `#= kendo.toString(data.value, 'n0') #`;
+              unitValueTemplate = `#= kendo.toString(parseInt(data.value), '\\#\\#,\\#') #`;
               break;
             case "double":
-              unitValueTemplate = `#= kendo.toString(data.value, '\\#\\#\\#,\\#\\#\\#.\\#\\#\\#\\#\\#\\#') #`;
+              unitValueTemplate = `#= kendo.toString(parseFloat(data.value), '\\#\\#\\#,\\#\\#\\#.\\#\\#\\#\\#\\#\\#') #`;
               break;
             case "money":
-              unitValueTemplate = `#= kendo.toString(data.value, 'c2') #`;
+              unitValueTemplate = `#= kendo.toString(parseFloat(data.value), 'c2') #`;
               break;
             case "date":
               unitValueTemplate =
@@ -163,10 +164,24 @@ export default class GridDataUtils extends AbstractGridUtil {
                   // Second level of multiplicity
                   const secondLevelRender = elem
                     .map(subElem => {
+                      if (
+                        empty(subElem) ||
+                        (typeof subElem === "object" && subElem.value === null)
+                      ) {
+                        // Empty value case
+                        return emptyValue;
+                      }
                       return kendo.template(unitValueTemplate)(subElem);
                     })
                     .join("<div class='grid-cell-content-br'></div>");
                   return `<div class="grid-cell-multiple-value">${secondLevelRender}</div>`;
+                }
+                if (
+                  empty(elem) ||
+                  (typeof elem === "object" && elem.value === null)
+                ) {
+                  // Empty value case
+                  return emptyValue;
                 }
                 return kendo.template(unitValueTemplate)(elem);
               })

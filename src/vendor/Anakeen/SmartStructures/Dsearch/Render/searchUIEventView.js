@@ -82,14 +82,7 @@ Research result in consult mode
     },
     function() {
       var $this = $(this);
-      var $child = $(
-        $("body").children($("<div/>"))[
-          $("body").children($("<div/>")).length - 1
-        ]
-      );
-      if ($child[0].className === "k-widget k-window") {
-        $child.remove();
-      }
+
       $this.documentController("removeEventListener", ".viewEvent");
     }
   );
