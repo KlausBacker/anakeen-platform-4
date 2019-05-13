@@ -37,7 +37,7 @@ export default class Welcome extends Vue {
       this.$refs.grids.forEach(grid => {
         grid.dataSource.read();
       });
-    } else {
+    } else if (this.$refs.grids) {
       // @ts-ignore
       this.$refs.grids.dataSource.read();
     }
