@@ -1088,6 +1088,9 @@ define([
       this.view.on(
         "showSuccess",
         function documentController_triggerShowSuccess(message) {
+          if (message) {
+            message.type = message.type ? message.type : "success";
+          }
           var result = currentWidget._triggerControllerEvent(
             "displayMessage",
             null,
