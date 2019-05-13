@@ -70,6 +70,11 @@ define([
       );
       this.listenTo(this.model, "actionAttributeLink", this.doStandardAction);
       this.listenTo(this.model, "loadDocument", this.loadDocument);
+      this.listenTo(
+        this.model,
+        "displayCloseDocument",
+        this.displayCloseDocument
+      );
       this.listenTo(this.model, "redrawErrorMessages", this.redrawTootips);
       this.listenTo(this.model, "doSelectTab", this.selectTab);
       this.listenTo(this.model, "doDrawTab", this.drawTab);
@@ -1375,16 +1380,11 @@ define([
       }
     },
 
-    /**
-     * load another document document  : confirm if modified
-     * options : {initid, viewId, revision}
-     * callbacks : {success, error}
-     */
-    loadDocument: function vDocumentLoadDocument(options, callbacks) {
+    displayCloseDocument: function vDocumentdisplayCloseDocument(
+      success,
+      error
+    ) {
       var confirmWindow;
-      var documentView = this;
-
-      callbacks = callbacks || {};
 
       if (this.model.hasAttributesChanged()) {
         confirmWindow = $("body").dcpConfirm({
@@ -1402,39 +1402,40 @@ define([
             textMessage: ""
           },
           confirm: function wMenuConfirm() {
-            documentView.model
-              .fetchDocument({
-                initid: options.initid,
-                viewId: options.viewId,
-                revision: options.revision
-              })
-              .then(callbacks.success, callbacks.error);
+            success();
           },
           cancel: function wLoadCancel() {
-            if (callbacks && _.isFunction(callbacks.error)) {
-              callbacks.error({
-                errorMessage: {
-                  code: "USERCANCEL",
-                  contentText: i18n.___(
-                    "User has cancelled the action.",
-                    "ddui"
-                  )
-                }
-              });
-            }
+            error({
+              errorMessage: {
+                code: "USERCANCEL",
+                contentText: i18n.___("User has cancelled the action.", "ddui")
+              },
+              eventPrevented: true
+            });
           },
           templateData: { templates: this.model.get("templates") }
         });
         confirmWindow.data("dcpWindow").open();
       } else {
-        this.model
-          .fetchDocument({
-            initid: options.initid,
-            viewId: options.viewId,
-            revision: options.revision
-          })
-          .then(callbacks.success, callbacks.error);
+        success();
       }
+    },
+
+    /**
+     * load another document document  : confirm if modified
+     * options : {initid, viewId, revision}
+     * callbacks : {success, error}
+     */
+    loadDocument: function vDocumentLoadDocument(options, callbacks) {
+      callbacks = callbacks || {};
+
+      this.model
+        .fetchDocument({
+          initid: options.initid,
+          viewId: options.viewId,
+          revision: options.revision
+        })
+        .then(callbacks.success, callbacks.error);
     },
 
     /**
