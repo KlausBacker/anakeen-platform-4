@@ -89,27 +89,27 @@ class VaultFsManager
         $bytes = abs($bytes);
 
         if ($bytes < 1024) {
-            return $neg . sprintf(_("%d bytes"), $bytes);
+            return $neg . sprintf(___("%d bytes", "vault"), $bytes);
         }
         if ($bytes < 10240) {
-            return $neg . sprintf(_("%.02f KB"), $bytes / 1024);
+            return $neg . sprintf(___("%.02f KB", "vault"), $bytes / 1024);
         }
         if ($bytes < 1048576) {
-            return $neg . sprintf(_("%d KB"), $bytes / 1024);
+            return $neg . sprintf(___("%d KB", "vault"), $bytes / 1024);
         }
         if ($bytes < 10485760) {
-            return $neg . sprintf(_("%.02f MB"), $bytes / 1048576);
+            return $neg . sprintf(___("%.02f MB", "vault"), $bytes / 1048576);
         }
         if ($bytes < 1048576 * 1024) {
-            return $neg . sprintf(_("%d MB"), $bytes / 1048576);
+            return $neg . sprintf(___("%d MB", "vault"), $bytes / 1048576);
         }
         if ($bytes < 1048576 * 10240) {
-            return $neg . sprintf(_("%.02f GB"), $bytes / 1048576 / 1024);
+            return $neg . sprintf(___("%.02f GB", "vault"), $bytes / 1048576 / 1024);
         }
         if ($bytes < 1048576 * 1048576) {
-            return $neg . sprintf(_("%d GB"), $bytes / 1048576 / 1024);
+            return $neg . sprintf(___("%d GB", "vault"), $bytes / 1048576 / 1024);
         }
-        return $neg . sprintf(_("%d TB"), $bytes / 1048576 / 1048576);
+        return $neg . sprintf(___("%d TB", "vault"), $bytes / 1048576 / 1048576);
     }
 
     protected static function humanreadpc($pc)

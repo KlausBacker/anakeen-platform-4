@@ -72,7 +72,7 @@ class ReportAutocomplete
         $propList = array(
             "icon" => _("prop_icon"),
             "title" => _("doctitle"),
-            "mdate" => _("mdate"),
+            "mdate" => _("prop_mdate"),
             "revision" => _("revision"),
             "owner" => _("owner"),
             "state" => _("step"),
@@ -85,7 +85,8 @@ class ReportAutocomplete
                     $propLabel,
                     [
                         $propName,
-                        $propLabel
+                        $propLabel,
+                        ''
                     ]
                 );
             }

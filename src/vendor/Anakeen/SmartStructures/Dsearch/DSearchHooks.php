@@ -551,7 +551,11 @@ class DSearchHooks extends \SmartStructure\Search
                     }
                 }
                 if (trim($val) != "") {
-                    $cond = " " . $col . " " . trim($op) . " " . $this->_pgVal($val) . " ";
+                    if ($oa && $oa->isMultiple()) {
+                        $cond = sprintf("%s ~*< ANY (%s)", $this->_pgVal($val), $col);
+                    } else {
+                        $cond = " " . $col . " " . trim($op) . " " . $this->_pgVal($val) . " ";
+                    }
                 }
                 break;
 
@@ -568,14 +572,18 @@ class DSearchHooks extends \SmartStructure\Search
 
             case "~y":
                 if (!is_array($val)) {
-                    $val = $this->rawValueToArray($val);
+                    $val = $this->rawValueToArray($val, true);
                 }
                 foreach ($val as & $v) {
                     $v = self::pgRegexpQuote($v);
                 }
                 unset($v);
                 if (count($val) > 0) {
-                    $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
+                    if ($oa && $oa->isMultiple()) {
+                        $cond = sprintf("%s ~< ANY (%s)", $this->_pgVal($val[0]), $col);
+                    } else {
+                        $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
+                    }
                 }
                 break;
 

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 14:13+0200\n"
-"PO-Revision-Date: 2019-04-26 14:20+0200\n"
+"POT-Creation-Date: 2019-05-10 14:38+0200\n"
+"PO-Revision-Date: 2019-05-10 14:39+0200\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -15,56 +15,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "search"
 msgid "\"%s\" is not a structure"
-msgstr "%s n'est pas un attribut de type tableau"
+msgstr "\"%s\" n'est pas une structure"
 
 #, php-format
-msgid "%.02f GB"
-msgstr ""
-
-#, php-format
+msgctxt "vault"
 msgid "%.02f KB"
-msgstr ""
+msgstr "%.02f ko"
 
 #, php-format
+msgctxt "vault"
 msgid "%.02f MB"
-msgstr ""
+msgstr "%.02f Mo"
 
 #, php-format
+msgctxt "vault"
 msgid "%d GB"
-msgstr ""
+msgstr "%d Go"
 
 #, php-format
+msgctxt "vault"
 msgid "%d KB"
-msgstr ""
+msgstr "%d Ko"
 
 #, php-format
+msgctxt "vault"
 msgid "%d MB"
-msgstr ""
+msgstr "%d Mo"
 
 #, php-format
+msgctxt "vault"
 msgid "%d TB"
-msgstr ""
+msgstr "%d To"
 
 #, php-format
+msgctxt "vault"
 msgid "%d bytes"
-msgstr ""
+msgstr "%d octets"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "%d document detected"
 msgid_plural "%d documents detected"
-msgstr[0] "%d document détecté"
-msgstr[1] "%d documents détectés"
+msgstr[0] "%d élément détecté"
+msgstr[1] "%d éléments détectés"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "%d document processed"
 msgid_plural "%d documents processed"
-msgstr[0] "%d document traité"
-msgstr[1] "%d documents traités"
+msgstr[0] "%d élément traité"
+msgstr[1] "%d éléments traités"
 
 #, php-format
 msgid "%s (as substitute)"
@@ -86,9 +89,9 @@ msgstr "répertoire %s non trouvé"
 msgid "%s directory not writable"
 msgstr "répertoire %s non accessible en écriture"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s field access list"
-msgstr " profil d'accès"
+msgstr "%s liste d'accès aux champs"
 
 #, php-format
 msgid "%s igroup created\n"
@@ -122,10 +125,10 @@ msgstr "masque %s"
 msgid "%s needed\n"
 msgstr "%s doit être rempli\n"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "%s new state %s"
-msgstr "%s changement d'état vers %s"
+msgstr "\"%s\" changement d'état vers \"%s\""
 
 #, php-format
 msgid "%s persistent timer"
@@ -161,30 +164,27 @@ msgstr "(suppléant de %s) : "
 msgid "(title)"
 msgstr "(titre)"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "core"
 msgid "API file \"%s\" not found"
-msgstr "fichier API %s non trouvé\n"
+msgstr "fichier API \"%s\" non trouvé"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Access \"%s\" not granted"
-msgstr "Privilège"
+msgstr "Privilège \"%s\" nécessaire"
 
 #, php-format
 msgid "Access \"%s\" unknow"
-msgstr ""
+msgstr "Privilège \"%s\" inconnu"
 
-#, fuzzy
 msgctxt "ank"
 msgid "Access not granted"
-msgstr "Privilège"
+msgstr "Accès non autorisé"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Access not granted to activate account"
 msgstr "L'utilisateur courant ne peut désactiver le compte"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Access not granted to deactivate account"
 msgstr "L'utilisateur courant ne peut désactiver le compte"
@@ -282,15 +282,18 @@ msgstr ""
 "Le document ne peut pas être importé car la ligne ORDER pour la famille '%s' "
 "est incorrecte: %s"
 
-msgctxt "HTTPAPI_V1"
+msgctxt "sde"
 msgid "Cannot store file because vault size limit is reached"
 msgstr ""
+"Enregistrement du fichier impossible, la capacité du coffre est atteinte"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid ""
 "Cannot update element \"%s\" (rev %d) : is fixed. Get the latest version"
-msgstr "le fichier %s (rév. %d) est figé. Utilisez la dernière version"
+msgstr ""
+"Modification impossible. L'élément \"%s\" (rév. %d) est figé. Utilisez la "
+"dernière version"
 
 #, php-format
 msgid "Change profil to default document profil : %d"
@@ -301,12 +304,12 @@ msgstr ""
 msgid "Change profil to default subfolder profil : %d"
 msgstr "Changement du profil avec le profil par défaut du dossier: %d"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "ChangeState :: the initial state '%s' is not known"
 msgstr "Changement d'état: l'état initial '%s' est inconnu"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid ""
 "ChangeState :: the new state '%s' is not known or is not allowed from %s"
@@ -332,7 +335,6 @@ msgstr "Fichier de configuration %s: le nom de la famille n'est pas précisé"
 msgid "Config file %s : unknow attribute name %s"
 msgstr "Fichier de configuration %s: nom de l'attribut %s inconnu"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Control characters are not allowed"
 msgstr "Les caractères de contrôle ne sont pas autorisés"
@@ -370,25 +372,24 @@ msgstr "DbObj::Adds erreur dans insertion multiple"
 msgid "Del atags \"%s\""
 msgstr "Suppression atags \"%s\""
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "Delete by route from %s"
-msgstr "supprimé avec l'action %s/%s depuis %s"
+msgstr "Supprimé depuis l'url \"%s\""
 
-#, fuzzy
 msgctxt "ank"
 msgid "Deleted by API"
-msgstr "Supprimer"
+msgstr "Supprimé par l'API"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "ank"
 msgid "Deleted document \"%s\" not found"
-msgstr "Le document [%s] est introuvable"
+msgstr "L'élement supprimé \"%s\" est introuvable"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "Destroyed by route from %s"
-msgstr "Détruit par la purge de l'archive %s"
+msgstr "Détruit par la route \"%s\""
 
 msgid "DetailSearch:malformed timestamp"
 msgstr "horodatage malformé"
@@ -424,20 +425,20 @@ msgstr ""
 msgid "Doc Render %d/%d"
 msgstr "Composition %d/%d"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "ank"
 msgid "Document \"%s\" is deleted"
-msgstr "Insertion document %s "
+msgstr "L'élément \"%s\" est supprimé"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "ank"
 msgid "Document \"%s\" is not in the trash"
-msgstr "le document %s [%d] n'est pas dans la corbeille"
+msgstr "L'élément \"%s\" n'est pas dans la corbeille"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "ank"
 msgid "Document \"%s\" not found"
-msgstr "Document %s non trouvé"
+msgstr "Élément \"%s\" non trouvé"
 
 #, php-format
 msgid "Document %s inserted"
@@ -447,10 +448,9 @@ msgstr "Insertion document %s "
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
 
-#, fuzzy
 msgctxt "ank"
 msgid "Document access not granted"
-msgstr "Document %s non trouvé"
+msgstr "Accès à l'élément non autorisé"
 
 msgctxt "fusersimport"
 msgid "Document creation"
@@ -459,10 +459,9 @@ msgstr "Création du document associé"
 msgid "Document destroyed"
 msgstr "Document détruit définitivement"
 
-#, fuzzy
 msgctxt "ank"
 msgid "Document information"
-msgstr "Création de document"
+msgstr "Information sur l'élément"
 
 #, php-format
 msgid "Document inserted in %s folder"
@@ -476,10 +475,9 @@ msgctxt "fusersimport"
 msgid "Document update"
 msgstr "Mise à jour du document associé"
 
-#, fuzzy
 msgctxt "ank"
 msgid "Document update failed"
-msgstr "Mise à jour du document associé"
+msgstr "La mise à jour de l'élement a échoué"
 
 msgid "Doing csv render"
 msgstr "Composition du csv"
@@ -502,10 +500,10 @@ msgstr "Le modèle dynamique %s n'a pas été trouvé"
 msgid "ERROR %s\n"
 msgstr "ERREUR %s\n"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "Element %s is in edition by %s."
-msgstr "Document %s est en cours de modification par %s"
+msgstr "L'élément \"%s\" est en cours de modification par \"%s\""
 
 #, php-format
 msgid ""
@@ -515,7 +513,7 @@ msgstr ""
 "L'élément ne peut pas être parfaitement analysé, des erreurs peuvent "
 "apparaître ou être corrigées lors de l'importation"
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Element can't be perfectly analyzed, some error might occurs or be corrected "
 "when importing"
@@ -619,10 +617,10 @@ msgstr "Échec de la copie du fichier %s dans le coffre"
 msgid "Failed to create directory \"%s\" in vault"
 msgstr "Échec de la création du répertoire \"%s\" dans le coffre"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "ank"
 msgid "Family \"%s\" not found"
-msgstr "La famille [%s] n'a pas été trouvée"
+msgstr "La strcuture [%s] n'a pas été trouvée"
 
 #, php-format
 msgctxt "fusersimport"
@@ -641,9 +639,10 @@ msgid "File System already exists"
 msgstr "Système de fichier déjà existant"
 
 #, php-format
-msgctxt "HTTPAPI_V1"
+msgctxt "sde"
 msgid "File not recorded, File size transfert limited to %d Mb"
 msgstr ""
+"Fichier non enregistré. La taille du fichier dépasse la limite de %d Mo"
 
 #, php-format
 msgid "Fix multiple alive document #%s"
@@ -677,10 +676,10 @@ msgctxt "fuserimport"
 msgid "Import end"
 msgstr "Fin de l'importation"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "Import file '%s' is not found"
-msgstr "fichier d'importation %s non trouvé"
+msgstr "Fichier d'importation %s non trouvé"
 
 #, php-format
 msgctxt "fuserimport"
@@ -705,7 +704,7 @@ msgstr "Condition invalide pour l'attribut '%s' avec la valeur '%s': %s"
 msgid "Invalid directory '%s'."
 msgstr "Répertoire non valide '%s'."
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart iuser"
 msgid "It must contains at least %d characters (total length)"
 msgstr "Il doit contenir au moins %d caractères"
@@ -732,22 +731,21 @@ msgstr "Le nom logique %s est déjà utilisé pour le document %s"
 msgid "Mail %s sent to %s"
 msgstr "Message %s envoyé à %s"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Malformed HTML in field '%s' from document '%s': %s"
-msgstr "HTML malformé dans l'attribut '%s' du document '%s': %s"
+msgstr "HTML malformé dans le champ '%s' du document '%s': %s"
 
 msgid "Malformed HTML:"
 msgstr "HTML malformé:"
 
-#, fuzzy
 msgctxt "sed"
 msgid "Malformed HTML:"
 msgstr "HTML malformé:"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "ank"
 msgid "Method \"%s\" Not Allowed. Must be one of: %s"
-msgstr "la méthode %s n'a pas été exécutée : %s"
+msgstr "La méthode \"%s\" n'a pas été exécutée : %s"
 
 #, php-format
 msgid "Method [%s] not exists"
@@ -767,7 +765,7 @@ msgstr ""
 "Impossible de trouver d'identifiant pour la relation '%s' %s dans le fichier "
 "%s"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "No privilege \"%s\" for %d"
 msgstr "Pas de privilège \"%s\" pour l'élement \"%d\""
@@ -776,27 +774,22 @@ msgstr "Pas de privilège \"%s\" pour l'élement \"%d\""
 msgid "Not a family [%s]"
 msgstr "Pas une famille [%s]"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Not enough characters."
 msgstr "Pas assez de caractères"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Not enough digits."
 msgstr "Pas assez de chiffres"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Not enough lowercase characters."
 msgstr "Pas assez de minuscules"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Not enough special characters."
 msgstr "Pas assez de charactères spéciaux"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "Not enough uppercase characters."
 msgstr "Pas assez de majuscules"
@@ -809,10 +802,9 @@ msgstr "Le fichier de sortie '%s' existe déjà."
 msgid "Output file '%s' is already opened."
 msgstr "Le fichier de sortie '%s' est déjà ouvert."
 
-#, fuzzy
 msgctxt "ank"
 msgid "Page not found"
-msgstr "(fichier non trouvé)"
+msgstr "Page non trouvée"
 
 msgid "Parameter name does not include spaces"
 msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
@@ -825,10 +817,9 @@ msgctxt "authentOpen"
 msgid "Private key identifier is not valid"
 msgstr "La clef d'authentification n'est pas valide"
 
-#, fuzzy
 msgctxt "ank"
 msgid "Profil not configured"
-msgstr "Adresse non configurée"
+msgstr "Profil d'accès non configuré : acun accès autorisé"
 
 msgid "REPORT_pivot"
 msgstr "REPORT_pivot"
@@ -928,10 +919,10 @@ msgstr "Affectation atags \"%s\""
 msgid "SetBlock:error [%s]"
 msgstr "SetBlock : erreur [%s]"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "autocomplete"
 msgid "Smart Structure \"%s\" not found"
-msgstr "attribut %s non trouvé"
+msgstr "Structure \"%s\" non trouvée"
 
 msgctxt "autocomplete"
 msgid "Smart Structure must be set"
@@ -948,10 +939,9 @@ msgctxt "fusersimport"
 msgid "Stopped on first error"
 msgstr "Arrêt à la première erreur"
 
-#, fuzzy
 msgctxt "sde"
 msgid "Structure cannot be deleted"
-msgstr "Cet utilisateur système n epeut être supprimé"
+msgstr "Une structure ne peut pas être supprimée"
 
 #, php-format
 msgid "Syntax error in file '%s': %s"
@@ -961,15 +951,13 @@ msgstr "Erreur de syntaxe dans le fichier '%s' : %s"
 msgid "Template [%s] not found"
 msgstr "Template [%s] non trouvé."
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "The 2 passwords are not the same"
 msgstr "Les deux mots de passes ne sont pas identiques"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "The email address is not valid"
-msgstr "absence d'adresse couriel"
+msgstr "L'adresse de courriel est invalide"
 
 msgid "Unallocate aborded"
 msgstr "Suppression de l'affectation abandonnée"
@@ -1001,14 +989,13 @@ msgstr "Mise à jour du compte"
 msgid "Update by importation"
 msgstr "Mise à jour par importation"
 
-msgctxt "HTTPAPI_V1"
+msgctxt "sde"
 msgid "Update forbidden"
-msgstr ""
+msgstr "Mise à jour non autorisée"
 
-#, fuzzy
 msgctxt "ank"
 msgid "Updated by API"
-msgstr "mise à jour par import"
+msgstr "mise à jour par l'API"
 
 msgctxt "dcp:import"
 msgid "Updated values"
@@ -1041,10 +1028,9 @@ msgctxt "dcp"
 msgid "Whoops, looks like something went wrong"
 msgstr "Aïe aïe aïe, on dirait que quelque chose s'est mal passé"
 
-#, fuzzy
 msgctxt "autocomplete"
 msgid "Workflow must be set"
-msgstr "Paramètres d'affichage"
+msgstr "Le cycle de vie doit être initialisé"
 
 #, php-format
 msgid "XML Root node is not a '%s' node (root node is '%s')."
@@ -1065,11 +1051,11 @@ msgstr "importation XML : Le fichier %s ne peut être crée"
 msgid "Xml import file %s not found"
 msgstr "importation XML : fichier %s introuvable"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid ""
 "You are not allowed to update the element \"%s\" (# %d) is locked by \"%s\"."
-msgstr "le fichier %s (rév. %d) est verrouillé par %s."
+msgstr "Mise à jour non autorisé de \"%s\" (#%d). Verrouillé par \"%s\"."
 
 #, php-format
 msgid "Your password is not secure."
@@ -1098,10 +1084,10 @@ msgstr "[%s] doit être supérieur à %s"
 msgid "[%s] must be lower than %s"
 msgstr "[%s] doit être inférieur à %s"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "sde"
 msgid "[%s] the method '%s' is not known for the object class %s"
-msgstr "La méthode '%s' n'est pas connu de la classe d'objet %s"
+msgstr "[%s] La méthode '%s' n'est pas connu de la classe d'objet \"%s\""
 
 #, php-format
 msgid "add %s for %s"
@@ -1141,42 +1127,38 @@ msgstr "et ajout dans dossier %s"
 msgid "assigned workflow is not alive"
 msgstr "Le cycle de vie associé n'est pas vivant"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart iuser"
 msgid "at least %d digits"
 msgstr "au moins %d chiffres"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart iuser"
 msgid "at least %d lowercase alpha characters"
 msgstr "au moins %d lettres minuscules"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart iuser"
 msgid "at least %d symbol characters"
 msgstr "au moins %d caractères spéciaux"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart iuser"
 msgid "at least %d uppercase alpha characters"
 msgstr "au moins %d lettres majuscules"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "at least one digit"
 msgstr "au moins un chiffre"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "at least one lowercase alpha character"
 msgstr "au moins une lettre minuscule"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "at least one symbol character"
 msgstr "au moins un caractère spécial"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "at least one uppercase alpha character"
 msgstr "au moins une lettre majuscule"
@@ -1221,6 +1203,14 @@ msgstr "attribut %s inconnu dans le document \"%s\" [%s]"
 #, php-format
 msgid "attribute %s unknow in family \"%s\""
 msgstr "attribut %s inconnu dans la famille \"%s\""
+
+msgctxt "smartOperator"
+msgid "begin by"
+msgstr "commence par"
+
+msgctxt "smartOperator"
+msgid "between"
+msgstr "entre"
 
 msgid "can't access file"
 msgstr "Accès au fichier impossible"
@@ -1491,6 +1481,10 @@ msgstr "Document trop volumineux (%dKo): pas de mise en évidence"
 msgid "electronic messages cannot be modified"
 msgstr "les courriels ne peuvent être modifiés"
 
+msgctxt "smartOperator"
+msgid "equal"
+msgstr "égal"
+
 #, php-format
 msgid "error in import keys : %s"
 msgstr "erreur dans la format des clefs d'importation : %s"
@@ -1528,6 +1522,14 @@ msgstr "fichier %s non trouvé."
 msgid "file status"
 msgstr "status du fichier"
 
+msgctxt "smartOperator"
+msgid "filename or type include"
+msgstr "nom du fichier ou type du fichier contient"
+
+msgctxt "smartOperator"
+msgid "filename or type not include"
+msgstr "le nom du fichier ou son type ne contient pas"
+
 #, php-format
 msgid "find %s more than one, created aborded\n"
 msgstr "%s trouvé plus d'une fois, création abandonnée\n"
@@ -1561,18 +1563,31 @@ msgstr "Un groupe ne peut être restauré"
 msgid "icon already set. No update allowed"
 msgstr "icône déjà affectée. Pas de mise à jour possible."
 
-#, fuzzy
+msgctxt "smartOperator"
+msgid "identificator equal"
+msgstr "identificateur égal"
+
+msgctxt "smartOperator"
+msgid "identificator not equal"
+msgstr "l'identifiant est différent"
+
 msgctxt "smart report"
 msgid "identifier"
-msgstr "Pas d'identificateurs"
+msgstr "identificateur"
 
 #, php-format
+msgctxt "sde"
 msgid "import file %s not found"
 msgstr "fichier d'importation %s non trouvé"
 
 #, php-format
+msgctxt "sde"
 msgid "import file '%s' is not a valid file"
 msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
+
+msgctxt "smartOperator"
+msgid "include"
+msgstr "contient"
 
 #, php-format
 msgid "incorrect conversion HTML to ODT %s"
@@ -1583,6 +1598,18 @@ msgstr "Information non accessible"
 
 msgid "invalid regular expression"
 msgstr "expression rationnelle invalide"
+
+msgctxt "smartOperator"
+msgid "is empty"
+msgstr "est vide"
+
+msgctxt "smartOperator"
+msgid "is not empty"
+msgstr "n'est pas vide"
+
+msgctxt "smartOperator"
+msgid "last or first name include"
+msgstr "le nom ou le prénom contient"
 
 #, php-format
 msgid "local config for date not found"
@@ -1595,18 +1622,19 @@ msgstr "Configuration du timestamp local introuvable"
 msgid "locked"
 msgstr "verrouillé"
 
-#, fuzzy, php-format
+#, php-format
 msgid "log file \"%s\" not writable"
-msgstr "Le fichier de log %s n'est pas être modifié"
-
-#, fuzzy, php-format
-msgctxt "sde"
-msgid "log file \"%s\" not writable"
-msgstr "Le fichier de log %s n'est pas être modifié"
+msgstr "Erreur d'enregistrement du fichier de log \"%s\""
 
 #, php-format
+msgctxt "sde"
+msgid "log file \"%s\" not writable"
+msgstr "Erreur d'enregistrement du fichier de log \"%s\""
+
+#, php-format
+msgctxt "sde"
 msgid "log file %s not writable"
-msgstr "Le fichier de log %s n'est pas être modifié"
+msgstr "Erreur d'enregistrement du fichier de log \"%s\""
 
 msgid "login must not be empty"
 msgstr "le login ne doit pas être vide"
@@ -1618,9 +1646,8 @@ msgstr "login déjà utilisé"
 msgid "max revision '%d'"
 msgstr "max révision '%d'"
 
-#, fuzzy
 msgid "mdate"
-msgstr "date"
+msgstr "Date de modification"
 
 #, php-format
 msgid "method %s not found"
@@ -1671,10 +1698,9 @@ msgstr "Tous les coffres de fichiers sont saturés"
 msgid "no export folder specified"
 msgstr "pas de dossier d'export défini"
 
-#, fuzzy
 msgctxt "sde"
 msgid "no export folder specified"
-msgstr "pas de dossier d'export défini"
+msgstr "pas de dossier d'exportation défini"
 
 msgid "no file"
 msgstr "pas de fichier"
@@ -1703,6 +1729,10 @@ msgstr "pas d'état spécifié"
 msgid "no user tag specified"
 msgstr "pas d'étiquette utilisateur spécifiée"
 
+msgctxt "smartOperator"
+msgid "no value include"
+msgstr "aucune valeur contient"
+
 msgid "no vault directory found"
 msgstr "Pas de système de fichier trouvé"
 
@@ -1713,14 +1743,21 @@ msgstr "Pas de système de fichier trouvé"
 msgid "none families are described to be used as recipient"
 msgstr "Aucune structure n'est déclarée utilisable comme destinataire"
 
-#, fuzzy
 msgctxt "smart mail"
 msgid "none smart structure are described to be used as recipient"
 msgstr "Aucune structure n'est déclarée utilisable comme destinataire"
 
+msgctxt "smartOperator"
+msgid "not equal"
+msgstr "pas égal"
+
 #, php-format
 msgid "not in XML format"
 msgstr "format XML non reconnu "
+
+msgctxt "smartOperator"
+msgid "not include"
+msgstr "ne contient pas"
 
 msgid "not perm for admin"
 msgstr "pas de permission pour admin"
@@ -1728,6 +1765,30 @@ msgstr "pas de permission pour admin"
 #, php-format
 msgid "nothing to export. Do export before"
 msgstr "Rien à exporter. Faire l'exportation avant"
+
+msgctxt "smartOperator"
+msgid "one id equal"
+msgstr "un des identifiants égal"
+
+msgctxt "smartOperator"
+msgid "one of the titles include"
+msgstr "un des titres contient"
+
+msgctxt "smartOperator"
+msgid "one of the titles {left} include {right}"
+msgstr "un des titres {left} contient {right}"
+
+msgctxt "smartOperator"
+msgid "one value equal"
+msgstr "une des valeurs égale"
+
+msgctxt "smartOperator"
+msgid "one value include"
+msgstr "une des valeurs contient"
+
+msgctxt "smartOperator"
+msgid "one value of {left} include {right}"
+msgstr "une des valeurs de {left} contient {right}"
 
 #, php-format
 msgid "operator [%s] not allowed"
@@ -1810,9 +1871,8 @@ msgstr "chemin ldap"
 msgid "prop_lmodify"
 msgstr "tag indiquant la modification"
 
-#, fuzzy
 msgid "prop_mdate"
-msgstr "date de création de la révision"
+msgstr "date de modification"
 
 msgid "prop_name"
 msgstr "référence logique"
@@ -1956,7 +2016,7 @@ msgstr "affecte la caractéristique spéciale à '%s'"
 msgid "similar document %s found. keep similar"
 msgstr "document similaire à %s a été trouve. L'original est conservé"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart mail"
 msgid ""
 "smart structure %s does not implement IMailRecipent - missing getMail method"
@@ -1964,7 +2024,7 @@ msgstr ""
 "La structure %s n'implémente pas IMailRecipient - il manque la méthode "
 "getMail"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart mail"
 msgid ""
 "smart structure %s does not implement IMailRecipent - missing "
@@ -1973,7 +2033,7 @@ msgstr ""
 "La structure %s n'implémente pas IMailRecipient - il manque la méthode "
 "getMailAttribute"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart mail"
 msgid ""
 "smart structure %s does not implement IMailRecipient - missing getMailTitle "
@@ -1995,6 +2055,14 @@ msgstr ""
 "L'identifiant est déjà utilisé\n"
 "Ce type de document ne peut pas être dupliqué"
 
+msgctxt "smartOperator"
+msgid "system identifiant equal"
+msgstr "l'identifiant système est égal"
+
+msgctxt "smartOperator"
+msgid "system identifier not equal"
+msgstr "l'identifiant système n'est pas égal"
+
 #, php-format
 msgid "template file (layout [%s]) not found"
 msgstr "Fichier modèle (zone [%s]) non trouvé"
@@ -2011,6 +2079,10 @@ msgstr "Cet identifiant de connexion existe"
 
 msgid "this system user cannot be deleted"
 msgstr "Cet utilisateur système n epeut être supprimé"
+
+msgctxt "smartOperator"
+msgid "title include"
+msgstr "le titre contient"
 
 #, php-format
 msgid "to be update %s [%d] "
@@ -2050,7 +2122,6 @@ msgstr "Mo"
 msgid "unit:TB"
 msgstr "To"
 
-#, fuzzy
 msgctxt "sde"
 msgid "unit:byte"
 msgid_plural "unit:bytes"
@@ -2074,9 +2145,6 @@ msgstr "attribut inconnu"
 #, php-format
 msgid "unknow attribute %s"
 msgstr "attribut inconnu %s"
-
-msgid "unknow operator"
-msgstr "opérateur inconnu"
 
 #, php-format
 msgid "unknow privilege %s"
@@ -2142,7 +2210,6 @@ msgstr "l'utilisateur n°%d n'existe pas"
 msgid "user %d does not exist"
 msgstr "l'utilisateur n°%d n'existe pas"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "user cannot be revived"
 msgstr "L'utilisateur ne peut pas être ressuscité"
@@ -2195,7 +2262,6 @@ msgstr "viewDoc n'a pas retourné de fichier valide"
 msgid "waiting conversion file"
 msgstr "en attente de conversion"
 
-#, fuzzy
 msgctxt "smart iuser"
 msgid "with these conditions"
 msgstr "avec les conditions suivantes"
@@ -2210,6 +2276,90 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de document"
 #, php-format
 msgid "you cannot create this kind [%s] of folder"
 msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
+
+msgctxt "smartOperator"
+msgid "{left} begin by {right}"
+msgstr "{left} commence par {right}"
+
+msgctxt "smartOperator"
+msgid "{left} equal {right}"
+msgstr "{left} est égal à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} filename or type include {right}"
+msgstr "le nom du fichier {left} ou son type contient {right}"
+
+msgctxt "smartOperator"
+msgid "{left} filename or type not include {right}"
+msgstr "le nom du fichier {left} ou son type ne contient pas {right}"
+
+msgctxt "smartOperator"
+msgid "{left} greater or equal to {right}"
+msgstr "{left} est supérieur ou égal à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} greater than {right}"
+msgstr "{left} est supérieur à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} identifier equal {right}"
+msgstr "l'identificateur {left} est égal à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} identifier not equal {right}"
+msgstr "l'identifiant {left} est différent de {right}"
+
+msgctxt "smartOperator"
+msgid "{left} include no value of {right}"
+msgstr "aucunes des valeurs de {left} n'inclut {right}"
+
+msgctxt "smartOperator"
+msgid "{left} is between {min} and {max}"
+msgstr "{left] est compris entre {min} et {max}"
+
+msgctxt "smartOperator"
+msgid "{left} is not empty"
+msgstr "{left} n'est pas vide"
+
+msgctxt "smartOperator"
+msgid "{left} is not equal {right}"
+msgstr "{left} est différent de {right}"
+
+msgctxt "smartOperator"
+msgid "{left} is null"
+msgstr "{left} est vide"
+
+msgctxt "smartOperator"
+msgid "{left} last or first name include {right}"
+msgstr "le prénom ou le nom de {left} conteint {right}"
+
+msgctxt "smartOperator"
+msgid "{left} lesser or equal to {right}"
+msgstr "{left} est inférieur ou égal à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} lesser than {right}"
+msgstr "{left} est inférieur à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} not include {right}"
+msgstr "{left} ne contient pas {right}"
+
+msgctxt "smartOperator"
+msgid "{left} one id equal {right}"
+msgstr "L'identifiant {left} est égale à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} system identifier equal {right}"
+msgstr "l'identifiant système {left} est égal à {right}"
+
+msgctxt "smartOperator"
+msgid "{left} system identifier not equal {right}"
+msgstr "l'identifiant système {left} est différent de {right}"
+
+msgctxt "smartOperator"
+msgid "{left} title include {right}"
+msgstr "le titre de {left} inclus {right}"
 
 #~ msgid " Change password for"
 #~ msgstr "Modification du mot de passe pour"
@@ -5969,9 +6119,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ "le document trouvé est mis à jour (si l'utilisateur n'a pas les droits "
 #~ "nécessaires, les nouvelles valeurs sont ignorées)"
 
-#~ msgid "Update history done"
-#~ msgstr "Mise à jour de l'historique effectuée"
-
 #~ msgid "Update profiling is in progress."
 #~ msgstr "Mise à jour des privilèges en cours"
 
@@ -6573,12 +6720,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "batch from %s folder"
 #~ msgstr "lot issu du dossier %s"
-
-#~ msgid "begin by"
-#~ msgstr "commence par"
-
-#~ msgid "between"
-#~ msgstr "entre"
 
 #~ msgid "bookmark folders"
 #~ msgstr "signets des dossiers"
@@ -7393,9 +7534,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "eprinting"
 #~ msgstr "publiimpression"
 
-#~ msgid "equal"
-#~ msgstr "égal"
-
 #~ msgid "err"
 #~ msgstr "err"
 
@@ -7585,12 +7723,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "filename"
 #~ msgstr "fichier"
-
-#~ msgid "filename or type include"
-#~ msgstr "nom du fichier ou type du fichier contient"
-
-#~ msgid "filename or type not include"
-#~ msgstr "le nom du fichier ou son type ne contient pas"
 
 #~ msgid "filter attributes"
 #~ msgstr "Filtrer les attributs"
@@ -7872,12 +8004,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "id owner"
 #~ msgstr "identifiant propriétaire"
 
-#~ msgid "identificator equal"
-#~ msgstr "identificateur égal"
-
-#~ msgid "identificator not equal"
-#~ msgstr "l'identifiant est différent"
-
 #~ msgid "if you want to change order of column"
 #~ msgstr "pour changer l'ordre des colonnes"
 
@@ -7903,8 +8029,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "import edition"
 #~ msgstr "modification de l'importation"
 
-#, fuzzy
-#~ msgctxt "sde"
 #~ msgid "import file '%s' is not a valid file"
 #~ msgstr "le fichier d'importation '%s' n'est pas un fichier valide"
 
@@ -7922,9 +8046,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "in domain %s"
 #~ msgstr "dans le domain %s"
-
-#~ msgid "include"
-#~ msgstr "contient"
 
 #~ msgid "incorrect global filter %s"
 #~ msgstr "Le filtre global \"%s\" est incorrect"
@@ -7995,12 +8116,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "invisible"
 #~ msgstr "invisible"
 
-#~ msgid "is empty"
-#~ msgstr "est vide"
-
-#~ msgid "is not empty"
-#~ msgstr "n'est pas vide"
-
 #~ msgid "it is the first"
 #~ msgstr "premier"
 
@@ -8027,9 +8142,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "last modification date"
 #~ msgstr "date de dernière modification"
-
-#~ msgid "last or first name include"
-#~ msgstr "le nom ou le prénom contient"
 
 #~ msgid "last search text typed"
 #~ msgstr "dernier texte tapé pour la recherche"
@@ -8466,9 +8578,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "no template defined"
 #~ msgstr "Pas de modèle défini"
 
-#~ msgid "no value include"
-#~ msgstr "aucune valeur contient"
-
 #~ msgid "no view control"
 #~ msgstr "pas de contrôle de vues"
 
@@ -8493,12 +8602,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "not added"
 #~ msgstr "pas ajouté"
 
-#~ msgid "not equal"
-#~ msgstr "pas égal"
-
-#~ msgid "not include"
-#~ msgstr "ne contient pas"
-
 #~ msgid "not locked"
 #~ msgstr "non verrouillé"
 
@@ -8513,24 +8616,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "number of waiting answers %d"
 #~ msgstr "Nombre de réponses en attente : %d"
-
-#~ msgid "one id equal"
-#~ msgstr "un des identifiants égal"
-
-#~ msgid "one of the titles include"
-#~ msgstr "un des titres contient"
-
-#~ msgid "one of the titles {left} include {right}"
-#~ msgstr "un des titres {left} contient {right}"
-
-#~ msgid "one value equal"
-#~ msgstr "une des valeurs égale"
-
-#~ msgid "one value include"
-#~ msgstr "une des valeurs contient"
-
-#~ msgid "one value of {left} include {right}"
-#~ msgstr "une des valeurs de {left} contient {right}"
 
 #~ msgid "only latest revision"
 #~ msgstr "seulement la dernière révision"
@@ -9122,12 +9207,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "switch search mode (basic/advanced)"
 #~ msgstr "recherche simple / recherche avancée"
 
-#~ msgid "system identifiant equal"
-#~ msgstr "l'identifiant système est égal"
-
-#~ msgid "system identifier not equal"
-#~ msgstr "l'identifiant système n'est pas égal"
-
 #~ msgid "t"
 #~ msgstr "t"
 
@@ -9252,9 +9331,6 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "timeraction"
 #~ msgstr "actions"
 
-#~ msgid "title include"
-#~ msgstr "le titre contient"
-
 #~ msgid "to %s"
 #~ msgstr "vers %s"
 
@@ -9326,6 +9402,9 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 
 #~ msgid "unknow logical reference '%s'"
 #~ msgstr "la référence logique '%s' est inconnue"
+
+#~ msgid "unknow operator"
+#~ msgstr "opérateur inconnu"
 
 #~ msgid "unknow set for attribute %s %s"
 #~ msgstr "Attribut structurant inconnu %s %s"
@@ -9636,71 +9715,8 @@ msgstr "vous n'avez pas la permission de créer ce type [%s] de dossier"
 #~ msgid "yourusername"
 #~ msgstr "Identifiant : "
 
-#~ msgid "{left} begin by {right}"
-#~ msgstr "{left} commence par {right}"
-
-#~ msgid "{left} equal {right}"
-#~ msgstr "{left} est égal à {right}"
-
-#~ msgid "{left} filename or type include {right}"
-#~ msgstr "le nom du fichier {left} ou son type contient {right}"
-
-#~ msgid "{left} filename or type not include {right}"
-#~ msgstr "le nom du fichier {left} ou son type ne contient pas {right}"
-
-#~ msgid "{left} greater or equal to {right}"
-#~ msgstr "{left} est supérieur ou égal à {right}"
-
-#~ msgid "{left} greater than {right}"
-#~ msgstr "{left} est supérieur à {right}"
-
-#~ msgid "{left} identifier equal {right}"
-#~ msgstr "l'identificateur {left} est égal à {right}"
-
-#~ msgid "{left} identifier not equal {right}"
-#~ msgstr "l'identifiant {left} est différent de {right}"
-
-#~ msgid "{left} include no value of {right}"
-#~ msgstr "aucunes des valeurs de {left} n'inclut {right}"
-
 #~ msgid "{left} include {right}"
 #~ msgstr "{left} contient {right}"
 
-#~ msgid "{left} is between {min} and {max}"
-#~ msgstr "{left] est compris entre {min} et {max}"
-
-#~ msgid "{left} is not empty"
-#~ msgstr "{left} n'est pas vide"
-
-#~ msgid "{left} is not equal {right}"
-#~ msgstr "{left} est différent de {right}"
-
-#~ msgid "{left} is null"
-#~ msgstr "{left} est vide"
-
-#~ msgid "{left} last or first name include {right}"
-#~ msgstr "le prénom ou le nom de {left} conteint {right}"
-
-#~ msgid "{left} lesser or equal to {right}"
-#~ msgstr "{left} est inférieur ou égal à {right}"
-
-#~ msgid "{left} lesser than {right}"
-#~ msgstr "{left} est inférieur à {right}"
-
-#~ msgid "{left} not include {right}"
-#~ msgstr "{left} ne contient pas {right}"
-
-#~ msgid "{left} one id equal {right}"
-#~ msgstr "L'identifiant {left} est égale à {right}"
-
 #~ msgid "{left} one value equal {right}"
 #~ msgstr "{left} une des valeurs est égal à {right}"
-
-#~ msgid "{left} system identifier equal {right}"
-#~ msgstr "l'identifiant système {left} est égal à {right}"
-
-#~ msgid "{left} system identifier not equal {right}"
-#~ msgstr "l'identifiant système {left} est différent de {right}"
-
-#~ msgid "{left} title include {right}"
-#~ msgstr "le titre de {left} inclus {right}"

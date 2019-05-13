@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 14:13+0200\n"
+"POT-Creation-Date: 2019-05-10 14:38+0200\n"
 "PO-Revision-Date: 2016-11-18 15:26+0100\n"
 "Last-Translator: Matthieu Codron <matthieu.codron+dev@anakeen.com>\n"
 "Language-Team: English team <>\n"
@@ -18,34 +18,37 @@ msgid "\"%s\" is not a structure"
 msgstr ""
 
 #, php-format
-msgid "%.02f GB"
-msgstr ""
-
-#, php-format
+msgctxt "vault"
 msgid "%.02f KB"
 msgstr ""
 
 #, php-format
+msgctxt "vault"
 msgid "%.02f MB"
 msgstr ""
 
 #, php-format
+msgctxt "vault"
 msgid "%d GB"
 msgstr ""
 
 #, php-format
+msgctxt "vault"
 msgid "%d KB"
 msgstr ""
 
 #, php-format
+msgctxt "vault"
 msgid "%d MB"
 msgstr ""
 
 #, php-format
+msgctxt "vault"
 msgid "%d TB"
 msgstr ""
 
 #, php-format
+msgctxt "vault"
 msgid "%d bytes"
 msgstr ""
 
@@ -270,7 +273,7 @@ msgid ""
 "%s"
 msgstr ""
 
-msgctxt "HTTPAPI_V1"
+msgctxt "sde"
 msgid "Cannot store file because vault size limit is reached"
 msgstr ""
 
@@ -604,7 +607,7 @@ msgid "File System already exists"
 msgstr ""
 
 #, php-format
-msgctxt "HTTPAPI_V1"
+msgctxt "sde"
 msgid "File not recorded, File size transfert limited to %d Mb"
 msgstr ""
 
@@ -938,7 +941,7 @@ msgstr ""
 msgid "Update by importation"
 msgstr ""
 
-msgctxt "HTTPAPI_V1"
+msgctxt "sde"
 msgid "Update forbidden"
 msgstr ""
 
@@ -1148,6 +1151,14 @@ msgstr ""
 
 #, php-format
 msgid "attribute %s unknow in family \"%s\""
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "begin by"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "between"
 msgstr ""
 
 msgid "can't access file"
@@ -1412,6 +1423,10 @@ msgstr ""
 msgid "electronic messages cannot be modified"
 msgstr ""
 
+msgctxt "smartOperator"
+msgid "equal"
+msgstr ""
+
 #, php-format
 msgid "error in import keys : %s"
 msgstr ""
@@ -1448,6 +1463,14 @@ msgstr ""
 msgid "file status"
 msgstr ""
 
+msgctxt "smartOperator"
+msgid "filename or type include"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "filename or type not include"
+msgstr ""
+
 #, php-format
 msgid "find %s more than one, created aborded\n"
 msgstr ""
@@ -1481,16 +1504,30 @@ msgstr ""
 msgid "icon already set. No update allowed"
 msgstr ""
 
+msgctxt "smartOperator"
+msgid "identificator equal"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "identificator not equal"
+msgstr ""
+
 msgctxt "smart report"
 msgid "identifier"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
 msgid "import file %s not found"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
 msgid "import file '%s' is not a valid file"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "include"
 msgstr ""
 
 #, php-format
@@ -1501,6 +1538,18 @@ msgid "information access deny"
 msgstr ""
 
 msgid "invalid regular expression"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "is empty"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "is not empty"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "last or first name include"
 msgstr ""
 
 #, php-format
@@ -1524,6 +1573,7 @@ msgid "log file \"%s\" not writable"
 msgstr ""
 
 #, php-format
+msgctxt "sde"
 msgid "log file %s not writable"
 msgstr ""
 
@@ -1619,6 +1669,10 @@ msgstr ""
 msgid "no user tag specified"
 msgstr ""
 
+msgctxt "smartOperator"
+msgid "no value include"
+msgstr ""
+
 msgid "no vault directory found"
 msgstr ""
 
@@ -1633,8 +1687,16 @@ msgctxt "smart mail"
 msgid "none smart structure are described to be used as recipient"
 msgstr ""
 
+msgctxt "smartOperator"
+msgid "not equal"
+msgstr ""
+
 #, php-format
 msgid "not in XML format"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "not include"
 msgstr ""
 
 msgid "not perm for admin"
@@ -1642,6 +1704,30 @@ msgstr ""
 
 #, php-format
 msgid "nothing to export. Do export before"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "one id equal"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "one of the titles include"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "one of the titles {left} include {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "one value equal"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "one value include"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "one value of {left} include {right}"
 msgstr ""
 
 #, php-format
@@ -1902,6 +1988,14 @@ msgid ""
 "This kind of document can not be duplicated"
 msgstr ""
 
+msgctxt "smartOperator"
+msgid "system identifiant equal"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "system identifier not equal"
+msgstr ""
+
 #, php-format
 msgid "template file (layout [%s]) not found"
 msgstr ""
@@ -1917,6 +2011,10 @@ msgid "this login exists"
 msgstr ""
 
 msgid "this system user cannot be deleted"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "title include"
 msgstr ""
 
 #, php-format
@@ -1978,9 +2076,6 @@ msgstr ""
 
 #, php-format
 msgid "unknow attribute %s"
-msgstr ""
-
-msgid "unknow operator"
 msgstr ""
 
 #, php-format
@@ -2112,6 +2207,90 @@ msgstr ""
 
 #, php-format
 msgid "you cannot create this kind [%s] of folder"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} begin by {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} equal {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} filename or type include {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} filename or type not include {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} greater or equal to {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} greater than {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} identifier equal {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} identifier not equal {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} include no value of {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} is between {min} and {max}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} is not empty"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} is not equal {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} is null"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} last or first name include {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} lesser or equal to {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} lesser than {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} not include {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} one id equal {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} system identifier equal {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} system identifier not equal {right}"
+msgstr ""
+
+msgctxt "smartOperator"
+msgid "{left} title include {right}"
 msgstr ""
 
 #~ msgid " Please, see your manager"

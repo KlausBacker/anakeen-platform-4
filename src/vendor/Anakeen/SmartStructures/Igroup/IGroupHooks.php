@@ -410,7 +410,7 @@ class IGroupHooks extends \SmartStructure\Group
                     "grp_roles",
                     "us_login",
                     "us_meid",
-                    "grp_idgroup"
+                    "grp_idpgroup"
                 ));
             } else {
                 $err = sprintf(_("group %d does not exist"), $wid);

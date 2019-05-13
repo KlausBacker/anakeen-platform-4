@@ -2,6 +2,7 @@
 
 namespace Anakeen\Routes\Core;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Settings;
 use Anakeen\Router\Exception;
 use Anakeen\Router\ApiV2Response;
@@ -17,7 +18,7 @@ use Anakeen\Router\ApiV2Response;
  */
 class ImageAttribute extends FileAttribute
 {
-    const CACHEIMGDIR = Settings::CacheDir."image/";
+    const CACHEIMGDIR = Settings::CacheDir . "image/";
     protected $size;
     protected $imageFileName;
     /**
@@ -56,6 +57,9 @@ class ImageAttribute extends FileAttribute
 
         $this->fileInfo = $this->getFileInfo($this->docid);
 
+        if (!file_exists($this->fileInfo->path)) {
+            $this->fileInfo->path=sprintf("%s/public/Images/%s", ContextManager::getRootDirectory(), ImageAsset::DEFAULTIMG);
+        }
         $destination = $this->getDestinationCacheImage($this->fileInfo->id_file, $this->size);
 
         if (file_exists($destination)) {
@@ -69,7 +73,7 @@ class ImageAttribute extends FileAttribute
         $mime = "";
         if ($this->extension) {
             $fileName = substr($fileName, 0, strrpos($fileName, '.'));
-            $fileName .= ".".$this->extension;
+            $fileName .= "." . $this->extension;
             switch ($this->extension) {
                 case "jpg":
                     $mime = "image/jpeg";

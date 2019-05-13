@@ -1,11 +1,10 @@
 <?php /** @noinspection PhpUnusedParameterInspection */
+
 /**
  * importation of Smart Elements
  *
  */
 
-
-include_once("WHAT/Lib.Http.php");
 
 use Anakeen\Core\ContextManager;
 
@@ -23,7 +22,7 @@ $archive = $usage->addOptionalParameter("archive", "description file is an stand
 $logfile = $usage->addOptionalParameter("log", "log file output");
 $policy = $usage->addOptionalParameter(
     "policy",
-    "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t".
+    "policy import - \n\t\t[update] to auto update same document (the default), \n\t\t" .
     "[add] to always create new document, \n\t\t[keep] to do nothing if same document already present",
     array(
         "update",
@@ -104,19 +103,19 @@ $usage->verify();
 
 
 if (!file_exists($filename)) {
-    ContextManager::exitError(sprintf(_("import file %s not found"), $filename));
+    ContextManager::exitError(sprintf(___("import file %s not found", "sde"), $filename));
 }
 if (!is_file($filename)) {
-    ContextManager::exitError(sprintf(_("import file '%s' is not a valid file"), $filename));
+    ContextManager::exitError(sprintf(___("import file '%s' is not a valid file", "sde"), $filename));
 }
 if ($logfile) {
     if (file_exists($logfile) && (!is_writable($logfile))) {
-        ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
+        ContextManager::exitError(sprintf(___("log file %s not writable", "sde"), $logfile));
     }
     if (!file_exists($logfile)) {
         $f = @fopen($logfile, 'a');
         if ($f === false) {
-            ContextManager::exitError(sprintf(_("log file %s not writable"), $logfile));
+            ContextManager::exitError(sprintf(___("log file %s not writable", "sde"), $logfile));
         }
         fclose($f);
     }
