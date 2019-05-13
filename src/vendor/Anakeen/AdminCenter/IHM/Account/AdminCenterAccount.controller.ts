@@ -197,7 +197,17 @@ export default class AdminCenterAccountController extends Vue {
   public groupId: any = false;
   public groupTitle: any = false;
   private smartTriggerActivated: boolean = false;
+  private refreshNeeded: boolean = false;
 
+  @Watch("refreshNeeded")
+  public watchRefreshNeeded(value) {
+    if (value) {
+      setTimeout(() => {
+        this.updateTreeData();
+      }, 300);
+    }
+    this.refreshNeeded = false;
+  }
   @Watch("groupId")
   public watchGroupId(value) {
     const createGrpBtn = this.$refs.groupList.kendoWidget();
@@ -242,8 +252,6 @@ export default class AdminCenterAccountController extends Vue {
     treeview.bind("dataBound", () => {
       const selectedElement = treeview.dataItem(treeview.select());
       if (selectedElement) {
-        console.log(this.selectedGroupLogin, selectedElement);
-
         if (
           selectedElement.login &&
           this.selectedGroupLogin !== selectedElement.documentId
@@ -345,22 +353,60 @@ export default class AdminCenterAccountController extends Vue {
   }
 
   // Manually refresh the tree pane
-  public updateTreeData(force?) {
-    const filterTitle = this.$refs.filterTree.value
-      ? this.$refs.filterTree.value.toLowerCase()
-      : "";
-    if (force) {
-      this.groupTree.read();
+  public updateTreeData() {
+    let filterTitle;
+    if (this.$refs.filterTree.value) {
+      filterTitle = this.$refs.filterTree.value.toLowerCase();
     }
-    if (filterTitle) {
-      return this.groupTree.filter({
-        field: "title",
-        operator: "contains",
-        value: filterTitle
-      });
+    if (filterTitle !== undefined) {
+      this.filter(this.groupTree, filterTitle);
+    } else {
+      this.showAll(this.groupTree);
+      this.expandAll();
     }
   }
+  // filter treeview datasource and expand until leaf is reached if a matching item is found
+  public filter(dataSource, query) {
+    let hasVisibleChildren = false;
+    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
 
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
+      const text = item.title.toLowerCase();
+      const itemVisible =
+        query === true // parent already matches
+        || query === "" // query is empty
+        || text.indexOf(query) >= 0; // item title matches query
+
+      const anyVisibleChildren = this.filter(item.children, itemVisible || query); // pass true if parent matches
+
+      hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
+
+      item.hidden = !itemVisible && !anyVisibleChildren;
+    }
+
+    if (data) {
+      // re-apply filter on children
+      dataSource.filter({ field: "hidden", operator: "neq", value: true });
+      const treeview = this.$refs.groupTreeView.kendoWidget();
+      treeview.expand(".k-item");
+    }
+
+    return hasVisibleChildren;
+  }
+  public showAll(dataSource) {
+    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0 ; i < data.length; i++) {
+      const item = data[i];
+      item.hidden = false;
+      if (item.hasChildren) {
+        this.showAll(item.children);
+      }
+    }
+    return this.groupTree.filter({field: "hidden", operators: "eq", value: false});
+  }
   // Display the selected group in the ank-document
   public updateGroupSelected(selectedGroupId) {
     this.selectedGroupLogin = selectedGroupId || this.selectedGroupLogin;
@@ -533,13 +579,16 @@ export default class AdminCenterAccountController extends Vue {
     if (!this.smartTriggerActivated) {
       openDoc.addEventListener("afterSave", () => {
         this.gridContent.read();
-        this.updateTreeData(true);
+        this.groupTree.read();
+        this.refreshNeeded = true;
       });
       openDoc.addEventListener("afterDelete", () => {
         this.updateGridData();
-        this.updateTreeData(true);
+        this.groupTree.read();
+        this.refreshNeeded = true;
       });
       this.smartTriggerActivated = true;
+      this.refreshNeeded = false;
     }
   }
 
@@ -549,7 +598,8 @@ export default class AdminCenterAccountController extends Vue {
       "admin.account.expandedElement",
       JSON.stringify({ "#all": false })
     );
-    this.updateTreeData();
+    const treeview = this.$refs.groupTreeView.kendoWidget();
+    treeview.collapse(".k-item");
   }
 
   // Expand all the leafs
@@ -558,12 +608,13 @@ export default class AdminCenterAccountController extends Vue {
       "admin.account.expandedElement",
       JSON.stringify({ "#all": true })
     );
-    this.updateTreeData();
+    const treeview = this.$refs.groupTreeView.kendoWidget();
+    treeview.expand(".k-item");
   }
 
   // Disable all the group non selected
   public filterGroup(event) {
     event.preventDefault();
-    this.updateTreeData(true);
+    this.updateTreeData();
   }
 }
