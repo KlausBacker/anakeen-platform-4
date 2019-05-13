@@ -208,6 +208,7 @@ export default class AdminCenterAccountController extends Vue {
     }
     this.refreshNeeded = false;
   }
+
   @Watch("groupId")
   public watchGroupId(value) {
     const createGrpBtn = this.$refs.groupList.kendoWidget();
@@ -246,6 +247,7 @@ export default class AdminCenterAccountController extends Vue {
         console.error("Unable to get options", error);
       });
   }
+
   // Bind the tree events
   public bindTree() {
     const treeview = this.$refs.groupTreeView.kendoWidget();
@@ -264,12 +266,15 @@ export default class AdminCenterAccountController extends Vue {
       }
     });
   }
+
   public parseCreateUser(data) {
     return data.user;
   }
+
   public parseCreateGroup(data) {
     return data.group;
   }
+
   // Bind the grid events (click to open an user)
   public openUser(event) {
     event.preventDefault();
@@ -365,23 +370,27 @@ export default class AdminCenterAccountController extends Vue {
       this.expandAll();
     }
   }
+
   // filter treeview datasource and expand until leaf is reached if a matching item is found
   public filter(dataSource, query) {
     let hasVisibleChildren = false;
-    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
+    const data =
+      dataSource instanceof kendo.data.HierarchicalDataSource &&
+      dataSource.data();
 
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
       const text = item.title.toLowerCase();
       const itemVisible =
-        query === true // parent already matches
-        || query === "" // query is empty
-        || text.indexOf(query) >= 0; // item title matches query
+        query === true || // parent already matches
+        query === "" || // query is empty
+        text.indexOf(query) >= 0; // item title matches query
 
-      const anyVisibleChildren = this.filter(item.children, itemVisible || query); // pass true if parent matches
+      const anyVisibleChildren = this.filter(item.children, query);
 
-      hasVisibleChildren = hasVisibleChildren || anyVisibleChildren || itemVisible;
+      hasVisibleChildren =
+        hasVisibleChildren || anyVisibleChildren || itemVisible;
 
       item.hidden = !itemVisible && !anyVisibleChildren;
     }
@@ -395,17 +404,24 @@ export default class AdminCenterAccountController extends Vue {
 
     return hasVisibleChildren;
   }
+
   public showAll(dataSource) {
-    const data = dataSource instanceof kendo.data.HierarchicalDataSource && dataSource.data();
+    const data =
+      dataSource instanceof kendo.data.HierarchicalDataSource &&
+      dataSource.data();
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0 ; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       const item = data[i];
       item.hidden = false;
       if (item.hasChildren) {
         this.showAll(item.children);
       }
     }
-    return this.groupTree.filter({field: "hidden", operators: "eq", value: false});
+    return this.groupTree.filter({
+      field: "hidden",
+      operators: "eq",
+      value: false
+    });
   }
   // Display the selected group in the ank-document
   public updateGroupSelected(selectedGroupId) {
