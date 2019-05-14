@@ -45,7 +45,7 @@ class RenderConfigView extends \Anakeen\Ui\DefaultView
         );
         $menuItem->setBeforeContent('<div class="fa fa-database" />');
         $menuItem->setTarget("_self");
-        $menuItem->setUrl("?app=TEST_DOCUMENT_SELENIUM&action=EXPORTRENDER");
+        $menuItem->setUrl(sprintf("/api/v2/smart-elements/%s.xml", $document->initid));
 
 
         $menu->appendElement($menuItem);

@@ -14,7 +14,7 @@ class AllRenderButtons extends \Anakeen\Ui\DefaultEdit
 
         $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = '<i class="fa fa-eye"></i>';
-        $viewDoc->url = sprintf("/api/v1/documents/{{value}}.html");
+        $viewDoc->url = sprintf("/api/v2/smart-elements/{{value}}.html");
         $viewDoc->target = "_dialog";
         $viewDoc->windowWidth = "400px";
 

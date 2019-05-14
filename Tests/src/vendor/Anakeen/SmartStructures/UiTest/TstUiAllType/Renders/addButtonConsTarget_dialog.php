@@ -11,7 +11,7 @@ class addButtonConsTarget_dialog extends \Anakeen\Ui\DefaultView
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
-        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
 
@@ -19,7 +19,7 @@ class addButtonConsTarget_dialog extends \Anakeen\Ui\DefaultView
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
+        $cssReferences["tstAddButtonCSS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
     }
 
