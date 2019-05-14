@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-13 09:33+0200\n"
-"PO-Revision-Date: 2019-05-13 09:34+0200\n"
+"POT-Creation-Date: 2019-05-14 13:49+0200\n"
+"PO-Revision-Date: 2019-05-14 14:00+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -15,6 +15,10 @@ msgstr ""
 msgctxt "ddui"
 msgid "%s Creation"
 msgstr "Création %s"
+
+msgctxt "smart-grid"
+msgid "-- Select another operator --"
+msgstr "-- Sélectionner un autre opérateur --"
 
 msgctxt " smart iuser"
 msgid "<p>Set to \"<b>-1</b>\"  to cancel expiration</p>"
@@ -75,6 +79,10 @@ msgstr "Chacun des textes contient"
 msgctxt "authent"
 msgid "An email has been sent to user \"%s\""
 msgstr "Un courriel a été envoyé à l'utilisateur \"%s\""
+
+msgctxt "smart-grid"
+msgid "And"
+msgstr "Et"
 
 msgctxt "grid-component"
 msgid "Any values is after than or equal to"
@@ -149,6 +157,10 @@ msgctxt "smartCvdoc"
 msgid "Class \"%s\" problem : %s"
 msgstr "Classe \"%s\" problême : %s"
 
+msgctxt "smart-grid"
+msgid "Clear"
+msgstr "Effacer"
+
 msgctxt "ddui-file"
 msgid "Click to upload file"
 msgstr "Cliquez pour choisir un fichier"
@@ -196,7 +208,7 @@ msgstr "Confirmer"
 #, php-format
 msgctxt "login"
 msgid "Connexion to %s"
-msgstr ""
+msgstr "Connexion à \"%s\""
 
 msgctxt "grid-component"
 msgid "Contains"
@@ -250,6 +262,10 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr "Supprimer"
 
+msgctxt "smart-grid"
+msgid "Display"
+msgstr "Afficher"
+
 msgctxt "smart:dsearch"
 msgid "Display"
 msgstr "Afficher"
@@ -297,14 +313,22 @@ msgctxt "smart exec"
 msgid "Execute now"
 msgstr "Démarrer la tâche"
 
-#, fuzzy, php-format
+#, php-format
 msgctxt "smart exec"
 msgid "Execute now the task %s"
-msgstr "Démarrer la tâche"
+msgstr "Démarrer la tâche \"%s\" maintenant"
+
+msgctxt "smart-grid"
+msgid "Export as XLSX"
+msgstr "Exporter au format XLSX"
 
 msgctxt "ddui"
 msgid "Family View"
 msgstr "Vue de Smart Structure"
+
+msgctxt "smart-grid"
+msgid "Filter"
+msgstr "Filtrer"
 
 msgctxt "ddui"
 msgid "Force transition"
@@ -314,10 +338,14 @@ msgctxt "UiMenu"
 msgid "Goto next activity"
 msgstr "Passer à l'étape suivante"
 
-#, fuzzy, php-format
+msgctxt "smart-grid"
+msgid "Grid Settings"
+msgstr "Paramétrage de la grille"
+
+#, php-format
 msgctxt "smart iuser"
 msgid "Groups of \"%s\" has been updated"
-msgstr "Les groupes ont été mis à jour"
+msgstr "Les groupes de \"%s\" ont été mis à jour"
 
 msgctxt "UiMenu"
 msgid "Help"
@@ -460,13 +488,17 @@ msgctxt "UiMenu"
 msgid "Modify"
 msgstr "Modifier"
 
+msgctxt "smart-grid"
+msgid "Modify"
+msgstr "Modifier"
+
 msgctxt "ddui"
 msgid "Modifying by"
 msgstr "En cours de modification par"
 
 msgctxt "mask"
 msgid "N"
-msgstr ""
+msgstr "N"
 
 msgctxt "smart iuser"
 msgid "No groups"
@@ -492,6 +524,10 @@ msgstr "Aucune des valeurs n'est égale à"
 msgctxt "ddui"
 msgid "No result found"
 msgstr "Pas de résultat"
+
+msgctxt "smart-grid"
+msgid "No results"
+msgstr "Aucun résultat"
 
 msgctxt "smart igroup"
 msgid "No roles"
@@ -543,7 +579,7 @@ msgstr "Ordre des contrôles d'accès"
 
 msgctxt " smart cvdoc"
 msgid "PHP Access render class used to fork the appropriate render config"
-msgstr ""
+msgstr "Classe d'accès au rendu pour aiguiller vers la configuration voulue"
 
 msgctxt " smart cvdoc"
 msgid "PHP Config render class used to custom render"
@@ -671,6 +707,10 @@ msgctxt "smart iuser"
 msgid "This account has no system identifier"
 msgstr "Ce compte n'a pas "
 
+msgctxt "grid-component"
+msgid "Title contains"
+msgstr "Le titre contient"
+
 msgctxt " smart group"
 msgid "To avoid compute mail addresses when group has lot of members"
 msgstr ""
@@ -737,7 +777,7 @@ msgctxt "mailtemplate"
 msgid ""
 "Workflow Structure to use revision comment and transition parameters in body "
 "message"
-msgstr ""
+msgstr "Structure du cycle de vie pour pouvoir utiliser le commentaire de révision ou les paramètres de transition dans le corp du message"
 
 msgctxt "ddui"
 msgid "Workflow Transition Comment"
@@ -757,12 +797,11 @@ msgstr "Vous avez entré un mot de passe invalide"
 
 #, php-format
 msgid "You must use only a-z, 0-9, _, - characters : \"%s\""
-msgstr ""
+msgstr "Vous ne pouvez utilisez que les caractères a-z, 0-9, _ : \"%s\" "
 
 msgid "activity"
 msgstr "Activité"
 
-#, fuzzy
 msgctxt "dsearch"
 msgid "activity"
 msgstr "Activité"
@@ -786,11 +825,11 @@ msgstr "Titre"
 
 msgctxt "mask"
 msgid "hidden"
-msgstr ""
+msgstr "caché"
 
 msgctxt "Report"
 msgid "id"
-msgstr ""
+msgstr "Rapport"
 
 msgctxt "searchui"
 msgid "id locked"
@@ -802,7 +841,7 @@ msgstr "Identifiant propriétaire"
 
 msgctxt "mask"
 msgid "invisible"
-msgstr ""
+msgstr "masque"
 
 msgctxt "ddui-file"
 msgid "kB"
@@ -811,6 +850,10 @@ msgstr "ko"
 msgctxt "searchui"
 msgid "mdate"
 msgstr "Date de modification"
+
+msgctxt "smart-grid"
+msgid "of"
+msgstr "sur"
 
 msgctxt "mask"
 msgid "read disabled"
@@ -824,6 +867,10 @@ msgctxt "mask"
 msgid "read write"
 msgstr ""
 
+msgctxt "smart-grid"
+msgid "results per page"
+msgstr "résultats par page"
+
 msgctxt "searchui"
 msgid "revision"
 msgstr "Révision"
@@ -831,24 +878,21 @@ msgstr "Révision"
 msgid "state"
 msgstr "État"
 
-#, fuzzy
 msgctxt "dsearch"
 msgid "state"
 msgstr "État"
 
 msgctxt "mask"
 msgid "static array"
-msgstr ""
+msgstr "Tableau statique"
 
 msgid "step"
 msgstr "Étape"
 
-#, fuzzy
 msgctxt "dsearch"
 msgid "step"
 msgstr "Étape"
 
-#, fuzzy
 msgctxt "Report"
 msgid "title"
 msgstr "Titre"
@@ -859,6 +903,10 @@ msgstr "Cycle de vie"
 msgctxt "mask"
 msgid "write only"
 msgstr ""
+
+msgctxt "smart-grid"
+msgid "{0} - {1} of {2} results"
+msgstr "{0} - {1} of {2} résultats"
 
 msgctxt "ddui-enum"
 msgid "{{value}} **"

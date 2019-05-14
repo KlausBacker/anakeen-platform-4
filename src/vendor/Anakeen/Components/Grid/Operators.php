@@ -60,7 +60,7 @@ class Operators
             ],
 
             "titleContains" => [
-                "label" => ___("Contains", "grid-component"),
+                "label" => ___("Title contains", "grid-component"),
                 "operands" => [":field", ":value", StartsWith::NOCASE],
                 "type" => [
                     "docid",

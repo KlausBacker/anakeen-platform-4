@@ -4,6 +4,7 @@
 namespace Anakeen\SmartStructures\Report\Render;
 
 use Anakeen\SmartStructures\Dsearch\Render\SearchEditRender;
+use Anakeen\Ui\RenderAttributeVisibilities;
 use Anakeen\Ui\RenderOptions;
 use SmartStructure\Fields\Report as myAttr;
 use Anakeen\Core\SEManager;
@@ -24,10 +25,6 @@ class ReportEditRender extends SearchEditRender
                 $family = $data["familyName"];
                 if ($family) {
                     $document->setValue(myAttr::se_famid, SEManager::getIdFromName($family));
-                    $document->setValue(myAttr::se_fam, SEManager::getTitle($family));
-                }
-                if (!empty($data["memo"])) {
-                    $document->setValue(myAttr::se_memo, "yes");
                 }
             }
         }
@@ -59,8 +56,16 @@ class ReportEditRender extends SearchEditRender
             ]
         ));
         $options->int(myAttr::rep_limit)->setInputTooltip(\Anakeen\Core\Utils\Strings::xmlEncode(
-            ___("Number maximum of displayed elements", "smart report")
+            ___("Number of elements to display per page", "smart report")
         ));
         return $options;
+    }
+
+    public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
+    {
+        $vis= parent::getVisibilities($document, $mask);
+        $vis->setVisibility(myAttr::rep_displayoption, RenderAttributeVisibilities::HiddenVisibility);
+        $vis->setVisibility(myAttr::rep_colors, RenderAttributeVisibilities::HiddenVisibility);
+        return $vis;
     }
 }

@@ -18,7 +18,8 @@ export default class GridActions extends AbstractGridUtil {
   getAction(actionName) {
     const actionMethod = `${actionName}Action`;
     const actionObject = {};
-    actionObject.title = this.vueComponent.translations[actionName];
+    actionObject.title =
+      this.vueComponent.translations[actionName] || actionName;
     actionObject.iconClass = DEFAULT_ACTION_PROPS[actionName]
       ? DEFAULT_ACTION_PROPS[actionName].iconClass
       : "";
