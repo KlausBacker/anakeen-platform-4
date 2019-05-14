@@ -11,7 +11,7 @@ class setLinkTarget_self extends AllRenderConfigView
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
-        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
 
@@ -19,17 +19,17 @@ class setLinkTarget_self extends AllRenderConfigView
     {
         $options = parent::getOptions($document);
 
-        $linkOptionAccount = new \Dcp\ui\htmlLinkOptions();
+        $linkOptionAccount = new \Anakeen\Ui\htmlLinkOptions();
         $linkOptionAccount->target = "_self";
         $linkOptionAccount->title = "Mon test {{value}} {{displayValue}}";
-        $linkOptionAccount->url = "/api/v1/documents/{{value}}/views/!defaultEdition.html";
+        $linkOptionAccount->url = "/api/v2/smart-elements/{{value}}/views/!defaultEdition.html";
 
-        $linkOptionImage = new \Dcp\ui\htmlLinkOptions();
+        $linkOptionImage = new \Anakeen\Ui\htmlLinkOptions();
         $linkOptionImage->target = "_self";
         $linkOptionImage->title = ' <h3><img src="{{thumbnail}}&size=100"/>{{displayValue}}</h3>';
         $linkOptionImage->url = "{{{url}}}&size=200";
 
-        $linkOption = new \Dcp\ui\htmlLinkOptions();
+        $linkOption = new \Anakeen\Ui\htmlLinkOptions();
         $linkOption->target = "_self";
         $linkOption->title = "Mon test {{value}} {{displayValue}}";
         $linkOption->url = "#action/my:myOptions";

@@ -11,7 +11,7 @@ class addButtonConsTarget_self extends \Anakeen\Ui\DefaultView
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
-        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
         return $js;
     }
 
@@ -19,7 +19,7 @@ class addButtonConsTarget_self extends \Anakeen\Ui\DefaultView
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
+        $cssReferences["tstAddButtonCSS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonCSS.css?ws=" . $version;
         return $cssReferences;
     }
 
@@ -29,7 +29,7 @@ class addButtonConsTarget_self extends \Anakeen\Ui\DefaultView
 
         $viewDoc = new \Anakeen\Ui\ButtonOptions();
         $viewDoc->htmlContent = '<i class="fa fa-eye"></i>';
-        $viewDoc->url = sprintf("/api/v1/documents/{{value}}.html");
+        $viewDoc->url = sprintf("/api/v2/smart-elements/{{value}}.html");
         $viewDoc->target = "_self";
         $viewDoc->windowWidth = "400px";
         $options->docid()->addButton($viewDoc);
