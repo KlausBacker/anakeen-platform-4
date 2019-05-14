@@ -410,7 +410,10 @@ class Compose {
     if (!archive.match(/\.src$/)) {
       throw new ComposeError(`Archive '${archive}' has no '.src' suffix`);
     }
-    const basename = path.basename(archive, ".src");
+    let name = path.basename(archive, ".src");
+    const regex = new RegExp("-(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$");
+    const versionNumber = name.match(regex)[0];
+    const basename = name.replace(versionNumber, "");
     const dirname = path.dirname(archive);
     const pathname = path.normalize([dirname, basename].join("/"));
     if (await Compose.fileExists(pathname)) {

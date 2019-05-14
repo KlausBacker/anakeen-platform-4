@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/anakeen-cli",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
   "bin": {
@@ -13,10 +13,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@anakeen/anakeen-module-validation": "^1.0.9",
+    "@anakeen/anakeen-module-validation": "latest",
     "form-data": "^2.3.3",
-    "glob": "^7.1.3",
-    "gulp": "^4.0.0",
+    "glob": "^7.1.4",
+    "gulp": "^4.0.2",
     "gulp-gzip": "^1.4.2",
     "gulp-replace": "^1.0.0",
     "gulp-tar": "^2.1.0",
@@ -31,8 +31,8 @@
     "signale": "^1.3.0",
     "streamqueue": "^1.1.2",
     "tar": "^4.4.8",
-    "tar-stream": "^2.0.0",
-    "through2": "^3.0.0",
+    "tar-stream": "^2.0.1",
+    "through2": "^3.0.1",
     "tmp": "^0.0.33",
     "url-join": "^4.0.0",
     "uuid": "^3.3.2",
@@ -41,12 +41,12 @@
     "yargs": "^12.0.5"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^7.5.0",
-    "commitlint": "^7.5.2",
-    "eslint": "^5.9.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "husky": "^1.3.1",
-    "prettier": "^1.15.2"
+    "@commitlint/config-conventional": "^7.6.0",
+    "commitlint": "^7.6.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^2.2.0",
+    "prettier": "^1.17.1"
   },
   "husky": {
     "hooks": {
