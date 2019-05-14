@@ -54,12 +54,9 @@ hubConf
   })
   .catch(error => {
     // Display an error message
-    new Vue({
-      el: "#ank-hub",
-      template: `<div style="width: 100%; padding: 2rem 1rem 2rem 10rem; font-size: 1.333rem; font-weight: bold; color: white; background: #b0413e">${error}</div>`,
-      mounted() {
-        enableLoader(false);
-      }
-    });
+    enableLoader(false);
+    window.setTimeout(() => {
+      window.alert(error);
+    }, 100);
     throw error;
   });
