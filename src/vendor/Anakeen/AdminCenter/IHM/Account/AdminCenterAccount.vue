@@ -14,7 +14,7 @@
                   <kendo-toolbar-item
                     type="button"
                     icon="refresh"
-                    @click="() => updateTreeData(true)"
+                    @click="() => updateTreeData()"
                   ></kendo-toolbar-item>
                   <kendo-toolbar-item
                     type="button"
