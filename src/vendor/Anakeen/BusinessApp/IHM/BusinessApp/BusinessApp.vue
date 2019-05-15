@@ -4,7 +4,8 @@
       <ank-se-list
         ref="businessAppList"
         class="ank-business-app-list-widget"
-        @se-selected="onSelectListItem"
+        :selectable="false"
+        @se-clicked="onSelectListItem"
         @after-se-list-page-change="afterPageChange"
         @se-list-filter-change="onListFilterChange"
       >
