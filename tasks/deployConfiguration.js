@@ -156,7 +156,7 @@ const postGlobFile = ({
 };
 
 exports.deployConfiguration = ({
-  sourcePath,
+  configFilePath,
   contextUrl,
   contextUsername,
   contextPassword,
@@ -171,7 +171,7 @@ exports.deployConfiguration = ({
           interactive.info(message);
         };
         return postFile({
-          sourcePath,
+          configFilePath,
           contextUrl,
           contextUsername,
           contextPassword,
