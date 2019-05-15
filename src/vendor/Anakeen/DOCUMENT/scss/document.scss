@@ -8,6 +8,9 @@ $ank-ui-color-body-background: #FBFBFB;
 .dcpDocument__body {
   padding-left: 0;
   padding-right: 0;
+  .k-icon {
+    color: $ank-ui-color-picto;
+  }
 }
 
 .dcpDocument__header {
@@ -39,8 +42,4 @@ $ank-ui-color-body-background: #FBFBFB;
 
 .card-default {
   border: none;
-}
-
-.k-icon {
-  color: $ank-ui-color-picto;
 }

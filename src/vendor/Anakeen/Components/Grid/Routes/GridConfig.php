@@ -15,6 +15,8 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
 use SmartStructure\Fields\Search;
 
+use SmartStructure\Fields\Report as ReportFields;
+
 /**
  * Config for Smart Element Grid
  *
@@ -67,11 +69,49 @@ class GridConfig
     {
         return array(
             "smartFields" => $this->gridFields,
+            "pageable" => $this->getPageable(),
             "footer" => array(),
             "toolbar" => [],
             "actions" => [],
+            "locales" => $this->getLocales(),
             "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=" . $this->getUrlFields())
         );
+    }
+
+    protected function getPageable()
+    {
+        $pageSlice = $this->collectionDoc->getRawValue(ReportFields::rep_limit);
+        if ($pageSlice) {
+            return ["pageSize" => intval($pageSlice), "pageSizes" => [intval($pageSlice)]];
+        } else {
+            return null;
+        }
+    }
+
+    protected function getLocales()
+    {
+        return [
+            "pageable" => [
+                "messages" => [
+                    "itemsPerPage" => ___("results per page", "smart-grid"),
+                    "of" => ___("of", "smart-grid"),
+                    "display" => ___("{0} - {1} of {2} results", "smart-grid"),
+                    "empty" => ___("No results", "smart-grid")
+                ],
+            ],
+            "filterable" => [
+                "messages" => [
+                    "and" => ___("And", "smart-grid"),
+                    "clear" => ___("Clear", "smart-grid"),
+                    "filter" => ___("Filter", "smart-grid"),
+                ],
+            ],
+            "consult" => ___("Display", "smart-grid"),
+            "edit" => ___("Modify", "smart-grid"),
+            "export" => ___("Export as XLSX", "smart-grid"),
+            "selectOperator" => ___("-- Select another operator --", "smart-grid"),
+            "extraOperator" => ___("Grid Settings", "smart-grid"),
+        ];
     }
 
     protected function getUrlFields()

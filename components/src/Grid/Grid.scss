@@ -8,6 +8,9 @@
     display: flex!important; // To override important kendo rule
     flex:1;
 
+    .grid-header-content {
+       position:relative;
+    }
     .grid-header--subtitle {
       color: #666;
       font-style:italic;
@@ -15,7 +18,50 @@
       overflow: hidden;
     }
     .grid-header--title {
-      display:inline-block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    th.grid-column--context {
+      position:relative;
+      .k-link {
+        .k-icon {
+          // Sort icon
+          position: absolute;
+          top: .25rem;
+          right: 1.15rem;
+          // The sort arrox  must be inverted top-bottom means asc
+          transform: rotate(180deg);
+        }
+        .k-sort-order {
+          // Sort icon number
+          position: absolute;
+          top: .25rem;
+          right: 0.7rem;
+        }
+        &::after {
+          position: absolute;
+          top: .25rem;
+          right:1.35rem;
+        }
+      }
+      &[data-role=columnsorter]:not(.k-sorted) {
+        .k-link::after {
+          position: absolute;
+          top: .25rem;
+          right:1.35rem;
+        }
+      }
+      &.grid-column-no-sortable {
+        &:hover {
+          &::after {
+            position: absolute;
+            top: .25rem;
+            right: 1.35rem;
+          }
+        }
+      }
+
     }
 
     tr.k-state-selected, th.k-state-selected, td.k-state-selected {
@@ -104,17 +150,20 @@
     display:flex;
     flex-direction: column;
   }
+  th[data-role=columnsorter] .k-link {
+    display:flex;
+  }
+
+
 
   th[data-role=columnsorter]:not(.k-sorted) {
     position: relative;
+
     .k-link::after {
-      position: relative;
       cursor: pointer;
       content: "\e127\e128";
       font-family: "WebComponentsIcons";
       letter-spacing: -.4rem;
-      top: .15rem;
-      margin-left: .5rem;
     }
   }
 
@@ -122,13 +171,12 @@
     &:hover {
       position: relative;
       &::after {
-        position: relative;
-        top: .15rem;
+        top: .25rem;
         content: "\e116";
         font-family: "WebComponentsIcons";
         font-size:0.9rem;
-        margin-left: .5rem;
-        bottom: 10px;
+
+        right:1.35rem;
       }
     }
   }
@@ -427,6 +475,12 @@
 
   .k-grid-footer {
     border-top: 2px solid rgba(210, 210, 210, 0.5);
+    .grid-footer--title {
+      font-weight: bold;
+    }
+    .grid-foot-content--int, .grid-foot-content--double, .grid-foot-content--money {
+      text-align: right;
+    }
   }
 
   .k-grid-pager {

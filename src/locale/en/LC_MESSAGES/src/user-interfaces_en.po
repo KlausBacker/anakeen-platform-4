@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-13 09:33+0200\n"
+"POT-Creation-Date: 2019-05-14 13:49+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -15,6 +15,10 @@ msgstr ""
 #, php-format
 msgctxt "ddui"
 msgid "%s Creation"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "-- Select another operator --"
 msgstr ""
 
 msgctxt " smart iuser"
@@ -73,6 +77,10 @@ msgstr ""
 #, php-format
 msgctxt "authent"
 msgid "An email has been sent to user \"%s\""
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "And"
 msgstr ""
 
 msgctxt "grid-component"
@@ -146,6 +154,10 @@ msgstr ""
 #, php-format
 msgctxt "smartCvdoc"
 msgid "Class \"%s\" problem : %s"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Clear"
 msgstr ""
 
 msgctxt "ddui-file"
@@ -249,6 +261,10 @@ msgctxt "UiMenu"
 msgid "Delete"
 msgstr ""
 
+msgctxt "smart-grid"
+msgid "Display"
+msgstr ""
+
 msgctxt "smart:dsearch"
 msgid "Display"
 msgstr ""
@@ -301,8 +317,16 @@ msgctxt "smart exec"
 msgid "Execute now the task %s"
 msgstr ""
 
+msgctxt "smart-grid"
+msgid "Export as XLSX"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Family View"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Filter"
 msgstr ""
 
 msgctxt "ddui"
@@ -311,6 +335,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Goto next activity"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Grid Settings"
 msgstr ""
 
 #, php-format
@@ -459,6 +487,10 @@ msgctxt "UiMenu"
 msgid "Modify"
 msgstr ""
 
+msgctxt "smart-grid"
+msgid "Modify"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Modifying by"
 msgstr ""
@@ -490,6 +522,10 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "No result found"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "No results"
 msgstr ""
 
 msgctxt "smart igroup"
@@ -668,6 +704,10 @@ msgctxt "smart iuser"
 msgid "This account has no system identifier"
 msgstr ""
 
+msgctxt "grid-component"
+msgid "Title contains"
+msgstr ""
+
 msgctxt " smart group"
 msgid "To avoid compute mail addresses when group has lot of members"
 msgstr ""
@@ -809,6 +849,10 @@ msgctxt "searchui"
 msgid "mdate"
 msgstr ""
 
+msgctxt "smart-grid"
+msgid "of"
+msgstr ""
+
 msgctxt "mask"
 msgid "read disabled"
 msgstr ""
@@ -819,6 +863,10 @@ msgstr ""
 
 msgctxt "mask"
 msgid "read write"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "results per page"
 msgstr ""
 
 msgctxt "searchui"
@@ -855,6 +903,10 @@ msgstr "Workflow"
 
 msgctxt "mask"
 msgid "write only"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "{0} - {1} of {2} results"
 msgstr ""
 
 msgctxt "ddui-enum"

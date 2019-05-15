@@ -4,6 +4,7 @@ namespace Anakeen\Components\Grid\Routes;
 
 use Anakeen\Components\Grid\Operators;
 use Anakeen\Core\Internal\SmartElement;
+use Anakeen\Core\Utils\Strings;
 use Anakeen\SmartElementManager;
 use Anakeen\Core\SmartStructure;
 use Anakeen\Core\SmartStructure\BasicAttribute;
@@ -86,6 +87,7 @@ class ColumnsConfig
             case "S":
                 return self::getSearchColumns($collection, $structRef, $returnsOnly);
         }
+        return null;
     }
 
     private static function getStructureColumns(SmartElement $famDoc, SmartStructure $struct, array $returnsOnly)
@@ -149,12 +151,12 @@ class ColumnsConfig
             if ($attrid) {
                 $config = self::getColumnConfig($attrid, $structRef);
                 if (!empty($config)) {
-                    if ($displayOptions[$kf]) {
+                    if (!empty($displayOptions[$kf])) {
                         switch ($displayOptions[$kf]) {
                             case "docid":
                                 $config["title"] .= sprintf(" (%s)", ___("id", "Report"));
                                 $config["smartType"] = "int";
-                                $config["filterable"]["cell"]["enable"]=false;
+                                $config["filterable"]["cell"]["enable"] = false;
                                 break;
                             case "title":
                                 $config["title"] .= sprintf(" (%s)", ___("title", "Report"));
@@ -176,7 +178,7 @@ class ColumnsConfig
         array_walk($properties, function (&$value, $key) {
             $value["field"] = $key;
             $value["smartType"] = $value['type'];
-            $value["title"] = _($value['label']);
+            $value["title"] = Strings::mbUcfirst(_($value['label']));
             $value["property"] = true;
             $value["filterable"] = self::getFilterable($value["type"]);
 
@@ -237,6 +239,7 @@ class ColumnsConfig
         return self::getFilterable($attr->type . ($attr->isMultiple() ? '[]' : '') . ($attr->isMultipleInArray() ? '[]' : ''));
     }
 
+
     protected static function getAttributeConfig(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \Anakeen\Core\SmartStructure $family)
     {
         $data = array(
@@ -249,12 +252,15 @@ class ColumnsConfig
             "relation" => $currentAttribute->format,
             "withContext" => true,
             "encoded" => false,
-            "sortable" => self::isSortable($family, $currentAttribute->id),
+            "sortable" => false,
             "filterable" => self::getColumnFilterConfig($currentAttribute),
-
         );
-        if (($data["smartType"] == "docid" || $data["smartType"] == "account") && $data["filterable"]) {
-            $data["doctitle"] = $currentAttribute->getOption("doctitle") == "auto" ? $currentAttribute->id . "_title" : $currentAttribute->getOption("doctitle");
+        $isSortable = self::isSortable($family, $currentAttribute->id);
+        if ($isSortable) {
+            $data["sortable"] = ["initialDirection" => "asc"];
+            if (($data["smartType"] == "docid" || $data["smartType"] == "account")) {
+                $data["sortable"]["compare"] = $currentAttribute->getOption("doctitle") == "auto" ? $currentAttribute->id . "_title" : $currentAttribute->getOption("doctitle");
+            }
         }
         return $data;
     }
@@ -268,7 +274,7 @@ class ColumnsConfig
         return $contextLabels;
     }
 
-    public static function getColumnConfig($fieldId, \Anakeen\Core\Internal\SmartElement $smartEl = null)
+    public static function getColumnConfig($fieldId, \Anakeen\Core\SmartStructure $smartEl = null)
     {
         $properties = self::getDisplayableProperties();
         if (isset($properties[$fieldId])) {
@@ -288,5 +294,6 @@ class ColumnsConfig
                 }
             }
         }
+        return null;
     }
 }

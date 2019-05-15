@@ -982,12 +982,14 @@ define([
                 withoutResize: true
               })
               .on("documentloaded", function vDocumentSelectHelpChapter() {
-                _.defer(function vDocumentHelpReady() {
-                  $dialogDiv.document(
-                    "triggerEvent",
-                    "custom:helppageSelect",
-                    attrid
-                  );
+                $(this).document("addEventListener", "ready", function() {
+                  _.defer(function triggerSelectHelpChapter() {
+                    $dialogDiv.document(
+                      "triggerEvent",
+                      "custom:helppageSelect",
+                      attrid
+                    );
+                  });
                 });
               });
 

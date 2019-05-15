@@ -155,10 +155,11 @@ export default class GridKendoUtils extends AbstractGridUtil {
       col.encoded = false;
     }
     if (col.field) {
+      col.headerAttributes = {
+        class: this.vueComponent.contextTitles ? "grid-column--context" : ""
+      };
       if (!col.sortable) {
-        col.headerAttributes = {
-          class: "grid-column-no-sortable"
-        };
+        col.headerAttributes.class += " grid-column-no-sortable";
       }
       col.attributes = {
         class: `grid-cell--${col.field}`
@@ -215,9 +216,11 @@ export default class GridKendoUtils extends AbstractGridUtil {
       col.context.length
     ) {
       const title = col.title || col.field;
-      const titleWords = col.context.join(
-        ` ${this.vueComponent.contextTitlesSeparator} `
-      );
+      const titleWords = col.context
+        .filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        })
+        .join(` ${this.vueComponent.contextTitlesSeparator} `);
       col.title = title;
       col.subTitle = titleWords;
     }
@@ -228,13 +231,24 @@ export default class GridKendoUtils extends AbstractGridUtil {
     }
 
     if (!col.headerTemplate) {
-      col.headerTemplate = kendo.template(
-        `<div class="grid-header--subtitle">#: subTitle #</div><div class="grid-header--title"> #: title # </div>`
-      )(col);
+      if (col.subTitle) {
+        col.fullTitle = `${col.subTitle} / ${col.title}`;
+      } else {
+        col.fullTitle = col.title;
+      }
+      if (this.vueComponent.contextTitles) {
+        col.headerTemplate = kendo.template(
+          `<div class="grid-header-content" title="#: fullTitle #"><div class="grid-header--subtitle">#: subTitle #</div><div class="grid-header--title" >#: title #</div></div>`
+        )(col);
+      }
     }
 
     if (config.footer && config.footer[col.field]) {
-      col.footerTemplate = `${config.footer[col.field]}`;
+      col.footerValue = config.footer[col.field];
+
+      col.footerTemplate = kendo.template(
+        `<div class="grid-footer--title grid-foot-content--#: smartType #"> #: footerValue # </div>`
+      )(col);
     }
   }
 
@@ -296,11 +310,8 @@ export default class GridKendoUtils extends AbstractGridUtil {
           ).rowData;
 
           if (this.vueComponent.isFullSelectionState) {
-            if (!e.currentTarget.checked) {
-              this.vueComponent.uncheckRows[item.initid.toString()] = true;
-            } else {
-              this.vueComponent.uncheckRows[item.initid.toString()] = false;
-            }
+            this.vueComponent.uncheckRows[item.initid.toString()] = !e
+              .currentTarget.checked;
           }
         }
       );
@@ -319,16 +330,48 @@ export default class GridKendoUtils extends AbstractGridUtil {
     }
   }
 
+  prepareKendoGridPaging(config) {
+    if (config.pageable && config.pageable.pageSize) {
+      this.vueComponent.kendoGridOptions.pageable.pageSize =
+        config.pageable.pageSize;
+      this.vueComponent.kendoDataSourceOptions.pageSize =
+        config.pageable.pageSize;
+      if (typeof config.pageable.pageSizes !== "undefined") {
+        this.vueComponent.kendoGridOptions.pageable.pageSizes =
+          config.pageable.pageSizes;
+      }
+    }
+  }
+  /**
+   * Compute the kendo grid actions
+   * @param config - Grid configuration
+   */
+  prepareKendoGridLocales(config) {
+    if (config.locales) {
+      this.vueComponent.kendoGridOptions.noRecords = {
+        template: config.locales.pageable.messages.empty
+      };
+      this.vueComponent.translations = config.locales;
+      if (
+        this.vueComponent.kendoGridOptions.pageable &&
+        typeof this.vueComponent.kendoGridOptions.pageable === "object"
+      ) {
+        this.vueComponent.kendoGridOptions.pageable.messages =
+          config.locales.pageable.messages;
+      }
+      if (this.vueComponent.kendoGridOptions.filterable) {
+        this.vueComponent.kendoGridOptions.filterable.messages =
+          config.locales.filterable.messages;
+      }
+    }
+  }
+
   /**
    * Compute the kendo grid options
    * @param {object} config - Grid configuration
    * @param {object|null} savedColsOpts - Saved columns configuration
    */
   prepareKendoGridOptions(config, savedColsOpts = {}) {
-    this.vueComponent.kendoGridOptions.noRecords = {
-      template: this.vueComponent.translations.emptyMessage
-    };
-
     this.vueComponent.kendoGridOptions.columns = [];
     /**
      * force to set visible input with value of real input filter
@@ -347,6 +390,8 @@ export default class GridKendoUtils extends AbstractGridUtil {
       GridFilter.beforeFilterGrid(e);
     };
 
+    this.prepareKendoGridLocales(config);
+    this.prepareKendoGridPaging(config);
     this.prepareKendoGridToolbar(config);
     this.prepareKendoGridColumns(config);
     this.prepareKendoGridActions(config);
@@ -374,7 +419,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
   /**
    * Create and initialize the kendo grid widget
    * @param config - Grid configuration
-   * @param {object|null} savedConfig - Saved columns configuration
+   * @param {object|null} savedColsOpts - Saved columns configuration
    */
   initKendoGrid(config, savedColsOpts = null) {
     this.createKendoWidget({

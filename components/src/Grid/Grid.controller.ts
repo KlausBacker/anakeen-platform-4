@@ -138,6 +138,7 @@ export default class GridController extends Vue {
     default: true
   })
   public persistSelection;
+  public translations = {};
 
   public privateScope: IGrid;
   @Watch("urlConfig")
@@ -419,23 +420,7 @@ export default class GridController extends Vue {
     const collection = this.collection;
     return baseUrl.replace("<collection>", collection.toString());
   }
-  public get translations() {
-    return {
-      emptyMessage: this.$pgettext("SEGrid", "No element on this page"),
-      itemsPerPage: this.$pgettext("SEGrid", "items per page"),
-      contains: this.$pgettext("SEGrid", "Contains"),
-      doesNotContain: this.$pgettext("SEGrid", "Does not contain"),
-      isEmpty: this.$pgettext("SEGrid", "Is empty"),
-      isNotEmpty: this.$pgettext("SEGrid", "Is not empty"),
-      selectOperator: this.$pgettext("SEGrid", "-- Select another operator --"),
-      extraOperator: this.$pgettext("SEGrid", "Extra operators..."),
-      columns: this.$pgettext("SEGrid", "Grid Settings"),
-      consult: this.$pgettext("SEGrid", "Consult"),
-      custom: this.$pgettext("SEGrid", "Custom"),
-      edit: this.$pgettext("SEGrid", "Edit"),
-      export: this.$pgettext("SEGrid", "Export as XSLX")
-    };
-  }
+
   public mounted() {
     let saveColumnsOptions = null;
     if (this.persistStateKey) {
@@ -522,12 +507,7 @@ export default class GridController extends Vue {
     pageable: this.pageable
       ? {
           pageSizes: this.pageSizes,
-          numeric: false,
-          messages: {
-            itemsPerPage: "résultats par page",
-            of: "sur",
-            display: "{0} - {1} sur {2} résultats"
-          }
+          numeric: false
         }
       : this.pageable,
     resizable: this.resizable,

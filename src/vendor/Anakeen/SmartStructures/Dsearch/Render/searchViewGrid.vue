@@ -1,5 +1,6 @@
 <template>
     <ank-se-grid :url-config="`/api/v2/smartstructures/dsearch/gridConfig/${searchId}`"
+                 :page-sizes="[50, 100, 500]"
                  :collection="searchId" class="dsearch-result-grid" ref="gridPreview">
     </ank-se-grid>
 </template>

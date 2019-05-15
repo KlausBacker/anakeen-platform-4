@@ -218,7 +218,7 @@ class DataSource extends DocumentList
             }
             if (!empty($this->sort)) {
                 $orderBy = implode(',', array_map(function ($item) {
-                    return $item['field'] . ":" . $item['dir'];
+                    return ($item['compare']?:$item['field']) . ":" . $item['dir'];
                 }, $this->sort));
             }
             if (!empty($orderBy)) {
@@ -227,6 +227,7 @@ class DataSource extends DocumentList
                         return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy($orderBy, $this->smartElement);
                     case "S":
                         $famId = $this->smartElement->getRawValue("se_famid");
+
                         return \Anakeen\Routes\Core\Lib\DocumentUtils::extractOrderBy(
                             $orderBy,
                             SmartElementManager::getFamily($famId)

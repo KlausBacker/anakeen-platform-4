@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: js_SEARCH_UI_HTML5_en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-13 09:33+0200\n"
+"POT-Creation-Date: 2019-05-14 13:49+0200\n"
 "PO-Revision-Date: 2018-10-10 09:15+020\n"
 "Last-Translator: Anakeen\n"
 "Language-Team: Anakeen Team\n"
@@ -35,3 +35,13 @@ msgstr "You must select an operator."
 msgctxt "SEvents"
 msgid "type a title"
 msgstr "Type a title for the new document"
+
+#, fuzzy
+#~ msgctxt "SEGrid"
+#~ msgid "-- Select another operator --"
+#~ msgstr "You must select an operator."
+
+#, fuzzy
+#~ msgctxt "SEGrid"
+#~ msgid "Extra operators..."
+#~ msgstr "You must select an operator."
