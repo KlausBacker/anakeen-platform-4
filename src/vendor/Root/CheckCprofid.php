@@ -35,7 +35,7 @@ class CheckCprofid extends CheckData
     {
         if ($this->profilName) {
             $d = \Anakeen\Core\SEManager::getDocument($this->profilName);
-            if (!$d->isAlive()) {
+            if (!$d || !$d->isAlive()) {
                 $this->addError(ErrorCode::getError('CPRF0001', $this->profilName, $this->doc->name));
             } elseif (!is_a($d, \Anakeen\Core\Internal\SmartElement::class)) {
                 $this->addError(ErrorCode::getError('CPRF0002', $this->profilName, $this->doc->name));
