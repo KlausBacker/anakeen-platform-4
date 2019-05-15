@@ -18,7 +18,7 @@ Pour commencer un nouveau projet avec @anakeen/anakeen-cli, la démarche est sim
 
 * Créer le répertoire
 * Faire un npm init dans le répertoire
-* Enregistrer le registry anakeen ```npm login --registry=http://npm-stable.corp.anakeen.com:4873 --scope=@anakeen```
+* Enregistrer le registry anakeen ```npm config set @anakeen http://npm-stable.corp.anakeen.com:4873```
 * lancer le npm install du module ```npm install @anakeen/anakeen-cli```
 * ensuite les commandes sont accessibles de deux manières :
  * via un outil en cli ```npx @anakeen/anakeen-cli```
