@@ -24,7 +24,7 @@ class EnumRenderConfigEditHorizontal extends EnumRenderConfigEditButtons
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumhorizontal.css";
+        $css["tstenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumhorizontal.css";
         return $css;
     }
 }

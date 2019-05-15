@@ -61,7 +61,7 @@ class EmployeeViewRender extends \Anakeen\Ui\DefaultView
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstCustomEmployee"] = "TEST_DOCUMENT_SELENIUM/Layout/customEmployee.css";
+        $css["tstCustomEmployee"] = "/TEST_DOCUMENT_SELENIUM/Layout/customEmployee.css";
         return $css;
     }
 }

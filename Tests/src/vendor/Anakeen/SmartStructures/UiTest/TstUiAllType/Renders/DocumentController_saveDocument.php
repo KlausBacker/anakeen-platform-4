@@ -12,7 +12,7 @@ class DocumentController_saveDocument extends \Anakeen\Ui\DefaultEdit
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $cssReferences = parent::getCssReferences($document);
-        $cssReferences["tstAddButtonCSS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
+        $cssReferences["tstAddButtonCSS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/userButton.css?ws=" . $version;
         return $cssReferences;
     }
 
@@ -20,7 +20,7 @@ class DocumentController_saveDocument extends \Anakeen\Ui\DefaultEdit
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
-        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_saveDocument.js?ws=" . $version;
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_saveDocument.js?ws=" . $version;
         return $js;
     }
 

@@ -128,13 +128,13 @@ DOC;TST_RENDER;TST_RENDER_0365;;365;Docid::addCreateDocumentButton;"<p>Test des 
 
 <p>Prise en compte de l'option de création de documents liés.</p>";TST_DDUI_DOCID;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0395;;395;Enum::addCssRef;<p>Prise en compte de la css pour mettre du content personalisé (ville, note de musiques, couleur)</p>;TST_ENUM_COMPLET;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-DOC;TST_RENDER;TST_RENDER_0393;;393;Enum::useOtherChoice;<p>Prise en compte du choix autre. Visible en marron.</p>;TST_ENUM_OTHER;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+DOC;TST_RENDER;TST_RENDER_0393;;393;Enum::useOtherChoice;<p>Prise en compte du choix autre. Visible en marron.</p>;TST_ENUM_OTHER;E4;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0390;;390;Enum::setDisplay(vertical);"<p>Prise en compte de la disposition verticale.</p>
 
 <p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0391;;391;Enum::setDisplay(horizontal);"<p>Prise en compte de la disposition horizontale.</p>
 
-<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+<p>Custom Template pour le tableau</p>";TST_ENUM_COMPLET;E3;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0212;;212;Common::setDescription;"<p>Prise en compte de l'option Description? Voir le cadre ""Information Administrative""</p>";TST_DDUI_EMPLOYEE;!defaultCreation;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DOC;TST_RENDER;TST_RENDER_0218;;218;Common::setTemplate Imbriqué;"<p>Le nom,  prénom et le cadre identité ont un template spécifique.</p>
 

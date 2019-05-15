@@ -11,7 +11,7 @@ class AllRenderNotification extends \Anakeen\Ui\DefaultView
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $jsReferences = parent::getJsReferences($document);
-        $jsReferences["tstNotification"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=" . $version;
+        $jsReferences["tstNotification"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testNotifications.js?ws=" . $version;
         return $jsReferences;
     }
 }

@@ -10,7 +10,7 @@ class DocumentController_getValueConsultation extends \Anakeen\Ui\DefaultView
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
-        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_getValueConsultation.js?ws=" . $version;
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/DocumentController_getValueConsultation.js?ws=" . $version;
         return $js;
     }
 

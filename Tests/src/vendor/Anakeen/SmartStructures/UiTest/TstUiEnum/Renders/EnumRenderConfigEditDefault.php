@@ -28,7 +28,7 @@ class EnumRenderConfigEditDefault extends \Anakeen\Ui\DefaultEdit
     {
         $version =  ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tstotherenum"] = "TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
+        $css["tstotherenum"] = "/TEST_DOCUMENT_SELENIUM/Layout/testOtherEnum.css?ws=".$version;
         return $css;
     }
 }

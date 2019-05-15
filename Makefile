@@ -88,6 +88,7 @@ po: install-deps
 stub: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} generateStubs -s ${ANAKEEN_UI_SRC_PATH}
+	${ANAKEEN_CLI_BIN} generateStubs -s ${TEST_SRC_PATH}
 
 ########################################################################################################################
 ##

@@ -36,7 +36,7 @@ class EnumRenderConfigEditOther extends EnumRenderConfigEdit
     {
         $version =  ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $css = parent::getCssReferences($document);
-        $css["tsteditverticalenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css?ws=".$version;
+        $css["tsteditverticalenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css?ws=".$version;
         return $css;
     }
 }

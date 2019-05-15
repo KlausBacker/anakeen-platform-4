@@ -18,9 +18,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCIDstruct.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
@@ -48,9 +46,7 @@
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__CVDOC.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEnum/TST_DDUI_ENUM__PARAM.csv"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__STRUCT.csv"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__CVDOC.xml"/>
-        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__PARAM.csv"/>
+        <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCIDstruct.xml"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiDocid/TST_DDUI_DOCID__DATA.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__STRUCT.csv"/>
         <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/SmartStructures/UiTest/TstUiEmployee/TST_DDUI_EMPLOYEE__CVDOC.xml"/>
