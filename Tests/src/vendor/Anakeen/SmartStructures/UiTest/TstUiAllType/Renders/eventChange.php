@@ -10,7 +10,7 @@ class eventChange extends \Anakeen\Ui\DefaultEdit
     {
         $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
         $js = parent::getJsReferences();
-        $js["tstAddbuttonJS"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventChangeJS.js?ws=" . $version;
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testEventChangeJS.js?ws=" . $version;
         return $js;
     }
 

@@ -13,6 +13,8 @@ class setLinkHelp extends \Anakeen\Ui\DefaultEdit
         $options = parent::getOptions($document);
 
 
+        $options->commonOption()->setLinkHelp("HELP_REPORT");
+
         return $options;
 
     }

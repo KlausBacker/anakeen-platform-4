@@ -1,4 +1,7 @@
 <?xml version="1.0" ?>
 <acli:config xmlns:acli="https://platform.anakeen.com/4/schemas/module/1.0">
     <acli:source path="src" />
+    <acli:stub-config>
+        <acli:stub-struct source="src/**/*struct.xml"/>
+    </acli:stub-config>
 </acli:config>

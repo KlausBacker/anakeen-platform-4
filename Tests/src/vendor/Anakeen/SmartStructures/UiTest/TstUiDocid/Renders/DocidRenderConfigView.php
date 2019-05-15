@@ -8,7 +8,7 @@ namespace Anakeen\SmartStructures\UiTest\TstUiDocid\Renders;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Ui\RenderOptions;
-use SmartStructure\Fields\TST_DDUI_DOCID as myAttributes;
+use SmartStructure\Fields\Tst_ddui_docid as myAttributes;
 
 class DocidRenderConfigView extends \Anakeen\Ui\DefaultView
 {
@@ -69,7 +69,7 @@ class DocidRenderConfigView extends \Anakeen\Ui\DefaultView
             $document
         );
 
-        $jsRef["testViewDocid"]="TEST_DOCUMENT_SELENIUM/Layout/testViewDocid.js?ws=".$version;
+        $jsRef["testViewDocid"]="/TEST_DOCUMENT_SELENIUM/Layout/testViewDocid.js?ws=".$version;
         return $jsRef;
     }
 }

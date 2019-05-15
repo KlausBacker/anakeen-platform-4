@@ -24,7 +24,7 @@ class EnumRenderConfigEditVertical extends EnumRenderConfigEditButtons
     public function getCssReferences(\Anakeen\Core\Internal\SmartElement $document = null)
     {
         $css = parent::getCssReferences($document);
-        $css["tstenum"] = "TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css";
+        $css["tstenum"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_enum/tstenumvertical.css";
         return $css;
     }
 }

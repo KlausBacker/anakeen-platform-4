@@ -10,7 +10,7 @@
             window.dcp.document.documentController("reinitDocument").then(function (data) {
                 data.element.documentController("showMessage", {
                     type: "success",
-                    message: "Document " + data.nextDocument.title + " has been reinisialized"
+                    message: "Document " + data.nextDocument.title + " has been reinitialised"
                 });
             }).catch(function (data) {
                 data.element.documentController("showMessage", {
