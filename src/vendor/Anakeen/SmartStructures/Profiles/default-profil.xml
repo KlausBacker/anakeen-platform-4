@@ -19,17 +19,7 @@
     </smart:access-configuration>
 
 
-    <smart:access-configuration name="PRF_ADMIN_DIR" label="Modification administrateur" profil-type="PDIR">
-        <smart:description>Folder can be update by administrators.</smart:description>
-        <smart:element-access access="view" account="all"/>
-        <smart:element-access access="open" account="all"/>
-        <smart:element-access access="delete" account="gadmin"/>
-        <smart:element-access access="edit" account="gadmin"/>
-        <smart:element-access access="modify" account="gadmin"/>
-    </smart:access-configuration>
 
-    <smart:access-configuration name="GDEFAULT" ref="PRF_ADMIN_DIR"/>
-    <smart:access-configuration name="GADMIN" ref="PRF_ADMIN_DIR"/>
     <smart:access-configuration name="USER_ADMIN" ref="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="USER_GUEST" ref="PRF_ADMIN_EDIT"/>
 </smart:config>

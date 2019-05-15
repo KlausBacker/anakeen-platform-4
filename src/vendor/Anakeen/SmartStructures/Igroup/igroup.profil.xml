@@ -23,10 +23,22 @@
         <smart:element-access access="default_edit" account="gadmin"/>
         <smart:element-access access="changeGroup" account="gadmin"/>
     </smart:access-configuration>
+    <smart:access-configuration name="PRF_ADMIN_IGROUP" label="Modification administrateur" profil-type="PDIR">
+        <smart:description>Group accounts can be update by administrators.</smart:description>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="open" account="all"/>
+        <smart:element-access access="delete" account="gadmin"/>
+        <smart:element-access access="edit" account="gadmin"/>
+        <smart:element-access access="modify" account="gadmin"/>
+    </smart:access-configuration>
+
+    <smart:access-configuration name="GDEFAULT" ref="PRF_ADMIN_IGROUP"/>
+    <smart:access-configuration name="GADMIN" ref="PRF_ADMIN_IGROUP"/>
+
     <smart:structure-configuration name="IGROUP">
         <smart:accesses>
             <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
-            <smart:element-access-configuration ref="PRF_ADMIN_DIR"/>
+            <smart:element-access-configuration ref="PRF_ADMIN_IGROUP"/>
             <smart:field-access-configuration ref="FALL_IGROUP"/>
         </smart:accesses>
     </smart:structure-configuration>
