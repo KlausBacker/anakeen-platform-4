@@ -23,8 +23,7 @@ const createInfoXML = (
         xmlns: "https://platform.anakeen.com/4/schemas/app/1.0",
         name: moduleName,
         vendor: vendorName,
-        version: "1.0.0",
-        release: "0"
+        version: "1.0.0"
       },
       "post-install": postInstall,
       "post-upgrade": postUpgrade
