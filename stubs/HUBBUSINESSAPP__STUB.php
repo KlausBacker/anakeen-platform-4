@@ -19,15 +19,6 @@ namespace SmartStructure\Fields {
         */ 
         const hub_component_parameters='hub_component_parameters';
         /**
-        * Business App icon type
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>relation</i> HBA_ICON_TYPES </li>
-        * <li> <i>type</i> enum </li>
-        * </ul>
-        */ 
-        const hba_icon_type='hba_icon_type';
-        /**
         * Business App icon
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
@@ -35,30 +26,6 @@ namespace SmartStructure\Fields {
         * </ul>
         */ 
         const hba_icon_image='hba_icon_image';
-        /**
-        * Business App icon
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> htmltext </li>
-        * </ul>
-        */ 
-        const hba_icon_lib='hba_icon_lib';
-        /**
-        * Business App icon
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> htmltext </li>
-        * </ul>
-        */ 
-        const hba_icon_html='hba_icon_html';
-        /**
-        * Business App icon
-        * <ul>
-        * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> htmltext </li>
-        * </ul>
-        */ 
-        const hba_icon='hba_icon';
         /**
         * Business App Titles
         * <ul>
@@ -126,9 +93,10 @@ namespace SmartStructure\Fields {
         */ 
         const hba_welcome_option='hba_welcome_option';
         /**
+        * Title HTML template
         * <ul>
         * <li> <i>access</i> ReadWrite </li>
-        * <li> <i>type</i> htmltext </li>
+        * <li> <i>type</i> longtext </li>
         * </ul>
         */ 
         const hba_welcome_title='hba_welcome_title';
