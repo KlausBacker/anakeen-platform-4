@@ -1404,9 +1404,11 @@ define([
             textMessage: ""
           },
           confirm: function wMenuConfirm() {
+            $("body").dcpConfirm("destroy");
             success();
           },
           cancel: function wLoadCancel() {
+            $("body").dcpConfirm("destroy");
             error({
               errorMessage: {
                 code: "USERCANCEL",
