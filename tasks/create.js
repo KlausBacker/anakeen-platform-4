@@ -23,8 +23,7 @@ const createInfoXML = (
         xmlns: "https://platform.anakeen.com/4/schemas/app/1.0",
         name: moduleName,
         vendor: vendorName,
-        version: "1.0.0",
-        release: "0"
+        version: "1.0.0"
       },
       "post-install": postInstall,
       "post-upgrade": postUpgrade
@@ -61,8 +60,6 @@ exports.create = options => {
     moduleName,
     vendorName,
     namespace,
-    createPackage,
-    packageName,
     withSmartStructure,
     withConfig,
     withPublic,
@@ -72,7 +69,6 @@ exports.create = options => {
     withEnumerates,
     withSettings
   } = options;
-  let packagePath;
   let postUpgrade = {
     process: []
   };
@@ -90,16 +86,8 @@ exports.create = options => {
       if (!checkNamespace(namespace)) {
         reject("The namespace is invalid " + namespace);
       }
-      packagePath = sourcePath;
-      if (createPackage) {
-        if (!packageName) {
-          reject("The package name cannot be empty");
-        } else {
-          packagePath = path.join(sourcePath, packageName);
-        }
-      }
       let completePath = path.join(
-        packagePath,
+        sourcePath,
         "src",
         "vendor",
         vendorName,
@@ -118,14 +106,14 @@ exports.create = options => {
     }) // Create the public (if needed)
       .then(() => {
         if (withPublic) {
-          return createTemplates.public.writeTemplate(packagePath, options);
+          return createTemplates.public.writeTemplate(sourcePath, options);
         }
         return Promise.resolve();
       })
       .then(() => {
         if (withConfig) {
           return createTemplates.config
-            .writeTemplate(packagePath, options)
+            .writeTemplate(sourcePath, options)
             .then(toImport => {
               postInstall.process.push(
                 createCommand(
@@ -140,7 +128,7 @@ exports.create = options => {
       .then(() => {
         if (withAccount) {
           return createTemplates.accounts
-            .writeTemplate(packagePath, options)
+            .writeTemplate(sourcePath, options)
             .then(toImport => {
               const command = createCommand(
                 `./ank.php --script=importConfiguration --glob=./${toImport}`
@@ -155,7 +143,7 @@ exports.create = options => {
       .then(() => {
         if (withAutocompletion) {
           return createTemplates.autocompletion.writeTemplate(
-            packagePath,
+            sourcePath,
             options
           );
         }
@@ -164,7 +152,7 @@ exports.create = options => {
       .then(() => {
         if (withEnumerates) {
           return createTemplates.enumerates
-            .writeTemplate(packagePath, options)
+            .writeTemplate(sourcePath, options)
             .then(toImport => {
               const command = createCommand(
                 `./ank.php --script=importConfiguration --glob=./${toImport}`
@@ -178,13 +166,13 @@ exports.create = options => {
       })
       .then(() => {
         if (withSettings) {
-          return createTemplates.settings.writeTemplate(packagePath, options);
+          return createTemplates.settings.writeTemplate(sourcePath, options);
         }
         return Promise.resolve();
       })
       .then(() => {
         if (withRoutes) {
-          return createTemplates.routes.writeTemplate(packagePath, options);
+          return createTemplates.routes.writeTemplate(sourcePath, options);
         }
         return Promise.resolve();
       })
@@ -194,7 +182,7 @@ exports.create = options => {
           const xml = builder.buildObject(
             createInfoXML({ moduleName, vendorName }, postInstall, postUpgrade)
           );
-          fs.writeFile(path.join(packagePath, "info.xml"), xml, err => {
+          fs.writeFile(path.join(sourcePath, "info.xml"), xml, err => {
             if (err) {
               return reject(err);
             }
@@ -206,7 +194,7 @@ exports.create = options => {
         return new Promise((resolve, reject) => {
           const builder = new xml2js.Builder();
           const xml = builder.buildObject(createBuildXML());
-          fs.writeFile(path.join(packagePath, "build.xml"), xml, err => {
+          fs.writeFile(path.join(sourcePath, "build.xml"), xml, err => {
             if (err) {
               return reject(err);
             }

@@ -73,26 +73,6 @@ const builder = {
       return arg;
     }
   },
-  createPackage: {
-    description: "create the package directory",
-    alias: "c",
-    default: false,
-    type: "boolean"
-  },
-  packageName: {
-    description: "package name",
-    default: () => {
-      if (
-        moduleOptions &&
-        moduleOptions.moduleName &&
-        moduleOptions.vendorName
-      ) {
-        return `${moduleOptions.vendorName.toLowerCase()}-${moduleOptions.moduleName.toLowerCase()}`;
-      }
-      return "";
-    },
-    implies: "createPackage"
-  },
   withSmartStructure: {
     description: "add path for smart structure",
     default: true,
@@ -157,12 +137,6 @@ const getInquirerQuestion = (currentKey, currentParam) => {
         }
       : () => true
   };
-  switch (currentKey) {
-    case "packageName":
-      // Ask the question only if create package option is true
-      question.when = answers => !!answers.createPackage;
-      break;
-  }
   return question;
 };
 

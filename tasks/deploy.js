@@ -107,7 +107,7 @@ exports.deploy = ({
 };
 
 exports.buildAndDeploy = ({
-  sourcePath = ".",
+  sourceDir = ".",
   controlUrl,
   controlUsername,
   controlPassword,
@@ -123,7 +123,7 @@ exports.buildAndDeploy = ({
           interactive.info(message);
         };
         const localName = uuid_v4();
-        const build = await buildPipe({ sourcePath, autoRelease, localName });
+        const build = await buildPipe({ sourceDir, autoRelease, localName });
         deployPipe({
           gulpSrc: build,
           localName,
