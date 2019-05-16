@@ -52,15 +52,22 @@ export default class HubElementMixin extends Vue {
   }
 
   public hubNotify(notification = {}) {
-    // @ts-ignore
     if (this.$_hubEventBus) {
       this.$_hubEventBus.emit("hubNotify", notification);
     }
   }
 
-  protected getRouter(): Navigo | null {
+  public getRouter(): Navigo | null {
     if (this.$ankHubRouter) {
       return this.$ankHubRouter.external;
+    }
+    return null;
+  }
+
+  public getStore(): any {
+    // @ts-ignore
+    if (this.$store) {
+      return this.$store;
     }
     return null;
   }
