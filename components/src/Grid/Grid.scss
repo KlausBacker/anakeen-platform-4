@@ -3,27 +3,31 @@
   height: 100%;
   max-height: 100%;
   width: 100%;
+
   .k-grid {
 
-    display: flex!important; // To override important kendo rule
-    flex:1;
+    display: flex !important; // To override important kendo rule
+    flex: 1;
 
     .grid-header-content {
-       position:relative;
+      position: relative;
     }
+
     .grid-header--subtitle {
       color: #666;
-      font-style:italic;
+      font-style: italic;
       text-overflow: ellipsis;
       overflow: hidden;
     }
+
     .grid-header--title {
       text-overflow: ellipsis;
       overflow: hidden;
     }
 
     th.grid-column--context {
-      position:relative;
+      position: relative;
+
       .k-link {
         .k-icon {
           // Sort icon
@@ -33,25 +37,29 @@
           // The sort arrox  must be inverted top-bottom means asc
           transform: rotate(180deg);
         }
+
         .k-sort-order {
           // Sort icon number
           position: absolute;
           top: .25rem;
           right: 0.7rem;
         }
+
         &::after {
           position: absolute;
           top: .25rem;
-          right:1.35rem;
+          right: 1.35rem;
         }
       }
+
       &[data-role=columnsorter]:not(.k-sorted) {
         .k-link::after {
           position: absolute;
           top: .25rem;
-          right:1.35rem;
+          right: 1.35rem;
         }
       }
+
       &.grid-column-no-sortable {
         &:hover {
           &::after {
@@ -81,7 +89,7 @@
     }
 
     .grid-cell-align-center {
-      text-align: center!important;
+      text-align: center !important;
     }
 
     .grid-cell-vertical-align-center {
@@ -89,18 +97,22 @@
     }
 
     .checkable-grid-cell, .checkable-grid-header {
-      line-height:1;
+      line-height: 1;
       padding: calc(0.75rem - 2px);
+
       input:checked + .k-checkbox-label.k-no-text {
-        cursor:pointer;
+        cursor: pointer;
+
         &::after {
           width: 1.66667rem;
           height: 1.66667rem;
         }
       }
+
       .k-checkbox-label.k-no-text {
         width: 1.66667rem;
         height: 1.66667rem;
+
         &::before {
           width: 1.66667rem;
           height: 1.66667rem;
@@ -112,6 +124,7 @@
       .checkable-grid-cell, .checkable-grid-header {
         input:not(:checked) + .k-checkbox-label.k-no-text {
           cursor: pointer;
+
           &::before {
             background-color: transparent;
             border: 1px solid #BEBEBE;
@@ -122,11 +135,17 @@
 
   }
 
+
+  .grid-cell-value {
+    word-break: break-word;
+  }
+
   .grid-widget.grid-row-collapsed {
-    .grid-cell-value {
-      overflow:hidden;
+    .grid-cell-value, .grid-footer--title {
+      overflow: hidden;
       white-space: nowrap;
     }
+
   }
 
   &.smart--fit {
@@ -144,23 +163,25 @@
       flex: 1;
       display: flex !important;
       flex-direction: column;
+
       .k-grid-content {
         flex: 1;
       }
     }
   }
+
   .grid-widget, .grid-widget-wrapper {
     margin: 0;
     padding: 0;
     border-width: 0;
     min-height: 0;
-    display:flex;
+    display: flex;
     flex-direction: column;
   }
-  th[data-role=columnsorter] .k-link {
-    display:flex;
-  }
 
+  th[data-role=columnsorter] .k-link {
+    display: flex;
+  }
 
 
   th[data-role=columnsorter]:not(.k-sorted) {
@@ -177,13 +198,14 @@
   .grid-column-no-sortable {
     &:hover {
       position: relative;
+
       &::after {
         top: .25rem;
         content: "\e116";
         font-family: "WebComponentsIcons";
-        font-size:0.9rem;
+        font-size: 0.9rem;
 
-        right:1.35rem;
+        right: 1.35rem;
       }
     }
   }
@@ -191,6 +213,7 @@
   .grid-column-menu-filter {
     .k-grid-filter {
       visibility: visible;
+
       &.k-state-active {
         border-radius: .25rem;
         background-color: #157EFB;
@@ -205,12 +228,14 @@
   .operator-label {
     font-size: 0.8rem;
   }
+
   .k-filter-row th {
     padding-top: 0;
   }
 
   .k-filtercell {
     position: relative;
+
     .filter-input {
       width: 100%;
     }
@@ -222,6 +247,7 @@
       .k-icon {
         color: inherit;
       }
+
       .k-icon::before {
         content: "\E11D";
       }
@@ -230,20 +256,25 @@
     .k-combobox .k-i-close {
       display: none;
     }
+
     .k-dropdown-operator .k-dropdown-wrap, .k-button {
       background: transparent;
       border-width: 0;
     }
+
     .k-header {
       width: auto;
     }
+
     .k-numeric-wrap,
     .k-header:first-child > span {
       display: flex;
       flex-direction: row-reverse;
+
       .k-select {
         border-width: 0 1px 0 0;
       }
+
       input {
         //text-indent: 0;
       }
@@ -251,174 +282,217 @@
 
   }
 
-  .k-grid-toolbar {
-    display: flex;
-    justify-content: flex-end;
+  .k-grid-pager {
+    overflow: initial;
+  }
 
-    .grid-export {
-      .k-menu-group.k-popup {
-        padding: 0;
-        .k-item {
-          padding: .5rem;
+  .grid-export {
+    .k-menu-group.k-popup {
+      padding: 0;
+
+      .k-item {
+        padding: .5rem;
+      }
+    }
+
+    &.grid-bottom-export {
+      .k-grid-export {
+        height: 100%;
+
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        background: transparent;
+
+        &:hover {
+          background: rgba(210, 210, 210, 0.5);
         }
       }
-      .grid-export-menu {
+    }
+
+    .k-menu-link {
+      display: initial;
+      width: auto;
+    }
+
+
+    .grid-export-menu {
+      padding: 0;
+
+      > .k-first > .k-link {
         padding: 0;
-        > .k-first > .k-link {
-          padding: 0;
-        }
-        .k-menu-expand-arrow {
-          display: none;
-        }
       }
 
-      .grid-export-status {
-        width: auto;
+      .k-menu-expand-arrow {
+        display: none;
+      }
+    }
+
+    .export-total {
+      margin-left: .5rem;
+      border-radius: 1rem;
+      padding: 0 0.5rem;
+    }
+
+    .grid-export-status {
+      width: auto;
+
+      .material-icons {
+        font-size: 1.33333rem;
+      }
+
+      &.grid-export-status--success, &.grid-export-status--pending, &.grid-export-status--error {
+        display: none;
+      }
+
+      &.grid-export-status--pending, &.grid-export-status--success {
         .material-icons {
-          font-size: 1.33333rem;
+          color: #8AE234;
         }
-        &.grid-export-status--success, &.grid-export-status--pending, &.grid-export-status--error {
-          display: none;
+      }
+
+      &.grid-export-status--error {
+        .material-icons {
+          color: red;
         }
+      }
 
-        &.grid-export-status--pending, &.grid-export-status--success {
-          .material-icons {
-            color: #8AE234;
-          }
-        }
+      &.grid-export-status--pending {
 
-        &.grid-export-status--error {
-          .material-icons {
-            color: red;
-          }
-        }
-
-        &.grid-export-status--pending {
-
-          .k-menu-group.k-popup {
-            li.k-item {
-              .k-link {
-                height: 100%;
-                width: 100%;
-                padding: .5rem;
-              }
-            }
-
-            li.k-item.k-first {
-              height: 5rem;
-              border-bottom: 1px #F1F1F1 solid;
-              .export-pending-header {
-                height: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                .export-pending-title {
-                  display: flex;
-                  align-items: center;
-                  & > .k-icon {
-                    margin-right: .5rem;
-                  }
-                  & > .export-pending-title-text {
-                    font-size: 1.1rem;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                  }
-                }
-
-                .export-pending-close {
-                  background: transparent;
-                  border: transparent;
-                  padding-right: .5rem;
-                  .k-icon {
-                    margin-right: .5rem;
-                  }
-
-                  .export-pending-close-text {
-                    text-decoration: underline;
-                  }
-                }
-              }
-            }
-
-            .k-item.k-last {
-              .export-pending-details {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-
-                & > .grid-export-status-progress-bar-wrapper {
-                  width: 100%;
-                }
-              }
-            }
-          }
-
-          .grid-export-status-progress-bar-wrapper {
-
-            &.grid-export-status-progress-bar-wrapper--indeterminate {
-              overflow: hidden;
-              // If indeterminate hide progress status
-              .grid-export-status-progress-bar-text {
-                display: none;
-              }
-
-              & > .grid-export-status-progress-bar {
-                position: relative;
-                width: 40%;
-                transition: width .2s ease;
-                animation: indeterminate 1.5s linear infinite;
-                @keyframes indeterminate {
-                  0%   {left: -40%;}
-                  50%  {left: 50%;}
-                  100% {left: 140%;}
-                }
-              }
-
-            }
-            width: 11.25rem;
-            height: 1rem;
-            border-radius: .5rem;
-            background: #F1F1F1;
-            position: relative;
-            & > .grid-export-status-progress-bar-text {
-              font-size: .8rem;
-              position: absolute;
-              top: 0;
-              display: flex;
-              justify-content: center;
+        .k-menu-group.k-popup {
+          li.k-item {
+            .k-link {
+              height: 100%;
               width: 100%;
+              padding: .5rem;
+            }
+          }
+
+          li.k-item.k-first {
+            height: 5rem;
+            border-bottom: 1px #F1F1F1 solid;
+
+            .export-pending-header {
+              height: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+
+              .export-pending-title {
+                display: flex;
+                align-items: center;
+
+                & > .k-icon {
+                  margin-right: .5rem;
+                }
+
+                & > .export-pending-title-text {
+                  font-size: 1.1rem;
+                  font-weight: bold;
+                  text-transform: uppercase;
+                }
+              }
+
+              .export-pending-close {
+                background: transparent;
+                border: transparent;
+                padding-right: .5rem;
+
+                .k-icon {
+                  margin-right: .5rem;
+                }
+
+                .export-pending-close-text {
+                  text-decoration: underline;
+                }
+              }
+            }
+          }
+
+          .k-item.k-last {
+            .export-pending-details {
+              width: 100%;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+
+              & > .grid-export-status-progress-bar-wrapper {
+                width: 100%;
+              }
+            }
+          }
+        }
+
+        .grid-export-status-progress-bar-wrapper {
+
+          &.grid-export-status-progress-bar-wrapper--indeterminate {
+            overflow: hidden;
+            // If indeterminate hide progress status
+            .grid-export-status-progress-bar-text {
+              display: none;
             }
 
             & > .grid-export-status-progress-bar {
-              border-radius: inherit;
-              height: 100%;
-              width: 100%;
-              background: #8AE234;
+              position: relative;
+              width: 40%;
               transition: width .2s ease;
+              animation: indeterminate 1.5s linear infinite;
+              @keyframes indeterminate {
+                0% {
+                  left: -40%;
+                }
+                50% {
+                  left: 50%;
+                }
+                100% {
+                  left: 140%;
+                }
+              }
             }
+
+          }
+
+          width: 11.25rem;
+          height: 1rem;
+          border-radius: .5rem;
+          background: #F1F1F1;
+          position: relative;
+
+          & > .grid-export-status-progress-bar-text {
+            font-size: .8rem;
+            position: absolute;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+          }
+
+          & > .grid-export-status-progress-bar {
+            border-radius: inherit;
+            height: 100%;
+            width: 100%;
+            background: #8AE234;
+            transition: width .2s ease;
           }
         }
       }
     }
+  }
 
-    .grid-toolbar-export-action {
-      .export-total {
-        margin-left: .5rem;
-        border-radius: 1rem;
-        padding: 0 0.5rem;
-      }
-    }
+  .k-grid-toolbar {
+    display: flex;
+    justify-content: flex-end;
 
     .k-button {
       background: transparent;
       border: none;
       color: black;
+
       &:hover {
         border: initial;
         background: rgba(210, 210, 210, 0.5);
       }
     }
+
     .k-button + .k-button {
       &:before {
         content: '';
@@ -433,6 +507,7 @@
       }
     }
   }
+
   .k-grid-content {
     border-top: 1px solid #DDDDDD;
 
@@ -442,6 +517,7 @@
 
     td {
       vertical-align: top;
+
       .grid-cell-content {
         max-height: 14rem;
         overflow: auto;
@@ -463,8 +539,7 @@
 
         &.grid-cell-content--account, &.grid-cell-content--docid {
           .grid-cell-value a {
-            display: flex;
-            align-items: center;
+
             &:hover {
               text-decoration: underline;
             }
@@ -482,9 +557,11 @@
 
   .k-grid-footer {
     border-top: 2px solid rgba(210, 210, 210, 0.5);
+
     .grid-footer--title {
       font-weight: bold;
     }
+
     .grid-foot-content--int, .grid-foot-content--double, .grid-foot-content--money {
       text-align: right;
     }
@@ -503,6 +580,7 @@
         &:hover {
           border-radius: 10%;
         }
+
         border-radius: 10%;
       }
     }
@@ -512,9 +590,12 @@
   .grid-cell-icon {
     margin-right: .5rem;
     height: 1rem;
+    vertical-align: baseline;
   }
+
   .grid-cell-content-br {
     display: inline;
+
     &::before {
       content: ", ";
     }
@@ -539,22 +620,27 @@
       display: none;
     }
   }
+
   .k-command-cell {
     margin-left: 0;
     padding-left: 0;
+
     .k-button, .actionMenu .k-button {
       background: transparent;
       border: none;
       padding: 0.5rem 0.75rem;
       text-transform: uppercase;
       font-weight: bold;
+
       &:focus {
         box-shadow: none;
       }
+
       &:hover {
         border-color: transparent #DDDDDD;
       }
     }
+
     overflow: visible !important;
 
     .actionMenu {
@@ -567,6 +653,7 @@
 
         .k-button {
           padding-left: 1rem;
+
           &.k-state-hover {
             background: rgba(210, 210, 210, 0.5);
           }
@@ -574,6 +661,7 @@
       }
     }
   }
+
   .filter-no-input .k-filtercell {
     .k-numeric-wrap,
     .k-picker-wrap {
@@ -581,6 +669,7 @@
         display: none;
       }
     }
+
     input {
       color: transparent;
     }
@@ -589,18 +678,24 @@
   .grid-collapse-button {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    border-color:#e5e5e5;
+    border-color: #e5e5e5;
     background-color: transparent;
     transform: rotate(90deg);
+
+    &:hover {
+      background: rgba(210, 210, 210, 0.5);
+    }
   }
 }
 
 .smart-element-grid-filter-menu.k-filter-menu .k-widget.k-filter-and {
   margin: 0;
+
   .k-dropdown-wrap {
     background: transparent;
     border: none;
   }
+
   .k-select {
     display: none;
   }

@@ -10,7 +10,7 @@
 
     // Background color of selected rows
     tr.k-state-selected, th.k-state-selected, td.k-state-selected {
-      background-color: rgba($ank-ui-button1-color-background,0.07);
+      background-color: rgba($ank-ui-button1-color-background, 0.07);
       color: $ank-ui-color-text;
     }
 
@@ -21,6 +21,7 @@
         }
       }
     }
+
     tr:not(.k-state-selected) {
       .checkable-grid-cell, .checkable-grid-header {
         input:not(:checked) + .k-checkbox-label.k-no-text {
@@ -33,15 +34,13 @@
       }
     }
 
-    .k-grid-toolbar {
-
-      .grid-toolbar-export-action {
-        .export-total {
-          background: $ank-ui-button1-color-background;
-          color: $ank-ui-color-text-colored;
-        }
+    .grid-toolbar-export-action {
+      .export-total {
+        background: $ank-ui-button1-color-background;
+        color: $ank-ui-color-text-colored;
       }
     }
+
   }
 
   .k-command-cell {
@@ -69,6 +68,7 @@
     &:hover {
       border-color: transparent #DDDDDD;
     }
+
     .k-filtercell {
       .k-dropdown-operator .k-dropdown-wrap, .k-button {
         background: transparent;
@@ -83,9 +83,11 @@
     .k-filter-active {
       background: $ank-ui-button2-color-text;
       color: $ank-ui-button2-color-background;
+
       .k-icon {
         color: $ank-ui-button2-color-background;
       }
+
       .operator-label {
         color: $ank-ui-button2-color-background;
       }
@@ -94,8 +96,8 @@
         border-color: transparent;
       }
 
-      .k-numeric-wrap{
-        border-color:$ank-ui-button2-color-text;
+      .k-numeric-wrap {
+        border-color: $ank-ui-button2-color-text;
       }
 
       .filter-input, input.k-formatted-value {
@@ -110,16 +112,19 @@
         background-color: $ank-ui-button2-color-text;
         border-color: transparent;
         border-radius: 0;
+
         input {
           text-indent: 0;
         }
       }
+
       .k-clear-value {
         color: inherit;
       }
     }
 
   }
+
   .filter-no-input {
     input {
       background: repeating-linear-gradient(
@@ -141,8 +146,10 @@
   .k-grid-content {
     border-top-color: $gray-light-alt;
   }
+
   .k-grid-pager {
     border-top-color: $gray-light-alt;
+
     .k-pager-info {
       color: $ank-ui-color-font-placeholder;
     }

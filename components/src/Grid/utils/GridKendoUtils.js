@@ -100,7 +100,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
         }
       }
     });
-  
+
     if (this.vueComponent.collapseRowButton) {
       this.addCollapseRowColumn();
     }
@@ -108,8 +108,8 @@ export default class GridKendoUtils extends AbstractGridUtil {
   addCollapseRowColumn() {
     this.vueComponent.$once("grid-ready", () => {
       if (this.vueComponent.kendoGrid.pager) {
-        const pagerInfo = this.vueComponent.kendoGrid.pager.element.find(
-          ".k-pager-info"
+        const pagerSizes = this.vueComponent.kendoGrid.pager.element.find(
+          ".k-pager-sizes"
         );
         const $collapseButton = $(
           '<a class="grid-collapse-button k-button"> <span class="k-icon k-i-arrows-resizing"></span></a>'
@@ -118,7 +118,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
           "title",
           this.vueComponent.translations.rowCollapse
         );
-        $collapseButton.insertBefore($(pagerInfo));
+        $collapseButton.insertAfter($(pagerSizes));
         $collapseButton.on("click", event => {
           event.preventDefault();
           $(this.vueComponent.kendoGrid.element).toggleClass(
@@ -156,7 +156,12 @@ export default class GridKendoUtils extends AbstractGridUtil {
           if (a.action === "export") {
             toolbarActionConfig.template = ExportActionTemplate;
             this.vueComponent.$once("grid-ready", () => {
-              this.vueComponent.gridActions.initToolbarExportTemplate();
+              const $exportMenu = this.vueComponent.kendoGrid.element.find(
+                ".grid-toolbar-export-action"
+              );
+              $exportMenu.each((index, item) => {
+                this.vueComponent.gridActions.initToolbarExportTemplate(item);
+              });
             });
           }
           this.vueComponent.kendoGridOptions.toolbar.push(toolbarActionConfig);
@@ -164,7 +169,7 @@ export default class GridKendoUtils extends AbstractGridUtil {
       }
     }
   }
-  
+
   /**
    * Format column to the Kendo Grid Column object format
    * @param {object} col - Column configuration

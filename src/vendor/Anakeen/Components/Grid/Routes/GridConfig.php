@@ -117,7 +117,14 @@ class GridConfig
             "export" => ___("Export as XLSX", "smart-grid"),
             "selectOperator" => ___("-- Select another operator --", "smart-grid"),
             "extraOperator" => ___("Grid Settings", "smart-grid"),
-            "rowCollapse" => ___("Collapse / Expand rows    ", "smart-grid"),
+            "rowCollapse" => ___("Collapse / Expand rows", "smart-grid"),
+            "uploadReport" => ___("Export as xlsx", "smart-grid"),
+            "uploadAgain" => ___("Retry export", "smart-grid"),
+            "uploadCancel" => ___("Cancel", "smart-grid"),
+            "uploadAllResults" => ___("Upload all results", "smart-grid"),
+            "uploadSelection" => ___("Upload selected items", "smart-grid"),
+            "uploadSuccess" => ___("Upload succeeded", "smart-grid"),
+            "uploadError" => ___("Upload error", "smart-grid"),
         ];
     }
 
