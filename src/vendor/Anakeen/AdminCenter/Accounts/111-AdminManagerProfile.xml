@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="PRF_ACCOUNTS_CREATION" profil-type="PFAM">
+        <smart:element-access access="create" account="accounts_manager_role"/>
+        <smart:element-access access="icreate" account="accounts_manager_role"/>
+        <smart:element-access access="create" account="system_administrator"/>
+        <smart:element-access access="icreate" account="system_administrator"/>
+    </smart:access-configuration>
+
+    <smart:access-configuration name="PRF_ADMIN_CREATION" label="Création administrateur" profil-type="PFAM">
+        <smart:element-access access="create" account="system_administrator"/>
+        <smart:element-access access="icreate" account="system_administrator"/>
+    </smart:access-configuration>
+    <smart:access-configuration name="PRF_ADMIN_EDIT">
+        <smart:element-access access="view" account="system_administrator"/>
+        <smart:element-access access="edit" account="system_administrator"/>
+    </smart:access-configuration>
+    <smart:access-configuration name="PRF_ADMIN_ACCESS">
+        <smart:element-access access="view" account="system_administrator"/>
+        <smart:element-access access="edit" account="system_administrator"/>
+        <smart:element-access access="delete" account="system_administrator"/>
+    </smart:access-configuration>
+
+    <smart:access-configuration name="PRF_IUSER_OWNER" label="User itself" access-structure="IUSER">
+        <smart:description>User can modify its own information</smart:description>
+        <smart:element-access access="view" account="accounts_manager_role"/>
+        <smart:element-access access="edit" account="accounts_manager_role"/>
+        <smart:element-access access="delete" account="accounts_manager_role"/>
+        <smart:element-access access="view" account="system_administrator"/>
+        <smart:element-access access="edit" account="system_administrator"/>
+        <smart:element-access access="delete" account="system_administrator"/>
+    </smart:access-configuration>
+
+    <smart:access-configuration name="PRF_ADMIN_IGROUP" profil-type="PDIR">
+        <smart:element-access access="view" account="accounts_manager_role"/>
+        <smart:element-access access="edit" account="accounts_manager_role"/>
+        <smart:element-access access="delete" account="accounts_manager_role"/>
+        <smart:element-access access="open" account="accounts_manager_role"/>
+        <smart:element-access access="modify" account="accounts_manager_role"/>
+        <smart:element-access access="view" account="system_administrator"/>
+        <smart:element-access access="edit" account="system_administrator"/>
+        <smart:element-access access="delete" account="system_administrator"/>
+        <smart:element-access access="open" account="system_administrator"/>
+        <smart:element-access access="modify" account="system_administrator"/>
+    </smart:access-configuration>
+
+    <smart:access-configuration name="CV_IUSER_ACCOUNT" label="CV DOC IUSER" profil-type="CVDOC" access-structure="IUSER">
+        <smart:element-access access="EGROUP" account="accounts_manager_role"/>
+        <smart:element-access access="EUSER" account="accounts_manager_role"/>
+        <smart:element-access access="EGROUP" account="system_administrator"/>
+        <smart:element-access access="EUSER" account="system_administrator"/>
+    </smart:access-configuration>
+
+    <smart:access-configuration name="FALL_IUSER" profil-type="FIELDACCESSLAYERLIST" access-structure="IUSER">
+        <smart:element-access access="Identity" account="accounts_manager_role"/>
+        <smart:element-access access="Password" account="accounts_manager_role"/>
+        <smart:element-access access="Admin" account="accounts_manager_role"/>
+        <smart:element-access access="Identity" account="system_administrator"/>
+        <smart:element-access access="Password" account="system_administrator"/>
+        <smart:element-access access="Admin" account="system_administrator"/>
+    </smart:access-configuration>
+</smart:config>
