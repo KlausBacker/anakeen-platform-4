@@ -100,8 +100,34 @@ export default class GridKendoUtils extends AbstractGridUtil {
         }
       }
     });
+  
+    if (this.vueComponent.collapseRowButton) {
+      this.addCollapseRowColumn();
+    }
   }
-
+  addCollapseRowColumn() {
+    this.vueComponent.$once("grid-ready", () => {
+      if (this.vueComponent.kendoGrid.pager) {
+        const pagerInfo = this.vueComponent.kendoGrid.pager.element.find(
+          ".k-pager-info"
+        );
+        const $collapseButton = $(
+          '<a class="grid-collapse-button k-button"> <span class="k-icon k-i-arrows-resizing"></span></a>'
+        );
+        $collapseButton.attr(
+          "title",
+          this.vueComponent.translations.rowCollapse
+        );
+        $collapseButton.insertBefore($(pagerInfo));
+        $collapseButton.on("click", event => {
+          event.preventDefault();
+          $(this.vueComponent.kendoGrid.element).toggleClass(
+            "grid-row-collapsed"
+          );
+        });
+      }
+    });
+  }
   resizeKendoWidgets() {
     if (this.vueComponent.kendoGrid) {
       this.vueComponent.kendoGrid.resize();
