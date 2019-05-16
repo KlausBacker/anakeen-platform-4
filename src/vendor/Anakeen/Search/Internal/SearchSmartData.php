@@ -11,6 +11,7 @@ use \Anakeen\SmartStructures\Dir\DirHooks;
 
 /**
  * document searches
+ *
  * @code
  * $s=new SearchSmartData($db,"IUSER");
  * $s->setObjectReturn(); // document object returns
@@ -29,41 +30,49 @@ class SearchSmartData
 {
     /**
      * family identifier filter
+     *
      * @public string
      */
     public $fromid;
     /**
      * folder identifier filter
+     *
      * @public int
      */
     public $dirid = 0;
     /**
      * recursive search for folders
+     *
      * @public boolean
      */
     public $recursiveSearch = false;
     /**
      * max recursive level
+     *
      * @public int
      */
     public $folderRecursiveLevel = 2;
     /**
      * number of results : set "ALL" if no limit
+     *
      * @public int
      */
     public $slice = "ALL";
     /**
      * index of results begins
+     *
      * @public int
      */
     public $start = 0;
     /**
      * sql filters
+     *
      * @public array
      */
     public $filters = array();
     /**
      * search in sub-families set false if restriction to top family
+     *
      * @public bool
      */
     public $only = false;
@@ -74,26 +83,31 @@ class SearchSmartData
     public $distinct = false;
     /**
      * order of result : like sql order
+     *
      * @public string
      */
     public $orderby = 'title';
     /**
      * order result by this attribute label/title
+     *
      * @public string
      */
     public $orderbyLabel = '';
     /**
      * to search in trash : [no|also|only]
+     *
      * @public string
      */
     public $trash = "";
     /**
      * restriction to latest revision
+     *
      * @public bool
      */
     public $latest = true;
     /**
      * user identifier : set to current user by default
+     *
      * @public int
      */
     public $userid = 0;
@@ -103,23 +117,27 @@ class SearchSmartData
     private $join = "";
     /**
      * sql filter not return confidential document if current user cannot see it
+     *
      * @var string
      */
     private $excludeFilter = "";
     /**
      *
      * Iterator document
+     *
      * @var \Anakeen\Core\Internal\SmartElement
      */
     private $iDoc = null;
     /**
      *
      * Iterator document
+     *
      * @var \Anakeen\Core\Internal\SmartElement []
      */
     private $cacheDocuments = array();
     /**
      * result type [ITEM|TABLE]
+     *
      * @private string
      */
     private $mode = "TABLE";
@@ -163,6 +181,7 @@ class SearchSmartData
      * Normalize supported forms of fromid
      *
      * @param int|string $id the fromid to normalize
+     *
      * @return bool|int normalized integer or bool(false) on normalization failure
      */
     private function normalizeFromId($id)
@@ -184,7 +203,7 @@ class SearchSmartData
                 $sign = -1;
                 $id = abs($id);
             }
-            $fam= \Anakeen\Core\SEManager::getFamily($id);
+            $fam = \Anakeen\Core\SEManager::getFamily($id);
             if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
@@ -196,7 +215,7 @@ class SearchSmartData
                 $sign = -1;
                 $id = substr($id, 1);
             }
-            $fam= \Anakeen\Core\SEManager::getFamily($id);
+            $fam = \Anakeen\Core\SEManager::getFamily($id);
             if ($fam && $fam->isAlive()) {
                 return $sign * (int)$fam->id;
             }
@@ -210,16 +229,16 @@ class SearchSmartData
      * Note:
      * - The setStart() and setSlice() parameters are not used when counting with this method.
      *
-     * @api send query search and only count results
-     *
      * @return int the number of results
      * @throws \Anakeen\Search\Exception
      * @throws \Anakeen\Database\Exception
+     * @api send query search and only count results
+     *
      */
     public function onlyCount()
     {
         /**  @var DirHooks $fld */
-        $fld= \Anakeen\Core\SEManager::getDocument($this->dirid);
+        $fld = \Anakeen\Core\SEManager::getDocument($this->dirid);
         $userid = $this->userid;
         if (!$fld || $fld->fromid != \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
             $this->recursiveSearchInit();
@@ -277,8 +296,11 @@ class SearchSmartData
 
     /**
      * return memberof to be used in profile filters
+     *
      * @static
+     *
      * @param $uid
+     *
      * @return string
      */
     public static function getUserViewVector($uid)
@@ -324,19 +346,20 @@ class SearchSmartData
     /**
      * add join condition
      *
+     * @param string $jointure
+     *
+     * @throws \Anakeen\Exception
      * @api Add join condition
      * @code
-     * $s=new searchSmartData();
-     * $s->trash='only';
-     * $s->join("id = dochisto(id)");
-     * $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
-     * // search all document which has been deleted by search DELETE code in history
-     * $s->addFilter("dochisto.code = 'DELETE'");
-     * $s->distinct=true;
-     * $result= $s->search();
+     *      $s=new searchSmartData();
+     *      $s->trash='only';
+     *      $s->join("id = dochisto(id)");
+     *      $s->addFilter("dochisto.uid = %d",$this->getSystemUserId());
+     *      // search all document which has been deleted by search DELETE code in history
+     *      $s->addFilter("dochisto.code = 'DELETE'");
+     *      $s->distinct=true;
+     *      $result= $s->search();
      * @endcode
-     * @param string $jointure
-     * @throws \Anakeen\Exception
      */
     public function join($jointure)
     {
@@ -353,11 +376,11 @@ class SearchSmartData
      * count results
      * ::search must be call before
      *
-     * @see \Anakeen\Search\Internal\SearchSmartData::search()
-     * @api count results after query search is sended
-     *
      * @return int
      *
+     * @api count results after query search is sended
+     *
+     * @see \Anakeen\Search\Internal\SearchSmartData::search()
      */
     public function count()
     {
@@ -375,6 +398,7 @@ class SearchSmartData
 
     /**
      * count returned document in sql select ressources
+     *
      * @return int
      */
     protected function countDocs()
@@ -443,10 +467,10 @@ class SearchSmartData
      * send search
      * the query is sent to database
      *
-     * @api send query
      * @return array|null|\Anakeen\Search\Internal\SearchSmartData array of documents if no setObjectReturn else itself
      * @throws \Anakeen\Search\Exception
      * @throws \Anakeen\Database\Exception
+     * @api send query
      */
     public function search()
     {
@@ -505,7 +529,7 @@ class SearchSmartData
         if ($this->mode == "ITEM") {
             if ($this->dirid) {
                 // change search mode because ITEM mode not supported for Specailized searches
-                $fld= \Anakeen\Core\SEManager::getDocument($this->dirid);
+                $fld = \Anakeen\Core\SEManager::getDocument($this->dirid);
                 if ($fld->fromid == \Anakeen\Core\SEManager::getFamilyIdFromName("SSEARCH")) {
                     $this->searchmode = "TABLE";
                 }
@@ -549,6 +573,7 @@ class SearchSmartData
 
     /**
      * return document iterator to be used in loop
+     *
      * @code
      *  $s=new SearchSmartData($dbaccess, $famName);
      * $s->setObjectReturn();
@@ -558,8 +583,8 @@ class SearchSmartData
      * print $doc->getTitle();
      * }
      * @endcode
-     * @api get document iterator
      * @return \DocumentList
+     * @api get document iterator
      */
     public function getDocumentList()
     {
@@ -568,6 +593,7 @@ class SearchSmartData
 
     /**
      * limit query to a subset of somes attributes
+     *
      * @param array $returns
      */
     public function returnsOnly(array $returns)
@@ -603,7 +629,7 @@ class SearchSmartData
             return $this->returnsFields;
         }
         if ($this->fromid) {
-            $fdoc= \Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
+            $fdoc = \Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
             if ($fdoc->isAlive()) {
                 return array_merge($fdoc->fields, $fdoc->sup_fields);
             }
@@ -613,6 +639,7 @@ class SearchSmartData
 
     /**
      * return error message
+     *
      * @return string empty if no errors
      */
     public function searchError()
@@ -622,8 +649,9 @@ class SearchSmartData
 
     /**
      * Return error message
-     * @api get error message
+     *
      * @return string
+     * @api get error message
      */
     public function getError()
     {
@@ -634,7 +662,6 @@ class SearchSmartData
     }
 
 
-
     /**
      * set recursive mode for folder searches
      * can be use only if collection set if a static folder
@@ -642,10 +669,10 @@ class SearchSmartData
      * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
      * @param int  $level         Indicate depth to inspect subfolders
      *
-     * @throws \Anakeen\Search\Exception
-     * @api set recursive mode for folder searches
-     * @see \Anakeen\Search\Internal\SearchSmartData::useCollection
      * @return void
+     * @throws \Anakeen\Search\Exception
+     * @see \Anakeen\Search\Internal\SearchSmartData::useCollection
+     * @api set recursive mode for folder searches
      */
     public function setRecursiveSearch($recursiveMode = true, $level = 2)
     {
@@ -657,12 +684,12 @@ class SearchSmartData
     }
 
 
-
     /**
      * return informations about query after search has been sent
      * array indexes are : query, err, count, delay
-     * @api get informations about query results
+     *
      * @return array of info
+     * @api get informations about query results
      */
     public function getSearchInfo()
     {
@@ -671,30 +698,35 @@ class SearchSmartData
 
     /**
      * set maximum number of document to return
-     * @api set maximum number of document to return
+     *
      * @param int $slice the limit ('ALL' means no limit)
      *
      * @return Boolean
+     * @api set maximum number of document to return
      */
     public function setSlice($slice)
     {
-        if ((!is_numeric($slice)) && ($slice != 'ALL')) {
+        if ((!is_numeric($slice)) && (strtoupper($slice) != 'ALL')) {
             return false;
         }
-        $this->slice = $slice;
+        if (is_numeric($slice)) {
+            $this->slice = $slice;
+        } else {
+            $this->slice = strtoupper($slice);
+        }
         return true;
     }
 
     /**
      * use different order , default is title
      *
-     * @api set order to sort results
-     *
      * @param string $order        the new order, empty means no order
      * @param string $orderbyLabel string of comma separated columns names on
      *                             which the order should be performed on their label instead of their value (e.g. order enum by their label instead of their key)
      *
      * @return void
+     * @api set order to sort results
+     *
      */
     public function setOrder($order, $orderbyLabel = '')
     {
@@ -706,14 +738,15 @@ class SearchSmartData
 
     /**
      * use folder or search document to search within it
-     * @api use folder or search document
+     *
      * @param int $dirid identifier of the collection
      *
      * @return Boolean true if set
+     * @api use folder or search document
      */
     public function useCollection($dirid)
     {
-        $dir= \Anakeen\Core\SEManager::getDocument($dirid);
+        $dir = \Anakeen\Core\SEManager::getDocument($dirid);
         if ($dir && $dir->isAlive()) {
             $this->dirid = $dir->initid;
             $this->originalDirId = $this->dirid;
@@ -726,10 +759,11 @@ class SearchSmartData
 
     /**
      * set offset where start the result window
-     * @api set offset where start the result window
+     *
      * @param int $start the offset (0 is the begin)
      *
      * @return Boolean true if set
+     * @api set offset where start the result window
      */
     public function setStart($start)
     {
@@ -741,16 +775,15 @@ class SearchSmartData
     }
 
 
-
     /**
      * can, be use in loop
      * ::search must be call before
      *
-     * @see \Anakeen\Search\Internal\SearchSmartData::search
-     *
+     * @return \Anakeen\Core\Internal\SmartElement |array|bool  false if this is the end
      * @api get next document results
      *
-     * @return \Anakeen\Core\Internal\SmartElement |array|bool  false if this is the end
+     * @see \Anakeen\Search\Internal\SearchSmartData::search
+     *
      */
     public function getNextDoc()
     {
@@ -788,8 +821,9 @@ class SearchSmartData
 
     /**
      * after search return only document identifiers instead of complete document
-     * @api get only document identifiers
+     *
      * @return int[] document identifiers
+     * @api get only document identifiers
      */
     public function getIds()
     {
@@ -813,6 +847,7 @@ class SearchSmartData
      * Return an object document from array of values
      *
      * @param array $v the values of documents
+     *
      * @return \Anakeen\Core\Internal\SmartElement the document object
      */
     protected function getNextDocument(array $v)
@@ -826,7 +861,7 @@ class SearchSmartData
             $fromid = "family";
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
-                $this->cacheDocuments[$fromid]= \Anakeen\Core\SEManager::createDocument($fromid, false);
+                $this->cacheDocuments[$fromid] = \Anakeen\Core\SEManager::createDocument($fromid, false);
                 if (empty($this->cacheDocuments[$fromid])) {
                     throw new \Anakeen\Search\Exception(sprintf('Document "%s" has an unknow family "%s"', $v["id"], $fromid));
                 }
@@ -843,10 +878,12 @@ class SearchSmartData
 
     /**
      * add a condition in filters
-     * @api add a new condition in filters
+     *
      * @param string $filter the filter string
      * @param string $args   arguments of the filter string (arguments are escaped to avoid sql injection)
+     *
      * @return void
+     * @api add a new condition in filters
      */
     public function addFilter($filter, $args = '')
     {
@@ -887,9 +924,11 @@ class SearchSmartData
      * return where condition like : foo in ('x','y','z')
      *
      * @static
+     *
      * @param array  $values  set of values
      * @param string $column  database column name
      * @param bool   $integer set to true if database column is numeric type
+     *
      * @return string
      */
     public static function sqlcond(array $values, $column, $integer = false)
@@ -914,11 +953,11 @@ class SearchSmartData
     }
 
 
-
     /**
      * no use access view control in filters
-     * @api no add view access criteria in final query
+     *
      * @return void
+     * @api no add view access criteria in final query
      */
     public function overrideViewControl()
     {
@@ -928,9 +967,10 @@ class SearchSmartData
     /**
      * the return of ::search will be array of document's object
      *
-     * @api set return type : document object or document array
      * @param bool $returnobject set to true to return object, false to return raw data
+     *
      * @return void
+     * @api set return type : document object or document array
      */
     public function setObjectReturn($returnobject = true)
     {
@@ -948,9 +988,11 @@ class SearchSmartData
 
     /**
      * add a filter to not return confidential document if current user cannot see it
-     * @api add a filter to not return confidential
+     *
      * @param boolean $exclude set to true to exclude confidential
+     *
      * @return void
+     * @api add a filter to not return confidential
      */
     public function excludeConfidential($exclude = true)
     {
@@ -976,7 +1018,7 @@ class SearchSmartData
             /**
              * @var \Anakeen\SmartStructures\Search\SearchHooks $tmps
              */
-            $tmps= \Anakeen\Core\SEManager::createTemporaryDocument("SEARCH");
+            $tmps = \Anakeen\Core\SEManager::createTemporaryDocument("SEARCH");
             $tmps->setValue(\SmartStructure\Fields\Search::se_famid, $this->fromid);
             $tmps->setValue(\SmartStructure\Fields\Search::se_idfld, $this->originalDirId);
             $tmps->setValue(\SmartStructure\Fields\Search::se_latest, "yes");
@@ -992,6 +1034,7 @@ class SearchSmartData
 
     /**
      * Get the SQL queries that will be executed by the search() method
+     *
      * @return array|bool boolean false on error, or array() of queries on success.
      */
     public function getQueries()
@@ -1033,7 +1076,7 @@ class SearchSmartData
                 if (DirLib::isSimpleFilter($sqlfilters) && (DirLib::familyNeedDocread($dbaccess, $fromid))) {
                     $table = "docread";
 
-                    $fdoc= \Anakeen\Core\SEManager::getFamily($fromid);
+                    $fdoc = \Anakeen\Core\SEManager::getFamily($fromid);
                     $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
                         $fromid
                     ), array_keys($fdoc->GetChildFam())), "fromid", true);
@@ -1101,7 +1144,7 @@ class SearchSmartData
             // in a specific folder
             //-------------------------------------------
 
-            $fld= \Anakeen\Core\SEManager::getDocument($dirid);
+            $fld = \Anakeen\Core\SEManager::getDocument($dirid);
             if ($fld->defDoctype != 'S') {
                 /**
                  * @var DirHooks $fld
@@ -1176,7 +1219,7 @@ class SearchSmartData
                     switch ($ldocsearch[0]["qtype"]) {
                         case "M": // complex query
                             // $sqlM=$ldocsearch[0]["query"];
-                            $fld= \Anakeen\Core\SEManager::getDocument($dirid);
+                            $fld = \Anakeen\Core\SEManager::getDocument($dirid);
                             /**
                              * @var \Anakeen\SmartStructures\Search\SearchHooks $fld
                              */
@@ -1232,14 +1275,17 @@ class SearchSmartData
             $qsql
         );
     }
+
     /**
      * Get the family on which the search is operating
+     *
      * @return \Anakeen\Core\SmartStructure
      */
     public function getFamily()
     {
         return \Anakeen\Core\SEManager::getFamily($this->fromid);
     }
+
     /**
      * Insert an additional relation in the FROM clause of the given query
      * to perform a sort on a label/title instead of a key/id.
@@ -1252,6 +1298,7 @@ class SearchSmartData
      * @param int    $fromid The identifier of the family which the query is based on
      * @param string $column The name of the column on which the result is supposed to be be ordered
      * @param string $sqlM   The SQL query in which an additional FROM relation should be injected
+     *
      * @return string The modified query
      */
     private function injectFromClauseForOrderByLabel($fromid, $column, $sqlM)
@@ -1300,11 +1347,12 @@ class SearchSmartData
      *
      * @param $fromid
      * @param $column
+     *
      * @return \Anakeen\Core\SmartStructure\NormalAttribute|bool
      */
     private function _getAttributeFromColumn($fromid, $column)
     {
-        $fam= \Anakeen\Core\SEManager::getFamily($fromid);
+        $fam = \Anakeen\Core\SEManager::getFamily($fromid);
         if (!$fam) {
             return false;
         }

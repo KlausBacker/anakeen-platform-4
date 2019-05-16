@@ -10,7 +10,7 @@
             <smart:field-set name="fr_basic" extended="true">
                 <smart:field-account name="se_author" label="Auteur" access="Read"/>
             </smart:field-set>
-            <smart:field-set name="se_crit" type="frame" label="Critère" access="ReadWrite">
+            <smart:field-set name="se_crit" type="frame" label="Critères" access="ReadWrite">
                 <smart:field-text name="se_key" label="Mot-clef" access="ReadWrite" is-abstract="true"/>
                 <smart:field-enum name="se_latest" label="Révision" access="ReadWrite" relation="SEARCH-se_latest"/>
                 <smart:field-enum name="se_case" label="Mode" access="ReadWrite" relation="SEARCH-se_case"/>

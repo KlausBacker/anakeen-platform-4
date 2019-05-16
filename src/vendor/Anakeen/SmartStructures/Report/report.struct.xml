@@ -13,7 +13,7 @@
                     <smart:field-text name="rep_sort" label="Tri" access="ReadWrite"/>
                     <smart:field-text name="rep_idsort" label="Id tri" access="Read"/>
                     <smart:field-enum name="rep_ordersort" label="Ordre" access="ReadWrite" relation="REPORT-rep_ordersort"/>
-                    <smart:field-int name="rep_limit" label="Limite" access="ReadWrite"/>
+                    <smart:field-int name="rep_limit" label="Nombre de résultats par page" access="ReadWrite"/>
                     <smart:field-set name="rep_tcols" type="array" label="Colonnes" access="ReadWrite">
                         <smart:field-text name="rep_lcols" label="Label" access="ReadWrite"/>
                         <smart:field-text name="rep_idcols" label="Id colonnes" access="Read"/>
@@ -77,6 +77,7 @@
             <smart:enum name="CARD" label="Cardinal"/>
             <smart:enum name="MOY" label="Moyenne"/>
             <smart:enum name="SUM" label="Somme"/>
+            <smart:enum name="NONE" label="Aucun"/>
         </smart:enum-configuration>
     </smart:enumerates>
 
