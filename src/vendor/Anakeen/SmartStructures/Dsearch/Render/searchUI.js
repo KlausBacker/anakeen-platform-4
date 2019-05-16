@@ -72,6 +72,7 @@ import searchAttributes from "./searchAttributes";
             return;
           }
 
+          kendo.ui.progress($(".dcpTab--loading"), true);
           /*
                  Hide title field if in creation mode
                  */
@@ -348,6 +349,7 @@ import searchAttributes from "./searchAttributes";
                     }
                   );
 
+                  kendo.ui.progress($(".dcpTab--loading"), false);
                   $(".dcpTab__content").removeClass("dcpTab--loading");
                 });
               });

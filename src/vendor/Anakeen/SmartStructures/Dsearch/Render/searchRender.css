@@ -196,7 +196,7 @@
 .dcpTab--loading .result-waiting,
 .result--waiting.result--grid .result-waiting {
     display: block;
-    background-color: #eaeaea;
+
     text-align: center;
     padding: 10px;
     font-size: initial;
@@ -206,9 +206,9 @@
     min-height: 200px;
 }
 .result-waiting-text {
-    border: solid 1px grey;
+    border: solid 1px #a9a9a9;
     display: inline-block;
-    padding: 0 1em;
+    padding: 1em;
     background-color: white;
 }
 .result-waiting-text img {
