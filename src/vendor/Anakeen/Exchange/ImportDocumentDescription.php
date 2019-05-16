@@ -227,7 +227,7 @@ class ImportDocumentDescription
 
         while (!feof($this->fdoc)) {
             if (!$this->csvEnclosure) {
-                $buffer = rtrim(fgets($this->fdoc, 16384));
+                $buffer = rtrim(fgets($this->fdoc));
                 $data = explode($this->csvSeparator, $buffer);
                 $data = array_map(function ($v) use ($csvLinebreak) {
                     return str_replace(array(
