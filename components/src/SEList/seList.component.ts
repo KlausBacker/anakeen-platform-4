@@ -23,6 +23,7 @@ export default class SeListComponent extends Vue {
   @Prop({ type: String, default: "title:asc" }) public order;
   @Prop({ type: Number, default: 1 }) public page;
   @Prop({ type: String, default: "Aucun contenu" }) public emptyMessage;
+  @Prop({ type: Boolean, default: true }) public selectable;
 
   public $refs!: {
     wrapper: HTMLElement;
@@ -188,20 +189,22 @@ export default class SeListComponent extends Vue {
   }
 
   public selectSe(seId) {
-    const seSelected = this.dataSourceItems.find(
-      i => i.properties.initid == seId
-    );
-    if (seSelected) {
-      const customEvent = $createComponentEvent(
-        "se-selected",
-        { detail: [seSelected.properties] },
-        event
+    if (this.selectable) {
+      const seSelected = this.dataSourceItems.find(
+        i => i.properties.initid == seId
       );
-      this.$emit("se-selected", customEvent);
-      this.selectedItem = seId;
-      this.$nextTick(() => {
-        this.scrollToActiveItem();
-      });
+      if (seSelected) {
+        const customEvent = $createComponentEvent(
+          "se-selected",
+          { detail: [seSelected.properties] },
+          event
+        );
+        this.$emit("se-selected", customEvent);
+        this.selectedItem = seId;
+        this.$nextTick(() => {
+          this.scrollToActiveItem();
+        });
+      }
     }
   }
 
