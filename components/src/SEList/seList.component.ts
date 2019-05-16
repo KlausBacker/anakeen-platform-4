@@ -69,6 +69,7 @@ export default class SeListComponent extends Vue {
       } else {
         _enableReady();
       }
+      this.onResize();
     };
 
     if (document.readyState === "loading") {
