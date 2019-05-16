@@ -136,8 +136,9 @@ export default class BusinessApp extends Vue {
   }
 
   protected onTabRemove(tabRemoved) {
-    const closeTab = (tabIndex) => {
-      const nextSelectedTab = this.tabs[tabIndex - 1] || this.tabs[tabIndex + 1];
+    const closeTab = tabIndex => {
+      const nextSelectedTab =
+        this.tabs[tabIndex - 1] || this.tabs[tabIndex + 1];
       this.tabs.splice(tabIndex, 1);
       if (this.selectedTab === tabRemoved) {
         if (nextSelectedTab) {
@@ -146,7 +147,7 @@ export default class BusinessApp extends Vue {
         } else if (this.hasWelcomeTab) {
           this.selectedTab = "welcome";
         } else {
-          this.selectedTab = ""
+          this.selectedTab = "";
         }
       }
     };
