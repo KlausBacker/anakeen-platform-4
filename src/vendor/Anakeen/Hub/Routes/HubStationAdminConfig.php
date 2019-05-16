@@ -70,8 +70,8 @@ class HubStationAdminConfig extends GridConfig
             ]
         ];
         $originalConfig["smartFields"] = [
-            ColumnsConfig::getColumnConfig("hub_docker_position", SEManager::getDocument("HUBCONFIGURATION")),
-            ColumnsConfig::getColumnConfig("hub_order", SEManager::getDocument("HUBCONFIGURATION")),
+            ColumnsConfig::getColumnConfig("hub_docker_position", SEManager::getFamily("HUBCONFIGURATION")),
+            ColumnsConfig::getColumnConfig("hub_order", SEManager::getFamily("HUBCONFIGURATION")),
             [
                 "field" => "hub_type",
                 "smartType" => "text",
@@ -80,7 +80,7 @@ class HubStationAdminConfig extends GridConfig
                 "sortable" => true,
                 "filterable" => self::getFilterable("text")
             ],
-            ColumnsConfig::getColumnConfig("hub_title", SEManager::getDocument("HUBCONFIGURATION"))
+            ColumnsConfig::getColumnConfig("hub_title", SEManager::getFamily("HUBCONFIGURATION"))
         ];
 
         $originalConfig["actions"] = [
