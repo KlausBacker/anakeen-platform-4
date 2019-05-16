@@ -221,6 +221,7 @@ export default class HubStation extends Vue {
       this.$ankHubRouter.internal.navigate(fullRoutePath, true);
       this.$ankHubRouter.internal.resolve(window.location.pathname);
     }
+    this.$emit("hubElementSelected", event);
   }
 
   private isPriorityDefaultRoute(entryOptions, computedPriority) {

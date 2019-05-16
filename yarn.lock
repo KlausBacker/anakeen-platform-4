@@ -71,9 +71,9 @@
     roboto-fontface "^0.10.0"
 
 "@anakeen/user-interfaces@^2.0.0-dev20190510085942":
-  version "2.0.0-dev20190510085942"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190510085942.tgz#28d82b116dfda70cf772291f296b56ef2039382b"
-  integrity sha512-NL4d+5n3hQGWEuSQRQWx62qOJj1OfXnrLBe5rD+ei6kOoydI7zkn3vSNTHUl+JdHUMLKCI+nZCXJUsaViqCfWg==
+  version "2.0.0-dev20190516125204"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190516125204.tgz#ebdb34ff2569177481b7a6c01724169271fb0686"
+  integrity sha512-GDfbzDaNqBcOwxdewvbxIw7y7Tw54YE9ZqA1ZOR0UuVAZUJL3EFblduX2bisH0lHUfEof2eYWExTuz+JA+tbng==
   dependencies:
     "@anakeen/theme-variables" "^0.0.2"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
@@ -911,16 +911,16 @@
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
 
 "@progress/kendo-theme-bootstrap@^3.2.1", "@progress/kendo-theme-bootstrap@^3.2.3":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.3.1.tgz#e730d4d3dad8bf82a8720ebbd46d30bc3c854a45"
-  integrity sha512-l43dqJHEILy8EsUWjBpWZG++4QofpLKFvMYToXoGU/RSGPhk9uboxYin6J/VdMeURuWN1R4pSRzqoMIgcy94zg==
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-bootstrap/-/kendo-theme-bootstrap-3.4.1.tgz#b9dd82484076a9470d40277e5ccf95b861a0c53b"
+  integrity sha512-YoXB2ZiDZrkaJRxknAxMPv3qRjVfSghQGDDgy+SSZBpDWbgbOnKmxySuau07TdjBs0Wy62rNS5VY+s1B5cpK0g==
   dependencies:
-    "@progress/kendo-theme-default" "^3.5.1"
+    "@progress/kendo-theme-default" "^3.6.1"
 
-"@progress/kendo-theme-default@^3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.5.1.tgz#2f923a33dbfea50b5729fe481c407940f14b2e1a"
-  integrity sha512-S2Jts5/7ns3IU+xCSB2zPKz01BMp/VbiL4Tw+pkb7/eF/aoTbjRoZS4IzvJrqZOLZ6aVybrFCDJZqDRZcQNIuw==
+"@progress/kendo-theme-default@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-theme-default/-/kendo-theme-default-3.6.1.tgz#ae2507f4eca78cb1c291a2253b30753e856514b9"
+  integrity sha512-hswBtkqB4PVbRD37NRIP91N8J68JFZ9QQ3NFqJ1bPlSP1ps/MRaITerMODzX+HxEY06fau+T2ZJp5X6WJ1ruAg==
 
 "@progress/kendo-ui@2019.1.320":
   version "2019.1.320"
@@ -947,9 +947,9 @@
   integrity sha512-auXcoS/pc39onGyf6fr2V3J3BEHUqH0a1Sa1psuGrVkCat+2D592DA7hdXY73lwCUyhGPzkf0lrcE5jH0OFeJg==
 
 "@types/node@*":
-  version "11.13.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.7.tgz#85dbb71c510442d00c0631f99dae957ce44fd104"
-  integrity sha512-suFHr6hcA9mp8vFrZTgrmqW2ZU3mbWsryQtQlY/QvwTISCw7nw/j+bCQPPohqmskhmqa5wLNuMHTTsc+xf1MQg==
+  version "12.0.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.2.tgz#3452a24edf9fea138b48fad4a0a028a683da1e40"
+  integrity sha512-5tabW/i+9mhrfEOUcLDu2xBPsHJ+X5Orqy9FKpale3SjDA17j5AEpYq5vfy3oAeAHGcvANRCO3NV3d2D6q3NiA==
 
 "@types/node@^11.11.7":
   version "11.11.7"
@@ -7337,7 +7337,12 @@ prettier@1.16.3:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.16.3.tgz#8c62168453badef702f34b45b6ee899574a6a65d"
   integrity sha512-kn/GU6SMRYPxUakNXhpP0EedT/KmaPzr0H5lIsDogrykbaxOpOfAFfk5XA7DZrJyMAv1wlMV3CPcZruGXVVUZw==
 
-prettier@^1.13.0, prettier@^1.17.0:
+prettier@^1.13.0:
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.17.1.tgz#ed64b4e93e370cb8a25b9ef7fef3e4fd1c0995db"
+  integrity sha512-TzGRNvuUSmPgwivDqkZ9tM/qTGW9hqDKWOE9YHiyQdixlKbv7kvEqsmDPrcHJTKwthU774TQwZXVtaQ/mMsvjg==
+
+prettier@^1.17.0:
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.17.0.tgz#53b303676eed22cc14a9f0cec09b477b3026c008"
   integrity sha512-sXe5lSt2WQlCbydGETgfm1YBShgOX4HxQkFPvbxkcwgDvGDeqVau8h+12+lmSVlP3rHPz0oavfddSZg/q+Szjw==
@@ -8022,7 +8027,14 @@ resolve-url@^0.2.1:
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
-resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.4.0:
+resolve@^1.1.6:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.11.0.tgz#4014870ba296176b86343d50b60f3b50609ce232"
+  integrity sha512-WL2pBDjqT6pGUNSUzMw00o4T7If+z4H2x3Gz893WoUQ5KW8Vr9txp00ykiP16VBaZF5+j/OcXJHZ9+PCvdiDKw==
+  dependencies:
+    path-parse "^1.0.6"
+
+resolve@^1.1.7, resolve@^1.10.0, resolve@^1.4.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.1.tgz#664842ac960795bbe758221cdccda61fb64b5f18"
   integrity sha512-KuIe4mf++td/eFb6wkaPbMDnP6kObCaEtIDuHOUED6MNUo4K670KZUHuuvYPZDxNF0WVLw49n06M2m2dXphEzA==
@@ -9542,14 +9554,14 @@ vue-class-component@^7.0.1, vue-class-component@^7.0.2:
   integrity sha512-8xw/wkZI2tgHcwvkSRC1ax7GeP1CG27wKhedvOAdjdASm05VU4RijGsCYti6s6CzBioBL5BQUmntQQTCsp1wnQ==
 
 vue-custom-element@^3.2.5:
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.6.tgz#9e3f52eb5c5014c298cad731321ed64487fada0b"
-  integrity sha512-tNWsax/Rq4Sr1QHj0pi4CWaBnAYfva75rlQg2fBKGja35+6AmdcZre/ztoiBWCSlSJ7APsMakG5R0A+GWBAc4Q==
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/vue-custom-element/-/vue-custom-element-3.2.7.tgz#ee1fd9d5e720e8c89bf94af6f845ce4abaac849a"
+  integrity sha512-jBtPXqm5WuIovoWsuoyYG+n8QGfhPOEyMuVVdWOydarcaU7YlsWfAt1lghi66ohJl4lMjyF71doTX5DHVBuUvg==
 
 vue-gettext@^2.1.0:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.4.tgz#f42aa8480ad45c3f63ee67ea2f56891740010e37"
-  integrity sha512-UkJ+tKMp4/cn5RKK7Nm0l5apvpTqeuzlP22/SkNYdEfAzFBasX6qxK1EMTZGTXGWlc6h/KMu9X6W8KjWCnFbtQ==
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/vue-gettext/-/vue-gettext-2.1.5.tgz#6bede1091c25ca657c591532a154b7e5680abd84"
+  integrity sha512-QAfPupLNthQLDVSIoLKOSiDeBqXja3qfT48Civhuxwjdee0fdi0MHTgsvnseMsHDfMJq6GBxIMBMhoRp6NJdjg==
 
 vue-gettext@^2.1.3:
   version "2.1.3"
