@@ -58,9 +58,17 @@
     <smart:access-configuration name="MSK_IUSERSUBSTITUTE" ref="PRF_ADMIN_EDIT"/>
     <smart:access-configuration name="MSK_IUSER_ADMIN" ref="PRF_ADMIN_EDIT"/>
 
+
+    <smart:access-configuration name="PRF_ACCOUNTS_CREATION" label="Création des comptes" profil-type="PFAM">
+        <smart:description>Accounts can be create only by administrators.</smart:description>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="gadmin"/>
+        <smart:element-access access="icreate" account="gadmin"/>
+    </smart:access-configuration>
+
     <smart:structure-configuration name="IUSER">
         <smart:accesses>
-            <smart:structure-access-configuration ref="PRF_ADMIN_CREATION"/>
+            <smart:structure-access-configuration ref="PRF_ACCOUNTS_CREATION"/>
             <smart:element-access-configuration ref="PRF_IUSER_OWNER"/>
             <smart:field-access-configuration ref="FALL_IUSER"/>
         </smart:accesses>
