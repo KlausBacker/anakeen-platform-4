@@ -1,6 +1,5 @@
 import { Component, Inject, Prop, Vue, Watch } from "vue-property-decorator";
 import { VNode } from "vue";
-import { addResizeListener } from "../utils/resizeEvents";
 import DropdownMenu from "./DropdownMenu/DropdownMenu.vue";
 
 function noop() {}
@@ -275,7 +274,7 @@ export default class TabsNav extends Vue {
   }
 
   public mounted() {
-    addResizeListener(this.$el, this.update);
+    window.addEventListener("resize", this.update);
     document.addEventListener("visibilitychange", this.visibilityChangeHandler);
     window.addEventListener("blur", this.windowBlurHandler);
     window.addEventListener("focus", this.windowFocusHandler);
@@ -284,6 +283,7 @@ export default class TabsNav extends Vue {
     });
   }
   public beforeDestroy() {
+    window.removeEventListener("resize", this.update);
     document.removeEventListener(
       "visibilitychange",
       this.visibilityChangeHandler

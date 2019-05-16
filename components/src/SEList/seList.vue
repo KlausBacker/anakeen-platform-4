@@ -1,5 +1,5 @@
 <template>
-  <div class="seList__wrapper" ref="wrapper">
+  <div :class="componentClasses" ref="wrapper">
     <div class="seList">
       <div class="seList__header__slot">
         <slot name="header">
@@ -56,7 +56,7 @@
           @click="onClickSE(item)"
         >
           <slot name="item" :properties="item.properties">
-            <div class="seList__listItem__body">
+            <div class="seList__listItem__body" :title="item.properties.title">
               <div class="seList__listItem__heading">
                 <img
                   class="seList__listItem__heading__content_icon"

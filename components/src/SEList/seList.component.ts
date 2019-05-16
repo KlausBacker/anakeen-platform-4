@@ -56,6 +56,7 @@ export default class SeListComponent extends Vue {
     kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), true);
     const ready = () => {
       this.initKendoWidgets();
+      window.addEventListener("resize", this.onResize);
       kendo.ui.progress(kendo.jQuery(this.$refs.wrapper), false);
 
       if (this.smartCollection) {
@@ -75,6 +76,10 @@ export default class SeListComponent extends Vue {
     } else {
       ready();
     }
+  }
+
+  public destroyed() {
+    window.removeEventListener("resize", this.onResize);
   }
 
   public collection: any = null;
@@ -104,6 +109,11 @@ export default class SeListComponent extends Vue {
       value: 100
     }
   ];
+  public componentClasses = {
+    seList__wrapper: true,
+    "is-compact": false,
+    "is-tiny": false
+  };
 
   public get dataSourceItems() {
     if (this.dataSource) {
@@ -243,6 +253,13 @@ export default class SeListComponent extends Vue {
     const activeItem = this.$el.querySelector(".is-active");
     if (activeItem) {
       activeItem.scrollIntoView();
+    }
+  }
+
+  protected onResize() {
+    if (this.$el.clientWidth) {
+      this.componentClasses["is-compact"] = this.$el.clientWidth < 210;
+      this.componentClasses["is-tiny"] = this.$el.clientWidth < 170;
     }
   }
 
