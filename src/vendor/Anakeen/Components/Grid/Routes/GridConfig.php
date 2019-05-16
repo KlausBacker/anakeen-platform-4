@@ -74,18 +74,24 @@ class GridConfig
             "toolbar" => [],
             "actions" => [],
             "locales" => $this->getLocales(),
+            "collection"=> [
+                "id" => $this->collectionDoc->initid,
+                "name" => $this->collectionDoc->name,
+                "title" => $this->collectionDoc->getTitle(),
+            ],
             "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=" . $this->getUrlFields())
         );
     }
 
     protected function getPageable()
     {
-        $pageSlice = $this->collectionDoc->getRawValue(ReportFields::rep_limit);
-        if ($pageSlice) {
-            return ["pageSize" => intval($pageSlice), "pageSizes" => [intval($pageSlice)]];
-        } else {
-            return null;
+        if ($this->collectionDoc) {
+            $pageSlice = $this->collectionDoc->getRawValue(ReportFields::rep_limit);
+            if ($pageSlice) {
+                return ["pageSize" => intval($pageSlice), "pageSizes" => [intval($pageSlice)]];
+            }
         }
+        return null;
     }
 
     protected function getLocales()
@@ -110,7 +116,7 @@ class GridConfig
             "edit" => ___("Modify", "smart-grid"),
             "export" => ___("Export as XLSX", "smart-grid"),
             "selectOperator" => ___("-- Select another operator --", "smart-grid"),
-            "extraOperator" => ___("Grid Settings", "smart-grid"),
+            "extraOperator" => ___("Grid Settings", "smart-grid")
         ];
     }
 

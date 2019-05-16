@@ -18,7 +18,9 @@ class SearchGridConfig extends GridConfig
     protected function getConfig()
     {
         $config = parent::getConfig();
-        $config["toolbar"] = [];
+        $config["toolbar"] = ["actionConfigs" => [
+            [ "action" => "export" ], // For l'export
+        ]];
         $config["actions"] = [
             "title" => "Actions",
             "actionConfigs" => [

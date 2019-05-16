@@ -1,6 +1,8 @@
 <?php
+
 namespace Anakeen\Components\Grid\Routes;
 
+use Anakeen\Core\ContextManager;
 use Anakeen\Core\Utils\FileMime;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Router\Exception;
@@ -15,8 +17,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * Class GridExport
+ *
  * @package Anakeen\Components\Grid\Routes
- * @note use by route /api/v2/grid/export/{collectionId}
+ * @note    use by route /api/v2/grid/export/{collectionId}
  */
 class GridExport extends GridContent
 {
@@ -61,9 +64,9 @@ class GridExport extends GridContent
 
         $this->writeHeaders($sheet);
         $this->writeValues($sheet, $data["smartElements"]);
-        $this->writeFile($spreadSheet);
+        $filename = $this->writeFile($spreadSheet);
 
-        return self::withFile($response, "./export.xlsx", "export.xlsx");
+        return self::withFile($response, $filename);
     }
 
     protected function prepareFiltering()
@@ -93,7 +96,7 @@ class GridExport extends GridContent
 
         $column = "A";
         for ($i = 0; $i < count($this->returnFields); $i++) {
-            $sheet->getStyle($column."1")->applyFromArray($styleArray);
+            $sheet->getStyle($column . "1")->applyFromArray($styleArray);
             $sheet->getColumnDimension($column++)->setAutoSize('true');
         }
 
@@ -122,7 +125,7 @@ class GridExport extends GridContent
         $rowIndex = 2;
         $defaultHeight = 20.0;
         $totalValues = count($values);
-        $modulo = intval($totalValues/100) || 1;
+        $modulo = intval($totalValues / 100) || 1;
         \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder());
         TransactionManager::updateProgression($this->transactionId, [
             "exportedRows" => 0,
@@ -153,13 +156,13 @@ class GridExport extends GridContent
                 }
                 $this->setCellFormat(
                     $sheet,
-                    $columnIndex.$rowIndex,
+                    $columnIndex . $rowIndex,
                     $fieldConfig["smartType"]
                 );
                 $columnIndex++;
             }
             $sheet->getRowDimension($rowIndex)->setRowHeight(($maxHeightCoeff * $defaultHeight));
-            $sheet->fromArray($row, null, "A".$rowIndex++);
+            $sheet->fromArray($row, null, "A" . $rowIndex++);
 
             if (($rowIndex - 2) % $modulo === 0) {
                 TransactionManager::updateProgression($this->transactionId, [
@@ -180,6 +183,9 @@ class GridExport extends GridContent
                 default:
                     return $data["displayValue"];
             }
+        }
+        if (is_a($data, \Anakeen\Core\Internal\Format\StatePropertyValue::class)) {
+            return $data->displayValue;
         }
         return $data;
     }
@@ -211,10 +217,13 @@ class GridExport extends GridContent
         }
     }
 
+
     private function writeFile(Spreadsheet $spreadsheet)
     {
+        $outputFileName = sprintf("%s/%s.xlsx", ContextManager::getTmpDir(), uniqid("export"));
         $writer = new Xlsx($spreadsheet);
-        $writer->save('export.xlsx');
+        $writer->save($outputFileName);
+        return $outputFileName;
     }
 
     private static function withFile(

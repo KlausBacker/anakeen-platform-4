@@ -227,7 +227,7 @@ export default class GridActions extends AbstractGridUtil {
     }
     link.setAttribute(
       "download",
-      `export-${this.vueComponent.collection || "data"}-${horodator}.xlsx`
+      `export-${this.vueComponent.collectionProperties.title || this.vueComponent.collection || "data"}-${horodator}.xlsx`
     );
     link.href = url;
     link.click();

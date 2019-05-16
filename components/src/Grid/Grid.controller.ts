@@ -139,6 +139,7 @@ export default class GridController extends Vue {
   })
   public persistSelection;
   public translations = {};
+  public collectionProperties = {};
 
   public privateScope: IGrid;
   @Watch("urlConfig")
