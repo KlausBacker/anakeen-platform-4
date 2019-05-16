@@ -117,6 +117,7 @@ export default class BusinessApp extends Vue {
     // @ts-ignore
     if (this.tabs.findIndex(t => t.tabId === tab.tabId) === -1) {
       this.tabs.push(tab);
+      this.$emit("openTab", tab);
     }
     this.selectedTab = tab.tabId;
   }
@@ -135,14 +136,17 @@ export default class BusinessApp extends Vue {
   }
 
   protected onTabRemove(tabRemoved) {
-    const closeTab = () => {
-      this.tabs.splice(index, 1);
+    const closeTab = (tabIndex) => {
+      const nextSelectedTab = this.tabs[tabIndex - 1] || this.tabs[tabIndex + 1];
+      this.tabs.splice(tabIndex, 1);
       if (this.selectedTab === tabRemoved) {
-        if (index !== 0) {
+        if (nextSelectedTab) {
           // @ts-ignore
-          this.selectedTab = this.tabs[index - 1].tabId;
+          this.selectedTab = nextSelectedTab.tabId;
         } else if (this.hasWelcomeTab) {
           this.selectedTab = "welcome";
+        } else {
+          this.selectedTab = ""
         }
       }
     };
@@ -151,7 +155,7 @@ export default class BusinessApp extends Vue {
     const vueTab = this.$refs.seTab[index];
     if (vueTab && vueTab.close) {
       vueTab.close().then(() => {
-        closeTab();
+        closeTab(index);
       });
     }
   }
