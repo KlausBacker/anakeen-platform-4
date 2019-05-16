@@ -41,6 +41,11 @@ export default class GridController extends Vue {
     type: String,
     default: "-"
   })
+  public collapseRowButton: boolean;
+  @Prop({
+    type: Boolean,
+    default: true
+  })
   public contextTitlesSeparator;
   @Prop({
     type: String,

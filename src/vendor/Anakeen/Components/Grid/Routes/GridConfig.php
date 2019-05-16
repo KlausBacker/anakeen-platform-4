@@ -116,7 +116,8 @@ class GridConfig
             "edit" => ___("Modify", "smart-grid"),
             "export" => ___("Export as XLSX", "smart-grid"),
             "selectOperator" => ___("-- Select another operator --", "smart-grid"),
-            "extraOperator" => ___("Grid Settings", "smart-grid")
+            "extraOperator" => ___("Grid Settings", "smart-grid"),
+            "rowCollapse" => ___("Collapse / Expand rows    ", "smart-grid"),
         ];
     }
 

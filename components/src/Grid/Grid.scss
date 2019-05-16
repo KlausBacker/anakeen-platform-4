@@ -122,6 +122,13 @@
 
   }
 
+  .grid-widget.grid-row-collapsed {
+    .grid-cell-value {
+      overflow:hidden;
+      white-space: nowrap;
+    }
+  }
+
   &.smart--fit {
     max-height: inherit;
     display: flex;
@@ -579,6 +586,13 @@
     }
   }
 
+  .grid-collapse-button {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-color:#e5e5e5;
+    background-color: transparent;
+    transform: rotate(90deg);
+  }
 }
 
 .smart-element-grid-filter-menu.k-filter-menu .k-widget.k-filter-and {
