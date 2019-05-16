@@ -15,9 +15,6 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
     public function registerHooks()
     {
         parent::registerHooks();
-        $this->getHooks()->addListener(SmartHooks::PRESTORE, function () {
-            $this->setIconValue();
-        });
         $this->getHooks()->addListener(\Anakeen\Hub\Routes\ExportConfiguration::PREIMPORT, function (&$dataIds) {
             $hbaCollections = array_merge(
                 $this->getAttributeValue(HubBusinessAppFields::hba_collection),
@@ -44,7 +41,7 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
             "props" => [
                 "collections" => $this->getCollections(),
                 "welcomeTab" => $this->getWelcomeTabConfiguration(),
-                "iconTemplate" => $this->getRawValue(HubBusinessAppFields::hba_icon),
+                "iconTemplate" => $this->getImageTemplate(HubBusinessAppFields::hba_icon_image),
                 "hubLabel" => $this->getCustomTitle()
             ]
         ];
@@ -68,13 +65,6 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
             return $asset["business-app"]["js"];
         }
         return null;
-    }
-
-    protected function getEntryOptions()
-    {
-        $entryOptions = parent::getEntryOptions();
-        $entryOptions["libName"] = "HubBusinessApp";
-        return $entryOptions;
     }
 
     protected function getCollections()
@@ -174,35 +164,16 @@ class HubBusinessAppBehavior extends Hubconfigurationvue
         ];
     }
 
-    protected function setIconValue()
+    protected function getImageTemplate($fieldId)
     {
-        $iconType = $this->getRawValue(HubBusinessAppFields::hba_icon_type);
-        switch ($iconType) {
-            case "ICON":
-                $icon = $this->getRawValue(HubBusinessAppFields::hba_icon_lib);
-                if (!empty($icon)) {
-                    $this->setValue(HubBusinessAppFields::hba_icon, $icon);
-                }
-                break;
-            case "HTML":
-                $icon = $this->getRawValue(HubBusinessAppFields::hba_icon_html);
-                if (!empty($icon)) {
-                    $this->setValue(HubBusinessAppFields::hba_icon, htmlspecialchars_decode($icon));
-                }
-                break;
-            case "IMAGE":
-                $image = $this->getAttributeValue(HubBusinessAppFields::hba_icon_image);
-                if (!empty($image)) {
-                    $fileInfo = $this->getFileInfo($image);
-                    $imgValue = base64_encode(file_get_contents($fileInfo["path"]));
-                    $src = 'data: '.$fileInfo["mime_s"].';base64,'.$imgValue;
-                    $this->setValue(
-                        HubBusinessAppFields::hba_icon,
-                        "<img src='" .$src. "' width='32' height='32'/>"
-                    );
-                }
-                break;
+        $image = $this->getAttributeValue(HubBusinessAppFields::hba_icon_image);
+        if (!empty($image)) {
+            $fileInfo = $this->getFileInfo($image);
+            $imgValue = base64_encode(file_get_contents($fileInfo["path"]));
+            $src = 'data: '.$fileInfo["mime_s"].';base64,'.$imgValue;
+            return "<img src='" .$src. "' width='32' height='32'/>";
         }
+        return "<img width='32' height='32' src='/CORE/Images/core-noimage.png'/>";
     }
 
     public function getCustomTitle()

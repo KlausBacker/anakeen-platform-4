@@ -6,11 +6,7 @@
         <smart:class>Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior</smart:class>
         <smart:fields>
             <smart:field-set name="hub_component_parameters" extended="true">
-                <smart:field-enum name="hba_icon_type" access="ReadWrite" label="Business App icon type" relation="HBA_ICON_TYPES"/>
                 <smart:field-image name="hba_icon_image" access="ReadWrite" label="Business App icon"/>
-                <smart:field-htmltext name="hba_icon_lib" access="ReadWrite" label="Business App icon"/>
-                <smart:field-htmltext name="hba_icon_html" access="ReadWrite" label="Business App icon"/>
-                <smart:field-htmltext name="hba_icon" access="ReadWrite" label="Business App icon"/>
                 <smart:field-set name="hba_titles" type="array" label="Business App Titles"
                                  access="ReadWrite">
                     <smart:field-text name="hba_title" label="Title" access="ReadWrite" needed="true"/>
@@ -36,10 +32,9 @@
         </smart:fields>
 
         <smart:defaults>
-            <smart:default field="hba_welcome_option" reset="true">YES</smart:default>
-            <smart:default field="hba_welcome_title" reset="true">Welcome</smart:default>
-            <smart:default field="hba_icon_type" reset="true">ICON</smart:default>
-            <smart:default field="hba_titles" reset="true">
+            <smart:default field="hba_welcome_option">YES</smart:default>
+            <smart:default field="hba_welcome_title">Welcome</smart:default>
+            <smart:default field="hba_titles">
                 <smart:field-callable function="::getDefaultLanguages"/>
             </smart:default>
         </smart:defaults>
@@ -49,11 +44,6 @@
         <smart:enum-configuration name="HBA_YES_NO_ENUM">
             <smart:enum name="NO" label="No"/>
             <smart:enum name="YES" label="Yes"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="HBA_ICON_TYPES">
-            <smart:enum name="ICON" label="Icons library"/>
-            <smart:enum name="IMAGE" label="Image file"/>
-            <smart:enum name="HTML" label="Html template"/>
         </smart:enum-configuration>
         <smart:enum-configuration name="HBA_SUPPORT_LANG">
             <smart:enum name="en_US" label="English"/>

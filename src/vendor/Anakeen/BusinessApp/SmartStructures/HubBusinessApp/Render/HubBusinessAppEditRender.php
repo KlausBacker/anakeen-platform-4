@@ -18,9 +18,6 @@ class HubBusinessAppEditRender extends \Anakeen\Hub\SmartStructures\HubConfigura
         $options->arrayAttribute(HubBusinessAppFields::hba_titles)->disableRowDel(true);
         $options->arrayAttribute(HubBusinessAppFields::hba_titles)->setCollapse("none");
 
-        $options->htmltext(HubBusinessAppFields::hba_icon_lib)->setTemplate(
-            "<select class='icon-selector' data-attrid='hba_icon_lib'>".$this->getOptionsTemplate()."</select>"
-        );
         return $options;
     }
 
@@ -33,7 +30,6 @@ class HubBusinessAppEditRender extends \Anakeen\Hub\SmartStructures\HubConfigura
     public function getVisibilities(\Anakeen\Core\Internal\SmartElement $document, \SmartStructure\Mask $mask = null): RenderAttributeVisibilities
     {
         $visibilities = parent::getVisibilities($document, $mask);
-        $visibilities->setVisibility(HubBusinessAppFields::hba_icon, RenderAttributeVisibilities::HiddenVisibility);
         $visibilities->setVisibility(HubBusinessAppFields::hba_language, RenderAttributeVisibilities::StaticWriteVisibility);
         return $visibilities;
     }

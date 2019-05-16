@@ -6,19 +6,11 @@
 
   .ank-business-app-list {
     max-width: 25%;
+    min-width: 10.8rem;
     flex-basis: 25%;
     flex-grow: 0;
     flex-shrink: 0;
     margin-right: 0.283333rem;
-
-    /deep/ {
-      .seList__listItem.is-active {
-        box-shadow: none;
-        background-color: initial;
-        color: #505050;
-        font-weight: normal;
-      }
-    }
   }
 
   .ank-business-app-header {
