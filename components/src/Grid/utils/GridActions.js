@@ -208,12 +208,6 @@ export default class GridActions extends AbstractGridUtil {
 
   downloadExportFile(blobFile) {
     const date = new Date();
-    const horodator =
-      ("0" + date.getDate()).slice(-2) +
-      "-" +
-      ("0" + (date.getMonth() + 1)).slice(-2) +
-      "-" +
-      date.getFullYear();
     const url = window.URL.createObjectURL(blobFile);
     let link;
     const existLink = this.vueComponent.$("a.seGridExportLink");
@@ -227,7 +221,9 @@ export default class GridActions extends AbstractGridUtil {
     }
     link.setAttribute(
       "download",
-      `export-${this.vueComponent.collectionProperties.title || this.vueComponent.collection || "data"}-${horodator}.xlsx`
+      `${this.vueComponent.collectionProperties.title ||
+        this.vueComponent.collection ||
+        "data"}.xlsx`
     );
     link.href = url;
     link.click();
