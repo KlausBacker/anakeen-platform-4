@@ -91,7 +91,11 @@
 .seList__search {
   padding: 0.5rem;
 
+  .input-group {
+    flex-wrap: nowrap;
+  }
   .seList__search__keyword {
+    min-width: 2rem;
     border-left: 0;
     flex: 1;
     &::placeholder {
