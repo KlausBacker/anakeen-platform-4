@@ -438,7 +438,7 @@
     <xs:complexType name="structure-configurationType">
         <xs:sequence>
             <xs:element type="v1:extendsType" name="extends" minOccurs="0"/>
-            <xs:element type="xs:string" name="default-folder" minOccurs="0"/>
+            <xs:element type="v1:logicalNameType" name="default-folder" minOccurs="0"/>
             <xs:element type="v1:iconType" name="icon" minOccurs="0"/>
             <xs:element type="v1:classType" name="class" minOccurs="0">
 
