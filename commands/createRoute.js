@@ -17,7 +17,7 @@ const builder = {
     required: true
   },
   callable: {
-    description: "path to php file",
+    description: "path to php file (example: Anakeen/Module/Routes/Main)",
     alias: "c",
     type: "string",
     required: true
