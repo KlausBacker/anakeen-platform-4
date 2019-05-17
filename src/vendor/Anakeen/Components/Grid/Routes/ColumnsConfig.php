@@ -242,6 +242,19 @@ class ColumnsConfig
 
     protected static function getAttributeConfig(\Anakeen\Core\SmartStructure\BasicAttribute $currentAttribute, \Anakeen\Core\SmartStructure $family)
     {
+        if ($currentAttribute->type === "account" && !$currentAttribute->format) {
+            $match = $currentAttribute->getOption("match");
+            switch ($match) {
+                case "group":
+                    $currentAttribute->format = "IGROUP";
+                    break;
+                case "role":
+                    $currentAttribute->format = "ROLE";
+                    break;
+                default:
+                    $currentAttribute->format = "IUSER";
+            }
+        }
         $data = array(
             "field" => $currentAttribute->id,
             "multiple" => $currentAttribute->isMultiple(),
@@ -255,6 +268,7 @@ class ColumnsConfig
             "sortable" => false,
             "filterable" => self::getColumnFilterConfig($currentAttribute),
         );
+
         $isSortable = self::isSortable($family, $currentAttribute->id);
         if ($isSortable) {
             $data["sortable"] = ["initialDirection" => "asc"];
