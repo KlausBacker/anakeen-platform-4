@@ -47,7 +47,20 @@ class GridConfig
         $this->parseRequestParams($request, $response, $args);
         $this->gridFields = $this->getGridFields();
 
+        // Until this filter is fixed
+        $this->removeTitleContainFilterForTheMoment();
         return ApiV2Response::withData($response, $this->getConfig());
+    }
+
+    private function removeTitleContainFilterForTheMoment()
+    {
+        foreach ($this->gridFields as $k => $fields) {
+            if (isset($fields["filterable"]["operators"])) {
+                foreach ($fields["filterable"]["operators"] as $ok => $operatorType) {
+                    unset($this->gridFields[$k]["filterable"]["operators"][$ok]["titleContains"]);
+                }
+            }
+        }
     }
 
     protected function parseRequestParams(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
@@ -74,7 +87,7 @@ class GridConfig
             "toolbar" => [],
             "actions" => [],
             "locales" => $this->getLocales(),
-            "collection"=> [
+            "collection" => [
                 "id" => $this->collectionDoc->initid,
                 "name" => $this->collectionDoc->name,
                 "title" => $this->collectionDoc->getTitle(),
