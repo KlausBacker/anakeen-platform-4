@@ -87,13 +87,21 @@ class GridConfig
             "toolbar" => [],
             "actions" => [],
             "locales" => $this->getLocales(),
-            "collection" => [
+            "collection" => $this->getCollectionInfo(),
+            "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=" . $this->getUrlFields())
+        );
+    }
+
+    protected function getCollectionInfo()
+    {
+        if ($this->collectionDoc) {
+            return [
                 "id" => $this->collectionDoc->initid,
                 "name" => $this->collectionDoc->name,
                 "title" => $this->collectionDoc->getTitle(),
-            ],
-            "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=" . $this->getUrlFields())
-        );
+            ];
+        }
+        return [];
     }
 
     protected function getPageable()
