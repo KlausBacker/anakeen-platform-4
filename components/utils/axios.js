@@ -2,7 +2,7 @@ import Axios from "axios";
 
 const axios = Axios.create({
   baseURL: "/",
-  timeout: 10000
+  timeout: 0
 });
 
 // Intercept network errors from axios instance
