@@ -3,6 +3,7 @@
 const { produceApp } = require("@anakeen/anakeen-ci");
 const { getModuleInfo } = require("@anakeen/anakeen-cli/utils/moduleInfo");
 
+const util = require("util");
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
 
