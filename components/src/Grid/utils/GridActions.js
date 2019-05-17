@@ -176,9 +176,7 @@ export default class GridActions extends AbstractGridUtil {
 
   pollTransaction(transactionId, pollingCb = () => {}, pollingTime = 500) {
     let timer = null;
-    let call = 0;
     const getStatus = () => {
-      call++;
       this.vueComponent.$http
         .get(`/api/v2/ui/transaction/${transactionId}/status`)
         .then(response => {
@@ -188,9 +186,8 @@ export default class GridActions extends AbstractGridUtil {
             this.vueComponent.$el
           );
           if (
-            (responseData.transactionStatus === "PENDING" ||
-              responseData.transactionStatus === "CREATED") &&
-            call < 20
+            responseData.transactionStatus === "PENDING" ||
+            responseData.transactionStatus === "CREATED"
           ) {
             if (typeof pollingCb === "function") {
               pollingCb(responseData, progressBar);
@@ -402,6 +399,7 @@ export default class GridActions extends AbstractGridUtil {
             transactionId
           ),
           {
+            timeout: 0,
             responseType: "blob",
             params: queryParams,
             paramsSerializer: params => this.vueComponent.$.param(params)
