@@ -7,6 +7,7 @@ import "@progress/kendo-ui/js/kendo.toolbar";
 
 import GridActions from "./utils/GridActions";
 import GridEvent from "./utils/GridEvent";
+import ExportActionTemplate from "./templates/GridToolbarExportAction.template.kd";
 
 import GridDataUtils from "./utils/GridDataUtils";
 import GridFilter from "./utils/GridFilter";
@@ -37,11 +38,25 @@ export default class GridController extends Vue {
     default: true
   })
   public contextTitles;
+
+  @Prop({
+    type: Boolean,
+    default: true
+  })
+  public collapseRowButton: boolean;
+
+  @Prop({
+    type: Boolean,
+    default: false
+  })
+  public exportButton: boolean;
+
   @Prop({
     type: String,
     default: "-"
   })
   public contextTitlesSeparator;
+
   @Prop({
     type: String,
     default: "/api/v2/grid/config/<collection>"
@@ -138,7 +153,10 @@ export default class GridController extends Vue {
     default: true
   })
   public persistSelection;
-  public translations = {};
+  public translations = {
+    uploadReport: "upload"
+  };
+  public collectionProperties = {};
 
   public privateScope: IGrid;
   @Watch("urlConfig")
@@ -336,6 +354,31 @@ export default class GridController extends Vue {
               }
             });
           }
+        }
+        if (this.exportButton) {
+          const pagerInfo = this.kendoGrid.pager.element.find(".k-pager-info");
+
+          const toolbarActionConfig = {
+            name: "export",
+            text: "",
+            iconClass: "k-icon k-i-upload",
+            attributes: { "data-action-id": "export" }
+          };
+          const exportTemplate = ExportActionTemplate;
+          const exportButton = kendo.template(exportTemplate)(
+            toolbarActionConfig
+          );
+          const $exportButton = $(exportButton);
+
+          $exportButton.addClass("grid-bottom-export");
+          $exportButton
+            .find(".k-button-icontext")
+            .removeClass("k-button-icontext");
+          $exportButton.attr("title", this.translations.uploadReport);
+          $exportButton.insertBefore($(pagerInfo));
+          this.$once("grid-ready", () => {
+            this.gridActions.initToolbarExportTemplate($exportButton);
+          });
         }
       },
 

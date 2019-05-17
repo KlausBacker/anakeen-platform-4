@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ANAKEEN-UI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-14 13:49+0200\n"
+"POT-Creation-Date: 2019-05-16 17:05+0200\n"
 "PO-Revision-Date: 2018-06-01 08:42+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: English <distrib@anakeen.com>\n"
@@ -116,6 +116,10 @@ msgctxt "UiMenu"
 msgid "Cancel"
 msgstr ""
 
+msgctxt "smart-grid"
+msgid "Cancel"
+msgstr ""
+
 msgctxt "ddui"
 msgid "Cancel transition"
 msgstr ""
@@ -182,6 +186,10 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Close message"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Collapse / Expand rows"
 msgstr ""
 
 msgctxt "ddui"
@@ -319,6 +327,10 @@ msgstr ""
 
 msgctxt "smart-grid"
 msgid "Export as XLSX"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Export as xlsx"
 msgstr ""
 
 msgctxt "ddui"
@@ -545,7 +557,7 @@ msgid "Notification"
 msgstr ""
 
 msgctxt "smart report"
-msgid "Number maximum of displayed elements"
+msgid "Number of elements to display per page"
 msgstr ""
 
 msgctxt "grid-component"
@@ -631,6 +643,10 @@ msgstr ""
 
 msgctxt "UiMenu"
 msgid "Restore document from the trash"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Retry export"
 msgstr ""
 
 msgctxt "ddui"
@@ -738,6 +754,22 @@ msgstr ""
 
 msgctxt "ddui"
 msgid "Unlock document"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Upload all results"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Upload error"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Upload selected items"
+msgstr ""
+
+msgctxt "smart-grid"
+msgid "Upload succeeded"
 msgstr ""
 
 #, php-format

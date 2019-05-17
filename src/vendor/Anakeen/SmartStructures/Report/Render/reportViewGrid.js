@@ -20,7 +20,7 @@ window.dcp.document.documentController(
       components: {
         "search-ui-view": SearchViewGrid
       },
-      template: "<search-ui-view></search-ui-view>"
+      template: "<search-ui-view />"
     });
   }
 );

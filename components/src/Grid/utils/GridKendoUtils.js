@@ -100,8 +100,34 @@ export default class GridKendoUtils extends AbstractGridUtil {
         }
       }
     });
-  }
 
+    if (this.vueComponent.collapseRowButton) {
+      this.addCollapseRowColumn();
+    }
+  }
+  addCollapseRowColumn() {
+    this.vueComponent.$once("grid-ready", () => {
+      if (this.vueComponent.kendoGrid.pager) {
+        const pagerSizes = this.vueComponent.kendoGrid.pager.element.find(
+          ".k-pager-sizes"
+        );
+        const $collapseButton = $(
+          '<a class="grid-collapse-button k-button"> <span class="k-icon k-i-arrows-resizing"></span></a>'
+        );
+        $collapseButton.attr(
+          "title",
+          this.vueComponent.translations.rowCollapse
+        );
+        $collapseButton.insertAfter($(pagerSizes));
+        $collapseButton.on("click", event => {
+          event.preventDefault();
+          $(this.vueComponent.kendoGrid.element).toggleClass(
+            "grid-row-collapsed"
+          );
+        });
+      }
+    });
+  }
   resizeKendoWidgets() {
     if (this.vueComponent.kendoGrid) {
       this.vueComponent.kendoGrid.resize();
@@ -130,7 +156,12 @@ export default class GridKendoUtils extends AbstractGridUtil {
           if (a.action === "export") {
             toolbarActionConfig.template = ExportActionTemplate;
             this.vueComponent.$once("grid-ready", () => {
-              this.vueComponent.gridActions.initToolbarExportTemplate();
+              const $exportMenu = this.vueComponent.kendoGrid.element.find(
+                ".grid-toolbar-export-action"
+              );
+              $exportMenu.each((index, item) => {
+                this.vueComponent.gridActions.initToolbarExportTemplate(item);
+              });
             });
           }
           this.vueComponent.kendoGridOptions.toolbar.push(toolbarActionConfig);
@@ -139,11 +170,6 @@ export default class GridKendoUtils extends AbstractGridUtil {
     }
   }
 
-  decodeHtml(html) {
-    const txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
-  }
   /**
    * Format column to the Kendo Grid Column object format
    * @param {object} col - Column configuration
@@ -385,6 +411,8 @@ export default class GridKendoUtils extends AbstractGridUtil {
     this.vueComponent.kendoGridOptions.filterMenuInit = e => {
       this.vueComponent.gridFilter.onfilterMenuInit(e);
     };
+
+    this.vueComponent.collectionProperties = config.collection;
 
     this.vueComponent.kendoGridOptions.filter = e => {
       GridFilter.beforeFilterGrid(e);

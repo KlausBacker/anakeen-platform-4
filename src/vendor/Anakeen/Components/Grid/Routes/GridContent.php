@@ -26,7 +26,7 @@ class GridContent extends DataSource
         $data["requestParameters"]["pager"]=array(
             "page" => intval($this->page),
             "skip" => intval($this->_searchDoc->start),
-            "take" => intval($this->_searchDoc->slice),
+            "take" => is_numeric($this->_searchDoc->slice)?intval($this->_searchDoc->slice):$this->_searchDoc->slice,
             "pageSize" => intval($this->pageSize),
             "total" => intval($this->_searchDoc->onlyCount())
         );

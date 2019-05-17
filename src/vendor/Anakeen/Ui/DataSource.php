@@ -166,12 +166,16 @@ class DataSource extends DocumentList
     protected function preparePaging()
     {
         if (!empty($this->smartElement) && is_a($this->smartElement, \SmartStructure\Report::class)) {
-            $repLimit = intval($this->smartElement->getRawValue(Report::rep_limit, $this->pageSize));
-            $this->slice = $repLimit;
-            $this->pageSize = $this->slice;
+            $repLimit = intval($this->smartElement->getRawValue(Report::rep_limit));
+            if ($repLimit > 0) {
+                $this->slice = $repLimit;
+                $this->pageSize = $this->slice;
+            }
         }
-        $this->_searchDoc->setSlice($this->pageSize);
-        $this->_searchDoc->setStart(($this->page - 1) * $this->pageSize);
+        if ($this->pageSize > 0) {
+            $this->_searchDoc->setSlice($this->pageSize);
+            $this->_searchDoc->setStart(($this->page - 1) * $this->pageSize);
+        }
     }
 
     /**

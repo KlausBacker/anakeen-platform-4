@@ -74,18 +74,24 @@ class GridConfig
             "toolbar" => [],
             "actions" => [],
             "locales" => $this->getLocales(),
+            "collection"=> [
+                "id" => $this->collectionDoc->initid,
+                "name" => $this->collectionDoc->name,
+                "title" => $this->collectionDoc->getTitle(),
+            ],
             "contentURL" => sprintf("/api/v2/grid/content/%s%s", $this->collectionId, "?fields=" . $this->getUrlFields())
         );
     }
 
     protected function getPageable()
     {
-        $pageSlice = $this->collectionDoc->getRawValue(ReportFields::rep_limit);
-        if ($pageSlice) {
-            return ["pageSize" => intval($pageSlice), "pageSizes" => [intval($pageSlice)]];
-        } else {
-            return null;
+        if ($this->collectionDoc) {
+            $pageSlice = $this->collectionDoc->getRawValue(ReportFields::rep_limit);
+            if ($pageSlice) {
+                return ["pageSize" => intval($pageSlice), "pageSizes" => [intval($pageSlice)]];
+            }
         }
+        return null;
     }
 
     protected function getLocales()
@@ -111,6 +117,14 @@ class GridConfig
             "export" => ___("Export as XLSX", "smart-grid"),
             "selectOperator" => ___("-- Select another operator --", "smart-grid"),
             "extraOperator" => ___("Grid Settings", "smart-grid"),
+            "rowCollapse" => ___("Collapse / Expand rows", "smart-grid"),
+            "uploadReport" => ___("Export as xlsx", "smart-grid"),
+            "uploadAgain" => ___("Retry export", "smart-grid"),
+            "uploadCancel" => ___("Cancel", "smart-grid"),
+            "uploadAllResults" => ___("Upload all results", "smart-grid"),
+            "uploadSelection" => ___("Upload selected items", "smart-grid"),
+            "uploadSuccess" => ___("Upload succeeded", "smart-grid"),
+            "uploadError" => ___("Upload error", "smart-grid"),
         ];
     }
 

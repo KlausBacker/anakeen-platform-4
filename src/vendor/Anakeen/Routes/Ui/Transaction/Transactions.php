@@ -12,9 +12,10 @@ class Transactions
 
 
     /**
-     * @param \Slim\Http\request $request
+     * @param \Slim\Http\request  $request
      * @param \Slim\Http\response $response
-     * @param $args
+     * @param                     $args
+     *
      * @return \Slim\Http\response
      * @throws Exception
      */
@@ -37,16 +38,7 @@ class Transactions
 
     public function doTransactionAction($transactionId)
     {
-        sleep(20);
-        TransactionManager::updateProgression($transactionId, [
-            "progress" => "Oulà ça fait 20 secondes"
-        ]);
-        sleep(20);
-        TransactionManager::updateProgression($transactionId, [
-            "progress" => "Oulà maintenant ça fait 40 secondes"
-        ]);
-        sleep(5);
-        return "Cette fois j'ai terminé";
+        // To be set in inherit classes
     }
 
     protected function onReadRequest(\Slim\Http\request $request, \Slim\Http\response $response, $args)

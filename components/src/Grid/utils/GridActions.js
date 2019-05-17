@@ -118,14 +118,17 @@ export default class GridActions extends AbstractGridUtil {
 
   displayExportMenu() {
     const menu = this.vueComponent.kendoGrid.element;
-    menu.find("ul.grid-export-action-menu").css("display", "inline-flex");
+    menu.find("ul.grid-export-action-menu").css("display", "");
+    menu
+      .find("ul.grid-export-action-menu .k-animation-container")
+      .css("display", "none");
     menu.find(".grid-export-status--error").css("display", "none");
     menu.find(".grid-export-status--pending").css("display", "none");
     menu.find(".grid-export-status--success").css("display", "none");
   }
 
-  displayExportPendingStatus(indeterminate = false) {
-    const menu = this.vueComponent.kendoGrid.element;
+  displayExportPendingStatus(exportElement, indeterminate = false) {
+    const menu = exportElement;
     menu.find("ul.grid-export-action-menu").css("display", "none");
     menu.find(".grid-export-status--error").css("display", "none");
     const returnDom = menu.find(".grid-export-status--pending");
@@ -149,6 +152,9 @@ export default class GridActions extends AbstractGridUtil {
     menu.find("ul.grid-export-action-menu").css("display", "none");
     menu.find(".grid-export-status--error").css("display", "none");
     menu.find(".grid-export-status--pending").css("display", "none");
+    menu
+      .find(".grid-export-status--success .grid-export-status-text")
+      .text(this.vueComponent.translations.uploadSuccess);
     menu.find(".grid-export-status--success").css("display", "inline-flex");
     if (autoHide) {
       setTimeout(() => {
@@ -160,6 +166,9 @@ export default class GridActions extends AbstractGridUtil {
   displayExportErrorStatus() {
     const menu = this.vueComponent.kendoGrid.element;
     menu.find("ul.grid-export-action-menu").css("display", "none");
+    menu
+      .find(".grid-export-status--error .grid-export-status-text")
+      .text(this.vueComponent.translations.uploadError);
     menu.find(".grid-export-status--error").css("display", "inline-flex");
     menu.find(".grid-export-status--pending").css("display", "none");
     menu.find(".grid-export-status--success").css("display", "none");
@@ -167,9 +176,7 @@ export default class GridActions extends AbstractGridUtil {
 
   pollTransaction(transactionId, pollingCb = () => {}, pollingTime = 500) {
     let timer = null;
-    let call = 0;
     const getStatus = () => {
-      call++;
       this.vueComponent.$http
         .get(`/api/v2/ui/transaction/${transactionId}/status`)
         .then(response => {
@@ -179,9 +186,8 @@ export default class GridActions extends AbstractGridUtil {
             this.vueComponent.$el
           );
           if (
-            (responseData.transactionStatus === "PENDING" ||
-              responseData.transactionStatus === "CREATED") &&
-            call < 20
+            responseData.transactionStatus === "PENDING" ||
+            responseData.transactionStatus === "CREATED"
           ) {
             if (typeof pollingCb === "function") {
               pollingCb(responseData, progressBar);
@@ -207,13 +213,6 @@ export default class GridActions extends AbstractGridUtil {
   }
 
   downloadExportFile(blobFile) {
-    const date = new Date();
-    const horodator =
-      ("0" + date.getDate()).slice(-2) +
-      "-" +
-      ("0" + (date.getMonth() + 1)).slice(-2) +
-      "-" +
-      date.getFullYear();
     const url = window.URL.createObjectURL(blobFile);
     let link;
     const existLink = this.vueComponent.$("a.seGridExportLink");
@@ -227,7 +226,9 @@ export default class GridActions extends AbstractGridUtil {
     }
     link.setAttribute(
       "download",
-      `export-${this.vueComponent.collection || "data"}-${horodator}.xlsx`
+      `${this.vueComponent.collectionProperties.title ||
+        this.vueComponent.collection ||
+        "data"}.xlsx`
     );
     link.href = url;
     link.click();
@@ -338,10 +339,12 @@ export default class GridActions extends AbstractGridUtil {
 
   doExport(event, exportAll) {
     event.preventDefault();
+
+    const $exportElement = $(event.sender.element).parent();
     const exportEvent = this.sendExportEvent();
     const queryParams = this.getExportQueryParams(exportAll);
     if (exportEvent.serverProgression) {
-      this.displayExportPendingStatus();
+      this.displayExportPendingStatus($exportElement, false);
       this.createExportTransaction().then(transaction => {
         this.doTransactionExport(
           transaction,
@@ -352,7 +355,7 @@ export default class GridActions extends AbstractGridUtil {
       });
     } else {
       if (typeof exportEvent.onExport === "function") {
-        this.displayExportPendingStatus(true);
+        this.displayExportPendingStatus($exportElement, true);
         const exportPromise = exportEvent.onExport(null, queryParams);
         if (exportPromise instanceof Promise) {
           exportPromise
@@ -396,6 +399,7 @@ export default class GridActions extends AbstractGridUtil {
             transactionId
           ),
           {
+            timeout: 0,
             responseType: "blob",
             params: queryParams,
             paramsSerializer: params => this.vueComponent.$.param(params)
@@ -460,8 +464,8 @@ export default class GridActions extends AbstractGridUtil {
     }
   }
 
-  initToolbarExportPendingMenuTemplate() {
-    const exportMenu = this.vueComponent.kendoGrid.element
+  initToolbarExportPendingMenuTemplate(exportElement) {
+    const exportMenu = $(exportElement)
       .find("ul.grid-export-status--pending")
       .kendoMenu({
         openOnClick: true,
@@ -503,8 +507,8 @@ export default class GridActions extends AbstractGridUtil {
     );
   }
 
-  initToolbarExportErrorMenuTemplate() {
-    const exportMenu = this.vueComponent.kendoGrid.element
+  initToolbarExportErrorMenuTemplate(exportElement) {
+    const exportMenu = $(exportElement)
       .find("ul.grid-export-status--error")
       .kendoMenu({
         openOnClick: true,
@@ -514,13 +518,13 @@ export default class GridActions extends AbstractGridUtil {
     exportMenu.append(
       [
         {
-          text: "Recommencer l'export",
+          text: this.vueComponent.translations.uploadAgain,
           attr: {
             "data-export-action": "retry"
           }
         },
         {
-          text: "Annuler",
+          text: this.vueComponent.translations.uploadCancel,
           attr: {
             "data-export-action": "quit"
           }
@@ -530,25 +534,26 @@ export default class GridActions extends AbstractGridUtil {
     );
   }
 
-  initToolbarExportActionMenuTemplate() {
-    const exportMenu = this.vueComponent.kendoGrid.element
+  initToolbarExportActionMenuTemplate(exportElement) {
+    const exportMenu = $(exportElement)
       .find("ul.grid-export-action-menu")
       .kendoMenu({
         openOnClick: true,
+        direction: "top",
         select: e => this.onExportActionMenuItemClick(e)
       })
       .data("kendoMenu");
     const submenus = [];
     if (this.vueComponent.checkable) {
       submenus.push({
-        text: "Seulement la sélection",
+        text: this.vueComponent.translations.uploadSelection,
         attr: {
           "data-export-action": "selection"
         }
       });
     }
     submenus.push({
-      text: "Toute la grille",
+      text: this.vueComponent.translations.uploadAllResults,
       attr: {
         "data-export-action": "all"
       }
@@ -559,10 +564,10 @@ export default class GridActions extends AbstractGridUtil {
     );
   }
 
-  initToolbarExportTemplate() {
-    this.initToolbarExportActionMenuTemplate();
-    this.initToolbarExportErrorMenuTemplate();
-    this.initToolbarExportPendingMenuTemplate();
+  initToolbarExportTemplate(exportElement) {
+    this.initToolbarExportActionMenuTemplate(exportElement);
+    this.initToolbarExportErrorMenuTemplate(exportElement);
+    this.initToolbarExportPendingMenuTemplate(exportElement);
   }
 
   exportToolbarAction(e, actionType) {
