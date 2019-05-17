@@ -15,7 +15,7 @@ const createRouteXML = ({ moduleName, vendorName, namespace }) => {
         },
         "sde:route": {
           $: { name: `${moduleName}Main` },
-          "sde:callable": `\\${vendorName}\\${moduleName}\\Routes\\Main`,
+          "sde:callable": `${vendorName}\\${moduleName}\\Routes\\Main`,
           "sde:method": "GET",
           "sde:pattern": `/${moduleName}/main`,
           "sde:description": `A route example for ${moduleName}`
