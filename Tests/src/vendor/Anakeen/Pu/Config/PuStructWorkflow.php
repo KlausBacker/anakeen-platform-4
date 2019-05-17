@@ -233,7 +233,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_redaction' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Rédaction field access list',
+                    'label' => 'Rédaction liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -330,7 +330,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_validee_rs' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Validée RS field access list',
+                    'label' => 'Validée RS liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -427,7 +427,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_archivee' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Archivée field access list',
+                    'label' => 'Archivée liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -524,7 +524,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_validee_directeur' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Validée Directeur field access list',
+                    'label' => 'Validée Directeur liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -621,7 +621,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_validee_ca' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Validée CTP field access list',
+                    'label' => 'Validée CTP liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -718,7 +718,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_contrat_signe_recu' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Contrat signé reçu field access list',
+                    'label' => 'Contrat signé reçu liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -815,7 +815,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_payee_compta' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Payée compta field access list',
+                    'label' => 'Payée compta liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -912,7 +912,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_ar_recu' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'AR reçu field access list',
+                    'label' => 'AR reçu liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -1009,7 +1009,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_ctp_informe' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'CTP informée field access list',
+                    'label' => 'CTP informée liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
@@ -1106,7 +1106,7 @@ class PuStructWorkflow extends TestCaseConfig
             'wd_fallide_tst_sl_bap' =>
                 array(
                     'type' => 'docid',
-                    'label' => 'Bon à payer field access list',
+                    'label' => 'Bon à payer liste d\'accès aux champs',
                     'format' => 'FIELDACCESSLAYERLIST',
                     'access' => 'ReadWrite',
                     'options' =>
