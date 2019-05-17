@@ -6,12 +6,12 @@ const { getModuleInfo } = require("../utils/moduleInfo");
 const phpPathDirectory = (callable, moduleData) => {
   let path = callable.split("/");
   path.pop();
-  return moduleData.buildInfo.buildPath[0] + "/vendor" + path.join("/");
+  return moduleData.buildInfo.buildPath[0] + "/vendor/" + path.join("/");
 };
 const convertPathInPhpNamespace = callable => {
   let path = callable.split("/");
   path.pop();
-  return path.join("\\").replace("\\", "");
+  return path.join("\\");
 };
 const middlewareConf = (
   namespace,
@@ -224,10 +224,7 @@ exports.createRoute = ({
             if (err) {
               return reject(err);
             }
-            callable = callable
-              .split("/")
-              .join("\\")
-              .replace("\\", "");
+            callable = callable.split("/").join("\\");
             let middlewareTag = null;
             let routesTag = null;
             let overridesTag = null;
@@ -419,7 +416,7 @@ exports.createRoute = ({
           namespace: convertPathInPhpNamespace(callable)
         });
         fs.writeFile(
-          moduleData.buildInfo.buildPath[0] + "/vendor" + callable + ".php",
+          moduleData.buildInfo.buildPath[0] + "/vendor/" + callable + ".php",
           phpStruct,
           err => {
             if (err) {
