@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
     <smart:structure-configuration name="TST_001" label="Test n°1">
-        <smart:default-folder>9</smart:default-folder>
         <smart:icon file="N1.png"/>
         <smart:usefor>N</smart:usefor>
         <smart:tag name="vendor">Anakeen</smart:tag>
