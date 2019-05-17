@@ -150,7 +150,7 @@ class PuStructBasic extends TestCaseConfig
                 [
                     "label" => "Test n°1",
                     "icon" => "N1.png",
-                    "dfldid" => 9,
+                    "dfldid" => null,
                     "tags" => [
                         "vendor" => "Anakeen"
                     ]
