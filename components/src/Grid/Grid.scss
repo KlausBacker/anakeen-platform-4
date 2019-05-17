@@ -137,6 +137,7 @@
 
 
   .grid-cell-value {
+    word-break: break-all; // For firefox
     word-break: break-word;
   }
 
