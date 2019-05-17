@@ -43,7 +43,7 @@ exports.createWorkflowModel = ({
     }
     if (!workflowPath && vendorName && moduleName) {
       //Compute and test the workflowPath for the vendor name
-      let basePath = path.join("vendor", vendorName, moduleName, "Workflows");
+      let basePath = path.join("vendor", vendorName, moduleName);
       if (associatedSmartStructure) {
         const StructureName =
           associatedSmartStructure.charAt(0).toUpperCase() +
@@ -53,8 +53,7 @@ exports.createWorkflowModel = ({
           vendorName,
           moduleName,
           "SmartStructures",
-          StructureName,
-          `${StructureName}Workflows`
+          StructureName
         );
       }
       //Compute and test the workflowPath for the vendor name
@@ -68,20 +67,34 @@ exports.createWorkflowModel = ({
         }
       });
       if (!srcPath) {
-        let errorMessage = `Unable to find a setting path for the vendor (${vendorName}), you should create it or indicate the settingPath option`;
+        let errorMessage = `Unable to find a source path for the vendor (${vendorName}), you should create it or indicate the workflowPath option`;
         if (associatedSmartStructure) {
-          errorMessage = `Unable to find a setting path for the vendor (${vendorName}) and the structure ${associatedSmartStructure}, you should create it or indicate the settingPath option`;
+          errorMessage = `Unable to find a the ${associatedSmartStructure} source path, you should create it or indicate the workflowPath option`;
         }
         throw new Error(errorMessage);
+      }
+      if (associatedSmartStructure) {
+        const StructureName =
+          associatedSmartStructure.charAt(0).toUpperCase() +
+          associatedSmartStructure.slice(1).toLowerCase();
+        basePath = path.join(basePath, `${StructureName}Workflows`);
+      } else {
+        basePath = path.join(basePath, "Workflows");
       }
       workflowPath = path.join(srcPath, basePath);
     }
     //Create the directory if needed
-    let directoryPromise = Promise.resolve(workflowPath);
-    const Name =
-      modelName.charAt(0).toUpperCase() + modelName.slice(1).toLowerCase();
+    let workflowDirectory = workflowPath;
     if (inSelfDirectory) {
-      const workflowDirectory = path.join(workflowPath, `${Name}Workflow`);
+      const Name =
+        modelName.charAt(0).toUpperCase() + modelName.slice(1).toLowerCase();
+      workflowDirectory = path.join(workflowPath, `${Name}Workflow`);
+    }
+    let directoryPromise = Promise.resolve(workflowDirectory);
+    if (
+      !fs.existsSync(workflowDirectory) ||
+      !fs.statSync(workflowDirectory).isDirectory()
+    ) {
       directoryPromise = new Promise((resolve, reject) => {
         fsUtils.mkpdir(workflowDirectory, err => {
           if (err) {
@@ -186,8 +199,7 @@ exports.createWorkflowInstance = ({
         vendorName,
         moduleName,
         "SmartStructures",
-        StructureName,
-        `${StructureName}Workflows`
+        StructureName
       );
 
       //Compute and test the workflowPath for the vendor name
@@ -201,27 +213,30 @@ exports.createWorkflowInstance = ({
         }
       });
       if (!srcPath) {
-        let errorMessage = `Unable to find a setting path for the vendor (${vendorName}) and the structure ${associatedSmartStructure}, you should create it or indicate the settingPath option`;
+        let errorMessage = `Unable to find the ${associatedSmartStructure} source path for the vendor (${vendorName}), you should create it or indicate the settingPath option`;
         throw new Error(errorMessage);
       }
-      workflowPath = path.join(srcPath, basePath);
+      workflowPath = path.join(srcPath, basePath, `${StructureName}Workflows`);
+    }
+    if (inSelfDirectory) {
+      const InstanceName =
+        instanceName.charAt(0).toUpperCase() +
+        instanceName.slice(1).toLowerCase();
+      workflowPath = path.join(workflowPath, `${InstanceName}Workflow`);
     }
     //Create the directory if needed
     let directoryPromise = Promise.resolve(workflowPath);
-    const InstanceName =
-      instanceName.charAt(0).toUpperCase() +
-      instanceName.slice(1).toLowerCase();
-    if (inSelfDirectory) {
-      const workflowDirectory = path.join(
-        workflowPath,
-        `${InstanceName}Workflow`
-      );
+
+    if (
+      !fs.existsSync(workflowPath) ||
+      !fs.statSync(workflowPath).isDirectory()
+    ) {
       directoryPromise = new Promise((resolve, reject) => {
-        fsUtils.mkpdir(workflowDirectory, err => {
+        fsUtils.mkpdir(workflowPath, err => {
           if (err) {
             reject(err);
           }
-          resolve(workflowDirectory);
+          resolve(workflowPath);
         });
       });
     }
