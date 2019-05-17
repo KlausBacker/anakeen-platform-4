@@ -7,8 +7,8 @@ before_script:
 
 stages:
   - autotest
+  - package
   - integration
-  - stable
 
 autotest:
   stage: autotest
@@ -18,7 +18,7 @@ autotest:
     - ./.cibuild/cibuild.sh --target autotest
   artifacts:
     paths:
-    - outputs/
+      - outputs/
     expire_in: 1 week
     when: always
   only:
@@ -26,18 +26,32 @@ autotest:
 
 integration:
   stage: integration
+  variables:
+    CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_INTEGRATION_ANAKEEN_APP_REGISTRY_BUCKET"
+    CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_INTEGRATION_ANAKEEN_APP_REGISTRY_URL"
+    CIBUILD_ANAKEEN_NPM_REGISTRY: "$CIBUILD_INTEGRATION_ANAKEEN_NPM_REGISTRY"
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target integration
+    - ./.cibuild/cibuild.sh --target integration --publish --no-tag --bucket integration
+  artifacts:
+    paths:
+      - outputs/
+    expire_in: 1 week
+    when: always
   only:
     - master@Anakeen/Platform-4/npm/anakeen-cli
+    - web
 
-stable:
-  stage: stable
+package:
+  stage: package
+  variables:
+    CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_BUCKET"
+    CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_URL"
+    CIBUILD_ANAKEEN_NPM_REGISTRY: "$CIBUILD_STABLE_ANAKEEN_NPM_REGISTRY"
   tags:
     - a4ppm
   script:
-    - ./.cibuild/cibuild.sh --target stable
+    - ./.cibuild/cibuild.sh --target package --publish
   only:
     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/npm/anakeen-cli

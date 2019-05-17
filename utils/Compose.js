@@ -316,7 +316,12 @@ class Compose {
       } else {
         throw new ComposeError(`Unrecognized resource type '${type}'`);
       }
-      await this._updateLocalResource({ type, src: url, pathname });
+      await this._updateLocalResource({
+        type,
+        src: url,
+        pathname,
+        moduleName
+      });
       resources[type] = {
         name: moduleInfo[type],
         src: url,
@@ -404,16 +409,14 @@ class Compose {
    * the archive's basename: `/path/to/archive.src` will be unpacked in
    * `/path/to/archive` (without the `.src` suffix)
    * @param {string} archive Path to archive
+   * @param {string} moduleName name of the module
    * @returns {Promise<*>}
    */
-  async unpackSrc(archive) {
+  async unpackSrc(archive, moduleName) {
     if (!archive.match(/\.src$/)) {
       throw new ComposeError(`Archive '${archive}' has no '.src' suffix`);
     }
-    let name = path.basename(archive, ".src");
-    const regex = new RegExp("-(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$");
-    const versionNumber = name.match(regex)[0];
-    const basename = name.replace(versionNumber, "");
+    const basename = moduleName || path.basename(archive, ".src");
     const dirname = path.dirname(archive);
     const pathname = path.normalize([dirname, basename].join("/"));
     if (await Compose.fileExists(pathname)) {
@@ -588,7 +591,12 @@ class Compose {
         signale.note(
           `Updating outdated resource '${pathname}' from lock src '${src}'`
         );
-        await this._updateLocalResource({ type, src, pathname });
+        await this._updateLocalResource({
+          type,
+          src,
+          pathname,
+          moduleName: lockedModule.$.name
+        });
       } else {
         signale.note(`Local resource '${pathname}' is up-to-date`);
       }
@@ -605,13 +613,13 @@ class Compose {
     return Compose.fileExists(srcUnpackDir);
   }
 
-  async _updateLocalResource({ type, src, pathname }) {
+  async _updateLocalResource({ type, src, pathname, moduleName }) {
     signale.note(`Downloading '${src}' to '${pathname}'...`);
     const httpAgent = new HTTPAgent({ debug: this.$.debug });
     await httpAgent.downloadFileTo(src, pathname);
     if (type === "src") {
       signale.note(`Unpacking '${type}' from '${src}' into '${pathname}'`);
-      await this.unpackSrc(pathname);
+      await this.unpackSrc(pathname, moduleName);
     }
     signale.note(`Done.`);
   }
