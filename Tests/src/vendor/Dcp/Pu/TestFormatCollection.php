@@ -694,7 +694,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 ),
                 array(
                     "value" => "^[0-9]+$",
-                    "url" => "api/v2/documents/"
+                    "url" => "api/v2/smart-elements/"
                 )
             ),
             array(
@@ -912,7 +912,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 ),
                 array(
                     "value" => "^[0-9]+$",
-                    "url" => "api/v2/documents/"
+                    "url" => "api/v2/smart-elements/"
                 )
             ),
 
@@ -926,7 +926,7 @@ class TestFormatCollection extends TestCaseDcpCommonFamily
                 ),
                 array(
                     "value" => "^[0-9]+$",
-                    "url" => "api/v2/documents/"
+                    "url" => "api/v2/smart-elements/"
                 )
             ),
 
