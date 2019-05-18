@@ -9,6 +9,8 @@ const util = require("util");
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
 
+const outputPath = process.env.CIBUILD_OUTPUTS;
+
 return produceApp({
   apps: [
     {
