@@ -49,10 +49,10 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/internal-components@^1.0.1-dev20190412123917":
-  version "1.0.1-dev20190513070753"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190513070753.tgz#842a4e6e2154b2f7788fa950dc4a52b7cbef7d09"
-  integrity sha512-W8kiLEHI1yC9WP4lvReI53xryJwS3biZybHl4nikJUlrH/bTpfk4Q3o1UKSUFLcM1/uzPKC7TZZ6PH9ebPBiGg==
+"@anakeen/internal-components@^1.0.1":
+  version "1.0.1"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1.tgz#89d2a12f56dbf372061c1f43617031757e67fef9"
+  integrity sha512-guq8DBfvsBuCk27ULiYKTyDYQHEK3o5sJVEzriv7VX9JlSkQu4hKdbaxaomm2XZAlwEnY0WlthbojWsEdIlJSw==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     axios "^0.18.0"
@@ -60,22 +60,22 @@
     vue-class-component "^7.0.2"
     vue-property-decorator "^8.1.0"
 
-"@anakeen/theme-variables@^0.0.2":
-  version "0.0.2"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2ftheme-variables/-/theme-variables-0.0.2.tgz#3855a712fa76fabb7febb6e365067ff8c80ba8f3"
-  integrity sha512-3g3nwLdm1IMCyQDxxHnp5RWHY8HbasxfxJwhF9EboJE2tWSihUDoP1xrzNdOwUrqHoaXLhDjzSjCd3kz3vnUDQ==
+"@anakeen/theme-variables@^1.0.0":
+  version "1.0.0"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2ftheme-variables/-/theme-variables-1.0.0.tgz#ec0b517aeec565ffcacb2f0bfa1020a614ce5797"
+  integrity sha512-ZpsezoIAPAEMd3qLHxsTYecHcindI2d0xVmMCrJ32azZmNx1Mv9ETAdXUbCq1QuX3qzm9B6yYdfl04ZDSBVFGQ==
   dependencies:
     "@progress/kendo-theme-bootstrap" "^3.2.1"
     font-awesome "^4.7.0"
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190510085942":
-  version "2.0.0-dev20190516125204"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190516125204.tgz#ebdb34ff2569177481b7a6c01724169271fb0686"
-  integrity sha512-GDfbzDaNqBcOwxdewvbxIw7y7Tw54YE9ZqA1ZOR0UuVAZUJL3EFblduX2bisH0lHUfEof2eYWExTuz+JA+tbng==
+"@anakeen/user-interfaces@^2.0.0":
+  version "2.0.0"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0.tgz#76a83bfa83e4d10024f22f3c2bba4d933de03f0a"
+  integrity sha512-ndQchNt+bUkMTObZu1l1DpSMLgtvi058zi+ZhlniUMoQb1OK5QR/9yvgljdJY3eSpnuGZ/H8rvi2v8Vcv8Jxgg==
   dependencies:
-    "@anakeen/theme-variables" "^0.0.2"
+    "@anakeen/theme-variables" "^1.0.0"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
     "@progress/kendo-theme-bootstrap" "^3.2.3"
     "@progress/kendo-ui" "2019.1.320"
@@ -91,6 +91,43 @@
     vue-custom-element "^3.2.5"
     vue-gettext "^2.1.0"
     vue-template-compiler "2.6.10"
+    whatwg-fetch "^3.0.0"
+
+"@anakeen/webpack-conf@^1.2.0":
+  version "1.2.0"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.2.0.tgz#41a324c02e17bee93ba7ad8fb97e0fa9d832782e"
+  integrity sha512-Z4bt7wM+MZKg5T/hex3ursLRZ6KL4GTBBIlXvvpm+wuygmhzSCxtXrumck5qjfXSIooV4Le2gi2nZa3aTlipxQ==
+  dependencies:
+    "@babel/core" "^7.4.0"
+    "@babel/plugin-syntax-dynamic-import" "^7.2.0"
+    "@babel/polyfill" "^7.4.0"
+    "@babel/preset-env" "^7.4.2"
+    assets-webpack-plugin "^3.9.10"
+    babel-loader "^8.0.5"
+    clean-webpack-plugin "^2.0.1"
+    core-js "^3.0.0"
+    css-loader "^2.1.1"
+    duplicate-package-checker-webpack-plugin "^3.0.0"
+    file-loader "^3.0.1"
+    graceful-fs "^4.1.15"
+    html-webpack-plugin "^3.2.0"
+    mini-css-extract-plugin "^0.5.0"
+    node-sass "^4.11.0"
+    optimize-css-assets-webpack-plugin "^5.0.1"
+    progress-bar-webpack-plugin "^1.12.1"
+    raw-loader "^2.0.0"
+    sass-loader "^7.1.0"
+    style-loader "^0.23.1"
+    ts-loader "^5.3.3"
+    typescript "^3.3.4000"
+    vue-loader "^15.7.0"
+    vue-style-loader "^4.1.2"
+    vue-template-compiler "2.6.10"
+    webpack "^4.29.6"
+    webpack-cli "^3.3.0"
+    webpack-dev-server "^3.1.0"
+    webpack-fix-style-only-entries "^0.2.1"
+    webpack-merge "^4.2.1"
     whatwg-fetch "^3.0.0"
 
 "@anakeen/webpack-conf@^1.2.0-dev20190326111645":
