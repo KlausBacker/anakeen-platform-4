@@ -39,7 +39,7 @@
   "author": "Anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
-    "@anakeen/internal-components": "^1.0.1-dev20190412123917",
+    "@anakeen/internal-components": "^1.0.1",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@types/navigo": "^7.0.1",
     "@types/url-join": "^4.0.0",
@@ -58,8 +58,8 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190510085942",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
+    "@anakeen/user-interfaces": "^2.0.0",
+    "@anakeen/webpack-conf": "^1.2.0",
     "@commitlint/config-conventional": "^7.6.0",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
@@ -85,7 +85,7 @@
     "@progress/kendo-layout-vue-wrapper/vue": "2.6.10"
   },
   "peerDependencies": {
-    "@anakeen/internal-components": "^1.0.1-dev20190322160440",
+    "@anakeen/internal-components": "^1.0.1",
     "vue": "2.6.10"
   },
   "husky": {
