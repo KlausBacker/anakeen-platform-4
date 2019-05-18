@@ -49,32 +49,33 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/internal-components@^1.0.1-dev20190322160440":
-  version "1.0.1-dev20190322160440"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190322160440.tgz#e9b94b6af80cda32ddd990e32dfc09cfbd54fe23"
-  integrity sha512-EAwdoRhayYW2hZKB2AcXHMrFNybNIGe1/TgCOFc8rlXmFE44QX7giWtdnlAdYU8pr8qwfl1t4JhAIfV5VqG8Qg==
+"@anakeen/internal-components@^1.0.1":
+  version "1.0.1"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1.tgz#89d2a12f56dbf372061c1f43617031757e67fef9"
+  integrity sha512-guq8DBfvsBuCk27ULiYKTyDYQHEK3o5sJVEzriv7VX9JlSkQu4hKdbaxaomm2XZAlwEnY0WlthbojWsEdIlJSw==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     axios "^0.18.0"
-    vue-class-component "^7.0.1"
-    vue-property-decorator "^7.3.0"
+    core-js "3.0.0"
+    vue-class-component "^7.0.2"
+    vue-property-decorator "^8.1.0"
 
-"@anakeen/theme-variables@^0.0.2":
-  version "0.0.2"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2ftheme-variables/-/theme-variables-0.0.2.tgz#3855a712fa76fabb7febb6e365067ff8c80ba8f3"
-  integrity sha512-3g3nwLdm1IMCyQDxxHnp5RWHY8HbasxfxJwhF9EboJE2tWSihUDoP1xrzNdOwUrqHoaXLhDjzSjCd3kz3vnUDQ==
+"@anakeen/theme-variables@^1.0.0":
+  version "1.0.0"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2ftheme-variables/-/theme-variables-1.0.0.tgz#ec0b517aeec565ffcacb2f0bfa1020a614ce5797"
+  integrity sha512-ZpsezoIAPAEMd3qLHxsTYecHcindI2d0xVmMCrJ32azZmNx1Mv9ETAdXUbCq1QuX3qzm9B6yYdfl04ZDSBVFGQ==
   dependencies:
     "@progress/kendo-theme-bootstrap" "^3.2.1"
     font-awesome "^4.7.0"
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0-dev20190326115253":
-  version "2.0.0-dev20190326115253"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190326115253.tgz#b725057048c56d601b77075be321351e69638c56"
-  integrity sha512-nI+6NrfPcfGaZ1Tq4Ma/nWbSY+NJewIhM3eRpDZSiNfJQ2qzvCG7QVRSIL6SAnFHRCB0JZdBoiOLYpE31ekOoA==
+"@anakeen/user-interfaces@^2.0.0":
+  version "2.0.0"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0.tgz#76a83bfa83e4d10024f22f3c2bba4d933de03f0a"
+  integrity sha512-ndQchNt+bUkMTObZu1l1DpSMLgtvi058zi+ZhlniUMoQb1OK5QR/9yvgljdJY3eSpnuGZ/H8rvi2v8Vcv8Jxgg==
   dependencies:
-    "@anakeen/theme-variables" "^0.0.2"
+    "@anakeen/theme-variables" "^1.0.0"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
     "@progress/kendo-theme-bootstrap" "^3.2.3"
     "@progress/kendo-ui" "2019.1.320"
@@ -92,7 +93,44 @@
     vue-template-compiler "2.6.10"
     whatwg-fetch "^3.0.0"
 
-"@anakeen/webpack-conf@1.2.0-dev20190326111645", "@anakeen/webpack-conf@^1.2.0-dev20190326111645":
+"@anakeen/webpack-conf@^1.2.0":
+  version "1.2.0"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.2.0.tgz#41a324c02e17bee93ba7ad8fb97e0fa9d832782e"
+  integrity sha512-Z4bt7wM+MZKg5T/hex3ursLRZ6KL4GTBBIlXvvpm+wuygmhzSCxtXrumck5qjfXSIooV4Le2gi2nZa3aTlipxQ==
+  dependencies:
+    "@babel/core" "^7.4.0"
+    "@babel/plugin-syntax-dynamic-import" "^7.2.0"
+    "@babel/polyfill" "^7.4.0"
+    "@babel/preset-env" "^7.4.2"
+    assets-webpack-plugin "^3.9.10"
+    babel-loader "^8.0.5"
+    clean-webpack-plugin "^2.0.1"
+    core-js "^3.0.0"
+    css-loader "^2.1.1"
+    duplicate-package-checker-webpack-plugin "^3.0.0"
+    file-loader "^3.0.1"
+    graceful-fs "^4.1.15"
+    html-webpack-plugin "^3.2.0"
+    mini-css-extract-plugin "^0.5.0"
+    node-sass "^4.11.0"
+    optimize-css-assets-webpack-plugin "^5.0.1"
+    progress-bar-webpack-plugin "^1.12.1"
+    raw-loader "^2.0.0"
+    sass-loader "^7.1.0"
+    style-loader "^0.23.1"
+    ts-loader "^5.3.3"
+    typescript "^3.3.4000"
+    vue-loader "^15.7.0"
+    vue-style-loader "^4.1.2"
+    vue-template-compiler "2.6.10"
+    webpack "^4.29.6"
+    webpack-cli "^3.3.0"
+    webpack-dev-server "^3.1.0"
+    webpack-fix-style-only-entries "^0.2.1"
+    webpack-merge "^4.2.1"
+    whatwg-fetch "^3.0.0"
+
+"@anakeen/webpack-conf@^1.2.0-dev20190326111645":
   version "1.2.0-dev20190326111645"
   resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fwebpack-conf/-/webpack-conf-1.2.0-dev20190326111645.tgz#41c673fe7f206018ffaad0d55c1cee5bebe604ff"
   integrity sha512-iJ5CTI61x2TPD3AVD2re6bAL4LR565dluZdGYRirzLG3aKve2NEtbxzEEcjdz5KVWjPCeljFu1hkLhFco/cvdw==
@@ -9561,15 +9599,15 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-vue-class-component@^6.2.0:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-6.3.2.tgz#e6037e84d1df2af3bde4f455e50ca1b9eec02be6"
-  integrity sha512-cH208IoM+jgZyEf/g7mnFyofwPDJTM/QvBNhYMjqGB8fCsRyTf68rH2ISw/G20tJv+5mIThQ3upKwoL4jLTr1A==
-
 vue-class-component@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.0.1.tgz#7af2225c600667c7042b60712eefdf41dfc6de63"
   integrity sha512-YIihdl7YmceEOjSwcxLhCXCNA3TKC2FStuMcjtuzhUAgw5x5d1T5gZTmVQHGyOaQsaKffL4GlZzYN3dlMYl53w==
+
+vue-class-component@^7.0.2:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.1.0.tgz#b33efcb10e17236d684f70b1e96f1946ec793e87"
+  integrity sha512-G9152NzUkz0i0xTfhk0Afc8vzdXxDR1pfN4dTwE72cskkgJtdXfrKBkMfGvDuxUh35U500g5Ve4xL8PEGdWeHg==
 
 vue-custom-element@^3.2.1, vue-custom-element@^3.2.5:
   version "3.2.6"
@@ -9602,12 +9640,12 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-property-decorator@^7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-7.3.0.tgz#d50d67f0b0f1c814f9f2fba36d6eeccbcc62dbb6"
-  integrity sha512-HarXfTQ/Nxm4s/APpAaGIGHq5ZzslApImQy8ZrtkfGamw8rUFAVgMS5C50/AQ80+wfw3Wpnf4bNzbmj75m/k2Q==
+vue-property-decorator@^8.1.0:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-8.1.1.tgz#80dadbe5ffa0e7eb6a0ba0a07036365471a7d5ee"
+  integrity sha512-K+PUT17ZEMWyhrKZnl4Fc9qMyFpMcjVbZJBwx4BpA8BXfaspaTeFdoHuk1aywC/+4G86sxIr/5n4IQUQLecSWw==
   dependencies:
-    vue-class-component "^6.2.0"
+    vue-class-component "^7.0.1"
 
 vue-router@^3.0.2:
   version "3.0.2"
