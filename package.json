@@ -18,9 +18,9 @@
     "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy"
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.0-dev20190430102957",
-    "@anakeen/theme-variables": "^0.0.2",
-    "@anakeen/user-interfaces": "^2.0.0-dev20190430094508",
+    "@anakeen/hub-components": "^1.0.0",
+    "@anakeen/theme-variables": "^1.0.0",
+    "@anakeen/user-interfaces": "^2.0.0",
     "@types/jquery": "^3.3.29",
     "@types/kendo-ui": "^2019.1.1",
     "vue": "2.6.10",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.1.5",
-    "@anakeen/webpack-conf": "^1.2.0-dev20190326111645",
+    "@anakeen/webpack-conf": "^1.2.0",
     "@commitlint/config-conventional": "^7.5.0",
     "commitlint": "^7.5.2",
     "husky": "^2.1.0",
