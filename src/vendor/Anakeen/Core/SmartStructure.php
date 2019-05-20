@@ -27,7 +27,6 @@ create table docfam (cprofid int ,
                      param jsonb,
                      genversion float,
                      maxrev int,
-                     usedocread int,
                      tagable text,
                      configuration text) inherits (doc);
 create unique index idx_idfam on docfam(id);";
@@ -51,7 +50,6 @@ create unique index idx_idfam on docfam(id);";
             "defaultvalues",
             "param",
             "genversion",
-            "usedocread",
             "schar",
             "maxrev",
             "tagable",

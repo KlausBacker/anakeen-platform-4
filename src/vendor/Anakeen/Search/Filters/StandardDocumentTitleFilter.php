@@ -12,10 +12,12 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
     protected $MATCH_REGEXP = false;
     protected $NOCASE = false;
     protected $value = null;
-    protected $compatibleType = array(
-        'docid',
-        'account',
-    );
+    protected $compatibleType
+        = array(
+            'docid',
+            'account',
+        );
+
     public function __construct($attrId, $value)
     {
         parent::__construct($attrId);
@@ -27,6 +29,7 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
             $this->NOCASE = ($argv[0] & self::NOCASE);
         }
     }
+
     /**
      * Generate sql part
      *
@@ -37,27 +40,32 @@ class StandardDocumentTitleFilter extends StandardAttributeFilter implements Ele
     public function addFilter(\Anakeen\Search\Internal\SearchSmartData $search)
     {
         $attr = $this->verifyCompatibility($search);
-        // $famName = $attr->format;
-        $search->join("id = docrel(sinitid)");
-        $search->addFilter($this->_filter($attr, $this->value));
+        $docTitle = $attr->getOption("doctitle");
+        if ($docTitle) {
+            if ($docTitle === "auto") {
+                $docTitle = $attr->id . "_title";
+            }
+            $operator = ($this->NOCASE) ? '~*' : '~';
+
+            $search->addFilter("%s %s '%s'", $docTitle, $operator, $this->MATCH_REGEXP ? $this->value : preg_quote($this->value));
+        } else {
+            // $famName = $attr->format;
+            $search->join("id = docrel(sinitid)");
+            $search->addFilter($this->_filter($attr, $this->value));
+        }
         return $this;
     }
+
     protected function _filter(NormalAttribute & $attr, $value)
     {
         $leftOperand = 'docrel.ctitle';
         $rightOperand = $value;
-        if ($this->MATCH_REGEXP) {
-            $operator = ($this->NOCASE) ? '~*' : '~';
-            $rightOperand = sprintf("E'%s'", pg_escape_string($rightOperand));
-        } else {
-            $operator = '=';
-            if ($this->NOCASE) {
-                $leftOperand = sprintf("lower(%s)", $leftOperand);
-                $rightOperand = sprintf("lower(%s)", pg_escape_literal($value));
-            } else {
-                $rightOperand = pg_escape_literal($value);
-            }
+
+        if (!$this->MATCH_REGEXP) {
+            $rightOperand = preg_quote($rightOperand);
         }
+        $operator = ($this->NOCASE) ? '~*' : '~';
+        $rightOperand = sprintf("E'%s'", pg_escape_string($rightOperand));
         $sql = sprintf("docrel.type = %s AND %s %s %s", pg_escape_literal(mb_strtolower($attr->id)), $leftOperand, $operator, $rightOperand);
         return $sql;
     }

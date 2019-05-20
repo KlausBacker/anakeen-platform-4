@@ -349,11 +349,11 @@ class TestSearch extends TestCaseDcpCommonFamily
             $c = $s->onlyCount();
         } catch (\Anakeen\Database\Exception $e) {
         }
-
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
 
-        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
+        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s %s ", $count, $s->count(), $criteria, $arg, print_r($s->getSearchInfo(),true)));
+
         $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
     }
 

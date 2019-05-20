@@ -84,15 +84,7 @@ class DirLib
             $table = "doc$fromid";
         } else {
             if ($fromid != 0) {
-                if (self::isSimpleFilter($sqlfilters) && (self::familyNeedDocread($dbaccess, $fromid))) {
-                    $table = "docread";
-                    $fdoc = \Anakeen\Core\SEManager::getFamily($fromid);
-                    $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
-                        $fromid
-                    ), array_keys($fdoc->GetChildFam())), "fromid", true);
-                } else {
-                    $table = "doc$fromid";
-                }
+                $table = "doc$fromid";
             } elseif ($fromid == 0) {
                 if (self::isSimpleFilter($sqlfilters)) {
                     $table = "docread";
@@ -423,11 +415,10 @@ class DirLib
             $fld = SEManager::getDocument($dirid);
             if (($fld->defDoctype == 'S') && ($fld->getRawValue("se_famid"))) {
                 $fromid = $fld->getRawValue("se_famid");
-                $fdoc = SEManager::getFamily(abs($fromid), true);
+                $fdoc = SEManager::getFamily(abs($fromid));
                 if (!$fdoc || !$fdoc->isAlive()) {
                     throw new \Anakeen\Exception(sprintf(_('Family [%s] not found'), abs($fromid)));
                 }
-                unset($fdoc);
             }
         }
         if ($trash == "only") {
@@ -792,34 +783,5 @@ class DirLib
             $query->order_by = "lower(title)";
             return $query->Query(0, 0, $qtype);
         }
-    }
-
-
-    /**
-     * return true for optimization select
-     * @param string $dbaccess database specification
-     * @param int    $id       identifier of the document family
-     *
-     * @return int false if error occured
-     */
-    public static function familyNeedDocread($dbaccess, $id)
-    {
-        if (!is_numeric($id)) {
-            $id = \Anakeen\Core\SEManager::getFamilyIdFromName($id);
-        }
-        $id = abs(intval($id));
-        if ($id == 0) {
-            return false;
-        }
-        $dbid = \Anakeen\Core\DbManager::getDbId();
-        $result = pg_query($dbid, "select id from docfam where id=$id and usedocread=1");
-        if (pg_numrows($result) > 0) {
-            $result = pg_query($dbid, "select fromid from docfam where fromid=$id;");
-            if (pg_numrows($result) > 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
