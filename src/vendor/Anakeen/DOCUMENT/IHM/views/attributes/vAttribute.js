@@ -4,6 +4,7 @@ define([
   "underscore",
   "backbone",
   "mustache",
+  "dcpDocument/i18n/documentCatalog",
   "dcpDocument/views/document/attributeTemplate",
   "dcpDocument/widgets/attributes/label/wLabel",
   "dcpDocument/widgets/attributes/text/wText",
@@ -20,7 +21,7 @@ define([
   "dcpDocument/widgets/attributes/file/wFile",
   "dcpDocument/widgets/attributes/double/wDouble",
   "dcpDocument/widgets/attributes/docid/wDocid"
-], function vAttribute($, _, Backbone, Mustache, attributeTemplate) {
+], function vAttribute($, _, Backbone, Mustache, i18n, attributeTemplate) {
   "use strict";
 
   return Backbone.View.extend({
@@ -686,7 +687,10 @@ define([
             if (response.status === 0) {
               return {
                 success: false,
-                error: "Your navigator seems offline, try later"
+                error: i18n.___(
+                  "Your navigator seems offline, try later",
+                  "ddui"
+                )
               };
             }
             if (
