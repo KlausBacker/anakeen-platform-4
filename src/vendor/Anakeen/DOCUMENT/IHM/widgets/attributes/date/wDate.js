@@ -147,6 +147,9 @@
       };
 
       inputValue.kendoDatePicker(kOptions);
+      inputValue.on("keydown", () => {
+        inputValue.data("kendoDatePicker").close();
+      });
 
       // Workaround for date paste : change event is not trigger in this case
       inputValue.on("paste" + this.eventNamespace, function wDatePaste() {

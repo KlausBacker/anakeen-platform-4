@@ -48,6 +48,9 @@
         scope.setValue({ value: isoDate, displayValue: inputValue.val() });
       };
       inputValue.kendoTimePicker(kOptions);
+      inputValue.on("keydown", () => {
+        inputValue.data("kendoTimePicker").close();
+      });
       this._controlDate(inputValue);
       if (this.options.attributeValue && this.options.attributeValue.value) {
         this.setValue(this.options.attributeValue);
