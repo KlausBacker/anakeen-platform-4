@@ -72,6 +72,9 @@
         }
       };
       inputValue.kendoDateTimePicker(kendoOptions);
+      inputValue.on("keydown", () => {
+        inputValue.data("kendoDateTimePicker").close();
+      });
 
       this._controlDate(inputValue);
     },
