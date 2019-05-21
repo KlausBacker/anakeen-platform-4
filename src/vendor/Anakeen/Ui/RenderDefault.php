@@ -300,6 +300,19 @@ class RenderDefault implements IRenderConfig
             "allSelectedDocument" => ___("No more matching", "ddui-docid")
         ));
         $opt->commonOption()->setLabelPosition(\Anakeen\Ui\CommonRenderOptions::upPosition);
+        $opt->int()->setTranslations(array(
+            "increaseLabel" => ___("Increase value", "ddui-numerical"),
+            "decreaseLabel" => ___("Decrease value", "ddui-numerical")
+        ));
+        $opt->double()->setTranslations(array(
+            "increaseLabel" => ___("Increase value", "ddui-numerical"),
+            "decreaseLabel" => ___("Decrease value", "ddui-numerical")
+        ));
+        $opt->money()->setTranslations(array(
+            "increaseLabel" => ___("Increase value", "ddui-numerical"),
+            "decreaseLabel" => ___("Decrease value", "ddui-numerical")
+        ));
+
 
         $selectedTab = $document->getUTag("lasttab");
         if ($selectedTab) {
