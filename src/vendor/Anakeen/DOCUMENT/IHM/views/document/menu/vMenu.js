@@ -56,7 +56,7 @@ define(["underscore", "backbone", "dcpDocument/widgets/menu/wMenu"], function(
 
       options.attrid = this.model.id;
       this.model.trigger("internalLinkSelected", internalEvent, options);
-      if (event.prevent) {
+      if (internalEvent.prevent) {
         return this;
       }
       this.model.trigger("actionAttributeLink", internalEvent, options);
