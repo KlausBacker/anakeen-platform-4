@@ -89,8 +89,9 @@
         this._bindEvents();
         this._isEventBinded(true);
       }
-      this.element.find(".dcpArray--collapsable").on(
+      this.element.on(
         "click" + this.eventNamespace,
+        ".dcpArray--collapsable",
         _.bind(function toogleTable() {
           this.toggleCollapse.apply(this);
         }, this)
