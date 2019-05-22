@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: aurelien
- * Date: 07/08/18
- * Time: 13:53
- */
 
 namespace Anakeen\Components\Grid\Routes;
 
@@ -22,7 +16,7 @@ use SmartStructure\Fields\Report as ReportFields;
  *
  * Class Config
  *
- * @note    Used by route : GET api/v2/grid/config
+ * @note    Used by route : GET /api/v2/grid/config
  * @package Anakeen\Routes\Authent
  */
 class GridConfig
@@ -47,20 +41,7 @@ class GridConfig
         $this->parseRequestParams($request, $response, $args);
         $this->gridFields = $this->getGridFields();
 
-        // Until this filter is fixed
-        $this->removeTitleContainFilterForTheMoment();
         return ApiV2Response::withData($response, $this->getConfig());
-    }
-
-    private function removeTitleContainFilterForTheMoment()
-    {
-        foreach ($this->gridFields as $k => $fields) {
-            if (isset($fields["filterable"]["operators"])) {
-                foreach ($fields["filterable"]["operators"] as $ok => $operatorType) {
-                    unset($this->gridFields[$k]["filterable"]["operators"][$ok]["titleContains"]);
-                }
-            }
-        }
     }
 
     protected function parseRequestParams(\Slim\Http\Request $request, \Slim\Http\Response $response, $args)
