@@ -46,6 +46,7 @@ define([
       dcplabelexternallinkselected: "externalLinkSelected",
       "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
       "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
+      "dcpattributeuploadfileerror  .dcpAttribute__content": "uploadFileError",
       "dcpattributeuploadfiledone  .dcpAttribute__content": "uploadFileDone",
       "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
       "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
@@ -511,6 +512,13 @@ define([
       options
     ) {
       this.model.trigger("uploadFile", widgetEvent, this.model.id, options);
+    },
+    uploadFileError: function vAttributeuploadFileError(event, params) {
+      this.model.getDocumentModel().trigger("showMessage", {
+        type: "error",
+        title: "",
+        htmlMessage: params.message
+      });
     },
     uploadFileDone: function vAttributeuploadFileSEnd(widgetEvent, options) {
       this.model.trigger("uploadFileDone", widgetEvent, this.model.id, options);
