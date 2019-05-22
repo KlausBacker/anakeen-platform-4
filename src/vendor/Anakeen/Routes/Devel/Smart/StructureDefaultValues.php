@@ -41,28 +41,22 @@ class StructureDefaultValues extends StructureFields
 
     protected static function getConfigParameterValues(SmartStructure $structure)
     {
-        $fields = $structure->getOwnDefValues();
+        $configDefValues = $structure->getOwnDefValues();
         $data = [];
 
-        $element = SEManager::createTemporaryDocument($structure->name);
+        $element = SEManager::createTemporaryDocument($structure->name, true);
 
-
-        foreach ($fields as $field => $value) {
-            $oa = $structure->getAttribute($field);
-            if (!$oa) {
-                $data[$field] = [
-                    "config" => $value,
-                    "type" => "unknow",
-                    "value" => "Error : Unknow field"
-                ];
-            } else {
-                $isMultiple = $oa->isMultiple();
-                $data[$field] = [
-                    "config" => $value,
-                    "type" => $oa->usefor === "Q" ? "parameter" : "field",
-                    "value" => $isMultiple ? $element->getRawValue($field) : $element->getMultipleRawValues($field)
-                ];
+        $fields = $structure->getAttributes();
+        foreach ($fields as $field => $oa) {
+            if ($field === SmartStructure\Attributes::HIDDENFIELD) {
+                continue;
             }
+            $isMultiple = $oa->isMultiple();
+            $data[$field] = [
+                "config" => $configDefValues[$field]??"",
+                "type" => $oa->usefor === "Q" ? "parameter" : "field",
+                "value" => $isMultiple ? $element->getRawValue($field) : $element->getMultipleRawValues($field)
+            ];
         }
         return $data;
     }
