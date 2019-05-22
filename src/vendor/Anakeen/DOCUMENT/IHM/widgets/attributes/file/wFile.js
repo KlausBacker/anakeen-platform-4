@@ -6,13 +6,14 @@
     define([
       "jquery",
       "underscore",
+      "dcpDocument/i18n/documentCatalog",
       "dcpDocument/widgets/attributes/text/wText"
     ], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._);
   }
-})(window, function wFileWidget($, _) {
+})(window, function wFileWidget($, _, i18n) {
   "use strict";
 
   //noinspection JSUnusedLocalSymbols
@@ -424,6 +425,14 @@
             $el: currentWidget.element,
             index: currentWidget._getIndex(),
             file: null
+          });
+          currentWidget._trigger("uploadfileerror", event, {
+            index: currentWidget._getIndex(),
+            message: i18n.___("Your navigator seems offline, try later", "ddui")
+          });
+          currentWidget.setValue({
+            displayValue: "",
+            value: ""
           });
           inputText.css(
             "background-image",
