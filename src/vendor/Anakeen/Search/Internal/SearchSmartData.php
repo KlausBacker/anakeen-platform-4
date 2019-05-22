@@ -6,6 +6,8 @@
 
 namespace Anakeen\Search\Internal;
 
+use Anakeen\Core\SEManager;
+use Anakeen\Search\Exception;
 use \Anakeen\SmartStructures\Dir\DirLib;
 use \Anakeen\SmartStructures\Dir\DirHooks;
 
@@ -372,6 +374,75 @@ class SearchSmartData
         }
     }
 
+    protected function getJoinTable()
+    {
+        if ($this->join) {
+            if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $this->join, $reg)) {
+                $joinid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['family']);
+                $jointable = ($joinid) ? "doc" . $joinid : $reg['family'];
+
+                return $jointable;
+            } else {
+                throw new Exception(sprintf("search join syntax error : %s", $this->join));
+            }
+        }
+    }
+
+    protected function getMainTable()
+    {
+        $fromid = $this->fromid;
+
+        if (!is_numeric($fromid)) {
+            $fromid = SEManager::getIdFromName($fromid);
+        } else {
+            $fromid = intval($fromid);
+        }
+
+        if ($this->dirid) {
+            $fld = \Anakeen\Core\SEManager::getDocument($this->dirid);
+            if ($fld) {
+                \Anakeen\Core\SEManager::cache()->addDocument($fld);
+                if ($this->join && $fld->defDoctype === 'S') {
+                    return "z";
+                }
+            }
+        }
+        if (!$fromid) {
+            if ($this->dirid) {
+                $fld = \Anakeen\Core\SEManager::getDocument($this->dirid);
+                if ($fld) {
+                    \Anakeen\Core\SEManager::cache()->addDocument($fld);
+                    if ($this->join && $fld->defDoctype === 'S') {
+                        return "z";
+                    }
+                    if (($fld->defDoctype === 'S') && ($fld->getRawValue("se_famid"))) {
+                        $fromid = $fld->getRawValue("se_famid");
+                    }
+                }
+            }
+        }
+        $table = "doc";
+        if ($fromid == -1) {
+            $table = "docfam";
+        } elseif ($fromid < 0) {
+            $this->only = true;
+            $fromid = abs($fromid);
+            $table = "doc$fromid";
+        } else {
+            if ($fromid != 0) {
+                $table = "doc$fromid";
+            } elseif ($fromid == 0) {
+                if (DirLib::isSimpleFilter($this->getFilters())) {
+                    $table = "docread";
+                }
+            }
+        }
+        if ($this->dirid) {
+            $fld = \Anakeen\Core\SEManager::getDocument($this->dirid);
+        }
+        return $table;
+    }
+
     /**
      * count results
      * ::search must be call before
@@ -629,6 +700,7 @@ class SearchSmartData
             return $this->returnsFields;
         }
         if ($this->fromid) {
+            return ["*"];
             $fdoc = \Anakeen\Core\SEManager::createTemporaryDocument($this->fromid, false);
             if ($fdoc->isAlive()) {
                 return array_merge($fdoc->fields, $fdoc->sup_fields);
@@ -1062,48 +1134,19 @@ class SearchSmartData
         if ($this->only && strpos($fromid, '-') !== 0) {
             $fromid = '-' . $fromid;
         }
-        $table = "doc";
-        $only = "";
 
-        if ($fromid == -1) {
-            $table = "docfam";
-        } elseif ($fromid < 0) {
-            $only = "only";
-            $fromid = -$fromid;
-            $table = "doc$fromid";
-        } else {
-            if ($fromid != 0) {
-                if (DirLib::isSimpleFilter($sqlfilters) && (DirLib::familyNeedDocread($dbaccess, $fromid))) {
-                    $table = "docread";
-
-                    $fdoc = \Anakeen\Core\SEManager::getFamily($fromid);
-                    $sqlfilters[-4] = \Anakeen\Core\DbManager::getSqlOrCond(array_merge(array(
-                        $fromid
-                    ), array_keys($fdoc->GetChildFam())), "fromid", true);
-                } else {
-                    $table = "doc$fromid";
-                }
-            } elseif ($fromid == 0) {
-                if (DirLib::isSimpleFilter($sqlfilters)) {
-                    $table = "docread";
-                }
-            }
-        }
+        $table = $this->getMainTable();
+        $only = $this->only ? "only" : "";
         $maintable = $table; // can use join only on search
         if ($join) {
             if (preg_match('/(?P<attr>[a-z0-9_\-:]+)\s*(?P<operator>=|<|>|<=|>=)\s*(?P<family>[a-z0-9_\-:]+)\((?P<family_attr>[^\)]*)\)/', $join, $reg)) {
-                $joinid = \Anakeen\Core\SEManager::getFamilyIdFromName($reg['family']);
-                $jointable = ($joinid) ? "doc" . $joinid : $reg['family'];
-
+                $jointable = $this->getJoinTable();
                 $sqlfilters[] = sprintf("%s.%s %s %s.%s", $table, $reg['attr'], $reg['operator'], $jointable, $reg['family_attr']); // "id = dochisto(id)";
                 $maintable = $table;
                 $table .= ", " . $jointable;
-            } else {
-                \Anakeen\Core\Utils\System::addWarningMsg(sprintf(_("search join syntax error : %s"), $join));
-                return false;
             }
         }
-        $maintabledot = ($maintable && $dirid == 0) ? $maintable . '.' : '';
+        $maintabledot = ($maintable && $maintable !== "doc") ? $maintable . '.' : '';
 
         if ($distinct) {
             $selectfields = "distinct on ($maintable.initid) $maintable.*";
@@ -1208,7 +1251,7 @@ class SearchSmartData
                 }
             } else {
                 //-------------------------------------------
-                // search familly
+                // search Smart Elements from Smart Structure
                 //-------------------------------------------
                 $docsearch = new \Anakeen\Core\Internal\QueryDb($dbaccess, \QueryDir::class);
                 $docsearch->AddQuery("dirid=$dirid");
@@ -1231,11 +1274,12 @@ class SearchSmartData
                             $fld->folderRecursiveLevel = $folderRecursiveLevel;
                             $tsqlM = $fld->getQuery();
                             $qsql = [];
+
                             foreach ($tsqlM as $sqlM) {
                                 if ($sqlM != false) {
                                     if (!preg_match("/doctype[ ]*=[ ]*'Z'/", $sqlM, $reg)) {
                                         if (($trash != "also") && ($trash != "only")) {
-                                            $sqlfilters[-3] = "doctype != 'Z'"; // no zombie if no trash
+                                            $sqlfilters[-3] = $maintabledot . "doctype != 'Z'"; // no zombie if no trash
                                         }
                                         ksort($sqlfilters);
                                         foreach ($sqlfilters as $kf => $sf) { // suppress doubles
@@ -1255,7 +1299,13 @@ class SearchSmartData
                                     $fldFromId = ($fromid == 0) ? $fld->getRawValue('se_famid', 0) : $fromid;
                                     $sqlM = $this->injectFromClauseForOrderByLabel($fldFromId, $this->orderbyLabel, $sqlM);
                                     if ($sqlcond) {
-                                        $qsql[] = $sqlM . " and " . $sqlcond;
+                                        if ($this->join) {
+                                            $qsql[] = sprintf("select z.* from (%s) as z, %s where %s", $sqlM, $this->getJoinTable(), $sqlcond);
+                                        } else {
+                                            //$qsql[] = sprintf("select * from (%s) as z where %s", $sqlM, $sqlcond);
+
+                                            $qsql[] = $sqlM . " and " . $sqlcond;
+                                        }
                                     } else {
                                         $qsql[] = $sqlM;
                                     }
