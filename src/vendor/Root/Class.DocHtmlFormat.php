@@ -915,7 +915,8 @@ class DocHtmlFormat
         } else {
             if ($avalue !== '') {
                 $htmlval = money_format('%!.2n', doubleval($avalue));
-                $htmlval = str_replace(" ", "&nbsp;", $htmlval); // need to replace space by non breaking spaces
+                // Be carreful replace normal space by non breaking spaces : Narrow No-Break Space
+                $htmlval = str_replace(" ", "\u202F", $htmlval);
             } else {
                 $htmlval = '';
             }
