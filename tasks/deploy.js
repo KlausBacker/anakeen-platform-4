@@ -123,7 +123,11 @@ exports.buildAndDeploy = ({
           interactive.info(message);
         };
         const localName = uuid_v4();
-        const build = await buildPipe({ sourceDir, autoRelease, localName });
+        const build = await buildPipe({
+          sourcePath: sourceDir,
+          autoRelease,
+          localName
+        });
         deployPipe({
           gulpSrc: build,
           localName,
