@@ -603,6 +603,7 @@ function wiff_context_module_help(&$context, &$argv)
     echo "  --nopost   Do not execute post-upgrade processes.\n";
     echo "  --nothing  Do not execute pre-upgrade and post-upgrade processes.\n";
     echo "  --force    Force upgrade.\n";
+    echo "  --all      Upgrade all installed modules.\n";
     echo "\n";
     return 0;
 }
@@ -1039,7 +1040,11 @@ function wiff_context_module_upgrade(&$context, &$argv)
     if (is_file($modName)) {
         return wiff_context_module_upgrade_local($context, $options, $modName, $argv);
     } else {
-        return wiff_context_module_upgrade_remote($context, $options, $modName, $argv);
+        if (!empty($options["all"])) {
+            return wiff_context_module_upgrade_all($context, $options, $argv);
+        } else {
+            return wiff_context_module_upgrade_remote($context, $options, $modName, $argv);
+        }
     }
 }
 
@@ -2923,4 +2928,48 @@ function executeModulePhase(&$module, $phaseName, $options = array())
     $phase = $module->getPhase($phaseName);
     $processList = $phase->getProcessList();
     return executeProcessList($processList, $options);
+}
+
+function wiff_context_module_upgrade_all(Context & $context, $options, $argv)
+{
+    $moduleList = array_filter($context->getInstalledModuleListWithUpgrade(true), function ($module) {
+        return $module->canUpdate === true;
+    });
+    $moduleNames = array_map(function ($module) {
+        return $module->name;
+    }, $moduleList);
+    if (empty($moduleList)) {
+        echo fg_green(). "No modules to update. All is up-to-date.". color_reset()."\n";
+        return 0;
+    }
+    $dependencies = $context->getModuleDependencies($moduleNames);
+    foreach ($dependencies as $dependency) {
+        /** @var Module $dependency */
+        if ($dependency->needphase == '') {
+            $dependency->needphase = 'upgrade';
+        }
+
+        $op = '(i)';
+        if ($dependency->needphase == 'upgrade') {
+            $op = fg_green(). '(u)'. color_reset();
+        } else {
+            if ($dependency->needphase == 'replaced') {
+                $op = '(r) (replaced by ' . (($dependency->replacedBy) ? $dependency->replacedBy : 'unknown') . ')';
+            }
+        }
+        $error = "";
+        if ($dependency->errorMessage) {
+            $error = "(" . fg_red() . $dependency->errorMessage . color_reset() . ")";
+        }
+        $warning = "";
+        if ($dependency->warningMessage) {
+            $warning = "(" . fg_yellow() . $dependency->warningMessage . color_reset() . ")";
+        }
+        echo sprintf("- %s-%s-%s %s%s%s\n", $dependency->name, $dependency->version, $dependency->release, $op, $error, $warning);
+    }
+    $ret = param_ask($options, "Proceed upgrade", "Y/n", "Y");
+    if (!preg_match('/^(y|yes|)$/i', $ret)) {
+        return 0;
+    }
+    return wiff_context_module_install_deplist($context, $options, $argv, $dependencies, 'upgrade');
 }
