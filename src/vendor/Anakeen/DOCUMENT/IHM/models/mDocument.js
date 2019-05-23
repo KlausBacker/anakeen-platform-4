@@ -535,7 +535,10 @@ define([
         currentModel.trigger("showError", {
           errorCode: errorCode,
           title: i18n.___("Unexpected error ", "ddui") + " : " + title,
-          message: parsedReturn.responseText
+          message:
+            parsedReturn.messages.length === 0
+              ? parsedReturn.responseText
+              : parsedReturn.messages.join(" ")
         });
       }
       _.each(
@@ -1352,15 +1355,15 @@ define([
                   successpromiseArguments: arguments
                 });
               },
-              function mDocument_injectJSFail(values) {
+              function mDocument_injectJSFail() {
+                currentModel.message = i18n.___(
+                  "JS resources could not be loaded",
+                  "ddui"
+                );
                 reject({
                   documentProperties: properties,
                   promiseArguments: arguments
                 });
-                currentModel.trigger.apply(
-                  currentModel,
-                  _.union(["dduiDocumentFail"], values.promiseArguments)
-                );
               }
             );
           },
@@ -1555,8 +1558,12 @@ define([
           ) {
             currentModel.trigger.apply(
               currentModel,
-              _.union(["dduiDocumentFail"], values.promiseArguments[0])
+              _.union(
+                ["dduiDocumentFail", currentModel],
+                values.promiseArguments[0]
+              )
             );
+            currentModel.trigger("displayNetworkError");
           }
         }
       );
