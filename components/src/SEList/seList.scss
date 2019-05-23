@@ -128,7 +128,6 @@
 }
 
 .seList__listItem {
-  min-height: 3.5rem;
   border-style: none;
   cursor: pointer;
   line-height: 1.3em;
@@ -137,9 +136,6 @@
   opacity: 0.8;
   border-bottom: 1px solid #ccc;
 
-  &.seList__listItem__full {
-    min-height: 5rem;
-  }
 
   &:hover {
     color: #00b4fc;
@@ -164,12 +160,13 @@
 
 .seList__listItem__heading {
   text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  display: flex;
+  align-items: flex-start;
 
   & > span {
     position: relative;
     bottom: -2px;
+    display:block;
   }
 }
 
@@ -179,12 +176,13 @@
   align-items: center;
   justify-content: flex-end;
   margin-right: 1rem;
+  margin-top: -0.5rem;
 
   .seList__listItem__heading__state--color {
     border-radius: 25%;
     width: .8rem;
     height: .8rem;
-    margin-right: .5rem;
+    margin-left: .5rem;
     background-color: transparent;
   }
 }
