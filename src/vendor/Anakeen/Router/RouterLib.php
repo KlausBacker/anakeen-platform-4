@@ -23,6 +23,7 @@ class RouterLib
      * @throws Exception
      */
     const NS = "sde";
+    const NSURL="https://platform.anakeen.com/4/schemas/sde/1.0";
     protected static $index=0;
 
 
@@ -68,7 +69,15 @@ class RouterLib
     {
         $xmlData = file_get_contents($configFile);
 
-        $simpleData = simplexml_load_string($xmlData, \SimpleXMLElement::class, 0, self::NS, true);
+        $sxe = new \SimpleXMLElement($xmlData);
+        $namespaces = $sxe->getNamespaces();
+        $ns=array_search(self::NSURL, $namespaces);
+
+        if (!$ns) {
+            $ns=self::NS;
+        }
+
+        $simpleData = simplexml_load_string($xmlData, \SimpleXMLElement::class, 0, $ns, true);
 
         if ($simpleData === false) {
             throw new \Anakeen\Router\Exception("ROUTER0107", $configFile);
