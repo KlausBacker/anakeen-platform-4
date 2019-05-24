@@ -48,6 +48,8 @@ define([
       "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
       "dcpattributeuploadfileerror  .dcpAttribute__content": "uploadFileError",
       "dcpattributeuploadfiledone  .dcpAttribute__content": "uploadFileDone",
+      "dcpattributedisplaynetworkerror  .dcpAttribute__content":
+        "displayNetworkError",
       "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
       "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
     },
@@ -913,6 +915,10 @@ define([
 
     show: function vAttributeShow() {
       this.$el.show();
+    },
+
+    displayNetworkError: function vAttributeDisplayNetworkError() {
+      this.model.getDocumentModel().trigger("displayNetworkError");
     },
 
     _closeWidget: function vAttribute__closeWidget() {
