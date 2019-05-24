@@ -4,6 +4,10 @@ const USER_INTERFACES = path.resolve(BASE_DIR,
   "node_modules",
   "@anakeen",
   "user-interfaces");
+const HUB = path.resolve(BASE_DIR,
+  "node_modules",
+  "@anakeen",
+  "hub-components");
 
 const { addDll } = require("@anakeen/webpack-conf/parts");
 
@@ -51,6 +55,18 @@ module.exports.dllPart = [
       "ankDll",
       "legacy",
       "ankKendoDll-manifest.json"
+    )
+  }),
+  addDll({
+    context: BASE_DIR,
+    manifest: path.join(
+      HUB,
+      "src",
+      "public",
+      "Anakeen",
+      "hubVendor",
+      "legacy",
+      "hubVendor-manifest.json"
     )
   })
 ];
