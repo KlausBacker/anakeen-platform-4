@@ -2,30 +2,29 @@
 
 namespace Anakeen\Core\Internal\Format;
 
-use \Anakeen\Core\SEManager;
-
 class DoubleAttributeValue extends FormatAttributeValue
 {
     public function __construct(\Anakeen\Core\SmartStructure\NormalAttribute $oa, $v, $decimalSeparator = ',')
     {
         parent::__construct($oa, $v);
-        $lang = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
-        if ($lang == "fr_FR") {
-            if (is_array($this->displayValue)) {
-                foreach ($this->displayValue as $k => $v) {
-                    $this->displayValue[$k] = str_replace('.', $decimalSeparator, $v);
+        if ($this->value !== null) {
+            $lang = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "CORE_LANG");
+
+            if (is_array($this->value)) {
+                foreach ($this->value as $k => $v2) {
+                    $this->value[$k] = ($v2 !== "") ? doubleval($v2) : null;
+                }
+                if ($lang == "fr_FR") {
+                    foreach ($this->displayValue as $k => $v2) {
+                        $this->displayValue[$k] = str_replace('.', $decimalSeparator, $v2);
+                    }
                 }
             } else {
-                $this->displayValue = str_replace('.', $decimalSeparator, $this->displayValue);
+                $this->value = doubleval($this->value);
+                if ($lang == "fr_FR") {
+                    $this->displayValue = str_replace('.', $decimalSeparator, $this->displayValue);
+                }
             }
-        }
-        if (is_array($this->value)) {
-            /** @noinspection PhpWrongForeachArgumentTypeInspection */
-            foreach ($this->value as $k => $v) {
-                $this->value[$k] = doubleval($v);
-            }
-        } else {
-            $this->value = doubleval($this->value);
         }
     }
 }
