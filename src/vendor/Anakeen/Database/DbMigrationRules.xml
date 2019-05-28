@@ -14,7 +14,6 @@
             <sql-query label="Add data column">
                 alter table doclog add column data jsonb;
             </sql-query>
-            <php label="Transfert values from arg column to data column" callable="Anakeen\Database\Migrations\DocLogConvert::__invoke()" load-context="false"/>
         </process>
         <check>
             <sql-assert-not-empty label="verify column data of table doclog has been created">

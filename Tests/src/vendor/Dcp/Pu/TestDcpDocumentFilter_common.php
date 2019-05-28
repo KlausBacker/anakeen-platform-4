@@ -12,16 +12,16 @@ class TestDcpDocumentFilter_common extends TestCaseDcpCommonFamily
         $res = $s->search();
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search returned with error: %s (query=[%s])", $err, $s->getOriginalQuery()));
-        
+
         $found = array();
         foreach ($res as & $r) {
             $found[] = $r["name"];
         }
         unset($r);
-        
+
         $missing = array_diff($expected, $found);
-        $this->assertEmpty($missing, sprintf("Missing elements in result: %s (query=[%s])", join(", ", $missing), $s->getOriginalQuery()));
-        
+        $this->assertEmpty($missing, sprintf("Missing elements in result: %s (query=[%s])", join(", ", $missing), print_r($s->getSearchInfo(), true)));
+
         $spurious = array_diff($found, $expected);
         $this->assertEmpty($spurious, sprintf("Spurious elements in result: %s (query=[%s])", join(", ", $spurious), $s->getOriginalQuery()));
     }
