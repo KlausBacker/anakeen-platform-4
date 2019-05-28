@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/user-interfaces",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "autorelease": true,
   "description": "A package for the user interface of anakeen-platform",
   "keywords": [
