@@ -117,6 +117,7 @@ class FilterTemplate {
     $selectEle.insertBefore(e.element);
     $selectEle.addClass("filter-input--user");
     e.element.addClass("filter-input--data");
+    e.element.addClass("k-textbox filter-input");
     e.element.hide();
 
     $selectEle.kendoComboBox({
@@ -388,6 +389,8 @@ export default class GridFilter {
     $th.attr("data-field", col.field);
     $th.prepend(this.grid.$('<div class="operator-label"/>'));
 
+    $form.attr("data-field", col.field);
+    $form.attr("data-type", col.smartType);
     e.element.attr("data-field", col.field);
     switch (col.smartType) {
       case "date":
@@ -422,12 +425,44 @@ export default class GridFilter {
 
   onfilterMenuInit(e) {
     const $container = e.container;
-    const additionalDropdown = $container
-      .find(".k-dropdown[role=listbox] select")
-      .last()
-      .data("kendoDropDownList");
-    if (additionalDropdown) {
+    const $selects = $container.find(".k-dropdown[role=listbox] select");
+
+    if ($selects.length > 1) {
+      const additionalDropdown = $container
+        .find(".k-dropdown[role=listbox] select")
+        .last()
+        .data("kendoDropDownList");
       additionalDropdown.text(this.grid.translations.selectOperator);
+    }
+
+    if (
+      $container.data("type") === "docid" ||
+      $container.data("type") === "account"
+    ) {
+      // Special toogle to switch to class keyword and autocomplete
+      // when operator = titleContains
+      if ($($selects.get(0)).val() === "titleContains") {
+        $container.find(".filter-input--data").show();
+        $container.find(".k-widget.filter-input--user").hide();
+      }
+      $selects.each((k, item) => {
+        const $select = $(item);
+        const kSelect = $select.data("kendoDropDownList");
+        kSelect.bind("select", event => {
+          const $simpleInput = $container.find(".filter-input--data");
+          const $autocompleteInput = $container.find(
+            ".k-widget.filter-input--user"
+          );
+
+          if (event.dataItem.value === "titleContains") {
+            $simpleInput.show();
+            $autocompleteInput.hide();
+          } else {
+            $simpleInput.hide();
+            $autocompleteInput.show();
+          }
+        });
+      });
     }
   }
 

@@ -4,6 +4,7 @@ define([
   "underscore",
   "backbone",
   "mustache",
+  "dcpDocument/i18n/documentCatalog",
   "dcpDocument/views/document/attributeTemplate",
   "dcpDocument/widgets/attributes/label/wLabel",
   "dcpDocument/widgets/attributes/text/wText",
@@ -20,7 +21,7 @@ define([
   "dcpDocument/widgets/attributes/file/wFile",
   "dcpDocument/widgets/attributes/double/wDouble",
   "dcpDocument/widgets/attributes/docid/wDocid"
-], function vAttribute($, _, Backbone, Mustache, attributeTemplate) {
+], function vAttribute($, _, Backbone, Mustache, i18n, attributeTemplate) {
   "use strict";
 
   return Backbone.View.extend({
@@ -45,6 +46,7 @@ define([
       dcplabelexternallinkselected: "externalLinkSelected",
       "dcpattributedownloadfile  .dcpAttribute__content": "downloadFileSelect",
       "dcpattributeuploadfile  .dcpAttribute__content": "uploadFileSelect",
+      "dcpattributeuploadfileerror  .dcpAttribute__content": "uploadFileError",
       "dcpattributeuploadfiledone  .dcpAttribute__content": "uploadFileDone",
       "dcpattributeanchorclick .dcpAttribute__content": "anchorClick",
       "dcpattributewidgetready .dcpAttribute__content": "setWidgetReady"
@@ -511,6 +513,13 @@ define([
     ) {
       this.model.trigger("uploadFile", widgetEvent, this.model.id, options);
     },
+    uploadFileError: function vAttributeuploadFileError(event, params) {
+      this.model.getDocumentModel().trigger("showMessage", {
+        type: "error",
+        title: "",
+        htmlMessage: params.message
+      });
+    },
     uploadFileDone: function vAttributeuploadFileSEnd(widgetEvent, options) {
       this.model.trigger("uploadFileDone", widgetEvent, this.model.id, options);
     },
@@ -686,7 +695,10 @@ define([
             if (response.status === 0) {
               return {
                 success: false,
-                error: "Your navigator seems offline, try later"
+                error: i18n.___(
+                  "Your navigator seems offline, try later",
+                  "ddui"
+                )
               };
             }
             if (

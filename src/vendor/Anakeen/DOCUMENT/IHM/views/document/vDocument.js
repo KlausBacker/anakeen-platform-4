@@ -880,6 +880,17 @@ define([
     },
 
     /**
+     * Publish associated model message
+     */
+    showMessage: function vDocumentShowMessage(message) {
+      this.trigger("showMessage", {
+        type: message.type,
+        title: message.contentText,
+        htmlMessage: message.contentHtml
+      });
+    },
+
+    /**
      * Inject associated CSS in the DOM
      *
      * Inject new CSS, remove old CSS

@@ -63,20 +63,19 @@
                   :src="item.properties.icon"
                   alt="image"
                 />
-                <span>{{ item.properties.title }}</span>
+                <div>{{ item.properties.title }}</div>
               </div>
             </div>
             <div
               v-if="item.properties.state"
               class="seList__listItem__heading__state"
             >
-              <span
-                class="seList__listItem__heading__state--color"
-                :style="`background-color: ${item.properties.state.color}`"
-              ></span>
               <span class="seList__listItem__heading__state--label">
                 {{ item.properties.state.displayValue }}
-              </span>
+              </span><span
+                    class="seList__listItem__heading__state--color"
+                    :style="`background-color: ${item.properties.state.color}`"
+            ></span>
             </div>
           </slot>
         </div>
