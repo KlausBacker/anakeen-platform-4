@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/admin-center",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "autorelease": true,
   "description": "Web interfaces to admin applications and configure smart elements",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
@@ -29,9 +29,9 @@
   ],
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
-    "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/hub-components": "^1.0.0",
-    "@anakeen/user-interfaces": "^2.0.0",
+    "@anakeen/anakeen-cli": "^1.1.13",
+    "@anakeen/hub-components": "^1.0.1",
+    "@anakeen/user-interfaces": "^2.0.1",
     "@anakeen/webpack-conf": "^1.2.0",
     "@commitlint/config-conventional": "^7.5.0",
     "commitlint": "^7.5.2",

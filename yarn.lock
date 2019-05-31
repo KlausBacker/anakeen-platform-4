@@ -10,15 +10,15 @@
     glob "^7.1.3"
     xml2js "^0.4.19"
 
-"@anakeen/anakeen-cli@^1.1.4":
-  version "1.1.5"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.1.5.tgz#cfa1c75830e569e97e1b86772ce58d10c8d6fef1"
-  integrity sha512-lhrUVNyTeOI+dQbFWExMw8n1cNgn3eCtgnMHgtdtO5h0jzAaZyyJQcDIbgjnH7gjXJ1v4ixIakFbvlUBfcc4ww==
+"@anakeen/anakeen-cli@^1.1.13":
+  version "1.1.13"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fanakeen-cli/-/anakeen-cli-1.1.13.tgz#b368789e1198242126432d1387f559459c1a0a23"
+  integrity sha512-IPlDakFyqU+xnDIybK26jbR9i0+NC2K+GZ+Uh7L4+PTxjS6APaWdF0V3zjuBwlaZnkZ1f9kmxkmJBX20WA9hJQ==
   dependencies:
-    "@anakeen/anakeen-module-validation" "^1.0.9"
+    "@anakeen/anakeen-module-validation" "1.0.14"
     form-data "^2.3.3"
-    glob "^7.1.3"
-    gulp "^4.0.0"
+    glob "^7.1.4"
+    gulp "^4.0.2"
     gulp-gzip "^1.4.2"
     gulp-replace "^1.0.0"
     gulp-tar "^2.1.0"
@@ -33,8 +33,8 @@
     signale "^1.3.0"
     streamqueue "^1.1.2"
     tar "^4.4.8"
-    tar-stream "^2.0.0"
-    through2 "^3.0.0"
+    tar-stream "^2.0.1"
+    through2 "^3.0.1"
     tmp "^0.0.33"
     url-join "^4.0.0"
     uuid "^3.3.2"
@@ -42,17 +42,17 @@
     xml2js "^0.4.19"
     yargs "^12.0.5"
 
-"@anakeen/anakeen-module-validation@^1.0.9":
+"@anakeen/anakeen-module-validation@1.0.14":
   version "1.0.14"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.14.tgz#5bc7c20c17f830f4728b4d4a5188ff78f4ec9bd6"
-  integrity sha512-a70e0W2Zoy8YeA3AgSX/9Wy7aOkNLAdQXR/PTZopBFDd6yFu2JhDynDvRXHxvq+Ozfh+liPqpG9wHJKy4t9kBA==
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fanakeen-module-validation/-/anakeen-module-validation-1.0.14.tgz#65b421edf7af7e1ae6161fc729b35935c3be3ddd"
+  integrity sha512-qbsPKeY2i57Vf+PHFH/vFqZzYTQVa+tcxtmRsFx2lisCU88u7aKNFHhlGhz0weKvGL3kkbdnYU4c2UyQUZiDAg==
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/hub-components@^1.0.0":
-  version "1.0.0"
-  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0.tgz#8ca31779966cc0722c4ea2a1897abd3877faeb7f"
-  integrity sha512-8Nq1xmXg9r1nvSFNpXHJ68t++4ye0SLlu+kqEeLuZOkKdGGwvmG5/mL0jFV8JWow2oWeePl1UjfVytg9sgdvzg==
+"@anakeen/hub-components@^1.0.1":
+  version "1.0.1"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.1.tgz#30bdc948386a175177d4f1b0260e726b6b5765c4"
+  integrity sha512-8s1/HMt60wYw2aJ/LLqqGmrSLrQ+IiRPOYf4iwxlzw0dKbpJR2kek0nBvd0gr2OcprCfKflORK53VTsb4qXnZA==
   dependencies:
     "@anakeen/internal-components" "^1.0.1"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
@@ -91,10 +91,10 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0":
-  version "2.0.0"
-  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0.tgz#76a83bfa83e4d10024f22f3c2bba4d933de03f0a"
-  integrity sha512-ndQchNt+bUkMTObZu1l1DpSMLgtvi058zi+ZhlniUMoQb1OK5QR/9yvgljdJY3eSpnuGZ/H8rvi2v8Vcv8Jxgg==
+"@anakeen/user-interfaces@^2.0.1":
+  version "2.0.1"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.1.tgz#62b8e15635c3b0447692c03e397eab3b45c8c5e7"
+  integrity sha512-tpBbd/zmpUdykRMX9OfhsLnhU6yBOlBKp47vJHIGr3csC2faXVsf8TYb/a7iz4K2rw4WMo+BE4ZJnBf0I0AoTQ==
   dependencies:
     "@anakeen/theme-variables" "^1.0.0"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
@@ -4550,6 +4550,18 @@ glob@^7.0.0, glob@^7.0.3, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@~7.1.1:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+glob@^7.1.4:
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
+  integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.4"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
 global-dirs@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/global-dirs/-/global-dirs-0.1.1.tgz#b319c0dd4607f353f3be9cca4c72fc148c49f445"
@@ -4674,10 +4686,10 @@ gulp-tar@^2.1.0:
     through2 "^2.0.0"
     vinyl "^2.1.0"
 
-gulp@^4.0.0:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/gulp/-/gulp-4.0.1.tgz#987a38a55a7d3677f6b49e291b06bc05809f33d9"
-  integrity sha512-yDVtVunxrAdsk7rIV/b7lVSBifPN1Eqe6wTjsESGrFcL+MEVzaaeNTkpUuGTUptloSOU+8oJm/lBJbgPV+tMAw==
+gulp@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/gulp/-/gulp-4.0.2.tgz#543651070fd0f6ab0a0650c6a3e6ff5a7cb09caa"
+  integrity sha512-dvEs27SCZt2ibF29xYgmnwwCYZxdxhQ/+LFWlbAW8y7jt68L/65402Lz3+CKy0Ov4rOs+NERmDq7YlZaDqUIfA==
   dependencies:
     glob-watcher "^5.0.3"
     gulp-cli "^2.2.0"
@@ -9196,7 +9208,7 @@ tar-stream@^1.5.0:
     to-buffer "^1.1.1"
     xtend "^4.0.0"
 
-tar-stream@^2.0.0:
+tar-stream@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/tar-stream/-/tar-stream-2.0.1.tgz#42fbe41cd1cc5e6657c813e7d98e7afca2858a8c"
   integrity sha512-I6OJF7wE62BC6zNPdHDtseK0D0187PBjbKSLYY4ffvVkBM6tyBn2O9plDvVM2229/mozfEL/X3++qSvYYQE2xw==
@@ -9283,7 +9295,7 @@ through2@^2.0.0, through2@^2.0.2, through2@^2.0.3, through2@~2.0.0:
     readable-stream "~2.3.6"
     xtend "~4.0.1"
 
-through2@^3.0.0:
+through2@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/through2/-/through2-3.0.1.tgz#39276e713c3302edf9e388dd9c812dd3b825bd5a"
   integrity sha512-M96dvTalPT3YbYLaKaCuwu+j06D/8Jfib0o/PxbVt6Amhv3dUAtW6rTV1jPgJSBG83I/e04Y6xkVdVhSRhi0ww==
