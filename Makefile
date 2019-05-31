@@ -47,7 +47,7 @@ CS_BIN=php ./ide/vendor/bin/phpcs
 ########################################################################################################################
 
 install-deps:
-	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; rm -rf ./vendor; $(COMPOSER_BIN) install
+	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; $(COMPOSER_BIN) install
 	$(YARN_BIN) install
 
 ########################################################################################################################
