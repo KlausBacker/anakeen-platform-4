@@ -10,8 +10,30 @@ stages:
   - package
   - integration
 
+
+.default-cache:
+  cache: &default-cache
+    key: "Anakeen:Workflow"
+    paths:
+      - ide/vendor
+      - src/vendor/Anakeen/lib/vendor
+      - Tests/src/vendor/Anakeen/TestUnits/lib
+      - node_modules
+
+.pull-cache: &readonly-cache
+  cache:
+    <<: *default-cache
+    policy: pull
+
+.pullpush-cache: &standard-cache
+  cache:
+    <<: *default-cache
+    policy: pull-push
+
+
 autotest:
   stage: autotest
+  <<: *readonly-cache
   tags:
     - a4ppm
   script:
@@ -26,6 +48,7 @@ autotest:
 
 integration:
   stage: integration
+  <<: *standard-cache
   tags:
     - a4ppm
   variables:
@@ -44,6 +67,7 @@ integration:
 
 package:
   stage: package
+  <<: *standard-cache
   variables:
     CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_BUCKET"
     CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_URL"
