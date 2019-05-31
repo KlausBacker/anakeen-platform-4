@@ -1,5 +1,5 @@
 image:
-  name: php71pg96:latest
+  name: php72pg10:latest
 
 before_script:
   - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.anakeen.com/Anakeen/Platform-4/cibuild .cibuild.tmp
@@ -10,8 +10,28 @@ stages:
   - package
   - integration
 
+.default-cache:
+  cache: &default-cache
+    key: "Anakeen:Sde"
+    paths:
+      - ide/vendor
+      - src/vendor/Anakeen/lib/vendor
+      - Tests/src/vendor/Anakeen/TestUnits/lib
+      - node_modules
+
+.pull-cache: &readonly-cache
+  cache:
+    <<: *default-cache
+    policy: pull
+
+.pullpush-cache: &standard-cache
+  cache:
+    <<: *default-cache
+    policy: pull-push
+
 autotest:
   stage: autotest
+  <<: *readonly-cache
   tags:
     - a4ppm
   script:
@@ -26,6 +46,7 @@ autotest:
 
 integration:
   stage: integration
+  <<: *standard-cache
   tags:
     - a4ppm
   variables:
@@ -45,6 +66,7 @@ integration:
 
 package:
   stage: package
+  <<: *standard-cache
   variables:
     CIBUILD_ANAKEEN_APP_REGISTRY_BUCKET: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_BUCKET"
     CIBUILD_ANAKEEN_APP_REGISTRY_URL: "$CIBUILD_STABLE_ANAKEEN_APP_REGISTRY_URL"
