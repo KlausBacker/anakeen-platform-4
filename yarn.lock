@@ -49,10 +49,10 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/hub-components@^1.0.0":
-  version "1.0.0"
-  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0.tgz#8ca31779966cc0722c4ea2a1897abd3877faeb7f"
-  integrity sha512-8Nq1xmXg9r1nvSFNpXHJ68t++4ye0SLlu+kqEeLuZOkKdGGwvmG5/mL0jFV8JWow2oWeePl1UjfVytg9sgdvzg==
+"@anakeen/hub-components@^1.0.1":
+  version "1.0.1"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.1.tgz#30bdc948386a175177d4f1b0260e726b6b5765c4"
+  integrity sha512-8s1/HMt60wYw2aJ/LLqqGmrSLrQ+IiRPOYf4iwxlzw0dKbpJR2kek0nBvd0gr2OcprCfKflORK53VTsb4qXnZA==
   dependencies:
     "@anakeen/internal-components" "^1.0.1"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
@@ -91,10 +91,10 @@
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
 
-"@anakeen/user-interfaces@^2.0.0":
-  version "2.0.0"
-  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0.tgz#76a83bfa83e4d10024f22f3c2bba4d933de03f0a"
-  integrity sha512-ndQchNt+bUkMTObZu1l1DpSMLgtvi058zi+ZhlniUMoQb1OK5QR/9yvgljdJY3eSpnuGZ/H8rvi2v8Vcv8Jxgg==
+"@anakeen/user-interfaces@^2.0.1":
+  version "2.0.1"
+  resolved "http://npm-stable.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.1.tgz#62b8e15635c3b0447692c03e397eab3b45c8c5e7"
+  integrity sha512-tpBbd/zmpUdykRMX9OfhsLnhU6yBOlBKp47vJHIGr3csC2faXVsf8TYb/a7iz4K2rw4WMo+BE4ZJnBf0I0AoTQ==
   dependencies:
     "@anakeen/theme-variables" "^1.0.0"
     "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
