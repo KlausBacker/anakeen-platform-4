@@ -74,9 +74,10 @@ class ElementsGridConfig extends GridConfig
         $fromConfig["smartType"] = "text";
         $fromConfig["title"] = "Type";
 
-        $idConfig = ColumnsConfig::getColumnConfig("id");
+        $idConfig = ColumnsConfig::getColumnConfig("initid");
         $idConfig["filterable"] = self::getFilterable("int");
-        $idConfig["title"] = "Id";
+        $idConfig["title"] = "InitId";
+        $idConfig["smartType"] = "integer";
 
         $docTypeConfig = ColumnsConfig::getColumnConfig("doctype");
         $docTypeConfig["hidden"] = true;
