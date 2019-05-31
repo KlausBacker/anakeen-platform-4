@@ -1,6 +1,6 @@
 {
   "name": "@anakeen/hub-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "autorelease": true,
   "description": "Anakeen Hub Components",
   "main": "components/lib/hub-components.common.min.js",
@@ -57,8 +57,8 @@
   },
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.0",
-    "@anakeen/anakeen-cli": "^1.1.4",
-    "@anakeen/user-interfaces": "^2.0.0",
+    "@anakeen/anakeen-cli": "^1.1.13",
+    "@anakeen/user-interfaces": "^2.0.1",
     "@anakeen/webpack-conf": "^1.2.0",
     "@commitlint/config-conventional": "^7.6.0",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
