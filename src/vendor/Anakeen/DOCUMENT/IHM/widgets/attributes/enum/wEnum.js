@@ -7,13 +7,14 @@
       "jquery",
       "underscore",
       "mustache",
+      "dcpDocument/i18n/documentCatalog",
       "dcpDocument/widgets/attributes/wAttribute"
     ], factory);
   } else {
     //noinspection JSUnresolvedVariable
     factory(window.jQuery, window._, window.Mustache);
   }
-})(window, function require_wenum($, _, Mustache) {
+})(window, function require_wenum($, _, Mustache, i18n) {
   "use strict";
 
   var localeCompareSupportsLocales = (function testLocaleCompareSupportsLocales() {
@@ -344,12 +345,8 @@
           scope.options.renderOptions.useSourceUri = false;
           done(scope);
         })
-        .fail(function wEnum_retrieveFail(response) {
-          $("body").trigger("notification", {
-            htmlMessage: "Enumerate " + scope.options.id,
-            message: response.statusText,
-            type: "error"
-          });
+        .fail(function wEnum_retrieveFail() {
+          scope._trigger("displayNetworkError");
         });
     },
 
@@ -1064,6 +1061,11 @@
         },
         error: function wEnum_onAutoCompleteError(result) {
           // notify the data source that the request failed
+          scope._trigger("uploadfileerror", result, {
+            index: -1,
+            message: i18n.___("Your navigator seems offline, try later", "ddui")
+          });
+          $("body").trigger("displayNetworkError");
           options.error(result);
         }
       });
