@@ -9,15 +9,20 @@
         <module name="user-interfaces" version="2.0.x"/>
         <module name="security" version="2.0.x"/>
         <module name="workflow" version="2.0.x"/>
+        <module name="anakeen-hub" version="1.0.x"/>
     </requires>
 
     <parameters>
     </parameters>
 
     <post-install>
+        <!-- import default configuration of admin center -->
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/DevelopmentCenter/Config/develConfiguration.xml"/>
     </post-install>
 
     <post-upgrade>
+        <!-- import default configuration of admin center -->
+        <process command="./ank.php --script=importDocuments --file=./vendor/Anakeen/DevelopmentCenter/Config/develConfiguration.xml"/>
     </post-upgrade>
 
 

@@ -1,46 +1,30 @@
 {
   "name": "development-center",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "autorelease": true,
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
   "scripts": {
-    "beautify": "./node_modules/eslint/bin/eslint.js ./ --fix",
-    "buildJs": "webpack --config webpack/index.js"
+    "beautify": "eslint ./src --fix",
+    "buildJs:devCenter:prod": "element=DEVCENTER npx webpack --config webpack/index.js",
+    "buildJs:devCenter:dev": "element=DEVCENTER dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:devCenter": "yarn run buildJs:devCenter:prod && yarn run buildJs:devCenter:dev",
+    "buildJs": "yarn run buildJs:devCenter"
   },
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/anakeen-cli": "^1.1.13",
-    "@anakeen/internal-components": "^1.0.1",
-    "@anakeen/user-interfaces": "^2.0.1",
+    "@anakeen/anakeen-cli": "^1.1.4",
     "@anakeen/webpack-conf": "^1.2.0",
     "@commitlint/config-conventional": "^7.5.0",
-    "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
-    "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
-    "@progress/kendo-grid-vue-wrapper": "^2019.1.220",
-    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
-    "@progress/kendo-treelist-vue-wrapper": "^2019.1.220",
-    "@progress/kendo-ui": "2019.1.320",
-    "axios": "^0.18.0",
     "commitlint": "^7.5.2",
     "copy-webpack-plugin": "^5.0.2",
-    "d3": "^5.9.1",
-    "document-register-element": "^1.10.0",
     "eslint": "^5.15.3",
     "eslint-plugin-prettier": "^3.0.1",
-    "flag-icon-css": "^3.3.0",
-    "highlight.js": "^9.15.6",
+    "hard-source-webpack-plugin": "^0.13.1",
     "husky": "^1.3.1",
-    "jquery": "^3.3.1",
-    "prettier": "^1.16.4",
-    "vue": "2.6.10",
-    "vue-custom-element": "^3.2.1",
-    "vue-js-modal": "^1.3.28",
-    "vue-router": "^3.0.2",
-    "vuex": "^3.1.0",
-    "vuex-router-sync": "^5.0.0"
+    "prettier": "^1.16.4"
   },
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/development-center.git",
   "keywords": [
@@ -55,6 +39,21 @@
     }
   },
   "dependencies": {
-    "core-js": "3.0.0"
+    "@anakeen/hub-components": "^1.0.0-dev20190518140622",
+    "@anakeen/internal-components": "^1.0.1-dev20190518124914",
+    "@anakeen/user-interfaces": "^2.0.0",
+    "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-grid-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-treelist-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-ui": "2019.1.320",
+    "axios": "^0.18.0",
+    "core-js": "3.0.0",
+    "highlight.js": "^9.15.6",
+    "jquery": "^3.3.1",
+    "jquery-deparam": "^0.5.3",
+    "vue": "2.6.10",
+    "vue-js-modal": "^1.3.28"
   }
 }
