@@ -38,11 +38,6 @@ export default {
   },
   props: ["ssName"],
   watch: {
-    ssName(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.fetchStructureInfos();
-      }
-    },
     isReady(newValue) {
       if (newValue) {
         if (this.structureDetails && this.structureDetails.workflow) {
@@ -92,6 +87,14 @@ export default {
         }, tree);
       }
       return tree;
+    },
+    isHierarchyEmpty() {
+      return (
+        !this.structureHierarchy ||
+        !this.structureHierarchy.length ||
+        (this.structureHierarchy.length === 1 &&
+          !this.structureHierarchy[0].children.length)
+      );
     }
   },
   mounted() {

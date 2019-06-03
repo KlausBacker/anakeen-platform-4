@@ -4,6 +4,10 @@
   min-height: 0;
   flex: 1;
   overflow: hidden;
+
+  .fields-tabs {
+    flex: 1;
+  }
 }
 
 .fields-content {

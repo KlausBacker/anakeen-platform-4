@@ -2,55 +2,13 @@
 
 namespace Anakeen\Routes\Devel\UI;
 
-use Anakeen\Ui\UIGetAssetPath;
-
-class Main
+class Main extends \Anakeen\Hub\Routes\Hub
 {
-
-    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
-    {
-        $page = __DIR__ . "/Layout/main.html.mustache";
-        $mustache = new \Mustache_Engine();
-        $data = [
-            "CSS" => [
-                [
-                    "key" => "bootstrap",
-                    "path" => UIGetAssetPath::getCssBootstrap()
-                ],
-                [
-                    "key" => "kendo",
-                    "path" => UIGetAssetPath::getCssKendo()
-                ],
-                [
-                    "key" => "components",
-                    "path" => UIGetAssetPath::getCssSmartWebComponents()
-                ],
-            ],
-            "JS_DEPS" => [
-                [
-                    "key" => "kendo",
-                    "path" => UIGetAssetPath::getJSKendoPath()
-                ],
-                [
-                    "key" => "kendoDLL",
-                    "path" => UIGetAssetPath::getJSKendoComponentPath()
-                ],
-                [
-                    "key" => "vueDll",
-                    "path" => UIGetAssetPath::getJSVueComponentPath()
-                ]
-            ],
-            "JS" => [
-                [
-                    "key" => "admin",
-                    "path" => UIGetAssetPath::getElementAssets(
-                        "developmentCenter",
-                        UIGetAssetPath::isInDebug() ? "dev" : "prod"
-                    )["main"]["js"]
-                ]
-            ]
-        ];
-        $template = file_get_contents($page);
-        return $response->write($mustache->render($template, $data));
+    protected function getHubInstanceId(
+        \Slim\Http\request $request,
+        \Slim\Http\response $response,
+        $args
+    ) {
+        return "DEVELCENTER";
     }
 }

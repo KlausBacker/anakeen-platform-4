@@ -245,7 +245,7 @@ export default {
                   </div>
                  <button class="k-button k-button-icon view-all-acls" title="View all rights">
                     <i class="k-icon k-i-plus"></i>
-                 </button>   
+                 </button>
               </th>
             </tr>`
         );
@@ -383,7 +383,7 @@ export default {
               this.graphProperties = response.data.data.properties;
               const steps = response.data.data.steps;
               this.treeColumns = this.privateMethods.getColumns(steps);
-              if (steps.length) {
+              if (steps.length && steps[0].acls) {
                 this.acls = steps[0].acls.reduce((acc, acl) => {
                   acc[acl.name] = acl;
                   acc[acl.name].label = this.showLabel ? acl.label : acl.name;

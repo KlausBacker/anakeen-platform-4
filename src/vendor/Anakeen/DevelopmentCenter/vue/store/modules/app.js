@@ -1,7 +1,7 @@
 import {
   SET_ERROR,
   SELECT_VENDOR_CATEGORY,
-  UPDATE_VISITED_ROUTE
+  SET_CURRENT_ROUTE
 } from "../mutation-types";
 
 const mutations = {
@@ -11,15 +11,9 @@ const mutations = {
   [SELECT_VENDOR_CATEGORY](state, vendorCategory) {
     state.vendorCategory = vendorCategory;
   },
-  [UPDATE_VISITED_ROUTE](state, route) {
-    const routeIndex = state.visitedRoutes.findIndex(
-      r => r.path === route.path
-    );
-    if (routeIndex !== -1) {
-      state.visitedRoutes.splice(routeIndex, 1);
-    }
-    state.visitedRoutes.unshift(route);
-  }
+  [SET_CURRENT_ROUTE](state, route) {
+    state.currentRoute = route;
+  },
 };
 
 const loadInitialState = defaultState => {
@@ -35,7 +29,7 @@ const loadInitialState = defaultState => {
 const state = loadInitialState({
   error: {},
   vendorCategory: "all",
-  visitedRoutes: []
+  currentRoute: []
 });
 
 export default {

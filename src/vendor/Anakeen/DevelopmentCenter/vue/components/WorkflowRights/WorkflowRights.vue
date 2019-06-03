@@ -33,7 +33,9 @@
                        :headerTemplate="privateMethods.getHeaderTemplate"
                        :columnTemplate="privateMethods.getCellTemplate"
                        :inlineFilters="false"
-                       :model="model"></ank-tree-list>
+                       :model="model"
+                       messages="There are no rights for this workflow"
+        ></ank-tree-list>
     </div>
 </template>
 <!-- CSS to this component only -->

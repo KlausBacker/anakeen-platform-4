@@ -1,12 +1,17 @@
 <template>
     <div class="security-workflows-section">
-        <div class="security-workflows-section-title">
-            <h3>Workflows Security Configuration</h3>
-        </div>
         <div class="security-workflows-section-content">
-            <workflows-list listUrl="/api/v2/devel/smart/workflows/" :filter="{ placeholder: 'Search a workflow'}"
-                            vendorCategory="auto" routeName="Security::Workflows::Content"
-                            routeParamField="workflowId"></workflows-list>
+            <ss-list listUrl="/api/v2/devel/smart/workflows/" :filter="{ placeholder: 'Search a workflow'}"
+                            vendorCategory="auto"
+                            :selected="selectedWorkflow"
+                            @item-clicked="onItemClicked"
+                            @list-ready="onListReady"
+            ></ss-list>
+            <router-tabs :ref="listItem.name" @hook:mounted="onTabsMounted(listItem.name)" @tab-selected="onTabSelected" v-for="(listItem, index) in listContent" :key="index" v-show="listItem && listItem.name === selectedWorkflow" :tabs="tabs">
+                <template v-slot="slotProps">
+                    <component :is="slotProps.tab.component" :workflowId="listItem.name || listItem.id"></component>
+                </template>
+            </router-tabs>
         </div>
     </div>
 </template>

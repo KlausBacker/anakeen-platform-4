@@ -12,14 +12,12 @@
                     <span class="filter-list-clear" @click="clearFilter"><i class="material-icons">close</i></span>
                 </div>
                 <div class="smart-structure-tabs-list-nav">
-                    <router-link :to="{name: routeName, params: { [routeParamField]: tab.name || tab.id }}" v-for="(tab, index) in tabs" :key="`tab-${index}`" :class="{'smart-structure-list-item': true}" :title="tab.title">
+                    <div v-for="(tab, index) in tabs" :key="`tab-${index}`" :class="{'smart-structure-list-item': true, 'item-active': tab.name === selected}" :title="tab.title" @click="onListItemClicked(tab)">
                         <img class="smart-structure-list-item-icon" :src='tab.icon'/>
                         <div class="smart-structure-list-item-title">{{tab.name || tab.title}} ({{tab.id}})</div>
-                    </router-link>
+                    </div>
                 </div>
             </div>
-
-            <router-multi-view class="smart-structure-tabs-content"></router-multi-view>
         </div>
     </div>
 </template>

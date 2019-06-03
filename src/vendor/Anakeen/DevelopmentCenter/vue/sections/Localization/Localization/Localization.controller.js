@@ -1,4 +1,7 @@
 import Vue from "vue";
+import "@progress/kendo-ui/js/kendo.toolbar.js";
+import "@progress/kendo-ui/js/kendo.grid.js";
+import "@progress/kendo-ui/js/kendo.filtercell.js";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import { Grid, GridInstaller } from "@progress/kendo-grid-vue-wrapper";
 
@@ -85,9 +88,6 @@ export default {
       countryHeaderTemplate: lang => {
         return `
           <span    class="country-header">
-              <span class="flag-icon flag-icon-${getIsoAlpha2Code(
-                lang.field
-              )}"></span>
               <span class="country-label">${lang.title}</span>
           </span>
         `;

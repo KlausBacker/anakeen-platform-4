@@ -140,7 +140,7 @@ export default {
       }
     });
     const columns = window.localStorage.getItem(
-      "ss-list-column-conf-" + this.$route.name
+      "ss-list-column-conf-" + this.ssName
     );
     if (columns) {
       JSON.parse(columns).forEach(item => {
@@ -223,14 +223,12 @@ export default {
               $(this).addClass(" attr-type--" + dataItem.type);
             }
             if (
-              dataItem.structure !== that.ssName &&
-              that.$route.name === "SmartStructures::fields::structure"
+              dataItem.structure !== that.ssName
             ) {
               $(this).addClass(" is-herited");
             }
             if (
-              dataItem.declaration === "overrided" &&
-              that.$route.name === "SmartStructures::fields::structure"
+              dataItem.declaration === "overrided"
             ) {
               $(this).addClass(" is-overrided");
             }

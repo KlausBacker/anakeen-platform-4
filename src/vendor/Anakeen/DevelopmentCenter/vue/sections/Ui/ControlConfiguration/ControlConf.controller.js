@@ -1,47 +1,33 @@
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-
+import ElementView from "../../SmartElements/ElementView/ElementView.vue";
+import ProfileView from "devComponents/profile/profile.vue";
 import Splitter from "../../../components/Splitter/Splitter.vue";
+
+const addToArray = (anArray = [], item, filterCb = () => false) => {
+  if (anArray) {
+    if (typeof filterCb === "function") {
+      const filterResult = anArray.filter(filterCb);
+      if (!filterResult || filterResult.length) {
+        anArray.push(item);
+      }
+    } else {
+      anArray.push(item);
+    }
+  }
+  return anArray;
+};
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "element-view": ElementView,
+    "profile-view": ProfileView
   },
   props: ["ssName"],
-  beforeRouteEnter(to, from, next) {
-    if (to.name === "Ui::control::element") {
-      next(function(vueInstance) {
-        if (to.query.filter) {
-          if (vueInstance.$refs.controlConfGrid.kendoGrid) {
-            vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
-              field: "name",
-              operator: "eq",
-              value: to.query.filter
-            });
-            vueInstance.$refs.controlSplitter.disableEmptyContent();
-          } else {
-            vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
-              vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
-                field: "name",
-                operator: "eq",
-                value: to.query.filter
-              });
-            });
-            vueInstance.$refs.controlSplitter.disableEmptyContent();
-          }
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    } else {
-      next(vueInstance => {
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    }
-  },
   data() {
     return {
+      openedItems: [],
       panes: [
         {
           scrollable: false,
@@ -97,21 +83,17 @@ export default {
       this.$refs.controlSplitter.disableEmptyContent();
       switch (event.data.type) {
         case "consult":
-          this.$router.push({
-            name: "Ui::control::element",
-            params: {
-              seIdentifier: event.data.row.name
-            }
-          });
+          addToArray(
+            this.openedItems,
+            {
+              name: event.data.row.name
+            },
+            item => item.name === event.data.row.name
+          );
           this.getSelected(event.data.row.name);
+          console.log(this.openedItems);
           break;
         case "permissions":
-          this.$router.push({
-            name: "Ui::control::permissions",
-            params: {
-              seIdentifier: event.data.row.name
-            }
-          });
           this.getSelected(event.data.row.name);
           break;
         default:

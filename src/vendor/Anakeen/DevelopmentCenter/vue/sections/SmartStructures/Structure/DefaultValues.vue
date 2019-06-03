@@ -11,6 +11,11 @@
   export default {
     components: {SsTreelist},
     props: ["ssName"],
+    watch: {
+      ssName(newValue) {
+        this.url = `/api/v2/devel/smart/structures/${newValue}/defaults/`;
+      }
+    },
     data() {
       return {
         columnSizeTab: window.localStorage.getItem(

@@ -71,29 +71,30 @@ export default {
       this.$refs.enumGridContent.kendoWidget().bind("filter", event => {
         const filter = event.filter ? event.filter.filters[0] || null : null;
         if (filter) {
-          this.$router.addQueryParams({
-            filters: this.$.param(
-              Object.assign(
-                {},
-                this.$route.query.filters
-                  ? parseFilters(this.$route.query.filters)
-                  : {},
-                { [filter.field]: filter.value }
-              )
-            )
-          });
+          this.$emit("filter", { [filter.field]: filter.value });
+          // this.$router.addQueryParams({
+          //   filters: this.$.param(
+          //     Object.assign(
+          //       {},
+          //       this.$route.query.filters
+          //         ? parseFilters(this.$route.query.filters)
+          //         : {},
+          //       { [filter.field]: filter.value }
+          //     )
+          //   )
+          // });
         } else {
-          const query = Object.assign({}, this.$route.query);
-          if (query.filters) {
-            query.filters = parseFilters(query.filters);
-            delete query.filters[event.field];
-            if (!Object.keys(query.filters).length) {
-              delete query.filters;
-            } else {
-              query.filters = this.$.param(query.filters);
-            }
-          }
-          this.$router.push({ query: query });
+          // const query = Object.assign({}, this.$route.query);
+          // if (query.filters) {
+          //   query.filters = parseFilters(query.filters);
+          //   delete query.filters[event.field];
+          //   if (!Object.keys(query.filters).length) {
+          //     delete query.filters;
+          //   } else {
+          //     query.filters = this.$.param(query.filters);
+          //   }
+          // }
+          // this.$router.push({ query: query });
         }
       });
       this.$refs.enumGridContent.kendoWidget().bind("filter", e => {

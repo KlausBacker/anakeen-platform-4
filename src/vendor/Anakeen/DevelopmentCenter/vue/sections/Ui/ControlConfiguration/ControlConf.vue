@@ -11,7 +11,9 @@
             </ank-se-grid>
         </template>
         <template slot="right">
-            <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+            <div style="height: 100%" v-for="openedItem in openedItems" :key="openedItem.name">
+                <component v-for="component in openedItem.components" :key="`${openedItem.name}-${component.tag}`" :is="component.tag" v-bind="component.props"></component>
+            </div>
         </template>
     </ank-splitter>
 </template>

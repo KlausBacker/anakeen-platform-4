@@ -1,85 +1,16 @@
-const path = require('path');
-const {prod, dev} = require("@anakeen/webpack-conf");
-const { vueLoader,   addFalseKendoGlobal,
-  addDll } = require("@anakeen/webpack-conf/parts");
-
-const BASE_DIR = path.resolve(__dirname, '../');
-const PUBLIC_PATH =  path.join(BASE_DIR, "src/public");
-const USER_INTERFACES = path.resolve(
-  BASE_DIR,
-  "node_modules",
-  "@anakeen",
-  "user-interfaces"
-);
+const devCenter = require("./devCenter.js");
+const { lib } = require("@anakeen/webpack-conf");
 
 module.exports = () => {
-  const conf = {
-    "moduleName": "developmentCenter",
-    "entry": {
-      'main': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/main.js')],
-      'profile': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/profile.js')],
-      'workflow': [path.resolve(BASE_DIR, 'src/vendor/Anakeen/DevelopmentCenter/JS/workflowRights.js')],
-    },
-    buildPath: PUBLIC_PATH,
-    excludeBabel: [
-      /node_modules\/axios/,
-      /node_modules\/@progress\/.*/,
-      /node_modules\/css-loader/,
-      /node_modules\/vue/
-    ],
-    customParts :[
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "src",
-          "public",
-          "Anakeen",
-          "assets",
-          "legacy",
-          "KendoUI-manifest.json"
-        )
-      }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "src",
-          "public",
-          "Anakeen",
-          "ankDll",
-          "legacy",
-          "vueDll-manifest.json"
-        )
-      }),
-      addDll({
-        context: BASE_DIR,
-        manifest: path.join(
-          USER_INTERFACES,
-          "src",
-          "public",
-          "Anakeen",
-          "ankDll",
-          "legacy",
-          "ankKendoDll-manifest.json"
-        )
-      }),
-      vueLoader(),
-      addFalseKendoGlobal([
-        /kendo.pdf/,
-        /kendo.excel/
-      ]),
-      {
-        resolve: {
-          alias: {
-            devComponents: path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/components")
-          }
-        }
-      }
-    ]
+  const modeDev = {
+    mode: process.env.dev === "DEV" ? "dev" : "prod"
   };
+  if (process.env.element === "DEVCENTER") {
+    return lib({ ...devCenter, ...modeDev });
+  }
+  
   return [
-    prod(conf),
-    dev(conf)
+    lib(devCenter),
+    lib({ ...devCenter, ...{ mode: "dev" } })
   ];
 };

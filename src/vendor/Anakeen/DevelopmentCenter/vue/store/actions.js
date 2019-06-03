@@ -8,10 +8,12 @@ export const selectVendorCategory = ({ commit }, vendorCategory) => {
   commit(mutations.SELECT_VENDOR_CATEGORY, vendorCategory);
 };
 
-export const updateVisitedRoute = ({ commit }, route) => {
-  commit(mutations.UPDATE_VISITED_ROUTE, route);
+export const setCurrentRoute = ({ commit }, route) => {
+  commit(mutations.SET_CURRENT_ROUTE, route);
 };
 
 export const clearError = ({ commit }) => {
   commit(mutations.SET_ERROR, {});
 };
+
+export const updateRoute = () => {};

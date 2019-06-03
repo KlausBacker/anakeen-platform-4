@@ -1,13 +1,15 @@
 import Vue from "vue";
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 
-import { vendorCategory } from "../../store/getters";
-
 Vue.use(DataSourceInstaller);
 
 export default {
   name: "ss-list",
   props: {
+    selected: {
+      type: String,
+      default: ""
+    },
     filter: {
       type: [Boolean, Object],
       default: true
@@ -29,14 +31,6 @@ export default {
     icon: {
       type: Boolean,
       default: true
-    },
-    routeName: {
-      type: String,
-      required: true
-    },
-    routeParamField: {
-      type: String,
-      required: true
     },
     vendorCategory: {
       type: String,
@@ -79,6 +73,11 @@ export default {
       if (this.dataSource) {
         this.dataSource.read();
       }
+    },
+    selected() {
+      this.$nextTick(() => {
+        this.autoScrollOnSelected();
+      })
     }
   },
   computed: {
@@ -122,19 +121,26 @@ export default {
       return baseUrl.replace("<type>", this.vendorType);
     }
   },
+  created() {
+    if (this.vendorCategory === "auto") {
+      // Watch store vendor update
+      this.$store.subscribe((mutation) => {
+        if (mutation.type === "SELECT_VENDOR_CATEGORY") {
+          if (this.vendorCategory === "auto") {
+            if (this.dataSource) {
+              this.dataSource.read();
+            }
+          }
+        }
+      });
+    }
+  },
   mounted() {
     this.dataSource = this.$refs.remoteDataSource.kendoWidget();
-    if (this.$router.currentRoute.query.filter) {
-      this.listFilter = this.$router.currentRoute.query.filter;
-    }
+    // if (this.$router.currentRoute.query.filter) {
+    //   this.listFilter = this.$router.currentRoute.query.filter;
+    // }
     this.dataSource.read();
-    this.$store.watch(vendorCategory, () => {
-      if (this.vendorCategory === "auto") {
-        if (this.dataSource) {
-          this.dataSource.read();
-        }
-      }
-    });
   },
   devCenterRefreshData() {
     if (this.dataSource) {
@@ -142,11 +148,14 @@ export default {
     }
   },
   methods: {
+    onListItemClicked(tab) {
+      this.$emit("item-clicked", tab);
+    },
     filterList(filterValue) {
       if (this.dataSource) {
-        if (this.$router.currentRoute.query.filter !== filterValue) {
-          this.$router.addQueryParams({ filter: filterValue });
-        }
+        // if (this.$router.currentRoute.query.filter !== filterValue) {
+        //   this.$router.addQueryParams({ filter: filterValue });
+        // }
         let filterObject = {
           logic: "or",
           filters: [
@@ -177,10 +186,8 @@ export default {
           kendo.ui.progress(this.$(this.$refs.ssTabsList), false);
           options.success(response);
           this.$nextTick(() => {
-            const active = this.$(".router-link-active", this.$el);
-            if (active.length) {
-              active[0].scrollIntoView();
-            }
+            this.autoScrollOnSelected();
+            this.$emit("list-ready", this.parseData(response));
           });
         })
         .catch(error => {
@@ -196,6 +203,12 @@ export default {
     },
     clearFilter() {
       this.listFilter = "";
+    },
+    autoScrollOnSelected() {
+      const active = this.$(".item-active", this.$el);
+      if (active.length) {
+        active[0].scrollIntoView();
+      }
     }
   }
 };

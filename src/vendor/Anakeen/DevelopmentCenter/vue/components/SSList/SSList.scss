@@ -1,6 +1,5 @@
 $smart-structure-list-border-color: rgb(210, 210, 210);
 .smart-structure-list {
-  flex: 1;
   display: flex;
   min-height: 0;
   .smart-structure-tabs {
@@ -62,7 +61,7 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
           &:hover {
             text-decoration: none;
           }
-          &.router-link-active {
+          &.item-active {
             z-index: 10;
             border-color: $smart-structure-list-border-color;
             border-right-color: transparent;
@@ -71,7 +70,7 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
             background-color: var(--primary);
             color: var(--white);
           }
-          &:not(.router-link-active):hover {
+          &:not(.item-active):hover {
             border-color: rgba(33, 37, 41, .125);
           }
           border: 1px solid transparent;
