@@ -23,7 +23,7 @@ const filterAction = (to, vueInstance) => () => {
   if (filter) {
     const filterObject = { logic: "and", filters: [] };
     filterObject.filters = Object.entries(filter).map(entry => {
-      const filterOperator = entry[0] === "id" ? "eq" : "contains";
+      const filterOperator = entry[0] === "initid" ? "eq" : "contains";
       return {
         field: entry[0],
         operator: filterOperator,
@@ -200,7 +200,9 @@ export default {
           event.preventDefault();
           this.$router.push({
             name: "SmartElements::ElementView",
-            params: { seIdentifier: event.data.row.name || event.data.row.id },
+            params: {
+              seIdentifier: event.data.row.name || event.data.row.initid
+            },
             query: this.$route.query
           });
           break;
@@ -208,7 +210,7 @@ export default {
           this.$router.push({
             name: "SmartElements::RawElementView",
             params: {
-              seIdentifier: event.data.row.name || event.data.row.id,
+              seIdentifier: event.data.row.name || event.data.row.initid,
               seType: docTypeString(event.data.row.doctype)
             },
             query: {
@@ -221,7 +223,7 @@ export default {
           this.$router.push({
             name: "SmartElements::RawElementView",
             params: {
-              seIdentifier: event.data.row.name || event.data.row.id,
+              seIdentifier: event.data.row.name || event.data.row.initid,
               seType: docTypeString(event.data.row.doctype)
             },
             query: {
@@ -234,7 +236,7 @@ export default {
           this.$router.push({
             name: "SmartElements::PropertiesView",
             params: {
-              seIdentifier: event.data.row.name || event.data.row.id
+              seIdentifier: event.data.row.name || event.data.row.initid
             },
             query: this.$route.query
           });
@@ -244,7 +246,7 @@ export default {
             this.$router.push({
               name: "SmartElements::ProfilView",
               params: {
-                seIdentifier: event.data.row.name || event.data.row.id
+                seIdentifier: event.data.row.name || event.data.row.initid
               },
               query: {
                 ...this.$route.query,
