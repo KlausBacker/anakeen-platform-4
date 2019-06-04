@@ -28,6 +28,7 @@ ini_set("session.use_cookies", "0");
 ini_set("session.name", "session");
 @ini_set("session.use_trans_sid", "0");
 ini_set("session.cache_limiter", "nocache");
+ini_set("session.gc_maxlifetime", "2147483647");
 ini_set("magic_quotes_gpc", "Off");
 ini_set("default_charset", "UTF-8");
 ini_set("pcre.backtrack_limit", max(ini_get("pcre.backtrack_limit"), 10000000));
