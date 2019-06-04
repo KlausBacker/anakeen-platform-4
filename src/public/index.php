@@ -1,7 +1,6 @@
 <?php
 
 require __DIR__ . '/../vendor/Anakeen/autoload.php';
-require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
 
 
 // TODO To delete when legacy functions will have disappeared
