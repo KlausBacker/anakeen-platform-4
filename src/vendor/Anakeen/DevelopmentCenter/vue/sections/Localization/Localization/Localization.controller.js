@@ -26,6 +26,28 @@ export default {
     localizationUrlContent: {
       type: String,
       default: "/api/v2/devel/i18n/"
+    },
+    context: String,
+    msgid: String,
+    en: String,
+    fr: String,
+    files: String
+  },
+  watch: {
+    context(newValue) {
+      this.privateMethods.updateFilterValues({ context: newValue });
+    },
+    msgid(newValue) {
+      this.privateMethods.updateFilterValues({ msgid: newValue });
+    },
+    en(newValue) {
+      this.privateMethods.updateFilterValues({ en: newValue });
+    },
+    fr(newValue) {
+      this.privateMethods.updateFilterValues({ fr: newValue });
+    },
+    files(newValue) {
+      this.privateMethods.updateFilterValues({ files: newValue });
     }
   },
   data() {
@@ -59,6 +81,7 @@ export default {
         kendoGrid.resize();
       }
     });
+    this.privateMethods.updateFilterValues();
   },
   beforeCreate() {
     this.privateMethods = {
@@ -88,6 +111,9 @@ export default {
       countryHeaderTemplate: lang => {
         return `
           <span    class="country-header">
+              <img class="country-logo" src="/api/v2/images/assets/sizes/20x20/Helppage/flags/${getIsoAlpha2Code(
+                lang.field
+              )}.png"/>
               <span class="country-label">${lang.title}</span>
           </span>
         `;
@@ -109,7 +135,54 @@ export default {
           return cellData;
         }
         return cellData;
+      },
+      updateFilterValues: (mergedFilters = {}) => {
+        const filters = [];
+        ["context", "msgid", "en", "fr", "files"].forEach(propKey => {
+          const value = mergedFilters[propKey] || this[propKey];
+          if (value) {
+            filters.push({
+              field: propKey,
+              operator: "contains",
+              value
+            });
+          }
+        });
+        this.$refs.localizationGrid.kendoWidget().dataSource.filter(filters);
       }
     };
+  },
+  methods: {
+    bindFilters() {
+      this.$refs.localizationGrid.kendoWidget().bind("filter", event => {
+        const filter = event.filter ? event.filter.filters[0] || null : null;
+        if (filter) {
+          const currentFilter = event.sender.dataSource.filter();
+          let nextFilter = {};
+          if (currentFilter) {
+            nextFilter = currentFilter.filters.reduce((acc, curr) => {
+              acc[curr.field] = curr.value;
+              return acc;
+            }, {});
+          }
+          this.$emit(
+            "filter",
+            Object.assign({}, nextFilter, { [filter.field]: filter.value })
+          );
+        } else {
+          const currentFilter = event.sender.dataSource.filter();
+          let nextFilter = {};
+          if (currentFilter) {
+            nextFilter = currentFilter.filters.reduce((acc, curr) => {
+              if (curr.field !== event.field) {
+                acc[curr.field] = curr.value;
+              }
+              return acc;
+            }, {});
+          }
+          this.$emit("filter", Object.assign({}, nextFilter));
+        }
+      });
+    }
   }
 };

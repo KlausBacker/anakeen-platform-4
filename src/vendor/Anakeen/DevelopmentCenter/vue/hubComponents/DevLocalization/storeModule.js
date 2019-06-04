@@ -1,19 +1,34 @@
 export default {
   namespaced: true,
   state: {
-    ssName: "",
-    structureTab: "SmartStructures::infos"
+    context: "",
+    msgid: "",
+    en: "",
+    fr: "",
+    files: ""
   },
   mutations: {
-    SET_STRUCTURE_NAME: (state, ssName) => {
-      state.ssName = ssName;
+    SET_CONTEXT: (state, context) => {
+      state.context = context;
     },
-    SET_STRUCTURE_TAB: (state, tab) => {
-      state.structureTab = tab;
+    SET_MSGID: (state, msgid) => {
+      state.msgid = msgid;
+    },
+    SET_EN: (state, en) => {
+      state.en = en;
+    },
+    SET_FR: (state, fr) => {
+      state.fr = fr;
+    },
+    SET_FILES: (state, files) => {
+      state.files = files;
     }
   },
   getters: {
-    ssName: state => state.ssName,
-    structureTab: state => state.structureTab
+    context: state => state.context,
+    msgid: state => state.msgid,
+    en: state => state.en,
+    fr: state => state.fr,
+    files: state => state.files
   }
 };
