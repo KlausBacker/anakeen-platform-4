@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="SENTMESSAGE-emsg_sendtype">
+            <smart:enum name="to" label="Pour"/>
+            <smart:enum name="cc" label="Copie"/>
+            <smart:enum name="bcc" label="Copie cachée"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="SENTMESSAGE" label="Message envoyé">
         <smart:icon file="sentmessage.png"/>
         <smart:class>Anakeen\SmartStructures\Sentmessage\SentMessageHooks</smart:class>
@@ -35,11 +42,4 @@
         <smart:defaults/>
         <smart:accesses/>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="SENTMESSAGE-emsg_sendtype">
-            <smart:enum name="to" label="Pour"/>
-            <smart:enum name="cc" label="Copie"/>
-            <smart:enum name="bcc" label="Copie cachée"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>

@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-  <smart:structure-configuration name="TST_DOCENUM" label="Test DocRel">
-    <smart:usefor>N</smart:usefor>
-    <smart:fields>
-      <smart:field-set name="tst_fr_info" type="frame" label="Cadre Html" access="ReadWrite">
-        <smart:field-text name="tst_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
-        <smart:field-enum name="tst_enum1" label="Enum" access="ReadWrite" relation="TST_DOCENUM-0123"/>
-        <smart:field-enum name="tst_enuma" label="Enum" access="ReadWrite" relation="TST_DOCENUM-ABCD"/>
-      </smart:field-set>
-    </smart:fields>
-    <smart:parameters/>
-    <smart:hooks/>
-    <smart:autocompletion/>
-    <smart:defaults/>
-    <smart:accesses/>
-  </smart:structure-configuration>
   <smart:enumerates>
     <smart:enum-configuration name="TST_DOCENUM-0123">
       <smart:enum name=" " label="nothing"/>
@@ -32,4 +17,19 @@
       <smart:enum name="d" label="D"/>
     </smart:enum-configuration>
   </smart:enumerates>
+  <smart:structure-configuration name="TST_DOCENUM" label="Test DocRel">
+    <smart:usefor>N</smart:usefor>
+    <smart:fields>
+      <smart:field-set name="tst_fr_info" type="frame" label="Cadre Html" access="ReadWrite">
+        <smart:field-text name="tst_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
+        <smart:field-enum name="tst_enum1" label="Enum" access="ReadWrite" relation="TST_DOCENUM-0123"/>
+        <smart:field-enum name="tst_enuma" label="Enum" access="ReadWrite" relation="TST_DOCENUM-ABCD"/>
+      </smart:field-set>
+    </smart:fields>
+    <smart:parameters/>
+    <smart:hooks/>
+    <smart:autocompletion/>
+    <smart:defaults/>
+    <smart:accesses/>
+  </smart:structure-configuration>
 </smart:config>

@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="MAIL-mail_copymode">
+            <smart:enum name="to" label="À"/>
+            <smart:enum name="cc" label="Cc"/>
+            <smart:enum name="bcc" label="Bcc"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAIL-mail_sendformat">
+            <smart:enum name="plain" label="document complet"/>
+            <smart:enum name="link" label="notification avec lien vers le document"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAIL-mail_savecopy">
+            <smart:enum name="no" label="Pas de copie"/>
+            <smart:enum name="yes" label="Copie sur le serveur"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAIL-mail_format">
+            <smart:enum name="html" label="HTML"/>
+            <smart:enum name="pdf" label="PDF"/>
+            <smart:enum name="htmlpdf" label="HTML &amp; PDF"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="MAIL" label="Mail">
         <smart:icon file="se-mail.png"/>
         <smart:class>Anakeen\SmartStructures\Mail\MailHooks</smart:class>
@@ -37,24 +57,4 @@
         <smart:defaults/>
         <smart:accesses/>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="MAIL-mail_copymode">
-            <smart:enum name="to" label="À"/>
-            <smart:enum name="cc" label="Cc"/>
-            <smart:enum name="bcc" label="Bcc"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="MAIL-mail_sendformat">
-            <smart:enum name="plain" label="document complet"/>
-            <smart:enum name="link" label="notification avec lien vers le document"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="MAIL-mail_savecopy">
-            <smart:enum name="no" label="Pas de copie"/>
-            <smart:enum name="yes" label="Copie sur le serveur"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="MAIL-mail_format">
-            <smart:enum name="html" label="HTML"/>
-            <smart:enum name="pdf" label="PDF"/>
-            <smart:enum name="htmlpdf" label="HTML &amp; PDF"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>

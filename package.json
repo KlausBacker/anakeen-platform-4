@@ -11,7 +11,7 @@
   "dependencies": {},
   "devDependencies": {
     "@anakeen/anakeen-ci": "~1.0.8",
-    "@anakeen/anakeen-cli": "~1.1.13",
+    "@anakeen/anakeen-cli": "~1.1.14",
     "@commitlint/config-conventional": "^7.5.0",
     "commitlint": "^7.5.2",
     "husky": "^1.3.1",

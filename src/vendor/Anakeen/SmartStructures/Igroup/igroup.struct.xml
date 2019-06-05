@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="dir-fld_subfam">
+            <smart:enum name="yes" label="inclure les sous familles"/>
+            <smart:enum name="no" label="ne pas inclure les sous familles"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="GROUP-grp_hasmail">
+            <smart:enum name="yes" label="adresses regroupées"/>
+            <smart:enum name="no" label="sans adresse mail"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-gui_isrss">
+            <smart:enum name="no" label="non"/>
+            <smart:enum name="yes" label="oui"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="GROUP-grp_isrefreshed">
+            <smart:enum name="1" label="oui"/>
+            <smart:enum name="0" label="non"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-fld_allbut">
+            <smart:enum name="0" label="tout sauf"/>
+            <smart:enum name="1" label="seulement"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="IGROUP" id="127" label="Groupe d'utilisateurs">
         <smart:extends ref="GROUP"/>
         <smart:icon file="se-igroup.png"/>
@@ -41,27 +63,4 @@
         </smart:defaults>
 
     </smart:structure-configuration>
-
-    <smart:enumerates>
-        <smart:enum-configuration name="dir-fld_subfam">
-            <smart:enum name="yes" label="inclure les sous familles"/>
-            <smart:enum name="no" label="ne pas inclure les sous familles"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="GROUP-grp_hasmail">
-            <smart:enum name="yes" label="adresses regroupées"/>
-            <smart:enum name="no" label="sans adresse mail"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="dir-gui_isrss">
-            <smart:enum name="no" label="non"/>
-            <smart:enum name="yes" label="oui"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="GROUP-grp_isrefreshed">
-            <smart:enum name="1" label="oui"/>
-            <smart:enum name="0" label="non"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="dir-fld_allbut">
-            <smart:enum name="0" label="tout sauf"/>
-            <smart:enum name="1" label="seulement"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>

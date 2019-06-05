@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="SEARCH-noyes">
+            <smart:enum name="no" label="Non"/>
+            <smart:enum name="yes" label="Oui"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="SEARCH-se_famonly">
+            <smart:enum name="no" label="Avec les sous familles"/>
+            <smart:enum name="yes" label="Sans les sous familles"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="SEARCH-se_latest">
+            <smart:enum name="yes" label="courante"/>
+            <smart:enum name="no" label="toutes les révisions"/>
+            <smart:enum name="fixed" label="dernière révision"/>
+            <smart:enum name="allfixed" label="sans la courante"/>
+            <smart:enum name="lastfixed" label="dernière parmi les révisions effectuées"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="SEARCH-se_acl">
+            <smart:enum name="edit" label="Modifiable"/>
+            <smart:enum name="delete" label="Supprimable"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="SEARCH-se_trash">
+            <smart:enum name="no" label="non"/>
+            <smart:enum name="only" label="seulement"/>
+            <smart:enum name="also" label="aussi"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="SEARCH-se_case">
+            <smart:enum name="no" label="expression sans casse"/>
+            <smart:enum name="yes" label="expression avec casse"/>
+            <smart:enum name="full" label="mot complet"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="SEARCH" id="5" label="Recherche">
         <smart:extends ref="BASE"/>
         <smart:icon file="se-search.png"/>
@@ -34,36 +65,4 @@
             <smart:default field="se_latest">yes</smart:default>
         </smart:defaults>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="SEARCH-noyes">
-            <smart:enum name="no" label="Non"/>
-            <smart:enum name="yes" label="Oui"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="SEARCH-se_famonly">
-            <smart:enum name="no" label="Avec les sous familles"/>
-            <smart:enum name="yes" label="Sans les sous familles"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="SEARCH-se_latest">
-            <smart:enum name="yes" label="courante"/>
-            <smart:enum name="no" label="toutes les révisions"/>
-            <smart:enum name="fixed" label="dernière révision"/>
-            <smart:enum name="allfixed" label="sans la courante"/>
-            <smart:enum name="lastfixed" label="dernière parmi les révisions effectuées"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="SEARCH-se_acl">
-            <smart:enum name="edit" label="Modifiable"/>
-            <smart:enum name="delete" label="Supprimable"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="SEARCH-se_trash">
-            <smart:enum name="no" label="non"/>
-            <smart:enum name="only" label="seulement"/>
-            <smart:enum name="also" label="aussi"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="SEARCH-se_case">
-            <smart:enum name="no" label="expression sans casse"/>
-            <smart:enum name="yes" label="expression avec casse"/>
-            <smart:enum name="full" label="mot complet"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
-
 </smart:config>

@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="DSEARCH-se_ol">
+            <smart:enum name="and" label="satisfait toutes les conditions"/>
+            <smart:enum name="or" label="satisfait au moins une condition"/>
+            <smart:enum name="perso" label="personnalisée"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_ols">
+            <smart:enum name="and" label="et"/>
+            <smart:enum name="or" label="ou"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_leftp">
+            <smart:enum name="no" label=""/>
+            <smart:enum name="yes" label="("/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_rightp">
+            <smart:enum name="no" label=""/>
+            <smart:enum name="yes" label=")"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="DSEARCH-se_typefilter">
+            <smart:enum name="specified" label="Spécifié"/>
+            <smart:enum name="generated" label="Généré"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="DSEARCH" id="16" label="Recherche détaillée">
         <smart:extends ref="SEARCH"/>
         <smart:icon file="se-dsearch.png"/>
@@ -44,27 +67,4 @@
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="DSEARCH-se_ol">
-            <smart:enum name="and" label="satisfait toutes les conditions"/>
-            <smart:enum name="or" label="satisfait au moins une condition"/>
-            <smart:enum name="perso" label="personnalisée"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="DSEARCH-se_ols">
-            <smart:enum name="and" label="et"/>
-            <smart:enum name="or" label="ou"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="DSEARCH-se_leftp">
-            <smart:enum name="no" label=""/>
-            <smart:enum name="yes" label="("/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="DSEARCH-se_rightp">
-            <smart:enum name="no" label=""/>
-            <smart:enum name="yes" label=")"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="DSEARCH-se_typefilter">
-            <smart:enum name="specified" label="Spécifié"/>
-            <smart:enum name="generated" label="Généré"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>

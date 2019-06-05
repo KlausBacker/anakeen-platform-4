@@ -11,14 +11,15 @@ use Anakeen\Exception;
 
 /**
  * Class ExportConfiguration
+ *
  * @package Anakeen\Core\SmartStructure
  *
  * Export Smart Structure in Xml
  */
 class ExportConfiguration
 {
-    protected static $lastStartComment=[];
-    protected static $lastStartDom=[];
+    protected static $lastStartComment = [];
+    protected static $lastStartDom = [];
     protected $data;
     const NS = "smart";
     const NSBASEURL = "https://platform.anakeen.com/4/schemas/";
@@ -39,6 +40,7 @@ class ExportConfiguration
 
     /**
      * ExportConfiguration constructor.
+     *
      * @param SmartStructure $sst Smart Structure to export
      */
     public function __construct(SmartStructure $sst)
@@ -80,6 +82,7 @@ class ExportConfiguration
 
     /**
      * Return Xml string for smart structre configuration
+     *
      * @return string
      */
     public function toXml()
@@ -278,6 +281,9 @@ class ExportConfiguration
             if (SmartElement::seemsMethod($default)) {
                 $this->insertCallable($def, $default);
             } else {
+                if (is_array($default)) {
+                    $default = json_encode($default);
+                }
                 $def->nodeValue = $default;
             }
             $smartDefaults->appendChild($def);
@@ -412,9 +418,9 @@ class ExportConfiguration
                 if (!empty($attr->labelText)) {
                     $smartAttr->setAttribute("label", $attr->labelText);
                 }
-                if (!empty($attr->access)) {
-                    $smartAttr->setAttribute("access", FieldAccessManager::getTextAccess($attr->access));
-                }
+
+                $smartAttr->setAttribute("access", FieldAccessManager::getTextAccess($attr->access));
+
                 if (!empty($attr->link)) {
                     $smartAttr->setAttribute("link", $attr->link);
                 }
@@ -745,18 +751,19 @@ class ExportConfiguration
 
     public static function setStartComment($text, \DOMElement $dom)
     {
-        self::$lastStartComment[]=$text;
-        self::$lastStartDom[]=$dom;
+        self::$lastStartComment[] = $text;
+        self::$lastStartDom[] = $dom;
         $l = 40;
         $region = str_pad(sprintf('region %s ', $text), $l, '=');
         $dom->appendChild($dom->ownerDocument->createComment($region));
     }
+
     public static function setEndComment($text = '', \DOMElement $dom = null)
     {
         $l = 40;
         if ($text === '' && $dom === null) {
-            $text=array_pop(self::$lastStartComment);
-            $dom=array_pop(self::$lastStartDom);
+            $text = array_pop(self::$lastStartComment);
+            $dom = array_pop(self::$lastStartDom);
         }
 
         $region = str_pad(sprintf('endregion %s ', $text), $l, '=');

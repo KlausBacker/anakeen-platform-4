@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="REPORT-rep_ordersort">
+            <smart:enum name="asc" label="ascendant"/>
+            <smart:enum name="desc" label="descendant"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="report-rep_foots">
+            <smart:enum name="CARD" label="Cardinal"/>
+            <smart:enum name="MOY" label="Moyenne"/>
+            <smart:enum name="SUM" label="Somme"/>
+            <smart:enum name="NONE" label="Aucun"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="REPORT" id="25" label="Rapport">
         <smart:extends ref="DSEARCH"/>
         <smart:icon file="se-report.png"/>
@@ -68,17 +80,5 @@
         </smart:defaults>
 
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="REPORT-rep_ordersort">
-            <smart:enum name="asc" label="ascendant"/>
-            <smart:enum name="desc" label="descendant"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="report-rep_foots">
-            <smart:enum name="CARD" label="Cardinal"/>
-            <smart:enum name="MOY" label="Moyenne"/>
-            <smart:enum name="SUM" label="Somme"/>
-            <smart:enum name="NONE" label="Aucun"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 
 </smart:config>

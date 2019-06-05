@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="TST_001-colors">
+            <smart:enum name="red" label="Rouge"/>
+            <smart:enum name="yellow" label="Jaune"/>
+            <smart:enum name="green" label="Vert"/>
+            <smart:enum name="blue" label="Bleu">
+                <smart:enum name="lightblue" label="Bleu ciel"/>
+                <smart:enum name="navyblue" label="Bleu marine"/>
+            </smart:enum>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="TST_001-countries">
+            <smart:enum name="AD" label="Andorre"/>
+            <smart:enum name="AE" label="Emirats Arabes unis"/>
+            <smart:enum name="AF" label="Afghanistan"/>
+            <smart:enum name="AG" label="Antigua et Barbade"/>
+            <smart:enum name="AI" label="Anguilla"/>
+            <smart:enum name="AL" label="Albanie"/>
+            <smart:enum name="AM" label="Arménie"/>
+            <smart:enum name="AN" label="Antilles néerlandaises"/>
+            <smart:enum name="AO" label="Angola"/>
+            <smart:enum name="AR" label="Argentine"/>
+            <smart:enum name="AS" label="Samoa américain"/>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
     <smart:structure-configuration name="TST_001" label="Test n°1">
         <smart:icon file="N1.png"/>
         <smart:usefor>N</smart:usefor>
@@ -119,29 +144,4 @@
         <smart:defaults/>
         <smart:accesses/>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="TST_001-colors">
-            <smart:enum name="red" label="Rouge"/>
-            <smart:enum name="yellow" label="Jaune"/>
-            <smart:enum name="green" label="Vert"/>
-            <smart:enum name="blue" label="Bleu">
-                <smart:enum name="lightblue" label="Bleu ciel"/>
-                <smart:enum name="navyblue" label="Bleu marine"/>
-            </smart:enum>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="TST_001-countries">
-            <smart:enum name="AD" label="Andorre"/>
-            <smart:enum name="AE" label="Emirats Arabes unis"/>
-            <smart:enum name="AF" label="Afghanistan"/>
-            <smart:enum name="AG" label="Antigua et Barbade"/>
-            <smart:enum name="AI" label="Anguilla"/>
-            <smart:enum name="AL" label="Albanie"/>
-            <smart:enum name="AM" label="Arménie"/>
-            <smart:enum name="AN" label="Antilles néerlandaises"/>
-            <smart:enum name="AO" label="Angola"/>
-            <smart:enum name="AR" label="Argentine"/>
-            <smart:enum name="AS" label="Samoa américain"/>
-        </smart:enum-configuration>
-
-    </smart:enumerates>
 </smart:config>
