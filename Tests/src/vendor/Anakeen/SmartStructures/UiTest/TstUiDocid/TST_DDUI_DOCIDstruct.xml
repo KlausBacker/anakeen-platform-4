@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
-  <ui:view-control xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="TST_DDUI_RENDER_DOCID" label="Rendus de relations" structure="TST_DDUI_DOCID">
-    <ui:creation-view ref="E1"/>
-    <!--region View control configuration ======-->
-    <ui:view-list>
-      <ui:view name="C1" label="Défaut" display-mode="consultation" order="1" menu-displayed="false">
-        <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiDocid\Renders\DocidRenderConfigView"/>
-      </ui:view>
-      <ui:view name="E1" label="Modifier les relations" display-mode="edition" order="1" menu-displayed="false">
-        <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiDocid\Renders\DocidRenderConfigEdit"/>
-      </ui:view>
-    </ui:view-list>
-    <!--endregion View control configuration ===-->
-  </ui:view-control>
+
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
   <!--View control accesses-->
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -68,6 +56,19 @@
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
   <!--Ui render configuration-->
   <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <ui:view-control xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="TST_DDUI_RENDER_DOCID" label="Rendus de relations" structure="TST_DDUI_DOCID">
+    <ui:creation-view ref="E1"/>
+    <!--region View control configuration ======-->
+    <ui:view-list>
+      <ui:view name="C1" label="Défaut" display-mode="consultation" order="1" menu-displayed="false">
+        <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiDocid\Renders\DocidRenderConfigView"/>
+      </ui:view>
+      <ui:view name="E1" label="Modifier les relations" display-mode="edition" order="1" menu-displayed="false">
+        <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiDocid\Renders\DocidRenderConfigEdit"/>
+      </ui:view>
+    </ui:view-list>
+    <!--endregion View control configuration ===-->
+  </ui:view-control>
   <ui:render ref="TST_DDUI_DOCID">
     <ui:view-control ref="TST_DDUI_RENDER_DOCID"/>
   </ui:render>
