@@ -9,6 +9,7 @@ use Anakeen\Workflow\ExportElementConfiguration;
 
 /**
  * Class ExportConfiguration
+ *
  * @package Anakeen\Core\SmartStructure
  *
  * Export Smart Structure in Xml
@@ -20,6 +21,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
     /** @noinspection PhpMissingParentConstructorInspection */
     /**
      * ExportConfiguration constructor.
+     *
      * @param SmartStructure $sst Smart Structure to export
      */
     public function __construct(SmartStructure $sst)
@@ -43,8 +45,19 @@ class ExportConfigurationAccesses extends ExportConfiguration
 
     public function extractProfil($part = "all")
     {
-        $structConfig=$this->structConfig;
+        $structConfig = $this->structConfig;
         $access = $this->cel("accesses");
+
+        if ($this->sst->cfallid) {
+            if ($part === "all" || $part === "access") {
+                $this->setFieldAccessProfile($this->sst->cfallid);
+                $this->setFieldAccess($this->sst->cfallid);
+                $accessControl = $this->setAccess($this->sst->cfallid);
+
+                $this->setFieldAccessConfiguration($this->sst->cfallid);
+                $this->domConfig->appendChild($accessControl);
+            }
+        }
 
         if ($this->sst->profid) {
             $tag = $this->cel("structure-access-configuration");
@@ -64,8 +77,9 @@ class ExportConfigurationAccesses extends ExportConfiguration
                 }
             }
         }
+
         if ($this->sst->cprofid) {
-            if ($part === "all"|| $part === "ref") {
+            if ($part === "all" || $part === "ref") {
                 $tag = $this->cel("element-access-configuration");
                 $tag->setAttribute("ref", static::getLogicalName($this->sst->cprofid));
                 $access->appendChild($tag);
@@ -82,12 +96,6 @@ class ExportConfigurationAccesses extends ExportConfiguration
                 $tag->setAttribute("ref", static::getLogicalName($this->sst->cfallid) ?: $this->sst->cfallid);
                 $access->appendChild($tag);
             }
-            if ($part === "all" || $part === "access") {
-                $this->setFieldAccessProfile($this->sst->cfallid);
-                $this->setFieldAccess($this->sst->cfallid);
-                $accessControl = $this->setAccess($this->sst->cfallid);
-                $this->domConfig->appendChild($accessControl);
-            }
         }
 
         $structConfig->appendChild($access);
@@ -98,8 +106,8 @@ class ExportConfigurationAccesses extends ExportConfiguration
     {
         $tag = $this->cel("field-access-layer-list");
         $fall = SEManager::getDocument($fallid);
-        if (! $fall) {
-            $tag->setAttribute("name", "UNKNOW#".$fall->name);
+        if (!$fall) {
+            $tag->setAttribute("name", "UNKNOW#" . $fall->name);
             return;
         }
         SEManager::cache()->addDocument($fall);
@@ -124,7 +132,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
     protected function setFieldAccessProfile($fallid)
     {
         $fall = SEManager::getDocument($fallid);
-        if (! $fall) {
+        if (!$fall) {
             $this->setComment(sprintf("Field Access %s not found", $fallid));
             return;
         }
@@ -137,7 +145,10 @@ class ExportConfigurationAccesses extends ExportConfiguration
             $tag->setAttribute("name", $eLayer->name);
             $tag->setAttribute("label", $eLayer->getTitle());
             $tag->setAttribute("access-name", $aclNames[$kl]);
-            $tag->setAttribute("structure", static::getLogicalName($eLayer->getRawValue(\SmartStructure\Fields\Fieldaccesslayer::fal_famid)));
+            $falFamid = $eLayer->getRawValue(\SmartStructure\Fields\Fieldaccesslayer::fal_famid);
+            if ($falFamid) {
+                $tag->setAttribute("structure", static::getLogicalName($falFamid));
+            }
 
             $fieldIds = $eLayer->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayer::fal_fieldid);
             $fieldAccesses = $eLayer->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayer::fal_fieldaccess);
@@ -149,11 +160,24 @@ class ExportConfigurationAccesses extends ExportConfiguration
             }
             $this->domConfig->appendChild($tag);
         }
+    }
+
+
+    protected function setFieldAccessConfiguration($fallid)
+    {
+        $fall = SEManager::getDocument($fallid);
+        if (!$fall) {
+            $this->setComment(sprintf("Field Access %s not found", $fallid));
+            return;
+        }
+        $layers = $fall->getMultipleRawValues(\SmartStructure\Fields\Fieldaccesslayerlist::fall_layer);
+
         foreach ($layers as $kl => $layer) {
             $eLayer = SEManager::getDocument($layer);
             $this->setAccessProfile($eLayer);
         }
     }
+
 
     protected function setAccessProfile(SmartElement $e)
     {
@@ -163,7 +187,7 @@ class ExportConfigurationAccesses extends ExportConfiguration
 
         $this->extractedAccessProfile[$e->id] = true;
 
-        $accessNode=ExportElementConfiguration::getAccessProfile($e->id, $this->dom);
+        $accessNode = ExportElementConfiguration::getAccessProfile($e->id, $this->dom);
         $this->domConfig->appendChild($accessNode);
     }
 
