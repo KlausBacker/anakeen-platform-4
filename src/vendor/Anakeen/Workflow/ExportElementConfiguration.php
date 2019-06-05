@@ -327,8 +327,9 @@ class ExportElementConfiguration
 
         $cvtag->setAttribute("name", $cvdoc->name ?: $cvdoc->id);
         $cvtag->setAttribute("label", $cvdoc->title);
-
-        $cvtag->setAttribute("structure", ExportRenderConfiguration::getLogicalName($cvdoc->getRawvalue(CvDocFields::cv_famid)));
+        if ($cvFamId = $cvdoc->getRawvalue(CvDocFields::cv_famid)) {
+            $cvtag->setAttribute("structure", ExportRenderConfiguration::getLogicalName($cvFamId));
+        }
 
         $desc = $cvdoc->getRawValue(CvDocFields::ba_desc);
         if ($desc) {
