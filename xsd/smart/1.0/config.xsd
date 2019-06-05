@@ -8,11 +8,11 @@
            xmlns:task="https://platform.anakeen.com/4/schemas/task/1.0"
            xmlns:timer="https://platform.anakeen.com/4/schemas/timer/1.0"
            xmlns:v1="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/ui/1.0"/>
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/task/1.0"/>
-    <xs:import namespace="https://platform.anakeen.com/4/schemas/timer/1.0"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/ui/1.0" schemaLocation="../../ui/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/workflow/1.0" schemaLocation="../../workflow/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" schemaLocation="../../mailtemplate/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/task/1.0" schemaLocation="../../task/1.0/config.xsd"/>
+    <xs:import namespace="https://platform.anakeen.com/4/schemas/timer/1.0" schemaLocation="../../timer/1.0/config.xsd"/>
     <xs:element name="config" type="v1:configType">
         <xs:annotation>
             <xs:documentation>
@@ -29,11 +29,10 @@
             <xs:element ref="task:task" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="wfl:graph" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="wfl:config" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element ref="ui:view-control" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:fieldAccessLayerType" name="field-access-layer" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:fieldAccessLayerListType" name="field-access-layer-list" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:accessConfigurationType" name="access-configuration" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="v1:structure-configurationType" name="structure-configuration" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
@@ -42,7 +41,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="v1:enumeratesType" name="enumerates" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="ui:mask" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="ui:view-control" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element ref="ui:render" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
