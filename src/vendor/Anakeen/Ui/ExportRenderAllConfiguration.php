@@ -14,14 +14,9 @@ class ExportRenderAllConfiguration extends ExportRenderAccessConfiguration
         $this->domConfig->setAttribute("xmlns:" . self::NS, self::NSURL);
         $this->domConfig->setAttribute("xmlns:" . self::NSUI, self::NSUIURL);
 
-        $this->extractCvRef();
-        $this->extractDefaultCvData();
 
-        $this->setComment("View control accesses");
-        $this->extractCvAccess();
 
         $this->setComment("Structure Profil Accesses");
-        $this->extractProfil();
 
         $this->extractProps();
         $this->extractAttr();
@@ -29,8 +24,14 @@ class ExportRenderAllConfiguration extends ExportRenderAccessConfiguration
         $this->extractHooks();
         $this->extractAutoComplete();
         $this->extractDefaults();
+        $this->extractProfil();
+        $this->setComment("View control accesses");
+        $this->extractCvAccess();
         $this->extractEnums();
 
         $this->domConfig->appendChild($this->structConfig);
+        $this->setComment("View control definition");
+        $this->extractDefaultCvData();
+        $this->extractCvRef();
     }
 }

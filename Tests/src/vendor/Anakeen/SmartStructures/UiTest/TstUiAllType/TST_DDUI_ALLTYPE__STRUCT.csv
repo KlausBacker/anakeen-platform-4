@@ -3,7 +3,6 @@ ICON;testdduiall.png;;;;;;;;;;;;;;;
 CLASS;Anakeen\SmartStructures\UiTest\TstUiAllType\TstUiAllTypeHooks;;;;;;;;;;;;;;;
 RESET;enums;;;;;;;;;;;;;;;
 RESET;structure;;;;;;;;;;;;;;;
-DFLDID;auto;;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option;Commentaires
 ATTR;TEST_DDUI_ALL__F_TITLE;;Titre;N;N;frame;::auto;W;;;;;;;;
 ATTR;TEST_DDUI_ALL__TITLE;TEST_DDUI_ALL__F_TITLE;Le titre;Y;Y;text ;::auto;W;;;;;;;;
