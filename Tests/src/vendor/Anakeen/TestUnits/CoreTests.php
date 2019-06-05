@@ -16,7 +16,6 @@ use Dcp\Pu\SuiteDcpSecurity;
 use Dcp\Pu\SuiteDcpUser;
 
 require_once __DIR__ . '/../autoload.php';
-require_once __DIR__ . '/../WHAT/Lib.Prefix.php';
 
 set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
 

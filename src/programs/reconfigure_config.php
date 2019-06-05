@@ -2,7 +2,6 @@
 <?php
 
 require __DIR__ . '/../vendor/Anakeen/autoload.php';
-require __DIR__ . "/../vendor/Anakeen/WHAT/Lib.Prefix.php";
 
 $paramName = "Core::CORE_TMPDIR";
 

@@ -353,7 +353,6 @@ class FileMime
      */
     protected static function loadUserMimeConf()
     {
-        include_once('WHAT/Lib.Prefix.php');
 
         $rules = array();
 
@@ -389,8 +388,6 @@ class FileMime
      */
     protected static function loadMimeConf()
     {
-        include_once('WHAT/Lib.Prefix.php');
-
         $rules = array();
 
         $conf_file = DEFAULT_PUBDIR . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "mime.conf";

@@ -6,6 +6,8 @@
 
 namespace Anakeen\Exchange;
 
+use Anakeen\Core\Utils\Postgres;
+
 class ImportSingleDocument
 {
     const CSVSECONDLEVELMULTIPLE = '<BR>';
@@ -282,6 +284,9 @@ class ImportSingleDocument
                         if (!$this->analyze) {
                             if ($attr->inArray()) {
                                 $tabsfiles = $this->normalizeData($attr, $dv);
+                                if (is_string($tabsfiles)) {
+                                    $tabsfiles=Postgres::stringToArray($tabsfiles);
+                                }
                                 $tvfids = array();
                                 foreach ($tabsfiles as $fi) {
                                     if (preg_match(PREGEXPFILE, $fi, $reg)) {

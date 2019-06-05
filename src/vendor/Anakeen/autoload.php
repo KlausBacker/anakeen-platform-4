@@ -36,3 +36,6 @@ spl_autoload_register(function ($classname) {
 });
 
 \Anakeen\Core\Internal\Autoloader::recordLoader($loader);
+
+
+require __DIR__ . "/WHAT/Lib.Prefix.php";

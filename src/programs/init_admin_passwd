@@ -21,7 +21,6 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $WIFF_CONTEXT_ROOT . PATH
 
 
 require __DIR__ . '/../vendor/Anakeen/autoload.php';
-require __DIR__ . '/../vendor/Anakeen/WHAT/Lib.Prefix.php';
 
 include_once ('lib/Lib.Cli.php');
 
