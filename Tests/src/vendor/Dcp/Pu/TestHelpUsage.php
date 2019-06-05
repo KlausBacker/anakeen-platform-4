@@ -43,9 +43,6 @@ class TestHelpUsage extends TestCaseDcp
                 "cleanContext"
             ),
             array(
-                "getApplicationParameter"
-            ),
-            array(
                 "importDocuments"
             ),
             array(
