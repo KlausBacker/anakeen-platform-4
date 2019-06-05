@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="MASK-needed">
+            <smart:enum name="-" label=" "/>
+            <smart:enum name="Y" label="Yes"/>
+            <smart:enum name="N" label="No"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="MASK" label="Masque de saisie">
         <smart:extends ref="BASE"/>
         <smart:icon file="se-mask.png"/>
@@ -18,11 +25,4 @@
             </smart:field-set>
         </smart:fields>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="MASK-needed">
-            <smart:enum name="-" label=" "/>
-            <smart:enum name="Y" label="Yes"/>
-            <smart:enum name="N" label="No"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>
