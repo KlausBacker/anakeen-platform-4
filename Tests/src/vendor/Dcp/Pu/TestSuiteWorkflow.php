@@ -13,11 +13,9 @@ namespace Dcp\Pu;
 //require_once 'PHPUnit/Framework.php';
 
 
-require_once __DIR__."/../WHAT/Lib.Prefix.php";
 
 set_include_path(get_include_path() . PATH_SEPARATOR . "./DCPTEST:./WHAT");
 
-require_once 'WHAT/autoload.php';
 // ...
 class TestSuiteWorkflow
 {
