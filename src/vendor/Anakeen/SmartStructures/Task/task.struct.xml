@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="TASK-task_status">
+            <smart:enum name="active" label="Active"/>
+            <smart:enum name="disabled" label="Disabled"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="TASK-task_result-status">
+            <smart:enum name="success" label="Succeed"/>
+            <smart:enum name="inprogress" label="Processing"/>
+            <smart:enum name="fail" label="Failed"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="TASK-task_method">
+            <smart:enum name="GET" label="GET"/>
+            <smart:enum name="POST" label="POST"/>
+            <smart:enum name="PUT" label="PUT"/>
+            <smart:enum name="DELETE" label="DELETE"/>
+            <smart:enum name="PATCH" label="PATCH"/>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
     <smart:structure-configuration name="TASK" label="Scheduled Task" >
         <smart:icon file="se-task.png"/>
         <smart:class>Anakeen\SmartStructures\Task\TaskBehavior</smart:class>
@@ -60,23 +79,4 @@
 
         <smart:accesses/>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="TASK-task_status">
-            <smart:enum name="active" label="Active"/>
-            <smart:enum name="disabled" label="Disabled"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="TASK-task_result-status">
-            <smart:enum name="success" label="Succeed"/>
-            <smart:enum name="inprogress" label="Processing"/>
-            <smart:enum name="fail" label="Failed"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="TASK-task_method">
-            <smart:enum name="GET" label="GET"/>
-            <smart:enum name="POST" label="POST"/>
-            <smart:enum name="PUT" label="PUT"/>
-            <smart:enum name="DELETE" label="DELETE"/>
-            <smart:enum name="PATCH" label="PATCH"/>
-        </smart:enum-configuration>
-
-    </smart:enumerates>
 </smart:config>

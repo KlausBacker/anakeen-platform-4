@@ -1,122 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
-    <smart:structure-configuration name="TST_API_ALLTYPE" label="Test tout type">
-        <smart:usefor>N</smart:usefor>
-        <smart:fields>
-            <smart:field-set name="tst_api__f_title" type="frame" label="Titre" access="ReadWrite">
-                <smart:field-text name="tst_api__title" label="Le titre" access="ReadWrite" is-title="true" is-abstract="true"/>
-            </smart:field-set>
-            <smart:field-set name="tst_api__t_tab" type="tab" label="Basiques" access="ReadWrite">
-                <smart:field-set name="tst_api__fr_rels" type="frame" label="Relations" access="ReadWrite">
-                    <smart:field-account name="tst_api__account" label="Un compte" access="ReadWrite"/>
-                    <smart:field-account name="tst_api__account_multiple" label="Des comptes" access="ReadWrite" multiple="true"/>
-                    <smart:field-docid name="tst_api__docid" label="Un document" access="ReadWrite" relation="TST_API_ALLTYPE"/>
-                    <smart:field-docid name="tst_api__docid_multiple" label="Des documents" access="ReadWrite" relation="TST_API_ALLTYPE" multiple="true"/>
-                </smart:field-set>
-                <smart:field-set name="tst_api__fr_date" type="frame" label="Le temps" access="ReadWrite">
-                    <smart:field-date name="tst_api__date" label="Une date" access="ReadWrite"/>
-                    <smart:field-time name="tst_api__time" label="Une heure" access="ReadWrite"/>
-                    <smart:field-timestamp name="tst_api__timestamp" label="Une date avec  une heure" access="ReadWrite"/>
-                </smart:field-set>
-                <smart:field-set name="tst_api__fr_number" type="frame" label="Les nombres" access="ReadWrite">
-                    <smart:field-int name="tst_api__integer" label="Un entier" access="ReadWrite"/>
-                    <smart:field-double name="tst_api__double" label="Un décimal" access="ReadWrite"/>
-                    <smart:field-money name="tst_api__money" label="Un sous" access="ReadWrite"/>
-                </smart:field-set>
-                <smart:field-set name="tst_api__fr_misc" type="frame" label="Divers" access="ReadWrite">
-                    <smart:field-password name="tst_api__password" label="Un mot de passe" access="ReadWrite"/>
-                    <smart:field-color name="tst_api__color" label="Une couleur" access="ReadWrite"/>
-                </smart:field-set>
-                <smart:field-set name="tst_api__fr_file" type="frame" label="Fichiers &amp; images" access="ReadWrite">
-                    <smart:field-file name="tst_api__file" label="Un fichier" access="ReadWrite"/>
-                    <smart:field-image name="tst_api__image" label="Une image" access="ReadWrite"/>
-                </smart:field-set>
-                <smart:field-set name="tst_api__fr_text" type="frame" label="Les textes" access="ReadWrite">
-                    <smart:field-htmltext name="tst_api__htmltext" label="Un texte formaté" access="ReadWrite"/>
-                    <smart:field-longtext name="tst_api__longtext" label="Un texte multiligne" access="ReadWrite"/>
-                    <smart:field-text name="tst_api__text" label="Un texte simple" access="ReadWrite"/>
-                </smart:field-set>
-                <smart:field-set name="tst_api__fr_enumsimple" type="frame" label="Énumérés directs simple" access="ReadWrite">
-                    <smart:field-enum name="tst_api__enumlist" label="Un énuméré liste" access="ReadWrite" relation="TST_API_ALLTYPE-countries">
-                        <smart:field-option name="bmenu">no</smart:field-option>
-                    </smart:field-enum>
-                    <smart:field-enum name="tst_api__enumhorizontal" label="Un énuméré multi-niveau" access="ReadWrite" relation="TST_API_ALLTYPE-colors">
-                        <smart:field-option name="bmenu">no</smart:field-option>
-                    </smart:field-enum>
-                </smart:field-set>
-                <smart:field-set name="tst_api__fr_enummultiple" type="frame" label="Énumérés directs multiple" access="ReadWrite">
-                    <smart:field-enum name="tst_api__enumslist" label="Des énumérés liste" access="ReadWrite" relation="TST_API_ALLTYPE-countries" multiple="true">
-                        <smart:field-option name="bmenu">no</smart:field-option>
-                    </smart:field-enum>
-                    <smart:field-enum name="tst_api__enumshorizontal" label="Des énumérés multi-niveau" access="ReadWrite" relation="TST_API_ALLTYPE-colors" multiple="true">
-                        <smart:field-option name="bmenu">no</smart:field-option>
-                    </smart:field-enum>
-                </smart:field-set>
-            </smart:field-set>
-            <smart:field-set name="tst_api__t_tab_date" type="tab" label="Les dates" access="ReadWrite">
-                <smart:field-set name="tst_api__frame_date" type="frame" label="Date, heures &amp; date avec l'heure" access="ReadWrite">
-                    <smart:field-set name="tst_api__array_dates" type="array" label="Le temps" access="ReadWrite">
-                        <smart:field-date name="tst_api__date_array" label="Des dates" access="ReadWrite"/>
-                        <smart:field-time name="tst_api__time_array" label="Des heures" access="ReadWrite"/>
-                        <smart:field-timestamp name="tst_api__timestamp_array" label="Des dates avec l'heure" access="ReadWrite"/>
-                    </smart:field-set>
-                </smart:field-set>
-            </smart:field-set>
-            <smart:field-set name="tst_api__t_tab_relations" type="tab" label="Les relations" access="ReadWrite">
-                <smart:field-set name="tst_api__frame_relation" type="frame" label="Relations à entretenir" access="ReadWrite">
-                    <smart:field-set name="tst_api__array_docid" type="array" label="Les documents" access="ReadWrite">
-                        <smart:field-docid name="tst_api__docid_array" label="Des documents" access="ReadWrite" relation="TST_API_ALLTYPE"/>
-                        <smart:field-docid name="tst_api__docid_multiple_array" label="Encore plus de documents" access="ReadWrite" relation="TST_API_ALLTYPE" multiple="true"/>
-                    </smart:field-set>
-                    <smart:field-set name="tst_api__array_account" type="array" label="Les comptes" access="ReadWrite">
-                        <smart:field-account name="tst_api__account_array" label="Des comptes" access="ReadWrite"/>
-                        <smart:field-account name="tst_api__account_multiple_array" label="Encore plus de comptes" access="ReadWrite" multiple="true"/>
-                    </smart:field-set>
-                </smart:field-set>
-            </smart:field-set>
-            <smart:field-set name="tst_api__t_tab_numbers" type="tab" label="Les nombres" access="ReadWrite">
-                <smart:field-set name="tst_api__frame_numbers" type="frame" label="Entier, décimaux et monnaie" access="ReadWrite">
-                    <smart:field-set name="tst_api__array_numbers" type="array" label="Quelques nombres" access="ReadWrite">
-                        <smart:field-double name="tst_api__double_array" label="Des décimaux" access="ReadWrite"/>
-                        <smart:field-int name="tst_api__integer_array" label="Des entiers" access="ReadWrite"/>
-                        <smart:field-money name="tst_api__money_array" label="Des sous" access="ReadWrite"/>
-                    </smart:field-set>
-                </smart:field-set>
-            </smart:field-set>
-            <smart:field-set name="tst_api__t_tab_misc" type="tab" label="Divers" access="ReadWrite">
-                <smart:field-set name="tst_api__frame_misc" type="frame" label="Énuméré, couleur et mot de passe" access="ReadWrite">
-                    <smart:field-set name="tst_api__array_misc" type="array" label="Quelques diverses données" access="ReadWrite">
-                        <smart:field-color name="tst_api__color_array" label="Des couleurs" access="ReadWrite"/>
-                        <smart:field-password name="tst_api__password_array" label="Des mots de passe" access="ReadWrite"/>
-                    </smart:field-set>
-                </smart:field-set>
-            </smart:field-set>
-            <smart:field-set name="tst_api__t_tab_files" type="tab" label="Les fichiers" access="ReadWrite">
-                <smart:field-set name="tst_api__frame_files" type="frame" label="Fichiers &amp; images" access="ReadWrite">
-                    <smart:field-set name="tst_api__array_files" type="array" label="Quelques fichiers" access="ReadWrite">
-                        <smart:field-file name="tst_api__file_array" label="Des fichiers" access="ReadWrite"/>
-                        <smart:field-image name="tst_api__image_array" label="Des images" access="ReadWrite"/>
-                    </smart:field-set>
-                </smart:field-set>
-            </smart:field-set>
-            <smart:field-set name="tst_api__t_tab_texts" type="tab" label="Les textes" access="ReadWrite">
-                <smart:field-set name="tst_api__frame_texts" type="frame" label="Les textes non formatés" access="ReadWrite">
-                    <smart:field-set name="tst_api__array_texts" type="array" label="Textes simples et multilignes" access="ReadWrite">
-                        <smart:field-text name="tst_api__text_array" label="Des textes" access="ReadWrite"/>
-                        <smart:field-longtext name="tst_api__longtext_array" label="Des textes multiligne" access="ReadWrite"/>
-                    </smart:field-set>
-                    <smart:field-set name="tst_api__array_html" type="array" label="Les textes HTML" access="ReadWrite">
-                        <smart:field-htmltext name="tst_api__htmltext_array" label="Des textes formatés" access="ReadWrite"/>
-                    </smart:field-set>
-                </smart:field-set>
-            </smart:field-set>
-        </smart:fields>
-        <smart:parameters/>
-        <smart:hooks/>
-        <smart:autocompletion/>
-        <smart:defaults/>
-        <smart:accesses/>
-    </smart:structure-configuration>
     <smart:enumerates>
         <smart:enum-configuration name="TST_API_ALLTYPE-colors">
             <smart:enum name="red" label="Rouge"/>
@@ -362,4 +245,121 @@
         </smart:enum-configuration>
 
     </smart:enumerates>
+    <smart:structure-configuration name="TST_API_ALLTYPE" label="Test tout type">
+        <smart:usefor>N</smart:usefor>
+        <smart:fields>
+            <smart:field-set name="tst_api__f_title" type="frame" label="Titre" access="ReadWrite">
+                <smart:field-text name="tst_api__title" label="Le titre" access="ReadWrite" is-title="true" is-abstract="true"/>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab" type="tab" label="Basiques" access="ReadWrite">
+                <smart:field-set name="tst_api__fr_rels" type="frame" label="Relations" access="ReadWrite">
+                    <smart:field-account name="tst_api__account" label="Un compte" access="ReadWrite"/>
+                    <smart:field-account name="tst_api__account_multiple" label="Des comptes" access="ReadWrite" multiple="true"/>
+                    <smart:field-docid name="tst_api__docid" label="Un document" access="ReadWrite" relation="TST_API_ALLTYPE"/>
+                    <smart:field-docid name="tst_api__docid_multiple" label="Des documents" access="ReadWrite" relation="TST_API_ALLTYPE" multiple="true"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_date" type="frame" label="Le temps" access="ReadWrite">
+                    <smart:field-date name="tst_api__date" label="Une date" access="ReadWrite"/>
+                    <smart:field-time name="tst_api__time" label="Une heure" access="ReadWrite"/>
+                    <smart:field-timestamp name="tst_api__timestamp" label="Une date avec  une heure" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_number" type="frame" label="Les nombres" access="ReadWrite">
+                    <smart:field-int name="tst_api__integer" label="Un entier" access="ReadWrite"/>
+                    <smart:field-double name="tst_api__double" label="Un décimal" access="ReadWrite"/>
+                    <smart:field-money name="tst_api__money" label="Un sous" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_misc" type="frame" label="Divers" access="ReadWrite">
+                    <smart:field-password name="tst_api__password" label="Un mot de passe" access="ReadWrite"/>
+                    <smart:field-color name="tst_api__color" label="Une couleur" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_file" type="frame" label="Fichiers &amp; images" access="ReadWrite">
+                    <smart:field-file name="tst_api__file" label="Un fichier" access="ReadWrite"/>
+                    <smart:field-image name="tst_api__image" label="Une image" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_text" type="frame" label="Les textes" access="ReadWrite">
+                    <smart:field-htmltext name="tst_api__htmltext" label="Un texte formaté" access="ReadWrite"/>
+                    <smart:field-longtext name="tst_api__longtext" label="Un texte multiligne" access="ReadWrite"/>
+                    <smart:field-text name="tst_api__text" label="Un texte simple" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_enumsimple" type="frame" label="Énumérés directs simple" access="ReadWrite">
+                    <smart:field-enum name="tst_api__enumlist" label="Un énuméré liste" access="ReadWrite" relation="TST_API_ALLTYPE-countries">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_api__enumhorizontal" label="Un énuméré multi-niveau" access="ReadWrite" relation="TST_API_ALLTYPE-colors">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+                <smart:field-set name="tst_api__fr_enummultiple" type="frame" label="Énumérés directs multiple" access="ReadWrite">
+                    <smart:field-enum name="tst_api__enumslist" label="Des énumérés liste" access="ReadWrite" relation="TST_API_ALLTYPE-countries" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                    <smart:field-enum name="tst_api__enumshorizontal" label="Des énumérés multi-niveau" access="ReadWrite" relation="TST_API_ALLTYPE-colors" multiple="true">
+                        <smart:field-option name="bmenu">no</smart:field-option>
+                    </smart:field-enum>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_date" type="tab" label="Les dates" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_date" type="frame" label="Date, heures &amp; date avec l'heure" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_dates" type="array" label="Le temps" access="ReadWrite">
+                        <smart:field-date name="tst_api__date_array" label="Des dates" access="ReadWrite"/>
+                        <smart:field-time name="tst_api__time_array" label="Des heures" access="ReadWrite"/>
+                        <smart:field-timestamp name="tst_api__timestamp_array" label="Des dates avec l'heure" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_relations" type="tab" label="Les relations" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_relation" type="frame" label="Relations à entretenir" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_docid" type="array" label="Les documents" access="ReadWrite">
+                        <smart:field-docid name="tst_api__docid_array" label="Des documents" access="ReadWrite" relation="TST_API_ALLTYPE"/>
+                        <smart:field-docid name="tst_api__docid_multiple_array" label="Encore plus de documents" access="ReadWrite" relation="TST_API_ALLTYPE" multiple="true"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst_api__array_account" type="array" label="Les comptes" access="ReadWrite">
+                        <smart:field-account name="tst_api__account_array" label="Des comptes" access="ReadWrite"/>
+                        <smart:field-account name="tst_api__account_multiple_array" label="Encore plus de comptes" access="ReadWrite" multiple="true"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_numbers" type="tab" label="Les nombres" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_numbers" type="frame" label="Entier, décimaux et monnaie" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_numbers" type="array" label="Quelques nombres" access="ReadWrite">
+                        <smart:field-double name="tst_api__double_array" label="Des décimaux" access="ReadWrite"/>
+                        <smart:field-int name="tst_api__integer_array" label="Des entiers" access="ReadWrite"/>
+                        <smart:field-money name="tst_api__money_array" label="Des sous" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_misc" type="tab" label="Divers" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_misc" type="frame" label="Énuméré, couleur et mot de passe" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_misc" type="array" label="Quelques diverses données" access="ReadWrite">
+                        <smart:field-color name="tst_api__color_array" label="Des couleurs" access="ReadWrite"/>
+                        <smart:field-password name="tst_api__password_array" label="Des mots de passe" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_files" type="tab" label="Les fichiers" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_files" type="frame" label="Fichiers &amp; images" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_files" type="array" label="Quelques fichiers" access="ReadWrite">
+                        <smart:field-file name="tst_api__file_array" label="Des fichiers" access="ReadWrite"/>
+                        <smart:field-image name="tst_api__image_array" label="Des images" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="tst_api__t_tab_texts" type="tab" label="Les textes" access="ReadWrite">
+                <smart:field-set name="tst_api__frame_texts" type="frame" label="Les textes non formatés" access="ReadWrite">
+                    <smart:field-set name="tst_api__array_texts" type="array" label="Textes simples et multilignes" access="ReadWrite">
+                        <smart:field-text name="tst_api__text_array" label="Des textes" access="ReadWrite"/>
+                        <smart:field-longtext name="tst_api__longtext_array" label="Des textes multiligne" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="tst_api__array_html" type="array" label="Les textes HTML" access="ReadWrite">
+                        <smart:field-htmltext name="tst_api__htmltext_array" label="Des textes formatés" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:autocompletion/>
+        <smart:defaults/>
+        <smart:accesses/>
+    </smart:structure-configuration>
 </smart:config>

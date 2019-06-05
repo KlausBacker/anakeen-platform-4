@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_desttype">
+            <smart:enum name="F" label="Adresse fixe"/>
+            <smart:enum name="A" label="Smart Field texte"/>
+            <smart:enum name="D" label="Smart Field relation"/>
+            <smart:enum name="E" label="Paramètre de structure texte"/>
+            <smart:enum name="DE" label="Paramètre de structure relation"/>
+            <smart:enum name="P" label="Paramètres globaux"/>
+            <smart:enum name="WA" label="Attribut cycle"/>
+            <smart:enum name="WD" label="Relation cycle"/>
+            <smart:enum name="WE" label="Paramètre cycle"/>
+            <smart:enum name="RD" label="Smart Element destinataire"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_copymode">
+            <smart:enum name="to" label="À"/>
+            <smart:enum name="cc" label="Cc"/>
+            <smart:enum name="bcc" label="Bcc"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_ulink">
+            <smart:enum name="no" label="Sans lien"/>
+            <smart:enum name="yes" label="Avec liens"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_savecopy">
+            <smart:enum name="no" label="Pas de copie"/>
+            <smart:enum name="yes" label="Copie sur le serveur"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_fromtype">
+            <smart:enum name="F" label="Adresse fixe"/>
+            <smart:enum name="A" label="Smart Field texte"/>
+            <smart:enum name="D" label="Smart Field relation"/>
+            <smart:enum name="E" label="Paramètre de structure texte"/>
+            <smart:enum name="DE" label="Paramètre de structure relation"/>
+            <smart:enum name="P" label="Paramètres globaux"/>
+            <smart:enum name="WA" label="Attribut cycle"/>
+            <smart:enum name="WD" label="Relation cycle"/>
+            <smart:enum name="WE" label="Paramètre cycle"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="MAILTEMPLATE" label="Modèle de mail">
         <smart:icon file="se-mailtemplate.png"/>
         <smart:class>Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks</smart:class>
@@ -79,42 +117,4 @@
         </smart:defaults>
         <smart:accesses/>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="MAILTEMPLATE-tmail_desttype">
-            <smart:enum name="F" label="Adresse fixe"/>
-            <smart:enum name="A" label="Smart Field texte"/>
-            <smart:enum name="D" label="Smart Field relation"/>
-            <smart:enum name="E" label="Paramètre de structure texte"/>
-            <smart:enum name="DE" label="Paramètre de structure relation"/>
-            <smart:enum name="P" label="Paramètres globaux"/>
-            <smart:enum name="WA" label="Attribut cycle"/>
-            <smart:enum name="WD" label="Relation cycle"/>
-            <smart:enum name="WE" label="Paramètre cycle"/>
-            <smart:enum name="RD" label="Smart Element destinataire"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="MAILTEMPLATE-tmail_copymode">
-            <smart:enum name="to" label="À"/>
-            <smart:enum name="cc" label="Cc"/>
-            <smart:enum name="bcc" label="Bcc"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="MAILTEMPLATE-tmail_ulink">
-            <smart:enum name="no" label="Sans lien"/>
-            <smart:enum name="yes" label="Avec liens"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="MAILTEMPLATE-tmail_savecopy">
-            <smart:enum name="no" label="Pas de copie"/>
-            <smart:enum name="yes" label="Copie sur le serveur"/>
-        </smart:enum-configuration>
-        <smart:enum-configuration name="MAILTEMPLATE-tmail_fromtype">
-            <smart:enum name="F" label="Adresse fixe"/>
-            <smart:enum name="A" label="Smart Field texte"/>
-            <smart:enum name="D" label="Smart Field relation"/>
-            <smart:enum name="E" label="Paramètre de structure texte"/>
-            <smart:enum name="DE" label="Paramètre de structure relation"/>
-            <smart:enum name="P" label="Paramètres globaux"/>
-            <smart:enum name="WA" label="Attribut cycle"/>
-            <smart:enum name="WD" label="Relation cycle"/>
-            <smart:enum name="WE" label="Paramètre cycle"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>

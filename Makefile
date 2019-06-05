@@ -19,7 +19,11 @@ ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
 ## Deps
 ##
 ########################################################################################################################
-src/vendor/Anakeen/XmlSchemas:
+
+node_modules:
+	yarn install
+
+src/vendor/Anakeen/XmlSchemas: node_modules
 	rm -fr $@
 	cp -r ./node_modules/@anakeen/anakeen-module-validation/xsd $@
 
@@ -27,7 +31,6 @@ install-deps: src/vendor/Anakeen/XmlSchemas
 	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 	cd src/vendor/Anakeen/lib; ${COMPOSER} install --ignore-platform-reqs
 	cd Tests/src/vendor/Anakeen/TestUnits/lib; ${COMPOSER} install --ignore-platform-reqs
-	yarn install
 ########################################################################################################################
 ##
 ## Static analyze
