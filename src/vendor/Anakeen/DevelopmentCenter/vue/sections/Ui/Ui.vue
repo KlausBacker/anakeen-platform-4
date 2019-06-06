@@ -96,9 +96,6 @@
           ]
         }
       },
-      mounted() {
-        console.log(this.ssName, this.uiSection);
-      },
       methods: {
         onSubComponentMounted(name) {
           this.$emit(`${name}-ready`)

@@ -53,7 +53,6 @@
         }
         const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?`;
         this.getRouter().on(new RegExp(pattern), (...params) => {
-          debugger;
           const ssName = params[0];
           const uiSection = params[1];
           this.$store.dispatch("userInterface/setStructureName", ssName);

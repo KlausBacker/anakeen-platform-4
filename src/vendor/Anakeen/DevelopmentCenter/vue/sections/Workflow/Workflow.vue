@@ -231,7 +231,6 @@ export default {
         label: this.selectedWfl,
         url: this.selectedWfl
       };
-      console.log(this.$refs, this.selectedWfl);
       const selTab = this.$refs[this.selectedWfl][0].selectedTab;
       const result = [wflName, selTab];
       const ref = `${this.selectedWfl}-${selTab.name}`;
