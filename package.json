@@ -9,7 +9,8 @@
     "buildJs:devCenter:prod": "element=DEVCENTER npx webpack --config webpack/index.js",
     "buildJs:devCenter:dev": "element=DEVCENTER dev=DEV npx webpack --config webpack/index.js",
     "buildJs:devCenter": "yarn run buildJs:devCenter:prod && yarn run buildJs:devCenter:dev",
-    "buildJs": "yarn run buildJs:devCenter"
+    "buildJs:standalone": "npx webpack --config webpack/standalone.js",
+    "buildJs": "yarn run buildJs:standalone && yarn run buildJs:devCenter"
   },
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",
