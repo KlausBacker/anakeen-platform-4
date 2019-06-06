@@ -66,6 +66,7 @@ export default {
           this.$store.dispatch("userInterface/setUiSection", uiSection);
           switch (uiSection) {
             case "control":
+
               const controlView = params[2];
               const controlId = params[3];
               if (controlView && controlId) {

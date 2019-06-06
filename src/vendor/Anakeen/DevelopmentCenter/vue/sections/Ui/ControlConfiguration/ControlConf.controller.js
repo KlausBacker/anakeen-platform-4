@@ -15,12 +15,16 @@ export default {
     controlConfig(newValue) {
       this.$refs.controlSplitter.disableEmptyContent();
       this.selectedControl = newValue;
+      this.initFilters(window.location.search);
+      this.getSelected(newValue.name);
     }
   },
   mounted() {
+    const searchUrl = window.location.search;
     if (this.selectedControl) {
       this.$refs.controlSplitter.disableEmptyContent();
     }
+    this.initFilters(searchUrl);
   },
   data() {
     return {
@@ -47,14 +51,38 @@ export default {
     }
   },
   methods: {
-    getFiltered() {
-      // this.$refs.controlConfGrid.kendoGrid.dataSource.bind("change", e => {
-      //   if (e.sender._filter === undefined) {
-      //     let query = Object.assign({}, this.$route.query);
-      //     delete query.filter;
-      //     this.$router.replace({ query });
-      //   }
-      // });
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(name|title)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: "contains",
+              value
+            });
+          }
+        }
+        if (filters.length) {
+          this.$refs.controlConfGrid.dataSource.filter(filters);
+        }
+      };
+      if (this.$refs.controlConfGrid.kendoGrid) {
+        computeFilters();
+      } else {
+        this.$refs.controlConfGrid.$once("grid-ready", () => {
+          computeFilters();
+        });
+      }
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
+      });
     },
     getSelected(e) {
       this.$nextTick(() => {
@@ -75,11 +103,30 @@ export default {
         }
       });
     },
-    getRoute() {
-      if (this.selectedControl) {
-        return Promise.resolve([this.selectedControl]);
+    getFilter() {
+      if (this.$refs.controlConfGrid && this.$refs.controlConfGrid.kendoGrid) {
+        const currentFilter = this.$refs.controlConfGrid.kendoGrid.dataSource.filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, {});
+        }
       }
-      return Promise.resolve([]);
+      return {};
+    },
+    getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
+      if (this.selectedControl) {
+        return Promise.resolve([
+          Object.assign({}, this.selectedControl, {
+            url: this.selectedControl.url + filterUrl
+          })
+        ]);
+      }
+      return Promise.resolve([{ url: filterUrl }]);
     },
     actionClick(event) {
       const controlName = event.data.row.name;

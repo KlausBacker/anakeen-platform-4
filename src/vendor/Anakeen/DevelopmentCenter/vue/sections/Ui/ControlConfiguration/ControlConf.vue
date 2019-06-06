@@ -7,7 +7,8 @@
                          :pageSizes="[100, 200, 500]"
                          :sortable="''"
                          @action-click="actionClick"
-                         @grid-ready="getFiltered">
+                         @grid-data-bound="onGridDataBound"
+            >
             </ank-se-grid>
         </template>
         <template slot="right">

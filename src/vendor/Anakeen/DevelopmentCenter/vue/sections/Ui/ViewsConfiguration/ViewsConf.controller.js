@@ -101,13 +101,13 @@ export default {
           case "maskId":
             return `<a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/masks/${dataItem[colId]}/?filter=${dataItem[colId]}">${
+            }/masks/${dataItem[colId]}/?name=${dataItem[colId]}">${
               dataItem[colId]
             }</a>`;
           case "cvId":
             return `<a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/control/element/${dataItem[colId]}/?filter=${dataItem[colId]}">${
+            }/control/element/${dataItem[colId]}/?name=${dataItem[colId]}">${
               dataItem[colId]
             }</a>`;
           case "cvStructure":
