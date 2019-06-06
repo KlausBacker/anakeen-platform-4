@@ -3,7 +3,8 @@ export default {
   state: {
     ssName: "",
     uiSection: "infos",
-    mask: ""
+    mask: "",
+    control: null
   },
   mutations: {
     SET_STRUCTURE_NAME: (state, ssName) => {
@@ -14,6 +15,9 @@ export default {
     },
     SET_MASK: (state, mask) => {
       state.mask = mask;
+    },
+    SET_CONTROL: (state, control) => {
+      state.control = control;
     }
   },
   actions: {
@@ -30,6 +34,7 @@ export default {
   getters: {
     ssName: state => state.ssName,
     uiSection: state => state.uiSection,
-    mask: state => state.mask
+    mask: state => state.mask,
+    control: state => state.control
   }
 };

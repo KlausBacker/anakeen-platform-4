@@ -8,7 +8,7 @@ export default {
     "ank-se-grid": AnkSEGrid,
     "ank-splitter": Splitter,
     "element-view": ElementView,
-    "profile-view": ProfileView
+    "permissions-view": ProfileView
   },
   props: ["ssName", "controlConfig"],
   watch: {
@@ -88,7 +88,7 @@ export default {
           event.preventDefault();
           this.$refs.controlSplitter.disableEmptyContent();
           this.selectedControl = {
-            url: `${this.ssName}/control/element/${controlName}`,
+            url: `/element/${controlName}`,
             component: "element-view",
             props: {
               initid: controlName
@@ -105,8 +105,8 @@ export default {
           event.preventDefault();
           this.$refs.controlSplitter.disableEmptyContent();
           this.selectedControl = {
-            url: `${this.ssName}/control/element/${controlName}`,
-            component: "profile-view",
+            url: `/permissions/${controlName}`,
+            component: "permissions-view",
             props: {
               profileId: controlName.toString(),
               detachable: true,
