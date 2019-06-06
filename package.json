@@ -40,7 +40,7 @@
     }
   },
   "dependencies": {
-    "@anakeen/hub-components": "^1.0.0-dev20190518140622",
+    "@anakeen/hub-components": "^1.0.1-dev20190606072649",
     "@anakeen/internal-components": "^1.0.1-dev20190518124914",
     "@anakeen/user-interfaces": "^2.0.0",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",

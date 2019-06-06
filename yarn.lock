@@ -49,10 +49,10 @@
   dependencies:
     libxmljs "^0.19.5"
 
-"@anakeen/hub-components@^1.0.0-dev20190518140622":
-  version "1.0.0-dev20190518140622"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.0-dev20190518140622.tgz#34995d916ce29154527bc0c485214163215bda73"
-  integrity sha512-rUpbW6CCID3LPqvDZkGZqLTIcIXg1xod3JrlgtufeZAvpXpd/fPUp9MtVMk05cqgoHOxhRZOH1WdcHE3I/supA==
+"@anakeen/hub-components@^1.0.1-dev20190606072649":
+  version "1.0.1-dev20190606072649"
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fhub-components/-/hub-components-1.0.1-dev20190606072649.tgz#109ba5a0ff196226fd7b373370d4960cb96e00d7"
+  integrity sha512-T2As5TDvCNOqq0Xl5NtGt8ppll91tUjQmIs8Wh1eOav5fTSgPnQLOYaoNZOUgac9Q7X9GsLG3zXyFLzn2/wyoA==
   dependencies:
     "@anakeen/internal-components" "^1.0.1"
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
