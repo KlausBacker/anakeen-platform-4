@@ -38,7 +38,7 @@
           </div>
         </div>
         <div
-          v-if="expandable"
+          v-if="collapsable"
           class="hub-dock-collapse-button"
           @click="toggleDock"
         >
