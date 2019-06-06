@@ -63,9 +63,6 @@ export default {
     if (this.entryOptions && this.entryOptions.name) {
       this.errorMessage = `${this.entryOptions.name} n'a pas pu être chargé`;
     }
-  },
-  errorCaptured(err, vm, info) {
-    console.log(err, vm, info);
   }
 };
 </script>

@@ -124,7 +124,7 @@ export default class HubStation extends Vue {
   @Prop({ default: false, type: Boolean }) public injectTag!: boolean;
   // endregion props
 
-  public activeRoute: string | null = null;
+  public activeRoute: string = "/";
 
   protected defaultRoute: { priority: number | null; route: string } = {
     priority: null,
@@ -190,7 +190,12 @@ export default class HubStation extends Vue {
   }
 
   protected initRouterConfig(configData: IHubStationDockConfigs) {
-    Vue.use(Router);
+    const rootUrl = urlJoin(
+      window.location.protocol,
+      window.location.host,
+      this.config.routerEntry
+    );
+    Vue.use(Router, { root: rootUrl });
     Object.keys(configData).forEach(key => {
       const routes = this.getRoutesConfigs(configData[key]);
       if (routes && routes.length) {
@@ -201,12 +206,12 @@ export default class HubStation extends Vue {
       }
     });
     if (this.defaultRoute && this.defaultRoute.route) {
-      this.$ankHubRouter.internal.on(this.rootUrl, () => {
+      this.$ankHubRouter.internal.on(() => {
         this.$ankHubRouter.internal.navigate(this.defaultRoute.route, true);
-        this.$ankHubRouter.internal.resolve(window.location.pathname);
+        this.$ankHubRouter.internal.resolve();
       });
     }
-    this.$ankHubRouter.internal.resolve(window.location.pathname);
+    this.$ankHubRouter.internal.resolve();
   }
 
   protected onHubElementSelected(event) {
@@ -216,10 +221,9 @@ export default class HubStation extends Vue {
       event.entryOptions.route &&
       this.withDefaultRouter
     ) {
-      const fullRoutePath =
-        urlJoin(this.rootUrl, event.entryOptions.route) + "/";
-      this.$ankHubRouter.internal.navigate(fullRoutePath, true);
-      this.$ankHubRouter.internal.resolve(window.location.pathname);
+      const routePath = urlJoin("/", event.entryOptions.route) + "/";
+      this.$ankHubRouter.internal.navigate(routePath);
+      this.$ankHubRouter.internal.resolve();
     }
     this.$emit("hubElementSelected", event);
   }
@@ -244,8 +248,6 @@ export default class HubStation extends Vue {
         if (cfg.component && cfg.component.name) {
           const component = Vue.component(cfg.component.name);
           if (component && cfg.entryOptions && cfg.entryOptions.route) {
-            const absoluteRoute =
-              urlJoin(this.rootUrl, cfg.entryOptions.route) + "/";
             const priority =
               cfg.entryOptions.activatedOrder === null ||
               cfg.entryOptions.activatedOrder === undefined
@@ -253,13 +255,13 @@ export default class HubStation extends Vue {
                 : cfg.entryOptions.activatedOrder;
             if (this.isPriorityDefaultRoute(cfg.entryOptions, priority)) {
               this.defaultRoute.priority = priority;
-              this.defaultRoute.route = absoluteRoute;
+              this.defaultRoute.route = cfg.entryOptions.route;
             }
             routes.push({
               handler: () => {
                 this.activeRoute = cfg.entryOptions.route;
               },
-              pattern: new RegExp("^" + absoluteRoute)
+              pattern: new RegExp(`^/${cfg.entryOptions.route}(?:/.*)?$`)
             });
           }
         }

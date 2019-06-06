@@ -44,10 +44,10 @@ export default class HubElementMixin extends Vue {
     }
   }
 
-  public navigate(to: string) {
+  public navigate(to: string, absolute = true) {
     const router = this.getRouter();
     if (router !== null) {
-      router.navigate(to, true);
+      router.navigate(to, absolute);
     }
   }
 

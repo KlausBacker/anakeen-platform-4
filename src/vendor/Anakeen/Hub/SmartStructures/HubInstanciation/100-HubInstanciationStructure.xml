@@ -4,6 +4,7 @@
         <smart:icon file="HubInstanciation.png"/>
 
         <smart:class>Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="hub_instance_config" type="tab" label="Configuration" access="ReadWrite">
                 <smart:field-set name="hub_instance" type="frame" access="ReadWrite" label="Information">
