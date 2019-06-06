@@ -189,11 +189,6 @@
   height: auto;
 }
 
-.dcpAttribute__value--enumbuttons.orientation-horizontal::after {
-  content: "";
-  flex: auto;
-}
-
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal,
 .dcpAttribute__value--enumbuttons.orientation-bool {
@@ -238,11 +233,11 @@
 .dcpAttribute__value--enumbuttons.orientation-horizontal .dcpAttribute__value--enumlabel {
   display: flex;
   white-space: nowrap;
+  width: 10rem;
 
   border-radius: $border-radius-base;
   border: none;
   .dcpAttribute__value--enumlabel--text {
-    width: 7rem;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
@@ -278,10 +273,6 @@
 .dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel.unselected {
   display: inherit;
   background-color: inherit;
-}
-
-.input-group margin-bottom-sm {
-  width: 100%;
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical {
