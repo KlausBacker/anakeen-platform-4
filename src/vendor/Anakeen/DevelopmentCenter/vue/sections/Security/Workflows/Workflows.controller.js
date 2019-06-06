@@ -4,11 +4,12 @@ export default {
   components: {
     "ss-list": List,
     RouterTabs,
-    "security-wfl-rights": resolve => import("./Rights/Rights.vue").then(module => resolve(module.default))
+    "security-wfl-rights": resolve =>
+      import("./Rights/Rights.vue").then(module => resolve(module.default))
   },
   computed: {
     listContent() {
-      return this.wflList.filter(item => this.alreadyClicked(item))
+      return this.wflList.filter(item => this.alreadyClicked(item));
     }
   },
   props: ["wflName", "wflSection"],
@@ -30,7 +31,7 @@ export default {
   methods: {
     onTabsMounted(wflName) {
       if (this.wflName === wflName) {
-        this.$refs[this.wflName][0].setSelectedTab((tab) => {
+        this.$refs[this.wflName][0].setSelectedTab(tab => {
           return tab.url === this.wflSection;
         });
         this.$emit(`${wflName}-ready`);
@@ -41,10 +42,10 @@ export default {
     },
     onItemClicked(item) {
       this.selectedWorkflow = item.name;
-  
+
       this.$nextTick(() => {
         this.onChildNavigate();
-      })
+      });
     },
     getRoute() {
       if (!this.selectedWorkflow) {
@@ -56,7 +57,7 @@ export default {
         url: this.selectedWorkflow
       };
       const result = [ssName];
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         if (this.$refs[this.selectedWorkflow]) {
           const selTab = this.$refs[this.selectedWorkflow][0].selectedTab;
           result.push(selTab);
@@ -80,7 +81,7 @@ export default {
       return item && this.alreadyVisited[item.name];
     },
     onChildNavigate() {
-      this.getRoute().then((route) => {
+      this.getRoute().then(route => {
         this.$emit("navigate", route);
       });
     }

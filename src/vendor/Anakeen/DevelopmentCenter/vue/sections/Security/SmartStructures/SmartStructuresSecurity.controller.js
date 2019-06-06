@@ -7,9 +7,13 @@ export default {
       ),
     RouterTabs,
     "security-ss-infos": resolve =>
-      import("./subsections/Infos/Infos.vue").then(module => resolve(module.default)),
+      import("./subsections/Infos/Infos.vue").then(module =>
+        resolve(module.default)
+      ),
     "security-ss-access": resolve =>
-      import("./subsections/Structures/Structures.vue").then(module => resolve(module.default)),
+      import("./subsections/Structures/Structures.vue").then(module =>
+        resolve(module.default)
+      ),
     "security-ss-element-access": resolve =>
       import("./subsections/Elements/Elements.vue").then(module =>
         resolve(module.default)
@@ -22,7 +26,7 @@ export default {
   props: ["ssName", "ssSection"],
   computed: {
     listContent() {
-      return this.ssList.filter(item => this.alreadyClicked(item))
+      return this.ssList.filter(item => this.alreadyClicked(item));
     }
   },
   data() {
@@ -31,7 +35,7 @@ export default {
       ssList: [],
       alreadyVisited: {},
       subComponentsRefs: {},
-      tabs:  [
+      tabs: [
         {
           name: "Security::SmartStructures::Infos",
           label: "Informations",
@@ -62,9 +66,9 @@ export default {
   methods: {
     onTabsMounted(ssName) {
       if (this.ssName === ssName) {
-        this.$refs[this.ssName][0].setSelectedTab((tab) => {
+        this.$refs[this.ssName][0].setSelectedTab(tab => {
           return tab.url === this.ssSection;
-        })
+        });
       }
     },
     onSubComponentMounted(ssName, tabName) {
@@ -75,10 +79,10 @@ export default {
     },
     onItemClicked(tab) {
       this.selectedStructure = tab.name;
-      
+
       this.$nextTick(() => {
         this.onChildNavigate();
-      })
+      });
     },
     getRoute() {
       if (!this.selectedStructure) {
@@ -98,12 +102,12 @@ export default {
         this.subComponentsRefs[ref] = new Promise(resolve => {
           this.$once(`${ref}-ready`, () => {
             resolve(this.$refs[ref]);
-          })
+          });
         });
       }
-      return this.subComponentsRefs[ref].then((component) => {
+      return this.subComponentsRefs[ref].then(component => {
         if (component && component.length && component[0].getRoute) {
-          return component[0].getRoute().then((childRoute) =>  {
+          return component[0].getRoute().then(childRoute => {
             result.push(childRoute);
             return result;
           });
@@ -122,7 +126,7 @@ export default {
       return item && this.alreadyVisited[item.name];
     },
     onChildNavigate() {
-      this.getRoute().then((route) => {
+      this.getRoute().then(route => {
         this.$emit("navigate", route);
       });
     }

@@ -14,7 +14,7 @@ export default {
     },
     SET_MASK: (state, mask) => {
       state.mask = mask;
-    },
+    }
   },
   actions: {
     setStructureName: ({ commit }, ssName) => {

@@ -10,8 +10,5 @@ if (
   window.ank.hub["ank-dev-security"]
 ) {
   // @ts-ignore
-  window.ank.hub["ank-dev-security"].resolve(
-    Security,
-    "ank-dev-security"
-  );
+  window.ank.hub["ank-dev-security"].resolve(Security, "ank-dev-security");
 }
