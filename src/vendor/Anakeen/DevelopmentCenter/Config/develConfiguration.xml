@@ -52,6 +52,23 @@
         </hge_jsassets>
         <hge_component_tag>ank-dev-breadcrumb</hge_component_tag>
     </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVREFRESHDATA">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>REFRESHDATA</hub_title>
+        <hub_order>2</hub_order>
+        <hub_docker_position>TOP_RIGHT</hub_docker_position>
+        <hub_vue_router_entry>/refresh</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>FALSE</hub_selectable>
+        <hub_expandable>FALSE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "refresh-data")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-refresh-data</hge_component_tag>
+    </hubconfigurationgeneric>
     <hubconfigurationgeneric name="DEVSMARTSTRUCTURES">
         <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
         <hub_title>SMARTSTRUCTURES</hub_title>

@@ -13,7 +13,7 @@ const mutations = {
   },
   [SET_CURRENT_ROUTE](state, route) {
     state.currentRoute = route;
-  },
+  }
 };
 
 const loadInitialState = defaultState => {

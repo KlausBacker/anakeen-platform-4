@@ -14,6 +14,7 @@ const conf = {
   entry: {
     "vendor-selector": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevBreadcrumb/index.js")],
     "breadcrumb": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevVendorSelector/index.js")],
+    "refresh-data": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevRefreshData/index.js")],
     "smart-structures": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevSmartStructures/index.js")],
     "user-interface": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevUserInterface/index.js")],
     "security": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevSecurity/index.js")],
