@@ -64,6 +64,7 @@ export default class HubStationDock extends Vue {
   @Prop({ default: DockPosition.LEFT, type: String })
   public position!: DockPosition;
   @Prop({ default: "", type: String }) public rootUrl!: string;
+  @Prop({ default: "", type: String }) public activeRoute!: string;
   // endregion props
 
   protected dockIsCollapsed: boolean = true;
@@ -123,7 +124,7 @@ export default class HubStationDock extends Vue {
   protected isSelectedEntry(entry) {
     if (entry && entry.entryOptions && entry.entryOptions.route) {
       return (
-        HubStationDock.normalizeUrl(window.location.pathname).indexOf(
+        HubStationDock.normalizeUrl(this.activeRoute).indexOf(
           this.getEntryRoute(entry)
         ) > -1
       );
@@ -139,10 +140,7 @@ export default class HubStationDock extends Vue {
 
   protected getEntryRoute(entry) {
     if (entry && entry.entryOptions && entry.entryOptions.route) {
-      return HubStationDock.normalizeUrl(
-        this.rootUrl,
-        entry.entryOptions.route
-      );
+      return HubStationDock.normalizeUrl(entry.entryOptions.route);
     }
     return "";
   }

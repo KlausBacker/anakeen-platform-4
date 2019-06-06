@@ -25,6 +25,7 @@
           :position="DockPosition.LEFT"
           :dockContent="configData.left"
           :rootUrl="rootUrl"
+          :activeRoute="activeRoute"
           @hubElementSelected="onHubElementSelected"
         ></hub-station-dock>
       </aside>
