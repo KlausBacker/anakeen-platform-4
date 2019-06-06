@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HUBCONFIGURATIONSLOT" label="Slot element configuration">
         <smart:extends ref="HUBCONFIGURATION"/>
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationSlot\HubConfigurationSlotBehavior</smart:class>
-
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="hub_slot_parameters" extended="true">
             </smart:field-set>

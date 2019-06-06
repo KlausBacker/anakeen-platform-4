@@ -4,7 +4,7 @@
         <smart:extends ref="HUBCONFIGURATIONSLOT"/>
         <smart:icon file="HubConfigurationIdentity.png"/>
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationIdentity\HubConfigurationIdentityBehavior</smart:class>
-
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="hub_component_parameters" extended="true">
                 <smart:field-enum name="email_alterable" label="Email alterable" relation="Hub_YesNo"

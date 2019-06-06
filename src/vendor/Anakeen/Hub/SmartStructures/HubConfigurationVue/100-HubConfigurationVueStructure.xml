@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HUBCONFIGURATIONVUE" label="Hub entry configuration (Vuejs)">
         <smart:extends ref="HUBCONFIGURATION"/>
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationVue\HubConfigurationVueBehavior</smart:class>
-
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="hub_slot_parameters" extended="true">
                 <smart:field-text access="ReadWrite" name="hub_vue_router_entry" needed="true" label="Router entry"/>

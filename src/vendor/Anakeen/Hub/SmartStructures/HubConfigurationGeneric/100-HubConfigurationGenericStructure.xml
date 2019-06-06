@@ -3,7 +3,7 @@
     <smart:structure-configuration name="HUBCONFIGURATIONGENERIC" label="Generic configuration">
         <smart:extends ref="HUBCONFIGURATIONVUE"/>
         <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubConfigurationGenericBehavior</smart:class>
-
+        <smart:tag name="vendor">Anakeen</smart:tag>
         <smart:fields>
             <smart:field-set name="hub_component_tab" extended="true">
                 <smart:field-set type="frame" name="hge_fr_assets" access="ReadWrite" label="Assets">
