@@ -185,10 +185,13 @@
   padding: 0 2rem 0  0;
   display: flex;
   flex-direction: row;
+  flex-flow: row wrap;
+  height: auto;
+}
 
-  .dcpAttribute__value--enumlabel {
-    flex-grow:1;
-  }
+.dcpAttribute__value--enumbuttons.orientation-horizontal::after {
+  content: "";
+  flex: auto;
 }
 
 
@@ -233,13 +236,13 @@
 }
 
 .dcpAttribute__value--enumbuttons.orientation-horizontal .dcpAttribute__value--enumlabel {
-  display: table-cell;
+  display: flex;
   white-space: nowrap;
 
   border-radius: $border-radius-base;
   border: none;
   .dcpAttribute__value--enumlabel--text {
-    width: calc(100% - 1em);
+    width: 7rem;
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
@@ -247,6 +250,7 @@
     text-align: left;
 
     margin: 0 0 0 0.3em;
+
   }
   input[type=radio], input[type=checkbox] {
     margin-right: 0.5em;
@@ -274,6 +278,10 @@
 .dcpAttribute__value--enumbuttons.orientation-bool .dcpAttribute__value--enumlabel.unselected {
   display: inherit;
   background-color: inherit;
+}
+
+.input-group margin-bottom-sm {
+  width: 100%;
 }
 
 .dcpAttribute__value--enumbuttons.orientation-vertical {
