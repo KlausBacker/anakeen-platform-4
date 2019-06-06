@@ -5,6 +5,10 @@
         </nav>
         <div v-else-if="isHubContent" class="dev-routes">
             <dev-routes
+                    @navigate="onNavigate"
+                    :routeSection="routeSection"
+                    :routeFilter="routeFilter"
+                    :middlewareFilter="middlewareFilter"
             ></dev-routes>
 
         </div>
@@ -25,6 +29,17 @@
           });
         })
     },
+    computed: {
+      routeSection() {
+        return this.$store.getters["routes/routeSection"];
+      },
+      routeFilter() {
+        return this.$store.getters["routes/routeFilter"];
+      },
+      middlewareFilter() {
+        return this.$store.getters["routes/middlewareFilter"];
+      }
+    },
     beforeCreate() {
       if (this.$options.propsData.displayType === "COLLAPSED") {
         this.$parent.$parent.collapsable = false;
@@ -37,7 +52,35 @@
         if (this.$store) {
           this.$store.registerModule(["routes"], routeStore);
         }
-        syncRouter(this);
+        const pattern = `(?:/${this.entryOptions.route}(?:/(\\w+))?)(.*)`;
+        this.getRouter().on(new RegExp(pattern), (...params) => {
+          const routeSection = params[0];
+          this.$store.commit("routes/SET_ROUTE_SECTION", routeSection);
+          const queries = window.location.search.replace(/^\?/, "").split("&");
+          const filters = queries.reduce((acc, curr) => {
+            const entry = curr.split("=");
+            acc[entry[0]] = entry[1];
+            return acc;
+          }, {});
+          switch (routeSection) {
+            case "routes":
+              this.$store.commit("routes/SET_ROUTE_FILTER", filters);
+              break;
+            case "middlewares":
+              this.$store.commit("routes/SET_MIDDLEWARE_FILTER", filters);
+              break;
+          }
+        }).resolve();
+      }
+    },
+    methods: {
+      onNavigate(route, filter) {
+        const routeUrl = `/${this.entryOptions.route}/`+route.map(r => r.url).join("/").replace(/\/\//g, '/');
+        let search = "";
+        if (filter && Object.keys(filter).length) {
+          search = `?${kendo.jQuery.param(filter)}`;
+        }
+        this.getRouter().navigate(`${routeUrl}/${search}`);
       }
     }
   };

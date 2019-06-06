@@ -31,8 +31,6 @@ export const interceptDOMLinks = (element, cb = () => {}) => {
   });
 };
 
-export function syncRouter() {};
-
 // export function syncRouter(vueHubElement) {
 //   const router = vueHubElement.getRouter();
 //   const store = vueHubElement.getStore();

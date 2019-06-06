@@ -8,6 +8,7 @@
                     @navigate="onNavigate"
                     :ssName="ssName"
                     :uiSection="uiSection"
+                    :mask="mask"
             ></dev-user-interface>
         </div>
     </div>
@@ -39,6 +40,9 @@
       },
       uiSection() {
         return this.$store.getters["userInterface/uiSection"];
+      },
+      mask() {
+        return this.$store.getters["userInterface/mask"];
       }
     },
     created() {
@@ -47,12 +51,20 @@
         if (this.$store) {
           this.$store.registerModule(["userInterface"], uiStore);
         }
-        const pattern = `(?:/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+))?)?)?`;
+        const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?`;
         this.getRouter().on(new RegExp(pattern), (...params) => {
+          debugger;
           const ssName = params[0];
           const uiSection = params[1];
           this.$store.dispatch("userInterface/setStructureName", ssName);
           this.$store.dispatch("userInterface/setUiSection", uiSection);
+          switch (uiSection) {
+            case "masks":
+              if (params[2]) {
+                this.$store.dispatch("userInterface/setMask", params[2]);
+              }
+              break;
+          }
         }).resolve();
       }
     },

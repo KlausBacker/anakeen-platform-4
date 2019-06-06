@@ -2,7 +2,8 @@ export default {
   namespaced: true,
   state: {
     ssName: "",
-    uiSection: "infos"
+    uiSection: "infos",
+    mask: ""
   },
   mutations: {
     SET_STRUCTURE_NAME: (state, ssName) => {
@@ -10,7 +11,10 @@ export default {
     },
     SET_UI_SECTION: (state, uiSection) => {
       state.uiSection = uiSection;
-    }
+    },
+    SET_MASK: (state, mask) => {
+      state.mask = mask;
+    },
   },
   actions: {
     setStructureName: ({ commit }, ssName) => {
@@ -18,10 +22,14 @@ export default {
     },
     setUiSection: ({ commit }, uiSection) => {
       commit("SET_UI_SECTION", uiSection);
+    },
+    setMask: ({ commit }, mask) => {
+      commit("SET_MASK", mask);
     }
   },
   getters: {
     ssName: state => state.ssName,
-    uiSection: state => state.uiSection
+    uiSection: state => state.uiSection,
+    mask: state => state.mask
   }
 };

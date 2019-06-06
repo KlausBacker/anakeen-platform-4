@@ -1,8 +1,8 @@
 <template>
     <div class="all-routes-tabs">
-        <router-tabs :tabs="tabs">
+        <router-tabs ref="tabsComponent" :tabs="tabs" @tab-selected="onTabSelected">
             <template v-slot="slotProps">
-                <component :is="slotProps.tab.component"></component>
+                <component :is="slotProps.tab.component" :ref="slotProps.tab.name" :routeFilter="routeFilter" :middlewareFilter="middlewareFilter" @filter="onFilter"></component>
             </template>
         </router-tabs>
     </div>
@@ -17,6 +17,19 @@
       "middlewares": resolve => import("../Routes/Middlewares/Middlewares.vue").then((module) => resolve(module.default)),
       RouterTabs
     },
+    props: ["routeSection", "routeFilter", "middlewareFilter"],
+    watch: {
+      routeSection(newValue) {
+        this.$refs.tabsComponent.setSelectedTab((tab) => {
+          return tab.url === newValue;
+        })
+      }
+    },
+    mounted() {
+      this.$refs.tabsComponent.setSelectedTab((tab) => {
+        return tab.url === this.routeSection;
+      })
+    },
     data() {
       return {
         selected: "routes",
@@ -25,14 +38,34 @@
           {
             name: "routes",
             label: "Routes",
-            component: "routes"
+            component: "routes",
+            url: "routes"
           },
           {
             name: "middlewares",
             label: "Middlewares",
-            component: "middlewares"
+            component: "middlewares",
+            url: "middlewares"
           }
         ]
+      }
+    },
+    methods: {
+      onTabSelected() {
+        this.onChildNavigate();
+      },
+      getRoute() {
+        return Promise.resolve([this.$refs.tabsComponent.selectedTab]);
+      },
+      onChildNavigate() {
+        this.getRoute().then((route) => {
+          this.$emit("navigate", route);
+        });
+      },
+      onFilter(filter) {
+        this.getRoute().then((route) => {
+          this.$emit("navigate", route, filter);
+        })
       }
     }
   }

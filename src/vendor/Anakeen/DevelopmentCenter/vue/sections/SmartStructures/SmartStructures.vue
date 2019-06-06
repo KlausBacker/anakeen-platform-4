@@ -8,9 +8,26 @@
     >
     </ss-list>
     <div class="smart-structure-content">
-      <router-tabs :ref="listItem.name" v-for="listItem in listContent" @hook:mounted="onTabsMounted(listItem.name)" @tab-selected="onTabSelected"  :key="listItem.name" v-show="listItem && listItem.name === selectedStructure" :tabs="tabs">
+      <router-tabs
+        :ref="listItem.name"
+        v-for="listItem in listContent"
+        @hook:mounted="onTabsMounted(listItem.name)"
+        @tab-selected="onTabSelected"
+        :key="listItem.name"
+        v-show="listItem && listItem.name === selectedStructure"
+        :tabs="tabs"
+      >
         <template v-slot="slotProps">
-          <component :ref="`${listItem.name}-${slotProps.tab.name}`" @navigate="onChildNavigate" @hook:mounted="onSubComponentMounted(listItem.name, slotProps.tab.name)" :is="slotProps.tab.component" :ssName="listItem.name" :ssDetails="ssDetails"></component>
+          <component
+            :ref="`${listItem.name}-${slotProps.tab.name}`"
+            @navigate="onChildNavigate"
+            @hook:mounted="
+              onSubComponentMounted(listItem.name, slotProps.tab.name)
+            "
+            :is="slotProps.tab.component"
+            :ssName="listItem.name"
+            :ssDetails="ssDetails"
+          ></component>
         </template>
       </router-tabs>
       <div class="smart-structure-empty" v-if="!selectedStructure">
@@ -32,7 +49,6 @@
   min-height: 0;
 
   .smart-structure-content {
-    border: 1px solid #d2d2d2;
     border-radius: 0.25rem;
     flex: 1;
     display: flex;
@@ -61,7 +77,6 @@
     color: #848484;
     min-height: 0;
     overflow: hidden;
-
 
     .empty-content {
       display: flex;
@@ -101,7 +116,7 @@ export default {
   props: ["ssName", "ssType", "ssDetails"],
   computed: {
     listContent() {
-      return this.ssList.filter(item => this.alreadyClicked(item))
+      return this.ssList.filter(item => this.alreadyClicked(item));
     }
   },
   watch: {
@@ -110,9 +125,9 @@ export default {
     },
     ssType(newValue) {
       if (this.$refs[this.selectedStructure]) {
-        this.$refs[this.selectedStructure][0].setSelectedTab((tab) => {
+        this.$refs[this.selectedStructure][0].setSelectedTab(tab => {
           return tab.url === newValue;
-        })
+        });
       }
     }
   },
@@ -147,9 +162,9 @@ export default {
   methods: {
     onTabsMounted(ssName) {
       if (this.ssName === ssName) {
-        this.$refs[this.ssName][0].setSelectedTab((tab) => {
+        this.$refs[this.ssName][0].setSelectedTab(tab => {
           return tab.url === this.ssType;
-        })
+        });
       }
     },
     onSubComponentMounted(ssName, tabName) {
@@ -160,7 +175,7 @@ export default {
 
       this.$nextTick(() => {
         this.onChildNavigate();
-      })
+      });
     },
     onListReady(data) {
       this.ssList = data;
@@ -190,12 +205,12 @@ export default {
         this.subComponentsRefs[ref] = new Promise(resolve => {
           this.$once(`${ref}-ready`, () => {
             resolve(this.$refs[ref]);
-          })
+          });
         });
       }
-      return this.subComponentsRefs[ref].then((component) => {
+      return this.subComponentsRefs[ref].then(component => {
         if (component && component.length && component[0].getRoute) {
-          return component[0].getRoute().then((childRoute) =>  {
+          return component[0].getRoute().then(childRoute => {
             result.push(childRoute);
             return result;
           });
@@ -205,7 +220,7 @@ export default {
       });
     },
     onChildNavigate() {
-      this.getRoute().then((route) => {
+      this.getRoute().then(route => {
         this.$emit("navigate", route);
       });
     }

@@ -222,14 +222,10 @@ export default {
             if (dataItem.type) {
               $(this).addClass(" attr-type--" + dataItem.type);
             }
-            if (
-              dataItem.structure !== that.ssName
-            ) {
+            if (dataItem.structure !== that.ssName) {
               $(this).addClass(" is-herited");
             }
-            if (
-              dataItem.declaration === "overrided"
-            ) {
+            if (dataItem.declaration === "overrided") {
               $(this).addClass(" is-overrided");
             }
             if (dataItem.parentId) {
@@ -296,7 +292,7 @@ export default {
                   </button>
                 </div>
               </th>`;
-              this.filterRow();
+              this.filterRow(col.field);
               break;
             case "value":
               this.filters += `<th class="k-header" data-field="${
@@ -311,7 +307,7 @@ export default {
                   </button>
                 </div>
               </th>`;
-              this.filterRow();
+              this.filterRow(col.field);
               break;
             default:
               this.filters += `<th class="k-header" data-field="${
@@ -323,7 +319,7 @@ export default {
                   }-filter" type="text"/>
                 </div>
               </th>`;
-              this.filterRow();
+              this.filterRow(col.field);
               break;
           }
         });
@@ -414,15 +410,15 @@ export default {
         }
       });
     },
-    filterRow() {
+    filterRow(field) {
       this.$(this.$refs.ssTreelist.kendoWidget().thead).on(
         "change",
-        "input.filter",
+        `[data-field=${field}] input.filter`,
         event => {
           let value = this.getFilterValue(event.currentTarget.value);
           value = value.replace(" ", "");
+          const colId = event.target.className.split(" ")[2].split("-")[0];
           if (value) {
-            const colId = event.target.className.split(" ")[2].split("-")[0];
             switch (colId) {
               case "config":
                 event.target.value = value;
@@ -475,11 +471,19 @@ export default {
             }
           } else {
             this.$refs.ssTreelist.kendoWidget().dataSource.filter({});
-            let query = Object.assign({}, this.$route.query);
-            delete query.pattern;
-            delete query.name;
-            this.$router.replace({ query });
+            // let query = Object.assign({}, this.$route.query);
+            // delete query.pattern;
+            // delete query.name;
+            // this.$router.replace({ query });
           }
+          this.$emit("filter", {
+            sender: this.$refs.ssTreelist.kendoWidget(),
+            filter: {
+              field: colId,
+              operator: "contains",
+              value: value
+            }
+          });
         }
       );
     },

@@ -1,21 +1,7 @@
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
 import ElementView from "../../SmartElements/ElementView/ElementView.vue";
 import ProfileView from "devComponents/profile/profile.vue";
-import Splitter from "../../../components/Splitter/Splitter.vue";
-
-const addToArray = (anArray = [], item, filterCb = () => false) => {
-  if (anArray) {
-    if (typeof filterCb === "function") {
-      const filterResult = anArray.filter(filterCb);
-      if (!filterResult || filterResult.length) {
-        anArray.push(item);
-      }
-    } else {
-      anArray.push(item);
-    }
-  }
-  return anArray;
-};
+import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 
 export default {
   components: {
@@ -24,10 +10,21 @@ export default {
     "element-view": ElementView,
     "profile-view": ProfileView
   },
-  props: ["ssName"],
+  props: ["ssName", "controlConfig"],
+  watch: {
+    controlConfig(newValue) {
+      this.$refs.controlSplitter.disableEmptyContent();
+      this.selectedControl = newValue;
+    }
+  },
+  mounted() {
+    if (this.selectedControl) {
+      this.$refs.controlSplitter.disableEmptyContent();
+    }
+  },
   data() {
     return {
-      openedItems: [],
+      selectedControl: this.controlConfig,
       panes: [
         {
           scrollable: false,
@@ -51,13 +48,13 @@ export default {
   },
   methods: {
     getFiltered() {
-      this.$refs.controlConfGrid.kendoGrid.dataSource.bind("change", e => {
-        if (e.sender._filter === undefined) {
-          let query = Object.assign({}, this.$route.query);
-          delete query.filter;
-          this.$router.replace({ query });
-        }
-      });
+      // this.$refs.controlConfGrid.kendoGrid.dataSource.bind("change", e => {
+      //   if (e.sender._filter === undefined) {
+      //     let query = Object.assign({}, this.$route.query);
+      //     delete query.filter;
+      //     this.$router.replace({ query });
+      //   }
+      // });
     },
     getSelected(e) {
       this.$nextTick(() => {
@@ -78,23 +75,50 @@ export default {
         }
       });
     },
+    getRoute() {
+      if (this.selectedControl) {
+        return Promise.resolve([this.selectedControl]);
+      }
+      return Promise.resolve([]);
+    },
     actionClick(event) {
-      event.preventDefault();
-      this.$refs.controlSplitter.disableEmptyContent();
+      const controlName = event.data.row.name;
       switch (event.data.type) {
         case "consult":
-          addToArray(
-            this.openedItems,
-            {
-              name: event.data.row.name
+          event.preventDefault();
+          this.$refs.controlSplitter.disableEmptyContent();
+          this.selectedControl = {
+            url: `${this.ssName}/control/element/${controlName}`,
+            component: "element-view",
+            props: {
+              initid: controlName
             },
-            item => item.name === event.data.row.name
-          );
-          this.getSelected(event.data.row.name);
-          console.log(this.openedItems);
+            name: controlName,
+            label: controlName
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+            this.getSelected(event.data.row.name);
+          });
           break;
         case "permissions":
-          this.getSelected(event.data.row.name);
+          event.preventDefault();
+          this.$refs.controlSplitter.disableEmptyContent();
+          this.selectedControl = {
+            url: `${this.ssName}/control/element/${controlName}`,
+            component: "profile-view",
+            props: {
+              profileId: controlName.toString(),
+              detachable: true,
+              onlyExtendedAcls: true
+            },
+            name: controlName,
+            label: controlName
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+            this.getSelected(event.data.row.name);
+          });
           break;
         default:
           break;

@@ -77,7 +77,7 @@ export default {
     selected() {
       this.$nextTick(() => {
         this.autoScrollOnSelected();
-      })
+      });
     }
   },
   computed: {
@@ -124,7 +124,7 @@ export default {
   created() {
     if (this.vendorCategory === "auto") {
       // Watch store vendor update
-      this.$store.subscribe((mutation) => {
+      this.$store.subscribe(mutation => {
         if (mutation.type === "SELECT_VENDOR_CATEGORY") {
           if (this.vendorCategory === "auto") {
             if (this.dataSource) {

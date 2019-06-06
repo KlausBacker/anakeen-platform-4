@@ -14,9 +14,6 @@ export default {
     }
   },
   watch: {
-    selected(newValue) {
-      this.onSelectedTab(newValue);
-    },
     selectedTab(newValue) {
       this.onSelectedTab(newValue.name);
     }

@@ -6,7 +6,8 @@
                 </ank-se-grid>
             </template>
             <template slot="right">
-                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+<!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
+                <profile-view style="height: 100%" :seIdentifier="selectedProfile"></profile-view>
             </template>
         </ank-splitter>
     </div>

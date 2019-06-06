@@ -12,7 +12,8 @@
                 </ank-se-grid>
             </template>
             <template slot="right">
-                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+<!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
+                <component v-if="selectedFieldAccess" style="height: 100%" :is="selectedFieldAccess.component" v-bind="selectedFieldAccess.props"></component>
             </template>
         </ank-splitter>
     </div>

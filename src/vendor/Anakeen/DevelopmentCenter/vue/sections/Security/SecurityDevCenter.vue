@@ -2,7 +2,20 @@
   <div class="security-parent">
     <router-tabs ref="tabsComponent" @tab-selected="onTabSelected" :tabs="tabs">
       <template v-slot="slotProps">
-        <component :ref="slotProps.tab.name" :is="slotProps.tab.component" @navigate="onChildNavigate" @hook:mounted="onComponentMounted(slotProps.tab.name)" :ssName="ssName" :ssSection="ssSection" :wflName="wflName" :wflSection="wflSection" :routeAccess="routeAccess"></component>
+        <component
+          :ref="slotProps.tab.name"
+          :is="slotProps.tab.component"
+          @navigate="onChildNavigate"
+          @hook:mounted="onComponentMounted(slotProps.tab.name)"
+          :ssName="ssName"
+          :ssSection="ssSection"
+          :wflName="wflName"
+          :wflSection="wflSection"
+          :routeAccess="routeAccess"
+          :profile="profile"
+          :fieldAccess="fieldAccess"
+          :role="role"
+        ></component>
       </template>
     </router-tabs>
   </div>
@@ -22,9 +35,7 @@ export default {
         resolve(module.default)
       ),
     "security-profiles": resolve =>
-      import("./Profiles/Profiles.vue").then(module =>
-        resolve(module.default)
-      ),
+      import("./Profiles/Profiles.vue").then(module => resolve(module.default)),
     "security-fieldaccess": resolve =>
       import("./FieldAccess/FieldAccess.vue").then(module =>
         resolve(module.default)
@@ -42,7 +53,24 @@ export default {
         resolve(module.default)
       )
   },
-  props: ["securitySection", "ssName", "ssSection", "wflName", "wflSection", "routeAccess"],
+  props: [
+    "securitySection",
+    "ssName",
+    "ssSection",
+    "wflName",
+    "wflSection",
+    "routeAccess",
+    "profile",
+    "fieldAccess",
+    "role"
+  ],
+  watch: {
+    securitySection(newValue) {
+      this.$refs.tabsComponent.setSelectedTab(tab => {
+        return tab.url === newValue;
+      });
+    }
+  },
   data() {
     return {
       subComponentsRefs: {},
@@ -87,7 +115,7 @@ export default {
     };
   },
   mounted() {
-    this.$refs.tabsComponent.setSelectedTab((tab) => {
+    this.$refs.tabsComponent.setSelectedTab(tab => {
       return tab.url === this.securitySection;
     });
   },
@@ -110,12 +138,12 @@ export default {
         this.subComponentsRefs[ref] = new Promise(resolve => {
           this.$once(`${ref}-ready`, () => {
             resolve(this.$refs[ref]);
-          })
+          });
         });
       }
-      return this.subComponentsRefs[ref].then((component) => {
+      return this.subComponentsRefs[ref].then(component => {
         if (component && component.getRoute) {
-          return component.getRoute().then((childRoute) =>  {
+          return component.getRoute().then(childRoute => {
             result.push(...childRoute);
             return result;
           });
@@ -125,7 +153,7 @@ export default {
       });
     },
     onChildNavigate() {
-      this.getRoute().then((route) => {
+      this.getRoute().then(route => {
         this.$emit("navigate", route);
       });
     }

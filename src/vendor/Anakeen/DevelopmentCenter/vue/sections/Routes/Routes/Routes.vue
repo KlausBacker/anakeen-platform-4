@@ -1,6 +1,6 @@
 <template>
     <ss-treelist ref="routesList" :items="items" :url="url" :getValues="getValues" :columnTemplate="columnTemplate"
-                 :ssName="''" :sort="sort" :inlineFilters="true"></ss-treelist>
+                 :ssName="''" :sort="sort" :inlineFilters="true" @filter="onFilter"></ss-treelist>
 </template>
 <script>
   import Vue from "vue";
@@ -10,7 +10,7 @@
 
   export default {
     components: {SsTreelist},
-    props: ["ssName"],
+    props: ["ssName", "routeFilter"],
     beforeRouteEnter(to, from, next) {
       next(function (vueInstance) {
         if (to.name === "routes" && to.query.name) {
@@ -82,6 +82,37 @@
           };
         }
       };
+    },
+    methods: {
+      onFilter(event) {
+        const filter = event.filter;
+        if (filter) {
+          const currentFilter = event.sender.dataSource.filter();
+          let nextFilter = {};
+          if (currentFilter) {
+            nextFilter = currentFilter.filters.reduce((acc, curr) => {
+              acc[curr.field] = curr.value;
+              return acc;
+            }, {});
+          }
+          this.$emit(
+            "filter",
+            Object.assign({}, nextFilter, { [filter.field]: filter.value })
+          );
+        } else {
+          const currentFilter = event.sender.dataSource.filter();
+          let nextFilter = {};
+          if (currentFilter) {
+            nextFilter = currentFilter.filters.reduce((acc, curr) => {
+              if (curr.field !== event.field) {
+                acc[curr.field] = curr.value;
+              }
+              return acc;
+            }, {});
+          }
+          this.$emit("filter", Object.assign({}, nextFilter));
+        }
+      }
     }
   }
 </script>

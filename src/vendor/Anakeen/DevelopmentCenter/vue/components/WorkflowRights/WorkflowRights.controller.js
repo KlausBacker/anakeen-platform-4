@@ -95,9 +95,9 @@ export default {
           const primaryAcls = [];
           const secondaryAcls = [];
           Object.keys(this.acls).forEach(acl => {
-            let hide = "";
-            if (!this.acls[acl].visible) {
-              hide = "style='display: none;'";
+            let hide = "style='display: none'";
+            if (this.acls[acl] && this.acls[acl].visible) {
+              hide = "";
             }
             let template;
             switch (rights[acl]) {
@@ -206,8 +206,11 @@ export default {
                     <div class="primary-acls">
                       ${this.defaultAcls
                         .map(c => {
+                          if (!this.acls[c]) {
+                            return "";
+                          }
                           let checked = "";
-                          if (this.acls[c].visible) {
+                          if (this.acls[c] && this.acls[c].visible) {
                             checked = "checked='checked'";
                           }
                           return `<input type="checkbox" id="${
@@ -440,13 +443,15 @@ export default {
       window.open(this.resolveDetachUrl);
     },
     getLabel(element, capitalize = false, firstBold = false) {
-      let label = element.label;
-
-      if (label && capitalize) {
-        label = `${label.charAt(0).toUpperCase()}${label.substring(1)}`;
-      }
-      if (label && firstBold) {
-        label = `${label.charAt(0).bold()}${label.substring(1)}`;
+      let label = "";
+      if (element) {
+        label = element.label;
+        if (label && capitalize) {
+          label = `${label.charAt(0).toUpperCase()}${label.substring(1)}`;
+        }
+        if (label && firstBold) {
+          label = `${label.charAt(0).bold()}${label.substring(1)}`;
+        }
       }
       return label;
     }

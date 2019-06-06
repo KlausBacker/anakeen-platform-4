@@ -10,7 +10,7 @@
         <div class="ui-content">
             <router-tabs :ref="listItem.name" v-for="(listItem, index) in listContent" :key="index" @hook:mounted="onTabsMounted(listItem.name)" @tab-selected="onTabSelected" v-show="listItem && listItem.name === selectedStructure" :tabs="tabs">
                 <template v-slot="slotProps">
-                    <component :is="slotProps.tab.component" :ssName="listItem.name"></component>
+                    <component :ref="`${listItem.name}-${slotProps.tab.name}`" :is="slotProps.tab.component" @hook:mounted="onSubComponentMounted(listItem.name)" :ssName="listItem.name" :mask="mask" @navigate="onChildNavigate"></component>
                 </template>
             </router-tabs>
             <div class="ui-empty" v-if="!selectedStructure">
@@ -45,7 +45,19 @@
             resolve(module.default)
           )
       },
-      props: ["ssName", "uiSection"],
+      props: ["ssName", "uiSection", "mask"],
+      watch: {
+        ssName(newValue) {
+          this.selectedStructure = newValue;
+        },
+        uiSection(newValue) {
+          if (this.$refs[this.selectedStructure]) {
+            this.$refs[this.selectedStructure][0].setSelectedTab(tab => {
+              return tab.url === newValue;
+            });
+          }
+        }
+      },
       computed: {
         listContent() {
           return this.ssList.filter(item => this.alreadyClicked(item))
@@ -84,7 +96,13 @@
           ]
         }
       },
+      mounted() {
+        console.log(this.ssName, this.uiSection);
+      },
       methods: {
+        onSubComponentMounted(name) {
+          this.$emit(`${name}-ready`)
+        },
         onTabsMounted(ssName) {
           if (this.ssName === ssName) {
             this.$refs[this.ssName][0].setSelectedTab((tab) => {
@@ -118,14 +136,34 @@
             url: this.selectedStructure
           };
           const selTab = this.$refs[this.selectedStructure][0].selectedTab;
+          const ref = `${this.selectedStructure}-${selTab.name}`;
+          let componentPromise;
+          if (this.$refs[ref]) {
+            componentPromise = Promise.resolve(this.$refs[ref][0]);
+          } else {
+            componentPromise = new Promise((resolve) => {
+              this.$once(`${ref}-ready`, () => {
+                resolve(this.$refs[ref][0]);
+              })
+            })
+          }
           const result = [ssName, selTab];
-          return Promise.resolve(result);
+          return componentPromise.then((component) => {
+            if (component && component.getRoute) {
+              return component.getRoute().then(route => {
+                result.push(...route);
+                return result;
+              });
+            } else {
+              return result;
+            }
+          });
         },
         onChildNavigate() {
           this.getRoute().then((route) => {
             this.$emit("navigate", route);
           });
-        }
+        },
       }
     }
 </script>

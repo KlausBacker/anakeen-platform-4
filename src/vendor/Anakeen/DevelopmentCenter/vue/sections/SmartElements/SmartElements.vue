@@ -9,7 +9,8 @@
                 </ank-se-grid>
             </template>
             <template slot="right">
-                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+<!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
+                <component style="height:100%" v-if="selectedElement" :is="selectedElement.component" v-bind="selectedElement.props"></component>
             </template>
         </ank-splitter>
     </div>

@@ -21,6 +21,7 @@
             </template>
             <template slot="right">
 <!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1; height: 100%;"></router-multi-view>-->
+                <element-view style="height:100%" :initid="selectedRole" viewId="!defaultConsultation"></element-view>
             </template>
         </ank-splitter>
     </div>

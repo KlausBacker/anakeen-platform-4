@@ -1,13 +1,25 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
+import RightsGrid from "devComponents/profile/profile.vue";
+import FallConfig from "devComponents/FieldAccessConfig/FieldAccessConfig.vue";
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "fall-rights": RightsGrid,
+    "fall-config": FallConfig
+  },
+  props: ["fieldAccess"],
+  watch: {
+    fieldAccess(newValue) {
+      this.$refs.fallSplitter.disableEmptyContent();
+      this.selectedFieldAccess = newValue;
+    }
   },
   data() {
     return {
+      selectedFieldAccess: this.fieldAccess,
       panes: [
         {
           scrollable: false,
@@ -68,27 +80,30 @@ export default {
     }
   },
   mounted() {
-    const bindFilter = grid => {
-      grid.bind("filter", event => {
-        const filter = event.filter ? event.filter.filters[0] || null : null;
-        if (filter) {
-          this.$router.addQueryParams({
-            [filter.field]: filter.value
-          });
-        } else {
-          const query = Object.assign({}, this.$route.query);
-          delete query[event.field];
-          this.$router.push({ query: query });
-        }
-      });
-    };
-    if (this.$refs.fallGrid.kendoGrid) {
-      bindFilter(this.$refs.fallGrid.kendoGrid);
-    } else {
-      this.$refs.fallGrid.$once("grid-ready", () => {
-        bindFilter(this.$refs.fallGrid.kendoGrid);
-      });
+    if (this.selectedFieldAccess) {
+      this.$refs.fallSplitter.disableEmptyContent();
     }
+    // const bindFilter = grid => {
+    //   grid.bind("filter", event => {
+    //     const filter = event.filter ? event.filter.filters[0] || null : null;
+    //     if (filter) {
+    //       this.$router.addQueryParams({
+    //         [filter.field]: filter.value
+    //       });
+    //     } else {
+    //       const query = Object.assign({}, this.$route.query);
+    //       delete query[event.field];
+    //       this.$router.push({ query: query });
+    //     }
+    //   });
+    // };
+    // if (this.$refs.fallGrid.kendoGrid) {
+    //   bindFilter(this.$refs.fallGrid.kendoGrid);
+    // } else {
+    //   this.$refs.fallGrid.$once("grid-ready", () => {
+    //     bindFilter(this.$refs.fallGrid.kendoGrid);
+    //   });
+    // }
   },
   methods: {
     cellRender(event) {
@@ -118,22 +133,46 @@ export default {
         }
       }
     },
+    getRoute() {
+      if (this.selectedFieldAccess) {
+        return Promise.resolve([this.selectedFieldAccess]);
+      }
+      return Promise.resolve([]);
+    },
     actionClick(event) {
+      let fallIdentifier;
       switch (event.data.type) {
         case "rights":
-          this.$router.push({
-            name: "Security::FieldAccess::Access",
-            params: {
-              fallIdentifier: event.data.row.name || event.data.row.initid
-            }
+          this.$refs.fallSplitter.disableEmptyContent();
+          fallIdentifier = event.data.row.name || event.data.row.initid;
+          this.selectedFieldAccess = {
+            url: `${fallIdentifier}/rights`,
+            component: "fall-rights",
+            props: {
+              onlyExtendedAcls: true,
+              profileId: fallIdentifier
+            },
+            name: fallIdentifier,
+            label: fallIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "config":
-          this.$router.push({
-            name: "Security::FieldAccess::Config",
-            params: {
-              fallIdentifier: event.data.row.name || event.data.row.initid
-            }
+          this.$refs.fallSplitter.disableEmptyContent();
+          fallIdentifier = event.data.row.name || event.data.row.initid;
+          this.selectedFieldAccess = {
+            url: `${fallIdentifier}/config`,
+            component: "fall-config",
+            props: {
+              fallid: fallIdentifier
+            },
+            name: fallIdentifier,
+            label: fallIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
       }

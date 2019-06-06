@@ -1,14 +1,17 @@
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
+import ElementView from "../../SmartElements/ElementView/ElementView.vue";
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "element-view": ElementView
   },
+  props: ["role"],
   data() {
     return {
-      collection: "",
+      selectedRole: this.role,
       panes: [
         {
           scrollable: false,
@@ -57,6 +60,11 @@ export default {
       });
     }
   },
+  mounted() {
+    if (this.selectedRole) {
+      this.$refs.rolesSplitter.disableEmptyContent();
+    }
+  },
   devCenterRefreshData() {
     if (this.$refs.roleContent && this.$refs.roleContent.dataSource) {
       this.$refs.roleContent.dataSource.read();
@@ -83,16 +91,32 @@ export default {
       });
       this.$refs.roleContent.kendoGrid.setOptions(options);
     },
+    getRoute() {
+      if (this.selectRole) {
+        return Promise.resolve([
+          {
+            url: this.selectedRole,
+            name: this.selectedRole,
+            label: this.selectedRole
+          }
+        ]);
+      }
+      return Promise.resolve([]);
+    },
     selectRole(e) {
-      e.preventDefault();
-      this.$router.push({
-        name: "Security::Roles::element",
-        params: {
-          seIdentifier: e.data.row.name ? e.data.row.name : e.data.row.id
-        }
-      });
-      this.getSelected(e.data.row.id);
-      this.$refs.rolesSplitter.disableEmptyContent();
+      let profileId;
+      switch (e.data.type) {
+        case "consultRole":
+          e.preventDefault();
+          profileId = e.data.row.name || e.data.row.id.toString();
+          this.$refs.rolesSplitter.disableEmptyContent();
+          this.selectedRole = profileId;
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+            this.getSelected(e.data.row.id, "id");
+          });
+          break;
+      }
     },
     onGridError(event) {
       this.$store.dispatch("displayError", {

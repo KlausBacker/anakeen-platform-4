@@ -1,48 +1,28 @@
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-import Splitter from "../../../components/Splitter/Splitter.vue";
+import Splitter from "@anakeen/internal-components/lib/Splitter.js";
+import ElementView from "../../SmartElements/ElementView/ElementView.vue";
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "element-view": ElementView
   },
-  props: ["ssName"],
-  beforeRouteEnter(to, from, next) {
-    if (to.name === "Ui::masks::element") {
-      next(function(vueInstance) {
-        if (to.query.filter) {
-          if (vueInstance.$refs.masksGrid.kendoGrid) {
-            vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
-              field: "name",
-              operator: "eq",
-              value: to.query.filter
-            });
-            vueInstance.$refs.masksSplitter.disableEmptyContent();
-            vueInstance.getSelected(to.params.seIdentifier);
-          } else {
-            vueInstance.$refs.masksGrid.$on("grid-ready", () => {
-              vueInstance.$refs.masksGrid.kendoGrid.dataSource.filter({
-                field: "name",
-                operator: "eq",
-                value: to.query.filter
-              });
-            });
-            vueInstance.$refs.masksSplitter.disableEmptyContent();
-            vueInstance.getSelected(to.params.seIdentifier);
-          }
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    } else {
-      next(vueInstance => {
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
+  props: ["ssName", "mask"],
+  watch: {
+    mask(newValue) {
+      this.$refs.masksSplitter.disableEmptyContent();
+      this.selectedMask = newValue;
+    }
+  },
+  mounted() {
+    if (this.selectedMask) {
+      this.$refs.masksSplitter.disableEmptyContent();
     }
   },
   data() {
     return {
+      selectedMask: this.mask,
       panes: [
         {
           scrollable: false,
@@ -65,15 +45,6 @@ export default {
     }
   },
   methods: {
-    getFiltered() {
-      this.$refs.masksGrid.kendoGrid.dataSource.bind("change", e => {
-        if (e.sender._filter === undefined) {
-          let query = Object.assign({}, this.$route.query);
-          delete query.filter;
-          this.$router.replace({ query });
-        }
-      });
-    },
     getSelected(e, col) {
       if (e !== "") {
         if (this.$refs.masksGrid.kendoGrid) {
@@ -103,20 +74,28 @@ export default {
         }
       }
     },
+    getRoute() {
+      if (this.selectedMask) {
+        return Promise.resolve([
+          {
+            url: this.selectedMask,
+            name: this.selectedMask,
+            label: this.selectedMask
+          }
+        ]);
+      }
+      return Promise.resolve([]);
+    },
     actionClick(event) {
       event.preventDefault();
-      this.$refs.masksSplitter.disableEmptyContent();
       switch (event.data.type) {
         case "consult": {
-          this.$router.push({
-            name: "Ui::masks::element",
-            params: {
-              seIdentifier: event.data.row.name
-                ? event.data.row.name
-                : event.data.row.id
-            }
+          this.$refs.masksSplitter.disableEmptyContent();
+          this.selectedMask = event.data.row.name || event.data.row.id;
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+            this.getSelected(event.data.row.id, "id");
           });
-          this.getSelected(event.data.row.id, "id");
           break;
         }
       }

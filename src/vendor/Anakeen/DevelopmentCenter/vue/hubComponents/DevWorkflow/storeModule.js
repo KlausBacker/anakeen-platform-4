@@ -1,18 +1,27 @@
 export default {
+  namespaced: true,
   state: {
-    ssName: "",
-    structureTab: "SmartStructures::infos"
+    wflName: "",
+    wflType: "infos"
   },
   mutations: {
-    SET_STRUCTURE_NAME: (state, ssName) => {
-      state.ssName = ssName;
+    SET_WORKFLOW_NAME: (state, wflName) => {
+      state.wflName = wflName;
     },
-    SET_STRUCTURE_TAB: (state, tab) => {
-      state.structureTab = tab;
+    SET_WORKFLOW_TYPE: (state, wflType) => {
+      state.wflType = wflType;
+    }
+  },
+  actions: {
+    setWorkflowName: ({ commit }, wflName) => {
+      commit("SET_WORKFLOW_NAME", wflName);
+    },
+    setWorkflowType: ({ commit }, wflType) => {
+      commit("SET_WORKFLOW_TYPE", wflType);
     }
   },
   getters: {
-    ssName: state => state.ssName,
-    structureTab: state => state.structureTab
+    wflName: state => state.wflName,
+    wflType: state => state.wflType
   }
 };

@@ -11,9 +11,7 @@
             </ank-se-grid>
         </template>
         <template slot="right">
-            <div style="height: 100%" v-for="openedItem in openedItems" :key="openedItem.name">
-                <component v-for="component in openedItem.components" :key="`${openedItem.name}-${component.tag}`" :is="component.tag" v-bind="component.props"></component>
-            </div>
+            <component style="height: 100%" v-if="selectedControl" :is="selectedControl.component" v-bind="selectedControl.props"></component>
         </template>
     </ank-splitter>
 </template>

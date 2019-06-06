@@ -1,10 +1,10 @@
 <template>
     <div class="header-breadcrumb" v-if="isDockCollapsed || isDockExpanded">
-            <span v-for="(routeItem, index) in routesSections" :key="index">
+            <span v-for="(routeItem, index) in routes" :key="index">
                 <span :class="{ 'header-breadcrumb-root-item': index === 0, 'header-breacrumb-item': true }">
                     {{getRouteLabel(routeItem)}}
                 </span>
-                <span class="header-breadcrumb-separator" v-if="index !== routesSections.length - 1"> > </span>
+                <span class="header-breadcrumb-separator" v-if="index !== routes.length - 1"> > </span>
             </span>
     </div>
 </template>
@@ -37,10 +37,28 @@
         ]
       }
     },
+    data() {
+      return {
+       routes: [
+         {
+           name: "Development Center"
+         }
+       ]
+      }
+    },
     created() {
       if (this.isDockCollapsed) {
+        this.getRouter().on('*', (...params) => {
+          this.routes = [
+            ...this.routesSections
+          ]
+        });
         interceptDOMLinks("body", (path) => {
-          this.getRouter().navigate(path, true);
+          this.$ankHubRouter.internal.navigate(path, true).resolve();
+          setTimeout(() => {
+            this.getRouter().navigate(path, true).resolve();
+          }, 10000);
+
         })
       }
     },

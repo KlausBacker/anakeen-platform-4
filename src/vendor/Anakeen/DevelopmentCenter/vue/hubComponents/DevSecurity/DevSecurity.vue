@@ -11,6 +11,9 @@
                     :wflName="wflName"
                     :wflSection="wflSection"
                     :routeAccess="routeAccess"
+                    :profile="profile"
+                    :fieldAccess="fieldAccess"
+                    :role="role"
                     @navigate="onNavigate"
             ></dev-security>
 
@@ -56,6 +59,15 @@
       },
       routeAccess() {
         return this.$store.getters["security/routeAccess"];
+      },
+      profile() {
+        return this.$store.getters["security/profile"];
+      },
+      fieldAccess() {
+        return this.$store.getters["security/fieldAccess"];
+      },
+      role() {
+        return this.$store.getters["security/role"];
       }
     },
     created() {
@@ -64,7 +76,7 @@
         if (this.$store) {
           this.$store.registerModule(["security"], securityStore);
         }
-        const pattern = `(?:/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?)?`;
+        const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?`;
         this.getRouter().on(new RegExp(pattern), (...params) => {
           const securitySection = params[0];
           this.$store.dispatch("security/setSecuritySection", securitySection);
@@ -76,6 +88,22 @@
             this.$store.dispatch("security/setWflSection", params[2]);
           } else if (securitySection === "routes") {
             this.$store.dispatch("security/setRouteAccess", params[1]);
+          } else if (securitySection === "profiles" && params[1]) {
+            this.$store.dispatch("security/setProfile", params[1])
+          } else if (securitySection === "fieldAccess" && params[1]) {
+            this.$store.commit("security/SET_FIELD_ACCESS", {
+              url: `${params[1]}/${params[2]}`,
+              component: `fall-${params[2]}`,
+              props: {
+                onlyExtendedAcls: true,
+                profileId: params[1],
+                fallid: params[1]
+              },
+              name: params[1],
+              label: params[1]
+            })
+          } else if (securitySection === "roles" && params[1]) {
+            this.$store.commit("security/SET_ROLE", params[1]);
           }
         }).resolve();
       }

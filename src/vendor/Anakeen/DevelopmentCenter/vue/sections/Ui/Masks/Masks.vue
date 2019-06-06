@@ -6,12 +6,12 @@
                          filterable="inline"
                          :pageSizes="[100,200,500]"
                          :sortable="''"
-                         @action-click="actionClick"
-                         @grid-ready="getFiltered">
+                         @action-click="actionClick">
             </ank-se-grid>
         </template>
         <template slot="right">
-            <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+<!--            <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
+            <element-view style="height: 100%" :initid="selectedMask" viewId="!defaultConsultation"></element-view>
         </template>
     </ank-splitter>
 </template>

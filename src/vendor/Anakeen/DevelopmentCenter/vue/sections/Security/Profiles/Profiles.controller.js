@@ -1,13 +1,23 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
+import ProfileView from "./ProfileVisualizer/ProfileVisualizerContent.vue";
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "profile-view": ProfileView
+  },
+  props: ["profile"],
+  watch: {
+    profileId(newValue) {
+      this.$refs.profileSplitter.disableEmptyContent();
+      this.selectedProfile = newValue;
+    }
   },
   data() {
     return {
+      selectedProfile: this.profile,
       panes: [
         {
           scrollable: false,
@@ -76,27 +86,30 @@ export default {
     }
   },
   mounted() {
-    const bindFilter = grid => {
-      grid.bind("filter", event => {
-        const filter = event.filter ? event.filter.filters[0] || null : null;
-        if (filter) {
-          this.$router.addQueryParams({
-            [filter.field]: filter.value
-          });
-        } else {
-          const query = Object.assign({}, this.$route.query);
-          delete query[event.field];
-          this.$router.push({ query: query });
-        }
-      });
-    };
-    if (this.$refs.profilesGrid.kendoGrid) {
-      bindFilter(this.$refs.profilesGrid.kendoGrid);
-    } else {
-      this.$refs.profilesGrid.$once("grid-ready", () => {
-        bindFilter(this.$refs.profilesGrid.kendoGrid);
-      });
+    if (this.selectedProfile) {
+      this.$refs.profileSplitter.disableEmptyContent();
     }
+    // const bindFilter = grid => {
+    //   grid.bind("filter", event => {
+    //     const filter = event.filter ? event.filter.filters[0] || null : null;
+    //     if (filter) {
+    //       this.$router.addQueryParams({
+    //         [filter.field]: filter.value
+    //       });
+    //     } else {
+    //       const query = Object.assign({}, this.$route.query);
+    //       delete query[event.field];
+    //       this.$router.push({ query: query });
+    //     }
+    //   });
+    // };
+    // if (this.$refs.profilesGrid.kendoGrid) {
+    //   bindFilter(this.$refs.profilesGrid.kendoGrid);
+    // } else {
+    //   this.$refs.profilesGrid.$once("grid-ready", () => {
+    //     bindFilter(this.$refs.profilesGrid.kendoGrid);
+    //   });
+    // }
   },
   methods: {
     cellRender(event) {
@@ -131,18 +144,27 @@ export default {
         }
       }
     },
+    getRoute() {
+      if (this.selectedProfile) {
+        return Promise.resolve([
+          {
+            url: this.selectedProfile,
+            name: this.selectedProfile,
+            label: this.selectedProfile
+          }
+        ]);
+      }
+      return Promise.resolve([]);
+    },
     actionClick(event) {
       switch (event.data.type) {
-        case "view": {
-          this.$router.push({
-            name: "Security::Profile::Access::Element",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid
-            }
-          });
+        case "view":
           this.$refs.profileSplitter.disableEmptyContent();
+          this.selectedProfile = event.data.row.name || event.data.row.id;
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+          });
           break;
-        }
       }
     }
   }

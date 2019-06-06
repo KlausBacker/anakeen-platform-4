@@ -1,5 +1,9 @@
 import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
+import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
+import ElementView from "./ElementView/ElementView.vue";
+import RawElementView from "./RawElementView/RawElementView.vue";
+import ProfileGrid from "../../components/profile/profile.vue";
 
 const parseFilters = filters => {
   const result = {};
@@ -62,7 +66,18 @@ const docTypeString = doctype => {
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "element-view": ElementView,
+    "element-properties": PropertiesView,
+    "element-security": ProfileGrid,
+    "element-raw": RawElementView
+  },
+  props: ["smartElement"],
+  watch: {
+    smartElement(newValue) {
+      this.$refs.splitter.disableEmptyContent();
+      this.selectedElement = newValue;
+    }
   },
   computed: {
     urlConfig() {
@@ -109,7 +124,7 @@ export default {
   },
   data() {
     return {
-      splitterSmartElementEmpty: true,
+      selectedElement: this.smartElement,
       panes: [
         {
           scrollable: false,
@@ -137,33 +152,20 @@ export default {
     }
   },
   mounted() {
+    if (this.selectedElement) {
+      this.$refs.splitter.disableEmptyContent();
+    }
     const bindFilter = grid => {
       grid.bind("filter", event => {
         const filter = event.filter ? event.filter.filters[0] || null : null;
         if (filter) {
-          this.$router.addQueryParams({
-            filters: this.$.param(
-              Object.assign(
-                {},
-                this.$route.query.filters
-                  ? parseFilters(this.$route.query.filters)
-                  : {},
-                { [filter.field]: filter.value }
-              )
-            )
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
         } else {
-          const query = Object.assign({}, this.$route.query);
-          if (query.filters) {
-            query.filters = parseFilters(query.filters);
-            delete query.filters[event.field];
-            if (!Object.keys(query.filters).length) {
-              delete query.filters;
-            } else {
-              query.filters = this.$.param(query.filters);
-            }
-          }
-          this.$router.push({ query: query });
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+          });
         }
       });
     };
@@ -194,69 +196,128 @@ export default {
         }
       }
     },
+    getFilter(nextFilter) {
+      let result = {};
+      if (this.$refs.grid) {
+        const filter = this.$refs.grid.dataSource.filter();
+        if (filter && filter.filters) {
+          filter.filters.forEach(f => {
+            result[f.field] = f.value;
+          });
+        }
+      }
+      if (nextFilter) {
+        result = Object.assign({}, result, {
+          [nextFilter.field]: nextFilter.value
+        });
+      }
+      return $.param(result);
+    },
+    getRoute() {
+      if (this.selectedElement) {
+        return Promise.resolve([this.selectedElement]);
+      }
+      return Promise.resolve([]);
+    },
     actionClick(event) {
+      let seIdentifier;
       switch (event.data.type) {
         case "consult":
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
           event.preventDefault();
-          this.$router.push({
-            name: "SmartElements::ElementView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid
+          this.selectedElement = {
+            url: `${seIdentifier}/view`,
+            component: "element-view",
+            props: {
+              initid: seIdentifier,
+              viewId: "!defaultConsultation"
             },
-            query: this.$route.query
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "viewJSON":
-          this.$router.push({
-            name: "SmartElements::RawElementView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid,
-              seType: docTypeString(event.data.row.doctype)
-            },
-            query: {
-              ...this.$route.query,
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
+          event.preventDefault();
+          this.selectedElement = {
+            url: `${seIdentifier}/element?formatType=json`,
+            component: "element-raw",
+            props: {
+              elementId: seIdentifier,
+              elementType: docTypeString(event.data.row.doctype),
               formatType: "json"
-            }
+            },
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "viewXML":
-          this.$router.push({
-            name: "SmartElements::RawElementView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid,
-              seType: docTypeString(event.data.row.doctype)
-            },
-            query: {
-              ...this.$route.query,
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
+          event.preventDefault();
+          this.selectedElement = {
+            url: `${seIdentifier}/element?formatType=xml`,
+            component: "element-raw",
+            props: {
+              elementId: seIdentifier,
+              elementType: docTypeString(event.data.row.doctype),
               formatType: "xml"
-            }
+            },
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "viewProps":
-          this.$router.push({
-            name: "SmartElements::PropertiesView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
+          event.preventDefault();
+          this.selectedElement = {
+            url: `${seIdentifier}/properties`,
+            component: "element-properties",
+            props: {
+              elementId: seIdentifier
             },
-            query: this.$route.query
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "security":
           if (event.data.row.profid) {
-            this.$router.push({
-              name: "SmartElements::ProfilView",
-              params: {
-                seIdentifier: event.data.row.name || event.data.row.initid
+            seIdentifier = event.data.row.name || event.data.row.initid;
+            this.$refs.splitter.disableEmptyContent();
+            event.preventDefault();
+            this.selectedElement = {
+              url: `${seIdentifier}/security?profileId=${
+                event.data.row.profid
+              }`,
+              component: "element-security",
+              props: {
+                profileId: event.data.row.profid,
+                detachable: true
               },
-              query: {
-                ...this.$route.query,
-                profileId: event.data.row.profid
-              }
+              name: seIdentifier,
+              label: seIdentifier
+            };
+            this.getRoute().then(route => {
+              this.$emit("navigate", route);
             });
           }
           break;
       }
-      this.$refs.splitter.disableEmptyContent();
     }
   }
 };
