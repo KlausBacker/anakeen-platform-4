@@ -70,7 +70,7 @@ class MasksGridConfig extends GridConfig
         $originalConfig["smartFields"] = [
             ColumnsConfig::getColumnConfig("name"),
             ColumnsConfig::getColumnConfig("title"),
-            static::getDynamciFamidConfig()
+//            static::getDynamciFamidConfig()
         ];
 
         $originalConfig["actions"] = [
