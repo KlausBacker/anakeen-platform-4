@@ -58,14 +58,15 @@ export default {
   },
   created() {
     if (this.isDockCollapsed) {
-      this.getRouter().on("*", (...params) => {
-        this.routes = [...this.routesSections];
-      });
+      // this.getRouter().on("*", (...params) => {
+      //   this.routes = [...this.routesSections];
+      // });
       interceptDOMLinks("body", path => {
         this.$ankHubRouter.internal.navigate(path, true).resolve();
+        this.getRouter().historyAPIUpdateMethod("replaceState");
         this.getRouter()
-          .navigate(path, true)
-          .resolve();
+          .navigate(path, true).resolve();
+        this.getRouter().historyAPIUpdateMethod("pushState");
       });
     }
   },

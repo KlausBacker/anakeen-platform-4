@@ -24,7 +24,7 @@
         <div class="smart-structure-tabs-list-nav">
           <div
             v-for="(tab, index) in tabs"
-            :key="`tab-${index}`"
+            :key="`tab-${tab.name}-${index}`"
             :class="{
               'smart-structure-list-item': true,
               'item-active': tab.name === selected || tab.id === selected

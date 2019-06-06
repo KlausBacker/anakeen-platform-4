@@ -76,7 +76,7 @@ export default {
     },
     selected() {
       this.$nextTick(() => {
-        this.autoScrollOnSelected();
+        // this.autoScrollOnSelected();
       });
     }
   },
