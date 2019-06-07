@@ -76,3 +76,8 @@
   right: 0;
   margin-top: 0;
 }
+
+.dcpAttribute__content--docid.dcpAttribute__loading .k-multiselect-wrap .k-i-loading, .dcpAttribute__content--account.dcpAttribute__loading .k-multiselect-wrap .k-i-loading {
+  display: none;
+}
+
