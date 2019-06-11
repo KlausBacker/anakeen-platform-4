@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<documents>
+    <hubinstanciation name="DEVELCENTER">
+        <instance_logical_name>DEVELCENTER</instance_logical_name>
+        <hub_instanciation_icone  mime="image/x-icon" title="favico.ico">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
+        </hub_instanciation_icone>
+        <hub_instance_titles>
+            <hub_instance_title>Development Center</hub_instance_title>
+            <hub_instance_language>English</hub_instance_language>
+        </hub_instance_titles>
+        <hub_instance_titles>
+            <hub_instance_title>Development Center</hub_instance_title>
+            <hub_instance_language>Français</hub_instance_language>
+        </hub_instance_titles>
+        <hub_instance_cssassets>
+            <hub_instance_cssasset_type>path</hub_instance_cssasset_type>
+            <hub_instance_cssasset>/Anakeen/DevCenter/main.css</hub_instance_cssasset>
+        </hub_instance_cssassets>
+        <hub_instanciation_router_entry>/devel/</hub_instanciation_router_entry>
+    </hubinstanciation>
+    <hubconfigurationgeneric name="DEVVENDORSELECT">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>VENDORSELECTOR</hub_title>
+        <hub_order>1</hub_order>
+        <hub_docker_position>TOP_LEFT</hub_docker_position>
+        <hub_vue_router_entry>/selector</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>FALSE</hub_selectable>
+        <hub_expandable>FALSE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "vendor-selector")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-vendor-selector</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVBREADCRUMB">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>BREADCRUMB</hub_title>
+        <hub_order>2</hub_order>
+        <hub_docker_position>TOP_LEFT</hub_docker_position>
+        <hub_vue_router_entry>/</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>FALSE</hub_selectable>
+        <hub_expandable>FALSE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "breadcrumb")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-breadcrumb</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVREFRESHDATA">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>REFRESHDATA</hub_title>
+        <hub_order>2</hub_order>
+        <hub_docker_position>TOP_RIGHT</hub_docker_position>
+        <hub_vue_router_entry>/refresh</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>FALSE</hub_selectable>
+        <hub_expandable>FALSE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "refresh-data")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-refresh-data</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVSMARTSTRUCTURES">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>SMARTSTRUCTURES</hub_title>
+        <hub_order>1</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>smartStructures</hub_vue_router_entry>
+        <hub_activated>TRUE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "smart-structures")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-structures</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVUSERINTERFACE">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>USERINTERFACE</hub_title>
+        <hub_order>2</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>ui</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "user-interface")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-user-interface</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVSECURITY">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>SECURITY</hub_title>
+        <hub_order>3</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>security</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "security")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-security</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVSMARTELEMENTS">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>SMARTELEMENTS</hub_title>
+        <hub_order>4</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>smartElements</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "smart-elements")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-elements</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVWORKFLOW">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>WORKFLOW</hub_title>
+        <hub_order>5</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>wfl</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "workflow")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-workflow</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVROUTES">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>ROUTES</hub_title>
+        <hub_order>6</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>routes</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "routes")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-routes</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVLOCALIZATION">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>LOCALIZATION</hub_title>
+        <hub_order>7</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>localization</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "localization")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-localization</hge_component_tag>
+    </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVENUMERATES">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>ENUMERATES</hub_title>
+        <hub_order>8</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>enums</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "enumerates")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-enumerates</hge_component_tag>
+    </hubconfigurationgeneric>
+</documents>

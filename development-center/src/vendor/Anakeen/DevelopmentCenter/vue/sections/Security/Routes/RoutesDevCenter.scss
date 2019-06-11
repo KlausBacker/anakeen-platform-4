@@ -1,0 +1,25 @@
+.routes-parent {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.routes-content {
+  display: flex;
+  flex: 1;
+}
+
+.routes-nav {
+  display: flex;
+  .routes-nav-link {
+    cursor: pointer;
+    border-radius: .25rem .25rem 0 0;
+    padding: .5rem;
+    background: white;
+    &.router-link-active {
+      z-index: 10;
+      margin-bottom: -1px;
+      border: 1px solid rgba(33, 37, 41, .125);
+      border-bottom-color: transparent;
+    }
+  }
+}

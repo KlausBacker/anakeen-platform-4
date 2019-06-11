@@ -1,0 +1,38 @@
+.localization-section {
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 100%;
+
+  & /deep/ {
+    .k-grid-header {
+      background: #f5f5f5;
+
+      &:hover {
+        border-color: transparent #DDDDDD;
+      }
+
+      .k-filtercell {
+        .k-button {
+          display: none;
+        }
+      }
+      th[data-role=columnsorter]:not(.k-sorted) .k-link::after {
+        position: relative;
+        cursor: pointer;
+        content: "\E127\E128";
+        font-family: "WebComponentsIcons";
+        letter-spacing: -.4rem;
+        top: .15rem;
+        margin-left: .5rem;
+      }
+    }
+
+    .k-grid-content {
+      border-top: 1px solid #DDDDDD;
+      .lang-cell-value {
+        white-space: pre-wrap;
+      }
+    }
+  }
+}

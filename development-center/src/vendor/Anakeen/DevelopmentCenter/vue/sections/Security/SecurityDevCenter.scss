@@ -1,0 +1,11 @@
+.security-parent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+
+  .security-content > .router-tabs-content {
+    border-style: solid none none none ! important;
+    border-radius:0 !important;
+  }
+}

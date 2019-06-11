@@ -1,0 +1,25 @@
+.enum-grid-parent {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  overflow: hidden;
+
+  .k-grid-header {
+    background-color: #F5F5F5;
+  }
+}
+
+.enum-grid-content {
+  width: 100%;
+  height: 100%;
+}
+
+.k-filtercell {
+  display: flex;
+  width: auto;
+  .filter-input {
+    flex: 1;
+    width: 100%;
+  }
+
+}

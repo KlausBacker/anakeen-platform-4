@@ -1,0 +1,45 @@
+.router-tabs {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+
+  /deep/ {
+    > .ank-tabs-contents {
+      overflow: hidden;
+    }
+    > .ank-tabs-header.is-top {
+      padding-top: 0.25rem;
+      margin-left: 1rem;
+      .ank-tab-item.is-top {
+        justify-content: center;
+        min-width: unset !important;
+        width: auto;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem 0.25rem 0 0;
+        cursor: pointer;
+        background: transparent;
+
+        &.is-active {
+          border: 1px solid rgba(33, 37, 41, 0.125);
+          border-bottom-color: transparent;
+          background-color: var(--primary);
+          color: var(--white);
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  .router-tab {
+    min-height: 0;
+    background: white;
+    padding: 0.5rem;
+    display: flex;
+    flex: 1;
+    border: 1px solid var(--primary);
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+}

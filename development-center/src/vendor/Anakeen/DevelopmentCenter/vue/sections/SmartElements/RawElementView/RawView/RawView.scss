@@ -1,0 +1,20 @@
+@import "~highlight.js/styles/github.css";
+.data-raw-view {
+  font-size: 1.2rem;
+  display: flex;
+  flex: 1;
+  background: white;
+  pre {
+    flex: 1;
+  }
+
+  & /deep/ {
+    code.xml {
+      .hljs-attr + * {
+        &:not(:last-child):after {
+          content: "\A";
+        }
+      }
+    }
+  }
+}

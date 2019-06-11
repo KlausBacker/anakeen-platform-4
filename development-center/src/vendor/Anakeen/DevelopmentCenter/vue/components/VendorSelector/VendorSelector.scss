@@ -1,0 +1,22 @@
+.vendor-selector {
+  .k-dropdown {
+    width: 8.333333333rem;
+    .k-dropdown-wrap {
+      background-color: #157EFB;
+      border-color: transparent;
+      color: white;
+
+      .k-input {
+        font-weight: bold;
+      }
+
+      .k-select::before {
+        height: 100%;
+        width: 1px;
+        background: rgba(255,255, 255, 0.7);
+        content: " ";
+        margin-right: .5rem;
+      }
+    }
+  }
+}

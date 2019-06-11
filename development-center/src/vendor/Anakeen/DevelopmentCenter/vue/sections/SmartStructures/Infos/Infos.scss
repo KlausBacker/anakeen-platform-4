@@ -1,0 +1,75 @@
+.smart-structure-infos-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
+  .smart-structure-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .smart-structure-toolbar {
+      .k-button-group + .k-button-group {
+        margin-left: .75rem;
+      }
+
+      .view-buttons-group {
+        position: relative;
+        .k-button {
+          border: 1px solid lightgray;
+        }
+      }
+    }
+
+    .smart-structure-icon {
+      margin-right: 1rem;
+    }
+  }
+
+  .smart-structure-infos-content {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    overflow-y: auto;
+
+    .smart-structure-infos-column {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow-y:auto;
+
+      & + .smart-structure-infos-column {
+        margin-left: 1rem;
+      }
+    }
+    .smart-structure-infos-card {
+
+      &.hierarchy-card {
+        max-height: 50%;
+      }
+
+      .infos-card-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      padding: .5rem;
+      border: 1px solid rgb(210, 210, 210);
+      flex: 1;
+
+      & + .smart-structure-infos-card {
+        border-top-width: 0;
+      }
+
+      .infos-card-content {
+        overflow-y: auto;
+        height: calc(100% - 2.8rem);
+        font-size: 1.1rem;
+        .card-content-item-label {
+          font-weight: bold;
+          margin-right: .5rem;
+        }
+      }
+    }
+  }
+}

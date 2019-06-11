@@ -1,0 +1,24 @@
+.ss-infos-nav {
+  .infos-nav-item {
+    background: #157EFB;
+    color: white;
+    display: inline-block;
+    border-radius: 0.25rem;
+    padding: .5rem .75rem;
+
+    & + .infos-nav-item {
+      margin-left: .75rem;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    .infos-nav-icon.rotate {
+      font-size: 1rem;
+      margin-right: .5rem;
+      vertical-align: middle;
+      transform: rotate(90deg);
+    }
+  }
+}

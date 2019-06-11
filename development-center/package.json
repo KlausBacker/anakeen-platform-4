@@ -1,0 +1,60 @@
+{
+  "name": "development-center",
+  "version": "2.1.0",
+  "autorelease": true,
+  "description": "Developement Center for Anakeen Platform",
+  "main": "index.js",
+  "scripts": {
+    "beautify": "eslint ./src --fix",
+    "buildJs:devCenter:prod": "element=DEVCENTER npx webpack --config webpack/index.js",
+    "buildJs:devCenter:dev": "element=DEVCENTER dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:devCenter": "yarn run buildJs:devCenter:prod && yarn run buildJs:devCenter:dev",
+    "buildJs:standalone": "npx webpack --config webpack/standalone.js",
+    "buildJs": "yarn run buildJs:standalone && yarn run buildJs:devCenter"
+  },
+  "author": "anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "devDependencies": {
+    "@anakeen/anakeen-ci": "^1.0.8",
+    "@anakeen/anakeen-cli": "^1.1.4",
+    "@anakeen/webpack-conf": "^1.2.0",
+    "@commitlint/config-conventional": "^7.5.0",
+    "babel-eslint": "^10.0.1",
+    "commitlint": "^7.5.2",
+    "copy-webpack-plugin": "^5.0.2",
+    "eslint": "^5.15.3",
+    "eslint-plugin-prettier": "^3.0.1",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "husky": "^1.3.1",
+    "prettier": "^1.16.4"
+  },
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/development-center.git",
+  "keywords": [
+    "anakeen",
+    "platform",
+    "developement"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-push": "npx eslint ./ && make lint && make checkPackage",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "dependencies": {
+    "@anakeen/hub-components": "^1.0.1-dev20190606072649",
+    "@anakeen/internal-components": "^1.0.1",
+    "@anakeen/user-interfaces": "^2.0.1-dev20190611073610",
+    "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-grid-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-treelist-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-ui": "2019.1.320",
+    "axios": "^0.18.0",
+    "core-js": "3.0.0",
+    "highlight.js": "^9.15.6",
+    "jquery": "^3.3.1",
+    "vue": "2.6.10",
+    "vue-js-modal": "^1.3.28"
+  }
+}

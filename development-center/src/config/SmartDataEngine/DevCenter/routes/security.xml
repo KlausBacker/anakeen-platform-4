@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="DevCenter">
+        <sde:route name="GetProfileAccesses">
+            <sde:callable>Anakeen\Routes\Devel\Security\Profile</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/profile/{id}/accesses/</sde:pattern>
+            <sde:description>Get right accesses for a profile</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetFallData">
+            <sde:callable>Anakeen\Routes\Devel\Security\FallData</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/fall/{id}</sde:pattern>
+            <sde:description>Get definition </sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetRouteAccesses">
+            <sde:callable>Anakeen\Routes\Devel\Security\RoleRouteAccesses</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/routes/accesses/</sde:pattern>
+            <sde:description>Get accesses for routes</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetAllRoutes">
+            <sde:callable>Anakeen\Routes\Devel\Security\Routes</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/routes/</sde:pattern>
+            <sde:description>Get All routes</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="profil">
+            <sde:callable>Anakeen\Routes\Devel\UI\Profile</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devels/security/profile/{id}.html</sde:pattern>
+            <sde:description>Get the profil display</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="workflow">
+            <sde:callable>Anakeen\Routes\Devel\UI\Workflow</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devels/security/workflow/{id}.html</sde:pattern>
+            <sde:description>Get the workflow display</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="profiles">
+            <sde:callable>Anakeen\Routes\Devel\UI\Profiles</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/profiles/</sde:pattern>
+            <sde:description>Get all the profiles</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+
+        <sde:route name="GetWorkflowAccesses">
+            <sde:callable>Anakeen\Routes\Devel\Security\WorkflowAccesses</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/workflows/{workflow}</sde:pattern>
+            <sde:description>Get workflow accesses</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="profilesGridConfig">
+            <sde:callable>Anakeen\Routes\Devel\UI\ProfilesGridConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/profiles/gridConfig</sde:pattern>
+            <sde:description>Get profiles grid config</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="searchElements">
+            <sde:callable>Anakeen\Routes\Devel\UI\Elements</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/elements/</sde:pattern>
+            <sde:description>Get elements</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="elementsGridConfig">
+            <sde:callable>Anakeen\Routes\Devel\UI\ElementsGridConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/elements/config/</sde:pattern>
+            <sde:description>Get elements grid config</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="fieldAccessGridConfig">
+            <sde:callable>Anakeen\Routes\Devel\UI\FieldAccessGridConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/fieldAccess/gridConfig</sde:pattern>
+            <sde:description>Get field access grid config</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="fieldAccessGridContent">
+            <sde:callable>Anakeen\Routes\Devel\UI\FieldAccess</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/security/fieldAccess/</sde:pattern>
+            <sde:description>Get field access grid content</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>

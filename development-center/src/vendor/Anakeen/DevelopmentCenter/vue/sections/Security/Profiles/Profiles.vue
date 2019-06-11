@@ -1,0 +1,23 @@
+<template>
+    <div class="security-se-section">
+        <ank-splitter class="profile-splitter" ref="profileSplitter" :panes="panes" localStorageKey="security-profiles-splitter">
+            <template slot="left">
+                <ank-se-grid ref="profilesGrid" :pageSizes="[100, 200, 500]" :contextTitles="false" urlConfig="/api/v2/devel/security/profiles/gridConfig" filterable="inline" @before-grid-cell-render="cellRender" @action-click="actionClick" @grid-data-bound="onGridDataBound">
+                </ank-se-grid>
+            </template>
+            <template slot="right">
+<!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
+                <profile-view style="height: 100%" :seIdentifier="selectedProfile"></profile-view>
+            </template>
+        </ank-splitter>
+    </div>
+</template>
+<!-- CSS to this component only -->
+<style lang="scss">
+    @import "./Profiles.scss";
+</style>
+<!-- Global CSS -->
+<style lang="scss">
+</style>
+<script src="./Profiles.controller.js">
+</script>

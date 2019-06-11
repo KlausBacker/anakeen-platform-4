@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="DevCenter">
+        <sde:route name="GetEnumerates">
+            <sde:callable>Anakeen\Routes\Devel\Smart\Enumerates</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/enumerates/</sde:pattern>
+            <sde:description>Get all enumerates items</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetVendorStructures">
+            <sde:callable>Anakeen\Routes\Devel\Smart\Structures</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{target:vendor|all}/</sde:pattern>
+            <sde:description>Get structures</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetDevelWorkflows">
+            <sde:callable>Anakeen\Routes\Devel\Smart\Workflows</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/workflows/</sde:pattern>
+            <sde:description>Get workflows</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetStructureInfo">
+            <sde:callable>Anakeen\Routes\Devel\Smart\StructureInfo</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{structure}/info/</sde:pattern>
+            <sde:description>Get structure</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetStructureFields">
+            <sde:callable>Anakeen\Routes\Devel\Smart\StructureFields</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{structure}/fields/</sde:pattern>
+            <sde:description>Get structure fields configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetStructureDefautValues">
+            <sde:callable>Anakeen\Routes\Devel\Smart\StructureDefaultValues</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{structure}/defaults/</sde:pattern>
+            <sde:description>Get structure default values configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetStructureParameters">
+            <sde:callable>Anakeen\Routes\Devel\Smart\StructureParameters</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{structure}/parameters/</sde:pattern>
+            <sde:description>Get structure default values configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetStructureConfig">
+            <sde:callable>Anakeen\Routes\Devel\Config\StructureConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/config/smart/structures/{structure}.xml</sde:pattern>
+            <sde:pattern>
+                /api/v2/devel/config/smart/structures/{structure}/{type:structure|uis|accesses|uiaccesses}.xml
+            </sde:pattern>
+            <sde:description>Get structure configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+
+        <sde:route name="GetWorkflowData">
+            <sde:callable>Anakeen\Routes\Devel\Smart\WorkflowData</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/smart/workflows/{workflow}</sde:pattern>
+            <sde:description>Get workflow configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+
+        <sde:route name="GetWorkflowConfig">
+            <sde:callable>Anakeen\Routes\Devel\Config\WorkflowConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/config/smart/workflows/{workflow}.xml</sde:pattern>
+            <sde:pattern>/api/v2/devel/config/smart/workflows/{workflow}/{type:data|config|accesses|uis}.xml
+            </sde:pattern>
+            <sde:description>Get workflow configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetElementConfig">
+            <sde:callable>Anakeen\Routes\Devel\Config\ElementConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/config/smart/elements/{id}.xml</sde:pattern>
+            <sde:description>Get system element configuration</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="deleteSmartStructure">
+            <sde:callable>Anakeen\Routes\Devel\Smart\DeleteSmartStructure</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/v2/devel/smart/structures/{name}</sde:pattern>
+            <sde:description>Delete smart structure</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>

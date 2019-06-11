@@ -1,0 +1,33 @@
+.security-roles-section {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  .role-parent {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    overflow: hidden;
+  }
+
+  .role-content {
+    flex: 1;
+    align-items: flex-start;
+    justify-content: stretch;
+  }
+
+  .role-modal {
+    height: 100% !important;
+    width: 100% !important;
+    visibility: visible !important;
+  }
+
+  .roles-splitter {
+    height: 100%;
+    width: 100%;
+  }
+  /deep/ {
+    .k-dropdown-operator {
+      display: none;
+    }
+  }
+}

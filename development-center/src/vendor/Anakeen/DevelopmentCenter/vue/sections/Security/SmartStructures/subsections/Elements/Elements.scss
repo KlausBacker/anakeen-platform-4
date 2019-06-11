@@ -1,0 +1,46 @@
+.security-smartelement-profile {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+
+  .security-smartelement-profile-nocontent {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    .security-smartelement-profile-nocontent-icon {
+      position: relative;
+      width: 20rem;
+      height: 20rem;
+      .material-icons {
+        color: #D9D9D9;
+        position: absolute;
+        top: calc((20rem / 2) - (12rem / 2));
+        left: calc((20rem / 2) - (12rem / 2));
+        font-size: 12rem;
+
+        &.disable {
+          top: 0;
+          left: 0;
+          font-size: 20rem;
+        }
+      }
+    }
+
+    .security-smartelement-profile-nocontent-text {
+      font-size: 1.5rem;
+    }
+  }
+
+  .security-smartelement-profile-content {
+    display: flex;
+    flex: 1;
+    .security-smartelement-profile-grid {
+      overflow-y:auto;
+      background: #F1F1F1;
+      padding: 1rem;
+      flex: 1;
+    }
+  }
+}
