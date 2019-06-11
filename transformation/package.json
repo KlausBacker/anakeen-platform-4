@@ -1,0 +1,51 @@
+{
+  "name": "transformation",
+  "version": "2.0.1",
+  "main": "index.js",
+  "author": "Anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "beautify": "eslint ./src --fix",
+    "buildJs:tedock:prod": "element=TEDOCK npx webpack --config webpack/index.js",
+    "buildJs:tedock:dev": "element=TEDOCK dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:tokens": "yarn run buildJs:tedock:prod && yarn run buildJs:tedock:dev",
+    "buildJs": "yarn run buildJs:tokens"
+  },
+  "devDependencies": {
+    "@anakeen/anakeen-ci": "^1.0.8",
+    "@anakeen/anakeen-cli": "^1.1.13",
+    "@anakeen/internal-components": "^1.0.1",
+    "@anakeen/user-interfaces": "^2.0.1",
+    "@commitlint/config-conventional": "^7.3.1",
+    "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-dropdowns-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-inputs-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-ui": "2019.1.320",
+    "@types/jquery": "^3.3.29",
+    "commitlint": "^7.3.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "husky": "^2.1.0",
+    "jquery": "^3.3.1",
+    "prettier": "^1.17.0",
+    "ts-loader": "^5.4.4",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.5",
+    "vue": "2.6.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npx eslint ./ && npx tslint './src/vendor/Anakeen/TransformationEngine/HubComponent/**/*.ts' && npx prettier --check './src/vendor/Anakeen/TransformationEngine/HubComponent/**/*.ts' && make checkPackage",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "dependencies": {
+    "@anakeen/hub-components": "^1.0.1",
+    "@anakeen/webpack-conf": "^1.2.0",
+    "core-js": "3.0.0",
+    "vue-template-compiler": "2.6.10"
+  }
+}

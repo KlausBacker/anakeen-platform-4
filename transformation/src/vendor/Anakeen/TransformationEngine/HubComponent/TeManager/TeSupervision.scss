@@ -1,0 +1,128 @@
+.te-manager {
+  .te-manager-splitter {
+    flex: 1;
+  }
+
+  .te-manager-box {
+    height: 100%;
+     > .k-tabstrip-wrapper {
+       height: 100%;
+     }
+  }
+
+  .te-supervision-component {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    max-height: 100%;
+    .te-grid-box {
+      margin:0;
+      height: 100px;
+      flex:1;
+      .te-supervision-grid {
+        height: 100%;
+        border: none;
+      }
+    }
+    .te-logo {
+      display: flex;
+      height: 100%;
+      color:grey;
+      > span {
+        font-size: 5rem;
+        margin: auto;
+      }
+    }
+    .te-empty-text {
+      font-size:1.5rem;
+      color:grey;
+    }
+    .k-filtercell .k-autocomplete {
+      width:100%;
+    }
+
+    .task--selected {
+      background-color: var(--primary);
+      color: white;
+      &:hover {
+        background-color: var(--primary);
+        color: white;
+      }
+      a.k-button {
+        background-color: transparent;
+      }
+    }
+
+    .cell-status-value {
+
+      font-family: monospace;
+      &:before {
+        content: " ";
+        width: 1rem;
+        display: inline-block;
+        height: 1rem;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+
+      }
+      &.cell-status--D {
+        &:before {
+          background-color: var(--green);
+        }
+        &:after {
+          content: " : Done";
+        }
+
+        &.cell-status--CALLERROR {
+          &:before {
+            background-color: var(--warning);
+          }
+          &:after {
+            content: " : Callback error";
+          }
+        }
+      }
+      &.cell-status--W {
+        &:before {
+          background-color: #c69e47;
+        }
+        &:after {
+          content: " : Waiting";
+        }
+      }
+      &.cell-status--P {
+        &:before {
+          background-color: #5484ca;
+        }
+        &:after {
+          content: " : Processing";
+        }
+      }
+      &.cell-status--K {
+        &:before {
+          background-color: var(--danger);
+        }
+        &:after {
+          content: " : Failed";
+        }
+      }
+      &.cell-status--T {
+        &:before {
+          background-color: #a53935;
+        }
+        &:after {
+          content: " : Transferring";
+        }
+      }
+      &.cell-status--B {
+        &:before {
+          background-color: #a5508e;
+        }
+        &:after {
+          content: " : Initialized";
+        }
+      }
+    }
+  }
+}

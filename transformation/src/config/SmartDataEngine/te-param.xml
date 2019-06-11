@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:parameters namespace="TE">
+        <sde:parameter name="TE_HOST">
+            <sde:category>Transformation Engine</sde:category>
+            <sde:description>TE hostname</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="TE_PORT">
+            <sde:category>Transformation Engine</sde:category>
+            <sde:description>TE Port number</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="TE_ACTIVATE">
+            <sde:category>Transformation Engine</sde:category>
+            <sde:description>Activate Transformation Engine</sde:description>
+            <sde:value/>
+            <sde:type>enum(yes|no)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="TE_URLINDEX">
+            <sde:category>Transformation Engine</sde:category>
+            <sde:description>Transformation Engine callback url</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="TE_TIMEOUT">
+            <sde:category>Transformation Engine</sde:category>
+            <sde:description>Transformation Engine timeout connection (in seconds)</sde:description>
+            <sde:value>5</sde:value>
+            <sde:type>text</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>
