@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub" vendor="Anakeen" version="1.0.1">
+
+    <requires>
+        <module name="smart-data-engine" version="2.0.x"/>
+        <module name="user-interfaces" version="2.0.x"/>
+        <module name="security" version="2.0.x"/>
+        <module name="workflow" version="2.0.x"/>
+    </requires>
+    <post-install>
+        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
+
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationGeneric/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
+
+    </post-install>
+    <post-upgrade>
+        <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/Hub/Accounts/110-HubRoles.xml"/>
+
+        <process command="./programs/DbMigration.php --file=./vendor/Anakeen/Hub/Migration/resetHubConfigurationField.xml">
+            <label>Apply Migrate HubGenericConfiguration Rules</label>
+        </process>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfiguration/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationVue/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationGeneric/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationSlot/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationIdentity/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLogout/**/*.xml"/>
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubConfigurationLabel/**/*.xml"/>
+
+        <process
+                command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/Hub/SmartStructures/HubInstanciation/**/*.xml"/>
+    </post-upgrade>
+</module>

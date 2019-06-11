@@ -1,0 +1,217 @@
+$tab-height: 3rem;
+$transitionDelay: 0.2s;
+$background-color: #ffffff;
+$background-color-button: #646464;
+$background-color-button-hovered: #f5f5f5;
+$background-color-tab: #f3f3f3;
+$button-icon-color: #ffffff;
+$border-color: #a9a9a9;
+$tab-compact-color: #646464;
+$selected-color: rgba(21, 126, 251, 0.08);
+$selected-header-footer-color: #777777;
+$green-selected: #8ae234;
+
+.hub-dock-component {
+  position: relative;
+  background-color: $background-color;
+  display: flex;
+
+  .hub-dock-section {
+   // flex:1;
+
+  }
+  .hub-dock-content {
+    flex:1;
+  }
+
+    &.hub-dock--collapsed {
+    .hub-dock-transition-wrapper {
+      transition: width $transitionDelay ease, height $transitionDelay ease;
+    }
+  }
+  &.hub-dock--expanded {
+    .hub-dock-content-wrapper {
+      transition: width $transitionDelay ease, height $transitionDelay ease;
+    }
+  }
+
+  &.hub-dock--animation {
+    .hub-dock-entry-component {
+      opacity: 0;
+      animation: dock-opacities 2s;
+    }
+  }
+
+  .hub-dock-content-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .hub-dock-transition-wrapper {
+    display: flex;
+    flex: 1;
+  }
+
+  .hub-dock-header,
+  .hub-dock-content,
+  .hub-dock-footer {
+    display: flex;
+  }
+  .hub-dock-content-outside {
+    flex: 1;
+    flex-direction: inherit;
+    justify-content: space-between;
+
+  }
+
+  .hub-dock-content {
+    flex: 1;
+    flex-direction: inherit;
+    justify-content: space-between;
+  }
+
+  .hub-dock-center {
+    justify-content: center;
+    display: flex;
+  }
+
+  // Set flex direction form the position of the dock
+  &.hub-dock--left,
+  &.hub-dock--right {
+    &.hub-dock--absolute {
+      .hub-dock-content-wrapper {
+        z-index: 1000;
+        background: inherit;
+        position: absolute;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+      }
+    }
+
+
+    flex-direction: column;
+    flex: 1;
+    .hub-dock-content-wrapper {
+      flex-direction: inherit;
+      .hub-dock-transition-wrapper {
+        flex-direction: inherit;
+
+        .hub-dock-entry-component {
+          min-height: 5rem;
+        }
+
+        .hub-dock-center,
+        .hub-dock-header,
+        .hub-dock-footer {
+          flex-direction: inherit;
+        }
+      }
+    }
+
+    &.hub-dock--expanded {
+      .hub-dock-entry-component {
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  // Display border in function
+  &.hub-dock--left {
+    .hub-dock-entry-component {
+      border-left: 3px solid transparent;
+      &.entry-selected {
+        border-left: 3px solid $green-selected;
+      }
+    }
+  }
+
+  &.hub-dock--right {
+    // Set animation right from left
+    align-items: flex-end;
+    &.hub-dock--absolute {
+      .hub-dock-content-wrapper {
+        right: 0;
+        z-index: 2000;
+      }
+    }
+
+    .hub-dock-content-wrapper {
+    }
+
+    .hub-dock-entry-component {
+      border-right: 3px solid transparent;
+      &.entry-selected {
+        border-right: 3px solid $green-selected;
+      }
+    }
+  }
+
+  &.hub-dock--top {
+    .hub-dock-entry-component {
+      border-top: 3px solid transparent;
+      &.entry-selected {
+        border-top: 3px solid $green-selected;
+      }
+    }
+  }
+
+  &.hub-dock--bottom {
+    .hub-dock-entry-component {
+      border-bottom: 3px solid transparent;
+      &.entry-selected {
+        border-bottom: 3px solid $green-selected;
+      }
+    }
+  }
+
+  &.hub-dock--top,
+  &.hub-dock--bottom {
+    flex-direction: row;
+    width: 100%;
+    .hub-dock-transition-wrapper {
+      flex-direction: row;
+      .hub-dock-entry-component {
+        min-width: 5rem;
+      }
+
+      .hub-dock-center {
+        flex-direction: row;
+      }
+    }
+  }
+
+  .hub-dock-collapse-button {
+    color: #bebebe;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 4.5rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    &:hover {
+      background-color: $background-color-button-hovered;
+    }
+  }
+
+  .hub-dock-section {
+    .hub-dock-entry-component {
+      min-width: 5rem;
+      &.entry-selected {
+        background-color: $selected-color;
+        color: #157efb;
+        font-weight: bold;
+      }
+    }
+  }
+}
+@keyframes dock-opacities {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

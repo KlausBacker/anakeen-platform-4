@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <smart:structure-configuration name="HUBCONFIGURATIONLOGOUT">
+        <smart:accesses>
+            <smart:structure-access-configuration ref="PRF_HUB_STRUCT"/>
+            <smart:element-access-configuration ref="PRF_HUB_ACCESS"/>
+        </smart:accesses>
+    </smart:structure-configuration>
+    <ui:render ref="HUBCONFIGURATIONLOGOUT">
+        <ui:render-access class="Anakeen\Hub\SmartStructures\HubConfiguration\Render\HubConfigurationAccess"/>
+    </ui:render>
+</smart:config>

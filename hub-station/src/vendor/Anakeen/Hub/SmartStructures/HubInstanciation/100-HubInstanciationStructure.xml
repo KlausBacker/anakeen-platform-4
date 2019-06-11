@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBINSTANCIATION" label="HubInstanciation">
+        <smart:icon file="HubInstanciation.png"/>
+
+        <smart:class>Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="hub_instance_config" type="tab" label="Configuration" access="ReadWrite">
+                <smart:field-set name="hub_instance" type="frame" access="ReadWrite" label="Information">
+                    <smart:field-text access="ReadWrite" name="instance_logical_name" label="Logical Name"
+                                      needed="true"/>
+                    <smart:field-text access="ReadWrite" name="hub_instanciation_router_entry" label="Router entry"/>
+                    <smart:field-image access="ReadWrite" name="hub_instanciation_icone" label="Fav icon"/>
+                </smart:field-set>
+                <smart:field-set name="hub_instance_label_frame" type="frame" label="Label" access="ReadWrite">
+                    <smart:field-set name="hub_instance_titles" type="array" label="Hub Station Titles"
+                                     access="ReadWrite">
+                        <smart:field-text name="hub_instance_title" label="Title" access="ReadWrite" needed="true"/>
+                        <smart:field-text name="hub_instance_language" label="Language"
+                                          access="Read"/>
+                    </smart:field-set>
+                </smart:field-set>
+                <smart:field-set name="hub_instance_advanced_settings" type="frame" access="ReadWrite" label="Advanced Settings">
+                    <smart:field-text access="ReadWrite" name="hub_instanciation_router_entry" label="Router entry"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_instance_tab_assets" type="tab" label="Global assets" access="ReadWrite">
+                <smart:field-set name="hub_instance_fr_assets" type="frame" label="Hub instance global assets" access="ReadWrite">
+                    <smart:field-set name="hub_instance_jsassets" type="array" label="Javascript assets" access="ReadWrite">
+                        <smart:field-enum name="hub_instance_jsasset_type" label="Asset type" access="ReadWrite" relation="hub_instance_asset_type"/>
+                        <smart:field-text name="hub_instance_jsasset" label="Location" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="hub_instance_cssassets" type="array" label="CSS assets" access="ReadWrite">
+                        <smart:field-enum name="hub_instance_cssasset_type" label="Asset type" access="ReadWrite" relation="hub_instance_asset_type"/>
+                        <smart:field-text name="hub_instance_cssasset" label="Location" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
+                <smart:field-set name="hub_security_frame" type="frame" access="ReadWrite">
+                    <smart:field-account name="hub_access_roles" label="Roles to access" access="ReadWrite" match="role" multiple="true"/>
+                    <smart:field-account name="hub_super_role" label="Role to access to any elements" access="ReadWrite" match="role" />
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:parameters>
+        </smart:parameters>
+
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="instance_logical_name">
+                <smart:field-callable function="::checkLogicalName"/>
+                <smart:field-argument type="field">instance_logical_name</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
+
+        <smart:autocompletion>
+            <smart:field-autocomplete field="hub_instance_jsasset">
+                <smart:field-callable
+                        function="Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationAutocomplete\HubInstanciationAutocomplete::getManifests"/>
+                <smart:field-returns>
+                    <smart:field-return field="hub_instance_jsasset"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="hub_instance_cssasset">
+                <smart:field-callable
+                        function="Anakeen\Hub\SmartStructures\HubInstanciation\HubInstanciationAutocomplete\HubInstanciationAutocomplete::getManifests"/>
+                <smart:field-returns>
+                    <smart:field-return field="hub_instance_cssasset"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+
+        <smart:defaults>
+            <smart:default field="hub_instance_cssasset_type">manifest</smart:default>
+            <smart:default field="hub_instance_jsasset_type">manifest</smart:default>
+            <smart:default field="hub_instance_titles">
+                <smart:field-callable function="::getDefaultLanguages"/>
+            </smart:default>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+
+    <smart:enumerates>
+        <smart:enum-configuration name="hub_instance_asset_type">
+            <smart:enum name="manifest" label="Manifest"/>
+            <smart:enum name="path" label="Path"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>

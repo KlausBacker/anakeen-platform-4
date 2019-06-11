@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBCONFIGURATIONIDENTITY" label="Identity badge configuration">
+        <smart:extends ref="HUBCONFIGURATIONSLOT"/>
+        <smart:icon file="HubConfigurationIdentity.png"/>
+        <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationIdentity\HubConfigurationIdentityBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="hub_component_parameters" extended="true">
+                <smart:field-enum name="email_alterable" label="Email alterable" relation="Hub_YesNo"
+                                  access="ReadWrite"/>
+                <smart:field-enum name="password_alterable" label="Password alterable" relation="Hub_YesNo"
+                                  access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters>
+
+        </smart:parameters>
+
+        <smart:hooks/>
+
+        <smart:defaults>
+            <smart:default field="email_alterable">FALSE</smart:default>
+            <smart:default field="password_alterable">FALSE</smart:default>
+        </smart:defaults>
+    </smart:structure-configuration>
+</smart:config>

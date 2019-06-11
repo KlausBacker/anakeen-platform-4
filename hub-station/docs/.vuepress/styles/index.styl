@@ -1,0 +1,161 @@
+//@require '~vuepress-plugin-tabs/dist/themes/default.styl'
+
+
+$sidebar-bg = white
+$sidebar-fg = #333
+$green = #88be3b
+
+
+@require 'guide.styl'
+
+.page .content:not(.custom) {
+  max-width: unset;
+  code {
+    word-break: break-word;
+  }
+}
+
+.go-to-top {
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  height: 2rem;
+  &:hover {
+    border: solid 2px $accentColor;
+    background-color:white;
+  }
+}
+.extra-class code {
+  font-family: monospace;
+}
+
+.nav-links .dropdown-wrapper .nav-dropdown .dropdown-item {
+  a.router-link-active::after {
+    // Delete bullet in submenu bar
+    display: none;
+  }
+
+  a.router-link-active:hover {
+    background-color: $sidebar-fg;
+  }
+}
+
+code {
+  .token.namespace {
+    color: yellow
+  }
+
+  .token.attr-name,
+  .token.tag {
+    color: #6cbfff
+  }
+  .token.comment {
+    color: #fff
+  }
+  .token.attr-value {
+    color: #8aff92
+  }
+}
+.navbar .home-link::before {
+  content: " ";
+  background-image: url("../../../../.vuepress/public/anakeen-letter.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 1rem;
+  width: 1rem;
+  margin-right 1rem;
+}
+
+div.sidebar {
+  background: $sidebar-bg;
+
+  .sidebar-heading {
+    color: $sidebar-fg;
+  }
+
+  .sidebar-group.collapsable {
+    border-bottom: dotted 1px $green;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    &.first {
+
+      margin-top: 0;
+    }
+  }
+  .sidebar-sub-header {
+    position:relative;
+    > .sidebar-link::before {
+      content: " ";
+      background-color: $green;
+      width: 0.5rem;
+      height 0.1rem;
+      margin-right: 0.3rem;
+
+      display: inline-block;
+      position:absolute;
+      left:1rem;
+      top:0.8rem;
+    }
+    .sidebar-sub-header > .sidebar-link::before {
+      display:none;
+    }
+  }
+
+  .sidebar-group-items > li {
+    position:relative;
+    > .sidebar-link::before {
+      content: " ";
+      background-color: $green;
+      width: 0.5rem;
+      height 0.5rem;
+      margin-right: 0.3rem;
+      border-radius: 50%
+      display: inline-block;
+      position:absolute;
+      left:1rem;
+      top:0.8rem;
+    }
+  }
+
+
+  .active.sidebar-link {
+    background-color: $sidebar-fg;
+    color: $sidebar-bg;
+  }
+
+  a.sidebar-link {
+    color: $sidebar-fg;
+  }
+
+  a.sidebar-link:hover {
+    color: $green;
+  }
+
+  .sidebar-heading {
+    display: flex;
+    flex-direction row-reverse;
+    padding-left: 0.5rem;
+
+    > span {
+      flex: 1;
+      display: block;
+    }
+
+    .arrow {
+      margin-left: 0;
+      flex: 0;
+      margin-top: 0.7rem;
+      margin-right: 1rem;
+
+      &.right {
+        border-left-color: $green;
+      }
+
+      &.down {
+        border-top-color: $green;
+        margin-top: 0.9rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBCONFIGURATIONVUE" label="Hub entry configuration (Vuejs)">
+        <smart:extends ref="HUBCONFIGURATION"/>
+        <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationVue\HubConfigurationVueBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="hub_slot_parameters" extended="true">
+                <smart:field-text access="ReadWrite" name="hub_vue_router_entry" needed="true" label="Router entry"/>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:parameters>
+
+        </smart:parameters>
+
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="hub_vue_router_entry">
+                <smart:field-callable function="::checkRouterEntry"/>
+                <smart:field-argument type="field">hub_vue_router_entry</smart:field-argument>
+                <smart:field-argument type="field">hub_station_id</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
+
+        <smart:defaults>
+            <smart:default field="hub_selectable">TRUE</smart:default>
+            <smart:default field="hub_expandable">TRUE</smart:default>
+        </smart:defaults>
+    </smart:structure-configuration>
+</smart:config>

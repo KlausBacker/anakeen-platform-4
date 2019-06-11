@@ -1,0 +1,147 @@
+.hub-admin-main-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  > header {
+    flex-basis: 3.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+  }
+
+  > section {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+
+
+    > .ank-splitter {
+      flex: 1;
+      height: auto;
+
+      .splitter-wrapper-right-content {
+        display: flex;
+      }
+
+
+      .grid-widget {
+        display: flex !important;
+
+        .grid-cell--key .grid-cell-content {
+          text-align: center;
+          border-radius: 50%;
+          background-color: #333;
+          color: white;
+          cursor: pointer;
+          &:hover {
+            background-color: #888;
+          }
+        }
+
+        .row--selected {
+          background-color: var(--primary);
+          color: var(--white);
+          & .grid-cell--key .grid-cell-content {
+            background-color: var(--white);
+            color: #333;
+          }
+
+          .k-grid-detail {
+            color: var(--white);
+          }
+        }
+      }
+    }
+  }
+
+
+  .k-dropdown.k-primary {
+    .k-dropdown-wrap {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+  }
+}
+
+
+.hub-admin-header__content {
+  display: flex;
+  align-items: center;
+
+  > * + * {
+    margin-left: 1rem;
+  }
+}
+
+.hub-mockup {
+  overflow: auto;
+}
+
+.hub-admin-grid {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 5rem;
+
+  thead {
+    display:none;
+  }
+
+  .k-grid-content {
+    overflow: auto;
+    cursor: default;
+  }
+}
+
+
+.hub-admin-content {
+  display: flex;
+  flex-direction: column;
+
+  tr {
+    word-break: break-word;
+  }
+
+  .k-grid-consult,
+  .k-grid-edit {
+    padding: 0.5rem 2.25rem !important;
+  }
+}
+
+
+.hub-modal {
+  height: 100%;
+  width: 100%;
+  visibility: visible !important;
+}
+
+.hub-select-container {
+  width: auto !important;
+
+  .k-list-optionlabel {
+    background-color: #eee;
+    color: #333;
+  }
+
+  li.k-item {
+    white-space: nowrap;
+  }
+}
+@media (max-height: 30rem) {
+  .hub-mockup {
+    .component {
+      height: 1rem;
+      min-width: 1rem;
+      font-size: 0.5rem;
+    }
+  }
+}
+
+
+@media (max-height: 15rem) {
+  .hub-mockup {
+    display: none;
+  }
+}

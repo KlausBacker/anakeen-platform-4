@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBCONFIGURATIONGENERIC" label="Generic configuration">
+        <smart:extends ref="HUBCONFIGURATIONVUE"/>
+        <smart:class>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubConfigurationGenericBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="hub_component_tab" extended="true">
+                <smart:field-set type="frame" name="hge_fr_assets" access="ReadWrite" label="Assets">
+                    <smart:field-set name="hge_jsassets" type="array" label="Javascript assets" access="ReadWrite">
+                        <smart:field-enum name="hge_jsasset_type" label="Asset type" access="ReadWrite" relation="hge_asset_type"/>
+                        <smart:field-text name="hge_jsasset" label="Location" access="ReadWrite"/>
+                    </smart:field-set>
+                    <smart:field-set name="hge_cssassets" type="array" label="CSS assets" access="ReadWrite">
+                        <smart:field-enum name="hge_cssasset_type" label="Asset type" access="ReadWrite" relation="hge_asset_type"/>
+                        <smart:field-text name="hge_cssasset" label="Location" access="ReadWrite"/>
+                    </smart:field-set>
+                </smart:field-set>
+                <smart:field-set type="frame" name="hge_fr_identification" access="ReadWrite" label="Identification">
+                    <smart:field-text name="hge_component_tag" label="Component tag" access="ReadWrite" needed="true"/>
+                    <smart:field-json name="hge_component_props" label="Component properties" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:field-override access="ReadWrite" field="hub_component_tab" label="Component"/>
+        <smart:field-override access="ReadWrite" field="hub_execution_roles"/>
+
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="hge_jsasset">
+                <smart:field-callable function="::checkAssetCallable"/>
+                <smart:field-argument type="field">hge_jsasset_type</smart:field-argument>
+                <smart:field-argument type="field">hge_jsasset</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+            <smart:field-hook type="constraint" event="onPreStore" field="hge_cssasset">
+                <smart:field-callable function="::checkAssetCallable"/>
+                <smart:field-argument type="field">hge_cssasset_type</smart:field-argument>
+                <smart:field-argument type="field">hge_cssasset</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
+
+        <smart:defaults>
+            <smart:default field="hge_jsasset_type">PATH</smart:default>
+            <smart:default field="hge_cssasset_type">PATH</smart:default>
+        </smart:defaults>
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="hge_asset_type">
+            <smart:enum name="MANIFEST" label="Manifest"/>
+            <smart:enum name="PATH" label="Path"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>

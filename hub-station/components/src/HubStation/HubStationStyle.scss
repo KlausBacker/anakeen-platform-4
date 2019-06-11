@@ -1,0 +1,43 @@
+.hub-station-component {
+
+  .hub-station-content {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+    margin: 1rem;
+  }
+
+  .hub-station-center-area {
+    background-color: #e1e1e1;
+    position: relative;
+    min-height: 0;
+    .hub-station-aside {
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+
+      height: calc(100% - 2rem);
+
+      &.hub-station-left {
+        display:flex;
+        flex-direction: column;
+        margin: 1rem 0 1rem 1rem;
+      }
+      &.hub-station-right {
+        display:flex;
+        flex-direction: column;
+        margin: 1rem 1rem 1rem 0;
+      }
+    }
+  }
+
+  .hub-dock--collapsed {
+    .hub-dock-entry-component {
+      justify-content: center;
+    }
+  }
+
+  .hub-dock-entry-component {
+    color: #8b8b8b;
+
+    &.entry-selectable:hover {
+      background-color: rgba(206, 206, 206, 0.4);
+    }
+  }
+}

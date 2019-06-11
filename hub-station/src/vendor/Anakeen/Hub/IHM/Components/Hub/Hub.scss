@@ -1,0 +1,14 @@
+body,
+html {
+  width: 100vw;
+  height: 100vh;
+  font-size: 12px;
+}
+
+.hub-station-main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+//  overflow: hidden;
+}

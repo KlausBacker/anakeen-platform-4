@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBCONFIGURATION" label="HubConfiguration">
+        <smart:icon file="HubConfiguration.png"/>
+
+        <smart:class>Anakeen\Hub\SmartStructures\HubConfiguration\HubConfigurationBehavior</smart:class>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="hub_config" type="tab" label="Configuration" access="ReadWrite">
+                <smart:field-set name="hub_station_id_frame" type="frame" label="Identification" access="ReadWrite">
+                    <smart:field-docid access="ReadWrite" name="hub_station_id" label="Hub Station" relation="HUBINSTANCIATION"/>
+                    <smart:field-text access="ReadWrite" name="hub_title" label="Name" is-title="true" needed="true"/>
+                </smart:field-set>
+
+                <smart:field-set name="hub_slot_parameters" type="frame" access="ReadWrite" label="Dock">
+                    <smart:field-int name="hub_order" label="Order in dock" access="ReadWrite"/>
+                    <smart:field-enum name="hub_docker_position" label="Dock position" relation="Hub_DockerPos"
+                                      access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="hub_activated_frame" type="frame" label="Hub element status" access="ReadWrite">
+                    <smart:field-enum name="hub_activated" label="Element is default selected" relation="Hub_YesNo"
+                                      access="ReadWrite"/>
+                    <smart:field-int name="hub_activated_order" label="Priority" access="ReadWrite"/>
+                    <smart:field-enum name="hub_selectable" label="Element is selectable" relation="Hub_YesNo"
+                                      access="ReadWrite"/>
+                    <smart:field-enum name="hub_expandable" label="Element is expandable" relation="Hub_YesNo"
+                                      access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_component_tab" type="tab" label="Element parameters" access="ReadWrite">
+                <smart:field-set name="hub_component_parameters" type="frame" access="ReadWrite" label="Parameters"/>
+            </smart:field-set>
+            <smart:field-set name="hub_security" label="Security" type="tab" access="ReadWrite">
+                <smart:field-set name="hub_security_frame" label="Security Roles" type="frame" access="ReadWrite">
+                    <smart:field-account name="hub_visibility_roles" label="Roles to display hub element" access="ReadWrite" match="role" multiple="true"/>
+                    <smart:field-account name="hub_execution_roles" label="Roles to access hub element API" access="Read" match="role" multiple="true"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:parameters>
+            <smart:field-set name="hub_p_securityaccess" type="frame" label="Security access" access="Read">
+                <smart:field-text name="hub_p_routes_role" label="Mandatory route role" access="Read"/>
+            </smart:field-set>
+        </smart:parameters>
+
+
+        <smart:defaults>
+            <smart:default field="hub_activated">FALSE</smart:default>
+            <smart:default field="hub_selectable">FALSE</smart:default>
+            <smart:default field="hub_docker_position">LEFT_TOP</smart:default>
+            <smart:default field="hub_expandable">FALSE</smart:default>
+            <smart:default field="hub_order">0</smart:default>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+
+    <smart:enumerates>
+
+        <smart:enum-configuration name="Hub_DockerPos">
+            <smart:enum name="TOP_LEFT" label="Top Left"/>
+            <smart:enum name="TOP_CENTER" label="Top Center"/>
+            <smart:enum name="TOP_RIGHT" label="Top Right"/>
+            <smart:enum name="BOTTOM_LEFT" label="Bottom Left"/>
+            <smart:enum name="BOTTOM_CENTER" label="Bottom Center"/>
+            <smart:enum name="BOTTOM_RIGHT" label="Bottom Right"/>
+            <smart:enum name="LEFT_TOP" label="Left Top"/>
+            <smart:enum name="LEFT_CENTER" label="Left Center"/>
+            <smart:enum name="LEFT_BOTTOM" label="Left Bottom"/>
+            <smart:enum name="RIGHT_TOP" label="Right Top"/>
+            <smart:enum name="RIGHT_CENTER" label="Right Center"/>
+            <smart:enum name="RIGHT_BOTTOM" label="Right Bottom"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="Hub_YesNo">
+            <smart:enum name="TRUE" label="Yes"/>
+            <smart:enum name="FALSE" label="No"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>
