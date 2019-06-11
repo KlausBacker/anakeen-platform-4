@@ -72,19 +72,8 @@
 
 "@anakeen/internal-components@^1.0.1":
   version "1.0.1"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1.tgz#f69bf1dd67eea4d97496db7aad5084afb3541610"
-  integrity sha512-S1s/2K83cYxxrzrNt9x6TuRN/+d/0ubrYFjuzK93OpBzUTYvqfzkxYBb8VEoL+0AmR2ZLl/7GyxTsMhFftR9iQ==
-  dependencies:
-    "@anakeen/user-interfaces" "^2.0.0-dev20190219120819"
-    "@progress/kendo-layout-vue-wrapper" "^2019.1.124"
-    vue "^2.6.6"
-    vue-class-component "^7.0.1"
-    vue-property-decorator "^7.3.0"
-
-"@anakeen/internal-components@^1.0.1-dev20190518124914":
-  version "1.0.1-dev20190518124914"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1-dev20190518124914.tgz#60e1a7d3c472a40ca9e83a31835c488aa87d681d"
-  integrity sha512-xf8zmyhztS4a//kz4pBWIYS8PLFybJd5XHFUyKGj5u4r6V6Gs8Wvr/5utFVbfBEWG6Ag8fujlF3dML5Q0diWVQ==
+  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2finternal-components/-/internal-components-1.0.1.tgz#6d865daee9fdd7279ea49cfe34ca650b3a6d5f4b"
+  integrity sha512-DVz4uk6fnKIfgnRcYVQc/QW+v1IirgdS3bRbPwb+f/qyYKvno1ea5JXyWYXHCfDV+QtOu+BMwuPgQFVD2v/b0Q==
   dependencies:
     "@progress/kendo-layout-vue-wrapper" "^2019.1.220"
     axios "^0.18.0"
@@ -101,29 +90,6 @@
     font-awesome "^4.7.0"
     material-design-icons-iconfont "^4.0.4"
     roboto-fontface "^0.10.0"
-
-"@anakeen/user-interfaces@^2.0.0-dev20190219120819":
-  version "2.0.0-dev20190518114138"
-  resolved "http://npm-integration.corp.anakeen.com:4873/@anakeen%2fuser-interfaces/-/user-interfaces-2.0.0-dev20190518114138.tgz#79c74110026764631acfcbac1e1d718a1f8ffc0b"
-  integrity sha512-xtGm4akcCM3i3OV3wyUenAAm+PP/8ViMcX4FiYxHxttf2+7tpPO01OylHKY4mDDWcERgW2x3QP0ZmTkZA9Pk+A==
-  dependencies:
-    "@anakeen/theme-variables" "^1.0.0"
-    "@anakeen/webpack-conf" "^1.2.0-dev20190326111645"
-    "@progress/kendo-theme-bootstrap" "^3.2.3"
-    "@progress/kendo-ui" "2019.1.320"
-    "@webcomponents/webcomponentsjs" "2.2.7"
-    axios "^0.18.0"
-    bootstrap "^4.3.1"
-    core-js "3"
-    document-register-element "^1.11.0"
-    easygettext "^2.7.0"
-    jquery "^3.3.1"
-    popper.js "^1.14.7"
-    vue "2.6.10"
-    vue-custom-element "^3.2.5"
-    vue-gettext "^2.1.0"
-    vue-template-compiler "2.6.10"
-    whatwg-fetch "^3.0.0"
 
 "@anakeen/user-interfaces@^2.0.1-dev20190611073610":
   version "2.0.1-dev20190611073610"
@@ -1018,11 +984,6 @@
   resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2019.1.220.tgz#484fa25da3d52054f380e97046282cce207cc37e"
   integrity sha512-ou7yksiHr1cYJH4BEueavC8IjTgiE4S4qQmzMwKz8RYKcnM0WeslMPYE/fFpUv6YYCSNunwG57kzx+q3kl8uCQ==
 
-"@progress/kendo-base-components-vue-wrapper@2019.2.514":
-  version "2019.2.514"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-base-components-vue-wrapper/-/kendo-base-components-vue-wrapper-2019.2.514.tgz#21f5b13b8099809ee39e904f553a66949dcabd28"
-  integrity sha512-ZphBiquTriuCZDsSfcMHWqMr7ec6JdNoHlR6ast45lza1eZ8WtMkTjVRyrX/3DYdzhdTFm0BZRvNN/hGWCf++Q==
-
 "@progress/kendo-buttons-vue-wrapper@^2019.1.220":
   version "2019.1.220"
   resolved "https://registry.yarnpkg.com/@progress/kendo-buttons-vue-wrapper/-/kendo-buttons-vue-wrapper-2019.1.220.tgz#ddcf9a62d8b1838b2201c0f5b720f7dddacbac89"
@@ -1043,13 +1004,6 @@
   integrity sha512-2lYsutO/NLXc0RqOCZGvfcvBsdBf0E4bMDObb0+1M3+ic4tV09Vg3rDE5rcRdvJrZvdigSdC2khw8YTkKJ+2fg==
   dependencies:
     "@progress/kendo-base-components-vue-wrapper" "2019.1.220"
-
-"@progress/kendo-layout-vue-wrapper@^2019.1.124":
-  version "2019.2.514"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-layout-vue-wrapper/-/kendo-layout-vue-wrapper-2019.2.514.tgz#49c4ef856d17410fa3f303128648ddd329795c5c"
-  integrity sha512-pgyeJG3w1gaZObeo24yWGgLf7R8JIc1gk1dM/9XrfDpXqSw4yxV22Bs4NhyaBt4vTceB5ONTKPOvh1QSeOWqHw==
-  dependencies:
-    "@progress/kendo-base-components-vue-wrapper" "2019.2.514"
 
 "@progress/kendo-layout-vue-wrapper@^2019.1.220":
   version "2019.1.220"
@@ -9592,11 +9546,6 @@ void-elements@^2.0.1:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-vue-class-component@^6.2.0:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-6.3.2.tgz#e6037e84d1df2af3bde4f455e50ca1b9eec02be6"
-  integrity sha512-cH208IoM+jgZyEf/g7mnFyofwPDJTM/QvBNhYMjqGB8fCsRyTf68rH2ISw/G20tJv+5mIThQ3upKwoL4jLTr1A==
-
 vue-class-component@^7.0.1, vue-class-component@^7.0.2:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.1.0.tgz#b33efcb10e17236d684f70b1e96f1946ec793e87"
@@ -9633,13 +9582,6 @@ vue-loader@^15.7.0:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-property-decorator@^7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-7.3.0.tgz#d50d67f0b0f1c814f9f2fba36d6eeccbcc62dbb6"
-  integrity sha512-HarXfTQ/Nxm4s/APpAaGIGHq5ZzslApImQy8ZrtkfGamw8rUFAVgMS5C50/AQ80+wfw3Wpnf4bNzbmj75m/k2Q==
-  dependencies:
-    vue-class-component "^6.2.0"
-
 vue-property-decorator@^8.1.0:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/vue-property-decorator/-/vue-property-decorator-8.1.1.tgz#80dadbe5ffa0e7eb6a0ba0a07036365471a7d5ee"
@@ -9668,7 +9610,7 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@2.6.10, vue@^2.6.6:
+vue@2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
