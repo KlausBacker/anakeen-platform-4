@@ -12,6 +12,7 @@ export default {
   watch: {
     profileId(newValue) {
       this.$refs.profileSplitter.disableEmptyContent();
+      this.initFilters(window.location.search);
       this.selectedProfile = newValue;
     }
   },
@@ -34,52 +35,6 @@ export default {
       ]
     };
   },
-  beforeRouteEnter(to, from, next) {
-    const filterAction = vueInstance => () => {
-      const filter = to.query;
-      if (filter) {
-        const filterObject = { logic: "and", filters: [] };
-        filterObject.filters = Object.entries(filter).map(entry => {
-          return {
-            field: entry[0],
-            operator: "contains",
-            value: entry[1]
-          };
-        });
-        if (filterObject.filters.length) {
-          vueInstance.$refs.profilesGrid.dataSource.filter(filterObject);
-        }
-      }
-    };
-    if (to.name === "Security::Profile::Access::Element") {
-      next(vueInstance => {
-        vueInstance.$refs.profileSplitter.disableEmptyContent();
-        if (vueInstance.$refs.profilesGrid.kendoGrid) {
-          filterAction(vueInstance)();
-        } else {
-          vueInstance.$refs.profilesGrid.$once(
-            "grid-ready",
-            filterAction(vueInstance)
-          );
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    } else {
-      next(vueInstance => {
-        if (vueInstance.$refs.profilesGrid.kendoGrid) {
-          filterAction(vueInstance)();
-        } else {
-          vueInstance.$refs.profilesGrid.$once(
-            "grid-ready",
-            filterAction(vueInstance)
-          );
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    }
-  },
   devCenterRefreshData() {
     if (this.$refs.profilesGrid && this.$refs.profilesGrid.dataSource) {
       this.$refs.profilesGrid.dataSource.read();
@@ -89,29 +44,55 @@ export default {
     if (this.selectedProfile) {
       this.$refs.profileSplitter.disableEmptyContent();
     }
-    // const bindFilter = grid => {
-    //   grid.bind("filter", event => {
-    //     const filter = event.filter ? event.filter.filters[0] || null : null;
-    //     if (filter) {
-    //       this.$router.addQueryParams({
-    //         [filter.field]: filter.value
-    //       });
-    //     } else {
-    //       const query = Object.assign({}, this.$route.query);
-    //       delete query[event.field];
-    //       this.$router.push({ query: query });
-    //     }
-    //   });
-    // };
-    // if (this.$refs.profilesGrid.kendoGrid) {
-    //   bindFilter(this.$refs.profilesGrid.kendoGrid);
-    // } else {
-    //   this.$refs.profilesGrid.$once("grid-ready", () => {
-    //     bindFilter(this.$refs.profilesGrid.kendoGrid);
-    //   });
-    // }
+    this.initFilters(window.location.search);
   },
   methods: {
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(name|title|fromid|dpdoc_famid)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: "contains",
+              value
+            });
+          }
+        }
+        if (filters.length) {
+          this.$refs.profilesGrid.dataSource.filter(filters);
+        }
+      };
+      if (this.$refs.profilesGrid.kendoGrid) {
+        computeFilters();
+      } else {
+        this.$refs.profilesGrid.$once("grid-ready", () => {
+          computeFilters();
+        });
+      }
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
+      });
+    },
+    getFilter() {
+      if (this.$refs.profilesGrid && this.$refs.profilesGrid.kendoGrid) {
+        const currentFilter = this.$refs.profilesGrid.kendoGrid.dataSource.filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, {});
+        }
+      }
+      return {};
+    },
     cellRender(event) {
       if (event.data && event.data.columnConfig) {
         switch (event.data.columnConfig.field) {
@@ -136,25 +117,27 @@ export default {
             event.data.cellRender.html(
               `<a data-role="develRouterLink" href="/devel/smartElements/${
                 event.data.rowData.id
-              }/view?filters=${this.$.param({
-                id: event.data.rowData.id
-              })}">${event.data.cellRender.html()}</a>`
+              }/view?initid=${
+                event.data.rowData.id
+              }">${event.data.cellRender.html()}</a>`
             );
             break;
         }
       }
     },
     getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
       if (this.selectedProfile) {
         return Promise.resolve([
           {
-            url: this.selectedProfile,
+            url: this.selectedProfile + filterUrl,
             name: this.selectedProfile,
             label: this.selectedProfile
           }
         ]);
       }
-      return Promise.resolve([]);
+      return Promise.resolve([{ url: filterUrl }]);
     },
     actionClick(event) {
       switch (event.data.type) {

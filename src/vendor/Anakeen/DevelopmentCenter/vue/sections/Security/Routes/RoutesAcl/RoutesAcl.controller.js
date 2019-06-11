@@ -22,24 +22,7 @@ export default {
         this.$refs.routesGridContent.kendoWidget().resize();
       }
     });
-  },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.filters) {
-      let filter = to.query.filters.split("=");
-      next(function(vueInstance) {
-        if (filter && filter !== "") {
-          vueInstance.$refs.routesGridContent.kendoWidget().dataSource.filter({
-            field: filter[0],
-            operator: "contains",
-            value: filter[1]
-          });
-        }
-      });
-    } else {
-      next(function(vueInstance) {
-        vueInstance.$refs.routesGridContent.kendoWidget().dataSource.filter({});
-      });
-    }
+    this.initFilters(window.location.search);
   },
   devCenterRefreshData() {
     if (this.$refs.routesGrid) {
@@ -47,14 +30,56 @@ export default {
     }
   },
   methods: {
-    bindFilters() {
-      this.$refs.routesGridContent.kendoWidget().bind("filter", e => {
-        if (e.filter === null) {
-          let query = Object.assign({}, this.$route.query);
-          delete query.filters;
-          this.$router.replace({ query });
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(nameSpace|name|method|requiredAccess|decscription)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: "contains",
+              value
+            });
+          }
         }
+        if (filters.length) {
+          this.$refs.routesGrid.kendoWidget().filter(filters);
+        }
+      };
+      if (this.$refs.routesGrid) {
+        computeFilters();
+      } else {
+        this.$refs.routesGrid.$once("hook:mounted", () => {
+          computeFilters();
+        });
+      }
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
       });
+    },
+    getFilter() {
+      if (this.$refs.routesGrid && this.$refs.routesGrid.kendoWidget()) {
+        const currentFilter = this.$refs.routesGrid.kendoWidget().filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, {});
+        }
+      }
+      return {};
+    },
+    getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
+      return Promise.resolve([{ url: filterUrl }]);
     },
     getRoutes(options) {
       this.$http
@@ -89,9 +114,7 @@ export default {
           elt.map(e => {
             let accessName = e.split("::")[1];
             this.tabMultiple.push(
-              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/?filters=${this.$.param(
-                { accessName: accessName }
-              )}">${accessName}</a>`
+              `<a data-role="develRouterLink" href="/devel/security/routes/access/permissions/?accessName=${accessName}">${accessName}</a>`
             );
           });
         });

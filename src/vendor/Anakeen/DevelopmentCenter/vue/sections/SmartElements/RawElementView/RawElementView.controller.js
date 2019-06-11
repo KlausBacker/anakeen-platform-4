@@ -72,6 +72,11 @@ export default {
           kendo.ui.progress(this.$(this.$el), false);
         });
     },
+    getFilter() {
+      return {
+        formatType: this.formatType
+      };
+    },
     openView() {
       const splitter = this.$refs.splitter.kendoWidget();
       splitter.expand(".k-pane:last");

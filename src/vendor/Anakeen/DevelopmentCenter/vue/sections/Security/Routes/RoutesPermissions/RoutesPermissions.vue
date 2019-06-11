@@ -16,7 +16,7 @@
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="true"
-                    @hook:mounted="bindFilters">
+                    @databound="onGridDataBound">
             <kendo-grid-column :field="'accessNs'" :title="'<b>Namespace</b>'" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'accessName'" :title="'<b>Name</b>'" :template="displayLink('accessName')" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>
             <kendo-grid-column :field="'account.reference'" :title="'<b>Account</b>'" :template="displayLink('account')" :filterable-cell-operator="'contains'" :filterable-cell-show-operators="false" :filterable-cell-template="autoFilterCol"></kendo-grid-column>

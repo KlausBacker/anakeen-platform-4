@@ -20,55 +20,73 @@ export default {
       viewsDataSource: ""
     };
   },
+  updated() {
+    this.initFilters(window.location.search);
+  },
   mounted() {
     $(window).resize(() => {
       if (this.$refs.viewsGridContent) {
         this.$refs.viewsGridContent.kendoWidget().resize();
       }
     });
+    this.initFilters(window.location.search);
   },
   devCenterRefreshData() {
     if (this.$refs.viewsGrid) {
       this.$refs.viewsGrid.kendoWidget().read();
     }
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.filters) {
-      next(function(vueInstance) {
-        if (vueInstance.$refs.viewsGridContent.kendoWidget()) {
-          vueInstance.$refs.viewsGridContent.kendoWidget().dataSource.filter({
-            field: to.query.filters.split("=")[0],
-            operator: "eq",
-            value: to.query.filters.split("=")[1]
-          });
-        } else {
-          vueInstance.$refs.viewsGridContent.$on("grid-ready", () => {
-            vueInstance.$refs.viewsGridContent.kendoWidget().dataSource.filter({
-              field: to.query.filters.split("=")[0],
-              operator: "eq",
-              value: to.query.filters.split("=")[1]
-            });
-          });
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    } else {
-      next(vueInstance => {
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    }
-  },
   methods: {
-    bindFilters() {
-      this.$refs.viewsGridContent.kendoWidget().bind("filter", e => {
-        if (e.filter === null) {
-          let query = Object.assign({}, this.$route.query);
-          delete query.filters;
-          this.$router.replace({ query });
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(cvId|cvStructure|viewId|viewLabel|maskId|order|viewMode|renderConfigClass|menuList|displayed)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: "contains",
+              value
+            });
+          }
         }
+        if (filters.length) {
+          this.$refs.viewsGrid.kendoWidget().filter(filters);
+        }
+      };
+      if (this.$refs.viewsGrid && this.$refs.viewsGrid.kendoWidget()) {
+        computeFilters();
+      } else {
+        this.$refs.viewsGrid.$once("hook:mounted", () => {
+          computeFilters();
+        });
+      }
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
       });
+    },
+    getFilter() {
+      if (this.$refs.viewsGrid) {
+        const currentFilter = this.$refs.viewsGrid.kendoWidget().filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, {});
+        }
+      }
+      return {};
+    },
+    getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
+      return Promise.resolve([{ url: filterUrl }]);
     },
     getViews(options) {
       this.$http

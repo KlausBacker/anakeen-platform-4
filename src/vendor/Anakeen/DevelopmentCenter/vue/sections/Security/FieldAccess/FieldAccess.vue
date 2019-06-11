@@ -8,6 +8,7 @@
                              urlConfig="/api/v2/devel/security/fieldAccess/gridConfig"
                              filterable="inline" @action-click="actionClick"
                              @before-grid-cell-render="cellRender"
+                             @grid-data-bound="onGridDataBound"
                 >
                 </ank-se-grid>
             </template>

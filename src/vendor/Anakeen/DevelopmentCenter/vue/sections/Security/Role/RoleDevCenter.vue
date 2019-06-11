@@ -8,7 +8,8 @@
                         collection="ROLE"
                         :pageSizes="[100,200,500]"
                         @action-click="selectRole"
-                        @grid-ready="setGridOption"
+                        filterable="inline"
+                        @grid-data-bound="onGridDataBound"
                         @grid-error="onGridError">
                     <ank-se-grid-column title="Identification" field="id" hidden="true"></ank-se-grid-column>
                     <ank-se-grid-column title="Title" field="title"></ank-se-grid-column>

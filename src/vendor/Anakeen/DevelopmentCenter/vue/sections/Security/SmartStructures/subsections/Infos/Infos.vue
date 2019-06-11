@@ -27,7 +27,7 @@
                             <span v-else>No profile</span>
                         </span>
                     </div>
-                    <a class="dynamic-profiles-button k-button k-button-icontext k-primary" :href="`/devel/security/profiles?dpdoc_famid=${ssName}`"><span class="k-icon"><i class="material-icons">navigation</i></span>Dynamic Profiles</a>
+                    <a data-role="develRouterLink" class="dynamic-profiles-button k-button k-button-icontext k-primary" :href="`/devel/security/profiles?dpdoc_famid=${ssName}`"><span class="k-icon"><i class="material-icons">navigation</i></span>Dynamic Profiles</a>
                 </div>
             </div>
             <div class="security-infos-card">

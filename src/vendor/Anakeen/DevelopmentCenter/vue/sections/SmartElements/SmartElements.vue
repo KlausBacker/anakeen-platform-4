@@ -5,12 +5,13 @@
                 <ank-se-grid class="se-grid" :pageSizes="[100, 200, 500]" ref="grid" :urlConfig="urlConfig"
                              filterable="inline"
                              @before-grid-cell-render="cellRender"
+                             @grid-data-bound="onGridDataBound"
                              @action-click="actionClick">
                 </ank-se-grid>
             </template>
             <template slot="right">
 <!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>-->
-                <component style="height:100%" v-if="selectedElement" :is="selectedElement.component" v-bind="selectedElement.props"></component>
+                <component ref="component" style="height:100%" v-if="selectedElement" :is="selectedElement.component" v-bind="selectedElement.props"></component>
             </template>
         </ank-splitter>
     </div>

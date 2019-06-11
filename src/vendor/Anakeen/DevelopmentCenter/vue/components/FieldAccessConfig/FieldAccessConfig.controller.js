@@ -96,11 +96,9 @@ export default {
           return `
             <div class="fall-layer-header">
                 <span class="fall-layer-header-aclName">${column.label}</span>
-                <a data-role="develRouterLink" 
+                <a data-role="develRouterLink"
                 href="/devel/smartElements/${column.refName ||
-                  column.id}/view/?filters=${this.$.param({
-            name: column.refName
-          })}" 
+                  column.id}/view/?name=${column.refName}"
                 class="fall-layer-header-label">${column.refName}</a>
                 <div class="show-all-switch switch-container">
                     <label class="switch">

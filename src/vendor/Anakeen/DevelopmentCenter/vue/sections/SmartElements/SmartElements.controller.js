@@ -5,41 +5,6 @@ import ElementView from "./ElementView/ElementView.vue";
 import RawElementView from "./RawElementView/RawElementView.vue";
 import ProfileGrid from "../../components/profile/profile.vue";
 
-const parseFilters = filters => {
-  const result = {};
-  if (filters) {
-    filters.split("&").forEach(filter => {
-      const entry = filter.split("=");
-      if (entry && entry.length) {
-        const key = entry[0];
-        const value = entry[1];
-        result[key] = value;
-      }
-    });
-    return result;
-  } else {
-    return null;
-  }
-};
-
-const filterAction = (to, vueInstance) => () => {
-  let filter = to.query ? parseFilters(to.query.filters) || null : null;
-  if (filter) {
-    const filterObject = { logic: "and", filters: [] };
-    filterObject.filters = Object.entries(filter).map(entry => {
-      const filterOperator = entry[0] === "initid" ? "eq" : "contains";
-      return {
-        field: entry[0],
-        operator: filterOperator,
-        value: entry[1]
-      };
-    });
-    if (filterObject.filters.length) {
-      vueInstance.$refs.grid.dataSource.filter(filterObject);
-    }
-  }
-};
-
 const docTypeString = doctype => {
   switch (doctype) {
     case "F":
@@ -76,6 +41,7 @@ export default {
   watch: {
     smartElement(newValue) {
       this.$refs.splitter.disableEmptyContent();
+      this.initFilters(window.location.search);
       this.selectedElement = newValue;
     }
   },
@@ -83,44 +49,6 @@ export default {
     urlConfig() {
       return `/api/v2/devel/security/elements/config/`;
     }
-  },
-  beforeRouteEnter(to, from, next) {
-    if (to.name !== "SmartElements") {
-      next(vueInstance => {
-        vueInstance.$refs.splitter.disableEmptyContent();
-        if (vueInstance.$refs.grid.kendoGrid) {
-          filterAction(to, vueInstance)();
-        } else {
-          vueInstance.$refs.grid.$once(
-            "grid-ready",
-            filterAction(to, vueInstance)
-          );
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    } else {
-      next(vueInstance => {
-        if (vueInstance.$refs.grid.kendoGrid) {
-          filterAction(to, vueInstance)();
-        } else {
-          vueInstance.$refs.grid.$once(
-            "grid-ready",
-            filterAction(to, vueInstance)
-          );
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    }
-  },
-  beforeRouteUpdate(to, from, next) {
-    if (this.$refs.grid.kendoGrid) {
-      filterAction(to, this)();
-    } else {
-      this.$refs.grid.$once("grid-ready", filterAction(to, this));
-    }
-    next();
   },
   data() {
     return {
@@ -155,27 +83,7 @@ export default {
     if (this.selectedElement) {
       this.$refs.splitter.disableEmptyContent();
     }
-    const bindFilter = grid => {
-      grid.bind("filter", event => {
-        const filter = event.filter ? event.filter.filters[0] || null : null;
-        if (filter) {
-          this.getRoute().then(route => {
-            this.$emit("navigate", route);
-          });
-        } else {
-          this.getRoute().then(route => {
-            this.$emit("navigate", route);
-          });
-        }
-      });
-    };
-    if (this.$refs.grid.kendoGrid) {
-      bindFilter(this.$refs.grid.kendoGrid);
-    } else {
-      this.$refs.grid.$once("grid-ready", () => {
-        bindFilter(this.$refs.grid.kendoGrid);
-      });
-    }
+    this.initFilters(window.location.search);
   },
   methods: {
     cellRender(event) {
@@ -196,28 +104,67 @@ export default {
         }
       }
     },
-    getFilter(nextFilter) {
-      let result = {};
-      if (this.$refs.grid) {
-        const filter = this.$refs.grid.dataSource.filter();
-        if (filter && filter.filters) {
-          filter.filters.forEach(f => {
-            result[f.field] = f.value;
-          });
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(name|title|initid|fromid)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: field === "initid" ? "equals" : "contains",
+              value
+            });
+          }
         }
-      }
-      if (nextFilter) {
-        result = Object.assign({}, result, {
-          [nextFilter.field]: nextFilter.value
+        if (filters.length) {
+          this.$refs.grid.dataSource.filter(filters);
+        }
+      };
+      if (this.$refs.grid.kendoGrid) {
+        computeFilters();
+      } else {
+        this.$refs.grid.$once("grid-ready", () => {
+          computeFilters();
         });
       }
-      return $.param(result);
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
+      });
+    },
+    getFilter() {
+      let childrenFilters = {};
+      if (this.$refs.component && this.$refs.component.getFilter) {
+        childrenFilters = this.$refs.component.getFilter();
+      }
+      if (this.$refs.grid && this.$refs.grid.kendoGrid) {
+        const currentFilter = this.$refs.grid.kendoGrid.dataSource.filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, childrenFilters);
+        }
+      }
+      return childrenFilters;
     },
     getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
       if (this.selectedElement) {
-        return Promise.resolve([this.selectedElement]);
+        return Promise.resolve([
+          Object.assign({}, this.selectedElement, {
+            url: this.selectedElement.url + filterUrl
+          })
+        ]);
       }
-      return Promise.resolve([]);
+      return Promise.resolve([{ url: filterUrl }]);
     },
     actionClick(event) {
       let seIdentifier;

@@ -3,7 +3,7 @@
 <!--        <router-tabs :items="items"></router-tabs>-->
         <router-tabs ref="tabsComponent" @tab-selected="onTabSelected" :tabs="tabs">
             <template v-slot="slotProps">
-                <component :is="slotProps.tab.component"></component>
+                <component :is="slotProps.tab.component" :ref="slotProps.tab.name" @hook:mounted="onSubComponentMounted(slotProps.tab.name)" @navigate="onChildNavigate"></component>
             </template>
         </router-tabs>
     </div>
@@ -24,6 +24,13 @@
           import("./RoutesPermissions/RoutesPermissions.vue").then(module => resolve(module.default)),
       },
       props: ["routeAccess"],
+      watch: {
+        routeAccess(newValue) {
+          this.$refs.tabsComponent.setSelectedTab((tab) => {
+            return tab.url === newValue;
+          })
+        }
+      },
       data() {
         return {
           tabs: [
@@ -56,8 +63,34 @@
             this.$emit("navigate", route);
           });
         },
+        onSubComponentMounted(tabName) {
+          this.$emit(`${tabName}-ready`);
+        },
         getRoute() {
-          return Promise.resolve([this.$refs.tabsComponent.selectedTab]);
+          const selectedTab = this.$refs.tabsComponent.selectedTab;
+
+          const result = [selectedTab];
+          const ref = selectedTab.name;
+          let componentPromise;
+          if (this.$refs[ref]) {
+            componentPromise = Promise.resolve(this.$refs[ref]);
+          } else {
+            componentPromise = new Promise(resolve => {
+              this.$once(`${ref}-ready`, () => {
+                resolve(this.$refs[ref]);
+              });
+            });
+          }
+          return componentPromise.then(component => {
+            if (component && component.getRoute) {
+              return component.getRoute().then(childRoute => {
+                result.push(...childRoute);
+                return result;
+              });
+            } else {
+              return result;
+            }
+          });
         },
       }
     }
