@@ -1,0 +1,41 @@
+<span class="dcpAttribute__value dcpAttribute__value dcpAttribute__value--read dcpAttribute__value--docid" name="{{id}}">
+    {{#attributeValue.value}}
+        {{#renderOptions.htmlLink.renderUrl}}
+        <a class="dcpAttribute__content__link"
+        {{#renderOptions.htmlLink.renderTitle}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.renderTitle}}
+                        target="{{renderOptions.htmlLink.target}}"
+                        href="{{renderOptions.htmlLink.renderUrl}}">
+        {{/renderOptions.htmlLink.renderUrl}}
+        {{^attributeValue.formatValue}}
+            {{#attributeValue.icon}}<img class="dcpAttribute__value--icon" src="{{attributeValue.icon}}" />{{/attributeValue.icon}}
+        <span class="dcpAttribute__content__value">{{attributeValue.displayValue}}</span>
+        {{/attributeValue.formatValue}}
+        {{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}
+        {{#renderOptions.htmlLink.renderUrl}}
+        </a>
+        {{/renderOptions.htmlLink.renderUrl}}
+    {{/attributeValue.value}}
+    {{{emptyValue}}}
+    {{#attributeValues}}
+        {{#renderUrl}}
+        <a class="dcpAttribute__content__link dcpAttribute__value--multiple" data-index="{{index}}"
+        {{#renderOptions.htmlLink.title}}title="{{renderTitle}}" {{/renderOptions.htmlLink.title}}
+                  target="{{renderOptions.htmlLink.target}}"
+                   href="{{renderUrl}}">
+            {{/renderUrl}}{{^formatValue}}
+            {{#icon}}<img class="dcpAttribute__value--icon" src="{{icon}}" />{{/icon}}
+            <span class="dcpAttribute__content__value">{{displayValue}}</span>{{/formatValue}}
+        {{#formatValue}}{{{formatValue}}}{{/formatValue}}
+        {{#renderUrl}}
+        </a>
+        {{/renderUrl}}
+    {{/attributeValues}}
+</span>
+{{#hadButtons}}
+<span class="dcpAttribute__content__buttons">
+    {{#renderOptions.buttons}}
+    <button type="button" data-title="{{title}}" data-index="{{index}}" tabindex="-1"
+            class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
+    {{/renderOptions.buttons}}
+</span>
+{{/hadButtons}}

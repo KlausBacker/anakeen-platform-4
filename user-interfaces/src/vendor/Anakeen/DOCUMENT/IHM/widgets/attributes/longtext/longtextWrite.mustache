@@ -1,0 +1,29 @@
+<div class="input-group margin-bottom-sm">
+    {{# hasAutocomplete}}
+    <span class="input-group-addon">
+        <button
+              {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
+                class="dcpAttribute__value--autocomplete--button btn btn-default btn-xs" tabindex="-1">
+            <span class="fa fa-caret-down"></span>
+        </button>
+    </span>
+    {{/hasAutocomplete}}
+    <textarea type="text" name="{{id}}" id="{{viewCid}}"
+           {{# renderOptions.maxLength}}maxlength="{{renderOptions.maxLength}}"{{/ renderOptions.maxLength}}
+           {{# renderOptions.placeHolder}}placeHolder="{{renderOptions.placeHolder}}"{{/ renderOptions.placeHolder}}
+          class="form-control dcpAttribute__value dcpAttribute__value--edit k-textbox">{{attributeValue.value}}</textarea>
+    {{#hadButtons}}
+    <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#deleteButton}}
+            <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+                    class="btn btn-default btn-xs dcpAttribute__content__button--delete">
+            <span class="char-close"></span>
+        </button>
+        {{/deleteButton}}
+        {{#renderOptions.buttons}}
+        <button type="button" data-title="{{title}}" data-index="{{index}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}" tabindex="-1">{{{renderHtmlContent}}}</button>
+        {{/renderOptions.buttons}}
+
+    </span>
+     {{/hadButtons}}
+</div>

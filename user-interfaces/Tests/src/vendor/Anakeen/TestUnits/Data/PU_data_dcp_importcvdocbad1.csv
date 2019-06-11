@@ -1,0 +1,3 @@
+ORDER;CVDOC;;;ba_title;cv_famid;cv_idview;cv_lview;cv_kview;cv_mskid;cv_displayed;cv_order;cv_menu;cv_idcview;cv_lcview;dpdoc_famid
+DOC;CVDOC;CV_TEST_BAD_1;;Bad cv_idview;IUSER;EUSER\n\nESUBSTITUTE;Admin edit\nGroupes\nModifier le suppléant;VEDIT\nVEDIT\nVEDIT;MSK_IUSER_ADMIN\n\nMSK_IUSERSUBSTITUTE;no\nyes\nyes;2\n\n;\nCompte\nCompte;EUSER;Admin edit;IUSER
+DOC;CVDOC;CV_TEST_BAD_2;;Bad cv_lview;IUSER;EUSER\nEGROUP\nESUBSTITUTE;Admin edit\n\nModifier le suppléant;VEDIT\nVEDIT\nVEDIT;MSK_IUSER_ADMIN\n\nMSK_IUSERSUBSTITUTE;no\nyes\nyes;2\n\n;\nCompte\nCompte;EUSER;Admin edit;IUSER

@@ -1,0 +1,34 @@
+.dcpDocument--edit, .dcpDocument--create, .dcpDocument--view {
+  .dcpArray {
+    border: $ank-ui-array-border;
+    border-bottom: none;
+    margin: $ank-ui-array-margin;
+    padding: $ank-ui-array-padding;
+    border-radius: $ank-ui-array-border-radius;
+    box-shadow: $ank-ui-array-shadow;
+  }
+
+  .dcpArray > .dcpArray__label {
+    font-size: 1.1em;
+    font-weight: 700;
+    padding: 0;
+    line-height: 2.5em;
+    border-bottom: 1px solid #DDD;
+    margin-bottom: 15px;
+  }
+
+  .table-bordered > thead > tr > th,
+  .table-bordered > tbody > tr > th,
+  .table-bordered > tfoot > tr > th,
+  .table-bordered > thead > tr > td,
+  .table-bordered > tbody > tr > td,
+  .table-bordered > tfoot > tr > td .table > tbody > tr > td,
+  .table-bordered {
+    border-style: none;
+  }
+}
+
+.dcpArray__label {
+  background-color: transparent;
+  color: #878787;
+}

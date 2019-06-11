@@ -1,0 +1,16 @@
+.dcpAttribute__value--multiple {
+  button.dcpAttribute__value--docid--button {
+    border: none;
+    min-width: 2em;
+    height: 100%;
+    padding: 0;
+  }
+}
+
+.dcpAttribute__value.dcpAttribute__value--docid {
+  .k-select {
+    left: 0;
+    right: auto;
+    border: none;
+  }
+}

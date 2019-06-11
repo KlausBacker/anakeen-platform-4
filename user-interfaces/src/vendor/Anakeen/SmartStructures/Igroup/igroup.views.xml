@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <ui:view-control name="CV_GROUP_ACCOUNT" label="CV DOC IGROUP" structure="IGROUP">
+        <ui:description><![CDATA[CV DOC IGROUP]]></ui:description>
+        <ui:creation-view ref="default_edit"/>
+        <ui:view-list>
+            <ui:view name="default_view" label="Consulter" display-mode="consultation" menu-displayed="false"/>
+            <ui:view name="default_edit" label="Modifier" display-mode="edition" order="2">
+                <ui:render-config class="\Anakeen\SmartStructures\Group\Render\GroupEditRender"/>
+            </ui:view>
+            <ui:view name="changeGroup" label="Changer de groupe" display-mode="edition" menu-displayed="false">
+                <ui:render-config class="\Anakeen\SmartStructures\Group\Render\GroupChangeGroup"/>
+            </ui:view>
+        </ui:view-list>
+    </ui:view-control>
+
+    <ui:render ref="IGROUP">
+        <ui:render-access class="Anakeen\SmartStructures\Igroup\Render\IgroupAccess"/>
+        <ui:view-control ref="CV_GROUP_ACCOUNT"/>
+    </ui:render>
+</smart:config>
+

@@ -1,0 +1,35 @@
+<div class="grid-export grid-toolbar-action grid-toolbar-export-action">
+    <ul class="grid-export-action-menu grid-export-menu">
+        <li data-export-menu="root">
+            <span role="button" class="k-button k-button-icontext k-grid-export">
+                <span class="#: iconClass#"></span>
+                #: text#
+            </span>
+        </li>
+    </ul>
+    <ul class="grid-export-status grid-export-status--error grid-export-menu">
+        <li data-export-menu="root">
+            <span role="button" class="k-button k-button-icontext k-grid-export">
+                <span class="grid-export-status-icon k-image material-icons">warning</span>
+                <span class="grid-export-status-text">Error</span>
+            </span>
+        </li>
+    </ul>
+    <span role="button" class="k-button k-button-icontext grid-export-status grid-export-status--success">
+        <span class="material-icons k-image grid-export-status-icon">check</span>
+        <span class="grid-export-status-text">Upload done</span>
+    </span>
+    <ul class="grid-export-status grid-export-status--pending grid-export-menu">
+        <li data-export-menu="root">
+            <span role="button" class="k-button k-button-icontext k-grid-export">
+                <span class="material-icons k-image grid-export-status-icon">cached</span>
+                <div class="grid-export-status-progress-bar-wrapper">
+                    <div class="grid-export-status-progress-bar"></div>
+                    <span class="grid-export-status-progress-bar-text">
+                        <span class="exported"></span> / <span class="total"></span>
+                    </span>
+                </div>
+            </span>
+        </li>
+    </ul>
+</div>

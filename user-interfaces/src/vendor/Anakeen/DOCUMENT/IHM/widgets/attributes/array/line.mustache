@@ -1,0 +1,23 @@
+<tr class="dcpArray__content__line" data-attrid="{{id}}" data-line="{{lineNumber}}">
+    {{#tools}}
+    <td class="dcpArray__toolCell">
+        <div class="dcpArray__content__toolCell">
+            <span title="[[#i18n]]ddui::Drag to move line[[/i18n]]" class="dcpArray__content__toolCell__dragDrop">
+                <button class="btn btn-default btn-xs" tabindex="-1"><span class="fa fa-sort"></span></button>
+            </span>
+            <span title="[[#i18n]]ddui::Select line[[/i18n]]" class="dcpArray__content__toolCell__check">
+                <input class="k-radio" name="check_{{id}}" id="radio{{lineCid}}" type="radio" tabindex="-1"/>
+                <label class="k-radio-label" for="radio{{lineCid}}"></label>
+            </span>
+            <span title="[[#i18n]]ddui::Delete line[[/i18n]]" class="dcpArray__content__toolCell__delete">
+                <button class="btn btn-default btn-xs" tabindex="-1">
+                    <span class="fa fa-trash-o"></span>
+                </button>
+            </span>
+        </div>
+    </td>
+    {{/tools}}
+{{#content}}
+    <td data-attrid="{{id}}"><div class="dcpAttribute__content dcpAttribute__content--{{type}} dcpArray__content__cell dcpArray__content__cell--{{type}}" data-attrid="{{id}}" data-dcpattribute_content/></td>
+{{/content}}
+</tr>

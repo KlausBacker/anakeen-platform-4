@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="Uitest">
+        <sde:route name="GridPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\UiTest\TestGridPage</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/apps/uitest/grid</sde:pattern>
+            <sde:description>Test UI Grid Page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AllTypeGridPage">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\UiTest\TestAllTypeGridPage</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/apps/uitest/grid/alltypes</sde:pattern>
+            <sde:description>Test UI Grid Page</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GridPageConfig">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\UiTest\TestGridConfig</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/uitest/gridConfig/{collectionId}</sde:pattern>
+            <sde:description>Test Grid Page Config</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="ExportData">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Routes\UiTest\ExportData</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/uitest/data</sde:pattern>
+            <sde:description>Test Ui Export Test Description</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="Uitest">admin</sde:access>
+                <sde:access ns="Uitest">user</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="Uitest">
+        <sde:access name="user">
+            <sde:description>Normal Access</sde:description>
+        </sde:access>
+        <sde:access name="admin">
+            <sde:description>Administrator Access</sde:description>
+        </sde:access>
+    </sde:accesses>
+</sde:config>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Autotest : Identity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{#CSS}}
+        <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
+    {{#JS_DEPS}}
+        <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+        <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
+</head>
+<body>
+
+<h1>Identity</h1>
+<div>
+    <ank-identity id="identity"/>
+</div>
+
+<h1>Identity : Large</h1>
+<div>
+    <ank-identity id="identity-large" large="true"/>
+</div>
+
+<h1>Identity : Email alterable</h1>
+<div>
+    <ank-identity id="identity-email" email-alterable="true" large="true"/>
+</div>
+
+<h1>Identity : Password alterable</h1>
+<div>
+    <ank-identity  id="identity-password" password-alterable="true"/>
+</div>
+
+<div id="result--before">
+    Nope
+</div>
+<div id="result--after">
+    Nope
+</div>
+
+{{#JS_LEGACY}}
+    <script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Autotest : logout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{#CSS}}
+        <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
+    {{#JS_DEPS}}
+        <script type="text/javascript" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+        <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
+</head>
+<body>
+
+<h1>Logout without slot</h1>
+<div>
+    <ank-logout id="logout" title="Se déconnecter" >
+    </ank-logout>
+</div>
+
+<h1>Logout with slot</h1>
+<div>
+    <ank-logout id="logout-slot">
+        <span vue-slot="content" class="slot-content">Click here to logout</span>
+    </ank-logout>
+</div>
+<div id="result">
+    Nope
+</div>
+
+{{#JS_LEGACY}}
+    <script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
+</body>
+</html>

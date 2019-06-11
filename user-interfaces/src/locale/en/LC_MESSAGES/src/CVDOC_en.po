@@ -1,0 +1,112 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart CVDOC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-10-09 16:50+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "ba_desc"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_displayed"
+msgstr "Displayable"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_famid"
+msgstr "Structure"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_fr_default"
+msgstr "Default view"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_idcview"
+msgstr "Default create view"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_idview"
+msgstr "View id"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_kview"
+msgstr "Type"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_lcview"
+msgstr "Default create view label"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_lview"
+msgstr "Label"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_menu"
+msgstr "Menu"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_mskid"
+msgstr "Mask"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_order"
+msgstr "Select order"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_primarymask"
+msgstr "Primary mask"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_renderaccessclass"
+msgstr "Render access PHP class"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_renderconfigclass"
+msgstr "Render PHP class"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "cv_t_views"
+msgstr "Views"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "dpdoc_famid"
+msgstr "Profile structure reference"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "dpdoc_fr_dyn"
+msgstr "Dynamic profile"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "fr_basic"
+msgstr "Identification"
+
+#: src/vendor/Anakeen/SmartStructures/Cvdoc/cvdoc.struct.xml
+msgctxt "CVDOC"
+msgid "title"
+msgstr ""

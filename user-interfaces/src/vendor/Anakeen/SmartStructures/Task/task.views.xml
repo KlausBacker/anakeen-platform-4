@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+
+    <smart:structure-configuration name="TASK">
+        <smart:autocompletion>
+            <smart:field-autocomplete field="task_route_name">
+                <smart:field-callable function="Anakeen\SmartStructures\Task\Render\RouteAutoComplete"/>
+                <smart:field-returns>
+                    <smart:field-return field="task_route_ns"/>
+                    <smart:field-return field="task_route_name"/>
+                    <smart:field-return field="task_route_method"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+    </smart:structure-configuration>
+    <ui:render ref="TASK">
+        <ui:render-access class="Anakeen\SmartStructures\Task\Render\TaskAccess"/>
+    </ui:render>
+</smart:config>

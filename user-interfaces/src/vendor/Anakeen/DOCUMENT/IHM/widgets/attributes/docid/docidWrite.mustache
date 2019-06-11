@@ -1,0 +1,29 @@
+<div class="input-group margin-bottom-sm {{#isMultiple}}dcpAttribute__value--multiple{{/isMultiple}}{{^isMultiple}}dcpAttribute__value--single{{/isMultiple}}">
+    <span class="input-group-addon">
+        <button
+            {{#renderOptions.autoCompleteHtmlLabel}}
+            title="{{renderOptions.autoCompleteHtmlLabel}}"
+            {{/renderOptions.autoCompleteHtmlLabel}}
+            class="dcpAttribute__value--docid--button btn btn-default btn-xs" tabindex="-1">
+                <span class="k-icon k-i-arrow-60-down"></span>
+        </button>
+    </span>
+    <input name="{{id}}" id="{{viewCid}}"
+            class="form-control dcpAttribute__value dcpAttribute__value--docid">
+    </input>
+    {{#hadButtons}}
+    <span class="dcpAttribute__content__buttons input-group-addon">
+         {{#deleteButton}}
+             <button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" class="dcpAttribute__content__button--delete btn btn-default btn-xs" tabindex="-1">
+            <span class="char-close"></span>
+        </button>
+         {{/deleteButton}}
+        {{#renderOptions.buttons}}
+        <button type="button" data-index="{{index}}" data-title="{{title}}" class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}" tabindex="-1">
+         {{{renderHtmlContent}}}
+        </button>
+        {{/renderOptions.buttons}}
+
+    </span>
+    {{/hadButtons}}
+</div>

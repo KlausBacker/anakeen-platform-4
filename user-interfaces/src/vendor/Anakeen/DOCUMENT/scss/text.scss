@@ -1,0 +1,8 @@
+.dcpAttribute__value.dcpAttribute__value--edit.k-textbox,
+.dcpAttribute__value.dcpAttribute__value--edit > .k-dropdown-wrap,
+.dcpAttribute__value.dcpAttribute__value--edit > .k-multiselect-wrap
+{
+  &:hover, &:focus {
+    caret-color: $ank-ui-color-btn-action;
+  }
+}

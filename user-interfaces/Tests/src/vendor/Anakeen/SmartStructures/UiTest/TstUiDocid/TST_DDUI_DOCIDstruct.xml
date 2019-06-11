@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!--View control accesses-->
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <smart:access-configuration name="TST_DDUI_RENDER_DOCID" label="Rendus de relations" profil-type="CVDOC"/>
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!--Structure Profil Accesses-->
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <smart:structure-configuration name="TST_DDUI_DOCID" label="Test Docid">
+    <!--region Structure Properties ============-->
+    <smart:icon file="testdduidocid.png"/>
+    <smart:class>Anakeen\SmartStructures\UiTest\TstUiDocid\TstUiDocidHooks</smart:class>
+    <smart:usefor>N</smart:usefor>
+    <!--endregion Structure Properties =========-->
+    <!--region Structure Fields ================-->
+    <smart:fields>
+      <smart:field-set name="test_ddui_docid__f_title" type="frame" label="Titre" access="ReadWrite">
+        <smart:field-text name="test_ddui_docid__titleref" label="Référence" access="ReadWrite" is-title="true"/>
+        <smart:field-docid name="test_ddui_docid__title" label="Le titre" access="ReadWrite" is-title="true" relation="TST_DDUI_DOCID"/>
+      </smart:field-set>
+      <smart:field-set name="test_ddui_docid__fr_docid" type="frame" label="Les documents" access="ReadWrite">
+        <smart:field-docid name="test_ddui_docid__single1" label="Une première relation" access="ReadWrite" relation="TST_DDUI_DOCID"/>
+        <smart:field-text name="test_ddui_docid__histo1" label="Voir l'historique" access="ReadWrite" link="#action/document.history:%TEST_DDUI_DOCID__SINGLE1%"/>
+        <smart:field-docid name="test_ddui_docid__single2" label="Une deuxième relation" access="ReadWrite" link="#action/document.history:%TEST_DDUI_DOCID__SINGLE2%" relation="TST_DDUI_DOCID"/>
+        <smart:field-docid name="test_ddui_docid__single3" label="Une troisième relation" access="ReadWrite" link="#action/document.properties:%TEST_DDUI_DOCID__SINGLE3%" relation="TST_DDUI_DOCID"/>
+        <smart:field-docid name="test_ddui_docid__multiple1" label="Des premières relations" access="ReadWrite" relation="TST_DDUI_DOCID" multiple="true"/>
+        <smart:field-docid name="test_ddui_docid__multiple2" label="Des secondes relations" access="ReadWrite" link="#action/document.history:%TEST_DDUI_DOCID__MULTIPLE2%" relation="TST_DDUI_DOCID" multiple="true"/>
+        <smart:field-docid name="test_ddui_docid__multiple3" label="Des troisièmes relations" access="ReadWrite" link="#action/document.properties:%TEST_DDUI_DOCID__MULTIPLE3%" relation="TST_DDUI_DOCID" multiple="true"/>
+        <smart:field-set name="test_ddui_docid__t_rels" type="array" label="Autres relations" access="ReadWrite">
+          <smart:field-docid name="test_ddui_docid__single_array" label="Une autre relation" access="ReadWrite" relation="TST_DDUI_DOCID"/>
+          <smart:field-docid name="test_ddui_docid__multiple_array" label="D'autres relations" access="ReadWrite" relation="TST_DDUI_DOCID" multiple="true"/>
+        </smart:field-set>
+        <smart:field-set name="test_ddui_docid__t_links" type="array" label="Autres relations avec liens" access="ReadWrite">
+          <smart:field-docid name="test_ddui_docid__single_link" label="Un lien particulier" access="ReadWrite" link="#action/document.properties:%TEST_DDUI_DOCID__SINGLE_LINK%" relation="TST_DDUI_DOCID"/>
+          <smart:field-text name="test_ddui_docid__link_histo" label="Voir l'historique" access="ReadWrite" link="#action/document.history:%TEST_DDUI_DOCID__SINGLE_LINK%"/>
+          <smart:field-docid name="test_ddui_docid__multiple_link" label="D'autres liaisons spécifique" access="ReadWrite" link="#action/document.properties:%TEST_DDUI_DOCID__MULTIPLE_LINK%:%TEST_DDUI_DOCID__SINGLE_LINK%" relation="TST_DDUI_DOCID" multiple="true"/>
+        </smart:field-set>
+      </smart:field-set>
+    </smart:fields>
+    <!--endregion Structure Fields =============-->
+    <!--region Structure Parameters ============-->
+    <smart:parameters/>
+    <!--endregion Structure Parameters =========-->
+    <!--region Hooks methods ===================-->
+    <smart:hooks/>
+    <!--endregion Hooks methods ================-->
+    <!--region Autocomplete methods ============-->
+    <smart:autocompletion/>
+    <!--endregion Autocomplete methods =========-->
+    <!--region Default values ==================-->
+    <smart:defaults/>
+    <!--endregion Default values ===============-->
+  </smart:structure-configuration>
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!--Ui render configuration-->
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <ui:view-control xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="TST_DDUI_RENDER_DOCID" label="Rendus de relations" structure="TST_DDUI_DOCID">
+    <ui:creation-view ref="E1"/>
+    <!--region View control configuration ======-->
+    <ui:view-list>
+      <ui:view name="C1" label="Défaut" display-mode="consultation" order="1" menu-displayed="false">
+        <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiDocid\Renders\DocidRenderConfigView"/>
+      </ui:view>
+      <ui:view name="E1" label="Modifier les relations" display-mode="edition" order="1" menu-displayed="false">
+        <ui:render-config class="Anakeen\SmartStructures\UiTest\TstUiDocid\Renders\DocidRenderConfigEdit"/>
+      </ui:view>
+    </ui:view-list>
+    <!--endregion View control configuration ===-->
+  </ui:view-control>
+  <ui:render ref="TST_DDUI_DOCID">
+    <ui:view-control ref="TST_DDUI_RENDER_DOCID"/>
+  </ui:render>
+</smart:config>

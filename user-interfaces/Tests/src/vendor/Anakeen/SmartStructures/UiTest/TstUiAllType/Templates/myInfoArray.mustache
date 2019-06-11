@@ -1,0 +1,39 @@
+<table class="dcpArray__table">
+    <thead>
+    <tr>
+        {{#attribute.toolsEnabled}}
+        <th>Outils</th>
+        {{/attribute.toolsEnabled}}
+        <th class="special">
+            Identification
+        </th>
+        <th>
+            Deuxième et troisième cellules
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#attribute.rows}}
+    <tr>
+        {{#attribute.toolsEnabled}}
+        <td>{{{rowTools}}}</td>
+        {{/attribute.toolsEnabled}}
+        <td>
+            <b>{{content.test_ddui_all__account_array.label}}</b>
+            <br/>
+            {{{content.test_ddui_all__account_array.htmlContent}}}
+        </td>
+        <td>
+            <b>{{content.test_ddui_all__account_array.label}}</b>
+            <br/>
+            value : {{{content.test_ddui_all__account_array.attributeValue.value}}}
+            <br/>
+            displayValue : {{{content.test_ddui_all__account_array.attributeValue.displayValue}}}
+        </td>
+    </tr>
+    {{/attribute.rows}}
+    </tbody>
+</table>
+<div>
+    {{{attribute.tableTools}}}
+</div>

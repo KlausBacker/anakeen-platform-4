@@ -1,0 +1,47 @@
+.dcpDocument--edit, .dcpDocument--create {
+  .dcpAttribute__value--enumlabel {
+    background-color: $ank-ui-doc-edit-attribute-bg;
+  }
+
+  .k-radio-label::before {
+    background-color: $ank-ui-radio-color-bg;
+    width: $ank-ui-radio-size;
+    height: $ank-ui-radio-size;
+  }
+
+  .k-radio:focus + .k-radio-label::before {
+    border-color: $ank-ui-radio-border-selected;
+    box-shadow: none;
+  }
+
+  .k-radio:checked + .k-radio-label::before {
+    background-color: $ank-ui-radio-color-bg;
+  }
+
+  .k-radio:checked + .k-radio-label::after {
+    position: absolute;
+    background-color: $ank-ui-radio-color-checked;
+    width: $ank-ui-radio-size-checked;
+    height: $ank-ui-radio-size-checked;
+
+    left: ($ank-ui-radio-size - $ank-ui-radio-size-checked)/2;
+  }
+
+  .k-checkbox:checked + .k-checkbox-label:before {
+    font-family: $ank-ui-check-font;
+    content: $ank-ui-check-content;
+    background-color: $ank-ui-radio-color-bg;
+    border-color: #ccc;
+    color: $ank-ui-radio-color-checked;
+  }
+
+  .k-checkbox-label:before {
+    background-color: $ank-ui-radio-color-bg;
+  }
+
+  .k-checkbox:focus + .k-checkbox-label::before {
+    box-shadow: none;
+  }
+
+
+}

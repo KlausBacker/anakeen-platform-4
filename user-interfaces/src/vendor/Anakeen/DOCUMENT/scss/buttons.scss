@@ -1,0 +1,26 @@
+// Buttons
+.dcpArray__add {
+  color: $ank-ui-button1-color-text;
+  background-color: $ank-ui-button1-color-background;
+  border-radius: $ank-ui-button1-border-radius;
+  font-size: $ank-ui-button-font-size;
+  &:hover {
+    color: $ank-ui-button1-hover-color-text;
+    background-color: $ank-ui-button1-hover-color-background;
+  }
+}
+
+.dcpAttribute__content .input-group-addon button:last-child {
+  border-right: none;
+}
+
+.dcpAttribute__content .input-group-addon button {
+  border-right: 1px solid #ccc;
+}
+
+.dcpAttribute__content .input-group-addon button, .dcpArray__content__cell .input-group-addon button {
+  border: none;
+  min-width: 2em;
+  height: 100%;
+  padding: 0;
+}

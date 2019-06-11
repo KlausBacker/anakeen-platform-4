@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+
+    <ui:mask name="MSK_TEST000" label="x" structure="TST_PMASK">
+        <ui:visibility-list>
+            <ui:visibility field="tst_fr_rw" value="R"/>
+        </ui:visibility-list>
+    </ui:mask>
+    <ui:mask name="MSK_TEST001" structure="TST_PMASK">
+        <ui:visibility-list>
+            <ui:visibility field="tst_r_rw" value="H"/>
+            <ui:visibility field="tst_r_r" value="H"/>
+            <ui:visibility field="tst_fr_w" value="H"/>
+        </ui:visibility-list>
+    </ui:mask>
+    <ui:view-control name="CV_TEST_PMASK">
+        <ui:creation-view ref="E2"/>
+        <ui:view-list>
+            <ui:view name="V1" label="Admin edit" display-mode="consultation">
+                <ui:mask ref="MSK_TEST001"/>
+            </ui:view>
+            <ui:view name="E1" label="Modification des groupes parents" display-mode="edition">
+            </ui:view>
+            <ui:view name="E2" label="Modifier le suppléant" display-mode="edition">
+                <ui:mask ref="MSK_TEST002"/>
+            </ui:view>
+        </ui:view-list>
+    </ui:view-control>
+    <ui:view-control name="CV_TEST_PMASKBIS">
+        <ui:primary-mask ref="MSK_TEST000"/>
+        <ui:view-list>
+            <ui:view name="V1" label="Admin edit" display-mode="consultation">
+                <ui:mask ref="MSK_TEST001"/>
+            </ui:view>
+            <ui:view name="E1" label="x" display-mode="edition"/>
+        </ui:view-list>
+    </ui:view-control>
+    <ui:render ref="TST_PMASK">
+        <ui:view-control ref="CV_TEST_PMASK"/>
+    </ui:render>
+    <ui:render ref="TST_PMASKBIS">
+        <ui:view-control ref="CV_TEST_PMASKBIS"/>
+    </ui:render>
+</smart:config>

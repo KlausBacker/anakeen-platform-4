@@ -1,0 +1,224 @@
+@import "~@anakeen/theme-variables/scss/variables.scss";
+
+$navScrollSize: 2rem;
+$navListSize: 4rem;
+.ank-tabs-nav-wrap {
+  &.scrollable {
+    &.is-top,
+    &.is-bottom {
+      padding-left: $navScrollSize;
+      padding-right: calc(#{$navListSize} + #{$navScrollSize});
+    }
+  }
+
+  &.is-top,
+  &.is-bottom {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    //position: relative;
+
+    .ank-tabs-nav-prev {
+      box-shadow: 3px -2px 5px 0px #d2d2d2;
+      left: 0;
+    }
+
+    .ank-tabs-nav-next {
+      box-shadow: -3px -2px 5px 0px #d2d2d2;
+      right: $navListSize;
+    }
+
+    .ank-tabs-nav-list {
+      right: 0;
+      text-align: center;
+      width: $navListSize;
+      //height: 100%;
+      z-index: 2;
+      position: absolute;
+      cursor: pointer;
+      font-size: 1.3rem;
+      //color: #157EFB;
+      & /deep/ {
+        .anchor {
+          color: #157EFB;
+        }
+
+        .ank-tab-label,
+        a {
+          color: #909399;
+          text-decoration: none;
+          text-overflow: ellipsis;
+          overflow: hidden;
+
+          &:hover {
+            color: #00B4FC;
+          }
+
+          &.is-active, &.is-active a {
+            font-weight: bold;
+            color: #00B4FC;
+          }
+        }
+
+        .menu {
+          max-width: 25rem;
+          .menu-item.is-active {
+            .ank-tab-item-close {
+              color: #FF542C;
+            }
+          }
+        }
+
+      }
+      .ank-tab-item-close {
+        border-radius: 50%;
+        text-align: center;
+        &:hover {
+          i {
+            color: $ank-ui-color-error;
+          }
+        }
+        margin: 0 0.5rem;
+        i {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .ank-tabs-nav-prev,
+    .ank-tabs-nav-next {
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      //height: 100%;
+      width: $navScrollSize;
+      z-index: 2;
+      position: absolute;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: #157EFB;
+    }
+  }
+}
+
+.ank-tabs-nav {
+  display: flex;
+  transition: transform 0.2s ease;
+  // Common parts
+  .ank-tab-item {
+    background: #ECECEC;
+    display: flex;
+    padding: 0;
+    cursor: pointer;
+    color: $ank-ui-color-label;
+
+    & /deep/ .ank-tab-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: inherit;
+      text-decoration: none;
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+    }
+
+    &:focus,
+    &:focus:active {
+      outline: none;
+    }
+
+    &:hover {
+      color: $ank-ui-color-selected;
+    }
+
+    &:focus.is-active.is-focus:not(:active) {
+      box-shadow: inset 0 0 2px 2px $ank-ui-color-client;
+      border-radius: 3px;
+    }
+
+    .ank-tab-item-close {
+      position: relative;
+      border-radius: 50%;
+      text-align: center;
+      &:hover {
+        background: $ank-ui-color-error;
+        i {
+          color: white;
+        }
+      }
+      margin: 0 0.5rem;
+      i {
+        font-size: 1rem;
+      }
+    }
+
+    &.is-disabled {
+      cursor: not-allowed;
+    }
+
+    &.is-active {
+      color: $ank-ui-color-selected;
+      font-weight: 700;
+      background-color: #fafafa;
+      .ank-tab-item-close {
+        &:hover {
+          i {
+            color: white;
+          }
+        }
+        visibility: visible;
+        i {
+          font-size: 1.1667rem;
+          color: $ank-ui-color-error;
+        }
+      }
+    }
+  }
+
+  // TOP / BOTTOM common parts
+  &.is-top,
+  &.is-bottom {
+    flex-direction: row;
+
+    .ank-tab-item {
+      position: relative;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 16.6667rem;
+      padding-left: 1rem;
+      flex-direction: row;
+      min-height: 3.3333rem;
+      max-width: 16.6667rem;
+      width: 16.6667rem;
+      align-items: center;
+      justify-content: space-between;
+
+      .ank-tab-item-close {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      &.is-top.is-active {
+        box-shadow: inset 0 3px 0 0 $ank-ui-color-client;
+      }
+
+      &.is-dirty {
+        .ank-tab-item-close::before {
+          font-family: FontAwesome;
+          content: "\f069";
+          position: absolute;
+          font-size: 0.7rem;
+          left: -0.5rem;
+          top: -0.5rem;
+        }
+      }
+
+      & + .ank-tab-item {
+        margin-left: 0.2rem;
+      }
+    }
+  }
+}

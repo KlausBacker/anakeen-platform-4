@@ -1,0 +1,19 @@
+<li data-menu-id="{{id}}"{{#htmlAttr}} {{attrId}}="{{attrValue}}"{{/htmlAttr}}
+    class="menu__element menu__element--callable {{cssClass}}"
+    {{# disabled}}disabled="disabled"{{/ disabled}}
+    {{# tooltipLabel}}title="{{tooltipLabel}}"{{/tooltipLabel}}
+    >
+    <a {{#confirmationText}}class="menu--confirm" data-confirm-message="{{confirmationText}}"{{/confirmationText}}
+       {{# target}}target="{{target}}"{{/ target}} data-method="{{method}}"
+       data-url="{{url}}" >
+        {{#iconUrl}}
+            <img src="{{iconUrl}}" class="k-image" />
+        {{/iconUrl}}
+        {{#beforeContent}}
+            <span class="menu__before-content k-image">
+                {{{beforeContent}}}
+            </span>
+        {{/beforeContent}}
+        {{#contentLabel}}<span class="menu__content">{{{htmlLabel}}}{{label}}</span>{{/contentLabel}}
+    </a>
+</li>

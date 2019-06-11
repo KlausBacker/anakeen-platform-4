@@ -1,0 +1,54 @@
+<table class="dcpArray__table">
+    <thead>
+    <tr>
+        {{#attribute.toolsEnabled}}<th></th>{{/attribute.toolsEnabled}}
+        <th>Identification</th>
+        <th>{{attributes.cv_kview.label}}</th>
+        <th>Vue</th>
+        <th>Affichage</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#attribute.rows}}
+        <tr>
+            {{#attribute.toolsEnabled}}
+                <td>{{{rowTools}}}</td>{{/attribute.toolsEnabled}}
+            <td>
+                <div class="cv_order">
+                    <span>{{attributes.cv_order.label}} :</span> {{{content.cv_order.htmlContent}}}
+                </div>
+                <div class="cv_idview">
+                    <span>{{attributes.cv_idview.label}} :</span> {{{content.cv_idview.htmlContent}}}
+                </div>
+                <div class="cv_lview">
+                    <span>{{attributes.cv_lview.label}} :</span> {{{content.cv_lview.htmlContent}}}
+                </div>
+            </td>
+            <td>
+                <div class="cv_kview">
+                    <span>{{attributes.cv_kview.label}} :</span> {{{content.cv_kview.htmlContent}}}
+                </div>
+            </td>
+            <td>
+                <div class="cv_renderconfigclass">
+                    <span>{{attributes.cv_renderconfigclass.label}} :</span>{{{content.cv_renderconfigclass.htmlContent}}}
+                </div>
+                <div class="cv_mskid">
+                    <span>{{attributes.cv_mskid.label}} :</span>{{{content.cv_mskid.htmlContent}}}
+                </div>
+            </td>
+            <td>
+                <div class="cv_displayed">
+                    <span>{{attributes.cv_displayed.label}} :</span>{{{content.cv_displayed.htmlContent}}}
+                </div>
+                <div class="cv_menu">
+                    <span>{{attributes.cv_menu.label}} :</span>{{{content.cv_menu.htmlContent}}}
+                </div>
+            </td>
+        </tr>
+    {{/attribute.rows}}
+    </tbody>
+</table>
+<div>
+    {{{attribute.tableTools}}}
+</div>

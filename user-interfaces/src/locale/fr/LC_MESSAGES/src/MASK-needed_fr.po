@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Enum MASK-needed \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-11-08T16:11:11.714Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
+#, fuzzy
+msgctxt "MASK-needed"
+msgid "-"
+msgstr " "
+
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
+#, fuzzy
+msgctxt "MASK-needed"
+msgid "Y"
+msgstr "Yes"
+
+#: vendor/Anakeen/SmartStructures/Mask/mask.struct.xml
+#, fuzzy
+msgctxt "MASK-needed"
+msgid "N"
+msgstr "No"

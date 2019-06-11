@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="Ui">
+    <sde:route name="Ui:Smart:Search:Attributes">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\Attributes</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/attributes/[{family}]</sde:pattern>
+      <sde:description>Attribute family list</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Ui:Smart:Search:Operators">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\Operators</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/operators/</sde:pattern>
+      <sde:description>Operands list</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Ui:Smart:Search:Relations">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\Relations</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/relations/{family}/{attrid}</sde:pattern>
+      <sde:description>Operands list</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Ui:Smart:Search:TemporaryDoc">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\TemporaryDoc</sde:callable>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/temporaryDoc/{family}/</sde:pattern>
+      <sde:description>Temporary Doc</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Ui:Smart:Search:GridAttributes">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\SearchGridAttributes</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/searchAttributes/{searchId}</sde:pattern>
+      <sde:description>Temporary Doc</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Ui:Smart:Search:GridConfig">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\SearchGridConfig</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/gridConfig/{collectionId}</sde:pattern>
+      <sde:description>Get the search grid configc</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Ui:Smart:Search:Grid:Preview">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\SmartStructures\Dsearch\Routes\SearchViewGridRender</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/smartstructures/dsearch/preview/{collectionId}</sde:pattern>
+      <sde:description>Get the search grid preview page</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+</sde:config>

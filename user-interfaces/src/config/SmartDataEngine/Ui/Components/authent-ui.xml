@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="Ui:Component:Authent">
+        <sde:route name="Login">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Components\Authent\Routes\LoginPage</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/login/</sde:pattern>
+            <sde:description>Login page</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>false</sde:authenticated>
+        </sde:route>
+        <sde:route name="MailPassword">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Components\Authent\Routes\MailPassword</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/authent/mailPassword/{userId}</sde:pattern>
+            <sde:description>Send email to change password</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>false</sde:authenticated>
+        </sde:route>
+        <sde:route name="Password">
+            <sde:priority>1</sde:priority>
+            <sde:callable>Anakeen\Components\Authent\Routes\Password</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/authent/password/{login}</sde:pattern>
+            <sde:description>Change password</sde:description>
+            <sde:requiredAccess/>
+            <sde:authenticated>true</sde:authenticated>
+        </sde:route>
+    </sde:routes>
+    <sde:parameters namespace="Core">
+        <sde:parameter name="AUTHENT_MAILASKPWD">
+            <sde:category>Authent</sde:category>
+            <sde:description>Mail template document reference to ask new password</sde:description>
+            <sde:value>AUTH_TPLMAILASKPWD</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>

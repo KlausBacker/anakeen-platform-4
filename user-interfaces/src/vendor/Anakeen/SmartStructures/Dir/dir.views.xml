@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <ui:mask name="mskfld" label="Restrictions" structure="DIR">
+        <ui:visibility-list>
+            <ui:visibility field="fld_fr_prof" value="W"/>
+            <ui:visibility field="fld_fr_rest" value="W"/>
+        </ui:visibility-list>
+        <ui:need-list/>
+    </ui:mask>
+    <ui:view-control name="cvfld" label="Restrictions" structure="DIR">
+        <ui:view-list>
+            <ui:view name="RESTRICT" label="Restriction" display-mode="edition" menu-displayed="false">
+                <ui:mask ref="mskfld"/>
+            </ui:view>
+        </ui:view-list>
+    </ui:view-control>
+    <ui:render ref="DIR">
+        <ui:render-access class="Anakeen\SmartStructures\Dir\Render\DirAccess"/>
+        <ui:view-control ref="cvfld"/>
+    </ui:render>
+</smart:config>
+

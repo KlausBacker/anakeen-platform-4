@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>{{title}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    {{#CSS}}
+    <link rel="stylesheet" type="text/css" data-id="{{key}}" href="{{path}}"/>
+    {{/CSS}}
+    {{#JS_DEPS}}
+    <script type="text/javascript" {{#noModule}}nomodule{{/noModule}} data-id="{{key}}" src="{{path}}"></script>
+    {{/JS_DEPS}}
+    {{#JS}}
+    <script type="module" data-id="{{key}}" src="{{path}}"></script>
+    {{/JS}}
+
+</head>
+<body class="login-page">
+
+<div id="login"></div>
+
+
+{{#JS_LEGACY}}
+    <script nomodule data-id="{{key}}" src="{{path}}"></script>
+{{/JS_LEGACY}}
+
+</body>
+</html>

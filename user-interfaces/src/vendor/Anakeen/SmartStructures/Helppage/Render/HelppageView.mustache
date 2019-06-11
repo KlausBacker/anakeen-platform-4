@@ -1,0 +1,16 @@
+{{=<% %>=}}
+<script id="helppage-template" type="text/template">
+
+<h1>{{helppage.title}} </h1>
+<h2>{{helppage.description}}</h2>
+{{#helppage.chapters}}
+    <div class="helppage--chapter" id="CHAP-{{id}}">
+        <h3>{{order}}. {{title}}</h3>
+        <div class="helppage-chapter-content">{{{content}}}</div>
+    </div>
+{{/helppage.chapters}}
+
+</script>
+<%={{ }}=%>
+
+<div class="helppage--content" />

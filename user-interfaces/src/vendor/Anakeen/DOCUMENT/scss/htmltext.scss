@@ -1,0 +1,12 @@
+.dcpDocument--edit, .dcpDocument--create {
+  .dcpAttribute__content.dcpAttribute__content--htmltext {
+    .cke_top {
+      padding: 0;
+      height: 27px !important;
+    }
+
+    .k-autocomplete.form-control {
+      height:auto;
+    }
+  }
+}

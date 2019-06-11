@@ -1,0 +1,34 @@
+<div class="input-group margin-bottom-sm dcpAttribute__dragTarget">
+    {{# hasAutocomplete}}
+    <span class="input-group-addon">
+        <button
+                {{#renderOptions.autoCompleteHtmlLabel}}title="{{renderOptions.autoCompleteHtmlLabel}}"{{/renderOptions.autoCompleteHtmlLabel}}
+                class="dcpAttribute__value--autocomplete--button btn btn-default btn-xs" tabindex="-1">
+            <span class="fa fa-caret-down"></span>
+        </button>
+    </span>
+    {{/hasAutocomplete}}
+    <input type="file" name="{{id}}" id="{{viewCid}}" style="display:none;"
+           class="dcpAttribute__value--file"
+           value="{{attributeValue.value}}"/>
+
+    <input {{#attributeValue.icon}}style="background-image:url({{attributeValue.icon}}){{/attributeValue.icon}}"
+           type="text"
+           class="form-control dcpAttribute__value dcpAttribute__value--edit {{#attributeValue.icon}}dcpAttribute__value--fileicon{{/attributeValue.icon}}"
+           value="{{attributeValue.displayValue}}"/>
+    <span class="dcpAttribute__content__buttons input-group-addon">
+        {{#deleteButton}}<!-- avoid white spaces
+        --><button type="button" title="[[#i18n]]ddui::Delete : [[/i18n]]" tabindex="-1"
+                   class="btn btn-default btn-xs dcpAttribute__content__button--delete"><span class="char-close"></span>
+        </button>
+        {{/deleteButton}}
+        <button type="button"  data-index="{{index}}" tabindex="-1"
+                class="dcpAttribute__content__button--file btn btn-default btn-xs">
+            <span class="fa fa-download fa-fw"></span>
+        </button><!-- avoid white spaces
+        -->{{#renderOptions.buttons}}
+        <button type="button" data-title="{{title}}" data-index="{{index}}"
+                class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
+        {{/renderOptions.buttons}}
+    </span>
+</div>

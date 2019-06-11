@@ -1,0 +1,44 @@
+<?php
+
+namespace Anakeen\SmartStructures\UiTest\TstUiAllType\Renders;
+
+use Anakeen\Ui\RenderOptions;
+use SmartStructure\Fields\Tst_ddui_alltype as myAttributes;
+
+class setLinkTarget_self extends AllRenderConfigView
+{
+    public function getJsReferences(\Anakeen\Core\Internal\SmartElement $document = null)
+    {
+        $version = \Anakeen\Core\ContextManager::getParameterValue(\Anakeen\Core\Settings::NsSde, "WVERSION");
+        $js = parent::getJsReferences();
+        $js["tstAddbuttonJS"] = "/TEST_DOCUMENT_SELENIUM/Family/tst_ddui_alltype/testAddButtonJS.js?ws=" . $version;
+        return $js;
+    }
+
+    public function getOptions(\Anakeen\Core\Internal\SmartElement $document):RenderOptions
+    {
+        $options = parent::getOptions($document);
+
+        $linkOptionAccount = new \Anakeen\Ui\htmlLinkOptions();
+        $linkOptionAccount->target = "_self";
+        $linkOptionAccount->title = "Mon test {{value}} {{displayValue}}";
+        $linkOptionAccount->url = "/api/v2/smart-elements/{{value}}/views/!defaultEdition.html";
+
+        $linkOptionImage = new \Anakeen\Ui\htmlLinkOptions();
+        $linkOptionImage->target = "_self";
+        $linkOptionImage->title = ' <h3><img src="{{thumbnail}}&size=100"/>{{displayValue}}</h3>';
+        $linkOptionImage->url = "{{{url}}}&size=200";
+
+        $linkOption = new \Anakeen\Ui\htmlLinkOptions();
+        $linkOption->target = "_self";
+        $linkOption->title = "Mon test {{value}} {{displayValue}}";
+        $linkOption->url = "#action/my:myOptions";
+
+        $options->account()->setLink($linkOptionAccount);
+        $options->image()->setLink($linkOptionImage);
+        $options->commonOption()->setLink($linkOption);
+
+        return $options;
+
+    }
+}

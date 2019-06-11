@@ -1,0 +1,43 @@
+
+/* Positionnement 2 colonnes pour les attributs du cadre tst_f_dombancaire */
+.dcpFrame__content[data-attrid="tst_f_dombancaire"] .dcpAttribute {
+    float: left;
+    display: inline-block;
+    min-height: 34px;
+    width: calc(50% - 1em);
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+
+/* Colorisation des descriptions d'attributs */
+.dcpAttribute__description[data-attrid="tst_ban_agence"] {
+    background-color: rgba(0, 128, 50, 0.2);
+    border-color: #02bf54;
+    background: linear-gradient(to right, #c9de96 0%,#8ab66b 44%, #47bc43 100%);
+}
+
+.dcpAttribute__description[data-attrid="tst_ban_etablissement"],
+.dcpAttribute__description[data-attrid="tst_ban_guichet"],
+.dcpAttribute__description[data-attrid="tst_ban_numcompte"],
+.dcpAttribute__description[data-attrid="tst_ban_clecompte"] {
+    background-color: rgba(15, 61, 128, 0.2);
+    border-color: #0062bf;
+    background: linear-gradient(to right, #e4f5fc 0%,#bfe8f9 34%,#2ab0ed 71%,#9fd8ef 100%);
+}
+.dcpAttribute__description[data-attrid="tst_ban_iban"],
+.dcpAttribute__description[data-attrid="tst_ban_bic"] {
+    background-color: rgba(128, 63, 13, 0.2);
+    border-color: #bf7410;
+    background: linear-gradient(to right, #fceabb 0%,#fccd4d 37%,#f8b500 70%,#fbdf93 100%);
+}
+
+/* Alignement des descriptions pour le mode 2 colonnes */
+.dcpFrame[data-attrid=tst_f_dombancaire] .dcpAttribute__description {
+    min-height:6em;
+}
+/* Suppression de la flêche pour les description du cadre tst_f_dombancaire */
+.dcpFrame[data-attrid=tst_f_dombancaire] .dcpAttribute__description::after,
+.dcpFrame[data-attrid=tst_f_dombancaire] .dcpAttribute__description::before  {
+    display:none;
+}

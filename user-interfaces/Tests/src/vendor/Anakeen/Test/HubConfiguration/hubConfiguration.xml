@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2019-04-25T15:59:19" author="Anakeen Platform Master" name="Interface de tests des rendus">
+  <hubinstanciation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="hubinstanciation.xsd" name="UI_TEST" title="Interface de tests des rendus" revision="0" modification-date="2019-04-25 14:17:20.932413" version="" state="">
+    <hub_instance_config>
+      <hub_instance>
+        <instance_logical_name>UI_TEST</instance_logical_name>
+        <hub_instanciation_icone mime="" title="" xsi:nil="true"/>
+      </hub_instance>
+      <hub_instance_label_frame>
+        <hub_instance_titles>
+          <hub_instance_title>Render test interface</hub_instance_title>
+          <hub_instance_language>English</hub_instance_language>
+        </hub_instance_titles>
+        <hub_instance_titles>
+          <hub_instance_title>Interface de tests des rendus</hub_instance_title>
+          <hub_instance_language>Français</hub_instance_language>
+        </hub_instance_titles>
+      </hub_instance_label_frame>
+      <hub_instance_advanced_settings>
+        <hub_instanciation_router_entry xsi:nil="true"/>
+      </hub_instance_advanced_settings>
+    </hub_instance_config>
+    <hub_instance_tab_assets>
+      <hub_instance_fr_assets>
+        <hub_instance_jsassets>
+          <hub_instance_jsasset_type>manifest</hub_instance_jsasset_type>
+          <hub_instance_jsasset xsi:nil="true"/>
+        </hub_instance_jsassets>
+        <hub_instance_cssassets>
+          <hub_instance_cssasset_type>manifest</hub_instance_cssasset_type>
+          <hub_instance_cssasset xsi:nil="true"/>
+        </hub_instance_cssassets>
+      </hub_instance_fr_assets>
+    </hub_instance_tab_assets>
+    <hub_security>
+      <hub_security_frame>
+        <hub_super_role xsi:nil="true"/>
+      </hub_security_frame>
+    </hub_security>
+  </hubinstanciation>
+  <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="report.xsd" name="HUBEXT_2108" title="Tests de rendu de Smart Element" revision="0" modification-date="2019-04-25 14:12:15.959953" version="" state="">
+    <fr_basic>
+      <ba_title>Tests de rendu de Smart Element</ba_title>
+      <se_author name="USER_ADMIN">Master Anakeen Platform</se_author>
+    </fr_basic>
+    <se_crit>
+      <se_key xsi:nil="true"/>
+      <se_latest>yes</se_latest>
+      <se_case xsi:nil="true"/>
+      <se_famid name="TST_RENDER">Test de rendu de document</se_famid>
+      <se_idfld xsi:nil="true"/>
+      <se_trash xsi:nil="true"/>
+      <se_sysfam>no</se_sysfam>
+      <se_sublevel xsi:nil="true"/>
+      <se_idcfld xsi:nil="true"/>
+      <se_orderby xsi:nil="true"/>
+      <se_famonly>no</se_famonly>
+      <se_acl xsi:nil="true"/>
+      <se_static xsi:nil="true"/>
+    </se_crit>
+    <se_fr_detail>
+      <se_ol>and</se_ol>
+      <se_t_detail>
+        <se_ols>and</se_ols>
+        <se_leftp>no</se_leftp>
+        <se_attrids xsi:nil="true"/>
+        <se_funcs xsi:nil="true"/>
+        <se_keys xsi:nil="true"/>
+        <se_rightp>no</se_rightp>
+      </se_t_detail>
+
+    </se_fr_detail>
+    <rep_tab_presentation>
+      <rep_fr_presentation>
+        <rep_caption xsi:nil="true"/>
+        <rep_sort xsi:nil="true"/>
+        <rep_idsort xsi:nil="true"/>
+        <rep_ordersort xsi:nil="true"/>
+        <rep_limit xsi:nil="true"/>
+      </rep_fr_presentation>
+    </rep_tab_presentation>
+  </report>
+  <hubbusinessapp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="hubbusinessapp.xsd" name="HUBELT_2109" title="Smart Element de test" revision="0" modification-date="2019-04-25 14:24:25.175912" version="" state="">
+    <hub_config>
+      <hub_station_id_frame>
+        <hub_station_id name="UI_TEST">Interface de tests des rendus</hub_station_id>
+        <hub_title>Liste des Smart Elements de test</hub_title>
+      </hub_station_id_frame>
+      <hub_slot_parameters>
+        <hub_order xsi:nil="true"/>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>test</hub_vue_router_entry>
+      </hub_slot_parameters>
+      <hub_activated_frame>
+        <hub_activated>TRUE</hub_activated>
+        <hub_activated_order>1</hub_activated_order>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+      </hub_activated_frame>
+    </hub_config>
+    <hub_component_tab>
+      <hub_component_parameters>
+        <hba_icon_type>ICON</hba_icon_type>
+        <hba_icon_image mime="" title="" xsi:nil="true"/>
+        <hba_icon_lib>&lt;i class='fa fa-wrench'&gt;&lt;/i&gt;</hba_icon_lib>
+        <hba_icon_html xsi:nil="true"/>
+        <hba_icon>&lt;i class='fa fa-wrench'&gt;&lt;/i&gt;</hba_icon>
+        <hba_titles>
+          <hba_title>Smart Elements to test</hba_title>
+          <hba_language>en_US</hba_language>
+        </hba_titles>
+        <hba_titles>
+          <hba_title>Smart Elements de test</hba_title>
+          <hba_language>fr_FR</hba_language>
+        </hba_titles>
+        <hba_collections>
+          <hba_collection name="HUBEXT_2108">Tests de rendu de Smart Element</hba_collection>
+        </hba_collections>
+      </hub_component_parameters>
+      <hba_options>
+        <hba_welcome_option>NO</hba_welcome_option>
+        <hba_welcome_title><![CDATA[Welcome]]></hba_welcome_title>
+      </hba_options>
+    </hub_component_tab>
+    <hub_security>
+      <hub_security_frame>
+        <hub_execution_roles xsi:nil="true"/>
+      </hub_security_frame>
+    </hub_security>
+  </hubbusinessapp>
+</documents>

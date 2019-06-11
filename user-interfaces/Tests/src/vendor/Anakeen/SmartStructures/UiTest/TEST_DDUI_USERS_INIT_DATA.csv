@@ -1,0 +1,16 @@
+ORDER;IGROUP;;;grp_name;grp_hasmail;us_login;;;;;;;;;;;;;;;;;;;;;;
+DOC;IGROUP;TST_DDUI_GRP;GDEFAULT;Test DDUI;yes;gtstddui;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;ROLE;;;role_login;role_name;;;;;;;;;;;;;;;;;;;;;;;
+DOC;ROLE;TST_DDUI_ROLE_BIGBOSS;;rtstdduibigboss;Big boss;;;;;;;;;;;;;;;;;;;;;;;
+DOC;ROLE;TST_DDUI_ROLE_BOSS;;rtstdduiboss;Boss;;;;;;;;;;;;;;;;;;;;;;;
+DOC;ROLE;TST_DDUI_ROLE_WORKER;;rtstdduiworker;Travailleur;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;grp_idruser
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ORDER;IUSER;;;us_lname;us_fname;us_extmail;us_login;us_passwd1;us_passwd2;us_roles;;;;;;;;;;;;;;;;;;
+DOC;IUSER;TST_DDUI_USER1;TST_DDUI_GRP;Grand;Jean;gj@example.net;zoo.user1;anakeen;anakeen;TST_DDUI_ROLE_BIGBOSS;;;;;;;;;;;;;;;;;;
+DOC;IUSER;TST_DDUI_USER2;TST_DDUI_GRP;Dujardin;Isabelle;di@example.net;zoo.user2;anakeen;anakeen;TST_DDUI_ROLE_BOSS;;;;;;;;;;;;;;;;;;
+DOC;IUSER;TST_DDUI_USER3;TST_DDUI_GRP;Granget;Catherine;gc@example.net;zoo.user3;anakeen;anakeen;TST_DDUI_ROLE_WORKER;;;;;;;;;;;;;;;;;;
+DOC;IUSER;TST_DDUI_USER4;TST_DDUI_GRP;Tordi;Albert;ta@example.net;zoo.user4;anakeen;anakeen;TST_DDUI_ROLE_WORKER;;;;;;;;;;;;;;;;;;

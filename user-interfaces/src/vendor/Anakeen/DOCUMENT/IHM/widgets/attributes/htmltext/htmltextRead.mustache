@@ -1,0 +1,21 @@
+<span class="dcpAttribute__value dcpAttribute__value--read" name="{{id}}">
+    {{#renderOptions.htmlLink.url}}
+    <a  class="dcpAttribute__content__link"
+        target="{{renderOptions.htmlLink.target}}"
+        {{#renderOptions.htmlLink.renderTitle}}title="{{renderOptions.htmlLink.renderTitle}}" {{/renderOptions.htmlLink.renderTitle}}
+        href="{{renderOptions.htmlLink.url}}">
+    {{/renderOptions.htmlLink.url}}
+        <span class="dcpAttribute__content__value">{{#attributeValue.formatValue}}{{{attributeValue.formatValue}}}{{/attributeValue.formatValue}}{{^attributeValue.formatValue}}{{{attributeValue.displayValue}}}{{/attributeValue.formatValue}}</span>
+    {{#renderOptions.htmlLink.url}}
+    </a>
+    {{/renderOptions.htmlLink.url}}
+    {{{emptyValue}}}
+</span>
+{{#hadButtons}}
+<span class="dcpAttribute__content__buttons">
+    {{#renderOptions.buttons}}
+    <button type="button" data-title="{{title}}" data-index="{{index}}" tabindex="-1"
+            class="dcpAttribute__content__button--extra btn btn-default btn-xs {{class}}">{{{renderHtmlContent}}}</button>
+    {{/renderOptions.buttons}}
+</span>
+{{/hadButtons}}

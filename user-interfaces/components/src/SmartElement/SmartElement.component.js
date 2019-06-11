@@ -1,0 +1,422 @@
+/**
+ * Dynacase document component object ***
+ */
+import Vue from "vue";
+import VueSetup from "../setup.js";
+import { SmartElementEvents } from "./SmartElementEvents";
+
+Vue.use(VueSetup);
+export default {
+  name: "ank-smart-element",
+  data() {
+    return {
+      initialDocumentUrl: "/api/v2/smart-elements/0.html"
+    };
+  },
+
+  props: {
+    seValue: {
+      type: [String, Object],
+      default: () =>
+        JSON.stringify({
+          initid: 0,
+          viewId: "!defaultConsultation",
+          revision: -1,
+          customClientData: null
+        }),
+      validator: value => {
+        if (typeof value === "string") {
+          try {
+            const parsed = JSON.parse(value);
+            return parsed.initid !== undefined;
+          } catch (e) {
+            console.error(e);
+            return false;
+          }
+        }
+
+        return true;
+      }
+    },
+    browserHistory: {
+      default: false,
+      type: Boolean
+    },
+    initid: {
+      type: String,
+      default: "0"
+    },
+    customClientData: {
+      type: [String, Object],
+      default: null,
+      validator: value => {
+        if (typeof value === "string") {
+          try {
+            JSON.parse(value);
+            return true;
+          } catch (e) {
+            console.error(e);
+            return false;
+          }
+        }
+
+        return true;
+      }
+    },
+    viewId: {
+      type: String,
+      default: "!defaultConsultation"
+    },
+    revision: {
+      type: Number,
+      default: -1
+    }
+  },
+
+  computed: {
+    parsedSEValue() {
+      if (typeof this.seValue === "object") {
+        return this.seValue;
+      } else {
+        return JSON.parse(this.seValue);
+      }
+    },
+
+    getInitialData() {
+      const initialData = {
+        noRouter: this.browserHistory !== true
+      };
+
+      /**
+       * Prop documentValue are priority on single properties
+       */
+      initialData.initid = this.parsedSEValue.initid || this.initid;
+      initialData.initid = initialData.initid.toString();
+      if (this.parsedSEValue.customClientData || this.customClientData) {
+        initialData.customClientData =
+          this.parsedSEValue.customClientData || this.customClientData;
+      }
+
+      if (this.parsedSEValue.revision !== -1) {
+        initialData.revision = this.parsedSEValue.revision;
+      } else if (this.revision !== -1) {
+        initialData.revision = this.revision;
+      }
+
+      if (this.parsedSEValue.viewId !== "!defaultConsultation") {
+        initialData.viewId = this.parsedSEValue.viewId;
+      } else if (this.viewId !== "!defaultConsultation") {
+        initialData.viewId = this.viewId;
+      }
+
+      return initialData;
+    }
+  },
+
+  updated() {
+    if (this.isLoaded()) {
+      this.fetchSmartElement(this.getInitialData);
+    } else {
+      this.$once("documentLoaded", () => {
+        this.fetchSmartElement(this.getInitialData);
+      });
+    }
+  },
+
+  methods: {
+    /**
+     * True when internal widget is loaded
+     * @returns {boolean}
+     */
+    isLoaded() {
+      return this.documentWidget !== undefined;
+    },
+
+    /**
+     * Rebind all declared binding to internal widget
+     * @returns void
+     */
+    listenAttributes() {
+      const eventNames = SmartElementEvents;
+      /* eslint-disable no-underscore-dangle */
+      const localListener = this.$options._parentListeners || {};
+
+      eventNames.forEach(eventName => {
+        this.documentWidget.addEventListener(
+          eventName,
+          {
+            name: `v-on-${eventName}-listen`,
+            documentCheck(/* documentObject */) {
+              return true;
+            }
+          },
+          (event, documentObject, ...others) => {
+            this.$emit(eventName, event, documentObject, ...others);
+          }
+        );
+      });
+
+      Object.keys(localListener).forEach(key => {
+        // input is an internal vuejs bind
+        if (
+          eventNames.indexOf(key) === -1 &&
+          key !== "documentLoaded" &&
+          key !== "input" &&
+          key !== "internalComponentError"
+        ) {
+          /* eslint-disable no-console */
+          console.error(
+            `Cannot listen to "${key}". It is not a defined listener for ank-smart-element component`
+          );
+        }
+      });
+
+      /**
+       * Add listener to update component values
+       */
+      this.documentWidget.addEventListener(
+        "ready",
+        {
+          name: "v-on-dcpready-listen"
+        },
+        (event, documentObject) => {
+          if (
+            this.initid &&
+            documentObject.initid.toString() !== this.initid.toString()
+          ) {
+            this.documentIsReady = true;
+            this.$emit("update:props", documentObject);
+          }
+        }
+      );
+    },
+
+    addEventListener(eventType, options, callback) {
+      return this.documentWidget.addEventListener(eventType, options, callback);
+    },
+
+    fetchSmartElement(value, options) {
+      return this.documentWidget.fetchDocument(value, options).catch(error => {
+        let errorMessage = "Undefined error";
+        if (error && error.errorMessage && error.errorMessage.contentText) {
+          console.error(error.errorMessage.contentText);
+          errorMessage = error.errorMessage.contentText;
+        } else {
+          console.error(error);
+        }
+        if (!this.documentIsReady) {
+          this.$emit(
+            "internalComponentError",
+            {},
+            {},
+            { message: errorMessage }
+          );
+        }
+        throw error;
+      });
+    },
+
+    saveSmartElement(options) {
+      return this.documentWidget.saveDocument(options);
+    },
+
+    showMessage(message) {
+      return this.documentWidget.showMessage(message);
+    },
+
+    getAttributes() {
+      return this.documentWidget.getAttributes();
+    },
+
+    getAttribute(attributeId) {
+      return this.documentWidget.getAttribute(attributeId);
+    },
+
+    setValue(attributeId, newValue) {
+      if (typeof newValue === "string") {
+        /* eslint-disable no-param-reassign */
+        newValue = {
+          value: newValue,
+          displayValue: newValue
+        };
+      }
+
+      return this.documentWidget.setValue(attributeId, newValue);
+    },
+
+    reinitSmartElement(values, options) {
+      return this.documentWidget.reinitDocument(values, options);
+    },
+
+    changeStateSmartElement(parameters, reinitOptions, options) {
+      return this.documentWidget.changeStateDocument(
+        parameters,
+        reinitOptions,
+        options
+      );
+    },
+
+    deleteSmartElement(options) {
+      return this.documentWidget.deleteDocument(options);
+    },
+
+    restoreSmartElement(options) {
+      return this.documentWidget.restoreDocument(options);
+    },
+
+    getProperty(property) {
+      return this.documentWidget.getProperty(property);
+    },
+
+    getProperties() {
+      return this.documentWidget.getProperties();
+    },
+
+    hasAttribute(attributeId) {
+      return this.documentWidget.hasAttribute(attributeId);
+    },
+
+    hasMenu(menuId) {
+      return this.documentWidget.hasMenu(menuId);
+    },
+
+    getMenu(menuId) {
+      return this.documentWidget.getMenu(menuId);
+    },
+
+    getMenus() {
+      return this.documentWidget.getMenus();
+    },
+
+    getValue(attributeId, type) {
+      return this.documentWidget.getValue(attributeId, type);
+    },
+
+    getValues() {
+      return this.documentWidget.getValues();
+    },
+
+    getCustomServerData() {
+      return this.documentWidget.getCustomServerData();
+    },
+
+    isModified() {
+      return this.documentWidget.getProperty("isModified");
+    },
+
+    addCustomClientData(documentCheck, value) {
+      return this.documentWidget.addCustomClientData(documentCheck, value);
+    },
+
+    getCustomClientData(deleteOnce) {
+      return this.documentWidget.getCustomClientData(deleteOnce);
+    },
+
+    removeCustomClientData(key) {
+      return this.documentWidget.removeCustomClientData(key);
+    },
+
+    appendArrayRow(attributeId, values) {
+      return this.documentWidget.appendArrayRow(attributeId, values);
+    },
+
+    insertBeforeArrayRow(attributeId, values, index) {
+      return this.documentWidget.insertBeforeArrayRow(
+        attributeId,
+        values,
+        index
+      );
+    },
+
+    removeArrayRow(attributeId, index) {
+      return this.documentWidget.removeArrayRow(attributeId, index);
+    },
+
+    addConstraint(options, callback) {
+      return this.documentWidget.addConstraint(options, callback);
+    },
+
+    listConstraints() {
+      return this.documentWidget.listConstraints();
+    },
+
+    removeConstraint(constraintName, allKind) {
+      return this.documentWidget.removeConstraint(constraintName, allKind);
+    },
+
+    listEventListeners() {
+      return this.documentWidget.listEventListeners();
+    },
+
+    removeEventListener(eventName, allKind) {
+      return this.documentWidget.removeEventListener(eventName, allKind);
+    },
+
+    triggerEvent(eventName, ...parameters) {
+      return this.documentWidget.triggerEvent(eventName, ...parameters);
+    },
+
+    hideAttribute(attributeId) {
+      return this.documentWidget.hideAttribute(attributeId);
+    },
+
+    showAttribute(attributeId) {
+      return this.documentWidget.showAttribute(attributeId);
+    },
+
+    maskSmartElement(message, px) {
+      return this.documentWidget.maskDocument(message, px);
+    },
+
+    unmaskSmartElement(force) {
+      return this.documentWidget.unmaskDocument(force);
+    },
+
+    tryToDestroy() {
+      return this.documentWidget.tryToDestroy();
+    },
+
+    injectCSS(cssToInject) {
+      return this.documentWidget.injectCSS(cssToInject);
+    }
+  },
+
+  mounted() {
+    const $iframe = this.$refs.iDocument;
+    const documentWindow = $iframe.contentWindow;
+    $iframe.addEventListener(
+      "load",
+      () => {
+        documentWindow.documentLoaded = domNode => {
+          // Re Bind the internalController function to the current widget
+          this.documentWidget = domNode.data("dcpDocumentController");
+          if (this.initid.toString() !== "0") {
+            this.listenAttributes();
+            $iframe.style.visibility = "";
+            this.fetchSmartElement(this.getInitialData);
+          } else {
+            this.documentWidget.addEventListener(
+              "ready",
+              { once: true },
+              () => {
+                this.listenAttributes();
+                $iframe.style.visibility = "";
+              }
+            );
+          }
+
+          this.$emit("documentLoaded");
+        };
+
+        if (
+          documentWindow.dcp &&
+          documentWindow.dcp.triggerReload &&
+          documentWindow.dcp.documentReady === false
+        ) {
+          documentWindow.dcp.triggerReload();
+        }
+      },
+      true
+    );
+  }
+};

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="Ui">
+    <sde:route name="CurrentUser">
+      <sde:callable>Anakeen\Routes\Ui\CurrentUser</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/ui/users/current</sde:pattern>
+      <sde:description>Fetch user information</sde:description>
+      <sde:requiredAccess/>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
+    <sde:route name="AnkComponents">
+      <sde:callable>Anakeen\Routes\Ui\AnkComponents</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/ui/components/ank-components</sde:pattern>
+      <sde:description>Fetch Anakeen Web Components</sde:description>
+      <sde:authenticated>false</sde:authenticated>
+    </sde:route>
+    <sde:route name="Transaction">
+      <sde:callable>Anakeen\Routes\Ui\Transaction\Transactions</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:method>POST</sde:method>
+      <sde:pattern>/api/v2/ui/transaction[/{transactionId}]</sde:pattern>
+      <sde:description>Create and launch a transaction</sde:description>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
+    <sde:route name="PollTransaction">
+      <sde:callable>Anakeen\Routes\Ui\Transaction\PollTransaction</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/api/v2/ui/transaction/{transactionId}/status</sde:pattern>
+      <sde:description>Read a transaction status</sde:description>
+      <sde:authenticated>true</sde:authenticated>
+    </sde:route>
+  </sde:routes>
+</sde:config>

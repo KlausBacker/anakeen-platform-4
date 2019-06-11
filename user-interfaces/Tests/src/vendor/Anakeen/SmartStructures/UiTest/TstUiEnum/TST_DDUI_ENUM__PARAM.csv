@@ -1,0 +1,12 @@
+//FAM;Contrôle de rendu(CVDOC);<specid>;<fldid>;titre;description;family id;famille;Identifiant de la vue;Label;Type;Zone (Layout);Classe de configuration de rendu;Masque;Masque(titre);Ordre de sélection;Affichable;Menu;id création vues par défaut;Famille pour le profil;Famille pour le profil (titre);création vue;Classe d'accès au rendu
+;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+BEGIN;;;;;TST_DDUI_ENUM;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+CVID;TST_DDUI_RENDER_ENUM;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;;;;;;;;

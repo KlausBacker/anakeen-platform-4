@@ -1,0 +1,31 @@
+.dcpAttribute__content .k-numeric-wrap ,
+.dcpAttribute__content .k-numeric-wrap .k-formatted-value ,
+.dcpAttribute__content .k-numeric-wrap .k-input {
+  height: $ank-ui-input-height;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.dcpAttribute__content .k-numerictextbox {
+  padding:0;
+}
+
+.dcpAttribute__content.has-error .k-numeric-wrap {
+  border-color : $error transparent $error $error;
+}
+
+// set icon in right
+.dcpAttribute__content .k-numeric-wrap {
+  padding-left: 1.9em;
+  padding-right: 0;
+}
+
+// set icon in right
+.dcpAttribute__content .k-numeric-wrap .k-select {
+  position: absolute;
+  left: 0;
+  right: auto;
+  border-right-width: 1px;
+  border-left-width: 0;
+  height: 100%;
+}
