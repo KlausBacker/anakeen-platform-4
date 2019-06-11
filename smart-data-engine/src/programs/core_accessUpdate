@@ -1,0 +1,54 @@
+#!/bin/bash -e
+
+# Regenerate config/dbaccess.php from dbaccess.php.in and access paramters
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. >/dev/null 2>&1 && pwd )"
+
+authtype=`"$DIR"/programs/config.php --get authentMode`
+
+if [ "$authtype" = "" ]; then
+    authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
+    "$DIR"/programs/config.php --set authentMode "$authtype"
+fi
+
+
+
+core_db=`"$DIR"/programs/config.php --get dbService`
+
+if [ "$core_db" = "" ]; then
+    core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
+    "$DIR"/programs/config.php --set dbService "$core_db"
+fi
+
+
+dbaccesstpl="$DIR"/config/dbaccess.php.in
+dbaccess="$DIR"/config/dbaccess.php
+
+supervisorHtaccessIn="$DIR"/public/supervisor/.htaccess.in
+supervisorHtaccess="$DIR"/public/supervisor/.htaccess
+
+if [ ! -f "$dbaccesstpl" ]; then
+    echo "file '$dbaccesstpl' not found" >&2
+    exit 1
+fi
+
+# initialize configuration files
+
+. "$DIR/libutil.sh"
+(
+    set -e
+    cp "$dbaccesstpl" "$dbaccess" && installUtils replace -f "$dbaccess" +s +e ".@AUTHTYPE@." "$authtype" ".@CORE_DB@." "$core_db"
+    V=$(installUtils doublequote -q "$DIR")
+    if [ -f "$supervisorHtaccessIn" ]; then
+        cp "$supervisorHtaccessIn" "$supervisorHtaccess" && installUtils replace -f "$supervisorHtaccess" +em '@prefix@(.*)$' "\"$V\$1\""
+        V=$(installUtils doublequote -q "$DIR")
+    fi
+)
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error regenerating files from templates."
+    exit $RET
+fi
+
+
+export wpub=$DIR # same as `wiff --getValue=rootdirectory`
+. "$DIR"/programs/core_environment

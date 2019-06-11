@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="CoreTest">
+        <sde:route-override name="Routes:Over1">
+            <sde:priority>10</sde:priority>
+            <sde:description>Route override</sde:description>
+        </sde:route-override>
+        <sde:route-override name="Routes:Over2">
+            <sde:priority>3</sde:priority>
+            <sde:callable>Anakeen\Routes\Tests\TestRouteConfig</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/tests/routes/over2/</sde:pattern>
+            <sde:requiredAccess/>
+        </sde:route-override>
+    </sde:routes>
+</sde:config>

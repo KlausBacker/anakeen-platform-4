@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:parameters namespace="Core">
+        <sde:parameter name="WVERSION">
+            <sde:description>Version key</sde:description>
+            <sde:value/>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_LOGLEVEL">
+            <sde:description>Minimum Core Log Level !</sde:description>
+            <sde:value>NOTICE</sde:value>
+            <sde:type>enum(EMERGENCY|ALERT|CRITICAL|ERROR|WARNING|NOTICE|INFO|DEBUG)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_TMPDIR">
+            <sde:category>System</sde:category>
+            <sde:description>Temporary dir used by applications</sde:description>
+            <sde:value>./var/tmp</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_TMPDIR_MAXAGE">
+            <sde:category>System</sde:category>
+            <sde:description>Maximum time (in days) after which the temporary files and directories are deleted</sde:description>
+            <sde:value>2</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_TMPDOC_MAXAGE">
+            <sde:category>System</sde:category>
+            <sde:description>Maximum time (in days) after which the temporary documents are deleted</sde:description>
+            <sde:value>1</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_CLIENT">
+            <sde:description>client name</sde:description>
+            <sde:value>N O M du C L I E N T</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_URLINDEX">
+            <sde:description>Url to reach http server index</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="MEMORY_LIMIT">
+            <sde:category>System</sde:category>
+            <sde:description>Memory max by PHP process in Mo</sde:description>
+            <sde:value>64</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_REALM">
+            <sde:category>Authent</sde:category>
+            <sde:description>Realm name for http authenticate</sde:description>
+            <sde:value>Anakeen Platform</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_LANG">
+            <sde:description>user language</sde:description>
+            <sde:value>fr_FR</sde:value>
+            <sde:type>enum(fr_FR|en_US)</sde:type>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="CORE_LOGDURATION">
+            <sde:category>System</sde:category>
+            <sde:description>Duration for log conservation (in days)</sde:description>
+            <sde:value>30</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
+        <sde:parameter name="CORE_ROUTESSTATUSES">
+            <sde:category>System</sde:category>
+            <sde:description>List disabled routes</sde:description>
+            <sde:value>{}</sde:value>
+            <sde:type>json</sde:type>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+
+        <sde:parameter name="CORE_CONFIGDIRECTORIES">
+            <sde:category>System</sde:category>
+            <sde:description>Other routes and parameters config files</sde:description>
+            <sde:value>[]</sde:value>
+            <sde:type>json</sde:type>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+
+        <sde:parameter name="CORE_TIMERHOURLIMIT">
+            <sde:category>System</sde:category>
+            <sde:description>Hour delay where timer can be execute until date is reached. After this delay the timer is ignored.</sde:description>
+            <sde:value>10</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
+        <sde:parameter name="CORE_MAIL_LINK">
+            <sde:description>produce link for</sde:description>
+            <sde:value>optimal</sde:value>
+            <sde:type>enum(optimal|mailto)</sde:type>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="CORE_START_APP">
+            <sde:description>Default start application</sde:description>
+            <sde:value>CORE</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSIONTTL">
+            <sde:category>Authent</sde:category>
+            <sde:description>Session lifetime (in seconds) - 0 means until web browser quit</sde:description>
+
+            <sde:value>0</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_GUEST_SESSIONTTL">
+            <sde:category>Authent</sde:category>
+            <sde:description>Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)</sde:description>
+            <sde:value>3600</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>static</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSIONMAXAGE">
+            <sde:category>Authent</sde:category>
+            <sde:description>Maximum time after which an unused session is eligible for deletion</sde:description>
+            <sde:value>1 week</sde:value>
+            <sde:type>enum(1 day|1 week|1 month)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSIONGCPROBABILITY">
+            <sde:category>Authent</sde:category>
+            <sde:description>Probability of running the suppression of unused sessions (expressed as a percentage by a number between 0 and 1)</sde:description>
+            <sde:value>0.01</sde:value>
+            <sde:type>double</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_SESSION_BYTE_LENGTH">
+            <sde:category>Authent</sde:category>
+            <sde:description>Session's identifier length in bytes (at least 16 bytes)</sde:description>
+            <sde:value>16</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="AUTHENT_FAILURECOUNT">
+            <sde:category>Authent</sde:category>
+            <sde:description>Number of consecutive connection attemps failure (0 means infinite)</sde:description>
+            <sde:value>0</sde:value>
+            <sde:type>integer</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_ALLOW_GUEST">
+            <sde:description>Allow guest access</sde:description>
+            <sde:value>yes</sde:value>
+            <sde:type>enum(yes|no)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_MAILACTION">
+            <sde:description>Mail action URL</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_NOTIFY_SENDMAIL">
+            <sde:description>Show a notification when a mail is sent</sde:description>
+            <sde:value>always</sde:value>
+            <sde:type>enum(always|errors only|never)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_WSH_MAILTO">
+            <sde:description>WSH error mail recipients (comma-separated list of mail addresses)</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_WSH_MAILSUBJECT">
+            <sde:description>WSH error mail subject</sde:description>
+            <sde:value>[%h](%c) Script error: %m</sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="CORE_DISPLAY_ERROR">
+            <sde:description>Display errors in request response</sde:description>
+            <sde:value>no</sde:value>
+            <sde:type>enum(yes|no)</sde:type>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+        <sde:parameter name="STYLE">
+            <sde:description>Ui style</sde:description>
+            <sde:value>NONE</sde:value>
+            <sde:access>readonly</sde:access>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>

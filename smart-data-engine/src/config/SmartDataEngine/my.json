@@ -1,0 +1,67 @@
+{
+    "routes": {
+        "My:Debug:Routes": {
+            "priority": 0,
+            "callable": "\\My\\MyRouteConfig",
+            "methods": [
+                "any"
+            ],
+            "pattern": "/my/routes[/]",
+            "description": "My root",
+            "requiredAccess": null
+        }
+    },
+
+    "parameters": {
+        "CORE": {
+            "override": "partial",
+            "parameters": {
+                "SMTP_HOST": {
+                    "value": "",
+                    "description": "SMTP hostname",
+                    "access": "admin",
+                    "category": "SMTP",
+                    "global": true
+                },
+                "SMTP_PORT": {
+                    "value": 25,
+                    "description": "SMTP Port number",
+                    "access": "admin",
+                    "category": "SMTP",
+                    "global": true
+                },
+                "SMTP_LOGIN": {
+                    "value": "",
+                    "description": "SMTP Login",
+                    "access": "admin",
+                    "category": "SMTP",
+                    "global": true
+                },
+                "SMTP_PASSWORD": {
+                    "value": "",
+                    "description": "SMTP Password",
+                    "type" : "password",
+                    "category": "SMTP",
+                    "global": true,
+                    "access": "admin"
+                }  ,
+                "SMTP_FROM": {
+                    "value": "",
+                    "description": "SMTP From (mail address)",
+                    "type" : "text",
+                    "category": "SMTP",
+                    "global": true,
+                    "access": "admin"
+                },
+                "SMTP_SENDER": {
+                    "value": "",
+                    "description": "SMTP Sender (mail address)",
+                    "type" : "text",
+                    "category": "SMTP",
+                    "global": true,
+                    "access": "admin"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+pgservice_core=$(php -r 'require($argv[1]."/config/dbaccess.php"); echo $pgservice_core;' "$wpub" 2> /dev/null)
+if [ $? -ne 0 ]; then
+    echo "Error getting pgservice_core env variable from '$wpub/config/dbaccess.php'"
+    return 3
+fi
+if [ -z "$pgservice_core" ]; then
+    echo "Error: undefined pgservice_core !"
+    return 4
+fi
+
+
+
+export pgservice_core

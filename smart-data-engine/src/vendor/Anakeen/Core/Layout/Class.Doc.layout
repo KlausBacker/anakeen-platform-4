@@ -1,0 +1,11 @@
+<?php
+
+require_once(__DIR__.'/[docFile].php');
+
+[BLOCK CLASSALIAS]
+// alias name for the class
+
+class_alias('[SmartClass]','_[PHPclassName]');
+class_alias('[SmartClass]' , 'Doc[docid]');
+
+[ENDBLOCK CLASSALIAS]

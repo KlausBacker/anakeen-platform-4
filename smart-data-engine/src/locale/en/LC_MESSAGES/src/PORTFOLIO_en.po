@@ -1,0 +1,119 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PORTFOLIO \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 09:47+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "fld_open"
+msgstr "Open"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "fld_openfolio"
+msgstr "Open as portfolio"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_copytab"
+msgstr "Tab to copy"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_def"
+msgstr "Default portfolio"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_fr_init"
+msgstr "Portfolio display"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_idcopytab"
+msgstr "Tab id to copy"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_iddef"
+msgstr "Default portfolio id"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_idlinktab"
+msgstr "Tab id to link"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_linktab"
+msgstr "Tab to link"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle"
+msgstr "List style"
+
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle#icon"
+msgstr "Icon"
+
+msgctxt "PORTFOLIO"
+msgid "pfl_liststyle#list"
+msgstr "List"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_open"
+msgstr "Open"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo"
+msgstr "Last disposition display"
+
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#0"
+msgstr "No"
+
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#1"
+msgstr "Yes"
+
+msgctxt "PORTFOLIO"
+msgid "pfl_savedispo#elabel"
+msgstr "Display last seen documents"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab"
+msgstr "Display last seen tab"
+
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab#0"
+msgstr "No"
+
+msgctxt "PORTFOLIO"
+msgid "pfl_savetab#1"
+msgstr "Yes"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_t_copytab"
+msgstr "Tab to copy for new documents"
+
+#: App/Fdl/misc.ods.csv
+msgctxt "PORTFOLIO"
+msgid "pfl_t_linktab"
+msgstr "Tab to link (dynamic)"
+
+msgctxt "PORTFOLIO"
+msgid "title"
+msgstr "Portfolio"

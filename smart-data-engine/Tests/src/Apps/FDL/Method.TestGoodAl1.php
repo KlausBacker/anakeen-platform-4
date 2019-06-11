@@ -1,0 +1,34 @@
+<?php
+/*
+ * @author Anakeen
+ * @package FDL
+*/
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+class _TST_GOODFAMAL1 extends \Anakeen\Core\Internal\SmartElement
+
+{
+    /**
+     * @end-method-ignore
+     */
+    const CSTFAMALOne = 1;
+    const CSTFAMALTwo = 2;
+    public function constantCompute10()
+    {
+        return _TST_GOODFAMAL2::CSTFAMALTen;
+    }
+    public function constantCompute12()
+    {
+        return _TST_GOODFAMAL2::CSTFAMALTwelve;
+    }
+    /**
+     * @begin-method-ignore
+     * this part will be deleted when construct document class until end-method-ignore
+     */
+}
+/**
+ * @end-method-ignore
+ */
+?>

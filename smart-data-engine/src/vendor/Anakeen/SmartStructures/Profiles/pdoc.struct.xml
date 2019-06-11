@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+
+    <smart:structure-configuration name="PDOC" id="3" label="Profil de document">
+        <smart:icon file="se-pdoc.png"/>
+        <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PDocHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="fr_basic" type="frame" label="Basique" access="ReadWrite">
+                <smart:field-text name="ba_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite"/>
+            </smart:field-set>
+            <smart:field-set name="dpdoc_fr_dyn" type="frame" label="Dynamique" access="ReadWrite">
+                <smart:field-docid name="dpdoc_famid" label="Smart Structure utilisable pour les droits en fonction des smart fields &quot;account&quot;" access="ReadWrite"
+                                   relation="-1"/>
+                <smart:field-text name="dpdoc_fam" label="Smart Structure (titre)" access="Read" is-abstract="true"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks>
+            <smart:field-hook event="onPreRefresh" field="dpdoc_fam">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="field">dpdoc_famid</smart:field-argument>
+            </smart:field-hook>
+        </smart:hooks>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="PDIR" id="4" label="Profil de dossier">
+        <smart:extends ref="PDOC"/>
+        <smart:icon file="se-pdir.png"/>
+        <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PDirHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="PSEARCH" id="6" label="Profil de recherche">
+        <smart:extends ref="PDOC"/>
+        <smart:icon file="se-psearch.png"/>
+        <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PSearchHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+    </smart:structure-configuration>
+
+    <smart:structure-configuration name="PFAM" id="23" label="Profil de famille">
+        <smart:extends ref="PDOC"/>
+        <smart:icon file="se-pfam.png"/>
+        <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Profiles\PFamHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>SP</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:field-override field="dpdoc_fr_dyn" access="None"/>
+    </smart:structure-configuration>
+
+</smart:config>

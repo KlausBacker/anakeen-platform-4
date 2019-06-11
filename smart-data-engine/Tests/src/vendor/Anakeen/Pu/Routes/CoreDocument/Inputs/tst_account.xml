@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts date="2016-01-29T11:49:17">
+    <users>
+        <user>
+            <login>fachewie</login>
+            <lastname>Chewbacca</lastname>
+            <mail>chewie@starwars.com</mail>
+        </user>
+    </users>
+</accounts>

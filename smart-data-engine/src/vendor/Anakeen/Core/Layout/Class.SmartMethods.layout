@@ -1,0 +1,19 @@
+<?php
+
+
+
+        [IF STARMETHOD]
+// redirect class : to simulate double inherit
+class [docNameIndirect] extends [RedirectDocParent] {
+   [METHODS2]
+}
+        [ENDIF STARMETHOD]
+
+[IF METHODS]
+class [PHPmethodName] extends [ClassDocParent] {
+   [METHODS]
+
+}
+[ENDIF METHODS]
+
+

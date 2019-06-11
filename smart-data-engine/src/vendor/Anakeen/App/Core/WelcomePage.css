@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+html {
+    padding:0;
+    margin:0;
+    height: 100vh;
+    font-size:13px;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color:white;
+    color:black;
+    padding:0;
+    margin:0;
+    min-height: 100vh;
+
+    display:flex;
+    flex-direction: row;
+}
+
+.left {
+    flex-grow: 0;
+    background: #e7e7e7;
+    width: 270px;
+    min-width:270px;
+    display:flex;
+    flex-direction: column;
+}
+
+.version {
+    flex-grow: 0;
+    font-weight: bold;
+    margin: 20px 50px 0 50px;
+    font-size: 1.4rem;
+
+}
+.info {
+    margin: 50px;
+    text-align: justify;
+    line-height: 1.3rem;
+    flex-grow: 1;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+.logo img {
+    width:200px;
+    flex-grow: 0;
+}
+.right {
+    flex-grow: 1;
+    display:flex;
+    flex-direction: column;
+}
+.top {
+    flex-grow:0;
+    font-size: 1.6rem;
+    padding-left: 4rem;
+    display: flex;
+    flex-direction: row;
+}
+.welcome {
+    flex-grow:1;
+    padding-right: 1rem;
+}
+.access a {
+    background-color: #007aff;
+    border-radius: 0.2rem;
+    border: solid 1px #007aff;
+    padding: 0.3rem 2rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.devel a {
+    background-color: #92c83e;
+    border-color: #92c83e;
+}
+
+.admin a:hover {
+
+    background-color: #0066cb;
+}
+
+.admin {
+    flex-grow:0;
+    margin-right: 2rem;
+}
+
+
+.logout a:hover {
+
+    background-color: #eee;
+}
+
+.logout a {
+    background: none;
+    border: none;
+    color:#9c9c9c;
+    padding: 0.3rem 1rem;
+}
+.logout a i {
+    font-size:1.5rem;
+}
+
+
+.bottom {
+    flex-grow:1;
+    padding-top: 5rem;
+    text-align: center;
+    background-color: #f5f5f5;
+}
+
+
+.product {
+    color: #9ecd63;
+    font-style: italic;
+    font-size: 2.5rem;
+}
+.summary {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #b5b5b5;
+    font-weight: bold;
+}
+.description {
+    font-size: 1.7rem;
+    color: #8e8e8e;
+    font-weight: bold;
+}
+
+@media (max-width:768px){
+    body {
+        flex-direction: column;
+        flex-flow: column-reverse;
+    }
+    .left {
+        width:100%;
+    }
+}

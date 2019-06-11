@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hello:config xmlns:hello="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <hello:structure-configuration name="TST_003" label="Test n°3">
+        <hello:extends ref="TST_001"/>
+        <hello:icon file="N3.png"/>
+        <hello:revisable>false</hello:revisable>
+        <hello:tag name="testExtended">From Test 2</hello:tag>
+        <hello:fields>
+
+            <hello:field-set name="tst_f_n3" type="frame" label="Level 3" access="ReadWrite" insert-after="::first">
+                <hello:field-text name="tst_three" label="Three" access="Read" />
+            </hello:field-set>
+
+        </hello:fields>
+
+        <hello:field-override field="tst_account" access="None"/>
+    </hello:structure-configuration>
+</hello:config>

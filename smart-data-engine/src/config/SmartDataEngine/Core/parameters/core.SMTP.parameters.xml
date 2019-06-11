@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:parameters namespace="Core">
+    <sde:parameter name="SMTP_HOST">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP hostname</sde:description>
+      <sde:value/>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_PORT">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Port number</sde:description>
+      <sde:value>25</sde:value>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_LOGIN">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Login</sde:description>
+      <sde:value/>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_PASSWORD">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Password</sde:description>
+      <sde:value/>
+      <sde:type>password</sde:type>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_FROM">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP From (mail address)</sde:description>
+      <sde:value/>
+      <sde:type>text</sde:type>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+    <sde:parameter name="SMTP_SENDER">
+      <sde:category>SMTP</sde:category>
+      <sde:description>SMTP Sender (mail address)</sde:description>
+      <sde:value/>
+      <sde:type>text</sde:type>
+      <sde:access>admin</sde:access>
+    </sde:parameter>
+  </sde:parameters>
+</sde:config>

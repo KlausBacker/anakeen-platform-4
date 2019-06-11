@@ -1,0 +1,140 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MAIL \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25 10:58+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_cm"
+msgstr "Commentaire"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_copymode"
+msgstr "Cc"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_dest"
+msgstr "Destinataires"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_format"
+msgstr "Format"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_fr"
+msgstr "Adresses"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_fr_cm"
+msgstr "Commentaire"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_from"
+msgstr "De"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_recip"
+msgstr "Destinataire"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_recipid"
+msgstr "Id destinataire"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_savecopy"
+msgstr "Enregistrer une copie"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_sendformat"
+msgstr "Notif."
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_subject"
+msgstr "Sujet"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "title"
+msgstr "Mail"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#bcc"
+#~ msgstr "Bcc"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#to"
+#~ msgstr "À"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#html"
+#~ msgstr "HTML"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#htmlpdf"
+#~ msgstr "HTML & PDF"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#pdf"
+#~ msgstr "PDF"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#elabel"
+#~ msgstr "enregistrer une copie du message sur le serveur"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#no"
+#~ msgstr "Pas de copie"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#yes"
+#~ msgstr "Copie sur le serveur"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#[bool]plain"
+#~ msgstr "document complet"
+
+#, fuzzy
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#link"
+#~ msgstr "notification avec lien vers le document"

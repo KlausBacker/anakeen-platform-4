@@ -1,0 +1,118 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MAIL \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 09:48+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_cm"
+msgstr "Comment"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+#, fuzzy
+msgctxt "MAIL"
+msgid "mail_copymode"
+msgstr "Cc"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_dest"
+msgstr "Recipients"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_format"
+msgstr "Format"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_fr"
+msgstr "Address"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_fr_cm"
+msgstr "Comment"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_from"
+msgstr "From"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_recip"
+msgstr "Recipient"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_recipid"
+msgstr "ID recipient"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_savecopy"
+msgstr "Save a copy"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_sendformat"
+msgstr "Notif."
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "mail_subject"
+msgstr "Subject"
+
+#: src/vendor/Anakeen/SmartStructures/Mail/mail.struct.xml
+msgctxt "MAIL"
+msgid "title"
+msgstr "Mail"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#bcc"
+#~ msgstr "Bcc"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_copymode#to"
+#~ msgstr "To"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#html"
+#~ msgstr "HTML"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#htmlpdf"
+#~ msgstr "HTML & PDF"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_format#pdf"
+#~ msgstr "PDF"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#elabel"
+#~ msgstr "Save a copy on the server"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#no"
+#~ msgstr "No copy"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_savecopy#yes"
+#~ msgstr "Copy on the server"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#[bool]plain"
+#~ msgstr "Document"
+
+#~ msgctxt "MAIL"
+#~ msgid "mail_sendformat#link"
+#~ msgstr "Link to the document"

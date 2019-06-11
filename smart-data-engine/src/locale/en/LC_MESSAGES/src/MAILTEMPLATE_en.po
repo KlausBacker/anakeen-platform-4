@@ -1,0 +1,235 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MAILTEMPLATE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 09:48+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "title"
+msgstr "Mail template"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_attach"
+msgstr "Attachment"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_body"
+msgstr "Body"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_copymode"
+msgstr "-"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_dest"
+msgstr "Recipient"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_desttype"
+msgstr "Type"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_family"
+msgstr "Family"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_fr"
+msgstr "Header"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_fr_content"
+msgstr "Content"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_from"
+msgstr "From"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_fromtype"
+msgstr "type"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_recip"
+msgstr "Recipient"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_savecopy"
+msgstr "Save a copy"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_subject"
+msgstr "Subject"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_t_attach"
+msgstr "Attachments"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_t_from"
+msgstr "Sender"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_title"
+msgstr "Title"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_ulink"
+msgstr "With links"
+
+#: src/vendor/Anakeen/SmartStructures/Mailtemplate/mailtemplate.struct.xml
+msgctxt "MAILTEMPLATE"
+msgid "tmail_workflow"
+msgstr "Workflow family"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#bcc"
+#~ msgstr "Bcc"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#cc"
+#~ msgstr "Cc"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_copymode#to"
+#~ msgstr "To"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#A"
+#~ msgstr "Text attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#D"
+#~ msgstr "Relation attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#DE"
+#~ msgstr "Family relation parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#E"
+#~ msgstr "Family text parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#F"
+#~ msgstr "Fixed address"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#P"
+#~ msgstr "Global parameters"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#RD"
+#~ msgstr "Recipient document"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WA"
+#~ msgstr "Workflow attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WD"
+#~ msgstr "Workflow relation"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_desttype#WE"
+#~ msgstr "Workflow parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format"
+#~ msgstr "Format"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#html"
+#~ msgstr "HTML"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#htmlpdf"
+#~ msgstr "HTML & PDF"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_format#pdf"
+#~ msgstr "PDF"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#A"
+#~ msgstr "Text attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#D"
+#~ msgstr "Relation attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#DE"
+#~ msgstr "Family relation parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#E"
+#~ msgstr "Family text parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#F"
+#~ msgstr "Fixed address"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#P"
+#~ msgstr "Global parameters"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WA"
+#~ msgstr "Workflow attribute"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WD"
+#~ msgstr "Workflow relation"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_fromtype#WE"
+#~ msgstr "Workflow parameter"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#elabel"
+#~ msgstr "save a message copy on server when sending"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#no"
+#~ msgstr "No copy"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_savecopy#yes"
+#~ msgstr "Copy on server"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_ulink#no"
+#~ msgstr "Without link"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_ulink#yes"
+#~ msgstr "With links"
+
+#~ msgctxt "MAILTEMPLATE"
+#~ msgid "tmail_workflow#elabel"
+#~ msgstr "workflow family to recover comment or transition settings"

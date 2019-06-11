@@ -1,0 +1,4 @@
+ACCESS;test-role-bigboss;CoreTest;User;Admin
+ACCESS;test-role-boss;CoreTest;User;
+ACCESS;test-group-visitor;CoreTest;Guest;
+ACCESS;test-role-boss;CoreTest;Global;

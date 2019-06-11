@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_desttype">
+            <smart:enum name="F" label="Adresse fixe"/>
+            <smart:enum name="A" label="Smart Field texte"/>
+            <smart:enum name="D" label="Smart Field relation"/>
+            <smart:enum name="E" label="Paramètre de structure texte"/>
+            <smart:enum name="DE" label="Paramètre de structure relation"/>
+            <smart:enum name="P" label="Paramètres globaux"/>
+            <smart:enum name="WA" label="Attribut cycle"/>
+            <smart:enum name="WD" label="Relation cycle"/>
+            <smart:enum name="WE" label="Paramètre cycle"/>
+            <smart:enum name="RD" label="Smart Element destinataire"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_copymode">
+            <smart:enum name="to" label="À"/>
+            <smart:enum name="cc" label="Cc"/>
+            <smart:enum name="bcc" label="Bcc"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_ulink">
+            <smart:enum name="no" label="Sans lien"/>
+            <smart:enum name="yes" label="Avec liens"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_savecopy">
+            <smart:enum name="no" label="Pas de copie"/>
+            <smart:enum name="yes" label="Copie sur le serveur"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="MAILTEMPLATE-tmail_fromtype">
+            <smart:enum name="F" label="Adresse fixe"/>
+            <smart:enum name="A" label="Smart Field texte"/>
+            <smart:enum name="D" label="Smart Field relation"/>
+            <smart:enum name="E" label="Paramètre de structure texte"/>
+            <smart:enum name="DE" label="Paramètre de structure relation"/>
+            <smart:enum name="P" label="Paramètres globaux"/>
+            <smart:enum name="WA" label="Attribut cycle"/>
+            <smart:enum name="WD" label="Relation cycle"/>
+            <smart:enum name="WE" label="Paramètre cycle"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="MAILTEMPLATE" label="Modèle de mail">
+        <smart:icon file="se-mailtemplate.png"/>
+        <smart:class>Anakeen\SmartStructures\Mailtemplate\MailTemplateHooks</smart:class>
+        <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="tmail_fr" type="frame" label="Entête" access="ReadWrite">
+                <smart:field-text name="tmail_title" label="Titre" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-docid name="tmail_family" label="Smart Structure" access="ReadWrite" relation="-1"/>
+                <smart:field-docid name="tmail_workflow" label="Workflow Structure" access="ReadWrite" relation="-1"/>
+                <smart:field-set name="tmail_t_from" type="array" label="Émetteur" access="ReadWrite">
+                    <smart:field-enum name="tmail_fromtype" label="Type" access="ReadWrite" relation="MAILTEMPLATE-tmail_fromtype"/>
+                    <smart:field-text name="tmail_from" label="De" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="tmail_dest" type="array" label="Destinataires" access="ReadWrite">
+                    <smart:field-enum name="tmail_copymode" label="-" access="ReadWrite" relation="MAILTEMPLATE-tmail_copymode"/>
+                    <smart:field-enum name="tmail_desttype" label="Type" access="ReadWrite" relation="MAILTEMPLATE-tmail_desttype"/>
+                    <smart:field-text name="tmail_recip" label="Destinataire" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-text name="tmail_subject" label="Sujet" access="ReadWrite" is-abstract="true"/>
+            </smart:field-set>
+            <smart:field-set name="tmail_fr_content" type="frame" label="Contenu" access="ReadWrite">
+                <smart:field-enum name="tmail_savecopy" label="Enregistrer une copie" access="ReadWrite" relation="MAILTEMPLATE-tmail_savecopy"/>
+                <smart:field-enum name="tmail_ulink" label="Avec liens" access="ReadWrite" relation="MAILTEMPLATE-tmail_ulink"/>
+                <smart:field-htmltext name="tmail_body" label="Corps" access="ReadWrite">
+                    <smart:field-option name="jsonconf">{"addPlugins": ["docattr"]}</smart:field-option>
+                    <smart:field-option name="allowedcontent">all</smart:field-option>
+                </smart:field-htmltext>
+                <smart:field-set name="tmail_t_attach" type="array" label="Attachements" access="ReadWrite">
+                    <smart:field-text name="tmail_attach" label="Attachement" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks/>
+        <smart:autocompletion>
+            <smart:field-autocomplete field="tmail_workflow">
+                <smart:field-callable function="Anakeen\Core\SmartStructure\Autocomplete\SmartStructureList::getSmartStructures"/>
+                <smart:field-argument name="subset" type="string">WDOC</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="tmail_workflow"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="tmail_from">
+                <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
+                <smart:field-argument name="fromtype" type="field">TMAIL_FROMTYPE</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="field">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="field">TMAIL_FROM</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="tmail_from"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="tmail_recip">
+                <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
+                <smart:field-argument name="fromtype" type="field">TMAIL_DESTTYPE</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="field">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="field">TMAIL_RECIP</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="tmail_recip"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+            <smart:field-autocomplete field="tmail_attach">
+                <smart:field-callable function="Anakeen\SmartStructures\Mailtemplate\MailtemplateAutoComplete::getMailAddresses"/>
+                <smart:field-argument name="fromtype" type="string">G</smart:field-argument>
+                <smart:field-argument name="smartstructure" type="field">TMAIL_FAMILY</smart:field-argument>
+                <smart:field-argument name="workflow" type="field">TMAIL_WORKFLOW</smart:field-argument>
+                <smart:field-argument name="from" type="field">TMAIL_ATTACH</smart:field-argument>
+                <smart:field-returns>
+                    <smart:field-return field="tmail_attach"/>
+                </smart:field-returns>
+            </smart:field-autocomplete>
+        </smart:autocompletion>
+        <smart:defaults>
+            <smart:default field="tmail_ulink">yes</smart:default>
+        </smart:defaults>
+        <smart:accesses/>
+    </smart:structure-configuration>
+</smart:config>

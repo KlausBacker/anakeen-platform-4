@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC10">
+        <tst_api__f_title>
+            <tst_api__title>Test n°10</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2018-01-31</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC11">
+        <tst_api__f_title>
+            <tst_api__title>Test n°11</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2018-01-31</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC12">
+        <tst_api__f_title>
+            <tst_api__title>Test n°12</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2018-02-21</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC13">
+        <tst_api__f_title>
+            <tst_api__title>Test n°13</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2019-01-31</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC14_DEL">
+        <tst_api__f_title>
+            <tst_api__title>Test n°14</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2019-01-31</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC15_DEL">
+        <tst_api__f_title>
+            <tst_api__title>Test n°15</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2019-01-30</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC16_DEL">
+        <tst_api__f_title>
+            <tst_api__title>Test n°16</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2019-01-30</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+    <tst_api_alltype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="tst_api_alltype.xsd"
+                     name="TST_APIDOC17">
+        <tst_api__f_title>
+            <tst_api__title>Test n°17</tst_api__title>
+        </tst_api__f_title>
+        <tst_api__t_tab>
+            <tst_api__fr_date>
+                <tst_api__date>2020-01-30</tst_api__date>
+            </tst_api__fr_date>
+        </tst_api__t_tab>
+    </tst_api_alltype>
+</documents>

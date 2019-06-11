@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents>
+    <tst_fieldaccess xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" title="Test de contrôle" revision="0" modification-date="2018-07-03T17:25:25" name="TST_FA1">
+        <tst_fa__title>Test de contrôle</tst_fa__title>
+        <tst_fa__account name="USER_GUEST">Anonymous Guest</tst_fa__account>
+        <tst_fa__account_multiple xsi:nil="true"/>
+        <tst_fa__date>1977-10-19</tst_fa__date>
+        <tst_fa__time>13:17</tst_fa__time>
+        <tst_fa__timestamp>1977-10-19T15:56:23</tst_fa__timestamp>
+        <tst_fa__integer>101</tst_fa__integer>
+        <tst_fa__double>-3.14159</tst_fa__double>
+        <tst_fa__money>4.5</tst_fa__money>
+        <tst_fa__password>Secret Story</tst_fa__password>
+        <tst_fa__color>#34ED0F</tst_fa__color>
+        <tst_fa__htmltext>&lt;p&gt;L'ours&lt;/p&gt;</tst_fa__htmltext>
+        <tst_fa__longtext><![CDATA[De la montagne
+Et des prairies.]]>
+        </tst_fa__longtext>
+        <tst_fa__text>Texte de fin</tst_fa__text>
+    </tst_fieldaccess>
+
+</documents>

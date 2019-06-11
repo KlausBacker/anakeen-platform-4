@@ -1,0 +1,9 @@
+<?php
+
+
+require_once __DIR__ . '/../autoload.php';
+
+set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__);
+
+\Anakeen\TestUnits\CoreTests::configure();
+printf("\nError log in [%s].\n", \Anakeen\TestUnits\CoreTests::LOGFILE);

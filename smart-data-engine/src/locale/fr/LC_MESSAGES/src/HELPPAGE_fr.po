@@ -1,0 +1,114 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HELPPAGE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-22T16:02:07+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_description"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_family"
+msgstr "Famille"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_fr_family"
+msgstr "Paramètres de famille"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_fr_identification"
+msgstr "Aide"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_lang"
+msgstr "Langue du libellé"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_name"
+msgstr "Libellé"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_p_lang_key"
+msgstr "Langue"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_p_lang_name"
+msgstr "Libellé de la langue"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_sec_key"
+msgstr "Clé de la rubrique"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_sec_lang"
+msgstr "Langue"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_sec_name"
+msgstr "Nom de la rubrique"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_sec_order"
+msgstr "Ordre de la rubrique"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_sec_text"
+msgstr "Texte"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_t_family"
+msgstr "Langues"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_t_help"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "help_t_sections"
+msgstr "Rubriques"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+#, fuzzy
+msgctxt "HELPPAGE"
+msgid "title"
+msgstr "Aide en ligne"

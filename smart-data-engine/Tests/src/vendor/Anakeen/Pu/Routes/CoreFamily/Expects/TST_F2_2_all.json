@@ -1,0 +1,78 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test F2 \/ 2",
+                "affected": {
+                    "id": 0,
+                    "title": ""
+                },
+                "allocated": null,
+                "confidential": null,
+                "createdBy": {
+                    "title": "%userDocName%",
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/se-iuser.png"
+                },
+                "cvid": null,
+                "doctype": "C",
+                "dprofid": null,
+                "family": {
+                    "title": "Test F2 / 1",
+                    "name": "TST_F2_1",
+                    "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png"
+                },
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "lmodify": "N",
+                "locked": 0,
+                "name": "TST_F2_2",
+                "note": {
+                    "id": 0,
+                    "title": ""
+                },
+                "owner": "1",
+                "postitid": null,
+                "prelid": null,
+                "profid": "0",
+                "revision": 0,
+                "revisionData": {
+                    "isModified": false,
+                    "number": 0,
+                    "createdBy": {
+                        "title": "%userDocName%",
+                        "icon": "/api/v2/images/assets/sizes/24x24c/se-iuser.png"
+                    }
+                },
+                "security": {
+                    "lock": {
+                        "id": 0
+                    },
+                    "readOnly": false,
+                    "fixed": false,
+                    "profil": {
+                        "id": 0,
+                        "title": ""
+                    },
+                    "confidentiality": "public"
+                },
+                "status": "alive",
+                "tags": null,
+                "type": "family",
+                "usage": "normal",
+                "usefor": "N",
+                "version": null,
+                "viewController": {
+                    "id": 0,
+                    "title": ""
+                },
+                "wid": null,
+                "workflow": {
+                    "id": 0,
+                    "title": ""
+                }
+            },
+            "uri": "%baseURL%api\/v2\/smart-structures\/TST_F2_2.json"
+        }
+    },
+    "messages": []
+}

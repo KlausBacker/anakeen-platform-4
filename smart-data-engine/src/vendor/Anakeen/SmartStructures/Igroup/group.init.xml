@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+    <accounts:groups>
+        <accounts:group name="all">
+            <accounts:displayName>Main Group</accounts:displayName>
+            <accounts:structure name="GDEFAULT"/>
+        </accounts:group>
+
+        <accounts:group name="gadmin">
+            <accounts:displayName>Administrators</accounts:displayName>
+            <accounts:parentGroups>
+                <accounts:parentGroup ref="all"/>
+            </accounts:parentGroups>
+            <accounts:structure name="GADMIN"/>
+        </accounts:group>
+    </accounts:groups>
+
+    <accounts:users>
+        <!-- update accounts to affect logical name -->
+        <accounts:user login="admin">
+            <accounts:firstname>Anakeen Platform</accounts:firstname>
+            <accounts:lastname>Master</accounts:lastname>
+            <accounts:structure name="USER_ADMIN"/>
+        </accounts:user>
+        <accounts:user login="anonymous">
+            <accounts:firstname>Guest</accounts:firstname>
+            <accounts:lastname>Anonymous</accounts:lastname>
+            <accounts:structure name="USER_GUEST"/>
+        </accounts:user>
+    </accounts:users>
+</accounts:accounts>

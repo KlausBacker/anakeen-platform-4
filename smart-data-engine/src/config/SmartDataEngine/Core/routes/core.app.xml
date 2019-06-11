@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+  <sde:routes namespace="Core">
+    <sde:route name="Root">
+      <sde:priority>0</sde:priority>
+      <sde:callable>Anakeen\App\Core\WelcomePage</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/</sde:pattern>
+      <sde:description>Welcome Page</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="Welcome">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\App\Core\WelcomePage</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/welcome</sde:pattern>
+      <sde:description>Welcome Page</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="LayoutAsset">
+      <sde:priority>1</sde:priority>
+      <sde:callable>Anakeen\Routes\Core\LayoutAsset</sde:callable>
+      <sde:method>GET</sde:method>
+      <sde:pattern>/assets/{asset}</sde:pattern>
+      <sde:description>Get css/js asset from Layout directory</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+    <sde:route name="CleanContext">
+      <sde:callable>Anakeen\Routes\Core\CleanContext</sde:callable>
+      <sde:method>PATCH</sde:method>
+      <!-- Cannot be executed by standard url -->
+      <sde:pattern/>
+      <sde:description>Clean temporary data in database</sde:description>
+      <sde:requiredAccess/>
+    </sde:route>
+  </sde:routes>
+  <sde:accesses namespace="Core">
+    <sde:access name="Admin">
+      <sde:category>System</sde:category>
+      <sde:description>Admin Access</sde:description>
+    </sde:access>
+  </sde:accesses>
+</sde:config>

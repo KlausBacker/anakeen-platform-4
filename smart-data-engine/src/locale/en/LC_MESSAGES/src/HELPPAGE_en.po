@@ -1,0 +1,97 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HELPPAGE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 09:49+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_description"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_family"
+msgstr "Family"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_fr_family"
+msgstr "Family parameters"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_fr_identification"
+msgstr "Help"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_lang"
+msgstr "Label language"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_name"
+msgstr "Label"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_p_lang_key"
+msgstr "Language"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_p_lang_name"
+msgstr "Language label"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_key"
+msgstr "Section key"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_lang"
+msgstr "Language"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_name"
+msgstr "Section name"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_order"
+msgstr "Section order"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_sec_text"
+msgstr "Text"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_t_family"
+msgstr "Languages"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_t_help"
+msgstr "Description"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "help_t_sections"
+msgstr "Sections"
+
+#: src/vendor/Anakeen/SmartStructures/Helppage/helppage.struct.xml
+msgctxt "HELPPAGE"
+msgid "title"
+msgstr "Online help"

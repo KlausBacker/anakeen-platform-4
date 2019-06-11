@@ -1,0 +1,246 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: EXEC \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 09:50+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_action"
+msgstr "Action"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_api"
+msgstr "Api"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_application"
+msgstr "Application"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_date"
+msgstr "Execution date"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_detail"
+msgstr "Detail"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_detaillog"
+msgstr "Log"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_elapsed"
+msgstr "Execution duration"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_batch"
+msgstr "Treatment"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_cr"
+msgstr "Report"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_date"
+msgstr "Dates"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_ident"
+msgstr "Identification"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_fr_param"
+msgstr "Parameter"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_handnextdate"
+msgstr "Execute on"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_idadmin"
+msgstr "Administrator"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_idref"
+msgstr "From"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_iduser"
+msgstr "Performer"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_idvar"
+msgstr "Variable"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_nextdate"
+msgstr "Next execution date"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_periodday"
+msgstr "Period in day"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_periodhour"
+msgstr "Period in hours"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_periodmin"
+msgstr "Period in minutes"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_prevdate"
+msgstr "Previous execution date"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_state"
+msgstr "Status"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_status"
+msgstr "Execution"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_statusdate"
+msgstr "Execution since"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_t_parameters"
+msgstr "Parameters"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_title"
+msgstr "Title"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "exec_valuevar"
+msgstr "Value"
+
+#: vendor/Anakeen/SmartStructures/Exec/exec.struct.xml
+msgctxt "EXEC"
+msgid "title"
+msgstr "Process"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_bgexec"
+#~ msgstr "Execute now"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_idadmin#elabel"
+#~ msgstr "Will receive execution report copy in mail"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodday#elabel"
+#~ msgstr "Perform every n day"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber"
+#~ msgstr "day of the week"
+
+#, fuzzy
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber# "
+#~ msgstr "---"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#1"
+#~ msgstr "Monday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#2"
+#~ msgstr "Tuesday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#3"
+#~ msgstr "Wednesday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#4"
+#~ msgstr "Thursday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#5"
+#~ msgstr "Friday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#6"
+#~ msgstr "Saturday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_perioddaynumber#7"
+#~ msgstr "Sunday"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodenddate"
+#~ msgstr "Until"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodhour#elabel"
+#~ msgstr "perform every n hours"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_periodmin#elabel"
+#~ msgstr "perform every n minutes"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_prevdate#ltitle"
+#~ msgstr "See previous execution"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_ref"
+#~ msgstr "Referrer (title)"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_reset"
+#~ msgstr "Abandon current execution"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#none"
+#~ msgstr "No"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#progressing"
+#~ msgstr "Ongoing"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_status#waiting"
+#~ msgstr "Waiting"
+
+#~ msgctxt "EXEC"
+#~ msgid "exec_user"
+#~ msgstr "Performer (title)"

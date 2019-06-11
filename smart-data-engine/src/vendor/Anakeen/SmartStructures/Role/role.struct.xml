@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="ROLE" id="130" label="Rôle">
+        <smart:icon file="se-role.png"/>
+        <smart:class>Anakeen\SmartStructures\Role\RoleHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="role_fr_ident" type="frame" label="Identification" access="ReadWrite">
+                <smart:field-text name="role_login" label="Référence" access="ReadWrite"/>
+                <smart:field-text name="role_name" label="Libellé" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-int name="us_whatid" label="Identifiant système" access="Read"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="role_login">
+                <smart:field-callable function="::isUniqueLogin"/>
+                <smart:field-argument type="field">role_login</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
+        <smart:autocompletion/>
+        <smart:defaults/>
+        <smart:accesses/>
+    </smart:structure-configuration>
+</smart:config>

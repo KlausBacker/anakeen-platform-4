@@ -1,0 +1,150 @@
+<html>
+  <head>
+
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <title>[TEXT:Import Result] </title>
+      [CSS:REF]
+   <style type="text/css">
+TR.updated TD{
+   background-color:#efef53;
+}
+TR.ignored TD{
+   background-color:#ef5653;
+}
+TR.added TD{
+   background-color:#adf4b2;
+}
+TR.warning TD{
+   background-color:#FBC95E;
+}
+
+LI.no {
+        color:#333
+        }
+TD, TH {
+       font-size:95%;
+       font-family:sans-serif;
+       border-top: solid grey 1px;
+       empty-cells:show;
+       }
+#importresults_filter {
+  position: absolute;
+  top: -2.5em;
+       right: 0em;
+       margin-right: 2px;
+}
+
+#importresults_filter input {
+       padding:0.3em;
+       border: 1px solid grey;
+       width: 13em;
+       }
+ h4.warning  {
+       padding:0.5em;
+       margin:0.5em;
+       }
+h4.error  {
+       padding:0.5em;
+       margin:0.5em;
+       margin-right:15em;
+}
+
+
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+
+    [JS:CODE]
+
+    $(document).ready(function () {
+       var editw=window.opener;
+          if (! editw) {
+              if (window.parent) {
+                  var editf=editw=window.parent.document.getElementById("editw");
+                  if (editf && editf.contentWindow) {
+                      editw=editf.contentWindow;
+                  }
+              }
+          }
+       if (editw) {
+            editw.$("#bgimport").button("enable").val("[TEXT:proceed background import]");
+
+            b=editw.document.getElementById('fgimport');
+            if (b) {
+              editw.updateVisibilities(( [nbdoc] >= [FDL_MAX_FGEXPORTDOC] ), [FDL_MAX_FGEXPORTDOC]);
+            }
+        }
+       var ybody=$(window).height() - $('#importresults tbody').offset().top - 20;
+
+       $('#importresults').dataTable({
+           "sDom":'f<"top"t<"bottom"><"clear">',
+           bJQueryUI:true,
+           bSort:false,
+           bAutoWidth:false,
+           iDisplayLength:5000,
+           "oLanguage": {
+              "sSearch": ""
+            }
+       });
+
+       window.setTimeout(function() {
+                $("#importresults_filter input").attr("placeholder","[TEXT:Filter import message]");
+        },500);
+
+     });
+   </script>
+
+
+
+ </head>
+
+<body >
+[IF analyze]
+    <h1>[TEXT:Result Analyze Documents] "[basename]"</h1>
+    [IFNOT haserror]<H3>[processMessage].</H3>[ENDIF haserror]
+
+    [IF haswarning]
+    <h4 class="warning" style="background-color: #FBC95E">[TEXT:Some element couldn't be fully analyze, warnings can become errors or be corrected when importing]</h4>
+    [ENDIF haswarning]
+    [IF haserror]
+    <h4 class="error"  style="background-color: [CORE_ERRORCOLOR]">[TEXT:Analyze error occured, check the details for more information]</h4>
+    [ENDIF haserror]
+[ENDIF analyze]
+
+[IFNOT analyze]
+    <h1>[TEXT:Result Import Documents] "[basename]"</h1>
+    [IFNOT haserror]<H3>[processMessage].</H3>[ENDIF haserror]
+
+    [IF haswarning]
+    <h4 class="warning" style="background-color: #FBC95E">[TEXT:Import Warning are occured]</h4>
+    [ENDIF haswarning]
+    [IF haserror]
+    <h4 class="error" style="background-color: [CORE_ERRORCOLOR]">[TEXT:Import error occured, check the details for more information]</h4>
+    [ENDIF haserror]
+[ENDIF analyze]
+
+
+
+<table id="importresults" width="100%" >
+
+<thead><tr><th>[TEXT:line]</th>
+<th>[TEXT:doctitle]</th>
+<th>[TEXT:foldername]</th>
+<th>[TEXT:id]</th>
+<th>[TEXT:familyname]</th>
+<th>[TEXT:action]</th>
+<th>[TEXT:message]</th>
+<th>[TEXT:specmessage]</th>
+<th>[TEXT:changes]</th>
+<th>[TEXT:error]</th></tr></thead>
+<tbody>
+[BLOCK ADDEDDOC]
+<tr class="[action]"><td>[order]</td><td>[title]</td><td>[foldername]</td><td><a target="_blank" href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[id]">[id]</a></td><td><a target="_blank" href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[familyid]">[familyname]</a></td><td>[taction]</td><td>[msg]</td><td>[specmsg]</td><td>[svalues]</td><td>[err]</td></tr>
+[ENDBLOCK ADDEDDOC]
+</tbody></table>
+
+
+</body>
+</html>

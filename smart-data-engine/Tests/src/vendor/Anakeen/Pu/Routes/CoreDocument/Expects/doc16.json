@@ -1,0 +1,34 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Test n\u00b016",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "name": "TST_APIDOC16_DEL",
+                "revision": 0,
+                "status": "alive"
+            },
+            "attributes": {
+                "tst_api__title": {
+                    "value": "Test n\u00b016",
+                    "displayValue": "Test n\u00b016"
+                },
+                "tst_api__account": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_api__docid": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_api__docid_multiple": [],
+                "tst_api__date": {
+                    "value": "2019-01-30",
+                    "displayValue": "30\/01\/2019"
+                }
+            }
+        }
+    },
+    "messages": []
+}

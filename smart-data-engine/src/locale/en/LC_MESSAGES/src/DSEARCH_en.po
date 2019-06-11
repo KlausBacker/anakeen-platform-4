@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: DSEARCH \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-26 09:50+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_attrids"
+msgstr "Attributes"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_filter"
+msgstr "Filter"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_fr_detail"
+msgstr "Conditions"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_funcs"
+msgstr "Functions"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_keys"
+msgstr "Keywords"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_leftp"
+msgstr "Left parenthesis"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_ol"
+msgstr "Condition"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_ols"
+msgstr "Operator"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_rightp"
+msgstr "Right parenthesis"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_t_detail"
+msgstr "Conditions"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_t_filters"
+msgstr "Filters"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "se_typefilter"
+msgstr "Type"
+
+#: src/vendor/Anakeen/SmartStructures/Dsearch/dsearch.struct.xml
+msgctxt "DSEARCH"
+msgid "title"
+msgstr "Detailed search"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_leftp#no"
+#~ msgstr " "
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_leftp#yes"
+#~ msgstr "("
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#and"
+#~ msgstr "satisfy all conditions"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#or"
+#~ msgstr "satisfy at least one condition"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ol#perso"
+#~ msgstr "personalized"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ols#and"
+#~ msgstr "and"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_ols#or"
+#~ msgstr "or"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_rightp#no"
+#~ msgstr " "
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_rightp#yes"
+#~ msgstr ")"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_typefilter#generated"
+#~ msgstr "Generated"
+
+#~ msgctxt "DSEARCH"
+#~ msgid "se_typefilter#specified"
+#~ msgstr "Specified"

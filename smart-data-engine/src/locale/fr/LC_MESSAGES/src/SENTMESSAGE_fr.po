@@ -1,0 +1,139 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SENTMESSAGE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25 11:34+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_attach"
+msgstr "Fichier"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_date"
+msgstr "Date"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_editcontrol"
+msgstr "Force la lecture seule"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_bodies"
+msgstr "Corps de messages"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_ident"
+msgstr "Identification"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_fr_parameters"
+msgstr "Paramètres"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_from"
+msgstr "De"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_htmlbody"
+msgstr "Texte formaté"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_recipient"
+msgstr "Destinataire"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_refid"
+msgstr "Document référence"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_sendtype"
+msgstr "Type"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_size"
+msgstr "Taille"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_subject"
+msgstr "Sujet"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_t_attach"
+msgstr "Attachements"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_t_recipient"
+msgstr "Destinataires"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "emsg_textbody"
+msgstr "Texte"
+
+#: src/vendor/Anakeen/SmartStructures/Sentmessage/sentmessage.struct.xml
+#, fuzzy
+msgctxt "SENTMESSAGE"
+msgid "title"
+msgstr "Message envoyé"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol#freeedit"
+#~ msgstr "Droit édit libre"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_editcontrol#lockedit"
+#~ msgstr "Droit édit verrouillé"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#bcc"
+#~ msgstr "Copie cachée"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#cc"
+#~ msgstr "Copie"
+
+#, fuzzy
+#~ msgctxt "SENTMESSAGE"
+#~ msgid "emsg_sendtype#to"
+#~ msgstr "Pour"

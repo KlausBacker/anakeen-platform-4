@@ -1,0 +1,26 @@
+//;héritage;titre;id;class;name;;;;;;;;;;
+BEGIN;;Test Revise;;;TST_REVISE;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+ATTR;TST_FRAME;;Cadre Un;N;N;frame;10;W;N;;;;;;
+ATTR;TST_TITLE;TST_FRAME;Titre;Y;N;text;20;W;Y;;;;;;
+ATTR;TST_REV;TST_FRAME;Révision;Y;N;int;30;W;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+//;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+BEGIN;TST_REVISE;Test Revise;;;TST_REVISEMAX;;;;;;;;;;
+;;;;;;;;;;;;;;;
+MAXREV;5;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+END;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;
+ORDER;TST_REVISE;;;TST_TITLE;;;;;;;;;;;
+DOC;TST_REVISE;TST_REVISE1;;Cornichon;;;;;;;;;;;
+ORDER;TST_REVISEMAX;;;TST_TITLE;;;;;;;;;;;
+DOC;TST_REVISEMAX;TST_REVISE2;;Tomate;;;;;;;;;;;

@@ -1,0 +1,49 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Fondation de l\u2019organisation humanitaire M\u00e9decins sans fronti\u00e8res Plus",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "name": "TST_F22D2",
+                "revision": 0,
+                "status": "alive"
+            },
+            "attributes": {
+                "tst_f2_title": {
+                    "value": "Fondation de l\u2019organisation humanitaire M\u00e9decins sans fronti\u00e8res",
+                    "displayValue": "Fondation de l\u2019organisation humanitaire M\u00e9decins sans fronti\u00e8res"
+                },
+                "tst_f2_subtitle": {
+                    "value": "Plus",
+                    "displayValue": "Plus"
+                },
+                "tst_f2_date": {
+                    "value": "1971-12-22",
+                    "displayValue": "22\/12\/1971"
+                },
+                "tst_f2_time": {
+                    "value": "11:30:05",
+                    "displayValue": "11:30:05"
+                },
+                "tst_f2_timestamp": {
+                    "value": "2000-01-01T12:30:00",
+                    "displayValue": "01\/01\/2000 12:30"
+                },
+                "tst_f2_integer": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_f2_double": {
+                    "value": null,
+                    "displayValue": null
+                },
+                "tst_f2_money": {
+                    "value": null,
+                    "displayValue": null
+                }
+            }
+        }
+    },
+    "messages": []
+}

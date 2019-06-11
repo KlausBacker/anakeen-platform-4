@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="TASK-task_status">
+            <smart:enum name="active" label="Active"/>
+            <smart:enum name="disabled" label="Disabled"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="TASK-task_result-status">
+            <smart:enum name="success" label="Succeed"/>
+            <smart:enum name="inprogress" label="Processing"/>
+            <smart:enum name="fail" label="Failed"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="TASK-task_method">
+            <smart:enum name="GET" label="GET"/>
+            <smart:enum name="POST" label="POST"/>
+            <smart:enum name="PUT" label="PUT"/>
+            <smart:enum name="DELETE" label="DELETE"/>
+            <smart:enum name="PATCH" label="PATCH"/>
+        </smart:enum-configuration>
+
+    </smart:enumerates>
+    <smart:structure-configuration name="TASK" label="Scheduled Task" >
+        <smart:icon file="se-task.png"/>
+        <smart:class>Anakeen\SmartStructures\Task\TaskBehavior</smart:class>
+        <smart:revisable max="100">default</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+
+            <smart:field-set name="task_fr_ident" type="frame" label="Identification" access="ReadWrite">
+                <smart:field-text name="task_title" label="Title" access="ReadWrite" is-title="true" needed="true"/>
+                <smart:field-account name="task_iduser" label="Executed by" access="ReadWrite" match="user" needed="true"/>
+                <smart:field-enum name="task_status" label="Status" access="ReadWrite" relation="TASK-task_status" needed="true"/>
+                <smart:field-longtext name="task_desc" label="Description" access="ReadWrite"/>
+            </smart:field-set>
+
+            <smart:field-set name="task_fr_route" type="frame" label="Route to execute" access="ReadWrite">
+                <smart:field-text name="task_route_ns" label="Namespace" access="ReadWrite" needed="true"/>
+                <smart:field-text name="task_route_name" label="Name" access="ReadWrite" needed="true"/>
+                <smart:field-enum name="task_route_method" label="Method" relation="TASK-task_method" access="ReadWrite" needed="true"/>
+                <smart:field-set name="task_t_args" type="array" label="Arguments" access="ReadWrite">
+                    <smart:field-text name="task_arg_name" label="Nom" access="ReadWrite"/>
+                    <smart:field-text name="task_arg_value" label="Valeur" access="ReadWrite"/>
+                </smart:field-set>
+                <smart:field-set name="task_t_queryfield" type="array" label="Query fields" access="ReadWrite">
+                    <smart:field-text name="task_queryfield_name" label="Nom" access="ReadWrite"/>
+                    <smart:field-text name="task_queryfield_value" label="Valeur" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+
+            <smart:field-set name="task_fr_schedule" type="frame" label="Schedule" access="ReadWrite">
+                <smart:field-text name="task_crontab" label="Crontab periodicity" access="ReadWrite"/>
+                <smart:field-text name="task_humancrontab" label="Periodicity (comprehensive)" access="Read"/>
+                <smart:field-timestamp name="task_nextdate" label="Next execution date" access="Read" is-abstract="true"/>
+            </smart:field-set>
+
+            <smart:field-set name="task_fr_result" type="frame" label="Task results" access="Read">
+                <smart:field-timestamp name="task_exec_date" label="Execution date" access="Read"/>
+                <smart:field-time name="task_exec_duration" label="Execution duration" access="Read"/>
+                <smart:field-enum name="task_exec_state_result" relation="TASK-task_result-status" label="Execution status" access="Read"/>
+                <smart:field-longtext name="task_exec_output" label="Output" access="Read"/>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="task_crontab">
+                <smart:field-callable function="::checkCrontab"/>
+                <smart:field-argument type="field">task_crontab</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+        </smart:hooks>
+
+        <smart:defaults >
+            <smart:default field="task_status">active</smart:default>
+            <smart:default field="task_iduser" reset="true">
+                <smart:field-callable function="Anakeen\SmartStructures\Task\CrontabManager::getCurrentSmartUserId"/>
+            </smart:default>
+        </smart:defaults>
+
+        <smart:accesses/>
+    </smart:structure-configuration>
+</smart:config>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="dir-fld_subfam">
+            <smart:enum name="yes" label="inclure les sous familles"/>
+            <smart:enum name="no" label="ne pas inclure les sous familles"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="GROUP-grp_hasmail">
+            <smart:enum name="yes" label="adresses regroupées"/>
+            <smart:enum name="no" label="sans adresse mail"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-gui_isrss">
+            <smart:enum name="no" label="non"/>
+            <smart:enum name="yes" label="oui"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="GROUP-grp_isrefreshed">
+            <smart:enum name="1" label="oui"/>
+            <smart:enum name="0" label="non"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-fld_allbut">
+            <smart:enum name="0" label="tout sauf"/>
+            <smart:enum name="1" label="seulement"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="GROUP" id="129" label="Groupe de personnes">
+        <smart:extends ref="DIR"/>
+        <smart:icon file="se-group.png"/>
+        <smart:class>Anakeen\SmartStructures\Group\GroupHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="fr_basic" type="frame" label="basique" access="None">
+                <smart:field-text name="ba_title" label="titre" access="None"/>
+            </smart:field-set>
+            <smart:field-set name="fld_fr_rest" type="frame" label="Restrictions"  access="None"/>
+            <smart:field-set name="fld_fr_prof" type="frame" label="Profils par défaut" access="None"/>
+            <smart:field-set name="grp_fr_ident" type="frame" label="Identification" access="Read">
+                <smart:field-text name="grp_name" label="nom" access="Read" needed="true" is-title="true"/>
+                <smart:field-text name="grp_mail" label="mail" access="Read" link="mailto:%GRP_MAIL%" is-abstract="true"/>
+                <smart:field-enum name="grp_hasmail" label="sans adresse mail de groupe" access="None" is-abstract="true" relation="GROUP-grp_hasmail"/>
+            </smart:field-set>
+            <smart:field-set name="grp_fr" type="frame" label="Groupes" access="None">
+                <smart:field-account name="grp_idgroup" label="sous groupes" access="Read" multiple="true">
+                    <smart:field-option name="showempty">Aucun sous groupe</smart:field-option>
+                </smart:field-account>
+                <smart:field-account name="grp_idpgroup" label="groupes parents" access="Read" multiple="true">
+                    <smart:field-option name="showempty">Aucun groupe parent</smart:field-option>
+                </smart:field-account>
+                <smart:field-enum name="grp_isrefreshed" label="est rafraîchi"  access="Read" relation="GROUP-grp_isrefreshed">
+                    <smart:field-option name="system">yes</smart:field-option>
+                    <smart:field-option name="bmenu">no</smart:field-option>
+                </smart:field-enum>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:defaults>
+            <smart:default field="fld_allbut">1</smart:default>
+            <smart:default field="fld_tfam">[{"fld_famids":129,"fld_fam":"groupe"},{"fld_famids":128,"fld_fam":"utilisateur"}]</smart:default>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+</smart:config>

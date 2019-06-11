@@ -1,0 +1,37 @@
+{
+    "success": true,
+    "data": {
+        "document": {
+            "properties": {
+                "title": "Exposition universelle",
+                "icon": "%baseURL%api\/v2\/images\/assets\/sizes\/24x24c\/doc.png",
+                "name": "TST_F21D0",
+                "revision": 0,
+                "status": "alive"
+            },
+            "attributes": {
+                "tst_f2_title": {
+                    "value": "Exposition universelle",
+                    "displayValue": "Exposition universelle"
+                },
+                "tst_f2_date": {
+                    "value": "1889-05-06",
+                    "displayValue": "06\/05\/1889"
+                },
+                "tst_f2_time": {
+                    "value": "02:00:00",
+                    "displayValue": "02:00:00"
+                },
+                "tst_f2_integer": {
+                    "value": 3,
+                    "displayValue": "3"
+                },
+                "tst_f2_double": {
+                    "value": 3.56,
+                    "displayValue": "3.56"
+                }
+            }
+        }
+    },
+    "messages": []
+}

@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
+"PO-Revision-Date: 2013-03-12 18:06+0100\n"
+"Last-Translator: Anakeen <dev@anakeen.com>\n"
+"Language-Team: French <distrib@anakeen.com>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
+msgctxt "ROLE"
+msgid "role_fr_ident"
+msgstr "Identification"
+
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
+msgctxt "ROLE"
+msgid "role_login"
+msgstr "Référence"
+
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
+msgctxt "ROLE"
+msgid "role_name"
+msgstr "Libellé"
+
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
+msgctxt "ROLE"
+msgid "title"
+msgstr "Rôle"
+
+#: src/vendor/Anakeen/SmartStructures/Role/role.struct.xml
+msgctxt "ROLE"
+msgid "us_whatid"
+msgstr "Identifiant système"

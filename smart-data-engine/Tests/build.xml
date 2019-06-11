@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<module:config xmlns:module="https://platform.anakeen.com/4/schemas/module/1.0">
+    <module:source path="src" />
+    <module:po-config>
+        <module:po-struct source="src/**/*struct.xml"/>
+        <module:po-enum source="src/**/*struct.xml"/>
+        <module:po-php source="src/**/*.php" target="smart-data-engine-test"/>
+    </module:po-config>
+    <module:stub-config>
+        <module:stub-struct source="src/vendor/Anakeen/Pu/Config/**/*.struct.xml"/>
+        <module:stub-struct source="src/vendor/Anakeen/TestUnits/Data/**/*.xml"/>
+    </module:stub-config>
+    <module:check-config>
+        <module:config-xml source="src/**/*.xml"/>
+    </module:check-config>
+</module:config>

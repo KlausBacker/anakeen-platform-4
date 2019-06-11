@@ -1,0 +1,265 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
+"PO-Revision-Date: 2016-11-09 11:02+0100\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "title"
+msgstr "User Account"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_accexpiredate"
+msgstr "Account expiration date"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_daydelay"
+msgstr "Expiration deadline in day"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_defaultgroup"
+msgstr "Default group"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_expires"
+msgstr "Expiration date epoch"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_expiresd"
+msgstr "Expiration date"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_expirest"
+msgstr "Expiration hour"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_extmail"
+msgstr "Main mail"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fname"
+msgstr "First name"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_default"
+msgstr "Parameter"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_ident"
+msgstr "Civil status"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_intranet"
+msgstr "Intranet login"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_security"
+msgstr "Security"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_substitute"
+msgstr "Substitute"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#, fuzzy
+msgctxt "IUSER"
+msgid "us_fr_sysident"
+msgstr "Civil status"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_fr_userchange"
+msgstr "Password"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_group"
+msgstr "Group (title)"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_groups"
+msgstr "User groups"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_idgroup"
+msgstr "Group"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_incumbents"
+msgstr "Holders"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_lname"
+msgstr "Name"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_login"
+msgstr "Login"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_loginfailure"
+msgstr "Login failures"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_mail"
+msgstr "Mail"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_meid"
+msgstr "User id"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_passdelay"
+msgstr "Deadline epoch"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_rolegorigin"
+msgstr "Group"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_roles"
+msgstr "Role"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_rolesorigin"
+msgstr "Origin"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_status"
+msgstr "Account status"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_substitute"
+msgstr "Substitute"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_t_roles"
+msgstr "Roles"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+#, fuzzy
+msgctxt "IUSER"
+msgid "us_tab_sysinfo"
+msgstr "System"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_tab_system"
+msgstr "System"
+
+#: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
+msgctxt "IUSER"
+msgid "us_whatid"
+msgstr "Identifier"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_activateaccount"
+#~ msgstr "Activate account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_activateaccount#submenu"
+#~ msgstr "Manage account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_daydelay#elabel"
+#~ msgstr "enter -1 to cancel expiration"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_desactivateaccount"
+#~ msgstr "Deactivate account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_desactivateaccount#submenu"
+#~ msgstr "Manage account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_fr_privacy"
+#~ msgstr "Privacy"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_groups#showempty"
+#~ msgstr "No group"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_inituser"
+#~ msgstr "Refresh users"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_ldapdn"
+#~ msgstr "Login LDAP"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_login#elabel"
+#~ msgstr "Enter '-' if you don't want a login"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_menuresetlogfails"
+#~ msgstr "Reset login failures"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_menuresetlogfails#submenu"
+#~ msgstr "Manage account"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_passwd1"
+#~ msgstr "New password"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_passwd2"
+#~ msgstr "Confirm password"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_rolesorigin#group"
+#~ msgstr "Obtained by"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_rolesorigin#internal"
+#~ msgstr "Affectation direct"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_status#A"
+#~ msgstr "Activated"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_status#D"
+#~ msgstr "Deactivated"
+
+#~ msgctxt "IUSER"
+#~ msgid "us_t_roles#showempty"
+#~ msgstr "No role"

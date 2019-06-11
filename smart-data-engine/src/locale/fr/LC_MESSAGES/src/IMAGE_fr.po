@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: IMAGE \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25 10:44+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#, fuzzy
+msgctxt "IMAGE"
+msgid "img_file"
+msgstr "Image"
+
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#, fuzzy
+msgctxt "IMAGE"
+msgid "img_frfile"
+msgstr "Image"
+
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#, fuzzy
+msgctxt "IMAGE"
+msgid "img_title"
+msgstr "Titre"
+
+#: src/vendor/Anakeen/SmartStructures/Image/image.struct.xml
+#, fuzzy
+msgctxt "IMAGE"
+msgid "title"
+msgstr "Image"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg"
+#~ msgstr "Catégorie"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg#1"
+#~ msgstr "Photo"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_catg#2"
+#~ msgstr "Dessin"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_description"
+#~ msgstr "Description"
+
+#, fuzzy
+#~ msgctxt "IMAGE"
+#~ msgid "img_fr_char"
+#~ msgstr "Caractéristiques"

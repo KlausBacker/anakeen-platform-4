@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="dir-fld_allbut">
+            <smart:enum name="0" label="tout sauf"/>
+            <smart:enum name="1" label="seulement"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-fld_subfam">
+            <smart:enum name="yes" label="inclure les sous familles"/>
+            <smart:enum name="no" label="ne pas inclure les sous familles"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="dir-gui_isrss">
+            <smart:enum name="no" label="non"/>
+            <smart:enum name="yes" label="oui"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="DIR" id="2" label="Dossier">
+        <smart:extends ref="BASE"/>
+        <smart:icon file="se-dir.png"/>
+        <smart:class disable-inheritance-condition="true">Anakeen\SmartStructures\Dir\DirHooks</smart:class>
+        <smart:usefor>F</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+
+        <smart:fields>
+            <smart:field-set name="fr_basic" extended="true">
+                <smart:field-longtext name="ba_desc" label="Description" access="ReadWrite" is-abstract="true"/>
+                <smart:field-color name="gui_color" label="Couleur intercalaire" access="ReadWrite"/>
+            </smart:field-set>
+            <smart:field-set name="fld_fr_rest" type="frame" label="Restrictions" access="Read">
+                <smart:field-enum name="fld_allbut" label="Tout ou rien" access="ReadWrite" relation="dir-fld_allbut"/>
+                <smart:field-set name="fld_tfam" type="array" label="Smart structure autorisées" access="ReadWrite">
+                    <smart:field-text name="fld_fam" label="Smart structure (titre)" access="Read"/>
+                    <smart:field-docid name="fld_famids" label="Smart structure" access="ReadWrite" relation="-1"/>
+                    <smart:field-enum name="fld_subfam" label="Restriction sous Smart structure" access="ReadWrite" relation="dir-fld_subfam"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="fld_fr_prof" type="frame" label="Profils par défaut" access="Read">
+                <smart:field-docid name="fld_pdocid" label="Profil par défaut de document" access="ReadWrite" relation="PDOC"/>
+                <smart:field-docid name="fld_pdirid" label="Profil par défaut de dossier" access="ReadWrite" relation="PDIR"/>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:hooks>
+            <smart:field-hook event="onPreRefresh" field="fld_fam">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="field">fld_famids</smart:field-argument>
+            </smart:field-hook>
+        </smart:hooks>
+
+    </smart:structure-configuration>
+
+</smart:config>

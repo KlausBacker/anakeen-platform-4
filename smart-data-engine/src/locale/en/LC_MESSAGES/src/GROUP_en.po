@@ -1,0 +1,113 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Toolbox\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-03-20T11:54:53+01:00\n"
+"PO-Revision-Date: 2016-07-26 09:50+0200\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"Language: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "ba_title"
+msgstr "Title"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "fld_fr_prof"
+msgstr "Default profile"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "fld_fr_rest"
+msgstr "Restrictions"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "fr_basic"
+msgstr "Basic"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_fr"
+msgstr "Groups"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_fr_ident"
+msgstr "Identification"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_hasmail"
+msgstr "Without group adress mail"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_idgroup"
+msgstr "Subgroups"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_idpgroup"
+msgstr "Parent groups"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_isrefreshed"
+msgstr "Is refreshed"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_mail"
+msgstr "Mail"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "grp_name"
+msgstr "Name"
+
+#: src/vendor/Anakeen/SmartStructures/Group/group.struct.xml
+msgctxt "GROUP"
+msgid "title"
+msgstr "Group of people"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_adduser"
+#~ msgstr "Members' management"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_hasmail#[bool]yes"
+#~ msgstr "Mail regrouped"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_hasmail#elabel"
+#~ msgstr "Skip mail calculation for group with a lot of members"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_hasmail#no"
+#~ msgstr "Without mail adress"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_idgroup#showempty"
+#~ msgstr "No subgroups"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_idpgroup#showempty"
+#~ msgstr "No parent groups"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_isrefreshed#0"
+#~ msgstr "no"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_isrefreshed#1"
+#~ msgstr "yes"
+
+#~ msgctxt "GROUP"
+#~ msgid "grp_refresh"
+#~ msgstr "Refresh"

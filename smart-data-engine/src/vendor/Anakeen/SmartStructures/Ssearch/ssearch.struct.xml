@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="SSEARCH" id="38" label="Recherche spécialisée">
+        <smart:extends ref="SEARCH"/>
+        <smart:icon file="se-ssearch.png"/>
+        <smart:class>Anakeen\SmartStructures\Ssearch\SSearchHooks</smart:class>
+        <smart:usefor>S</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <smart:fields>
+            <smart:field-set name="se_fr_function" type="frame" label="Fonction" access="ReadWrite">
+                <smart:field-text name="se_phpfile" label="Fichier PHP" access="ReadWrite"/>
+                <smart:field-text name="se_phpfunc" label="Fonction PHP" access="ReadWrite"/>
+                <smart:field-text name="se_phparg" label="Argument PHP" access="ReadWrite"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:parameters/>
+        <smart:field-override field="se_crit" access="None"/>
+        <smart:hooks/>
+        <smart:autocompletion/>
+        <smart:defaults>
+            <smart:default field="se_latest">yes</smart:default>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+</smart:config>

@@ -1,0 +1,47 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MSEARCH \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2016-07-25T09:24:34+02:00\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#, fuzzy
+msgctxt "MSEARCH"
+msgid "se_crit"
+msgstr "Critère"
+
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#, fuzzy
+msgctxt "MSEARCH"
+msgid "se_fr_searches"
+msgstr "Les recherches"
+
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#, fuzzy
+msgctxt "MSEARCH"
+msgid "seg_idcond"
+msgstr "Recherche"
+
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#, fuzzy
+msgctxt "MSEARCH"
+msgid "seg_t_cond"
+msgstr "Ensemble de recherche"
+
+#: src/vendor/Anakeen/SmartStructures/Msearch/msearch.struct.xml
+#, fuzzy
+msgctxt "MSEARCH"
+msgid "title"
+msgstr "Recherche groupée"
+
+#, fuzzy
+#~ msgctxt "MSEARCH"
+#~ msgid "seg_cond"
+#~ msgstr "Recherche (titre)"

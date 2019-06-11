@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="IUSER-us_rolesorigin">
+            <smart:enum name="internal" label="Affectation directe"/>
+            <smart:enum name="group" label="Obtenu par"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="IUSER-us_status">
+            <smart:enum name="A" label="Activé"/>
+            <smart:enum name="D" label="Désactivé"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+    <smart:structure-configuration name="IUSER" id="128" label="Utilisateur">
+        <smart:icon file="se-iuser.png"/>
+        <smart:class>Anakeen\SmartStructures\Iuser\IUserHooks</smart:class>
+        <smart:revisable>false</smart:revisable>
+        <smart:usefor>N</smart:usefor>
+        <smart:tag name="vendor">Anakeen</smart:tag>
+        <!--<smart:tag>MAILRECIPIENT</smart:tag>-->
+        <smart:fields>
+            <smart:field-set name="us_fr_ident" type="frame" label="État civil" access="Read">
+                <smart:field-text name="us_lname" label="Nom" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-text name="us_fname" label="Prénom" access="ReadWrite" needed="true" is-title="true"/>
+                <smart:field-text name="us_mail" label="Mail" access="Read" link="mailto:%US_MAIL%" is-abstract="true"/>
+                <smart:field-text name="us_extmail" label="Mail principal" access="ReadWrite"/>
+            </smart:field-set>
+            <smart:field-set name="us_tab_sysinfo" type="tab" label="Identification" access="None">
+                <smart:field-set name="us_fr_sysident" type="frame" label="Identifier" access="Read">
+                    <smart:field-text name="us_login" label="Login" access="Read" needed="true"/>
+                    <smart:field-text name="us_whatid" label="Identifiant" access="None"/>
+                </smart:field-set>
+                <smart:field-set name="us_fr_userchange" type="frame" label="Mot de passe" access="None">
+                    <smart:field-password name="us_passwd1" label="Nouveau mot de passe" access="None"/>
+                    <smart:field-password name="us_passwd2" label="Confirmation mot de passe" access="None"/>
+                </smart:field-set>
+            </smart:field-set>
+
+            <smart:field-set name="us_tab_system" type="tab" label="Technical Settings" access="None">
+                <smart:field-set name="us_fr_intranet" type="frame" label="Identification intranet" access="Read">
+                    <smart:field-account name="us_meid" label="Utilisateur id" access="None"/>
+                    <smart:field-set name="us_t_roles" type="array" label="Rôles" access="ReadWrite">
+                        <smart:field-account name="us_roles" label="Rôle" access="ReadWrite">
+                            <smart:field-option name="match">role</smart:field-option>
+                        </smart:field-account>
+                        <smart:field-enum name="us_rolesorigin" label="Origine" access="Read" relation="IUSER-us_rolesorigin"/>
+                        <smart:field-account name="us_rolegorigin" label="Groupe" access="Read" multiple="true">
+                            <smart:field-option name="match">group</smart:field-option>
+                        </smart:field-account>
+                    </smart:field-set>
+                    <smart:field-set name="us_groups" type="array" label="groupes d'appartenance" access="Read">
+                        <smart:field-text name="us_group" label="groupe (titre)" access="Read"/>
+                        <smart:field-account name="us_idgroup" label="Groupe" access="ReadWrite">
+                            <smart:field-option name="doctitle">us_group</smart:field-option>
+                            <smart:field-option name="match">group</smart:field-option>
+                        </smart:field-account>
+                    </smart:field-set>
+                    <smart:field-int name="us_daydelay" label="Délai d'expiration en jours" access="ReadWrite"/>
+                    <smart:field-int name="us_expires" label="Date d'expiration epoch" access="Read"/>
+                    <smart:field-date name="us_expiresd" label="Date d'expiration" access="Read"/>
+                    <smart:field-time name="us_expirest" label="Heure d'expiration" access="Read"/>
+                    <smart:field-int name="us_passdelay" label="Délai d'expiration epoch" access="Read"/>
+                </smart:field-set>
+                <smart:field-set name="us_fr_substitute" type="frame" label="Suppléants" access="Read">
+                    <smart:field-account name="us_substitute" label="Suppléant" access="ReadWrite"/>
+                    <smart:field-account name="us_incumbents" label="Titulaires" access="Read" multiple="true"/>
+                </smart:field-set>
+
+                <smart:field-set name="us_fr_security" type="frame" label="Sécurité" access="Read">
+                    <smart:field-enum name="us_status" label="État du compte" access="ReadWrite" relation="IUSER-us_status">
+                    </smart:field-enum>
+                    <smart:field-int name="us_loginfailure" label="Échecs de connexion" access="ReadWrite"/>
+                    <smart:field-date name="us_accexpiredate" label="Date d'expiration du compte" access="ReadWrite"/>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:parameters>
+            <smart:field-set name="us_fr_default" type="frame" label="Paramètre" access="ReadWrite">
+                <smart:field-account name="us_defaultgroup" label="Groupe par défaut" access="ReadWrite">
+                    <smart:field-option name="match">group</smart:field-option>
+                </smart:field-account>
+            </smart:field-set>
+        </smart:parameters>
+
+        <smart:hooks>
+            <smart:field-hook type="constraint" event="onPreStore" field="us_extmail">
+                <smart:field-callable function="::parseMail"/>
+                <smart:field-argument type="field">us_extmail</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+
+            <smart:field-hook type="constraint" event="onPreStore" field="us_login">
+                <smart:field-callable function="::constraintLogin"/>
+                <smart:field-argument type="field">us_login</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+
+            <smart:field-hook type="constraint" event="onPreStore" field="us_expiresd">
+                <smart:field-callable function="::constraintExpires"/>
+                <smart:field-argument type="field">us_expiresd</smart:field-argument>
+                <smart:field-argument type="field">us_expirest</smart:field-argument>
+                <smart:field-argument type="field">us_daydelay</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+
+            <smart:field-hook type="constraint" event="onPreStore" field="us_passwd1">
+                <smart:field-callable function="::testForcePassword"/>
+                <smart:field-argument type="field">us_passwd1</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+
+            <smart:field-hook type="constraint" event="onPreStore" field="us_passwd2">
+                <smart:field-callable function="::ConstraintPassword"/>
+                <smart:field-argument type="field">us_passwd1</smart:field-argument>
+                <smart:field-argument type="field">us_passwd2</smart:field-argument>
+                <smart:field-argument type="field">us_login</smart:field-argument>
+                <smart:field-return/>
+            </smart:field-hook>
+
+        </smart:hooks>
+        <smart:autocompletion/>
+        <smart:defaults>
+            <smart:default field="us_status">A</smart:default>
+            <smart:default field="us_loginfailure">0</smart:default>
+            <smart:initial field="us_defaultgroup">GDEFAULT</smart:initial>
+        </smart:defaults>
+
+        <smart:accesses/>
+
+    </smart:structure-configuration>
+</smart:config>

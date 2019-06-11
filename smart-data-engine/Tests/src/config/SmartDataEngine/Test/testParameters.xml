@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:parameters namespace="UITEST">
+        <sde:parameter name="PARENT_USER_GLOBAL_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_USER_GLOBAL_PARAMETER_DESC</sde:description>
+            <sde:value>PARENT_USER_GLOBAL_PARAMETER_VALUE</sde:value>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="PARENT_USER_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_USER_PARAMETER</sde:description>
+            <sde:value>Hello</sde:value>
+            <sde:isUser>true</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="PARENT_GLOBAL_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_GLOBAL_PARAMETER</sde:description>
+            <sde:value>PARENT_GLOBAL_PARAMETER</sde:value>
+            <sde:isUser>false</sde:isUser>
+        </sde:parameter>
+        <sde:parameter name="PARENT_PARAMETER">
+            <sde:category>Test Unit</sde:category>
+            <sde:description>PARENT_PARAMETER</sde:description>
+            <sde:value>PARENT_PARAMETER</sde:value>
+            <sde:isUser>false</sde:isUser>
+        </sde:parameter>
+    </sde:parameters>
+</sde:config>

@@ -1,0 +1,11 @@
+<xs:element name="[aname]" minOccurs="0" maxOccurs="1">
+	<xs:annotation><xs:documentation >
+                [appinfos]
+        </xs:documentation></xs:annotation>
+                <xs:complexType>
+                        <xs:sequence>[BLOCK ATTR]
+                        [axs]
+                        [ENDBLOCK ATTR]
+                        </xs:sequence>
+                </xs:complexType>
+</xs:element>
