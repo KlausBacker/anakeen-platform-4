@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    {{#withRender}}
+    <ui:render ref="{{SSNAME}}">
+        <ui:render-access class="{{namespace}}\Render\{{ssName}}Access"/>
+    </ui:render>
+    {{/withRender}}
+</smart:config>

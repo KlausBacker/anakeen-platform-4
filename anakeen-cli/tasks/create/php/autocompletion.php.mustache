@@ -1,0 +1,20 @@
+<?php
+
+namespace {{vendorName}}\{{moduleName}}\Autocompletion;
+
+use Anakeen\SmartAutocompleteRequest;
+use Anakeen\SmartAutocompleteResponse;
+
+class {{moduleName}}Autocompletion
+{
+    /**
+     * @param SmartAutocompleteRequest  $request
+     * @param SmartAutocompleteResponse $response
+     * @param array                     $args
+     * @return SmartAutocompleteResponse
+     */
+    public static function getCompletions(SmartAutocompleteRequest $request, SmartAutocompleteResponse $response, $args): SmartAutocompleteResponse
+    {
+        return $response;
+    }
+}

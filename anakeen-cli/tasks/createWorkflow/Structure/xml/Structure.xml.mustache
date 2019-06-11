@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="{{WFLNAME}}">
+        {{#parentName}}
+        <smart:extends ref="{{PARENTNAME}}"/>
+        {{/parentName}}
+        {{^parentName}}
+        <smart:extends ref="WDOC"/>
+        {{/parentName}}
+        <smart:icon file="{{wflname}}.png"/>
+        {{#withBehavior}}
+        <smart:class>{{namespace}}\{{wflName}}Behavior</smart:class>
+        {{/withBehavior}}
+        <smart:fields/>
+        <smart:hooks/>
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config>

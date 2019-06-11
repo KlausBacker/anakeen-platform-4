@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:field-access-layer-list name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
+       <!--
+        <smart:field-access-layer name="{{NAME}}_LAYER" label="Layer example" access-name="Example">
+            <smart:field-access field="field_1" access="ReadWrite"/>
+            <smart:field-access field="field_2" access="ReadWrite"/>
+            <smart:field-access field="field_3" access="Read"/>
+        </smart:field-access-layer>
+        -->
+    </smart:field-access-layer-list>
+</smart:config>

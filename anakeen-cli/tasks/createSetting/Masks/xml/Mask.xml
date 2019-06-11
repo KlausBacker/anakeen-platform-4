@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <ui:mask xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0" name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SS}}"{{/associatedSmartStructure}}>
+        <ui:visibility-list>
+            <!--
+            <ui:visibility field="field_id_1" value="R"/>
+            <ui:visibility field="field_id_2" value="W"/>
+            -->
+        </ui:visibility-list>
+        <ui:need-list>
+            <!--
+            <ui:need field="other_field_id_1" value="true"></ui:need>
+            -->
+        </ui:need-list>
+    </ui:mask>
+</smart:config>

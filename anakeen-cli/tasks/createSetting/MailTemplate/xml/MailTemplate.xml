@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0">
+    <mail:mailtemplate xmlns:mail="https://platform.anakeen.com/4/schemas/mailtemplate/1.0" name="{{NAME}}" label="{{nameLabel}}" {{#associatedSmartStructure}}structure="{{SSNAME}}"{{/associatedSmartStructure}}>
+        <mail:from>
+            <!--
+            <mail:config-parameter ns="NAMESPACE" label="Expéditeur">ACCOUNT_SENDER</mail:config-parameter>
+            -->
+        </mail:from>
+        <mail:recipients>
+            <!--
+            <mail:recipient dest="to">
+                <mail:element-account-field label="Destinataire">person_recipient</mail:element-account-field>
+            </mail:recipient>
+            -->
+        </mail:recipients>
+        <mail:subject>[{{moduleName}}] Mail sample</mail:subject>
+        <mail:body content-type="html"><![CDATA[<p>Bonjour,<br /><br />Ce mail est un exemple]]></mail:body>
+    </mail:mailtemplate>
+</smart:config>

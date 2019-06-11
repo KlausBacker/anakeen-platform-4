@@ -1,0 +1,34 @@
+{
+  "rules": {
+      "access-configuration": {
+        "url": "/devel/smartElements?filters=name=<identifier>"
+      },
+      "enum-configuration": {
+        "url": "/devel/enums?filters=name=<identifier>"
+      },
+      "role": {
+        "url": "/devel/security/roles"
+      },
+      "structure-configuration": {
+        "url": "/devel/smartStructures/<identifier>/infos"
+      },
+      "route": {
+        "url": "/devel/routes/routes"
+      },
+      "accesses": {
+        "url": "/devel/security/routes/access/controls"
+      },
+      "timer": {
+        "url": "/devel/smartElements?filters=name=<identifier>"
+      },
+      "mask": {
+        "url": "/devel/smartElements?filters=name=<identifier>"
+      },
+      "mailtemplate": {
+        "url": "/devel/smartElements?filters=name=<identifier>"
+      },
+      "view-control": {
+        "url": "/devel/ui/<identifier>/views"
+      }
+  }
+}

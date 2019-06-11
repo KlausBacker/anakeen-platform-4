@@ -1,0 +1,45 @@
+<?php
+
+namespace {{namespace}};
+
+use SmartStructure\Fields\{{ssName}} as {{ssName}}Fields;
+
+class {{ssName}}Autocompletion
+{
+
+    /**
+     * @param SmartAutocompleteRequest $request
+     * @param SmartAutocompleteResponse $response
+     * @param array $args
+     * @return SmartAutocompleteResponse
+     * @throws \Dcp\SearchDoc\Exception
+     */
+    public static function getSuggestionsFromElementId(
+        SmartAutocompleteRequest $request,
+        SmartAutocompleteResponse $response,
+        array $args
+    ): SmartAutocompleteResponse {
+        $userInput = $request->getFilterValue();
+        $elementId = $args["elementId"];
+        $search = new SearchElements("{{SSNAME}}");
+        $search->addFilter(
+            "%s ='%s'",
+            "id",
+            $elementId
+        );
+        if ("" !== $userInput) {
+            $search->addFilter(
+                "title ILIKE '%%%s%%'",
+                $userInput
+            );
+        }
+        foreach ($search->getResults() as $result) {
+            $title = $result->getTitle();
+            $response->appendEntry(xml_entity_encode($title), [
+                ["value" => $result->initid, "displayValue" => $title],
+            ]);
+        }
+
+        return $response;
+    }
+}
