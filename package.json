@@ -1,6 +1,6 @@
 {
   "name": "development-center",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "autorelease": true,
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
