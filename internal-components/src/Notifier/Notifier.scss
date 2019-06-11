@@ -1,0 +1,129 @@
+$white: #ffffff;
+$black: #000000;
+$gray: #878787;
+$error-color: #ff542c;
+$warning-color: #ffa000;
+$success-color: #66E700;
+$info-color: #157efb;
+$notice-color: #E4E4E4;
+
+.ank-notifier {
+
+  position: absolute;
+  right:1rem;
+  top:3rem;
+  z-index: 10;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  width:25rem;
+  scrollbar-width: thin;
+
+
+  .k-notification {
+    margin: 0.2rem;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+  }
+
+  .notification {
+    height: auto;
+    border-style: solid;
+    border-width:1px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+    background-color: $white;
+    padding: 0.9rem;
+
+    .notification-icon {
+      font-size: 1.5rem;
+      width: 1.5rem;
+      margin-right: 0.7rem;
+    }
+
+    .notification-content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: stretch;
+
+      .notification-content-header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+
+        .notification-title {
+          font-size: 1.4rem;
+          font-weight: bold;
+          margin-bottom: 0.3rem;
+        }
+
+        .notification-close {
+          color: $white;
+          margin-left: auto;
+          cursor: pointer;
+        }
+      }
+
+      .notification-message {
+        word-break: break-word;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .notification {
+  }
+
+  .notification.error-notification {
+    border-color:$error-color;
+    background-color: $error-color;
+    color: $white;
+    .notification-icon::before {
+      content: "error";
+    }
+  }
+
+  .notification.warning-notification {
+    border-color:$warning-color;
+    background-color: $warning-color;
+    color: $white;
+
+    .notification-icon::before {
+      content: "warning";
+    }
+  }
+
+  .notification.success-notification {
+    border-color:$success-color;
+    background-color: $success-color;
+    color: $white;
+
+    .notification-icon::before {
+      content: "check_circle";
+    }
+  }
+
+  .notification.info-notification {
+    border-color:$info-color;
+    background-color: $info-color;
+    color: $white;
+
+    .notification-icon::before {
+      content: "info";
+    }
+  }
+
+  .notification.notice-notification {
+    border-color:$notice-color;
+    background-color: $notice-color;
+    color: #6F6F6F;
+
+    .notification-icon::before {
+      content: "info";
+    }
+  }
+}

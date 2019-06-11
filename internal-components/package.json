@@ -1,0 +1,58 @@
+{
+  "name": "@anakeen/internal-components",
+  "autorelease": true,
+  "version": "1.0.1",
+  "description": "Anakeen internal components",
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/npm/internal-components.git",
+  "author": "Anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "lint:fix": "npx eslint ./ --fix && npx tslint ./src/**/*.ts --fix",
+    "lint": "npx eslint ./ && npx tslint ./src/**/*.ts",
+    "prettier": "prettier --check ./src/**/*.{js,ts}",
+    "prettier:fix": "prettier --write ./src/**/*.{js,ts}",
+    "build:dev": "npx webpack --env development --config ./webpack/index.js --progress",
+    "build": "yarn run build:dev",
+    "watch": "webpack --watch --env development --config ./webpack/index.js"
+  },
+  "files": [
+    "lib",
+    "src",
+    "README.md",
+    "yarn.lock"
+  ],
+  "devDependencies": {
+    "@anakeen/anakeen-ci": "^1.0.8",
+    "@anakeen/user-interfaces": "^2.0.0",
+    "@anakeen/webpack-conf": "^1.2.0",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@progress/kendo-ui": "^2019.1.213",
+    "commitlint": "^7.5.2",
+    "eslint": "^5.15.3",
+    "eslint-plugin-prettier": "^3.0.1",
+    "husky": "^1.3.1",
+    "jquery": "^3.3.1",
+    "prettier": "^1.16.4",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.3.4000",
+    "vue": "2.6.10",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "2.6.10",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "axios": "^0.18.0",
+    "core-js": "3.0.0",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint && npm run prettier && ./.cibuild/targets/autotest/scripts.d/01_checkPackage.sh",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
