@@ -1,0 +1,213 @@
+.vault-infos {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  overflow: auto;
+  min-height: 5rem;
+
+  .vault-infos-content {
+    padding: 2px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1;
+
+    .vault-infos-card {
+      .vault-infos-card-title {
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      margin: auto;
+      padding: 0.5rem;
+      border-bottom: 1px solid rgb(210, 210, 210);
+      display: inline-block;
+
+      .vault-infos-card-content {
+        font-size: 1.1rem;
+
+        .vault-card-content-item {
+          white-space: nowrap;
+        }
+
+        .vault-card-content-item-label {
+          font-weight: bold;
+        }
+
+        .vault-card-content-item-value {
+          font-weight: normal;
+
+          &:after {
+            content: ".";
+          }
+        }
+
+        .vault-infos-card-content-item-label {
+          font-weight: bold;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+}
+
+.vault-pie-chart {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: auto;
+
+  .vault-graphs {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 10rem;
+    // flex-wrap: wrap;
+    justify-content: space-between;
+    border: solid 1px #d2d2d2;
+
+    > .disk-gauges {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      display: flex;
+
+      .disk-gauge {
+        min-width: 40rem;
+
+        flex: 1;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .arc-gauge {
+          display: flex;
+          div[data-role="surface"] {
+            width: auto !important;
+            flex: 1;
+          }
+        }
+      }
+    }
+
+    > .disk-chart {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-width: 50%;
+
+      .disk-chart-legend {
+        text-align: center;
+        font-weight: bold;
+      }
+      .vault-chart {
+        flex: 1;
+        min-width: 50%;
+        min-height: 20rem;
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+.vault-progress {
+  width: 100%;
+  height: 2rem;
+}
+
+.disk-gauges {
+  .disk-gauge {
+    border-bottom: solid 1px #d2d2d2;
+    position: relative;
+
+    > .k-gauge > div {
+      // height:auto!important;
+    }
+
+    &.diskerror {
+      background-color: #fd4859;
+    }
+  }
+
+  .arc-title {
+    font-weight: bold;
+    text-align: center;
+  }
+  .arc-legend {
+    text-align: center;
+  }
+}
+
+.vault-row {
+  justify-content: center;
+  align-items: center;
+  flex: 2;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.k-grid-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.k-grid-add:hover {
+  color: #157efb !important;
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.k-grid-add {
+  color: white !important;
+  background-color: #157efb;
+  font-weight: bold;
+}
+
+.gauge-legend {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.disk-space {
+  height: 0.3rem;
+  width: 1.5rem;
+}
+
+.vault-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 0.5rem;
+  button {
+    min-width: 9rem;
+  }
+
+  .vault-action {
+  }
+}
+
+.vault-resize-form,
+.vault-move-form {
+  .vault-buttons {
+    text-align: right;
+  }
+
+  input {
+    width: 100%;
+    margin: 0.3rem;
+  }
+}
+
+.vault-resize-inputs {
+  display: flex;
+  margin: 0.3rem 0;
+  align-items: center;
+}

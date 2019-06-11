@@ -1,0 +1,102 @@
+.authentication-tokens {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .token-title {
+      font-size: 2rem;
+    }
+    .fa {
+      width: 2rem;
+      margin-right: 1rem;
+    }
+  }
+
+  .token-main {
+    display: flex;
+    flex-direction: column;
+
+    .token-grid-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .token-grid {
+      height: 100%;
+      table {
+        // table-layout: auto;
+      }
+      .k-filtercell .k-autocomplete {
+        width: 100%;
+      }
+      .cell--token {
+        font-family: monospace;
+      }
+      .k-pager-nav,
+      .k-pager-numbers {
+        display: none;
+      }
+
+      .token--expired .cell--expire {
+        color: var(--warning);
+      }
+      .token--expired.token--selected .cell--expire {
+        color: inherit;
+      }
+    }
+    .k-command-cell {
+      text-align: center;
+      .k-button {
+        color: #157efb;
+        font-weight: bold;
+        background-color: transparent;
+        box-shadow: none;
+        border: none;
+        padding-right:0.5rem;
+        padding-left:0.5rem;
+      }
+
+      .k-button:hover {
+        color: white;
+        font-weight: bold;
+        background-color: #157efb;
+        box-shadow: none;
+        border: none;
+      }
+    }
+  }
+
+  > .ank-token-splitter {
+    flex-grow: 1;
+  }
+
+  .token-logo {
+    display: flex;
+    height: 100%;
+    > span {
+      font-size: 5rem;
+      margin: auto;
+    }
+  }
+  .token--selected {
+    background-color: var(--primary);
+    color: white;
+    &:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    a.k-button {
+      background-color: transparent;
+    }
+  }
+}
+
+.token-station {
+  height: 100%;
+  position: relative;
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes  namespace="AdminCenter">
+        <sde:route name="AdminTokens:List">
+            <sde:callable>Anakeen\Routes\Admin\Tokens\TokenList</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/tokens/</sde:pattern>
+            <sde:description>Get all tokens</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTokens</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminTokens:Delete">
+            <sde:callable>Anakeen\Routes\Admin\Tokens\TokenDelete</sde:callable>
+            <sde:method>DELETE</sde:method>
+            <sde:pattern>/api/v2/admin/tokens/{token}</sde:pattern>
+            <sde:description>Delete a token</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTokens</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="AdminTokens:Create">
+            <sde:callable>Anakeen\Routes\Admin\Tokens\TokenCreate</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/admin/tokens/</sde:pattern>
+            <sde:description>Create a token</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminTokens</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+    <sde:accesses namespace="AdminCenter">
+        <sde:access name="AdminTokens">
+            <sde:description>Tokens administrator access</sde:description>
+        </sde:access>
+        <sde:route-access ref="AdminTokens" account="tokens_manager_role" />
+    </sde:accesses>
+</sde:config>

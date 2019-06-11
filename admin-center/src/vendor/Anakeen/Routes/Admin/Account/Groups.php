@@ -1,0 +1,61 @@
+<?php
+
+namespace Anakeen\Routes\Admin\Account;
+
+use Anakeen\Core\DbManager;
+
+/**
+ * @note use by route GET /api/v2/admin/account/groups/
+ */
+class Groups
+{
+
+    /**
+     * @param \Slim\Http\request $request
+     * @param \Slim\Http\response $response
+     * @param $args
+     * @return \Slim\Http\Response
+     * @throws \Anakeen\Database\Exception
+     */
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    {
+
+        $filter = $request->getQueryParam("filter");
+
+        $searchAccount = new \Anakeen\Accounts\SearchAccounts();
+        $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::groupType);
+        if ($filter !== null) {
+            $searchAccount->addFilter("lastname ~* '%s' OR login ~* '%s'", preg_quote($filter));
+        }
+
+        $groups = [];
+        //First iteration
+        foreach ($searchAccount->search() as $currentAccount) {
+            $nbUser = 0;
+            $userList = $currentAccount->getAllMembers();
+            if (is_array($userList)) {
+                $nbUser = count($userList);
+            }
+
+            /* @var $currentAccount \Anakeen\Core\Account */
+            $groups[$currentAccount->id] = [
+                "login"=> $currentAccount->login,
+                "documentId" => $currentAccount->fid,
+                "accountId" => $currentAccount->id,
+                "parents" => $currentAccount->getGroupsId(),
+                "title" => $currentAccount->getAccountName(),
+                "nbUser" => $nbUser,
+                "items" => []
+            ];
+        }
+
+        //Compute nb total of users
+        $nbUsers = 0;
+        $searchAccount = new \Anakeen\Accounts\SearchAccounts();
+        $searchAccount->setTypeFilter(\Anakeen\Accounts\SearchAccounts::userType);
+        $request = $searchAccount->getQuery();
+        DbManager::query("select count(*) from (".$request.") as nbResult;", $nbUsers, true, true);
+
+        return $response->withJson(["groups"=> $groups, "nbUsers"=> $nbUsers]);
+    }
+}

@@ -1,0 +1,27 @@
+# IntelliJ project files
+*.iml
+
+/*.app
+*.webinst
+*~
+*#
+node_modules/
+src/public/Anakeen/accountManager
+src/public/Anakeen/parameterManager
+src/public/Anakeen/tokenManager
+src/public/Anakeen/vaultManager
+src/public/Anakeen/manifest
+src/public/Anakeen/adminCenter/dev
+src/public/Anakeen/adminCenter/prod
+src/public/Anakeen/adminCenter/legacy
+Makefile.local
+/.idea/deployment.xml
+/.idea/dictionaries/
+/.idea/jsonSchemas.xml
+/.idea/modules.xml
+/.idea/php.xml
+/.idea/vcs.xml
+/.idea/webServers.xml
+/.idea/workspace.xml
+ide/vendor/
+lib/

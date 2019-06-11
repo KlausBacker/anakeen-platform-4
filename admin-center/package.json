@@ -1,0 +1,73 @@
+{
+  "name": "@anakeen/admin-center",
+  "version": "2.0.1",
+  "autorelease": true,
+  "description": "Web interfaces to admin applications and configure smart elements",
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/admin-center.git",
+  "author": "Anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "beautify": "eslint ./src --fix",
+    "buildJs:tokens:prod": "element=TOKENS npx webpack --config webpack/index.js",
+    "buildJs:tokens:dev": "element=TOKENS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:tokens": "yarn run buildJs:tokens:prod && yarn run buildJs:tokens:dev",
+    "buildJs:vaults:prod": "element=VAULTFS npx webpack --config webpack/index.js",
+    "buildJs:vaults:dev": "element=VAULTFS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:vaults": "yarn run buildJs:vaults:prod && yarn run buildJs:vaults:dev",
+    "buildJs:parameters:prod": "element=PARAMETERS npx webpack --config webpack/index.js",
+    "buildJs:parameters:dev": "element=PARAMETERS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:parameters": "yarn run buildJs:parameters:prod && yarn run buildJs:parameters:dev",
+    "buildJs:accounts:prod": "element=ACCOUNTS npx webpack --config webpack/index.js",
+    "buildJs:accounts:dev": "element=ACCOUNTS dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:accounts": "yarn run buildJs:accounts:prod && yarn run buildJs:accounts:dev",
+    "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts"
+  },
+  "files": [
+    "src/**/*.scss",
+    "LICENSE",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@anakeen/anakeen-ci": "^1.0.0",
+    "@anakeen/anakeen-cli": "^1.1.13",
+    "@anakeen/hub-components": "^1.0.1",
+    "@anakeen/user-interfaces": "^2.0.1",
+    "@anakeen/webpack-conf": "^1.2.0",
+    "@commitlint/config-conventional": "^7.5.0",
+    "commitlint": "^7.5.2",
+    "document-register-element": "^1.13.1",
+    "eslint": "^5.15.3",
+    "eslint-plugin-prettier": "^3.0.1",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "husky": "^2.1.0",
+    "prettier": "^1.17.0",
+    "ts-loader": "^5.4.4",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "@anakeen/internal-components": "^1.0.1",
+    "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-charts-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-dialog-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-dropdowns-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-gauges-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-grid-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-treeview-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-ui": "2019.1.320",
+    "@types/jquery": "^3.3.29",
+    "axios": "^0.18.0",
+    "core-js": "3.0.0",
+    "jquery": "^3.3.1",
+    "vue": "2.6.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npx eslint ./ && npx tslint './src/vendor/Anakeen/AdminCenter/**/*.ts' && npx prettier --check './src/vendor/Anakeen/AdminCenter/**/*.ts' && make lint && make checkPackage",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}

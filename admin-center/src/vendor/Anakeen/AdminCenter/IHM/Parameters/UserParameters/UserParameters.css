@@ -1,0 +1,126 @@
+.user-parameters {
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: stretch;
+}
+
+.user-parameters-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+}
+
+.user-parameters-toolbar > .btn {
+  margin-right: 0.5rem;
+}
+
+.toolbar-btn {
+  padding-bottom: 0.1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.reset-search-btn {
+  border: 0;
+  margin: auto;
+  font-size: 1.3rem;
+  line-height: 1;
+  border-radius: 50%;
+  background: transparent;
+  position: relative;
+  z-index: 10;
+  padding: 0;
+  cursor: pointer;
+}
+
+.reset-search-btn:hover {
+  background-color: #ff542c;
+  color: #ffffff;
+  border-radius: 50%;
+}
+
+.toolbar-btn > .material-icons {
+  font-size: 1.5rem;
+}
+
+.user-parameters-tree {
+  height: 100% !important;
+}
+
+.filter-icon {
+  vertical-align: middle;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: dodgerblue;
+  float: right;
+}
+
+.k-grid tbody tr td {
+  white-space: nowrap;
+}
+
+.user-search {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: stretch;
+}
+
+.user-search-form {
+  width: 100%;
+}
+
+.parameters-div {
+  height: 100%;
+}
+
+.switch-parameters {
+  margin-right: 0.375rem;
+}
+
+.grid-expandable {
+  cursor: pointer;
+}
+
+.search-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: stretch;
+  margin: 0.5rem;
+}
+
+.search-group > span {
+  margin-top: 0.5rem;
+}
+
+.users-tree {
+  height: 100%;
+}
+
+tr:not(.grid-expandable) > td .k-icon.k-i-none:first-child {
+  width: 0;
+}
+
+.global-search-input {
+  margin-right: -1.6rem;
+}
+
+.user-search-input {
+  margin-right: -1.1rem;
+}
+
+.user-search-reset-btn {
+  left: -0.6rem;
+}
+
+.parameter-search-reset {
+  left: -0.3rem;
+}

@@ -1,0 +1,226 @@
+
+.accountManager_wrapper {
+
+  .k-command-cell {
+    text-align: center;
+
+    .k-button {
+      color: #157efb;
+      font-weight: bold;
+      background-color: transparent;
+      box-shadow: none;
+      border: none;
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+    }
+
+    .k-button:hover {
+      color: white;
+      font-weight: bold;
+      background-color: #157efb;
+      box-shadow: none;
+      border: none;
+    }
+  }
+
+  .account-manager-splitter {
+    .tree-view-part {
+      display: flex;
+      flex-direction: column;
+
+      * {
+        min-height: 0;
+      }
+
+      .accountManager_treeViewPart_wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .accountManager_treeViewPart_wrapper_content {
+          flex: 1;
+          overflow: auto;
+        }
+      }
+    }
+  }
+}
+
+.account-tree-splitter .account-splitter {
+  height: 100%;
+}
+
+.account-manager-splitter {
+  height: 100%;
+  width: 100%;
+}
+
+.admin-account-main-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  > header {
+    flex-basis: 3.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+  }
+
+  > section {
+    flex: 1;
+    overflow: hidden;
+  }
+}
+
+.open-element-content {
+  height: 100% !important;
+}
+
+.k-treeview .k-in.k-state-selected {
+  border-color: #157efb;
+  background-color: #157efb;
+  color: white;
+}
+
+.k-grid-Consult {
+  color: #157efb !important;
+  font-weight: bold;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.k-grid-Consult:hover {
+  color: white !important;
+  font-weight: bold;
+  background-color: #157efb;
+  box-shadow: none;
+  border: none;
+}
+
+.k-button:focus {
+  box-shadow: none;
+}
+
+.ank-admin-account {
+  width: 100%;
+  height: 100%;
+}
+
+.accountManager_wrapper {
+  height: 100%;
+}
+
+.accountManager_gridAndTreePart {
+  height: 100%;
+}
+
+.accountManager_userPart {
+  height: 100%;
+}
+
+.accountManager_contentPart_groupPart_wrapper {
+  height: 100%;
+}
+
+.ank-admin-account .accountManager_treeViewPart_wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.ank-admin-account .accountManager_logo {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.ank-admin-account .accountManager_logo img.anakeen-logo {
+  height: 10rem;
+}
+
+.ank-admin-account
+.accountManager_treeViewPart_wrapper
+.accountManager_treeViewPart_wrapper_topPart {
+  height: 6em;
+  width: 100%;
+}
+
+.ank-admin-account .k-toolbar {
+  /* Magic number to suppress an horizontal scrollbar*/
+  width: calc(100% - 0.25rem);
+}
+
+.accountManager_treeViewPart_wrapper
+.accountManager_treeViewPart_wrapper_content {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.accountManager_contentPart_groupPart iframe,
+.accountManager_userPart iframe {
+  height: 100%;
+  width: 100%;
+}
+
+.accountManager_contentPart_gridPart .k-grid {
+  height: 100%;
+  width: 100%;
+}
+
+.ank-se-parent {
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+}
+
+.apDocumentWrapper {
+  height: 100px;
+}
+
+.tree-toolbar {
+  justify-content: center;
+}
+
+.account-user-grid {
+  .k-grid-content {
+    tr {
+      word-break: break-all;
+    }
+  }
+}
+
+.admin-account-header__content {
+  display: flex;
+  flex-direction: row;
+}
+
+
+.k-dropdown.k-primary {
+  .k-dropdown-wrap {
+    background-color: var(--primary);
+    color: var(--white);
+  }
+}
+
+.select-container {
+  width: auto !important;
+
+  .k-list-optionlabel {
+    background-color: #eee;
+    color: #333;
+  }
+
+  li.k-item {
+    white-space: nowrap;
+  }
+}
+
+.ank-splitter {
+  max-width: calc(100% - 0.5rem);
+}

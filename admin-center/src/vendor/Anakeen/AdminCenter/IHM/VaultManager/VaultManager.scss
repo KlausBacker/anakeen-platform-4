@@ -1,0 +1,139 @@
+.vault-main-box {
+  display: flex;
+  flex-direction: column;
+  > header {
+    flex: 0;
+  }
+  > .vault-grid-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .k-command-cell {
+    text-align: center;
+    .k-button {
+      color: #157efb;
+      font-weight: bold;
+      background-color: transparent;
+      box-shadow: none;
+      border: none;
+      padding-right:0.5rem;
+      padding-left:0.5rem;
+
+
+      &:hover {
+        color: white;
+        font-weight: bold;
+        background-color: #157efb;
+        box-shadow: none;
+        border: none;
+
+      }
+    }
+
+    &.vault--selected {
+      color: white;
+      .k-button {
+        color: white;
+        border:solid 1px white;
+      }
+    }
+
+  }
+}
+
+.vault-manager-grid {
+  height: 100%;
+  width: 100%;
+  tr {
+    word-break: break-word;
+    td {
+    }
+  }
+}
+
+.vault-manager {
+  height: 100%;
+  width: 100%;
+
+  .vault--selected {
+    background-color: var(--primary);
+    color: white;
+    &:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    a.k-button {
+      background-color: transparent;
+      color: white;
+      &:hover {
+        border: solid 1px white;
+      }
+    }
+  }
+  .vault-grid--error {
+    background-color: var(--danger);
+    color: var(--white);
+  }
+
+  .vault-grid-sizes {
+    text-align: right;
+    font-style: italic;
+  }
+}
+
+.vault-manager-form {
+  input {
+    width: 100%;
+  }
+}
+
+.vault-manager-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  tr {
+    word-break: break-word;
+  }
+  .k-grid-consult,
+  .k-grid-edit {
+    padding: 0.5rem 2.25rem !important;
+  }
+}
+.vault-manager-splitter {
+  height: 100%;
+  header {
+    text-align: right;
+
+    .fa {
+      margin-right: 0.2rem;
+    }
+  }
+}
+
+.consult-btn {
+  color: #157efb !important;
+  font-weight: bold;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.consult-btn:hover {
+  color: white !important;
+  font-weight: bold;
+  background-color: #157efb;
+  box-shadow: none;
+  border: none;
+}
+
+.vault-info {
+  width: 100%;
+  height: 100%;
+}
+
+.vault-resize-inputs {
+  .vault-resize-inputs__content {
+    display: flex;
+  }
+}
