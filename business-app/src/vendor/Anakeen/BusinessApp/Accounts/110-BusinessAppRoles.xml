@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<accounts:accounts xmlns:accounts="https://platform.anakeen.com/4/schemas/account/1.0">
+  <accounts:roles>
+    <accounts:role name="business_app_user_role">
+      <accounts:displayName>Business App User</accounts:displayName>
+    </accounts:role>
+  </accounts:roles>
+</accounts:accounts>

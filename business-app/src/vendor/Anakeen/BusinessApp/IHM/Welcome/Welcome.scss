@@ -1,0 +1,102 @@
+@import "~@anakeen/theme-variables/scss/variables.scss";
+.ank-business-app-welcome {
+  background: #fafafa;
+  padding: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  .ank-business-app-welcome-creation,
+  .ank-business-app-welcome-grid {
+    padding: 1.2rem;
+    border: none;
+    margin-bottom: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 0.25rem 0.25rem;
+  }
+
+  .ank-business-app-welcome-grid,
+  .ank-business-app-welcome-grid-content {
+    flex: 1;
+  }
+
+  .ank-business-app-welcome-grid {
+    min-height: 15rem;
+  }
+
+  .ank-business-app-welcome-grid-content {
+    min-height: 9rem;
+  }
+
+  .ank-business-app-welcome-creation-title,
+  .ank-business-app-welcome-grid-title {
+    font-size: 1.2rem;
+
+    font-weight: 700;
+    background-color: transparent;
+    color: #878787;
+    line-height: 2.5rem;
+    border-bottom: 0.083rem solid #d8d9da;
+    padding: 0;
+    margin: 0 0 1.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    i.title-icon {
+      margin-right: 0.7rem;
+      font-size: 1rem;
+    }
+
+    .ank-business-app-welcome-grid-reload {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 0.083rem solid #d8d9da;
+      background: transparent;
+      &:hover {
+        background: lighten(#d8d9da, 10);
+      }
+    }
+  }
+
+  .ank-business-app-welcome-creation-content {
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    justify-content: space-around;
+  }
+
+  .ank-business-app-welcome-creation-button {
+    cursor: pointer;
+    padding: 0.75rem;
+
+    &:hover {
+      background: #f9f9f9;
+    }
+
+    .creation-structure-icon-wrapper {
+      position: relative;
+      &::after {
+        margin: auto;
+        position: absolute;
+        bottom: -0.5rem;
+        right: 0;
+        text-align: center;
+        font-size: 0.8rem;
+        display: block;
+        border-radius: 50%;
+        background-color: $ank-ui-color-selected;
+        font-family: "FontAwesome";
+        color: white;
+        content: "\f067";
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+  }
+}

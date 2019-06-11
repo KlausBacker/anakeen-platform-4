@@ -1,0 +1,50 @@
+@import "~@anakeen/theme-variables/scss/variables.scss";
+.ank-business-app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  .ank-business-app-list {
+    max-width: 25%;
+    min-width: 10.8rem;
+    flex-basis: 25%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: 0.283333rem;
+  }
+
+  .ank-business-app-header {
+    background: white;
+    padding: 0.5rem;
+  }
+
+  .ank-business-app-welcome-title {
+    /deep/ p {
+      margin: 0;
+    }
+  }
+
+  .ank-business-app-tabs-wrapper {
+    flex: 1;
+    overflow: hidden;
+
+    .ank-business-app-tabs {
+      height: 100%;
+      /deep/ .ank-tabs-contents {
+        overflow: hidden;
+      }
+    }
+  }
+
+  /deep/ .ank-business-app-collection-selector {
+    font-size: 1.15rem;
+    .k-dropdown-wrap {
+      .k-input {
+        color: $ank-ui-color-selected;
+        font-weight: 700;
+      }
+      background: #f1f1f1;
+    }
+    width: 100%;
+  }
+}

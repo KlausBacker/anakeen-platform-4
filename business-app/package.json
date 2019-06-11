@@ -1,0 +1,48 @@
+{
+  "name": "@anakeen/business-app",
+  "version": "1.0.1",
+  "autorelease": true,
+  "description": "Anakeen Hub Business App",
+  "main": "src/vendor/Anakeen/BusinessApp/IHM/index.js",
+  "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/users/aurelien.brugalieres/anakeen-hub-business-app.git",
+  "author": "Anakeen",
+  "license": "SEE LICENSE IN LICENSE",
+  "scripts": {
+    "beautify": "eslint ./src --fix",
+    "buildJs:prod": "element=BUSINESS_APP npx webpack --config webpack/index.js",
+    "buildJs:dev": "element=BUSINESS_APP dev=DEV npx webpack --config webpack/index.js",
+    "buildJs": "yarn run buildJs:prod && yarn run buildJs:dev",
+    "buildJsRender:prod": "conf=PROD npx webpack --config ./webpack/render.js",
+    "buildJsRender:dev": "conf=DEV npx webpack --config ./webpack/render.js",
+    "buildJsRender:legacy": "conf=LEGACY npx webpack --config ./webpack/render.js",
+    "buildJsRender": "yarn run buildJsRender:prod && yarn run buildJsRender:dev && yarn run buildJsRender:legacy"
+  },
+  "dependencies": {
+    "@anakeen/hub-components": "^1.0.1",
+    "@anakeen/theme-variables": "^1.0.0",
+    "@anakeen/user-interfaces": "^2.0.1",
+    "@types/jquery": "^3.3.29",
+    "@types/kendo-ui": "^2019.1.1",
+    "vue": "2.6.10",
+    "vue-property-decorator": "^8.1.0"
+  },
+  "devDependencies": {
+    "@anakeen/anakeen-ci": "^1.0.8",
+    "@anakeen/anakeen-cli": "^1.1.5",
+    "@anakeen/webpack-conf": "^1.2.0",
+    "@commitlint/config-conventional": "^7.5.0",
+    "commitlint": "^7.5.2",
+    "husky": "^2.1.0",
+    "prettier": "^1.17.0",
+    "ts-loader": "^5.4.4",
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "make checkPackage && make lint && npx tslint './src/vendor/Anakeen/BusinessApp/**/*.ts' && npx prettier --check './src/vendor/Anakeen/BusinessApp/**/*.ts'",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}

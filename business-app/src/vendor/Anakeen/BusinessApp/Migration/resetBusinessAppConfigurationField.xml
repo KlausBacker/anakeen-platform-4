@@ -1,0 +1,42 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="DbMigrationRules.xsd">
+
+    <action id="BusinessAppConfiguration" label="Remove html text icon fields from HUBBUSINESSAPP">
+        <condition>
+            <sql-assert-not-empty label="verify hba_icon_lib, hba_icon_html, hba_icon_type and hba_icon fields exist">
+                select * from docattr where id in ('hba_icon_lib', 'hba_icon_html', 'hba_icon', 'hba_icon_type');
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <sql-query label="Remove hba_icon_lib, hba_icon_html, hba_icon_type and hba_icon fields">
+                delete from docattr where id in ('hba_icon_lib', 'hba_icon_html', 'hba_icon', 'hba_icon_type');
+            </sql-query>
+
+        </process>
+        <check>
+            <sql-assert-empty label="verify hba_icon_lib, hba_icon_html, hba_icon_type and hba_icon fields has been removed">
+                select * from docattr where id in ('hba_icon_lib', 'hba_icon_html', 'hba_icon', 'hba_icon_type');
+            </sql-assert-empty>
+        </check>
+    </action>
+    <action id="BusinessAppDefaultConfiguration" label="Remove default value on hba_icon_type field from HUBBUSINESSAPP">
+        <condition>
+            <sql-assert-not-empty label="verify default value on hba_icon_type field exist">
+                select defaultvalues -> 'hba_icon_type' from docfam where name = 'HUBBUSINESSAPP' and defaultvalues -> 'hba_icon_type' is not null ;
+            </sql-assert-not-empty>
+        </condition>
+        <process>
+            <sql-query label="Remove default value on hba_icon_type field">
+                UPDATE docfam
+                SET defaultvalues = (SELECT defaultvalues::jsonb - 'hba_icon_type' as defVal from docfam WHERE name = 'HUBBUSINESSAPP')
+                WHERE name = 'HUBBUSINESSAPP';
+            </sql-query>
+
+        </process>
+        <check>
+            <sql-assert-empty label="verify default value on hba_icon_type field has been removed">
+                select defaultvalues -> 'hba_icon_type' from docfam where name = 'HUBBUSINESSAPP' and defaultvalues -> 'hba_icon_type' is not null ;
+            </sql-assert-empty>
+        </check>
+    </action>
+</migration>

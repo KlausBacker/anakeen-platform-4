@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-hub-business-app" vendor="Anakeen" version="1.0.1">
+  <requires>
+    <module name="anakeen-hub" version="1.0.x"/>
+  </requires>
+  <post-install>
+    <process command="./ank.php --script=importAccounts --file=./vendor/Anakeen/BusinessApp/Accounts/110-BusinessAppRoles.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/BusinessApp/SmartStructures/HubBusinessApp/**/*.xml"/>
+  </post-install>
+  <post-upgrade>
+    <process command="./programs/DbMigration.php --file=./vendor/Anakeen/BusinessApp/Migration/resetBusinessAppConfigurationField.xml">
+      <label>Apply Migrate HubBusinessApp Rules</label>
+    </process>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/BusinessApp/SmartStructures/HubBusinessApp/**/*.xml"/>
+  </post-upgrade>
+
+</module>

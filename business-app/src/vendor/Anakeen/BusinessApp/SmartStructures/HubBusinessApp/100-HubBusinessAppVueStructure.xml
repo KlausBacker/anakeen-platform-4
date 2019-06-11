@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="HUBBUSINESSAPP" label="Business App Configuration">
+        <smart:extends ref="HUBCONFIGURATIONVUE"/>
+        <smart:icon file="HubAdminCenterParameters.png"/>
+        <smart:class>Anakeen\BusinessApp\SmartStructures\HubBusinessApp\HubBusinessAppBehavior</smart:class>
+        <smart:fields>
+            <smart:field-set name="hub_component_parameters" extended="true">
+                <smart:field-image name="hba_icon_image" access="ReadWrite" label="Business App icon"/>
+                <smart:field-set name="hba_titles" type="array" label="Business App Titles"
+                                 access="ReadWrite">
+                    <smart:field-text name="hba_title" label="Title" access="ReadWrite" needed="true"/>
+                    <smart:field-enum name="hba_language" label="Language" relation="HBA_SUPPORT_LANG"
+                                      access="Read"/>
+                </smart:field-set>
+                <smart:field-set name="hba_collections" type="array" access="ReadWrite" label="Business App collections">
+                    <smart:field-docid access="ReadWrite" name="hba_collection" label="Collection" relation="DSEARCH"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="hub_component_tab" extended="true">
+                <smart:field-set type="frame" name="hba_options" access="ReadWrite" label="Welcome Tab options">
+                    <smart:field-enum access="ReadWrite" name="hba_welcome_option" relation="HBA_YES_NO_ENUM" label="Enable"/>
+                    <smart:field-longtext access="ReadWrite" name="hba_welcome_title" label="Title HTML template"/>
+                    <smart:field-set name="hba_structure_creation" type="array" access="ReadWrite" label="Smart Structure creation">
+                        <smart:field-docid access="ReadWrite" name="hba_structure" label="Structure" relation="-1"/>
+                    </smart:field-set>
+                    <smart:field-set name="hba_grid_collections" type="array" access="ReadWrite" label="Grid collections">
+                        <smart:field-docid access="ReadWrite" name="hba_grid_collection" label="Grid collection" relation="REPORT"/>
+                    </smart:field-set>
+                </smart:field-set>
+            </smart:field-set>
+        </smart:fields>
+
+        <smart:defaults>
+            <smart:default field="hba_welcome_option">YES</smart:default>
+            <smart:default field="hba_welcome_title">Welcome</smart:default>
+            <smart:default field="hba_titles">
+                <smart:field-callable function="::getDefaultLanguages"/>
+            </smart:default>
+        </smart:defaults>
+
+    </smart:structure-configuration>
+    <smart:enumerates>
+        <smart:enum-configuration name="HBA_YES_NO_ENUM">
+            <smart:enum name="NO" label="No"/>
+            <smart:enum name="YES" label="Yes"/>
+        </smart:enum-configuration>
+        <smart:enum-configuration name="HBA_SUPPORT_LANG">
+            <smart:enum name="en_US" label="English"/>
+            <smart:enum name="fr_FR" label="Français"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
+</smart:config>
