@@ -7,11 +7,12 @@
                          :pageSizes="[100, 200, 500]"
                          :sortable="''"
                          @action-click="actionClick"
-                         @grid-ready="getFiltered">
+                         @grid-data-bound="onGridDataBound"
+            >
             </ank-se-grid>
         </template>
         <template slot="right">
-            <router-multi-view :force-multi-views="false" style="display:flex; flex: 1" class="splitter-right"></router-multi-view>
+            <component style="height: 100%" v-if="selectedControl" :is="selectedControl.component" v-bind="selectedControl.props"></component>
         </template>
     </ank-splitter>
 </template>

@@ -1,259 +1,121 @@
 <template>
-    <div class="smart-structure-hierarchy">
-        <svg class="smart-structure-hierarchy-graph" ref="treeSvg">
-        </svg>
-    </div>
+    <ul class="smart-structure-hierarchy">
+        <li v-for="(item, index) in hierarchy" :key="`${currentStructure}-${item.name}-${index}`" class="smart-structure-hierarchy-item">
+            <a data-role="develRouterLink" :href="`/devel/smartStructures/${item.name}/infos`" :class="{ 'smart-structure-hierarchy-label': true, 'current-item': item.name === currentStructure }">{{item.name}}</a>
+            <structure-hierarchy v-if="item.children && item.children.length" :data="item.children" :currentStructure="currentStructure"></structure-hierarchy>
+        </li>
+    </ul>
 </template>
-<!-- CSS to this component only -->
-<style scoped lang="scss">
 
-</style>
-<!-- Global CSS -->
-<style lang="scss">
-    .smart-structure-hierarchy {
-        overflow-y: auto;
-        width: 100%;
-        height: 100%;
-        .smart-structure-hierarchy-graph {
-            width: 100%;
-            height: 100%;
-
-            .node rect {
-                cursor: pointer;
-                fill: #fff;
-                fill-opacity: 0.5;
-                stroke: #3182bd;
-                stroke-width: 1.5px;
-            }
-
-            .node text {
-                font: 10px sans-serif;
-                pointer-events: none;
-            }
-
-            .link {
-                fill: none;
-                stroke: #9ecae1;
-                stroke-width: 1.5px;
-            }
-
-        }
-    }
-</style>
 <script>
-    import * as d3 from "d3";
-    // Creates a curved (diagonal) path from parent to the child nodes
-    const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
-    const color = (vm) => (d) => {
-      if (d.data.name === vm.currentStructure) {
-        return "#fd8d3c";
+  export default {
+    name: "structure-hierarchy",
+    props: ["data", "currentStructure"],
+    data() {
+      return {
+        hierarchy: JSON.parse(JSON.stringify(this.data))
       }
-      return "#c6dbef";
-    };
-    const BOX_HEIGHT = 20;
-    const OFFSET_DRAWX = 50;
-    const OFFSET_DRAWY = 20;
-    const BOX_SPACE_Y = 5;
-    export default {
-        props: {
-          data: {
-            type: Array,
-            default: () => ([])
-          },
-          currentStructure: {
-            type: String,
-            required: true
-          }
-        },
-      mounted() {
-        this.initGraph(this.$refs.treeSvg);
-        if (!this.empty) {
-          this.normalizeData();
-          this.updateGraph(this.root);
-        }
-      },
-      updated() {
-        if (!this.empty) {
-          this.normalizeData();
-          this.resizeAndUpdateTree(this.$refs.treeSvg);
-        }
-      },
-      beforeDestroy() {
-        window.removeEventListener('resize', () => {
-          this.resizeAndUpdateTree(this.$refs.treeSvg);
-        });
-      },
-      data() {
-        return {
-          root: {},
-          tree: {},
-          svg: {},
-          duration: 0,
-          i: 0,
-        };
-      },
-      computed: {
-        empty() {
-          return !this.data || !this.data.length;
-        },
-        dataEmptyText() {
-          return this.emptyText || '';
-        },
-      },
-      methods: {
-        normalizeData() {
-          this.reinitNodes();
-          if (!this.empty) {
-            this.root = this.data[0];
-          }
-          this.root = d3.hierarchy(this.root, d => d.children);
-          this.root.x0 = OFFSET_DRAWX;
-          this.root.y0 = OFFSET_DRAWY;
-        },
-        reinitNodes() {
-          this.root = {
-            name: 'Hierarchy',
-            x0: OFFSET_DRAWX,
-            y0: OFFSET_DRAWY,
-            children: [],
-          };
-        },
-        initGraph(element) {
-          let { width, height } = this.$el.getBoundingClientRect();
-
-          // append the svg object to the body of the page
-          // appends a 'group' element to 'svg'
-          // moves the 'group' element to the top left margin
-          this.svg = d3.select(element)
-            .style("overflow-y", "auto")
-            .style("padding", "1rem")
-            .append('g')
-            .style("overflow-y", "auto");
-
-          const realSize = {
-            width: height,
-            height: width,
-          };
-
-          // declares a tree layout and assigns the size
-          this.tree = d3.tree().size([realSize.width, realSize.height]);
-          window.addEventListener('resize', () => {
-            this.resizeAndUpdateTree(this.$refs.treeSvg);
-          });
-        },
-        updateGraph(source) {
-          // Compute the flattened node list.
-          var nodes = this.root.descendants();
-
-
-          // Compute the "layout". TODO https://github.com/d3/d3-hierarchy/issues/67
-          var index = 0;
-
-          this.root.eachBefore(function(n) {
-            n.x = (index++ * (BOX_HEIGHT + BOX_SPACE_Y)) + OFFSET_DRAWY;
-            n.y = n.depth * OFFSET_DRAWX;
-          });
-          this.$refs.treeSvg.style.height = (((index+1)* (BOX_HEIGHT + BOX_SPACE_Y)) + OFFSET_DRAWY/2) + "px";
-          // Update the nodes…
-          var node = this.svg.selectAll(".node")
-            .data(nodes, function(d) {
-              this.i += 1;
-              return d.id || (d.id = this.i);
-            });
-
-          var nodeEnter = node.enter().append("g")
-            .attr("class", "node")
-            .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-            .style("opacity", 0)
-            .on("click", this.onClickNode)
-
-          // Enter any new nodes at the parent's previous position.
-          nodeEnter.append("rect")
-            .attr("y", -BOX_HEIGHT / 2)
-            .attr("height", BOX_HEIGHT)
-            .attr("width", (d) => {
-              const value = d.data.name;
-              return `${value.split("").length}rem`;
-            })
-            .style("fill", color(this));
-
-          nodeEnter.append("text")
-            .attr("dy", 3.5)
-            .attr("dx", 5.5)
-            .text(function(d) { return d.data.name; });
-
-          // Transition nodes to their new position.
-          nodeEnter.transition()
-            .duration(this.duration)
-            .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
-            .style("opacity", 1);
-
-          node.transition()
-            .duration(this.duration)
-            .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
-            .style("opacity", 1)
-            .select("rect")
-            .style("fill", color(this));
-
-          // Transition exiting nodes to the parent's new position.
-          node.exit().transition()
-            .duration(this.duration)
-            .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-            .style("opacity", 0)
-            .remove();
-
-          // Update the links…
-          var link = this.svg.selectAll(".link")
-            .data(this.root.links(), function(d) { return d.target.id; });
-
-          // Enter any new links at the parent's previous position.
-          link.enter().insert("path", "g")
-            .attr("class", "link")
-            .attr("d", function(d) {
-              var o = {x: source.x0, y: source.y0};
-              return diagonal({source: o, target: o});
-            })
-            .transition()
-            .duration(this.duration)
-            .attr("d", diagonal);
-
-          // Transition links to their new position.
-          link.transition()
-            .duration(this.duration)
-            .attr("d", diagonal);
-
-          // Transition exiting nodes to the parent's new position.
-          link.exit().transition()
-            .duration(this.duration)
-            .attr("d", function(d) {
-              var o = {x: source.x, y: source.y};
-              return diagonal({source: o, target: o});
-            })
-            .remove();
-
-          // Stash the old positions for transition.
-          this.root.each(function(d) {
-            d.x0 = d.x;
-            d.y0 = d.y;
-          });
-        },
-        onClickNode(d) {
-          this.$router.push({ name: "SmartStructures::name", params: { ssName: d.data.name }})
-        },
-        resizeAndUpdateTree(element) {
-          if (element) {
-            const { width, height } = this.$el.getBoundingClientRect();
-            const realSize = {
-              width: height,
-              height: width,
-            };
-            this.tree.size([realSize.width, realSize.height]);
-            this.svg.attr('width', width).attr('height', height);
-            if (!this.empty) {
-              this.updateGraph(this.root);
-            }
-          }
-        },
-      },
-    }
+    },
+  }
 </script>
+
+<style lang="scss" scoped>
+    .smart-structure-hierarchy {
+
+        .smart-structure-hierarchy-item {
+
+            .smart-structure-hierarchy-label {
+                display:inline-block;
+                cursor: pointer;
+                &.current-item {
+                    background: #fdc69f;
+                }
+                background: #e3edf6;
+                border: 2px solid #5f9ccc;
+
+                text-align: center;
+                padding: 0.33em 0.66em;
+
+            }
+        }
+        list-style: none;
+
+        $border-width: 2px;
+
+        ul {
+            position: relative;
+            padding: 1em 0;
+            white-space: nowrap;
+            margin: 0 auto;
+            text-align: center;
+            &::after {
+                content: '';
+                display: table;
+                clear: both;
+            }
+        }
+
+         li {
+            display: inline-block; // need white-space fix
+            vertical-align: top;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 1em .5em 0 .5em;
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 50%;
+                border-top: $border-width solid #ccc;
+                width: 50%;
+                height: 1em;
+            }
+            &::after {
+                right: auto;
+                left: 50%;
+                border-left: $border-width solid #ccc;
+            }
+            &:only-child::after,
+            &:only-child::before {
+                display: none;
+            }
+            &:only-child {
+                padding-top: 0;
+            }
+            &:first-child::before,
+            &:last-child::after {
+                border: 0 none;
+            }
+            &:last-child::before{
+                border-right: $border-width solid #ccc;
+                border-radius: 0 5px 0 0;
+            }
+            &:first-child::after{
+                border-radius: 5px 0 0 0;
+            }
+        }
+
+        ul::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: $border-width solid #ccc;
+            width: 0;
+            height: 1em;
+        }
+
+        li a {
+            border: $border-width solid #ccc;
+            padding: .5em .75em;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            color: #333;
+            position: relative;
+            top: $border-width;
+        }
+    }
+</style>

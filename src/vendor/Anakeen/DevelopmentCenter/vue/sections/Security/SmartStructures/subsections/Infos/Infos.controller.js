@@ -86,7 +86,9 @@ export default {
       }
     },
     onDynamicProfilesClick() {
-      this.$router.push(`/devel/security/profiles?dpdoc_famid=${this.ssName}`);
+      this.getRouter().navigate(
+        `/security/profiles?dpdoc_famid=${this.ssName}`
+      );
     }
   }
 };

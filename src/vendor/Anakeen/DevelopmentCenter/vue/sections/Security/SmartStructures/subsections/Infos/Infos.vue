@@ -9,25 +9,25 @@
                     <div class="infos-card-content-item">
                         <span class="card-content-item-label">Structure profile:</span>
                         <span class="card-content-item-value">
-                            <router-link v-if="structureProperties.security && structureProperties.security.profil && structureProperties.security.profil.id" :to="{name: 'Security::SmartStructures::Structures', params: { ssName: ssName}}">{{structureProperties.security.profil.name}} ({{structureProperties.security.profil.title}})</router-link>
+                            <a v-if="structureProperties.security && structureProperties.security.profil && structureProperties.security.profil.id" :href="`/devel/smartStructures/${ssName}/infos`" >{{structureProperties.security.profil.name}} ({{structureProperties.security.profil.title}})</a>
                             <span v-else>No profile</span>
                         </span>
                     </div>
                     <div class="infos-card-content-item">
                         <span class="card-content-item-label">Default Element profile:</span>
                         <span class="card-content-item-value">
-                            <router-link v-if="structureSecurity.cprofid" :to="{name: 'Security::SmartStructures::Elements', params: { ssName: ssName}}">{{structureSecurity.cprofid.name}} ({{structureSecurity.cprofid.title}})</router-link>
+                            <a v-if="structureSecurity.cprofid" :href="`/devel/security/smartStructures/${ssName}/elementsProfile`" :to="{name: 'Security::SmartStructures::Elements', params: { ssName: ssName}}">{{structureSecurity.cprofid.name}} ({{structureSecurity.cprofid.title}})</a>
                             <span v-else>No profile</span>
                         </span>
                     </div>
                     <div class="infos-card-content-item">
                         <span class="card-content-item-label">Field Access:</span>
                         <span class="card-content-item-value">
-                            <router-link v-if="structureSecurity.cfallid" :to="{name: 'Security::SmartStructures::Fields', params: { ssName: ssName}}">{{structureSecurity.cfallid.name}} ({{structureSecurity.cfallid.title}})</router-link>
+                            <a v-if="structureSecurity.cfallid" :to="{name: 'Security::SmartStructures::Fields', params: { ssName: ssName}}">{{structureSecurity.cfallid.name}} ({{structureSecurity.cfallid.title}})</a>
                             <span v-else>No profile</span>
                         </span>
                     </div>
-                    <button class="dynamic-profiles-button k-button k-button-icontext k-primary" @click="onDynamicProfilesClick"><span class="k-icon"><i class="material-icons">navigation</i></span>Dynamic Profiles</button>
+                    <a data-role="develRouterLink" class="dynamic-profiles-button k-button k-button-icontext k-primary" :href="`/devel/security/profiles?dpdoc_famid=${ssName}`"><span class="k-icon"><i class="material-icons">navigation</i></span>Dynamic Profiles</a>
                 </div>
             </div>
             <div class="security-infos-card">

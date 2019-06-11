@@ -1,6 +1,6 @@
 <template>
     <div class="ss-infos-nav">
-        <router-link v-for="(info, index) in infoSections" :key="index" class="infos-nav-item" :to="info.path"><i class="material-icons infos-nav-icon rotate">navigation</i> {{info.label}}</router-link>
+        <a data-role="develRouterLink" v-for="(info, index) in infoSections" :key="index" class="infos-nav-item" :href="info.path"><i class="material-icons infos-nav-icon rotate">navigation</i> {{info.label}}</a>
     </div>
 </template>
 <!-- CSS to this component only -->

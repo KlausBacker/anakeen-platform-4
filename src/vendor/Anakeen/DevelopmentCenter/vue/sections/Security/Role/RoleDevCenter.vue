@@ -8,7 +8,8 @@
                         collection="ROLE"
                         :pageSizes="[100,200,500]"
                         @action-click="selectRole"
-                        @grid-ready="setGridOption"
+                        filterable="inline"
+                        @grid-data-bound="onGridDataBound"
                         @grid-error="onGridError">
                     <ank-se-grid-column title="Identification" field="id" hidden="true"></ank-se-grid-column>
                     <ank-se-grid-column title="Title" field="title"></ank-se-grid-column>
@@ -20,7 +21,8 @@
                 </ank-se-grid>
             </template>
             <template slot="right">
-                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1; height: 100%;"></router-multi-view>
+<!--                <router-multi-view :force-multi-views="false" style="display:flex; flex: 1; height: 100%;"></router-multi-view>-->
+                <element-view style="height:100%" :initid="selectedRole" viewId="!defaultConsultation"></element-view>
             </template>
         </ank-splitter>
     </div>

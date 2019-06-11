@@ -12,14 +12,14 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.query && this.$route.query.vendorCategory) {
-      if (this.vendorCategory !== this.$route.query.vendorCategory) {
-        this.vendorCategory = this.$route.query.vendorCategory;
-      }
-    }
+    // if (this.$route.query && this.$route.query.vendorCategory) {
+    //   if (this.vendorCategory !== this.$route.query.vendorCategory) {
+    //     this.vendorCategory = this.$route.query.vendorCategory;
+    //   }
+    // }
     this.$store.subscribe(mutation => {
       if (mutation.type === MutationsTypes.SELECT_VENDOR_CATEGORY) {
-        this.$router.addQueryParams({ vendorCategory: mutation.payload });
+        // this.$router.addQueryParams({ vendorCategory: mutation.payload });
       }
     });
     this.$(this.$refs.selector).kendoDropDownList({

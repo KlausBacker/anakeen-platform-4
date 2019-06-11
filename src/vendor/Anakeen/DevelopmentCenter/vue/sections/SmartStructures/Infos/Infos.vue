@@ -15,9 +15,10 @@
         <div class="smart-structure-infos-content">
             <div class="smart-structure-infos-column">
                 <div class="smart-structure-infos-card hierarchy-card">
-                    <div class="infos-card-title">Hierarchy</div>
+                    <div class="infos-card-title">Inheritance</div>
                     <div class="infos-card-content">
-                        <structure-hierarchy :currentStructure="ssName" :data="structureHierarchy"></structure-hierarchy>
+                        <structure-hierarchy v-if="!isHierarchyEmpty" :currentStructure="ssName" :data="structureHierarchy"></structure-hierarchy>
+                        <div style="text-align: center" v-else><span>No inheritance</span></div>
                     </div>
                 </div>
                 <div class="smart-structure-infos-card">

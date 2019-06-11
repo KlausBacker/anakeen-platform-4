@@ -1,40 +1,9 @@
-import Splitter from "../../components/Splitter/Splitter.vue";
+import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-
-const parseFilters = filters => {
-  const result = {};
-  if (filters) {
-    filters.split("&").forEach(filter => {
-      const entry = filter.split("=");
-      if (entry && entry.length) {
-        const key = entry[0];
-        const value = entry[1];
-        result[key] = value;
-      }
-    });
-    return result;
-  } else {
-    return null;
-  }
-};
-
-const filterAction = (to, vueInstance) => () => {
-  let filter = to.query ? parseFilters(to.query.filters) || null : null;
-  if (filter) {
-    const filterObject = { logic: "and", filters: [] };
-    filterObject.filters = Object.entries(filter).map(entry => {
-      const filterOperator = entry[0] === "initid" ? "eq" : "contains";
-      return {
-        field: entry[0],
-        operator: filterOperator,
-        value: entry[1]
-      };
-    });
-    if (filterObject.filters.length) {
-      vueInstance.$refs.grid.dataSource.filter(filterObject);
-    }
-  }
-};
+import PropertiesView from "devComponents/PropertiesView/PropertiesView.vue";
+import ElementView from "./ElementView/ElementView.vue";
+import RawElementView from "./RawElementView/RawElementView.vue";
+import ProfileGrid from "../../components/profile/profile.vue";
 
 const docTypeString = doctype => {
   switch (doctype) {
@@ -62,54 +31,28 @@ const docTypeString = doctype => {
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "element-view": ElementView,
+    "element-properties": PropertiesView,
+    "element-security": ProfileGrid,
+    "element-raw": RawElementView
+  },
+  props: ["smartElement"],
+  watch: {
+    smartElement(newValue) {
+      this.$refs.splitter.disableEmptyContent();
+      this.initFilters(window.location.search);
+      this.selectedElement = newValue;
+    }
   },
   computed: {
     urlConfig() {
       return `/api/v2/devel/security/elements/config/`;
     }
   },
-  beforeRouteEnter(to, from, next) {
-    if (to.name !== "SmartElements") {
-      next(vueInstance => {
-        vueInstance.$refs.splitter.disableEmptyContent();
-        if (vueInstance.$refs.grid.kendoGrid) {
-          filterAction(to, vueInstance)();
-        } else {
-          vueInstance.$refs.grid.$once(
-            "grid-ready",
-            filterAction(to, vueInstance)
-          );
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    } else {
-      next(vueInstance => {
-        if (vueInstance.$refs.grid.kendoGrid) {
-          filterAction(to, vueInstance)();
-        } else {
-          vueInstance.$refs.grid.$once(
-            "grid-ready",
-            filterAction(to, vueInstance)
-          );
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    }
-  },
-  beforeRouteUpdate(to, from, next) {
-    if (this.$refs.grid.kendoGrid) {
-      filterAction(to, this)();
-    } else {
-      this.$refs.grid.$once("grid-ready", filterAction(to, this));
-    }
-    next();
-  },
   data() {
     return {
-      splitterSmartElementEmpty: true,
+      selectedElement: this.smartElement,
       panes: [
         {
           scrollable: false,
@@ -137,43 +80,10 @@ export default {
     }
   },
   mounted() {
-    const bindFilter = grid => {
-      grid.bind("filter", event => {
-        const filter = event.filter ? event.filter.filters[0] || null : null;
-        if (filter) {
-          this.$router.addQueryParams({
-            filters: this.$.param(
-              Object.assign(
-                {},
-                this.$route.query.filters
-                  ? parseFilters(this.$route.query.filters)
-                  : {},
-                { [filter.field]: filter.value }
-              )
-            )
-          });
-        } else {
-          const query = Object.assign({}, this.$route.query);
-          if (query.filters) {
-            query.filters = parseFilters(query.filters);
-            delete query.filters[event.field];
-            if (!Object.keys(query.filters).length) {
-              delete query.filters;
-            } else {
-              query.filters = this.$.param(query.filters);
-            }
-          }
-          this.$router.push({ query: query });
-        }
-      });
-    };
-    if (this.$refs.grid.kendoGrid) {
-      bindFilter(this.$refs.grid.kendoGrid);
-    } else {
-      this.$refs.grid.$once("grid-ready", () => {
-        bindFilter(this.$refs.grid.kendoGrid);
-      });
+    if (this.selectedElement) {
+      this.$refs.splitter.disableEmptyContent();
     }
+    this.initFilters(window.location.search);
   },
   methods: {
     cellRender(event) {
@@ -194,69 +104,167 @@ export default {
         }
       }
     },
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(name|title|initid|fromid)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: field === "initid" ? "equals" : "contains",
+              value
+            });
+          }
+        }
+        if (filters.length) {
+          this.$refs.grid.dataSource.filter(filters);
+        }
+      };
+      if (this.$refs.grid.kendoGrid) {
+        computeFilters();
+      } else {
+        this.$refs.grid.$once("grid-ready", () => {
+          computeFilters();
+        });
+      }
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
+      });
+    },
+    getFilter() {
+      let childrenFilters = {};
+      if (this.$refs.component && this.$refs.component.getFilter) {
+        childrenFilters = this.$refs.component.getFilter();
+      }
+      if (this.$refs.grid && this.$refs.grid.kendoGrid) {
+        const currentFilter = this.$refs.grid.kendoGrid.dataSource.filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, childrenFilters);
+        }
+      }
+      return childrenFilters;
+    },
+    getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
+      if (this.selectedElement) {
+        return Promise.resolve([
+          Object.assign({}, this.selectedElement, {
+            url: this.selectedElement.url + filterUrl
+          })
+        ]);
+      }
+      return Promise.resolve([{ url: filterUrl }]);
+    },
     actionClick(event) {
+      let seIdentifier;
       switch (event.data.type) {
         case "consult":
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
           event.preventDefault();
-          this.$router.push({
-            name: "SmartElements::ElementView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid
+          this.selectedElement = {
+            url: `${seIdentifier}/view`,
+            component: "element-view",
+            props: {
+              initid: seIdentifier,
+              viewId: "!defaultConsultation"
             },
-            query: this.$route.query
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "viewJSON":
-          this.$router.push({
-            name: "SmartElements::RawElementView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid,
-              seType: docTypeString(event.data.row.doctype)
-            },
-            query: {
-              ...this.$route.query,
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
+          event.preventDefault();
+          this.selectedElement = {
+            url: `${seIdentifier}/element?formatType=json`,
+            component: "element-raw",
+            props: {
+              elementId: seIdentifier,
+              elementType: docTypeString(event.data.row.doctype),
               formatType: "json"
-            }
+            },
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "viewXML":
-          this.$router.push({
-            name: "SmartElements::RawElementView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid,
-              seType: docTypeString(event.data.row.doctype)
-            },
-            query: {
-              ...this.$route.query,
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
+          event.preventDefault();
+          this.selectedElement = {
+            url: `${seIdentifier}/element?formatType=xml`,
+            component: "element-raw",
+            props: {
+              elementId: seIdentifier,
+              elementType: docTypeString(event.data.row.doctype),
               formatType: "xml"
-            }
+            },
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "viewProps":
-          this.$router.push({
-            name: "SmartElements::PropertiesView",
-            params: {
-              seIdentifier: event.data.row.name || event.data.row.initid
+          seIdentifier = event.data.row.name || event.data.row.initid;
+          this.$refs.splitter.disableEmptyContent();
+          event.preventDefault();
+          this.selectedElement = {
+            url: `${seIdentifier}/properties`,
+            component: "element-properties",
+            props: {
+              elementId: seIdentifier
             },
-            query: this.$route.query
+            name: seIdentifier,
+            label: seIdentifier
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
           });
           break;
         case "security":
           if (event.data.row.profid) {
-            this.$router.push({
-              name: "SmartElements::ProfilView",
-              params: {
-                seIdentifier: event.data.row.name || event.data.row.initid
+            seIdentifier = event.data.row.name || event.data.row.initid;
+            this.$refs.splitter.disableEmptyContent();
+            event.preventDefault();
+            this.selectedElement = {
+              url: `${seIdentifier}/security?profileId=${
+                event.data.row.profid
+              }`,
+              component: "element-security",
+              props: {
+                profileId: event.data.row.profid,
+                detachable: true
               },
-              query: {
-                ...this.$route.query,
-                profileId: event.data.row.profid
-              }
+              name: seIdentifier,
+              label: seIdentifier
+            };
+            this.getRoute().then(route => {
+              this.$emit("navigate", route);
             });
           }
           break;
       }
-      this.$refs.splitter.disableEmptyContent();
     }
   }
 };

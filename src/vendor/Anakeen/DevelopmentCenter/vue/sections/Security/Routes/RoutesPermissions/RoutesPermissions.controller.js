@@ -22,28 +22,7 @@ export default {
         this.$refs.routesPermissionsContent.kendoWidget().resize();
       }
     });
-  },
-  beforeRouteEnter(to, from, next) {
-    if (to.query.filters) {
-      let filter = to.query.filters.split("=");
-      next(function(vueInstance) {
-        if (filter && filter !== "") {
-          vueInstance.$refs.routesPermissionsContent
-            .kendoWidget()
-            .dataSource.filter({
-              field: filter[0],
-              operator: "contains",
-              value: filter[1]
-            });
-        }
-      });
-    } else {
-      next(function(vueInstance) {
-        vueInstance.$refs.routesPermissionsContent
-          .kendoWidget()
-          .dataSource.filter({});
-      });
-    }
+    this.initFilters(window.location.search);
   },
   devCenterRefreshData() {
     if (this.$refs.routesPermissions) {
@@ -51,14 +30,61 @@ export default {
     }
   },
   methods: {
-    bindFilters() {
-      this.$refs.routesPermissionsContent.kendoWidget().bind("filter", e => {
-        if (e.filter === null) {
-          let query = Object.assign({}, this.$route.query);
-          delete query.filters;
-          this.$router.replace({ query });
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(accessNs|accessName|account\.reference)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: "contains",
+              value
+            });
+          }
         }
+        if (filters.length) {
+          this.$refs.routesPermissions.kendoWidget().filter(filters);
+        }
+      };
+      if (this.$refs.routesPermissions) {
+        computeFilters();
+      } else {
+        this.$refs.routesPermissions.$once("hook:mounted", () => {
+          computeFilters();
+        });
+      }
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
       });
+    },
+    getFilter() {
+      if (
+        this.$refs.routesPermissions &&
+        this.$refs.routesPermissions.kendoWidget()
+      ) {
+        const currentFilter = this.$refs.routesPermissions
+          .kendoWidget()
+          .filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, {});
+        }
+      }
+      return {};
+    },
+    getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
+      return Promise.resolve([{ url: filterUrl }]);
     },
     getPermissions(options) {
       this.$http
@@ -91,12 +117,12 @@ export default {
         }
         switch (colId) {
           case "accessName":
-            return `<a data-role="develRouterLink" href="/devel/security/routes/access/controls/?filters=${this.$.param(
+            return `<a data-role="develRouterLink" href="/devel/security/routes/access?${this.$.param(
               { requiredAccess: dataItem[colId] }
             )}">${dataItem[colId]}</a>`;
           case "account":
             if (dataItem[colId].type === "role") {
-              return `<a data-role="develRouterLink" href="/devel/security/roles/?role=${
+              return `<a data-role="develRouterLink" href="/devel/security/roles/?role_login=${
                 dataItem[colId].reference
               }">${dataItem[colId].reference}</a>`;
             } else {

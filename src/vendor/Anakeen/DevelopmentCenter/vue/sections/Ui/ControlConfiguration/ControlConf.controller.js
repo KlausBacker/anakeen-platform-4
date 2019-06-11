@@ -1,47 +1,34 @@
 import AnkSEGrid from "@anakeen/user-interfaces/components/lib/AnkSEGrid";
-
-import Splitter from "../../../components/Splitter/Splitter.vue";
+import ElementView from "../../SmartElements/ElementView/ElementView.vue";
+import ProfileView from "devComponents/profile/profile.vue";
+import Splitter from "@anakeen/internal-components/lib/Splitter.js";
 
 export default {
   components: {
     "ank-se-grid": AnkSEGrid,
-    "ank-splitter": Splitter
+    "ank-splitter": Splitter,
+    "element-view": ElementView,
+    "permissions-view": ProfileView
   },
-  props: ["ssName"],
-  beforeRouteEnter(to, from, next) {
-    if (to.name === "Ui::control::element") {
-      next(function(vueInstance) {
-        if (to.query.filter) {
-          if (vueInstance.$refs.controlConfGrid.kendoGrid) {
-            vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
-              field: "name",
-              operator: "eq",
-              value: to.query.filter
-            });
-            vueInstance.$refs.controlSplitter.disableEmptyContent();
-          } else {
-            vueInstance.$refs.controlConfGrid.$on("grid-ready", () => {
-              vueInstance.$refs.controlConfGrid.kendoGrid.dataSource.filter({
-                field: "name",
-                operator: "eq",
-                value: to.query.filter
-              });
-            });
-            vueInstance.$refs.controlSplitter.disableEmptyContent();
-          }
-        }
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
-    } else {
-      next(vueInstance => {
-        // Trigger resize to resize the splitter
-        vueInstance.$(window).trigger("resize");
-      });
+  props: ["ssName", "controlConfig"],
+  watch: {
+    controlConfig(newValue) {
+      this.$refs.controlSplitter.disableEmptyContent();
+      this.selectedControl = newValue;
+      this.initFilters(window.location.search);
+      this.getSelected(newValue.name);
     }
+  },
+  mounted() {
+    const searchUrl = window.location.search;
+    if (this.selectedControl) {
+      this.$refs.controlSplitter.disableEmptyContent();
+    }
+    this.initFilters(searchUrl);
   },
   data() {
     return {
+      selectedControl: this.controlConfig,
       panes: [
         {
           scrollable: false,
@@ -64,13 +51,37 @@ export default {
     }
   },
   methods: {
-    getFiltered() {
-      this.$refs.controlConfGrid.kendoGrid.dataSource.bind("change", e => {
-        if (e.sender._filter === undefined) {
-          let query = Object.assign({}, this.$route.query);
-          delete query.filter;
-          this.$router.replace({ query });
+    initFilters(searchUrl) {
+      const computeFilters = () => {
+        const re = /(name|title)=([^&]+)/g;
+        let match;
+        const filters = [];
+        while ((match = re.exec(searchUrl))) {
+          if (match && match.length >= 3) {
+            const field = match[1];
+            const value = decodeURIComponent(match[2]);
+            filters.push({
+              field,
+              operator: "contains",
+              value
+            });
+          }
         }
+        if (filters.length) {
+          this.$refs.controlConfGrid.dataSource.filter(filters);
+        }
+      };
+      if (this.$refs.controlConfGrid.kendoGrid) {
+        computeFilters();
+      } else {
+        this.$refs.controlConfGrid.$once("grid-ready", () => {
+          computeFilters();
+        });
+      }
+    },
+    onGridDataBound() {
+      this.getRoute().then(route => {
+        this.$emit("navigate", route);
       });
     },
     getSelected(e) {
@@ -92,27 +103,69 @@ export default {
         }
       });
     },
+    getFilter() {
+      if (this.$refs.controlConfGrid && this.$refs.controlConfGrid.kendoGrid) {
+        const currentFilter = this.$refs.controlConfGrid.kendoGrid.dataSource.filter();
+        if (currentFilter) {
+          const filters = currentFilter.filters;
+          return filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+          }, {});
+        }
+      }
+      return {};
+    },
+    getRoute() {
+      const filter = this.getFilter();
+      const filterUrl = Object.keys(filter).length ? `?${$.param(filter)}` : "";
+      if (this.selectedControl) {
+        return Promise.resolve([
+          Object.assign({}, this.selectedControl, {
+            url: this.selectedControl.url + filterUrl
+          })
+        ]);
+      }
+      return Promise.resolve([{ url: filterUrl }]);
+    },
     actionClick(event) {
-      event.preventDefault();
-      this.$refs.controlSplitter.disableEmptyContent();
+      const controlName = event.data.row.name;
       switch (event.data.type) {
         case "consult":
-          this.$router.push({
-            name: "Ui::control::element",
-            params: {
-              seIdentifier: event.data.row.name
-            }
+          event.preventDefault();
+          this.$refs.controlSplitter.disableEmptyContent();
+          this.selectedControl = {
+            url: `/element/${controlName}`,
+            component: "element-view",
+            props: {
+              initid: controlName
+            },
+            name: controlName,
+            label: controlName
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+            this.getSelected(event.data.row.name);
           });
-          this.getSelected(event.data.row.name);
           break;
         case "permissions":
-          this.$router.push({
-            name: "Ui::control::permissions",
-            params: {
-              seIdentifier: event.data.row.name
-            }
+          event.preventDefault();
+          this.$refs.controlSplitter.disableEmptyContent();
+          this.selectedControl = {
+            url: `/permissions/${controlName}`,
+            component: "permissions-view",
+            props: {
+              profileId: controlName.toString(),
+              detachable: true,
+              onlyExtendedAcls: true
+            },
+            name: controlName,
+            label: controlName
+          };
+          this.getRoute().then(route => {
+            this.$emit("navigate", route);
+            this.getSelected(event.data.row.name);
           });
-          this.getSelected(event.data.row.name);
           break;
         default:
           break;

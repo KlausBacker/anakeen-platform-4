@@ -10,7 +10,7 @@
                     :filterable-mode="'row'"
                     :filterable-extra="false"
                     :sortable="false"
-                    @hook:mounted="bindFilters"
+                    @databound="onGridDataBound"
                     :noRecords="{ template: `<div class='empty-grid'>
                                                 <div class='empty-grid-icon'>
                                                    <i class='material-icons'>grid_off</i>

@@ -25,4 +25,9 @@
     height: 100%;
     width: 100%;
   }
+  /deep/ {
+    .k-dropdown-operator {
+      display: none;
+    }
+  }
 }

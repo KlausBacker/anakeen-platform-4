@@ -12,7 +12,8 @@
                         :columnHide="onColumnHide"
                         :columnShow="onColumnShow"
                         :columnMenu="{columns: true, filterable: false}"
-                        :messages="{ noRows: messages }">
+                        :messages="{ noRows: messages }"
+        >
             <kendo-treelist-column v-for="item in items" :key="item.name" :template="columnTemplate(`${item.name}`)"
                                    :field="`${item.name}`" :title="`${item.label}`" :headerTemplate="headerTemplate(item)" :hidden="item.hidden" :width="item.width">
             </kendo-treelist-column>

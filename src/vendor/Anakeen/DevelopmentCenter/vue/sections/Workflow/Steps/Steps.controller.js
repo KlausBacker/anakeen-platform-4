@@ -66,9 +66,7 @@ export default {
           } else {
             str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${
               items[item]
-            }/view/?filters=${this.$.param({ name: items[item] })}">${
-              items[item]
-            }</a></li>`;
+            }/view/?name=${items[item]}">${items[item]}</a></li>`;
           }
         });
       }
@@ -80,15 +78,15 @@ export default {
           case "UI":
             return `<ul><li><b>View control :&nbsp</b><a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/views/?filters=${this.$.param({
-              cvId: this.checkIsValid(dataItem["viewcontrol"])
-            })}">${this.checkIsValid(
+            }/views/?cvId=${this.checkIsValid(
+              dataItem["viewcontrol"]
+            )}">${this.checkIsValid(
               dataItem["viewcontrol"]
             )}</a></li><li><b>Mask :&nbsp</b><a data-role="develRouterLink" href="/devel/ui/${
               this.ssName
-            }/views/?filters=${this.$.param({
-              maskId: this.checkIsValid(dataItem["mask"])
-            })}">${this.checkIsValid(dataItem["mask"])}</a></li></ul>`;
+            }/views/?maskId=${this.checkIsValid(
+              dataItem["mask"]
+            )})}">${this.checkIsValid(dataItem["mask"])}</a></li></ul>`;
           case "security":
             return `<ul><li><b>Profil&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/security/profiles/${this.checkIsValid(
               dataItem["profil"]
@@ -104,9 +102,9 @@ export default {
               dataItem["mailtemplates"]
             )}</div><ul><li><b>Timer&nbsp:&nbsp</b><a data-role="develRouterLink" href="/devel/smartElements/${this.checkIsValid(
               dataItem["timer"]
-            )}/view/?filters=${this.$.param({
-              name: this.checkIsValid(dataItem["timer"])
-            })}">${this.checkIsValid(dataItem["timer"])}</a></li></ul></div>`;
+            )}/view/?name=${this.checkIsValid(
+              dataItem["timer"]
+            )}">${this.checkIsValid(dataItem["timer"])}</a></li></ul></div>`;
           default:
             return this.checkIsValid(dataItem[colId]);
         }

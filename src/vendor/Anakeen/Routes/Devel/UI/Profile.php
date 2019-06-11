@@ -72,9 +72,9 @@ class Profile
             ],
             "JS" => [
                 [
-                    "key" => "admin",
+                    "key" => "profile",
                     "path" => UIGetAssetPath::getElementAssets(
-                        "developmentCenter",
+                        "DevCenterStandalone",
                         UIGetAssetPath::isInDebug() ? "dev" : "prod"
                     )["profile"]["js"]
                 ]

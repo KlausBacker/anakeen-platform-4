@@ -57,9 +57,9 @@ class Workflow
             ],
             "JS" => [
                 [
-                    "key" => "admin",
+                    "key" => "workflow",
                     "path" => UIGetAssetPath::getElementAssets(
-                        "developmentCenter",
+                        "DevCenterStandalone",
                         UIGetAssetPath::isInDebug() ? "dev" : "prod"
                     )["workflow"]["js"]
                 ]
