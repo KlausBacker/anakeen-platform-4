@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
+    <workflow:graph ns="WD" name="WG001" label="Graph 001">
+        <workflow:steps>
+            <workflow:step name="e_tst_sl_redaction" initial="true" state-label="Rédaction" activity-label="Écriture en cours"/>
+            <workflow:step name="e_tst_sl_validee_rs" state-label="Validée RS"/>
+            <workflow:step name="e_tst_sl_archivee" state-label="Archivée"/>
+            <workflow:step name="e_tst_sl_validee_directeur" state-label="Validée Directeur" />
+            <workflow:step name="e_tst_sl_validee_ca" state-label="Validée CTP"/>
+            <workflow:step name="e_tst_sl_contrat_signe_recu" state-label="Contrat signé reçu"/>
+            <workflow:step name="e_tst_sl_payee_compta" state-label="Payée compta"/>
+            <workflow:step name="e_tst_sl_ar_recu" state-label="AR reçu"/>
+            <workflow:step name="e_tst_sl_ctp_informe" state-label="CTP informée"/>
+            <workflow:step name="e_tst_sl_bap" state-label="Bon à payer"/>
+        </workflow:steps>
+        <workflow:transitions>
+            <workflow:transition name="t_tst_sl_validation_un_deux" from="e_tst_sl_redaction" to="e_tst_sl_validee_rs" label="Validation RS"/>
+            <workflow:transition name="t_tst_sl_archivage_un_huit" from="e_tst_sl_redaction" to="e_tst_sl_archivee" label="Archivage (E1-E8)"/>
+            <workflow:transition name="t_tst_sl_demande_deux_un" from="e_tst_sl_validee_rs" to="e_tst_sl_redaction" label="Demande de modifications (E2-E1)"/>
+            <workflow:transition name="t_tst_sl_validation_deux_trois" from="e_tst_sl_validee_rs" to="e_tst_sl_validee_directeur" label="Validation Directeur"/>
+            <workflow:transition name="t_tst_sl_demande_trois_un" from="e_tst_sl_validee_directeur" to="e_tst_sl_redaction" label="Demande de modifications de fond"/>
+            <workflow:transition name="t_tst_sl_validation_trois_quatre" from="e_tst_sl_validee_directeur" to="e_tst_sl_validee_ca" label="Validation CTP"/>
+            <workflow:transition name="t_tst_sl_archivage_trois_huit" from="e_tst_sl_validee_directeur" to="e_tst_sl_archivee" label="Archivage (E3-E8)"/>
+            <workflow:transition name="t_tst_sl_paiement_cinq_six" from="e_tst_sl_contrat_signe_recu" to="e_tst_sl_payee_compta" label="Paiement"/>
+            <workflow:transition name="t_tst_sl_reception_six_sept" from="e_tst_sl_payee_compta" to="e_tst_sl_ar_recu" label="Réception AR"/>
+            <workflow:transition name="t_tst_sl_reception_sept_huit" from="e_tst_sl_ar_recu" to="e_tst_sl_archivee" label="Réception rapport"/>
+            <workflow:transition name="t_tst_sl_validation_rs_ctp_informe" from="e_tst_sl_validee_rs" to="e_tst_sl_ctp_informe" label="Informer la CTP"/>
+            <workflow:transition name="t_tst_sl_ctp_informe_bap" from="e_tst_sl_ctp_informe" to="e_tst_sl_bap" label="Validation BAP 2"/>
+            <workflow:transition name="t_tst_sout_long_valid_bap_qqb" from="e_tst_sl_validee_ca" to="e_tst_sl_bap" label="Validation BAP 1"/>
+            <workflow:transition name="t_tst_sl_emission_quatre_cinq" from="e_tst_sl_bap" to="e_tst_sl_contrat_signe_recu" label="Emission contrat"/>
+        </workflow:transitions>
+    </workflow:graph>
+</smart:config>

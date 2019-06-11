@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
+    <workflow:graph ns="WD" name="WG002" label="Graph 002">
+        <workflow:steps>
+            <workflow:step name="e1" initial="true" state-label="E1" activity-label="In progress"/>
+            <workflow:step name="e2" state-label="E2"/>
+        </workflow:steps>
+        <workflow:transitions>
+            <workflow:transition name="t_e1_e2" from="e1" to="e2" label="E1 to E2"/>
+        </workflow:transitions>
+    </workflow:graph>
+</smart:config>

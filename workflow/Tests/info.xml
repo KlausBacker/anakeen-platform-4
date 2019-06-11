@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="workflow-test"
+        license="http://docs.anakeen.com/licenses/anakeen-3.0/license.html Anakeen License Agreement v3"
+        version="2.0.0" vendor="Anakeen">
+    <description>Test case for Anakeen Platform Workflow.</description>
+    <requires>
+        <module name="smart-data-engine-test" version="2.0.x"/>
+        <module name="workflow" version="2.0.x"/>
+    </requires>
+
+    <pre-install>
+        <check type="syscommand" command="xmllint">
+            <label>Check "xmllint". To check xml files</label>
+        </check>
+        <check type="phpclass" class="ZipArchive">
+            <help>You might need to install a php-zip package from your distribution in order to have ZipArchive support in PHP.</help>
+        </check>
+    </pre-install>
+
+    <post-install>
+        <process command="./ank.php --system --localeGen"/>
+    </post-install>
+
+    <pre-upgrade>
+        <check type="syscommand" command="xmllint">
+            <label>Check "xmllint". To check xml files</label>
+        </check>
+        <check type="phpclass" class="ZipArchive">
+            <help>You might need to install a php-zip package from your distribution in order to have ZipArchive support in PHP.</help>
+        </check>
+    </pre-upgrade>
+
+    <post-upgrade>
+    </post-upgrade>
+
+</module>
