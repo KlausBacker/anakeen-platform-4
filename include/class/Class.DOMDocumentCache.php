@@ -28,7 +28,7 @@ class DOMDocumentCache extends DOMDocument
     }
     public function commit($options = 0)
     {
-        require_once 'lib/Lib.System.php';
+        require_once __DIR__.'/../lib/Lib.System.php';
         
         if (!$this->_hasBeenModified()) {
             /*

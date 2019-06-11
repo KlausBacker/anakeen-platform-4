@@ -19,7 +19,7 @@ function curPageURL()
     return $pageURL;
 }
 
-require_once 'class/Class.WiffCommon.php';
+require_once __DIR__.'/Class.WiffCommon.php';
 
 class WIFF extends WiffCommon
 {
@@ -395,7 +395,7 @@ EOF;
     }
     private function checkPreUpdate($archiveFile)
     {
-        require_once ('class/Class.String.php');
+        require_once (__DIR__.'/Class.String.php');
         
         $tempDir = WiffLibSystem::tempnam(null, 'WIFF_checkPreUpdate');
         if ($tempDir === false) {
@@ -490,7 +490,7 @@ EOF;
      */
     public function getRepoList($checkValidity = true)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         $repoList = array();
         
@@ -518,7 +518,7 @@ EOF;
      */
     public function getRepo($name)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -564,7 +564,7 @@ EOF;
      */
     public function createRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password, $returnRepoValidation = true)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -785,7 +785,7 @@ EOF;
      */
     public function modifyRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -840,7 +840,7 @@ EOF;
      */
     public function deleteRepo($name)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
@@ -905,8 +905,8 @@ EOF;
      */
     public function getContextList($withInProgress = false)
     {
-        require_once ('class/Class.Repository.php');
-        require_once ('class/Class.Context.php');
+        require_once (__DIR__.'/Class.Repository.php');
+        require_once (__DIR__.'/Class.Context.php');
         
         $contextList = array();
         
@@ -1747,8 +1747,8 @@ EOF;
      */
     public function getContext($name, $opt = false)
     {
-        require_once ('class/Class.Repository.php');
-        require_once ('class/Class.Context.php');
+        require_once (__DIR__.'/Class.Repository.php');
+        require_once (__DIR__.'/Class.Context.php');
         
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
@@ -2061,7 +2061,7 @@ EOF;
      */
     public function downloadUrl($url, $opts = array())
     {
-        require_once 'class/Class.WWWUserAgent.php';
+        require_once __DIR__.'/Class.WWWUserAgent.php';
         
         if ($url == '') {
             $this->errorMessage = 'Download URL must not be empty';
@@ -2647,7 +2647,7 @@ EOF;
     
     static function anonymizeUrl($url)
     {
-        require_once 'class/Class.WWWUserAgent.php';
+        require_once __DIR__.'/Class.WWWUserAgent.php';
         return WWW\UserAgent::anonymizeUrl($url);
     }
     
@@ -2742,7 +2742,7 @@ EOF;
     
     public function validateDOMDocument(DOMDocument $dom, $urn)
     {
-        require_once ('class/Class.XMLSchemaCatalogValidator.php');
+        require_once (__DIR__.'/Class.XMLSchemaCatalogValidator.php');
         try {
             $validator = new \XMLSchemaCatalogValidator\Validator($this->xsd_catalog_xml);
             $validator->loadDOMDocument($dom);
@@ -2781,7 +2781,7 @@ EOF;
     
     public function loadContextsDOMDocument($options = 0)
     {
-        require_once 'class/Class.DOMDocumentCacheFactory.php';
+        require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
         try {
             $dom = DOMDocumentCacheFactory::load($this->contexts_filepath, $options);
         }
@@ -2794,7 +2794,7 @@ EOF;
     
     public function loadParamsDOMDocument($options = 0)
     {
-        require_once 'class/Class.DOMDocumentCacheFactory.php';
+        require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
         try {
             $dom = DOMDocumentCacheFactory::load($this->params_filepath, $options);
         }
@@ -2819,7 +2819,7 @@ EOF;
     
     private function initLogger()
     {
-        require_once 'class/Class.Logger.php';
+        require_once __DIR__.'/Class.Logger.php';
         self::$logger = new Logger(self::logIdent);
         if ($this->getParam('local-log', false, true) == 'yes') {
             self::$logger->setLogFile($this->log_filepath);

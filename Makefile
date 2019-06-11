@@ -18,6 +18,8 @@ all:
 
 tarball:
 	composer install
+	yarn install
+
 	mkdir -p tmp/$(TAR_DIST_DIR)
 	sed -e "s/{{VR}}/$(VERSION)-$(RELEASE)/g" index-tpl.html > index.html
 	tar -cf - \
@@ -30,10 +32,16 @@ tarball:
 		--exclude "*~" \
 		--exclude .git \
 		--exclude .gitmodules \
+		--exclude node_modules \
 		--exclude PubRule \
 		--exclude po2js.php \
 		. | tar -C tmp/$(TAR_DIST_DIR) -xf -
+	cp -r node_modules/bootstrap/dist tmp/public/bootstrap
+	cp -r node_modules/jquery/dist tmp/public/jquery
+	cp -r node_modules/popper.js/dist tmp/public/popper
+
 	tar -C tmp -zcf $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).tar.gz $(TAR_DIST_OPTS) $(TAR_DIST_DIR)
+
 	rm -Rf tmp
 
 autoinstall: tarball

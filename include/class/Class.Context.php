@@ -132,10 +132,11 @@ class Context extends ContextProperties
     /**
      * Import archive in Context
      *
-     * @return bool|string boolean false on error or the archive pathname
-     *
      * @param string $archive the archive pathname
      * @param string $status  the status to which the imported archive will be set to (default = 'downloaded')
+     *
+     * @return bool|string boolean false on error or the archive pathname
+     *
      */
     public function importArchive($archive, $status = 'downloaded')
     {
@@ -234,9 +235,9 @@ class Context extends ContextProperties
     /**
      * Activate repository for Context
      *
-     * @return boolean success
-     *
      * @param string $name repository name
+     *
+     * @return boolean success
      *
      * @internal param string $url repository url
      */
@@ -346,9 +347,10 @@ class Context extends ContextProperties
     /**
      * Deactivate repository for Context
      *
+     * @param string $name repository name
+     *
      * @return boolean success
      *
-     * @param string $name repository name
      */
     public function deactivateRepo($name)
     {
@@ -637,10 +639,11 @@ class Context extends ContextProperties
      * Merge two module lists, sort and keep modules with highest version-release
      *   (kinda sort|uniq).
      *
-     * @return array containing unique module Objects
-     *
      * @param first array of module Objects
      * @param second array of module Objects
+     *
+     * @return array containing unique module Objects
+     *
      */
     public function mergeModuleList(&$list1, &$list2)
     {
@@ -694,10 +697,11 @@ class Context extends ContextProperties
     /**
      * Compare two module Objects by ascending version
      *
-     * @return int < 0 if mod1 is less than mod2, > 0 if mod1 is greater than mod2,
-     *
      * @param Module $module1
      * @param Module $module2
+     *
+     * @return int < 0 if mod1 is less than mod2, > 0 if mod1 is greater than mod2,
+     *
      */
     public static function cmpModuleByVersionAsc(&$module1, &$module2)
     {
@@ -707,10 +711,11 @@ class Context extends ContextProperties
     /**
      * Compare two module Objects by descending version
      *
-     * @return int > 0 if mod1 is less than mod2, < 0 if mod1 is greater than mod2,
-     *
      * @param Module $module1
      * @param Module $module2
+     *
+     * @return int > 0 if mod1 is less than mod2, < 0 if mod1 is greater than mod2,
+     *
      */
     public function cmpModuleByVersionDesc(&$module1, &$module2)
     {
@@ -728,10 +733,11 @@ class Context extends ContextProperties
     /**
      * Get Module by name
      *
-     * @return Module or boolean false
-     *
      * @param string $name Module name
      * @param bool   $status
+     *
+     * @return Module or boolean false
+     *
      */
     public function getModule($name, $status = false)
     {
@@ -959,12 +965,13 @@ class Context extends ContextProperties
     /**
      * Get module dependencies from repositories indexes
      *
-     * @return array containing a list of Module objects ordered by their
-     *         install order, or false in case of error
-     *
      * @param array $namelist the module name list
      * @param bool  $local
      * @param bool  $installed
+     *
+     * @return array containing a list of Module objects ordered by their
+     *         install order, or false in case of error
+     *
      */
     public function getModuleDependencies(array $namelist, $local = false, $installed = false)
     {
@@ -1292,10 +1299,11 @@ class Context extends ContextProperties
      * Check if a Module object with this name already exists a a list of
      * Module objects
      *
-     * @return integer Index where module was found, -1 if not found
-     *
      * @param        $depsList array( Module object 1, [...], Module object N )
      * @param string $name
+     *
+     * @return integer Index where module was found, -1 if not found
+     *
      */
     private function depsListContains(array & $depsList, $name)
     {
@@ -1312,11 +1320,12 @@ class Context extends ContextProperties
     /**
      * Move a module at position $pos after position $pivot
      *
-     * @return void (nothing)
-     *
      * @param array $depsList array of Modules
      * @param int   $pos      actual module to move
      * @param int   $pivot    position which the module should be moved to
+     *
+     * @return void (nothing)
+     *
      */
     private function moveDepToRight(array & $depsList, $pos, $pivot)
     {
@@ -1339,7 +1348,6 @@ class Context extends ContextProperties
         }
         return $installedModule;
     }
-
 
 
     /**
@@ -1395,7 +1403,7 @@ class Context extends ContextProperties
      */
     public function getParamByName($paramName)
     {
-        require_once(__DIR__.'/Class.WIFF.php');
+        require_once(__DIR__ . '/Class.WIFF.php');
 
         $wiff = WIFF::getInstance();
 
@@ -1429,7 +1437,7 @@ class Context extends ContextProperties
      */
     public function setParamByName($paramName, $paramValue)
     {
-        require_once __DIR__.'/Class.WIFF.php';
+        require_once __DIR__ . '/Class.WIFF.php';
         $wiff = WIFF::getInstance();
 
         $xml = $wiff->loadContextsDOMDocument();
@@ -1522,7 +1530,7 @@ class Context extends ContextProperties
      */
     public function uploadModule()
     {
-        require_once(__DIR__.'/../lib/Lib.System.php');
+        require_once(__DIR__ . '/../lib/Lib.System.php');
 
         $tmpfile = WiffLibSystem::tempnam(null, 'WIFF_downloadLocalFile');
         if ($tmpfile === false) {
@@ -1638,7 +1646,7 @@ class Context extends ContextProperties
      */
     public function loadModuleFromPackage($filename)
     {
-        require_once(__DIR__.'/Class.Module.php');
+        require_once(__DIR__ . '/Class.Module.php');
 
         $module = new Module($this);
         $module->tmpfile = $filename;

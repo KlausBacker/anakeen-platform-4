@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Anakeen Control</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="images/icons/anakeen.png">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="mainpage.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <!-- Navbar content -->
+  <a class="navbar-brand" target="_blank" href="https://www.anakeen.com/">
+    <img class="logo" alt="logo"
+         src="images/logo/anakeen-dark.svg"/></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+          aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" data-target-id="modules">Modules</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-target-id="configuration">Configuration</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-target-id="info">Info</a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      <div class="navbar-text--title">Anakeen </div>
+      <div class="navbar-text--title">Control</div>
+    </span>
+  </div>
+</nav>
+
+
+<div id="modules" class="control-container">
+
+  <div class="table-responsive-lg">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+
+
+      <tr>
+        <th>Name</th>
+        <th>Vendor</th>
+        <th>Installed version</th>
+        <th>Available version</th>
+        <th>Status</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#modules}}
+        <tr class="installed" {{#canUpdate}}data-canupdate="true"{{/canUpdate}}>
+          <td>{{name}}</td>
+          <td>{{vendor}}</td>
+          <td>{{version}}</td>
+          <td class="available-version">{{availableversion}}</td>
+          <td>{{status}}</td>
+          <td>{{description}}</td>
+        </tr>
+      {{/modules}}
+
+
+
+      {{#notinstalled}}
+        <tr class="notinstalled">
+          <td>{{name}}</td>
+          <td>{{vendor}}</td>
+          <td></td>
+          <td>{{version}}</td>
+          <td>{{status}}</td>
+          <td>{{description}}</td>
+        </tr>
+      {{/notinstalled}}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<div id="info" class="control-container" style="display:none">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+    <tr>
+      <th colspan="2">Anakeen Control About</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Installed version</td>
+      <td>{{version}}</td>
+    </tr>
+    <tr>
+      <td>Available version</td>
+      <td>{{availableVersion}}</td>
+    </tr>
+    <tr>
+      <td>Anakeen Platform Server Path</td>
+      <td>{{serverPath}}</td>
+    </tr>
+    <tr>
+      <td>Anakeen Control Server Path</td>
+      <td>{{controlPath}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <div class="container card-body php-info">
+
+      {{{phpinfo}}}
+
+    </div>
+  </div>
+
+</div>
+<div id="configuration" class="control-container" style="display:none">
+  <div class="card">
+    <h5 class="card-title">Repositories</h5>
+    <div class="container card-body">
+
+      <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Url</th>
+          <th>Status</th>
+          <th>Authentication login</th>
+          <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#repositories}}
+          <tr class="installed" {{#isValid}}data-isvalid="true"{{/isValid}}>
+            <td>{{name}}</td>
+            <td>{{url}}</td>
+            <td>{{#errorMessage}}{{errorMessage}}{{/errorMessage}}{{#isValid}}activated{{/isValid}}</td>
+            <td>{{login}}</td>
+            <td>{{description}}</td>
+          </tr>
+        {{/repositories}}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div class="card">
+    <h5 class="card-title">Parameters</h5>
+    <div class="container card-body">
+
+      <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#parameters}}
+          <tr>
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+          </tr>
+        {{/parameters}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="jquery/jquery.min.js"></script>
+<script src="popper/umd/popper.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="mainpage.js"></script>
+</body>
+</html>

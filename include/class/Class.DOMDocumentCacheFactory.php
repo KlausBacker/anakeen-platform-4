@@ -4,7 +4,7 @@
  * @package CONTROL
 */
 
-require_once 'class/Class.DOMDocumentCache.php';
+require_once __DIR__.'/Class.DOMDocumentCache.php';
 
 class DOMDocumentCacheFactory
 {
