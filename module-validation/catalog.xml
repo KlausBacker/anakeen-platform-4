@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <system uri="./xsd/timer/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/timer/1.0"/>
+    <system uri="./xsd/workflow/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/workflow/1.0"/>
+    <system uri="./xsd/mailtemplate/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"/>
+    <system uri="./xsd/sde/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/sde/1.0"/>
+    <system uri="./xsd/smart/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/smart/1.0"/>
+    <system uri="./xsd/ui/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/ui/1.0"/>
+    <system uri="./xsd/module/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/module/1.0"/>
+    <system uri="./xsd/app/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/app/1.0"/>
+    <system uri="./xsd/task/1.0/config.xsd" systemId="https://platform.anakeen.com/4/schemas/task/1.0"/>
+    <system uri="./xsd/compose/1.0/compose.xsd" systemId="https://platform.anakeen.com/4/schemas/compose/1.0"/>
+    <system uri="./xsd/compose-lock/1.0/compose-lock.xsd" systemId="https://platform.anakeen.com/4/schemas/compose-lock/1.0"/>
+</catalog>

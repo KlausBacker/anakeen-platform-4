@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified"
+           targetNamespace="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"
+           xmlns:ns="https://platform.anakeen.com/4/schemas/mailtemplate/1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Mailtemplate data part -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xs:element name="mailtemplate" type="ns:mailtemplateType"/>
+
+    <xs:complexType name="fromType">
+        <xs:choice>
+            <xs:element type="xs:string" name="address" minOccurs="0"/>
+            <xs:element type="ns:config-parameterType" name="config-parameter" minOccurs="0"/>
+            <xs:element type="ns:element-account-fieldType" name="structure-account-parameter" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="element-field-value" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="element-account-field" minOccurs="0"/>
+            <xs:element type="ns:element-account-fieldType" name="structure-parameter-value" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="workflow-field-value" minOccurs="0"/>
+            <xs:element type="ns:element-account-fieldType" name="workflow-parameter-value" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="workflow-account-field" minOccurs="0"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="element-account-fieldType">
+        <xs:simpleContent>
+            <xs:extension base="ns:fieldName">
+                <xs:attribute type="xs:string" name="label"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="element-relation-fieldType">
+        <xs:simpleContent>
+            <xs:extension base="ns:fieldRelation">
+                <xs:attribute type="xs:string" name="label"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="element-nameType">
+        <xs:simpleContent>
+            <xs:extension base="ns:elementName">
+                <xs:attribute type="xs:string" name="label"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="recipientType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="address" minOccurs="0"/>
+            <xs:element type="ns:config-parameterType" name="config-parameter" minOccurs="0"/>
+            <xs:element type="ns:element-account-fieldType" name="structure-account-parameter" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="element-field-value" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="element-account-field" minOccurs="0"/>
+            <xs:element type="ns:element-account-fieldType" name="structure-parameter-value" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="workflow-field-value" minOccurs="0"/>
+            <xs:element type="ns:element-account-fieldType" name="workflow-parameter-value" minOccurs="0"/>
+            <xs:element type="ns:element-relation-fieldType" name="workflow-account-field" minOccurs="0"/>
+            <xs:element type="ns:element-nameType" name="element-name" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="ns:destType" name="dest" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="recipientsType">
+        <xs:sequence>
+            <xs:element type="ns:recipientType" name="recipient" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bodyType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="content-type">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="html"/>
+                            <!-- Need to add plain -->
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+        <xs:complexType name="attachmentType">
+        <xs:simpleContent>
+            <xs:extension base="ns:fieldName">
+                <xs:attribute type="xs:string" name="label"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="attachmentsType">
+        <xs:sequence>
+            <xs:element type="ns:attachmentType" name="attachment" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="mailtemplateType">
+        <xs:sequence>
+            <xs:element type="ns:fromType" name="from" minOccurs="0"/>
+            <xs:element type="ns:recipientsType" name="recipients"/>
+            <xs:element type="xs:string" name="subject"/>
+            <xs:element type="xs:boolean" name="savecopy" minOccurs="0" default="false"/>
+            <xs:element type="xs:boolean" name="use-html-anchor" minOccurs="0" default="true"/>
+            <xs:element type="ns:bodyType" name="body"/>
+            <xs:element type="ns:attachmentsType" name="attachments" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="ns:elementName" name="name" use="required"/>
+        <xs:attribute type="ns:elementName" name="structure" use="required"/>
+        <xs:attribute type="ns:elementName" name="workflow-model"/>
+        <xs:attribute type="xs:string" name="label"/>
+    </xs:complexType>
+    <xs:simpleType name="destType">
+        <xs:annotation>
+            <xs:documentation>
+                <h1>Destination type</h1>
+                <ul>
+                    <li>
+                        <code>to</code>
+                        : Send copy
+                    </li>
+                    <li>
+                        <code>cc</code>
+                        : Carbon copy
+                    </li>
+                    <li>
+                        <code>bcc</code>
+                        : Blind carbon copy
+                    </li>
+                </ul>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="to"/>
+            <xs:enumeration value="cc"/>
+            <xs:enumeration value="bcc"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="config-parameterType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:token" name="ns" use="required"/>
+                <xs:attribute type="xs:string" name="label" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <!-- ~~~~~~~~~~~~~~~~~ -->
+    <!--    Basic type     -->
+    <!-- ~~~~~~~~~~~~~~~~~ -->
+    <xs:simpleType name="fieldName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z0-9_]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="fieldRelation">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-z][a-z0-9_:]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="elementName">
+        <xs:restriction base="xs:token">
+            <xs:pattern value="[a-zA-Z][A-Za-z0-9_-]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
