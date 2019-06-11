@@ -60,3 +60,12 @@ div.hub-station-component.hub-instance-DEVELCENTER > section > section {
     margin: 0;
     background: white;
 }
+
+.smart-element-grid > .grid-widget-wrapper {
+    flex: 1;
+}
+
+a[data-role=develRouterLink] {
+    color: #157EFB;
+    text-decoration: underline;
+}
