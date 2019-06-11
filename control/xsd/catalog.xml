@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <system systemId="https://platform.anakeen.com/4/schemas/app/1.0" uri="app-1.0.xsd"/>
+</catalog>

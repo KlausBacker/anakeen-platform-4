@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+$WIFF_ROOT = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..');
+set_include_path(get_include_path().PATH_SEPARATOR.$WIFF_ROOT.DIRECTORY_SEPARATOR.'include');
+putenv('WIFF_ROOT='.$WIFF_ROOT);
+
+require_once ('class/Class.WIFF.php');
+
+function __autoload($class_name) {
+  require_once 'class/Class.'.$class_name.'.php';
+}
+
+$wiff = WIFF::getInstance();
+if( $wiff === false ) {
+  error_log(sprintf("Error getting WIFF instance."));
+  exit(1);
+}
+
+$xml = $wiff->loadParamsDOMDocument();
+if ($xml === false) {
+  error_log($wiff->errorMessage);
+  exit(1);
+}
+$x = new DOMXPath($xml);
+/*
+ * Add new connect-timeout parameter if not exists
+ */
+$exists = $x->query("/wiff/parameters/param[@name='connect-timeout']");
+if ($exists->length <= 0) {
+  $parameters = $x->query("/wiff/parameters");
+  if ($parameters->length > 0) {
+    $param = $xml->createElement('param');
+    $param->setAttribute('name', 'connect-timeout');
+    $param->setAttribute('value', '3');
+    $parameters->item(0)->appendChild($param);
+  }
+}
+$xml->commit();
+
+exit(0);

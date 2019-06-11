@@ -1,0 +1,296 @@
+.x-form-item {
+    overflow: hidden !important;
+}
+.x-repo-setup {
+    background-image: url('../images/icons/link_edit.png') !important;
+}
+
+.x-repo-delete {
+    background-image: url('../images/icons/link_delete.png') !important;
+}
+
+.x-icon-create {
+    background-image: url('../images/icons/add.png') !important;
+}
+
+.x-icon-create-archive {
+    background-image: url('../images/icons/package_add.png') !important;
+}
+
+.x-icon-delete-archive {
+    background-image: url('../images/icons/package_delete.png') !important;
+}
+
+.x-context-modify {
+    background-image: url('../images/icons/pencil.png') !important;
+}
+
+.x-icon-context {
+    background-image: url('../images/icons/context.png') !important;
+}
+
+.x-icon-delete-context {
+    background-image: url('../images/icons/delete.png') !important;
+}
+
+.x-icon-archive {
+    background-image: url('../images/icons/package.png') !important;
+}
+
+.x-icon-archive-error {
+    background-image: url('../images/icons/package-warn.png') !important;
+}
+
+.x-icon-archive-download {
+    background-image: url('../images/icons/icon-archive-download.png') !important;
+}
+
+.x-icon-install {
+    background-image: url('../images/icons/add.png') !important;
+}
+
+.x-icon-update {
+    background-image: url('../images/icons/add.png') !important;
+}
+
+.x-icon-setup {
+    background-image: url('../images/icons/application_form_edit.png') !important;
+}
+
+.x-icon-param {
+    background-image: url('../images/icons/brick_edit.png') !important;
+}
+
+.x-icon-param-change {
+    background-image: url('../images/icons/textfield_rename.png') !important;
+}
+
+.x-icon-remove {
+    background-image: url('../images/icons/delete.png') !important;
+}
+
+.x-icon-help {
+    background-image: url('../images/icons/help.png') !important;
+}
+
+.x-icon-ok {
+    background-image: url('../images/icons/accept.png') !important;
+}
+
+.x-icon-ko {
+    background-image: url('../images/icons/exclamation.png') !important;
+}
+
+.x-icon-warning {
+    background-image: url('../images/icons/error.png') !important;
+}
+
+.x-icon-refresh {
+    background-image: url('../images/icons/arrow_refresh.png') !important;
+}
+
+.x-icon-loading {
+    background-image: url('../javascript/lib/ext/resources/images/default/grid/loading.gif') !important;
+}
+
+.x-icon-wiff-update {
+    background-image: url('../images/icons/application_get.png') !important;
+}
+
+.x-icon-wiff-password {
+    background-image: url('../images/icons/application_key.png') !important;
+}
+
+.x-icon-undo {
+    background-image: url('../images/icons/arrow_undo.png') !important;
+}
+
+.x-icon-cross {
+    background-image: url('../images/icons/cross.png') !important;
+}
+
+.x-icon-local-log {
+    background-image: url('../images/icons/application_form_magnify.png') !important;
+}
+
+.x-icon-local-log-view {
+    background-image: url('../images/icons/magnifier.png') !important;
+}
+
+.x-icon-local-log-clear {
+    background-image: url('../images/icons/bin.png') !important;
+}
+
+.x-module-import {
+    background-image: url('../images/icons/brick_go.png') !important;
+}
+
+.x-module-installed, .x-module-available {
+    background-image: url('../images/icons/brick.png') !important;
+}
+
+.x-icon-php {
+    background-image: url('../images/icons/page_white_php.png') !important;
+}
+
+.x-icon-loading {
+    background-image: url('../javascript/lib/ext/resources/images/default/grid/loading.gif') !important;
+}
+
+.x-icon-log {
+    background-image: url('../images/icons/page_white_text.png') !important;
+}
+
+.x-icon-log-alone {
+    float: left;
+    min-width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    margin: 0 5px 0 0;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.x-tab-strip .x-icon-loading {
+    color: #DFE8F6 !important;
+}
+
+.x-tab-strip-active .x-icon-loading {
+    color: #395B8E !important;
+}
+.x-tab-joint {
+    z-index: 0 !important;
+}
+.red-row .x-grid3-cell-inner {
+    color: red;
+}
+
+.mandatory-row .x-grid3-cell-inner {
+    color: gray;
+}
+
+.console {
+    white-space: pre-wrap;
+    padding: 0.5em;
+    border-left: black dotted 1px;
+}
+
+.help {
+    padding: 0.5em;
+    background-color: MistyRose;
+}
+
+.x-btn-text {
+    font-weight: bold !important;
+}
+
+.x-form-check-wrap, .x-form-display-field {
+    padding-top: 4px;
+    height: 100%;
+}
+
+/*
+ * FileUploadField component styles
+ */
+.x-form-file-wrap {
+    position: relative;
+    height: 22px;
+    /* CHANGE */
+    overflow: hidden;
+    /* END CHANGE */
+}
+
+.x-form-file-wrap .x-form-file {
+    position: absolute;
+    right: 0;
+    -moz-opacity: 0;
+    filter: alpha(opacity:0);
+    opacity: 0;
+    z-index: 2;
+    height: 22px;
+}
+
+.x-form-file-wrap .x-form-file-btn {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
+.x-form-file-wrap .x-form-file-text {
+    position: absolute;
+    left: 0;
+    z-index: 3;
+    color: #777;
+}
+
+/*
+ * EO FileUploadField component styles
+ */
+
+#group-tab-panel > .x-tab-panel-header {
+    background-image: url('../images/logo/anakeen-dark.svg');
+    background-position: top center;
+    background-size: 130px;
+    background-repeat: no-repeat !important;
+    padding-top: 60px;
+}
+
+.module, .context {
+    font-weight: bold;
+}
+
+.message {
+    font-style: italic;
+}
+
+.error {
+    color: #900;
+}
+
+.warning {
+    color: #990;
+}
+
+.welcome {
+    padding:50px;
+    color: #888;
+    font-family: Helvetica, Arial, sans-serif;
+}
+.welcome .content {
+    margin-left: 7em;
+}
+.welcome a { color: #08C; text-decoration:none; }
+.welcome img { float:left; }
+.welcome h1 { font-size: 2em; font-weight: bold; }
+.welcome ul { list-style-type: circle; padding-left: 2em; }
+.welcome li { padding-top: 1em; }
+
+
+.welcome .message {
+  font-style: normal;
+  margin-top:3em;
+}
+
+.welcome .documentation { margin-top:3em; }
+
+.welcome .licence {
+  font-style: normal;
+  margin-top:3em;
+}
+
+.welcome pre.code {
+    font-family: courier, monospace;
+    font-size: 80%;
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #888;
+    border-radius: 5px;
+    margin-top:1em;
+}
+
+table.altern tr:nth-child(even) {
+    background: #dddddd;
+}
+table.altern tr:nth-child(odd) {
+    background: #ffffff;
+}
