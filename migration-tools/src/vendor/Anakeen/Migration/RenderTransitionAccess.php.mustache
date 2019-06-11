@@ -1,0 +1,24 @@
+<?php
+
+namespace {{Namespace}};
+
+use SmartStructure\Wdoc;
+/**
+ * Transition Access render to display {{structureName}} elements in browser
+ */
+class {{Classname}} implements \Dcp\Ui\IRenderTransitionAccess
+{
+    /**
+     * @param string $transitionId
+     * @return \Anakeen\Ui\TransitionRender
+     */
+    public function getTransitionRender($transitionId, Wdoc $workflow)
+      {
+            if($transitionId)
+            {
+            // @FIXME return \Anakeen\Ui\TransitionRender object
+
+            }
+            return null;
+      }
+}

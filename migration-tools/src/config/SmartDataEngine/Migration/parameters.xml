@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:parameters namespace="Migration">
+        <sde:parameter name="MODULE">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Module Name (sub directory)</sde:description>
+            <sde:value></sde:value>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
+        <sde:parameter name="DYNACASE_URL">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Dynacase Complete Url to context</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
+        <sde:parameter name="DYNACASE_PASSWORD">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Admin password</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
+        <sde:parameter name="VENDOR">
+            <sde:category>MIGRATION</sde:category>
+            <sde:description>Vendor to place config files</sde:description>
+            <sde:value/>
+            <sde:access>admin</sde:access>
+        </sde:parameter>
+
+    </sde:parameters>
+</sde:config>

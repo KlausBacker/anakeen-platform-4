@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+
+    <sde:accesses namespace="{{APPNAME}}">
+    {{#acls}}
+        <sde:access name="{{aclName}}">
+            <sde:description>{{description}}</sde:description>
+        </sde:access>
+
+      {{/acls}}
+    </sde:accesses>
+</sde:config>

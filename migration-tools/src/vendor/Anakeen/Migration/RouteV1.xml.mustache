@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="{{VENDOR}}">
+
+    {{#routes}}
+        <sde:route name="{{name}}">
+            <sde:callable>{{VENDOR}}\{{MODULE}}\Routes\V1\{{classSubNs}}</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:method>POST</sde:method>
+            <sde:method>PUT</sde:method>
+            <sde:method>DELETE</sde:method>
+            <!-- {{regExp}} -->
+            <sde:pattern>/api/v1/{{pattern}}</sde:pattern>
+            <sde:description>{{description}}</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+
+      {{/routes}}
+    </sde:routes>
+</sde:config>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="Migration">
+        <sde:route name="InitTransfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\InitTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/init</sde:pattern>
+            <sde:description>Database transfert move ids</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="DataElementTransfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\DataElementTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/data/{structure}</sde:pattern>
+            <sde:description>Database transfert structure data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="ConfigStructureTransfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\ConfigStructureTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/config/{structure}</sde:pattern>
+            <sde:description>Database transfert new structure config</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="UiStructureTransfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\UiStructureTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/ui/{structure}</sde:pattern>
+            <sde:description>Database transfert ui config</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="WorkflowTransfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\WorkflowTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/workflow/{structure}</sde:pattern>
+            <sde:description>Database transfert workflow</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="TableTransfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\TableTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/tables/{class}</sde:pattern>
+            <sde:description>Database transfert structure table</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="ApplicationTransfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\ConfigApplicationTransfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/application/{application}</sde:pattern>
+            <sde:description>Database transfert app acl and parameters data</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="RoutesV1Transfert">
+            <sde:callable>Anakeen\Routes\Migration\Database\ConfigRoutesV1Transfert</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/transfert/routesv1</sde:pattern>
+            <sde:description>Database transfert route v1 and create stuc</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+        <sde:route name="FinalUpdates">
+            <sde:callable>Anakeen\Routes\Migration\Database\FinalUpdates</sde:callable>
+            <sde:method>POST</sde:method>
+            <sde:pattern>/api/v2/migration/database/finalupdates</sde:pattern>
+            <sde:description>Final date adjustement in database</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+
+        <sde:route name="DownloadVendorModule">
+            <sde:callable>Anakeen\Routes\Migration\Module\Download</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/migration/modules/{vendor}.zip</sde:pattern>
+            <sde:description>Download module files associated to a vendor</sde:description>
+            <sde:requiredAccess/>
+        </sde:route>
+    </sde:routes>
+</sde:config>

@@ -1,0 +1,19 @@
+<?php
+
+namespace {{Namespace}};
+
+/**
+ * Workflow Behavior of {{structureName}} elements
+ * @ FIXME Use original class to complete behavior
+ * @see {{OriginalClass}}
+ */
+class {{Classname}} extends  {{Extends}}
+{
+    public function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
+    {
+        $this->useWorkflowGraph(__DIR__."/{{StructureName}}Graph.xml");
+        parent::__construct($dbaccess, $id, $res, $dbid);
+
+        // @FIXME Insert Here transition coniguration
+    }
+}

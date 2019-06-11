@@ -1,0 +1,63 @@
+<?php
+
+namespace {{VENDOR}}\{{MODULE}}\Routes\V1\{{classSubNs}};
+/**
+ *
+ * @description {{description}}
+ * @use by route GET /api/v1/{{classSubDir}}
+ */
+class {{className}}
+{
+    public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
+    {
+        $this->initParameters($args, $request);
+$data = $this->doRequest($request);
+return $response->write($data);
+}
+
+protected function initParameters($args, \Slim\Http\request $request)
+{
+//@FIXME HERE set parameters in protected fields
+}
+
+protected function doRequest(\Slim\Http\request $request)
+{
+// @FIXME Choose the good method and realize the action
+$data = [];
+switch ($request->getMethod()) {
+case "GET":
+$data = $this->get();
+break;
+case "POST":
+$data = $this->create();
+break;
+case "PUT":
+$data = $this->update();
+break;
+case "DELETE":
+$data = $this->delete();
+break;
+}
+return $data;
+}
+
+public function get()
+{
+return [];
+}
+
+public function create()
+{
+return [];
+}
+
+public function delete()
+{
+return [];
+}
+
+public function update()
+{
+return [];
+}
+}
