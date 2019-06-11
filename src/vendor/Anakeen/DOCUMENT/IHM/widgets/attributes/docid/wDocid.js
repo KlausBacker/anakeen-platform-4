@@ -287,6 +287,27 @@
                 return currentItem.docId || currentItem.message;
               });
             }
+          },
+          requestStart: function() {
+            currentWidget._pendingRequest = false;
+            currentWidget._hasBeenRequested = true;
+            $(currentWidget.element).addClass("dcpAttribute__loading");
+            $(currentWidget.element)
+              .find(".k-i-arrow-60-down")
+              .addClass("k-i-loading");
+            $(currentWidget.element)
+              .find(".dcpAttribute__value--docid--button")
+              .prop("disabled", true);
+          },
+          requestEnd: function() {
+            currentWidget._pendingRequest = false;
+            $(currentWidget.element).removeClass("dcpAttribute__loading");
+            $(currentWidget.element)
+              .find(".k-i-arrow-60-down")
+              .removeClass("k-i-loading");
+            $(currentWidget.element)
+              .find(".dcpAttribute__value--docid--button")
+              .prop("disabled", false);
           }
         },
         select: function kendoDocidSelect(event) {
@@ -371,15 +392,34 @@
           currentWidget.setValue(newValues, event);
         },
         open: function wDocidSelectOpen(event) {
-          if (currentWidget._hasBeenRequested !== true) {
-            event.preventDefault();
-            currentWidget.kendoWidgetObject.search("");
+          if (
+            currentWidget._hasBeenRequested !== true &&
+            currentWidget._pendingRequest !== true
+          ) {
+            //If the widget has not been clicked and not searching for results yet
+            event.preventDefault(); //Prevent the popup from opening
+            currentWidget.kendoWidgetObject.search(""); //Forces new server request to get up-to-date data
+            currentWidget._pendingRequest = true;
+            //Prevent the popup from sending another request for at least 5 seconds until the request has ended
+            window.setTimeout(() => {
+              currentWidget._pendingRequest = false;
+            }, 5000);
+          } else if (
+            currentWidget._hasBeenRequested === true &&
+            currentWidget._pendingRequest === true
+          ) {
+            //Else if a request is already in process
+            event.preventDefault(); //Prevent the popup from opening
           }
           this.ul.addClass("dcpAttribute__select--docid");
         },
-        close: function wDocidSelectClose() {
-          if (this.ns !== ".kendoDropDownList") {
-            currentWidget._hasBeenRequested = false;
+        close: function wDocidSelectClose(event) {
+          if (currentWidget._pendingRequest === true) {
+            event.preventDefault();
+          } else {
+            if (this.ns !== ".kendoDropDownList") {
+              currentWidget._hasBeenRequested = false;
+            }
           }
         },
         filtering: function wDocidSelectOpen() {
