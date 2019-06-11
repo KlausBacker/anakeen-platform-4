@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="AUTH_TPLMAILASKPWD" ref="PRF_ADMIN_EDIT"/>
+</smart:config>

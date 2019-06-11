@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:access-configuration name="PRF_ADMIN_EDIT" label="Administration - Access all">
+        <smart:description>View for all. Modify only by administrators.</smart:description>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="edit" account="gadmin"/>
+    </smart:access-configuration>
+    <smart:access-configuration name="PRF_ADMIN_ACCESS" label="Administration">
+        <smart:description>View and modify only by administrators.</smart:description>
+        <smart:element-access access="view" account="gadmin"/>
+        <smart:element-access access="edit" account="gadmin"/>
+        <smart:element-access access="delete" account="gadmin"/>
+    </smart:access-configuration>
+    <smart:access-configuration name="PRF_ADMIN_CREATION" label="Création administrateur" profil-type="PFAM">
+        <smart:description>Can be create only by administrators.</smart:description>
+        <smart:element-access access="view" account="all"/>
+        <smart:element-access access="create" account="gadmin"/>
+        <smart:element-access access="icreate" account="gadmin"/>
+    </smart:access-configuration>
+
+
+
+    <smart:access-configuration name="USER_ADMIN" ref="PRF_ADMIN_EDIT"/>
+    <smart:access-configuration name="USER_GUEST" ref="PRF_ADMIN_EDIT"/>
+</smart:config>

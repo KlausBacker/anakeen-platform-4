@@ -1,0 +1,60 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart FIELDACCESSLAYER \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-11-06T16:20:35.495Z\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_desc"
+msgstr "Description"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_famid"
+msgstr "Structure"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_fieldaccess"
+msgstr "New Access"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_fieldid"
+msgstr "Field id"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_fr_ident"
+msgstr "Properties"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_t_fields"
+msgstr "Fields"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "fal_title"
+msgstr "Title"
+
+#: vendor/Anakeen/SmartStructures/FieldAccessLayer/fieldaccesslayer.struct.xml
+#, fuzzy
+msgctxt "FIELDACCESSLAYER"
+msgid "title"
+msgstr "Title"
