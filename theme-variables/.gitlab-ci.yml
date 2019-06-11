@@ -1,0 +1,43 @@
+image:
+  name: php71pg96:latest
+
+before_script:
+  - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.anakeen.com/Anakeen/Platform-4/cibuild .cibuild.tmp
+  - GIT_DIR=.cibuild.tmp/.git git archive --format=tar master | tar -C .cibuild -xvf -
+
+stages:
+  - autotest
+  - integration
+  - stable
+
+autotest:
+  stage: autotest
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target autotest
+  artifacts:
+    paths:
+    - outputs/
+    expire_in: 1 week
+    when: always
+  only:
+    - merge_requests
+
+integration:
+  stage: integration
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target integration
+  only:
+    - master@Anakeen/Platform-4/npm/theme-variables
+
+stable:
+  stage: stable
+  tags:
+    - a4ppm
+  script:
+    - ./.cibuild/cibuild.sh --target stable
+  only:
+    - /^\d+\.\d+-stable$/@Anakeen/Platform-4/npm/theme-variables

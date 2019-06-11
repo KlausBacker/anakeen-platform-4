@@ -1,0 +1,18 @@
+@import "./variables/corporate";
+@import "./variables/kendo-overrides";
+@import "~@progress/kendo-theme-bootstrap/scss/variables";
+
+// Widget
+$widget-text: $text-color;
+$widget-bg: $bg-color;
+$widget-border: $border-color;
+
+// Panel
+$panel-text: $text-color;
+
+// Input
+$input-focused-border: $input-hovered-border;
+$input-focused-shadow: $input-hovered-shadow;
+
+// Notification error
+$notification-error-bg: $error;
