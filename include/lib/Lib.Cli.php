@@ -909,13 +909,14 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
          */
         $phaseList = $module->getPhaseList($type);
         if (boolopt('nothing', $options)) {
-            $phaseList = array_filter($phaseList, create_function('$v', 'return !preg_match("/^(pre|post)-/",$v);'));
+            $phaseList = array_filter($phaseList, function($v) {return !preg_match("/^(pre|post)-/",$v);});
         }
         if (boolopt('nopre', $options)) {
-            $phaseList = array_filter($phaseList, create_function('$v', 'return !preg_match("/^pre-/",$v);'));
+
+            $phaseList = array_filter($phaseList, function($v) {return !preg_match("/^pre-/",$v);});
         }
         if (boolopt('nopost', $options)) {
-            $phaseList = array_filter($phaseList, create_function('$v', 'return !preg_match("/^post-/",$v);'));
+            $phaseList = array_filter($phaseList, function($v) {return !preg_match("/^post-/",$v);});
         }
 
         foreach ($phaseList as $phaseName) {

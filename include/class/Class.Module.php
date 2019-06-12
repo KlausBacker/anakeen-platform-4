@@ -586,6 +586,7 @@ class Module
         $wiff = WIFF::getInstance();
         
         $xml = $wiff->loadContextsDOMDocument();
+
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             return false;

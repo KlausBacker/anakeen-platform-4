@@ -54,6 +54,12 @@ li.nav-item.active {
 .php-info a > img {
     float: right;
 }
+.php-info tr th {
+    background-color: var(--light);
+}
+.php-info .v i {
+    color: var(--gray);
+}
 
 .nav-link {
     cursor: pointer;

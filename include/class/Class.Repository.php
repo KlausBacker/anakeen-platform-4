@@ -159,6 +159,10 @@ class Repository
         $this->contenturl = $this->getUrl() . '/content.xml';
         return $this->isValid();
     }
+
+    public function getContentUrl() {
+        return $this->contenturl;
+    }
     
     public function getUrl()
     {

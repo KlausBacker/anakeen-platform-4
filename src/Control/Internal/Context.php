@@ -1,10 +1,11 @@
 <?php
 
+namespace Control\Internal;
 
-namespace Control;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
+use Symfony\Component\Console\Exception\RuntimeException;
 
-
-require_once(__DIR__ . '/../../include/class/Class.WIFF.php');
+require_once(__DIR__ . '/../../../include/class/Class.WIFF.php');
 
 class Context
 {
@@ -56,6 +57,19 @@ class Context
     {
         $wiff = \WIFF::getInstance();
         return $wiff->getAvailVersion();
+    }
+
+
+    public static function download($url)
+    {
+        $wiff = \WIFF::getInstance();
+        $tmpfile=  $wiff->downloadUrl($url);
+
+        if ($tmpfile !== false) {
+            return file_get_contents($tmpfile);
+        }
+
+        throw new \Exception(sprintf("Page \"%s\" not found", $url));
     }
 
     public static function getPhpInfo()

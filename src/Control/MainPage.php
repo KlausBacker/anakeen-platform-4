@@ -4,6 +4,8 @@
 namespace Control;
 
 
+use Control\Internal\Context;
+
 class MainPage
 {
 
@@ -19,9 +21,8 @@ class MainPage
 
     protected function getModuleData()
     {
-
         $context = Context::getContext();
-        $data["modules"] = $context->getInstalledModuleListWithUpgrade(true);
+        $data["modules"] = $context->getInstalledModuleList(true);
 
         usort($data["modules"], function ($a, $b) {
             return strcmp($a->name, $b->name);
