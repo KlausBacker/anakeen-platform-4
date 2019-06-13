@@ -1,0 +1,84 @@
+.i18n-parent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  .i18nManager-toolbar {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .i18n-toolbar-files {
+      /deep/ {
+        .k-button {
+          background-color: #157efb;
+          color: white;
+        }
+
+        .k-button:hover {
+          background-color: white;
+          color: #157efb;
+          border-color: #157efb;
+        }
+      }
+      display: flex;
+      flex: 1;
+      flex-direction: row-reverse;
+    }
+
+    .i18n-toolbar-locale {
+      display: flex;
+      flex: 1;
+      /deep/ {
+        .k-toggle-button {
+          background-color: transparent;
+          border: none;
+          &.k-state-active {
+            background-color: #157efb;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+
+  .i18n-grid-parent {
+    flex: 1;
+    display: flex;
+    .i18n-grid {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      .k-grid-content {
+        flex: 1;
+        overflow: auto;
+      }
+
+      /deep/ {
+        .fa-times {
+          color: white;
+        }
+
+        .fa-check {
+          color: white;
+        }
+
+        .confirm-override-translation {
+          background-color: var(--green);
+          border: none;
+
+        }
+        .confirm-override-translation:focus{
+          box-shadow: none;
+        }
+        .cancel-override-translation {
+          background-color: var(--red);
+          border: none;
+
+        }
+        .cancel-override-translation:focus{
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
