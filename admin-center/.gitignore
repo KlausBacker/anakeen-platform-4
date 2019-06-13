@@ -14,6 +14,7 @@ src/public/Anakeen/manifest
 src/public/Anakeen/adminCenter/dev
 src/public/Anakeen/adminCenter/prod
 src/public/Anakeen/adminCenter/legacy
+src/vendor/Anakeen/Routes/Admin/Lib/vendor/
 Makefile.local
 /.idea/deployment.xml
 /.idea/dictionaries/
