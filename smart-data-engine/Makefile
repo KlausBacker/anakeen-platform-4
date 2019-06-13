@@ -25,7 +25,7 @@ node_modules:
 
 src/vendor/Anakeen/XmlSchemas: node_modules
 	rm -fr $@
-	cp -r ./node_modules/@anakeen/anakeen-module-validation/xsd $@
+	cp -r ../node_modules/@anakeen/anakeen-module-validation/xsd $@
 
 install-deps: src/vendor/Anakeen/XmlSchemas
 	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"

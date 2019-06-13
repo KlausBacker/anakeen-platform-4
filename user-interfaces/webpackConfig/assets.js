@@ -65,7 +65,7 @@ module.exports = () => {
             },
             //datatables
             {
-              from: "./node_modules/datatables.net-bs4/css",
+              from: "../node_modules/datatables.net-bs4/css",
               to: path.resolve(
                 __dirname,
                 "../src/public/uiAssets/externals/datatables/css/"
@@ -73,7 +73,7 @@ module.exports = () => {
             },
             //TraceKit
             {
-              from: "./node_modules/tracekit/tracekit.js",
+              from: "../node_modules/tracekit/tracekit.js",
               to: path.resolve(
                 __dirname,
                 "../src/public/uiAssets/externals/traceKit/traceKit.js"
@@ -81,7 +81,7 @@ module.exports = () => {
             },
             //ckeditor
             {
-              from: "./node_modules/ckeditor/",
+              from: "../node_modules/ckeditor/",
               to: path.resolve(
                 __dirname,
                 "../src/public/uiAssets/externals/ckeditor"

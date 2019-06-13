@@ -1,0 +1,20 @@
+{
+    "private": true,
+    "workspaces": [
+        "smart-data-engine",
+        "user-interfaces",
+        "security",
+        "workflow",
+        "admin-center",
+        "transformation",
+        "development-center",
+        "migration-tools",
+        "control",
+        "internal-components",
+        "theme-variables",
+        "module-validation",
+        "anakeen-cli",
+        "hub-station",
+        "business-app"
+    ]
+}

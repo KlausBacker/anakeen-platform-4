@@ -7,6 +7,7 @@ const BASE_DIR = path.resolve(__dirname, '../');
 const PUBLIC_PATH =  path.join(BASE_DIR, "src/public");
 const USER_INTERFACES = path.resolve(
   BASE_DIR,
+  "..",
   "node_modules",
   "@anakeen",
   "user-interfaces"
