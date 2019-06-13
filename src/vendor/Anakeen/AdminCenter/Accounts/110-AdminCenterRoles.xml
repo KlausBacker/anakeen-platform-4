@@ -31,6 +31,11 @@
             <accounts:displayName>Vaults Manager</accounts:displayName>
             <accounts:structure name="AC_VAULTSMANAGER"/>
         </accounts:role>
+
+        <accounts:role name="i18n_manager_role">
+            <accounts:displayName>I18n Manager</accounts:displayName>
+            <accounts:structure name="AC_I18NMANAGER"/>
+        </accounts:role>
     </accounts:roles>
     <accounts:groups>
 
