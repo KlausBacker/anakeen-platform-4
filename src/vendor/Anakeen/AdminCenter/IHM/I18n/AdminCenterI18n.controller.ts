@@ -9,9 +9,14 @@ import { Component } from "vue-property-decorator";
 
 @Component
 export default class I18nManagerController extends Vue {
-
-  private readonly FILTER_CLASS_LIST = new Array("filter-locale-type", "filter-locale-id", "filter-locale-context", "filter-locale-overridentranslation", "filter-locale-servertranslation");
-  private translationLocale: string = 'fr';
+  private readonly FILTER_CLASS_LIST = new Array(
+    "filter-locale-type",
+    "filter-locale-id",
+    "filter-locale-context",
+    "filter-locale-overridentranslation",
+    "filter-locale-servertranslation"
+  );
+  private translationLocale: string = "fr";
   public mounted() {
     $(this.$refs.i18nGrid).kendoGrid({
       columns: [
@@ -39,19 +44,18 @@ export default class I18nManagerController extends Vue {
         },
         {
           field: "msgstr",
-          headerTemplate: `<div class="filter-locale-header"><span>Server translation</span><BR><input type="text"class="filter-locale filter-locale-servertranslation" aria-label="Small"/></div>`,
+          headerTemplate: `<div class="filter-locale-header"><span>Server translation</span><BR><input type="text"class="filter-locale filter-locale-servertranslation" aria-label="Small"/></div>`
         },
         {
           field: "overridentranslation",
           headerTemplate: `<div class="filter-locale-header"><span>Overriden translation</span><BR><input type="text"class="filter-locale filter-locale-overridentranslation" aria-label="Small"/></div>`,
-          template:
-            `<div class="input-group">
+          template: `<div class="input-group">
                 <input type='text' class='overriden-translation-input filter-locale' aria-label='Small'>
                 <div class="input-group-append">
                     <button class='confirm-override-translation btn btn-primary'><i class='fa fa-check'></i></button>
                     <button class='cancel-override-translation btn btn-primary'><i class='fa fa-times'></i></button>
                 </div>
-            </div>`,
+            </div>`
         }
       ],
       dataBound: e => {
@@ -66,9 +70,15 @@ export default class I18nManagerController extends Vue {
         $(".cancel-override-translation").kendoButton({
           click: cancelEvent => {
             console.log("cancel");
-            const rowId = cancelEvent.event.target.closest("tr[role=row]").getAttribute("data-uid");
-            const oldVal = $(this.$refs.i18nGrid).data("kendoGrid").dataItem(rowId);
-            $(cancelEvent.event.target.closest("tr[role=row]")).find("input")[0].value = 123;
+            const rowId = cancelEvent.event.target
+              .closest("tr[role=row]")
+              .getAttribute("data-uid");
+            const oldVal = $(this.$refs.i18nGrid)
+              .data("kendoGrid")
+              .dataItem(rowId);
+            $(cancelEvent.event.target.closest("tr[role=row]")).find(
+              "input"
+            )[0].value = 123;
           }
         });
       },
@@ -79,22 +89,22 @@ export default class I18nManagerController extends Vue {
           model: {
             fields: {
               gridId: {
-                type: 'string',
+                type: "string"
               },
               msgctxt: {
-                type: 'string'
+                type: "string"
               },
               msgid: {
-                type: 'string'
+                type: "string"
               },
               msgstr: {
-                type: 'string'
+                type: "string"
               },
               overridentranslation: {
-                type: 'string'
+                type: "string"
               },
               section: {
-                type: 'string'
+                type: "string"
               }
             },
             id: "gridId"
@@ -111,24 +121,28 @@ export default class I18nManagerController extends Vue {
       pageable: {
         alwaysVisible: true,
         buttonCount: 5,
-        pageSizes: [50,100,200],
+        pageSizes: [50, 100, 200],
         refresh: true
       },
       sortable: true
     });
     $(this.$refs.i18nGrid).on("keypress", ".filter-locale", e => {
-      if (e.key === 'Enter'){
-        this.filter(e.target)
+      if (e.key === "Enter") {
+        this.filter(e.target);
       }
-    })
+    });
   }
   public changeLocale(e) {
     if (e.id === "i18n-locale-button-fr") {
       this.translationLocale = "fr";
-      $(this.$refs.i18nGrid).data("kendoGrid").dataSource.read();
+      $(this.$refs.i18nGrid)
+        .data("kendoGrid")
+        .dataSource.read();
     } else if (e.id === "i18n-locale-button-en") {
       this.translationLocale = "en";
-      $(this.$refs.i18nGrid).data("kendoGrid").dataSource.read();
+      $(this.$refs.i18nGrid)
+        .data("kendoGrid")
+        .dataSource.read();
     } else {
       this.$emit(
         "changeLocaleWrongArgument",
@@ -142,15 +156,19 @@ export default class I18nManagerController extends Vue {
   public exportLocaleFile() {
     console.log("Export Locale");
   }
-  public filter(filterObject){
-    const filterClassResult = this.FILTER_CLASS_LIST.filter(value => filterObject.classList.contains(value));
+  public filter(filterObject) {
+    const filterClassResult = this.FILTER_CLASS_LIST.filter(value =>
+      filterObject.classList.contains(value)
+    );
     if (filterClassResult.length) {
       const filterClass = filterClassResult[0].replace("filter-locale-", "");
-      $(this.$refs.i18nGrid).data("kendoGrid").dataSource.filter({
-        field: filterClass,
-        operator: "contains",
-        value: filterObject.value
-      })
+      $(this.$refs.i18nGrid)
+        .data("kendoGrid")
+        .dataSource.filter({
+          field: filterClass,
+          operator: "contains",
+          value: filterObject.value
+        });
     }
   }
 }
