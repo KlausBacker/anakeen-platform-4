@@ -8,7 +8,7 @@ app:
 	$(YARN_BIN) build
 
 app-test:
-app-all:
+app-all: app
 deploy:
 deploy-test:
 deploy-all:

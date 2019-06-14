@@ -16,5 +16,8 @@
         "anakeen-cli",
         "hub-station",
         "business-app"
-    ]
+    ],
+    "dependencies": {
+        "yarn-version-bump": "^0.0.3"
+    }
 }

@@ -2,20 +2,23 @@
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 MODULE_NAME=migration-tools
-NODE_MODULE_PATH=node_modules
 
-## control conf
+#Control
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
-CONTROL_URL=$(host)/control/
-CONTROL_CONTEXT=$(ctx)
+CONTROL_URL=http://localhost:8080/control/
+CONTROL_CONTEXT="anakeen-platform"
+
+#Build
+APP_OUTPUT_PATH=${MK_DIR}/../build/
 
 ##bin
 YARN_BIN=yarn
 COMPOSER=composer
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ./ide/vendor/bin/phpcbf
--include Makefile.local
+CBF_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
+
+-include ../Makefile.local
 
 ########################################################################################################################
 ##
@@ -24,7 +27,7 @@ CBF_BIN=php ./ide/vendor/bin/phpcbf
 ########################################################################################################################
 install-deps:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
-	yarn install
+	${YARN_BIN} install
 
 ########################################################################################################################
 ##
@@ -34,17 +37,17 @@ install-deps:
 
 checkXML: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} check -s .
+	${ANAKEEN_CLI_BIN} check
 
 lint: checkXML
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
@@ -55,7 +58,7 @@ beautify:
 ########################################################################################################################
 po: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} extractPo -s .
+	${ANAKEEN_CLI_BIN} extractPo
 
 stub: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
@@ -68,13 +71,15 @@ stub: install-deps
 ########################################################################################################################
 app: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build
+	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
+
+app-test:
 
 app-all: app
 
 app-autorelease: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --auto-release
+	${ANAKEEN_CLI_BIN} build --auto-release -t ${APP_OUTPUT_PATH}
 
 app-all-autorelease: app-autorelease
 
@@ -86,6 +91,8 @@ app-all-autorelease: app-autorelease
 deploy: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
+deploy-test:
 
 deploy-all: deploy
 
@@ -104,7 +111,7 @@ clean:
 ## MAKEFILE INTERNALS
 ##
 ########################################################################################################################
-.PHONY: app po deploy install pojs clean cleanAll stub nodePublish
+.PHONY: app po deploy install pojs clean cleanAll stub
 
 PRINT_COLOR = printf
 SUCCESS_COLOR = \033[1;32m

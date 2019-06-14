@@ -23,7 +23,7 @@
   ],
   "devDependencies": {
     "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/user-interfaces": "^2.0.0",
+    "@anakeen/user-interfaces": "2.0.1",
     "@anakeen/webpack-conf": "^1.2.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@progress/kendo-ui": "^2019.1.213",

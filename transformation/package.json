@@ -15,7 +15,7 @@
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.1.13",
     "@anakeen/internal-components": "^1.0.1",
-    "@anakeen/user-interfaces": "^2.0.1",
+    "@anakeen/user-interfaces": "2.0.1",
     "@commitlint/config-conventional": "^8.0.0",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-charts-vue-wrapper": "^2019.1.220",

@@ -12,7 +12,7 @@ YARN_LOCKFILE=yarn.lock
 
 VERSION=$(shell node -p "require('./package.json').version")
 
--include Makefile.local
+-include ../Makefile.local
 
 
 install:

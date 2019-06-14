@@ -3,26 +3,24 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #path
 MODULE_NAME=anakeen-hub
-JS_CONF_PATH=$(MK_DIR)
-NODE_MODULE_PATH=node_modules
 
-## control conf
-port=80
-CONTROL_PROTOCOL=http
-CONTROL_PORT=$(port)
+#Control
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
-CONTROL_URL=$(host)/control/
-CONTROL_CONTEXT=$(ctx)
+CONTROL_URL=http://localhost:8080/control/
+CONTROL_CONTEXT="anakeen-platform"
+
+#Build
+APP_OUTPUT_PATH=${MK_DIR}/../build/
 
 ##bin
 YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ./ide/vendor/bin/phpcbf
-CS_BIN=php ./ide/vendor/bin/phpcs
+CBF_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
+CS_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
 COMPOSER_BIN=composer
 
--include Makefile.local
+-include ../Makefile.local
 ########################################################################################################################
 ##
 ## Deps
@@ -40,17 +38,17 @@ install-deps:
 
 checkXML: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} check
+	${ANAKEEN_CLI_BIN} check -s ${MK_DIR}
 
 lint: checkXML
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php  ${MK_DIR}/src
 
@@ -90,13 +88,15 @@ buildJS: install-deps
 ########################################################################################################################
 app: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build
+	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
+
+app-test:
 
 app-all: app
 
 app-autorelease: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --auto-release
+	${ANAKEEN_CLI_BIN} build --auto-release -t ${APP_OUTPUT_PATH}
 
 app-all-autorelease: app-autorelease
 
@@ -108,6 +108,8 @@ app-all-autorelease: app-autorelease
 deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+
+deploy-test:
 
 deploy-all: deploy
 

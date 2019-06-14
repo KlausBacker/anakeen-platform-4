@@ -1,37 +1,61 @@
 #MAKEFILE dir
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-## control conf
+#Control
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
-CONTROL_URL=$(host)/control/
-CONTROL_CONTEXT=$(ctx)
+CONTROL_URL=http://localhost:8080/control/
+CONTROL_CONTEXT="anakeen-platform"
+
+#Build
+APP_OUTPUT_PATH=${MK_DIR}/../build/
 
 ##bin
 YARN_BIN=yarn
-COMPOSER=composer
-CBF_BIN=php ./ide/vendor/bin/phpcbf
-CS_BIN=php ./ide/vendor/bin/phpcs
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
--include Makefile.local
+CBF_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
+CS_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
+COMPOSER_BIN=composer
 
-install-dev:
-	yarn install
+-include ../Makefile.local
+########################################################################################################################
+##
+## Deps
+##
+########################################################################################################################
+install-deps:
+	$(YARN_BIN) install
+
+########################################################################################################################
+##
+## Po and stub
+##
+########################################################################################################################
+po: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} extractPo
+
+stub: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} generateStubs
 
 ########################################################################################################################
 ##
 ## build and deploy
 ##
 ########################################################################################################################
-
-buildJS: install-dev
+buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build JS $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildJs
 
-app: install-dev buildJS
+app:
 	${ANAKEEN_CLI_BIN} build
 
-app-autorelease: install-dev buildJS
+app-test:
+
+app-all: app
+
+app-autorelease: buildJS
 	rm -f *app
 	${ANAKEEN_CLI_BIN} build --auto-release
 
@@ -40,21 +64,13 @@ app-autorelease: install-dev buildJS
 ## Deploy
 ##
 ########################################################################################################################
-deploy: install-dev buildJS
-	rm -f smart-data-engine-1*app
+deploy: install-deps buildJS
 	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
-########################################################################################################################
-##
-## utilities
-##
-########################################################################################################################
 
-po: install-dev
-	${ANAKEEN_CLI_BIN} extractPo -s .
+deploy-test:
 
-stub: install-dev
-	${ANAKEEN_CLI_BIN} generateStubs
+deploy-all:deploy
 
 ########################################################################################################################
 ##
@@ -63,12 +79,12 @@ stub: install-dev
 ########################################################################################################################
 
 beautify:
-	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php  ${MK_DIR}/src
 
 lint:
-	cd ${MK_DIR}/ide; ${COMPOSER} install --ignore-platform-reqs
+	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
 	cd ${MK_DIR}
 	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
 
