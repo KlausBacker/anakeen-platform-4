@@ -75,7 +75,7 @@ class UserAgent extends \WiffCommon
             return false;
         }
         
-        $ret = copy($url, $tmpfile);
+        $ret = @copy($url, $tmpfile);
         if ($ret === false) {
             $this->errorMessage = sprintf(__METHOD__ . " " . "Error copying file '%s' to '%s'.", $url, $tmpfile);
             return false;

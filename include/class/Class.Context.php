@@ -45,7 +45,7 @@ class ContextProperties extends WiffCommon
      */
     public $description;
     /**
-     * @var string Context's root
+     * @var string Context's install path
      */
     public $root;
     /**

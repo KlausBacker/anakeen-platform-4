@@ -2,6 +2,14 @@ html {
     font-size: 13px;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
 .navbar-dark .navbar-text {
     font-weight: normal;
     color: white;
@@ -65,14 +73,6 @@ li.nav-item.active {
     cursor: pointer;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-}
-
 .control-container {
     flex: 1;
     overflow: auto;
@@ -86,9 +86,14 @@ body {
     transition : opacity 500ms ease;
 }
 
+.navbar-text {
+   // position:relative;
+}
 .logo {
-    height: 2rem;
-    margin-top: -0.5rem;
+    height: 2.5rem;
+    margin-top: -1rem;
+    background: var(--dark);
+    border-radius: 0.5rem;
 }
 
 .installed[data-canupdate=true] .available-version {
@@ -97,4 +102,8 @@ body {
 
 .notinstalled {
     color: grey;
+}
+
+.installed[data-isvalid=false] {
+    color:red;
 }

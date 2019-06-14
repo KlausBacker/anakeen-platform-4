@@ -12,9 +12,8 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <!-- Navbar content -->
-  <a class="navbar-brand" target="_blank" href="https://www.anakeen.com/">
-    <img class="logo" alt="logo"
-         src="images/logo/anakeen-dark.svg"/></a>
+
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
           aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -22,19 +21,21 @@
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" data-target-id="modules">Modules</a>
+        <a class="nav-link" href="#modules" data-target-id="modules">Modules</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-target-id="configuration">Configuration</a>
+        <a class="nav-link" href="#configuration" data-target-id="configuration">Configuration</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-target-id="info">Info</a>
+        <a class="nav-link" href="#info" data-target-id="info">Info</a>
       </li>
     </ul>
     <span class="navbar-text">
-      <div class="navbar-text--title">Anakeen </div>
-      <div class="navbar-text--title">Control</div>
-    </span>
+        <a class="navbar-brand" target="_blank" href="https://www.anakeen.com/">
+         <img class="logo" alt="logo"
+              src="images/logo/anakeen-control.svg"/>
+        </a>
+  </span>
   </div>
 </nav>
 
@@ -139,10 +140,11 @@
         </thead>
         <tbody>
         {{#repositories}}
-          <tr class="installed" {{#isValid}}data-isvalid="true"{{/isValid}}>
+          <tr class="installed"
+              {{#isValid}}data-isvalid="true"{{/isValid}} {{^isValid}}data-isvalid="false"{{/isValid}}>
             <td>{{name}}</td>
             <td><a target="_blank" href="{{url}}">{{url}}</a></td>
-            <td>{{#errorMessage}}{{errorMessage}}{{/errorMessage}}{{#isValid}}activated{{/isValid}}</td>
+            <td>{{#errorMessage}}{{errorMessage}}{{/errorMessage}}{{status}}</td>
             <td>{{login}}</td>
             <td>{{description}}</td>
           </tr>

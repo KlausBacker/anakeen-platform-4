@@ -44,7 +44,27 @@ class Context
     {
 
         $wiff = \WIFF::getInstance();
-        return $wiff->getRepoList();
+        $allRepos=  $wiff->getRepoList();
+        $ctxRepos= self::getContext()->repo;
+        foreach ($allRepos as &$repo) {
+            $searchName=$repo->name;
+
+            $ctxRepo=array_filter($ctxRepos, function ($lrepo) use ($searchName) {
+                return $lrepo->name === $searchName;
+            });
+            if ($ctxRepo) {
+                /** @noinspection PhpUndefinedFieldInspection */
+                $repo->status = "activated";
+                if ($ctxRepo[0]->errorMessage) {
+                    /** @noinspection PhpUndefinedFieldInspection */
+                    $repo->status = $ctxRepo[0]->errorMessage;
+                }
+            } else {
+                /** @noinspection PhpUndefinedFieldInspection */
+                $repo->status = "disabled";
+            };
+        }
+        return $allRepos;
     }
 
     public static function getVersion()

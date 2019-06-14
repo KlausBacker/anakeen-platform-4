@@ -19,7 +19,9 @@ $application->setName("Anakeen Control");
 // ... register commands
 $application->add(new \Control\Cli\CliInfo());
 $application->add(new \Control\Cli\CliShow());
+$application->add(new \Control\Cli\CliStatus());
 $application->add(new \Control\Cli\CliOutdated());
 $application->add(new \Control\Cli\CliUpdateModule());
+$application->add(new \Control\Cli\CliDoJob());
 
 $application->run();
