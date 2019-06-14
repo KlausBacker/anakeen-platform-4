@@ -4,7 +4,7 @@
             <kendo-toolbar ref="i18nToolbarLocale" class="i18n-toolbar-locale" @toggle="changeLocale">
                 <kendo-toolbar-item type="buttonGroup" :buttons="[
                 {  id: 'i18n-locale-button-en', togglable: true, group: 'text-align', imageUrl: '/api/v2/images/assets/sizes/20x20/Helppage/flags/us.png'},
-                {  id: 'i18n-locale-button-fr', togglable: true, group: 'text-align', imageUrl: '/api/v2/images/assets/sizes/20x20/Helppage/flags/fr.png'},
+                {  id: 'i18n-locale-button-fr', selected: true, togglable: true, group: 'text-align', imageUrl: '/api/v2/images/assets/sizes/20x20/Helppage/flags/fr.png'},
                ]">
                 </kendo-toolbar-item>
             </kendo-toolbar>

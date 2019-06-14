@@ -8,7 +8,7 @@
     </nav>
     <div v-else-if="isHubContent" class="i18n-station">
       <admin-center-i18n
-        @changeLocaleWrongArgument="handleLocaleWrongArgumentError"
+        @changeLocaleWrongArgument="handleLocaleWrongArgumentError" @i18nOffline="handleLocaleNetworkError"
       ></admin-center-i18n>
     </div>
   </div>
@@ -37,6 +37,15 @@ export default {
           title: "Wrong locale argument"
         }
       });
+    },
+    handleLocaleNetworkError(message) {
+      this.hubNotify({
+        type: "error",
+        content: {
+          textContent: message,
+          title: "Network error"
+        }
+      })
     }
   }
 };
@@ -47,5 +56,6 @@ export default {
   flex: 1;
   flex-direction: column;
   min-height: 0;
+  height: 100%;
 }
 </style>

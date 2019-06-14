@@ -1,23 +1,28 @@
 import { ButtonsInstaller } from "@progress/kendo-buttons-vue-wrapper";
 import "@progress/kendo-ui/js/kendo.button";
+import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import Vue from "vue";
 Vue.use(ButtonsInstaller);
-import { id } from "postcss-selector-parser";
 import { Component } from "vue-property-decorator";
 
 @Component
 export default class I18nManagerController extends Vue {
-  private readonly FILTER_CLASS_LIST = new Array(
-    "filter-locale-type",
-    "filter-locale-id",
-    "filter-locale-context",
-    "filter-locale-overridentranslation",
-    "filter-locale-servertranslation"
-  );
+
   private translationLocale: string = "fr";
   public mounted() {
+    window.addEventListener("offline", e => {
+      console.log(e);
+      kendo.ui.progress($("body"), true);
+      this.$emit(
+        "i18nOffline",
+        e.type
+      );
+    });
+    window.addEventListener("online", () => {
+      kendo.ui.progress($("body"), false);
+    });
     $(this.$refs.i18nGrid).kendoGrid({
       columns: [
         {
@@ -27,35 +32,60 @@ export default class I18nManagerController extends Vue {
         },
         {
           field: "section",
-          headerTemplate: `<div class="filter-locale-header">
-                            <span>Type</span><BR>
-                            <input type="text" class="filter-locale filter-locale-type" aria-label="Small"/></div>`,
+          filterable: {
+            cell: {
+              operator: "contains",
+              showOperators: false
+            }
+          },
+          minResizableWidth: 25,
           title: "Type"
         },
         {
           field: "msgctxt",
-          headerTemplate: `<div class="filter-locale-header"><span>Contexte</span><BR><input type="text"class="filter-locale filter-locale-context" aria-label="Small"/></div>`,
+          filterable: {
+            cell: {
+              operator: "contains",
+              showOperators: false
+            }
+          },
+          minResizableWidth: 25,
           title: "Contexte"
         },
         {
           field: "msgid",
-          headerTemplate: `<div class="filter-locale-header"><span>ID</span><BR><input type="text" class="filter-locale filter-locale-id" aria-label="Small"/></div>`,
+          filterable: {
+            cell: {
+              operator: "contains",
+              showOperators: false
+            }
+          },
+          minResizableWidth: 25,
           title: "ID"
         },
         {
           field: "msgstr",
-          headerTemplate: `<div class="filter-locale-header"><span>Server translation</span><BR><input type="text"class="filter-locale filter-locale-servertranslation" aria-label="Small"/></div>`
+          filterable: {
+            cell: {
+              operator: "contains",
+              showOperators: false
+            }
+          },
+          minResizableWidth: 25,
+          title: "Server translation"
         },
         {
           field: "overridentranslation",
-          headerTemplate: `<div class="filter-locale-header"><span>Overriden translation</span><BR><input type="text"class="filter-locale filter-locale-overridentranslation" aria-label="Small"/></div>`,
+          filterable: false,
+          minResizableWidth: 25,
           template: `<div class="input-group">
-                <input type='text' class='overriden-translation-input filter-locale' aria-label='Small'>
+                <input type='text' placeholder="change translation" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
                 <div class="input-group-append">
-                    <button class='confirm-override-translation btn btn-primary'><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation btn btn-primary'><i class='fa fa-times'></i></button>
+                    <button class='confirm-override-translation btn btn-outline-secondary'><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation btn btn-outline-secondary'><i class='fa fa-times'></i></button>
                 </div>
-            </div>`
+            </div>`,
+          title: "Overriden translation",
         }
       ],
       dataBound: e => {
@@ -85,7 +115,9 @@ export default class I18nManagerController extends Vue {
       dataSource: new kendo.data.DataSource({
         pageSize: 50,
         schema: {
-          data: "data",
+          data: response => {
+            return response.data.data;
+          },
           model: {
             fields: {
               gridId: {
@@ -108,28 +140,35 @@ export default class I18nManagerController extends Vue {
               }
             },
             id: "gridId"
+          },
+          total: response => {
+            return response.data.requestParameters.total;
           }
         },
+        serverFiltering: true,
+        serverPaging: true,
         transport: {
           read: {
+            dataType: "json",
+            type: "get",
             url: () => {
               return `/api/v2/admin/i18n/${this.translationLocale}`;
             }
           }
         }
       }),
+      filterable: {
+        extra: false,
+        mode: "row"
+      },
       pageable: {
         alwaysVisible: true,
         buttonCount: 5,
         pageSizes: [50, 100, 200],
         refresh: true
       },
-      sortable: true
-    });
-    $(this.$refs.i18nGrid).on("keypress", ".filter-locale", e => {
-      if (e.key === "Enter") {
-        this.filter(e.target);
-      }
+      resizable: true,
+      sortable: true,
     });
   }
   public changeLocale(e) {
@@ -155,20 +194,5 @@ export default class I18nManagerController extends Vue {
   }
   public exportLocaleFile() {
     console.log("Export Locale");
-  }
-  public filter(filterObject) {
-    const filterClassResult = this.FILTER_CLASS_LIST.filter(value =>
-      filterObject.classList.contains(value)
-    );
-    if (filterClassResult.length) {
-      const filterClass = filterClassResult[0].replace("filter-locale-", "");
-      $(this.$refs.i18nGrid)
-        .data("kendoGrid")
-        .dataSource.filter({
-          field: filterClass,
-          operator: "contains",
-          value: filterObject.value
-        });
-    }
   }
 }
