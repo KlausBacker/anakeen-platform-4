@@ -9,16 +9,12 @@ import { Component } from "vue-property-decorator";
 
 @Component
 export default class I18nManagerController extends Vue {
-
   private translationLocale: string = "fr";
   public mounted() {
     window.addEventListener("offline", e => {
       console.log(e);
       kendo.ui.progress($("body"), true);
-      this.$emit(
-        "i18nOffline",
-        e.type
-      );
+      this.$emit("i18nOffline", e.type);
     });
     window.addEventListener("online", () => {
       kendo.ui.progress($("body"), false);
@@ -85,7 +81,7 @@ export default class I18nManagerController extends Vue {
                     <button class='cancel-override-translation btn btn-outline-secondary'><i class='fa fa-times'></i></button>
                 </div>
             </div>`,
-          title: "Overriden translation",
+          title: "Overriden translation"
         }
       ],
       dataBound: e => {
@@ -168,7 +164,7 @@ export default class I18nManagerController extends Vue {
         refresh: true
       },
       resizable: true,
-      sortable: true,
+      sortable: true
     });
   }
   public changeLocale(e) {
