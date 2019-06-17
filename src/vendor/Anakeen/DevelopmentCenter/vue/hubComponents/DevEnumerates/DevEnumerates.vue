@@ -85,7 +85,7 @@ export default {
       if (filter && Object.keys(filter).length) {
         search = `?${kendo.jQuery.param(filter)}`;
       }
-      this.getRouter().navigate(`/${this.entryOptions.route}/${search}`);
+      this.navigate(`/devel/${this.entryOptions.route}/${search}`);
     }
   }
 };

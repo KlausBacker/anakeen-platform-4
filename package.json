@@ -1,6 +1,6 @@
 {
   "name": "development-center",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "autorelease": true,
   "description": "Developement Center for Anakeen Platform",
   "main": "index.js",
@@ -10,7 +10,8 @@
     "buildJs:devCenter:dev": "element=DEVCENTER dev=DEV npx webpack --config webpack/index.js",
     "buildJs:devCenter": "yarn run buildJs:devCenter:prod && yarn run buildJs:devCenter:dev",
     "buildJs:standalone": "npx webpack --config webpack/standalone.js",
-    "buildJs": "yarn run buildJs:standalone && yarn run buildJs:devCenter"
+    "buildJs": "yarn run buildJs:standalone && yarn run buildJs:devCenter",
+    "buildCss": "npx webpack --config webpack/css.js"
   },
   "author": "anakeen",
   "license": "SEE LICENSE IN LICENSE",

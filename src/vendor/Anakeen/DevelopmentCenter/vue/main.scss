@@ -1,0 +1,69 @@
+.hub-station-main .hub-station-component.hub-instance-DEVELCENTER {
+  & > section > section {
+    margin: 0;
+    background: white;
+  }
+
+  .hub-dock-component {
+    background-color: #424142;
+    .hub-dock-section {
+      padding-left: 1rem;
+      .hub-dock-entry-component {
+        color: white;
+        font-weight: normal;
+        padding: 1rem 0.1rem 1rem 0.75rem;
+        min-height: 3rem;
+        border-radius: .25rem 0 0 .25rem;
+        position: relative;
+        margin-right: 1.5rem;
+        white-space: nowrap;
+        &:not(:first-child) {
+          margin-top: 2rem;
+        }
+        &.entry-selected {
+          border-left: none;
+          font-weight: normal;
+          background: var(--primary);
+          &::after {
+            content: " ";
+            position: absolute;
+            top: 0;
+            right: -3rem;
+            width: 1rem;
+            border-width: 1.8rem 1.5rem;
+            border-style: solid;
+            border-color: transparent;
+            border-left-color: var(--primary);
+          }
+        }
+
+        &.entry-selectable:not(.entry-selected):hover::after {
+          content: " ";
+          position: absolute;
+          top: 0;
+          right: -3rem;
+          width: 1rem;
+          border-width: 1.8rem 1.5rem;
+          border-style: solid;
+          border-color: transparent;
+          border-left-color: rgba(206, 206, 206, 0.4);
+        }
+      }
+    }
+  }
+
+  .hub-station-center-area .hub-station-aside {
+    margin: 0;
+    height: auto;
+  }
+
+  .smart-element-grid > .grid-widget-wrapper {
+    flex: 1;
+  }
+
+  a[data-role=develRouterLink] {
+    color: #157EFB;
+  }
+}
+
+

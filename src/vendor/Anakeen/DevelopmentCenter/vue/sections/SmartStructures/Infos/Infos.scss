@@ -10,7 +10,7 @@
 
     .smart-structure-toolbar {
       .k-button-group + .k-button-group {
-        margin-left: .75rem;
+        margin-left: 0.75rem;
       }
 
       .view-buttons-group {
@@ -36,16 +36,18 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      overflow-y:auto;
+      overflow-y: auto;
 
       & + .smart-structure-infos-column {
         margin-left: 1rem;
       }
     }
     .smart-structure-infos-card {
-
       &.hierarchy-card {
         max-height: 50%;
+        flex: 2;
+        display: flex;
+        flex-direction: column;
       }
 
       .infos-card-title {
@@ -53,7 +55,7 @@
         margin-bottom: 1rem;
       }
 
-      padding: .5rem;
+      padding: 0.5rem;
       border: 1px solid rgb(210, 210, 210);
       flex: 1;
 
@@ -63,11 +65,13 @@
 
       .infos-card-content {
         overflow-y: auto;
-        height: calc(100% - 2.8rem);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
         font-size: 1.1rem;
         .card-content-item-label {
           font-weight: bold;
-          margin-right: .5rem;
+          margin-right: 0.5rem;
         }
       }
     }
