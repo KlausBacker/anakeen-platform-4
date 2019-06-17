@@ -55,14 +55,18 @@
                 });
             };
             if (typeof define === "function" && define.amd) {
-              require.ensure(
-                ["documentCkEditor"],
-                function() {
-                  require("documentCkEditor");
-                  init();
-                },
-                "documentCkEditor"
-              );
+              require
+                .ensure(
+                  ["documentCkEditor"],
+                  function() {
+                    require("documentCkEditor");
+                    init();
+                  },
+                  "documentCkEditor"
+                )
+                .catch(() => {
+                  currentWidget._trigger("displayNetworkError");
+                });
             } else {
               //noinspection JSUnresolvedVariable
               init();
