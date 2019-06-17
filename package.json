@@ -20,7 +20,10 @@
     "buildJs:accounts:prod": "element=ACCOUNTS npx webpack --config webpack/index.js",
     "buildJs:accounts:dev": "element=ACCOUNTS dev=DEV npx webpack --config webpack/index.js",
     "buildJs:accounts": "yarn run buildJs:accounts:prod && yarn run buildJs:accounts:dev",
-    "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts"
+    "buildJs:i18n:prod": "element=I18N npx webpack --config webpack/index.js",
+    "buildJs:i18n:dev": "element=I18N dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:i18n": "yarn run buildJs:i18n:prod && yarn run buildJs:i18n:dev",
+    "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts && yarn run buildJs:i18n"
   },
   "files": [
     "src/**/*.scss",

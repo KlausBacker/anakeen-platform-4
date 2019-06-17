@@ -1,0 +1,127 @@
+.i18n-parent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  .i18nManager-toolbar {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .i18n-toolbar-files {
+      /deep/ {
+        .k-button {
+          background-color: #157efb;
+          color: white;
+        }
+
+        .k-button:hover {
+          background-color: white;
+          color: #157efb;
+          border-color: #157efb;
+        }
+      }
+      display: flex;
+      flex: 1;
+      flex-direction: row-reverse;
+    }
+
+    .i18n-toolbar-locale {
+      display: flex;
+      flex: 1;
+      /deep/ {
+        .k-toggle-button {
+          background-color: transparent;
+          border: none;
+          &.k-state-active {
+            background-color: #157efb;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+
+  .i18n-grid-parent {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    .i18n-grid {
+      display: flex !important;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+
+      /deep/ {
+        .k-grid-header {
+          font-weight: bold;
+          background-color: rgb(248, 248, 248);
+        }
+      }
+
+      .k-grid-content {
+        flex: 1;
+        overflow: auto;
+      }
+
+      /deep/ {
+        .input-group {
+          justify-content: space-between;
+          display: flex;
+          flex-direction: row;
+          flex: 1;
+        }
+        .overriden-translation-input {
+          flex: 1;
+        }
+        .overriden-translation-input::placeholder {
+          color: #d0d0d0;
+        }
+
+        .overriden-translation-input:focus::-webkit-input-placeholder {
+          color: transparent;
+        }
+
+        .confirm-override-translation {
+          background-color: var(--green);
+          border: none;
+          width: 1rem;
+
+          .fa-check {
+            color: white;
+          }
+        }
+        .confirm-override-translation:hover {
+          background-color: transparent;
+          border: solid var(--green) 1px;
+          width: 1rem;
+          .fa-check {
+            color: var(--green);
+          }
+        }
+        .confirm-override-translation:focus{
+          box-shadow: none;
+        }
+        .cancel-override-translation {
+          background-color: var(--red);
+          border: none;
+          width: 1rem;
+          .fa-times {
+            color: white;
+          }
+        }
+        .cancel-override-translation:hover {
+          background-color: transparent;
+          border: solid var(--red) 1px;
+          width: 1rem;
+          .fa-times {
+            color: var(--red);
+          }
+        }
+        .cancel-override-translation:focus{
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
