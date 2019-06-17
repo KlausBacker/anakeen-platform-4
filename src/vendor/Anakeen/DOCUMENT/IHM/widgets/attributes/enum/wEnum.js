@@ -1065,7 +1065,6 @@
             index: -1,
             message: i18n.___("Your navigator seems offline, try later", "ddui")
           });
-          $("body").trigger("displayNetworkError");
           options.error(result);
         }
       });
