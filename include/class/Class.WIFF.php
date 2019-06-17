@@ -153,31 +153,24 @@ class WIFF extends WiffCommon
      * Get WIFF version
      * @return string
      */
-    public function getVersion()
+    public static function getVersion()
     {
         $wiff_root = getenv('WIFF_ROOT');
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
+
+        $fversion=file_get_contents($wiff_root . 'VERSION');
+        $frelease=file_get_contents($wiff_root . 'RELEASE');
         
-        if (!$fversion = fopen($wiff_root . 'VERSION', 'r')) {
-            $this->errorMessage = sprintf("Error when opening VERSION file.");
-            return false;
-        }
-        
-        if (!$frelease = fopen($wiff_root . 'RELEASE', 'r')) {
-            $this->errorMessage = sprintf("Error when opening RELEASE file.");
-            return false;
-        }
-        
-        $version = trim(fgets($fversion));
-        $release = trim(fgets($frelease));
-        
-        fclose($fversion);
-        fclose($frelease);
+        $version = trim($fversion);
+        $release = trim($frelease);
+
         
         return $version . '-' . $release;
     }
+
+
     /**
      * Compose and get the update URL
      * @return string

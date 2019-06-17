@@ -1,5 +1,5 @@
 TAR_DIST_NAME=anakeen-control
-TAR_DIST_DIR=anakeen-control-$(VERSION)-$(RELEASE)
+TAR_DIST_DIR=anakeen/control
 
 TAR_DIST_OPTS=--owner 0 --group 0
 
@@ -36,9 +36,9 @@ tarball:
 		--exclude PubRule \
 		--exclude po2js.php \
 		. | tar -C tmp/$(TAR_DIST_DIR) -xf -
-	cp -r node_modules/bootstrap/dist tmp/public/bootstrap
-	cp -r node_modules/jquery/dist tmp/public/jquery
-	cp -r node_modules/popper.js/dist tmp/public/popper
+	cp -r node_modules/bootstrap/dist tmp/$(TAR_DIST_DIR)/public/bootstrap
+	cp -r node_modules/jquery/dist tmp/$(TAR_DIST_DIR)/public/jquery
+	cp -r node_modules/popper.js/dist tmp/$(TAR_DIST_DIR)/public/popper
 
 	tar -C tmp -zcf $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).tar.gz $(TAR_DIST_OPTS) $(TAR_DIST_DIR)
 

@@ -12,8 +12,17 @@ class Context
     public static $contextName;
     private static $context;
 
+
+    public static function isInitialized() {
+        $contentsFile=sprintf("%s/%s", __DIR__."/../../", \WIFF::contexts_filepath);
+        return file_exists($contentsFile);
+    }
+
     public static function getContext()
     {
+        if (!self::isInitialized()) {
+             throw new \Exception(sprintf("Context not initialized yet"));
+        }
 
         if (!self::$context) {
 
@@ -69,8 +78,8 @@ class Context
 
     public static function getVersion()
     {
-        $wiff = \WIFF::getInstance();
-        return $wiff->getVersion();
+            return \WIFF::getVersion();
+
     }
 
     public static function getAvailableVersion()

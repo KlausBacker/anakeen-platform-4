@@ -51,7 +51,11 @@ class ModuleJob
     protected static function archiveJobFile()
     {
         $file = self::getJobFile();
-        $archiveName = sprintf("%s/job-%s.json", self::getRunDir(), date('Ymd-His'));
+        $jobDir = sprintf("%s/log", self::getRunDir());
+        if (!is_dir($jobDir)) {
+            mkdir($jobDir);
+        }
+        $archiveName = sprintf("%s/job-%s.json", $jobDir, date('Ymd-His'));
         rename($file, $archiveName);
     }
 
@@ -135,6 +139,7 @@ class ModuleJob
         set_error_handler(function ($error, $msg) {
             JobLog::setStatus("", "", "exception");
             JobLog::setError("", "", $msg);
+            return false;
         });
         $pidFile = self::getPidFile();
         register_shutdown_function(function () use ($pidFile) {
@@ -144,7 +149,7 @@ class ModuleJob
         });
         declare(ticks=1);
 
-        $signalHanldler = function () use ($pidFile) {
+        $signalHandler = function () use ($pidFile) {
             JobLog::setStatus("", "", "interrupted");
             JobLog::writeInterruption();
             if ($pidFile && file_exists($pidFile)) {
@@ -153,9 +158,9 @@ class ModuleJob
             exit();
         };
         // Catch Ctrl-C signal
-        pcntl_signal(SIGINT, $signalHanldler);
+        pcntl_signal(SIGINT, $signalHandler);
         // Catch Normal KILL
-        pcntl_signal(SIGTERM, $signalHanldler);
+        pcntl_signal(SIGTERM, $signalHandler);
     }
 
     protected static function dotheJob()
@@ -187,6 +192,10 @@ class ModuleJob
     {
         $context = Context::getContext();
         $depList = $moduleManager->getDepencies();
+
+        if (!$depList) {
+            return true;
+        }
         $downloaded = array();
         foreach ($depList as $module) {
             /**
@@ -242,23 +251,27 @@ class ModuleJob
                 JobLog::setStatus($module->name, "download", "DONE");
                 JobLog::setInfo($module->name, "downloadFile", $module->tmpfile);
             } else {
-                JobLog::setStatus($module->name, "download", "RUNNING");
-                /**
-                 * download module
-                 */
-                $ret = $module->download('downloaded');
-                if ($ret === false) {
-                    JobLog::setError($module->name, "download", $module->errorMessage);
-                    return false;
+                if (JobLog::getStatus($module->name, "download") !== "DONE") {
+                    JobLog::setStatus($module->name, "download", "RUNNING");
+                    /**
+                     * download module
+                     */
+                    $ret = $module->download('downloaded');
+                    if ($ret === false) {
+                        JobLog::setError($module->name, "download", $module->errorMessage);
+                        return false;
+                    }
+                    if (!empty($module->warningMessage)) {
+
+                        JobLog::setWarning($module->name, "download", $module->warningMessage);
+
+                    }
+
+                    JobLog::setStatus($module->name, "download", "DONE");
+                    JobLog::setInfo($module->name, "downloadFile", $module->tmpfile);
+                } else {
+                    JobLog::displayOutput($module->name, "download", "status", "<warning>SKIP</warning>");
                 }
-                if (!empty($module->warningMessage)) {
-
-                    JobLog::setWarning($module->name, "download", $module->warningMessage);
-
-                }
-
-                JobLog::setStatus($module->name, "download", "DONE");
-                JobLog::setInfo($module->name, "downloadFile", $module->tmpfile);
             }
             /**
              * switch to the module object from the context XML database
@@ -330,62 +343,84 @@ class ModuleJob
 
             foreach ($phaseList as $phaseName) {
                 switch ($phaseName) {
-                    /** @noinspection PhpMissingBreakStatementInspection */
                     case 'clean-unpack':
-                        JobLog::setStatus($module->name, $phaseName, "DOING");
-                        $ret = $context->deleteFilesFromModule($module->name);
-                        if ($ret === false) {
-                            JobLog::setError($module->name, $phaseName,
-                                sprintf("Error: could not delete old files for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
-                            return false;
+                        if (JobLog::getStatus($module->name, $phaseName) !== "DONE") {
+                            JobLog::setStatus($module->name, $phaseName, "RUNNING");
+                            $ret = $context->deleteFilesFromModule($module->name);
+                            if ($ret === false) {
+                                JobLog::setError($module->name, $phaseName,
+                                    sprintf("Error: could not delete old files for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
+                                return false;
+                            }
+                            $ret = $module->unpack($context->root);
+                            if ($ret === false) {
+                                JobLog::setError($module->name, $phaseName,
+                                    sprintf("Error: could not unpack module '%s' in '%s': %s\n", $module->name, $context->root, $module->errorMessage));
+                                return false;
+                            }
+                            JobLog::setStatus($module->name, $phaseName, "DONE");
+                        } else {
+                            JobLog::displayOutput($module->name, $phaseName, "status", "<warning>SKIP</warning>");
                         }
-
-                        JobLog::setStatus($module->name, $phaseName, "DONE");
-                    // Chain with 'unpack'
+                        break;
 
                     case 'unpack':
-                        JobLog::setStatus($module->name, "unpack", "DOING");
-                        $ret = $module->unpack($context->root);
-                        if ($ret === false) {
-                            JobLog::setError($module->name, $phaseName,
-                                sprintf("Error: could not unpack module '%s' in '%s': %s\n", $module->name, $context->root, $module->errorMessage));
-                            return false;
+                        if (JobLog::getStatus($module->name, $phaseName) !== "DONE") {
+                            JobLog::setStatus($module->name, $phaseName, "RUNNING");
+                            $ret = $module->unpack($context->root);
+                            if ($ret === false) {
+                                JobLog::setError($module->name, $phaseName,
+                                    sprintf("Error: could not unpack module '%s' in '%s': %s\n", $module->name, $context->root, $module->errorMessage));
+                                return false;
+                            }
+                            JobLog::setStatus($module->name, "unpack", "DONE");
+                        } else {
+                            JobLog::displayOutput($module->name, $phaseName, "status", "<warning>SKIP</warning>");
                         }
-                        JobLog::setStatus($module->name, "unpack", "DONE");
                         break;
 
                     case 'unregister-module':
-                        JobLog::setStatus($module->name, $phaseName, "DOING");
-                        $ret = $context->removeModule($module->name);
-                        if ($ret === false) {
-                            JobLog::setError($module->name, $phaseName,
-                                sprintf("Error: could not remove module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
-                            return false;
-                        }
-                        $ret = $context->deleteFilesFromModule($module->name);
-                        if ($ret === false) {
-                            JobLog::setError($module->name, $phaseName,
-                                sprintf("Error: could not delete files for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
-                            return false;
-                        }
-                        $ret = $context->deleteManifestForModule($module->name);
-                        if ($ret === false) {
 
-                            JobLog::setError($module->name, $phaseName, sprintf("Error: could not delete manifest"));
-                            return false;
-                        }
+                        if (JobLog::getStatus($module->name, $phaseName) !== "DONE") {
+                            JobLog::setStatus($module->name, $phaseName, "RUNNING");
+                            $ret = $context->removeModule($module->name);
+                            if ($ret === false) {
+                                JobLog::setError($module->name, $phaseName,
+                                    sprintf("Error: could not remove module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
+                                return false;
+                            }
+                            $ret = $context->deleteFilesFromModule($module->name);
+                            if ($ret === false) {
+                                JobLog::setError($module->name, $phaseName,
+                                    sprintf("Error: could not delete files for module '%s' in '%s': %s\n", $module->name, $context->root, $context->errorMessage));
+                                return false;
+                            }
+                            $ret = $context->deleteManifestForModule($module->name);
+                            if ($ret === false) {
 
-                        JobLog::setStatus($module->name, $phaseName, "DONE");
+                                JobLog::setError($module->name, $phaseName, sprintf("Error: could not delete manifest"));
+                                return false;
+                            }
+
+                            JobLog::setStatus($module->name, $phaseName, "DONE");
+                        } else {
+                            JobLog::displayOutput($module->name, $phaseName, "status", "<warning>SKIP</warning>");
+                        }
                         break;
 
                     case 'purge-unreferenced-parameters-value':
-                        $ret = $context->purgeUnreferencedParametersValue();
-                        if ($ret === false) {
-                            JobLog::setError($module->name, $phaseName,
-                                sprintf("Error: could not purge unreferenced parameters value in '%s': %s\n", $context->root, $context->errorMessage));
-                            return false;
+                        if (JobLog::getStatus($module->name, $phaseName) !== "DONE") {
+                            JobLog::setStatus($module->name, $phaseName, "RUNNING");
+                            $ret = $context->purgeUnreferencedParametersValue();
+                            if ($ret === false) {
+                                JobLog::setError($module->name, $phaseName,
+                                    sprintf("Error: could not purge unreferenced parameters value in '%s': %s\n", $context->root, $context->errorMessage));
+                                return false;
+                            }
+                            JobLog::setStatus($module->name, $phaseName, "DONE");
+                        } else {
+                            JobLog::displayOutput($module->name, $phaseName, "status", "<warning>SKIP</warning>");
                         }
-                        JobLog::setStatus($module->name, $phaseName, "DONE");
                         break;
 
                     default:
@@ -394,7 +429,6 @@ class ModuleJob
                         }
                         break;
                 }
-                JobLog::setStatus($module->name, $phaseName, "DONE");
             }
             /**
              * set status to 'installed'
@@ -435,10 +469,18 @@ class ModuleJob
     {
         $phase = $module->getPhase($phaseName);
         $processList = $phase->getProcessList();
-        JobLog::setStatus($module->name, $phase->name, "RUNNING");
-        $ret = self::executeProcessList($processList);
-        if ($ret !== true) {
-            JobLog::setStatus($module->name, $phase->name, "FAILED");
+        $ret = true;
+        if (JobLog::getStatus($module->name, $phase->name) !== "DONE") {
+            JobLog::setStatus($module->name, $phase->name, "RUNNING");
+            $ret = self::executeProcessList($processList);
+            if ($ret !== true) {
+                JobLog::setStatus($module->name, $phase->name, "FAILED");
+                JobLog::writeInterruption("FAILED");
+            } else {
+                JobLog::setStatus($module->name, $phase->name, "DONE");
+            }
+        } else {
+            JobLog::displayOutput($module->name, $phase->name, "status", "<warning>SKIP</warning>");
         }
         return ($ret === true) ? 0 : 1;
     }
@@ -453,27 +495,42 @@ class ModuleJob
         foreach ($processList as & $process) {
 
             self::$processIndex++;
-            $processInfo = [
-                "name" => $process->getName(),
-                "label" => $process->label,
-                "status" => "RUNNING"
-            ];
-            JobLog::setProcess($process->phase->module->name, $process->phase->name, $processInfo, self::$processIndex);
+            $command = $process->getAttribute("command");
+            if ($command) {
+                $index = hash("md5", $command);
+            } else {
+                $index = self::$processIndex;
+            }
+            $configStatus=JobLog::getProcessStatus($process->phase->module->name, $process->phase->name, $index);
+            if ($configStatus === "IGNORED") {
+                continue;
+            }
+            if ( $configStatus!== "DONE") {
 
+                $processInfo = [
+                    "name" => $process->getName(),
+                    "label" => $process->label,
+                    "status" => "RUNNING"
+                ];
+                JobLog::setProcess($process->phase->module->name, $process->phase->name, $processInfo, $index);
 
-            $exec = $process->execute();
+                $exec = $process->execute();
 
-            if ($exec['ret'] === false) {
-                $processInfo["error"] = $exec['output'];
-                $processInfo["status"] = "ABORT";
+                if ($exec['ret'] === false) {
+                    $processInfo["error"] = $exec['output'];
+                    $processInfo["status"] = "FAILED";
+                } else {
+
+                    $processInfo["status"] = "DONE";
+                }
+
+                JobLog::setProcess($process->phase->module->name, $process->phase->name, $processInfo, $index);
+                if ($processInfo["status"] === "FAILED") {
+                    return false;
+                }
             } else {
 
-                $processInfo["status"] = "DONE";
-            }
-
-            JobLog::setProcess($process->phase->module->name, $process->phase->name, $processInfo, self::$processIndex);
-            if ($processInfo["status"] === "ABORT") {
-                return false;
+                JobLog::displayOutput($process->phase->module->name, $process->phase->name, "process", "<warning>SKIP</warning>");
             }
         }
         return true;

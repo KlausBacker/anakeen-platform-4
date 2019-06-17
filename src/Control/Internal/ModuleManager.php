@@ -183,7 +183,7 @@ class ModuleManager
     }
 
 
-    protected function runJobInBackground() {
+    public static function runJobInBackground() {
         $command=sprintf("%s/anakeen-control dojob", realpath(__DIR__."/../../../"));
         exec("exec nohup $command > /dev/null 2>&1 &", $result, $status);
         //if (session_id()) @session_start();

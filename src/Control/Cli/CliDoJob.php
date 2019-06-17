@@ -8,7 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CliDoJob extends Command
+class CliDoJob extends CliCommand
 {
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'dojob';
@@ -24,7 +24,11 @@ class CliDoJob extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        parent::execute($input, $output);
         JobLog::setOutput($output);
+        if (ModuleJob::hasFailed()) {
+            $output->writeln("<info>Retry last failed job</info>");
+        }
         ModuleJob::runJob();
     }
 

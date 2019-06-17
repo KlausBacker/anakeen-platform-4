@@ -2,7 +2,10 @@
 
 namespace Control\Cli;
 
+use Control\Internal\Context;
+use Control\Internal\JobLog;
 use Control\Internal\ModuleJob;
+use Control\Internal\ModuleManager;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,6 +13,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 
 class CliStatus extends CliCommand
@@ -25,7 +30,7 @@ class CliStatus extends CliCommand
             // the short description shown while running "php bin/console list"
             ->setDescription('Get status of control manager.')
             ->addOption('json', null, InputOption::VALUE_NONE, 'JSON output format.')
-            ->addOption('watch', null, InputOption::VALUE_OPTIONAL, 'Watch log and refresh each n seconds. Ignored if json format')
+            ->addOption('watch', "w", InputOption::VALUE_OPTIONAL, 'Watch log and refresh each n seconds. Ignored if json format')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('Get job progress and some other statuses');
@@ -35,6 +40,12 @@ class CliStatus extends CliCommand
     {
         parent::execute($input, $output);
 
+        if (! Context::isInitialized()) {
+            $output->writeln("<comment>Context not initialized.</comment>");
+            $output->writeln("<info>Use \"init\" command to initialized.</info>");
+            return;
+        }
+        
         $watch = intval($input->getOption("watch"));
 
         $jobStatus = $this->getJobStatus();
@@ -59,6 +70,27 @@ class CliStatus extends CliCommand
                 }
             } else {
                 self::writeJobStatus($section, $jobStatus);
+                if (ModuleJob::hasFailed()) {
+                    $helper = $this->getHelper('question');
+                    $output->writeln("<info>The last job has failed.</info>");
+
+                    $question = new ChoiceQuestion('<question>Retry from failed point [Y/n]?</question>', ['Retry', 'Ignore', 'Cancel']);
+                    $answer = $helper->ask($input, $output, $question);
+
+                    switch ($answer) {
+                        case 'Retry':
+
+                            $output->writeln("<info>Rerun Job.</info>");
+                            ModuleManager::runJobInBackground();
+                            break;
+
+                        case 'Ignore' :
+                            $output->writeln("<info>Rerun Job and ignore last error.</info>");
+                            JobLog::markProcessFailedAsIgnored();
+                            ModuleManager::runJobInBackground();
+                            break;
+                    }
+                }
             }
         }
     }
@@ -74,7 +106,7 @@ class CliStatus extends CliCommand
 
             foreach ($data["tasks"] as $task) {
 
-                $status=sprintf("<%s>%s</%s>",strtolower($task["status"]), $task["status"],strtolower($task["status"]));
+                $status = sprintf("<%s>%s</%s>", strtolower($task["status"]), $task["status"], strtolower($task["status"]));
 
                 $row = [
                     sprintf("<comment>%s</comment>", $task["module"]),
@@ -82,9 +114,9 @@ class CliStatus extends CliCommand
                     sprintf("%s", $status)
                 ];
                 $table->addRow($row);
-                if (($task["status"] ?? "") === "RUNNING" || ($task["status"] ?? "") === "INTERRUPTED") {
+                if (($task["status"] ?? "") === "RUNNING" || ($task["status"] ?? "") === "INTERRUPTED" || ($task["status"] ?? "") === "FAILED") {
                     foreach ($task["phases"] as $phase) {
-                        $status=sprintf("<%s>%s</%s>",strtolower($phase["status"]), $phase["status"],strtolower($phase["status"]));
+                        $status = sprintf("<%s>%s</%s>", strtolower($phase["status"]), $phase["status"], strtolower($phase["status"]));
 
                         $row = [
                             sprintf("<comment>%s</comment>", ""),
@@ -95,11 +127,12 @@ class CliStatus extends CliCommand
                         if (isset($phase["process"])) {
                             foreach ($phase["process"] as $process) {
                                 if ($process["status"] !== "DONE" && $process["status"] !== "TODO") {
-                                    $status=sprintf("<%s>%s</%s>",strtolower($process["status"]), $process["status"],strtolower($process["status"]));
+                                    $status = sprintf("<%s>%s</%s>", strtolower($process["status"]), $process["status"], strtolower($process["status"]));
                                     $row = [
                                         sprintf("<comment>%s</comment>", ""),
                                         sprintf("<info>%s</info>", $process["label"]),
-                                        sprintf("<info>%s</info>", $status)];
+                                        sprintf("<info>%s</info>", $status)
+                                    ];
                                     $table->addRow($row);
                                 }
                             }
@@ -119,7 +152,7 @@ class CliStatus extends CliCommand
     protected function getJobStatus()
     {
 
-        $status = ["status" =>""];
+        $status = ["status" => ""];
 
         if (ModuleJob::isRunning()) {
             $status = ModuleJob::getJobData();

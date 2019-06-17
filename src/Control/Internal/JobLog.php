@@ -4,7 +4,6 @@
 namespace Control\Internal;
 
 
-use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +21,7 @@ class JobLog
     {
         $data = ModuleJob::getJobData();
 
-        self::displayOutput($moduleName, $phaseName, $key, $value, $adding);
+        self::displayOutput($moduleName, $phaseName, $key, $value);
 
         if ($moduleName) {
             foreach ($data["tasks"] as &$task) {
@@ -32,7 +31,7 @@ class JobLog
                             if ($phase["name"] === $phaseName) {
                                 if ($adding === true) {
                                     $phase[$key][] = $value;
-                                } elseif (is_int($adding)) {
+                                } elseif ($adding !== false) {
                                     $phase[$key][$adding] = $value;
                                 } else {
                                     $phase[$key] = $value;
@@ -50,7 +49,36 @@ class JobLog
         ModuleJob::putJobData($data);
     }
 
-    protected static function displayOutput($moduleName, $phaseName, $key, $value, $adding = false)
+
+    protected static function getKey($moduleName, $phaseName, $key, $index=-1)
+    {
+        $data = ModuleJob::getJobData();
+
+        if ($moduleName) {
+            foreach ($data["tasks"] as &$task) {
+                if ($task["module"] === $moduleName) {
+                    if ($phaseName) {
+                        foreach ($task["phases"] as &$phase) {
+                            if ($phase["name"] === $phaseName) {
+                                if ($index !== -1) {
+                                    return $phase[$key][$index]["status"] ?? null;
+                                } else {
+                                    return $phase[$key] ?? null;
+                                }
+                            }
+                        }
+                    } else {
+                        return $task[$key] ?? null;
+                    }
+                }
+            }
+        } else {
+            return $data[$key] ?? null;
+        }
+        return null;
+    }
+
+    public static function displayOutput($moduleName, $phaseName, $key, $value)
     {
         if (self::$output) {
             if (is_array($value)) {
@@ -75,24 +103,44 @@ class JobLog
         }
     }
 
-    public static function writeInterruption()
+    public static function writeInterruption($status="INTERRUPTED")
     {
         $data = ModuleJob::getJobData();
 
 
         foreach ($data["tasks"] as &$task) {
             if ($task["status"] === "RUNNING") {
-                $task["status"] = "INTERRUPTED";
+                $task["status"] = $status;
             }
 
             foreach ($task["phases"] as &$phase) {
                 if ($phase["status"] === "RUNNING") {
-                    $phase["status"] = "INTERRUPTED";
+                    $phase["status"] = $status;
                 }
                 if (!empty($phase["process"])) {
                     foreach ($phase["process"] as &$process) {
                         if ($process["status"] === "RUNNING") {
-                            $process["status"] = "INTERRUPTED";
+                            $process["status"] = $status;
+                        }
+                    }
+                }
+            }
+        }
+
+        ModuleJob::putJobData($data);
+    }
+
+
+    public static function markProcessFailedAsIgnored()
+    {
+        $data = ModuleJob::getJobData();
+
+        foreach ($data["tasks"] as &$task) {
+            foreach ($task["phases"] as &$phase) {
+                if (!empty($phase["process"])) {
+                    foreach ($phase["process"] as &$process) {
+                        if ($process["status"] === "FAILED") {
+                            $process["status"] = "IGNORED";
                         }
                     }
                 }
@@ -105,6 +153,15 @@ class JobLog
     public static function setStatus($moduleName, $phaseName, $status)
     {
         self::setKey($moduleName, $phaseName, "status", $status);
+    }
+
+    public static function getStatus($moduleName, $phaseName)
+    {
+        return self::getKey($moduleName, $phaseName, "status");
+    }
+    public static function getProcessStatus($moduleName, $phaseName, $index)
+    {
+        return self::getKey($moduleName, $phaseName, "process", $index);
     }
 
     public static function setInfo($moduleName, $key, $value)

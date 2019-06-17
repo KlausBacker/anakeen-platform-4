@@ -2,7 +2,9 @@
 
 namespace Control\Cli;
 
+use Control\Internal\ModuleJob;
 use Control\Internal\ModuleManager;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,6 +36,10 @@ class CliUpdateModule extends CliCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         parent::execute($input, $output);
+
+        if (ModuleJob::isRunning()) {
+            throw new RuntimeException(sprintf("Job is already in progress. Wait or kill it"));
+        }
 
         $output->getFormatter()->setStyle('question', new OutputFormatterStyle('cyan', null, []));
         $moduleName = $input->getArgument("module");
