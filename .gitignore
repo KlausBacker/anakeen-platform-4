@@ -19,7 +19,6 @@ ide/vendor/
 src/vendor/Anakeen/Routes/Devel/Lib/vendor/
 Makefile.local
 node_modules/
-src/public/Anakeen/DevCenter/dev
-src/public/Anakeen/DevCenter/prod
+src/public/Anakeen/DevCenter/*
 src/public/Anakeen/DevCenterStandalone/*
 src/public/Anakeen/manifest
