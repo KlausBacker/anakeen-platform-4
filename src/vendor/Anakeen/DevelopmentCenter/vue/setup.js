@@ -30,36 +30,3 @@ export const interceptDOMLinks = (element, cb = () => {}) => {
     }
   });
 };
-
-// export function syncRouter(vueHubElement) {
-//   const router = vueHubElement.getRouter();
-//   const store = vueHubElement.getStore();
-//   if (router && store) {
-//     store.subscribe((mutation, state) => {
-//       const regex = /(\w+)\/SET_ROUTE/;
-//       const matches = mutation.type.match(regex);
-//       if (matches && matches.length > 1) {
-//         const namespace = matches[1];
-//         const localStateRoute = state[namespace].currentRoute;
-//         router.navigate(
-//           `/${namespace}/` +
-//             localStateRoute.map(r => r.url || r.name || r).join("/")
-//         );
-//         const NS = namespace.replace(
-//           /([A-Z]?[a-z]+)([A-Z][a-z]+)/g,
-//           (correspondance, ...args) => {
-//             const tokens = args.slice(0, args.length - 2);
-//             if (tokens && tokens.length) {
-//               return tokens
-//                 .map(t => t.charAt(0).toUpperCase() + t.slice(1))
-//                 .join(" ");
-//             } else {
-//               return args[args.length - 1];
-//             }
-//           }
-//         );
-//         store.commit("SET_CURRENT_ROUTE", [NS, ...localStateRoute]);
-//       }
-//     });
-//   }
-// }

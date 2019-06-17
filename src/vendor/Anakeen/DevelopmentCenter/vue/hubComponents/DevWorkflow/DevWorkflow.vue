@@ -58,8 +58,8 @@
     },
     methods: {
       onNavigate(route) {
-        const routeUrl = `/${this.entryOptions.route}/`+route.map(r => r.url).join("/").replace(/\/\//g, '/');
-        this.getRouter().navigate(routeUrl);
+        const routeUrl = `/devel/${this.entryOptions.route}/`+route.map(r => r.url).join("/").replace(/\/\//g, '/');
+        this.navigate(routeUrl);
       }
     }
   };
