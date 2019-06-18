@@ -205,4 +205,21 @@
         </hge_jsassets>
         <hge_component_tag>ank-dev-enumerates</hge_component_tag>
     </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVHUB">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>HUBINSTANCIATION</hub_title>
+        <hub_order>9</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>hub</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "hub-instanciation")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-hub-instanciation</hge_component_tag>
+    </hubconfigurationgeneric>
 </documents>

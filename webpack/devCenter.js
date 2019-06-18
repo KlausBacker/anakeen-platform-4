@@ -22,7 +22,8 @@ const conf = {
     "workflow": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevWorkflow/index.js")],
     "routes": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevRoutes/index.js")],
     "localization": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevLocalization/index.js")],
-    "enumerates": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevEnumerates/index.js")]
+    "enumerates": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevEnumerates/index.js")],
+    "hub-instanciation": [path.resolve(BASE_DIR, "src/vendor/Anakeen/DevelopmentCenter/vue/hubComponents/DevHubInstanciation/index.js")],
   },
   buildPath: PUBLIC_PATH,
   excludeBabel: dontParse,
