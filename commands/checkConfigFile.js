@@ -48,6 +48,7 @@ exports.handler = function(argv, silent) {
         if (silent !== true) {
           signale.timeEnd("checkConfigFile");
           signale.error(e);
+          process.exit(1);
         } else {
           return Promise.reject(e);
         }
@@ -56,6 +57,7 @@ exports.handler = function(argv, silent) {
     if (silent !== true) {
       signale.timeEnd("checkConfigFile");
       signale.error(e);
+      process.exit(1);
     } else {
       return Promise.reject(e);
     }

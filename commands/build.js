@@ -53,8 +53,10 @@ exports.handler = function(argv) {
       .catch(e => {
         signale.timeEnd("build");
         signale.error(e);
+        process.exit(1);
       });
   } catch (e) {
     signale.error(e);
+    process.exit(1);
   }
 };

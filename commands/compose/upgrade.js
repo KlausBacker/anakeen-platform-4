@@ -26,8 +26,8 @@ exports.handler = async argv => {
       latest: argv["latest"]
     }).upgrade(argv._.slice(2));
   } catch (e) {
-    signale.error(`Error: ${e.message}`);
-    throw e;
+    signale.error(e);
+    process.exit(1);
   }
   signale.success(`Done.`);
 };
