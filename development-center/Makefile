@@ -77,13 +77,17 @@ buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build js $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildJs
 
+buildCSS: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build css $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildCss
+
 
 ########################################################################################################################
 ##
 ## Build
 ##
 ########################################################################################################################
-app: install-deps buildJS
+app: install-deps buildJS buildCSS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
 
@@ -91,7 +95,7 @@ app-test:
 
 app-all: app
 
-app-autorelease: install-deps buildJS
+app-autorelease: install-deps buildJS buildCSS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} build --auto-release  -t ${APP_OUTPUT_PATH}
 
@@ -102,7 +106,7 @@ app-all-autorelease: app-autorelease
 ## Deploy
 ##
 ########################################################################################################################
-deploy: install-deps buildJS
+deploy: install-deps buildJS buildCSS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} deploy --auto-release -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 

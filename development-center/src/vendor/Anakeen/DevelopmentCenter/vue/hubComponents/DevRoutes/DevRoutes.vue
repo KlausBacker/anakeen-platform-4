@@ -55,12 +55,12 @@ export default {
   methods: {
     onNavigate(route, filter) {
       const routeUrl =
-        `/${this.entryOptions.route}/` +
+        `/devel/${this.entryOptions.route}/` +
         route
           .map(r => r.url)
           .join("/")
           .replace(/\/\//g, "/");
-      this.getRouter().navigate(routeUrl);
+      this.navigate(routeUrl);
     }
   }
 };
