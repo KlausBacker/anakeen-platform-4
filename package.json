@@ -3,6 +3,7 @@
   "version": "1.1.14",
   "description": "The cli tool to init, build and deploy anakeen-platform projects",
   "main": "index.js",
+  "autorelease": true,
   "bin": {
     "anakeen-cli": "./index.js"
   },
