@@ -90,9 +90,11 @@ exports.handler = function(argv) {
       .catch(e => {
         signale.timeEnd("deploy");
         signale.error(e);
+        process.exit(1);
       });
   } catch (e) {
     signale.timeEnd("deploy");
     signale.error(e);
+    process.exit(1);
   }
 };

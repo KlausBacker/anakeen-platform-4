@@ -42,9 +42,11 @@ exports.handler = function(argv) {
       .catch(e => {
         signale.timeEnd("stub");
         signale.error(e);
+        process.exit(1);
       });
   } catch (e) {
     signale.timeEnd("stub");
     signale.error(e);
+    process.exit(1);
   }
 };

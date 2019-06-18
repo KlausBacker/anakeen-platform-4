@@ -165,9 +165,11 @@ exports.handler = async argv => {
       .catch(e => {
         signale.timeEnd("create");
         signale.error(e);
+        process.exit(1);
       });
   } catch (e) {
     signale.timeEnd("create");
     signale.error(e);
+    process.exit(1);
   }
 };
