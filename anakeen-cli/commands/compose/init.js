@@ -23,8 +23,8 @@ exports.handler = async argv => {
   try {
     await new Compose().init(argv);
   } catch (e) {
-    signale.error(`Error: ${e.message}`);
-    throw e;
+    signale.error(e);
+    process.exit(1);
   }
   signale.success(`Done.`);
 };

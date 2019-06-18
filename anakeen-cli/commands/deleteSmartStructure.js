@@ -77,5 +77,6 @@ exports.handler = async function(argv) {
   } catch (e) {
     signale.timeEnd("deleteSmartStructure");
     signale.error(e);
+    process.exit(1);
   }
 };

@@ -92,9 +92,11 @@ exports.handler = async argv => {
       .catch(e => {
         signale.timeEnd("createRoute");
         signale.error(e);
+        process.exit(1);
       });
   } catch (e) {
     signale.timeEnd("createRoute");
     signale.error(e);
+    process.exit(1);
   }
 };

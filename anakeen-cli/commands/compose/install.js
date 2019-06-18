@@ -26,8 +26,8 @@ exports.handler = async argv => {
       frozenLockfile: argv["frozen-lockfile"]
     }).install(argv);
   } catch (e) {
-    signale.error(`Error: ${e.message}`);
-    throw e;
+    signale.error(e);
+    process.exit(1);
   }
   signale.success(`Done.`);
 };

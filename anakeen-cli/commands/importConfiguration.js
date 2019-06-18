@@ -113,9 +113,11 @@ exports.handler = function(argv) {
       .catch(e => {
         signale.timeEnd("importConfiguration");
         signale.error(e);
+        process.exit(1);
       });
   } catch (e) {
     signale.timeEnd("importConfiguration");
     signale.error(e);
+    process.exit(1);
   }
 };

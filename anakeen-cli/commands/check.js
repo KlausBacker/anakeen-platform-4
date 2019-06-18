@@ -41,6 +41,7 @@ exports.handler = function(argv, silent) {
         if (silent !== true) {
           signale.timeEnd("check");
           signale.error(e);
+          throw e;
         } else {
           return Promise.reject(e);
         }
@@ -49,6 +50,7 @@ exports.handler = function(argv, silent) {
     if (silent !== true) {
       signale.timeEnd("check");
       signale.error(e);
+      process.exit(1);
     } else {
       return Promise.reject(e);
     }

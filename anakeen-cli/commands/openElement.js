@@ -54,5 +54,6 @@ exports.handler = function(argv) {
   } catch (e) {
     signale.timeEnd("openElement");
     signale.error(e);
+    process.exit(1);
   }
 };
