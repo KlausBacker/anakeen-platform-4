@@ -10,13 +10,14 @@ CONTROL_URL=http://localhost:8080/control/
 CONTROL_CONTEXT="anakeen-platform"
 
 #Build
-APP_OUTPUT_PATH=${MK_DIR}/../build/
+APP_OUTPUT_PATH=../build/
 
 ##bin
 YARN_BIN=yarn
-COMPOSER=composer
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
+CBF_BIN=php ./../ide/vendor/bin/phpcbf
+CS_BIN=php ./../ide/vendor/bin/phpcbf
+COMPOSER_BIN=composer
 
 -include ../Makefile.local
 
@@ -41,15 +42,15 @@ checkXML: install-deps
 
 lint: checkXML
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ./migration-tools
+	$(CS_BIN) --standard=../ide/anakeenPhpCs.xml --extensions=php ./src
 
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --extensions=php ${MK_DIR}/src
+	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ./migration-tools
+	$(CBF_BIN) --standard=../ide/anakeenPhpCs.xml --extensions=php ./src
 
 ########################################################################################################################
 ##

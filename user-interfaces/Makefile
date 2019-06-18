@@ -4,7 +4,7 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ## path
 STUB_PATH=stubs/
 NODE_MODULE_PATH=node_modules
-JS_CONF_PATH=$(MK_DIR)
+JS_CONF_PATH=./
 WEBPACK_CONF_PATH=webpackConfig/
 PHP_LIB_PATH=./src/vendor/Anakeen/Ui/PhpLib
 JS_ASSET_PATH=./src/public/uiAssets/externals/
@@ -28,13 +28,13 @@ CONTROL_URL=http://localhost:8080/control/
 CONTROL_CONTEXT="anakeen-platform"
 
 #Build
-APP_OUTPUT_PATH=${MK_DIR}/../build/
+APP_OUTPUT_PATH=../build/
 
 ##bin
 YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
-CS_BIN=php ${MK_DIR}/../ide/vendor/bin/phpcbf
+CBF_BIN=php ./../ide/vendor/bin/phpcbf
+CS_BIN=php ./../ide/vendor/bin/phpcbf
 COMPOSER_BIN=composer
 
 -include ../Makefile.local
@@ -62,18 +62,15 @@ checkXML: install-deps
 
 lint: checkXML
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CS_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${ANAKEEN_UI_SRC_PATH}/src
+	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${ANAKEEN_UI_SRC_PATH}
+	$(CS_BIN) --standard=../ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${ANAKEEN_UI_SRC_PATH}/src
 
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	cd ${MK_DIR}/../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ${MK_DIR}
-	$(CBF_BIN) --standard=${MK_DIR}/ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${ANAKEEN_UI_SRC_PATH}/src
-
-checkPackage:
-	${MK_DIR}/.cibuild/targets/autotest/scripts.d/01_checkPackage.sh
+	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
+	cd ${ANAKEEN_UI_SRC_PATH}
+	$(CBF_BIN) --standard=../ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${ANAKEEN_UI_SRC_PATH}/src
 
 ########################################################################################################################
 ##
