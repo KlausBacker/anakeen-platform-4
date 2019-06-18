@@ -6,6 +6,7 @@
 *~
 *#
 node_modules/
+src/public/Anakeen/i18nManager
 src/public/Anakeen/accountManager
 src/public/Anakeen/parameterManager
 src/public/Anakeen/tokenManager
