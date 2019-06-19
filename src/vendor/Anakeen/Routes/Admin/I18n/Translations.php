@@ -40,7 +40,9 @@ class Translations
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->lang = strtolower(substr($args["lang"], 0, 2));
-        $this->filters = $request->getQueryParam("filter")["filters"];
+        if ($request->getQueryParam("filter") && isset($request->getQueryParam("filter")["filters"])) {
+            $this->filters = $request->getQueryParam("filter")["filters"];
+        }
         if ($request->getQueryParam("take") === "all") {
             $this->take = $request->getQueryParam("take");
         } else {
