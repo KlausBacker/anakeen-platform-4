@@ -8,6 +8,7 @@ use Anakeen\Core\Utils\Strings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
+use Sepia\PoParser\Catalog\Entry;
 
 /** @noinspection PhpIncludeInspection */
 require_once "vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php";
@@ -144,7 +145,7 @@ class Translations
         return $data;
     }
 
-    private function filterContainsTranslations($entry, $filters)
+    private function filterContainsTranslations(Entry $entry, $filters)
     {
         $filterPassed = false;
         if (!empty($filters)) {
@@ -183,7 +184,7 @@ class Translations
             foreach ($filters as $filter) {
                 $filterField = $filter["field"];
                 $filterValue = $filter["value"];
-                $entryValue;
+                $entryValue = null;
                 switch ($filterField) {
                     case "msgctxt":
                         $entryValue = $structure->name;
