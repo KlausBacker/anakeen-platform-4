@@ -12,37 +12,38 @@ declare var kendo;
 export default class I18nManagerController extends Vue {
   private translationLocale: string = "fr";
   private translationFilterableOptions: kendo.data.DataSourceFilter = {
-      cell: {
-        minLength: 3,
-        operator: "contains",
-        showOperators: false
-      }
-    };
-  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource({
-    pageSize: 50,
-    schema: {
-      data: response => response.data.data.data,
-      total: response => response.data.data.requestParameters.total
-    },
-    serverFiltering: true,
-    serverPaging: true,
-    transport: {
-      read: options => {
-        this.$http
-          .get(`/api/v2/admin/i18n/fr`,
-            {
+    cell: {
+      minLength: 3,
+      operator: "contains",
+      showOperators: false
+    }
+  };
+  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource(
+    {
+      pageSize: 50,
+      schema: {
+        data: response => response.data.data.data,
+        total: response => response.data.data.requestParameters.total
+      },
+      serverFiltering: true,
+      serverPaging: true,
+      transport: {
+        read: options => {
+          this.$http
+            .get(`/api/v2/admin/i18n/fr`, {
               params: options.data,
               paramsSerializer: kendo.jQuery.param
             })
-          .then(options.success)
-          .catch(options.error);
+            .then(options.success)
+            .catch(options.error);
+        }
       }
     }
-  });
+  );
 
   @Watch("translationLocale")
   public watchTranslationLocale(value) {
-    if (value === 'fr') {
+    if (value === "fr") {
       this.translationGridData = new kendo.data.DataSource({
         pageSize: 50,
         schema: {
@@ -54,11 +55,10 @@ export default class I18nManagerController extends Vue {
         transport: {
           read: options => {
             this.$http
-              .get(`/api/v2/admin/i18n/fr`,
-                {
-                  params: options.data,
-                  paramsSerializer: kendo.jQuery.param
-                })
+              .get(`/api/v2/admin/i18n/fr`, {
+                params: options.data,
+                paramsSerializer: kendo.jQuery.param
+              })
               .then(options.success)
               .catch(options.error);
           }
@@ -76,18 +76,19 @@ export default class I18nManagerController extends Vue {
         transport: {
           read: options => {
             this.$http
-              .get(`/api/v2/admin/i18n/en`,
-                {
-                  params: options.data,
-                  paramsSerializer: kendo.jQuery.param
-                })
+              .get(`/api/v2/admin/i18n/en`, {
+                params: options.data,
+                paramsSerializer: kendo.jQuery.param
+              })
               .then(options.success)
               .catch(options.error);
           }
         }
       });
     }
-    $(this.$refs.i18nGrid).data("kendoGrid").setDataSource(this.translationGridData);
+    $(this.$refs.i18nGrid)
+      .data("kendoGrid")
+      .setDataSource(this.translationGridData);
   }
   public mounted() {
     window.addEventListener("offline", e => {
@@ -218,7 +219,7 @@ export default class I18nManagerController extends Vue {
     const date = this.getDate();
     // const fileName = `${locale}-${date}`;
     const fileName = `${locale}-${date}`;
-    console.log(fileName+ ".po");
+    console.log(fileName + ".po");
     // window.open(`/api/v2/admin/i18n/export/${this.translationLocale}/${fileName}.po`);
   }
 
