@@ -43,7 +43,6 @@ export default class I18nManagerController extends Vue {
 
   @Watch("translationLocale")
   public watchTranslationLocale(value) {
-    if (value === "fr") {
       this.translationGridData = new kendo.data.DataSource({
         pageSize: 50,
         schema: {
@@ -55,7 +54,7 @@ export default class I18nManagerController extends Vue {
         transport: {
           read: options => {
             this.$http
-              .get(`/api/v2/admin/i18n/fr`, {
+              .get(`/api/v2/admin/i18n/${value}`, {
                 params: options.data,
                 paramsSerializer: kendo.jQuery.param
               })
@@ -64,31 +63,17 @@ export default class I18nManagerController extends Vue {
           }
         }
       });
-    } else {
-      this.translationGridData = new kendo.data.DataSource({
-        pageSize: 50,
-        schema: {
-          data: response => response.data.data.data,
-          total: response => response.data.data.requestParameters.total
-        },
-        serverFiltering: true,
-        serverPaging: true,
-        transport: {
-          read: options => {
-            this.$http
-              .get(`/api/v2/admin/i18n/en`, {
-                params: options.data,
-                paramsSerializer: kendo.jQuery.param
-              })
-              .then(options.success)
-              .catch(options.error);
-          }
-        }
-      });
-    }
     $(this.$refs.i18nGrid)
       .data("kendoGrid")
       .setDataSource(this.translationGridData);
+    setTimeout(() => {
+      if (value === 'fr') {
+        $(".overriden-translation-input").attr("placeholder", "modifier la traduction");
+      } else {
+        $(".overriden-translation-input").attr("placeholder", "edit translation");
+      }
+    }, 300);
+
   }
   public mounted() {
     window.addEventListener("offline", e => {
@@ -134,7 +119,7 @@ export default class I18nManagerController extends Vue {
           filterable: false,
           minResizableWidth: 25,
           template: `<div class="input-group">
-                <input type='text' placeholder="edit translation" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
+                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
                 <div class="input-group-append">
                     <button class='confirm-override-translation btn btn-outline-secondary'><i class='fa fa-check'></i></button>
                     <button class='cancel-override-translation btn btn-outline-secondary'><i class='fa fa-times'></i></button>
