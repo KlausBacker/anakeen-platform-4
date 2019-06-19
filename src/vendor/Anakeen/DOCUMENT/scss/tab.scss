@@ -19,6 +19,7 @@
   .dcpDocument__tabs {
     .dcpDocument__tabs__list {
       border-bottom: none;
+      padding-left: 1.166rem;
     }
   }
 
@@ -36,6 +37,10 @@
     }
   }
 
+  .dcpDocument__tabs--fixed.k-tabstrip-scrollable > .dcpDocument__tabs__list {
+    margin-bottom: -1px;
+  }
+
   // Active tab
   .dcpDocument__tabs .dcpTab__label.dcpLabel--active {
     font-family: $ank-ui-title-font-variant;
@@ -43,7 +48,7 @@
     line-height: $ank-ui-title-font-line-height;
     color: $ank-ui-color-font-title;
     background-color: $ank-ui-tab-active-bg;
-    border-bottom: none;
+    margin-bottom: -2px;
     //
     &:before {
       @include A4ClientTabDecoration;
@@ -55,8 +60,8 @@
     margin: 0;
     background-color: $ank-ui-tab-active-bg;
     border-style: solid solid solid solid;
-    margin-top: -1px;
     border-color: $ank-ui-doc-edit-attribute-color-border;
+    border-width: 1px;
     padding: 0;
     min-height: 0;
   }
@@ -68,5 +73,30 @@
 
   .dcpDocument__tabs .dcpFrame__content {
     padding-left: 1.6667rem;
+  }
+
+  // Left placement
+  .dcpDocument__tabs.dcpDocument__tabs--left {
+
+    .dcpDocument__tabs__list {
+      border: none;
+      .dcpTab__label {
+        margin: 0;
+        border-width: 1px 0 1px 1px;
+      }
+
+      //active tab
+      .dcpLabel--active {
+        border-width: 1px;
+        border-right-color: $ank-ui-tab-active-bg;
+        margin-right: -2px !important;
+      }
+    }
+
+    //Rotate anakeen icon and put on left side in case of
+    .dcpTab__label.dcpLabel--active:before{
+      left: 0;
+      transform: rotate(270deg);
+    }
   }
 }
