@@ -144,16 +144,15 @@ export default class I18nManagerController extends Vue {
         });
         $(".cancel-override-translation").kendoButton({
           click: cancelEvent => {
-            console.log("cancel");
             const rowId = cancelEvent.event.target
               .closest("tr[role=row]")
               .getAttribute("data-uid");
-            const oldVal = $(this.$refs.i18nGrid)
-              .data("kendoGrid")
-              .dataItem(rowId);
+            // sets input valueback to server value
             $(cancelEvent.event.target.closest("tr[role=row]")).find(
               "input"
-            )[0].value = 123;
+            )[0].value = $(this.$refs.i18nGrid)
+              .data("kendoGrid")
+              .dataItem(rowId);
           }
         });
       },
