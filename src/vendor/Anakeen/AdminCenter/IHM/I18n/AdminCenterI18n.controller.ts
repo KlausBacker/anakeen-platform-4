@@ -185,8 +185,13 @@ export default class I18nManagerController extends Vue {
     }
   }
   public importLocaleFile() {
-    console.log("Import Locale");
+    const importBtn = $(".import-locale-file");
+    importBtn.trigger("click");
+    importBtn.on("change", e => {
+      console.log(e.target);
+    });
   }
+
   public exportLocaleFile() {
     console.log("Export Locale");
   }
