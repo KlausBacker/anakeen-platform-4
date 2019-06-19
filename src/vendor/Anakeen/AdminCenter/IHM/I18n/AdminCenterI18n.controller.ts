@@ -7,54 +7,88 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
-
+declare var kendo;
 @Component
 export default class I18nManagerController extends Vue {
   private translationLocale: string = "fr";
-  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource(
-    {
-      pageSize: 50,
-      schema: {
-        data: response => response.data.data.data,
-        total: response => response.data.data.requestParameters.total
-      },
-      serverFiltering: true,
-      serverPaging: true,
-      transport: {
-        read: options => {
-          this.$http
-            .get("/api/v2/admin/i18n/fr")
-            .then(options.success)
-            .catch(options.error);
-        }
+  private translationFilterableOptions: kendo.data.DataSourceFilter = {
+      cell: {
+        minLength: 3,
+        operator: "contains",
+        showOperators: false
+      }
+    };
+  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource({
+    pageSize: 50,
+    schema: {
+      data: response => response.data.data.data,
+      total: response => response.data.data.requestParameters.total
+    },
+    serverFiltering: true,
+    serverPaging: true,
+    transport: {
+      read: options => {
+        this.$http
+          .get(`/api/v2/admin/i18n/fr`,
+            {
+              params: options.data,
+              paramsSerializer: kendo.jQuery.param
+            })
+          .then(options.success)
+          .catch(options.error);
       }
     }
-  );
+  });
 
   @Watch("translationLocale")
   public watchTranslationLocale(value) {
-    this.translationGridData = new kendo.data.DataSource({
-      pageSize: 50,
-      schema: {
-        data: response => response.data.data.data,
-        total: response => response.data.data.requestParameters.total
-      },
-      serverFiltering: true,
-      serverPaging: true,
-      transport: {
-        read: options => {
-          this.$http
-            .get("/api/v2/admin/i18n/" + value)
-            .then(options.success)
-            .catch(options.error);
+    if (value === 'fr') {
+      this.translationGridData = new kendo.data.DataSource({
+        pageSize: 50,
+        schema: {
+          data: response => response.data.data.data,
+          total: response => response.data.data.requestParameters.total
+        },
+        serverFiltering: true,
+        serverPaging: true,
+        transport: {
+          read: options => {
+            this.$http
+              .get(`/api/v2/admin/i18n/fr`,
+                {
+                  params: options.data,
+                  paramsSerializer: kendo.jQuery.param
+                })
+              .then(options.success)
+              .catch(options.error);
+          }
         }
-      }
-    });
-    $(this.$refs.i18nGrid)
-      .data("kendoGrid")
-      .setDataSource(this.translationGridData);
+      });
+    } else {
+      this.translationGridData = new kendo.data.DataSource({
+        pageSize: 50,
+        schema: {
+          data: response => response.data.data.data,
+          total: response => response.data.data.requestParameters.total
+        },
+        serverFiltering: true,
+        serverPaging: true,
+        transport: {
+          read: options => {
+            this.$http
+              .get(`/api/v2/admin/i18n/en`,
+                {
+                  params: options.data,
+                  paramsSerializer: kendo.jQuery.param
+                })
+              .then(options.success)
+              .catch(options.error);
+          }
+        }
+      });
+    }
+    $(this.$refs.i18nGrid).data("kendoGrid").setDataSource(this.translationGridData);
   }
-
   public mounted() {
     window.addEventListener("offline", e => {
       kendo.ui.progress($("body"), true);
@@ -72,45 +106,25 @@ export default class I18nManagerController extends Vue {
         },
         {
           field: "section",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
-            }
-          },
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           title: "Type"
         },
         {
           field: "msgctxt",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
-            }
-          },
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           title: "Contexte"
         },
         {
           field: "msgid",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
-            }
-          },
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           title: "ID"
         },
         {
           field: "msgstr",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
-            }
-          },
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           title: "Server translation"
         },
@@ -162,6 +176,7 @@ export default class I18nManagerController extends Vue {
           }
         });
       },
+      dataSource: this.translationGridData,
       filterable: {
         extra: false,
         mode: "row"
@@ -175,9 +190,6 @@ export default class I18nManagerController extends Vue {
       resizable: true,
       sortable: true
     });
-    $(this.$refs.i18nGrid)
-      .data("kendoGrid")
-      .setDataSource(this.translationGridData);
   }
 
   public changeLocale(e) {
@@ -205,7 +217,8 @@ export default class I18nManagerController extends Vue {
     const locale = this.translationLocale === "fr" ? "FR_fr" : "EN_us";
     const date = this.getDate();
     // const fileName = `${locale}-${date}`;
-    const fileName = `${locale}`;
+    const fileName = `${locale}-${date}`;
+    console.log(fileName+ ".po");
     // window.open(`/api/v2/admin/i18n/export/${this.translationLocale}/${fileName}.po`);
   }
 
