@@ -3,11 +3,17 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
+
   .i18nManager-toolbar {
     background-color: white;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .import-locale-file {
+      display: none;
+    }
+
     .i18n-toolbar-files {
       /deep/ {
         .k-button {
@@ -21,6 +27,7 @@
           border-color: #157efb;
         }
       }
+
       display: flex;
       flex: 1;
       flex-direction: row-reverse;
@@ -29,10 +36,12 @@
     .i18n-toolbar-locale {
       display: flex;
       flex: 1;
+
       /deep/ {
         .k-toggle-button {
           background-color: transparent;
           border: none;
+
           &.k-state-active {
             background-color: #157efb;
             border: none;
@@ -46,6 +55,7 @@
     flex: 1;
     display: flex;
     min-height: 0;
+
     .i18n-grid {
       display: flex !important;
       flex-direction: column;
@@ -71,9 +81,11 @@
           flex-direction: row;
           flex: 1;
         }
+
         .overriden-translation-input {
           flex: 1;
         }
+
         .overriden-translation-input::placeholder {
           color: #d0d0d0;
         }
@@ -91,34 +103,42 @@
             color: white;
           }
         }
+
         .confirm-override-translation:hover {
           background-color: transparent;
           border: solid var(--green) 1px;
           width: 1rem;
+
           .fa-check {
             color: var(--green);
           }
         }
-        .confirm-override-translation:focus{
+
+        .confirm-override-translation:focus {
           box-shadow: none;
         }
+
         .cancel-override-translation {
           background-color: var(--red);
           border: none;
           width: 1rem;
+
           .fa-times {
             color: white;
           }
         }
+
         .cancel-override-translation:hover {
           background-color: transparent;
           border: solid var(--red) 1px;
           width: 1rem;
+
           .fa-times {
             color: var(--red);
           }
         }
-        .cancel-override-translation:focus{
+
+        .cancel-override-translation:focus {
           box-shadow: none;
         }
       }
