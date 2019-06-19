@@ -11,23 +11,25 @@ Vue.use(ButtonsInstaller);
 @Component
 export default class I18nManagerController extends Vue {
   private translationLocale: string = "fr";
-  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource({
-    pageSize: 50,
-    schema: {
-      data: response => response.data.data.data,
-      total: response => response.data.data.requestParameters.total
-    },
-    serverFiltering: true,
-    serverPaging: true,
-    transport: {
-      read: options => {
-        this.$http
-          .get("/api/v2/admin/i18n/fr")
-          .then(options.success)
-          .catch(options.error);
+  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource(
+    {
+      pageSize: 50,
+      schema: {
+        data: response => response.data.data.data,
+        total: response => response.data.data.requestParameters.total
+      },
+      serverFiltering: true,
+      serverPaging: true,
+      transport: {
+        read: options => {
+          this.$http
+            .get("/api/v2/admin/i18n/fr")
+            .then(options.success)
+            .catch(options.error);
+        }
       }
     }
-  });
+  );
 
   @Watch("translationLocale")
   public watchTranslationLocale(value) {
@@ -48,7 +50,9 @@ export default class I18nManagerController extends Vue {
         }
       }
     });
-    $(this.$refs.i18nGrid).data("kendoGrid").setDataSource(this.translationGridData);
+    $(this.$refs.i18nGrid)
+      .data("kendoGrid")
+      .setDataSource(this.translationGridData);
   }
 
   public mounted() {
@@ -128,11 +132,12 @@ export default class I18nManagerController extends Vue {
         $(".overriden-translation-input").on("change", () => {
           console.log("overriden");
         });
+
         $(".confirm-override-translation").kendoButton({
           click: confirmEvent => {
-            const newVal = $(confirmEvent.event.target.closest("tr[role=row]")).find(
-              "input"
-            )[0].value;
+            const newVal = $(
+              confirmEvent.event.target.closest("tr[role=row]")
+            ).find("input")[0].value;
             this.$http.put(`/api/v2/admin/i18n/`, newVal).then(response => {
               if (response.status === 200) {
                 this.$emit("EditTranslationSuccess");
@@ -142,6 +147,7 @@ export default class I18nManagerController extends Vue {
             });
           }
         });
+
         $(".cancel-override-translation").kendoButton({
           click: cancelEvent => {
             const rowId = cancelEvent.event.target
@@ -169,7 +175,9 @@ export default class I18nManagerController extends Vue {
       resizable: true,
       sortable: true
     });
-    $(this.$refs.i18nGrid).data("kendoGrid").setDataSource(this.translationGridData);
+    $(this.$refs.i18nGrid)
+      .data("kendoGrid")
+      .setDataSource(this.translationGridData);
   }
 
   public changeLocale(e) {
@@ -184,6 +192,7 @@ export default class I18nManagerController extends Vue {
       );
     }
   }
+
   public importLocaleFile() {
     const importBtn = $(".import-locale-file");
     importBtn.trigger("click");
@@ -193,7 +202,7 @@ export default class I18nManagerController extends Vue {
   }
 
   public exportLocaleFile() {
-    const locale = (this.translationLocale === "fr") ? "FR_fr" : "EN_us";
+    const locale = this.translationLocale === "fr" ? "FR_fr" : "EN_us";
     const date = this.getDate();
     // const fileName = `${locale}-${date}`;
     const fileName = `${locale}`;
