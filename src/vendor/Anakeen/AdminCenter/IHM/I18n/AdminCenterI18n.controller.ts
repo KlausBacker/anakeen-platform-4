@@ -121,10 +121,10 @@ export default class I18nManagerController extends Vue {
             if (rowData.plural) {
               let cellData = "";
               // tslint:disable-next-line:prefer-for-of
-              for (let i = 0; i < rowData.plural.length-1 ; i++) {
-                cellData += rowData.plural[i]+"<hr>";
+              for (let i = 0; i < rowData.plural.length - 1; i++) {
+                cellData += rowData.plural[i] + "<hr>";
               }
-              cellData += rowData.plural[rowData.plural.length-1];
+              cellData += rowData.plural[rowData.plural.length - 1];
               return cellData;
             } else {
               return rowData.msgstr;
