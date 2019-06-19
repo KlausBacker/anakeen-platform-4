@@ -129,8 +129,17 @@ export default class I18nManagerController extends Vue {
           console.log("overriden");
         });
         $(".confirm-override-translation").kendoButton({
-          click: () => {
-            console.log("confirm");
+          click: confirmEvent => {
+            const newVal = $(confirmEvent.event.target.closest("tr[role=row]")).find(
+              "input"
+            )[0].value;
+            this.$http.put(`/api/v2/admin/i18n/`, newVal).then(response => {
+              if (response.status === 200) {
+                this.$emit("EditTranslationSuccess");
+              } else {
+                this.$emit("EditTranslationFail");
+              }
+            });
           }
         });
         $(".cancel-override-translation").kendoButton({
