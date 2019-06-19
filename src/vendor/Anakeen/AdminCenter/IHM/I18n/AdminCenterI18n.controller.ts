@@ -43,37 +43,42 @@ export default class I18nManagerController extends Vue {
 
   @Watch("translationLocale")
   public watchTranslationLocale(value) {
-      this.translationGridData = new kendo.data.DataSource({
-        pageSize: 50,
-        schema: {
-          data: response => response.data.data.data,
-          total: response => response.data.data.requestParameters.total
-        },
-        serverFiltering: true,
-        serverPaging: true,
-        transport: {
-          read: options => {
-            this.$http
-              .get(`/api/v2/admin/i18n/${value}`, {
-                params: options.data,
-                paramsSerializer: kendo.jQuery.param
-              })
-              .then(options.success)
-              .catch(options.error);
-          }
+    this.translationGridData = new kendo.data.DataSource({
+      pageSize: 50,
+      schema: {
+        data: response => response.data.data.data,
+        total: response => response.data.data.requestParameters.total
+      },
+      serverFiltering: true,
+      serverPaging: true,
+      transport: {
+        read: options => {
+          this.$http
+            .get(`/api/v2/admin/i18n/${value}`, {
+              params: options.data,
+              paramsSerializer: kendo.jQuery.param
+            })
+            .then(options.success)
+            .catch(options.error);
         }
-      });
+      }
+    });
     $(this.$refs.i18nGrid)
       .data("kendoGrid")
       .setDataSource(this.translationGridData);
     setTimeout(() => {
-      if (value === 'fr') {
-        $(".overriden-translation-input").attr("placeholder", "modifier la traduction");
+      if (value === "fr") {
+        $(".overriden-translation-input").attr(
+          "placeholder",
+          "modifier la traduction"
+        );
       } else {
-        $(".overriden-translation-input").attr("placeholder", "edit translation");
+        $(".overriden-translation-input").attr(
+          "placeholder",
+          "edit translation"
+        );
       }
     }, 300);
-
   }
   public mounted() {
     window.addEventListener("offline", e => {
