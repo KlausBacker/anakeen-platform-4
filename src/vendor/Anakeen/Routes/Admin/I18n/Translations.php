@@ -98,6 +98,10 @@ class Translations
         }
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
     protected function getRecordedTranslations()
     {
         $data = [];
@@ -147,7 +151,7 @@ class Translations
             foreach ($filters as $filter) {
                 $filterField = $filter["field"];
                 $filterValue = $filter["value"];
-                $entryValue;
+                $entryValue = null;
                 switch ($filterField) {
                     case "msgctxt":
                         $entryValue = $entry->getMsgCtxt();
