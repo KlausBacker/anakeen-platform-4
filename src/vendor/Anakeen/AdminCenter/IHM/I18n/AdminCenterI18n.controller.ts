@@ -4,15 +4,55 @@ import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+
 Vue.use(ButtonsInstaller);
-import { Component } from "vue-property-decorator";
 
 @Component
 export default class I18nManagerController extends Vue {
   private translationLocale: string = "fr";
+  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource({
+    pageSize: 50,
+    schema: {
+      data: response => response.data.data.data,
+      total: response => response.data.data.requestParameters.total
+    },
+    serverFiltering: true,
+    serverPaging: true,
+    transport: {
+      read: options => {
+        this.$http
+          .get("/api/v2/admin/i18n/fr")
+          .then(options.success)
+          .catch(options.error);
+      }
+    }
+  });
+
+  @Watch("translationLocale")
+  public watchTranslationLocale(value) {
+    this.translationGridData = new kendo.data.DataSource({
+      pageSize: 50,
+      schema: {
+        data: response => response.data.data.data,
+        total: response => response.data.data.requestParameters.total
+      },
+      serverFiltering: true,
+      serverPaging: true,
+      transport: {
+        read: options => {
+          this.$http
+            .get("/api/v2/admin/i18n/" + value)
+            .then(options.success)
+            .catch(options.error);
+        }
+      }
+    });
+    $(this.$refs.i18nGrid).data("kendoGrid").setDataSource(this.translationGridData);
+  }
+
   public mounted() {
     window.addEventListener("offline", e => {
-      console.log(e);
       kendo.ui.progress($("body"), true);
       this.$emit("i18nOffline", e.type);
     });
@@ -75,7 +115,7 @@ export default class I18nManagerController extends Vue {
           filterable: false,
           minResizableWidth: 25,
           template: `<div class="input-group">
-                <input type='text' placeholder="change translation" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
+                <input type='text' placeholder="edit translation" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
                 <div class="input-group-append">
                     <button class='confirm-override-translation btn btn-outline-secondary'><i class='fa fa-check'></i></button>
                     <button class='cancel-override-translation btn btn-outline-secondary'><i class='fa fa-times'></i></button>
@@ -108,51 +148,6 @@ export default class I18nManagerController extends Vue {
           }
         });
       },
-      dataSource: new kendo.data.DataSource({
-        pageSize: 50,
-        schema: {
-          data: response => {
-            return response.data.data;
-          },
-          model: {
-            fields: {
-              gridId: {
-                type: "string"
-              },
-              msgctxt: {
-                type: "string"
-              },
-              msgid: {
-                type: "string"
-              },
-              msgstr: {
-                type: "string"
-              },
-              overridentranslation: {
-                type: "string"
-              },
-              section: {
-                type: "string"
-              }
-            },
-            id: "gridId"
-          },
-          total: response => {
-            return response.data.requestParameters.total;
-          }
-        },
-        serverFiltering: true,
-        serverPaging: true,
-        transport: {
-          read: {
-            dataType: "json",
-            type: "get",
-            url: () => {
-              return `/api/v2/admin/i18n/${this.translationLocale}`;
-            }
-          }
-        }
-      }),
       filterable: {
         extra: false,
         mode: "row"
@@ -166,18 +161,14 @@ export default class I18nManagerController extends Vue {
       resizable: true,
       sortable: true
     });
+    $(this.$refs.i18nGrid).data("kendoGrid").setDataSource(this.translationGridData);
   }
+
   public changeLocale(e) {
     if (e.id === "i18n-locale-button-fr") {
       this.translationLocale = "fr";
-      $(this.$refs.i18nGrid)
-        .data("kendoGrid")
-        .dataSource.read();
     } else if (e.id === "i18n-locale-button-en") {
       this.translationLocale = "en";
-      $(this.$refs.i18nGrid)
-        .data("kendoGrid")
-        .dataSource.read();
     } else {
       this.$emit(
         "changeLocaleWrongArgument",
