@@ -48,17 +48,18 @@ class CliUpdateModule extends CliCommand
         } else {
             $module = new ModuleManager("");
         }
-        if (!$module->preUpgrade($input->getOption("force"))) {
+        if (!$module->prepareUpgrade($input->getOption("force"))) {
             $output->writeln("<info>No modules to update. All is up-to-date.</info>");
         } else {
             $module->displayModulesToProcess($output);
             $helper = $this->getHelper('question');
+
             $question = new ConfirmationQuestion('<question>Continue the update [Y/n]?</question>', true);
 
             if (!$helper->ask($input, $output, $question)) {
                 return;
             }
-            $this->askParameters($module, $input, $output);
+            AskParameters::askParameters($module, $this->getHelper('question'), $input, $output);
             $module->recordJob();
             $output->writeln("Job Recorded");
         }

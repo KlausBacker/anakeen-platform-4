@@ -10,6 +10,8 @@ $rootPath=realpath(__DIR__);
 set_include_path(get_include_path() . PATH_SEPARATOR . $rootPath . DIRECTORY_SEPARATOR . 'include');
 putenv('WIFF_ROOT=' .$rootPath );
 
+\Control\Internal\System::sudoWww();
+
 use Symfony\Component\Console\Application;
 
 $application = new Application();
@@ -20,7 +22,10 @@ $application->setName("Anakeen Control");
 $application->add(new \Control\Cli\CliInfo());
 $application->add(new \Control\Cli\CliShow());
 $application->add(new \Control\Cli\CliStatus());
+$application->add(new \Control\Cli\CliInit());
 $application->add(new \Control\Cli\CliOutdated());
+$application->add(new \Control\Cli\CliRegistry());
+$application->add(new \Control\Cli\CliInstallModule());
 $application->add(new \Control\Cli\CliUpdateModule());
 $application->add(new \Control\Cli\CliDoJob());
 

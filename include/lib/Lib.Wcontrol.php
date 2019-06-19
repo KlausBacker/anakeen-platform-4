@@ -508,7 +508,7 @@ function wcontrol_check_pgversion(Process & $process)
         return false;
     }
     
-    $conn = pg_connect("service='$service'");
+    $conn = @pg_connect("service='$service'");
     if ($conn === false) {
         $process->errorMessage = "Connection failed. Maybe postgresql server is not started or database '" . $service . "' does not exist. ";
         return false;

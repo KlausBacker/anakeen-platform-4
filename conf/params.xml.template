@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<wiff version="0.0.1" release="1" author="anakeen, www.anakeen.com" license="AGPL3" lang="fr|en">
+<wiff version="3.0.0" release="0" author="anakeen, www.anakeen.com" license="AGPL3" lang="fr|en">
 
   <repositories>
-    <access name="anakeen" description="Anakeen" protocol="http" host="eec-integration.corp.anakeen.com" path="anakeen/repo/4.0/webinst/" authenticated="no" login="" password="" default="yes" />
+
   </repositories>
 
   <parameters>

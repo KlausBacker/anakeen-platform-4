@@ -54,9 +54,9 @@ Au préalable, il faut déclarer le dépôt à partir duquel les modules seront 
 Autres commandes relatives à la gestion des dépôts :
 
 ```bash
-./control/anakeen-control registery add myrepo  "http://.../" [--user=<user>] --password=[--password]
+./control/anakeen-control registery add myrepo  "http://.../"
 ./control/anakeen-control registery show
-./control/anakeen-control registery set-url myrepo "http://..." [--user=<user>] --password=[--password]
+./control/anakeen-control registery set-url myrepo "http://..."
 ./control/anakeen-control registery remove  myrepo
 ```
 

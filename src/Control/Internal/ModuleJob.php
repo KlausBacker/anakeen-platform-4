@@ -69,9 +69,9 @@ class ModuleJob
         if (self::isRunning()) {
             throw new RuntimeException(sprintf("Job is already in progress. Wait or kill it"));
         }
+        $data["action"] = $module->getMainPhase();
         $data["moduleArg"] = $module->getName();
         $data["options"] = $options;
-        $data["parameters"] = $module->getAllParameters();
         $dependencies = $module->getDepencies();
         foreach ($dependencies as $dependency) {
             $task = [
@@ -85,11 +85,14 @@ class ModuleJob
             }
             $data["tasks"][] = $task;
         }
+
+        $data["parameters"] = $module->getAllParameters();
         $jobFile = self::getJobFile();
         if (!file_put_contents($jobFile, json_encode($data, JSON_PRETTY_PRINT))) {
             throw new RuntimeException(sprintf("Cannot write job file \"%s\"", $jobFile));
         }
     }
+
 
     public static function isRunning()
     {
@@ -129,6 +132,9 @@ class ModuleJob
             if ($pidFile && file_exists($pidFile)) {
                 unlink($pidFile);
             }
+
+            JobLog::setStatus("", "", "exception");
+            JobLog::setError("", "", $e->getMessage());
             throw $e;
         }
         unlink($pidFile);
@@ -171,9 +177,15 @@ class ModuleJob
         } else {
             $module = new ModuleManager("");
         }
-        $module->preUpgrade(true);
+        switch (self::$jobData["action"]) {
+            case "install":
+                $module->prepareInstall();
+                break;
+            case "upgrade":
+                $module->prepareUpgrade(true);
+                break;
+        }
         if (self::installDependencies($module)) {
-
             JobLog::setStatus("", "", "done");
             // Job succeeded
             self::archiveJobFile();
@@ -259,7 +271,7 @@ class ModuleJob
                     $ret = $module->download('downloaded');
                     if ($ret === false) {
                         JobLog::setError($module->name, "download", $module->errorMessage);
-                        return false;
+                        throw new RuntimeException($module->errorMessage);
                     }
                     if (!empty($module->warningMessage)) {
 
@@ -303,10 +315,10 @@ class ModuleJob
 
                     $pvalue = $param->value == "" ? $param->default : $param->value;
 
-                    $value = param_ask($options, $param->name, $pvalue, $pvalue);
+                    $value = self::getParameterAnswer($module->name, $param->name);
+
                     if ($value === false) {
-                        printerr(sprintf("Error: could not read answer!\n"));
-                        return false;
+                        throw new RuntimeException(sprintf("Error: could not read answer for \"%s\"!", $param->name));
                     }
                     $param->value = $param::cleanXMLUTF8($value);
 
@@ -501,11 +513,11 @@ class ModuleJob
             } else {
                 $index = self::$processIndex;
             }
-            $configStatus=JobLog::getProcessStatus($process->phase->module->name, $process->phase->name, $index);
+            $configStatus = JobLog::getProcessStatus($process->phase->module->name, $process->phase->name, $index);
             if ($configStatus === "IGNORED") {
                 continue;
             }
-            if ( $configStatus!== "DONE") {
+            if ($configStatus !== "DONE") {
 
                 $processInfo = [
                     "name" => $process->getName(),
@@ -534,5 +546,18 @@ class ModuleJob
             }
         }
         return true;
+    }
+
+    public static function getParameterAnswer($moduleName, $paramName) {
+
+        $data = ModuleJob::getJobData();
+
+        $parameters=$data["parameters"];
+        foreach ($parameters as $parameter) {
+            if ($parameter["name"] === $paramName && $parameter["module"] === $moduleName) {
+                return ($parameter["answer"]??"");
+            }
+        }
+        return null;
     }
 }

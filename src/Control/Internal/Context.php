@@ -13,15 +13,16 @@ class Context
     private static $context;
 
 
-    public static function isInitialized() {
-        $contentsFile=sprintf("%s/%s", __DIR__."/../../", \WIFF::contexts_filepath);
+    public static function isInitialized()
+    {
+        $contentsFile = sprintf("%s/%s", getenv("WIFF_ROOT"), \WIFF::contexts_filepath);
         return file_exists($contentsFile);
     }
 
     public static function getContext()
     {
         if (!self::isInitialized()) {
-             throw new \Exception(sprintf("Context not initialized yet"));
+            throw new \Exception(sprintf("Context not initialized yet"));
         }
 
         if (!self::$context) {
@@ -49,36 +50,100 @@ class Context
         return $wiff->getParamList();
     }
 
-    public static function getRepositories()
+
+    public static function init()
+    {
+
+        if (!Context::isInitialized()) {
+            require(__DIR__ . '/../../../include/lib/Lib.checkInitServer.php');
+            $errors=[];
+            if (checkInitServer($errors) === false) {
+                throw new RuntimeException(implode(", ", $errors));
+            }
+        }
+    }
+
+    public static function getRepositories($onlyEnabled=false)
     {
 
         $wiff = \WIFF::getInstance();
-        $allRepos=  $wiff->getRepoList();
-        $ctxRepos= self::getContext()->repo;
+        $allRepos = $wiff->getRepoList();
+        $ctxRepos = self::getContext()->repo;
         foreach ($allRepos as &$repo) {
-            $searchName=$repo->name;
+            $searchName = $repo->name;
 
-            $ctxRepo=array_filter($ctxRepos, function ($lrepo) use ($searchName) {
+            $ctxFilterRepos = array_filter($ctxRepos, function ($lrepo) use ($searchName) {
                 return $lrepo->name === $searchName;
             });
-            if ($ctxRepo) {
+            if ($ctxFilterRepos) {
+                $ctxRepo=array_pop($ctxFilterRepos);
+
                 /** @noinspection PhpUndefinedFieldInspection */
                 $repo->status = "activated";
-                if ($ctxRepo[0]->errorMessage) {
+                if ($ctxRepo->errorMessage) {
                     /** @noinspection PhpUndefinedFieldInspection */
-                    $repo->status = $ctxRepo[0]->errorMessage;
+                    $repo->status = $ctxRepo->errorMessage;
                 }
             } else {
                 /** @noinspection PhpUndefinedFieldInspection */
                 $repo->status = "disabled";
             };
         }
+        if ($onlyEnabled===true) {
+            return array_filter($allRepos, function ($lrepo)  {
+                return $lrepo->status !== "disabled";
+            });
+        }
         return $allRepos;
     }
 
     public static function getVersion()
     {
-            return \WIFF::getVersion();
+        return \WIFF::getVersion();
+    }
+
+    public static function addRepository($name, $url)
+    {
+        $wiff = \WIFF::getInstance();
+        if (is_dir($url)) {
+            $url="file://".realpath($url);
+        }
+
+        $parse = parse_url($url);
+
+        $ret = $wiff->createRepo(
+            $name,
+            $name,
+            $parse['scheme'],
+            $parse['host']??"",
+            $parse['path'],
+            'yes',
+            empty($parse['user']) ? "no" : "yes",
+            $parse['user'] ?? "",
+            $parse['pass'] ?? ""
+        );
+        if (!$ret) {
+            throw new RuntimeException($wiff->errorMessage);
+        }
+
+        $context = self::getContext();
+        if (!$context->activateRepo($name)) {
+            throw new RuntimeException($context->errorMessage);
+        }
+    }
+
+
+    public static function removeRepository($name)
+    {
+        $wiff = \WIFF::getInstance();
+
+        $context = self::getContext();
+        $context->deactivateRepo($name);
+
+        if (!$wiff->deleteRepo($name)) {
+            throw new RuntimeException($wiff->errorMessage);
+        }
+
 
     }
 
@@ -92,7 +157,7 @@ class Context
     public static function download($url)
     {
         $wiff = \WIFF::getInstance();
-        $tmpfile=  $wiff->downloadUrl($url);
+        $tmpfile = $wiff->downloadUrl($url);
 
         if ($tmpfile !== false) {
             return file_get_contents($tmpfile);

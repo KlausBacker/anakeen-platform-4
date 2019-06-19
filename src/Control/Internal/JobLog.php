@@ -150,6 +150,8 @@ class JobLog
         ModuleJob::putJobData($data);
     }
 
+
+
     public static function setStatus($moduleName, $phaseName, $status)
     {
         self::setKey($moduleName, $phaseName, "status", $status);
@@ -193,4 +195,6 @@ class JobLog
     {
         self::$output = $output;
     }
+
+
 }

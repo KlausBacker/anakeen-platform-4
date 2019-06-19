@@ -18,6 +18,9 @@ class DOMDocumentCacheFactory
     public static function load($filename, $options = 0)
     {
         $realFilename = realpath($filename);
+        if (!file_exists($realFilename)) {
+            return false;
+        }
         $dom = self::cacheGet($realFilename);
         if ($dom !== false) {
             return $dom;

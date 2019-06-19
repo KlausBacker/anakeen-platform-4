@@ -18,6 +18,9 @@ class ModuleManager
     /** @var \Module */
     protected $module;
     protected $depList;
+    protected $mainPhase;
+
+
     /**
      * @var array
      */
@@ -32,6 +35,14 @@ class ModuleManager
             $this->getAvailableModule();
         }
 
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMainPhase()
+    {
+        return $this->mainPhase;
     }
 
     public function getAvailableModule(): ?\Module
@@ -52,8 +63,43 @@ class ModuleManager
         return $module ?: null;
     }
 
-    public function preUpgrade($force = false)
+    public function prepareInstall()
     {
+        $this->mainPhase = "install";
+        if ($this->name) {
+            $installedModule = $this->getInstalledModule($this->name);
+            if ($installedModule) {
+                throw new RuntimeException(sprintf("Module '%s' (version '%s') is already installed [CTRL011].\n", $installedModule->name,
+                    $installedModule->version));
+            }
+            $this->depList = $this->context->getModuleDependencies(array(
+                $this->name
+            ));
+        } else {
+            $moduleList = $this->context->getAvailableModuleList(true);
+            $moduleNames = array_map(function ($module) {
+                return $module->name;
+            }, $moduleList);
+            if (empty($moduleList)) {
+
+                return false;
+            }
+            $this->depList = $this->context->getModuleDependencies($moduleNames);
+        }
+        if ($this->depList === false) {
+            throw new InvalidArgumentException($this->context->errorMessage);
+        }
+        foreach ($this->depList as &$module) {
+            if (!$module->needphase) {
+                $module->needphase = 'install';
+            }
+        }
+        return true;
+    }
+
+    public function prepareUpgrade($force = false)
+    {
+        $this->mainPhase = "upgrade";
         if ($this->name) {
             $installedModule = $this->getInstalledModule($this->name);
             if ($installedModule) {
@@ -136,26 +182,28 @@ class ModuleManager
 
     public function getAllParameters()
     {
-        /** @var \Module $module */
-        $contentXml = [];
-        foreach ($this->depList as $module) {
-            $repo = $module->repository;
-            $contentXml[] = $repo->getContentUrl();
-        }
+        if (!$this->parameters) {
+            /** @var \Module $module */
+            $contentXml = [];
+            foreach ($this->depList as $module) {
+                $repo = $module->repository;
+                $contentXml[] = $repo->getContentUrl();
+            }
 
-        $contentXml = array_filter($contentXml, function ($a) {
-            return !empty($a);
-        });
-        $contentXml = array_unique($contentXml);
-        foreach ($contentXml as $xmlUrl) {
-            $this->recordParameters(Context::download($xmlUrl));
+            $contentXml = array_filter($contentXml, function ($a) {
+                return !empty($a);
+            });
+            $contentXml = array_unique($contentXml);
+            foreach ($contentXml as $xmlUrl) {
+                $this->recordParameters(Context::download($xmlUrl));
+            }
         }
-
         return $this->parameters;
     }
 
     /**
      * Record in object module parameter of a repository
+     *
      * @param string $xmlContent content.xml
      */
     protected function recordParameters($xmlContent)
@@ -182,11 +230,20 @@ class ModuleManager
         }
     }
 
+    public function setParameterAnswer($moduleName, $paramName, $value)
+    {
+        foreach ($this->parameters as &$parameter) {
+            if ($parameter["name"] === $paramName && $parameter["module"] === $moduleName) {
+                $parameter["answer"] = $value;
+            }
+        }
+    }
 
-    public static function runJobInBackground() {
-        $command=sprintf("%s/anakeen-control dojob", realpath(__DIR__."/../../../"));
+    public static function runJobInBackground()
+    {
+        $command = sprintf("%s/anakeen-control dojob", realpath(__DIR__ . "/../../../"));
         exec("exec nohup $command > /dev/null 2>&1 &", $result, $status);
-        //if (session_id()) @session_start();
+
         if ($status !== 0) {
             throw new RuntimeException("BgExec Script Error");
         }
@@ -196,7 +253,6 @@ class ModuleManager
     {
         ModuleJob::initJobTask($this);
         self::runJobInBackground();
-
     }
 
     /**

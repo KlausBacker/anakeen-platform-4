@@ -72,12 +72,14 @@ class WIFF extends WiffCommon
         $this->archived_tmp_dir = $wiff_root . WIFF::archived_tmp_dir;
         $this->xsd_catalog_xml = $wiff_root . WIFF::xsd_catalog_xml;
         $this->log_filepath = $wiff_root . WIFF::log_filepath;
-        
-        $this->update_host = $this->getParam('wiff-update-host');
-        $this->update_url = $this->getParam('wiff-update-path');
-        $this->update_file = $this->getParam('wiff-update-file');
-        $this->update_login = $this->getParam('wiff-update-login');
-        $this->update_password = $this->getParam('wiff-update-password');
+
+        if (file_exists( $this->params_filepath)) {
+            $this->update_host = $this->getParam('wiff-update-host');
+            $this->update_url = $this->getParam('wiff-update-path');
+            $this->update_file = $this->getParam('wiff-update-file');
+            $this->update_login = $this->getParam('wiff-update-login');
+            $this->update_password = $this->getParam('wiff-update-password');
+        }
     }
     
     public function __destruct()
@@ -905,7 +907,7 @@ EOF;
         
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading 'contexts.xml' [001]: %s", $this->errorMessage);
             return false;
         }
         
@@ -1514,7 +1516,7 @@ EOF;
         // Write contexts XML
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading 'contexts.xml' [002]: %s", $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1745,7 +1747,7 @@ EOF;
         
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading '%s': %s", $this->contexts_filepath, $this->errorMessage);
             return false;
         }
         
@@ -1845,7 +1847,7 @@ EOF;
         // Write contexts XML
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading '%s' [003]: %s", $this->contexts_filepath, $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1890,7 +1892,7 @@ EOF;
         // Write contexts XML
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error saving '%s' : %s", $this->contexts_filepath, $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1984,6 +1986,10 @@ EOF;
      */
     public function getParam($paramName, $strict = false, $withHidden = false)
     {
+
+        if (!file_exists( $this->params_filepath)) {
+            return false;
+        }
         $plist = $this->getParamList($withHidden);
         
         if (array_key_exists($paramName, $plist)) {

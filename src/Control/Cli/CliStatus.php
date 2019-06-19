@@ -40,12 +40,12 @@ class CliStatus extends CliCommand
     {
         parent::execute($input, $output);
 
-        if (! Context::isInitialized()) {
+        if (!Context::isInitialized()) {
             $output->writeln("<comment>Context not initialized.</comment>");
             $output->writeln("<info>Use \"init\" command to initialized.</info>");
             return;
         }
-        
+
         $watch = intval($input->getOption("watch"));
 
         $jobStatus = $this->getJobStatus();
@@ -143,25 +143,30 @@ class CliStatus extends CliCommand
             $table->setColumnMaxWidth(0, 20);
             $table->setColumnMaxWidth(1, 35);
             $table->setColumnWidths([20, 35, 10]);
+
             $table->render();
         } else {
-            $section->writeln("<info>No job detected.</info>");
+            $section->writeln(sprintf("<info>%s.</info>", $data["status"]));
+        }
+        if (!empty($data["error"])) {
+            $section->writeln(sprintf("<error>%s</error>", $data["error"]));
         }
     }
 
     protected function getJobStatus()
     {
 
-        $status = ["status" => ""];
+        $status = ["status" => "Activated"];
 
-        if (ModuleJob::isRunning()) {
+
+       if (ModuleJob::isRunning()) {
             $status = ModuleJob::getJobData();
-            $status["status"] = "running";
+            $status["status"] = "Running";
         } elseif (ModuleJob::hasFailed()) {
             $jobData = ModuleJob::getJobData();
             $status = $jobData;
         } else {
-            $status["status"] = "none";
+            $status["status"] = "Ready";
         }
 
         return $status;

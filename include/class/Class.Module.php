@@ -409,7 +409,8 @@ class Module
              */
             $validationError = $wiff->validateDOMDocument($dom, self::SCHEMA_NAMESPACE);
             if ($validationError != '') {
-                $this->errorMessage = (string) (string) new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0; padding: 1em; text-align: center; background-color: #F88; color: black\">Module '<b>%s</b>' did not passed XML validation!</p>", new \String\Text($moduleName)));
+                print_r($dom->saveXML());
+                $this->errorMessage = sprintf("Module '%s' did not passed XML validation!", $moduleName);
                 return false;
             }
         }

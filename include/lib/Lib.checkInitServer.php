@@ -8,8 +8,8 @@ function checkDependencies(& $errors = array()) {
     require_once ('lib/Lib.System.php');
     
     // Check PHP version
-    if (version_compare(PHP_VERSION, '5.4') < 0) {
-        array_push($errors, sprintf("PHP version %s is not supported: you must use PHP >= 5.4.", PHP_VERSION));
+    if (version_compare(PHP_VERSION, '7.1') < 0) {
+        array_push($errors, sprintf("PHP version %s is not supported: you must use PHP >= 7.1.", PHP_VERSION));
     }
     // Check for required classes
     foreach (array(
