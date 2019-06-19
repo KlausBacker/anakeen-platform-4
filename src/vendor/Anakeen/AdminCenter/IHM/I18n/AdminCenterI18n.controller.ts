@@ -193,6 +193,22 @@ export default class I18nManagerController extends Vue {
   }
 
   public exportLocaleFile() {
-    console.log("Export Locale");
+    const locale = (this.translationLocale === "fr") ? "FR_fr" : "EN_us";
+    const date = this.getDate();
+    // const fileName = `${locale}-${date}`;
+    const fileName = `${locale}`;
+    // window.open(`/api/v2/admin/i18n/export/${this.translationLocale}/${fileName}.po`);
+  }
+
+  private getDate() {
+    const today = new Date();
+    const DD = String(today.getDate()).padStart(2, "0");
+    const MM = String(today.getMonth() + 1).padStart(2, "0");
+    const YYYY = today.getFullYear();
+    const HH = String(today.getHours()).padStart(2, "0");
+    const mm = String(today.getMinutes()).padStart(2, "0");
+    const ss = String(today.getSeconds()).padStart(2, "0");
+
+    return `${YYYY}-${MM}-${DD}-${HH}:${mm}:${ss}`;
   }
 }
