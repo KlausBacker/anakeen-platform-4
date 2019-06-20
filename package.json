@@ -60,6 +60,7 @@
     "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.1.13",
     "@commitlint/config-conventional": "^7.5.0",
+    "@types/backbone": "^1.4.0",
     "@types/jquery": "^3.3.29",
     "@types/kendo-ui": "^2019.1.1",
     "backbone": "^1.4.0",
