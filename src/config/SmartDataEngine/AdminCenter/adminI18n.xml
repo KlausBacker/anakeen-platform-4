@@ -11,8 +11,6 @@
                 <sde:access ns="AdminCenter">AdminI18n</sde:access>
             </sde:requiredAccess>
         </sde:route>
-
-
         <sde:route name="AdminI18n:RecordTranslation">
             <sde:callable>Anakeen\Routes\Admin\I18n\RecordTranslation</sde:callable>
             <sde:method>PUT</sde:method>

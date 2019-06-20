@@ -117,6 +117,19 @@ export default class I18nManagerController extends Vue {
           field: "msgstr",
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
+          template: rowData => {
+            if (rowData.plural) {
+              let cellData = "";
+              // tslint:disable-next-line:prefer-for-of
+              for (let i = 0; i < rowData.plural.length - 1; i++) {
+                cellData += rowData.plural[i] + "<hr>";
+              }
+              cellData += rowData.plural[rowData.plural.length - 1];
+              return cellData;
+            } else {
+              return rowData.msgstr;
+            }
+          },
           title: "Server translation"
         },
         {
@@ -140,19 +153,29 @@ export default class I18nManagerController extends Vue {
 
         $(".confirm-override-translation").kendoButton({
           click: confirmEvent => {
+            const rowData: any = $(this.$refs.i18nGrid)
+              .data("kendoGrid")
+              .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
+            const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
             const newVal = $(
               confirmEvent.event.target.closest("tr[role=row]")
             ).find("input")[0].value;
-            this.$http.put(`/api/v2/admin/i18n/`, newVal).then(response => {
-              if (response.status === 200) {
-                this.$emit("EditTranslationSuccess");
-              } else {
-                this.$emit("EditTranslationFail");
-              }
-            });
+            this.$http
+              .put(
+                `/api/v2/admin/i18n/${this.translationLocale}/
+                ${msgctxtData}/
+                ${rowData.msgid}`,
+                newVal
+              )
+              .then(response => {
+                if (response.status === 200) {
+                  this.$emit("EditTranslationSuccess");
+                } else {
+                  this.$emit("EditTranslationFail");
+                }
+              });
           }
         });
-
         $(".cancel-override-translation").kendoButton({
           click: cancelEvent => {
             const rowId = cancelEvent.event.target
