@@ -35,8 +35,14 @@ class MainPage
             return strcmp($a->name, $b->name);
         });
 
-        foreach (Context::getParameters() as $key => $value) {
+        foreach (Context::getControlParameters() as $key => $value) {
             $data["parameters"][] = [
+                "key" => $key,
+                "value" => $value
+            ];
+        }
+        foreach (Context::getParameters() as $key => $value) {
+            $data["moduleParameters"][] = [
                 "key" => $key,
                 "value" => $value
             ];
@@ -47,14 +53,14 @@ class MainPage
             return strcmp($a["key"], $b["key"]);
         });
 
-        $data["repositories"]=Context::getRepositories();
+        $data["repositories"] = Context::getRepositories();
 
-        $data["version"]=Context::getVersion();
-        $data["availableVersion"]=Context::getAvailableVersion();
-        $data["phpinfo"]=Context::getPhpInfo();
-        $data["serverPath"]=$context->root;
+        $data["version"] = Context::getVersion();
+        $data["availableVersion"] = Context::getAvailableVersion();
+        $data["phpinfo"] = Context::getPhpInfo();
+        $data["serverPath"] = $context->root;
 
-        $data["controlPath"] = getenv('WIFF_ROOT');
+        $data["controlPath"] = Context::getControlPath();
         return $data;
     }
 }

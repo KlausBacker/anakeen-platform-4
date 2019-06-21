@@ -26,6 +26,7 @@ class Repository
     public $login;
     public $password;
     public $default;
+    public $status;
     /**
      * @var Context
      */

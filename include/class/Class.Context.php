@@ -1428,6 +1428,37 @@ class Context extends ContextProperties
     }
 
     /**
+     * Get all parameters in contexts.xml
+     *
+     * @param string $paramName
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        require_once(__DIR__ . '/Class.WIFF.php');
+
+        $wiff = WIFF::getInstance();
+
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
+            return false;
+        }
+
+        $xpath = new DOMXPath($xml);
+        /**
+         * @var DOMElement $parameterNode
+         */
+        $parameterNodes = $xpath->query(sprintf("/contexts/context[@name='%s']/parameters-value/param", $this->name));
+        $parameters=[];
+        foreach ($parameterNodes as $parameterNode) {
+            $parameters[$parameterNode->getAttribute("name")]=$parameterNode->getAttribute("value");
+        }
+
+        return $parameters;
+    }
+    /**
      * Set parameter value
      *
      * @param string $paramName  The parameter's name

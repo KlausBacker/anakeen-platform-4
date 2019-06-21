@@ -160,7 +160,7 @@ Liste des modules à mettre à jour
 liste tous les modules installés.
 
 ```bash
-./control/anakeen-control list [--json] [--long]
+./control/anakeen-control show [--json]
 ```
 
 Recherche de modules.  
@@ -179,7 +179,7 @@ Retourne la liste des modules, les paramètres et le nombre d'utilisateurs enreg
 ./control/anakeen-control info [--json]
 ```
 
-### Autres comamndes
+### Autres commandes
 
 Activation / désactivation du serveur web
 
@@ -192,9 +192,9 @@ Paramètres de Anakeen Control
 
 ```bash
 
-./control/anakeen-control get --all
-./control/anakeen-control get "<key>"
-./control/anakeen-control set "<key>" "<value>"
+./control/anakeen-control get --all [--internal]
+./control/anakeen-control get [--internal] "<key>"
+./control/anakeen-control set [--internal] "<key>" "<value>"
 ```
 
 Command

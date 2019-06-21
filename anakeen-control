@@ -2,13 +2,13 @@
 <?php
 // application.php
 
-$loader=require __DIR__.'/vendor/autoload.php';
-$loader->addPsr4('', realpath(__DIR__. '/src/'));
+$loader = require __DIR__ . '/vendor/autoload.php';
+$loader->addPsr4('', realpath(__DIR__ . '/src/'));
 
 
-$rootPath=realpath(__DIR__);
+$rootPath = realpath(__DIR__);
 set_include_path(get_include_path() . PATH_SEPARATOR . $rootPath . DIRECTORY_SEPARATOR . 'include');
-putenv('WIFF_ROOT=' .$rootPath );
+putenv('WIFF_ROOT=' . $rootPath);
 
 \Control\Internal\System::sudoWww();
 
@@ -23,6 +23,8 @@ $application->add(new \Control\Cli\CliInfo());
 $application->add(new \Control\Cli\CliShow());
 $application->add(new \Control\Cli\CliStatus());
 $application->add(new \Control\Cli\CliInit());
+$application->add(new \Control\Cli\CliGet());
+$application->add(new \Control\Cli\CliSet());
 $application->add(new \Control\Cli\CliOutdated());
 $application->add(new \Control\Cli\CliRegistry());
 $application->add(new \Control\Cli\CliInstallModule());

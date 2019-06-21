@@ -2,7 +2,9 @@
 
 namespace Control\Cli;
 
+use Control\Internal\Context;
 use Control\Internal\ModuleManager;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,6 +14,9 @@ use Symfony\Component\Console\Question\Question;
 
 class AskParameters
 {
+    const askFile = "conf/askes.json";
+    protected static $askParameters = null;
+
     public static function askParameters(ModuleManager $moduleMng, QuestionHelper $helper, InputInterface $input, OutputInterface $output)
     {
         $askParameters = $moduleMng->getAllParameters();
@@ -23,12 +28,12 @@ class AskParameters
             });
             foreach ($askModuleParameters as $ask) {
                 if ($module->needphase === 'install') {
-                    $answer=self::askParameter($ask, $helper,$input, $output);
+                    $answer = self::askParameter($ask, $helper, $input, $output);
                     $moduleMng->setParameterAnswer($ask["module"], $ask["name"], $answer);
                 }
                 if ($module->needphase === 'update') {
                     if (($ask["onupgrade"] ?? "") === "W") {
-                        $answer=self::askParameter($ask, $helper, $input, $output);
+                        $answer = self::askParameter($ask, $helper, $input, $output);
                         $moduleMng->setParameterAnswer($ask["module"], $ask["name"], $answer);
                     }
                 }
@@ -38,6 +43,10 @@ class AskParameters
 
     protected static function askParameter($ask, QuestionHelper $helper, InputInterface $input, OutputInterface $output)
     {
+        $predefinedValue = self::getParameter($ask["name"]);
+        if ($predefinedValue !== null) {
+            return $predefinedValue;
+        }
         $output->getFormatter()->setStyle('qd', new OutputFormatterStyle('yellow'));
         $questionLabel = $ask["label"];
         if (!empty($ask["default"])) {
@@ -55,8 +64,8 @@ class AskParameters
         $question->setValidator(function ($answer) use ($ask, $availableAnswers) {
             if (!empty($ask["needed"]) && $ask["needed"] === "Y") {
                 if (empty($answer)) {
-                    throw new \RuntimeException(
-                        'This value is required'
+                    throw new RuntimeException(
+                        sprintf("Value for \"%s\" is required", $ask["name"])
                     );
                 }
             }
@@ -72,5 +81,24 @@ class AskParameters
         $response = $helper->ask($input, $output, $question);
 
         return $response;
+    }
+
+
+    protected static function getParameter($name)
+    {
+        if (!self::$askParameters) {
+            $askFilePath = sprintf("%s/%s", Context::getControlPath(), self::askFile);
+            if (is_file($askFilePath)) {
+                self::$askParameters = json_decode(file_get_contents($askFilePath), true);
+            }
+        }
+
+        return (self::$askParameters[$name] ?? null);
+    }
+
+    public static function setParameters(array $parameters)
+    {
+        $askFilePath = sprintf("%s/%s", Context::getControlPath(), self::askFile);
+        file_put_contents($askFilePath, json_encode($parameters, JSON_PRETTY_PRINT));
     }
 }

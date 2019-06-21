@@ -2,7 +2,6 @@
 
 namespace Control\Internal;
 
-use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Exception\RuntimeException;
 
 require_once(__DIR__ . '/../../../include/class/Class.WIFF.php');
@@ -43,27 +42,78 @@ class Context
         return self::$context;
     }
 
-    public static function getParameters()
+    /**
+     * get parameter of anakeen-control
+     *
+     * @return array
+     */
+    public static function getControlParameters()
     {
-
         $wiff = \WIFF::getInstance();
-        return $wiff->getParamList();
+        $parameters = $wiff->getParamList();
+        ksort($parameters);
+        return $parameters;
     }
 
+    /**
+     * set parameter of anakeen-control
+     *
+     * @param string $name
+     * @param string $value
+     */
+    public static function setControlParameter($name, $value)
+    {
+        $wiff = \WIFF::getInstance();
+        $wiff->setParam($name, $value);
+        if ($wiff->errorMessage) {
+            throw new RuntimeException($wiff->errorMessage);
+        }
+    }
+
+    /**
+     * Get parameters find in all info.xml
+     *
+     * @return array
+     */
+    public static function getParameters()
+    {
+        $context = self::getContext();
+        return $context->getParameters();
+    }
+
+    /**
+     * Set parameters in contexts.xml
+     *
+     * @param string $paramName
+     * @param string $value
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public static function setParameter($paramName, $value)
+    {
+        $context = self::getContext();
+        return $context->setParamByName($paramName, $value);
+    }
+
+    public static function getControlPath()
+    {
+        $wiff = \WIFF::getInstance();
+        return $wiff->getWiffRoot();
+    }
 
     public static function init()
     {
-
         if (!Context::isInitialized()) {
             require(__DIR__ . '/../../../include/lib/Lib.checkInitServer.php');
-            $errors=[];
+            $errors = [];
             if (checkInitServer($errors) === false) {
                 throw new RuntimeException(implode(", ", $errors));
             }
         }
     }
 
-    public static function getRepositories($onlyEnabled=false)
+    public static function getRepositories($onlyEnabled = false)
     {
 
         $wiff = \WIFF::getInstance();
@@ -76,7 +126,7 @@ class Context
                 return $lrepo->name === $searchName;
             });
             if ($ctxFilterRepos) {
-                $ctxRepo=array_pop($ctxFilterRepos);
+                $ctxRepo = array_pop($ctxFilterRepos);
 
                 /** @noinspection PhpUndefinedFieldInspection */
                 $repo->status = "activated";
@@ -89,8 +139,8 @@ class Context
                 $repo->status = "disabled";
             };
         }
-        if ($onlyEnabled===true) {
-            return array_filter($allRepos, function ($lrepo)  {
+        if ($onlyEnabled === true) {
+            return array_filter($allRepos, function ($lrepo) {
                 return $lrepo->status !== "disabled";
             });
         }
@@ -102,11 +152,22 @@ class Context
         return \WIFF::getVersion();
     }
 
+
+    public static function getParameterValue($paramName)
+    {
+        $context = self::getContext();
+        $value = $context->getParamByName($paramName);
+        if ($context->errorMessage) {
+            return null;
+        }
+        return $value;
+    }
+
     public static function addRepository($name, $url)
     {
         $wiff = \WIFF::getInstance();
         if (is_dir($url)) {
-            $url="file://".realpath($url);
+            $url = "file://" . realpath($url);
         }
 
         $parse = parse_url($url);
@@ -115,7 +176,7 @@ class Context
             $name,
             $name,
             $parse['scheme'],
-            $parse['host']??"",
+            $parse['host'] ?? "",
             $parse['path'],
             'yes',
             empty($parse['user']) ? "no" : "yes",

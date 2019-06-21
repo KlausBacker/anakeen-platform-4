@@ -600,7 +600,12 @@ EOF;
         $repositoryObject = new Repository($repository);
         
         $isValid = $repositoryObject->isValid();
-        
+        if (!$isValid) {
+            $url=sprintf("%s://%s/%s", $protocol, $host, $path);
+            $this->errorMessage = sprintf("Repository has no valid content.xml '%s'", $url);
+            return false;
+        }
+
         $repository->setAttribute('label', $repositoryObject->label);
         
         $ret = $this->commitDOMDocument($xml);
