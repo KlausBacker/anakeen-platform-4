@@ -14,10 +14,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 
-class CliStatus extends CliCommand
+class CliStatus extends CliJsonCommand
 {
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'status';

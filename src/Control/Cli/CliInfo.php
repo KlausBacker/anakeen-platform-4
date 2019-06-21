@@ -2,15 +2,12 @@
 
 namespace Control\Cli;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CliInfo extends CliCommand
+class CliInfo extends CliJsonCommand
 {
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'info';

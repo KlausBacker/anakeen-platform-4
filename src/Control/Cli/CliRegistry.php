@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class CliRegistry extends CliCommand
+class CliRegistry extends CliJsonCommand
 {
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'registry';

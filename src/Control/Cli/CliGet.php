@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class CliGet extends CliCommand
+class CliGet extends CliJsonCommand
 {
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'get';

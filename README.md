@@ -237,13 +237,13 @@ La colonne `Job` indique si un job est lancé à l'issue de la requête.
 | DELETE  | /control/api/registeries/[name]                    | Enlève un dépôt                                  | registery remove     |       |
 | POST    | /control/api/platform/?pg-service                  | Initialise Anakeen Platform                      | init                 |   X   |
 | GET     | /control/api/platform/modules/[name]               | Info sur un module                               | search               |       |
-| POST    | /control/api/platform/modules/[name]               | Installation d'un module                         | install              |   X   |
-| POST    | /control/api/platform/modules/                     | Installation de tous les modules                 | install --all        |   X   |
-| PUT     | /control/api/platform/modules/[name]               | Mets à jour un module                            | update               |   X   |
-| PUT     | /control/api/platform/modules/                     | Mets à jour tous les modules                     | update --all         |   X   |
+| POST    | /control/api/platform/modules/[name]               | Installation d'un module                         | install [module]     |   X   |
+| POST    | /control/api/platform/modules/                     | Installation de tous les modules                 | install              |   X   |
+| PUT     | /control/api/platform/modules/[name]               | Mets à jour un module                            | update [module]      |   X   |
+| PUT     | /control/api/platform/modules/                     | Mets à jour tous les modules                     | update               |   X   |
 | PUT     | /control/api/platform/modules/?init=true&file.app  | Mets à jour le module (.app) donné dans le corps | update --init --file |   X   |
 | DELETE  | /control/api/platform/modules/[name]               | Suppression d'un module                          | uninstall            |   X   |
-| GET     | /control/api/modules/                              | Liste des modules installés                      | list                 |       |
+| GET     | /control/api/modules/                              | Liste des modules installés                      | show                 |       |
 | GET     | /control/api/search/                               | Liste des modules disponibles                    | search               |       |
 | GET     | /control/api/info                                  | Information sur l'état et nombre d'utilisateur   | info                 |       |
 | GET     | /control/api/parameters/                           | Liste des paramètres                             | get --all            |       |
