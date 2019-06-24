@@ -122,6 +122,37 @@ class RepoXML extends XMLLoader {
   }
 
   /**
+   * Updates a module in repo.xml
+   * @param name the module's name
+   * @param version the module's version
+   * @param registry the module's registry
+   */
+  updateModule({ name, version, registry }) {
+    if (!this.moduleExists(name)) {
+      throw new RepoXMLError(`Module '${name}' does not exist`);
+    }
+    if (!this.registryExists(registry)) {
+      throw new RepoXMLError(`Registry '${registry}' does not exists`);
+    }
+    const appRegistry = this.getRegistryByName(registry);
+    if (!appRegistry.getModuleVersionInfo(name, version)) {
+      throw new RepoXMLError(
+        `Version '${version}' of module '${name}' does not exists`
+      );
+    }
+
+    const moduleList = this.getModuleList();
+
+    for (let i = 0; i < moduleList.length; i++) {
+      const module = moduleList[i];
+      if (module.$.name === name) {
+        moduleList[i] = { $: { name, version, registry } };
+      }
+    }
+    return this;
+  }
+
+  /**
    * @returns {Array|*}
    */
   getModuleList() {

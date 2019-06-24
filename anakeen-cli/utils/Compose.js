@@ -2,6 +2,7 @@ const console = require("console");
 const path = require("path");
 const util = require("util");
 const fs = require("fs");
+const URL = require("url").URL;
 const semver = require("semver");
 const signale = require("signale");
 const tar = require("tar");
@@ -235,7 +236,8 @@ class Compose {
     version: moduleVersion,
     registry: registryName
   }) {
-    if (this.$.frozenLockfile) {
+    const lockExists = Compose.fileExists("repo.lock.xml");
+    if (lockExists === true && this.$.frozenLockfile) {
       throw new ComposeError(
         `Cannot install module '${moduleName}' while using '--frozen-lock' option`
       );
@@ -454,6 +456,33 @@ class Compose {
    */
   async install() {
     await this.loadContext();
+
+    if (this.$.frozenLockfile) {
+      signale.note(
+        "Frozen lock file option activated : removing .app and source files from repository"
+      );
+      const localRepo = this.repoXML.getConfigLocalRepo();
+      const localSrc = this.repoXML.getConfigLocalSrc();
+
+      //Removing app files
+      let apps = await fs_readdir(localRepo);
+      apps = apps.filter(filename => {
+        return filename.match(/\.app$/);
+      });
+      for (let i = 0; i < apps.length; i++) {
+        const app = [localRepo, apps[i]].join("/");
+        await Compose.rm_Rf(app);
+      }
+
+      //Removing src files
+      let sources = await fs_readdir(localSrc);
+      for (let i = 0; i < sources.length; i++) {
+        const source = [localSrc, sources[i]].join("/");
+        await Compose.rm_Rf(source);
+      }
+
+      signale.note("Done.");
+    }
 
     const moduleLockList = this.repoLockXML.getModuleList();
     const moduleList = this.repoXML.getModuleList();
@@ -711,6 +740,16 @@ class Compose {
         version: module.version,
         registry: module.registry
       });
+
+      //Update repo.xml
+      if (this.$.latest) {
+        const lockModule = this.repoLockXML.getModuleByName(module.name);
+        this.repoXML.updateModule({
+          name: module.name,
+          version: lockModule.$.version,
+          registry: module.registry
+        });
+      }
     }
 
     this.debug(this.repoLockXML.data, { depth: 20 });
