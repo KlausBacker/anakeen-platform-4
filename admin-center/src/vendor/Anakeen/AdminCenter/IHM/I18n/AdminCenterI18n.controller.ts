@@ -4,15 +4,84 @@ import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import Vue from "vue";
-Vue.use(ButtonsInstaller);
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 
+Vue.use(ButtonsInstaller);
+declare var kendo;
 @Component
 export default class I18nManagerController extends Vue {
   private translationLocale: string = "fr";
+  private translationFilterableOptions: kendo.data.DataSourceFilter = {
+    cell: {
+      minLength: 3,
+      operator: "contains",
+      showOperators: false
+    }
+  };
+  private translationGridData: kendo.data.DataSource = new kendo.data.DataSource(
+    {
+      pageSize: 50,
+      schema: {
+        data: response => response.data.data.data,
+        total: response => response.data.data.requestParameters.total
+      },
+      serverFiltering: true,
+      serverPaging: true,
+      transport: {
+        read: options => {
+          this.$http
+            .get(`/api/v2/admin/i18n/fr`, {
+              params: options.data,
+              paramsSerializer: kendo.jQuery.param
+            })
+            .then(options.success)
+            .catch(options.error);
+        }
+      }
+    }
+  );
+
+  @Watch("translationLocale")
+  public watchTranslationLocale(value) {
+    this.translationGridData = new kendo.data.DataSource({
+      pageSize: 50,
+      schema: {
+        data: response => response.data.data.data,
+        total: response => response.data.data.requestParameters.total
+      },
+      serverFiltering: true,
+      serverPaging: true,
+      transport: {
+        read: options => {
+          this.$http
+            .get(`/api/v2/admin/i18n/${value}`, {
+              params: options.data,
+              paramsSerializer: kendo.jQuery.param
+            })
+            .then(options.success)
+            .catch(options.error);
+        }
+      }
+    });
+    $(this.$refs.i18nGrid)
+      .data("kendoGrid")
+      .setDataSource(this.translationGridData);
+    setTimeout(() => {
+      if (value === "fr") {
+        $(".overriden-translation-input").attr(
+          "placeholder",
+          "modifier la traduction"
+        );
+      } else {
+        $(".overriden-translation-input").attr(
+          "placeholder",
+          "edit translation"
+        );
+      }
+    }, 300);
+  }
   public mounted() {
     window.addEventListener("offline", e => {
-      console.log(e);
       kendo.ui.progress($("body"), true);
       this.$emit("i18nOffline", e.type);
     });
@@ -28,46 +97,39 @@ export default class I18nManagerController extends Vue {
         },
         {
           field: "section",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
-            }
-          },
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           title: "Type"
         },
         {
           field: "msgctxt",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
-            }
-          },
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           title: "Contexte"
         },
         {
           field: "msgid",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
-            }
-          },
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           title: "ID"
         },
         {
           field: "msgstr",
-          filterable: {
-            cell: {
-              operator: "contains",
-              showOperators: false
+          filterable: this.translationFilterableOptions,
+          minResizableWidth: 25,
+          template: rowData => {
+            if (rowData.plural) {
+              let cellData = "";
+              // tslint:disable-next-line:prefer-for-of
+              for (let i = 0; i < rowData.plural.length - 1; i++) {
+                cellData += rowData.plural[i] + "<hr>";
+              }
+              cellData += rowData.plural[rowData.plural.length - 1];
+              return cellData;
+            } else {
+              return rowData.msgstr;
             }
           },
-          minResizableWidth: 25,
           title: "Server translation"
         },
         {
@@ -75,7 +137,7 @@ export default class I18nManagerController extends Vue {
           filterable: false,
           minResizableWidth: 25,
           template: `<div class="input-group">
-                <input type='text' placeholder="change translation" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
+                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
                 <div class="input-group-append">
                     <button class='confirm-override-translation btn btn-outline-secondary'><i class='fa fa-check'></i></button>
                     <button class='cancel-override-translation btn btn-outline-secondary'><i class='fa fa-times'></i></button>
@@ -88,71 +150,47 @@ export default class I18nManagerController extends Vue {
         $(".overriden-translation-input").on("change", () => {
           console.log("overriden");
         });
+
         $(".confirm-override-translation").kendoButton({
-          click: () => {
-            console.log("confirm");
+          click: confirmEvent => {
+            const rowData: any = $(this.$refs.i18nGrid)
+              .data("kendoGrid")
+              .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
+            const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
+            const newVal = $(
+              confirmEvent.event.target.closest("tr[role=row]")
+            ).find("input")[0].value;
+            this.$http
+              .put(
+                `/api/v2/admin/i18n/${this.translationLocale}/
+                ${msgctxtData}/
+                ${rowData.msgid}`,
+                newVal
+              )
+              .then(response => {
+                if (response.status === 200) {
+                  this.$emit("EditTranslationSuccess");
+                } else {
+                  this.$emit("EditTranslationFail");
+                }
+              });
           }
         });
         $(".cancel-override-translation").kendoButton({
           click: cancelEvent => {
-            console.log("cancel");
             const rowId = cancelEvent.event.target
               .closest("tr[role=row]")
               .getAttribute("data-uid");
-            const oldVal = $(this.$refs.i18nGrid)
-              .data("kendoGrid")
-              .dataItem(rowId);
+            // sets input valueback to server value
             $(cancelEvent.event.target.closest("tr[role=row]")).find(
               "input"
-            )[0].value = 123;
+            )[0].value = $(this.$refs.i18nGrid)
+              .data("kendoGrid")
+              .dataItem(rowId);
           }
         });
       },
-      dataSource: new kendo.data.DataSource({
-        pageSize: 50,
-        schema: {
-          data: response => {
-            return response.data.data;
-          },
-          model: {
-            fields: {
-              gridId: {
-                type: "string"
-              },
-              msgctxt: {
-                type: "string"
-              },
-              msgid: {
-                type: "string"
-              },
-              msgstr: {
-                type: "string"
-              },
-              overridentranslation: {
-                type: "string"
-              },
-              section: {
-                type: "string"
-              }
-            },
-            id: "gridId"
-          },
-          total: response => {
-            return response.data.requestParameters.total;
-          }
-        },
-        serverFiltering: true,
-        serverPaging: true,
-        transport: {
-          read: {
-            dataType: "json",
-            type: "get",
-            url: () => {
-              return `/api/v2/admin/i18n/${this.translationLocale}`;
-            }
-          }
-        }
-      }),
+      dataSource: this.translationGridData,
       filterable: {
         extra: false,
         mode: "row"
@@ -167,17 +205,12 @@ export default class I18nManagerController extends Vue {
       sortable: true
     });
   }
+
   public changeLocale(e) {
     if (e.id === "i18n-locale-button-fr") {
       this.translationLocale = "fr";
-      $(this.$refs.i18nGrid)
-        .data("kendoGrid")
-        .dataSource.read();
     } else if (e.id === "i18n-locale-button-en") {
       this.translationLocale = "en";
-      $(this.$refs.i18nGrid)
-        .data("kendoGrid")
-        .dataSource.read();
     } else {
       this.$emit(
         "changeLocaleWrongArgument",
@@ -185,10 +218,33 @@ export default class I18nManagerController extends Vue {
       );
     }
   }
+
   public importLocaleFile() {
-    console.log("Import Locale");
+    const importBtn = $(".import-locale-file");
+    importBtn.trigger("click");
+    importBtn.on("change", e => {
+      console.log(e.target);
+    });
   }
+
   public exportLocaleFile() {
-    console.log("Export Locale");
+    const locale = this.translationLocale === "fr" ? "FR_fr" : "EN_us";
+    const date = this.getDate();
+    // const fileName = `${locale}-${date}`;
+    const fileName = `${locale}-${date}`;
+    console.log(fileName + ".po");
+    // window.open(`/api/v2/admin/i18n/export/${this.translationLocale}/${fileName}.po`);
+  }
+
+  private getDate() {
+    const today = new Date();
+    const DD = String(today.getDate()).padStart(2, "0");
+    const MM = String(today.getMonth() + 1).padStart(2, "0");
+    const YYYY = today.getFullYear();
+    const HH = String(today.getHours()).padStart(2, "0");
+    const mm = String(today.getMinutes()).padStart(2, "0");
+    const ss = String(today.getSeconds()).padStart(2, "0");
+
+    return `${YYYY}-${MM}-${DD}-${HH}:${mm}:${ss}`;
   }
 }

@@ -1,10 +1,10 @@
 <template>
   <div>
     <nav v-if="isDockCollapsed">
-      <i class="fa fa-flag" aria-hidden="true"></i>
+      <i class="fa fa-globe i18n-globe" aria-hidden="true"></i>
     </nav>
     <nav v-else-if="isDockExpanded">
-      <i class="fa fa-flag" aria-hidden="true"></i> <span>I18n</span>
+      <i class="fa fa-globe i18n-globe" aria-hidden="true"></i> <span>&nbspI18n</span>
     </nav>
     <div v-else-if="isHubContent" class="i18n-station">
       <admin-center-i18n
@@ -58,4 +58,9 @@ export default {
   min-height: 0;
   height: 100%;
 }
+
+  .i18n-globe {
+    font-size: 24px;
+    margin-right: 0.5rem;
+  }
 </style>

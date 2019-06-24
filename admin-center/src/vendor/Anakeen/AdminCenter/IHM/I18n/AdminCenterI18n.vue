@@ -22,6 +22,7 @@
                         @click="importLocaleFile"
                 ></kendo-toolbar-item>
             </kendo-toolbar>
+            <input class="import-locale-file" type="file" />
         </div>
         <div class="i18n-grid-parent">
             <div ref="i18nGrid" class="i18n-grid"></div>

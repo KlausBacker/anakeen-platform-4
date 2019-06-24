@@ -8,6 +8,7 @@ use Anakeen\Core\Utils\Strings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
+use Sepia\PoParser\Catalog\Entry;
 
 /** @noinspection PhpIncludeInspection */
 require_once "vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php";
@@ -40,7 +41,9 @@ class Translations
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->lang = strtolower(substr($args["lang"], 0, 2));
-        $this->filters = $request->getQueryParam("filter")["filters"];
+        if ($request->getQueryParam("filter") && isset($request->getQueryParam("filter")["filters"])) {
+            $this->filters = $request->getQueryParam("filter")["filters"];
+        }
         if ($request->getQueryParam("take") === "all") {
             $this->take = $request->getQueryParam("take");
         } else {
@@ -49,6 +52,10 @@ class Translations
         $this->skip = intval($request->getQueryParam("skip", 0));
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
     public function doRequest()
     {
         $data = $this->getRecordedTranslations();
@@ -92,6 +99,10 @@ class Translations
         }
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
     protected function getRecordedTranslations()
     {
         $data = [];
@@ -134,30 +145,25 @@ class Translations
         return $data;
     }
 
-    private function filterContainsTranslations($entry, $filters)
+    private function filterContainsTranslations(Entry $entry, $filters)
     {
         $filterPassed = false;
         if (!empty($filters)) {
             foreach ($filters as $filter) {
-                error_log(print_r("filtering...", true));
                 $filterField = $filter["field"];
                 $filterValue = $filter["value"];
-                $entryValue;
+                $entryValue = null;
                 switch ($filterField) {
                     case "msgctxt":
-                        error_log(print_r("Translations : msgctxt", true));
                         $entryValue = $entry->getMsgCtxt();
                         break;
                     case "msgid":
-                        error_log(print_r("Translations : msgid", true));
                         $entryValue = $entry->getMsgId();
                         break;
                     case "msgstr":
-                        error_log(print_r("Translations : msgstr", true));
                         $entryValue = $entry->getMsgStr();
                         break;
                     case "section":
-                        error_log(print_r("Translations : section", true));
                         $entryValue = "";
                         break;
                     default:
@@ -176,25 +182,20 @@ class Translations
         $filterPassed = false;
         if (!empty($filters)) {
             foreach ($filters as $filter) {
-                error_log(print_r("filtering...", true));
                 $filterField = $filter["field"];
                 $filterValue = $filter["value"];
-                $entryValue;
+                $entryValue = null;
                 switch ($filterField) {
                     case "msgctxt":
-                        error_log(print_r("Structure : msgctxt", true));
                         $entryValue = $structure->name;
                         break;
                     case "msgid":
-                        error_log(print_r("Structure : msgid", true));
                         $entryValue = $field->id;
                         break;
                     case "msgstr":
-                        error_log(print_r("Structure : msgstr", true));
                         $entryValue = $field->labelText;
                         break;
                     case "section":
-                        error_log(print_r("Structure : section", true));
                         $entryValue = "SmartStructure";
                         break;
                     default:
