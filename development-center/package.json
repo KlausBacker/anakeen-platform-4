@@ -47,6 +47,7 @@
     "@anakeen/user-interfaces": "^2.0.1",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-dropdowns-vue-wrapper": "^2019.1.220",
     "@progress/kendo-grid-vue-wrapper": "^2019.1.220",
     "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
     "@progress/kendo-treelist-vue-wrapper": "^2019.1.220",
