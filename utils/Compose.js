@@ -235,7 +235,8 @@ class Compose {
     version: moduleVersion,
     registry: registryName
   }) {
-    if (this.$.frozenLockfile) {
+    const lockExists = Compose.fileExists("repo.lock.xml");
+    if (lockExists === true && this.$.frozenLockfile) {
       throw new ComposeError(
         `Cannot install module '${moduleName}' while using '--frozen-lock' option`
       );
