@@ -740,6 +740,16 @@ class Compose {
         version: module.version,
         registry: module.registry
       });
+
+      //Update repo.xml
+      if (this.$.latest) {
+        const lockModule = this.repoLockXML.getModuleByName(module.name);
+        this.repoXML.updateModule({
+          name: module.name,
+          version: lockModule.$.version,
+          registry: module.registry
+        });
+      }
     }
 
     this.debug(this.repoLockXML.data, { depth: 20 });
