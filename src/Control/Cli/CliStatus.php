@@ -73,12 +73,11 @@ class CliStatus extends CliJsonCommand
                     $helper = $this->getHelper('question');
                     $output->writeln("<info>The last job has failed.</info>");
 
-                    $question = new ChoiceQuestion('<question>Retry from failed point [Y/n]?</question>', ['Retry', 'Ignore', 'Cancel']);
+                    $question = new ChoiceQuestion('<question>What do you what to do ?</question>', ['Retry', 'Ignore', 'Cancel'], "Cancel");
                     $answer = $helper->ask($input, $output, $question);
 
                     switch ($answer) {
                         case 'Retry':
-
                             $output->writeln("<info>Rerun Job.</info>");
                             ModuleManager::runJobInBackground();
                             break;
@@ -113,7 +112,9 @@ class CliStatus extends CliJsonCommand
                     sprintf("%s", $status)
                 ];
                 $table->addRow($row);
-                if (($task["status"] ?? "") === "RUNNING" || ($task["status"] ?? "") === "INTERRUPTED" || ($task["status"] ?? "") === "FAILED") {
+
+                $taskStatus = $task["status"] ?? "";
+                if ($taskStatus === "RUNNING" || $taskStatus === "INTERRUPTED" || $taskStatus === "FAILED") {
                     foreach ($task["phases"] as $phase) {
                         $status = sprintf("<%s>%s</%s>", strtolower($phase["status"]), $phase["status"], strtolower($phase["status"]));
 
@@ -133,6 +134,9 @@ class CliStatus extends CliJsonCommand
                                         sprintf("<info>%s</info>", $status)
                                     ];
                                     $table->addRow($row);
+                                }
+                                if (!empty($process["error"])) {
+                                    $data["error"]=$process["error"];
                                 }
                             }
                         }

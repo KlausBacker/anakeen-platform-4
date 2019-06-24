@@ -5,7 +5,7 @@
  * @param array $errors
  */
 function checkDependencies(& $errors = array()) {
-    require_once ('lib/Lib.System.php');
+
     
     // Check PHP version
     if (version_compare(PHP_VERSION, '7.1') < 0) {
@@ -42,7 +42,7 @@ function checkDependencies(& $errors = array()) {
                  'tar',
                  'gzip'
              ) as $cmd) {
-        $cmdPath = WiffLibSystem::getCommandPath($cmd);
+        $cmdPath = Control\Internal\LibSystem::getCommandPath($cmd);
         if ($cmdPath === false) {
             array_push($errors, sprintf("System command '%s' not found in PATH.", $cmd));
         }

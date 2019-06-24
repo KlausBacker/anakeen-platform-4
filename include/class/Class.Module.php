@@ -535,7 +535,7 @@ class Module
      */
     public function unpack($destDir = '')
     {
-        include_once ('lib/Lib.System.php');
+
         
         if (!is_file($this->tmpfile)) {
             $this->errorMessage = sprintf("Temporary file of downloaded module does not exists.");

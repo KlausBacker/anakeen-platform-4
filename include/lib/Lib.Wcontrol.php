@@ -8,7 +8,7 @@
  * @author Anakeen
  */
 
-require_once ('lib/Lib.System.php');
+
 require_once 'class/Class.WIFF.php';
 /**
  * evaluate a Process object
@@ -161,7 +161,7 @@ function wcontrol_clean_unpack(Process $process)
  */
 function wcontrol_process(Process $process)
 {
-    require_once ('lib/Lib.System.php');
+
     
     $cmd = $process->getAttribute('command');
     if ($cmd == '') {
@@ -196,14 +196,14 @@ function wcontrol_process(Process $process)
     }
     putenv(sprintf('MODULE_VERSION_TO=%s', $process->phase->module->version));
     
-    $tmpfile = WiffLibSystem::tempnam(null, 'wcontrol_process');
+    $tmpfile = Control\Internal\LibSystem::tempnam(null, 'wcontrol_process');
     if ($tmpfile === false) {
         return array(
             'ret' => false,
             'output' => 'Error creating temporary file.'
         );
     }
-    $tmpscript = WiffLibSystem::tempnam(null, 'wcontrol_process');
+    $tmpscript = Control\Internal\LibSystem::tempnam(null, 'wcontrol_process');
     if ($tmpscript === false) {
         return array(
             'ret' => false,
@@ -402,7 +402,7 @@ function wcontrol_check_syscommand(Process $process)
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_syscommand' (command = '%s')", $process->getAttribute('command')));
 
-    $ret = WiffLibSystem::getCommandPath($process->getAttribute('command'));
+    $ret = Control\Internal\LibSystem::getCommandPath($process->getAttribute('command'));
     if ($ret === false) {
         return false;
     }
@@ -781,20 +781,20 @@ function wcontrol_check_phpbug40926(Process & $process)
     $wiff = WIFF::getInstance();
     $wiff->activity(sprintf("* Execute 'check_phpbug40926'"));
 
-    require_once ('lib/Lib.System.php');
+
     require_once ('class/Class.WIFF.php');
     
     $wiff = WIFF::getInstance();
     $service = $process->getAttribute('service');
     $service = $wiff->expandParamValue($service);
     
-    $php = WiffLibSystem::getCommandPath('php');
+    $php = Control\Internal\LibSystem::getCommandPath('php');
     if ($php === false) {
         $wiff->log(LOG_ERR, __FUNCTION__ . " " . sprintf("PHP CLI not found."));
         return false;
     }
     
-    $tmpfile = WiffLibSystem::tempnam(null, 'WIFF_phpbug40926');
+    $tmpfile = Control\Internal\LibSystem::tempnam(null, 'WIFF_phpbug40926');
     if ($tmpfile === false) {
         $wiff->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
         return false;

@@ -33,9 +33,13 @@ class ModuleJob
     public static function getJobData()
     {
         $file = self::getJobFile();
-        $content = file_get_contents($file);
-        if (!$content) {
-            throw new RuntimeException("No job file : \"%s\"", $file);
+        if (file_exists($file)) {
+            $content = file_get_contents($file);
+            if (!$content) {
+                throw new RuntimeException(sprintf("Corrupted job file : \"%s\"", $file));
+            }
+        } else {
+             throw new RuntimeException(sprintf("No job file : \"%s\"", $file));
         }
 
         return json_decode($content, true);
@@ -71,6 +75,7 @@ class ModuleJob
         }
         $data["action"] = $module->getMainPhase();
         $data["moduleArg"] = $module->getName();
+        $data["file"] = $module->getFile();
         $data["options"] = $options;
         $dependencies = $module->getDepencies();
         foreach ($dependencies as $dependency) {
@@ -152,6 +157,7 @@ class ModuleJob
             if ($pidFile && file_exists($pidFile)) {
                 unlink($pidFile);
             }
+            LibSystem::purgeTmpFiles();
         });
         declare(ticks=1);
 
@@ -172,14 +178,18 @@ class ModuleJob
     protected static function dotheJob()
     {
         $moduleName = self::$jobData["moduleArg"];
-        if ($moduleName) {
+        $moduleFileName = self::$jobData["file"];
+        if ($moduleFileName) {
+            $module = new ModuleManager("");
+            $module->setFile($moduleFileName);
+        } elseif ($moduleName) {
             $module = new ModuleManager($moduleName);
         } else {
             $module = new ModuleManager("");
         }
         switch (self::$jobData["action"]) {
             case "install":
-                $module->prepareInstall();
+                $module->prepareInstall(true);
                 break;
             case "upgrade":
                 $module->prepareUpgrade(true);

@@ -25,6 +25,10 @@ class ModuleManager
      * @var array
      */
     protected $parameters = [];
+    /**
+     * @var string
+     */
+    protected $moduleFilePath = "";
 
     public function __construct($moduleName)
     {
@@ -45,6 +49,18 @@ class ModuleManager
         return $this->mainPhase;
     }
 
+    public function getFile()
+    {
+        return $this->moduleFilePath;
+    }
+    public function setFile($filePath)
+    {
+        if (!file_exists($filePath)) {
+            throw new InvalidArgumentException(sprintf("File \"%s\" not found", $filePath));
+        }
+        $this->moduleFilePath = realpath($filePath);
+    }
+
     public function getAvailableModule(): ?\Module
     {
         $this->module = $this->context->getModuleAvail($this->name);
@@ -63,10 +79,63 @@ class ModuleManager
         return $module ?: null;
     }
 
-    public function prepareInstall()
+
+    function prepareLocalInstall($pkgName, $force = false)
+    {
+
+        $tmpfile = \Control\Internal\LibSystem::tempnam(null, basename($pkgName));
+        if ($tmpfile === false) {
+            throw new RuntimeException(sprintf("Error: could not create temp file!\n"));
+
+        }
+
+        $ret = copy($pkgName, $tmpfile);
+        if ($ret === false) {
+            throw new RuntimeException(sprintf("Error: could not copy '%s' to '%s'!\n", $pkgName, $tmpfile));
+
+        }
+        $context = Context::getContext();
+
+        $tmpMod = $context->loadModuleFromPackage($tmpfile);
+        if ($tmpMod === false) {
+            throw new RuntimeException(sprintf("Error: could not load module '%s': %s\n", $tmpfile, $context->errorMessage));
+
+        }
+
+        $moduleName=$tmpMod->name;
+        $existingModule = $context->getModuleInstalled($moduleName);
+        if ($existingModule !== false) {
+            if ($force === false) {
+                throw new RuntimeException(sprintf("A module '%s' with version '%s' already exists [CTRL011].\n", $existingModule->name, $existingModule->version));
+            }
+        }
+
+        $tmpMod = $context->importArchive($tmpfile, 'downloaded');
+        if ($tmpMod === false) {
+            throw new RuntimeException(sprintf("Error: could not import module '%s': %s\n", $tmpfile, $context->errorMessage));
+
+        }
+
+
+        $depList = $context->getLocalModuleDependencies($tmpfile);
+        if ($depList === false) {
+            throw new RuntimeException(sprintf("Error: could not get dependencies for '%s': %s\n", $tmpfile, $context->errorMessage));
+        }
+
+        $this->depList = $depList;
+        foreach ($this->depList as &$module) {
+            if ($module->name === $moduleName) {
+                $module->needphase = $existingModule?"upgrade":"install";
+            }
+        }
+    }
+
+    public function prepareInstall($force = false)
     {
         $this->mainPhase = "install";
-        if ($this->name) {
+        if ($this->moduleFilePath) {
+            $this->prepareLocalInstall($this->moduleFilePath, $force);
+        } elseif ($this->name) {
             $installedModule = $this->getInstalledModule($this->name);
             if ($installedModule) {
                 throw new RuntimeException(sprintf("Module '%s' (version '%s') is already installed [CTRL011].\n", $installedModule->name,
@@ -187,7 +256,11 @@ class ModuleManager
             $contentXml = [];
             foreach ($this->depList as $module) {
                 $repo = $module->repository;
-                $contentXml[] = $repo->getContentUrl();
+                if ($repo) {
+                    $contentXml[] = $repo->getContentUrl();
+                } else {
+                    // @TODO It is a local .app : need extract ask inside
+                }
             }
 
             $contentXml = array_filter($contentXml, function ($a) {
@@ -256,7 +329,7 @@ class ModuleManager
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {

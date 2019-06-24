@@ -1,20 +1,18 @@
 <?php
-/*
- * @author Anakeen
- * @package FDL
-*/
+
+namespace Control\Internal;
+
 /**
- * WiffLibSystem class
+ * Control\Internal\LibSystem class
  *
  * This class provides methods for querying system informations
  *
- * @author Anakeen
  */
-
-class WiffLibSystem
+class LibSystem
 {
-    
-    static function getCommandPath($cmdname)
+    protected static $tmpFiles = [];
+
+    static public function getCommandPath($cmdname)
     {
         $path_env = getenv("PATH");
         if ($path_env == false) {
@@ -39,19 +37,19 @@ class WiffLibSystem
                 return $out[0];
             }
         }
-        
+
         return false;
     }
-    
-    static function getHostName()
+
+    static public function getHostName()
     {
         return php_uname('n');
     }
-    
-    static function getHostIPAddress($hostname = "")
+
+    static public function getHostIPAddress($hostname = "")
     {
         if ($hostname == false) {
-            $hostname = WiffLibSystem::getHostName();
+            $hostname = \Control\Internal\LibSystem::getHostName();
         }
         $ip = gethostbyname($hostname);
         if ($ip == $hostname) {
@@ -59,36 +57,39 @@ class WiffLibSystem
         }
         return $ip;
     }
-    
-    static function getServerName()
+
+    static public function getServerName()
     {
         return getenv("SERVER_NAME");
     }
-    
-    static function getServerAddr()
+
+    static public function getServerAddr()
     {
         return getenv("SERVER_ADDR");
     }
-    
-    static function runningInHttpd()
+
+    static public function runningInHttpd()
     {
-        return WiffLibSystem::getServerAddr();
+        return self::getServerAddr();
     }
+
     /**
      * system() à la Perl's system(@cmd)
-     * @param $args
+     *
+     * @param            $args
      * @param array|null $opt
+     *
      * @return int
      */
-    static function ssystem($args, $opt = null)
+    static public function ssystem($args, $opt = null)
     {
         $pid = pcntl_fork();
-        if ($pid == - 1) {
+        if ($pid == -1) {
             return -1;
         }
         if ($pid != 0) {
             $ret = pcntl_waitpid($pid, $status);
-            if ($ret == - 1) {
+            if ($ret == -1) {
                 return -1;
             }
             return pcntl_wexitstatus($status);
@@ -110,23 +111,25 @@ class WiffLibSystem
         pcntl_exec($cmd, $args, $envs);
         return 0;
     }
-    
-    static function getAbsolutePath($path)
+
+    static public function getAbsolutePath($path)
     {
         if (is_link($path)) {
             $path = readlink($path);
         }
         return realpath($path);
     }
-    
-    static function tempnam($dir, $prefix)
+
+    static public function tempnam($dir, $prefix)
     {
         if ($dir === null || $dir === false) {
             $dir = null;
-            foreach (array(
-                'TMP',
-                'TMPDIR'
-            ) as $env) {
+            foreach (
+                array(
+                    'TMP',
+                    'TMPDIR'
+                ) as $env
+            ) {
                 $dir = getenv($env);
                 if ($dir !== false && is_dir($dir) && is_writable($dir)) {
                     break;
@@ -135,10 +138,12 @@ class WiffLibSystem
         }
         if ($dir === null || $dir === false) {
             $dir = null;
-            foreach (array(
-                '/tmp',
-                '/var/tmp'
-            ) as $tmpdir) {
+            foreach (
+                array(
+                    '/tmp',
+                    '/var/tmp'
+                ) as $tmpdir
+            ) {
                 if (is_dir($tmpdir) && is_writable($tmpdir)) {
                     $dir = $tmpdir;
                     break;
@@ -146,6 +151,17 @@ class WiffLibSystem
             }
         }
         $res = tempnam($dir, $prefix);
+        self::$tmpFiles[] = $res;
+
         return $res;
+    }
+
+    static public function purgeTmpFiles()
+    {
+        foreach (self::$tmpFiles as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
     }
 }

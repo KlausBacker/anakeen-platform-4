@@ -3,11 +3,14 @@
 namespace Control\Cli;
 
 use Control\Internal\Context;
+use Control\Internal\LibSystem;
 use Control\Internal\ModuleJob;
 use Control\Internal\ModuleManager;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
@@ -24,6 +27,7 @@ class CliInstallModule extends CliCommand
             // the short description shown while running "php bin/console list"
             ->setDescription('Install module.')
             ->addArgument('module', InputArgument::OPTIONAL, "Module name to install")
+            ->addOption('file', null, InputOption::VALUE_OPTIONAL, '.app file to install.')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command install all modules or one if module name is set');
@@ -38,18 +42,28 @@ class CliInstallModule extends CliCommand
         }
 
         if (!Context::getRepositories(true)) {
-             throw new RuntimeException(sprintf("No one repositories configured. Use \"registry\" command to add."));
+            throw new RuntimeException(sprintf("No one repositories configured. Use \"registry\" command to add."));
         }
 
+        $file = $input->getOption("file");
+
         $moduleName = $input->getArgument("module");
-        if ($moduleName) {
+        if ($file) {
+            $module = new ModuleManager("");
+            $module->setFile($file);
+        } elseif ($moduleName) {
             $module = new ModuleManager($moduleName);
         } else {
             $module = new ModuleManager("");
         }
-        if (!$module->prepareInstall()) {
+        $force=true;
+        if (!$module->prepareInstall($force)) {
             $output->writeln("<info>No modules to install. All is up-to-date.</info>");
         } else {
+            $context=Context::getContext();
+            if ($context->warningMessage) {
+                $output->writeln(sprintf("<warning>%s</warning>", $context->warningMessage));
+            }
             $module->displayModulesToProcess($output);
             $helper = $this->getHelper('question');
             $question = new ConfirmationQuestion('<question>Continue the update [Y/n]?</question>', true);
@@ -59,8 +73,10 @@ class CliInstallModule extends CliCommand
             }
             AskParameters::askParameters($module, $this->getHelper('question'), $input, $output);
             $module->recordJob();
+            LibSystem::purgeTmpFiles();
             $output->writeln("Job Recorded");
         }
+
     }
 
 }

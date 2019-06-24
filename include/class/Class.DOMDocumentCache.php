@@ -28,8 +28,7 @@ class DOMDocumentCache extends DOMDocument
     }
     public function commit($options = 0)
     {
-        require_once __DIR__.'/../lib/Lib.System.php';
-        
+
         if (!$this->_hasBeenModified()) {
             /*
              * No need to save if the document has not
@@ -49,7 +48,7 @@ class DOMDocumentCache extends DOMDocument
         $filename = rawurldecode($filename);
         $dirName = dirname($filename);
         $baseName = basename($filename);
-        $tmpfile = WiffLibSystem::tempnam($dirName, 'tmp.' . $baseName . '.XXXXXX');
+        $tmpfile = Control\Internal\LibSystem::tempnam($dirName, 'tmp.' . $baseName . '.XXXXXX');
         if ($tmpfile === false) {
             throw new Exception(sprintf("Transaction error creating temporary file in '%s'.", $dirName));
         }

@@ -362,7 +362,7 @@ EOF;
      */
     private function unpack($archiveFile, $destDir = null)
     {
-        include_once ('lib/Lib.System.php');
+
         
         if (!is_file($archiveFile) || !is_readable($archiveFile)) {
             $this->errorMessage = sprintf("Archive file '%s' does not exists or is not readable.", $archiveFile);
@@ -392,7 +392,7 @@ EOF;
     {
         require_once (__DIR__.'/Class.String.php');
         
-        $tempDir = WiffLibSystem::tempnam(null, 'WIFF_checkPreUpdate');
+        $tempDir = Control\Internal\LibSystem::tempnam(null, 'WIFF_checkPreUpdate');
         if ($tempDir === false) {
             $this->errorMessage = sprintf(__METHOD__ . " " . "Error creating temporary file.");
             return false;
@@ -2164,7 +2164,7 @@ EOF;
     
     public function postUpgrade($fromVersion, $toVersion)
     {
-        include_once ('lib/Lib.System.php');
+
         
         $wiff_root = getenv('WIFF_ROOT');
         if ($wiff_root !== false) {

@@ -619,10 +619,10 @@ function wiff_context_module_install(&$context, &$argv)
 
 function wiff_context_module_install_local(Context & $context, &$options, &$pkgName, &$argv)
 {
-    require_once('lib/Lib.System.php');
+
     require_once('class/Class.Module.php');
 
-    $tmpfile = WiffLibSystem::tempnam(null, basename($pkgName));
+    $tmpfile = Control\Internal\LibSystem::tempnam(null, basename($pkgName));
     if ($tmpfile === false) {
         printerr(sprintf("Error: could not create temp file!\n"));
         return 1;
@@ -708,7 +708,7 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
 
 function wiff_context_module_install_remote(Context & $context, &$options, &$modName, &$argv)
 {
-    require_once('lib/Lib.System.php');
+
 
     $existingModule = $context->getModuleInstalled($modName);
     if ($existingModule !== false) {
@@ -1047,9 +1047,9 @@ function wiff_context_module_upgrade(&$context, &$argv)
 
 function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgName, &$argv)
 {
-    require_once('lib/Lib.System.php');
 
-    $tmpfile = WiffLibSystem::tempnam(null, basename($pkgName));
+
+    $tmpfile = Control\Internal\LibSystem::tempnam(null, basename($pkgName));
     if ($tmpfile === false) {
         printerr(sprintf("Error: could not create temp file!\n"));
         return 1;
@@ -1136,7 +1136,7 @@ function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgN
 
 function wiff_context_module_upgrade_remote(Context & $context, &$options, &$modName, &$argv)
 {
-    require_once('lib/Lib.System.php');
+
 
     $tmpMod = $context->getModuleAvail($modName);
     if ($tmpMod === false) {

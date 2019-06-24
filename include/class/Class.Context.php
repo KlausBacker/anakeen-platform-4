@@ -1561,9 +1561,8 @@ class Context extends ContextProperties
      */
     public function uploadModule()
     {
-        require_once(__DIR__ . '/../lib/Lib.System.php');
 
-        $tmpfile = WiffLibSystem::tempnam(null, 'WIFF_downloadLocalFile');
+        $tmpfile = Control\Internal\LibSystem::tempnam(null, 'WIFF_downloadLocalFile');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error creating temporary file.");
             return false;
@@ -1965,7 +1964,7 @@ class Context extends ContextProperties
 
         $dump = $archived_tmp_dir . DIRECTORY_SEPARATOR . 'core_db.pg_dump.gz';
 
-        $errorFile = WiffLibSystem::tempnam(null, 'WIFF_error.tmp');
+        $errorFile = Control\Internal\LibSystem::tempnam(null, 'WIFF_error.tmp');
         if ($errorFile === false) {
             $this->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
             $this->errorMessage = "Error creating temporary file for error.";
@@ -2856,7 +2855,7 @@ class Context extends ContextProperties
     public function zipEECConfiguration()
     {
         require_once('class/Class.StatCollector.php');
-        require_once('lib/Lib.System.php');
+
 
         if ($this->register != 'registered') {
             $this->log(LOG_WARNING, __METHOD__ . " " . $this->errorMessage);
@@ -2880,7 +2879,7 @@ class Context extends ContextProperties
             return false;
         }
 
-        $tmpZIP = WiffLibSystem::tempnam(null, 'downloadZip');
+        $tmpZIP = Control\Internal\LibSystem::tempnam(null, 'downloadZip');
         if ($tmpZIP === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
             return false;

@@ -2,9 +2,7 @@
 
 namespace Control\Cli;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +20,7 @@ class CliJsonCommand extends CliCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        parent::execute($input, $output);
         if ($input->hasOption("format")) {
             if ($input->getOption("format") && $input->getOption("format") !== "json") {
                 throw new InvalidArgumentException(sprintf('Unsupported format "%s". Only "json" supported.', $input->getOption("format")));

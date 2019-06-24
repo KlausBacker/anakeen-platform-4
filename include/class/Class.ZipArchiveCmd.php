@@ -55,20 +55,20 @@ class ZipArchiveCmd
      */
     public function open($zipfile, $mode = self::EXTRACT)
     {
-        include_once ('lib/Lib.System.php');
+
         
         if ($mode != self::CREATE && $mode != self::EXTRACT) {
             $this->last_error = sprintf("Wrong mode '%s'.", $mode);
             return false;
         }
         
-        $zipcmd = WiffLibSystem::getCommandPath('zip');
+        $zipcmd = Control\Internal\LibSystem::getCommandPath('zip');
         if ($zipcmd === false) {
             $this->last_error = sprintf("Could not find 'zip' command in PATH '%s'.", getenv('PATH'));
             return false;
         }
         
-        $unzipcmd = WiffLibSystem::getCommandPath('unzip');
+        $unzipcmd = Control\Internal\LibSystem::getCommandPath('unzip');
         if ($unzipcmd === false) {
             $this->last_error = sprintf("Could not find 'unzip' command in PATH '%s'.", getenv('PATH'));
             return false;
@@ -158,7 +158,7 @@ class ZipArchiveCmd
      */
     public function addFromString($filename, $string)
     {
-        include_once ('lib/Lib.System.php');
+
         /* Refuse filenames which may get out of the base
          * temporary directory by using the '../' sequence.
         */
@@ -177,7 +177,7 @@ class ZipArchiveCmd
             return false;
         }
         /* Create the base temporary directory */
-        $tmpname = WiffLibSystem::tempnam(null, __CLASS__);
+        $tmpname = Control\Internal\LibSystem::tempnam(null, __CLASS__);
         if ($tmpname === false) {
             $this->last_error = sprintf("Could not create temporary file.");
             return false;
@@ -354,7 +354,7 @@ class ZipArchiveCmd
      */
     public function getTmpFileFromName($name)
     {
-        $tmpfile = WiffLibSystem::tempnam(null, __CLASS__);
+        $tmpfile = Control\Internal\LibSystem::tempnam(null, __CLASS__);
         if ($tmpfile === false) {
             $this->last_error = sprintf("Error creating temporary file.");
             return false;
