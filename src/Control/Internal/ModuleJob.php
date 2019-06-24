@@ -39,7 +39,7 @@ class ModuleJob
                 throw new RuntimeException(sprintf("Corrupted job file : \"%s\"", $file));
             }
         } else {
-             throw new RuntimeException(sprintf("No job file : \"%s\"", $file));
+            throw new RuntimeException(sprintf("No job file : \"%s\"", $file));
         }
 
         return json_decode($content, true);
@@ -84,10 +84,18 @@ class ModuleJob
                 "action" => $dependency->needphase,
                 "status" => "TODO"
             ];
-            $task["phases"][] = ["name" => "download", "status" => "TODO"];
+            if ($data["action"] !== "remove") {
+                $task["phases"][] = ["name" => "download", "status" => "TODO"];
+            }
+
             foreach ($dependency->getPhaseList($dependency->needphase) as $phase) {
                 $task["phases"][] = ["name" => $phase, "status" => "TODO"];
             }
+            
+            if ($data["action"] === "remove") {
+                $task["phases"][] = ["name" => "uninstall", "status" => "TODO"];
+            }
+
             $data["tasks"][] = $task;
         }
 
@@ -147,7 +155,7 @@ class ModuleJob
 
     protected static function catchExit()
     {
-        set_error_handler(function ($error, $msg) {
+        set_error_handler(function (/** @noinspection PhpUnusedParameterInspection */ $error, $msg) {
             JobLog::setStatus("", "", "exception");
             JobLog::setError("", "", $msg);
             return false;
@@ -187,15 +195,25 @@ class ModuleJob
         } else {
             $module = new ModuleManager("");
         }
-        switch (self::$jobData["action"]) {
+        $action = self::$jobData["action"];
+        switch ($action) {
             case "install":
                 $module->prepareInstall(true);
                 break;
             case "upgrade":
                 $module->prepareUpgrade(true);
                 break;
+            case "remove":
+                $module->prepareRemove();
+                break;
         }
-        if (self::installDependencies($module)) {
+
+        if ($action === "remove") {
+            $jobStatus = self::removeModule($module);
+        } else {
+            $jobStatus = self::installDependencies($module);
+        }
+        if ($jobStatus) {
             JobLog::setStatus("", "", "done");
             // Job succeeded
             self::archiveJobFile();
@@ -205,12 +223,11 @@ class ModuleJob
 
     /**
      * @param ModuleManager $moduleManager
-     * @param array         $options
      *
      * @return bool
      * @throws \Exception
      */
-    public static function installDependencies(ModuleManager $moduleManager, $options = [])
+    public static function installDependencies(ModuleManager $moduleManager)
     {
         $context = Context::getContext();
         $depList = $moduleManager->getDepencies();
@@ -323,7 +340,7 @@ class ModuleJob
                         continue;
                     }
 
-                    $pvalue = $param->value == "" ? $param->default : $param->value;
+                    // $pvalue = $param->value == "" ? $param->default : $param->value;
 
                     $value = self::getParameterAnswer($module->name, $param->name);
 
@@ -487,6 +504,67 @@ class ModuleJob
         return true;
     }
 
+    public static function removeModule(ModuleManager $moduleManager)
+    {
+        $context = Context::getContext();
+        $module = $moduleManager->getAvailableModule();
+        if ($module === false) {
+            throw new RuntimeException(sprintf("Could not find a module with name '%s'.", $moduleManager->getName()));
+        }
+
+
+        if (($ret = self::executeModulePhase($module, "pre-delete")) != 0) {
+            throw new RuntimeException(sprintf("PRE-DELETE Phase error '%s'.", $moduleManager->getName()));
+        }
+
+        JobLog::setStatus($module->name, "uninstall", "RUNNING");
+
+        $index = 0;
+
+        // -------- Remove reference to module ------------
+        $label = "Remove reference to module";
+        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "RUNNING"], $index);
+        $ret = $context->removeModule($module->name);
+        if ($ret === false) {
+            JobLog::setStatus($module->name, "uninstall", "FAILED");
+            JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "FAILED"], $index);
+            throw new RuntimeException(sprintf("Error removing module  '%s' : %s.", $moduleManager->getName(), $context->errorMessage));
+        }
+        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "DONE"], $index);
+
+
+        // -------- Remove files of module ------------
+        $index++;
+        $label = "Remove files of module";
+        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "RUNNING"], $index);
+
+        $ret = $context->deleteFilesFromModule($module->name);
+        if ($ret === false) {
+            JobLog::setStatus($module->name, "uninstall", "FAILED");
+            JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "FAILED"], $index);
+            throw new RuntimeException(sprintf("Error removing files from module  '%s' : %s.", $moduleManager->getName(), $context->errorMessage));
+        }
+        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "DONE"], $index);
+
+
+        // -------- Remove manifest of module ------------
+        $index++;
+        $label = "Remove manifest of module";
+        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "RUNNING"], $index);
+
+        $ret = $context->deleteManifestForModule($module->name);
+        if ($ret === false) {
+            JobLog::setStatus($module->name, "uninstall", "FAILED");
+            JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "FAILED"], $index);
+            throw new RuntimeException(sprintf("Error removing manifest from module  '%s' : %s.", $moduleManager->getName(), $context->errorMessage));
+        }
+        JobLog::setProcess($module->name, "uninstall", ["label" => $label, "status" => "DONE"], $index);
+
+        JobLog::setStatus($module->name, "uninstall", "DONE");
+
+        return true;
+    }
+
     protected static function executeModulePhase(\Module $module, $phaseName)
     {
         $phase = $module->getPhase($phaseName);
@@ -558,14 +636,15 @@ class ModuleJob
         return true;
     }
 
-    public static function getParameterAnswer($moduleName, $paramName) {
+    public static function getParameterAnswer($moduleName, $paramName)
+    {
 
         $data = ModuleJob::getJobData();
 
-        $parameters=$data["parameters"];
+        $parameters = $data["parameters"];
         foreach ($parameters as $parameter) {
             if ($parameter["name"] === $paramName && $parameter["module"] === $moduleName) {
-                return ($parameter["answer"]??"");
+                return ($parameter["answer"] ?? "");
             }
         }
         return null;

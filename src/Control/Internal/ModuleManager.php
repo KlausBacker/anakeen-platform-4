@@ -53,6 +53,7 @@ class ModuleManager
     {
         return $this->moduleFilePath;
     }
+
     public function setFile($filePath)
     {
         if (!file_exists($filePath)) {
@@ -65,7 +66,7 @@ class ModuleManager
     {
         $this->module = $this->context->getModuleAvail($this->name);
         if (!$this->module) {
-            throw new InvalidArgumentException(sprintf("Download Module \"%s\" not found", $this->name));
+            throw new InvalidArgumentException(sprintf("Module \"%s\" not found", $this->name));
         }
         return $this->module;
     }
@@ -102,7 +103,7 @@ class ModuleManager
 
         }
 
-        $moduleName=$tmpMod->name;
+        $moduleName = $tmpMod->name;
         $existingModule = $context->getModuleInstalled($moduleName);
         if ($existingModule !== false) {
             if ($force === false) {
@@ -125,9 +126,31 @@ class ModuleManager
         $this->depList = $depList;
         foreach ($this->depList as &$module) {
             if ($module->name === $moduleName) {
-                $module->needphase = $existingModule?"upgrade":"install";
+                $module->needphase = $existingModule ? "upgrade" : "install";
             }
         }
+    }
+
+    public function prepareRemove()
+    {
+        $this->mainPhase = "remove";
+
+        $installedModule = $this->getInstalledModule($this->name);
+        if (!$installedModule) {
+            throw new RuntimeException(sprintf("Module '%s' is not installed [CTRL013].\n", $this->name));
+        }
+
+        $this->depList = [$installedModule];
+
+        if ($this->depList === false) {
+            throw new InvalidArgumentException($this->context->errorMessage);
+        }
+        foreach ($this->depList as &$module) {
+
+            $module->needphase = 'delete';
+
+        }
+        return true;
     }
 
     public function prepareInstall($force = false)
@@ -221,9 +244,10 @@ class ModuleManager
         $output->getFormatter()->setStyle('u', new OutputFormatterStyle('yellow', null, []));
         $output->getFormatter()->setStyle('i', new OutputFormatterStyle('green', null, []));
         $output->getFormatter()->setStyle('r', new OutputFormatterStyle('cyan', null, []));
+        $output->getFormatter()->setStyle('d', new OutputFormatterStyle('red', null, []));
         $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow', []));
 
-        $output->writeln("Will <i>(i)</i>nstall, <u>(u)</u>pgrade or <r>(r)</r>eplace the following modules:");
+        $output->writeln("Will <i>(i)</i>nstall, <u>(u)</u>pgrade, <d>(d)</d>elete, or <r>(r)</r>eplace the following modules:");
         foreach ($this->depList as $module) {
             if (!$module->needphase) {
                 $module->needphase = 'upgrade';
@@ -232,8 +256,12 @@ class ModuleManager
             if ($module->needphase === 'upgrade') {
                 $op = '<u>(u)</u>';
             } else {
-                if ($module->needphase === 'replaced') {
-                    $op = '<r>(r)</r> (replaced by ' . (($module->replacedBy) ? $module->replacedBy : 'unknown') . ')';
+                if ($module->needphase === 'delete') {
+                    $op = '<d>(d)</d>';
+                } else {
+                    if ($module->needphase === 'replaced') {
+                        $op = '<r>(r)</r> (replaced by ' . (($module->replacedBy) ? $module->replacedBy : 'unknown') . ')';
+                    }
                 }
             }
             $error = "";
@@ -258,8 +286,6 @@ class ModuleManager
                 $repo = $module->repository;
                 if ($repo) {
                     $contentXml[] = $repo->getContentUrl();
-                } else {
-                    // @TODO It is a local .app : need extract ask inside
                 }
             }
 
@@ -268,24 +294,39 @@ class ModuleManager
             });
             $contentXml = array_unique($contentXml);
             foreach ($contentXml as $xmlUrl) {
-                $this->recordParameters(Context::download($xmlUrl));
+                $this->recordParametersDefinition(Context::download($xmlUrl));
+            }
+            if ($this->moduleFilePath) {
+                $this->recordLocalParametersDefinition();
             }
         }
         return $this->parameters;
+    }
+
+
+    /**
+     * Add parameters for install/update from local app file
+     */
+    protected function recordLocalParametersDefinition()
+    {
+        $wiff = \WIFF::getInstance();
+        $xmlContent = file_get_contents($wiff->contexts_filepath);
+        self::recordParametersDefinition($xmlContent, '/contexts/context/modules/module[@status="downloaded"]');
     }
 
     /**
      * Record in object module parameter of a repository
      *
      * @param string $xmlContent content.xml
+     * @param string $moduleXPath XPATH for search modules
      */
-    protected function recordParameters($xmlContent)
+    protected function recordParametersDefinition($xmlContent, $moduleXPath = "/repo/modules/module")
     {
         $dom = new \DOMDocument();
         $dom->loadXML($xmlContent);
 
         $xpath = new \DOMXPath($dom);
-        $nodeModules = $xpath->query("/repo/modules/module");
+        $nodeModules = $xpath->query($moduleXPath);
         foreach ($nodeModules as $nodeModule) {
             /** @var \DOMElement $nodeModule */
             $paramNodes = $xpath->query("parameters/param", $nodeModule);
@@ -322,10 +363,12 @@ class ModuleManager
         }
     }
 
-    public function recordJob()
+    public function recordJob($justRecord = false)
     {
         ModuleJob::initJobTask($this);
-        self::runJobInBackground();
+        if ($justRecord === false) {
+            self::runJobInBackground();
+        }
     }
 
     /**

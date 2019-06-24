@@ -25,6 +25,7 @@ class CliDoJob extends CliCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         parent::execute($input, $output);
+        JobLog::clearLog();
         /** @var ConsoleOutput $output */
         JobLog::setOutput($output);
         if (ModuleJob::hasFailed()) {

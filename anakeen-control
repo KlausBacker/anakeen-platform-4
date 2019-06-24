@@ -29,6 +29,7 @@ $application->add(new \Control\Cli\CliOutdated());
 $application->add(new \Control\Cli\CliRegistry());
 $application->add(new \Control\Cli\CliInstallModule());
 $application->add(new \Control\Cli\CliUpdateModule());
+$application->add(new \Control\Cli\CliRemoveModule());
 $application->add(new \Control\Cli\CliDoJob());
 $application->add(new \Control\Cli\CliRun());
 

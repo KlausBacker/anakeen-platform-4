@@ -46,11 +46,16 @@ class JobLog
         } else {
             $data[$key] = $value;
         }
+        if ($key !== "log") {
+            $now = \DateTime::createFromFormat('U.u', microtime(true));
+            $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now->format("Y-m-d\\TH:i:s.u")];
+            $data["log"][] = $msg;
+        }
         ModuleJob::putJobData($data);
     }
 
 
-    protected static function getKey($moduleName, $phaseName, $key, $index=-1)
+    protected static function getKey($moduleName, $phaseName, $key, $index = -1)
     {
         $data = ModuleJob::getJobData();
 
@@ -103,7 +108,7 @@ class JobLog
         }
     }
 
-    public static function writeInterruption($status="INTERRUPTED")
+    public static function writeInterruption($status = "INTERRUPTED")
     {
         $data = ModuleJob::getJobData();
 
@@ -151,7 +156,6 @@ class JobLog
     }
 
 
-
     public static function setStatus($moduleName, $phaseName, $status)
     {
         self::setKey($moduleName, $phaseName, "status", $status);
@@ -161,6 +165,7 @@ class JobLog
     {
         return self::getKey($moduleName, $phaseName, "status");
     }
+
     public static function getProcessStatus($moduleName, $phaseName, $index)
     {
         return self::getKey($moduleName, $phaseName, "process", $index);
@@ -194,6 +199,10 @@ class JobLog
     public static function setOutput(ConsoleOutput $output)
     {
         self::$output = $output;
+    }
+    public static function clearLog()
+    {
+        self::setKey("", "", "log", []);
     }
 
 

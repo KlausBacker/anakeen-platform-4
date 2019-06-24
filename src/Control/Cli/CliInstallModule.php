@@ -47,16 +47,17 @@ class CliInstallModule extends CliCommand
 
         $file = $input->getOption("file");
 
+        $force=false;
         $moduleName = $input->getArgument("module");
         if ($file) {
             $module = new ModuleManager("");
             $module->setFile($file);
+            $force=true;
         } elseif ($moduleName) {
             $module = new ModuleManager($moduleName);
         } else {
             $module = new ModuleManager("");
         }
-        $force=true;
         if (!$module->prepareInstall($force)) {
             $output->writeln("<info>No modules to install. All is up-to-date.</info>");
         } else {
@@ -72,7 +73,7 @@ class CliInstallModule extends CliCommand
                 return;
             }
             AskParameters::askParameters($module, $this->getHelper('question'), $input, $output);
-            $module->recordJob();
+            $module->recordJob(false);
             LibSystem::purgeTmpFiles();
             $output->writeln("Job Recorded");
         }
