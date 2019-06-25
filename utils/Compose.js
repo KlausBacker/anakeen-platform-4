@@ -717,13 +717,13 @@ class Compose {
         const moduleAtVersion = this.parseNameAtVersion(moduleList[i]);
         const module = this.repoXML.getModuleByName(moduleAtVersion.name);
         moduleList[i] = {
-          name: module.$.name,
+          name: module.name,
           version: this.$.latest
             ? "latest"
             : moduleAtVersion.version !== ""
             ? moduleAtVersion.version
-            : module.$.version,
-          registry: module.$.registry
+            : module.version,
+          registry: module.registry
         };
       }
     }
@@ -742,14 +742,12 @@ class Compose {
       });
 
       //Update repo.xml
-      if (this.$.latest) {
-        const lockModule = this.repoLockXML.getModuleByName(module.name);
-        this.repoXML.updateModule({
-          name: module.name,
-          version: lockModule.$.version,
-          registry: module.registry
-        });
-      }
+      const lockModule = this.repoLockXML.getModuleByName(module.name);
+      this.repoXML.updateModule({
+        name: module.name,
+        version: lockModule.$.version,
+        registry: module.registry
+      });
     }
 
     this.debug(this.repoLockXML.data, { depth: 20 });
