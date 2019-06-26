@@ -1,0 +1,294 @@
+image:
+  name: gitlab.anakeen.com:4567/anakeen/platform-4/docker/build/build:latest
+
+stages:
+  - tear-up
+  - lint
+  - build
+  - test
+  - registry
+  - release
+  - publish
+
+.default-cache:
+  cache: &default-cache
+    key: "Anakeen:MonoRepo"
+    paths:
+      - .devtool/ci/check/checkPHP/vendor
+      - node_modules
+
+.pull-cache: &pull-cache
+  cache:
+    <<: *default-cache
+    policy: pull
+
+before_script:
+  # install npm deps
+  - node .devtool/ci/utils/select_registry.js
+  - yarn install --frozen-lockfile
+  - composer install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+
+# region tear-up
+populate-cache-master:
+  stage: tear-up
+  cache:
+    <<: *default-cache
+  script:
+    - yarn install --frozen-lockfile
+    - composer install --working-dir=./ide
+  only:
+    - master
+    - web
+#endregion tear-up
+
+#region lint
+lint:
+  <<: *pull-cache
+  stage: lint
+  script:
+    - make lint
+  only:
+    - merge_requests
+    - web
+#endregion lint
+
+#region build
+# .build-package:
+#   <<: *pull-cache
+#   stage: build
+#   script:
+#     - make -C ${PACKAGE_PATH} ${MODE}
+
+# build-smart-data-engine:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: smart-data-engine
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#         - smart-data-engine
+
+# build-autorelease-smart-data-engine:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: smart-data-engine
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - smart-data-engine
+
+# build-security:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: security
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - security
+
+# build-autorelease-security:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: security
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - security
+
+# build-workflow:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: workflow
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - workflow
+
+# build-autorelease-workflow:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: workflow
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - workflow
+
+# build-user-interfaces:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: user-interfaces
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - user-interfaces
+
+# build-autorelease-user-interfaces:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: user-interfaces
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - user-interfaces
+
+# build-hub-station:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: hub-station
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - hub-station
+
+# build-autorelease-hub-station:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: hub-station
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - hub-station
+
+# build-admin-center:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: admin-center
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - admin-center
+
+# build-autorelease-admin-center:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: admin-center
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - admin-center
+
+# build-business-app:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: business-app
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - business-app
+
+# build-autorelease-business-app:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: business-app
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - business-app
+
+# build-development-center:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: development-center
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - development-center
+
+# build-autorelease-development-center:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: development-center
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - development-center
+
+# build-transformation:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: transformation
+#     MODE: "app"
+#   only:
+#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - transformation
+
+# build-autorelease-transformation:
+#   extends: .build-package
+#   stage: build
+#   variables:
+#     PACKAGE_PATH: transformation
+#     MODE: "app-autorelease"
+#   only:
+#     - master@Anakeen/Platform-4/anakeen-platform-4
+#     changes:
+#       - transformation
+
+#endregion build
+
+#region publishNpm
+.npm-publish-package:
+  <<: *pull-cache
+  stage: build
+  script:
+    - cd ${PACKAGE_PATH} && npm publish
+
+
+#endregion publishNpm
+
+#region registry
+.registry:
+  <<: *pull-cache
+  stage: registry
+  script:
+    - >-
+      curl -f
+      --header "X-Http-Method-Override: PUT"
+      -F name=${ANK_CI_APP_NAME}
+      -F version=${ANK_CI_APP_VERSION}
+      -F metadata="{
+        \"git-sha\": \"${CI_COMMIT_SHA}\",
+        \"git-ref\": \"${CI_COMMIT_REF}\",
+        \"version\": \"${ANK_CI_APP_VERSION}\",
+        \"release\": \"${ANK_CI_APP_RELEASE}\",
+        \"date\": \"$(date '+%Y-%m-%d %H-%M-%S')\",
+        \"author\": \"${GITLAB_USER_NAME}\"
+      }"
+      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.app
+      -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
+      --request POST
+      "${INTERNAL_REGISTRY_URL}/${CSM_CI_REGISTRY_BUCKET_NAME}"
+
