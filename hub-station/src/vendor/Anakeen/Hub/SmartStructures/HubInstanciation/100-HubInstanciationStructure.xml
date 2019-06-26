@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="hub_instance_asset_type">
+            <smart:enum name="manifest" label="Manifest"/>
+            <smart:enum name="path" label="Path"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="HUBINSTANCIATION" label="HubInstanciation">
         <smart:icon file="HubInstanciation.png"/>
 
@@ -83,10 +89,4 @@
 
     </smart:structure-configuration>
 
-    <smart:enumerates>
-        <smart:enum-configuration name="hub_instance_asset_type">
-            <smart:enum name="manifest" label="Manifest"/>
-            <smart:enum name="path" label="Path"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>

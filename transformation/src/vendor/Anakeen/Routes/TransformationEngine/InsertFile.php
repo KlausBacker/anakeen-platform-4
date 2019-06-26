@@ -79,7 +79,7 @@ class InsertFile
                         if ($ext == "") {
                             $ext = $infoout->teng_lname;
                         }
-                        //	  print_r($infoout);
+                        //    print_r($infoout);
                         // print_r($ext);
                         if ($this->name != "") {
                             $newname = $this->name;

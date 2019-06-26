@@ -32,9 +32,9 @@ class FieldAccessLayerAutoComplete
                 continue;
             }
 
-            if (($name == "") ||
-                (preg_match("/$pattern/i", $attr->getLabel(), $m)) ||
-                (preg_match("/$pattern/i", $attr->id, $m))
+            if (($name == "") 
+                || (preg_match("/$pattern/i", $attr->getLabel(), $m)) 
+                || (preg_match("/$pattern/i", $attr->id, $m))
             ) {
                 $response->appendEntry(
                     self::getDisplayLabel($attr),

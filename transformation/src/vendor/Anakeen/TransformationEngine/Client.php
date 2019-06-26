@@ -262,7 +262,7 @@ class Client
                     //echo "<br>Response <b>$out</b>";
                     if (preg_match('|<task[^>]*>(.*)</task>|i', $out, $match)) {
                         $body = $match[1];
-                        //	echo "Response $body";
+                        //  echo "Response $body";
                         if (preg_match_all('|<[^>]+>(.*)</([^>]+)>|U', $body, $reg, PREG_SET_ORDER)) {
                             foreach ($reg as $v) {
                                 $info[$v[2]] = $v[1];

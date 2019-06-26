@@ -13,7 +13,4 @@
         <smart:hooks/>
     </smart:structure-configuration>
 
-    <smart:enumerates>
-
-    </smart:enumerates>
 </smart:config>

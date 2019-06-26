@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:enumerates>
+        <smart:enum-configuration name="FAL-Access">
+            <smart:enum name="ReadWrite" label="Read Write"/>
+            <smart:enum name="Read" label="Read Only"/>
+            <smart:enum name="Write" label="Write Only"/>
+        </smart:enum-configuration>
+    </smart:enumerates>
     <smart:structure-configuration name="FIELDACCESSLAYER"  label="Field Access Layer" >
         <smart:icon file="se-fieldaccesslayer.png"/>
         <smart:class>Anakeen\SmartStructures\FieldAccessLayer\FieldAccessLayerHooks</smart:class>
@@ -33,11 +40,4 @@
         <smart:defaults>
         </smart:defaults>
     </smart:structure-configuration>
-    <smart:enumerates>
-        <smart:enum-configuration name="FAL-Access">
-            <smart:enum name="ReadWrite" label="Read Write"/>
-            <smart:enum name="Read" label="Read Only"/>
-            <smart:enum name="Write" label="Write Only"/>
-        </smart:enum-configuration>
-    </smart:enumerates>
 </smart:config>
