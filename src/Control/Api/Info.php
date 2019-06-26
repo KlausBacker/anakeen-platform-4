@@ -3,6 +3,7 @@
 namespace Control\Api;
 
 
+use Control\Exception\ApiRuntimeException;
 use Control\Internal\ModuleJob;
 
 class Info

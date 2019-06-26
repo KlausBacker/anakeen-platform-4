@@ -10,9 +10,9 @@ class ErrorHandler
     const message="Anakeen Control Runtime";
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $exception)
     {
-        if (is_a($exception, \Control\Api\ApiRuntimeException::class)) {
+        if (is_a($exception, \Control\Exception\RuntimeException::class)) {
             /**
-             * @var \Control\Api\ApiRuntimeException $exception
+             * @var \Control\Exception\RuntimeException $exception
              */
             $response = $response->withStatus(self::status, self::message);
             return $response->withJson($exception);

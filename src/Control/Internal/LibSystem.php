@@ -150,6 +150,10 @@ class LibSystem
                 }
             }
         }
+        $dir.="/anakeen-control";
+        if (! is_dir($dir)) {
+            mkdir($dir);
+        }
         $res = tempnam($dir, $prefix);
         self::$tmpFiles[] = $res;
 

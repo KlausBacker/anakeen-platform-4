@@ -381,22 +381,21 @@ class ModuleJob
 
 
                     $value = self::getParameterAnswer($module->name, $param->name);
-                    if ($value === false && $param->default) {
+
+                    if ($value === null && $param->default !== '') {
                         $value = $param->default;
                     }
 
-                    if ($value === false) {
+                    if ($value === null) {
                         throw new RuntimeException(sprintf("Error: could not read answer for \"%s\"!", $param->name));
                     }
                     $param->value = $param::cleanXMLUTF8($value);
 
                     $ret = $module->storeParameter($param);
                     if ($ret === false) {
-                        printerr(sprintf("Error: could not store parameter '%s'!\n", $param->name));
-                        return false;
+                        throw new RuntimeException(sprintf("Error: could not store parameter '%s'!\n", $param->name));
                     }
 
-                    echo "\n";
                 }
             }
             /**
@@ -548,7 +547,7 @@ class ModuleJob
     public static function removeModule(ModuleManager $moduleManager)
     {
         $context = Context::getContext();
-        $module = $moduleManager->getAvailableModule();
+        $module = $moduleManager->getInstalledModule($moduleManager->getName());
         if ($module === false) {
             throw new RuntimeException(sprintf("Could not find a module with name '%s'.", $moduleManager->getName()));
         }
@@ -685,7 +684,7 @@ class ModuleJob
         $parameters = $data["parameters"];
         foreach ($parameters as $parameter) {
             if ($parameter["name"] === $paramName && $parameter["module"] === $moduleName) {
-                return ($parameter["answer"] ?? "");
+                return (isset($parameter["answer"])?$parameter["answer"]:null);
             }
         }
         return null;

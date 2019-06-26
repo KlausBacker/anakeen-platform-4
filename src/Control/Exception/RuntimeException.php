@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Control\Api;
+namespace Control\Exception;
 
 
-class ApiRuntimeException extends \Exception implements \JsonSerializable
+class RuntimeException extends \Exception implements \JsonSerializable
 {
 
     public function jsonSerialize()

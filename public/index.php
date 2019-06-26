@@ -11,9 +11,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $rootPath . DIRECTORY_SEP
 putenv('WIFF_ROOT=' . $rootPath);
 
 
-
 $app = new \Slim\App([
-    "errorHandler" => function ($c) {
+    "errorHandler" => function () {
         return new \Control\Api\ErrorHandler();
     },
     'settings' => [
@@ -25,18 +24,27 @@ $app = new \Slim\App([
 /**
  * Main Html page to display current configuration
  */
-$app->get('/', function (Request $request, Response $response, array $args) {
+$app->get('/', function (Request $request, Response $response) {
     return (new \Control\MainPage())($request, $response);
 });
 
 /**
  * REST Api Configuration
  */
-$app->get('/api/info', function (Request $request, Response $response, array $args) {
+$app->get('/api/info', function (Request $request, Response $response) {
     return (new \Control\Api\Info())($request, $response);
 });
-$app->get('/api/status', function (Request $request, Response $response, array $args) {
+$app->get('/api/status', function (Request $request, Response $response) {
     return (new \Control\Api\Status())($request, $response);
+});
+$app->post('/api/modules/{name}', function (Request $request, Response $response, array $args) {
+    return (new \Control\Api\Install())($request, $response, $args);
+});
+$app->post('/api/modules', function (Request $request, Response $response) {
+    return (new \Control\Api\InstallAppFile())($request, $response);
+});
+$app->post('/api/modules/', function (Request $request, Response $response) {
+    return (new \Control\Api\Install())($request, $response);
 });
 
 $app->run();

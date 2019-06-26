@@ -4,7 +4,7 @@
 namespace Control\Internal;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Exception\RuntimeException;
+use Control\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -35,7 +35,6 @@ class ModuleManager
         $this->name = $moduleName;
         $this->context = Context::getContext();
         if ($this->name) {
-
             $this->getAvailableModule();
         }
 
@@ -65,10 +64,8 @@ class ModuleManager
     public function getAvailableModule(): ?\Module
     {
         $this->module = $this->context->getModuleAvail($this->name);
-        if (!$this->module) {
-            throw new InvalidArgumentException(sprintf("Module \"%s\" not found", $this->name));
-        }
-        return $this->module;
+
+        return $this->module?:null;
     }
 
     public function getInstalledModule($moduleName): ?\Module
@@ -79,7 +76,7 @@ class ModuleManager
     }
 
 
-    function prepareLocalInstall($pkgName, $force = false)
+    protected function prepareLocalInstall($pkgName, $force = false)
     {
 
         $tmpfile = \Control\Internal\LibSystem::tempnam(null, basename($pkgName));
@@ -102,6 +99,7 @@ class ModuleManager
         }
 
         $moduleName = $tmpMod->name;
+        $this->name = $moduleName;
         $existingModule = $context->getModuleInstalled($moduleName);
         if ($existingModule !== false) {
             if ($force === false) {
@@ -157,11 +155,15 @@ class ModuleManager
         if ($this->moduleFilePath) {
             $this->prepareLocalInstall($this->moduleFilePath, $force);
         } elseif ($this->name) {
+            if (!$this->module) {
+                throw new InvalidArgumentException(sprintf("Module \"%s\" not found", $this->name));
+            }
             $installedModule = $this->getInstalledModule($this->name);
             if ($installedModule) {
                 throw new RuntimeException(sprintf("Module '%s' (version '%s') is already installed [CTRL011].\n", $installedModule->name,
                     $installedModule->version));
             }
+
             $this->depList = $this->context->getModuleDependencies(array(
                 $this->name
             ));
@@ -191,6 +193,10 @@ class ModuleManager
     {
         $this->mainPhase = "upgrade";
         if ($this->name) {
+
+            if (!$this->module) {
+                throw new InvalidArgumentException(sprintf("Module \"%s\" not found", $this->name));
+            }
             $installedModule = $this->getInstalledModule($this->name);
             if ($installedModule) {
                 $cmp = \Context::cmpModuleByVersionAsc($this->module, $installedModule);
@@ -201,8 +207,9 @@ class ModuleManager
                     }
                 }
             } else {
-                    throw new InvalidArgumentException(sprintf("Installed Module \"%s\" not found", $this->name));
+                throw new InvalidArgumentException(sprintf("Installed Module \"%s\" not found", $this->name));
             }
+
             $this->depList = $this->context->getModuleDependencies(array(
                 $this->name
             ));
@@ -317,7 +324,7 @@ class ModuleManager
     /**
      * Record in object module parameter of a repository
      *
-     * @param string $xmlContent content.xml
+     * @param string $xmlContent  content.xml
      * @param string $moduleXPath XPATH for search modules
      */
     protected function recordParametersDefinition($xmlContent, $moduleXPath = "/repo/modules/module")
@@ -346,6 +353,9 @@ class ModuleManager
 
     public function setParameterAnswer($moduleName, $paramName, $value)
     {
+        if (!$this->parameters) {
+            $this->getAllParameters();
+        }
         foreach ($this->parameters as &$parameter) {
             if ($parameter["name"] === $paramName && $parameter["module"] === $moduleName) {
                 $parameter["answer"] = $value;

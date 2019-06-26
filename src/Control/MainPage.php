@@ -56,7 +56,8 @@ class MainPage
         $data["repositories"] = Context::getRepositories();
 
         $data["version"] = Context::getVersion();
-        $data["availableVersion"] = Context::getAvailableVersion();
+        $data["availableVersion"] = Context::getAvailableVersion()?:"No update detected";
+
         $data["phpinfo"] = Context::getPhpInfo();
         $data["serverPath"] = $context->root;
 
