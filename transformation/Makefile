@@ -1,6 +1,9 @@
 #MAKEFILE dir
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
+#path
+CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
+
 #Control
 CONTROL_USER=admin
 CONTROL_PASSWORD=anakeen
@@ -13,9 +16,10 @@ APP_OUTPUT_PATH=../build/
 ##bin
 YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ./../ide/vendor/bin/phpcbf
-CS_BIN=php ./../ide/vendor/bin/phpcbf
+CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
+CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
 COMPOSER_BIN=composer
+CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
 -include ../Makefile.local
 ########################################################################################################################
@@ -31,6 +35,14 @@ install-deps:
 ## Po and stub
 ##
 ########################################################################################################################
+checkXML: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} check
+
+checkVersion:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
+	${CHECK_VERSION} ./
+
 po: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Extract PO${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} extractPo
@@ -79,14 +91,14 @@ deploy-all:deploy
 ########################################################################################################################
 
 beautify:
-	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ../transformation
-	$(CBF_BIN) --standard=../ide/anakeenPhpCs.xml --extensions=php ./src
+	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+	$(CBF_BIN) --standard=${CS_PATH_NAME} --extensions=php ./src
 
-lint:
-	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ../transformation
-	$(CS_BIN) --standard=../ide/anakeenPhpCs.xml --extensions=php ./src
+lint: checkVersion checkXML
+	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+	$(CS_BIN) --standard=${CS_PATH_NAME} --extensions=php ./src
 
 ########################################################################################################################
 ##

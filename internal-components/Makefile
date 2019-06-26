@@ -15,3 +15,4 @@ deploy-all:
 lint:
 po:
 stub:
+checkXML:

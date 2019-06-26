@@ -2,6 +2,7 @@
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 MODULE_NAME=development-center
+CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 PHP_LIB_PATH=src/vendor/Anakeen/Routes/Devel/Lib
 
 #Control
@@ -17,8 +18,9 @@ APP_OUTPUT_PATH=../build/
 YARN_BIN=yarn
 COMPOSER_BIN=composer
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ./../ide/vendor/bin/phpcbf
-CS_BIN=php ./../ide/vendor/bin/phpcbf
+CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
+CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
+CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
 -include ../Makefile.local
 ########################################################################################################################
@@ -40,19 +42,21 @@ install-deps:
 beautify: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify $@${RESET_COLOR}\n"
 	$(YARN_BIN) run beautify
-	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ../development-center
-	$(CBF_BIN) --standard=../ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ./src
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
-lint: install-deps
+lint: install-deps checkXML checkVersion
 	@${PRINT_COLOR} "${DEBUG_COLOR}lint $@${RESET_COLOR}\n"
-	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ../development-center
-	$(CS_BIN) --standard=../ide/anakeenPhpCs.xml --ignore=${PHP_LIB_PATH} --extensions=php ./src
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+	$(CS_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
 checkXML: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} check
+
+checkVersion:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
+	${CHECK_VERSION} ./
 
 ########################################################################################################################
 ##

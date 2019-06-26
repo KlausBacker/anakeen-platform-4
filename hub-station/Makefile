@@ -3,6 +3,7 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #path
 MODULE_NAME=anakeen-hub
+CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 
 #Control
 CONTROL_USER=admin
@@ -16,9 +17,11 @@ APP_OUTPUT_PATH=../build/
 ##bin
 YARN_BIN=yarn
 ANAKEEN_CLI_BIN=npx @anakeen/anakeen-cli
-CBF_BIN=php ./../ide/vendor/bin/phpcbf
-CS_BIN=php ./../ide/vendor/bin/phpcbf
+CBF_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
+CS_BIN=php ./../.devtool/ci/check/checkPHP/vendor/bin/phpcbf
 COMPOSER_BIN=composer
+CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
+
 
 -include ../Makefile.local
 ########################################################################################################################
@@ -40,17 +43,19 @@ checkXML: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check XML${RESET_COLOR}\n"
 	${ANAKEEN_CLI_BIN} check -s ./
 
-lint: checkXML
+checkVersion:
+	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
+	${CHECK_VERSION} ./
+
+lint: checkXML checkVersion
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ./hub-station
-	$(CS_BIN) --standard=../ide/anakeenPhpCs.xml --extensions=php ./src
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+	$(CS_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
 beautify:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	cd ../ide; ${COMPOSER_BIN} install --ignore-platform-reqs
-	cd ./hub-station
-	$(CBF_BIN) --standard=../ide/anakeenPhpCs.xml --extensions=php ./src
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
 ########################################################################################################################
 ##
