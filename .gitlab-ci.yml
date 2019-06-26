@@ -26,7 +26,7 @@ before_script:
   # install npm deps
   - node .devtool/ci/utils/select_registry.js
   - yarn install --frozen-lockfile
-  - composer install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+  - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 
 # region tear-up
 populate-cache-master:
