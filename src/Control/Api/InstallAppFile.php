@@ -22,7 +22,7 @@ class InstallAppFile extends Install
         $body = $request->getBody();
         $tmp = fopen($this->fileModulePath, "w+");
         while (!$body->eof()) {
-            fputs($tmp, $body->read(1024));
+            fputs($tmp, $body->read(2048));
         }
         fclose($tmp);
         $this->moduleManager = new ModuleManager("");

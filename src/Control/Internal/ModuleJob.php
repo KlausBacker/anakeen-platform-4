@@ -136,7 +136,7 @@ class ModuleJob
 
     public static function isReady()
     {
-        if (Context::isInitialized()) {
+        if (!Context::isInitialized()) {
             return false;
         }
         $context = Context::getContext();
@@ -386,7 +386,7 @@ class ModuleJob
                         $value = $param->default;
                     }
 
-                    if ($value === null) {
+                    if ($value === null && $param->needed) {
                         throw new RuntimeException(sprintf("Error: could not read answer for \"%s\"!", $param->name));
                     }
                     $param->value = $param::cleanXMLUTF8($value);

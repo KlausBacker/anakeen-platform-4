@@ -233,18 +233,18 @@ La colonne `Job` indique si un job est lancé à l'issue de la requête.
 | GET     | /control/api/status                                | Retourne le statut - état du job en cours        | status                 |       | OK   | OK  |
 | GET     | /control/api/registeries/                          | Liste des dépôts enregistrés                     | registery show         |       |      | OK  |
 | POST    | /control/api/registeries/[name]?url,login,password | Ajoute un dépôt                                  | registery add          |       |      | OK  |
-| PUT     | /control/api/registeries/[name]?url,login,password | Modifie un dépôt                                 | registery set-url      |       |      | OK  |
+| PUT     | /control/api/registeries/[name]?url,login,password | Modifie un dépôt                                 | registery set-url      |       |      |     |
 | DELETE  | /control/api/registeries/[name]                    | Enlève un dépôt                                  | registery remove       |       |      | OK  |
-| POST    | /control/api/platform/?pg-service                  | Initialise Anakeen Platform                      | init --pg-service      |   X   |      | OK  |
+| POST    | /control/api/platform/?pg-service                  | Initialise Anakeen Platform                      | init --pg-service      |   X   | --   | OK  |
 | GET     | /control/api/platform/modules/[name]               | Info sur un module                               | search [module]        |       |      |     |
 | POST    | /control/api/platform/modules/[name]               | Installation d'un module                         | install [module]       |   X   | OK   | OK  |
 | POST    | /control/api/platform/modules/                     | Installation de tous les modules                 | install                |   X   | OK   | OK  |
-| PUT     | /control/api/platform/modules/[name]               | Mets à jour un module                            | update [module]        |   X   |      | OK  |
-| PUT     | /control/api/platform/modules/                     | Mets à jour tous les modules                     | update                 |   X   |      | OK  |
+| PUT     | /control/api/platform/modules/[name]               | Mets à jour un module                            | update [module]        |   X   | OK   | OK  |
+| PUT     | /control/api/platform/modules/                     | Mets à jour tous les modules                     | update                 |   X   | OK   | OK  |
 | PUT     | /control/api/platform/modules/?init=true&file.app  | Mets à jour le module (.app) donné dans le corps | install --file         |   X   | OK   | OK  |
 | DELETE  | /control/api/platform/modules/[name]               | Suppression d'un module                          | remove                 |   X   |      | OK  |
 | GET     | /control/api/modules/                              | Liste des modules installés                      | show                   |       |      | OK  |
-| GET     | /control/api/search/                               | Liste des modules disponibles                    | search                 |       |      |     |
+| GET     | /control/api/search/                               | Liste des modules disponibles                    | search                 |       |      | OK  |
 | GET     | /control/api/info                                  | Information sur l'état et nombre d'utilisateur   | info                   |       | OK   | OK  |
 | GET     | /control/api/parameters/                           | Liste des paramètres                             | get --all [--internal] |       |      | OK  |
 | GET     | /control/api/parameters/[key]                      | Valeur du paramètre                              | get [--internal][key]  |       |      | OK  |
@@ -255,7 +255,7 @@ Remarque : la gestion des archives n'est pas proposée avec l'api REST.
 Installation ou mise à jour d'un module depuis le poste de développement :
 
 ```bash
-curl --user admin:zou --request POST --data-binary "@/home/users/Anakeen/4/myModule/mymodule-2.0.0.app"  "http://localhost:10180/control/api/modules"
+curl --user admin:secret --request POST --data-binary "@/home/users/Anakeen/4/myModule/mymodule-2.0.0.app"  "http://localhost:10180/control/api/modules"
 ```
 
 ## Licence

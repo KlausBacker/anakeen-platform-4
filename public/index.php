@@ -37,14 +37,27 @@ $app->get('/api/info', function (Request $request, Response $response) {
 $app->get('/api/status', function (Request $request, Response $response) {
     return (new \Control\Api\Status())($request, $response);
 });
+$app->get('/api/search/', function (Request $request, Response $response) {
+    return (new \Control\Api\Search())($request, $response);
+});
+$app->get('/api/modules/', function (Request $request, Response $response) {
+    return (new \Control\Api\Show())($request, $response);
+});
 $app->post('/api/modules/{name}', function (Request $request, Response $response, array $args) {
-    return (new \Control\Api\Install())($request, $response, $args);
+    return (new \Control\Api\InstallModule())($request, $response, $args);
 });
 $app->post('/api/modules', function (Request $request, Response $response) {
     return (new \Control\Api\InstallAppFile())($request, $response);
 });
 $app->post('/api/modules/', function (Request $request, Response $response) {
     return (new \Control\Api\Install())($request, $response);
+});
+
+$app->put('/api/modules/', function (Request $request, Response $response) {
+    return (new \Control\Api\Update())($request, $response);
+});
+$app->put('/api/modules/{name}', function (Request $request, Response $response, array $args) {
+    return (new \Control\Api\UpdateModule())($request, $response, $args);
 });
 
 $app->run();

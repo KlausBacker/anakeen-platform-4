@@ -5,11 +5,10 @@ namespace Control\Api;
 use Control\Internal\ModuleManager;
 
 /**
- * Class Install
  *
- * @note route : POST /control/api/modules/{name}
+ * @note route : PUT /control/api/modules/{name}
  */
-class InstallModule extends Install
+class UpdateModule extends Update
 {
     protected $moduleName;
 

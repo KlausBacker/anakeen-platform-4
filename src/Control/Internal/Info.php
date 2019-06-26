@@ -11,13 +11,28 @@ class Info
         $data["userStatistics"]=Platform::getUserStats();
         return $data;
     }
-    public static function getModuleList() {
+    public static function getInstalledModuleList() {
         $modules=Context::getContext()->getInstalledModuleList(true);
 
           usort($modules, function ($a, $b) {
               return strcmp($a->name, $b->name);
           });
         return $modules;
+    }
+    public static function getAllModuleList() {
+        $modules=Context::getContext()->getInstalledModuleList(true);
+
+        usort($modules, function ($a, $b) {
+            return strcmp($a->name, $b->name);
+        });
+
+        $uninstalled = Context::getContext()->getAvailableModuleList(true);
+
+        usort($uninstalled, function ($a, $b) {
+            return strcmp($a->name, $b->name);
+        });
+
+        return array_merge($modules, $uninstalled);
     }
 
 

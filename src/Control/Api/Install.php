@@ -25,6 +25,8 @@ class Install
      */
     protected $moduleManager;
 
+    const nothingToDoMsg="No modules to install. All is up-to-date.";
+
     public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response, array $args = [])
     {
         if ($request->getQueryParam("force")) {
@@ -58,12 +60,17 @@ class Install
         // update in child classes
     }
 
+    protected function prepareModuleManager()
+    {
+        return $this->moduleManager->prepareInstall($this->force);
+    }
+
     protected function execute()
     {
         $data = [];
 
-        if (!$this->moduleManager->prepareInstall($this->force)) {
-            $data["message"] = "No modules to install. All is up-to-date.";
+        if (!$this->prepareModuleManager()) {
+            $data["message"] = static::nothingToDoMsg;
         } else {
             $context = Context::getContext();
             if ($context->warningMessage) {

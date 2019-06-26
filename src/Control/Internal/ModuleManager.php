@@ -3,7 +3,6 @@
 
 namespace Control\Internal;
 
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Control\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,7 +55,7 @@ class ModuleManager
     public function setFile($filePath)
     {
         if (!file_exists($filePath)) {
-            throw new InvalidArgumentException(sprintf("File \"%s\" not found", $filePath));
+            throw new RuntimeException(sprintf("File \"%s\" not found", $filePath));
         }
         $this->moduleFilePath = realpath($filePath);
     }
@@ -65,7 +64,7 @@ class ModuleManager
     {
         $this->module = $this->context->getModuleAvail($this->name);
 
-        return $this->module?:null;
+        return $this->module ?: null;
     }
 
     public function getInstalledModule($moduleName): ?\Module
@@ -139,7 +138,7 @@ class ModuleManager
         $this->depList = [$installedModule];
 
         if ($this->depList === false) {
-            throw new InvalidArgumentException($this->context->errorMessage);
+            throw new RuntimeException($this->context->errorMessage);
         }
         foreach ($this->depList as &$module) {
 
@@ -156,10 +155,10 @@ class ModuleManager
             $this->prepareLocalInstall($this->moduleFilePath, $force);
         } elseif ($this->name) {
             if (!$this->module) {
-                throw new InvalidArgumentException(sprintf("Module \"%s\" not found", $this->name));
+                throw new RuntimeException(sprintf("Module \"%s\" not found", $this->name));
             }
             $installedModule = $this->getInstalledModule($this->name);
-            if ($installedModule) {
+            if ($installedModule && $force === false) {
                 throw new RuntimeException(sprintf("Module '%s' (version '%s') is already installed [CTRL011].\n", $installedModule->name,
                     $installedModule->version));
             }
@@ -179,7 +178,7 @@ class ModuleManager
             $this->depList = $this->context->getModuleDependencies($moduleNames);
         }
         if ($this->depList === false) {
-            throw new InvalidArgumentException($this->context->errorMessage);
+            throw new RuntimeException($this->context->errorMessage);
         }
         foreach ($this->depList as &$module) {
             if (!$module->needphase) {
@@ -195,7 +194,7 @@ class ModuleManager
         if ($this->name) {
 
             if (!$this->module) {
-                throw new InvalidArgumentException(sprintf("Module \"%s\" not found", $this->name));
+                throw new RuntimeException(sprintf("Module \"%s\" not found", $this->name));
             }
             $installedModule = $this->getInstalledModule($this->name);
             if ($installedModule) {
@@ -207,7 +206,7 @@ class ModuleManager
                     }
                 }
             } else {
-                throw new InvalidArgumentException(sprintf("Installed Module \"%s\" not found", $this->name));
+                throw new RuntimeException(sprintf("Installed Module \"%s\" not found", $this->name));
             }
 
             $this->depList = $this->context->getModuleDependencies(array(
@@ -227,7 +226,7 @@ class ModuleManager
             $this->depList = $this->context->getModuleDependencies($moduleNames);
         }
         if ($this->depList === false) {
-            throw new InvalidArgumentException($this->context->errorMessage);
+            throw new RuntimeException($this->context->errorMessage);
         }
         foreach ($this->depList as &$module) {
             if (!$module->needphase) {
