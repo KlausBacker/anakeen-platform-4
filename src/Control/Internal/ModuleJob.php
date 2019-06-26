@@ -30,6 +30,33 @@ class ModuleJob
         return sprintf("%s/job.json", self::getRunDir());
     }
 
+    public static function getJobStatus()
+    {
+        $status = ["status" => "Activated"];
+
+        $isInitialized = Context::isInitialized();
+        if (!$isInitialized) {
+            $status["status"] = "Not initialized";
+            $status["message"] = "Context not initialized";
+        } else {
+            $context = Context::getContext();
+            if (self::isRunning()) {
+                $status = self::getJobData();
+                $status["status"] = "Running";
+            } elseif (self::hasFailed()) {
+                $jobData = self::getJobData();
+                $status = $jobData;
+            } elseif (!$context->getInstalledModuleList()) {
+                $status["status"] = "Initialized";
+                $status["message"] = "Ready to install modules";
+            } else {
+                $status["status"] = "Ready";
+            }
+        }
+
+        return $status;
+    }
+
     public static function getJobData()
     {
         $file = self::getJobFile();
@@ -91,7 +118,7 @@ class ModuleJob
             foreach ($dependency->getPhaseList($dependency->needphase) as $phase) {
                 $task["phases"][] = ["name" => $phase, "status" => "TODO"];
             }
-            
+
             if ($data["action"] === "remove") {
                 $task["phases"][] = ["name" => "uninstall", "status" => "TODO"];
             }
@@ -106,6 +133,18 @@ class ModuleJob
         }
     }
 
+
+    public static function isReady()
+    {
+        if (Context::isInitialized()) {
+            return false;
+        }
+        $context = Context::getContext();
+        if (!$context->getInstalledModuleList()) {
+            return false;
+        }
+        return true;
+    }
 
     public static function isRunning()
     {
@@ -340,9 +379,11 @@ class ModuleJob
                         continue;
                     }
 
-                    // $pvalue = $param->value == "" ? $param->default : $param->value;
 
                     $value = self::getParameterAnswer($module->name, $param->name);
+                    if ($value === false && $param->default) {
+                        $value = $param->default;
+                    }
 
                     if ($value === false) {
                         throw new RuntimeException(sprintf("Error: could not read answer for \"%s\"!", $param->name));

@@ -23,6 +23,7 @@ class JobLog
 
         self::displayOutput($moduleName, $phaseName, $key, $value);
 
+        $now = \DateTime::createFromFormat('U.u', microtime(true))->format("Y-m-d\\TH:i:s.u");
         if ($moduleName) {
             foreach ($data["tasks"] as &$task) {
                 if ($task["module"] === $moduleName) {
@@ -33,6 +34,7 @@ class JobLog
                                     $phase[$key][] = $value;
                                 } elseif ($adding !== false) {
                                     $phase[$key][$adding] = $value;
+                                    $phase[$key][$adding]["date"] = $now;
                                 } else {
                                     $phase[$key] = $value;
                                 }
@@ -40,6 +42,7 @@ class JobLog
                         }
                     } else {
                         $task[$key] = $value;
+                        $task["date"] = $now;
                     }
                 }
             }
@@ -47,8 +50,7 @@ class JobLog
             $data[$key] = $value;
         }
         if ($key !== "log") {
-            $now = \DateTime::createFromFormat('U.u', microtime(true));
-            $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now->format("Y-m-d\\TH:i:s.u")];
+            $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now];
             $data["log"][] = $msg;
         }
         ModuleJob::putJobData($data);

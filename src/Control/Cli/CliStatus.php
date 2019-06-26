@@ -39,15 +39,9 @@ class CliStatus extends CliJsonCommand
     {
         parent::execute($input, $output);
 
-        if (!Context::isInitialized()) {
-            $output->writeln("<comment>Context not initialized.</comment>");
-            $output->writeln("<info>Use \"init\" command to initialized.</info>");
-            return;
-        }
-
         $watch = intval($input->getOption("watch"));
 
-        $jobStatus = $this->getJobStatus();
+        $jobStatus = ModuleJob::getJobStatus();
         if ($this->jsonMode) {
             $output->writeln(json_encode($jobStatus, JSON_PRETTY_PRINT));
         } else {
@@ -65,7 +59,7 @@ class CliStatus extends CliJsonCommand
                     $section->clear();
                     self::writeJobStatus($section, $jobStatus);
                     sleep($watch);
-                    $jobStatus = $this->getJobStatus();
+                    $jobStatus = ModuleJob::getJobStatus();
                 }
             } else {
                 self::writeJobStatus($section, $jobStatus);
@@ -143,13 +137,16 @@ class CliStatus extends CliJsonCommand
                     }
                 }
             }
-            $table->setColumnMaxWidth(0, 20);
+            $table->setColumnMaxWidth(0, 30);
             $table->setColumnMaxWidth(1, 35);
             $table->setColumnWidths([20, 35, 10]);
 
             $table->render();
         } else {
             $section->writeln(sprintf("<info>%s.</info>", $data["status"]));
+            if (! empty($data["message"])) {
+                $section->writeln(sprintf("<comment>%s.</comment>", $data["message"]));
+            }
         }
         if (!empty($data["error"])) {
             $section->writeln(sprintf("<error>%s</error>", $data["error"]));

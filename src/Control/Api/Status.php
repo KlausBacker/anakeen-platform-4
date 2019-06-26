@@ -2,11 +2,11 @@
 
 namespace Control\Api;
 
-
 use Control\Internal\ModuleJob;
 
-class Info
+class Status
 {
+
     public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response)
     {
         $data = $this->getData();
@@ -15,11 +15,7 @@ class Info
 
     protected function getData()
     {
-        if (!ModuleJob::isReady()) {
-            throw new ApiRuntimeException("Not initialized");
-        }
-        $data = \Control\Internal\Info::getInfo();
-        return $data;
+        return ModuleJob::getJobStatus();
     }
 
 }

@@ -1,5 +1,6 @@
 Options -Indexes
 
+
 <FilesMatch ".php$">
         Header set X-UA-Compatible "IE=Edge"
 </FilesMatch>

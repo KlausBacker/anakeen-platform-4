@@ -3,6 +3,7 @@
 namespace Control\Cli;
 
 use Control\Internal\Context;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,6 +24,7 @@ class CliInit extends CliCommand
             // the short description shown while running "php bin/console list"
             ->setDescription('Init Anakeen Control.')
             ->addOption('pg-service', null, InputOption::VALUE_REQUIRED, 'Postgresql Service for Anakeen Platform')
+            ->addOption('password', null, InputOption::VALUE_REQUIRED, 'Initial password for web access (control and platform)')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command init Anakeen Control context.');
@@ -30,6 +32,26 @@ class CliInit extends CliCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $pgService = $input->getOption("pg-service");
+        if (!$pgService) {
+             throw new InvalidOptionException(sprintf('"pg-service" option is needed'));
+        }
+
+        set_error_handler(function ($errno, $errstr, $errfile, $errline ) {
+            throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+        });
+
+        try {
+            if (!@pg_connect(sprintf('service=%s', $pgService))) {
+                throw new InvalidOptionException(sprintf('Cannot access to database server : '));
+            }
+        } catch (\ErrorException $e) {
+            throw new InvalidOptionException(sprintf('Cannot access to database server : %s', $e->getMessage()));
+        }
+
+        if (! $input->getOption("password")) {
+            throw new InvalidOptionException(sprintf('"password" option is needed'));
+        }
         parent::execute($input, $output);
 
         if (Context::isInitialized()) {
@@ -45,10 +67,12 @@ class CliInit extends CliCommand
         }
 
         AskParameters::setParameters([
-            "core_db" => $input->getOption("pg-service")
+            "core_db" => $pgService,
+            "core_admin_passwd" => $input->getOption("password")
         ]);
 
         Context::init();
+        $wiff->createPasswordFile("admin", $input->getOption("password"));
 
         $ret = $context = $wiff->createContext(self::CONTEXT_NAME, $contextPath, "Anakeen Platform Context", "");
         if ($ret === false) {

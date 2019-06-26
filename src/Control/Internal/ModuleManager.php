@@ -74,9 +74,7 @@ class ModuleManager
     public function getInstalledModule($moduleName): ?\Module
     {
         $module = $this->context->getModuleInstalled($moduleName);
-        if (!$module) {
-            throw new InvalidArgumentException(sprintf("Installed Module \"%s\" not found", $moduleName));
-        }
+
         return $module ?: null;
     }
 
@@ -202,6 +200,8 @@ class ModuleManager
                             $installedModule->version, $this->module->version));
                     }
                 }
+            } else {
+                    throw new InvalidArgumentException(sprintf("Installed Module \"%s\" not found", $this->name));
             }
             $this->depList = $this->context->getModuleDependencies(array(
                 $this->name

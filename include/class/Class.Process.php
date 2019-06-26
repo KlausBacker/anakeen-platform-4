@@ -81,7 +81,8 @@ class Process extends WiffCommon
                 $label = sprintf("Check %s", $this->attributes['type']);
             }
         } elseif ($this->name == 'process') {
-            $label = sprintf('Process %s', $this->attributes['command']);
+            $label = sprintf('Process %s', $this->phase->module->getContext()->expandParamsValues($this->attributes['command']));
+
         } elseif ($this->name == 'download') {
             $label = sprintf('Download %s', $this->attributes['href']);
         } else {

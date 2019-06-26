@@ -16,6 +16,7 @@ class CliCommand extends Command
         $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('magenta', null, []));
         $output->getFormatter()->setStyle('ignored', new OutputFormatterStyle('magenta', null, []));
         $output->getFormatter()->setStyle('failed', new OutputFormatterStyle('red', null, ['blink']));
+        $output->getFormatter()->setStyle('wait', new OutputFormatterStyle('yellow', null, ['blink']));
     }
 
 }

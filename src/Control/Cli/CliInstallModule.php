@@ -11,6 +11,7 @@ use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
@@ -41,6 +42,11 @@ class CliInstallModule extends CliCommand
             throw new RuntimeException(sprintf("Job is already in progress. Wait or kill it"));
         }
 
+
+        /** @var  ConsoleOutput $output */
+        $section = $output->section();
+        $section->writeln("<wait>Searching modules on repositories...</wait>");
+
         if (!Context::getRepositories(true)) {
             throw new RuntimeException(sprintf("No one repositories configured. Use \"registry\" command to add."));
         }
@@ -59,8 +65,10 @@ class CliInstallModule extends CliCommand
             $module = new ModuleManager("");
         }
         if (!$module->prepareInstall($force)) {
+            $section->clear();
             $output->writeln("<info>No modules to install. All is up-to-date.</info>");
         } else {
+            $section->clear();
             $context=Context::getContext();
             if ($context->warningMessage) {
                 $output->writeln(sprintf("<warning>%s</warning>", $context->warningMessage));
