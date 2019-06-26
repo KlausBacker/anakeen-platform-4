@@ -35,7 +35,7 @@ populate-cache-master:
     <<: *default-cache
   script:
     - yarn install --frozen-lockfile
-    - composer install --working-dir=./ide
+    - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
   only:
     - master
     - web
