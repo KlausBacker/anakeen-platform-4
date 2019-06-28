@@ -24,13 +24,13 @@ class CliGet extends CliJsonCommand
         parent::configure();
         $this
             // the short description shown while running "php bin/console list"
-            ->setDescription('Get parameter value.')
+            ->setDescription('Get control parameter value.')
             ->addArgument("parameterName", InputArgument::OPTIONAL, "The parameter name")
-            ->addOption('all', null, InputOption::VALUE_NONE, 'To show all module parameters')
-            ->addOption('internal', null, InputOption::VALUE_NONE, 'To show all control parameters')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'To show all control parameters')
+            ->addOption('module', null, InputOption::VALUE_NONE, 'To show module parameters')
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp("get a parameter value");
+            ->setHelp("Get a parameter value");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -42,11 +42,11 @@ class CliGet extends CliJsonCommand
         }
         $value = null;
         if ($paramName) {
-            if ($input->getOption("internal")) {
+            if ($input->getOption("module")) {
+                $value = Context::getParameterValue($paramName);
+            } else {
                 $controlParameters = Context::getControlParameters();
                 $value = $controlParameters[$paramName] ?? null;
-            } else {
-                $value = Context::getParameterValue($paramName);
             }
             if ($value === null) {
                 throw new RuntimeException(sprintf("Argument \"%s\" not found", $paramName));
@@ -54,10 +54,10 @@ class CliGet extends CliJsonCommand
         }
         if ($this->jsonMode) {
             if ($input->getOption("all")) {
-                if ($input->getOption("internal")) {
-                    $output->writeln(json_encode(Context::getControlParameters(), JSON_PRETTY_PRINT));
-                } else {
+                if ($input->getOption("module")) {
                     $output->writeln(json_encode(Context::getParameters(), JSON_PRETTY_PRINT));
+                } else {
+                    $output->writeln(json_encode(Context::getControlParameters(), JSON_PRETTY_PRINT));
                 }
             } else {
                 $output->writeln(json_encode([$paramName => $value], JSON_PRETTY_PRINT));
@@ -65,10 +65,10 @@ class CliGet extends CliJsonCommand
         } else {
             if ($input->getOption("all")) {
                 /** @var ConsoleOutput $output */
-                if ($input->getOption("internal")) {
-                    $this->writeAllParameters($output, Context::getControlParameters());
-                } else {
+                if ($input->getOption("module")) {
                     $this->writeAllParameters($output, Context::getParameters());
+                } else {
+                    $this->writeAllParameters($output, Context::getControlParameters());
                 }
             } else {
                 $output->writeln($value);

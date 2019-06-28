@@ -76,6 +76,7 @@ class CliInit extends CliCommand
 
         $ret = $context = $wiff->createContext(self::CONTEXT_NAME, $contextPath, "Anakeen Platform Context", "");
         if ($ret === false) {
+            Context::reset();
             throw new RuntimeException($wiff->errorMessage);
         }
 

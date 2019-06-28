@@ -23,6 +23,7 @@ $application->add(new \Control\Cli\CliInfo());
 $application->add(new \Control\Cli\CliShow());
 $application->add(new \Control\Cli\CliSearch());
 $application->add(new \Control\Cli\CliStatus());
+$application->add(new \Control\Cli\CliLog());
 $application->add(new \Control\Cli\CliInit());
 $application->add(new \Control\Cli\CliGet());
 $application->add(new \Control\Cli\CliSet());

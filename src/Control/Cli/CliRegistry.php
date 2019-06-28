@@ -32,8 +32,9 @@ class CliRegistry extends CliJsonCommand
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp("Manage the set of repositories.\n" .
-                "<info>Add repository:</info><comment>anakeen-control registry add myrepo https://...</comment>\n" .
-                "<info>Remove repositoy:</info><comment>anakeen-control registry remove myrepo</comment>\n"
+                "Show repositories:<comment>anakeen-control registry show</comment>\n" .
+                "Add repository:   <comment>anakeen-control registry add myrepo https://...</comment>\n" .
+                "Remove repositoy: <comment>anakeen-control registry remove myrepo</comment>"
             );
     }
 
@@ -73,7 +74,12 @@ class CliRegistry extends CliJsonCommand
                     $output->writeln(json_encode($repo, JSON_PRETTY_PRINT));
                 } else {
                     /** @var ConsoleOutput $output */
-                    $this->writeRepoTable($output, $repo);
+                    if ($repo) {
+                        $this->writeRepoTable($output, $repo);
+                    } else {
+                        $output->writeln("<comment>No one registries recorded.</comment>");
+                        $output->writeln("<comment>Use \"<info>registry add</info>\" to record it.</comment>");
+                    }
                 }
                 break;
         }

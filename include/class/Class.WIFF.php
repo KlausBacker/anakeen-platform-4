@@ -74,11 +74,11 @@ class WIFF extends WiffCommon
         $this->log_filepath = $wiff_root . WIFF::log_filepath;
 
         if (file_exists( $this->params_filepath)) {
-            $this->update_host = $this->getParam('wiff-update-host');
-            $this->update_url = $this->getParam('wiff-update-path');
-            $this->update_file = $this->getParam('wiff-update-file');
-            $this->update_login = $this->getParam('wiff-update-login');
-            $this->update_password = $this->getParam('wiff-update-password');
+            $this->update_host = $this->getParam('ac-update-host');
+            $this->update_url = $this->getParam('ac-update-path');
+            $this->update_file = $this->getParam('ac-update-file');
+            $this->update_login = $this->getParam('ac-update-login');
+            $this->update_password = $this->getParam('ac-update-password');
         }
     }
     

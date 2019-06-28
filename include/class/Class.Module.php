@@ -535,10 +535,8 @@ class Module
      */
     public function unpack($destDir = '')
     {
-
-        
         if (!is_file($this->tmpfile)) {
-            $this->errorMessage = sprintf("Temporary file of downloaded module does not exists.");
+            $this->errorMessage = sprintf("Temporary file \"%s\" of downloaded module does not exists.", $this->tmpfile);
             return false;
         }
         // Store BOM/manifest

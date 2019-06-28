@@ -2,7 +2,6 @@
 
 namespace Control\Cli;
 
-use Control\Internal\Context;
 use Control\Internal\JobLog;
 use Control\Internal\ModuleJob;
 use Control\Internal\ModuleManager;
@@ -28,7 +27,6 @@ class CliStatus extends CliJsonCommand
         $this
             // the short description shown while running "php bin/console list"
             ->setDescription('Get status of control manager.')
-            ->addOption('json', null, InputOption::VALUE_NONE, 'JSON output format.')
             ->addOption('watch', "w", InputOption::VALUE_OPTIONAL, 'Watch log and refresh each n seconds. Ignored if json format')
             // the full command description shown when running the command with
             // the "--help" option
@@ -107,8 +105,8 @@ class CliStatus extends CliJsonCommand
                 ];
                 $table->addRow($row);
 
-                $taskStatus = $task["status"] ?? "";
-                if ($taskStatus === "RUNNING" || $taskStatus === "INTERRUPTED" || $taskStatus === "FAILED") {
+                $taskStatus = ($task["status"] ?? "");
+                if ($taskStatus === ModuleJob::RUNNING_STATUS || $taskStatus === ModuleJob::INTERRUPTED_STATUS || $taskStatus === ModuleJob::FAILED_STATUS) {
                     foreach ($task["phases"] as $phase) {
                         $status = sprintf("<%s>%s</%s>", strtolower($phase["status"]), $phase["status"], strtolower($phase["status"]));
 
@@ -118,9 +116,14 @@ class CliStatus extends CliJsonCommand
                             sprintf("<info>%s</info>", $status)
                         ];
                         $table->addRow($row);
+
+                        if (!empty($phase["error"])) {
+                            $data["error"] = $phase["error"];
+                        }
                         if (isset($phase["process"])) {
+
                             foreach ($phase["process"] as $process) {
-                                if ($process["status"] !== "DONE" && $process["status"] !== "TODO") {
+                                if ($process["status"] !== ModuleJob::DONE_STATUS && $process["status"] !== ModuleJob::TODO_STATUS) {
                                     $status = sprintf("<%s>%s</%s>", strtolower($process["status"]), $process["status"], strtolower($process["status"]));
                                     $row = [
                                         sprintf("<comment>%s</comment>", ""),
@@ -130,7 +133,7 @@ class CliStatus extends CliJsonCommand
                                     $table->addRow($row);
                                 }
                                 if (!empty($process["error"])) {
-                                    $data["error"]=$process["error"];
+                                    $data["error"] = $process["error"];
                                 }
                             }
                         }
@@ -144,7 +147,7 @@ class CliStatus extends CliJsonCommand
             $table->render();
         } else {
             $section->writeln(sprintf("<info>%s.</info>", $data["status"]));
-            if (! empty($data["message"])) {
+            if (!empty($data["message"])) {
                 $section->writeln(sprintf("<comment>%s.</comment>", $data["message"]));
             }
         }
@@ -159,14 +162,14 @@ class CliStatus extends CliJsonCommand
         $status = ["status" => "Activated"];
 
 
-       if (ModuleJob::isRunning()) {
+        if (ModuleJob::isRunning()) {
             $status = ModuleJob::getJobData();
-            $status["status"] = "Running";
+            $status["status"] =  ModuleJob::RUNNING_STATUS;
         } elseif (ModuleJob::hasFailed()) {
             $jobData = ModuleJob::getJobData();
             $status = $jobData;
         } else {
-            $status["status"] = "Ready";
+            $status["status"] = ModuleJob::READY_STATUS;
         }
 
         return $status;

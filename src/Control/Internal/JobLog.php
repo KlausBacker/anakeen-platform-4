@@ -10,7 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class JobLog
 {
-
     protected static $jobData = null;
     /** @var ConsoleOutput */
     protected static $output = null;
@@ -23,7 +22,8 @@ class JobLog
 
         self::displayOutput($moduleName, $phaseName, $key, $value);
 
-        $now = \DateTime::createFromFormat('U.u', microtime(true))->format("Y-m-d\\TH:i:s.u");
+        list($usec) = explode(" ", microtime());
+        $now = sprintf("%s.%s",date("Y-m-d\\TH:i:s"), substr($usec,2,6));
         if ($moduleName) {
             foreach ($data["tasks"] as &$task) {
                 if ($task["module"] === $moduleName) {
@@ -116,17 +116,17 @@ class JobLog
 
 
         foreach ($data["tasks"] as &$task) {
-            if ($task["status"] === "RUNNING") {
+            if ($task["status"] === ModuleJob::RUNNING_STATUS) {
                 $task["status"] = $status;
             }
 
             foreach ($task["phases"] as &$phase) {
-                if ($phase["status"] === "RUNNING") {
+                if ($phase["status"] === ModuleJob::RUNNING_STATUS) {
                     $phase["status"] = $status;
                 }
                 if (!empty($phase["process"])) {
                     foreach ($phase["process"] as &$process) {
-                        if ($process["status"] === "RUNNING") {
+                        if ($process["status"] === ModuleJob::RUNNING_STATUS) {
                             $process["status"] = $status;
                         }
                     }
@@ -146,7 +146,7 @@ class JobLog
             foreach ($task["phases"] as &$phase) {
                 if (!empty($phase["process"])) {
                     foreach ($phase["process"] as &$process) {
-                        if ($process["status"] === "FAILED") {
+                        if ($process["status"] === ModuleJob::FAILED_STATUS) {
                             $process["status"] = "IGNORED";
                         }
                     }

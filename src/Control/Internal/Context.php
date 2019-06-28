@@ -113,6 +113,17 @@ class Context
         }
     }
 
+    public static function reset()
+    {
+        if (Context::isInitialized()) {
+            $wiff = \WIFF::getInstance();
+            $confFile=$wiff->contexts_filepath;
+            if (is_file($confFile)) {
+                rename($confFile, $confFile.".bak");
+            }
+        }
+    }
+
     public static function getRepositories($onlyEnabled = false)
     {
 

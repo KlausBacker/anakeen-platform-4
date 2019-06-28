@@ -18,7 +18,7 @@ class CliDoJob extends CliCommand
     {
         $this
             ->setDescription('Run the job now.')
-            ->setHidden(false)
+            ->setHidden(true)
             ->setHelp('Do the job');
     }
 
