@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+
+    <ui:mask name="MSK_MAIL_DEFAULT" label="Mail Template default" structure="MAILTEMPLATE">
+        <ui:visibility-list>
+            <ui:visibility field="tmail_family" value="S"/>
+            <ui:visibility field="tmail_workflow" value="S"/>
+            <ui:visibility field="tmail_t_from" value="S"/>
+            <ui:visibility field="tmail_dest" value="S"/>
+            <ui:visibility field="tmail_savecopy" value="S"/>
+            <ui:visibility field="tmail_ulink" value="S"/>
+            <ui:visibility field="tmail_t_attach" value="S"/>
+        </ui:visibility-list>
+    </ui:mask>
+
+    <ui:mask name="MSK_MAIL_ADMIN" label="Mail Template for admin" structure="MAILTEMPLATE">
+        <ui:visibility-list>
+            <ui:visibility field="tmail_fr" value="W"/>
+            <ui:visibility field="tmail_title" value="W"/>
+            <ui:visibility field="tmail_family" value="W"/>
+            <ui:visibility field="tmail_workflow" value="W"/>
+            <ui:visibility field="tmail_t_from" value="W"/>
+            <ui:visibility field="tmail_fromtype" value="W"/>
+            <ui:visibility field="tmail_from" value="W"/>
+            <ui:visibility field="tmail_dest" value="W"/>
+            <ui:visibility field="tmail_copymode" value="W"/>
+            <ui:visibility field="tmail_desttype" value="W"/>
+            <ui:visibility field="tmail_recip" value="W"/>
+            <ui:visibility field="tmail_fr_content" value="W"/>
+            <ui:visibility field="tmail_savecopy" value="W"/>
+            <ui:visibility field="tmail_ulink" value="W"/>
+            <ui:visibility field="tmail_t_attach" value="W"/>
+            <ui:visibility field="tmail_attach" value="W"/>
+        </ui:visibility-list>
+    </ui:mask>
+
+    <ui:view-control name="CV_MAIL_TEMPLATE" label="CV MAIL TEMPLATE" structure="MAILTEMPLATE">
+        <ui:description><![CDATA[Contrôle de vue pour les mail template]]></ui:description>
+        <ui:primary-mask ref="MSK_MAIL_DEFAULT"/>
+        <ui:creation-view ref="vMailAdmin"/>
+        <ui:view-list>
+            <ui:view name="vMailAdmin" label="Manage" display-mode="edition" menu-displayed="true" order="1" >
+                <ui:mask ref="MSK_MAIL_ADMIN"/>
+            </ui:view>
+        </ui:view-list>
+    </ui:view-control>
+
     <ui:render ref="MAILTEMPLATE">
         <ui:render-access class="Anakeen\SmartStructures\Mailtemplate\Render\MailtemplateAccess"/>
+        <ui:view-control ref="CV_MAIL_TEMPLATE"/>
     </ui:render>
 </smart:config>
