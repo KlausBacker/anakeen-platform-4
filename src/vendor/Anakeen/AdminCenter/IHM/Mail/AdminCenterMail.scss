@@ -1,0 +1,35 @@
+.mail-parent {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+
+  .mail-grid {
+    flex: 1;
+    align-items: flex-start;
+    justify-content: stretch;
+  }
+
+  .mail-splitter {
+    height: 100%;
+    width: 100%;
+  }
+
+  .splitter-wrapper-right-content {
+    overflow: hidden !important;
+  }
+  .mail-smart-element {
+    height: 100%;
+  }
+
+  /deep/ {
+    .k-dropdown-operator {
+      display: none;
+    }
+    .splitter-wrapper-right-content {
+      overflow: hidden !important;
+    }
+    .k-pager-sizes {
+      display: flex !important;
+    }
+  }
+}
