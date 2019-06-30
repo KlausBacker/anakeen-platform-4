@@ -28,9 +28,7 @@ export default {
       window.open(this.getGraphUrl());
     },
     getGraphUrl: function() {
-      return `/api/v2/devel/ui/workflows/image/${
-        this.wflName
-      }.svg?orientation=${this.wflOrient}&useLabel=${this.wflUseLabel}`;
+      return `/api/v2/devel/ui/workflows/image/${this.wflName}.svg?orientation=${this.wflOrient}&useLabel=${this.wflUseLabel}`;
     },
     displayGraph: function() {
       this.$http.get(this.getGraphUrl()).then(response => {

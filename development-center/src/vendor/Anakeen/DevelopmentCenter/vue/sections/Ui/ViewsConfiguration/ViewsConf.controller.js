@@ -117,21 +117,11 @@ export default {
         }
         switch (colId) {
           case "maskId":
-            return `<a data-role="develRouterLink" href="/devel/ui/${
-              this.ssName
-            }/masks/${dataItem[colId]}/?name=${dataItem[colId]}">${
-              dataItem[colId]
-            }</a>`;
+            return `<a data-role="develRouterLink" href="/devel/ui/${this.ssName}/masks/${dataItem[colId]}/?name=${dataItem[colId]}">${dataItem[colId]}</a>`;
           case "cvId":
-            return `<a data-role="develRouterLink" href="/devel/ui/${
-              this.ssName
-            }/control/element/${dataItem[colId]}/?name=${dataItem[colId]}">${
-              dataItem[colId]
-            }</a>`;
+            return `<a data-role="develRouterLink" href="/devel/ui/${this.ssName}/control/element/${dataItem[colId]}/?name=${dataItem[colId]}">${dataItem[colId]}</a>`;
           case "cvStructure":
-            return `<a data-role="develRouterLink" href="/devel/smartStructures/${
-              dataItem[colId]
-            }/infos">${dataItem[colId]}</a>`;
+            return `<a data-role="develRouterLink" href="/devel/smartStructures/${dataItem[colId]}/infos">${dataItem[colId]}</a>`;
           default:
             break;
         }

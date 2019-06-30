@@ -13,15 +13,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.8",
-    "@anakeen/anakeen-cli": "^1.0.7",
-    "@commitlint/config-conventional": "^8.0.0",
-    "commitlint": "^8.0.0",
-    "husky": "^2.4.1"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "@anakeen/anakeen-cli": "^1.0.7"
   }
 }

@@ -56,27 +56,18 @@
     "vuex": "^3.1.0"
   },
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.0",
     "@anakeen/anakeen-cli": "^1.1.13",
     "@anakeen/user-interfaces": "2.0.1",
     "@anakeen/webpack-conf": "^1.2.0",
-    "@commitlint/config-conventional": "^8.0.0",
     "@progress/kendo-buttons-vue-wrapper": "^2019.1.220",
     "@progress/kendo-datasource-vue-wrapper": "^2019.1.220",
     "@progress/kendo-dropdowns-vue-wrapper": "^2019.1.220",
     "@progress/kendo-ui": "2019.2.605",
     "@types/node": "^12.0.8",
-    "commitlint": "^8.0.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-prettier": "^3.0.1",
     "fg-loadcss": "^2.1.0",
     "hard-source-webpack-plugin": "^0.13.1",
-    "husky": "^2.4.1",
     "little-loader": "^0.2.0",
-    "prettier": "^1.17.0",
     "ts-loader": "^6.0.0",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
     "vuebar": "^0.0.20",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2"
@@ -87,11 +78,5 @@
   "peerDependencies": {
     "@anakeen/internal-components": "^1.0.1",
     "vue": "2.6.10"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "npx eslint ./ && npx tslint './components/src/**/*.ts' && npx prettier --check './components/src/**/*.ts' && make lint && make checkPackage",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }

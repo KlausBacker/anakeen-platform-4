@@ -27,22 +27,8 @@
     "vue-property-decorator": "^8.1.0"
   },
   "devDependencies": {
-    "@anakeen/anakeen-ci": "^1.0.8",
     "@anakeen/anakeen-cli": "^1.1.5",
     "@anakeen/webpack-conf": "^1.2.0",
-    "@commitlint/config-conventional": "^8.0.0",
-    "commitlint": "^8.0.0",
-    "husky": "^2.4.1",
-    "prettier": "^1.17.0",
-    "ts-loader": "^6.0.2",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "make checkPackage && make lint && npx tslint './src/vendor/Anakeen/BusinessApp/**/*.ts' && npx prettier --check './src/vendor/Anakeen/BusinessApp/**/*.ts'",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }

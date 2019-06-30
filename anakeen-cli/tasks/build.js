@@ -81,6 +81,7 @@ exports.build = ({
   autoRelease = false
 }) => {
   return gulp.task("build", async () => {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
         const build = await buildPipe({ sourcePath, autoRelease });

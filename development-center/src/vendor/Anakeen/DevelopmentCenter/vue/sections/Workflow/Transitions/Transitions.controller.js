@@ -61,24 +61,16 @@ export default {
           } else {
             switch (colId) {
               case "mailtemplates":
-                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
-                  items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>`;
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${items[item]}/view/?name=${items[item]}">${items[item]}</a>`;
                 break;
               case "volatileTimers":
-                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
-                  items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>`;
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${items[item]}/view/?name=${items[item]}">${items[item]}</a>`;
                 break;
               case "persistentTimers":
-                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
-                  items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>`;
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${items[item]}/view/?name=${items[item]}">${items[item]}</a>`;
                 break;
               case "unAttachTimers":
-                str += `<a data-role="develRouterLink" href="/devel/smartElements/${
-                  items[item]
-                }/view/?name=${items[item]}">${items[item]}</a>`;
+                str += `<a data-role="develRouterLink" href="/devel/smartElements/${items[item]}/view/?name=${items[item]}">${items[item]}</a>`;
                 break;
               default:
                 break;

@@ -305,6 +305,7 @@ exports.po = ({ sourcePath, verbose }) => {
   });
 
   gulp.task("extractPo", async () => {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       if (sourcePath === undefined) {
         signale.error("No source path specified.");

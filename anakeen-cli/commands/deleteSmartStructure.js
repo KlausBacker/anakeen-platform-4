@@ -55,9 +55,7 @@ exports.handler = async function(argv) {
         .prompt({
           type: "confirm",
           name: "confirmDelete",
-          message: `You are about to delete ${
-            argv.name
-          } smart structure. Are you sure you want to delete this?`
+          message: `You are about to delete ${argv.name} smart structure. Are you sure you want to delete this?`
         })
         .then(confirmation => {
           if (confirmation.confirmDelete && !argv.byPass) {

@@ -6,3 +6,4 @@ node_modules
 /build/
 /Makefile.local
 /.devtool/ci/check/checkPHP/vendor/
+.eslintcache

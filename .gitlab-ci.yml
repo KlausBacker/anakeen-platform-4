@@ -14,8 +14,14 @@ stages:
   cache: &default-cache
     key: "Anakeen:MonoRepo"
     paths:
-      - .devtool/ci/check/checkPHP/vendor
       - node_modules
+      - .devtool/ci/check/checkPHP/vendor
+      - smart-data-engine/src/vendor/Anakeen/lib/vendor
+      - smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
+      - user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
+      - user-interfaces/src/vendor/Anakeen/lib/
+      - user-interfaces/Tests/src/vendor/Anakeen/TestUnits/lib
+      - .eslintcache
 
 .pull-cache: &pull-cache
   cache:
@@ -27,6 +33,11 @@ before_script:
   - node .devtool/ci/utils/select_registry.js
   - yarn install --frozen-lockfile
   - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+  - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
+  - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
+  - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
+  - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/lib/
+  - composer install --working-dir=./user-interfaces/Tests/src/vendor/Anakeen/TestUnits/lib
 
 # region tear-up
 populate-cache-master:
@@ -36,6 +47,11 @@ populate-cache-master:
   script:
     - yarn install --frozen-lockfile
     - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+    - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
+    - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
+    - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
+    - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/lib/
+    - composer install --working-dir=./user-interfaces/Tests/src/vendor/Anakeen/TestUnits/lib
   only:
     - master
     - web
@@ -53,209 +69,226 @@ lint:
 #endregion lint
 
 #region build
-# .build-package:
-#   <<: *pull-cache
-#   stage: build
-#   script:
-#     - make -C ${PACKAGE_PATH} ${MODE}
+.build-package:
+ <<: *pull-cache
+ stage: build
+ script:
+   - make -C ${PACKAGE_PATH} ${MODE}
 
-# build-smart-data-engine:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: smart-data-engine
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#         - smart-data-engine
+build-smart-data-engine:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: smart-data-engine
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+      - smart-data-engine
 
-# build-autorelease-smart-data-engine:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: smart-data-engine
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - smart-data-engine
+build-autorelease-smart-data-engine:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: smart-data-engine
+   MODE: "app-autorelease"
+ only:
+   refs:
+     - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - smart-data-engine
 
-# build-security:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: security
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - security
+build-security:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: security
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - security
 
-# build-autorelease-security:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: security
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - security
+build-autorelease-security:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: security
+   MODE: "app-autorelease"
+ only:
+   refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - security
 
-# build-workflow:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: workflow
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - workflow
+build-workflow:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: workflow
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - workflow
 
-# build-autorelease-workflow:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: workflow
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - workflow
+build-autorelease-workflow:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: workflow
+   MODE: "app-autorelease"
+ only:
+   refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - workflow
 
-# build-user-interfaces:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: user-interfaces
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - user-interfaces
+build-user-interfaces:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: user-interfaces
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - user-interfaces
 
-# build-autorelease-user-interfaces:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: user-interfaces
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - user-interfaces
+build-autorelease-user-interfaces:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: user-interfaces
+   MODE: "app-autorelease"
+ only:
+   - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - user-interfaces
 
-# build-hub-station:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: hub-station
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - hub-station
+build-hub-station:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: hub-station
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - hub-station
 
-# build-autorelease-hub-station:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: hub-station
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - hub-station
+build-autorelease-hub-station:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: hub-station
+   MODE: "app-autorelease"
+ only:
+   refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - hub-station
 
-# build-admin-center:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: admin-center
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - admin-center
+build-admin-center:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: admin-center
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - admin-center
 
-# build-autorelease-admin-center:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: admin-center
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - admin-center
+build-autorelease-admin-center:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: admin-center
+   MODE: "app-autorelease"
+ only:
+   refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - admin-center
 
-# build-business-app:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: business-app
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - business-app
+build-business-app:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: business-app
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - business-app
 
-# build-autorelease-business-app:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: business-app
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - business-app
+build-autorelease-business-app:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: business-app
+   MODE: "app-autorelease"
+ only:
+   refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - business-app
 
-# build-development-center:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: development-center
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - development-center
+build-development-center:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: development-center
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - development-center
 
-# build-autorelease-development-center:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: development-center
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - development-center
+build-autorelease-development-center:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: development-center
+   MODE: "app-autorelease"
+ only:
+   refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - development-center
 
-# build-transformation:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: transformation
-#     MODE: "app"
-#   only:
-#     - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - transformation
+build-transformation:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: transformation
+   MODE: "app"
+ only:
+   refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - transformation
 
-# build-autorelease-transformation:
-#   extends: .build-package
-#   stage: build
-#   variables:
-#     PACKAGE_PATH: transformation
-#     MODE: "app-autorelease"
-#   only:
-#     - master@Anakeen/Platform-4/anakeen-platform-4
-#     changes:
-#       - transformation
+build-autorelease-transformation:
+ extends: .build-package
+ stage: build
+ variables:
+   PACKAGE_PATH: transformation
+   MODE: "app-autorelease"
+ only:
+   refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+   changes:
+     - transformation
 
 #endregion build
 
@@ -265,7 +298,6 @@ lint:
   stage: build
   script:
     - cd ${PACKAGE_PATH} && npm publish
-
 
 #endregion publishNpm
 

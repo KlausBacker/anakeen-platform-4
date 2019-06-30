@@ -1,5 +1,5 @@
 const path = require("path");
-const { dontParse, dllPart, useCache  } = require("./common.part");
+const { dontParse, dllPart, useCache } = require("./common.part");
 
 const {
   vueLoader,
@@ -14,7 +14,12 @@ const conf = {
   moduleName: "accountManager",
   libName: "AdminAccountManager",
   entry: {
-    "account-manager": [path.resolve(BASE_DIR, "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterAccounts/index.js")]
+    "account-manager": [
+      path.resolve(
+        BASE_DIR,
+        "src/vendor/Anakeen/AdminCenter/IHM/HubComponent/AdminCenterAccounts/index.js"
+      )
+    ]
   },
   buildPath: PUBLIC_PATH,
   excludeBabel: dontParse,

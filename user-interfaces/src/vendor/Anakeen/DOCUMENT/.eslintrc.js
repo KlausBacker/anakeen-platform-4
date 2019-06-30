@@ -4,7 +4,7 @@ module.exports = {
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 5
+        "ecmaVersion": 2015
     },
     "rules": {
         "prettier/prettier": "error",
@@ -16,17 +16,18 @@ module.exports = {
             "error",
             "always"
         ],
-        "no-console": ["error", { allow: ["warn", "error", "timeEnd", "time"] }]
+        "no-console": ["error", { allow: ["warn", "error", "timeEnd", "time"] }],
+        "no-redeclare": 0,
+        "no-prototype-builtins": 0
     },
     "globals": {
         i18n: false,
         jQuery: false,
         $: false,
         kendo: false,
-        define: false,
         _: false,
         Mustache: false,
-        require: false
+        define: false
     },
     "plugins": [
         "prettier"

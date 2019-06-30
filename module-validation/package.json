@@ -15,18 +15,5 @@
   "license": "ISC",
   "dependencies": {
     "libxmljs": "^0.19.5"
-  },
-  "devDependencies": {
-    "@commitlint/config-conventional": "^8.0.0",
-    "commitlint": "^8.0.0",
-    "eslint": "^5.9.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "husky": "^2.4.1",
-    "prettier": "^1.15.2"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }

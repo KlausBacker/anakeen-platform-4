@@ -521,9 +521,7 @@ class Compose {
           )
         ) {
           signale.note(
-            `Installing module '${bimod.locked.$.name}' with version '${
-              bimod.locked.$.version
-            }' from lock file`
+            `Installing module '${bimod.locked.$.name}' with version '${bimod.locked.$.version}' from lock file`
           );
           await this._installModuleFromLock({
             lockedModule: bimod.locked
@@ -531,17 +529,11 @@ class Compose {
         } else {
           if (this.$.frozenLockfile) {
             throw new ComposeError(
-              `Locked version '${
-                bimod.locked.$.version
-              }' does not satisfies requested semver version '${
-                bimod.required.$.version
-              }'`
+              `Locked version '${bimod.locked.$.version}' does not satisfies requested semver version '${bimod.required.$.version}'`
             );
           }
           signale.note(
-            `Installing module '${bimod.required.$.name}' with version '${
-              bimod.required.$.version
-            }'`
+            `Installing module '${bimod.required.$.name}' with version '${bimod.required.$.version}'`
           );
           await this._installSemverModule({
             name: bimod.required.$.name,
@@ -562,9 +554,7 @@ class Compose {
         const module = triage.orphanLockedList[i];
         if (this.$.frozenLockfile) {
           throw new ComposeError(
-            `Cannot remove orphan locked module '${
-              module.$.name
-            }' while using '--frozen-lockfile' option`
+            `Cannot remove orphan locked module '${module.$.name}' while using '--frozen-lockfile' option`
           );
         }
         this.repoLockXML.deleteModuleByName(module.$.name);

@@ -122,9 +122,7 @@ export default {
             )}">${dataItem[colId]}</a>`;
           case "account":
             if (dataItem[colId].type === "role") {
-              return `<a data-role="develRouterLink" href="/devel/security/roles/?role_login=${
-                dataItem[colId].reference
-              }">${dataItem[colId].reference}</a>`;
+              return `<a data-role="develRouterLink" href="/devel/security/roles/?role_login=${dataItem[colId].reference}">${dataItem[colId].reference}</a>`;
             } else {
               return dataItem[colId].reference;
             }

@@ -164,9 +164,7 @@ const builder = {
             SETTING_TYPES[settingOptions.type].onlySS
           ) {
             throw new Error(
-              `Setting type ${
-                settingOptions.type
-              } must be associated to a smart structure`
+              `Setting type ${settingOptions.type} must be associated to a smart structure`
             );
           }
         }

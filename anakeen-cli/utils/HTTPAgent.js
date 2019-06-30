@@ -56,23 +56,18 @@ class HTTPAgent {
       `[HTTPAgent] Downloading '${url}' to temporary file '${tmpName}'`
     );
 
-    try {
-      const response = await fetch(url);
-      const outputStream = fs.createWriteStream(tmpName);
-      await new Promise((resolve, reject) => {
-        try {
-          response.body
-            .pipe(outputStream)
-            .on("finish", resolve)
-            .on("error", reject);
-        } catch (e) {
-          reject(e);
-        }
-      });
-    } catch (e) {
-      throw e;
-    }
-
+    const response = await fetch(url);
+    const outputStream = fs.createWriteStream(tmpName);
+    await new Promise((resolve, reject) => {
+      try {
+        response.body
+          .pipe(outputStream)
+          .on("finish", resolve)
+          .on("error", reject);
+      } catch (e) {
+        reject(e);
+      }
+    });
     return tmpName;
   }
 

@@ -13,13 +13,13 @@ module.exports = {
     "prettier/prettier": "error",
     "linebreak-style": ["error", "unix"],
     semi: ["error", "always"],
-    "no-console": ["error", { allow: ["warn", "error"] }]
+    "no-console": ["error", { allow: ["warn", "error"] }],
+    "no-prototype-builtins": 0
   },
   globals: {
     i18n: false,
     $: false,
     kendo: false,
-    define: false,
     _: false,
     Mustache: false
   },

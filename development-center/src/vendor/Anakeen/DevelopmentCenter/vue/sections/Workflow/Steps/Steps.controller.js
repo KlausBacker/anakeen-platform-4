@@ -64,9 +64,7 @@ export default {
           if (items[item] instanceof Object) {
             this.recursiveData(items[item], str);
           } else {
-            str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${
-              items[item]
-            }/view/?name=${items[item]}">${items[item]}</a></li>`;
+            str += `<li><a data-role="develRouterLink" href="/devel/smartElements/${items[item]}/view/?name=${items[item]}">${items[item]}</a></li>`;
           }
         });
       }

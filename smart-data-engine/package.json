@@ -10,12 +10,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {},
   "devDependencies": {
-    "@anakeen/anakeen-ci": "~1.0.8",
-    "@anakeen/anakeen-cli": "~1.1.14",
-    "@commitlint/config-conventional": "^8.0.0",
-    "commitlint": "^8.0.0",
-    "husky": "^2.4.1",
-    "prettier": "^1.16.4"
+    "@anakeen/anakeen-cli": "~1.1.14"
   },
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/smart-data-engine.git",
   "keywords": [
@@ -24,11 +19,5 @@
     "smart",
     "data",
     "engine"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-push": "make checkXML && make lint",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  }
+  ]
 }

@@ -40,19 +40,5 @@
     "vinyl-file": "^3.0.0",
     "xml2js": "^0.4.19",
     "yargs": "^13.2.4"
-  },
-  "devDependencies": {
-    "@commitlint/config-conventional": "^8.0.0",
-    "commitlint": "^8.0.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "husky": "^2.4.1",
-    "prettier": "^1.17.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "npx eslint ./",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }

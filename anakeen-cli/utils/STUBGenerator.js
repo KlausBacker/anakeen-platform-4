@@ -23,9 +23,7 @@ const generateDescription = attr => {
   desc += `        * <ul>\n`;
   Object.keys(field).forEach(currentKey => {
     if (currentKey !== "name" && currentKey !== "label") {
-      desc += `        * <li> <i>${currentKey}</i> ${
-        field[currentKey]
-      } </li>\n`;
+      desc += `        * <li> <i>${currentKey}</i> ${field[currentKey]} </li>\n`;
     }
   });
   desc += `        * </ul>\n`;

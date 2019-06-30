@@ -20,7 +20,8 @@ module.exports = {
      "error",
       "always"
     ],
-    "no-console": ["error", {allow: ["warn", "error"]}]
+    "no-console": ["error", {allow: ["warn", "error"]}],
+    "no-prototype-builtins": 0
   },
   globals: {
     $: false,

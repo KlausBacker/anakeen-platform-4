@@ -23,9 +23,7 @@ const bindNetworkCommonsErrors = axiosInstance => {
             JSON.parse(response.request.responseText);
           } catch (err) {
             console.error(
-              `JSON parsing response error for request : ${
-                response.request.responseURL
-              }`
+              `JSON parsing response error for request : ${response.request.responseURL}`
             );
             throw err;
           }

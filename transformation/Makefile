@@ -61,7 +61,7 @@ buildJS: install-deps
 	$(YARN_BIN) buildJs
 
 app:
-	${ANAKEEN_CLI_BIN} build
+	${ANAKEEN_CLI_BIN} build -t ${APP_OUTPUT_PATH}
 
 app-test:
 
@@ -69,7 +69,7 @@ app-all: app
 
 app-autorelease: buildJS
 	rm -f *app
-	${ANAKEEN_CLI_BIN} build --auto-release
+	${ANAKEEN_CLI_BIN} build --auto-release -t ${APP_OUTPUT_PATH}
 
 ########################################################################################################################
 ##

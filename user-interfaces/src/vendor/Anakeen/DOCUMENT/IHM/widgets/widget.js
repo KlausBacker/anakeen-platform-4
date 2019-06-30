@@ -19,6 +19,7 @@
   ErrorNoSuchMethod.prototype = Object.create(Error.prototype);
   ErrorNoSuchMethod.prototype.constructor = ErrorNoSuchMethod;
 
+  // eslint-disable-next-line no-shadow-restricted-names
   (function widget_init($, undefined) {
     var widgetUuid = 0,
       slice = Array.prototype.slice,

@@ -92,9 +92,7 @@ export default {
           switch (event.data.columnConfig.field) {
             case "fromid":
               event.data.cellRender.html(`
-                <a data-role="develRouterLink" href="/devel/smartStructures/${
-                  event.data.cellData.name
-                }/infos">${event.data.cellData.name}</a>
+                <a data-role="develRouterLink" href="/devel/smartStructures/${event.data.cellData.name}/infos">${event.data.cellData.name}</a>
               `);
               break;
           }
@@ -248,9 +246,7 @@ export default {
             this.$refs.splitter.disableEmptyContent();
             event.preventDefault();
             this.selectedElement = {
-              url: `${seIdentifier}/security?profileId=${
-                event.data.row.profid
-              }`,
+              url: `${seIdentifier}/security?profileId=${event.data.row.profid}`,
               component: "element-security",
               props: {
                 profileId: event.data.row.profid,

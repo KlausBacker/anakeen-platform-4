@@ -190,9 +190,7 @@ export default {
       },
       getCurrentUrl: () => {
         if (this.displayAllElements) {
-          return `/api/v2/devel/security/profile/${
-            this.profileId
-          }/accesses/?group=all&role=all`;
+          return `/api/v2/devel/security/profile/${this.profileId}/accesses/?group=all&role=all`;
         }
         return `/api/v2/devel/security/profile/${this.profileId}/accesses/`;
       },
@@ -202,9 +200,7 @@ export default {
       fetchTreeConfig: () => {
         this.$http
           .get(
-            `/api/v2/devel/security/profile/${
-              this.profileId
-            }/accesses/?acls=only`
+            `/api/v2/devel/security/profile/${this.profileId}/accesses/?acls=only`
           )
           .then(content => {
             if (!content.data.success) {
@@ -309,11 +305,7 @@ export default {
                 if (currentElement.title) {
                   return currentElement.title;
                 }
-                return `<span title="${
-                  currentElement.accountId
-                }" class="account-type-${currentElement.account.type}">${
-                  currentElement.account.reference
-                }</span>`;
+                return `<span title="${currentElement.accountId}" class="account-type-${currentElement.account.type}">${currentElement.account.reference}</span>`;
               }
             },
             {
@@ -367,9 +359,7 @@ export default {
             this.$el
           ).css(
             "transform",
-            `translateX(calc(${this.columnWidth} - 2.25rem)) rotate(${
-              this.labelRotation
-            }deg)`
+            `translateX(calc(${this.columnWidth} - 2.25rem)) rotate(${this.labelRotation}deg)`
           );
         }
       },

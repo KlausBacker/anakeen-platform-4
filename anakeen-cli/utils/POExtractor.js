@@ -596,18 +596,12 @@ exports.msgmerge = ({ element, srcPath, potPath, prefix }) => {
     PO_LANGS.map(lang => {
       return new Promise((resolve, reject) => {
         const tmpPo = `${potPath}/${element.smartName}_${lang}.po`;
-        const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${prefix}${
-          element.smartName
-        }_${lang}.po`;
+        const basePo = `${srcPath}/locale/${lang}/LC_MESSAGES/src/${prefix}${element.smartName}_${lang}.po`;
         let command;
         if (fs.existsSync(basePo)) {
-          command = `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${
-            element.path
-          }"`;
+          command = `msgmerge  --sort-output -o "${tmpPo}"  "${basePo}" "${element.path}"`;
         } else {
-          command = `msginit  -o "${tmpPo}" -i "${
-            element.path
-          }" --no-translator --locale=${lang}`;
+          command = `msginit  -o "${tmpPo}" -i "${element.path}" --no-translator --locale=${lang}`;
         }
         cp.exec(command, error => {
           if (error) {
@@ -631,18 +625,12 @@ exports.msgmerge = ({ element, srcPath, potPath, prefix }) => {
 exports.msgmergeMustache = ({ element, srcPath }) => {
   return new Promise((resolve, reject) => {
     const tmpPot = element.path;
-    const basePo = `${srcPath}/locale/${
-      element.lang
-    }/LC_MESSAGES/src/mustache-${element.targetName}_${element.lang}.po`;
+    const basePo = `${srcPath}/locale/${element.lang}/LC_MESSAGES/src/mustache-${element.targetName}_${element.lang}.po`;
     let command;
     if (fs.existsSync(basePo)) {
-      command = `msgmerge  --sort-output -o "${
-        element.tmpPo
-      }"  "${basePo}" "${tmpPot}"`;
+      command = `msgmerge  --sort-output -o "${element.tmpPo}"  "${basePo}" "${tmpPot}"`;
     } else {
-      command = `msginit  -o "${
-        element.tmpPo
-      }" -i "${tmpPot}" --no-translator --locale=${element.lang}`;
+      command = `msginit  -o "${element.tmpPo}" -i "${tmpPot}" --no-translator --locale=${element.lang}`;
     }
     cp.exec(command, error => {
       if (error) {

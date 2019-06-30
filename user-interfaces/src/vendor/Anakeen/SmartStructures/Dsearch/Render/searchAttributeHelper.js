@@ -1,5 +1,3 @@
-/*global require*/
-
 const _ = require("underscore");
 import i18n from "./searchCatalog";
 import searchAttributes from "./searchAttributes";

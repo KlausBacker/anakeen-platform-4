@@ -70,39 +70,35 @@ exports.deploy = ({
   context
 }) => {
   return gulp.task("deploy", () => {
-    try {
-      return new Promise((resolve, reject) => {
-        const interactive = new Signale({ scope: "deploy" });
-        const log = message => {
-          interactive.await(message);
-        };
-        deployPipe({
-          appPath,
-          controlUrl,
-          controlUsername,
-          controlPassword,
-          force,
-          log,
-          parameterValues,
-          action,
-          context
-        })
-          .then(message => {
+    return new Promise((resolve, reject) => {
+      const interactive = new Signale({ scope: "deploy" });
+      const log = message => {
+        interactive.await(message);
+      };
+      deployPipe({
+        appPath,
+        controlUrl,
+        controlUsername,
+        controlPassword,
+        force,
+        log,
+        parameterValues,
+        action,
+        context
+      })
+        .then(message => {
+          //console.log(message.data.join(" "));
+          if (message.data) {
             //console.log(message.data.join(" "));
-            if (message.data) {
-              //console.log(message.data.join(" "));
-              interactive.error(message.data.join(" "));
-            }
-            interactive.success("Deploy done");
-            resolve();
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    } catch (e) {
-      throw e;
-    }
+            interactive.error(message.data.join(" "));
+          }
+          interactive.success("Deploy done");
+          resolve();
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   });
 };
 
@@ -116,6 +112,7 @@ exports.buildAndDeploy = ({
   autoRelease = false
 }) => {
   return gulp.task("buildAndDeploy", () => {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
         const interactive = new Signale({ scope: "deploy" });

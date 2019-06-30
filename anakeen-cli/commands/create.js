@@ -141,21 +141,22 @@ const getInquirerQuestion = (currentKey, currentParam) => {
 };
 
 exports.handler = async argv => {
+  let args = argv;
   if (!argv.moduleName || !argv.vendorName) {
     // Mode question
-    argv = await inquirer.prompt(
+    args = await inquirer.prompt(
       Object.keys(builder).map(currentKey => {
         const currentParam = builder[currentKey];
-        return getInquirerQuestion(currentKey, currentParam, argv);
+        return getInquirerQuestion(currentKey, currentParam, args);
       })
     );
   }
-  if (!argv.namespace) {
-    argv.namespace = argv.vendorName;
+  if (!args.namespace) {
+    args.namespace = args.vendorName;
   }
   try {
     signale.time("create");
-    create(argv);
+    create(args);
     const task = gulp.task("create");
     task()
       .then(() => {

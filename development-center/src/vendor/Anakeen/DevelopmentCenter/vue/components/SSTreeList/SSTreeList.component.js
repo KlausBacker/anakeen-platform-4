@@ -280,13 +280,9 @@ export default {
         columns.forEach(col => {
           switch (col.field) {
             case "config":
-              this.filters += `<th class="k-header" data-field="${
-                col.field
-              }" data-title="${col.title}" role="columnheader" >
+              this.filters += `<th class="k-header" data-field="${col.field}" data-title="${col.title}" role="columnheader" >
                 <div class="filter-clearable" style="position:relative;">
-                  <input class="k-textbox filter ${
-                    col.field
-                  }-filter" type="text"/>
+                  <input class="k-textbox filter ${col.field}-filter" type="text"/>
                   <button class="filter-drop filter-drop-config">
                     <span class="k-icon k-i-filter"></span>
                   </button>
@@ -295,13 +291,9 @@ export default {
               this.filterRow(col.field);
               break;
             case "value":
-              this.filters += `<th class="k-header" data-field="${
-                col.field
-              }" data-title="${col.title}" role="columnheader" >
+              this.filters += `<th class="k-header" data-field="${col.field}" data-title="${col.title}" role="columnheader" >
                 <div class="filter-clearable" style="position:relative;">
-                  <input class="k-textbox filter ${
-                    col.field
-                  }-filter" type="text"/>
+                  <input class="k-textbox filter ${col.field}-filter" type="text"/>
                   <button class="filter-drop filter-drop-value">
                     <span class="k-icon k-i-filter"></span>
                   </button>
@@ -310,13 +302,9 @@ export default {
               this.filterRow(col.field);
               break;
             default:
-              this.filters += `<th class="k-header" data-field="${
-                col.field
-              }" data-title="${col.title}" role="columnheader" >
+              this.filters += `<th class="k-header" data-field="${col.field}" data-title="${col.title}" role="columnheader" >
                 <div class="filter-clearable" style="position:relative;">
-                  <input class="k-textbox filter ${
-                    col.field
-                  }-filter" type="text"/>
+                  <input class="k-textbox filter ${col.field}-filter" type="text"/>
                 </div>
               </th>`;
               this.filterRow(col.field);

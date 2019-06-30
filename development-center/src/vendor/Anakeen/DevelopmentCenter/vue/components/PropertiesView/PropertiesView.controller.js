@@ -145,9 +145,7 @@ export default {
         if (propId === "tags") {
           return Object.keys(propValue)
             .map(key => {
-              return `<div class="se-property-tag"><b>${key} : </b>${
-                propValue[key]
-              }</div>`;
+              return `<div class="se-property-tag"><b>${key} : </b>${propValue[key]}</div>`;
             })
             .join("&nbsp;");
         }

@@ -105,9 +105,7 @@ export default {
           case "dpdoc_famid":
             if (event.data.cellData.name) {
               event.data.cellRender.html(
-                `<a data-role="develRouterLink" href="/devel/smartStructures/${
-                  event.data.cellData.name
-                }/infos">${event.data.cellData.name}</a>`
+                `<a data-role="develRouterLink" href="/devel/smartStructures/${event.data.cellData.name}/infos">${event.data.cellData.name}</a>`
               );
             } else {
               event.data.cellRender.text("");

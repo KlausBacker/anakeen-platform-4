@@ -18,6 +18,21 @@
         "business-app"
     ],
     "dependencies": {
+        "@commitlint/config-conventional": "^8.0.0",
+        "babel-eslint": "^10.0.2",
+        "commitlint": "^8.0.0",
+        "eslint": "^6.0.1",
+        "eslint-plugin-prettier": "^3.1.0",
+        "husky": "^2.7.0",
+        "prettier": "^1.18.2",
+        "tslint": "^5.18.0",
+        "tslint-config-prettier": "^1.18.0",
         "yarn-version-bump": "^0.0.3"
+    },
+    "husky": {
+        "hooks": {
+            "pre-push": "make lintJS && make lint",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
     }
 }
