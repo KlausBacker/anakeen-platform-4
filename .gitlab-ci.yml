@@ -30,7 +30,7 @@ stages:
 
 before_script:
   # install npm deps
-  - node .devtool/ci/utils/select_registry.js
+  - node .devtool/ci/utils/selectRegistry.js
     # init tmp workdir
   - yarn install --frozen-lockfile
   - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
@@ -38,6 +38,8 @@ before_script:
   - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
   - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
   - export ANK_CI_ARTEFACTS_PATH=./build/
+  - export ANK_CI_BUCKET=$(node ./.devtool/ci/utils/selectBucket.js)
+  - export ANK_CI_A4PPM=$(node ./.devtool/ci/utils/selectA4ppm.js)
 
 # region tear-up
 populate-cache-master:
@@ -74,6 +76,8 @@ lint:
  script:
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
+   - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} ${PACKAGE_PATH})
+   - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_PATH}-${ANK_CI_APP_VERSION}.tar.gz ./src ./stubs
 
 build-smart-data-engine:
  extends: .build-package
@@ -87,7 +91,7 @@ build-smart-data-engine:
    changes:
       - smart-data-engine
 
-build-autorelease-smart-data-engine:
+build-integration-smart-data-engine:
  extends: .build-package
  stage: build
  variables:
@@ -111,7 +115,7 @@ build-security:
    changes:
      - security
 
-build-autorelease-security:
+build-integration-security:
  extends: .build-package
  stage: build
  variables:
@@ -135,7 +139,7 @@ build-workflow:
    changes:
      - workflow
 
-build-autorelease-workflow:
+build-integration-workflow:
  extends: .build-package
  stage: build
  variables:
@@ -159,7 +163,7 @@ build-user-interfaces:
    changes:
      - user-interfaces
 
-build-autorelease-user-interfaces:
+build-integration-user-interfaces:
  extends: .build-package
  stage: build
  variables:
@@ -175,7 +179,8 @@ build-hub-station:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
  variables:
    PACKAGE_PATH: hub-station
    MODE: "app"
@@ -185,11 +190,12 @@ build-hub-station:
    changes:
      - hub-station
 
-build-autorelease-hub-station:
+build-integration-hub-station:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
  variables:
    PACKAGE_PATH: hub-station
    MODE: "app-autorelease"
@@ -203,8 +209,9 @@ build-admin-center:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
-   - make -C hub-station buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: admin-center
    MODE: "app"
@@ -214,12 +221,13 @@ build-admin-center:
    changes:
      - admin-center
 
-build-autorelease-admin-center:
+build-integration-admin-center:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
-   - make -C hub-station buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: admin-center
    MODE: "app-autorelease"
@@ -233,8 +241,9 @@ build-business-app:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
-   - make -C hub-station buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: business-app
    MODE: "app"
@@ -244,12 +253,13 @@ build-business-app:
    changes:
      - business-app
 
-build-autorelease-business-app:
+build-integration-business-app:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
-   - make -C hub-station buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: business-app
    MODE: "app-autorelease"
@@ -262,6 +272,10 @@ build-autorelease-business-app:
 build-development-center:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: development-center
    MODE: "app"
@@ -271,9 +285,11 @@ build-development-center:
    changes:
      - development-center
 
-build-autorelease-development-center:
+build-integration-development-center:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C internal-components app
  variables:
    PACKAGE_PATH: development-center
    MODE: "app-autorelease"
@@ -287,8 +303,9 @@ build-transformation:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
-   - make -C hub-station buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: transformation
    MODE: "app"
@@ -298,12 +315,13 @@ build-transformation:
    changes:
      - transformation
 
-build-autorelease-transformation:
+build-integration-transformation:
  extends: .build-package
  stage: build
  before_script:
-   - make -C user-interfaces buildJS
-   - make -C hub-station buildJS
+   - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: transformation
    MODE: "app-autorelease"
@@ -322,7 +340,7 @@ build-autorelease-transformation:
   script:
     - cd ${PACKAGE_PATH} && npm publish
 
-publish-autorelease-anakeen-cli:
+publish-integration-anakeen-cli:
   extends: .npm-publish-package
   before_script:
     -  node ./.devtool/ci/utils/autorelease.js ./anakeen-cli
@@ -344,7 +362,7 @@ publish-anakeen-cli:
     changes:
       - anakeen-cli
 
-publish-autorelease-module-validation:
+publish-integration-module-validation:
   extends: .npm-publish-package
   before_script:
     -  node ./.devtool/ci/utils/autorelease.js ./module-validation
@@ -366,7 +384,7 @@ publish-module-validation:
     changes:
       - module-validation
 
-publish-autorelease-theme-variable:
+publish-integration-theme-variable:
   extends: .npm-publish-package
   before_script:
     -  node ./.devtool/ci/utils/autorelease.js ./theme-variable
@@ -404,12 +422,209 @@ publish-theme-variable:
         \"git-sha\": \"${CI_COMMIT_SHA}\",
         \"git-ref\": \"${CI_COMMIT_REF}\",
         \"version\": \"${ANK_CI_APP_VERSION}\",
-        \"release\": \"${ANK_CI_APP_RELEASE}\",
+        \"release\": \"\",
         \"date\": \"$(date '+%Y-%m-%d %H-%M-%S')\",
         \"author\": \"${GITLAB_USER_NAME}\"
       }"
       -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.app
       -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
       --request POST
-      "${INTERNAL_REGISTRY_URL}/${CSM_CI_REGISTRY_BUCKET_NAME}"
+      "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
 
+register-smart-data-engine:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "smart-data-engine"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/smart-data-engine smart-data-engine)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - smart-data-engine
+
+register-integration-smart-data-engine:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "smart-data-engine"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/smart-data-engine smart-data-engine)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - smart-data-engine
+
+register-workflow:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "workflow"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/workflow workflow)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - workflow
+
+register-integration-workflow:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "workflow"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/workflow workflow)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - workflow
+
+register-security:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "security"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/security security)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - security
+
+register-integration-security:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "security"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/security security)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - security
+
+register-user-interfaces:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "user-interfaces"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/user-interfaces user-interfaces)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - user-interfaces
+
+register-integration-user-interfaces:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "user-interfaces"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/user-interfaces user-interfaces)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - user-interfaces
+
+register-migration-tools:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "migration-tools"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/migration-tools migration-tools)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - migration-tools
+
+register-integration-migration-tools:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "migration-tools"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/migration-tools migration-tools)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - migration-tools
+
+register-hub-station:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "hub-station"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/hub-station hub-station)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - hub-station
+
+register-integration-hub-station:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "hub-station"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/hub-station hub-station)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - hub-station
+
+register-business-app:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "business-app"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/business-app business-app)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - business-app
+
+register-integration-business-app:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "business-app"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/business-app business-app)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - business-app
+
+register-development-center:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "development-center"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/development-center development-center)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - development-center
+
+register-integration-development-center:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "development-center"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/development-center development-center)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - development-center
+
+register-transformation:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "transformation"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/transformation transformation)
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - transformation
+
+register-integration-transformation:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "transformation"
+    ANK_CI_APP_VERSION: $(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/transformation transformation)
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - transformation

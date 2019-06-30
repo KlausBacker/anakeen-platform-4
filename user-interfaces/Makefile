@@ -115,6 +115,11 @@ buildJS: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build smart structures $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildSmartStructures
 
+buildDLL: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build dll $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildDll
+
+
 buildJS-test: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
 	make -f pojs.make compile
