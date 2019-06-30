@@ -31,11 +31,14 @@ stages:
 before_script:
   # install npm deps
   - node .devtool/ci/utils/select_registry.js
+    # init tmp workdir
+  - mkdir -p /tmp/${CI_COMMIT_SHA}/${CI_JOB_ID}
   - yarn install --frozen-lockfile
   - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
   - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
   - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
   - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
+  - export TMP_BUILD=/tmp/${CI_COMMIT_SHA}/${CI_JOB_ID}
 
 # region tear-up
 populate-cache-master:
@@ -59,6 +62,7 @@ lint:
   stage: lint
   script:
     - make lint
+    - make lintJS
   only:
     - merge_requests
     - web
@@ -69,7 +73,8 @@ lint:
  <<: *pull-cache
  stage: build
  script:
-   - make -C ${PACKAGE_PATH} ${MODE}
+   - mrdir -p ${TMP_BUILD}/${PACKAGE_PATH}
+   - make APP_OUTPUT_PATH=${TMP_BUILD}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
 
 build-smart-data-engine:
  extends: .build-package
@@ -170,6 +175,8 @@ build-autorelease-user-interfaces:
 build-hub-station:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
  variables:
    PACKAGE_PATH: hub-station
    MODE: "app"
@@ -182,6 +189,8 @@ build-hub-station:
 build-autorelease-hub-station:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
  variables:
    PACKAGE_PATH: hub-station
    MODE: "app-autorelease"
@@ -194,6 +203,9 @@ build-autorelease-hub-station:
 build-admin-center:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
+   - make -C hub-station buildJS
  variables:
    PACKAGE_PATH: admin-center
    MODE: "app"
@@ -206,6 +218,9 @@ build-admin-center:
 build-autorelease-admin-center:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
+   - make -C hub-station buildJS
  variables:
    PACKAGE_PATH: admin-center
    MODE: "app-autorelease"
@@ -218,6 +233,9 @@ build-autorelease-admin-center:
 build-business-app:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
+   - make -C hub-station buildJS
  variables:
    PACKAGE_PATH: business-app
    MODE: "app"
@@ -230,6 +248,9 @@ build-business-app:
 build-autorelease-business-app:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
+   - make -C hub-station buildJS
  variables:
    PACKAGE_PATH: business-app
    MODE: "app-autorelease"
@@ -266,6 +287,9 @@ build-autorelease-development-center:
 build-transformation:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
+   - make -C hub-station buildJS
  variables:
    PACKAGE_PATH: transformation
    MODE: "app"
@@ -278,6 +302,9 @@ build-transformation:
 build-autorelease-transformation:
  extends: .build-package
  stage: build
+ before_script:
+   - make -C user-interfaces buildJS
+   - make -C hub-station buildJS
  variables:
    PACKAGE_PATH: transformation
    MODE: "app-autorelease"
