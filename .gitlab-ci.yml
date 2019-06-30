@@ -331,6 +331,30 @@ build-integration-transformation:
    changes:
      - transformation
 
+build-migration-tools:
+  extends: .build-package
+  stage: build
+  variables:
+    PACKAGE_PATH: migration-tools
+    MODE: "app"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - migration-tools
+
+build-integration-migration-tools:
+  extends: .build-package
+  stage: build
+  variables:
+    PACKAGE_PATH: migration-tools
+    MODE: "app-autorelease"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - migration-tools
+
 #endregion build
 
 #region publishNpm
