@@ -116,8 +116,12 @@ buildJS: install-deps
 	$(YARN_BIN) buildSmartStructures
 
 buildDLL: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build asset $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildAsset
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build dll $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildDll
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
+	$(YARN_BIN) buildComponent
 
 
 buildJS-test: install-deps
