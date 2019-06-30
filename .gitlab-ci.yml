@@ -32,13 +32,12 @@ before_script:
   # install npm deps
   - node .devtool/ci/utils/select_registry.js
     # init tmp workdir
-  - mkdir -p /tmp/${CI_COMMIT_SHA}/${CI_JOB_ID}
   - yarn install --frozen-lockfile
   - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
   - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
   - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
   - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
-  - export TMP_BUILD=/tmp/${CI_COMMIT_SHA}/${CI_JOB_ID}
+  - export ANK_CI_ARTEFACTS_PATH=./build/
 
 # region tear-up
 populate-cache-master:
@@ -73,8 +72,8 @@ lint:
  <<: *pull-cache
  stage: build
  script:
-   - mrdir -p ${TMP_BUILD}/${PACKAGE_PATH}
-   - make APP_OUTPUT_PATH=${TMP_BUILD}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
+   - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
+   - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
 
 build-smart-data-engine:
  extends: .build-package
@@ -319,9 +318,75 @@ build-autorelease-transformation:
 #region publishNpm
 .npm-publish-package:
   <<: *pull-cache
-  stage: build
+  stage: registry
   script:
     - cd ${PACKAGE_PATH} && npm publish
+
+publish-autorelease-anakeen-cli:
+  extends: .npm-publish-package
+  before_script:
+    -  node ./.devtool/ci/utils/autorelease.js ./anakeen-cli
+  variables:
+    PACKAGE_PATH: anakeen-cli
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - anakeen-cli
+
+publish-anakeen-cli:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: anakeen-cli
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - anakeen-cli
+
+publish-autorelease-module-validation:
+  extends: .npm-publish-package
+  before_script:
+    -  node ./.devtool/ci/utils/autorelease.js ./module-validation
+  variables:
+    PACKAGE_PATH: module-validation
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - module-validation
+
+publish-module-validation:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: module-validation
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - module-validation
+
+publish-autorelease-theme-variable:
+  extends: .npm-publish-package
+  before_script:
+    -  node ./.devtool/ci/utils/autorelease.js ./theme-variable
+  variables:
+    PACKAGE_PATH: theme-variable
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - theme-variable
+
+publish-theme-variable:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: theme-variable
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - theme-variable
 
 #endregion publishNpm
 
