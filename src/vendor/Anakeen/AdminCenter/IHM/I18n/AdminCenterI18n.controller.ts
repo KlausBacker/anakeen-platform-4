@@ -80,6 +80,7 @@ export default class I18nManagerController extends Vue {
       }
     }, 300);
   }
+
   public mounted() {
     window.addEventListener("offline", e => {
       kendo.ui.progress($("body"), true);
@@ -233,7 +234,9 @@ export default class I18nManagerController extends Vue {
     // const fileName = `${locale}-${date}`;
     const fileName = `${locale}-${date}`;
     console.log(fileName + ".po");
-    // window.open(`/api/v2/admin/i18n/export/${this.translationLocale}/${fileName}.po`);
+    // window.open(
+    //   `/api/v2/admin/i18n/${this.translationLocale}/export/${fileName}.po`
+    // );
   }
 
   private getDate() {

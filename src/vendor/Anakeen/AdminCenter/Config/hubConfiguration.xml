@@ -101,6 +101,22 @@
         <hge_component_tag>ank-admin-vault-manager</hge_component_tag>
         <hub_execution_roles name="AC_FUNCADMIN,AC_VAULTSMANAGER">document multiple</hub_execution_roles>
     </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="HGEA_I18N">
+        <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
+        <hub_title>ADMINI18N</hub_title>
+        <hub_order>6</hub_order>
+        <hub_docker_position>LEFT_TOP</hub_docker_position>
+        <hub_vue_router_entry>i18n</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>TRUE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("i18nManager","i18n-manager")</hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-admin-i18n</hge_component_tag>
+        <hub_execution_roles name="AC_FUNCADMIN,AC_I18NMANAGER">document multiple</hub_execution_roles>
+    </hubconfigurationgeneric>
     <hubconfigurationgeneric name="HGEA_MAIL">
         <hub_station_id name="ADMINCENTER">Admin Center</hub_station_id>
         <hub_title>ADMINMAIL</hub_title>
