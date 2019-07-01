@@ -241,11 +241,20 @@ class AuthenticatorManager
     public static function getAuthorizationValue()
     {
         if (php_sapi_name() !== 'cli') {
-            $headers = apache_request_headers();
+            if (function_exists("apache_request_headers")) {
+                $headers = apache_request_headers();
 
-            foreach ($headers as $k => $v) {
-                if (strtolower($k) === "authorization") {
-                    if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $v, $reg)) {
+                foreach ($headers as $k => $v) {
+                    if (strtolower($k) === "authorization") {
+                        if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $v, $reg)) {
+                            return ["scheme" => trim($reg[1]), "token" => trim($reg[2])];
+                        }
+                    }
+                }
+            } else {
+                $authorization=$_SERVER["HTTP_AUTHORIZATION"]??"";
+                if ($authorization) {
+                    if (preg_match("/^([a-z0-9]+)\\s+(.*)$/i", $authorization, $reg)) {
                         return ["scheme" => trim($reg[1]), "token" => trim($reg[2])];
                     }
                 }
