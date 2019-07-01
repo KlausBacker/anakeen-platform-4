@@ -248,7 +248,5 @@ SQL;
         if ($err) {
             throw new \Anakeen\Exception(sprintf("Cannot modify enum %s:%s : %s", $name, $enumStruct->key, $err));
         }
-
     }
-
 }

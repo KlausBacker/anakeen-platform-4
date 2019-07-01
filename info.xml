@@ -6,19 +6,16 @@
     <description>Smart Data Engine</description>
 
     <requires>
-        <installer version="2.x.x"/>
+        <installer version="3.x.x"/>
     </requires>
 
     <parameters>
         <param name="client_name" label="client name" type="text"/>
-        <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y"/>
+        <param name="core_db" label="database postgresql service name"  type="text" needed="Y"/>
         <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html"
                needed="Y"/>
-        <param name="core_tmpdir" label="temporary folder" default="./var/tmp" type="text" needed="Y"/>
         <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y"
                oninstall="W" onupgrade="H" onedit="H"/>
-        <param name="mod_deflate" label="Enable compression (requires Apache mod_deflate)" default="yes" type="enum"
-               values="yes|no" needed="Y"/>
     </parameters>
 
     <pre-install>
@@ -193,9 +190,6 @@
         </process>
         <process command="programs/set_param Core::CORE_CLIENT client_name">
             <label>Register client name</label>
-        </process>
-        <process command="programs/set_param Core::CORE_TMPDIR core_tmpdir">
-            <label>Register temporary folder</label>
         </process>
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Base/base.struct.xml">
             <label>Import BASE Structure</label>
@@ -427,9 +421,7 @@
     </pre-upgrade>
 
     <post-upgrade>
-        <process command="programs/core_sanitize">
-            <label>Sanitize core database</label>
-        </process>
+
         <process command="programs/core_accessUpdate">
             <label>Resync dbaccess config</label>
         </process>
