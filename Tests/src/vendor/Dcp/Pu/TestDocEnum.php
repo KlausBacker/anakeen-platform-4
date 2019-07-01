@@ -33,15 +33,9 @@ class TestDocEnum extends TestCaseDcpCommonFamily
 
     public static function tearDownAfterClass()
     {
-        $langs = array(
-            "fr_FR",
-            "en_US"
-        );
-        foreach ($langs as $lang) {
-            $moFile = DocEnum::getMoFilename("TST_DOCENUM-0123", $lang);
-            unlink($moFile);
-        }
-        \LibSystem::reloadLocaleCache();
+
+        $system = new \Anakeen\Script\System();
+        $system->localeGen();
         parent::tearDownAfterClass();
     }
 

@@ -19,6 +19,7 @@ class EnumManager
      *
      * @param string $name           enum set reference
      * @param bool   $returnDisabled if false disabled enum are not returned
+     *
      * @return array
      * @throws \Anakeen\Database\Exception
      */
@@ -111,6 +112,7 @@ class EnumManager
     /**
      * @param EnumItem[] $enumItems
      * @param EnumItem[] $parents
+     *
      * @return array
      */
     private static function formatItems(array $enumItems, $parents = [])
@@ -156,18 +158,18 @@ class EnumManager
         return '';
     }
 
-    private static function getCompleteEnumLabel($key, array & $enums, $prefix)
+    private static function getCompleteEnumLabel($key, array & $enums, $enumName)
     {
         foreach ($enums as $item) {
             if ($item["key"] === $key) {
-                $translatedEnumValue = ___($prefix . $key, "ENUM");
-                if ($translatedEnumValue != $prefix . $key) {
+                $translatedEnumValue = ___($key, $enumName);
+                if ($translatedEnumValue != $key) {
                     $label = $translatedEnumValue;
                 } else {
                     $label = $item["label"];
                 }
                 if ($item["parentkey"] !== null) {
-                    return sprintf("%s/%s", self::getCompleteEnumLabel($item["parentkey"], $enums, $prefix), $label);
+                    return sprintf("%s/%s", self::getCompleteEnumLabel($item["parentkey"], $enums, $enumName), $label);
                 } else {
                     return $label;
                 }
@@ -183,6 +185,7 @@ class EnumManager
      * @param string $enumName       enum set reference
      * @param string $enumid         the key of enumerate (if no parameter all labels are returned
      * @param bool   $returnDisabled if false disabled enum are not returned
+     *
      * @return array|string|null
      * @throws \Anakeen\Database\Exception
      */
@@ -260,6 +263,7 @@ class EnumManager
      * Construct a string key
      *
      * @param mixed $k key
+     *
      * @return string
      */
     private static function _cacheKey($k)
@@ -277,6 +281,7 @@ class EnumManager
      *
      * @param string $cacheId cache Id
      * @param string $k       key
+     *
      * @return bool true if it exists, false if it does not exists
      */
     private static function _cacheExists($cacheId, $k)
@@ -291,6 +296,7 @@ class EnumManager
      * @param string          $cacheId cache Id
      * @param string|string[] $k       key
      * @param mixed           $v       value
+     *
      * @return bool true on success, false on failure
      */
     private static function _cacheStore($cacheId, $k, $v)
@@ -307,6 +313,7 @@ class EnumManager
      * @param string|string[] $enumName       key
      * @param mixed           $onCacheMiss    value returned on cache miss (default is null)
      * @param bool            $returnDisabled if false unreturn disabled enums
+     *
      * @return null|mixed null on failure, mixed value on success
      */
     private static function _cacheFetch($cacheId, $enumName, $onCacheMiss = null, $returnDisabled = true)
@@ -333,6 +340,7 @@ class EnumManager
      * Flush the cache contents
      *
      * @param string|null $cacheId cache Id or null (default) to flush all caches
+     *
      * @return void
      */
     private static function _cacheFlush($cacheId = null)
