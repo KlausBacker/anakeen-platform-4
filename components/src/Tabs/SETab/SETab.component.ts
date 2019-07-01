@@ -107,11 +107,11 @@ export default class SETab extends Vue {
     if (this.$slots && !(this.$slots.default && this.$slots.default.length)) {
       this.bindSmartElementEvents();
       const onLoaded = () => {
-        // @ts-ignore
-        this.$refs.smartElement.fetchSmartElement({
-          initid: this.identifier,
-          viewId: this.viewId
-        });
+        // // @ts-ignore
+        // this.$refs.smartElement.fetchSmartElement({
+        //   initid: this.identifier,
+        //   viewId: this.viewId
+        // });
       };
       // @ts-ignore
       if (this.$refs.smartElement.isLoaded()) {

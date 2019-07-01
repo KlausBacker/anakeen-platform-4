@@ -11,6 +11,8 @@
     <slot>
       <ank-smart-element
         v-show="documentLoaded"
+        :initid="identifier"
+        :viewId="viewId"
         class="ank-se-tab-element"
         ref="smartElement"
         @documentLoaded="onDocumentLoaded"
