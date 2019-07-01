@@ -4,6 +4,8 @@ image:
 stages:
   - tear-up
   - lint
+  - buildJS
+  - buildHub
   - build
   - test
   - registry
@@ -69,7 +71,8 @@ lint-php:
     - web
 
 lint-js:
-  <<: *pull-cache
+  cache:
+    <<: *default-cache
   stage: lint
   script:
     - make lintJS
@@ -78,17 +81,67 @@ lint-js:
     - web
 #endregion lint
 
+#region buildJS
+
+user-interfaces-buildJS:
+  cache:
+    <<: *default-cache
+  stage: buildJS
+  script:
+    - make -C user-interfaces buildDLL
+  artifacts:
+    paths:
+      - user-interfaces/src/public/Anakeen/ankDll/
+      - user-interfaces/src/public/Anakeen/assets/
+      - user-interfaces/src/public/Anakeen/ank-components/
+      - user-interfaces/components/lib/
+    expire_in: 1 hour
+  only:
+    changes:
+      - user-interfaces
+
+internal-components-buildJS:
+  cache:
+    <<: *default-cache
+  stage: buildJS
+  script:
+    - make -C internal-components app
+  artifacts:
+    paths:
+      - internal-components/lib/
+    expire_in: 1 hour
+  only:
+    changes:
+      - internal-components
+
+hub-station-buildJS:
+  cache:
+    <<: *default-cache
+  stage: buildHub
+  script:
+    - make -C hub-station buildDLL
+  artifacts:
+    paths:
+      - hub-station/components/lib/
+      - hub-station/src/public/Anakeen/hubVendor/
+    expire_in: 1 hour
+  only:
+    changes:
+      - hub-station
+  dependencies:
+    - user-interfaces-buildJS
+    - internal-components-buildJS
+
+#endregion buildJS
+
 #region build
 .build-package:
  <<: *pull-cache
  stage: build
  script:
-   - ls -al ./node_modules/@anakeen/
-   - ls -al ./node_modules/@anakeen/user-interfaces/
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - make -C ${PACKAGE_PATH} stubs
    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
-   - ls -al ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} ${PACKAGE_PATH})
    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_PATH}-${ANK_CI_APP_VERSION}.tar.gz ./src ./stubs
 
@@ -191,9 +244,6 @@ user-interfaces-integration-build:
 hub-station-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
  variables:
    PACKAGE_PATH: hub-station
    MODE: "app"
@@ -202,13 +252,13 @@ hub-station-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - hub-station
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
 
 hub-station-integration-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
  variables:
    PACKAGE_PATH: hub-station
    MODE: "app-autorelease"
@@ -217,14 +267,13 @@ hub-station-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - hub-station
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
 
 admin-center-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: admin-center
    MODE: "app"
@@ -233,14 +282,14 @@ admin-center-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - admin-center
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 admin-center-integration-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: admin-center
    MODE: "app-autorelease"
@@ -249,14 +298,14 @@ admin-center-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - admin-center
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 business-app-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: business-app
    MODE: "app"
@@ -265,14 +314,14 @@ business-app-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - business-app
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 business-app-integration-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: business-app
    MODE: "app-autorelease"
@@ -281,14 +330,14 @@ business-app-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - business-app
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 development-center-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: development-center
    MODE: "app"
@@ -297,14 +346,14 @@ development-center-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - development-center
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 development-center-integration-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: development-center
    MODE: "app-autorelease"
@@ -313,14 +362,14 @@ development-center-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - development-center
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 transformation-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: transformation
    MODE: "app"
@@ -329,14 +378,14 @@ transformation-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - transformation
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 transformation-integration-build:
  extends: .build-package
  stage: build
- before_script:
-   - make -C internal-components app
-   - make -C user-interfaces buildDLL
-   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: transformation
    MODE: "app-autorelease"
@@ -345,6 +394,10 @@ transformation-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - transformation
+ dependencies:
+   - user-interfaces-buildJS
+   - internal-components-buildJS
+   - hub-station-buildJS
 
 migration-tools-build:
   extends: .build-package

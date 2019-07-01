@@ -85,6 +85,7 @@ buildJS: install-deps
 
 buildDLL: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build dll $@${RESET_COLOR}\n"
+	$(YARN_BIN) lib
 	$(YARN_BIN) buildVendor
 
 ########################################################################################################################

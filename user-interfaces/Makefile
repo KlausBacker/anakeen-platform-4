@@ -122,6 +122,8 @@ buildDLL: install-deps
 	$(YARN_BIN) buildDll
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build ank component $@${RESET_COLOR}\n"
 	$(YARN_BIN) buildComponent
+	@${PRINT_COLOR} "${DEBUG_COLOR}Build lib $@${RESET_COLOR}\n"
+	$(YARN_BIN) lib
 
 buildJS-test: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Build $@${RESET_COLOR}\n"
