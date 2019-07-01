@@ -147,7 +147,6 @@ define([
       this.listenTo(this, "dduiDocumentFail", this.propagateSynchroError);
       this.listenTo(this, "destroy", this.destroySubcollection);
       this.listenTo(this, "destroy", this.unbindLoadEvent);
-
       $(window).on(
         "beforeunload." + this.cid,
         function mDocumentBeforeUnload() {
@@ -1176,26 +1175,37 @@ define([
      * To launch beforeRender and beforeRenderAttribute
      */
     injectCurrentDocJS: function mDocumentInjectCurrentDocJS() {
-      var injectPromise = Promise.resolve(),
-        customJS = _.pluck(this.get("customJS"), "path");
+      const event = {
+        injectPromise: Promise.resolve(),
+        js: this.get("customJS")
+      };
+      this.trigger("injectCurrentSmartElementJS", event);
+      // var injectPromise = Promise.resolve(),
+      //   customJS = _.pluck(this.get("customJS"), "path");
+      //
+      // _.each(customJS, function injectElement(currentPath) {
+      //   if ($('script[src="' + currentPath + '"]').length === 0) {
+      //     injectPromise = injectPromise.then(function() {
+      //       return new Promise(function addJs(resolve, reject) {
+      //         load(currentPath, function addJsDone(err) {
+      //           if (err) {
+      //             reject(err);
+      //           } else {
+      //             resolve();
+      //           }
+      //         });
+      //         const script = $(`<script type="module">
+      //               import { install } from "${currentPath}";
+      //               console.log(install);
+      //               // smartElementFunction("toto");
+      //         </script>`);
+      //         $(document.head).append(script);
+      //       });
+      //     });
+      //   }
+      // });
 
-      _.each(customJS, function injectElement(currentPath) {
-        if ($('script[src="' + currentPath + '"]').length === 0) {
-          injectPromise = injectPromise.then(function() {
-            return new Promise(function addJs(resolve, reject) {
-              load(currentPath, function addJsDone(err) {
-                if (err) {
-                  reject(err);
-                } else {
-                  resolve();
-                }
-              });
-            });
-          });
-        }
-      });
-
-      return injectPromise;
+      return event.injectPromise;
     },
 
     /**
@@ -1240,7 +1250,6 @@ define([
           '<link rel="stylesheet" type="text/css" ' +
             'href="<%= path %>" data-injected="true">'
         );
-
       if (!_.isArray(customCss)) {
         throw new Error("The css to inject must be an array of string path");
       }

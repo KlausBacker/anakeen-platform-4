@@ -1,14 +1,15 @@
 import GlobalController from "./GlobalController";
 import { storeCatalog, loadCatalog } from "../../i18n/catalogStorage";
 
+import "../../../../../../../webpackConfig/kendo/kendo";
+
 declare global {
   interface Window {
     ank?: {
       smartElement?: {
         globalController?: GlobalController;
-        globalController2?: GlobalController;
-      },
-      i18n?: any
+      };
+      i18n?: any;
     };
   }
 }

@@ -45,7 +45,7 @@ define([
             data.document.properties.security.lock.isLocked =
               data.document.properties.security.lock.lockedBy &&
               data.document.properties.security.lock.lockedBy.id > 0;
-
+            data.href = currentView.model.url() + ".html";
             var headerRender = $(
               Mustache.render(currentView.headerTemplate || "", data)
             );

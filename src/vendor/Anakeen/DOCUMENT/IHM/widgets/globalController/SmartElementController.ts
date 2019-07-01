@@ -1,8 +1,8 @@
 import { AnakeenController } from "./types/ControllerTypes";
-import ControllerOptions = AnakeenController.Types.ControllerOptions;
 import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
 import ViewData = AnakeenController.Types.ViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
+import ListenableEvents = AnakeenController.BusEvents.ListenableEvents;
 import * as $ from "jquery";
 import * as _ from "underscore";
 import * as Backbone from "backbone";
@@ -21,19 +21,18 @@ import "../../widgets/window/wConfirm";
 import "../../widgets/window/wLoading";
 import "../../widgets/window/wNotification";
 
+type ControllerOptions = {
+  router?: false | { noRouter: boolean };
+  customClientData?: any;
+  loading?: boolean;
+  notification?: boolean;
+};
+
 const DEFAULT_OPTIONS: ControllerOptions = {
-  eventPrefix: "smart-element",
-  initid: null,
-  viewId: undefined,
-  revision: undefined,
-  constraintList: [],
-  eventListener: [],
-  noRouter: false,
-  activatedConstraint: {},
-  activatedEventListener: {},
-  _initializedModel: false,
-  _initializedView: false,
-  customClientData: {}
+  router: false,
+  customClientData: {},
+  loading: true,
+  notification: true
 };
 
 class ErrorModelNonInitialized extends Error {
@@ -63,20 +62,33 @@ interface ISmartElementModel extends Backbone.Model {
   injectCSS(cssToInject: string[]): Promise<any>;
 }
 
-export default class SmartElementController {
-  protected element: JQuery<DOMReference> = null;
-  protected $smartElement: JQuery<DOMReference> = null;
-  protected view: Backbone.View = null;
-  protected model: ISmartElementModel = null;
-  protected router: Backbone.Router = null;
-  protected options: ControllerOptions = DEFAULT_OPTIONS;
-  protected initialized: { model: boolean; view: boolean } = {
+export default class SmartElementController extends AnakeenController.BusEvents
+  .Listenable {
+  private static CONSTRAINT_PREFIX = "constraint::";
+  private static EVENT_PREFIX = "hook::";
+
+  public uid: string = null;
+  protected _eventHistory: { [key: string]: ListenableEvents } = {};
+  protected _element: JQuery<DOMReference> = null;
+  protected _smartElement: JQuery<DOMReference> = null;
+  protected _view: Backbone.View = null;
+  protected _model: ISmartElementModel;
+  protected _router: Backbone.Router = null;
+  protected _initialized: { model: boolean; view: boolean } = {
     model: false,
     view: false
   };
-  protected activatedConstraint: {} = {};
-  protected activatedEventListener: {} = {};
   protected _customClientData: {} = {};
+  protected _internalViewData: ViewData = {
+    initid: null,
+    revision: undefined,
+    viewId: undefined
+  };
+  protected _options: ControllerOptions = {};
+  protected _constraintList = {};
+  protected _eventListener = {};
+  protected _activatedConstraint: any = {};
+  protected _activatedEventListener: any = {};
   protected $loading: JQuery & { dcpLoading(...args): JQuery } = null;
   protected $notification: JQuery & { dcpNotification(...args): JQuery } = null;
 
@@ -85,51 +97,56 @@ export default class SmartElementController {
     viewData: ViewData,
     options?: ControllerOptions
   ) {
-    this.options = options || DEFAULT_OPTIONS;
+    super();
+    this.uid = _.uniqueId("smart-element-");
+    this._options = options || DEFAULT_OPTIONS;
     if (viewData) {
-      this.options.initid = viewData.initid;
-      this.options.viewId = viewData.viewId;
-      this.options.revision = viewData.revision;
+      this._internalViewData.initid = viewData.initid;
+      this._internalViewData.viewId = viewData.viewId;
+      this._internalViewData.revision = viewData.revision;
     }
     // @ts-ignore
-    this.element = $(dom);
-    this.initialized = {
+    this._element = $(dom);
+    this._initialized = {
       model: false,
       view: false
     };
-    if (!this.options.initid) {
+    if (!this._internalViewData.initid) {
       return;
     }
-    this.initializeSmartElement({}, this.options.customClientData);
+    this._initializeSmartElement({}, this._options.customClientData);
   }
 
-  private initializeSmartElement(options, customClientData) {
-    let promise;
-    const initializeSuccess = (...args: any[]) => {
-      this.initialized.model = true;
+  private _initializeSmartElement(options, customClientData) {
+    const onInitializeSuccess = () => {
+      this._initialized.model = true;
     };
-    options = options || {};
-    this.initExternalElements();
-    this.initModel(this.getModelValue());
-    this.initView();
-    if (options.success) {
-      options.success = _.wrap(options.success, (...args) => {
-        const success = args[0];
-        initializeSuccess.apply(this, _.rest(args));
-        return success.apply(this, _.rest(args));
+    const initOptions = options || {};
+    this._initExternalElements();
+    this._initModel(this._getModelValue());
+    this._initView();
+    if (initOptions.success) {
+      initOptions.success = _.wrap(options.success, (success, ...args) => {
+        onInitializeSuccess.apply(this);
+        return success.apply(this, args);
       });
     }
     if (customClientData) {
-      this.model._customClientData = customClientData;
+      this._model._customClientData = customClientData;
     }
-    promise = this.model.fetchDocument(this.getModelValue(), options);
+    const resultPromise = this._model.fetchDocument(
+      this._getModelValue(),
+      options
+    );
     if (!options.success) {
-      promise.then(initializeSuccess);
+      resultPromise.then(onInitializeSuccess);
     }
 
-    this.initRouter({ useHistory: !this.options.noRouter });
+    if (this._options.router !== false) {
+      this._initRouter({ useHistory: !this._options.router.noRouter });
+    }
 
-    return promise;
+    return resultPromise;
   }
 
   /**
@@ -138,19 +155,23 @@ export default class SmartElementController {
    * @returns {Object}
    * @private
    */
-  private getModelValue() {
-    return _.pick(this.options, "initid", "viewId", "revision");
+  private _getModelValue() {
+    return _.pick(this._internalViewData, "initid", "viewId", "revision");
   }
 
   /**
    * Init the external elements (loading bar and notification widget)
    * @private
    */
-  private initExternalElements() {
-    // @ts-ignore
-    this.$loading = $(".dcpLoading").dcpLoading();
-    // @ts-ignore
-    this.$notification = $("body").dcpNotification(window.dcp.notifications); // active notification
+  private _initExternalElements() {
+    if (this._options) {
+      // @ts-ignore
+      this.$loading = $(".dcpLoading").dcpLoading();
+    }
+    if (this._options.notification) {
+      // @ts-ignore
+      this.$notification = $("body").dcpNotification(window.dcp.notifications); // active notification
+    }
   }
 
   /**
@@ -160,16 +181,16 @@ export default class SmartElementController {
    * @returns DocumentModel
    * @private
    */
-  private initModel(initialValue) {
+  private _initModel(initialValue) {
     let model;
 
     //Don't reinit the model
-    if (!this.model) {
+    if (!this._model) {
       model = new Model(initialValue);
-      this.model = model;
-      this.initModelEvents();
+      this._model = model;
+      this._initModelEvents();
     } else {
-      this.reinitModel();
+      this._reinitModel();
     }
     return model;
   }
@@ -179,8 +200,8 @@ export default class SmartElementController {
    *
    * @private
    */
-  private reinitModel() {
-    this.model.set(this.getModelValue());
+  private _reinitModel() {
+    this._model.set(this._getModelValue());
   }
 
   /**
@@ -189,30 +210,33 @@ export default class SmartElementController {
    * @returns DocumentView
    * @private
    */
-  private initView() {
+  private _initView() {
     let seView;
     ///Don't reinit view
-    if (!this.view) {
-      this.initDom();
+    if (!this._view) {
+      this._initDom();
       seView = new View({
-        model: this.model,
-        el: this.$smartElement[0]
+        model: this._model,
+        el: this._smartElement[0]
       });
-      this.view = seView;
-      this.initViewEvents();
+      this._view = seView;
+      this._initViewEvents();
     }
-    return this.view;
+    return this._view;
   }
 
   /**
    * Generate the dom where the view is inserted
    * @private
    */
-  private initDom() {
-    const $se = this.element.find(".dcpDocument");
-    if (!this.$smartElement || $se.length === 0) {
-      this.element.append('<div class="dcpDocument"></div>');
-      this.$smartElement = this.element.find(".dcpDocument");
+  private _initDom() {
+    const $se = this._element.find(".dcpDocument");
+    if (!this._smartElement || $se.length === 0) {
+      this._element.attr("data-controller", this.uid);
+      this._element.append(
+        '<div class="document"><div class="dcpDocument"></div></div>'
+      );
+      this._smartElement = this._element.find(".dcpDocument");
     }
   }
 
@@ -223,9 +247,14 @@ export default class SmartElementController {
    *
    * @private
    */
-  private initModelEvents() {
-    this.model.listenTo(this.model, "invalid", (model, error) => {
-      const result = this.triggerControllerEvent(
+  private _initModelEvents() {
+    this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
+      event.controller = this;
+      this.emit("injectCurrentSmartElementJS", event);
+    });
+
+    this._model.listenTo(this._model, "invalid", (model, error) => {
+      const result = this._triggerControllerEvent(
         "displayError",
         null,
         this.getProperties(),
@@ -235,8 +264,8 @@ export default class SmartElementController {
         this.$notification.dcpNotification("showError", error);
       }
     });
-    this.model.listenTo(this.model, "showError", error => {
-      const result = this.triggerControllerEvent(
+    this._model.listenTo(this._model, "showError", error => {
+      const result = this._triggerControllerEvent(
         "displayError",
         null,
         this.getProperties(),
@@ -246,8 +275,8 @@ export default class SmartElementController {
         this.$notification.dcpNotification("showError", error);
       }
     });
-    this.model.listenTo(this.model, "showMessage", msg => {
-      const result = this.triggerControllerEvent(
+    this._model.listenTo(this._model, "showMessage", msg => {
+      const result = this._triggerControllerEvent(
         "displayMessage",
         null,
         this.getProperties(),
@@ -257,34 +286,32 @@ export default class SmartElementController {
         this.$notification.dcpNotification("show", msg.type, msg);
       }
     });
-    this.model.listenTo(this.model, "reload", () => {
-      // this._initModel(this._getModelValue());
-      // this._initView();
-      this.model.fetchDocument();
+    this._model.listenTo(this._model, "reload", () => {
+      this._model.fetchDocument();
     });
-    this.model.listenTo(this.model, "sync", () => {
-      this.initialized.model = true;
-      this.options.initid = this.model.id;
-      this.options.viewId = this.model.get("viewId");
-      this.options.revision = this.model.get("revision");
-      this.element.data("document", this.getModelValue());
+    this._model.listenTo(this._model, "sync", () => {
+      this._initialized.model = true;
+      this._internalViewData.initid = this._model.id;
+      this._internalViewData.viewId = this._model.get("viewId");
+      this._internalViewData.revision = this._model.get("revision");
+      this._element.data("document", this._getModelValue());
       this._initActivatedConstraint();
       this._initActivatedEventListeners({ launchReady: false });
     });
-    this.model.listenTo(this.model, "beforeRender", event => {
-      event.prevent = !this.triggerControllerEvent(
+    this._model.listenTo(this._model, "beforeRender", event => {
+      event.prevent = !this._triggerControllerEvent(
         "beforeRender",
         event,
         this.getProperties(),
-        this.model.getModelProperties()
+        this._model.getModelProperties()
       );
     });
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "beforeClose",
       (event, nextDocument, customClientData) => {
-        if (this.initialized.view) {
-          event.prevent = !this.triggerControllerEvent(
+        if (this._initialized.view) {
+          event.prevent = !this._triggerControllerEvent(
             "beforeClose",
             event,
             this.getProperties(),
@@ -294,93 +321,97 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(this.model, "close", oldProperties => {
-      if (this.initialized.view) {
-        this.triggerControllerEvent(
+    this._model.listenTo(this._model, "close", oldProperties => {
+      if (this._initialized.view) {
+        this._triggerControllerEvent(
           "close",
           null,
           this.getProperties(),
           oldProperties
         );
       }
-      this.initialized.view = false;
+      this._initialized.view = false;
     });
-    this.model.listenTo(this.model, "getCustomClientData", () => {
+    this._model.listenTo(this._model, "getCustomClientData", () => {
       try {
-        this.model._customClientData = this.getCustomClientData(false);
+        this._model._customClientData = this.getCustomClientData(false);
       } catch (e) {
         //no test here
       }
     });
-    this.model.listenTo(this.model, "beforeSave", (event, customClientData) => {
-      const requestOptions = {
-        getRequestData: () => {
-          return this.model.toJSON();
-        },
-        setRequestData: data => {
-          this.model._customRequestData = data;
-        }
-      };
-      event.prevent = !this.triggerControllerEvent(
-        "beforeSave",
-        event,
-        this.getProperties(),
-        requestOptions,
-        customClientData
-      );
-    });
-    this.model.listenTo(this.model, "afterSave", oldProperties => {
-      this.triggerControllerEvent(
+    this._model.listenTo(
+      this._model,
+      "beforeSave",
+      (event, customClientData) => {
+        const requestOptions = {
+          getRequestData: () => {
+            return this._model.toJSON();
+          },
+          setRequestData: data => {
+            this._model._customRequestData = data;
+          }
+        };
+        event.prevent = !this._triggerControllerEvent(
+          "beforeSave",
+          event,
+          this.getProperties(),
+          requestOptions,
+          customClientData
+        );
+      }
+    );
+    this._model.listenTo(this._model, "afterSave", oldProperties => {
+      this._triggerControllerEvent(
         "afterSave",
         null,
         this.getProperties(),
         oldProperties
       );
     });
-    this.model.listenTo(this.model, "beforeRestore", event => {
-      event.prevent = !this.triggerControllerEvent(
+    this._model.listenTo(this._model, "beforeRestore", event => {
+      event.prevent = !this._triggerControllerEvent(
         "beforeRestore",
         event,
         this.getProperties()
       );
     });
-    this.model.listenTo(this.model, "afterRestore", oldProperties => {
-      this.triggerControllerEvent(
+    this._model.listenTo(this._model, "afterRestore", oldProperties => {
+      this._triggerControllerEvent(
         "afterRestore",
         null,
         this.getProperties(),
         oldProperties
       );
     });
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "beforeDelete",
       (event, customClientData) => {
-        event.prevent = !this.triggerControllerEvent(
+        event.prevent = !this._triggerControllerEvent(
           "beforeDelete",
           event,
           this.getProperties(),
-          this.model.getModelProperties(),
+          this._model.getModelProperties(),
           customClientData
         );
       }
     );
-    this.model.listenTo(this.model, "afterDelete", oldProperties => {
-      this.triggerControllerEvent(
+    this._model.listenTo(this._model, "afterDelete", oldProperties => {
+      this._triggerControllerEvent(
         "afterDelete",
         null,
         this.getProperties(),
         oldProperties
       );
     });
-    this.model.listenTo(this.model, "validate", event => {
-      event.prevent = !this.triggerControllerEvent(
+    this._model.listenTo(this._model, "validate", event => {
+      event.prevent = !this._triggerControllerEvent(
         "validate",
         event,
         this.getProperties()
       );
     });
-    this.model.listenTo(this.model, "changeValue", options => {
+    this._model.listenTo(this._model, "changeValue", options => {
       try {
         const currentAttribute = this.getAttribute(options.attributeId);
         let index = 0;
@@ -428,8 +459,8 @@ export default class SmartElementController {
         }
       }
     });
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "beforeAttributeRender",
       (event, attributeId, $el, index) => {
         try {
@@ -450,8 +481,8 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "attributeRender",
       (attributeId, $el, index) => {
         try {
@@ -472,7 +503,7 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(this.model, "arrayModified", options => {
+    this._model.listenTo(this._model, "arrayModified", options => {
       try {
         const currentAttribute = this.getAttribute(options.attributeId);
         this._triggerAttributeControllerEvent(
@@ -490,11 +521,11 @@ export default class SmartElementController {
         }
       }
     });
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "internalLinkSelected",
       (event, options) => {
-        event.prevent = !this.triggerControllerEvent(
+        event.prevent = !this._triggerControllerEvent(
           "actionClick",
           event,
           this.getProperties(),
@@ -502,8 +533,8 @@ export default class SmartElementController {
         );
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "downloadFile",
       (event, attrid, options) => {
         try {
@@ -524,30 +555,34 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(this.model, "uploadFile", (event, attrid, options) => {
-      try {
-        const currentAttribute = this.getAttribute(attrid);
-        event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeUploadFile",
-          event,
-          currentAttribute,
-          this.getProperties(),
-          currentAttribute,
-          options.$el,
-          options.index,
-          {
-            file: options.file,
-            hasUploadingFiles: this.model.hasUploadingFile()
+    this._model.listenTo(
+      this._model,
+      "uploadFile",
+      (event, attrid, options) => {
+        try {
+          const currentAttribute = this.getAttribute(attrid);
+          event.prevent = !this._triggerAttributeControllerEvent(
+            "attributeUploadFile",
+            event,
+            currentAttribute,
+            this.getProperties(),
+            currentAttribute,
+            options.$el,
+            options.index,
+            {
+              file: options.file,
+              hasUploadingFiles: this._model.hasUploadingFile()
+            }
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
           }
-        );
-      } catch (error) {
-        if (!(error instanceof ErrorModelNonInitialized)) {
-          console.error(error);
         }
       }
-    });
-    this.model.listenTo(
-      this.model,
+    );
+    this._model.listenTo(
+      this._model,
       "uploadFileDone",
       (event, attrid, options) => {
         try {
@@ -562,7 +597,7 @@ export default class SmartElementController {
             options.index,
             {
               file: options.file,
-              hasUploadingFiles: this.model.hasUploadingFile()
+              hasUploadingFiles: this._model.hasUploadingFile()
             }
           );
         } catch (error) {
@@ -573,8 +608,8 @@ export default class SmartElementController {
       }
     );
 
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "attributeBeforeTabSelect",
       (event, attrid) => {
         const currentAttribute = this.getAttribute(attrid);
@@ -593,8 +628,8 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "attributeTabChange",
       (event, attrid, $el, data) => {
         const currentAttribute = this.getAttribute(attrid);
@@ -610,8 +645,8 @@ export default class SmartElementController {
         );
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "attributeAfterTabSelect",
       (event, attrid) => {
         const currentAttribute = this.getAttribute(attrid);
@@ -626,8 +661,8 @@ export default class SmartElementController {
         );
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "helperSearch",
       (event, attrid, options) => {
         try {
@@ -647,8 +682,8 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "helperResponse",
       (event, attrid, options) => {
         try {
@@ -668,8 +703,8 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "helperSelect",
       (event, attrid, options) => {
         try {
@@ -691,29 +726,33 @@ export default class SmartElementController {
     );
 
     // listener to prevent default actions when anchorClick is triggered
-    this.model.listenTo(this.model, "anchorClick", (event, attrid, options) => {
-      try {
-        const currentAttribute = this.getAttribute(attrid);
-        event.prevent = !this._triggerAttributeControllerEvent(
-          "attributeAnchorClick",
-          event,
-          currentAttribute,
-          this.getProperties(),
-          currentAttribute,
-          options.$el,
-          options.index,
-          options.options
-        );
-      } catch (error) {
-        if (!(error instanceof ErrorModelNonInitialized)) {
-          console.error(error);
+    this._model.listenTo(
+      this._model,
+      "anchorClick",
+      (event, attrid, options) => {
+        try {
+          const currentAttribute = this.getAttribute(attrid);
+          event.prevent = !this._triggerAttributeControllerEvent(
+            "attributeAnchorClick",
+            event,
+            currentAttribute,
+            this.getProperties(),
+            currentAttribute,
+            options.$el,
+            options.index,
+            options.options
+          );
+        } catch (error) {
+          if (!(error instanceof ErrorModelNonInitialized)) {
+            console.error(error);
+          }
         }
       }
-    });
+    );
 
     // Generic listener for addCreateDocumentButton docid render option
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "createDialogListener",
       (event, attrid, options) => {
         try {
@@ -739,14 +778,14 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "constraint",
       (attribute, constraintController) => {
         try {
           const currentAttribute = this.getAttribute(attribute);
           const currentModel = this.getProperties();
-          const $element = $(this.element);
+          const $element = $(this._element);
           const addConstraint = currentConstraint => {
             if (_.isString(currentConstraint)) {
               constraintController.addConstraintMessage(currentConstraint);
@@ -762,7 +801,8 @@ export default class SmartElementController {
               );
             }
           };
-          _.each(this.activatedConstraint, (currentConstraint: any) => {
+          Object.keys(this._activatedConstraint).forEach(key => {
+            const currentConstraint = this._activatedConstraint[key];
             try {
               if (
                 currentConstraint.attributeCheck.apply($element, [
@@ -793,13 +833,13 @@ export default class SmartElementController {
         }
       }
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "showTransition",
       _.bind(this._initAndDisplayTransition, this)
     );
-    this.model.listenTo(
-      this.model,
+    this._model.listenTo(
+      this._model,
       "beforeParse",
       _.bind(() => {
         //Suppress customClientData after a sucessful transaction
@@ -818,39 +858,39 @@ export default class SmartElementController {
    *
    * @private
    */
-  private initViewEvents() {
-    this.view.on("cleanNotification", () => {
+  private _initViewEvents() {
+    this._view.on("cleanNotification", () => {
       this.$notification.dcpNotification("clear");
     });
-    this.view.on("loading", (data, nbItem) => {
+    this._view.on("loading", (data, nbItem) => {
       this.$loading.dcpLoading("setPercent", data);
       if (nbItem) {
         this.$loading.dcpLoading("setNbItem", nbItem);
       }
     });
-    this.view.on("loaderShow", (text, pc) => {
+    this._view.on("loaderShow", (text, pc) => {
       console.time("xhr+render document view");
       this.$loading.dcpLoading("show", text, pc);
     });
-    this.view.on("loaderHide", () => {
+    this._view.on("loaderHide", () => {
       this.$loading.dcpLoading("hide");
     });
-    this.view.on("partRender", () => {
+    this._view.on("partRender", () => {
       this.$loading.dcpLoading("addItem");
     });
-    this.view.on("renderDone", () => {
+    this._view.on("renderDone", () => {
       console.timeEnd("xhr+render document view");
       this.$loading.dcpLoading("setPercent", 100);
       this.$loading.dcpLoading("setLabel", null);
-      this.initialized.view = true;
-      this.triggerControllerEvent("ready", null, this.getProperties());
+      this._initialized.view = true;
+      this._triggerControllerEvent("ready", null, this.getProperties());
       _.delay(() => {
         this.$loading.dcpLoading("hide", true);
         console.timeEnd("main");
       });
     });
-    this.view.on("showMessage", message => {
-      const result = this.triggerControllerEvent(
+    this._view.on("showMessage", message => {
+      const result = this._triggerControllerEvent(
         "displayMessage",
         null,
         this.getProperties(),
@@ -860,11 +900,11 @@ export default class SmartElementController {
         this.$notification.dcpNotification("show", message.type, message);
       }
     });
-    this.view.on("showSuccess", message => {
+    this._view.on("showSuccess", message => {
       if (message) {
         message.type = message.type ? message.type : "success";
       }
-      const result = this.triggerControllerEvent(
+      const result = this._triggerControllerEvent(
         "displayMessage",
         null,
         this.getProperties(),
@@ -874,10 +914,14 @@ export default class SmartElementController {
         this.$notification.dcpNotification("showSuccess", message);
       }
     });
-    this.view.on("reinit", () => {
-      this.initModel(this.getModelValue());
-      this.initView();
-      this.model.fetchDocument();
+    this._view.on("reinit", () => {
+      this._initModel(this._getModelValue());
+      this._initView();
+      this._model.fetchDocument();
+    });
+
+    this._view.on("renderCss", css => {
+      this.emit("renderCss", css);
     });
   }
 
@@ -886,9 +930,9 @@ export default class SmartElementController {
    *
    * @private
    */
-  private initRouter(config) {
-    if (this.router) {
-      return this.router;
+  private _initRouter(config) {
+    if (this._router) {
+      return this._router;
     }
     try {
       if (window.history && history.pushState) {
@@ -900,8 +944,8 @@ export default class SmartElementController {
     } catch (e) {
       console.error(e);
     }
-    this.router = new Router({
-      document: this.model,
+    this._router = new Router({
+      document: this._model,
       useHistory: !config || config.useHistory
     });
   }
@@ -931,7 +975,7 @@ export default class SmartElementController {
     const documentServerProperties = this.getProperties();
 
     return new Promise((resolve, reject) => {
-      result = !this.triggerControllerEvent(
+      result = !this._triggerControllerEvent(
         "beforeDisplayChangeState",
         null,
         this.getProperties(),
@@ -944,8 +988,8 @@ export default class SmartElementController {
 
       //Init transition model
       transitionElements.model = new TransitionModel({
-        documentId: this.model.id,
-        documentModel: this.model,
+        documentId: this._model.id,
+        documentModel: this._model,
         state: nextState,
         transition: transition
       });
@@ -968,7 +1012,7 @@ export default class SmartElementController {
       if (transitionElements.view) {
         //Propagate afterDisplayChange on renderDone
         transitionElements.view.once("renderTransitionWindowDone", () => {
-          this.triggerControllerEvent(
+          this._triggerControllerEvent(
             "afterDisplayTransition",
             null,
             this.getProperties(),
@@ -982,7 +1026,7 @@ export default class SmartElementController {
         transitionElements.model,
         "beforeChangeState",
         event => {
-          event.prevent = !this.triggerControllerEvent(
+          event.prevent = !this._triggerControllerEvent(
             "beforeTransition",
             null,
             this.getProperties(),
@@ -996,7 +1040,7 @@ export default class SmartElementController {
         transitionElements.model,
         "beforeChangeStateClose",
         event => {
-          event.prevent = !this.triggerControllerEvent(
+          event.prevent = !this._triggerControllerEvent(
             "beforeTransitionClose",
             null,
             this.getProperties(),
@@ -1009,7 +1053,7 @@ export default class SmartElementController {
         transitionElements.model,
         "showError",
         error => {
-          this.triggerControllerEvent(
+          this._triggerControllerEvent(
             "failTransition",
             null,
             this.getProperties(),
@@ -1026,16 +1070,16 @@ export default class SmartElementController {
         messages => {
           if (transitionElements.view) {
             transitionElements.view.$el.hide();
-            this.view.once("renderDone", () => {
+            this._view.once("renderDone", () => {
               transitionElements.view.remove();
               _.each(messages, message => {
-                this.view.trigger("showMessage", message);
+                this._view.trigger("showMessage", message);
               });
             });
           }
 
           //delete the pop up when the render of the pop up is done
-          this.triggerControllerEvent(
+          this._triggerControllerEvent(
             "successTransition",
             null,
             this.getProperties(),
@@ -1060,7 +1104,7 @@ export default class SmartElementController {
       );
 
       transitionElements.model.listenTo(
-        this.model,
+        this._model,
         "sync",
         function documentController_TransitionClose() {
           // @ts-ignore
@@ -1150,7 +1194,7 @@ export default class SmartElementController {
    * @returns {*}
    */
   private _getAttributeModel(attributeId) {
-    const attributes = this.model.get("attributes");
+    const attributes = this._model.get("attributes");
     let attribute;
     if (!attributes) {
       throw new Error(
@@ -1159,7 +1203,7 @@ export default class SmartElementController {
           '" cannot be found.'
       );
     }
-    attribute = this.model.get("attributes").get(attributeId);
+    attribute = this._model.get("attributes").get(attributeId);
     if (!attribute) {
       return undefined;
     }
@@ -1167,7 +1211,7 @@ export default class SmartElementController {
   }
 
   private _getMenuModel(menuId) {
-    const menus = this.model.get("menus");
+    const menus = this._model.get("menus");
 
     let menu = menus.get(menuId);
     if (!menu && menus) {
@@ -1190,7 +1234,7 @@ export default class SmartElementController {
    * @returns {*}
    */
   private _getRenderedAttributes() {
-    return this.model
+    return this._model
       .get("attributes")
       .chain()
       .map(currentAttribute => {
@@ -1229,15 +1273,15 @@ export default class SmartElementController {
    */
   private _initActivatedConstraint() {
     const currentDocumentProperties = this.getProperties();
-    this.activatedConstraint = {};
-    _.each(this.options.constraintList, (currentConstraint: any) => {
+    this._activatedConstraint = {};
+    _.each(this.listConstraints(), (currentConstraint: any) => {
       if (
         currentConstraint.documentCheck.call(
-          $(this.element),
+          $(this._element),
           currentDocumentProperties
         )
       ) {
-        this.activatedConstraint[currentConstraint.name] = currentConstraint;
+        this._activatedConstraint[currentConstraint.name] = currentConstraint;
       }
     });
   }
@@ -1249,24 +1293,24 @@ export default class SmartElementController {
   private _initActivatedEventListeners(options) {
     const currentDocumentProperties = this.getProperties();
     options = options || {};
-    this.activatedEventListener = {};
-    _.each(this.options.eventListener, (currentEvent: any) => {
+    this._activatedEventListener = {};
+    _.each(this.listEventListeners(), (currentEvent: any) => {
       if (!_.isFunction(currentEvent.documentCheck)) {
-        this.activatedEventListener[currentEvent.name] = currentEvent;
+        this._activatedEventListener[currentEvent.name] = currentEvent;
         return;
       }
       if (
         currentEvent.documentCheck.call(
-          $(this.element),
+          $(this._element),
           currentDocumentProperties
         )
       ) {
-        this.activatedEventListener[currentEvent.name] = currentEvent;
+        this._activatedEventListener[currentEvent.name] = currentEvent;
       }
     });
     //Trigger new added ready event
-    if (this.initialized.view && options.launchReady) {
-      this.triggerControllerEvent("ready", null, currentDocumentProperties);
+    if (this._initialized.view && options.launchReady) {
+      this._triggerControllerEvent("ready", null, currentDocumentProperties);
       _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
         const objectAttribute = this.getAttribute(currentAttribute.id);
         this._triggerAttributeControllerEvent(
@@ -1290,12 +1334,11 @@ export default class SmartElementController {
     let currentDocumentProperties;
     let event;
     let uniqueName;
-    const $element = $(this.element);
+    const $element = $(this._element);
     uniqueName =
       (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
-    this.options.eventListener[uniqueName] = newEvent;
-
-    if (!this.initialized.model) {
+    this._eventListener[uniqueName] = newEvent;
+    if (!this._initialized.model) {
       //early event model is not ready (no trigger, or current register possible)
       return this;
     }
@@ -1305,12 +1348,12 @@ export default class SmartElementController {
       !_.isFunction(newEvent.documentCheck) ||
       newEvent.documentCheck.call($element, currentDocumentProperties)
     ) {
-      this.activatedEventListener[newEvent.name] = newEvent;
+      this._activatedEventListener[newEvent.name] = newEvent;
       // Check if we need to manually trigger this callback (late registered : only for ready events)
-      if (this.initialized.view) {
+      if (this._initialized.view) {
         if (newEvent.eventType === "ready") {
           event = $.Event(newEvent.eventType);
-          event.target = this.element;
+          event.target = this._element;
           try {
             // add element as function context
             newEvent.eventCallback.call(
@@ -1324,7 +1367,7 @@ export default class SmartElementController {
         }
         if (newEvent.eventType === "attributeReady") {
           event = $.Event(newEvent.eventType);
-          event.target = this.element;
+          event.target = this._element;
           _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
             const objectAttribute = this.getAttribute(currentAttribute.id);
             if (
@@ -1368,14 +1411,14 @@ export default class SmartElementController {
   ) {
     const event: any = $.Event(eventName);
     let externalEventArgument;
-    const $element = $(this.element);
-    event.target = this.element;
+    const $element = $(this._element);
+    event.target = this._element;
     // internal event trigger
     if (originalEvent && originalEvent.preventDefault) {
       event.originalEvent = originalEvent;
     }
     args.unshift(event);
-    _.chain(this.activatedEventListener)
+    _.chain(this._activatedEventListener)
       .filter((currentEvent: any) => {
         // Check by eventType (only call callback with good eventType)
         if (currentEvent.eventType === eventName) {
@@ -1405,7 +1448,7 @@ export default class SmartElementController {
       });
     externalEventArgument = Array.prototype.slice.call(arguments, 0);
     externalEventArgument.splice(1, 1);
-    this.triggerExternalEvent.apply(this, externalEventArgument);
+    this._triggerExternalEvent.apply(this, externalEventArgument);
     return !event.isDefaultPrevented();
   }
 
@@ -1418,24 +1461,25 @@ export default class SmartElementController {
    * @param args
    * @returns {boolean}
    */
-  private triggerControllerEvent(eventName, originalEvent, ...args: any[]) {
+  private _triggerControllerEvent(eventName, originalEvent, ...args: any[]) {
     const event: JQuery.Event & {
       target: JQuery<DOMReference>;
-      originalEvent: JQuery.Event;
+      originalEvent?: JQuery.Event;
     } = $.Event(eventName);
-    event.target = this.element;
+    event.target = this._element;
     if (originalEvent && originalEvent.preventDefault) {
       event.originalEvent = originalEvent;
     }
+
     // internal event trigger
-    args.unshift(event);
-    _.chain(this.activatedEventListener)
+    const callbackArgs = [event, ...args];
+    _.chain(this._activatedEventListener)
       .filter((currentEvent: any) => {
         return currentEvent.eventType === eventName;
       })
       .each((currentEvent: any) => {
         try {
-          currentEvent.eventCallback.apply($(this.element), args);
+          currentEvent.eventCallback.apply($(this._element), callbackArgs);
         } catch (e) {
           // @ts-ignore
           if (window.dcp.logger) {
@@ -1447,7 +1491,7 @@ export default class SmartElementController {
         }
       });
     // @ts-ignore
-    this.triggerExternalEvent.call(this, ...arguments);
+    this._triggerExternalEvent.call(this, ...arguments);
     return !event.isDefaultPrevented();
   }
 
@@ -1457,7 +1501,7 @@ export default class SmartElementController {
    * @param type
    * @param args
    */
-  private triggerExternalEvent(type, ...args) {
+  private _triggerExternalEvent(type, ...args) {
     const event = $.Event(type);
     //prepare argument for widget event trigger (we want type, event, data)
     // add the eventObject
@@ -1493,7 +1537,7 @@ export default class SmartElementController {
       "The event type " +
         eventName +
         " is not known. It must be one of " +
-      AnakeenController.SmartElement.EVENTS_LIST.sort().join(" ,")
+        AnakeenController.SmartElement.EVENTS_LIST.sort().join(" ,")
     );
   }
 
@@ -1503,7 +1547,7 @@ export default class SmartElementController {
    * @private
    */
   private checkInitialisedView() {
-    if (!this.initialized.view) {
+    if (!this._initialized.view) {
       throw new ErrorModelNonInitialized(
         "The view is not initialized, use fetchDocument to initialise it."
       );
@@ -1516,7 +1560,7 @@ export default class SmartElementController {
    * @private
    */
   private checkInitialisedModel() {
-    if (!this.initialized.model) {
+    if (!this._initialized.model) {
       throw new ErrorModelNonInitialized();
     }
   }
@@ -1533,7 +1577,7 @@ export default class SmartElementController {
                 );
               }
               options.success.call(
-                $(this.element),
+                $(this._element),
                 values.documentProperties || {},
                 this.getProperties()
               );
@@ -1548,7 +1592,7 @@ export default class SmartElementController {
             }
           }
           resolve({
-            element: $(this.element),
+            element: $(this._element),
             previousDocument: values.documentProperties || {},
             nextDocument: this.getProperties()
           });
@@ -1592,7 +1636,7 @@ export default class SmartElementController {
                 );
               }
               options.error.call(
-                $(this.element),
+                $(this._element),
                 values.documentProperties || {},
                 null,
                 errorMessage
@@ -1603,7 +1647,7 @@ export default class SmartElementController {
             }
           }
           reject({
-            element: $(this.element),
+            element: $(this._element),
             previousDocument: values.documentProperties || {},
             nextDocument: null,
             errorMessage: errorMessage
@@ -1667,19 +1711,22 @@ export default class SmartElementController {
     _.defaults(options, { force: false });
 
     _.each(_.pick(values, "initid", "revision", "viewId"), (value, key) => {
-      this.options[key] = value;
+      this._internalViewData[key] = value;
     });
 
-    if (!this.model) {
-      documentPromise = this.initializeSmartElement(
+    if (!this._model) {
+      documentPromise = this._initializeSmartElement(
         options,
         values.customClientData
       );
     } else {
       if (values.customClientData) {
-        this.model._customClientData = values.customClientData;
+        this._model._customClientData = values.customClientData;
       }
-      documentPromise = this.model.fetchDocument(this.getModelValue(), options);
+      documentPromise = this._model.fetchDocument(
+        this._getModelValue(),
+        options
+      );
     }
     return this._registerOutputPromise(documentPromise, options);
   }
@@ -1695,9 +1742,9 @@ export default class SmartElementController {
     options = options || {};
     this.checkInitialisedModel();
     if (options.customClientData) {
-      this.model._customClientData = options.customClientData;
+      this._model._customClientData = options.customClientData;
     }
-    documentPromise = this.model.saveDocument();
+    documentPromise = this._model.saveDocument();
     return this._registerOutputPromise(documentPromise, options);
   }
 
@@ -1743,9 +1790,9 @@ export default class SmartElementController {
     options = options || {};
     this.checkInitialisedModel();
     if (options.customClientData) {
-      this.model._customClientData = options.customClientData;
+      this._model._customClientData = options.customClientData;
     }
-    documentPromise = this.model.deleteDocument();
+    documentPromise = this._model.deleteDocument();
     return this._registerOutputPromise(documentPromise, options);
   }
 
@@ -1759,9 +1806,9 @@ export default class SmartElementController {
     options = options || {};
     this.checkInitialisedModel();
     if (options.customClientData) {
-      this.model._customClientData = options.customClientData;
+      this._model._customClientData = options.customClientData;
     }
-    documentPromise = this.model.restoreDocument();
+    documentPromise = this._model.restoreDocument();
     return this._registerOutputPromise(documentPromise, options);
   }
 
@@ -1774,9 +1821,9 @@ export default class SmartElementController {
   public getProperty(property) {
     this.checkInitialisedModel();
     if (property === "isModified") {
-      return this.model.isModified();
+      return this._model.isModified();
     }
-    return this.model.getServerProperties()[property];
+    return this._model.getServerProperties()[property];
   }
 
   /**
@@ -1795,8 +1842,8 @@ export default class SmartElementController {
       };
     }
     if (ready) {
-      properties = this.model.getServerProperties();
-      properties.isModified = this.model.isModified();
+      properties = this._model.getServerProperties();
+      properties.isModified = this._model.isModified();
       properties.url = window.location.href;
     }
 
@@ -1811,7 +1858,7 @@ export default class SmartElementController {
    */
   public hasAttribute(attributeId) {
     this.checkInitialisedModel();
-    const attribute = this.model.get("attributes").get(attributeId);
+    const attribute = this._model.get("attributes").get(attributeId);
     return !!attribute;
   }
 
@@ -1837,7 +1884,7 @@ export default class SmartElementController {
    */
   public getAttributes() {
     this.checkInitialisedModel();
-    return this.model.get("attributes").map(currentAttribute => {
+    return this._model.get("attributes").map(currentAttribute => {
       return new AttributeInterface(currentAttribute);
     });
   }
@@ -1876,7 +1923,7 @@ export default class SmartElementController {
    */
   public getMenus() {
     this.checkInitialisedModel();
-    return this.model.get("menus").map(currentMenu => {
+    return this._model.get("menus").map(currentMenu => {
       return new MenuInterface(currentMenu);
     });
   }
@@ -1897,7 +1944,7 @@ export default class SmartElementController {
       throw new Error('The attribute "' + tabId + '" is not a tab.');
     }
 
-    this.model.trigger("doSelectTab", tabId);
+    this._model.trigger("doSelectTab", tabId);
   }
 
   /**
@@ -1916,7 +1963,7 @@ export default class SmartElementController {
       throw new Error('The attribute "' + tabId + '" is not a tab.');
     }
 
-    this.model.trigger("doDrawTab", tabId);
+    this._model.trigger("doDrawTab", tabId);
   }
 
   /**
@@ -1944,7 +1991,7 @@ export default class SmartElementController {
    */
   public getValues() {
     this.checkInitialisedModel();
-    return this.model.getValues();
+    return this._model.getValues();
   }
 
   /**
@@ -1953,7 +2000,7 @@ export default class SmartElementController {
    */
   public getCustomServerData() {
     this.checkInitialisedModel();
-    return this.model.get("customServerData");
+    return this._model.get("customServerData");
   }
   /**
    * Add customData from render view model
@@ -2009,7 +2056,7 @@ export default class SmartElementController {
     const newCustomData = {};
     this.checkInitialisedModel();
     properties = this.getProperties();
-    $element = $(this.element);
+    $element = $(this._element);
     _.each(this._customClientData, (currentCustom: any, key) => {
       if (currentCustom.documentCheck.call($element, properties)) {
         values[key] = currentCustom.value;
@@ -2276,7 +2323,7 @@ export default class SmartElementController {
     uniqueName =
       (currentConstraint.externalConstraint ? "external_" : "internal_") +
       currentConstraint.name;
-    this.options.constraintList[uniqueName] = currentConstraint;
+    this._constraintList[uniqueName] = currentConstraint;
     this._initActivatedConstraint();
     return currentConstraint.name;
   }
@@ -2287,7 +2334,7 @@ export default class SmartElementController {
    * @returns {*}
    */
   public listConstraints() {
-    return this.options.constraintList;
+    return this._constraintList;
   }
 
   /**
@@ -2306,7 +2353,7 @@ export default class SmartElementController {
     allKind = !!allKind;
     // jscs:enable disallowImplicitTypeConversion
     newConstraintList = _.filter(
-      this.options.constraintList,
+      this.listConstraints(),
       (currentConstraint: any) => {
         if (
           (allKind || !currentConstraint.externalConstraint) &&
@@ -2326,7 +2373,7 @@ export default class SmartElementController {
         currentConstraint.name;
       constraintList[uniqueName] = currentConstraint;
     });
-    this.options.constraintList = constraintList;
+    this._constraintList = constraintList;
     this._initActivatedConstraint();
     return removed;
   }
@@ -2403,7 +2450,7 @@ export default class SmartElementController {
    * @returns {*}
    */
   public listEventListeners() {
-    return this.options.eventListener;
+    return this._eventListener;
   }
 
   /**
@@ -2421,16 +2468,20 @@ export default class SmartElementController {
     // jscs:disable
     allKind = !!allKind;
     // jscs:enable
-    newList = _.filter(this.options.eventListener, (currentEvent: any) => {
-      if (
-        (allKind || !currentEvent.externalEvent) &&
-        (currentEvent.name === eventName || testRegExp.test(currentEvent.name))
-      ) {
-        removed.push(currentEvent);
-        return false;
+    newList = _.filter(
+      this._eventListener,
+      (currentEvent: any) => {
+        if (
+          (allKind || !currentEvent.externalEvent) &&
+          (currentEvent.name === eventName ||
+            testRegExp.test(currentEvent.name))
+        ) {
+          removed.push(currentEvent);
+          return false;
+        }
+        return true;
       }
-      return true;
-    });
+    );
     eventList = {};
     _.each(newList, (currentEvent: any) => {
       const uniqueName =
@@ -2438,7 +2489,7 @@ export default class SmartElementController {
         currentEvent.name;
       eventList[uniqueName] = currentEvent;
     });
-    this.options.eventListener = eventList;
+    this._eventListener = eventList;
     this._initActivatedEventListeners({ launchReady: false });
     return removed;
   }
@@ -2455,7 +2506,7 @@ export default class SmartElementController {
 
     args.splice(1, 0, null); // Add null originalEvent
     // @ts-ignore
-    return this.triggerControllerEvent.apply(this, args);
+    return this._triggerControllerEvent.apply(this, args);
   }
 
   /**
@@ -2573,7 +2624,7 @@ export default class SmartElementController {
       cssToInject = [cssToInject];
     }
 
-    this.model.injectCSS(cssToInject);
+    this._model.injectCSS(cssToInject);
   }
 
   public injectJS(jsToInject) {
@@ -2585,7 +2636,7 @@ export default class SmartElementController {
       jsToInject = [jsToInject];
     }
 
-    return this.model.injectJS(jsToInject);
+    return this._model.injectJS(jsToInject);
   }
   /**
    * tryToDestroy the widget
@@ -2595,15 +2646,15 @@ export default class SmartElementController {
   public tryToDestroy() {
     return new Promise((resolve, reject) => {
       const event = { prevent: false };
-      if (!this.model) {
+      if (!this._model) {
         resolve();
         return;
       }
       if (
-        this.model &&
-        this.model.isModified() &&
+        this._model &&
+        this._model.isModified() &&
         !window.confirm(
-          this.model.get("properties").get("title") +
+          this._model.get("properties").get("title") +
             "\n" +
             i18n.___(
               "The form has been modified without saving, do you want to close it ?",
@@ -2614,10 +2665,10 @@ export default class SmartElementController {
         reject("Unable to destroy because user refuses it");
         return;
       }
-      event.prevent = !this.triggerControllerEvent(
+      event.prevent = !this._triggerControllerEvent(
         "beforeClose",
         null,
-        this.model.getServerProperties()
+        this._model.getServerProperties()
       );
       if (event.prevent) {
         reject("Unable to destroy because before close refuses it");

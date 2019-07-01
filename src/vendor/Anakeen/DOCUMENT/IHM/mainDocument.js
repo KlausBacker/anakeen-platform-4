@@ -61,9 +61,11 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   };
 
   if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
-    window.ank.smartElement.globalController.addSmartElement(
-      ".document",
-      window.dcp.viewData
+    window.ank.smartElement.globalController.on(
+      "controllerReady",
+      controller => {
+        controller.addSmartElement(".document", window.dcp.viewData);
+      }
     );
     // $document.documentController(window.dcp.viewData);
     $document.one("documentready", function launchReady() {
@@ -76,7 +78,12 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
       });
     });
   } else {
-    window.ank.smartElement.globalController.addSmartElement();
+    window.ank.smartElement.globalController.on(
+      "controllerReady",
+      controller => {
+        controller.addSmartElement();
+      }
+    );
     // $document.documentController();
     window.dcp.triggerReload();
   }
