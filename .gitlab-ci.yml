@@ -59,11 +59,19 @@ populate-cache-master:
 #endregion tear-up
 
 #region lint
-lint:
+lint-php:
   <<: *pull-cache
   stage: lint
   script:
     - make lint
+  only:
+    - merge_requests
+    - web
+
+lint-js:
+  <<: *pull-cache
+  stage: lint
+  script:
     - make lintJS
   only:
     - merge_requests
@@ -78,7 +86,7 @@ lint:
    - ls -al ./node_modules/@anakeen/
    - ls -al ./node_modules/@anakeen/user-interfaces/
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
-   - make -C {PACKAGE_PATH} stubs
+   - make -C ${PACKAGE_PATH} stubs
    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
    - ls -al ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} ${PACKAGE_PATH})
