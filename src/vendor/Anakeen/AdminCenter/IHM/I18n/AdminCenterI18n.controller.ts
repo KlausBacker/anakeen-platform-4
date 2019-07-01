@@ -158,7 +158,6 @@ export default class I18nManagerController extends Vue {
               .data("kendoGrid")
               .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
             const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-
             const newVal = JSON.stringify({
               msgtr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
                 "input"
