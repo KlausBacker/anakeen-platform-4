@@ -22,7 +22,7 @@ stages:
       - user-interfaces/src/vendor/Anakeen/lib/
       - user-interfaces/Tests/src/vendor/Anakeen/TestUnits/lib
       - .eslintcache
-      - build/
+      - build
 
 .pull-cache: &pull-cache
   cache:
@@ -38,7 +38,7 @@ before_script:
   - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
   - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
   - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
-  - export ANK_CI_ARTEFACTS_PATH=./build/
+  - export ANK_CI_ARTEFACTS_PATH=./build
   - export ANK_CI_BUCKET=$(node ./.devtool/ci/utils/selectBucket.js)
   - export ANK_CI_A4PPM=$(node ./.devtool/ci/utils/selectA4ppm.js)
 
@@ -76,11 +76,13 @@ lint:
  stage: build
  script:
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
+   - make -C {PACKAGE_PATH} stubs
    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
+   - ls -al ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} ${PACKAGE_PATH})
    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_PATH}-${ANK_CI_APP_VERSION}.tar.gz ./src ./stubs
 
-build-smart-data-engine:
+smart-data-engine-build:
  extends: .build-package
  stage: build
  variables:
@@ -92,7 +94,7 @@ build-smart-data-engine:
    changes:
       - smart-data-engine
 
-build-integration-smart-data-engine:
+smart-data-engine-integration-build:
  extends: .build-package
  stage: build
  variables:
@@ -104,7 +106,7 @@ build-integration-smart-data-engine:
    changes:
      - smart-data-engine
 
-build-security:
+security-build:
  extends: .build-package
  stage: build
  variables:
@@ -116,7 +118,7 @@ build-security:
    changes:
      - security
 
-build-integration-security:
+security-integration-build:
  extends: .build-package
  stage: build
  variables:
@@ -128,7 +130,7 @@ build-integration-security:
    changes:
      - security
 
-build-workflow:
+workflow-build:
  extends: .build-package
  stage: build
  variables:
@@ -140,7 +142,7 @@ build-workflow:
    changes:
      - workflow
 
-build-integration-workflow:
+workflow-integration-build:
  extends: .build-package
  stage: build
  variables:
@@ -152,7 +154,7 @@ build-integration-workflow:
    changes:
      - workflow
 
-build-user-interfaces:
+user-interfaces-build:
  extends: .build-package
  stage: build
  variables:
@@ -164,7 +166,7 @@ build-user-interfaces:
    changes:
      - user-interfaces
 
-build-integration-user-interfaces:
+user-interfaces-integration-build:
  extends: .build-package
  stage: build
  variables:
@@ -176,7 +178,7 @@ build-integration-user-interfaces:
    changes:
      - user-interfaces
 
-build-hub-station:
+hub-station-build:
  extends: .build-package
  stage: build
  before_script:
@@ -191,7 +193,7 @@ build-hub-station:
    changes:
      - hub-station
 
-build-integration-hub-station:
+hub-station-integration-build:
  extends: .build-package
  stage: build
  before_script:
@@ -206,7 +208,7 @@ build-integration-hub-station:
    changes:
      - hub-station
 
-build-admin-center:
+admin-center-build:
  extends: .build-package
  stage: build
  before_script:
@@ -222,7 +224,7 @@ build-admin-center:
    changes:
      - admin-center
 
-build-integration-admin-center:
+admin-center-integration-build:
  extends: .build-package
  stage: build
  before_script:
@@ -238,7 +240,7 @@ build-integration-admin-center:
    changes:
      - admin-center
 
-build-business-app:
+business-app-build:
  extends: .build-package
  stage: build
  before_script:
@@ -254,7 +256,7 @@ build-business-app:
    changes:
      - business-app
 
-build-integration-business-app:
+business-app-integration-build:
  extends: .build-package
  stage: build
  before_script:
@@ -270,7 +272,7 @@ build-integration-business-app:
    changes:
      - business-app
 
-build-development-center:
+development-center-build:
  extends: .build-package
  stage: build
  before_script:
@@ -286,11 +288,13 @@ build-development-center:
    changes:
      - development-center
 
-build-integration-development-center:
+development-center-integration-build:
  extends: .build-package
  stage: build
  before_script:
    - make -C internal-components app
+   - make -C user-interfaces buildDLL
+   - make -C hub-station buildDLL
  variables:
    PACKAGE_PATH: development-center
    MODE: "app-autorelease"
@@ -300,7 +304,7 @@ build-integration-development-center:
    changes:
      - development-center
 
-build-transformation:
+transformation-build:
  extends: .build-package
  stage: build
  before_script:
@@ -316,7 +320,7 @@ build-transformation:
    changes:
      - transformation
 
-build-integration-transformation:
+transformation-integration-build:
  extends: .build-package
  stage: build
  before_script:
@@ -332,7 +336,7 @@ build-integration-transformation:
    changes:
      - transformation
 
-build-migration-tools:
+migration-tools-build:
   extends: .build-package
   stage: build
   variables:
@@ -344,7 +348,7 @@ build-migration-tools:
     changes:
       - migration-tools
 
-build-integration-migration-tools:
+migration-tools-integration-build:
   extends: .build-package
   stage: build
   variables:
@@ -365,7 +369,7 @@ build-integration-migration-tools:
   script:
     - cd ${PACKAGE_PATH} && npm publish
 
-publish-integration-anakeen-cli:
+anakeen-cli-integration-publish:
   extends: .npm-publish-package
   before_script:
     -  node ./.devtool/ci/utils/autorelease.js ./anakeen-cli
@@ -377,7 +381,7 @@ publish-integration-anakeen-cli:
     changes:
       - anakeen-cli
 
-publish-anakeen-cli:
+anakeen-cli-publish:
   extends: .npm-publish-package
   variables:
     PACKAGE_PATH: anakeen-cli
@@ -387,7 +391,7 @@ publish-anakeen-cli:
     changes:
       - anakeen-cli
 
-publish-integration-module-validation:
+module-validation-integration-publish:
   extends: .npm-publish-package
   before_script:
     -  node ./.devtool/ci/utils/autorelease.js ./module-validation
@@ -399,7 +403,7 @@ publish-integration-module-validation:
     changes:
       - module-validation
 
-publish-module-validation:
+module-validation-publish:
   extends: .npm-publish-package
   variables:
     PACKAGE_PATH: module-validation
@@ -409,7 +413,7 @@ publish-module-validation:
     changes:
       - module-validation
 
-publish-integration-theme-variable:
+theme-variable-integration-publish:
   extends: .npm-publish-package
   before_script:
     -  node ./.devtool/ci/utils/autorelease.js ./theme-variable
@@ -421,7 +425,7 @@ publish-integration-theme-variable:
     changes:
       - theme-variable
 
-publish-theme-variable:
+theme-variable-publish:
   extends: .npm-publish-package
   variables:
     PACKAGE_PATH: theme-variable
@@ -456,7 +460,7 @@ publish-theme-variable:
       --request POST
       "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
 
-register-smart-data-engine:
+smart-data-engine-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "smart-data-engine"
@@ -467,7 +471,7 @@ register-smart-data-engine:
     changes:
       - smart-data-engine
 
-register-integration-smart-data-engine:
+smart-data-engine-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "smart-data-engine"
@@ -478,7 +482,7 @@ register-integration-smart-data-engine:
     changes:
       - smart-data-engine
 
-register-workflow:
+workflow-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "workflow"
@@ -489,7 +493,7 @@ register-workflow:
     changes:
       - workflow
 
-register-integration-workflow:
+workflow-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "workflow"
@@ -500,7 +504,7 @@ register-integration-workflow:
     changes:
       - workflow
 
-register-security:
+security-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "security"
@@ -511,7 +515,7 @@ register-security:
     changes:
       - security
 
-register-integration-security:
+security-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "security"
@@ -522,7 +526,7 @@ register-integration-security:
     changes:
       - security
 
-register-user-interfaces:
+user-interfaces-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "user-interfaces"
@@ -533,7 +537,7 @@ register-user-interfaces:
     changes:
       - user-interfaces
 
-register-integration-user-interfaces:
+user-interfaces-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "user-interfaces"
@@ -544,7 +548,7 @@ register-integration-user-interfaces:
     changes:
       - user-interfaces
 
-register-migration-tools:
+migration-tools-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "migration-tools"
@@ -555,7 +559,7 @@ register-migration-tools:
     changes:
       - migration-tools
 
-register-integration-migration-tools:
+migration-tools-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "migration-tools"
@@ -566,7 +570,7 @@ register-integration-migration-tools:
     changes:
       - migration-tools
 
-register-hub-station:
+hub-station-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "hub-station"
@@ -577,7 +581,7 @@ register-hub-station:
     changes:
       - hub-station
 
-register-integration-hub-station:
+hub-station-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "hub-station"
@@ -588,7 +592,7 @@ register-integration-hub-station:
     changes:
       - hub-station
 
-register-business-app:
+business-app-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "business-app"
@@ -599,7 +603,7 @@ register-business-app:
     changes:
       - business-app
 
-register-integration-business-app:
+business-app-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "business-app"
@@ -610,7 +614,7 @@ register-integration-business-app:
     changes:
       - business-app
 
-register-development-center:
+development-center-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "development-center"
@@ -621,7 +625,7 @@ register-development-center:
     changes:
       - development-center
 
-register-integration-development-center:
+development-center-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "development-center"
@@ -632,7 +636,7 @@ register-integration-development-center:
     changes:
       - development-center
 
-register-transformation:
+transformation-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "transformation"
@@ -643,7 +647,7 @@ register-transformation:
     changes:
       - transformation
 
-register-integration-transformation:
+transformation-integration-register:
   extends: .registry
   variables:
     ANK_CI_APP_NAME: "transformation"
