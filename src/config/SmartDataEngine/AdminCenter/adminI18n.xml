@@ -15,6 +15,7 @@
             <sde:callable>Anakeen\Routes\Admin\I18n\RecordTranslation</sde:callable>
             <sde:method>PUT</sde:method>
             <sde:pattern>/api/v2/admin/i18n/{lang}/{msgctxt}/{msgid}</sde:pattern>
+            <sde:pattern>/api/v2/admin/i18n/{lang}//{msgid}</sde:pattern>
             <sde:description>Modify one translation</sde:description>
             <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>
