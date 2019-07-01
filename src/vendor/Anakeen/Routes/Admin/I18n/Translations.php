@@ -3,6 +3,7 @@
 namespace Anakeen\Routes\Admin\I18n;
 
 use Anakeen\Core\ContextManager;
+use Anakeen\Core\DbManager;
 use Anakeen\Core\SmartStructure\Attributes;
 use Anakeen\Core\Utils\Strings;
 use Anakeen\Router\ApiV2Response;
@@ -61,6 +62,7 @@ class Translations
         $data = $this->getRecordedTranslations();
 
         $this->addSmartStructureLocale($data);
+        $this->addEnumLocale($data);
 
         usort($data, function ($a, $b) {
             $cmp = strcmp($a["msgctxt"], $b["msgctxt"]);
@@ -99,6 +101,28 @@ class Translations
         }
     }
 
+
+    protected function addEnumLocale(&$data)
+    {
+        DbManager::query("select * from docenum", $enums);
+
+        foreach ($enums as $enum) {
+            $key = sprintf("%s-%s", $enum["name"], $enum["key"]);
+            if (empty($this->filters) || $this->filterContainsEnum($enum, $this->filters)) {
+                if (!isset($data[$key])) {
+                    $data[$key] = [
+                        "section" => "Enum",
+                        "msgctxt" => $enum["name"],
+                        "msgid" => $enum["key"],
+                        "msgstr" => $enum["label"]
+                    ];
+                } else {
+                    $data[$key]["section"] = "Enum";
+                }
+            }
+        }
+    }
+
     /**
      * @return array
      * @throws Exception
@@ -107,23 +131,28 @@ class Translations
     {
         $data = [];
 
-
-        $tmpPo = sprintf("%s/%s.po", ContextManager::getTmpDir(), uniqid("i18n"));
-
-        $cmd = sprintf("msgunfmt %s/locale/%s/LC_MESSAGES/main-catalog.mo > %s", escapeshellarg(ContextManager::getRootDirectory()), $this->lang, escapeshellarg($tmpPo));
-
-        exec($cmd, $output, $status);
-        if ($status !== 0) {
-            throw new Exception("Fail retrieve locale");
+        $customPoFile = sprintf("%s/locale/%s/LC_MESSAGES/custom-catalog.po", ContextManager::getRootDirectory(), $this->lang);
+        if (!file_exists($customPoFile)) {
+            throw new Exception("Fail retrieve custom locale results");
         }
-        if (!file_exists($tmpPo)) {
-            throw new Exception("Fail retrieve locale results");
+
+
+        $originPoFile = sprintf("%s/locale/%s/LC_MESSAGES/origin-catalog.po", ContextManager::getRootDirectory(), $this->lang);
+        if (!file_exists($originPoFile)) {
+            throw new Exception("Fail retrieve origin locale results");
         }
-        $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($tmpPo);
+
+        $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($customPoFile);
         $poParser = new \Sepia\PoParser\Parser($fileHandler);
-        $catalog = $poParser->parse();
+        $customCatalog = $poParser->parse();
 
-        $entries = $catalog->getEntries();
+
+        $originFileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($originPoFile);
+        $originParser = new \Sepia\PoParser\Parser($originFileHandler);
+        $originalCatalog = $originParser->parse();
+
+
+        $entries = $originalCatalog->getEntries();
         $i = 0;
         foreach ($entries as $entry) {
             $key = sprintf("%s-%s", $entry->getMsgCtxt(), $entry->getMsgId());
@@ -140,6 +169,10 @@ class Translations
                 if (($entry->getMsgIdPlural())) {
                     $data[$key]["plural"] = $entry->getMsgStrPlurals();
                 }
+                $customEntry=$customCatalog->getEntry($entry->getMsgId(), $entry->getMsgCtxt());
+                if ($customEntry) {
+                      $data[$key]["override"] = $customEntry->getMsgStr();
+                }
             }
         }
         return $data;
@@ -147,7 +180,7 @@ class Translations
 
     private function filterContainsTranslations(Entry $entry, $filters)
     {
-        $filterPassed = false;
+        $filterPassed = true;
         if (!empty($filters)) {
             foreach ($filters as $filter) {
                 $filterField = $filter["field"];
@@ -169,8 +202,8 @@ class Translations
                     default:
                         break;
                 }
-                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) !== false) {
-                    $filterPassed = true;
+                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) === false) {
+                    return false;
                 }
             }
         }
@@ -179,7 +212,7 @@ class Translations
 
     private function filterContainsStructure($structure, $field, $filters)
     {
-        $filterPassed = false;
+        $filterPassed = true;
         if (!empty($filters)) {
             foreach ($filters as $filter) {
                 $filterField = $filter["field"];
@@ -201,8 +234,40 @@ class Translations
                     default:
                         break;
                 }
-                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) !== false) {
-                    $filterPassed = true;
+                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) === false) {
+                    return false;
+                }
+            }
+        }
+        return $filterPassed;
+    }
+
+    private function filterContainsEnum($enum, $filters)
+    {
+        $filterPassed = true;
+        if (!empty($filters)) {
+            foreach ($filters as $filter) {
+                $filterField = $filter["field"];
+                $filterValue = $filter["value"];
+                $entryValue = null;
+                switch ($filterField) {
+                    case "msgctxt":
+                        $entryValue = $enum["name"];
+                        break;
+                    case "msgid":
+                        $entryValue =  $enum["key"];
+                        break;
+                    case "msgstr":
+                        $entryValue =  $enum["label"];
+                        break;
+                    case "section":
+                        $entryValue = "Enum";
+                        break;
+                    default:
+                        break;
+                }
+                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) === false) {
+                    return false;
                 }
             }
         }
