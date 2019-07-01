@@ -158,23 +158,23 @@ export default class I18nManagerController extends Vue {
               .data("kendoGrid")
               .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
             const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-            const newVal = $(
-              confirmEvent.event.target.closest("tr[role=row]")
-            ).find("input")[0].value;
-            this.$http
-              .put(
-                `/api/v2/admin/i18n/${this.translationLocale}/
-                ${msgctxtData}/
-                ${rowData.msgid}`,
-                newVal
-              )
-              .then(response => {
-                if (response.status === 200) {
-                  this.$emit("EditTranslationSuccess");
-                } else {
-                  this.$emit("EditTranslationFail");
-                }
-              });
+            const newVal = JSON.stringify({
+              msgtr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
+                "input"
+              )[0].value
+            });
+            const url = `/api/v2/admin/i18n/${encodeURIComponent(
+              this.translationLocale
+            )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
+              rowData.msgid
+            )}`;
+            this.$http.put(url, newVal).then(response => {
+              if (response.status === 200) {
+                this.$emit("EditTranslationSuccess");
+              } else {
+                this.$emit("EditTranslationFail");
+              }
+            });
           }
         });
         $(".cancel-override-translation").kendoButton({
