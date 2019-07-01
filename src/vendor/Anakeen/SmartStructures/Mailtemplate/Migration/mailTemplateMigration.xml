@@ -1,0 +1,21 @@
+<migration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="DbMigrationRules.xsd">
+
+    <action id="cvMailTemplateMigration" label="Set CV_MAIL_TEMPLATE view control to mail template smart elements">
+        <condition>
+            <sql-assert-empty label="verify MAILTEMPLATE have no view control">
+                select * from docfam where name = 'MAILTEMPLATE' and ccvid is not null;
+            </sql-assert-empty>
+        </condition>
+        <process>
+            <sql-query label="Affect CV_MAIL_TEMPLATE view control to mail template smart elements">
+                update family.mailtemplate set cvid = (select ccvid from docfam where name='MAILTEMPLATE') where cvid is null;
+            </sql-query>
+        </process>
+        <check>
+            <sql-assert-empty label="verify each MAILTEMPLATE has view control">
+                select * from family.mailtemplate where cvid is null;
+            </sql-assert-empty>
+        </check>
+    </action>
+</migration>
