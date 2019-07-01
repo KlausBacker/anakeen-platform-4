@@ -75,6 +75,8 @@ lint:
  <<: *pull-cache
  stage: build
  script:
+   - ls -al ./node_modules/@anakeen/
+   - ls -al ./node_modules/@anakeen/user-interfaces/
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - make -C {PACKAGE_PATH} stubs
    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
