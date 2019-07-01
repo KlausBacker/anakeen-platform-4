@@ -1,5 +1,5 @@
 const path = require("path");
-const { useCache  } = require("./common");
+const { useCache } = require("./common");
 
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const { vueLoader, addDll } = require("@anakeen/webpack-conf/parts");
@@ -46,6 +46,12 @@ module.exports = () => {
           __dirname,
           "../src/vendor/Anakeen/SmartStructures/Task/Render/task.js"
         )
+      ],
+      "search-view-grid-render": [
+        path.resolve(
+          __dirname,
+          "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/searchViewGrid.js"
+        )
       ]
     },
     buildPath: PUBLIC_PATH,
@@ -60,6 +66,26 @@ module.exports = () => {
           "assets",
           "legacy",
           "KendoUI-manifest.json"
+        )
+      }),
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          PUBLIC_PATH,
+          "Anakeen",
+          "ankDll",
+          "legacy",
+          "ankKendoDll-manifest.json"
+        )
+      }),
+      addDll({
+        context: BASE_DIR,
+        manifest: path.join(
+          PUBLIC_PATH,
+          "Anakeen",
+          "ankDll",
+          "legacy",
+          "vueDll-manifest.json"
         )
       }),
       {

@@ -57,6 +57,10 @@ beautify:
 	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
+stub: install-deps
+	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
+	${ANAKEEN_CLI_BIN} generateStubs
+
 ########################################################################################################################
 ##
 ## Po and stub

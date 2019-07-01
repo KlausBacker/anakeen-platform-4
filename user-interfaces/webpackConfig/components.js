@@ -1,5 +1,5 @@
 const path = require("path");
-const { useCache  } = require("./common");
+const { useCache } = require("./common");
 const { prod, legacy, dev } = require("@anakeen/webpack-conf");
 const {
   vueLoader,
@@ -15,10 +15,14 @@ module.exports = () => {
   const conf = {
     moduleName: "ank-components",
     entry: {
-      "login": [ path.resolve(__dirname, "../src/vendor/Anakeen/Components/Authent/Routes/LoginPage.js")],
-      "search-view-grid-render": [ path.resolve(__dirname, "../src/vendor/Anakeen/SmartStructures/Dsearch/Render/searchViewGrid.js")],
       "ank-components": [
         path.resolve(__dirname, "../src/vendor/Anakeen/Components/main.js")
+      ],
+      login: [
+        path.resolve(
+          __dirname,
+          "../src/vendor/Anakeen/Components/Authent/Routes/LoginPage.js"
+        )
       ]
     },
     buildPath: PUBLIC_PATH,
