@@ -158,9 +158,12 @@ export default class I18nManagerController extends Vue {
               .data("kendoGrid")
               .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
             const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-            const newVal = $(
-              confirmEvent.event.target.closest("tr[role=row]")
-            ).find("input")[0].value;
+
+            const newVal = JSON.stringify({
+              msgtr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
+                "input"
+              )[0].value
+            });
             const url = `/api/v2/admin/i18n/${encodeURIComponent(
               this.translationLocale
             )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
