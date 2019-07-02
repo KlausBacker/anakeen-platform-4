@@ -25,7 +25,7 @@
         <sde:route name="AdminI18n:ImportTranslation">
             <sde:callable>Anakeen\Routes\Admin\I18n\ImportTranslationsFile</sde:callable>
             <sde:method>PUT</sde:method>
-            <sde:pattern>/api/v2/admin/i18n/{lang}/{fileName}</sde:pattern>
+            <sde:pattern>/api/v2/admin/i18n/{lang}/</sde:pattern>
             <sde:description>Import translation file</sde:description>
             <sde:requiredAccess operator="or">
                 <sde:access ns="AdminCenter">Admin</sde:access>

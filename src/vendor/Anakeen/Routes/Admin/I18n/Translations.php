@@ -17,11 +17,10 @@ require_once "vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php";
 /**
  * Get All Enumerate Items
  *
- * @note Used by route : GET /api/v2/devel/i18n/
+ * @note Used by route : GET /api/v2/admin/i18n/{lang}
  */
 class Translations
 {
-
     protected $lang;
     protected $filters = array();
     const PAGESIZE = 50;
@@ -90,7 +89,8 @@ class Translations
                                 "section" => "SmartStructure",
                                 "msgctxt" => $structure->name,
                                 "msgid" => $field->id,
-                                "msgstr" => $field->labelText
+                                "msgstr" => $field->labelText,
+                                "override" => null
                             ];
                         } else {
                             $data[$key]["section"] = "SmartStructure";
@@ -114,7 +114,8 @@ class Translations
                         "section" => "Enum",
                         "msgctxt" => $enum["name"],
                         "msgid" => $enum["key"],
-                        "msgstr" => $enum["label"]
+                        "msgstr" => $enum["label"],
+                        "override" => null
                     ];
                 } else {
                     $data[$key]["section"] = "Enum";
@@ -167,11 +168,14 @@ class Translations
                 }
                 $data[$key]["msgstr"] = $entry->getMsgStr();
                 if (($entry->getMsgIdPlural())) {
-                    $data[$key]["plural"] = $entry->getMsgStrPlurals();
+                    $data[$key]["pluralid"] = $entry->getMsgIdPlural();
+                    $data[$key]["plurals"] = $entry->getMsgStrPlurals();
                 }
-                $customEntry=$customCatalog->getEntry($entry->getMsgId(), $entry->getMsgCtxt());
+                $customEntry = $customCatalog->getEntry($entry->getMsgId(), $entry->getMsgCtxt());
                 if ($customEntry) {
-                      $data[$key]["override"] = $customEntry->getMsgStr();
+                    $data[$key]["override"] = $customEntry->getMsgStr();
+                } else {
+                    $data[$key]["override"] = null;
                 }
             }
         }
@@ -255,10 +259,10 @@ class Translations
                         $entryValue = $enum["name"];
                         break;
                     case "msgid":
-                        $entryValue =  $enum["key"];
+                        $entryValue = $enum["key"];
                         break;
                     case "msgstr":
-                        $entryValue =  $enum["label"];
+                        $entryValue = $enum["label"];
                         break;
                     case "section":
                         $entryValue = "Enum";

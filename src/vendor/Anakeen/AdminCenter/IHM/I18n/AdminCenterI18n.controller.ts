@@ -119,13 +119,13 @@ export default class I18nManagerController extends Vue {
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           template: rowData => {
-            if (rowData.plural) {
+            if (rowData.plurals) {
               let cellData = "";
               // tslint:disable-next-line:prefer-for-of
-              for (let i = 0; i < rowData.plural.length - 1; i++) {
-                cellData += rowData.plural[i] + "<hr>";
+              for (let i = 0; i < rowData.plurals.length - 1; i++) {
+                cellData += rowData.plurals[i] + "<hr>";
               }
-              cellData += rowData.plural[rowData.plural.length - 1];
+              cellData += rowData.plurals[rowData.plurals.length - 1];
               return cellData;
             } else {
               return rowData.msgstr;
@@ -138,7 +138,7 @@ export default class I18nManagerController extends Vue {
           filterable: false,
           minResizableWidth: 25,
           template: rowData => {
-            if (rowData.plural) {
+            if (rowData.plurals) {
               return `<div class="input-group">
                 <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>
                 <div class="input-group-append">
@@ -330,12 +330,10 @@ export default class I18nManagerController extends Vue {
   }
 
   public exportLocaleFile() {
-    const locale = this.translationLocale === "fr" ? "FR_fr" : "EN_us";
-    const date = this.getDate();
-    // const fileName = `${locale}-${date}`;
-    const fileName = `${locale}-${date}`;
-    console.log(fileName + ".po");
-    window.open(`/api/v2/admin/i18n/${this.translationLocale}/custom.po`);
+    window.open(
+      `/api/v2/admin/i18n/${this.translationLocale}/custom.po`,
+      "_self"
+    );
   }
 
   private getDate() {
