@@ -335,9 +335,7 @@ export default class I18nManagerController extends Vue {
     // const fileName = `${locale}-${date}`;
     const fileName = `${locale}-${date}`;
     console.log(fileName + ".po");
-    // window.open(
-    //   `/api/v2/admin/i18n/${this.translationLocale}/export/${fileName}.po`
-    // );
+    window.open(`/api/v2/admin/i18n/${this.translationLocale}/custom.po`);
   }
 
   private getDate() {
