@@ -39,7 +39,7 @@ before_script:
   - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
   - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
   - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
-  - export ANK_CI_ARTEFACTS_PATH=./build
+  - export ANK_CI_ARTEFACTS_PATH=$(pwd)/build
   - export ANK_CI_BUCKET=$(node ./.devtool/ci/utils/selectBucket.js)
   - export ANK_CI_A4PPM=$(node ./.devtool/ci/utils/selectA4ppm.js)
 
