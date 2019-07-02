@@ -6,7 +6,8 @@ const appName = process.argv[3];
 
 findApp(appName, appPath).then(fileName => {
   if (!fileName) {
-    throw new Error(`No app found : ${appPath} ${appName}`);
+    console.log(`No app found : ${appPath} ${appName}`);
+    process.exit(1);
   }
   getInfoFromApp(path.join(appPath, fileName)).then(appInfo => {
     console.log(appInfo.version);
