@@ -42,8 +42,9 @@ class ExportTranslationsFile extends Translations
         $data = $this->getRecordedTranslations();
 
         $this->addSmartStructureLocale($data);
+        $this->addWorkflowLocale($data);
         $this->addEnumLocale($data);
-
+        $this->addOverride($data);
 
         usort($data, function ($a, $b) {
             if ($a["override"] !== null && $b["override"] === null) {
@@ -68,7 +69,7 @@ class ExportTranslationsFile extends Translations
         return $poFile;
     }
 
-    protected function initCatalog($data)
+    protected function initCatalog(&$data)
     {
 
         $originPoFile = sprintf("%s/locale/%s/LC_MESSAGES/custom-catalog.po", ContextManager::getRootDirectory(), $this->lang);
