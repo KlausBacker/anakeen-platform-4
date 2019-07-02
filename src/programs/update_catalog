@@ -61,7 +61,7 @@ function whattext ()
             msgcat --use-first -o origin-catalog.po  header*.po  ./src/*.po *.po
 
             # custom only
-            msgcat --use-first -o custom-catalog.po  ./src/0_header.po ./src/custom/*.po
+            msgcat --use-first -o custom-catalog.po  --force-po ./src/0_header.po ./src/custom/*.po
         else
             msgcat --use-first -o allmo.tmp  header*.po *.po
             msgfmt -o main-catalog.mo allmo.tmp
