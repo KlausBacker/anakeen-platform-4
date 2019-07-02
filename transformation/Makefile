@@ -49,6 +49,7 @@ po: install-deps
 
 stubs: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Generate Stubs${RESET_COLOR}\n"
+	mkdir stubs
 	${ANAKEEN_CLI_BIN} generateStubs
 
 ########################################################################################################################
