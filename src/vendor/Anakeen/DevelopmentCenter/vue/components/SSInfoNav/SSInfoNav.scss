@@ -1,5 +1,5 @@
 .ss-infos-nav {
-  .infos-nav-item {
+  a[data-role=develRouterLink].infos-nav-item {
     background: #157EFB;
     color: white;
     display: inline-block;
