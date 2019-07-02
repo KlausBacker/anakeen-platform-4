@@ -10,7 +10,13 @@ $rootPath = realpath(__DIR__ . "/../");
 set_include_path(get_include_path() . PATH_SEPARATOR . $rootPath . DIRECTORY_SEPARATOR . 'include');
 putenv('WIFF_ROOT=' . $rootPath);
 
+register_shutdown_function(function () {
+    Control\Internal\FatalHandler::handleFatalShutdown();
+});
 
+set_exception_handler(function (\Exception $e) {
+   print_r($e->getMessage());
+});
 $app = new \Slim\App([
     "errorHandler" => function () {
         return new \Control\Api\ErrorHandler();
@@ -20,7 +26,6 @@ $app = new \Slim\App([
         'debug' => true,
     ]
 ]);
-
 /**
  * Main Html page to display current configuration
  */

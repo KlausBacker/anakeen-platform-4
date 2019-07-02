@@ -17,6 +17,11 @@ class ErrorHandler
             $response = $response->withStatus(self::status, self::message);
             return $response->withJson($exception);
         }
-        throw $exception;
+        /**
+         * @var \Control\Exception\RuntimeException $exception
+         */
+        $response = $response->withStatus(self::status, self::message);
+        return $response->write(print_r($exception, true));
+
     }
 }
