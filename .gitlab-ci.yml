@@ -268,7 +268,7 @@ hub-station-build:
  stage: build
  variables:
    PACKAGE_PATH: hub-station
-   PACKAGE_NAME: anakeen-hub-station
+   PACKAGE_NAME: anakeen-hub
    MODE: "app"
  only:
    refs:
@@ -284,7 +284,7 @@ hub-station-integration-build:
  stage: build
  variables:
    PACKAGE_PATH: hub-station
-   PACKAGE_NAME: anakeen-hub-station
+   PACKAGE_NAME: anakeen-hub
    MODE: "app-autorelease"
  only:
    refs:
@@ -334,7 +334,7 @@ business-app-build:
  stage: build
  variables:
    PACKAGE_PATH: business-app
-   PACKAGE_NAME: anakeen-business-app
+   PACKAGE_NAME: anakeen-hub-business-app
    MODE: "app"
  only:
    refs:
@@ -351,7 +351,7 @@ business-app-integration-build:
  stage: build
  variables:
    PACKAGE_PATH: business-app
-   PACKAGE_NAME: anakeen-business-app
+   PACKAGE_NAME: anakeen-hub-business-app
    MODE: "app-autorelease"
  only:
    refs:
@@ -686,7 +686,7 @@ migration-tools-integration-register:
 hub-station-register:
   extends: .registry
   variables:
-    ANK_CI_APP_NAME: "anakeen-hub-station"
+    ANK_CI_APP_NAME: "anakeen-hub"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -698,7 +698,7 @@ hub-station-register:
 hub-station-integration-register:
   extends: .registry
   variables:
-    ANK_CI_APP_NAME: "anakeen-hub-station"
+    ANK_CI_APP_NAME: "anakeen-hub"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -710,7 +710,7 @@ hub-station-integration-register:
 business-app-register:
   extends: .registry
   variables:
-    ANK_CI_APP_NAME: "anakeen-business-app"
+    ANK_CI_APP_NAME: "anakeen-hub-business-app"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -722,7 +722,7 @@ business-app-register:
 business-app-integration-register:
   extends: .registry
   variables:
-    ANK_CI_APP_NAME: "anakeen-business-app"
+    ANK_CI_APP_NAME: "anakeen-hub-business-app"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
