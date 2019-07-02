@@ -26,7 +26,6 @@ class FinalUpdates
 
     protected function initParameters($args)
     {
-
     }
 
     protected function doRequest()
@@ -53,5 +52,4 @@ class FinalUpdates
 
         return $data;
     }
-
 }
