@@ -17,6 +17,18 @@ stages:
     key: "Anakeen:MonoRepo"
     paths:
       - node_modules
+      - anakeen-cli/node_modules/
+      - business-app/node_modules/
+      - development-center/node_modules/
+      - hub-station/node_modules/
+      - internal-components/node_modules/
+      - migration-tools/node_modules/
+      - security/node_modules/
+      - smart-data-engine/node_modules/
+      - theme-variables/node_modules/
+      - transformation/node_modules/
+      - user-interfaces/node_modules/
+      - workflow/node_modules/
       - .devtool/ci/check/checkPHP/vendor
       - smart-data-engine/src/vendor/Anakeen/lib/vendor
       - smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
@@ -138,18 +150,14 @@ hub-station-buildJS:
  <<: *pull-cache
  stage: build
  script:
-   - echo ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - make -C ${PACKAGE_PATH} stubs
    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_PATH} ${MODE}
-   - echo ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
    - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} ${PACKAGE_PATH})
-   - ls -al ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
-   - echo ${ANK_CI_APP_VERSION}
    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_PATH}-${ANK_CI_APP_VERSION}.tar.gz ./src ./stubs
  artifacts:
    paths:
-     - ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}
+     - build/${PACKAGE_PATH}
    expire_in: 1 day
 
 smart-data-engine-build:
@@ -540,6 +548,8 @@ smart-data-engine-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - smart-data-engine
+  dependencies:
+    - smart-data-engine-build
 
 smart-data-engine-integration-register:
   extends: .registry
@@ -551,6 +561,8 @@ smart-data-engine-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - smart-data-engine
+  dependencies:
+    - smart-data-engine-integration-build
 
 workflow-register:
   extends: .registry
@@ -562,6 +574,8 @@ workflow-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - workflow
+  dependencies:
+    - workflow-build
 
 workflow-integration-register:
   extends: .registry
@@ -573,6 +587,8 @@ workflow-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - workflow
+  dependencies:
+    - workflow-integration-build
 
 security-register:
   extends: .registry
@@ -584,6 +600,8 @@ security-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - security
+  dependencies:
+    - security-build
 
 security-integration-register:
   extends: .registry
@@ -595,6 +613,8 @@ security-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - security
+  dependencies:
+    - security-integration-build
 
 user-interfaces-register:
   extends: .registry
@@ -606,6 +626,8 @@ user-interfaces-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces
+  dependencies:
+    - user-interfaces-build
 
 user-interfaces-integration-register:
   extends: .registry
@@ -617,6 +639,8 @@ user-interfaces-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces
+  dependencies:
+    - user-interfaces-integration-build
 
 migration-tools-register:
   extends: .registry
@@ -628,6 +652,8 @@ migration-tools-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - migration-tools
+  dependencies:
+    - migration-tools-build
 
 migration-tools-integration-register:
   extends: .registry
@@ -639,6 +665,8 @@ migration-tools-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - migration-tools
+  dependencies:
+    - migration-tools-integration-build
 
 hub-station-register:
   extends: .registry
@@ -650,6 +678,8 @@ hub-station-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station
+  dependencies:
+    - hub-station-build
 
 hub-station-integration-register:
   extends: .registry
@@ -661,6 +691,8 @@ hub-station-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station
+  dependencies:
+    - hub-station-integration-build
 
 business-app-register:
   extends: .registry
@@ -672,6 +704,8 @@ business-app-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - business-app
+  dependencies:
+    - business-app-build
 
 business-app-integration-register:
   extends: .registry
@@ -683,6 +717,8 @@ business-app-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - business-app
+  dependencies:
+    - business-app-integration-build
 
 development-center-register:
   extends: .registry
@@ -694,6 +730,8 @@ development-center-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - development-center
+  dependencies:
+    - development-center-build
 
 development-center-integration-register:
   extends: .registry
@@ -705,6 +743,8 @@ development-center-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - development-center
+  dependencies:
+    - development-center-integration-build
 
 transformation-register:
   extends: .registry
@@ -716,6 +756,8 @@ transformation-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - transformation
+  dependencies:
+    - transformation-build
 
 transformation-integration-register:
   extends: .registry
@@ -727,3 +769,5 @@ transformation-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - transformation
+  dependencies:
+    - transformation-integration-build
