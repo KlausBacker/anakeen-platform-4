@@ -97,6 +97,8 @@ user-interfaces-buildJS:
   cache:
     <<: *default-cache
   stage: buildJS
+  tags:
+  - a4ppm
   script:
     - make -C user-interfaces buildDLL
   artifacts:
@@ -114,6 +116,8 @@ internal-components-buildJS:
   cache:
     <<: *default-cache
   stage: buildJS
+  tags:
+  - a4ppm
   script:
     - make -C internal-components app
   artifacts:
@@ -128,6 +132,8 @@ hub-station-buildJS:
   cache:
     <<: *default-cache
   stage: buildHub
+  tags:
+  - a4ppm
   script:
     - make -C hub-station buildDLL
   artifacts:
@@ -148,6 +154,8 @@ hub-station-buildJS:
 .build-package:
  <<: *pull-cache
  stage: build
+ tags:
+  - a4ppm
  script:
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}
    - make -C ${PACKAGE_PATH} stubs
@@ -162,6 +170,8 @@ hub-station-buildJS:
 smart-data-engine-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: smart-data-engine
    PACKAGE_NAME: smart-data-engine
@@ -175,6 +185,8 @@ smart-data-engine-build:
 smart-data-engine-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: smart-data-engine
    PACKAGE_NAME: smart-data-engine
@@ -188,6 +200,8 @@ smart-data-engine-integration-build:
 security-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: security
    PACKAGE_NAME: security
@@ -201,6 +215,8 @@ security-build:
 security-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: security
    PACKAGE_NAME: security
@@ -214,6 +230,8 @@ security-integration-build:
 workflow-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: workflow
    PACKAGE_NAME: workflow
@@ -227,6 +245,8 @@ workflow-build:
 workflow-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: workflow
    PACKAGE_NAME: workflow
@@ -240,6 +260,8 @@ workflow-integration-build:
 user-interfaces-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: user-interfaces
    PACKAGE_NAME: user-interfaces
@@ -253,6 +275,8 @@ user-interfaces-build:
 user-interfaces-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: user-interfaces
    PACKAGE_NAME: user-interfaces
@@ -266,6 +290,8 @@ user-interfaces-integration-build:
 hub-station-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: hub-station
    PACKAGE_NAME: anakeen-hub
@@ -282,6 +308,8 @@ hub-station-build:
 hub-station-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: hub-station
    PACKAGE_NAME: anakeen-hub
@@ -298,6 +326,8 @@ hub-station-integration-build:
 admin-center-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: admin-center
    PACKAGE_NAME: admin-center
@@ -315,6 +345,8 @@ admin-center-build:
 admin-center-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: admin-center
    PACKAGE_NAME: admin-center
@@ -332,6 +364,8 @@ admin-center-integration-build:
 business-app-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: business-app
    PACKAGE_NAME: anakeen-hub-business-app
@@ -349,6 +383,8 @@ business-app-build:
 business-app-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: business-app
    PACKAGE_NAME: anakeen-hub-business-app
@@ -366,6 +402,8 @@ business-app-integration-build:
 development-center-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: development-center
    PACKAGE_NAME: development-center
@@ -383,6 +421,8 @@ development-center-build:
 development-center-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: development-center
    PACKAGE_NAME: development-center
@@ -400,6 +440,8 @@ development-center-integration-build:
 transformation-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: transformation
    PACKAGE_NAME: transformation
@@ -417,6 +459,8 @@ transformation-build:
 transformation-integration-build:
  extends: .build-package
  stage: build
+ tags:
+  - a4ppm
  variables:
    PACKAGE_PATH: transformation
    PACKAGE_NAME: transformation
@@ -434,6 +478,8 @@ transformation-integration-build:
 migration-tools-build:
   extends: .build-package
   stage: build
+  tags:
+  - a4ppm
   variables:
     PACKAGE_PATH: migration-tools
     PACKAGE_NAME: migration-tools
@@ -447,6 +493,8 @@ migration-tools-build:
 migration-tools-integration-build:
   extends: .build-package
   stage: build
+  tags:
+  - a4ppm
   variables:
     PACKAGE_PATH: migration-tools
     PACKAGE_NAME: migration-tools
@@ -463,14 +511,20 @@ migration-tools-integration-build:
 .npm-publish-package:
   <<: *pull-cache
   stage: registry
+  tags:
+    - a4ppm
   script:
+    - npx npm-cli-login -u ${CIBUILD_INTEGRATION_ANAKEEN_NPM_LOGIN} -p ${CIBUILD_INTEGRATION_ANAKEEN_NPM_PASSWORD} -e ${CIBUILD_ANAKEEN_NPM_EMAIL} -r ${CIBUILD_INTEGRATION_ANAKEEN_NPM_REGISTRY} -s "@anakeen"
     - cd ${PACKAGE_PATH} && npm publish
 
 .npm-publish-package-integration:
   <<: *pull-cache
   stage: registry
+  tags:
+    - a4ppm
   script:
-    - node ./.devtool/ci/utils/autorelease.js ./anakeen-cli
+    - npx npm-cli-login -u ${CIBUILD_STABLE_ANAKEEN_NPM_LOGIN} -p ${CIBUILD_STABLE_ANAKEEN_NPM_PASSWORD} -e ${CIBUILD_ANAKEEN_NPM_EMAIL} -r ${CIBUILD_STABLE_ANAKEEN_NPM_REGISTRY} -s "@anakeen"
+    - node ./.devtool/ci/utils/autorelease.js ${PACKAGE_PATH}
     - cd ${PACKAGE_PATH} && npm publish
 
 anakeen-cli-integration-publish:
@@ -495,8 +549,6 @@ anakeen-cli-publish:
 
 module-validation-integration-publish:
   extends: .npm-publish-package-integration
-  before_script:
-    -  node ./.devtool/ci/utils/autorelease.js ./module-validation
   variables:
     PACKAGE_PATH: module-validation
   only:
@@ -517,8 +569,6 @@ module-validation-publish:
 
 theme-variable-integration-publish:
   extends: .npm-publish-package-integration
-  before_script:
-    -  node ./.devtool/ci/utils/autorelease.js ./theme-variable
   variables:
     PACKAGE_PATH: theme-variable
   only:
@@ -543,6 +593,8 @@ theme-variable-publish:
 .registry:
   <<: *pull-cache
   stage: registry
+  tags:
+    - a4ppm
   script:
     - export ANK_CI_APP_VERSION=$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME} ${ANK_CI_APP_NAME})
     - >-
