@@ -10,15 +10,15 @@ require_once __DIR__ . "/../../../include/lib/Lib.Cli.php";
 
 class ModuleJob
 {
-    const READY_STATUS="Ready";
-    const NOTINITIALIZED_STATUS="Not Initialized";
-    const INITIALIZED_STATUS="Initialized";
-    const RUNNING_STATUS="Running";
-    const DONE_STATUS="Done";
-    const TODO_STATUS="Todo";
-    const INTERRUPTED_STATUS="Interrupted";
-    const ERROR_STATUS="Error";
-    const FAILED_STATUS="Failed";
+    const READY_STATUS = "Ready";
+    const NOTINITIALIZED_STATUS = "Not Initialized";
+    const INITIALIZED_STATUS = "Initialized";
+    const RUNNING_STATUS = "Running";
+    const DONE_STATUS = "Done";
+    const TODO_STATUS = "Todo";
+    const INTERRUPTED_STATUS = "Interrupted";
+    const ERROR_STATUS = "Error";
+    const FAILED_STATUS = "Failed";
 
     protected static $jobData = null;
     protected static $processIndex = 0;
@@ -99,6 +99,14 @@ class ModuleJob
         return sprintf("%s/pid", self::getRunDir());
     }
 
+    public static function recordJobTask($data)
+    {
+        $jobFile = self::getJobFile();
+        if (!file_put_contents($jobFile, json_encode($data, JSON_PRETTY_PRINT))) {
+            throw new RuntimeException(sprintf("Cannot write job file \"%s\"", $jobFile));
+        }
+    }
+
     public static function initJobTask(ModuleManager $module, $options = [])
     {
         if (self::isRunning()) {
@@ -131,10 +139,7 @@ class ModuleJob
         }
 
         $data["parameters"] = $module->getAllParameters();
-        $jobFile = self::getJobFile();
-        if (!file_put_contents($jobFile, json_encode($data, JSON_PRETTY_PRINT))) {
-            throw new RuntimeException(sprintf("Cannot write job file \"%s\"", $jobFile));
-        }
+        self::recordJobTask($data);
     }
 
 
@@ -175,13 +180,17 @@ class ModuleJob
             $pidFile = self::getPidFile();
             self::catchExit();
             file_put_contents($pidFile, posix_getpid());
-            if (self::hasFailed()) {
-                ModuleJob::archiveJobFile(true);
-            }
             $jobFile = self::getJobFile();
             if (!file_exists($jobFile)) {
                 throw new RuntimeException(sprintf("No job file \"%s\"", $jobFile));
             }
+
+            if (self::hasFailed()) {
+                ModuleJob::archiveJobFile(true);
+            }
+
+            JobLog::clearLog();
+
             self::$jobData = json_decode(file_get_contents($jobFile), true);
             if (!self::$jobData) {
                 throw new RuntimeException(sprintf("Unreadable job file \"%s\"", $jobFile));
@@ -233,8 +242,8 @@ class ModuleJob
 
     protected static function dotheJob()
     {
-        $moduleName = self::$jobData["moduleArg"];
-        $moduleFileName = self::$jobData["file"];
+        $moduleName = self::$jobData["moduleArg"] ?? "";
+        $moduleFileName = self::$jobData["file"] ?? "";
         if ($moduleFileName) {
             $module = new ModuleManager("");
             $module->setFile($moduleFileName);
@@ -253,6 +262,12 @@ class ModuleJob
                 break;
             case "remove":
                 $module->prepareRemove();
+                break;
+            case "archive":
+                $archive = new ArchiveContext();
+                $archive->setOutputFile(self::$jobData["output"]);
+                $archive->setWithVault(self::$jobData["with-vault"]);
+                $archive->archiveContext();
                 break;
         }
 

@@ -58,14 +58,18 @@ class WIFF extends WiffCommon
      * @var Logger
      */
     private static $logger;
-    
+    /**
+     * @var string
+     */
+    public $root;
+
     private function __construct()
     {
         $wiff_root = getenv('WIFF_ROOT');
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
-        
+        $this->root=$wiff_root;
         $this->contexts_filepath = $wiff_root . WIFF::contexts_filepath;
         $this->params_filepath = $wiff_root . WIFF::params_filepath;
         $this->archived_contexts_dir = $wiff_root . WIFF::archived_contexts_dir;
@@ -1192,7 +1196,7 @@ EOF;
     
     public function verifyGzipIntegrity($file, &$err = '')
     {
-        $cmd = sprintf("gzip -t %s 2>&1", escapeshellarg($file));
+        $cmd = sprintf("unzip -t %s 2>&1", escapeshellarg($file));
         $output = array();
         exec($cmd, $output, $retval);
         $err = join("\n", $output);

@@ -33,6 +33,7 @@ $application->add(new \Control\Cli\CliInstallModule());
 $application->add(new \Control\Cli\CliUpdateModule());
 $application->add(new \Control\Cli\CliRemoveModule());
 $application->add(new \Control\Cli\CliDoJob());
+$application->add(new \Control\Cli\CliArchive());
 $application->add(new \Control\Cli\CliRun());
 
 $application->run();
