@@ -53,6 +53,7 @@ before_script:
   - export ANK_CI_ARTEFACTS_PATH=$(pwd)/build
   - export ANK_CI_BUCKET=$(node ./.devtool/ci/utils/selectBucket.js)
   - export ANK_CI_A4PPM=$(node ./.devtool/ci/utils/selectA4ppm.js)
+  - export NODE_OPTIONS="--max-old-space-size=8192"
 
 # region tear-up
 populate-cache-master:
