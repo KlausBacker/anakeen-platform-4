@@ -269,6 +269,14 @@ class ModuleJob
                 $archive->setWithVault(self::$jobData["with-vault"]);
                 $archive->archiveContext();
                 break;
+            case "restore":
+                $restore = new RestoreContext();
+                $restore->setPgService(self::$jobData["pg-service"]);
+                $restore->setVaultsPath(self::$jobData["vaults-path"]);
+                $restore->setCleanDatabase(self::$jobData["force-clean"]);
+
+                $restore->restore();
+                break;
         }
 
         if ($action === "remove") {

@@ -1507,6 +1507,35 @@ class Context extends ContextProperties
         return true;
     }
 
+
+    public function setAttribute($paramName, $paramValue)
+    {
+        require_once __DIR__ . '/Class.WIFF.php';
+        $wiff = WIFF::getInstance();
+
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
+            return false;
+        }
+
+        $xpath = new DOMXpath($xml);
+        $parametersRoot = $xpath->query(sprintf("/contexts/context[@name='%s']", $this->name))->item(0);
+        if (!$parametersRoot) {
+            $this->errorMessage = sprintf("Could not find 'parameters-value' node for context with name '%s'.", $this->name);
+            return false;
+        }
+        /** @var \DOMElement $parametersRoot */
+        $parametersRoot->setAttribute($paramName, $paramValue);
+
+        if ($wiff->commitDOMDocument($xml) === false) {
+            $this->errorMessage = sprintf("Error saving contexts.xml '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
+            return false;
+        }
+
+        return true;
+    }
+
     public function wstop(&$output = array())
     {
         $wstop = sprintf("%s/wstop", $this->root);

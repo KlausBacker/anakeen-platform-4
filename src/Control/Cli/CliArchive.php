@@ -3,7 +3,6 @@
 namespace Control\Cli;
 
 use Control\Internal\ArchiveContext;
-use Control\Internal\Context;
 use Control\Internal\ModuleJob;
 use Control\Internal\ModuleManager;
 use Symfony\Component\Console\Exception\InvalidOptionException;
@@ -16,7 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CliArchive extends CliCommand
 {
     // the name of the command (the part after "bin/console")
-    const CONTEXT_NAME = "default";
     protected static $defaultName = 'archive';
 
 
@@ -28,6 +26,7 @@ class CliArchive extends CliCommand
             ->setDescription('Archive Anakeen Platform.')
             ->addOption('file', null, InputOption::VALUE_REQUIRED, 'Output file (.zip file)')
             ->addOption('with-vault', null, InputOption::VALUE_NONE, 'Save vault files also')
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command save application files, database and vaults.');
@@ -62,15 +61,17 @@ class CliArchive extends CliCommand
             "with-vault" => $input->getOption("with-vault"),
             "tasks" => [$tasks],
         ]);
+        if (!$input->getOption("dry-run")) {
+            ModuleManager::runJobInBackground();
 
-        ModuleManager::runJobInBackground();
+            $output->writeln("<info>Job is processing</info>");
+            $output->writeln(sprintf("<comment>Archive file will be saved to \"%s\"</comment>", $input->getOption("file")));
+            if ($input->getOption("with-vault")) {
+                $output->writeln("<comment>Vaults will be saved too.</comment>");
+            } else {
+                $output->writeln("<warning>Vaults are not saved.</warning>");
+            }
 
-        $output->writeln("<info>Job is processing</info>");
-        $output->writeln(sprintf("<comment>Archive file will be saved to \"%s\"</comment>", $input->getOption("file")));
-        if ($input->getOption("with-vault")) {
-            $output->writeln("<comment>Vaults will saved also.</comment>");
-        } else {
-            $output->writeln("<warning>Vaults are not saved.</warning>");
         }
 
     }

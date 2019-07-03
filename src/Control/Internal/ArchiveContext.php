@@ -11,6 +11,8 @@ class ArchiveContext
     const PHASE_CONTROL = "archive-control-files";
     const PHASE_DATABASE = "dump-database";
     const PHASE_VAULTS = "archive-vaults";
+
+    const dbDumpFile = "core_db.pg_dump";
     /**
      * @var \Context
      */
@@ -41,7 +43,7 @@ class ArchiveContext
      *
      * @param string $phase
      */
-    private function writeArchiveError($phase = "")
+    private function exitArchiveError($phase = "")
     {
         JobLog::setError("archiving", $phase, $this->errorMessage);
         throw new RuntimeException($this->errorMessage);
@@ -109,7 +111,7 @@ class ArchiveContext
         if ($this->zip->open($zipfile, ZipArchiveCmd::CREATE) === false) {
             $this->errorMessage = sprintf("Cannot create Zip archive '%s': %s", $zipfile, $this->zip->getStatusString());
             // --- Delete status file --- //
-            $this->writeArchiveError();
+            $this->exitArchiveError();
             return false;
         }
 
@@ -169,34 +171,36 @@ class ArchiveContext
         $archived_tmp_dir = $wiff->archived_tmp_dir;
         $pgservice_core = $this->context->getParamByName('core_db');
 
-        $dump = $archived_tmp_dir . DIRECTORY_SEPARATOR . 'core_db.pg_dump';
+        $dump = $archived_tmp_dir . DIRECTORY_SEPARATOR . self::dbDumpFile;
 
         $errorFile = LibSystem::tempnam(null, 'WIFF_error.tmp');
         if ($errorFile === false) {
             $this->errorMessage = "Error creating temporary file for error.";
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_DATABASE);
+            $this->exitArchiveError(self::PHASE_DATABASE);
             return false;
         }
 
-        $script = sprintf("PGSERVICE=%s pg_dump -Fc --no-owner --compress=5 1>%s 2>%s", escapeshellarg($pgservice_core), escapeshellarg($dump), escapeshellarg($errorFile));
-        exec($script, $output, $retval);
-        $unlink[$dump] = true;
-        if ($retval != 0) {
+        $script = sprintf("PGSERVICE=%s pg_dump -Fc --no-owner --if-exists --clean --compress=5 1>%s 2>%s", escapeshellarg($pgservice_core), escapeshellarg($dump),
+            escapeshellarg($errorFile));
+        try {
+            System::exec($script);
+        } catch (RuntimeException $e) {
             $this->errorMessage = "Error when making database dump :: " . file_get_contents($errorFile);
             if (file_exists("$errorFile")) {
                 unlink("$errorFile");
             }
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_DATABASE);
-            return false;
+            $this->exitArchiveError(self::PHASE_DATABASE);
         }
+        $unlink[$dump] = true;
+
 
         $err = $this->zip->addFileWithoutPath($dump);
         if ($err === false) {
             $this->errorMessage = sprintf("Could not add 'core_db.pg_dump.gz' to archive: %s", $this->zip->getStatusString());
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_DATABASE);
+            $this->exitArchiveError(self::PHASE_DATABASE);
             return false;
         }
         unlink($dump);
@@ -215,7 +219,7 @@ class ArchiveContext
         if ($realContextRootPath === false) {
             $this->errorMessage = sprintf("Error getting real path for '%s'", $this->context->root);
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_PLATFORM);
+            $this->exitArchiveError(self::PHASE_PLATFORM);
             return false;
         }
 
@@ -229,7 +233,7 @@ class ArchiveContext
         if ($vaultList === false) {
             $this->errorMessage = sprintf("Error getting vault list for context '%s'", $this->context->root);
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_PLATFORM);
+            $this->exitArchiveError(self::PHASE_PLATFORM);
             return false;
         }
 
@@ -258,21 +262,22 @@ class ArchiveContext
         }
 
 
-        $script = sprintf("cd %s;zip -r %s %s %s", escapeshellarg(dirname($realContextRootPath)), escapeshellarg($this->outputFile), escapeshellarg(basename($realContextRootPath)),
+        $script = sprintf("cd %s;zip -r -q %s %s %s", escapeshellarg(dirname($realContextRootPath)), escapeshellarg($this->outputFile),
+            escapeshellarg(basename($realContextRootPath)),
             $tarExcludeOpts);
-
-        exec($script, $output, $retval);
-        if ($retval != 0) {
-            $this->errorMessage = "Error when making context tar :: " . join("\n", $output);
+        try {
+            System::exec($script);
+        } catch (RuntimeException $e) {
+            $this->errorMessage = "Error when making context tar :: " . $e->getMessage();
 
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_PLATFORM);
-            return false;
+            $this->exitArchiveError(self::PHASE_PLATFORM);
         }
+
         if ($wiff->verifyGzipIntegrity($this->outputFile, $err) === false) {
             $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", $this->outputFile, $err);
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_PLATFORM);
+            $this->exitArchiveError(self::PHASE_PLATFORM);
             return false;
         }
 
@@ -291,13 +296,14 @@ class ArchiveContext
         if ($realControlRootPath === false) {
             $this->errorMessage = sprintf("Error getting real path for '%s'", $wiff->root);
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_CONTROL);
+            $this->exitArchiveError(self::PHASE_CONTROL);
             return false;
         }
 
         $tarExcludeOpts = '';
         $tarExcludeList = array(
             sprintf("-x %s**\\*", './' . basename($realControlRootPath) . '/' . \WIFF::archived_tmp_dir),
+            sprintf("-x %s**\\*", './' . basename($realControlRootPath) . '/run'),
         );
 
         if (count($tarExcludeList) > 0) {
@@ -305,22 +311,23 @@ class ArchiveContext
         }
         //error_log(__METHOD__ . " " . sprintf("tarExcludeOpts = [%s]", $tarExcludeOpts));
         // --- Generate context tar.gz --- //
-        $script = sprintf("cd %s;zip -ru %s %s %s", escapeshellarg(dirname($realControlRootPath)), escapeshellarg($this->outputFile),
+        $script = sprintf("cd %s;zip -ru -q %s %s %s", escapeshellarg(dirname($realControlRootPath)), escapeshellarg($this->outputFile),
             escapeshellarg(basename($realControlRootPath)),
             $tarExcludeOpts);
 
-        exec($script, $output, $retval);
-        if ($retval != 0) {
-            $this->errorMessage = "Error when update zip :: " . join("\n", $output);
+        try {
+            System::exec($script);
+        } catch (RuntimeException $e) {
+            $this->errorMessage = "Error when update zip :: " . $e->getMessage();
 
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_CONTROL);
-            return false;
+            $this->exitArchiveError(self::PHASE_CONTROL);
         }
+
         if ($wiff->verifyGzipIntegrity($this->outputFile, $err) === false) {
             $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", $this->outputFile, $err);
             $this->zip->close();
-            $this->writeArchiveError(self::PHASE_CONTROL);
+            $this->exitArchiveError(self::PHASE_CONTROL);
             return false;
         }
 
@@ -340,7 +347,7 @@ class ArchiveContext
         if ($vaultList === false) {
             $this->errorMessage = sprintf("Error getting vault list: %s", $this->errorMessage);
             $this->zip->close();
-            $this->writeArchiveError();
+            $this->exitArchiveError();
             return false;
         }
 
@@ -350,7 +357,7 @@ class ArchiveContext
             if (!mkdir($vaultTmpDir)) {
 
                 $this->errorMessage = sprintf("Error create vault dir '%s'", $vaultTmpDir);
-                $this->writeArchiveError(self::PHASE_VAULTS);
+                $this->exitArchiveError(self::PHASE_VAULTS);
                 return false;
             }
         }
@@ -364,17 +371,18 @@ class ArchiveContext
                     "r_path" => $r_path
                 );
                 $script = sprintf("cd %s;rm -f %s && ln -s %s %s", escapeshellarg($vaultTmpDir), escapeshellarg($id_fs), escapeshellarg($r_path), escapeshellarg($id_fs));
-                exec($script, $output, $retval);
-
-                if ($retval != 0) {
-                    $this->errorMessage = sprintf("Error when linking vault '%s': %s", $r_path, join("\n", $output));
+                try {
+                    System::exec($script);
+                } catch (RuntimeException $e) {
+                    $this->errorMessage = sprintf("Error when linking vault '%s': %s", $r_path, $e->getMessage());
                     $this->zip->close();
-                    $this->writeArchiveError(self::PHASE_VAULTS);
-                    return false;
+                    $this->exitArchiveError(self::PHASE_VAULTS);
                 }
 
-                $script = sprintf("cd %s;zip -ru %s vaults/%s", escapeshellarg(dirname($vaultTmpDir)), escapeshellarg($this->outputFile), escapeshellarg($id_fs));
-                exec($script, $output, $retval);
+
+                $script = sprintf("cd %s;zip -ru -q %s vaults/%s", escapeshellarg(dirname($vaultTmpDir)), escapeshellarg($this->outputFile), escapeshellarg($id_fs));
+
+                System::exec($script);
 
             }
         }

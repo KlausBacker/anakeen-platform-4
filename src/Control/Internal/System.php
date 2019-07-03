@@ -19,4 +19,16 @@ class System
         }
 
     }
+
+    public static function exec($cmd) {
+
+        exec($cmd, $output, $retval);
+        JobLog::displayOutput("", "", "", $cmd);
+        if ($retval !== 0) {
+            var_dump([$retval, $script]);
+            $err=sprintf("%s\n%s", $cmd, implode("\n", $output));
+            throw new \Control\Exception\RuntimeException($err);
+        }
+
+}
 }
