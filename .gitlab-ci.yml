@@ -44,7 +44,6 @@ stages:
 before_script:
   # install npm deps
   - node .devtool/ci/utils/selectRegistry.js
-    # init tmp workdir
   - yarn install --frozen-lockfile
   - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
   - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/

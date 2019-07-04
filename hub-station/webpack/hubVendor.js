@@ -11,7 +11,7 @@ const USER_INTERFACES = path.resolve(
   "@anakeen",
   "user-interfaces"
 );
-const { vueLoader, addDll } = require("@anakeen/webpack-conf/parts");
+const { vueLoader, addDll, addFalseKendoGlobal } = require("@anakeen/webpack-conf/parts");
 
 module.exports = () => {
   const conf = {
@@ -29,6 +29,7 @@ module.exports = () => {
     customParts: [
       useCache,
       vueLoader(),
+      addFalseKendoGlobal([/kendo.pdf/, /kendo.excel/]),
       addDll({
         context: BASE_DIR,
         manifest: path.join(

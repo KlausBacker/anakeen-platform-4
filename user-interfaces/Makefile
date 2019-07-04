@@ -147,11 +147,11 @@ app-all: app app-test
 
 app-autorelease: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build -s ${ANAKEEN_UI_SRC_PATH} --auto-release -t ${APP_OUTPUT_PATH}
+	${ANAKEEN_CLI_BIN} build -s ${ANAKEEN_UI_SRC_PATH} --autoRelease="dev" -t ${APP_OUTPUT_PATH}
 
 app-test-autorelease: install-deps buildJS-test
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app test autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build -s ${TEST_SRC_PATH} --auto-release -t ${APP_OUTPUT_PATH}
+	${ANAKEEN_CLI_BIN} build -s ${TEST_SRC_PATH} --autoRelease="dev" -t ${APP_OUTPUT_PATH}
 
 app-all-autorelease: app-autorelease app-test-autorelease
 

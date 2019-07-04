@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/accountManager" />
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/i18nManager" />
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/parameterManager" />
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/tokenManager" />
+      <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/vaultManager" />
+      <excludeFolder url="file://$MODULE_DIR$/business-app/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/business-app/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/development-center/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/hub-station/components/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/hub-station/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/internal-components/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/transformation/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/transformation/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/user-interfaces/components/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/user-interfaces/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/user-interfaces/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/user-interfaces/src/public/uiAssets" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

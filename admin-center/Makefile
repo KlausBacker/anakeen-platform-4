@@ -96,7 +96,7 @@ app-all: app
 
 app-autorelease: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Make app autotrelease${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} build --auto-release -t ${APP_OUTPUT_PATH}
+	${ANAKEEN_CLI_BIN} build --autoRelease="dev" -t ${APP_OUTPUT_PATH}
 
 app-all-autorelease: app-autorelease
 
