@@ -782,7 +782,7 @@ class SEManager
         $fromName = null;
 
         $result = pg_query($dbid, sprintf(
-            "select docfam.name from docfrom, \Anakeen\Core\SmartStructure where docfrom.id=%d and docfam.id=docfrom.fromid",
+            "select docfam.name from docfrom, docfam where docfrom.id=%d and docfam.id=docfrom.fromid",
             $documentId
         ));
         if ($result) {
