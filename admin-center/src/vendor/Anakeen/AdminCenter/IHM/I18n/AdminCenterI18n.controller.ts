@@ -80,6 +80,7 @@ export default class I18nManagerController extends Vue {
       }
     }, 300);
   }
+
   public mounted() {
     window.addEventListener("offline", e => {
       kendo.ui.progress($("body"), true);
@@ -118,13 +119,13 @@ export default class I18nManagerController extends Vue {
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           template: rowData => {
-            if (rowData.plural) {
+            if (rowData.plurals) {
               let cellData = "";
               // tslint:disable-next-line:prefer-for-of
-              for (let i = 0; i < rowData.plural.length - 1; i++) {
-                cellData += rowData.plural[i] + "<hr>";
+              for (let i = 0; i < rowData.plurals.length - 1; i++) {
+                cellData += rowData.plurals[i] + "<hr>";
               }
-              cellData += rowData.plural[rowData.plural.length - 1];
+              cellData += rowData.plurals[rowData.plurals.length - 1];
               return cellData;
             } else {
               return rowData.msgstr;
@@ -136,47 +137,123 @@ export default class I18nManagerController extends Vue {
           field: "overridentranslation",
           filterable: false,
           minResizableWidth: 25,
-          template: `<div class="input-group">
-                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input filter-locale' aria-label='Small'>
+          template: rowData => {
+            if (rowData.plurals) {
+              return `<div class="input-group">
+                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>
                 <div class="input-group-append">
-                    <button class='confirm-override-translation btn btn-outline-secondary'><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation btn btn-outline-secondary'><i class='fa fa-times'></i></button>
+                    <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
                 </div>
-            </div>`,
+            </div>
+            <div class="input-group">
+                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>
+                <div class="input-group-append">
+                    <button class='confirm-override-translation-plural btn btn-outline-secondary'disabled><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation-plural btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
+                </div>
+            </div>`;
+            } else {
+              return `<div class="input-group">
+                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>
+                <div class="input-group-append">
+                    <button class='confirm-override-translation-singular btn btn-outline-secondary'disabled><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
+                </div>
+            </div>`;
+            }
+          },
           title: "Overriden translation"
         }
       ],
       dataBound: e => {
-        $(".overriden-translation-input").on("change", () => {
-          console.log("overriden");
+        $(
+          ".overriden-translation-input-singular, .overriden-translation-input-plural"
+        ).on("change", event => {
+          const cancelBtn = $(event.target.nextElementSibling.children[1]);
+          const confirmBtn = $(event.target.nextElementSibling.children[0]);
+          confirmBtn.data("kendoButton").enable(true);
+          cancelBtn.data("kendoButton").enable(true);
         });
 
-        $(".confirm-override-translation").kendoButton({
+        $(".confirm-override-translation-singular").kendoButton({
           click: confirmEvent => {
+            kendo.ui.progress($("body"), true);
+            const newVal = JSON.stringify({
+              msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
+                "input"
+              )[0].value
+            });
             const rowData: any = $(this.$refs.i18nGrid)
               .data("kendoGrid")
               .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
             const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-            const newVal = $(
-              confirmEvent.event.target.closest("tr[role=row]")
-            ).find("input")[0].value;
-            this.$http
-              .put(
-                `/api/v2/admin/i18n/${this.translationLocale}/
-                ${msgctxtData}/
-                ${rowData.msgid}`,
-                newVal
-              )
-              .then(response => {
-                if (response.status === 200) {
-                  this.$emit("EditTranslationSuccess");
-                } else {
-                  this.$emit("EditTranslationFail");
-                }
-              });
+            const url = `/api/v2/admin/i18n/${encodeURIComponent(
+              this.translationLocale
+            )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
+              rowData.msgid
+            )}`;
+            const jsonHeader = {
+              headers: {
+                "Content-type": "application/json"
+              }
+            };
+            this.$http.put(url, newVal, jsonHeader).then(response => {
+              if (response.status === 200) {
+                this.$emit("EditTranslationSuccess");
+              } else {
+                this.$emit("EditTranslationFail");
+              }
+              $(confirmEvent.sender.element[0])
+                .data("kendoButton")
+                .enable(false);
+              $(confirmEvent.sender.element[0].nextElementSibling)
+                .data("kendoButton")
+                .enable(false);
+              kendo.ui.progress($("body"), false);
+            });
           }
         });
-        $(".cancel-override-translation").kendoButton({
+        $(".confirm-override-translation-plural").kendoButton({
+          click: confirmEvent => {
+            kendo.ui.progress($("body"), true);
+            const newVal = JSON.stringify({
+              msgstr: null,
+              plural: $(confirmEvent.event.target.closest("tr[role=row]")).find(
+                "input"
+              )[1].value
+            });
+            const rowData: any = $(this.$refs.i18nGrid)
+              .data("kendoGrid")
+              .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
+            const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
+            const url = `/api/v2/admin/i18n/${encodeURIComponent(
+              this.translationLocale
+            )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
+              rowData.msgid
+            )}`;
+            const jsonHeader = {
+              headers: {
+                "Content-type": "application/json"
+              }
+            };
+            this.$http.put(url, newVal, jsonHeader).then(response => {
+              if (response.status === 200) {
+                this.$emit("EditTranslationSuccess");
+              } else {
+                this.$emit("EditTranslationFail");
+              }
+              $(confirmEvent.sender.element[0])
+                .data("kendoButton")
+                .enable(false);
+              $(confirmEvent.sender.element[0].nextElementSibling)
+                .data("kendoButton")
+                .enable(false);
+              kendo.ui.progress($("body"), false);
+            });
+          }
+        });
+        $(".cancel-override-translation-singular").kendoButton({
           click: cancelEvent => {
             const rowId = cancelEvent.event.target
               .closest("tr[role=row]")
@@ -187,6 +264,31 @@ export default class I18nManagerController extends Vue {
             )[0].value = $(this.$refs.i18nGrid)
               .data("kendoGrid")
               .dataItem(rowId);
+            $(cancelEvent.sender.element[0].previousElementSibling)
+              .data("kendoButton")
+              .enable(false);
+            $(cancelEvent.sender.element[0])
+              .data("kendoButton")
+              .enable(false);
+          }
+        });
+        $(".cancel-override-translation-plural").kendoButton({
+          click: cancelEvent => {
+            const rowId = cancelEvent.event.target
+              .closest("tr[role=row]")
+              .getAttribute("data-uid");
+            // sets input valueback to server value
+            $(cancelEvent.event.target.closest("tr[role=row]")).find(
+              "input"
+            )[1].value = $(this.$refs.i18nGrid)
+              .data("kendoGrid")
+              .dataItem(rowId);
+            $(cancelEvent.sender.element[0].previousElementSibling)
+              .data("kendoButton")
+              .enable(false);
+            $(cancelEvent.sender.element[0])
+              .data("kendoButton")
+              .enable(false);
           }
         });
       },
@@ -228,12 +330,10 @@ export default class I18nManagerController extends Vue {
   }
 
   public exportLocaleFile() {
-    const locale = this.translationLocale === "fr" ? "FR_fr" : "EN_us";
-    const date = this.getDate();
-    // const fileName = `${locale}-${date}`;
-    const fileName = `${locale}-${date}`;
-    console.log(fileName + ".po");
-    // window.open(`/api/v2/admin/i18n/export/${this.translationLocale}/${fileName}.po`);
+    window.open(
+      `/api/v2/admin/i18n/${this.translationLocale}/custom.po`,
+      "_self"
+    );
   }
 
   private getDate() {

@@ -94,52 +94,28 @@
           color: transparent;
         }
 
-        .confirm-override-translation {
-          background-color: var(--green);
-          border: none;
-          width: 1rem;
-
+        .confirm-override-translation-singular, .confirm-override-translation-plural {
+          border: 1px solid #ced4da;
+          padding-left: 1rem;
+          padding-right: 1rem;
           .fa-check {
-            color: white;
+            color: #157EFB;
           }
         }
-
-        .confirm-override-translation:hover {
-          background-color: transparent;
-          border: solid var(--green) 1px;
-          width: 1rem;
-
+        .confirm-override-translation-singular:disabled, .confirm-override-translation-plural:disabled {
           .fa-check {
-            color: var(--green);
+            color: #d0d0d0;
           }
         }
-
-        .confirm-override-translation:focus {
-          box-shadow: none;
+        .cancel-override-translation-singular, .cancel-override-translation-plural {
+          border: 1px solid #ced4da;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
-
-        .cancel-override-translation {
-          background-color: var(--red);
-          border: none;
-          width: 1rem;
-
+        .cancel-override-translation-singular:disabled, .cancel-override-translation-plural:disabled {
           .fa-times {
-            color: white;
+            color: #d0d0d0;
           }
-        }
-
-        .cancel-override-translation:hover {
-          background-color: transparent;
-          border: solid var(--red) 1px;
-          width: 1rem;
-
-          .fa-times {
-            color: var(--red);
-          }
-        }
-
-        .cancel-override-translation:focus {
-          box-shadow: none;
         }
       }
     }

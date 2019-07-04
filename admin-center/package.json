@@ -23,7 +23,10 @@
     "buildJs:i18n:prod": "element=I18N npx webpack --config webpack/index.js",
     "buildJs:i18n:dev": "element=I18N dev=DEV npx webpack --config webpack/index.js",
     "buildJs:i18n": "yarn run buildJs:i18n:prod && yarn run buildJs:i18n:dev",
-    "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts && yarn run buildJs:i18n"
+    "buildJs:mail:prod": "element=MAIL npx webpack --config webpack/index.js",
+    "buildJs:mail:dev": "element=MAIL dev=DEV npx webpack --config webpack/index.js",
+    "buildJs:mail": "yarn run buildJs:mail:prod && yarn run buildJs:mail:dev",
+    "buildJs": "yarn run buildJs:tokens && yarn run buildJs:vaults && yarn run buildJs:parameters && yarn run buildJs:accounts && yarn run buildJs:i18n && yarn run buildJs:mail"
   },
   "files": [
     "src/**/*.scss",
