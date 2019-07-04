@@ -53,6 +53,12 @@ $smart-structure-list-border-color: rgb(210, 210, 210);
         word-break: break-word;
         direction: rtl;
 
+        .empty-content {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
 
         .smart-structure-list-item {
           flex-shrink:0;

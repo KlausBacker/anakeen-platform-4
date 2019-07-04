@@ -93,6 +93,9 @@ export default {
       }
       return value;
     },
+    isEmpty() {
+      return !this.tabs.length;
+    },
     tabs() {
       if (this.dataSource) {
         const view = this.dataSource.view();
