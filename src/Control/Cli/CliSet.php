@@ -53,8 +53,7 @@ class CliSet extends CliCommand
                 throw new RuntimeException(sprintf("Internal parameter \"%s\" not found", $paramName));
             }
             Context::setControlParameter($paramName, $value);
-            Context::setParameter($paramName, $value);
-            $results = Context::getParameters();
+            $results = Context::getControlParameters();
             $output->writeln(sprintf("<info>Internal parameter \"<comment>%s</comment>\" set to \"<comment>%s</comment>\".</info>", $paramName, $results[$paramName]));
         }
     }

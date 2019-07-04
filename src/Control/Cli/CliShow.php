@@ -68,7 +68,11 @@ class CliShow extends CliJsonCommand
                 $row[] = sprintf("<info>%s</info>", $module->vendor);
             }
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-                $row[] = sprintf("<info>%s</info>", $module->availableversion);
+                if ( $module->availableversion !== $module->version) {
+                    $row[] = sprintf("<info>%s</info>", $module->availableversion);
+                } else {
+                    $row[] = "";
+                }
             }
 
             $table->addRow($row);

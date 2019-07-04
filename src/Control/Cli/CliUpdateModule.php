@@ -28,6 +28,7 @@ class CliUpdateModule extends CliCommand
             ->setDescription('Update module.')
             ->addArgument('module', InputArgument::OPTIONAL, "Module name to update")
             ->addOption("force", null, InputOption::VALUE_NONE, "Force downgrade")
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command update all modules or one if module name is set');
@@ -60,7 +61,7 @@ class CliUpdateModule extends CliCommand
                 return;
             }
             AskParameters::askParameters($module, $this->getHelper('question'), $input, $output);
-            $module->recordJob();
+            $module->recordJob($input->getOption("dry-run"));
             $output->writeln("Job Recorded");
         }
     }

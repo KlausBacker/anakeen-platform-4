@@ -28,6 +28,8 @@ class MainPage
             return strcmp($a->name, $b->name);
         });
 
+
+
         $data["notinstalled"] = $context->getAvailableModuleList(true);
 
 

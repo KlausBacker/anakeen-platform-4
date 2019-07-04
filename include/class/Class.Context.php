@@ -498,6 +498,7 @@ class Context extends ContextProperties
                         if ($cmp < 0) {
                             $module->canUpdate = true;
                         }
+                        $module->isUptodate = ($cmp === 0);
                     }
                 }
             }
@@ -577,7 +578,7 @@ class Context extends ContextProperties
      *
      * @param boolean $onlyNotInstalled only return available and not installed modules
      *
-     * @return array of module Objects
+     * @return \Module[]
      */
     public function getAvailableModuleList($onlyNotInstalled = false)
     {

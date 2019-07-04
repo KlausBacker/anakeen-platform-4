@@ -13,7 +13,6 @@ class CliDoJob extends CliCommand
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'dojob';
 
-
     protected function configure()
     {
         $this
@@ -30,6 +29,9 @@ class CliDoJob extends CliCommand
         if (ModuleJob::hasFailed()) {
             $output->writeln("<info>Retry last failed job</info>");
         }
+        // To have a own grp id : I am a process leader !
+        posix_setsid();
+
         ModuleJob::runJob();
     }
 

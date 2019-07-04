@@ -99,6 +99,9 @@ li.nav-item.active {
 .installed[data-canupdate=true] .available-version {
     font-weight: bold;
 }
+.installed[data-sameversion=true] .available-version {
+    color: grey;
+}
 
 .notinstalled {
     color: grey;

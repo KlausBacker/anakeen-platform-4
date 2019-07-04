@@ -101,4 +101,11 @@ class AskParameters
         $askFilePath = sprintf("%s/%s", Context::getControlPath(), self::askFile);
         file_put_contents($askFilePath, json_encode($parameters, JSON_PRETTY_PRINT));
     }
+
+    public static function removeAskes() {
+        $askFilePath = sprintf("%s/%s", Context::getControlPath(), self::askFile);
+        if (is_file($askFilePath)) {
+            unlink($askFilePath);
+        }
+    }
 }

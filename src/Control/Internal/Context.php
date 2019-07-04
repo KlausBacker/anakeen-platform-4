@@ -124,6 +124,12 @@ class Context
         }
     }
 
+    /**
+     * @param bool $onlyEnabled
+     *
+     * @return \Repository[]
+     * @throws \Exception
+     */
     public static function getRepositories($onlyEnabled = false)
     {
 

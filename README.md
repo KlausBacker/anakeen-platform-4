@@ -181,20 +181,13 @@ Retourne la liste des modules, les paramètres et le nombre d'utilisateurs enreg
 
 ### Autres commandes
 
-Activation / désactivation du serveur web
-
-```bash
-./control/anakeen-control start
-./control/anakeen-control stop
-```
-
 Paramètres de Anakeen Control
 
 ```bash
 
-./control/anakeen-control get --all [--internal]
-./control/anakeen-control get [--internal] "<key>"
-./control/anakeen-control set [--internal] "<key>" "<value>"
+./control/anakeen-control get --all
+./control/anakeen-control get "<key>"
+./control/anakeen-control set "<key>" "<value>"
 ```
 
 Command
@@ -211,7 +204,7 @@ Sauvegarde une archive (BD + Coffres + control + platform)
 Fait en mode asynchrone.
 
 ```bash
-./control/anakeen-control archive --output="mybackup.tgz" [--without-vault]
+./control/anakeen-control archive --file="mybackup.tgz" [--with-vault]
 ```
 
 Restauration d'une archive
@@ -219,36 +212,35 @@ Restauration d'une archive
 ```bash
 mkdir /var/www/html/backup
 cd /var/www/html/backup
-tar zxf mybackup.tgz
+unzip -q mybackup.tgz
 
-./control/anakeen-control restore --pg-service=backdb [--vault-path="/share/files/"]
+./control/anakeen-control restore --pg-service=backdb
 ```
 
 ## API REST
 
 La colonne `Job` indique si un job est lancé à l'issue de la requête.
 
-| Méthode | Url                                                | Description                                      | Équivalent commande    | Job ? | REST | CLI |
-| ------- | -------------------------------------------------- | ------------------------------------------------ | ---------------------- | :---: | ---- | --- |
-| GET     | /control/api/status                                | Retourne le statut - état du job en cours        | status                 |       | OK   | OK  |
-| GET     | /control/api/registeries/                          | Liste des dépôts enregistrés                     | registery show         |       |      | OK  |
-| POST    | /control/api/registeries/[name]?url,login,password | Ajoute un dépôt                                  | registery add          |       |      | OK  |
-| PUT     | /control/api/registeries/[name]?url,login,password | Modifie un dépôt                                 | registery set-url      |       |      |     |
-| DELETE  | /control/api/registeries/[name]                    | Enlève un dépôt                                  | registery remove       |       |      | OK  |
-| POST    | /control/api/platform/?pg-service                  | Initialise Anakeen Platform                      | init --pg-service      |   X   | --   | OK  |
-| GET     | /control/api/platform/modules/[name]               | Info sur un module                               | search [module]        |       |      |     |
-| POST    | /control/api/platform/modules/[name]               | Installation d'un module                         | install [module]       |   X   | OK   | OK  |
-| POST    | /control/api/platform/modules/                     | Installation de tous les modules                 | install                |   X   | OK   | OK  |
-| PUT     | /control/api/platform/modules/[name]               | Mets à jour un module                            | update [module]        |   X   | OK   | OK  |
-| PUT     | /control/api/platform/modules/                     | Mets à jour tous les modules                     | update                 |   X   | OK   | OK  |
-| PUT     | /control/api/platform/modules/?init=true&file.app  | Mets à jour le module (.app) donné dans le corps | install --file         |   X   | OK   | OK  |
-| DELETE  | /control/api/platform/modules/[name]               | Suppression d'un module                          | remove                 |   X   |      | OK  |
-| GET     | /control/api/modules/                              | Liste des modules installés                      | show                   |       |      | OK  |
-| GET     | /control/api/search/                               | Liste des modules disponibles                    | search                 |       |      | OK  |
-| GET     | /control/api/info                                  | Information sur l'état et nombre d'utilisateur   | info                   |       | OK   | OK  |
-| GET     | /control/api/parameters/                           | Liste des paramètres                             | get --all [--internal] |       |      | OK  |
-| GET     | /control/api/parameters/[key]                      | Valeur du paramètre                              | get [--internal][key]  |       |      | OK  |
-| PUT     | /control/api/parameters/[key]                      | Modifier le paramètre                            | set [--internal][key]  |       |      | OK  |
+| Méthode | Url                                          | Description                                      | Équivalent commande   | Job ? | REST | CLI |
+| ------- | -------------------------------------------- | ------------------------------------------------ | --------------------- | :---: | ---- | --- |
+| GET     | /control/api/status                          | Retourne le statut - état du job en cours        | status                |       | OK   | OK  |
+| GET     | /control/api/registeries/                    | Liste des dépôts enregistrés                     | registery show        |       | OK   | OK  |
+| POST    | /control/api/registeries/[name]?url          | Ajoute un dépôt                                  | registery add         |       | OK   | OK  |
+| PUT     | /control/api/registeries/[name]?url          | Modifie un dépôt                                 | registery set-url     |       |      |     |
+| DELETE  | /control/api/registeries/[name]              | Enlève un dépôt                                  | registery remove      |       | OK   | OK  |
+| GET     | /control/api/modules/[name]                  | Info sur un module                               | search [module]       |       | OK   |     |
+| POST    | /control/api/modules/[name]                  | Installation d'un module                         | install [module]      |   X   | OK   | OK  |
+| POST    | /control/api/modules/                        | Installation de tous les modules                 | install               |   X   | OK   | OK  |
+| PUT     | /control/api/modules/[name]                  | Mets à jour un module                            | update [module]       |   X   | OK   | OK  |
+| PUT     | /control/api/modules/                        | Mets à jour tous les modules                     | update                |   X   | OK   | OK  |
+| PUT     | /control/api/modules?<file.app>              | Mets à jour le module (.app) donné dans le corps | install --file        |   X   | OK   | OK  |
+| DELETE  | /control/api/modules/[name]                  | Suppression d'un module                          | remove                |   X   |      | OK  |
+| GET     | /control/api/modules/                        | Liste des modules installés                      | show                  |       | OK   | OK  |
+| GET     | /control/api/search/                         | Liste des modules disponibles                    | search                |       | OK   | OK  |
+| GET     | /control/api/info                            | Information sur l'état et nombre d'utilisateur   | info                  |       | OK   | OK  |
+| GET     | /control/api/parameters/internal/            | Liste des paramètres interne                     | get --all             |       | OK   | OK  |
+| GET     | /control/api/parameters/modules/             | Liste des paramètres des modules                 | get --all [--module]  |       | OK   | OK  |
+| PUT     | /control/api/parameters/internal/[key]?value | Modifier le paramètre                            | set [--internal][key] |       | OK   | OK  |
 
 Remarque : la gestion des archives n'est pas proposée avec l'api REST.
 

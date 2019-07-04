@@ -4,6 +4,7 @@
 namespace Control\Internal;
 
 
+use Control\Cli\AskParameters;
 use Control\Exception\RuntimeException;
 
 require_once __DIR__ . "/../../../include/lib/Lib.Cli.php";
@@ -170,6 +171,21 @@ class ModuleJob
         return file_exists($jobFile);
     }
 
+    public static function killJob() {
+        if (!ModuleJob::isRunning()) {
+            throw new RuntimeException(sprintf("No job detected."));
+        }
+
+        $pidFile = self::getPidFile();
+        $pid=intval(file_get_contents($pidFile));
+        if ($pid) {
+            if (!posix_kill(-($pid), SIGTERM)) {
+                throw new RuntimeException(sprintf("Fail to kill process.May be process \"%s\" not exists.If it process not exists, you could delete \"./control/run/pid\" file", $pid));
+            }
+            return $pid;
+        }
+        return false;
+    }
     public static function runJob()
     {
         $pidFile = "";
@@ -236,6 +252,7 @@ class ModuleJob
         };
         // Catch Ctrl-C signal
         pcntl_signal(SIGINT, $signalHandler);
+        pcntl_signal(SIGQUIT, $signalHandler);
         // Catch Normal KILL
         pcntl_signal(SIGTERM, $signalHandler);
     }
@@ -288,8 +305,8 @@ class ModuleJob
             JobLog::setStatus("", "", ModuleJob::DONE_STATUS);
             // Job succeeded
             self::archiveJobFile();
+            AskParameters::removeAskes();
         } else {
-
             JobLog::setStatus("", "", ModuleJob::FAILED_STATUS);
         }
     }

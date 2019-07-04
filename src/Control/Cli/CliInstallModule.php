@@ -29,6 +29,7 @@ class CliInstallModule extends CliCommand
             ->setDescription('Install module.')
             ->addArgument('module', InputArgument::OPTIONAL, "Module name to install")
             ->addOption('file', null, InputOption::VALUE_OPTIONAL, '.app file to install.')
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp('This command install all modules or one if module name is set');
@@ -81,7 +82,7 @@ class CliInstallModule extends CliCommand
                 return;
             }
             AskParameters::askParameters($module, $this->getHelper('question'), $input, $output);
-            $module->recordJob(false);
+            $module->recordJob($input->getOption("dry-run"));
             LibSystem::purgeTmpFiles();
             $output->writeln("Job Recorded");
         }

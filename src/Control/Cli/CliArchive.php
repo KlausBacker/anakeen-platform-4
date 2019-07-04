@@ -39,8 +39,16 @@ class CliArchive extends CliCommand
             throw new RuntimeException(sprintf("Job is already in progress. Wait or kill it"));
         }
 
-        if (!$input->getOption("file")) {
+        $outputFile = $input->getOption("file");
+        if (!$outputFile) {
             throw new InvalidOptionException("Option \"file\" is mandatory");
+        }
+        if (file_exists($outputFile) && !is_writable($outputFile)) {
+            throw new InvalidOptionException("Output file is not writable");
+        } else {
+            if (!file_put_contents($outputFile, "") === false) {
+                throw new InvalidOptionException("Output file is not writable");
+            }
         }
 
         $tasks = [

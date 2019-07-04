@@ -58,7 +58,7 @@
       </thead>
       <tbody>
       {{#modules}}
-        <tr class="installed" {{#canUpdate}}data-canupdate="true"{{/canUpdate}}>
+        <tr class="installed" {{#canUpdate}}data-canupdate="true"{{/canUpdate}} {{#isUptodate}}data-sameversion="true"{{/isUptodate}}>
           <td>{{name}}</td>
           <td>{{vendor}}</td>
           <td>{{version}}</td>

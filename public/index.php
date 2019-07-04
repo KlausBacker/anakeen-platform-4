@@ -15,7 +15,11 @@ register_shutdown_function(function () {
 });
 
 set_exception_handler(function (\Exception $e) {
-   print_r($e->getMessage());
+    header("Content-Type: application/json");
+    print (json_encode([
+        "exception" => $e->getMessage()
+    ]));
+
 });
 $app = new \Slim\App([
     "errorHandler" => function () {
@@ -42,11 +46,33 @@ $app->get('/api/info', function (Request $request, Response $response) {
 $app->get('/api/status', function (Request $request, Response $response) {
     return (new \Control\Api\Status())($request, $response);
 });
+$app->get('/api/parameters/internal/', function (Request $request, Response $response) {
+    return (new \Control\Api\GetInternalParameters())($request, $response);
+});
+$app->put('/api/parameters/internal/{name}', function (Request $request, Response $response, array $args) {
+    return (new \Control\Api\SetInternalParameter())($request, $response, $args);
+});
+$app->get('/api/parameters/modules/', function (Request $request, Response $response) {
+    return (new \Control\Api\GetModuleParameters())($request, $response);
+});
 $app->get('/api/search/', function (Request $request, Response $response) {
     return (new \Control\Api\Search())($request, $response);
 });
 $app->get('/api/modules/', function (Request $request, Response $response) {
     return (new \Control\Api\Show())($request, $response);
+});
+$app->get('/api/registeries/', function (Request $request, Response $response) {
+    return (new \Control\Api\Registeries())($request, $response);
+});
+$app->post('/api/registeries/{name}', function (Request $request, Response $response, array $args) {
+    return (new \Control\Api\AddRegistry())($request, $response, $args);
+});
+$app->delete('/api/registeries/{name}', function (Request $request, Response $response, array $args) {
+    return (new \Control\Api\DeleteRegistry())($request, $response, $args);
+});
+
+$app->get('/api/modules/{name}', function (Request $request, Response $response, array $args) {
+    return (new \Control\Api\ShowModule())($request, $response, $args);
 });
 $app->post('/api/modules/{name}', function (Request $request, Response $response, array $args) {
     return (new \Control\Api\InstallModule())($request, $response, $args);
