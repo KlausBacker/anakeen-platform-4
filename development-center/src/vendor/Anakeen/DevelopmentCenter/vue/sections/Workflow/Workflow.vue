@@ -1,14 +1,6 @@
 <template>
   <div class="wfl-parent-section">
-    <div class="wfl-ss-list-empty" v-show="wflIsEmpty">
-      <span class="k-icon k-i-folder-open wfl-empty-icon"></span>
-      <span class="wfl-empty-text"
-        >There are currently no Workflows associated with a Smart Structure
-        ...</span
-      >
-    </div>
     <ss-list
-      v-show="!wflIsEmpty"
       ref="wflSSList"
       position="left"
       :filter="{ placeholder: 'Search a workflow' }"
@@ -17,6 +9,12 @@
       @item-clicked="onItemClicked"
       @list-ready="onListReady"
     >
+      <template slot="empty">
+        <div class="wfl-ss-list-empty">
+          <span class="k-icon k-i-folder-open wfl-empty-icon"></span>
+          <span class="wfl-empty-text">No Workflows found</span>
+        </div>
+      </template>
     </ss-list>
     <div class="workflow-content">
       <router-tabs
@@ -65,6 +63,7 @@
 }
 
 .wfl-ss-list-empty {
+  height: 100%;
   padding: 0.5rem;
   flex: 1;
   display: flex;
@@ -76,14 +75,13 @@
   color: #848484;
   min-height: 0;
   overflow: hidden;
-}
-.wfl-empty-icon {
-  flex: 1;
-  font-size: 20rem;
-}
-.wfl-empty-text {
-  flex: 1;
-  font-size: 24px;
+
+  .wfl-empty-icon {
+    font-size: 5rem;
+  }
+  .wfl-empty-text {
+    /*font-size: 24px;*/
+  }
 }
 
 .workflow-empty {
@@ -123,17 +121,17 @@ export default {
     "ss-list": SSList,
     "router-tabs": RouterTabs,
     "wfl-infos": resolve =>
-            import("./Infos/Infos.vue").then(module => resolve(module.default)),
+      import("./Infos/Infos.vue").then(module => resolve(module.default)),
     "wfl-steps": resolve =>
-            import("./Steps/Steps.vue").then(module => resolve(module.default)),
+      import("./Steps/Steps.vue").then(module => resolve(module.default)),
     "wfl-transitions": resolve =>
-            import("./Transitions/Transitions.vue").then(module =>
-                    resolve(module.default)
-            ),
+      import("./Transitions/Transitions.vue").then(module =>
+        resolve(module.default)
+      ),
     "wfl-permissions": resolve =>
-            import("./Permissions/Permissions.vue").then(module =>
-                    resolve(module.default)
-            )
+      import("./Permissions/Permissions.vue").then(module =>
+        resolve(module.default)
+      )
   },
   props: ["wflName", "wflType"],
   computed: {
@@ -156,7 +154,6 @@ export default {
   data() {
     return {
       selectedWfl: this.wflName,
-      wflIsEmpty: true,
       wflList: [],
       alreadyVisited: {},
       subComponentsRefs: {},
@@ -187,13 +184,6 @@ export default {
         }
       ]
     };
-  },
-  mounted() {
-    this.$refs.wflSSList.dataSource.bind("change", e => {
-      e.items && e.items.length === 0
-        ? (this.wflIsEmpty = true)
-        : (this.wflIsEmpty = false);
-    });
   },
   methods: {
     onTabsMounted(wflName) {
