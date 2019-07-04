@@ -6,7 +6,7 @@ const path = require("path");
 const util = require("util");
 
 const sourcePath = process.argv[2];
-let versionAutorelease = process.argv[3] || false;
+let versionAutorelease = process.argv[3] || "COMPUTE";
 
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
@@ -18,7 +18,7 @@ const readPackage = async () => {
 };
 
 readPackage().then(async content => {
-  if (!versionAutorelease) {
+  if (versionAutorelease === "COMPUTE") {
     let dNow = new Date()
       .toISOString()
       .replace(/[^0-9]/g, "")

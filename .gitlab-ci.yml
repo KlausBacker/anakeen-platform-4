@@ -535,13 +535,14 @@ migration-tools-integration-build:
     - a4ppm
   script:
     - npx npm-cli-login -u ${CIBUILD_STABLE_ANAKEEN_NPM_LOGIN} -p ${CIBUILD_STABLE_ANAKEEN_NPM_PASSWORD} -e ${CIBUILD_ANAKEEN_NPM_EMAIL} -r ${CIBUILD_STABLE_ANAKEEN_NPM_REGISTRY} -s "@anakeen"
-    - node ./.devtool/ci/utils/autorelease.js ${PACKAGE_PATH}
+    - node ./.devtool/ci/utils/autorelease.js ${PACKAGE_PATH} ${AUTO_RELEASE}
     - cd ${PACKAGE_PATH} && npm publish
 
 anakeen-cli-integration-publish:
   extends: .npm-publish-package-integration
   variables:
     PACKAGE_PATH: anakeen-cli
+    AUTO_RELEASE: "COMPUTE"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -562,6 +563,7 @@ module-validation-integration-publish:
   extends: .npm-publish-package-integration
   variables:
     PACKAGE_PATH: module-validation
+    AUTO_RELEASE: "COMPUTE"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -582,21 +584,78 @@ theme-variable-integration-publish:
   extends: .npm-publish-package-integration
   variables:
     PACKAGE_PATH: theme-variable
+    AUTO_RELEASE: "COMPUTE"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - theme-variable/**/*
 
-theme-variable-publish:
+theme-variables-publish:
   extends: .npm-publish-package
   variables:
-    PACKAGE_PATH: theme-variable
+    PACKAGE_PATH: theme-variables
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
-      - theme-variable/**/*
+      - theme-variables/**/*
+
+user-interfaces-integration-publish:
+  extends: .npm-publish-package-integration
+  variables:
+    PACKAGE_PATH: user-interfaces
+    ANK_CI_APP_NAME: user-interfaces
+    AUTO_RELEASE: "$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/$$ANK_CI_APP_NAME $$ANK_CI_APP_NAME)"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - user-interfaces/**/*
+  dependencies:
+    - user-interfaces-integration-build
+
+user-interfaces-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: user-interfaces
+    ANK_CI_APP_NAME: user-interfaces
+    AUTO_RELEASE: "$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/$$ANK_CI_APP_NAME $$ANK_CI_APP_NAME)"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - user-interfaces/**/*
+  dependencies:
+    - user-interfaces-build
+
+hub-station-integration-publish:
+  extends: .npm-publish-package-integration
+  variables:
+    PACKAGE_PATH: hub-station
+    ANK_CI_APP_NAME: hub-station
+    AUTO_RELEASE: "$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/$$ANK_CI_APP_NAME $$ANK_CI_APP_NAME)"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - hub-station/**/*
+  dependencies:
+    - hub-station-integration-build
+
+hub-station-publish:
+  extends: .npm-publish-package
+  variables:
+    PACKAGE_PATH: hub-station
+    ANK_CI_APP_NAME: anakeen-hub-station
+    AUTO_RELEASE: "$(node ./.devtool/ci/utils/getVersionFromApp.js ${ANK_CI_ARTEFACTS_PATH}/$$ANK_CI_APP_NAME $$ANK_CI_APP_NAME)"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - hub-station/**/*
+  dependencies:
+    - hub-station-build
 
 #endregion publishNpm
 
