@@ -151,6 +151,10 @@
         <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Role/role.views.xml">
             <label>ROLE Structure view</label>
         </process>
+
+        <process command="./programs/DbMigration.php --file=./vendor/Anakeen/SmartStructures/Mailtemplate/Migration/mailTemplateMigration.xml">
+            <label>Apply Migrate Mail Template Control View</label>
+        </process>
     </post-upgrade>
 
 </module>
