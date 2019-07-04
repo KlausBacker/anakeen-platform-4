@@ -174,6 +174,11 @@ class Translations
                 $customEntry = $customCatalog->getEntry($entry->getMsgId(), $entry->getMsgCtxt());
                 if ($customEntry) {
                     $data[$key]["override"] = $customEntry->getMsgStr();
+                    if (($entry->getMsgIdPlural())) {
+                        $val1 = $customEntry->getMsgStrPlurals()[0] ?? "";
+                        $val2 = $customEntry->getMsgStrPlurals()[1] ?? "";
+                        $data[$key]["override"] = [$val1,$val2];
+                    }
                 } else {
                     $data[$key]["override"] = null;
                 }
