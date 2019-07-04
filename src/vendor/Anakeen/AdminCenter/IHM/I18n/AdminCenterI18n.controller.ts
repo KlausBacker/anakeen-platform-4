@@ -10,7 +10,6 @@ Vue.use(ButtonsInstaller);
 declare var kendo;
 @Component
 export default class I18nManagerController extends Vue {
-
   private static isEmptyOrSpaces(str) {
     return str === null || str.match(/^\s*$/) !== null;
   }
@@ -158,20 +157,33 @@ export default class I18nManagerController extends Vue {
           template: rowData => {
             if (rowData.pluralid) {
               if (rowData.override) {
-                if (rowData.override[0] && rowData.override[1] && !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) && !I18nManagerController.isEmptyOrSpaces(rowData.override[1])) {
+                if (
+                  rowData.override[0] &&
+                  rowData.override[1] &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[1])
+                ) {
                   return `<span class='override-singular-value-exist'>${
                     rowData.override[0]
                   }</span><hr>
                           <span class='override-plural-value-exist'>${
                             rowData.override[1]
                           }</span>`;
-                } else if (rowData.override[0] && !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) && !rowData.override[1]) {
+                } else if (
+                  rowData.override[0] &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) &&
+                  !rowData.override[1]
+                ) {
                   return (
                     `<span class='override-singular-value-exist'>${
                       rowData.override[0]
                     }</span>` + this.pluralInput
                   );
-                } else if (rowData.override[1] && !I18nManagerController.isEmptyOrSpaces(rowData.override[1]) && !rowData.override[0]) {
+                } else if (
+                  rowData.override[1] &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[1]) &&
+                  !rowData.override[0]
+                ) {
                   return (
                     this.pluralInput +
                     `<span class='override-plural-value-exist'>${
@@ -323,13 +335,15 @@ export default class I18nManagerController extends Vue {
             .data("kendoButton")
             .enable(false);
           kendo.ui.progress($("body"), false);
-          if (!I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)) {
+          if (
+            !I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)
+          ) {
             $(
               confirmEvent.sender.element[0].closest("div[class='input-group']")
             ).replaceWith(
               `<span class='override-singular-value-exist'>${
                 JSON.parse(newVal).msgstr
-                }</span>`
+              }</span>`
             );
             this.setEventSingularSpan();
           }
@@ -385,13 +399,15 @@ export default class I18nManagerController extends Vue {
             .data("kendoButton")
             .enable(false);
           kendo.ui.progress($("body"), false);
-          if (!I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)) {
+          if (
+            !I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)
+          ) {
             $(
               confirmEvent.sender.element[0].closest("div[class='input-group']")
             ).replaceWith(
               `<span class='override-plural-value-exist'>${
                 JSON.parse(newVal).msgstr
-                }</span>`
+              }</span>`
             );
             if ($(confirmEvent.sender.element[0]).prev("hr")) {
               $(".override-plural-value-exist").prepend("<hr>");
