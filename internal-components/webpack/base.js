@@ -36,13 +36,7 @@ module.exports = config => ({
     ]
   },
   externals: [
-    NodeExternals( { importType: "commonjs" })
-    // include only relative assets
-    // function(context, request, callback) {
-    //   if (!request.match(/(?:^|!)(?:\.|\.\.)?\//))
-    //     return callback(null, `commonjs ${request}`);
-    //   callback();
-    // }
+    NodeExternals( { importType: "commonjs", modulesDir: path.resolve(__dirname, "..", "..", "node_modules") })
   ],
   plugins: [new VueLoaderPlugin()]
 });

@@ -1,6 +1,8 @@
 const path = require("path");
 const NodeExternals = require("webpack-node-externals");
-const BASE_PATH = process.env.base ? process.env.base : path.resolve(__dirname, "..");
+const BASE_PATH = process.env.base
+  ? process.env.base
+  : path.resolve(__dirname, "..");
 const OUTPUT_PATH = {
   lib: path.resolve(BASE_PATH, "lib")
 };
@@ -30,5 +32,10 @@ module.exports = config => ({
       }
     ]
   },
-  externals: [NodeExternals({ importType: "commonjs" })]
+  externals: [
+    NodeExternals({
+      importType: "commonjs",
+      modulesDir: path.resolve(__dirname, "..", "..", "..", "node_modules")
+    })
+  ]
 });

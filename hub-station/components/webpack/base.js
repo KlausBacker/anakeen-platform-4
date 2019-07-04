@@ -33,6 +33,6 @@ module.exports = config => ({
       }
     ]
   },
-  externals: [NodeExternals({ importType: "commonjs" })],
+  externals: [NodeExternals({ importType: "commonjs", modulesDir: path.resolve(__dirname, "..", "..", "..", "node_modules") })],
   plugins: [new VueLoaderPlugin()]
 });
