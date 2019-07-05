@@ -433,20 +433,17 @@ function wiff_context_exportenv(&$context, &$argv)
 function wiff_context_shell(&$context, &$argv)
 {
     if (!function_exists("posix_setuid")) {
-        printerr(sprintf("Error: required POSIX PHP functions not available!\n"));
-        return 1;
+        throw new \Exception(sprintf("Error: required POSIX PHP functions not available!\n"));
     }
     if (!function_exists("pcntl_exec")) {
-        printerr(sprintf("Error: required PCNTL PHP functions not available!\n"));
-        return 1;
+        throw new \Exception(sprintf("Error: required PCNTL PHP functions not available!\n"));
     }
 
     $uid = posix_getuid();
 
     $httpuser = $context->getParamByName("apacheuser");
     if ($httpuser === false) {
-        printerr(sprintf("%s\n", $context->errorMessage));
-        return 1;
+        throw new \Exception(sprintf("%s\n", $context->errorMessage));
     }
     if ($httpuser == '') {
         $httpuser = $uid;
@@ -467,9 +464,11 @@ function wiff_context_shell(&$context, &$argv)
         }
     }
     $envs['wpub'] = $context->root;
+
+    $envs['WIFF_ROOT'] = getenv("WIFF_ROOT");
+    $envs['WIFF_CONTEXT_ROOT'] = $context->root;
+    $envs['WIFF_CONTEXT_NAME'] = $context->name;
     $envs['pgservice_core'] = $context->getParamByName("core_db");
-    $envs['pgservice_freedom'] = $envs['pgservice_core'];
-    $envs['freedom_context'] = "default";
     $envs['PS1'] = sprintf("Anakeen-Control(%s)\\w\\$ ", $context->name);
     $envs['USER'] = $httpuser;
     if (getenv('PATH') !== false) {
@@ -480,8 +479,7 @@ function wiff_context_shell(&$context, &$argv)
     }
 
     if ($envs['pgservice_core'] === false || $envs['pgservice_core'] == '') {
-        printerr(sprintf("Error: empty core_db parameter!\n"));
-        return 1;
+        throw new \Exception(sprintf("Error: empty core_db parameter!\n"));
     }
 
     if (is_numeric($httpuser)) {
@@ -490,8 +488,7 @@ function wiff_context_shell(&$context, &$argv)
         $http_pw = posix_getpwnam($httpuser);
     }
     if ($http_pw === false) {
-        printerr(sprintf("Error: could not get information for httpuser '%s'\n", $httpuser));
-        return 1;
+        throw new \Exception(sprintf("Error: could not get information for httpuser '%s'\n", $httpuser));
     }
 
     $http_uid = $http_pw['uid'];
@@ -506,30 +503,29 @@ function wiff_context_shell(&$context, &$argv)
 
     $ret = chdir($context->root);
     if ($ret === false) {
-        printerr(sprintf("Error: could not chdir to '%s'\n", $context->root));
-        return 1;
+        throw new \Exception(sprintf("Error: could not chdir to '%s'\n", $context->root));
     }
 
     if ($uid != $http_uid) {
         $ret = posix_setgid($http_gid);
         if ($ret === false) {
-            printerr(sprintf("Error: could not setgid to gid '%s'\n", $http_gid));
-            return 1;
+            throw new \Exception(sprintf("Error: could not setgid to gid '%s'\n", $http_gid));
+
         }
         $ret = posix_setuid($http_uid);
         if ($ret === false) {
-            printerr(sprintf("Error: could not setuid to uid '%s'\n", $http_uid));
-            return 1;
+            throw new \Exception(sprintf("Error: could not setuid to uid '%s'\n", $http_uid));
         }
     }
     /** @noinspection PhpVoidFunctionResultUsedInspection Because it return false on error and void on success */
+
+
     $ret = pcntl_exec($shell, $argv, $envs);
     if ($ret === false) {
-        printerr(sprintf("Error: exec error for '%s'\n", join(" ", array(
+        throw new \Exception(sprintf("Error: exec error for '%s'\n", join(" ", array(
             $shell,
             join(" ", $argv)
         ))));
-        exit(1);
     }
     return 0;
 }
@@ -623,10 +619,10 @@ function wiff_context_module_install(&$context, &$argv)
 
 function wiff_context_module_install_local(Context & $context, &$options, &$pkgName, &$argv)
 {
-    require_once('lib/Lib.System.php');
+
     require_once('class/Class.Module.php');
 
-    $tmpfile = WiffLibSystem::tempnam(null, basename($pkgName));
+    $tmpfile = Control\Internal\LibSystem::tempnam(null, basename($pkgName));
     if ($tmpfile === false) {
         printerr(sprintf("Error: could not create temp file!\n"));
         return 1;
@@ -712,7 +708,7 @@ function wiff_context_module_install_local(Context & $context, &$options, &$pkgN
 
 function wiff_context_module_install_remote(Context & $context, &$options, &$modName, &$argv)
 {
-    require_once('lib/Lib.System.php');
+
 
     $existingModule = $context->getModuleInstalled($modName);
     if ($existingModule !== false) {
@@ -909,13 +905,14 @@ function wiff_context_module_install_deplist(Context & $context, &$options, &$ar
          */
         $phaseList = $module->getPhaseList($type);
         if (boolopt('nothing', $options)) {
-            $phaseList = array_filter($phaseList, create_function('$v', 'return !preg_match("/^(pre|post)-/",$v);'));
+            $phaseList = array_filter($phaseList, function($v) {return !preg_match("/^(pre|post)-/",$v);});
         }
         if (boolopt('nopre', $options)) {
-            $phaseList = array_filter($phaseList, create_function('$v', 'return !preg_match("/^pre-/",$v);'));
+
+            $phaseList = array_filter($phaseList, function($v) {return !preg_match("/^pre-/",$v);});
         }
         if (boolopt('nopost', $options)) {
-            $phaseList = array_filter($phaseList, create_function('$v', 'return !preg_match("/^post-/",$v);'));
+            $phaseList = array_filter($phaseList, function($v) {return !preg_match("/^post-/",$v);});
         }
 
         foreach ($phaseList as $phaseName) {
@@ -1050,9 +1047,9 @@ function wiff_context_module_upgrade(&$context, &$argv)
 
 function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgName, &$argv)
 {
-    require_once('lib/Lib.System.php');
 
-    $tmpfile = WiffLibSystem::tempnam(null, basename($pkgName));
+
+    $tmpfile = Control\Internal\LibSystem::tempnam(null, basename($pkgName));
     if ($tmpfile === false) {
         printerr(sprintf("Error: could not create temp file!\n"));
         return 1;
@@ -1139,7 +1136,7 @@ function wiff_context_module_upgrade_local(Context & $context, &$options, &$pkgN
 
 function wiff_context_module_upgrade_remote(Context & $context, &$options, &$modName, &$argv)
 {
-    require_once('lib/Lib.System.php');
+
 
     $tmpMod = $context->getModuleAvail($modName);
     if ($tmpMod === false) {

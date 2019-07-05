@@ -8,7 +8,6 @@ namespace WWW;
 
 require_once 'class/Class.WIFF.php';
 require_once 'class/Class.WiffCommon.php';
-require_once 'lib/Lib.System.php';
 
 class UserAgent extends \WiffCommon
 {
@@ -69,13 +68,13 @@ class UserAgent extends \WiffCommon
     public function downloadLocalFile($url, $opts = array())
     {
         
-        $tmpfile = \WiffLibSystem::tempnam(null, 'WIFF_downloadLocalFile');
+        $tmpfile = \Control\Internal\LibSystem::tempnam(null, 'WIFF_downloadLocalFile');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
             return false;
         }
         
-        $ret = copy($url, $tmpfile);
+        $ret = @copy($url, $tmpfile);
         if ($ret === false) {
             $this->errorMessage = sprintf(__METHOD__ . " " . "Error copying file '%s' to '%s'.", $url, $tmpfile);
             return false;
@@ -94,7 +93,7 @@ class UserAgent extends \WiffCommon
         
         $wiff = \WIFF::getInstance();
         
-        $tmpfile = \WiffLibSystem::tempnam(null, 'WIFF_downloadHttpUrlCurl');
+        $tmpfile = \Control\Internal\LibSystem::tempnam(null, 'WIFF_downloadHttpUrlCurl');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
             return false;
@@ -313,7 +312,7 @@ class DefaultCache extends \WiffCommon implements Cache
             $this->remove($url);
             return false;
         }
-        $tmpfile = \WiffLibSystem::tempnam(null, 'www_get.XXXXXX');
+        $tmpfile = \Control\Internal\LibSystem::tempnam(null, 'www_get.XXXXXX');
         if ($tmpfile === false) {
             $this->log(LOG_ERR, __METHOD__ . " " . sprintf("Error creating temporary file."));
             return false;
@@ -367,7 +366,7 @@ class CacheItem
     public $expires = - 1;
     public function __construct($url, $file, $expires)
     {
-        $cacheFile = \WiffLibSystem::tempnam(null, 'www_cache.XXXXXX');
+        $cacheFile = \Control\Internal\LibSystem::tempnam(null, 'www_cache.XXXXXX');
         if ($cacheFile === false) {
             throw new CacheException(sprintf("Error creating temporary cache file."));
         }

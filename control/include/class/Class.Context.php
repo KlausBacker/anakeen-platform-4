@@ -45,7 +45,7 @@ class ContextProperties extends WiffCommon
      */
     public $description;
     /**
-     * @var string Context's root
+     * @var string Context's install path
      */
     public $root;
     /**
@@ -132,10 +132,11 @@ class Context extends ContextProperties
     /**
      * Import archive in Context
      *
-     * @return bool|string boolean false on error or the archive pathname
-     *
      * @param string $archive the archive pathname
      * @param string $status  the status to which the imported archive will be set to (default = 'downloaded')
+     *
+     * @return bool|string boolean false on error or the archive pathname
+     *
      */
     public function importArchive($archive, $status = 'downloaded')
     {
@@ -234,9 +235,9 @@ class Context extends ContextProperties
     /**
      * Activate repository for Context
      *
-     * @return boolean success
-     *
      * @param string $name repository name
+     *
+     * @return boolean success
      *
      * @internal param string $url repository url
      */
@@ -346,9 +347,10 @@ class Context extends ContextProperties
     /**
      * Deactivate repository for Context
      *
+     * @param string $name repository name
+     *
      * @return boolean success
      *
-     * @param string $name repository name
      */
     public function deactivateRepo($name)
     {
@@ -496,6 +498,7 @@ class Context extends ContextProperties
                         if ($cmp < 0) {
                             $module->canUpdate = true;
                         }
+                        $module->isUptodate = ($cmp === 0);
                     }
                 }
             }
@@ -575,7 +578,7 @@ class Context extends ContextProperties
      *
      * @param boolean $onlyNotInstalled only return available and not installed modules
      *
-     * @return array of module Objects
+     * @return \Module[]
      */
     public function getAvailableModuleList($onlyNotInstalled = false)
     {
@@ -637,10 +640,11 @@ class Context extends ContextProperties
      * Merge two module lists, sort and keep modules with highest version-release
      *   (kinda sort|uniq).
      *
-     * @return array containing unique module Objects
-     *
      * @param first array of module Objects
      * @param second array of module Objects
+     *
+     * @return array containing unique module Objects
+     *
      */
     public function mergeModuleList(&$list1, &$list2)
     {
@@ -694,10 +698,11 @@ class Context extends ContextProperties
     /**
      * Compare two module Objects by ascending version
      *
-     * @return int < 0 if mod1 is less than mod2, > 0 if mod1 is greater than mod2,
-     *
      * @param Module $module1
      * @param Module $module2
+     *
+     * @return int < 0 if mod1 is less than mod2, > 0 if mod1 is greater than mod2,
+     *
      */
     public static function cmpModuleByVersionAsc(&$module1, &$module2)
     {
@@ -707,10 +712,11 @@ class Context extends ContextProperties
     /**
      * Compare two module Objects by descending version
      *
-     * @return int > 0 if mod1 is less than mod2, < 0 if mod1 is greater than mod2,
-     *
      * @param Module $module1
      * @param Module $module2
+     *
+     * @return int > 0 if mod1 is less than mod2, < 0 if mod1 is greater than mod2,
+     *
      */
     public function cmpModuleByVersionDesc(&$module1, &$module2)
     {
@@ -728,10 +734,11 @@ class Context extends ContextProperties
     /**
      * Get Module by name
      *
-     * @return Module or boolean false
-     *
      * @param string $name Module name
      * @param bool   $status
+     *
+     * @return Module or boolean false
+     *
      */
     public function getModule($name, $status = false)
     {
@@ -959,12 +966,13 @@ class Context extends ContextProperties
     /**
      * Get module dependencies from repositories indexes
      *
-     * @return array containing a list of Module objects ordered by their
-     *         install order, or false in case of error
-     *
      * @param array $namelist the module name list
      * @param bool  $local
      * @param bool  $installed
+     *
+     * @return array containing a list of Module objects ordered by their
+     *         install order, or false in case of error
+     *
      */
     public function getModuleDependencies(array $namelist, $local = false, $installed = false)
     {
@@ -1292,10 +1300,11 @@ class Context extends ContextProperties
      * Check if a Module object with this name already exists a a list of
      * Module objects
      *
-     * @return integer Index where module was found, -1 if not found
-     *
      * @param        $depsList array( Module object 1, [...], Module object N )
      * @param string $name
+     *
+     * @return integer Index where module was found, -1 if not found
+     *
      */
     private function depsListContains(array & $depsList, $name)
     {
@@ -1312,11 +1321,12 @@ class Context extends ContextProperties
     /**
      * Move a module at position $pos after position $pivot
      *
-     * @return void (nothing)
-     *
      * @param array $depsList array of Modules
      * @param int   $pos      actual module to move
      * @param int   $pivot    position which the module should be moved to
+     *
+     * @return void (nothing)
+     *
      */
     private function moveDepToRight(array & $depsList, $pos, $pivot)
     {
@@ -1339,7 +1349,6 @@ class Context extends ContextProperties
         }
         return $installedModule;
     }
-
 
 
     /**
@@ -1395,7 +1404,7 @@ class Context extends ContextProperties
      */
     public function getParamByName($paramName)
     {
-        require_once(__DIR__.'/Class.WIFF.php');
+        require_once(__DIR__ . '/Class.WIFF.php');
 
         $wiff = WIFF::getInstance();
 
@@ -1420,6 +1429,37 @@ class Context extends ContextProperties
     }
 
     /**
+     * Get all parameters in contexts.xml
+     *
+     * @param string $paramName
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        require_once(__DIR__ . '/Class.WIFF.php');
+
+        $wiff = WIFF::getInstance();
+
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
+            return false;
+        }
+
+        $xpath = new DOMXPath($xml);
+        /**
+         * @var DOMElement $parameterNode
+         */
+        $parameterNodes = $xpath->query(sprintf("/contexts/context[@name='%s']/parameters-value/param", $this->name));
+        $parameters=[];
+        foreach ($parameterNodes as $parameterNode) {
+            $parameters[$parameterNode->getAttribute("name")]=$parameterNode->getAttribute("value");
+        }
+
+        return $parameters;
+    }
+    /**
      * Set parameter value
      *
      * @param string $paramName  The parameter's name
@@ -1429,7 +1469,7 @@ class Context extends ContextProperties
      */
     public function setParamByName($paramName, $paramValue)
     {
-        require_once __DIR__.'/Class.WIFF.php';
+        require_once __DIR__ . '/Class.WIFF.php';
         $wiff = WIFF::getInstance();
 
         $xml = $wiff->loadContextsDOMDocument();
@@ -1459,6 +1499,35 @@ class Context extends ContextProperties
             $paramNode->setAttribute('value', $paramValue);
             $parametersRoot->appendChild($paramNode);
         }
+
+        if ($wiff->commitDOMDocument($xml) === false) {
+            $this->errorMessage = sprintf("Error saving contexts.xml '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public function setAttribute($paramName, $paramValue)
+    {
+        require_once __DIR__ . '/Class.WIFF.php';
+        $wiff = WIFF::getInstance();
+
+        $xml = $wiff->loadContextsDOMDocument();
+        if ($xml === false) {
+            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
+            return false;
+        }
+
+        $xpath = new DOMXpath($xml);
+        $parametersRoot = $xpath->query(sprintf("/contexts/context[@name='%s']", $this->name))->item(0);
+        if (!$parametersRoot) {
+            $this->errorMessage = sprintf("Could not find 'parameters-value' node for context with name '%s'.", $this->name);
+            return false;
+        }
+        /** @var \DOMElement $parametersRoot */
+        $parametersRoot->setAttribute($paramName, $paramValue);
 
         if ($wiff->commitDOMDocument($xml) === false) {
             $this->errorMessage = sprintf("Error saving contexts.xml '%s': %s", $wiff->contexts_filepath, $wiff->errorMessage);
@@ -1522,9 +1591,8 @@ class Context extends ContextProperties
      */
     public function uploadModule()
     {
-        require_once(__DIR__.'/../lib/Lib.System.php');
 
-        $tmpfile = WiffLibSystem::tempnam(null, 'WIFF_downloadLocalFile');
+        $tmpfile = Control\Internal\LibSystem::tempnam(null, 'WIFF_downloadLocalFile');
         if ($tmpfile === false) {
             $this->errorMessage = sprintf(__CLASS__ . "::" . __FUNCTION__ . " " . "Error creating temporary file.");
             return false;
@@ -1638,7 +1706,7 @@ class Context extends ContextProperties
      */
     public function loadModuleFromPackage($filename)
     {
-        require_once(__DIR__.'/Class.Module.php');
+        require_once(__DIR__ . '/Class.Module.php');
 
         $module = new Module($this);
         $module->tmpfile = $filename;
@@ -1926,7 +1994,7 @@ class Context extends ContextProperties
 
         $dump = $archived_tmp_dir . DIRECTORY_SEPARATOR . 'core_db.pg_dump.gz';
 
-        $errorFile = WiffLibSystem::tempnam(null, 'WIFF_error.tmp');
+        $errorFile = Control\Internal\LibSystem::tempnam(null, 'WIFF_error.tmp');
         if ($errorFile === false) {
             $this->log(LOG_ERR, __FUNCTION__ . " " . sprintf("Error creating temporary file."));
             $this->errorMessage = "Error creating temporary file for error.";
@@ -2817,7 +2885,7 @@ class Context extends ContextProperties
     public function zipEECConfiguration()
     {
         require_once('class/Class.StatCollector.php');
-        require_once('lib/Lib.System.php');
+
 
         if ($this->register != 'registered') {
             $this->log(LOG_WARNING, __METHOD__ . " " . $this->errorMessage);
@@ -2841,7 +2909,7 @@ class Context extends ContextProperties
             return false;
         }
 
-        $tmpZIP = WiffLibSystem::tempnam(null, 'downloadZip');
+        $tmpZIP = Control\Internal\LibSystem::tempnam(null, 'downloadZip');
         if ($tmpZIP === false) {
             $this->errorMessage = sprintf("Error creating temporary file.");
             return false;

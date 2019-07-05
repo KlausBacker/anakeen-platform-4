@@ -1,5 +1,5 @@
 TAR_DIST_NAME=anakeen-control
-TAR_DIST_DIR=anakeen-control-$(VERSION)-$(RELEASE)
+TAR_DIST_DIR=anakeen/control
 
 TAR_DIST_OPTS=--owner 0 --group 0
 
@@ -16,8 +16,9 @@ all:
 	@echo "    clean"
 	@echo ""
 
-tarball:
+app:
 	composer install
+	yarn install
 	mkdir -p tmp/$(TAR_DIST_DIR)
 	sed -e "s/{{VR}}/$(VERSION)-$(RELEASE)/g" index-tpl.html > index.html
 	tar -cf - \
@@ -30,15 +31,16 @@ tarball:
 		--exclude "*~" \
 		--exclude .git \
 		--exclude .gitmodules \
+		--exclude node_modules \
 		--exclude PubRule \
 		--exclude po2js.php \
 		. | tar -C tmp/$(TAR_DIST_DIR) -xf -
-	tar -C tmp -zcf $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).tar.gz $(TAR_DIST_OPTS) $(TAR_DIST_DIR)
-	rm -Rf tmp
+	cp -r node_modules/bootstrap/dist tmp/$(TAR_DIST_DIR)/public/bootstrap
+	cp -r node_modules/jquery/dist tmp/$(TAR_DIST_DIR)/public/jquery
+	cp -r node_modules/popper.js/dist tmp/$(TAR_DIST_DIR)/public/popper
+	cd tmp;zip -q -r ../$(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).zip .
 
-autoinstall: tarball
-	# cat $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).tar.gz | php -r 'echo"<?php\n";$$fh=fopen("php://stdin","r");$$content=stream_get_contents($$fh);fclose($$fh);print"\$$content = <<<EOF\n".base64_encode($$content)."\nEOF;\n\$$proc=popen(\"tar zxf -\",\"w\");\nfwrite(\$$proc,base64_decode(\$$content));\nfclose(\$$proc);\nheader(\"Location: Anakeen-Control-$(VERSION)-$(RELEASE)\");\n?>";' > $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).autoinstall.php
-	cat $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).tar.gz | php -r 'echo"<?php\n\$$s=filesize(__FILE__);\$$m=ini_get(\"memory_limit\");if(preg_match(\"/^(\d+)([kmg])$$/i\",\$$m,\$$r)){switch(strtolower(\$$r[2])){case\"g\":\$$r[1]*=1024;case\"m\":\$$r[1]*=1024;case\"k\":\$$r[1]*=1024;}\$$m=\$$r[1];}error_log(\"filesize=\".\$$s.\"/memory_limit=\".\$$m);if(\$$m<\$$s*4){echo\"You might need to set memory_limit >= \".\$$s*4;echo(0);}\n";$$fh=fopen("php://stdin","r");$$content=stream_get_contents($$fh);fclose($$fh);print"\$$content = <<<EOF\n".base64_encode($$content)."\nEOF;\n\$$proc=popen(\"tar zxf -\",\"w\");\nfwrite(\$$proc,base64_decode(\$$content));\nfclose(\$$proc);\nerror_log(\"memory_peak_usage=\".memory_get_peak_usage(true));\nheader(\"Location: Anakeen-Control-$(VERSION)-$(RELEASE)\");\n?>";' > $(TAR_DIST_NAME)-$(VERSION)-$(RELEASE).autoinstall.php
+	rm -Rf tmp
 
 
 clean:

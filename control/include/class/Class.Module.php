@@ -409,7 +409,8 @@ class Module
              */
             $validationError = $wiff->validateDOMDocument($dom, self::SCHEMA_NAMESPACE);
             if ($validationError != '') {
-                $this->errorMessage = (string) (string) new \String\HTML(new \String\sprintf("<p style=\"margin: 0.5em 0 0.5em 0; padding: 1em; text-align: center; background-color: #F88; color: black\">Module '<b>%s</b>' did not passed XML validation!</p>", new \String\Text($moduleName)));
+                print_r($dom->saveXML());
+                $this->errorMessage = sprintf("Module '%s' did not passed XML validation!", $moduleName);
                 return false;
             }
         }
@@ -534,10 +535,8 @@ class Module
      */
     public function unpack($destDir = '')
     {
-        include_once ('lib/Lib.System.php');
-        
         if (!is_file($this->tmpfile)) {
-            $this->errorMessage = sprintf("Temporary file of downloaded module does not exists.");
+            $this->errorMessage = sprintf("Temporary file \"%s\" of downloaded module does not exists.", $this->tmpfile);
             return false;
         }
         // Store BOM/manifest
@@ -586,6 +585,7 @@ class Module
         $wiff = WIFF::getInstance();
         
         $xml = $wiff->loadContextsDOMDocument();
+
         if ($xml === false) {
             $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $wiff->errorMessage);
             return false;

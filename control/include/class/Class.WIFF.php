@@ -19,7 +19,7 @@ function curPageURL()
     return $pageURL;
 }
 
-require_once 'class/Class.WiffCommon.php';
+require_once __DIR__.'/Class.WiffCommon.php';
 
 class WIFF extends WiffCommon
 {
@@ -58,26 +58,32 @@ class WIFF extends WiffCommon
      * @var Logger
      */
     private static $logger;
-    
+    /**
+     * @var string
+     */
+    public $root;
+
     private function __construct()
     {
         $wiff_root = getenv('WIFF_ROOT');
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
-        
+        $this->root=$wiff_root;
         $this->contexts_filepath = $wiff_root . WIFF::contexts_filepath;
         $this->params_filepath = $wiff_root . WIFF::params_filepath;
         $this->archived_contexts_dir = $wiff_root . WIFF::archived_contexts_dir;
         $this->archived_tmp_dir = $wiff_root . WIFF::archived_tmp_dir;
         $this->xsd_catalog_xml = $wiff_root . WIFF::xsd_catalog_xml;
         $this->log_filepath = $wiff_root . WIFF::log_filepath;
-        
-        $this->update_host = $this->getParam('wiff-update-host');
-        $this->update_url = $this->getParam('wiff-update-path');
-        $this->update_file = $this->getParam('wiff-update-file');
-        $this->update_login = $this->getParam('wiff-update-login');
-        $this->update_password = $this->getParam('wiff-update-password');
+
+        if (file_exists( $this->params_filepath)) {
+            $this->update_host = $this->getParam('ac-update-host');
+            $this->update_url = $this->getParam('ac-update-path');
+            $this->update_file = $this->getParam('ac-update-file');
+            $this->update_login = $this->getParam('ac-update-login');
+            $this->update_password = $this->getParam('ac-update-password');
+        }
     }
     
     public function __destruct()
@@ -153,31 +159,24 @@ class WIFF extends WiffCommon
      * Get WIFF version
      * @return string
      */
-    public function getVersion()
+    public static function getVersion()
     {
         $wiff_root = getenv('WIFF_ROOT');
         if ($wiff_root !== false) {
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
+
+        $fversion=file_get_contents($wiff_root . 'VERSION');
+        $frelease=file_get_contents($wiff_root . 'RELEASE');
         
-        if (!$fversion = fopen($wiff_root . 'VERSION', 'r')) {
-            $this->errorMessage = sprintf("Error when opening VERSION file.");
-            return false;
-        }
-        
-        if (!$frelease = fopen($wiff_root . 'RELEASE', 'r')) {
-            $this->errorMessage = sprintf("Error when opening RELEASE file.");
-            return false;
-        }
-        
-        $version = trim(fgets($fversion));
-        $release = trim(fgets($frelease));
-        
-        fclose($fversion);
-        fclose($frelease);
+        $version = trim($fversion);
+        $release = trim($frelease);
+
         
         return $version . '-' . $release;
     }
+
+
     /**
      * Compose and get the update URL
      * @return string
@@ -367,7 +366,7 @@ EOF;
      */
     private function unpack($archiveFile, $destDir = null)
     {
-        include_once ('lib/Lib.System.php');
+
         
         if (!is_file($archiveFile) || !is_readable($archiveFile)) {
             $this->errorMessage = sprintf("Archive file '%s' does not exists or is not readable.", $archiveFile);
@@ -395,9 +394,9 @@ EOF;
     }
     private function checkPreUpdate($archiveFile)
     {
-        require_once ('class/Class.String.php');
+        require_once (__DIR__.'/Class.String.php');
         
-        $tempDir = WiffLibSystem::tempnam(null, 'WIFF_checkPreUpdate');
+        $tempDir = Control\Internal\LibSystem::tempnam(null, 'WIFF_checkPreUpdate');
         if ($tempDir === false) {
             $this->errorMessage = sprintf(__METHOD__ . " " . "Error creating temporary file.");
             return false;
@@ -490,7 +489,7 @@ EOF;
      */
     public function getRepoList($checkValidity = true)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         $repoList = array();
         
@@ -518,7 +517,7 @@ EOF;
      */
     public function getRepo($name)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -564,7 +563,7 @@ EOF;
      */
     public function createRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password, $returnRepoValidation = true)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -605,7 +604,12 @@ EOF;
         $repositoryObject = new Repository($repository);
         
         $isValid = $repositoryObject->isValid();
-        
+        if (!$isValid) {
+            $url=sprintf("%s://%s/%s", $protocol, $host, $path);
+            $this->errorMessage = sprintf("Repository has no valid content.xml '%s'", $url);
+            return false;
+        }
+
         $repository->setAttribute('label', $repositoryObject->label);
         
         $ret = $this->commitDOMDocument($xml);
@@ -785,7 +789,7 @@ EOF;
      */
     public function modifyRepo($name, $description, $protocol, $host, $path, $default, $authenticated, $login, $password)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         if ($name == '') {
             $this->errorMessage = "A name must be provided.";
@@ -840,7 +844,7 @@ EOF;
      */
     public function deleteRepo($name)
     {
-        require_once ('class/Class.Repository.php');
+        require_once (__DIR__.'/Class.Repository.php');
         
         $xml = $this->loadParamsDOMDocument();
         if ($xml === false) {
@@ -905,14 +909,14 @@ EOF;
      */
     public function getContextList($withInProgress = false)
     {
-        require_once ('class/Class.Repository.php');
-        require_once ('class/Class.Context.php');
+        require_once (__DIR__.'/Class.Repository.php');
+        require_once (__DIR__.'/Class.Context.php');
         
         $contextList = array();
         
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading 'contexts.xml' [001]: %s", $this->errorMessage);
             return false;
         }
         
@@ -1192,7 +1196,7 @@ EOF;
     
     public function verifyGzipIntegrity($file, &$err = '')
     {
-        $cmd = sprintf("gzip -t %s 2>&1", escapeshellarg($file));
+        $cmd = sprintf("unzip -t %s 2>&1", escapeshellarg($file));
         $output = array();
         exec($cmd, $output, $retval);
         $err = join("\n", $output);
@@ -1521,7 +1525,7 @@ EOF;
         // Write contexts XML
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading 'contexts.xml' [002]: %s", $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1747,12 +1751,12 @@ EOF;
      */
     public function getContext($name, $opt = false)
     {
-        require_once ('class/Class.Repository.php');
-        require_once ('class/Class.Context.php');
+        require_once (__DIR__.'/Class.Repository.php');
+        require_once (__DIR__.'/Class.Context.php');
         
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading '%s': %s", $this->contexts_filepath, $this->errorMessage);
             return false;
         }
         
@@ -1852,7 +1856,7 @@ EOF;
         // Write contexts XML
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error loading '%s' [003]: %s", $this->contexts_filepath, $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1897,7 +1901,7 @@ EOF;
         // Write contexts XML
         $xml = $this->loadContextsDOMDocument();
         if ($xml === false) {
-            $this->errorMessage = sprintf("Error loading 'contexts.xml': %s", $this->errorMessage);
+            $this->errorMessage = sprintf("Error saving '%s' : %s", $this->contexts_filepath, $this->errorMessage);
             return false;
         }
         $xml->formatOutput = true;
@@ -1991,6 +1995,10 @@ EOF;
      */
     public function getParam($paramName, $strict = false, $withHidden = false)
     {
+
+        if (!file_exists( $this->params_filepath)) {
+            return false;
+        }
         $plist = $this->getParamList($withHidden);
         
         if (array_key_exists($paramName, $plist)) {
@@ -2061,7 +2069,7 @@ EOF;
      */
     public function downloadUrl($url, $opts = array())
     {
-        require_once 'class/Class.WWWUserAgent.php';
+        require_once __DIR__.'/Class.WWWUserAgent.php';
         
         if ($url == '') {
             $this->errorMessage = 'Download URL must not be empty';
@@ -2160,7 +2168,7 @@ EOF;
     
     public function postUpgrade($fromVersion, $toVersion)
     {
-        include_once ('lib/Lib.System.php');
+
         
         $wiff_root = getenv('WIFF_ROOT');
         if ($wiff_root !== false) {
@@ -2647,7 +2655,7 @@ EOF;
     
     static function anonymizeUrl($url)
     {
-        require_once 'class/Class.WWWUserAgent.php';
+        require_once __DIR__.'/Class.WWWUserAgent.php';
         return WWW\UserAgent::anonymizeUrl($url);
     }
     
@@ -2742,7 +2750,7 @@ EOF;
     
     public function validateDOMDocument(DOMDocument $dom, $urn)
     {
-        require_once ('class/Class.XMLSchemaCatalogValidator.php');
+        require_once (__DIR__.'/Class.XMLSchemaCatalogValidator.php');
         try {
             $validator = new \XMLSchemaCatalogValidator\Validator($this->xsd_catalog_xml);
             $validator->loadDOMDocument($dom);
@@ -2781,7 +2789,7 @@ EOF;
     
     public function loadContextsDOMDocument($options = 0)
     {
-        require_once 'class/Class.DOMDocumentCacheFactory.php';
+        require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
         try {
             $dom = DOMDocumentCacheFactory::load($this->contexts_filepath, $options);
         }
@@ -2794,7 +2802,7 @@ EOF;
     
     public function loadParamsDOMDocument($options = 0)
     {
-        require_once 'class/Class.DOMDocumentCacheFactory.php';
+        require_once __DIR__.'/Class.DOMDocumentCacheFactory.php';
         try {
             $dom = DOMDocumentCacheFactory::load($this->params_filepath, $options);
         }
@@ -2819,7 +2827,7 @@ EOF;
     
     private function initLogger()
     {
-        require_once 'class/Class.Logger.php';
+        require_once __DIR__.'/Class.Logger.php';
         self::$logger = new Logger(self::logIdent);
         if ($this->getParam('local-log', false, true) == 'yes') {
             self::$logger->setLogFile($this->log_filepath);

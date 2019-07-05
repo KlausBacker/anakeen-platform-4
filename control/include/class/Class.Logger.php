@@ -4,7 +4,7 @@
  * @package CONTROL
 */
 
-require_once 'class/Class.WIFF.php';
+require_once __DIR__.'/Class.WIFF.php';
 
 class Logger
 {

@@ -1,6 +1,9 @@
 *~
 index.html
 .idea
-anakeen-control*.tar.gz
 
 /vendor/
+/public/bootstrap/
+/public/jquery/
+/public/popper/
+/node_modules/

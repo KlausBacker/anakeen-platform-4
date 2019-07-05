@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
-<wiff version="0.0.1" release="1" author="anakeen, www.anakeen.com" license="AGPL3" lang="fr|en">
+<wiff version="3.0.0" release="0" author="anakeen, www.anakeen.com" license="AGPL3" lang="fr|en">
 
   <repositories>
-    <access name="anakeen" description="Anakeen" protocol="http" host="eec-integration.corp.anakeen.com" path="anakeen/repo/4.0/webinst/" authenticated="no" login="" password="" default="yes" />
+
   </repositories>
 
   <parameters>
-    <param name="wiff-update-host" value="http://eec-integration.corp.anakeen.com" />
-    <param name="wiff-update-path" value="/anakeen/repo/4.0/control/" />
-    <param name="wiff-update-file" value="anakeen-control-current.tar.gz" />
-    <param name="wiff-update-login" value="" />
-    <param name="wiff-update-password" value="" />
+    <param name="ac-update-host" value="http://eec-integration.corp.anakeen.com" />
+    <param name="ac-update-path" value="/anakeen/repo/4.0/control/" />
+    <param name="ac-update-file" value="anakeen-control-current.tar.gz" />
+    <param name="ac-update-login" value="" />
+    <param name="ac-update-password" value="" />
     <param name="use-proxy" value="no" />
     <param name="proxy-host" value="" />
     <param name="proxy-port" value="" />

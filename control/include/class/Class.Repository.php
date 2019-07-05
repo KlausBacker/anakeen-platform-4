@@ -3,52 +3,54 @@
  * @author Anakeen
  * @package FDL
 */
+
 /**
  * Repository Class
+ *
  * @author Anakeen
  */
-
 class Repository
 {
     public $use;
-    
+
     public $name;
     public $baseurl;
     public $description;
-    
+
     public $label;
-    
+
     public $protocol;
     public $host;
     public $path;
-    
+
     public $authenticated;
     public $login;
     public $password;
     public $default;
+    public $status;
     /**
      * @var Context
      */
     private $context;
-    
+
     private $contenturl;
-    
+
     public $url;
     public $displayUrl;
-    
+
     public $errorMessage = '';
-    
+
     public $isValid;
     public $needAuth;
     public $contexts_filepath;
-    
+
     public function __construct(DOMElement $xml, $context = null, $opts = array())
     {
         $this->use = $xml->getAttribute('use');
         $this->name = $this->use;
-        
+
         if ($this->use != '') {
-            
+
             $wiff = WIFF::getInstance();
             $xml = $wiff->loadParamsDOMDocument();
             if ($xml === false) {
@@ -56,7 +58,7 @@ class Repository
                 $this->isValid = false;
                 return false;
             }
-            
+
             $xpath = new DOMXPath($xml);
             // Get repository with this name from WIFF repositories
             $wiffRepoList = $xpath->query("/wiff/repositories/access[@name='" . $this->use . "']");
@@ -65,22 +67,24 @@ class Repository
                 $this->errorMessage = "Repository " . $this->use . " does not exist.";
                 $this->isValid = false;
                 return false;
-            } else if ($wiffRepoList->length > 1) {
-                // If there is more than one repository with such name
-                $this->errorMessage = "More than one repository with name " . $this->use . ".";
-                $this->isValid = false;
-                return false;
+            } else {
+                if ($wiffRepoList->length > 1) {
+                    // If there is more than one repository with such name
+                    $this->errorMessage = "More than one repository with name " . $this->use . ".";
+                    $this->isValid = false;
+                    return false;
+                }
             }
             /**
              * @var DOMElement $repository
              */
             $repository = $wiffRepoList->item(0);
-            
+
             $this->name = $repository->getAttribute('name');
-            
+
             $this->baseurl = $repository->getAttribute('baseurl');
             $this->description = $repository->getAttribute('description');
-            
+
             if ($this->baseurl == '') {
                 $this->protocol = $repository->getAttribute('protocol');
                 $this->host = $repository->getAttribute('host');
@@ -96,7 +100,7 @@ class Repository
                 $this->password = $repository->getAttribute('password');
                 $this->default = $repository->getAttribute('default');
             }
-            
+
             if ($this->authenticated == 'yes') {
                 $info = $wiff->getAuthInfo($this->name);
                 //echo 'INFO '.print_r($info,true);
@@ -109,12 +113,12 @@ class Repository
                 }
             }
         } else {
-            
+
             $this->name = $xml->getAttribute('name');
-            
+
             $this->baseurl = $xml->getAttribute('baseurl');
             $this->description = $xml->getAttribute('description');
-            
+
             if ($this->baseurl == '') {
                 $this->protocol = $xml->getAttribute('protocol');
                 $this->host = $xml->getAttribute('host');
@@ -131,7 +135,7 @@ class Repository
                 $this->default = $xml->getAttribute('default');
             }
         }
-        
+
         $this->contenturl = $this->getUrl() . '/content.xml';
         $this->context = $context;
         // Evaluate if repo is valid and need authentification
@@ -140,16 +144,17 @@ class Repository
         }
         return $this;
     }
-    
+
     public function getContext()
     {
         return $this->context;
     }
+
     public function setContext(Context & $context)
     {
         $this->context = $context;
     }
-    
+
     public function authentify($login, $password)
     {
         if (!$this->login) {
@@ -159,33 +164,42 @@ class Repository
         $this->contenturl = $this->getUrl() . '/content.xml';
         return $this->isValid();
     }
-    
+
+    public function getContentUrl()
+    {
+        return $this->contenturl;
+    }
+
     public function getUrl()
     {
+        $hostSep = $this->host ? "/" : "";
         if ($this->baseurl) {
             $this->url = $this->baseurl;
             $this->displayUrl = $this->url;
         } elseif ($this->authenticated == 'yes' && $this->login && $this->password) {
-            $this->url = $this->protocol . '://' . urlencode($this->login) . ':' . urlencode($this->password) . '@' . $this->host . '/' . $this->path;
+            $this->url = $this->protocol . '://' . urlencode($this->login) . ':' . urlencode($this->password) . '@' . $this->host . $hostSep . $this->path;
         } else {
-            $this->url = $this->protocol . '://' . $this->host . '/' . $this->path;
+            $this->url = $this->protocol . '://' . $this->host . $hostSep . $this->path;
+
         }
         if ($this->authenticated == 'yes') {
-            $this->displayUrl = $this->protocol . '://*******:*******@' . $this->host . '/' . $this->path;
+            $this->displayUrl = $this->protocol . '://*******:*******@' . $this->host . $hostSep . $this->path;
         } else {
-            $this->displayUrl = $this->protocol . '://' . $this->host . '/' . $this->path;
+            $this->displayUrl = $this->protocol . '://' . $this->host . $hostSep . $this->path;
         }
         return $this->url;
     }
+
     /**
      * Return true if repository has a content.xml file
+     *
      * @return bool success
      */
     public function isValid()
     {
-        require_once ('class/Class.WIFF.php');
-        require_once ('class/Class.Module.php');
-        
+        require_once('class/Class.WIFF.php');
+        require_once('class/Class.Module.php');
+
         $wiff = WIFF::getInstance();
         $tmpfile = $wiff->downloadUrl($this->contenturl);
         if ($tmpfile === false) {
@@ -195,7 +209,7 @@ class Repository
             $this->isValid = false;
             return false;
         }
-        
+
         $xml = new DOMDocument();
         $ret = $xml->load($tmpfile);
         if ($ret === false) {
@@ -204,13 +218,15 @@ class Repository
             $this->isValid = false;
             return false;
         }
-        
+
         $this->label = $xml->documentElement->getAttribute('label');
         $this->isValid = true;
         return true;
     }
+
     /**
      * Return true if repository needs authentification
+     *
      * @return bool success
      */
     public function needAuth()
@@ -222,15 +238,18 @@ class Repository
         $this->needAuth = false;
         return false;
     }
+
     /**
      * Get Module list (available modules on repository)
+     *
      * @param Context $context
+     *
      * @return array of object Module
      */
     public function getModuleList(Context $context = null)
     {
-        require_once ('class/Class.WIFF.php');
-        require_once ('class/Class.Module.php');
+        require_once('class/Class.WIFF.php');
+        require_once('class/Class.Module.php');
 
         if (isset($this->isValid) && !$this->isValid) {
             $this->errorMessage = sprintf("Repository '%s' is not valid.", $this->name);
@@ -249,7 +268,7 @@ class Repository
             $this->isValid = false;
             return false;
         }
-        
+
         $xml = new DOMDocument();
         $ret = $xml->load($tmpfile);
         if ($ret === false) {
@@ -264,16 +283,16 @@ class Repository
             $this->isValid = false;
             return false;
         }
-        
+
         $xpath = new DOMXPath($xml);
-        
+
         $modules = $xpath->query("/repo/modules/module");
-        
+
         $moduleList = array();
         foreach ($modules as $module) {
             $moduleList[] = new Module($context, $this, $module, false);
         }
-        
+
         unlink($tmpfile);
         return $moduleList;
     }

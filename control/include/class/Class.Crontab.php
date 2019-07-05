@@ -75,9 +75,8 @@ class Crontab
     
     private function save()
     {
-        include_once "lib/Lib.System.php";
-        
-        $tmp = WiffLibSystem::tempnam(null, 'crontab');
+
+        $tmp = Control\Internal\LibSystem::tempnam(null, 'crontab');
         if ($tmp === FALSE) {
             $this->errorMsg.= ($this->errorMsg ? '\n' : '') . __CLASS__ . "::" . __FUNCTION__ . " Error creating temporary file";
             return FALSE;

@@ -531,9 +531,9 @@ class StatCollector
      */
     public function getMachineMacAddr_Linux_iproute2()
     {
-        include_once ('lib/Lib.System.php');
+
         
-        $ip = WiffLibSystem::getCommandPath('ip');
+        $ip = Control\Internal\LibSystem::getCommandPath('ip');
         if ($ip === false) {
             $ip = '/sbin/ip';
         }
@@ -578,9 +578,9 @@ class StatCollector
      */
     public function getMachineMacAddr_Linux_ifconfig()
     {
-        include_once ('lib/Lib.System.php');
+
         
-        $ifconfig = WiffLibSystem::getCommandPath('ifconfig');
+        $ifconfig = Control\Internal\LibSystem::getCommandPath('ifconfig');
         if ($ifconfig === false) {
             $ifconfig = '/sbin/ifconfig';
         }
@@ -619,9 +619,9 @@ class StatCollector
      */
     public function getMachineCPUCount_Linux()
     {
-        include_once ('lib/Lib.System.php');
+
         
-        $grep = WiffLibSystem::getCommandPath('grep');
+        $grep = Control\Internal\LibSystem::getCommandPath('grep');
         if ($grep === false) {
             $grep = '/bin/grep';
         }
@@ -655,9 +655,9 @@ class StatCollector
      */
     public function getMachineMacAddr_Darwin()
     {
-        include_once ('lib/Lib.System.php');
+
         
-        $netstat = WiffLibSystem::getCommandPath('netstat');
+        $netstat = Control\Internal\LibSystem::getCommandPath('netstat');
         if ($netstat === false) {
             $netstat = '/usr/sbin/netstat';
         }
@@ -692,9 +692,9 @@ class StatCollector
      */
     public function getMachineCPUCount_Darwin()
     {
-        include_once ('lib/Lib.System.php');
+
         
-        $sysctl = WiffLibSystem::getCommandPath('sysctl');
+        $sysctl = Control\Internal\LibSystem::getCommandPath('sysctl');
         if ($sysctl === false) {
             $sysctl = '/usr/sbin/sysctl';
         }
