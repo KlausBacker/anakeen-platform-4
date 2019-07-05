@@ -2,7 +2,6 @@ image:
   name: gitlab.anakeen.com:4567/anakeen/platform-4/docker/build/build:latest
 
 stages:
-  - tear-up
   - lint
   - buildJS
   - buildHub
@@ -11,30 +10,12 @@ stages:
   - registry
   - release
   - publish
+  - tear-down
 
 .default-cache:
   cache: &default-cache
-    key: "Anakeen:MonoRepo"
-    paths:
-      - node_modules
-      - anakeen-cli/node_modules/
-      - business-app/node_modules/
-      - development-center/node_modules/
-      - hub-station/node_modules/
-      - internal-components/node_modules/
-      - migration-tools/node_modules/
-      - security/node_modules/
-      - smart-data-engine/node_modules/
-      - theme-variables/node_modules/
-      - transformation/node_modules/
-      - user-interfaces/node_modules/
-      - workflow/node_modules/
-      - .devtool/ci/check/checkPHP/vendor
-      - smart-data-engine/src/vendor/Anakeen/lib/vendor
-      - smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
-      - user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
-      - .eslintcache
-      - build
+    key: "MonoRepo"
+    untracked: true
 
 .pull-cache: &pull-cache
   cache:
@@ -63,11 +44,10 @@ before_script:
   - export ANK_CI_ARTEFACTS_PATH=$(pwd)/build
   - export ANK_CI_BUCKET=$(node ./.devtool/ci/utils/selectBucket.js)
   - export ANK_CI_A4PPM=$(node ./.devtool/ci/utils/selectA4ppm.js)
-  - export NODE_OPTIONS="--max-old-space-size=8192"
 
 # region tear-up
 populate-cache-master:
-  stage: tear-up
+  stage: tear-down
   cache:
     <<: *default-cache
   script:
@@ -87,26 +67,30 @@ lint-php:
   stage: lint
   script:
     - make lint
-  only:
-    - merge_requests
-    - web
+  artifacts:
+    paths:
+      - .devtool/ci/check/checkPHP/
+      - smart-data-engine/src/vendor/Anakeen/lib/
+      - smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
+      - user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
+    expire_in: 1 hour
 
 lint-js:
-  cache:
-    <<: *default-cache
+  <<: *pull-cache
   stage: lint
   script:
     - make lintJS
-  only:
-    - merge_requests
-    - web
+  artifacts:
+    paths:
+      - node_modules/
+      - .eslintcache
+    expire_in: 1 hour
 #endregion lint
 
 #region buildJS
 
 user-interfaces-buildJS:
-  cache:
-    <<: *default-cache
+  <<: *pull-cache
   stage: buildJS
   tags:
   - a4ppm
@@ -124,8 +108,7 @@ user-interfaces-buildJS:
       - user-interfaces/**/*
 
 internal-components-buildJS:
-  cache:
-    <<: *default-cache
+  <<: *pull-cache
   stage: buildJS
   tags:
   - a4ppm
@@ -140,8 +123,7 @@ internal-components-buildJS:
       - internal-components/**/*
 
 hub-station-buildJS:
-  cache:
-    <<: *default-cache
+  <<: *pull-cache
   stage: buildHub
   tags:
   - a4ppm
