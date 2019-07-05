@@ -6,6 +6,8 @@
 
 namespace Dcp\Pu;
 
+use Anakeen\Core\SEManager;
+
 /**
  * @author  Anakeen
  * @package Dcp\Pu
@@ -18,6 +20,7 @@ class TestTypedValue extends TestCaseDcpCommonFamily
 
     /**
      * import TST_FAMSETVALUE family
+     *
      * @static
      * @return string
      */
@@ -270,6 +273,44 @@ class TestTypedValue extends TestCaseDcpCommonFamily
         }
     }
 
+
+    /**
+     * @dataProvider dataArraySetAttributeValue
+     */
+    public function testArraySetAttributeValue($docName, array $setValues, array $expectedValues)
+    {
+
+        $d = SEManager::getDocument($docName);
+        $this->assertTrue($d->isAlive(), sprintf("cannot access %s document", $docName));
+        foreach ($expectedValues as $attrid => $value) {
+            $d->setAttributeValue($attrid, $value);
+        }
+        $d->store(); // verify database record
+        foreach ($expectedValues as $attrid => $expectedValue) {
+            $value = $d->getAttributeValue($attrid);
+            $this->assertTrue($expectedValue === $value, sprintf('wrong value "%s" : expected %s, has %s', $attrid, $this->getDump($expectedValue), $this->getDump($value, true)));
+        }
+    }
+
+    public function dataArraySetAttributeValue()
+    {
+        return array(
+            array(
+                'TST_DOCTYPE1',
+                "set" => array(
+                    "tst_t_numbers" => [["tst_ints1"=>2, "tst_doubles1"=>2.54 ], ["tst_ints1"=>23, "tst_doubles1"=>20.154 ]],
+                    "tst_t_text" => [["tst_texts"=>"Hello"]],
+
+                ),
+                "get" => array(
+                    "tst_ints1" => [2, 23],
+                    "tst_doubles1" => [2.54, 20.154],
+                    "tst_texts" => ["Hello"],
+                )
+            )
+
+        );
+    }
     public function dataSetAndGetValues()
     {
         return array(

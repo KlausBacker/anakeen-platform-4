@@ -2,23 +2,23 @@
 
 INSTALLDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. >/dev/null 2>&1 && pwd )"
 
-core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
+core_db=`"$WIFF_ROOT"/anakeen-control get --module core_db`
 if [ -z "$core_db" ]; then
     echo "Unexpected empty 'core_db' from wiff"
     exit 1
 fi
-vault_root=`"$WIFF_ROOT"/wiff --getValue=vault_root`
+vault_root=`"$WIFF_ROOT"/anakeen-control get --module vault_root`
 if [ -z "$vault_root" ]; then
     echo "Unexpected empty 'vault_root' from wiff"
     exit 1
 fi
 
-client_name=`"$WIFF_ROOT"/wiff --getValue=client_name`
-vault_save=`"$WIFF_ROOT"/wiff --getValue=vault_save`
+client_name=`"$WIFF_ROOT"/anakeen-control get --module client_name`
+vault_save=`"$WIFF_ROOT"/anakeen-control get --module vault_save`
  
-remove_profiles=`"$WIFF_ROOT"/wiff --getValue=remove_profiles`
-user_login=`"$WIFF_ROOT"/wiff --getValue=user_login`
-user_password=`"$WIFF_ROOT"/wiff --getValue=user_password`
+remove_profiles=`"$WIFF_ROOT"/anakeen-control get --module remove_profiles`
+user_login=`"$WIFF_ROOT"/anakeen-control get --module user_login`
+user_password=`"$WIFF_ROOT"/anakeen-control get --module user_password`
 
 . "$INSTALLDIR/programs/libutil.sh"
 

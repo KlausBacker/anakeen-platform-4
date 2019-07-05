@@ -6,7 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. >/dev/null 2>&1 && pwd )"
 authtype=`"$DIR"/programs/config.php --get authentMode`
 
 if [ "$authtype" = "" ]; then
-    authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
+    authtype=`"$WIFF_ROOT"/anakeen-control get --module authtype`
     "$DIR"/programs/config.php --set authentMode "$authtype"
 fi
 
@@ -15,7 +15,7 @@ fi
 core_db=`"$DIR"/programs/config.php --get dbService`
 
 if [ "$core_db" = "" ]; then
-    core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
+    core_db=`"$WIFF_ROOT"/anakeen-control get --module core_db`
     "$DIR"/programs/config.php --set dbService "$core_db"
 fi
 
@@ -50,5 +50,5 @@ if [ $RET -ne 0 ]; then
 fi
 
 
-export wpub=$DIR # same as `wiff --getValue=rootdirectory`
+export wpub=$DIR
 . "$DIR"/programs/core_environment

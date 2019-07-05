@@ -1,6 +1,5 @@
 #!/bin/bash
 
-mod_deflate=`"$WIFF_ROOT"/wiff --getValue=mod_deflate`
 
 
 prefix="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php
@@ -27,25 +26,9 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
-if [ "$mod_deflate" = "yes" ]; then
-    cat <<EOF >> "$WIFF_CONTEXT_ROOT/public/.htaccess"
 
-<IfModule mod_deflate.c>
-	SetOutputFilter DEFLATE
-</IfModule>
 
-EOF
-else
-    cat <<EOF >> "$WIFF_CONTEXT_ROOT/public/.htaccess"
-
-#<IfModule mod_deflate.c>
-#	SetOutputFilter DEFLATE
-#</IfModule>
-
-EOF
-fi
-
-export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
+export wpub=$WIFF_CONTEXT_ROOT
 . "$WIFF_CONTEXT_ROOT"/programs/core_environment
 
 "$corepost" I 

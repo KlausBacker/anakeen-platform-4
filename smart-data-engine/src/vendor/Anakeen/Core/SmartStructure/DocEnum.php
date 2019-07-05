@@ -9,7 +9,6 @@ namespace Anakeen\Core\SmartStructure;
  */
 
 use Anakeen\Core\DbManager;
-use Anakeen\Core\EnumManager;
 use Anakeen\Core\Internal\DbObj;
 
 class DocEnum extends DbObj
@@ -222,12 +221,6 @@ SQL;
         if ($err) {
             throw new \Anakeen\Exception(sprintf("Cannot add enum %s:%s : %s", $name, $enumStruct->key, $err));
         }
-
-        if ($enumStruct->localeLabel) {
-            foreach ($enumStruct->localeLabel as $lLabel) {
-                self::changeLocale($name, $enumStruct->key, $lLabel->lang, $lLabel->label);
-            }
-        }
     }
 
     public static function modifyEnum($name, EnumStructure $enumStruct)
@@ -254,78 +247,6 @@ SQL;
         $err = $enum->modify();
         if ($err) {
             throw new \Anakeen\Exception(sprintf("Cannot modify enum %s:%s : %s", $name, $enumStruct->key, $err));
-        }
-        if ($enumStruct->localeLabel) {
-            foreach ($enumStruct->localeLabel as $lLabel) {
-                self::changeLocale($name, $enumStruct->key, $lLabel->lang, $lLabel->label);
-            }
-        }
-    }
-
-    public static function getMoFilename($enumName, $lang)
-    {
-
-        $moFile = sprintf("%s/locale/%s/LC_MESSAGES/customFamily_%s.mo", DEFAULT_PUBDIR, substr($lang, 0, 2), $enumName);
-        return $moFile;
-    }
-
-
-    public static function changeLocale($enumName, $enumId, $lang, $label)
-    {
-        \Anakeen\Core\ContextManager::setLanguage($lang);
-        $docenum = new DocEnum("", [$enumName, $enumId]);
-        if (!$docenum->isAffected()) {
-            throw new \Anakeen\Exception(sprintf("Locale : Enum %s:%s not found", $enumName, $enumId));
-        }
-        /**
-         * @var \Anakeen\Core\SmartStructure\NormalAttribute $oa
-         */
-        EnumManager::resetEnum();
-        //$curLabel = $oa->getEnumLabel($enumId);
-        if ($label !== null) {
-            $moFile = self::getMoFilename($enumName, $lang);
-            $poFile = sprintf("%s.po", (substr($moFile, 0, -3)));
-
-            $msgInit = sprintf('msgid ""
-msgstr ""
-"Project-Id-Version: Custom enum for %s\n"
-"Language: %s\n"
-"PO-Revision-Date: %s"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"', $enumName, substr($lang, 0, 2), date('Y-m-d H:i:s'));
-            if (file_exists($moFile)) {
-                // Just test mo validity
-                $cmd = sprintf("(msgunfmt %s > %s) 2>&1", escapeshellarg($moFile), escapeshellarg($poFile));
-
-                exec($cmd, $output, $ret);
-                if ($ret) {
-                    throw new \Anakeen\Exception(sprintf("Locale : Enum %s:%s error : %s", $enumName, $enumId, implode(',', $output)));
-                }
-            } else {
-                file_put_contents($poFile, $msgInit);
-            }
-            // add new entry
-            $msgEntry = sprintf(
-                'msgctxt "%s"' . "\n" . 'msgid "%s"' . "\n" . 'msgstr "%s"',
-                str_replace('"', '\\"', $enumName),
-                str_replace('"', '\\"', $enumId),
-                str_replace('"', '\\"', $label)
-            );
-            $content = file_get_contents($poFile);
-            // fuzzy old entry
-            $match = sprintf('msgid "%s"', $enumId);
-            $content = str_replace($match, "#, fuzzy\n$match", $content);
-            // delete previous header
-            $content = str_replace('msgid ""', "#, fuzzy\nmsgid \"- HEADER DELETION -\"", $content);
-
-            file_put_contents($poFile, $msgInit . $msgEntry . "\n\n" . $content);
-            $cmd = sprintf("(msguniq --use-first %s | msgfmt - -o %s; rm -f %s) 2>&1", escapeshellarg($poFile), escapeshellarg($moFile), escapeshellarg($poFile));
-            exec($cmd, $output, $ret);
-            if ($ret) {
-                print $cmd;
-                throw new \Anakeen\Exception(sprintf("Locale : Enum %s:%s error : %s", $enumName, $enumId, implode(',', $output)));
-            }
         }
     }
 }

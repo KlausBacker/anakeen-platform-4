@@ -291,9 +291,6 @@ create sequence seq_id_users start 10;";
 
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);
-            if ($this->id == 1) {
-                $this->setSupervisorHtpasswd($this->password_new);
-            }
         }
         //expires and passdelay
         $this->GetExpires();
@@ -315,9 +312,6 @@ create sequence seq_id_users start 10;";
     {
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);
-            if ($this->id == 1) {
-                $this->setSupervisorHtpasswd($this->password_new);
-            }
         }
 
         $this->login = mb_strtolower($this->login);
@@ -672,10 +666,6 @@ create sequence seq_id_users start 10;";
                     'password'
                 ), true);
                 if ($err == '') {
-                    if ($this->id == 1) {
-                        $this->setSupervisorHtpasswd($pass);
-                    }
-
                     LogManager::info(sprintf(
                         'User "%s" password crypted with salted SHA256 algorithm.',
                         $this->login
@@ -1308,48 +1298,6 @@ union
         return $token;
     }
 
-
-    /**
-     * Set password for the admin account in the `admin' subdir
-     *
-     * @param string $admin_passwd the password
-     *
-     * @return string error message, emptuy string if no error
-     */
-    public function setSupervisorHtpasswd($admin_passwd)
-    {
-        if ($this->id != 1) {
-            $err = sprintf("Method %s can only be used on the admin user.", __FUNCTION__);
-            return $err;
-        }
-
-        $supervisorDir = PUBLIC_DIR . DIRECTORY_SEPARATOR . 'supervisor';
-        if (is_dir($supervisorDir)) {
-            $tmpFile = @tempnam($supervisorDir, '.htpasswd');
-            if ($tmpFile === false) {
-                $err = sprintf("Error creating temporary file in '%s'.", $supervisorDir);
-                return $err;
-            }
-            if (chmod($tmpFile, 0600) === false) {
-                $err = sprintf("Error setting mode 0600 on temporary file '%s'.", $tmpFile);
-                unlink($tmpFile);
-                return $err;
-            }
-            $passwdLine = sprintf("%s:{SHA}%s", 'admin', base64_encode(sha1($admin_passwd, true)));
-            if (file_put_contents($tmpFile, $passwdLine) === false) {
-                $err = sprintf("Error writing to temporary file '%s'.", $tmpFile);
-                unlink($tmpFile);
-                return $err;
-            }
-            $htpasswdFile = $supervisorDir . DIRECTORY_SEPARATOR . '.htpasswd';
-            if (rename($tmpFile, $htpasswdFile) === false) {
-                $err = sprintf("Error renaming temporary file '%s' to '%s'.\n", $tmpFile, $htpasswdFile);
-                unlink($tmpFile);
-                return $err;
-            }
-        }
-        return '';
-    }
 
     /**
      * add a role to a user/group

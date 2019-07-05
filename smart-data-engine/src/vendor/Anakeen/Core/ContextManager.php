@@ -107,10 +107,15 @@ class ContextManager
         if (php_sapi_name() !== 'cli') {
             // Ask authentification if HTML required
             $urlInfo = parse_url($_SERVER["REQUEST_URI"]);
-            $headers = apache_request_headers();
+            if (function_exists("apache_request_headers")) {
+                $headers = apache_request_headers();
+                $hAccept = $headers["Accept"]?? "";
+            } else {
+                $hAccept = $_SERVER['HTTP_ACCEPT'] ?? "";
+            }
             $askAuthent = (preg_match("/\\.html$/", $urlInfo["path"])
-                || (!empty($headers["Accept"])
-                    && preg_match("@\\btext/html\\b@", $headers["Accept"])));
+                || (!empty($hAccept)
+                    && preg_match("@\\btext/html\\b@", $hAccept)));
         } else {
             $askAuthent = false;
         }
@@ -260,6 +265,7 @@ class ContextManager
 
     /**
      * Verify if user is authenticated
+     *
      * @return bool
      */
     public static function isAuthenticated(): bool

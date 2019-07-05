@@ -12,13 +12,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
-#, fuzzy
 msgctxt "IUSER-us_rolesorigin"
 msgid "group"
 msgstr "Obtenu par"
 
 #: src/vendor/Anakeen/SmartStructures/Iuser/iuser.struct.xml
-#, fuzzy
 msgctxt "IUSER-us_rolesorigin"
 msgid "internal"
 msgstr "Affectation directe"
