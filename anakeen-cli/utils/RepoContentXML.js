@@ -102,9 +102,14 @@ class RepoContentXML extends XMLLoader {
     delete rootNode.$.xmlns;
     for (let prop of Object.keys(rootNode)) {
       if (
-        !["$", "description", "requires", "replaces", "changelog"].includes(
-          prop
-        )
+        ![
+          "$",
+          "description",
+          "requires",
+          "replaces",
+          "changelog",
+          "parameters"
+        ].includes(prop)
       ) {
         delete rootNode[prop];
       }
