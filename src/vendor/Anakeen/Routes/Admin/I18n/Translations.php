@@ -4,11 +4,13 @@ namespace Anakeen\Routes\Admin\I18n;
 
 use Anakeen\Core\ContextManager;
 use Anakeen\Core\DbManager;
+use Anakeen\Core\SEManager;
 use Anakeen\Core\SmartStructure\Attributes;
 use Anakeen\Core\Utils\Strings;
 use Anakeen\Router\ApiV2Response;
 use Anakeen\Exception;
 use Anakeen\Search\SearchElements;
+use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Sepia\PoParser\Catalog\Entry;
 
 /** @noinspection PhpIncludeInspection */
@@ -61,7 +63,10 @@ class Translations
         $data = $this->getRecordedTranslations();
 
         $this->addSmartStructureLocale($data);
+        $this->addWorkflowLocale($data);
         $this->addEnumLocale($data);
+
+        $this->addOverride($data);
 
         usort($data, function ($a, $b) {
             $cmp = strcmp($a["msgctxt"], $b["msgctxt"]);
@@ -74,6 +79,30 @@ class Translations
         return $data;
     }
 
+    protected function addoverride(&$data)
+    {
+        $customPoFile = sprintf("%s/locale/%s/LC_MESSAGES/custom-catalog.po", ContextManager::getRootDirectory(), $this->lang);
+        if (!file_exists($customPoFile)) {
+            throw new Exception("Fail retrieve custom locale results");
+        }
+
+        $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($customPoFile);
+        $poParser = new \Sepia\PoParser\Parser($fileHandler);
+        $customCatalog = $poParser->parse();
+
+        foreach ($data as &$datum) {
+            $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
+            if ($customEntry) {
+                $datum["override"] = $customEntry->getMsgStr();
+                if (!empty($datum["defaultstr"])) {
+                    $datum["msgstr"] = $datum["defaultstr"];
+                }
+            } else {
+                $datum["override"] = null;
+            }
+        }
+    }
+
     protected function addSmartStructureLocale(&$data)
     {
         $s = new SearchElements(-1);
@@ -82,19 +111,91 @@ class Translations
             $fields = $structure->getAttributes();
             foreach ($fields as $field) {
                 if ($field->id !== Attributes::HIDDENFIELD) {
-                    $key = sprintf("%s-%s", $structure->name, $field->id);
-                    if (empty($this->filters) || $this->filterContainsStructure($structure, $field, $this->filters)) {
+                    $entry = [
+                        "msgid" => $field->id,
+                        "msgstr" => $field->labelText,
+                        "msgctxt" => $structure->name,
+                        "section" => "SmartStructure"
+                    ];
+                    $key = sprintf("%s-%s", $entry["msgctxt"], $entry["msgid"]);
+                    if (empty($this->filters) || $this->filterContainsEntry($entry, $this->filters)) {
+                        if ($field->structureId == $structure->id) {
+                            if (!isset($data[$key])) {
+                                $data[$key] = [
+                                    "msgctxt" => $entry["msgctxt"],
+                                    "msgid" => $entry["msgid"],
+                                    "msgstr" => $entry["msgstr"],
+                                    "override" => null
+                                ];
+                            }
+                        }
+                    }
+                    if (isset($data[$key])) {
+                        $data[$key]["section"] = "SmartStructure";
+                    }
+                }
+            }
+        }
+    }
+
+    protected function addWorkflowLocale(&$data)
+    {
+        $s = new SearchElements(-1);
+        $s->addFilter("usefor ~ 'W'");
+        $structures = $s->search()->getResults();
+        foreach ($structures as $structure) {
+            $workflow = SEManager::createDocument($structure->name);
+            /** @var WDocHooks $workflow */
+
+            if ($workflow->graphModelName) {
+                $states = $workflow->getStates();
+                foreach ($states as $state) {
+                    $entry = [
+                        "msgid" => $state,
+                        "msgctxt" => sprintf("%s:state", $workflow->graphModelName),
+                        "msgstr" => $workflow->stepLabels[$state]["state"] ?? "",
+                        "section" => "Workflow"
+                    ];
+                    $key = sprintf("%s-%s", $entry["msgctxt"], $entry["msgid"]);
+                    if (empty($this->filters) || $this->filterContainsEntry($entry, $this->filters)) {
                         if (!isset($data[$key])) {
                             $data[$key] = [
-                                "section" => "SmartStructure",
-                                "msgctxt" => $structure->name,
-                                "msgid" => $field->id,
-                                "msgstr" => $field->labelText,
+                                "msgctxt" => $entry["msgctxt"],
+                                "msgid" => $entry["msgid"],
+                                "msgstr" => $entry["msgstr"],
+                            ];
+                        }
+                    }
+                    if (isset($data[$key])) {
+                        $data[$key]["section"] = "Workflow";
+                        $data[$key]["defaultstr"] = $workflow->stepLabels[$state]["state"] ?? "";
+                    }
+
+                    // Activity
+                }
+                $transitions = $workflow->cycle;
+                foreach ($transitions as $transition) {
+                    $entry = [
+                        "msgid" => $transition["t"],
+                        "msgstr" => $workflow->transitions[$transition["t"]]["label"] ?? "",
+                        "msgctxt" => sprintf("%s:transition", $workflow->graphModelName),
+                        "defaultstr" => $workflow->transitions[$transition["t"]]["label"] ?? "",
+                        "section" => "Workflow"
+                    ];
+                    $key = sprintf("%s-%s", $entry["msgctxt"], $entry["msgid"]);
+                    if (empty($this->filters) || $this->filterContainsEntry($entry, $this->filters)) {
+                        if (!isset($data[$key])) {
+                            $data[$key] = [
+                                "msgctxt" => $entry["msgctxt"],
+                                "msgid" => $entry["msgid"],
+                                "msgstr" => $entry["msgstr"],
                                 "override" => null
                             ];
-                        } else {
-                            $data[$key]["section"] = "SmartStructure";
                         }
+                    }
+                    if (isset($data[$key])) {
+                        $data[$key]["section"] = "Workflow";
+                        $data[$key]["defaultstr"] = $workflow->transitions[$transition["t"]]["label"] ?? "";
                     }
                 }
             }
@@ -107,19 +208,25 @@ class Translations
         DbManager::query("select * from docenum", $enums);
 
         foreach ($enums as $enum) {
-            $key = sprintf("%s-%s", $enum["name"], $enum["key"]);
-            if (empty($this->filters) || $this->filterContainsEnum($enum, $this->filters)) {
+            $entry = [
+                "msgid" => $enum["key"],
+                "msgstr" => $enum["label"],
+                "msgctxt" => $enum["name"],
+                "section" => "Enum"
+            ];
+            $key = sprintf("%s-%s", $entry["msgctxt"], $entry["msgid"]);
+            if (empty($this->filters) || $this->filterContainsEntry($entry, $this->filters)) {
                 if (!isset($data[$key])) {
                     $data[$key] = [
-                        "section" => "Enum",
-                        "msgctxt" => $enum["name"],
-                        "msgid" => $enum["key"],
-                        "msgstr" => $enum["label"],
+                        "msgctxt" => $entry["msgctxt"],
+                        "msgid" => $entry["msgid"],
+                        "msgstr" => $entry["msgstr"],
                         "override" => null
                     ];
-                } else {
-                    $data[$key]["section"] = "Enum";
                 }
+            }
+            if (isset($data[$key])) {
+                $data[$key]["section"] = "Enum";
             }
         }
     }
@@ -132,21 +239,10 @@ class Translations
     {
         $data = [];
 
-        $customPoFile = sprintf("%s/locale/%s/LC_MESSAGES/custom-catalog.po", ContextManager::getRootDirectory(), $this->lang);
-        if (!file_exists($customPoFile)) {
-            throw new Exception("Fail retrieve custom locale results");
-        }
-
-
         $originPoFile = sprintf("%s/locale/%s/LC_MESSAGES/origin-catalog.po", ContextManager::getRootDirectory(), $this->lang);
         if (!file_exists($originPoFile)) {
             throw new Exception("Fail retrieve origin locale results");
         }
-
-        $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($customPoFile);
-        $poParser = new \Sepia\PoParser\Parser($fileHandler);
-        $customCatalog = $poParser->parse();
-
 
         $originFileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($originPoFile);
         $originParser = new \Sepia\PoParser\Parser($originFileHandler);
@@ -219,7 +315,7 @@ class Translations
         return $filterPassed;
     }
 
-    private function filterContainsStructure($structure, $field, $filters)
+    private function filterContainsEntry($entry, $filters)
     {
         $filterPassed = true;
         if (!empty($filters)) {
@@ -227,54 +323,9 @@ class Translations
                 $filterField = $filter["field"];
                 $filterValue = $filter["value"];
                 $entryValue = null;
-                switch ($filterField) {
-                    case "msgctxt":
-                        $entryValue = $structure->name;
-                        break;
-                    case "msgid":
-                        $entryValue = $field->id;
-                        break;
-                    case "msgstr":
-                        $entryValue = $field->labelText;
-                        break;
-                    case "section":
-                        $entryValue = "SmartStructure";
-                        break;
-                    default:
-                        break;
-                }
-                if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) === false) {
-                    return false;
-                }
-            }
-        }
-        return $filterPassed;
-    }
 
-    private function filterContainsEnum($enum, $filters)
-    {
-        $filterPassed = true;
-        if (!empty($filters)) {
-            foreach ($filters as $filter) {
-                $filterField = $filter["field"];
-                $filterValue = $filter["value"];
-                $entryValue = null;
-                switch ($filterField) {
-                    case "msgctxt":
-                        $entryValue = $enum["name"];
-                        break;
-                    case "msgid":
-                        $entryValue = $enum["key"];
-                        break;
-                    case "msgstr":
-                        $entryValue = $enum["label"];
-                        break;
-                    case "section":
-                        $entryValue = "Enum";
-                        break;
-                    default:
-                        break;
-                }
+                $entryValue = $entry[$filterField] ?? "";
+
                 if (strpos(Strings::unaccent(strtolower($entryValue)), Strings::unaccent(strtolower($filterValue))) === false) {
                     return false;
                 }
