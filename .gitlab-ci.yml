@@ -620,7 +620,7 @@ user-interfaces-publish:
     ANK_CI_APP_NAME: user-interfaces
   only:
     refs:
-      - master@Anakeen/Platform-4/anakeen-platform-4
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces/**/*
   dependencies:
@@ -630,7 +630,7 @@ hub-station-integration-publish:
   extends: .npm-publish-package-integration-synchro
   variables:
     PACKAGE_PATH: hub-station
-    ANK_CI_APP_NAME: hub-station
+    ANK_CI_APP_NAME: anakeen-hub
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -643,10 +643,10 @@ hub-station-publish:
   extends: .npm-publish-package
   variables:
     PACKAGE_PATH: hub-station
-    ANK_CI_APP_NAME: anakeen-hub-station
+    ANK_CI_APP_NAME: anakeen-hub
   only:
     refs:
-      - master@Anakeen/Platform-4/anakeen-platform-4
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station/**/*
   dependencies:
@@ -871,6 +871,30 @@ development-center-integration-register:
       - development-center/**/*
   dependencies:
     - development-center-integration-build
+
+admin-center-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "admin-center"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - admin-center/**/*
+  dependencies:
+    - admin-center-build
+
+admin-center-integration-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "admin-center"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - admin-center/**/*
+  dependencies:
+    - admin-center-integration-build
 
 transformation-register:
   extends: .registry
