@@ -10,6 +10,23 @@ Vue.use(ButtonsInstaller);
 declare var kendo;
 @Component
 export default class I18nManagerController extends Vue {
+  private static isEmptyOrSpaces(str) {
+    return str === null || str.match(/^\s*$/) !== null;
+  }
+  private singularInput: string = `<div class="input-group">
+                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>
+                <div class="input-group-append">
+                    <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
+                </div>
+            </div>`;
+  private pluralInput: string = `<div class="input-group">
+                <input type='text' placeholder="modifier la traduction pluriel" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>
+                <div class="input-group-append">
+                    <button class='confirm-override-translation-plural btn btn-outline-secondary'disabled><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation-plural btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
+                </div>
+            </div>`;
   private translationLocale: string = "fr";
   private translationFilterableOptions: kendo.data.DataSourceFilter = {
     cell: {
@@ -135,162 +152,71 @@ export default class I18nManagerController extends Vue {
         },
         {
           field: "overridentranslation",
-          filterable: false,
+          filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           template: rowData => {
-            if (rowData.plurals) {
-              return `<div class="input-group">
-                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>
-                <div class="input-group-append">
-                    <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
-                </div>
-            </div>
-            <div class="input-group">
-                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>
-                <div class="input-group-append">
-                    <button class='confirm-override-translation-plural btn btn-outline-secondary'disabled><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation-plural btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
-                </div>
-            </div>`;
+            if (rowData.pluralid) {
+              if (rowData.override) {
+                if (
+                  rowData.override[0] &&
+                  rowData.override[1] &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[1])
+                ) {
+                  return `<span class='override-singular-value-exist'>${
+                    rowData.override[0]
+                  }</span><hr>
+                          <span class='override-plural-value-exist'>${
+                            rowData.override[1]
+                          }</span>`;
+                } else if (
+                  rowData.override[0] &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) &&
+                  !rowData.override[1]
+                ) {
+                  return (
+                    `<span class='override-singular-value-exist'>${
+                      rowData.override[0]
+                    }</span>` + this.pluralInput
+                  );
+                } else if (
+                  rowData.override[1] &&
+                  !I18nManagerController.isEmptyOrSpaces(rowData.override[1]) &&
+                  !rowData.override[0]
+                ) {
+                  return (
+                    this.pluralInput +
+                    `<span class='override-plural-value-exist'>${
+                      rowData.override[1]
+                    }</span>`
+                  );
+                } else {
+                  return this.singularInput + this.pluralInput;
+                }
+              } else {
+                return this.singularInput + this.pluralInput;
+              }
             } else {
-              return `<div class="input-group">
-                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>
-                <div class="input-group-append">
-                    <button class='confirm-override-translation-singular btn btn-outline-secondary'disabled><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-times'></i></button>
-                </div>
-            </div>`;
+              if (rowData.override) {
+                return `<span class='override-singular-value-exist'>${
+                  rowData.override
+                }</span>`;
+              } else {
+                return this.singularInput;
+              }
             }
           },
           title: "Overriden translation"
         }
       ],
       dataBound: e => {
-        $(
-          ".overriden-translation-input-singular, .overriden-translation-input-plural"
-        ).on("change", event => {
-          const cancelBtn = $(event.target.nextElementSibling.children[1]);
-          const confirmBtn = $(event.target.nextElementSibling.children[0]);
-          confirmBtn.data("kendoButton").enable(true);
-          cancelBtn.data("kendoButton").enable(true);
-        });
-
-        $(".confirm-override-translation-singular").kendoButton({
-          click: confirmEvent => {
-            kendo.ui.progress($("body"), true);
-            const newVal = JSON.stringify({
-              msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
-                "input"
-              )[0].value
-            });
-            const rowData: any = $(this.$refs.i18nGrid)
-              .data("kendoGrid")
-              .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
-            const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-            const url = `/api/v2/admin/i18n/${encodeURIComponent(
-              this.translationLocale
-            )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
-              rowData.msgid
-            )}`;
-            const jsonHeader = {
-              headers: {
-                "Content-type": "application/json"
-              }
-            };
-            this.$http.put(url, newVal, jsonHeader).then(response => {
-              if (response.status === 200) {
-                this.$emit("EditTranslationSuccess");
-              } else {
-                this.$emit("EditTranslationFail");
-              }
-              $(confirmEvent.sender.element[0])
-                .data("kendoButton")
-                .enable(false);
-              $(confirmEvent.sender.element[0].nextElementSibling)
-                .data("kendoButton")
-                .enable(false);
-              kendo.ui.progress($("body"), false);
-            });
-          }
-        });
-        $(".confirm-override-translation-plural").kendoButton({
-          click: confirmEvent => {
-            kendo.ui.progress($("body"), true);
-            const newVal = JSON.stringify({
-              msgstr: null,
-              plural: $(confirmEvent.event.target.closest("tr[role=row]")).find(
-                "input"
-              )[1].value
-            });
-            const rowData: any = $(this.$refs.i18nGrid)
-              .data("kendoGrid")
-              .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
-            const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
-            const url = `/api/v2/admin/i18n/${encodeURIComponent(
-              this.translationLocale
-            )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
-              rowData.msgid
-            )}`;
-            const jsonHeader = {
-              headers: {
-                "Content-type": "application/json"
-              }
-            };
-            this.$http.put(url, newVal, jsonHeader).then(response => {
-              if (response.status === 200) {
-                this.$emit("EditTranslationSuccess");
-              } else {
-                this.$emit("EditTranslationFail");
-              }
-              $(confirmEvent.sender.element[0])
-                .data("kendoButton")
-                .enable(false);
-              $(confirmEvent.sender.element[0].nextElementSibling)
-                .data("kendoButton")
-                .enable(false);
-              kendo.ui.progress($("body"), false);
-            });
-          }
-        });
-        $(".cancel-override-translation-singular").kendoButton({
-          click: cancelEvent => {
-            const rowId = cancelEvent.event.target
-              .closest("tr[role=row]")
-              .getAttribute("data-uid");
-            // sets input valueback to server value
-            $(cancelEvent.event.target.closest("tr[role=row]")).find(
-              "input"
-            )[0].value = $(this.$refs.i18nGrid)
-              .data("kendoGrid")
-              .dataItem(rowId);
-            $(cancelEvent.sender.element[0].previousElementSibling)
-              .data("kendoButton")
-              .enable(false);
-            $(cancelEvent.sender.element[0])
-              .data("kendoButton")
-              .enable(false);
-          }
-        });
-        $(".cancel-override-translation-plural").kendoButton({
-          click: cancelEvent => {
-            const rowId = cancelEvent.event.target
-              .closest("tr[role=row]")
-              .getAttribute("data-uid");
-            // sets input valueback to server value
-            $(cancelEvent.event.target.closest("tr[role=row]")).find(
-              "input"
-            )[1].value = $(this.$refs.i18nGrid)
-              .data("kendoGrid")
-              .dataItem(rowId);
-            $(cancelEvent.sender.element[0].previousElementSibling)
-              .data("kendoButton")
-              .enable(false);
-            $(cancelEvent.sender.element[0])
-              .data("kendoButton")
-              .enable(false);
-          }
-        });
+        this.setEventSingularSpan();
+        this.setEventPluralSpan();
+        this.setEventInput();
+        this.setEventSingularConfirm();
+        this.setEventPluralConfirm();
+        this.setEventSingularCancel();
+        this.setEventPluralCancel();
       },
       dataSource: this.translationGridData,
       filterable: {
@@ -336,15 +262,203 @@ export default class I18nManagerController extends Vue {
     );
   }
 
-  private getDate() {
-    const today = new Date();
-    const DD = String(today.getDate()).padStart(2, "0");
-    const MM = String(today.getMonth() + 1).padStart(2, "0");
-    const YYYY = today.getFullYear();
-    const HH = String(today.getHours()).padStart(2, "0");
-    const mm = String(today.getMinutes()).padStart(2, "0");
-    const ss = String(today.getSeconds()).padStart(2, "0");
+  private initInput(target, type) {
+    if (type === "singular") {
+      $(target).replaceWith(this.singularInput);
+      this.setEventSingularCancel();
+      this.setEventSingularConfirm();
+      this.setEventInput();
+    } else {
+      $(target).replaceWith(this.pluralInput);
+      this.setEventPluralCancel();
+      this.setEventPluralConfirm();
+      this.setEventInput();
+    }
+  }
 
-    return `${YYYY}-${MM}-${DD}-${HH}:${mm}:${ss}`;
+  private setEventPluralSpan() {
+    $(".override-plural-value-exist").on("click", e => {
+      this.initInput(e.target, "plural");
+    });
+  }
+
+  private setEventSingularSpan() {
+    $(".override-singular-value-exist").on("click", e => {
+      this.initInput(e.target, "singular");
+    });
+  }
+
+  private setEventSingularConfirm() {
+    $(".confirm-override-translation-singular").kendoButton({
+      click: confirmEvent => {
+        kendo.ui.progress($("body"), true);
+        const rowData: any = $(this.$refs.i18nGrid)
+          .data("kendoGrid")
+          .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
+        let newVal;
+        if (rowData.pluralid) {
+          newVal = JSON.stringify({
+            msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
+              "input"
+            )[0].value,
+            plural: 0,
+            pluralid: rowData.pluralid
+          });
+        } else {
+          newVal = JSON.stringify({
+            msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
+              "input"
+            )[0].value
+          });
+        }
+        const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
+        const url = `/api/v2/admin/i18n/${encodeURIComponent(
+          this.translationLocale
+        )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
+          rowData.msgid
+        )}`;
+        const jsonHeader = {
+          headers: {
+            "Content-type": "application/json"
+          }
+        };
+        this.$http.put(url, newVal, jsonHeader).then(response => {
+          if (response.status === 200) {
+            this.$emit("EditTranslationSuccess");
+          } else {
+            this.$emit("EditTranslationFail");
+          }
+          $(confirmEvent.sender.element[0])
+            .data("kendoButton")
+            .enable(false);
+          $(confirmEvent.sender.element[0].nextElementSibling)
+            .data("kendoButton")
+            .enable(false);
+          kendo.ui.progress($("body"), false);
+          if (
+            !I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)
+          ) {
+            $(
+              confirmEvent.sender.element[0].closest("div[class='input-group']")
+            ).replaceWith(
+              `<span class='override-singular-value-exist'>${
+                JSON.parse(newVal).msgstr
+              }</span>`
+            );
+            this.setEventSingularSpan();
+          }
+        });
+      }
+    });
+  }
+
+  private setEventPluralConfirm() {
+    $(".confirm-override-translation-plural").kendoButton({
+      click: confirmEvent => {
+        kendo.ui.progress($("body"), true);
+        const rowData: any = $(this.$refs.i18nGrid)
+          .data("kendoGrid")
+          .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
+
+        const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
+        const inputVal =
+          $(confirmEvent.event.target.closest("tr[role=row]")).find("input")
+            .length > 1
+            ? $(confirmEvent.event.target.closest("tr[role=row]")).find(
+                "input"
+              )[1].value
+            : $(confirmEvent.event.target.closest("tr[role=row]")).find(
+                "input"
+              )[0].value;
+        const newVal = JSON.stringify({
+          msgstr: inputVal,
+          plural: 1,
+          pluralid: rowData.pluralid
+        });
+
+        const url = `/api/v2/admin/i18n/${encodeURIComponent(
+          this.translationLocale
+        )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
+          rowData.msgid
+        )}`;
+        const jsonHeader = {
+          headers: {
+            "Content-type": "application/json"
+          }
+        };
+        this.$http.put(url, newVal, jsonHeader).then(response => {
+          if (response.status === 200) {
+            this.$emit("EditTranslationSuccess");
+          } else {
+            this.$emit("EditTranslationFail");
+          }
+          $(confirmEvent.sender.element[0])
+            .data("kendoButton")
+            .enable(false);
+          $(confirmEvent.sender.element[0].nextElementSibling)
+            .data("kendoButton")
+            .enable(false);
+          kendo.ui.progress($("body"), false);
+          if (
+            !I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)
+          ) {
+            $(
+              confirmEvent.sender.element[0].closest("div[class='input-group']")
+            ).replaceWith(
+              `<span class='override-plural-value-exist'>${
+                JSON.parse(newVal).msgstr
+              }</span>`
+            );
+            if ($(confirmEvent.sender.element[0]).prev("hr")) {
+              $(".override-plural-value-exist").prepend("<hr>");
+            }
+            this.setEventPluralSpan();
+          }
+        });
+      }
+    });
+  }
+
+  private setEventSingularCancel() {
+    $(".cancel-override-translation-singular").kendoButton({
+      click: cancelEvent => {
+        $(cancelEvent.sender.element[0].previousElementSibling)
+          .data("kendoButton")
+          .enable(false);
+        $(cancelEvent.sender.element[0])
+          .data("kendoButton")
+          .enable(false);
+        $(this.$refs.i18nGrid)
+          .data("kendoGrid")
+          .dataSource.read();
+      }
+    });
+  }
+
+  private setEventPluralCancel() {
+    $(".cancel-override-translation-plural").kendoButton({
+      click: cancelEvent => {
+        $(cancelEvent.sender.element[0].previousElementSibling)
+          .data("kendoButton")
+          .enable(false);
+        $(cancelEvent.sender.element[0])
+          .data("kendoButton")
+          .enable(false);
+        $(this.$refs.i18nGrid)
+          .data("kendoGrid")
+          .dataSource.read();
+      }
+    });
+  }
+
+  private setEventInput() {
+    $(
+      ".overriden-translation-input-singular, .overriden-translation-input-plural"
+    ).on("input", event => {
+      const cancelBtn = $(event.target.nextElementSibling.children[1]);
+      const confirmBtn = $(event.target.nextElementSibling.children[0]);
+      confirmBtn.data("kendoButton").enable(true);
+      cancelBtn.data("kendoButton").enable(true);
+    });
   }
 }
