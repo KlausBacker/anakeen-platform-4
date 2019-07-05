@@ -28,6 +28,14 @@ class RecordTranslation
      * @var \Sepia\PoParser\Catalog\Catalog
      */
     protected $catalog;
+    /**
+     * @var string
+     */
+    private $plural;
+    /**
+     * @var string
+     */
+    protected $pluralid;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
@@ -53,6 +61,8 @@ class RecordTranslation
         $this->lang = $args["lang"];
         $data = $request->getParsedBody();
         $this->msgstr = $data["msgstr"] ?? "";
+        $this->plural = $data["plural"] ?? "";
+        $this->pluralid = $data["pluralid"] ?? "";
     }
 
     protected function initPoFile($filePath)
@@ -91,9 +101,23 @@ msgstr ""
             if ($this->msgctxt) {
                 $entry->setMsgCtxt($this->msgctxt);
             }
+            if ($this->pluralid) {
+                $tab = $entry->getMsgStrPlurals();
+                $tab[$this->plural] = $this->msgstr;
+                $entry->setMsgIdPlural($this->pluralid);
+                $entry->setMsgStrPlurals($tab);
+            }
             $this->catalog->addEntry($entry);
         } else {
-            $entry->setMsgStr($this->msgstr);
+            if ($this->pluralid) {
+                $tab = $entry->getMsgStrPlurals();
+                $tab[$this->plural] = $this->msgstr;
+                $entry->setMsgIdPlural($this->pluralid);
+                $entry->setMsgStrPlurals($tab);
+                $entry->setMsgStr(null);
+            } else {
+                $entry->setMsgStr($this->msgstr);
+            }
         }
     }
 
