@@ -48,6 +48,8 @@ before_script:
 # region tear-up
 populate-cache-master:
   stage: tear-down
+  tags:
+    - a4ppm
   cache:
     <<: *default-cache
   script:
@@ -59,12 +61,18 @@ populate-cache-master:
   only:
     - master
     - web
+  dependencies:
+    - lint-php
+    - lint-js
+
 #endregion tear-up
 
 #region lint
 lint-php:
   <<: *pull-cache
   stage: lint
+  tags:
+    - a4ppm
   script:
     - make lint
   artifacts:
@@ -78,6 +86,8 @@ lint-php:
 lint-js:
   <<: *pull-cache
   stage: lint
+  tags:
+    - a4ppm
   script:
     - make lintJS
   artifacts:
