@@ -114,8 +114,16 @@ user-interfaces-buildJS:
       - user-interfaces/components/lib/
     expire_in: 1 hour
   only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces/**/*
+      - hub-station/**/*
+      - admin-center/**/*
+      - business-app/**/*
+      - development-center/**/*
+      - transformation/**/*
 
 internal-components-buildJS:
   <<: *pull-cache
@@ -129,8 +137,16 @@ internal-components-buildJS:
       - internal-components/lib/
     expire_in: 1 hour
   only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - internal-components/**/*
+      - hub-station/**/*
+      - admin-center/**/*
+      - business-app/**/*
+      - development-center/**/*
+      - transformation/**/*
 
 hub-station-buildJS:
   <<: *pull-cache
@@ -145,8 +161,15 @@ hub-station-buildJS:
       - hub-station/src/public/Anakeen/hubVendor/
     expire_in: 1 hour
   only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station/**/*
+      - admin-center/**/*
+      - business-app/**/*
+      - development-center/**/*
+      - transformation/**/*
   dependencies:
     - user-interfaces-buildJS
     - internal-components-buildJS
