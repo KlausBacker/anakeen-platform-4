@@ -67,7 +67,6 @@
     "datatables.net-bs4": "^1.10.16",
     "expose-loader": "^0.7.5",
     "hard-source-webpack-plugin": "^0.13.1",
-    "husky": "^2.4.1",
     "little-loader": "^0.2.0",
     "load-css-file": "^1.0.0",
     "mustache": "^3.0.1",

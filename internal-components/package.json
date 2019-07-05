@@ -25,7 +25,6 @@
     "@anakeen/user-interfaces": "2.0.1",
     "@anakeen/webpack-conf": "^1.2.0",
     "@progress/kendo-ui": "^2019.1.213",
-    "husky": "^2.4.1",
     "jquery": "^3.3.1",
     "ts-loader": "^6.0.2",
     "typescript": "^3.3.4000",
