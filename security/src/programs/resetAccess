@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-pgservice_core=`"$WIFF_ROOT/wiff" --getValue=core_db`
+pgservice_core=`"$WIFF_ROOT/anakeen-control" get --module core_db`
 if [ -z "$pgservice_core" ]; then
     echo "Error: undefined or empty CORE_DB"
     exit 1
