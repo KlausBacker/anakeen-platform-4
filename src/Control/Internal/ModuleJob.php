@@ -159,33 +159,52 @@ class ModuleJob
     public static function isRunning()
     {
         $pidFile = self::getPidFile();
-        return file_exists($pidFile);
-    }
-
-    public static function hasFailed()
-    {
-        if (self::isRunning()) {
-            return null;
+        if (!file_exists($pidFile)) {
+            return false;
         }
-        $jobFile = self::getJobFile();
-        return file_exists($jobFile);
+        $pid = intval(file_get_contents($pidFile));
+        if (!posix_kill($pid, SIG_DFL)) {
+
+            JobLog::writeInterruption();
+            throw new RuntimeException("Seems job process is died. \n Try to remove \"./control/run/pid\" file.");
+        }
+        return true;
     }
 
-    public static function killJob() {
+    public static function hasFailed(): bool
+    {
+        $jobFile = self::getJobFile();
+        if (file_exists($jobFile)) {
+            $data = self::getJobData();
+
+            $status = $data["status"]??"";
+            if ($status === self::ERROR_STATUS || $status === self::INTERRUPTED_STATUS || $status === self::FAILED_STATUS) {
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+
+    public static function killJob()
+    {
         if (!ModuleJob::isRunning()) {
             throw new RuntimeException(sprintf("No job detected."));
         }
 
         $pidFile = self::getPidFile();
-        $pid=intval(file_get_contents($pidFile));
+        $pid = intval(file_get_contents($pidFile));
         if ($pid) {
             if (!posix_kill(-($pid), SIGTERM)) {
-                throw new RuntimeException(sprintf("Fail to kill process.May be process \"%s\" not exists.If it process not exists, you could delete \"./control/run/pid\" file", $pid));
+                throw new RuntimeException(sprintf("Fail to kill process.May be process \"%s\" not exists.\nIf it process not exists, you could delete \"./control/run/pid\" file",
+                    $pid));
             }
             return $pid;
         }
         return false;
     }
+
     public static function runJob()
     {
         $pidFile = "";
@@ -243,7 +262,6 @@ class ModuleJob
         declare(ticks=1);
 
         $signalHandler = function () use ($pidFile) {
-            JobLog::setStatus("", "", "Interrupted");
             JobLog::writeInterruption();
             if ($pidFile && file_exists($pidFile)) {
                 unlink($pidFile);
@@ -259,6 +277,8 @@ class ModuleJob
 
     protected static function dotheJob()
     {
+
+        JobLog::setStatus("", "", ModuleJob::RUNNING_STATUS);
         $moduleName = self::$jobData["moduleArg"] ?? "";
         $moduleFileName = self::$jobData["file"] ?? "";
         if ($moduleFileName) {
@@ -667,7 +687,7 @@ class ModuleJob
             JobLog::setStatus($module->name, $phase->name, ModuleJob::RUNNING_STATUS);
             $ret = self::executeProcessList($processList);
             if ($ret !== true) {
-                JobLog::setStatus($module->name, $phase->name, ModuleJob::FAILED_STATUS);
+
                 JobLog::writeInterruption(ModuleJob::FAILED_STATUS);
             } else {
                 JobLog::setStatus($module->name, $phase->name, ModuleJob::DONE_STATUS);

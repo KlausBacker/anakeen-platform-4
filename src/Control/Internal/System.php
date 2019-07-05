@@ -11,7 +11,7 @@ class System
     public static function sudoWww()
     {
 
-        require(__DIR__.'/../../../include/lib/Lib.Cli.php');
+        require(__DIR__ . '/../../../include/lib/Lib.Cli.php');
 
         $ret = setuid_wiff($_SERVER['SCRIPT_FILENAME']);
         if ($ret === false) {
@@ -20,14 +20,20 @@ class System
 
     }
 
-    public static function exec($cmd) {
+    public static function exec($cmd)
+    {
 
-        exec($cmd, $output, $retval);
         JobLog::displayOutput("", "", "", $cmd);
+        exec($cmd, $output, $retval);
         if ($retval !== 0) {
-            $err=sprintf("%s\n%s", $cmd, implode("\n", $output));
-            throw new \Control\Exception\RuntimeException($err);
+            $err = sprintf("%s\n[%s] %s", $cmd, $retval, implode("\n", $output));
+            if ($retval === SIGTERM) {
+                JobLog::writeInterruption();
+                throw new \Control\Exception\SignalException($err);
+            } else {
+                throw new \Control\Exception\RuntimeException($err);
+            }
         }
 
-}
+    }
 }

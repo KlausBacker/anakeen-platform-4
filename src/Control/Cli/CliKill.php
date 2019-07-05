@@ -31,7 +31,7 @@ class CliKill extends CliCommand
         parent::execute($input, $output);
 
         $pid = ModuleJob::killJob();
-        $output->writeln(sprintf("<info>Kill process %d.</info>", $pid));
+        $output->writeln(sprintf("<info>Process %d is killed.</info>", $pid));
     }
 
 }

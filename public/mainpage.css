@@ -44,6 +44,9 @@ li.nav-item.active {
     transition : border 500ms ease-out;
 }
 
+.php-info td.v {
+    word-break: break-word;
+}
 
 .php-info h1 {
     background-color: var(--dark);

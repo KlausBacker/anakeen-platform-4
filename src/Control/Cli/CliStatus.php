@@ -156,22 +156,4 @@ class CliStatus extends CliJsonCommand
         }
     }
 
-    protected function getJobStatus()
-    {
-
-        $status = ["status" => "Activated"];
-
-
-        if (ModuleJob::isRunning()) {
-            $status = ModuleJob::getJobData();
-            $status["status"] =  ModuleJob::RUNNING_STATUS;
-        } elseif (ModuleJob::hasFailed()) {
-            $jobData = ModuleJob::getJobData();
-            $status = $jobData;
-        } else {
-            $status["status"] = ModuleJob::READY_STATUS;
-        }
-
-        return $status;
-    }
 }

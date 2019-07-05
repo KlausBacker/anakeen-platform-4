@@ -23,7 +23,7 @@ class JobLog
         self::displayOutput($moduleName, $phaseName, $key, $value);
 
         list($usec) = explode(" ", microtime());
-        $now = sprintf("%s.%s",date("Y-m-d\\TH:i:s"), substr($usec,2,6));
+        $now = sprintf("%s.%s", date("Y-m-d\\TH:i:s"), substr($usec, 2, 6));
         if ($moduleName) {
             foreach ($data["tasks"] as &$task) {
                 if ($task["module"] === $moduleName) {
@@ -47,12 +47,14 @@ class JobLog
                 }
             }
         } else {
-            $data[$key] = $value;
+            if ($key !== "log") {
+                $data[$key] = $value;
+            }
         }
-        if ($key !== "log") {
+        
             $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now];
             $data["log"][] = $msg;
-        }
+
         ModuleJob::putJobData($data);
     }
 
@@ -110,10 +112,11 @@ class JobLog
         }
     }
 
-    public static function writeInterruption($status = "INTERRUPTED")
+    public static function writeInterruption($status = ModuleJob::INTERRUPTED_STATUS)
     {
         $data = ModuleJob::getJobData();
 
+        $data["status"] = $status;
 
         foreach ($data["tasks"] as &$task) {
             if ($task["status"] === ModuleJob::RUNNING_STATUS) {
@@ -135,6 +138,7 @@ class JobLog
         }
 
         ModuleJob::putJobData($data);
+        self::addLog("", "", "Interrupted process");
     }
 
 
@@ -202,6 +206,7 @@ class JobLog
     {
         self::$output = $output;
     }
+
     public static function clearLog()
     {
         self::setKey("", "", "log", []);
