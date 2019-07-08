@@ -90,10 +90,7 @@ class DbMigration
                         return getenv("wpub");
                     case "PGSERVICE":
                         return getenv("pgservice_core");
-                    default:
-                        /** @noinspection PhpUndefinedFunctionInspection */
-                        $wv = \wiff_getParamValue($p);
-                        return $wv;
+
                 }
             },
             $content
