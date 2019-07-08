@@ -117,20 +117,21 @@ class JobLog
         $data = ModuleJob::getJobData();
 
         $data["status"] = $status;
-
-        foreach ($data["tasks"] as &$task) {
-            if ($task["status"] === ModuleJob::RUNNING_STATUS) {
-                $task["status"] = $status;
-            }
-
-            foreach ($task["phases"] as &$phase) {
-                if ($phase["status"] === ModuleJob::RUNNING_STATUS) {
-                    $phase["status"] = $status;
+        if (isset($data["tasks"])) {
+            foreach ($data["tasks"] as &$task) {
+                if ($task["status"] === ModuleJob::RUNNING_STATUS) {
+                    $task["status"] = $status;
                 }
-                if (!empty($phase["process"])) {
-                    foreach ($phase["process"] as &$process) {
-                        if ($process["status"] === ModuleJob::RUNNING_STATUS) {
-                            $process["status"] = $status;
+
+                foreach ($task["phases"] as &$phase) {
+                    if ($phase["status"] === ModuleJob::RUNNING_STATUS) {
+                        $phase["status"] = $status;
+                    }
+                    if (!empty($phase["process"])) {
+                        foreach ($phase["process"] as &$process) {
+                            if ($process["status"] === ModuleJob::RUNNING_STATUS) {
+                                $process["status"] = $status;
+                            }
                         }
                     }
                 }

@@ -82,10 +82,16 @@ exports.handler = function(argv) {
     }
     checkPromise
       .then(() => {
-        task().then(() => {
-          signale.timeEnd("deploy");
-          signale.success("deploy done");
-        });
+        task()
+          .then(() => {
+            signale.timeEnd("deploy");
+            signale.success("Deploy task running");
+          })
+          .catch(e => {
+            signale.timeEnd("deploy");
+            signale.error(e);
+            process.exit(1);
+          });
       })
       .catch(e => {
         signale.timeEnd("deploy");

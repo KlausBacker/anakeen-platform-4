@@ -22,10 +22,7 @@ const deployPipe = (exports.deployPipe = async ({
   controlUrl,
   controlUsername,
   controlPassword,
-  force,
-  log,
-  action,
-  context
+  log
 }) => {
   let tmpDir = false;
   if (!appPath) {
@@ -37,26 +34,31 @@ const deployPipe = (exports.deployPipe = async ({
   }
   log("Check control connexion");
   //Send gulpSrc to temp dest
-  await control.checkControlConnexion({
-    controlUrl,
-    controlUsername,
-    controlPassword
-  });
-  log("Post the module");
-  const result = await control.postModule({
-    controlUrl,
-    controlUsername,
-    controlPassword,
-    fileName: appPath,
-    force,
-    action,
-    context
-  });
-  log(result.data.join("\n"));
-  if (tmpDir) {
-    tmpDir.removeCallback();
+  try {
+    await control.checkControlConnexion({
+      controlUrl,
+      controlUsername,
+      controlPassword
+    });
+    log("Post the module");
+    const result = await control
+      .postModule({
+        controlUrl,
+        controlUsername,
+        controlPassword,
+        fileName: appPath
+      })
+      .catch(e => {
+        throw new Error(e.message);
+      });
+    log(result.message);
+    if (tmpDir) {
+      tmpDir.removeCallback();
+    }
+    return result;
+  } catch (e) {
+    throw new Error(e.message);
   }
-  return result;
 });
 
 exports.deploy = ({
@@ -64,10 +66,7 @@ exports.deploy = ({
   controlUrl,
   controlUsername,
   controlPassword,
-  force,
-  parameterValues,
-  action,
-  context
+  parameterValues
 }) => {
   return gulp.task("deploy", () => {
     return new Promise((resolve, reject) => {
@@ -80,16 +79,11 @@ exports.deploy = ({
         controlUrl,
         controlUsername,
         controlPassword,
-        force,
         log,
-        parameterValues,
-        action,
-        context
+        parameterValues
       })
         .then(message => {
-          //console.log(message.data.join(" "));
           if (message.data) {
-            //console.log(message.data.join(" "));
             interactive.error(message.data.join(" "));
           }
           interactive.success("Deploy done");
@@ -103,12 +97,10 @@ exports.deploy = ({
 };
 
 exports.buildAndDeploy = ({
-  sourceDir = ".",
+  sourcePath = ".",
   controlUrl,
   controlUsername,
   controlPassword,
-  context,
-  force,
   autoRelease = false
 }) => {
   return gulp.task("buildAndDeploy", () => {
@@ -121,7 +113,7 @@ exports.buildAndDeploy = ({
         };
         const localName = uuid_v4();
         const build = await buildPipe({
-          sourcePath: sourceDir,
+          sourcePath: sourcePath,
           autoRelease,
           localName
         });
@@ -131,8 +123,6 @@ exports.buildAndDeploy = ({
           controlUrl,
           controlUsername,
           controlPassword,
-          force,
-          context,
           errorCallback: reject,
           log
         })

@@ -14,29 +14,33 @@ class LibSystem
 
     static public function getCommandPath($cmdname)
     {
+        JobLog::addLog("", "", "CMD: $cmdname");
+        JobLog::addLog("", "", "PATH: " . getenv("PATH"));
         $path_env = getenv("PATH");
-        if ($path_env == false) {
-            return false;
-        }
-        foreach (preg_split("/:/", $path_env) as $path) {
-            if (file_exists("$path/$cmdname")) {
-                return "$path/$cmdname";
+        if ($path_env !== false) {
+            foreach (preg_split("/:/", $path_env) as $path) {
+                if (file_exists("$path/$cmdname")) {
+                    return "$path/$cmdname";
+                }
             }
         }
+        JobLog::addLog("", "", "CMD2: $cmdname");
+
         /* If the command has not been found it may be
          * because of open_basedir restriction.
          * In this case, try to detect with the which
          * command.
         */
-        if (ini_get("open_basedir") != '') {
-            $out = array();
-            $ret = 0;
-            $cmd = sprintf("which %s", escapeshellarg($cmdname));
-            exec($cmd, $out, $ret);
-            if ($ret == 0) {
-                return $out[0];
-            }
+
+        JobLog::addLog("", "", "CMD3: $cmdname");
+        $out = array();
+        $ret = 0;
+        $cmd = sprintf("which %s", escapeshellarg($cmdname));
+        exec($cmd, $out, $ret);
+        if ($ret == 0) {
+            return $out[0];
         }
+
 
         return false;
     }
@@ -150,8 +154,8 @@ class LibSystem
                 }
             }
         }
-        $dir.="/anakeen-control";
-        if (! is_dir($dir)) {
+        $dir .= "/anakeen-control";
+        if (!is_dir($dir)) {
             mkdir($dir);
         }
         $res = tempnam($dir, $prefix);
