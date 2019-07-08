@@ -78,7 +78,7 @@ app-autorelease: buildJS
 ##
 ########################################################################################################################
 deploy: install-deps buildJS
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release="dev" --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 
 deploy-test:
