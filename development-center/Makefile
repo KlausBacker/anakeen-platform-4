@@ -112,7 +112,7 @@ app-all-autorelease: app-autorelease
 ########################################################################################################################
 deploy: install-deps buildJS buildCSS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release="dev" --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
 
 deploy-test:
 

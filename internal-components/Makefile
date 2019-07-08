@@ -7,14 +7,12 @@ YARN_BIN=yarn
 app:
 	$(YARN_BIN) build
 
-app-autorelease:
-	$(YARN_BIN) build
-
-app-test:
+app-autorelease: app
+app-test: app
 app-all: app
-deploy:
-deploy-test:
-deploy-all:
+deploy: app
+deploy-test: app
+deploy-all: app
 lint:
 po:
 stub:
