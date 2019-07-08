@@ -94,11 +94,13 @@ class Translations
             $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
             if ($customEntry) {
                 $datum["override"] = $customEntry->getMsgStr();
-                if (!empty($datum["defaultstr"])) {
-                    $datum["msgstr"] = $datum["defaultstr"];
+                if ($customEntry->getMsgIdPlural()) {
+                    $val1 = $customEntry->getMsgStrPlurals()[0] ?? "";
+                    $val2 = $customEntry->getMsgStrPlurals()[1] ?? "";
+                    $datum["override"] = [$val1,$val2];
+                } else {
+                    $datum["override"] = $customEntry->getMsgStr();
                 }
-            } else {
-                $datum["override"] = null;
             }
         }
     }
@@ -266,17 +268,6 @@ class Translations
                 if (($entry->getMsgIdPlural())) {
                     $data[$key]["pluralid"] = $entry->getMsgIdPlural();
                     $data[$key]["plurals"] = $entry->getMsgStrPlurals();
-                }
-                $customEntry = $customCatalog->getEntry($entry->getMsgId(), $entry->getMsgCtxt());
-                if ($customEntry) {
-                    $data[$key]["override"] = $customEntry->getMsgStr();
-                    if (($entry->getMsgIdPlural())) {
-                        $val1 = $customEntry->getMsgStrPlurals()[0] ?? "";
-                        $val2 = $customEntry->getMsgStrPlurals()[1] ?? "";
-                        $data[$key]["override"] = [$val1,$val2];
-                    }
-                } else {
-                    $data[$key]["override"] = null;
                 }
             }
         }

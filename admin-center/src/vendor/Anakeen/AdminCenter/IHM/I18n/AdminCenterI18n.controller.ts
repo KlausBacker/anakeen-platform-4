@@ -158,40 +158,64 @@ export default class I18nManagerController extends Vue {
             if (rowData.pluralid) {
               if (rowData.override) {
                 if (
-                  rowData.override[0] &&
-                  rowData.override[1] &&
                   !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) &&
                   !I18nManagerController.isEmptyOrSpaces(rowData.override[1])
                 ) {
-                  return `<span class='override-singular-value-exist'>${
-                    rowData.override[0]
-                  }</span><hr>
-                          <span class='override-plural-value-exist'>${
-                            rowData.override[1]
-                          }</span>`;
-                } else if (
-                  rowData.override[0] &&
-                  !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) &&
-                  !rowData.override[1]
-                ) {
-                  return (
-                    `<span class='override-singular-value-exist'>${
+                  if (rowData.override[0] && rowData.override[1]) {
+                    return `<span class='override-singular-value-exist'>${
                       rowData.override[0]
-                    }</span>` + this.pluralInput
-                  );
-                } else if (
-                  rowData.override[1] &&
-                  !I18nManagerController.isEmptyOrSpaces(rowData.override[1]) &&
-                  !rowData.override[0]
-                ) {
-                  return (
-                    this.pluralInput +
-                    `<span class='override-plural-value-exist'>${
+                      }</span><hr>
+                          <span class='override-plural-value-exist'>${
                       rowData.override[1]
-                    }</span>`
-                  );
+                      }</span>`;
+                  } else if (rowData.override[0] && !rowData.override[1]) {
+                    return (
+                      `<span class='override-singular-value-exist'>${
+                        rowData.override[0]
+                        }</span>` + this.pluralInput
+                    );
+                  } else if (rowData.override[1] && !rowData.override[0]) {
+                    return (
+                      this.pluralInput +
+                      `<span class='override-plural-value-exist'>${
+                        rowData.override[1]
+                        }</span>`
+                    );
+                  } else {
+                    return this.singularInput + this.pluralInput;
+                  }
                 } else {
-                  return this.singularInput + this.pluralInput;
+                  const val0 = I18nManagerController.isEmptyOrSpaces(
+                    rowData.override[0]
+                  );
+                  const val1 = I18nManagerController.isEmptyOrSpaces(
+                    rowData.override[1]
+                  );
+                  if (val0 && val1) {
+                    return this.singularInput + this.pluralInput;
+                  } else if (val0 && !val1) {
+                    return (
+                      this.singularInput +
+                      `<hr>
+                      <span class='override-plural-value-exist'>${
+                        rowData.override[1]
+                        }</span>`
+                    );
+                  } else if (!val0 && val1) {
+                    return (
+                      `
+                      <span class='override-singular-value-exist'>${
+                        rowData.override[0]
+                        }</span><hr>` + this.pluralInput
+                    );
+                  } else {
+                    return `<span class='override-singular-value-exist'>${
+                      rowData.override[0]
+                      }</span><hr>
+                          <span class='override-plural-value-exist'>${
+                      rowData.override[1]
+                      }</span>`;
+                  }
                 }
               } else {
                 return this.singularInput + this.pluralInput;
@@ -200,7 +224,7 @@ export default class I18nManagerController extends Vue {
               if (rowData.override) {
                 return `<span class='override-singular-value-exist'>${
                   rowData.override
-                }</span>`;
+                  }</span>`;
               } else {
                 return this.singularInput;
               }
@@ -250,8 +274,27 @@ export default class I18nManagerController extends Vue {
   public importLocaleFile() {
     const importBtn = $(".import-locale-file");
     importBtn.trigger("click");
-    importBtn.on("change", e => {
-      console.log(e.target);
+    importBtn.on("change", () => {
+      const formData = new FormData();
+      formData.append(
+        "file",
+        (this.$refs.importFile as HTMLInputElement).files[0]
+      );
+      this.$http
+        .post(
+          `/api/v2/admin/i18n/${encodeURIComponent(this.translationLocale)}/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+        )
+        .then(() => {
+          $(this.$refs.i18nGrid)
+            .data("kendoGrid")
+            .dataSource.read();
+        });
     });
   }
 
@@ -343,7 +386,7 @@ export default class I18nManagerController extends Vue {
             ).replaceWith(
               `<span class='override-singular-value-exist'>${
                 JSON.parse(newVal).msgstr
-              }</span>`
+                }</span>`
             );
             this.setEventSingularSpan();
           }
@@ -365,11 +408,11 @@ export default class I18nManagerController extends Vue {
           $(confirmEvent.event.target.closest("tr[role=row]")).find("input")
             .length > 1
             ? $(confirmEvent.event.target.closest("tr[role=row]")).find(
-                "input"
-              )[1].value
+            "input"
+            )[1].value
             : $(confirmEvent.event.target.closest("tr[role=row]")).find(
-                "input"
-              )[0].value;
+            "input"
+            )[0].value;
         const newVal = JSON.stringify({
           msgstr: inputVal,
           plural: 1,
@@ -407,7 +450,7 @@ export default class I18nManagerController extends Vue {
             ).replaceWith(
               `<span class='override-plural-value-exist'>${
                 JSON.parse(newVal).msgstr
-              }</span>`
+                }</span>`
             );
             if ($(confirmEvent.sender.element[0]).prev("hr")) {
               $(".override-plural-value-exist").prepend("<hr>");
