@@ -35,14 +35,14 @@ const deployPipe = (exports.deployPipe = async ({
   log("Check control connexion");
   //Send gulpSrc to temp dest
   try {
-    await control.checkControlConnexion({
+    await control.getControlStatus({
       controlUrl,
       controlUsername,
       controlPassword
     });
     log("Post the module");
     const result = await control
-      .postModule({
+      .postModuleAndWaitTheEnd({
         controlUrl,
         controlUsername,
         controlPassword,

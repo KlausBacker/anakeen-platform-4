@@ -65,13 +65,12 @@ class CliLog extends CliJsonCommand
         $table->setColumnWidths([10, 20, 10, 10, 30]);
 
         foreach ($info as $log) {
-            /** @var \Module $module */
-            if (is_array( $log["value"])) {
+            if (is_array($log["value"])) {
                 $log["value"] = implode(", ", $log["value"]);
             }
-            $tag="info";
+            $tag = "info";
             if ($log["task"] === "error") {
-                $tag="error";
+                $tag = "error";
             }
             $row = [
                 sprintf("<comment>%s</comment>", $log["date"]),
@@ -81,12 +80,6 @@ class CliLog extends CliJsonCommand
                 sprintf("<$tag>%s</$tag>", $log["value"])
             ];
 
-            if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $row[] = sprintf("<info>%s</info>", $module->vendor);
-            }
-            if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-                $row[] = sprintf("<info>%s</info>", $module->availableversion);
-            }
 
             $table->addRow($row);
         }

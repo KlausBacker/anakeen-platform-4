@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const urljoin = require("url-join");
 const fs = require("fs");
 const { Signale } = require("signale");
-const controlLog = new Signale({ scope: "control" });
+const controlLog = new Signale({ interactive: true, scope: "deploy" });
 
 //Generate the control arguments, for all cli that need control access
 exports.controlArguments = parameters => {
@@ -36,22 +36,11 @@ const getBaseAutorisation = (exports.getBaseAutorisation = (
   return "Basic " + Buffer.from(username + ":" + password).toString("base64");
 });
 
-//Handle second level control API error
-const analyzeApiReturn = result => {
-  if (!result.status) {
-    throw new Error("Control error : " + result.error);
-  }
-  if (result.status !== "Ready") {
-    // throw new Error("Control not ready : " + result.status);
-  }
-  return result.data;
-};
-
 /**
  * Check if login, password and url are OK
  * @param {*} param0
  */
-exports.checkControlConnexion = ({
+exports.getControlStatus = async ({
   controlUrl,
   controlUsername,
   controlPassword
@@ -63,35 +52,31 @@ exports.checkControlConnexion = ({
       Authorization: getBaseAutorisation(controlUsername, controlPassword)
     },
     method: "GET"
-  })
-    .then(response => {
-      if (!response.ok) {
-        return response.text().then(contentText => {
-          if (response.status === 401) {
-            throw new Error(
-              response.status +
-                " " +
-                response.statusText +
-                " : you should check the login and password " +
-                contentText
-            );
-          }
+  }).then(response => {
+    if (response.status !== 200) {
+      return response.text().then(contentText => {
+        if (response.status === 401) {
           throw new Error(
             response.status +
               " " +
               response.statusText +
-              " : you should check the control url " +
-              setupUrl +
-              " " +
+              " : you should check the login and password " +
               contentText
           );
-        });
-      }
-      return response.json();
-    })
-    .then(result => {
-      return !!analyzeApiReturn(result);
-    });
+        }
+        throw new Error(
+          response.status +
+            " " +
+            response.statusText +
+            " : you should check the control url " +
+            setupUrl +
+            " " +
+            contentText
+        );
+      });
+    }
+    return response.json();
+  });
 };
 
 /**
@@ -130,4 +115,126 @@ exports.postModule = ({
     .catch(response => {
       throw new Error(response);
     });
+};
+
+exports.postModuleAndWaitTheEnd = async args => {
+  return new Promise((resolve, reject) => {
+    controlLog.await("Upload module to the server");
+    exports
+      .postModule(args)
+      .catch(e => {
+        reject(e);
+      })
+      .then(async result => {
+        try {
+          let running = true;
+          let controlStatus;
+          while (running) {
+            await sleep(1000);
+            controlStatus = await exports.getControlStatus(args);
+            let runningTask = getRunningTask(controlStatus);
+
+            if (runningTask) {
+              controlLog.await(
+                `${runningTask.action} : ${runningTask.module} - ${runningTask.phase} - ${runningTask.process}`
+              );
+              result.message = `Control status: ${runningTask.action}`;
+            }
+            running = controlStatus.status === "Running";
+          }
+          controlLog.note(`Deployment process is finished`);
+
+          if (controlStatus.status === "Failed") {
+            result.error = getStatusError(controlStatus);
+            result.status = controlStatus;
+            result.message = result.error.message;
+            reject(result);
+          } else {
+            resolve(result);
+          }
+        } catch (e) {
+          reject(e);
+        }
+      });
+  });
+};
+
+const sleep = ms => {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+};
+
+const getRunningTask = runningStatus => {
+  const tasks = runningStatus.tasks || [];
+
+  let msg = {
+    action: runningStatus.status,
+    module: "",
+    phase: "",
+    process: ""
+  };
+
+  tasks.forEach(task => {
+    if (task.status === "Running") {
+      msg.module = task.module;
+      const phases = task.phases || [];
+      phases.forEach(phase => {
+        if (phase.status === "Running") {
+          msg.phase = phase.name;
+          const processes = phase.process || [];
+          Object.keys(processes).forEach(function(key) {
+            let process = processes[key];
+            if (process.status === "Running") {
+              msg.process = process.label;
+            }
+          });
+        }
+      });
+    }
+  });
+
+  return msg;
+};
+
+const getStatusError = controlStatus => {
+  const tasks = controlStatus.tasks || [];
+
+  let msg = {
+    action: controlStatus.status,
+    module: "",
+    phase: "",
+    process: "",
+    error: controlStatus.error || ""
+  };
+
+  tasks.forEach(task => {
+    if (task.status !== "Running") {
+      msg.module = task.module;
+      if (task.error) {
+        msg.error += task.error;
+      }
+      const phases = task.phases || [];
+      phases.forEach(phase => {
+        if (phase.status !== "Running") {
+          msg.phase = phase.name;
+          if (phase.error) {
+            msg.error += phase.error;
+          }
+          const processes = phase.process || [];
+          Object.keys(processes).forEach(function(key) {
+            let process = processes[key];
+            if (process.status === "Failed") {
+              msg.process = process.label;
+              msg.error += process.error;
+            }
+          });
+        }
+      });
+    }
+  });
+
+  msg.error = msg.error.replace("\\n", "\n");
+  msg.message = `${msg.module} ${msg.phase} ${msg.process} --  ${msg.error}`;
+  return msg;
 };
