@@ -58,12 +58,6 @@ populate-cache-master:
     - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
     - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
     - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
-  only:
-    - master
-    - web
-  dependencies:
-    - lint-php
-    - lint-js
 
 #endregion tear-up
 
@@ -170,9 +164,6 @@ hub-station-buildJS:
       - business-app/**/*
       - development-center/**/*
       - transformation/**/*
-  dependencies:
-    - user-interfaces-buildJS
-    - internal-components-buildJS
 
 #endregion buildJS
 
@@ -327,9 +318,6 @@ hub-station-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - hub-station/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
 
 hub-station-integration-build:
  extends: .build-package
@@ -345,9 +333,6 @@ hub-station-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - hub-station/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
 
 admin-center-build:
  extends: .build-package
@@ -363,10 +348,6 @@ admin-center-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - admin-center/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 admin-center-integration-build:
  extends: .build-package
@@ -382,10 +363,6 @@ admin-center-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - admin-center/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 business-app-build:
  extends: .build-package
@@ -401,10 +378,6 @@ business-app-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - business-app/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 business-app-integration-build:
  extends: .build-package
@@ -420,10 +393,6 @@ business-app-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - business-app/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 development-center-build:
  extends: .build-package
@@ -439,10 +408,6 @@ development-center-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - development-center/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 development-center-integration-build:
  extends: .build-package
@@ -458,10 +423,6 @@ development-center-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - development-center/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 transformation-build:
  extends: .build-package
@@ -477,10 +438,6 @@ transformation-build:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - transformation/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 transformation-integration-build:
  extends: .build-package
@@ -496,10 +453,6 @@ transformation-integration-build:
       - master@Anakeen/Platform-4/anakeen-platform-4
    changes:
      - transformation/**/*
- dependencies:
-   - user-interfaces-buildJS
-   - internal-components-buildJS
-   - hub-station-buildJS
 
 migration-tools-build:
   extends: .build-package
@@ -633,8 +586,6 @@ user-interfaces-integration-publish:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces/**/*
-  dependencies:
-    - user-interfaces-integration-build
 
 user-interfaces-publish:
   extends: .npm-publish-package
@@ -646,8 +597,6 @@ user-interfaces-publish:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces/**/*
-  dependencies:
-    - user-interfaces-build
 
 hub-station-integration-publish:
   extends: .npm-publish-package-integration-synchro
@@ -659,8 +608,6 @@ hub-station-integration-publish:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station/**/*
-  dependencies:
-    - hub-station-integration-build
 
 hub-station-publish:
   extends: .npm-publish-package
@@ -672,8 +619,6 @@ hub-station-publish:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station/**/*
-  dependencies:
-    - hub-station-build
 
 #endregion publishNpm
 
@@ -712,8 +657,6 @@ smart-data-engine-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - smart-data-engine/**/*
-  dependencies:
-    - smart-data-engine-build
 
 smart-data-engine-integration-register:
   extends: .registry
@@ -724,8 +667,6 @@ smart-data-engine-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - smart-data-engine/**/*
-  dependencies:
-    - smart-data-engine-integration-build
 
 workflow-register:
   extends: .registry
@@ -736,8 +677,6 @@ workflow-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - workflow/**/*
-  dependencies:
-    - workflow-build
 
 workflow-integration-register:
   extends: .registry
@@ -748,8 +687,6 @@ workflow-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - workflow/**/*
-  dependencies:
-    - workflow-integration-build
 
 security-register:
   extends: .registry
@@ -760,8 +697,6 @@ security-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - security/**/*
-  dependencies:
-    - security-build
 
 security-integration-register:
   extends: .registry
@@ -772,8 +707,6 @@ security-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - security/**/*
-  dependencies:
-    - security-integration-build
 
 user-interfaces-register:
   extends: .registry
@@ -784,8 +717,6 @@ user-interfaces-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces/**/*
-  dependencies:
-    - user-interfaces-build
 
 user-interfaces-integration-register:
   extends: .registry
@@ -796,8 +727,6 @@ user-interfaces-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - user-interfaces/**/*
-  dependencies:
-    - user-interfaces-integration-build
 
 migration-tools-register:
   extends: .registry
@@ -808,8 +737,6 @@ migration-tools-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - migration-tools/**/*
-  dependencies:
-    - migration-tools-build
 
 migration-tools-integration-register:
   extends: .registry
@@ -820,8 +747,6 @@ migration-tools-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - migration-tools/**/*
-  dependencies:
-    - migration-tools-integration-build
 
 hub-station-register:
   extends: .registry
@@ -832,8 +757,6 @@ hub-station-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station/**/*
-  dependencies:
-    - hub-station-build
 
 hub-station-integration-register:
   extends: .registry
@@ -844,8 +767,6 @@ hub-station-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - hub-station/**/*
-  dependencies:
-    - hub-station-integration-build
 
 business-app-register:
   extends: .registry
@@ -856,8 +777,6 @@ business-app-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - business-app/**/*
-  dependencies:
-    - business-app-build
 
 business-app-integration-register:
   extends: .registry
@@ -868,8 +787,6 @@ business-app-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - business-app/**/*
-  dependencies:
-    - business-app-integration-build
 
 development-center-register:
   extends: .registry
@@ -880,8 +797,6 @@ development-center-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - development-center/**/*
-  dependencies:
-    - development-center-build
 
 development-center-integration-register:
   extends: .registry
@@ -892,8 +807,6 @@ development-center-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - development-center/**/*
-  dependencies:
-    - development-center-integration-build
 
 admin-center-register:
   extends: .registry
@@ -904,8 +817,6 @@ admin-center-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - admin-center/**/*
-  dependencies:
-    - admin-center-build
 
 admin-center-integration-register:
   extends: .registry
@@ -916,8 +827,6 @@ admin-center-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - admin-center/**/*
-  dependencies:
-    - admin-center-integration-build
 
 transformation-register:
   extends: .registry
@@ -928,8 +837,6 @@ transformation-register:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - transformation/**/*
-  dependencies:
-    - transformation-build
 
 transformation-integration-register:
   extends: .registry
@@ -940,5 +847,3 @@ transformation-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - transformation/**/*
-  dependencies:
-    - transformation-integration-build
