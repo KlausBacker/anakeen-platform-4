@@ -15,7 +15,26 @@ stages:
 .default-cache:
   cache: &default-cache
     key: "MonoRepo"
-    untracked: true
+    paths:
+      - node_modules
+      - anakeen-cli/node_modules
+      - business-app/node_modules
+      - development-center/node_modules
+      - hub-station/node_modules
+      - internal-components/node_modules
+      - migration-tools/node_modules
+      - security/node_modules
+      - smart-data-engine/node_modules
+      - theme-variables/node_modules
+      - transformation/node_modules/
+      - user-interfaces/node_modules/
+      - control/node_modules/
+      - .devtool/ci/check/checkPHP/
+      - smart-data-engine/src/vendor/Anakeen/lib/vendor/
+      - smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib/vendor/
+      - user-interfaces/src/vendor/Anakeen/Ui/PhpLib/vendor/
+      - control/vendor/
+      - .eslintcache
 
 .pull-cache: &pull-cache
   cache:
@@ -185,6 +204,7 @@ hub-station-buildJS:
  artifacts:
    paths:
      - build/${PACKAGE_NAME}
+     - ${PACKAGE_PATH}/node_modules
    expire_in: 1 day
 
 smart-data-engine-build:
