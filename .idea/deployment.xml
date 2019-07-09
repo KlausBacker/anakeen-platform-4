@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="A4 Mono" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="A4 Mono">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/control/" local="$PROJECT_DIR$/control" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/smart-data-engine/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/security/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/development-center/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/admin-center/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/workflow/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/user-interfaces/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/user-interfaces/Tests/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/transformation/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/hub-station/src" web="/" />
+            <mapping deploy="/platform/" local="$PROJECT_DIR$/smart-data-engine/Tests/src" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
+  </component>
+</project>
