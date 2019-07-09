@@ -54,13 +54,8 @@ populate-cache-master:
   cache:
     <<: *default-cache
   script:
-    - yarn install --frozen-lockfile
-    - composer install --working-dir=./.devtool/ci/check/checkPHP/ --ignore-platform-reqs
-    - composer install --working-dir=./smart-data-engine/src/vendor/Anakeen/lib/
-    - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
-    - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
-    - composer install --working-dir=./control/src/
-    - rm -rf /build/
+    #Suppress build part
+    - rm -rf ./build/
 
 #endregion tear-up
 
