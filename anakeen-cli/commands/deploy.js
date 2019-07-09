@@ -34,12 +34,6 @@ exports.builder = controlArguments({
       return arg;
     }
   },
-  force: {
-    description: "force deployment",
-    alias: "f",
-    default: false,
-    type: "boolean"
-  },
   autoRelease: {
     description: "prefix for version minor part. Add current timestamp",
     default: "dev",
@@ -50,16 +44,6 @@ exports.builder = controlArguments({
     description: "action to execute (install|upgrade)",
     default: "",
     type: "string"
-  },
-  context: {
-    description: "context to deploy",
-    default: "a4",
-    type: "string"
-  },
-  noCheck: {
-    description: "add check of XML inside the module",
-    default: false,
-    type: "boolean"
   }
 });
 
@@ -82,10 +66,20 @@ exports.handler = function(argv) {
     }
     checkPromise
       .then(() => {
-        task().then(() => {
-          signale.timeEnd("deploy");
-          signale.success("deploy done");
-        });
+        task()
+          .then(() => {
+            signale.timeEnd("deploy");
+            signale.success("Deploy module succeeded");
+          })
+          .catch(e => {
+            signale.timeEnd("deploy");
+            if (e.message) {
+              signale.error(e.message);
+            } else {
+              signale.error(e);
+            }
+            process.exit(1);
+          });
       })
       .catch(e => {
         signale.timeEnd("deploy");

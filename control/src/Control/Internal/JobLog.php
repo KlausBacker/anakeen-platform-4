@@ -16,7 +16,7 @@ class JobLog
     /** @var ConsoleSectionOutput[] */
     protected static $outputSection = null;
 
-    protected static function setKey($moduleName, $phaseName, $key, $value, $adding = false)
+    protected static function setKey($moduleName, $phaseName, $key, $value, $adding = false, $keyLog="")
     {
         $data = ModuleJob::getJobData();
 
@@ -25,24 +25,26 @@ class JobLog
         list($usec) = explode(" ", microtime());
         $now = sprintf("%s.%s", date("Y-m-d\\TH:i:s"), substr($usec, 2, 6));
         if ($moduleName) {
-            foreach ($data["tasks"] as &$task) {
-                if ($task["module"] === $moduleName) {
-                    if ($phaseName) {
-                        foreach ($task["phases"] as &$phase) {
-                            if ($phase["name"] === $phaseName) {
-                                if ($adding === true) {
-                                    $phase[$key][] = $value;
-                                } elseif ($adding !== false) {
-                                    $phase[$key][$adding] = $value;
-                                    $phase[$key][$adding]["date"] = $now;
-                                } else {
-                                    $phase[$key] = $value;
+            if (isset($data["tasks"])) {
+                foreach ($data["tasks"] as &$task) {
+                    if ($task["module"] === $moduleName) {
+                        if ($phaseName) {
+                            foreach ($task["phases"] as &$phase) {
+                                if ($phase["name"] === $phaseName) {
+                                    if ($adding === true) {
+                                        $phase[$key][] = $value;
+                                    } elseif ($adding !== false) {
+                                        $phase[$key][$adding] = $value;
+                                        $phase[$key][$adding]["date"] = $now;
+                                    } else {
+                                        $phase[$key] = $value;
+                                    }
                                 }
                             }
+                        } else {
+                            $task[$key] = $value;
+                            $task["date"] = $now;
                         }
-                    } else {
-                        $task[$key] = $value;
-                        $task["date"] = $now;
                     }
                 }
             }
@@ -51,7 +53,10 @@ class JobLog
                 $data[$key] = $value;
             }
         }
-        
+
+        if ($key === "log" && $keyLog) {
+            $key=$keyLog;
+        }
             $msg = ["module" => $moduleName, "phase" => $phaseName, "task" => $key, "value" => $value, "date" => $now];
             $data["log"][] = $msg;
 
@@ -117,20 +122,21 @@ class JobLog
         $data = ModuleJob::getJobData();
 
         $data["status"] = $status;
-
-        foreach ($data["tasks"] as &$task) {
-            if ($task["status"] === ModuleJob::RUNNING_STATUS) {
-                $task["status"] = $status;
-            }
-
-            foreach ($task["phases"] as &$phase) {
-                if ($phase["status"] === ModuleJob::RUNNING_STATUS) {
-                    $phase["status"] = $status;
+        if (isset($data["tasks"])) {
+            foreach ($data["tasks"] as &$task) {
+                if ($task["status"] === ModuleJob::RUNNING_STATUS) {
+                    $task["status"] = $status;
                 }
-                if (!empty($phase["process"])) {
-                    foreach ($phase["process"] as &$process) {
-                        if ($process["status"] === ModuleJob::RUNNING_STATUS) {
-                            $process["status"] = $status;
+
+                foreach ($task["phases"] as &$phase) {
+                    if ($phase["status"] === ModuleJob::RUNNING_STATUS) {
+                        $phase["status"] = $status;
+                    }
+                    if (!empty($phase["process"])) {
+                        foreach ($phase["process"] as &$process) {
+                            if ($process["status"] === ModuleJob::RUNNING_STATUS) {
+                                $process["status"] = $status;
+                            }
                         }
                     }
                 }
@@ -192,9 +198,9 @@ class JobLog
         self::setKey($moduleName, $phaseName, "warning", $status);
     }
 
-    public static function addLog($moduleName, $phaseName, $msg)
+    public static function addLog($moduleName, $phaseName, $msg, $keyLog="")
     {
-        self::setKey($moduleName, $phaseName, "log", $msg, true);
+        self::setKey($moduleName, $phaseName, "log", $msg, true, $keyLog);
     }
 
     public static function setProcess($moduleName, $phaseName, $msg, $index)

@@ -314,7 +314,7 @@ class ContextManager
                 exit;
             }
         } else {
-            throw new \Anakeen\Core\Exception("CORE0001", $texterr);
+            throw new \Anakeen\Script\Exception("CORE0001", $texterr);
         }
     }
 

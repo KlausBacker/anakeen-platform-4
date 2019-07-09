@@ -80,7 +80,6 @@ exports.autoconf = () => {
               conf.localSrc = compose.localSrc[0];
             }
           }
-
           resolve(conf);
         }
       );

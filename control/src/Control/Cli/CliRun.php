@@ -3,10 +3,8 @@
 namespace Control\Cli;
 
 use Control\Internal\Context;
-use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
@@ -43,7 +41,7 @@ class CliRun extends CliCommand
             }
             wiff_context_shell($context, $shellCommand);
         } catch (\Exception $e) {
-            throw new RuntimeException($e->getMessage(), 0, $e);
+            throw new \Control\Exception\RuntimeException($e->getMessage(), 0, $e);
         }
     }
 

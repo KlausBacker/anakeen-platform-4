@@ -13,6 +13,9 @@ putenv('WIFF_ROOT=' . $rootPath);
 \Control\Internal\System::sudoWww();
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 $application = new Application();
 $application->setVersion(\Control\Internal\Context::getVersion());
@@ -37,5 +40,34 @@ $application->add(new \Control\Cli\CliKill());
 $application->add(new \Control\Cli\CliArchive());
 $application->add(new \Control\Cli\CliRestore());
 $application->add(new \Control\Cli\CliRun());
+
+
+$dispatcher = new EventDispatcher();
+$dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) {
+    // gets the command to be executed
+    $command = $event->getCommand();
+    if ($command->getName() !== "log") {
+        /** @var \Symfony\Component\Console\Input\InputInterface $input */
+        $input = $event->getInput();
+
+        $args = $input->getArguments();
+
+        $opts = $input->getOptions();
+        $msg = implode(" ", $args);
+        foreach ($opts as $kopt => $opt) {
+            if ($opt === null || $opt === false) {
+                continue;
+            }
+            if ($opt === true) {
+                $msg .= sprintf(" --%s", $kopt);
+            } else {
+                $msg .= sprintf(" --%s=%s", $kopt, $opt);
+            }
+        }
+        \Control\Internal\JobLog::addLog("anakeen-control", "exec", $msg, "cli");
+    }
+});
+
+$application->setDispatcher($dispatcher);
 
 $application->run();

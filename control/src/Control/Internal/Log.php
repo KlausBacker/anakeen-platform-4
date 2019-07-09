@@ -21,7 +21,6 @@ class Log
             self::$data=$jobData["log"];
         }
 
-        var_dump(self::$data);
         foreach ($files as $filename) {
             if ($maxData <= 0 || count(self::$data) < $maxData) {
                 self::recordData($filename);

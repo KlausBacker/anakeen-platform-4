@@ -163,10 +163,10 @@ class ModuleJob
             return false;
         }
         $pid = intval(file_get_contents($pidFile));
-        if (!posix_kill($pid, SIG_DFL)) {
-
+        if (!posix_kill($pid, 0)) {
             JobLog::writeInterruption();
-            throw new RuntimeException("Seems job process is died. \n Try to remove \"./control/run/pid\" file.");
+            $err=posix_strerror(posix_get_last_error());
+            throw new RuntimeException("[$err] Seems job process is died. \n Try to remove \"./control/run/pid\" file.");
         }
         return true;
     }
