@@ -22,11 +22,6 @@ ANAKEEN_UI_SRC_PATH=./
 TEST_SRC_PATH=Tests/
 CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 
-#Control
-CONTROL_USER=admin
-CONTROL_PASSWORD=anakeen
-CONTROL_URL=http://localhost:8080/control/
-CONTROL_CONTEXT="anakeen-platform"
 
 #Build
 APP_OUTPUT_PATH=../build/
@@ -162,11 +157,11 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ########################################################################################################################
 deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH} -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH} 
 
 deploy-test: install-deps buildJS-test
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${TEST_SRC_PATH} -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${TEST_SRC_PATH} 
 
 deploy-all: deploy deploy-test
 

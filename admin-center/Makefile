@@ -6,12 +6,6 @@ MODULE_NAME=admin-center
 CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 PHP_LIB_PATH=src/vendor/Anakeen/Routes/Admin/Lib
 
-#Control
-CONTROL_USER=admin
-CONTROL_PASSWORD=anakeen
-CONTROL_URL=http://localhost:8080/control/
-CONTROL_CONTEXT="anakeen-platform"
-
 #Build
 APP_OUTPUT_PATH=../build/
 
@@ -107,7 +101,7 @@ app-all-autorelease: app-autorelease
 ########################################################################################################################
 deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath .
 
 deploy-test:
 
