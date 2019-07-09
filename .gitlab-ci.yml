@@ -15,26 +15,7 @@ stages:
 .default-cache:
   cache: &default-cache
     key: "MonoRepo"
-    paths:
-      - node_modules
-      - anakeen-cli/node_modules
-      - business-app/node_modules
-      - development-center/node_modules
-      - hub-station/node_modules
-      - internal-components/node_modules
-      - migration-tools/node_modules
-      - security/node_modules
-      - smart-data-engine/node_modules
-      - theme-variables/node_modules
-      - transformation/node_modules/
-      - user-interfaces/node_modules/
-      - control/node_modules/
-      - .devtool/ci/check/checkPHP/
-      - smart-data-engine/src/vendor/Anakeen/lib/vendor/
-      - smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib/vendor/
-      - user-interfaces/src/vendor/Anakeen/Ui/PhpLib/vendor/
-      - control/vendor/
-      - .eslintcache
+    untracked: true
 
 .pull-cache: &pull-cache
   cache:
@@ -79,6 +60,7 @@ populate-cache-master:
     - composer install --working-dir=./smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
     - composer install --working-dir=./user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
     - composer install --working-dir=./control/
+    - rm -rf /build/
 
 #endregion tear-up
 
@@ -96,7 +78,7 @@ lint-php:
       - smart-data-engine/src/vendor/Anakeen/lib/
       - smart-data-engine/Tests/src/vendor/Anakeen/TestUnits/lib
       - user-interfaces/src/vendor/Anakeen/Ui/PhpLib/
-    expire_in: 1 hour
+    expire_in: 1 day
 
 lint-js:
   <<: *pull-cache
@@ -109,7 +91,7 @@ lint-js:
     paths:
       - node_modules/
       - .eslintcache
-    expire_in: 1 hour
+    expire_in: 1 day
 #endregion lint
 
 #region buildJS
@@ -127,7 +109,7 @@ user-interfaces-buildJS:
       - user-interfaces/src/public/Anakeen/assets/
       - user-interfaces/src/public/Anakeen/ank-components/
       - user-interfaces/components/lib/
-    expire_in: 1 hour
+    expire_in: 1 day
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -150,7 +132,7 @@ internal-components-buildJS:
   artifacts:
     paths:
       - internal-components/lib/
-    expire_in: 1 hour
+    expire_in: 1 day
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
@@ -174,7 +156,7 @@ hub-station-buildJS:
     paths:
       - hub-station/components/lib/
       - hub-station/src/public/Anakeen/hubVendor/
-    expire_in: 1 hour
+    expire_in: 1 day
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
