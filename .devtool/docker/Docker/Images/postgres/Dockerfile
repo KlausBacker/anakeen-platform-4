@@ -1,0 +1,1 @@
+FROM gitlab.anakeen.com:4567/customers/docker-images/dev-images/postgres:ap4-10

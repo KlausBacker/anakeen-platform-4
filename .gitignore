@@ -6,5 +6,6 @@ node_modules
 /build/
 /Makefile.local
 /.devtool/ci/check/checkPHP/vendor/
+/.devtool/docker/Docker/Volumes/_private/
 .eslintcache
 .anakeen-cli.xml
