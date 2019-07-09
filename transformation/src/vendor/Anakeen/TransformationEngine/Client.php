@@ -89,7 +89,7 @@ class Client
         }
         $size = filesize($filename);
         if ($size <= 0) {
-            $err = _("empty file");
+            $err = "TE : empty file";
             $info = array(
                 "status" => self::error_emptyfile
             );
@@ -105,7 +105,7 @@ class Client
         $fp = stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $this->timeout);
 
         if (!$fp) {
-            $err = _("socket creation error") . " : $errstr ($errno)\n";
+            $err = "TE : Socket creation error" . " : $errstr ($errno)\n";
             $info = array(
                 "status" => self::error_connect
             );
@@ -116,14 +116,14 @@ class Client
         */
         $out = fgets($fp, 2048);
         if ($out === false) {
-            $err = sprintf(_("Error sending file") . " (error reading expected 'Continue' response)");
+            $err = sprintf("TE : Error sending file" . " (error reading expected 'Continue' response)");
             $info = array(
                 "status" => self::error_sendfile
             );
             return $err;
         }
         if (trim($out) != 'Continue') {
-            $err = sprintf(_("Error sending file") . " (unexpected response from server: [%s])(server at %s:%s might not be a TE server?)", $out, $address, $service_port);
+            $err = sprintf("TE : Error sending file" . " (unexpected response from server: [%s])(server at %s:%s might not be a TE server?)", $out, $address, $service_port);
             $info = array(
                 "status" => self::error_sendfile
             );
@@ -201,7 +201,7 @@ class Client
                 );
                 $err = $match[1];
             } else {
-                $err = _("Error sending file");
+                $err = "TE : Error sending file";
                 if (preg_match('|<response[^>]*>(.*)</response>|i', $out, $match)) {
                     $err = $match[1];
                 }
@@ -237,7 +237,7 @@ class Client
         $fp = stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $timeout);
 
         if (!$fp) {
-            $err = _("socket creation error") . " : $errstr ($errno)\n";
+            $err = "TE GetInfo : socket creation error" . " : $errstr ($errno)\n";
         }
 
         if ($err == "") {
@@ -326,7 +326,7 @@ class Client
         $fp = stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $this->timeout);
 
         if (!$fp) {
-            $err = _("socket creation error") . " : $errstr ($errno)\n";
+            $err = "TE : socket creation error" . " : $errstr ($errno)\n";
         }
 
         if ($err == "") {
@@ -423,7 +423,7 @@ class Client
         $fp = stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $this->timeout);
 
         if (!$fp) {
-            $err = _("socket creation error") . " : $errstr ($errno)\n";
+            $err = "TE : socket creation error" . " : $errstr ($errno)\n";
         }
 
         if ($err == "") {
@@ -472,7 +472,7 @@ class Client
      * Establish a new connection to the TE server
      *
      * @return resource
-     * @throws \Exception
+     * @throws ClientException
      */
     private function connect()
     {
@@ -480,15 +480,15 @@ class Client
         $sport = $this->port;
         $sock = @stream_socket_client("tcp://$saddr:$sport", $errno, $errstr, $this->timeout);
         if ($sock === false) {
-            throw new ClientException(_("socket creation error") . " : $errstr ($errno)\n");
+            throw new ClientException("TE : socket creation error". " : $errstr ($errno)\n");
         }
         $msg = fgets($sock, 2048);
         if ($msg === false) {
-            throw new ClientException(_("Handshake error"));
+            throw new ClientException("TE : Handshake error");
         }
         $msg = trim($msg);
         if ($msg != 'Continue') {
-            throw new ClientException(_("Unexpected handshake message: %s"), $msg);
+            throw new ClientException("TE : Unexpected handshake message: %s", $msg);
         }
         return $sock;
     }
@@ -546,17 +546,17 @@ class Client
             try {
                 $sock = $this->connect();
             } catch (ClientException $e) {
-                throw new ClientException(sprintf(_("Could not connect to TE server: %s"), $e->getMessage()));
+                throw new ClientException(sprintf("Could not connect to TE server: %s", $e->getMessage()));
             }
             $ret = $this->fwriteStream($sock, $cmd);
             if ($ret != strlen($cmd)) {
                 fclose($sock);
-                throw new ClientRequestException(_("Could not send command to TE server."));
+                throw new ClientRequestException("Could not send command to TE server.");
             }
             $msg = fgets($sock, 2048);
             if ($msg === false) {
                 fclose($sock);
-                throw new ClientResponseIOException(_("Could not read response from TE server."));
+                throw new ClientResponseIOException("Could not read response from TE server.");
             }
             if (!preg_match('/<response.*\bstatus\s*=\s*"OK"/', $msg)) {
                 if (preg_match('|<response[^>]*>(?P<err>.*)</response>|i', $msg, $m)) {
@@ -593,12 +593,12 @@ class Client
         $ret = $this->fwriteStream($sock, $cmd);
         if ($ret != strlen($cmd)) {
             fclose($sock);
-            throw new ClientRequestException(_("Could not send command to TE server."));
+            throw new ClientRequestException("Could not send command to TE server.");
         }
         $msg = fgets($sock, 2048);
         if ($msg === false) {
             fclose($sock);
-            throw new ClientResponseIOException(_("Could not read response from TE server."));
+            throw new ClientResponseIOException("Could not read response from TE server.");
         }
         if (!preg_match('/<response.*\bstatus\s*=\s*"OK"/', $msg)) {
             if (preg_match('|<response[^>]*>(?P<err>.*)</response>|i', $msg, $m)) {
@@ -614,12 +614,12 @@ class Client
         }
         if ($size <= 0) {
             fclose($sock);
-            throw new ClientResponseFormatException(sprintf(_("Invalid response size '%s'"), $size));
+            throw new ClientResponseFormatException(sprintf("Invalid response size '%s'", $size));
         }
         $data = $this->readSize($sock, $size);
         if ($data === false) {
             fclose($sock);
-            throw new ClientResponseIOException(_("Could not read response from TE server."));
+            throw new ClientResponseIOException("Could not read response from TE server.");
         }
         fclose($sock);
         $json = new \JSONCodec();
@@ -629,7 +629,7 @@ class Client
             throw new ClientResponseFormatException($responseData);
         }
         if (!is_array($responseData)) {
-            throw new ClientResponseFormatException(sprintf(_("Returned data is not of array type (%s)"), gettype($responseData)));
+            throw new ClientResponseFormatException(sprintf("TE : Returned data is not of array type (%s)", gettype($responseData)));
         }
     }
 
@@ -726,7 +726,7 @@ class Client
             }
         } catch (ClientResponseIOException $e) {
             $err = $e->getMessage();
-            return sprintf(_("Server did not sent a valid response: server version might be incompatible."), $err);
+            return sprintf("TE : Server did not sent a valid response: server version might be incompatible. : %s", $err);
         } catch (ClientException $e) {
             return $e->getMessage();
         }

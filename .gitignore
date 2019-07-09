@@ -7,3 +7,4 @@ node_modules
 /Makefile.local
 /.devtool/ci/check/checkPHP/vendor/
 .eslintcache
+.anakeen-cli.xml

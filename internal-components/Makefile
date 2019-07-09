@@ -17,3 +17,5 @@ lint:
 po:
 stub:
 checkXML:
+clean:
+	rm -fr node_modules

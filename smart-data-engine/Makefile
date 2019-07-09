@@ -4,11 +4,6 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 #path
 CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 
-#Control
-CONTROL_USER=admin
-CONTROL_PASSWORD=anakeen
-CONTROL_URL=http://localhost:8080/control/
-CONTROL_CONTEXT="anakeen-platform"
 
 #Build
 APP_OUTPUT_PATH=../build/
@@ -35,10 +30,18 @@ src/vendor/Anakeen/XmlSchemas: node_modules
 	rm -fr $@
 	cp -r ../node_modules/@anakeen/anakeen-module-validation/xsd $@
 
-install-deps: src/vendor/Anakeen/XmlSchemas
-	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
+src/vendor/Anakeen/lib/vendor:
 	cd src/vendor/Anakeen/lib; ${COMPOSER_BIN} install --ignore-platform-reqs
+
+Tests/src/vendor/Anakeen/TestUnits/lib/vendor:
 	cd Tests/src/vendor/Anakeen/TestUnits/lib; ${COMPOSER_BIN} install --ignore-platform-reqs
+
+./../.devtool/ci/check/checkPHP/vendor:
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+
+
+install-deps: node_modules src/vendor/Anakeen/XmlSchemas src/vendor/Anakeen/lib/vendor Tests/src/vendor/Anakeen/TestUnits/lib/vendor
+	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 ########################################################################################################################
 ##
 ## Static analyze
@@ -54,14 +57,13 @@ checkVersion:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
 	${CHECK_VERSION} ./
 
-lint: checkXML checkVersion
+lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CS_BIN) --standard=${CS_PATH_NAME} --extensions=php --ignore=./src/vendor/Anakeen/lib,src/vendor/Anakeen/Core/SmartStructure/NormalAttribute.php ./src
 
-beautify:
+
+beautify: ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --extensions=php --ignore=./src/vendor/Anakeen/lib,src/vendor/Anakeen/Core/SmartStructure/NormalAttribute.php ./src
 	$(CBF_BIN) --standard=${CS_PATH_NAME}  --ignore=Tests/src/vendor/Anakeen/TestUnits/lib/vendor/,Tests/src/Apps/FDL --extensions=php ./Tests/src
 
@@ -110,11 +112,11 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ########################################################################################################################
 deploy: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath . 
 
 deploy-test: install-deps
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ./Tests 
 
 deploy-all: deploy deploy-test
 
@@ -125,6 +127,7 @@ deploy-all: deploy deploy-test
 ########################################################################################################################
 clean:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean${RESET_COLOR}\n"
+	rm -fr node_modules
 	rm -f *.src
 	rm -f *.app
 

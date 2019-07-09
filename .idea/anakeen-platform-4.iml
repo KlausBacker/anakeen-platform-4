@@ -2,6 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.devtool/ci" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/lib" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/accountManager" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/i18nManager" />
@@ -11,10 +12,27 @@
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/vaultManager" />
       <excludeFolder url="file://$MODULE_DIR$/business-app/lib" />
       <excludeFolder url="file://$MODULE_DIR$/business-app/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/control/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/container-interop/container-interop" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/mustache/mustache" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/nikic/fast-route" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/pimple/pimple" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/psr/container" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/psr/http-message" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/slim/slim" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/symfony/event-dispatcher" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/symfony/event-dispatcher-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/symfony/polyfill-php73" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/symfony/service-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/control/vendor/vierbergenlars/php-semver" />
       <excludeFolder url="file://$MODULE_DIR$/development-center/src/public/Anakeen" />
       <excludeFolder url="file://$MODULE_DIR$/hub-station/components/lib" />
       <excludeFolder url="file://$MODULE_DIR$/hub-station/src/public/Anakeen" />
       <excludeFolder url="file://$MODULE_DIR$/internal-components/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/transformation/lib" />
       <excludeFolder url="file://$MODULE_DIR$/transformation/src/public/Anakeen" />
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/components/lib" />
@@ -22,6 +40,8 @@
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/src/public/Anakeen" />
       <excludeFolder url="file://$MODULE_DIR$/user-interfaces/src/public/uiAssets" />
     </content>
+    <content url="file://$MODULE_DIR$/control/node_modules" />
+    <content url="file://$MODULE_DIR$/node_modules" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

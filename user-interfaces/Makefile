@@ -22,11 +22,6 @@ ANAKEEN_UI_SRC_PATH=./
 TEST_SRC_PATH=Tests/
 CS_PATH_NAME=./../.devtool/ci/check/checkPHP/anakeenPhpCs.xml
 
-#Control
-CONTROL_USER=admin
-CONTROL_PASSWORD=anakeen
-CONTROL_URL=http://localhost:8080/control/
-CONTROL_CONTEXT="anakeen-platform"
 
 #Build
 APP_OUTPUT_PATH=../build/
@@ -41,15 +36,22 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
 -include ../Makefile.local
 
+node_modules:
+	${YARN_BIN} install
+
+$(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/vendor:
+	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; $(COMPOSER_BIN) install
+
+./../.devtool/ci/check/checkPHP/vendor:
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 ########################################################################################################################
 ##
 ## Deps
 ##
 ########################################################################################################################
 
-install-deps:
-	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; $(COMPOSER_BIN) install
-	$(YARN_BIN) install
+install-deps: node_modules $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/vendor
+	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 
 ########################################################################################################################
 ##
@@ -66,14 +68,12 @@ checkVersion:
 	${CHECK_VERSION} ./ -s ${ANAKEEN_UI_SRC_PATH}
 	${ANAKEEN_CLI_BIN} check -s ${TEST_SRC_PATH}
 
-lint: checkXML checkVersion
+lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CS_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${ANAKEEN_UI_SRC_PATH}/src
 
-beautify:
+beautify: ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${ANAKEEN_UI_SRC_PATH}/src
 
 ########################################################################################################################
@@ -162,11 +162,11 @@ app-all-autorelease: app-autorelease app-test-autorelease
 ########################################################################################################################
 deploy: install-deps buildJS
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH} -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${ANAKEEN_UI_SRC_PATH} 
 
 deploy-test: install-deps buildJS-test
 	@${PRINT_COLOR} "${DEBUG_COLOR}Deploy test${RESET_COLOR}\n"
-	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${TEST_SRC_PATH} -c ${CONTROL_URL} -u ${CONTROL_USER} -p ${CONTROL_PASSWORD} --context ${CONTROL_CONTEXT}
+	${ANAKEEN_CLI_BIN} deploy --auto-release --sourcePath ${TEST_SRC_PATH} 
 
 deploy-all: deploy deploy-test
 
@@ -178,6 +178,7 @@ deploy-all: deploy deploy-test
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
+	rm -fr node_modules
 	rm -f *.app
 	rm -f *.src
 	make -f pojs.make clean

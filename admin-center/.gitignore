@@ -11,6 +11,7 @@ src/public/Anakeen/accountManager
 src/public/Anakeen/parameterManager
 src/public/Anakeen/tokenManager
 src/public/Anakeen/vaultManager
+src/public/Anakeen/mailManager
 src/public/Anakeen/manifest
 src/public/Anakeen/adminCenter/dev
 src/public/Anakeen/adminCenter/prod
