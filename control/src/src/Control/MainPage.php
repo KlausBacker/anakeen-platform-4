@@ -12,6 +12,10 @@ class MainPage
     public function __invoke(\Slim\Http\Request $request, \Slim\Http\Response $response)
     {
         $data = $this->getModuleData();
+        //Add asset
+        $assets = json_decode(file_get_contents(__DIR__."/../../public/Anakeen/manifest/control/prod.json"), true);
+        $data["mainCss"] = ".".$assets["control"]["css"];
+        $data["mainJs"] = ".".$assets["control"]["js"];
         $mustache = new \Mustache_Engine();
         $tpl = file_get_contents(__DIR__ . "/main.html.mustache");
         $response->getBody()->write($mustache->render($tpl, $data));

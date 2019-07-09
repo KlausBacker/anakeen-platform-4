@@ -1,0 +1,18 @@
+{
+    "log": [
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "status",
+            "date": "2019-07-09T19:17:47.394154"
+        },
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "status",
+            "date": "2019-07-09T19:22:08.568654"
+        }
+    ]
+}

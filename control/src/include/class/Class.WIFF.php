@@ -166,14 +166,9 @@ class WIFF extends WiffCommon
             $wiff_root = $wiff_root . DIRECTORY_SEPARATOR;
         }
 
-        $fversion=file_get_contents($wiff_root . 'VERSION');
-        $frelease=file_get_contents($wiff_root . 'RELEASE');
+        $version = json_decode(file_get_contents($wiff_root . 'version.json'), true);
         
-        $version = trim($fversion);
-        $release = trim($frelease);
-
-        
-        return $version . '-' . $release;
+        return $version["version"];
     }
 
 

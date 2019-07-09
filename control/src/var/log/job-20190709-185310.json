@@ -1,0 +1,3209 @@
+{
+    "action": "upgrade",
+    "moduleArg": "",
+    "file": "",
+    "options": [],
+    "tasks": [
+        {
+            "module": "user-interfaces",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "1": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:33.265729"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "a0673fd88c8b67e1e867eb327b9468fd": {
+                            "name": "process",
+                            "label": "MASK Structure",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:35.273241"
+                        },
+                        "93bdf00cd3b2dc784641ea59ca672f46": {
+                            "name": "process",
+                            "label": "CVDOC Structure",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:35.535971"
+                        },
+                        "24d8a211cc4aa86466b01f46af4ec956": {
+                            "name": "process",
+                            "label": "FIELDACCESSLAYER Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:35.737295"
+                        },
+                        "c3de19be96f913f87f922689e5fdf0d3": {
+                            "name": "process",
+                            "label": "FIELDACCESSLAYERLIST Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:35.940199"
+                        },
+                        "7b133d24b7229e690e66f5ffa2b65447": {
+                            "name": "process",
+                            "label": "DSEARCH Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:36.241457"
+                        },
+                        "58fce05b6d98eaad00705fbf22cd41e8": {
+                            "name": "process",
+                            "label": "PDOC Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:36.671999"
+                        },
+                        "587062bb50a6dd865ae009064a20cff1": {
+                            "name": "process",
+                            "label": "REPORT Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:36.895725"
+                        },
+                        "788b15e53ab2a487f8205cdb5546e881": {
+                            "name": "process",
+                            "label": "HELPPAGE Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:37.091386"
+                        },
+                        "af2a2648799fa789032d1fcd2f68b94f": {
+                            "name": "process",
+                            "label": "CVDOC Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:37.280583"
+                        },
+                        "f6ea45982468f9a93ebfca4c939bb203": {
+                            "name": "process",
+                            "label": "MAILTEMPLATE Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:37.574426"
+                        },
+                        "86302f46b977918033ea2a8f79f23740": {
+                            "name": "process",
+                            "label": "MASK Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:37.760945"
+                        },
+                        "37fe15428c40f3baafd9ba63d40543d1": {
+                            "name": "process",
+                            "label": "IGROUP Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:37.996201"
+                        },
+                        "a67392b80211de3c5b8ca820503458ea": {
+                            "name": "process",
+                            "label": "IUSER Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:38.258339"
+                        },
+                        "05a2f8ad5ef5eeaf508a31d93baae628": {
+                            "name": "process",
+                            "label": "GROUP Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:38.583767"
+                        },
+                        "6dec9a21598380b00defeb4f80cea1fc": {
+                            "name": "process",
+                            "label": "SEARCH Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:39.156412"
+                        },
+                        "e0490a6e0af2f13888390c3cd5f382e1": {
+                            "name": "process",
+                            "label": "MSEARCH Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:39.393417"
+                        },
+                        "31eaac3c9dc40dc19b2f809fe51a68c7": {
+                            "name": "process",
+                            "label": "SSEARCH Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:39.596681"
+                        },
+                        "c900e7e90ab6c99fabde745eaf797074": {
+                            "name": "process",
+                            "label": "DIR Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:39.985527"
+                        },
+                        "a6909b3321ff66ad236a394c1a51c14b": {
+                            "name": "process",
+                            "label": "TASK Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:40.288474"
+                        },
+                        "cc9e5cecfac89989b6acf3ca1a6eb3e2": {
+                            "name": "process",
+                            "label": "IMAGE Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:40.473893"
+                        },
+                        "b5ef9ac51af4a4ef7e02bada6b85d925": {
+                            "name": "process",
+                            "label": "ROLE Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:40.661468"
+                        },
+                        "1b6de1e76fdcf2e146282543a76e1e1c": {
+                            "name": "process",
+                            "label": "Apply Migrate Mail Template Control View",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:40.698168"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "2.0.1-dev20190709162921",
+            "date": "2019-07-09T18:52:40.709716",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFiletL3y9a"
+        },
+        {
+            "module": "security",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "24": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:42.536028"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "30c49676a4bf8af9bc14fb4901f89401": {
+                            "name": "process",
+                            "label": "Field Access Layer",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:42.768719"
+                        },
+                        "1d58771d91bcef3dd22e601f516b7912": {
+                            "name": "process",
+                            "label": "Field Access Layer List",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:42.980445"
+                        },
+                        "e150ed6406bedc57259a91b2b6f87506": {
+                            "name": "process",
+                            "label": "Profiling account structures",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:43.408799"
+                        },
+                        "20ae830f8de305c34b0890522722c459": {
+                            "name": "process",
+                            "label": "Profiling account structures",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:43.724867"
+                        },
+                        "486e6665022d87b8a45ec605f1908b45": {
+                            "name": "process",
+                            "label": "Reset Default Access",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:43.917825"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "2.0.0-dev20190709162355",
+            "date": "2019-07-09T18:52:43.927362",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFileCU2jMG"
+        },
+        {
+            "module": "workflow",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "30": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:45.670886"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "954466442cc6bca2aba7a6e2ac6b40e0": {
+                            "name": "process",
+                            "label": "WDOC Family",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:46.162767"
+                        },
+                        "e5d98dc135e0ba8824542733ad9ab542": {
+                            "name": "process",
+                            "label": "TIMER Family",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:46.401192"
+                        },
+                        "7be8bf6c394ae72bcae71f71ecdfe00f": {
+                            "name": "process",
+                            "label": "WDOC Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:46.846792"
+                        },
+                        "5ce8a1d71a0d135ef33f6e7a66e91c66": {
+                            "name": "process",
+                            "label": "TIMER Structure view",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:47.035388"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "2.0.0-dev20190709162358",
+            "date": "2019-07-09T18:52:47.044772",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFiletXtmUE"
+        },
+        {
+            "module": "anakeen-hub",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "35": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:48.983743"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "86729cd8912cc48cd9d60f4a516628f5": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/Hub\/Accounts\/110-HubRoles.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:49.289493"
+                        },
+                        "e6173243feed556aea846fe3610031a3": {
+                            "name": "process",
+                            "label": "Apply Migrate HubGenericConfiguration Rules",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:49.325011"
+                        },
+                        "38eaf54a65111a673ee70f9d258040fd": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfiguration\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:51.715560"
+                        },
+                        "b956e3b0390596b0729a92e24292aef1": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationVue\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:52.668269"
+                        },
+                        "ecec22f1f08ac16d3c6641c091e04d07": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationGeneric\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:53.138193"
+                        },
+                        "b30bca0b3c13ea38768b3185d98ea619": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationSlot\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:54.322220"
+                        },
+                        "f629d948b3b3cb400cbb1146f391dacc": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationIdentity\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:54.758352"
+                        },
+                        "444257906e034123c01564446b6dc2c5": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationLogout\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:55.199771"
+                        },
+                        "0c0806c671126d948400c709e225668e": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationLabel\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:55.637788"
+                        },
+                        "fc26b125137986f329583f30422f9f09": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubInstanciation\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:56.163231"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "1.0.1-dev20190709163059",
+            "date": "2019-07-09T18:52:56.175570",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFile8n3dmV"
+        },
+        {
+            "module": "development-center",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "46": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:58.166733"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "d30c6bb9383c276064059a5b883f5251": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/DevelopmentCenter\/Config\/develConfiguration.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:52:58.796709"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "2.0.1-dev20190709163455",
+            "date": "2019-07-09T18:52:58.808030",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFilefMSKec"
+        },
+        {
+            "module": "admin-center",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "48": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:00.846839"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "f17dc84a9b1680ef19a7b3a27c594ebe": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/AdminCenter\/Accounts\/110-AdminCenterRoles.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:01.280263"
+                        },
+                        "b08a74c4fe1c1d1d99834df63ba2b5bd": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --file=.\/vendor\/Anakeen\/AdminCenter\/Accounts\/111-AdminManagerProfile.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:01.605922"
+                        },
+                        "43f91c0e2d5b5e2f315e6c0494e4d364": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/AdminCenter\/Config\/hubConfiguration.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:01.807783"
+                        },
+                        "974b2a6ec225f2d69f9d09f82132d7ed": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=migrateAdminPlugins",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:01.850623"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "2.0.1-dev20190709163322",
+            "date": "2019-07-09T18:53:01.864710",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFilewebU6T"
+        },
+        {
+            "module": "migration-tools",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "53": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:03.693805"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "2.0.0-dev20190709163535",
+            "date": "2019-07-09T18:53:03.722390",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFile7ZcnYs"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "54": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:05.514248"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "471d8a91212739004647d1b2a661608c": {
+                            "name": "process",
+                            "label": "Apply Migrate HubBusinessApp Rules",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:05.629058"
+                        },
+                        "f4256f67e21337e3f92f64f2b9564cdd": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/BusinessApp\/SmartStructures\/HubBusinessApp\/**\/*.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:06.088061"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "1.0.1-dev20190709163357",
+            "date": "2019-07-09T18:53:06.099900",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFileQOQvmv"
+        },
+        {
+            "module": "transformation",
+            "action": "upgrade",
+            "status": "INSTALLED",
+            "phases": [
+                {
+                    "name": "download",
+                    "status": "Done"
+                },
+                {
+                    "name": "pre-upgrade",
+                    "status": "Done"
+                },
+                {
+                    "name": "check-files",
+                    "status": "Done",
+                    "process": {
+                        "57": {
+                            "name": "check-files",
+                            "label": "Do check-files",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:08.047294"
+                        }
+                    }
+                },
+                {
+                    "name": "clean-unpack",
+                    "status": "Done"
+                },
+                {
+                    "name": "post-upgrade",
+                    "status": "Done",
+                    "process": {
+                        "1f0e0aa1a917d5948c229d248ffbaff4": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=cleanOldStructures",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:08.243739"
+                        },
+                        "c885d2dd149b4ff431efcc2b03b7bf5a": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/TransformationEngine\/HubComponent\/TERoles.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:08.318049"
+                        },
+                        "ea13c401a36c60abb8f2a409d0d4d76f": {
+                            "name": "process",
+                            "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/TransformationEngine\/HubComponent\/hubConfiguration.xml",
+                            "status": "Done",
+                            "date": "2019-07-09T18:53:08.408536"
+                        }
+                    }
+                },
+                {
+                    "name": "purge-unreferenced-parameters-value",
+                    "status": "Done"
+                }
+            ],
+            "version": "2.0.1-dev20190709163532",
+            "date": "2019-07-09T18:53:08.420773",
+            "processing": "upgrade",
+            "downloadFile": "\/tmp\/anakeen-control\/WIFF_downloadLocalFile76sivH"
+        }
+    ],
+    "parameters": [
+        {
+            "module": "smart-data-engine",
+            "name": "client_name",
+            "label": "client name",
+            "type": "text"
+        },
+        {
+            "module": "smart-data-engine",
+            "name": "core_db",
+            "label": "database postgresql service name",
+            "type": "text",
+            "needed": "Y"
+        },
+        {
+            "module": "smart-data-engine",
+            "name": "authtype",
+            "label": "authenticate default mode",
+            "default": "basic",
+            "type": "enum",
+            "values": "basic|html",
+            "needed": "Y"
+        },
+        {
+            "module": "smart-data-engine",
+            "name": "core_admin_passwd",
+            "label": "Admin password",
+            "default": "anakeen",
+            "type": "text",
+            "volatile": "Y",
+            "oninstall": "W",
+            "onupgrade": "H",
+            "onedit": "H"
+        }
+    ],
+    "log": [
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "dojob",
+            "date": "2019-07-09T18:52:32.096304"
+        },
+        {
+            "module": "",
+            "phase": "",
+            "task": "log",
+            "value": [],
+            "date": "2019-07-09T18:52:32.097090"
+        },
+        {
+            "module": "",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:32.097362"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "",
+            "task": "version",
+            "value": "2.0.1-dev20190709162921",
+            "date": "2019-07-09T18:52:32.204940"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:52:32.205409"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:32.205660"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:32.205946"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:32.504933"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFiletL3y9a",
+            "date": "2019-07-09T18:52:32.505169"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:32.546615"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:32.546962"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:32.547369"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:32.547677"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:33.265729"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:33.266068"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:33.266404"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:34.863493"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:34.864903"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MASK Structure",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:34.870043"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MASK Structure",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:35.273241"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "CVDOC Structure",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:35.273671"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "CVDOC Structure",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:35.535971"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "FIELDACCESSLAYER Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:35.537433"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "FIELDACCESSLAYER Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:35.737295"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "FIELDACCESSLAYERLIST Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:35.737760"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "FIELDACCESSLAYERLIST Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:35.940199"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "DSEARCH Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:35.940662"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "DSEARCH Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:36.241457"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "PDOC Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:36.241955"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "PDOC Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:36.671999"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "REPORT Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:36.672509"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "REPORT Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:36.895725"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "HELPPAGE Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:36.896813"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "HELPPAGE Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:37.091386"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "CVDOC Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:37.091954"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "CVDOC Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:37.280583"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MAILTEMPLATE Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:37.281127"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MAILTEMPLATE Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:37.574426"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MASK Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:37.575332"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MASK Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:37.760945"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "IGROUP Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:37.761505"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "IGROUP Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:37.996201"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "IUSER Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:37.996783"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "IUSER Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:38.258339"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "GROUP Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:38.258936"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "GROUP Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:38.583767"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "SEARCH Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:38.584381"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "SEARCH Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:39.156412"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MSEARCH Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:39.157022"
+        },
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "update help --format=txt --help",
+            "date": "2019-07-09T18:52:39.317106"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "MSEARCH Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:39.393417"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "SSEARCH Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:39.394066"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "SSEARCH Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:39.596681"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "DIR Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:39.597320"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "DIR Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:39.985527"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "TASK Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:39.986190"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "TASK Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:40.288474"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "IMAGE Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:40.289189"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "IMAGE Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:40.473893"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "ROLE Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:40.474564"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "ROLE Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:40.661468"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Apply Migrate Mail Template Control View",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:40.662231"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Apply Migrate Mail Template Control View",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:40.698168"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:40.698709"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:40.699347"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:40.703566"
+        },
+        {
+            "module": "user-interfaces",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:52:40.709716"
+        },
+        {
+            "module": "security",
+            "phase": "",
+            "task": "version",
+            "value": "2.0.0-dev20190709162355",
+            "date": "2019-07-09T18:52:42.453741"
+        },
+        {
+            "module": "security",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:52:42.454262"
+        },
+        {
+            "module": "security",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:42.454712"
+        },
+        {
+            "module": "security",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:42.455402"
+        },
+        {
+            "module": "security",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:42.463434"
+        },
+        {
+            "module": "security",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFileCU2jMG",
+            "date": "2019-07-09T18:52:42.463921"
+        },
+        {
+            "module": "security",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:42.494777"
+        },
+        {
+            "module": "security",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:42.495338"
+        },
+        {
+            "module": "security",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:42.496117"
+        },
+        {
+            "module": "security",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:42.496808"
+        },
+        {
+            "module": "security",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:42.536028"
+        },
+        {
+            "module": "security",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:42.536553"
+        },
+        {
+            "module": "security",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:42.537220"
+        },
+        {
+            "module": "security",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:42.550072"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:42.551134"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Field Access Layer",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:42.551850"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Field Access Layer",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:42.768719"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Field Access Layer List",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:42.769510"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Field Access Layer List",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:42.980445"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Profiling account structures",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:42.981307"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Profiling account structures",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:43.408799"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Profiling account structures",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:43.409615"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Profiling account structures",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:43.724867"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Reset Default Access",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:43.725752"
+        },
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "get core_db --module",
+            "date": "2019-07-09T18:52:43.769076"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Reset Default Access",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:43.917825"
+        },
+        {
+            "module": "security",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:43.918641"
+        },
+        {
+            "module": "security",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:43.919426"
+        },
+        {
+            "module": "security",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:43.923411"
+        },
+        {
+            "module": "security",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:52:43.927362"
+        },
+        {
+            "module": "workflow",
+            "phase": "",
+            "task": "version",
+            "value": "2.0.0-dev20190709162358",
+            "date": "2019-07-09T18:52:45.586353"
+        },
+        {
+            "module": "workflow",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:52:45.586929"
+        },
+        {
+            "module": "workflow",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:45.587431"
+        },
+        {
+            "module": "workflow",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:45.588199"
+        },
+        {
+            "module": "workflow",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:45.596100"
+        },
+        {
+            "module": "workflow",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFiletXtmUE",
+            "date": "2019-07-09T18:52:45.596668"
+        },
+        {
+            "module": "workflow",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:45.628431"
+        },
+        {
+            "module": "workflow",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:45.629148"
+        },
+        {
+            "module": "workflow",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:45.630013"
+        },
+        {
+            "module": "workflow",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:45.630925"
+        },
+        {
+            "module": "workflow",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:45.670886"
+        },
+        {
+            "module": "workflow",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:45.671534"
+        },
+        {
+            "module": "workflow",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:45.672374"
+        },
+        {
+            "module": "workflow",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:45.686179"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:45.687484"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "WDOC Family",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:45.688374"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "WDOC Family",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:46.162767"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "TIMER Family",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:46.163779"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "TIMER Family",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:46.401192"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "WDOC Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:46.402172"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "WDOC Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:46.846792"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "TIMER Structure view",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:46.847791"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "TIMER Structure view",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:47.035388"
+        },
+        {
+            "module": "workflow",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:47.036035"
+        },
+        {
+            "module": "workflow",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:47.036911"
+        },
+        {
+            "module": "workflow",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:47.040972"
+        },
+        {
+            "module": "workflow",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:52:47.044772"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "",
+            "task": "version",
+            "value": "1.0.1-dev20190709163059",
+            "date": "2019-07-09T18:52:48.787425"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:52:48.788090"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:48.788695"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:48.789650"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:48.819587"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFile8n3dmV",
+            "date": "2019-07-09T18:52:48.820208"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:48.851259"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:48.852017"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:48.853048"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:48.854027"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:48.983743"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:48.984492"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:48.985481"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:49.187286"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:49.189211"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/Hub\/Accounts\/110-HubRoles.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:49.190569"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/Hub\/Accounts\/110-HubRoles.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:49.289493"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Apply Migrate HubGenericConfiguration Rules",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:49.290606"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Apply Migrate HubGenericConfiguration Rules",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:49.325011"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfiguration\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:49.326329"
+        },
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "update  --no-interaction",
+            "date": "2019-07-09T18:52:51.544089"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfiguration\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:51.715560"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationVue\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:51.716698"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationVue\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:52.668269"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationGeneric\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:52.669506"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationGeneric\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:53.138193"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationSlot\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:53.139367"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationSlot\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:54.322220"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationIdentity\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:54.323440"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationIdentity\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:54.758352"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationLogout\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:54.759672"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationLogout\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:55.199771"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationLabel\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:55.201028"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubConfigurationLabel\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:55.637788"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubInstanciation\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:55.639100"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/Hub\/SmartStructures\/HubInstanciation\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:56.163231"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:56.164048"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:56.165227"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:56.169604"
+        },
+        {
+            "module": "anakeen-hub",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:52:56.175570"
+        },
+        {
+            "module": "development-center",
+            "phase": "",
+            "task": "version",
+            "value": "2.0.1-dev20190709163455",
+            "date": "2019-07-09T18:52:57.840955"
+        },
+        {
+            "module": "development-center",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:52:57.841826"
+        },
+        {
+            "module": "development-center",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:57.842612"
+        },
+        {
+            "module": "development-center",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:57.843775"
+        },
+        {
+            "module": "development-center",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:57.922769"
+        },
+        {
+            "module": "development-center",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFilefMSKec",
+            "date": "2019-07-09T18:52:57.923549"
+        },
+        {
+            "module": "development-center",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:57.955552"
+        },
+        {
+            "module": "development-center",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:57.956412"
+        },
+        {
+            "module": "development-center",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:57.957686"
+        },
+        {
+            "module": "development-center",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:57.958956"
+        },
+        {
+            "module": "development-center",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:58.166733"
+        },
+        {
+            "module": "development-center",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:58.167599"
+        },
+        {
+            "module": "development-center",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:58.174905"
+        },
+        {
+            "module": "development-center",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:58.551947"
+        },
+        {
+            "module": "development-center",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:58.553451"
+        },
+        {
+            "module": "development-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/DevelopmentCenter\/Config\/develConfiguration.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:52:58.560440"
+        },
+        {
+            "module": "development-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/DevelopmentCenter\/Config\/develConfiguration.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:52:58.796709"
+        },
+        {
+            "module": "development-center",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:58.797616"
+        },
+        {
+            "module": "development-center",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:52:58.798902"
+        },
+        {
+            "module": "development-center",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:52:58.803273"
+        },
+        {
+            "module": "development-center",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:52:58.808030"
+        },
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "list  --format=txt",
+            "date": "2019-07-09T18:52:59.649514"
+        },
+        {
+            "module": "admin-center",
+            "phase": "",
+            "task": "version",
+            "value": "2.0.1-dev20190709163322",
+            "date": "2019-07-09T18:53:00.580686"
+        },
+        {
+            "module": "admin-center",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:53:00.581597"
+        },
+        {
+            "module": "admin-center",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:00.582486"
+        },
+        {
+            "module": "admin-center",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:00.583783"
+        },
+        {
+            "module": "admin-center",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:00.624500"
+        },
+        {
+            "module": "admin-center",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFilewebU6T",
+            "date": "2019-07-09T18:53:00.625443"
+        },
+        {
+            "module": "admin-center",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:00.657756"
+        },
+        {
+            "module": "admin-center",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:00.658712"
+        },
+        {
+            "module": "admin-center",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:00.660161"
+        },
+        {
+            "module": "admin-center",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:00.661490"
+        },
+        {
+            "module": "admin-center",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:00.846839"
+        },
+        {
+            "module": "admin-center",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:00.847789"
+        },
+        {
+            "module": "admin-center",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:00.855054"
+        },
+        {
+            "module": "admin-center",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:01.170213"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:01.172029"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/AdminCenter\/Accounts\/110-AdminCenterRoles.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:01.173324"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/AdminCenter\/Accounts\/110-AdminCenterRoles.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:01.280263"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --file=.\/vendor\/Anakeen\/AdminCenter\/Accounts\/111-AdminManagerProfile.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:01.281770"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --file=.\/vendor\/Anakeen\/AdminCenter\/Accounts\/111-AdminManagerProfile.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:01.605922"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/AdminCenter\/Config\/hubConfiguration.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:01.607617"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/AdminCenter\/Config\/hubConfiguration.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:01.807783"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=migrateAdminPlugins",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:01.809280"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=migrateAdminPlugins",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:01.850623"
+        },
+        {
+            "module": "admin-center",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:01.851604"
+        },
+        {
+            "module": "admin-center",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:01.853284"
+        },
+        {
+            "module": "admin-center",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:01.857744"
+        },
+        {
+            "module": "admin-center",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:53:01.864710"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "",
+            "task": "version",
+            "value": "2.0.0-dev20190709163535",
+            "date": "2019-07-09T18:53:03.604598"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:53:03.605615"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:03.606500"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:03.607855"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:03.616144"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFile7ZcnYs",
+            "date": "2019-07-09T18:53:03.617134"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:03.649007"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:03.650082"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:03.651562"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:03.653102"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:03.693805"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:03.694786"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:03.696208"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:03.709851"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:03.711430"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:03.712380"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:03.713775"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:03.718191"
+        },
+        {
+            "module": "migration-tools",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:53:03.722390"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "",
+            "task": "version",
+            "value": "1.0.1-dev20190709163357",
+            "date": "2019-07-09T18:53:05.386227"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:53:05.387253"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:05.388180"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:05.389762"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:05.406345"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFileQOQvmv",
+            "date": "2019-07-09T18:53:05.407340"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:05.442311"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:05.443360"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:05.444926"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:05.446424"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:05.514248"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:05.515456"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:05.517079"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:05.589036"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:05.590999"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Apply Migrate HubBusinessApp Rules",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:05.592635"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Apply Migrate HubBusinessApp Rules",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:05.629058"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/BusinessApp\/SmartStructures\/HubBusinessApp\/**\/*.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:05.630714"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importConfiguration --glob=.\/vendor\/Anakeen\/BusinessApp\/SmartStructures\/HubBusinessApp\/**\/*.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:06.088061"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:06.089186"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:06.090864"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:06.095423"
+        },
+        {
+            "module": "anakeen-hub-business-app",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:53:06.099900"
+        },
+        {
+            "module": "anakeen-control",
+            "phase": "exec",
+            "task": "cli",
+            "value": "status help --format=txt --help",
+            "date": "2019-07-09T18:53:07.225394"
+        },
+        {
+            "module": "transformation",
+            "phase": "",
+            "task": "version",
+            "value": "2.0.1-dev20190709163532",
+            "date": "2019-07-09T18:53:07.852377"
+        },
+        {
+            "module": "transformation",
+            "phase": "",
+            "task": "processing",
+            "value": "upgrade",
+            "date": "2019-07-09T18:53:07.853481"
+        },
+        {
+            "module": "transformation",
+            "phase": "",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:07.854454"
+        },
+        {
+            "module": "transformation",
+            "phase": "download",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:07.856019"
+        },
+        {
+            "module": "transformation",
+            "phase": "download",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:07.904375"
+        },
+        {
+            "module": "transformation",
+            "phase": "",
+            "task": "downloadFile",
+            "value": "\/tmp\/anakeen-control\/WIFF_downloadLocalFile76sivH",
+            "date": "2019-07-09T18:53:07.905691"
+        },
+        {
+            "module": "transformation",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:07.939275"
+        },
+        {
+            "module": "transformation",
+            "phase": "pre-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:07.940330"
+        },
+        {
+            "module": "transformation",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:07.942008"
+        },
+        {
+            "module": "transformation",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:07.943581"
+        },
+        {
+            "module": "transformation",
+            "phase": "check-files",
+            "task": "process",
+            "value": {
+                "name": "check-files",
+                "label": "Do check-files",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:08.047294"
+        },
+        {
+            "module": "transformation",
+            "phase": "check-files",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:08.048424"
+        },
+        {
+            "module": "transformation",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:08.050092"
+        },
+        {
+            "module": "transformation",
+            "phase": "clean-unpack",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:08.199340"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:08.201352"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=cleanOldStructures",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:08.202992"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=cleanOldStructures",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:08.243739"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/TransformationEngine\/HubComponent\/TERoles.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:08.245543"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importAccounts --file=.\/vendor\/Anakeen\/TransformationEngine\/HubComponent\/TERoles.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:08.318049"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/TransformationEngine\/HubComponent\/hubConfiguration.xml",
+                "status": "Running"
+            },
+            "date": "2019-07-09T18:53:08.319908"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "process",
+            "value": {
+                "name": "process",
+                "label": "Process .\/ank.php --script=importDocuments --file=.\/vendor\/Anakeen\/TransformationEngine\/HubComponent\/hubConfiguration.xml",
+                "status": "Done"
+            },
+            "date": "2019-07-09T18:53:08.408536"
+        },
+        {
+            "module": "transformation",
+            "phase": "post-upgrade",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:08.409777"
+        },
+        {
+            "module": "transformation",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Running",
+            "date": "2019-07-09T18:53:08.411424"
+        },
+        {
+            "module": "transformation",
+            "phase": "purge-unreferenced-parameters-value",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:08.415934"
+        },
+        {
+            "module": "transformation",
+            "phase": "",
+            "task": "status",
+            "value": "INSTALLED",
+            "date": "2019-07-09T18:53:08.420773"
+        },
+        {
+            "module": "",
+            "phase": "",
+            "task": "status",
+            "value": "Done",
+            "date": "2019-07-09T18:53:10.100404"
+        }
+    ],
+    "status": "Done"
+}
