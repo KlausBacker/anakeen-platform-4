@@ -1,14 +1,17 @@
 {
   "name": "anakeen-control",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "main": "index.js",
   "repository": "git@gitlab.anakeen.com:Anakeen/Platform-4/users/eric.brison/anakeen-control.git",
-  "author": "Éric Brison <eric.brison@anakeen.com>",
+  "author": "anakeen",
   "license": "MIT",
+  "scripts": {
+    "build": "npx webpack --config ./webpackConfig/ihm.js"
+  },
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "jquery": "^3.4.1",
-    "popper.js": "^1.15.0",
-    "prettier": "^1.18.0"
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.7",
+    "webpack": "^4.29.6"
   }
 }

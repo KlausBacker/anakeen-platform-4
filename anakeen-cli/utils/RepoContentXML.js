@@ -97,7 +97,7 @@ class RepoContentXML extends XMLLoader {
 
     const rootNode = xmlLoader.data.module;
     /* Add src attribute... */
-    rootNode.$.src = path.basename(file);
+    rootNode.$.src = path.relative(path.dirname(this.filename), file);
     /* Remove xmlns declaration and unused child nodes */
     delete rootNode.$.xmlns;
     for (let prop of Object.keys(rootNode)) {

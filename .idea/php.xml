@@ -7,21 +7,21 @@
   </component>
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="$PROJECT_DIR$/control/vendor/container-interop/container-interop" />
-      <path value="$PROJECT_DIR$/control/vendor/mustache/mustache" />
-      <path value="$PROJECT_DIR$/control/vendor/vierbergenlars/php-semver" />
-      <path value="$PROJECT_DIR$/control/vendor/symfony/polyfill-mbstring" />
-      <path value="$PROJECT_DIR$/control/vendor/symfony/polyfill-php73" />
-      <path value="$PROJECT_DIR$/control/vendor/symfony/console" />
-      <path value="$PROJECT_DIR$/control/vendor/symfony/service-contracts" />
-      <path value="$PROJECT_DIR$/control/vendor/composer" />
-      <path value="$PROJECT_DIR$/control/vendor/nikic/fast-route" />
-      <path value="$PROJECT_DIR$/control/vendor/pimple/pimple" />
-      <path value="$PROJECT_DIR$/control/vendor/psr/http-message" />
-      <path value="$PROJECT_DIR$/control/vendor/slim/slim" />
-      <path value="$PROJECT_DIR$/control/vendor/psr/container" />
-      <path value="$PROJECT_DIR$/control/vendor/symfony/event-dispatcher-contracts" />
-      <path value="$PROJECT_DIR$/control/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/control/src/vendor/vierbergenlars/php-semver" />
+      <path value="$PROJECT_DIR$/control/src/vendor/container-interop/container-interop" />
+      <path value="$PROJECT_DIR$/control/src/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/control/src/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/control/src/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/control/src/vendor/mustache/mustache" />
+      <path value="$PROJECT_DIR$/control/src/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/control/src/vendor/composer" />
+      <path value="$PROJECT_DIR$/control/src/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/control/src/vendor/slim/slim" />
+      <path value="$PROJECT_DIR$/control/src/vendor/nikic/fast-route" />
+      <path value="$PROJECT_DIR$/control/src/vendor/pimple/pimple" />
+      <path value="$PROJECT_DIR$/control/src/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/control/src/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/control/src/vendor/psr/http-message" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

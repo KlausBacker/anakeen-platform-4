@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  php:
+    build:
+      context: ./Images/php/
+      args:
+        ANK_RUN_UID: ${COMPOSE_UID}
+        ANK_RUN_GID: ${COMPOSE_GID}
+    sysctls:
+      # Allows mapping of port 80 form unprivileged user COMPOSE_UID
+      net.ipv4.ip_unprivileged_port_start: 0
+    volumes:
+      - "./Volumes/_private/php/var/www/html/platform/:/var/www/html/platform"
+      - "./Volumes/_private/php/var/spool/cron/crontabs/:/var/spool/cron/crontabs"
+      - "./Volumes/_private/php/tmp/share/:/tmp/share/"
+      - "./Volumes/php/usr/local/etc/php/conf.d/10-base.ini:/usr/local/etc/php/conf.d/10-base.ini"
+      - "../../../control/src/:/var/www/html/control/"
+      - "./Volumes/_private/php/var/www/html/control/conf/:/var/www/html/control/conf/"
+      - "../../../build/:/var/www/html/localRepo"
+    links:
+      - "postgres:postgres"
+    ports:
+      - "${CUSTOM_HTTP_PORT-8080}:80"
+      - "${CUSTOM_HTTPS_PORT-4430}:443"
+    networks:
+      - internal
+
+  postgres:
+    user: ${COMPOSE_UID}:${COMPOSE_GID}
+    build:
+      context: ./Images/postgres/
+    volumes:
+      - "./Volumes/_private/postgres/var/lib/postgresql/data:/var/lib/postgresql/data"
+      - "./Volumes/_private/postgres/tmp/share/:/tmp/share/"
+    ports:
+      - "${CUSTOM_PSQL_PORT-54320}:5432"
+    networks:
+      - internal
+
+  wait-for-it:
+    build:
+      context: ./Images/wait-for-it/
+    networks:
+      - internal
+    links:
+      - "postgres:postgres"
+      - "php:php"
+
+networks:
+  internal: {}

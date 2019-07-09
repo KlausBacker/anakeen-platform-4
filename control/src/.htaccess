@@ -1,0 +1,6 @@
+AuthUserFile "/var/www/html/control/.htpasswd"
+AuthName 'Veuillez vous identifier'
+AuthType Basic
+
+Require valid-user
+

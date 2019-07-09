@@ -17,6 +17,7 @@ src/public/Anakeen/adminCenter/dev
 src/public/Anakeen/adminCenter/prod
 src/public/Anakeen/adminCenter/legacy
 src/vendor/Anakeen/Routes/Admin/Lib/vendor/
+src/public/Anakeen/mailManager/
 Makefile.local
 /.idea/deployment.xml
 /.idea/dictionaries/

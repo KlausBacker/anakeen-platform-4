@@ -15,7 +15,8 @@
         "module-validation",
         "anakeen-cli",
         "hub-station",
-        "business-app"
+        "business-app",
+        "webpack-conf"
     ],
     "dependencies": {
         "@commitlint/config-conventional": "^8.0.0",

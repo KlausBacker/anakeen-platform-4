@@ -1,0 +1,118 @@
+@import "~@anakeen/theme-variables/scss/variables/fonts.scss";
+@import "~@progress/kendo-theme-bootstrap/modules/bootstrap/scss/bootstrap";
+
+html {
+  font-size: 13px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.navbar-dark .navbar-text {
+  font-weight: normal;
+  color: white;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 1.2rem;
+}
+
+.navbar-text--title {
+  display: inline-block;
+}
+
+.navbar-text--title::first-letter {
+  color: #92c93e;
+}
+
+
+li.nav-item {
+  padding-bottom: 0;
+  border-bottom: solid 0.25rem transparent;
+  min-width: 7rem;
+  text-align: center;
+}
+
+
+li.nav-item .nav-link {
+  padding-bottom: 0.25rem;
+}
+
+li.nav-item.active {
+  border-color: #92c93e;
+  transition : border 500ms ease-out;
+}
+
+.php-info td.v {
+  word-break: break-word;
+}
+
+.php-info h1 {
+  background-color: var(--dark);
+  color: var(--white);
+  font-size: 1.5rem;
+  padding: 0.5rem;
+}
+
+.php-info h2 {
+  background-color: var(--dark);
+  color: var(--white);
+  font-size: 1.2rem;
+  padding: 0.25rem;
+}
+
+.php-info a > img {
+  float: right;
+}
+.php-info tr th {
+  background-color: var(--light);
+}
+.php-info .v i {
+  color: var(--gray);
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+.control-container {
+  flex: 1;
+  overflow: auto;
+  opacity:0;
+}
+
+
+.control-container.active {
+  opacity:1;
+
+  transition : opacity 500ms ease;
+}
+
+.navbar-text {
+  // position:relative;
+}
+.logo {
+  height: 2.5rem;
+  margin-top: -1rem;
+  background: var(--dark);
+  border-radius: 0.5rem;
+}
+
+.installed[data-canupdate=true] .available-version {
+  font-weight: bold;
+}
+.installed[data-sameversion=true] .available-version {
+  color: grey;
+}
+
+.notinstalled {
+  color: grey;
+}
+
+.installed[data-isvalid=false] {
+  color:red;
+}

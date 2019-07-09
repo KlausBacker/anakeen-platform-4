@@ -1,9 +1,2 @@
-*~
-index.html
-.idea
-
-/vendor/
-/public/bootstrap/
-/public/jquery/
-/public/popper/
+src/vendor/
 /node_modules/
