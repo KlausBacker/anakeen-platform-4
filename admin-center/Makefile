@@ -24,10 +24,17 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 ##
 ########################################################################################################################
 
-install-deps:
-	cd $(PHP_LIB_PATH); rm -rf ./vendor; $(COMPOSER_BIN) install
-	$(YARN_BIN) install
+node_modules:
+	${YARN_BIN} install
 
+$(PHP_LIB_PATH)/vendor:
+	cd $(PHP_LIB_PATH); $(COMPOSER_BIN) install
+
+install-deps: node_modules $(PHP_LIB_PATH)/vendor
+	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
+
+./../.devtool/ci/check/checkPHP/vendor:
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 ########################################################################################################################
 ##
 ## Static analyze
@@ -42,14 +49,12 @@ checkVersion:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
 	${CHECK_VERSION} ./
 
-lint: checkXML checkVersion
+lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CS_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
-beautify:
+beautify: ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
 ########################################################################################################################
@@ -117,6 +122,7 @@ clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
 	rm -fr src/public/Anakeen/accountManager src/public/Anakeen/parameterManager src/public/Anakeen/tokenManager src/public/Anakeen/vaultManager src/public/Anakeen/manifest src/public/Anakeen/adminCenter/dev src/public/Anakeen/adminCenter/prod src/public/Anakeen/adminCenter/legacy
 	rm -fr ${PHP_LIB_PATH}/vendor
+	rm -fr node_modules
 	rm -rf ${MODULE_NAME}*.app
 	rm -rf ${MODULE_NAME}*.src
 

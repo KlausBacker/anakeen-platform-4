@@ -36,15 +36,22 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 
 -include ../Makefile.local
 
+node_modules:
+	${YARN_BIN} install
+
+$(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/vendor:
+	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; $(COMPOSER_BIN) install
+
+./../.devtool/ci/check/checkPHP/vendor:
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 ########################################################################################################################
 ##
 ## Deps
 ##
 ########################################################################################################################
 
-install-deps:
-	cd $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib; $(COMPOSER_BIN) install
-	$(YARN_BIN) install
+install-deps: node_modules $(ANAKEEN_UI_SRC_PATH)/src/vendor/Anakeen/Ui/PhpLib/vendor
+	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 
 ########################################################################################################################
 ##
@@ -61,14 +68,12 @@ checkVersion:
 	${CHECK_VERSION} ./ -s ${ANAKEEN_UI_SRC_PATH}
 	${ANAKEEN_CLI_BIN} check -s ${TEST_SRC_PATH}
 
-lint: checkXML checkVersion
+lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CS_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php ${ANAKEEN_UI_SRC_PATH}/src
 
-beautify:
+beautify: ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH},${JS_ASSET_PATH} --extensions=php  ${ANAKEEN_UI_SRC_PATH}/src
 
 ########################################################################################################################
@@ -173,6 +178,7 @@ deploy-all: deploy deploy-test
 
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
+	rm -fr node_modules
 	rm -f *.app
 	rm -f *.src
 	make -f pojs.make clean

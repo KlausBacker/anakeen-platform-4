@@ -22,8 +22,15 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 ## Deps
 ##
 ########################################################################################################################
-install-deps:
-	$(YARN_BIN) install
+
+node_modules:
+	${YARN_BIN} install
+
+./../.devtool/ci/check/checkPHP/vendor:
+	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
+
+install-deps: node_modules
+	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 
 ########################################################################################################################
 ##
@@ -86,14 +93,12 @@ deploy-all:deploy
 ##
 ########################################################################################################################
 
-beautify:
+beautify: ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --extensions=php ./src
 
-lint: checkVersion checkXML
+lint: checkVersion checkXML ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CS_BIN) --standard=${CS_PATH_NAME} --extensions=php ./src
 
 ########################################################################################################################
@@ -103,6 +108,7 @@ lint: checkVersion checkXML
 ########################################################################################################################
 clean:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean${RESET_COLOR}\n"
+	rm -fr node_modules
 	rm -f *.src
 	rm -f *.app
 

@@ -24,8 +24,11 @@ CHECK_VERSION=node ./../.devtool/ci/check/checkVersionNpmApp.js
 ##
 ########################################################################################################################
 
-install-deps:
-	$(YARN_BIN) install
+node_modules:
+	${YARN_BIN} install
+
+install-deps: node_modules
+	@${PRINT_COLOR} "${DEBUG_COLOR}Install deps${RESET_COLOR}\n"
 
 ########################################################################################################################
 ##
@@ -41,14 +44,12 @@ checkVersion:
 	@${PRINT_COLOR} "${DEBUG_COLOR}Check version between info and package${RESET_COLOR}\n"
 	${CHECK_VERSION} ./
 
-lint: checkXML checkVersion
+lint: checkXML checkVersion ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Lint PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CS_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
-beautify:
+beautify: ./../.devtool/ci/check/checkPHP/vendor
 	@${PRINT_COLOR} "${DEBUG_COLOR}Beautify PHP${RESET_COLOR}\n"
-	${COMPOSER_BIN} install --working-dir=./../.devtool/ci/check/checkPHP/ --ignore-platform-reqs
 	$(CBF_BIN) --standard=${CS_PATH_NAME} --ignore=${PHP_LIB_PATH} --extensions=php ./src
 
 checkPackage:
@@ -120,6 +121,7 @@ deploy-all: deploy
 clean: ## clean the local pub
 	@${PRINT_COLOR} "${DEBUG_COLOR}Clean $@${RESET_COLOR}\n"
 	rm -fr src/public/Anakeen/businessApp src/public/Anakeen/manifest
+	rm -fr node_modules
 	rm -rf ${MODULE_NAME}*.app
 	rm -rf ${MODULE_NAME}*.src
 
