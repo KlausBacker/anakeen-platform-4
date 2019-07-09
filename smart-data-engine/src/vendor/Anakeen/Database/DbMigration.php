@@ -90,7 +90,6 @@ class DbMigration
                         return getenv("wpub");
                     case "PGSERVICE":
                         return getenv("pgservice_core");
-
                 }
             },
             $content
