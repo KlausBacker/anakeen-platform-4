@@ -1,6 +1,6 @@
 import DOMReference = AnakeenController.Types.DOMReference;
 // @ts-ignore
-import moduleTemplate from "!!raw-loader!./utils/templates/module.mustache.js";
+import moduleTemplate from "!!raw-loader!./utils/templates/module.js.mustache";
 import ControllerUID = AnakeenController.Types.ControllerUID;
 import * as $ from "jquery";
 import * as Mustache from "mustache";
