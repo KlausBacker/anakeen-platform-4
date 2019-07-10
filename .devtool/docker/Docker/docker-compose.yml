@@ -18,8 +18,6 @@ services:
       - "../../../control/src/:/var/www/html/control/"
       - "./Volumes/_private/php/var/www/html/control/conf/:/var/www/html/control/conf/"
       - "./Volumes/_private/php/var/www/html/control/var/:/var/www/html/control/var/"
-      - "./Volumes/_private/php/var/www/html/control/run/:/var/www/html/control/run/"
-      - "./Volumes/_private/php/var/www/html/control/archived-tmp/:/var/www/html/control/archived-tmp/"
       - "../../../build/:/var/www/html/localRepo"
     links:
       - "postgres:postgres"

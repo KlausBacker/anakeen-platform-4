@@ -46,6 +46,7 @@ class ArchiveContext
     private function exitArchiveError($phase = "")
     {
         JobLog::setError("archiving", $phase, $this->errorMessage);
+        JobLog::writeInterruption(ModuleJob::FAILED_STATUS);
         throw new RuntimeException($this->errorMessage);
     }
 
@@ -303,7 +304,7 @@ class ArchiveContext
         $tarExcludeOpts = '';
         $tarExcludeList = array(
             sprintf("-x %s**\\*", './' . basename($realControlRootPath) . '/' . \WIFF::archived_tmp_dir),
-            sprintf("-x %s**\\*", './' . basename($realControlRootPath) . '/run'),
+            sprintf("-x %s**\\*", './' . basename($realControlRootPath) . '/'. \WIFF::run_dir),
         );
 
         if (count($tarExcludeList) > 0) {

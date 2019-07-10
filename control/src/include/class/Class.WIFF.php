@@ -21,6 +21,8 @@ function curPageURL()
 
 require_once __DIR__.'/Class.WiffCommon.php';
 
+/**
+ */
 class WIFF extends WiffCommon
 {
     const logIdent = 'anakeen-control';
@@ -28,9 +30,11 @@ class WIFF extends WiffCommon
     const contexts_filepath = 'conf/contexts.xml';
     const params_filepath = 'conf/params.xml';
     const archived_contexts_dir = 'archived-contexts/';
-    const archived_tmp_dir = 'archived-tmp/';
+    const archived_tmp_dir = 'var/tmp/';
+    const run_dir = 'var/run/';
     const xsd_catalog_xml = 'xsd/catalog.xml';
     const log_filepath = 'log/wiff.log';
+    const var_dir="var";
     
     public $update_host;
     public $update_url;
@@ -62,6 +66,10 @@ class WIFF extends WiffCommon
      * @var string
      */
     public $root;
+    /**
+     * @var string
+     */
+    public $run_dir;
 
     private function __construct()
     {
@@ -76,7 +84,13 @@ class WIFF extends WiffCommon
         $this->archived_tmp_dir = $wiff_root . WIFF::archived_tmp_dir;
         $this->xsd_catalog_xml = $wiff_root . WIFF::xsd_catalog_xml;
         $this->log_filepath = $wiff_root . WIFF::log_filepath;
+        $this->run_dir = $wiff_root . WIFF::run_dir;
 
+        $varDir=$wiff_root . WIFF::var_dir;
+
+        if (!is_dir($varDir)) {
+            mkdir ($varDir);
+        }
         if (file_exists( $this->params_filepath)) {
             $this->update_host = $this->getParam('ac-update-host');
             $this->update_url = $this->getParam('ac-update-path');
