@@ -1,2 +1,4 @@
 src/vendor/
 /node_modules/
+src/version.json
+src/public/Anakeen

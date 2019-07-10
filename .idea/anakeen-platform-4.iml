@@ -13,6 +13,7 @@
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/vaultManager" />
       <excludeFolder url="file://$MODULE_DIR$/business-app/lib" />
       <excludeFolder url="file://$MODULE_DIR$/business-app/src/public/Anakeen" />
+      <excludeFolder url="file://$MODULE_DIR$/control/src/public/Anakeen" />
       <excludeFolder url="file://$MODULE_DIR$/control/src/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/control/src/vendor/container-interop/container-interop" />
       <excludeFolder url="file://$MODULE_DIR$/control/src/vendor/mustache/mustache" />
