@@ -15,21 +15,21 @@
         <param name="authtype" label="authenticate default mode" default="basic" type="enum" values="basic|html"
                needed="Y"/>
         <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y"
-               oninstall="W" onupgrade="H" onedit="H"/>
+               onedit="H"/>
     </parameters>
 
     <pre-install>
-        <check type="phpversion" predicate="ge" version="7.1.0">
-            <label>Minimum PHP version is 7.1</label>
+        <check type="phpversion" predicate="ge" version="7.2.0">
+            <label>Minimum PHP version is 7.2</label>
         </check>
-        <check type="phpversion" predicate="lt" version="7.3.0">
-            <label>Maximum PHP version is 7.2</label>
+        <check type="phpversion" predicate="lt" version="7.4.0">
+            <label>Maximum PHP version is 7.3</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="ge" version="9.5.0">
-            <label>Minimum database version is 9.5</label>
+        <check type="pgversion" service="@core_db" predicate="ge" version="9.6.0">
+            <label>Minimum database version is 9.6</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="lt" version="11.0.0">
-            <label>Maximum database version is 10.0</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="12.0.0">
+            <label>Maximum database version is 11.0</label>
         </check>
         <check type="pgempty" service="@core_db" optional="Y">
             <label>Check database empty</label>
@@ -273,17 +273,17 @@
     </post-install>
 
     <pre-upgrade>
-        <check type="phpversion" predicate="ge" version="7.1.0">
-            <label>Minimum PHP version is 7.1</label>
+        <check type="phpversion" predicate="ge" version="7.2.0">
+            <label>Minimum PHP version is 7.2</label>
         </check>
-        <check type="phpversion" predicate="lt" version="7.3.0">
-            <label>Maximum PHP version is 7.2</label>
+        <check type="phpversion" predicate="lt" version="7.4.0">
+            <label>Maximum PHP version is 7.3</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="ge" version="9.5.0">
-            <label>Minimum database version is 9.5</label>
+        <check type="pgversion" service="@core_db" predicate="ge" version="9.6.0">
+            <label>Minimum database version is 9.6</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="lt" version="11.0.0">
-            <label>Maximum database version is 10.0</label>
+        <check type="pgversion" service="@core_db" predicate="lt" version="12.0.0">
+            <label>Maximum database version is 11.0</label>
         </check>
         <check type="syscommand" command="rm">
             <label>Check "rm". To delete some working files</label>
