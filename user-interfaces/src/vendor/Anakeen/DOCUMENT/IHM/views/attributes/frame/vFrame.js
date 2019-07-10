@@ -24,7 +24,7 @@ define([
     displayLabel: true,
 
     events: {
-      "click .dcpFrame--collapsable": "toggle",
+      "click > .dcpFrame--collapsable": "toggle",
       'click a[href^="#action/"], a[data-action], button[data-action]':
         "externalLinkSelected"
     },

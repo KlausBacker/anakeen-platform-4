@@ -5,6 +5,7 @@
       scrollable: scrollable,
       [`is-${rootTabs.tabPosition}`]: true
     }"
+    @wheel="onScrollNav"
   >
     <span
       v-if="scrollable"

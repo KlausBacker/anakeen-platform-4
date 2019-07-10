@@ -6,7 +6,8 @@ const webpack = require("webpack");
 const {
   cssLoader,
   addFalseKendoGlobal,
-  addDll
+  addDll,
+  typeScriptLoader
 } = require("@anakeen/webpack-conf/parts");
 
 const BASE_DIR = path.resolve(__dirname, "../");
@@ -27,6 +28,12 @@ module.exports = () => {
           __dirname,
           "../src/vendor/Anakeen/DOCUMENT/IHM/smartElement.js"
         )
+      ],
+      smartElementController: [
+        path.resolve(
+          __dirname,
+          "../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController"
+        )
       ]
     },
     buildPath: PUBLIC_PATH,
@@ -39,12 +46,12 @@ module.exports = () => {
           alias: {
             dcpContextRoot: "",
             dcpDocument: path.resolve(
-              __dirname,
-              "../src/vendor/Anakeen/DOCUMENT/IHM/"
+              BASE_DIR,
+              "src/vendor/Anakeen/DOCUMENT/IHM/"
             ),
             dcpExternals: path.resolve(
-              __dirname,
-              "../src/public/uiAssets/externals/"
+              BASE_DIR,
+              "src/public/uiAssets/externals/"
             ),
             datatables: "datatables.net",
             "datatables-bootstrap": "datatables.net-bs4",
@@ -62,6 +69,11 @@ module.exports = () => {
           })
         ]
       },
+      typeScriptLoader({
+        compilerOptions: {
+          declaration: false
+        }
+      }),
       addDll({
         context: BASE_DIR,
         manifest: path.join(

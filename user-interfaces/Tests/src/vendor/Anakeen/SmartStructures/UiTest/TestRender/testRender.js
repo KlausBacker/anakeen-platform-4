@@ -1,41 +1,40 @@
-import './testRender.scss';
+import "./testRender.scss";
 
-window.dcp.document.documentController("addEventListener", "ready", {
-    "name": "display.render", "documentCheck": function (document)
-    {
-        return document.family.name === "TST_RENDER"
-    }
-}, function (event, documentObject)
-{
-    var $target = $(".test-document");
-    var docid = $(this).documentController("getValue", "tst_docname").value;
-    var viewId = $(this).documentController("getValue", "tst_docviewid").value;
+export default function(scopedController) {
+  scopedController.addEventListener("ready", event => {
+    console.log(scopedController);
+    console.log("Youhouhouy !!!!!!!!");
+    const docid = scopedController.getValue("tst_docname").value;
+    const viewId =
+      scopedController.getValue("tst_docviewid").value ||
+      "!defaultConsultation";
+    window.ank.smartElement.globalController.addSmartElement(
+      event.target.find(".test-document"),
+      {
+        initid: docid,
+        viewId,
+        revision: -1
+      }
+    );
+  });
 
-    if ($target.length === 1) {
-        $target.document({
-            "initid": docid, "viewId": viewId || "!defaultConsultation", withoutResize: true
-        });
-
-        $(window).trigger("resize");
-        $target.height("calc(100vh - " + ($target.offset().top + 4) + "px)");
-    }
-});
-
-window.dcp.document.documentController(
-    "addEventListener",
+  scopedController.addEventListener(
     "actionClick",
-    {
-        "name": "tst.openWindow",
-        "documentCheck": function (documentObject) {
-            return (documentObject.family.name === "TST_RENDER");
+    (event, smartElementProps, data) => {
+      if (data.eventId === "tst") {
+        if (data.options.length > 0 && data.options[0] === "openWindow") {
+          const testController = window.ank.smartElement.globalController.scope(
+            event.target.find(".test-document")
+          );
+          if (testController) {
+            window.open(testController.getProperties().url);
+          }
         }
-    },
-    function(event, documentObject, data) {
-        if (data.eventId === "tst") {
-            if (data.options.length > 0 && data.options[0] === "openWindow" ) {
-                var $target = $(".test-document");
-                window.open($target.document("getProperties").url);
-            }
-        }
+      }
     }
-);
+  );
+
+  scopedController.addEventListener("beforeSave", (...args) => {
+    console.log(...args);
+  })
+}

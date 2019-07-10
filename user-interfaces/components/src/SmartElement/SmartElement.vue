@@ -1,20 +1,10 @@
 <template>
-    <iframe style="visibility:hidden" ref="iDocument" :src="initialDocumentUrl" class="apDocumentWrapper"></iframe>
+<!--    <iframe style="visibility:hidden" ref="iDocument" :src="initialDocumentUrl" class="apDocumentWrapper"></iframe>-->
+    <div class="ankSEWrapper" ref="ankSEWrapper"></div>
 </template>
 
-<script src="./SmartElement.component.js" ></script>
+<script lang="ts" src="./SmartElement.component.ts" ></script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-    iframe.apDocumentWrapper {
-        width:100%;
-        border:0;
-        padding:0;
-        margin:0;
-    }
-</style>
-
-
-<style lang="scss" >
+<style lang="scss" scoped >
     @import "./SmartElement.scss";
 </style>
