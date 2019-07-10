@@ -1,0 +1,111 @@
+.dev-center-search-engine-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  background: #8b8b8b;
+
+  .dev-center-search-engine-grid {
+    display: flex !important;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    width: 100%;
+
+    .grid-cell-content {
+      word-break: break-all;
+      word-break: break-word;
+    }
+
+    .k-grid-content {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+
+      td {
+        vertical-align: top;
+        p {
+          margin: 0;
+          a {
+            padding: 0 !important;
+          }
+        }
+      }
+
+      .search-engine-grid-link-result {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+
+        .search-engine-link {
+          justify-content: flex-start;
+          color: #157efb;
+          background: transparent;
+          border: 0;
+          margin-top: 2px;
+          margin-bottom: 2px;
+          width: 12rem;
+          text-transform: uppercase;
+          font-weight: bold;
+          align-content: flex-start;
+        }
+      }
+    }
+
+    .k-grid-header {
+      flex: 0;
+      background: #f5f5f5;
+
+      .k-header {
+        border-right-color: rgba(33, 37, 41, 0.125);
+      }
+    }
+    .k-pager-wrap {
+      flex: 0;
+      flex-basis: 3rem;
+
+      .k-pager-info {
+        display: flex;
+      }
+
+      .k-pager-sizes {
+        display: flex;
+      }
+    }
+
+    .k-dropdown-operator,
+    .k-grid-filter {
+      display: none !important;
+    }
+
+    .k-i-filter {
+      display: none !important;
+    }
+
+    button[title="Clear"] {
+      display: none;
+    }
+  }
+
+  .dev-center-search-engine-panel-input{
+    display: flex;
+    min-height: 0;
+
+    .panel-search-icon {
+      position: absolute;
+      top: 1.5rem;
+      left: 15.7rem;
+      z-index: 2;
+      padding: 0 1rem;
+      font-size: 1.3rem;
+      color: #333333;
+    }
+
+    .panel-search-input {
+      margin: 1rem;
+      border-radius: 2rem;
+      padding-left: 2.1rem;
+    }
+  }
+}

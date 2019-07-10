@@ -64,5 +64,14 @@
                 <sde:access ns="DevCenter">DevelAccess</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="GetSearchEngineResult">
+            <sde:callable>Anakeen\Routes\Devel\UI\DevSearchEngine</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/devel/ui/search/</sde:pattern>
+            <sde:description>Get search engine result</sde:description>
+            <sde:requiredAccess>
+                <sde:access ns="DevCenter">DevelAccess</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>
