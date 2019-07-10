@@ -936,6 +936,14 @@
   dependencies:
     "@types/babel-types" "*"
 
+"@types/backbone@^1.4.0":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@types/backbone/-/backbone-1.4.1.tgz#aa03f9f69994bd96646c50cfc70b5f30d38aafaa"
+  integrity sha512-KYfGuQy4d2vvYXbn0uHFZ6brFLndatTMomxBlljpbWf4kFpA3BG/6LA3ec+J9iredrX6eAVI7sm9SVAvwiIM6g==
+  dependencies:
+    "@types/jquery" "*"
+    "@types/underscore" "*"
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -957,7 +965,7 @@
   dependencies:
     "@types/sizzle" "*"
 
-"@types/jquery@^3.3.30":
+"@types/jquery@^3.3.29", "@types/jquery@^3.3.30":
   version "3.3.30"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.30.tgz#af4ad612d86d954d74664b2b0ec337a251fddb5b"
   integrity sha512-chB+QbLulamShZAFcTJtl8opZwHFBpDOP6nRLrPGkhC6N1aKWrDXg2Nc71tEg6ny6E8SQpRwbWSi9GdstH5VJA==
@@ -1017,6 +1025,11 @@
   integrity sha512-SudIN9TRJ+v8g5pTG8RRCqfqTMNqgWCKKd3vtynhGzkIIjxaicNAMuY5TRadJ6tzDu3Dotf3ngaMILtmOdmWEQ==
   dependencies:
     source-map "^0.6.1"
+
+"@types/underscore@*":
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.9.2.tgz#2c4f7743287218f5c2d9a83db3806672aa48530d"
+  integrity sha512-KgOKTAD+9X+qvZnB5S1+onqKc4E+PZ+T6CM/NA5ohRPLHJXb+yCJMVf8pWOnvuBuKFNUAJW8N97IA6lba6mZGg==
 
 "@types/url-join@^4.0.0":
   version "4.0.0"
@@ -6643,7 +6656,7 @@ object-visit@^1.0.0:
   dependencies:
     isobject "^3.0.0"
 
-object.assign@^4.0.1, object.assign@^4.0.4, object.assign@^4.1.0:
+object.assign@^4.0.4, object.assign@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.1.0.tgz#968bf1100d7956bb3ca086f006f846b3bc4008da"
   integrity sha512-exHJeq6kBKj58mqGyTQ9DFvrZC/eR6OwxzoM9YRoGBqrXYonaFyGiFMuc9VZrXf7DarreEwMpurG3dd+CNyW5w==
@@ -7591,20 +7604,6 @@ process@^0.11.10:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
-
-progress-bar-webpack-plugin@^1.12.1:
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/progress-bar-webpack-plugin/-/progress-bar-webpack-plugin-1.12.1.tgz#bbf3b1137a4ba2474eeb111377d6c1a580c57dd1"
-  integrity sha512-tVbPB5xBbqNwdH3mwcxzjL1r1Vrm/xGu93OsqVSAbCaXGoKFvfWIh0gpMDpn2kYsPVRSAIK0pBkP9Vfs+JJibQ==
-  dependencies:
-    chalk "^1.1.1"
-    object.assign "^4.0.1"
-    progress "^1.1.8"
-
-progress@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
-  integrity sha1-4mDHj2Fhzdmw5WzD4Khd4Xx6V74=
 
 progress@^2.0.0:
   version "2.0.3"

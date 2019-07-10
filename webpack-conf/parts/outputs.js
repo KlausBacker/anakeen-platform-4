@@ -18,9 +18,11 @@ exports.checkDuplicatePackage = () => ({
  * @returns {{plugins: CleanWebpackPlugin[]}}
  */
 exports.clean = () => ({
-  plugins: [new CleanWebpackPlugin(
-    {cleanOnceBeforeBuildPatterns: ["**/*", "!*-manifest.json"]}
-  )]
+  plugins: [
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ["**/*", "!*-manifest.json"]
+    })
+  ]
 });
 
 /**
