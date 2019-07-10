@@ -24,13 +24,13 @@ $(BUILDDIRS):
 	$(MAKE) APP_OUTPUT_PATH=$(MK_DIR)/build/$(subst app-,,$@) -C $(subst app-,,$@) $(MAKECMDGOALS)
 	node ./.devtool/script/generateLocalRepo.js
 
-lintJS:
-	npx eslint ./ --cache
+lint-JS:
+	$(NPX_BIN) eslint ./ --cache
 
-beautifyJS:
-	npx eslint ./ --cache --fix
+beautify-JS:
+	$(NPX_BIN) eslint ./ --cache --fix
 
-checkPo:
+lint-po:
 	./.devtool/ci/check/checkPo.sh
 
 start-env:
@@ -48,12 +48,15 @@ clean-env-full:
 update-all: app-autorelease
 	docker exec monorepo_php_1 /var/www/html/control/anakeen-control update -n
 
-initDocker: start-env
+init-docker: start-env
 	make -C ./.devtool/docker init
 	make -C ./.devtool/docker register-local-repo
 	make -C ./.devtool/docker install
 
-statusControl:
+control-status:
 	docker exec monorepo_php_1 /var/www/html/control/anakeen-control status
 
-.PHONY: $(TOPTARGETS) $(SUBDIRS)
+run-dev-server:
+	$(NODE_BIN) .devtool/devserver/index.js
+
+.PHONY: $(TOPTARGETS) $(SUBDIRS) $(BUILDDIRS) $(BUILDTARGETS) lint-JS beautify-JS lint-po start-env stop-env clean-env clean-env-full update-all init-docker control-status run-dev-server

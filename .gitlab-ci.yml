@@ -65,12 +65,20 @@ lint-js:
   tags:
     - a4ppm
   script:
-    - make lintJS
+    - make lint-JS
   artifacts:
     paths:
       - node_modules/
       - .eslintcache
     expire_in: 1 day
+
+lint-po:
+  <<: *pull-cache
+  stage: lint
+  tags:
+    - a4ppm
+  script:
+    - make lint-po
 #endregion lint
 
 #region buildJS
@@ -831,3 +839,5 @@ transformation-integration-register:
       - master@Anakeen/Platform-4/anakeen-platform-4
     changes:
       - transformation/**/*
+
+#endregion registry

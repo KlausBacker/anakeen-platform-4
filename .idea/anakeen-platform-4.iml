@@ -2,7 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/.devtool/ci" />
+      <excludeFolder url="file://$MODULE_DIR$/.devtool/ci/check/checkPHP/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/.devtool/docker/Docker/Volumes/_private" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/lib" />
       <excludeFolder url="file://$MODULE_DIR$/admin-center/src/public/Anakeen/accountManager" />
