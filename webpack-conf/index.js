@@ -8,7 +8,7 @@ const merge = require("webpack-merge");
 const parts = require("./parts");
 
 const commonConfig = ({ mode, moduleName, manifestPath }) => {
-  let conf = merge([
+  return merge([
     {
       bail: true
     },
@@ -20,10 +20,6 @@ const commonConfig = ({ mode, moduleName, manifestPath }) => {
       path: path.resolve(manifestPath, moduleName)
     })
   ]);
-  if (mode !== "dev") {
-    conf = merge(conf, parts.progressPlugin());
-  }
-  return conf;
 };
 
 const generateLibWebpackConf = ({
