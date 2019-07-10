@@ -69,7 +69,11 @@ module.exports = () => {
           })
         ]
       },
-      typeScriptLoader(),
+      typeScriptLoader({
+        compilerOptions: {
+          declaration: false
+        }
+      }),
       addDll({
         context: BASE_DIR,
         manifest: path.join(

@@ -34,7 +34,8 @@ export module AnakeenController {
     ) => void;
 
     export type ListenableEventOptions = {
-      callback: ListenableEventCallable;
+      eventCallback: ListenableEventCallable;
+      [key: string]: any
     };
 
     export type ListenableEvent = ListenableEventOptions;
@@ -70,7 +71,7 @@ export module AnakeenController {
       ) {
         const wrapperCallback = (...args: ListenableEventCallableArgs) => {
           const originalCb = Listenable._getEventCallback(eventCb);
-          originalCb.callback(...args);
+          originalCb.eventCallback(...args);
           this.off(eventName, wrapperCallback);
         };
         this.on(eventName, wrapperCallback);
@@ -94,7 +95,7 @@ export module AnakeenController {
           };
           const index = findIndex(
             this._events[eventName],
-            e => e.callback === eventCb.callback
+            e => e.callback === eventCb.eventCallback
           );
           if (index > -1) {
             return this._events[eventName].splice(index, 1);
@@ -106,12 +107,18 @@ export module AnakeenController {
         }
       }
 
+      public offAll() {
+        const events = this._events;
+        this._events = {};
+        return events;
+      }
+
       public emit(eventName, ...args: ListenableEventCallableArgs) {
         if (!this._events[eventName]) {
           return;
         }
         this._events[eventName].forEach(cb => {
-          cb.callback(...args);
+          cb.eventCallback(...args);
         });
       }
 
@@ -121,9 +128,9 @@ export module AnakeenController {
         if (eventCb) {
           if (typeof eventCb === "function") {
             return {
-              callback: eventCb
+              eventCallback: eventCb
             };
-          } else if (typeof eventCb === "object" && eventCb.callback) {
+          } else if (typeof eventCb === "object" && eventCb.eventCallback) {
             return eventCb;
           }
         }

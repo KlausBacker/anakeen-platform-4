@@ -3,9 +3,12 @@ import { AnakeenController } from "./types/ControllerTypes";
 import DOMReference = AnakeenController.Types.DOMReference;
 import ViewData = AnakeenController.Types.ViewData;
 import ControllerUniqueID = AnakeenController.Types.ControllerUID;
+import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
+import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 
 type ControllersMap = { [key: string]: SmartElementController };
-export default class ControllerDispatcher extends AnakeenController.BusEvents.Listenable {
+export default class ControllerDispatcher extends AnakeenController.BusEvents
+  .Listenable {
   protected _controllers: ControllersMap = {};
 
   public dispatch(scopeId: ControllerUniqueID, action: string, ...args: any[]) {
@@ -26,7 +29,12 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
     controller.on("renderCss", (...args) => {
       this.emit("renderCss", ...args);
     });
+    this._bindEvents(controller);
     return controller;
+  }
+
+  public removeController(controllerUID: ControllerUniqueID) {
+    delete this._controllers[controllerUID];
   }
 
   public getController(scopeId: ControllerUniqueID | DOMReference) {
@@ -43,10 +51,20 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents.Li
     }
   }
 
-  public getControllers(asObject?: boolean): SmartElementController[] | ControllersMap  {
+  public getControllers(
+    asObject?: boolean
+  ): SmartElementController[] | ControllersMap {
     if (asObject) {
       return this._controllers;
     }
     return Object.keys(this._controllers).map(k => this._controllers[k]);
+  }
+
+  private _bindEvents(controller) {
+    EVENTS_LIST.forEach(eventType => {
+      controller.addEventListener(eventType, (...args) => {
+        this.emit(eventType, controller, ...args);
+      })
+    })
   }
 }

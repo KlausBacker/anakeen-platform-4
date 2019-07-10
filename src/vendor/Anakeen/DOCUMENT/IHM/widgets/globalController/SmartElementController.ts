@@ -3,6 +3,8 @@ import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
 import ViewData = AnakeenController.Types.ViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
 import ListenableEvents = AnakeenController.BusEvents.ListenableEvents;
+import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
+import ListenableEventOptions = AnakeenController.BusEvents.ListenableEventOptions;
 import * as $ from "jquery";
 import * as _ from "underscore";
 import * as Backbone from "backbone";
@@ -20,6 +22,8 @@ import "../../widgets/widget";
 import "../../widgets/window/wConfirm";
 import "../../widgets/window/wLoading";
 import "../../widgets/window/wNotification";
+import Listenable = AnakeenController.BusEvents.Listenable;
+import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 
 type ControllerOptions = {
   router?: false | { noRouter: boolean };
@@ -89,6 +93,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
   protected _eventListener = {};
   protected _activatedConstraint: any = {};
   protected _activatedEventListener: any = {};
+  protected _activatedListeners: Listenable = null;
   protected $loading: JQuery & { dcpLoading(...args): JQuery } = null;
   protected $notification: JQuery & { dcpNotification(...args): JQuery } = null;
 
@@ -98,8 +103,8 @@ export default class SmartElementController extends AnakeenController.BusEvents
     options?: ControllerOptions
   ) {
     super();
-    this.uid = _.uniqueId("smart-element-");
-    this._options = options || DEFAULT_OPTIONS;
+    this.uid = _.uniqueId("smart-element-controller-");
+    this._options = _.defaults(options, DEFAULT_OPTIONS);
     if (viewData) {
       this._internalViewData.initid = viewData.initid;
       this._internalViewData.viewId = viewData.viewId;
@@ -115,6 +120,10 @@ export default class SmartElementController extends AnakeenController.BusEvents
       return;
     }
     this._initializeSmartElement({}, this._options.customClientData);
+  }
+
+  private _reinitListeners() {
+    return this.offAll();
   }
 
   private _initializeSmartElement(options, customClientData) {
@@ -248,11 +257,6 @@ export default class SmartElementController extends AnakeenController.BusEvents
    * @private
    */
   private _initModelEvents() {
-    this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
-      event.controller = this;
-      this.emit("injectCurrentSmartElementJS", event);
-    });
-
     this._model.listenTo(this._model, "invalid", (model, error) => {
       const result = this._triggerControllerEvent(
         "displayError",
@@ -319,6 +323,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
             customClientData
           );
         }
+        this._reinitListeners();
       }
     );
     this._model.listenTo(this._model, "close", oldProperties => {
@@ -850,6 +855,11 @@ export default class SmartElementController extends AnakeenController.BusEvents
         }
       }, this)
     );
+
+    this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
+      event.controller = this;
+      this.emit("injectCurrentSmartElementJS", event);
+    });
   }
 
   /**
@@ -1330,68 +1340,68 @@ export default class SmartElementController extends AnakeenController.BusEvents
    *
    * @param newEvent
    */
-  private _addAndInitNewEvents(newEvent) {
-    let currentDocumentProperties;
-    let event;
-    let uniqueName;
-    const $element = $(this._element);
-    uniqueName =
-      (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
-    this._eventListener[uniqueName] = newEvent;
-    if (!this._initialized.model) {
-      //early event model is not ready (no trigger, or current register possible)
-      return this;
-    }
-    currentDocumentProperties = this.getProperties();
-    // Check if the event is for the current document
-    if (
-      !_.isFunction(newEvent.documentCheck) ||
-      newEvent.documentCheck.call($element, currentDocumentProperties)
-    ) {
-      this._activatedEventListener[newEvent.name] = newEvent;
-      // Check if we need to manually trigger this callback (late registered : only for ready events)
-      if (this._initialized.view) {
-        if (newEvent.eventType === "ready") {
-          event = $.Event(newEvent.eventType);
-          event.target = this._element;
-          try {
-            // add element as function context
-            newEvent.eventCallback.call(
-              $element,
-              event,
-              currentDocumentProperties
-            );
-          } catch (e) {
-            console.error(e);
-          }
-        }
-        if (newEvent.eventType === "attributeReady") {
-          event = $.Event(newEvent.eventType);
-          event.target = this._element;
-          _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
-            const objectAttribute = this.getAttribute(currentAttribute.id);
-            if (
-              !_.isFunction(newEvent.attributeCheck) ||
-              newEvent.attributeCheck.apply($element, [objectAttribute])
-            ) {
-              try {
-                // add element as function context
-                newEvent.eventCallback.call(
-                  $element,
-                  event,
-                  currentDocumentProperties,
-                  objectAttribute,
-                  currentAttribute.view.elements
-                );
-              } catch (e) {
-                console.error(e);
-              }
-            }
-          });
-        }
-      }
-    }
-  }
+  // private _addAndInitNewEvents(newEvent) {
+  //   let currentDocumentProperties;
+  //   let event;
+  //   let uniqueName;
+  //   const $element = $(this._element);
+  //   uniqueName =
+  //     (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
+  //   this._eventListener[uniqueName] = newEvent;
+  //   if (!this._initialized.model) {
+  //     //early event model is not ready (no trigger, or current register possible)
+  //     return this;
+  //   }
+  //   currentDocumentProperties = this.getProperties();
+  //   // Check if the event is for the current document
+  //   if (
+  //     !_.isFunction(newEvent.check) ||
+  //     newEvent.check.call($element, currentDocumentProperties)
+  //   ) {
+  //     this._activatedEventListener[newEvent.name] = newEvent;
+  //     // Check if we need to manually trigger this callback (late registered : only for ready events)
+  //     if (this._initialized.view) {
+  //       if (newEvent.eventType === "ready") {
+  //         event = $.Event(newEvent.eventType);
+  //         event.target = this._element;
+  //         try {
+  //           // add element as function context
+  //           newEvent.eventCallback.call(
+  //             $element,
+  //             event,
+  //             currentDocumentProperties
+  //           );
+  //         } catch (e) {
+  //           console.error(e);
+  //         }
+  //       }
+  //       if (newEvent.eventType === "attributeReady") {
+  //         event = $.Event(newEvent.eventType);
+  //         event.target = this._element;
+  //         _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
+  //           const objectAttribute = this.getAttribute(currentAttribute.id);
+  //           if (
+  //             !_.isFunction(newEvent.attributeCheck) ||
+  //             newEvent.attributeCheck.apply($element, [objectAttribute])
+  //           ) {
+  //             try {
+  //               // add element as function context
+  //               newEvent.eventCallback.call(
+  //                 $element,
+  //                 event,
+  //                 currentDocumentProperties,
+  //                 objectAttribute,
+  //                 currentAttribute.view.elements
+  //               );
+  //             } catch (e) {
+  //               console.error(e);
+  //             }
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
 
   /**
    * Trigger attribute event
@@ -1470,30 +1480,66 @@ export default class SmartElementController extends AnakeenController.BusEvents
     if (originalEvent && originalEvent.preventDefault) {
       event.originalEvent = originalEvent;
     }
-
     // internal event trigger
     const callbackArgs = [event, ...args];
-    _.chain(this._activatedEventListener)
-      .filter((currentEvent: any) => {
-        return currentEvent.eventType === eventName;
-      })
-      .each((currentEvent: any) => {
-        try {
-          currentEvent.eventCallback.apply($(this._element), callbackArgs);
-        } catch (e) {
-          // @ts-ignore
-          if (window.dcp.logger) {
-            // @ts-ignore
-            window.dcp.logger(e);
-          } else {
-            console.error(e);
-          }
-        }
-      });
+
+    try {
+      this.emit(eventName, ...callbackArgs);
+    } catch (e) {
+      // @ts-ignore
+      if (window.dcp.logger) {
+        // @ts-ignore
+        window.dcp.logger(e);
+      } else {
+        console.error(e);
+      }
+    }
     // @ts-ignore
     this._triggerExternalEvent.call(this, ...arguments);
     return !event.isDefaultPrevented();
   }
+
+  /**
+   * Trigger a controller event
+   * That kind of event are only for this widget
+   *
+   * @param eventName
+   * @param originalEvent
+   * @param args
+   * @returns {boolean}
+   */
+  // private _triggerControllerEvent(eventName, originalEvent, ...args: any[]) {
+  //   const event: JQuery.Event & {
+  //     target: JQuery<DOMReference>;
+  //     originalEvent?: JQuery.Event;
+  //   } = $.Event(eventName);
+  //   event.target = this._element;
+  //   if (originalEvent && originalEvent.preventDefault) {
+  //     event.originalEvent = originalEvent;
+  //   }
+  //   // internal event trigger
+  //   const callbackArgs = [event, ...args];
+  //   _.chain(this._activatedEventListener)
+  //     .filter((currentEvent: any) => {
+  //       return currentEvent.eventType === eventName;
+  //     })
+  //     .each((currentEvent: any) => {
+  //       try {
+  //         currentEvent.eventCallback.apply($(this._element), callbackArgs);
+  //       } catch (e) {
+  //         // @ts-ignore
+  //         if (window.dcp.logger) {
+  //           // @ts-ignore
+  //           window.dcp.logger(e);
+  //         } else {
+  //           console.error(e);
+  //         }
+  //       }
+  //     });
+  //   // @ts-ignore
+  //   this._triggerExternalEvent.call(this, ...arguments);
+  //   return !event.isDefaultPrevented();
+  // }
 
   /**
    * Trigger event as jQuery standard events (all events are prefixed by document)
@@ -1844,7 +1890,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     if (ready) {
       properties = this._model.getServerProperties();
       properties.isModified = this._model.isModified();
-      properties.url = window.location.href;
+      properties.url = this._model.url() + ".html";
     }
 
     return properties;
@@ -2386,18 +2432,25 @@ export default class SmartElementController extends AnakeenController.BusEvents
    * @param callback function callback called when the event is triggered
    * @returns {*|Window.options.name}
    */
-  public addEventListener(eventType, options, callback) {
+  public addEventListener(
+    eventType: string | ListenableEvent,
+    options?: object | ListenableEventCallable,
+    callback?: ListenableEventCallable
+  ) {
     let currentEvent;
+    let eventCallback = callback;
+    let eventOptions = options;
     //options is not mandatory and the callback can be the second parameters
-    if (_.isUndefined(callback) && _.isFunction(options)) {
-      callback = options;
-      options = {};
+    if (_.isUndefined(eventCallback) && _.isFunction(eventOptions)) {
+      eventCallback = eventOptions;
+      eventOptions = {};
     }
+
     // the first parameters can be the final object (chain removeEvent and addEvent)
     if (
       _.isObject(eventType) &&
-      _.isUndefined(options) &&
-      _.isUndefined(callback)
+      _.isUndefined(eventOptions) &&
+      _.isUndefined(eventCallback)
     ) {
       currentEvent = eventType;
       if (!currentEvent.name) {
@@ -2407,10 +2460,10 @@ export default class SmartElementController extends AnakeenController.BusEvents
         );
       }
     } else {
-      currentEvent = _.defaults(options, {
+      currentEvent = _.defaults(eventOptions, {
         name: _.uniqueId("event_" + eventType),
-        eventType: eventType,
-        eventCallback: callback,
+        eventType,
+        eventCallback,
         externalEvent: false,
         once: false
       });
@@ -2421,28 +2474,203 @@ export default class SmartElementController extends AnakeenController.BusEvents
     if (!_.isFunction(currentEvent.eventCallback)) {
       throw new Error("An event needs a callback that is a function");
     }
-    //If event is once : wrap it an callback that execute event and delete it
-    if (currentEvent.once === true) {
-      currentEvent.eventCallback = _.wrap(
-        currentEvent.eventCallback,
-        callback => {
-          this.removeEventListener(
-            currentEvent.name,
-            currentEvent.externalEvent
-          );
-          try {
-            // @ts-ignore
-            callback.apply(this, _.rest(arguments));
-          } catch (e) {
-            console.error(e);
-          }
-        }
-      );
-    }
     this._addAndInitNewEvents(currentEvent);
     // return the name of the event
     return currentEvent.name;
   }
+
+  private _addAndInitNewEvents(newEvent: ListenableEventOptions) {
+    const $element = $(this._element);
+    // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
+    const currentElementProperties = this.getProperties();
+
+    // if (!this._initialized.model) {
+    //   //early event model is not ready (no trigger, or current register possible)
+    //   return this;
+    // }
+    // Check if the event is for the current document
+    if (
+      !_.isFunction(newEvent.check) ||
+      newEvent.check.call($element, currentElementProperties)
+    ) {
+      if (newEvent.once) {
+        this.once(newEvent.eventType, newEvent);
+      } else {
+        this.on(newEvent.eventType, newEvent);
+      }
+      if (this._initialized.view) {
+        if (newEvent.eventType === "ready") {
+          const event = $.Event(newEvent.eventType);
+          // @ts-ignore
+          event.target = this._element;
+          try {
+            // add element as function context
+            newEvent.eventCallback.call(
+              $element,
+              event,
+              currentElementProperties
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        if (newEvent.eventType === "attributeReady") {
+          const event = $.Event(newEvent.eventType);
+          // @ts-ignore
+          event.target = this._element;
+          _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
+            const objectAttribute = this.getAttribute(currentAttribute.id);
+            if (
+              !_.isFunction(newEvent.attributeCheck) ||
+              newEvent.attributeCheck.apply($element, [objectAttribute])
+            ) {
+              try {
+                // add element as function context
+                newEvent.eventCallback.call(
+                  $element,
+                  event,
+                  currentElementProperties,
+                  objectAttribute,
+                  currentAttribute.view.elements
+                );
+              } catch (e) {
+                console.error(e);
+              }
+            }
+          });
+        }
+      }
+    }
+  }
+
+  // private _addAndInitNewEvents(newEvent) {
+  //   let currentDocumentProperties;
+  //   let event;
+  //   let uniqueName;
+  //   const $element = $(this._element);
+  //   uniqueName =
+  //     (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
+  //   this._eventListener[uniqueName] = newEvent;
+  //   if (!this._initialized.model) {
+  //     //early event model is not ready (no trigger, or current register possible)
+  //     return this;
+  //   }
+  //   currentDocumentProperties = this.getProperties();
+  //   // Check if the event is for the current document
+  //   if (
+  //     !_.isFunction(newEvent.check) ||
+  //     newEvent.check.call($element, currentDocumentProperties)
+  //   ) {
+  //     this._activatedEventListener[newEvent.name] = newEvent;
+  //     // Check if we need to manually trigger this callback (late registered : only for ready events)
+  //     if (this._initialized.view) {
+  //       if (newEvent.eventType === "ready") {
+  //         event = $.Event(newEvent.eventType);
+  //         event.target = this._element;
+  //         try {
+  //           // add element as function context
+  //           newEvent.eventCallback.call(
+  //             $element,
+  //             event,
+  //             currentDocumentProperties
+  //           );
+  //         } catch (e) {
+  //           console.error(e);
+  //         }
+  //       }
+  //       if (newEvent.eventType === "attributeReady") {
+  //         event = $.Event(newEvent.eventType);
+  //         event.target = this._element;
+  //         _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
+  //           const objectAttribute = this.getAttribute(currentAttribute.id);
+  //           if (
+  //             !_.isFunction(newEvent.attributeCheck) ||
+  //             newEvent.attributeCheck.apply($element, [objectAttribute])
+  //           ) {
+  //             try {
+  //               // add element as function context
+  //               newEvent.eventCallback.call(
+  //                 $element,
+  //                 event,
+  //                 currentDocumentProperties,
+  //                 objectAttribute,
+  //                 currentAttribute.view.elements
+  //               );
+  //             } catch (e) {
+  //               console.error(e);
+  //             }
+  //           }
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
+
+  /**
+   * Add an event to the widget
+   *
+   * @param eventType string kind of event
+   * @param options object { "name" : string, "documentCheck": function}
+   * @param callback function callback called when the event is triggered
+   * @returns {*|Window.options.name}
+   */
+  // public addEventListener(eventType, options, callback) {
+  //   let currentEvent;
+  //   //options is not mandatory and the callback can be the second parameters
+  //   if (_.isUndefined(callback) && _.isFunction(options)) {
+  //     callback = options;
+  //     options = {};
+  //   }
+  //   // the first parameters can be the final object (chain removeEvent and addEvent)
+  //   if (
+  //     _.isObject(eventType) &&
+  //     _.isUndefined(options) &&
+  //     _.isUndefined(callback)
+  //   ) {
+  //     currentEvent = eventType;
+  //     if (!currentEvent.name) {
+  //       throw new Error(
+  //         "When an event is initiated with a single object, this object needs to have the name property " +
+  //           JSON.stringify(currentEvent)
+  //       );
+  //     }
+  //   } else {
+  //     currentEvent = _.defaults(options, {
+  //       name: _.uniqueId("event_" + eventType),
+  //       eventType: eventType,
+  //       eventCallback: callback,
+  //       externalEvent: false,
+  //       once: false
+  //     });
+  //   }
+  //   // the eventType must be one the list
+  //   this.checkEventName(currentEvent.eventType);
+  //   // callback is mandatory and must be a function
+  //   if (!_.isFunction(currentEvent.eventCallback)) {
+  //     throw new Error("An event needs a callback that is a function");
+  //   }
+  //   //If event is once : wrap it an callback that execute event and delete it
+  //   if (currentEvent.once === true) {
+  //     currentEvent.eventCallback = _.wrap(
+  //       currentEvent.eventCallback,
+  //       callback => {
+  //         this.removeEventListener(
+  //           currentEvent.name,
+  //           currentEvent.externalEvent
+  //         );
+  //         try {
+  //           // @ts-ignore
+  //           callback.apply(this, _.rest(arguments));
+  //         } catch (e) {
+  //           console.error(e);
+  //         }
+  //       }
+  //     );
+  //   }
+  //   this._addAndInitNewEvents(currentEvent);
+  //   // return the name of the event
+  //   return currentEvent.name;
+  // }
 
   /**
    * List of the events of the current widget
@@ -2461,35 +2689,23 @@ export default class SmartElementController extends AnakeenController.BusEvents
    * @returns {*}
    */
   public removeEventListener(eventName, allKind) {
-    const removed = [];
+    let removed = [];
     const testRegExp = new RegExp("\\" + eventName + "$");
-    let newList;
-    let eventList;
-    // jscs:disable
     allKind = !!allKind;
-    // jscs:enable
-    newList = _.filter(
-      this._eventListener,
-      (currentEvent: any) => {
-        if (
-          (allKind || !currentEvent.externalEvent) &&
-          (currentEvent.name === eventName ||
-            testRegExp.test(currentEvent.name))
-        ) {
-          removed.push(currentEvent);
-          return false;
-        }
-        return true;
-      }
-    );
-    eventList = {};
-    _.each(newList, (currentEvent: any) => {
-      const uniqueName =
-        (currentEvent.externalEvent ? "external_" : "internal_") +
-        currentEvent.name;
-      eventList[uniqueName] = currentEvent;
+    Object.keys(this.getEventsList()).forEach(eventType => {
+      removed = removed.concat(
+        this.getEventsList()[eventType].filter(currentEvent => {
+          return (
+            (allKind || !currentEvent.externalEvent) &&
+            (currentEvent.name === eventName ||
+              testRegExp.test(currentEvent.name))
+          );
+        })
+      );
     });
-    this._eventListener = eventList;
+    removed.forEach(event => {
+      this.off(event.eventType, event.eventCallback);
+    });
     this._initActivatedEventListeners({ launchReady: false });
     return removed;
   }

@@ -81,18 +81,34 @@ export default class SETab extends Vue {
 
   protected bindSmartElementEvents() {
     if (this.$refs.smartElement) {
-      this.$refs.smartElement.$on("ready", (event, elementData) => {
-        $(event.target, this.$el)
-          .find(".dcpDocument__header")
-          .hide();
-        this.elementIcon = `<img src="${elementData.icon}"/>`;
-        this.elementTitle = elementData.title;
-      });
+      const eventOptions = {
+        // @ts-ignore
+        check: (properties) => this.$refs.smartElement.getProperties().initid === properties.initid
+      };
+      window.ank.smartElement.globalController.addEventListener(
+        "ready",
+        eventOptions,
+        (event, elementData) => {
+          $(event.target, this.$el)
+            .find(".dcpDocument__header")
+            .hide();
+          this.elementIcon = `<img src="${elementData.icon}"/>`;
+          this.elementTitle = elementData.title;
+        }
+      );
       const isDirtyCb = (event, elementData) => {
         this.isDirty = !!elementData.isModified;
       };
-      this.$refs.smartElement.$on("change", isDirtyCb);
-      this.$refs.smartElement.$on("close", isDirtyCb);
+      window.ank.smartElement.globalController.addEventListener(
+        "change",
+        eventOptions,
+        isDirtyCb
+      );
+      window.ank.smartElement.globalController.addEventListener(
+        "close",
+        eventOptions,
+        isDirtyCb
+      );
       SmartElementEvents.forEach(eventName => {
         this.$refs.smartElement.$on(eventName, (...args) => {
           this.$emit(`seTab${capitalize(eventName)}`, ...args);

@@ -2,6 +2,7 @@ const path = require("path");
 const { useCache } = require("./common");
 const { prod, dev, legacy } = require("@anakeen/webpack-conf");
 const { vueLoader,typeScriptLoader, cssLoader, addDll } = require("@anakeen/webpack-conf/parts");
+// const EsmWebpackPlugin = require("@purtuga/esm-webpack-plugin");
 
 const BASE_DIR = path.resolve(__dirname, "../");
 const PUBLIC_PATH = path.join(BASE_DIR, "Tests/src/public");
@@ -33,7 +34,17 @@ module.exports = () => {
           "KendoUI-manifest.json"
         )
       }),
-      cssLoader()
+      cssLoader(),
+      {
+        output: {
+          library: "familyTestRender",
+          libraryTarget: "var",
+          libraryExport: "default"
+        },
+        // plugins: [
+        //   new EsmWebpackPlugin()
+        // ]
+      },
     ]
   };
   if (process.env.conf === "PROD") {

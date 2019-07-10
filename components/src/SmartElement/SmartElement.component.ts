@@ -109,10 +109,7 @@ export default class AnkSmartElement extends Vue {
       this.smartElementWidget.addEventListener(
         eventName,
         {
-          name: `v-on-${eventName}-listen`,
-          documentCheck(/* documentObject */) {
-            return true;
-          }
+          name: `v-on-${eventName}-listen`
         },
         (event, documentObject, ...others) => {
           this.$emit(eventName, event, documentObject, ...others);

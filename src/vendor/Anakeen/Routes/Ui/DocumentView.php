@@ -450,10 +450,15 @@ class DocumentView
         }
         $jsArray = array();
         foreach ($jsList as $cssId => $cssPath) {
-            $jsArray[] = array(
-                "path" => $cssPath,
+            $result = array(
                 "key" => $cssId
             );
+            if (is_array($cssPath)) {
+                $result = array_merge($result, $cssPath);
+            } else {
+                $result["path"] = $cssPath;
+            }
+            $jsArray[] = $result;
         }
 
         return array(

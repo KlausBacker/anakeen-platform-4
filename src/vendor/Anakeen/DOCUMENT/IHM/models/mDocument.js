@@ -1180,31 +1180,6 @@ define([
         js: this.get("customJS")
       };
       this.trigger("injectCurrentSmartElementJS", event);
-      // var injectPromise = Promise.resolve(),
-      //   customJS = _.pluck(this.get("customJS"), "path");
-      //
-      // _.each(customJS, function injectElement(currentPath) {
-      //   if ($('script[src="' + currentPath + '"]').length === 0) {
-      //     injectPromise = injectPromise.then(function() {
-      //       return new Promise(function addJs(resolve, reject) {
-      //         load(currentPath, function addJsDone(err) {
-      //           if (err) {
-      //             reject(err);
-      //           } else {
-      //             resolve();
-      //           }
-      //         });
-      //         const script = $(`<script type="module">
-      //               import { install } from "${currentPath}";
-      //               console.log(install);
-      //               // smartElementFunction("toto");
-      //         </script>`);
-      //         $(document.head).append(script);
-      //       });
-      //     });
-      //   }
-      // });
-
       return event.injectPromise;
     },
 
