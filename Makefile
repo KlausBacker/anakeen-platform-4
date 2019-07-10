@@ -56,6 +56,17 @@ init-docker: start-env
 control-status:
 	docker exec monorepo_php_1 /var/www/html/control/anakeen-control status
 
+
+control-bash:
+	make -C ./.devtool/docker docker-prompt-platform
+
+run-bash:
+	make -C ./.devtool/docker docker-prompt-root
+
+run-sql:
+	make -C ./.devtool/docker docker-prompt-psql
+
+
 run-dev-server:
 	$(NODE_BIN) .devtool/devserver/index.js
 

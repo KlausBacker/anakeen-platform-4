@@ -26,7 +26,8 @@ class ModuleJob
 
     protected static function getRunDir()
     {
-        $rundir = realpath(__DIR__ . "/../../..") . "/run";
+        $wiff=\WIFF::getInstance();
+        $rundir = $wiff->run_dir;
         if (!is_dir($rundir)) {
             if (!mkdir($rundir)) {
                 throw new RuntimeException(sprintf("Cannot create directory \"%s\".", $rundir));
@@ -166,7 +167,7 @@ class ModuleJob
         if (!posix_kill($pid, 0)) {
             JobLog::writeInterruption();
             $err=posix_strerror(posix_get_last_error());
-            throw new RuntimeException("[$err] Seems job process is died. \n Try to remove \"./control/run/pid\" file.");
+            throw new RuntimeException("[$err] Seems job process is died. \n Try to remove \"./control/%spid\" file.", \WIFF::run_dir);
         }
         return true;
     }
@@ -197,7 +198,7 @@ class ModuleJob
         $pid = intval(file_get_contents($pidFile));
         if ($pid) {
             if (!posix_kill(-($pid), SIGTERM)) {
-                throw new RuntimeException(sprintf("Fail to kill process.May be process \"%s\" not exists.\nIf it process not exists, you could delete \"./control/run/pid\" file",
+                throw new RuntimeException(sprintf("Fail to kill process.May be process \"%s\" not exists.\nIf it process not exists, you could delete \"./control/%spid\" file", \WIFF::run_dir,
                     $pid));
             }
             return $pid;
