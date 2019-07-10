@@ -3,7 +3,6 @@ app:
 	yarn install --frozen-lockfile
 	yarn run build
 
-
 app-autorelease: app
 app-test: app
 app-all: app
