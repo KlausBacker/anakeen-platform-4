@@ -16,7 +16,8 @@
         "anakeen-cli",
         "hub-station",
         "business-app",
-        "webpack-conf"
+        "webpack-conf",
+        ".devtool/devserver"
     ],
     "dependencies": {
         "@commitlint/config-conventional": "^8.0.0",
