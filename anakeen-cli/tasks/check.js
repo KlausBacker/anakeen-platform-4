@@ -44,13 +44,13 @@ exports.check = ({ sourcePath, verbose }) => {
   });
 };
 
-exports.checkConfigFile = ({ fileToCheck, verbose, glob, sourceDir }) => {
+exports.checkConfigFile = ({ sourcePath, verbose, glob, sourceDir }) => {
   return gulp.task(
     "checkConfigFile",
     async () =>
       new Promise((resolve, reject) => {
         let result = "";
-        if (fileToCheck === undefined && glob === undefined) {
+        if (sourcePath === undefined && glob === undefined) {
           throw new Error("No source path specified.");
         }
         try {
@@ -58,15 +58,15 @@ exports.checkConfigFile = ({ fileToCheck, verbose, glob, sourceDir }) => {
           const log = message => {
             interactive.info(message);
           };
-          if (fileToCheck) {
-            const checkResult = checkFile(fileToCheck);
+          if (sourcePath) {
+            const checkResult = checkFile(sourcePath);
             if (verbose) {
               result = checkResult.ok
                 ? "✓"
                 : checkResult.ignore
                 ? "ignored"
                 : checkResult.error;
-              log(`Analyze : ${fileToCheck} : ${result}`);
+              log(`Analyze : ${sourcePath} : ${result}`);
             }
             if (checkResult.error) {
               result += checkResult.error;
