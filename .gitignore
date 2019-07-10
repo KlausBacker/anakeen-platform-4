@@ -9,3 +9,5 @@ node_modules
 /.devtool/docker/Docker/Volumes/_private/
 .eslintcache
 .anakeen-cli.xml
+/control/src/.htaccess
+/control/src/.htpasswd

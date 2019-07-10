@@ -40,7 +40,7 @@ clean-env-full: clean-env
 .PHONY: volumes-private
 volumes-private: | $(VOLUMES_PRIVATE)
 
-$(VOLUMES_PRIVATE)/%: | $(VOLUMES_PRIVATE_DIR)
+$(VOLUMES_PRIVATE_DIR)/%: | $(VOLUMES_PRIVATE_DIR)
 	mkdir -p "$@"
 
 $(VOLUMES_PRIVATE_DIR):
