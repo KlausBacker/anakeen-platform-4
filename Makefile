@@ -4,7 +4,7 @@ MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 NODE_BIN=node
 NPX_BIN=npx
 
-TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML
+TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean
 
 BUILDTARGETS := app app-autorelease app-test app-all
 
