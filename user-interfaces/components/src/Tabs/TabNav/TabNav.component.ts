@@ -188,6 +188,17 @@ export default class TabsNav extends Vue {
     this.navOffset = Math.min(newOffset, maxOffset);
   }
 
+  protected onScrollNav(e) {
+    if (this.scrollable) {
+      const delta = e.deltaY || e.deltaX;
+      if (delta > 0) {
+        this.scrollNext();
+      } else if (delta < 0) {
+        this.scrollPrev();
+      }
+    }
+  }
+
   protected visibilityChangeHandler() {
     const visibility = document.visibilityState;
     if (visibility === "hidden") {

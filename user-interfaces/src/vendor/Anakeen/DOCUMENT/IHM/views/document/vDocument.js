@@ -161,8 +161,8 @@ define([
       this.renderCss();
       this.publishMessages();
 
-      this.updateTitle();
-      this.updateIcon();
+      // this.updateTitle();
+      // this.updateIcon();
 
       if (!locale) {
         locale = "fr-FR";
@@ -207,6 +207,11 @@ define([
       );
       this.$el.addClass(
         "dcpFamily--" + this.model.get("properties").get("family").name
+      );
+      this.$el.attr("data-viewid", this.model.get("viewId"));
+      this.$el.attr(
+        "data-structure",
+        this.model.get("properties").get("family").name
       );
       this.trigger("loading", 10);
       //add menu
@@ -895,43 +900,42 @@ define([
      *
      * Inject new CSS, remove old CSS
      */
-    renderCss: function vDocumentRenderCss(noRemove) {
+    renderCss: function vDocumentRenderCss(/* noRemove */) {
+      const customCss = this.model.get("customCSS");
+      this.trigger("renderCss", customCss);
       // add custom css style
-      var $head = $("head"),
-        cssLinkTemplate = _.template(
-          '<link rel="stylesheet" type="text/css" ' +
-            'href="<%= path %>" data-id="<%= key %>" data-view="true">'
-        ),
-        customCss = this.model.get("customCSS");
-
-      if (noRemove !== true) {
-        //Remove old CSS
-
-        _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(
-          currentLink
-        ) {
-          var findCss = function vDocumentFindCss(currentCss) {
-            return $(currentLink).data("id") === currentCss.key;
-          };
-          if (_.find(customCss, findCss) === undefined) {
-            $(currentLink).remove();
-          }
-        });
-      }
-      // Inject new CSS
-      _.each(customCss, function vDocumentInjectNewCSS(cssItem) {
-        var $existsLink = $(
-          "link[rel=stylesheet][data-id=" + cssItem.key + "]"
-        );
-
-        if ($existsLink.length === 0) {
-          if (document.createStyleSheet) {
-            // Special thanks to IE : ! up to 31 css cause errors...
-            document.createStyleSheet(cssItem.path);
-          }
-          $head.append(cssLinkTemplate(cssItem));
-        }
-      });
+      // var $head = $("head"),
+      //   cssLinkTemplate = _.template(
+      //     '<link rel="stylesheet" type="text/css" ' +
+      //       'href="<%= path %>" data-id="<%= key %>" data-view="true">'
+      //   ),
+      //   customCss = this.model.get("customCSS");
+      //
+      // if (noRemove !== true) {
+      //   //Remove old CSS
+      //   _.each($("link[data-view=true]"), function vDocumentRemoveOldCSS(
+      //     currentLink
+      //   ) {
+      //     var findCss = function vDocumentFindCss(currentCss) {
+      //       return $(currentLink).data("id") === currentCss.key;
+      //     };
+      //     if (_.find(customCss, findCss) === undefined) {
+      //       $(currentLink).remove();
+      //     }
+      //   });
+      // }
+      // // Inject new CSS
+      // _.each(customCss, function vDocumentInjectNewCSS(cssItem) {
+      //   var $existsLink = $(`link[rel=stylesheet][data-id=${cssItem.key}]`);
+      //
+      //   if ($existsLink.length === 0) {
+      //     if (document.createStyleSheet) {
+      //       // Special thanks to IE : ! up to 31 css cause errors...
+      //       document.createStyleSheet(cssItem.path);
+      //     }
+      //     $head.append(cssLinkTemplate(cssItem));
+      //   }
+      // });
     },
 
     /**

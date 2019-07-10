@@ -898,6 +898,14 @@
   dependencies:
     "@types/babel-types" "*"
 
+"@types/backbone@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@types/backbone/-/backbone-1.4.0.tgz#e8560427d40c532de3708fe4ec58ab835deac2cd"
+  integrity sha512-oxHwn/AGp60cAB3z10hO4pZdAdGan1Xc3UiQkx/qKCiLiccyN+PZwJ1QUCc8en7UHEc3FSRSh8kZLJkWY8JGMg==
+  dependencies:
+    "@types/jquery" "*"
+    "@types/underscore" "*"
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -945,6 +953,11 @@
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
   integrity sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
+
+"@types/underscore@*":
+  version "1.8.19"
+  resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.8.19.tgz#ae1357f2d28b8089f86ba0e5545d0512e6ef5b28"
+  integrity sha512-9r6zM91/lTnSYTEJbxf7FwgeVXzRZDegaGPXF+Bp0MSMYTTI2UvQPkoti/YE9ZWThU+0DMya6l9XePvOPBLKow==
 
 "@vue/component-compiler-utils@^1.2.1":
   version "1.3.1"

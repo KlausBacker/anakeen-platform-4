@@ -7,14 +7,15 @@
     "importHelpers": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "types": ["node", "jquery", "kendo-ui"],
+    "types": ["node", "jquery", "kendo-ui", "backbone"],
     "strictNullChecks": false,
     "sourceMap": true,
     "lib": ["dom", "esnext", "es6"]
   },
   "include": [
     "./components/src/**/*.vue",
-    "./components/src/**/*.ts"
+    "./components/src/**/*.ts",
+    "./src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/**/*.ts"
   ],
   "files": [
     "./vue-shims.d.ts",

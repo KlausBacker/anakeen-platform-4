@@ -26,7 +26,6 @@ window.dcp = window.dcp || {};
         console.error("Locale catalog error : " + e.message);
       }
     }
-
     return {
       _catalog: translation.data.catalog,
       _locale: translation.data.locale,

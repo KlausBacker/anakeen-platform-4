@@ -10,7 +10,7 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   window.dcp.i18n = catalog;
 
   var _ = require("underscore");
-  require("dcpDocument/widgets/documentController/documentController");
+  require("dcpDocument/widgets/globalController");
 
   ("use strict");
   console.timeEnd("js loading");
@@ -61,7 +61,13 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
   };
 
   if (window.dcp.viewData !== false && window.dcp.viewData.initid) {
-    $document.documentController(window.dcp.viewData);
+    window.ank.smartElement.globalController.on(
+      "controllerReady",
+      controller => {
+        controller.addSmartElement(".document", window.dcp.viewData);
+      }
+    );
+    // $document.documentController(window.dcp.viewData);
     $document.one("documentready", function launchReady() {
       window.dcp.triggerReload();
       _.each(window.dcp.messages, function(msg) {
@@ -72,7 +78,13 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
       });
     });
   } else {
-    $document.documentController();
+    window.ank.smartElement.globalController.on(
+      "controllerReady",
+      controller => {
+        controller.addSmartElement();
+      }
+    );
+    // $document.documentController();
     window.dcp.triggerReload();
   }
 

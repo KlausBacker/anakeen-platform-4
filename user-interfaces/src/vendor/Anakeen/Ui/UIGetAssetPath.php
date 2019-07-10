@@ -153,6 +153,22 @@ class UIGetAssetPath
      * @return mixed
      * @throws Exception
      */
+    public static function getJSSmartElementControllerPath($legacy = false)
+    {
+        $name = "smartElementController";
+        if (self::isInDebug()) {
+            $paths = self::getElementAssets("smartElement", "dev");
+        } else {
+            $paths = self::getElementAssets("smartElement", $legacy ? "legacy" : "prod");
+        }
+        return $paths[$name]["js"];
+    }
+
+    /**
+     * @param bool $legacy
+     * @return mixed
+     * @throws Exception
+     */
     public static function getJSSmartElementPath($legacy = false)
     {
         $name = "smartElement";

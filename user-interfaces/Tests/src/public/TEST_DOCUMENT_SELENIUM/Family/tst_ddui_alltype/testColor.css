@@ -1,45 +1,45 @@
-.document {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] {
     background-color: #5b7cdc;
 }
-.dcpDocument__tabs > .dcpTab__content.k-state-active {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__tabs > .dcpTab__content.k-state-active {
     background-color: #fcff85;
 }
 
 
-.dcpDocument__tabs.tab--fixed.dcpDocument__tabs .dcpTab__label.k-state-active,
-.dcpDocument__tabs .dcpTab__label.k-state-active {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__tabs.tab--fixed.dcpDocument__tabs .dcpTab__label.k-state-active,
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__tabs .dcpTab__label.k-state-active {
     background: #fcff85;
 }
 
 
-.dcpFrame__content {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpFrame__content {
     background-color: #dbe8a6;
 }
 
-.dcpDocument__tabs .dcpFrame__content {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__tabs .dcpFrame__content {
     background-color: #dbe8a6;
 }
-.dcpFrame {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpFrame {
     background: linear-gradient(to bottom, #2f25b5 30px,#2f25b5 30px, #dbe8a6 40px, #dbe8a6 50px);
 }
 
-.dcpFrame .dcpFrame__label {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpFrame .dcpFrame__label {
     color: white;
     font-weight: bold;
     background-color: #2f25b5;
     border-color: #aeaaff;
 }
 
-.dcpDocument__menu {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpDocument__menu {
     background: #e3ff25;
 }
 
-.dcpArray > .dcpArray__label {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpArray > .dcpArray__label {
     background-color: #9a0000;
     color: wheat;
 }
 
-.dcpArray {
+.dcpDocument[data-structure=TST_DDUI_ALLTYPE][data-viewid=CSSCOLOR] .dcpArray {
     background: linear-gradient(to bottom, #9a0000 30px,#9a0000 30px, #e88577 40px, #e88577 50px);
 
 }
