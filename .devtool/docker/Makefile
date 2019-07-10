@@ -68,13 +68,13 @@ log-php-other: ## Shows output from cron manager
 log-postgresql: ## Shows error from postgres container
 	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q postgres)
 
-.PHONY: docker-prompt-php
-docker-prompt-php: ## open bash prompt in php container
+.PHONY: docker-prompt-root
+docker-prompt-root: ## open bash prompt in php container
 	$(DOCKER_COMPOSE_CMD) exec php docker-php-entrypoint /bin/bash
 
-.PHONY: docker-prompt-wiff
-docker-prompt-wiff: ## open wiff prompt
-	$(DOCKER_COMPOSE_CMD) exec php $(DOCKER_INTERNAL_CONTROL_DIR_PATH)/wiff context $(CONTEXT_NAME) shell /bin/bash
+.PHONY: docker-prompt-platform
+docker-prompt-platform: ## open wiff prompt
+	$(DOCKER_COMPOSE_CMD) exec php $(DOCKER_INTERNAL_CONTROL_DIR_PATH)/anakeen-control run
 
 .PHONY: docker-prompt-postgresql
 docker-prompt-postgresql: ## open bash prompt in postgres container

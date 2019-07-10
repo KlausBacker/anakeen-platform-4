@@ -45,3 +45,13 @@ DOCKER_COMPOSE_UP_OPTIONS =
 DOCKER_COMPOSE_DOWN_OPTIONS =
 COMPOSE_SERVICES = php postgres
 WAIT_FOR_IT_TIMEOUT = 15
+
+
+init:
+	$(_CONTROL_CMD) init --pg-service=platform --password=anakeen
+
+register-local-repo:
+	$(_CONTROL_CMD) registry add localRepo /var/www/html/localRepo/
+
+install:
+	$(_CONTROL_CMD) install --no-interaction
