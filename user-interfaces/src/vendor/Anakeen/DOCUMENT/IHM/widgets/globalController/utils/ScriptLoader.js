@@ -45,7 +45,7 @@ const _addScript = script => {
  * @param {String}            src       URI of script
  * @param {Function|Object}   callback  (Optional) Called on script load completion,
  *                                      or options object
- * @param {Object}            context   (Optional) Callback context (`this`)
+ * @param {Object}            [context]   (Optional) Callback context (`this`)
  * @returns {void}
  */
 export default (src, callback, context) => {
