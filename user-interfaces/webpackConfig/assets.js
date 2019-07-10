@@ -36,8 +36,6 @@ module.exports = () => {
           ]
         }
       },
-      clean(path.resolve(__dirname, "../src/public/uiAssets/externals/")),
-      clean(path.resolve(__dirname, "../src/public/uiAssets/anakeen/")),
       {
         plugins: [
           new CopyWebpackPlugin([

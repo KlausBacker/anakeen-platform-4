@@ -1,7 +1,6 @@
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const AssetsWebpackPlugin = require("assets-webpack-plugin");
 const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
-const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const webpack = require("webpack");
 
 /**
@@ -19,7 +18,9 @@ exports.checkDuplicatePackage = () => ({
  * @returns {{plugins: CleanWebpackPlugin[]}}
  */
 exports.clean = () => ({
-  plugins: [new CleanWebpackPlugin()]
+  plugins: [new CleanWebpackPlugin(
+    {cleanOnceBeforeBuildPatterns: ["**/*", "!*-manifest.json"]}
+  )]
 });
 
 /**
@@ -111,11 +112,3 @@ exports.addDll = ({ context, manifest }) => {
     ]
   };
 };
-
-/**
- * Add a progress toolbar
- * @returns {{plugins: (*|webpack.ProgressPlugin)[]}}
- */
-exports.progressPlugin = () => ({
-  plugins: [new ProgressBarPlugin()]
-});

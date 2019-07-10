@@ -11,7 +11,7 @@
     "lint": "npx eslint ./ && npx tslint ./src/**/*.ts",
     "prettier": "prettier --check ./src/**/*.{js,ts}",
     "prettier:fix": "prettier --write ./src/**/*.{js,ts}",
-    "build:dev": "npx webpack --env development --config ./webpack/index.js --progress",
+    "build:dev": "npx webpack --env development --config ./webpack/index.js",
     "build": "yarn run build:dev",
     "watch": "webpack --watch --env development --config ./webpack/index.js"
   },
@@ -24,20 +24,20 @@
   "devDependencies": {
     "@anakeen/user-interfaces": "2.0.1",
     "@anakeen/webpack-conf": "^1.2.0",
-    "@progress/kendo-ui": "^2019.1.213",
+    "@progress/kendo-ui": "^2019.2.710",
     "jquery": "^3.3.1",
-    "ts-loader": "^6.0.2",
-    "typescript": "^3.3.4000",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
     "vue": "2.6.10",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "2.6.10",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@progress/kendo-layout-vue-wrapper": "^2019.1.220",
+    "@progress/kendo-layout-vue-wrapper": "^2019.2.621",
     "axios": "^0.19.0",
-    "core-js": "3.1.3",
+    "core-js": "3.1.4",
     "vue-class-component": "^7.0.2",
-    "vue-property-decorator": "^8.1.0"
+    "vue-property-decorator": "^8.2.1"
   }
 }
