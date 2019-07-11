@@ -62,6 +62,10 @@ class Hub
                     "path" => UIGetAssetPath::getJSVueComponentPath()
                 ],
                 [
+                    "key" => "smartElementController",
+                    "path" => UIGetAssetPath::getJSSmartElementControllerPath()
+                ],
+                [
                     "key" => "hub",
                     "path" => UIGetAssetPath::getElementAssets(
                         "hubVendor",

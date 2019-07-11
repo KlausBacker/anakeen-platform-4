@@ -115,14 +115,15 @@ export default class GlobalController extends AnakeenController.BusEvents
    */
   public addSmartElement(
     dom: DOMReference,
-    viewData?: AnakeenController.Types.ViewData
+    viewData?: AnakeenController.Types.ViewData,
+    options?
   ): ControllerUID {
     viewData = viewData || {
       initid: 0,
       revision: -1,
       viewId: "!defaultConsultation"
     };
-    const controller = this._dispatcher.initController(dom, viewData);
+    const controller = this._dispatcher.initController(dom, viewData, options);
     return controller.uid;
   }
 

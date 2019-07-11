@@ -64,7 +64,9 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
     window.ank.smartElement.globalController.on(
       "controllerReady",
       controller => {
-        controller.addSmartElement(".document", window.dcp.viewData);
+        controller.addSmartElement(".document", window.dcp.viewData, {
+          router: true
+        });
       }
     );
     // $document.documentController(window.dcp.viewData);
@@ -77,6 +79,17 @@ $.get("/api/v2/i18n/DOCUMENT").done(function translationLoaded(catalog) {
         });
       });
     });
+    window.ank.smartElement.globalController.addEventListener(
+      "ready",
+      {
+        check: element => {
+          return window.dcp.viewData.initid === element.initid;
+        }
+      },
+      (event, properties) => {
+        window.document.title = properties.title;
+      }
+    );
   } else {
     window.ank.smartElement.globalController.on(
       "controllerReady",

@@ -26,7 +26,7 @@ import Listenable = AnakeenController.BusEvents.Listenable;
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 
 type ControllerOptions = {
-  router?: false | { noRouter: boolean };
+  router?: boolean | { noRouter: boolean };
   customClientData?: any;
   loading?: boolean;
   notification?: boolean;
@@ -152,7 +152,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     }
 
     if (this._options.router !== false) {
-      this._initRouter({ useHistory: !this._options.router.noRouter });
+      this._initRouter({ useHistory: !this._options.router });
     }
 
     return resultPromise;

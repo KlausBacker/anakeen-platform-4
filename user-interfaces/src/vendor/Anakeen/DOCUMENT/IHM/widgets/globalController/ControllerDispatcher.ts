@@ -20,8 +20,8 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents
     }
   }
 
-  public initController(dom: DOMReference, viewData: ViewData) {
-    const controller = new SmartElementController(dom, viewData);
+  public initController(dom: DOMReference, viewData: ViewData, options?) {
+    const controller = new SmartElementController(dom, viewData, options);
     this._controllers[controller.uid] = controller;
     controller.on("injectCurrentSmartElementJS", (...args) => {
       this.emit("injectCurrentSmartElementJS", ...args);
