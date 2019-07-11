@@ -21,6 +21,7 @@ $(BUILDTARGETS): $(BUILDDIRS)
 
 $(BUILDDIRS):
 	rm -rf $(MK_DIR)/build/$(subst app-,,$@)
+	mkdir -p build
 	$(MAKE) APP_OUTPUT_PATH=$(MK_DIR)/build/$(subst app-,,$@) -C $(subst app-,,$@) $(MAKECMDGOALS)
 	node ./.devtool/script/generateLocalRepo.js
 
