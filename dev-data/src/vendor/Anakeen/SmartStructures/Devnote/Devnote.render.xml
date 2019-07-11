@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <ui:mask name="MSK_DEVNOTE" structure="DEVNOTE" label="Note mask">
+        <ui:visibility-list>
+            <ui:visibility field="note_coauthor" value="O"/>
+            <ui:visibility field="note_author_display" value="H"/>
+        </ui:visibility-list>
+    </ui:mask>
+
+    <ui:view-control name="VC_DEVNOTE" label="Note View Control">
+        <ui:description>No display computed title</ui:description>
+        <ui:primary-mask ref="MSK_DEVNOTE"/>
+    </ui:view-control>
+
+    <ui:render ref="DEVNOTE">
+        <ui:render-access class="Anakeen\SmartStructures\Devnote\Render\DevnoteAccess"/>
+        <ui:view-control ref="VC_DEVNOTE"/>
+    </ui:render>
+</smart:config>

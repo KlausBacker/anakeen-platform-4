@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+  <ui:mask name="MSK_DEVCLIENT" structure="DEVCLIENT" label="Client mask">
+    <ui:visibility-list>
+      <ui:visibility field="client_title" value="H"/>
+    </ui:visibility-list>
+  </ui:mask>
+
+  <ui:view-control name="VC_DEVCLIENT" label="Client View Control">
+    <ui:description>No display computed title</ui:description>
+    <ui:primary-mask ref="MSK_DEVCLIENT"/>
+  </ui:view-control>
+  
+  <ui:render ref="DEVCLIENT">
+    <ui:render-access class="Anakeen\SmartStructures\Devclient\Render\DevclientAccess"/>
+    <ui:view-control ref="VC_DEVCLIENT"/>
+  </ui:render>
+</smart:config>

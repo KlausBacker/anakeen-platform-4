@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:ui="https://platform.anakeen.com/4/schemas/ui/1.0">
+    <ui:mask name="MSK_DEVPERSON" structure="DEVPERSON" label="Person mask">
+        <ui:visibility-list>
+            <ui:visibility field="dev_title" value="H"/>
+        </ui:visibility-list>
+    </ui:mask>
+
+    <ui:view-control name="VC_DEVPERSON" label="Person View Control">
+        <ui:description>No display link to </ui:description>
+        <ui:primary-mask ref="MSK_DEVPERSON"/>
+    </ui:view-control>
+
+    <ui:render ref="DEVPERSON">
+        <ui:render-access class="Anakeen\SmartStructures\Devperson\Render\DevpersonAccess"/>
+        <ui:view-control ref="VC_DEVPERSON"/>
+    </ui:render>
+</smart:config>

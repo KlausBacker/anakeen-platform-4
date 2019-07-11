@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+  <smart:structure-configuration name="DEVPERSON" label="Person">
+    <smart:icon file="devperson.png"/>
+    <smart:class>Anakeen\SmartStructures\Devperson\DevpersonBehavior</smart:class>
+    <smart:fields>
+      <smart:field-set name="dev_fr_ident" type="frame" access="ReadWrite">
+        <smart:field-text name="dev_title" is-title="true" access="Read" label="Title"/>
+        <smart:field-text name="dev_firstname" access="ReadWrite" label="First name"/>
+        <smart:field-text name="dev_lastname" access="ReadWrite" label="Last name"/>
+        <smart:field-text name="dev_email" access="ReadWrite" label="Email adress"/>
+        <smart:field-date name="dev_birthdate" access="ReadWrite" label="Birthdate"/>
+      </smart:field-set>
+    </smart:fields>
+    <smart:hooks/>
+    <smart:defaults/>
+  </smart:structure-configuration>
+</smart:config>

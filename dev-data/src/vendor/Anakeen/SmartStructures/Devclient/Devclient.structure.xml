@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+  <smart:structure-configuration name="DEVCLIENT" label="Client">
+    <smart:icon file="devclient.png"/>
+    <smart:class>Anakeen\SmartStructures\Devclient\DevclientBehavior</smart:class>
+    <smart:fields>
+      <smart:field-set name="client_fr_ident" type="frame" access="ReadWrite" label = "Identification">
+        <smart:field-text name="client_title" is-title="true" access="Read" label="Title"/>
+        <smart:field-text name="client_firstname"  access="ReadWrite" label="Firstname"/>
+        <smart:field-text name="client_lastname"   access="ReadWrite" label="Lastname"/>
+        <smart:field-text name="client_email" access="ReadWrite" label="Email address"/>
+        <smart:field-text name="client_society" is-title="true" access="ReadWrite" label="Enterprise"/>
+        <smart:field-text name="client_location" access="ReadWrite" label="City"/>
+      </smart:field-set>
+    </smart:fields>
+    <smart:hooks/>
+    <smart:defaults/>
+  </smart:structure-configuration>
+</smart:config>

@@ -8,9 +8,9 @@ TOPTARGETS := deploy deploy-test deploy-all lint po stub checkXML clean
 
 BUILDTARGETS := app app-autorelease app-test app-all
 
-SUBDIRS := control smart-data-engine security workflow internal-components user-interfaces hub-station admin-center business-app development-center transformation migration-tools
+SUBDIRS := control smart-data-engine security workflow internal-components user-interfaces hub-station admin-center business-app development-center transformation migration-tools dev-data
 
-BUILDDIRS := app-control app-smart-data-engine app-security app-workflow app-internal-components app-user-interfaces app-hub-station app-admin-center app-business-app app-development-center app-transformation app-migration-tools
+BUILDDIRS := app-control app-smart-data-engine app-security app-workflow app-internal-components app-user-interfaces app-hub-station app-admin-center app-business-app app-development-center app-transformation app-migration-tools app-dev-data
 
 $(TOPTARGETS): $(SUBDIRS)
 

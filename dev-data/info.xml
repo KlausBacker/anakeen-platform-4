@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<module xmlns="https://platform.anakeen.com/4/schemas/app/1.0" name="anakeen-dev-data" vendor="Anakeen" version="2.0.0">
+  <description>Data set for developpement test</description>
+  <parameters>
+    <param name="COUNT_PERSON" label="Number of person to create" default="200" type="text" needed="Y"/>
+    <param name="COUNT_CLIENT" label="Number of client to create" default="100" type="text" needed="Y"/>
+    <param name="COUNT_ACCOUNTS" label="Number of accounts to create" default="0" type="text" needed="N"/>
+  </parameters>
+  <requires>
+    <module name="smart-data-engine" version="2.0.x"/>
+    <module name="security" version="2.0.x"/>
+    <module name="workflow" version="2.0.x"/>
+  </requires>
+
+  <post-install>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.structure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.render.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devnote/Devnote.structure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devnote/Devnote.render.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devbill/Devbill.structure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devbill/Devbill.render.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devclient/Devclient.structure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devclient/Devclient.render.xml"/>
+    <process command="./ank.php --script=recordDevData --person=@{COUNT_PERSON} --client=@{COUNT_CLIENT} --accounts=@{COUNT_ACCOUNTS} --note=0-3 --bill=0-3"/>
+  </post-install>
+  <post-upgrade>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.structure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devperson/Devperson.render.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devnote/Devnote.structure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devnote/Devnote.render.xml"/>
+    <process command="./ank.php --script=importConfiguration --glob=./vendor/Anakeen/SmartStructures/Devbill/**/*.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devclient/Devclient.structure.xml"/>
+    <process command="./ank.php --script=importConfiguration --file=./vendor/Anakeen/SmartStructures/Devclient/Devclient.render.xml"/>
+  </post-upgrade>
+</module>

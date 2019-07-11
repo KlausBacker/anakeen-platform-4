@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="DEVBILL" label="Bill">
+        <smart:icon file="devbill.png"/>
+        <smart:class>Anakeen\SmartStructures\Devbill\DevbillBehavior</smart:class>
+        <smart:fields>
+            <smart:field-set name="bill_fr_ident" type="frame" access="ReadWrite" label="Identification">
+                <smart:field-text name="bill_title" is-title="true" access="ReadWrite" label="Title"/>
+                <smart:field-longtext name="bill_content" access="ReadWrite" label="Description"/>
+                <smart:field-docid name="bill_author" relation="DEVPERSON" access="ReadWrite" label="Author"/>
+                <smart:field-text name="bill_author_display" is-title="true" access="Read"/>
+                <smart:field-date name="bill_billdate" access="ReadWrite" label="Bill date"/>
+                <smart:field-text name="bill_location" access="ReadWrite" label="City"/>
+
+                <smart:field-docid name="bill_clients" relation="DEVCLIENT" access="ReadWrite" multiple="true" label="Clients"/>
+                <smart:field-set name="bill_otherclients" type="array" access="ReadWrite" label="Other clients">
+                    <smart:field-text name="bill_clientname" access="ReadWrite" label="Client name"/>
+                    <smart:field-text name="bill_society" access="ReadWrite" label="Enterprise"/>
+                </smart:field-set>
+
+                <smart:field-money name="bill_cost" access="ReadWrite" label="Cost"/>
+            </smart:field-set>
+
+        </smart:fields>
+        <smart:hooks>
+            <smart:field-hook event="onPreRefresh" field="bill_author_display">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="field">bill_author</smart:field-argument>
+            </smart:field-hook>
+        </smart:hooks>
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config>
