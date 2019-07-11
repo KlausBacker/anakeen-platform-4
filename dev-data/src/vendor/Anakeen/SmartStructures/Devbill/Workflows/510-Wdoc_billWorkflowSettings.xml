@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0" xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0">
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--Timer and Mail templates workflow references-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <workflow:config xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0" name="WDOC_BILL" structure="DEVBILL" model="WFAM_BILL">
+        <workflow:steps/>
+        <workflow:transitions/>
+    </workflow:config>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--Elements (color, cvdoc, masks) user interface referenced in workflow-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <workflow:config xmlns:workflow="https://platform.anakeen.com/4/schemas/workflow/1.0" name="WDOC_BILL" structure="DEVBILL" model="WFAM_BILL">
+        <workflow:steps>
+            <workflow:step ref="WFAM_BILL_E1">
+                <workflow:color>#00CE01</workflow:color>
+            </workflow:step>
+            <workflow:step ref="WFAM_BILL_E2">
+                <workflow:color>#FF4249</workflow:color>
+            </workflow:step>
+        </workflow:steps>
+    </workflow:config>
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <!--Default workflow for the structure-->
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <smart:structure-configuration name="DEVBILL">
+        <smart:default-workflow ref="WDOC_BILL"/>
+    </smart:structure-configuration>
+</smart:config>

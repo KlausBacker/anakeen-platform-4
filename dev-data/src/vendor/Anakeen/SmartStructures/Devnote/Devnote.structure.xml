@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<smart:config xmlns:smart="https://platform.anakeen.com/4/schemas/smart/1.0">
+    <smart:structure-configuration name="DEVNOTE" label="Note">
+        <smart:icon file="devnote.png"/>
+        <smart:class>Anakeen\SmartStructures\Devnote\DevnoteBehavior</smart:class>
+        <smart:fields>
+            <smart:field-set name="note_fr_ident" type="frame" access="ReadWrite" label="Identification">
+                <smart:field-text name="note_title" is-title="true" access="ReadWrite" label="Title"/>
+                <smart:field-docid name="note_author" relation="DEVPERSON" access="ReadWrite" label="Author"/>
+                <smart:field-text name="note_author_display" is-title="true" access="Read" label="Author name"/>
+                <smart:field-date name="note_redactdate" access="ReadWrite" label="Redaction date"/>
+                <smart:field-text name="note_location" access="ReadWrite" label="City"/>
+                <smart:field-set name="note_co_authors" type="array" access="ReadWrite" label="Co-authors">
+                    <smart:field-docid name="note_coauthor" relation="DEVPERSON" access="ReadWrite" label="Co-author list" multiple="true"/>
+                    <smart:field-text name="note_name" access="Read" label="Co-author name"/>
+                    <smart:field-text name="note_phone" access="ReadWrite" label="Co-author phone"/>
+                </smart:field-set>
+            </smart:field-set>
+            <smart:field-set name="note_fr_body" type="frame" access="ReadWrite" label="Note content">
+                <smart:field-htmltext name="note_content" access="ReadWrite" label="Note text"/>
+            </smart:field-set>
+        </smart:fields>
+        <smart:hooks>
+            <smart:field-hook event="onPreRefresh" field="note_name">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="field">note_coauthor</smart:field-argument>
+            </smart:field-hook>
+            <smart:field-hook event="onPreRefresh" field="note_author_display">
+                <smart:field-callable function="::getTitle"/>
+                <smart:field-argument type="field">note_author</smart:field-argument>
+            </smart:field-hook>
+        </smart:hooks>
+        <smart:defaults/>
+    </smart:structure-configuration>
+</smart:config>

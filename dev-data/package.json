@@ -1,0 +1,14 @@
+{
+  "name": "dev-data",
+  "version": "2.0.0",
+  "description": "Smart Data to test Anakeen Platform dev",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anakeen",
+  "license": "ISC",
+  "devDependencies": {
+    "@anakeen/anakeen-cli": "^1.0.0"
+  }
+}

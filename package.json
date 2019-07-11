@@ -17,6 +17,7 @@
         "hub-station",
         "business-app",
         "webpack-conf",
+        "dev-data",
         ".devtool/devserver"
     ],
     "dependencies": {
