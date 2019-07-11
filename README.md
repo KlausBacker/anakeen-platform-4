@@ -24,8 +24,8 @@ Ensuite quelques commandes :
     1. `make clean-env`
     2. Reprendre une première installation
 
-`make run-bash` : Lance un bash en tant root sur le docker PHP
-`make run-sql` : Lance la commande "psql" sur la base de donnée
+`make run-bash` : Lance un bash en tant root sur le docker PHP  
+`make run-sql` : Lance la commande "psql" sur la base de donnée  
 `make control-bash` : Lance un bash en tant "www-data" sur le docker PHP 
 
 
