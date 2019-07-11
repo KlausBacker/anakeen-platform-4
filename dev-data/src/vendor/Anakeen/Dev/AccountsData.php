@@ -42,7 +42,8 @@ class AccountsData
         }
     }
 
-    protected static function getLogin(SmartElement $person) {
+    protected static function getLogin(SmartElement $person)
+    {
         $firstname = Strings::unaccent($person->getRawValue(DevPersonFields::dev_firstname));
         $lastname =  Strings::unaccent($person->getRawValue(DevPersonFields::dev_lastname));
         return mb_strtolower($firstname[0].$lastname);

@@ -4,7 +4,8 @@ namespace Anakeen\Dev;
 
 use SmartStructure\Fields\Devclient as DevClientFields;
 
-class ClientData extends  PersonData {
+class ClientData extends  PersonData
+{
     public function __invoke(int $number)
     {
         \Anakeen\Core\DbManager::query(sprintf("delete from family.%s", strtolower(\SmartStructure\Devclient::familyName)));

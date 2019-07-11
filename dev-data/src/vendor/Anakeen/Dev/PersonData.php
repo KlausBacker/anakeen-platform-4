@@ -4,7 +4,8 @@ namespace Anakeen\Dev;
 
 use SmartStructure\Fields\Devperson as DevPersonFields;
 
-class PersonData {
+class PersonData
+{
 
     public function __invoke(int $number)
     {
@@ -29,7 +30,8 @@ class PersonData {
 
     }
 
-    protected function storeData(string $structName, array $data) {
+    protected function storeData(string $structName, array $data)
+    {
         $c = 1;
         $count = count($data);
         foreach ($data as $datum) {
@@ -41,5 +43,5 @@ class PersonData {
             printf("\r%05d/%05d", $c++, $count);
         }
         print "\n";
-}
+    }
 }

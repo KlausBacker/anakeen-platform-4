@@ -33,7 +33,7 @@ class NoteData
                     $coids = $cophones = [];
                     for ($coidx = 0; $coidx < $maxco; $coidx++) {
                         $subCoIds = [];
-                        $maxSubCo = rand(0,3);
+                        $maxSubCo = rand(0, 3);
                         for($subCo = 0; $subCo < $maxSubCo; $subCo++) {
                             $r = rand(0, $count - 1);
                             $subCoIds[] = $allPersons[$r]["initid"];

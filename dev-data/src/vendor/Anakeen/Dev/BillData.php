@@ -42,7 +42,7 @@ class BillData
                 if ($maxco) {
                     $clients=[];
                     for ($coidx = 0; $coidx < $maxco; $coidx++) {
-                        $clients[] = $allClients[rand(0,$countClients-1)]["initid"];
+                        $clients[] = $allClients[rand(0, $countClients-1)]["initid"];
                     }
                     $bill->setValue(DevbillFields::bill_clients, $clients);
                 }
