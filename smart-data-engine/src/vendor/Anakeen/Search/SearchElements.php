@@ -241,6 +241,11 @@ class SearchElements
         return $this;
     }
 
+    /**
+     * Return iterable Smart Element List
+     *
+     * @return ElementList the result of the search
+     */
     public function getResults()
     {
         return new ElementList($this);
