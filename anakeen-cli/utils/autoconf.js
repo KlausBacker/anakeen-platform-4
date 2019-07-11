@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const xml2js = require("xml2js");
 
 const CONF_NAME = "./.anakeen-cli.xml";
@@ -6,11 +7,31 @@ const CONF_NAME = "./.anakeen-cli.xml";
 exports.autoconf = () => {
   return new Promise((resolve, reject) => {
     //read file
-    if (!fs.existsSync(CONF_NAME)) {
+    const checkIfFileExist = file => {
+      if (!fs.existsSync(path.dirname(file))) {
+        return false;
+      }
+      if (fs.existsSync(file)) {
+        return file;
+      }
+      if (
+        path.resolve(path.dirname(file), "..", CONF_NAME) ===
+        path.resolve(path.dirname(file), CONF_NAME)
+      ) {
+        return false;
+      }
+      return checkIfFileExist(
+        path.resolve(path.dirname(file), "..", CONF_NAME)
+      );
+    };
+
+    const fileName = checkIfFileExist(CONF_NAME);
+
+    if (!fileName) {
       return resolve({});
     }
 
-    fs.readFile(CONF_NAME, { encoding: "utf-8" }, (err, content) => {
+    fs.readFile(fileName, { encoding: "utf-8" }, (err, content) => {
       if (err) {
         reject(err);
       }
