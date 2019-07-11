@@ -20,7 +20,7 @@ class CliRun extends CliCommand
         $this
             // the short description shown while running "php bin/console list"
             ->setDescription('Run command')
-            ->addArgument("shell", InputArgument::OPTIONAL, "The command to execute", "/bin/bash")
+            ->addArgument("shell", InputArgument::OPTIONAL, "The command to execute", "/bin/bash --login")
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp("Execute shell command"
