@@ -46,6 +46,8 @@ WAIT_FOR_IT_TIMEOUT = 15
 
 
 init:
+	$(DOCKER_COMPOSE_CMD) exec php unzip -oq /var/www/html/localRepo/control/anakeen-control-latest.zip -d /var/www/html/control/
+	$(DOCKER_COMPOSE_CMD) exec php chown -R "www-data:" "/var/www/html/control/"
 	$(_CONTROL_CMD) init --pg-service=platform --password=anakeen
 
 register-local-repo:

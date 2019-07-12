@@ -915,7 +915,7 @@ transformation-integration-register:
       "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
 
 control-register:
-  extends: .registry
+  extends: .registry-control
   variables:
     ANK_CI_APP_NAME: "control"
   only:
@@ -925,7 +925,7 @@ control-register:
       - control/**/*
 
 control-integration-register:
-  extends: .registry
+  extends: .registry-control
   variables:
     ANK_CI_APP_NAME: "control"
   only:

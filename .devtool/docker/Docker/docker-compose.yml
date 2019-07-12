@@ -15,7 +15,6 @@ services:
       - "./Volumes/_private/php/var/spool/cron/crontabs/:/var/spool/cron/crontabs"
       - "./Volumes/_private/php/tmp/share/:/tmp/share/"
       - "./Volumes/php/usr/local/etc/php/conf.d/10-base.ini:/usr/local/etc/php/conf.d/10-base.ini"
-      - "../../../control/src/:/var/www/html/control/"
       - "./Volumes/_private/php/var/www/html/control/conf/:/var/www/html/control/conf/"
       - "./Volumes/_private/php/var/www/html/control/var/:/var/www/html/control/var/"
       - "../../../build/:/var/www/html/localRepo"

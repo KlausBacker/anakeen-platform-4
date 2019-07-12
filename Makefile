@@ -55,8 +55,7 @@ init-docker: start-env
 	make -C ./.devtool/docker install
 
 control-status:
-	docker exec monorepo_php_1 /var/www/html/control/anakeen-control status
-
+	watch docker exec monorepo_php_1 /var/www/html/control/anakeen-control status
 
 control-bash:
 	make -C ./.devtool/docker docker-prompt-platform

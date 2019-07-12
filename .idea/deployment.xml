@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="A4 Mono" autoUploadExternalChanges="true" />
+  <component name="PublishConfigData" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="docker">
+        <serverdata>
+          <mappings>
+            <mapping deploy="control" local="$PROJECT_DIR$/control/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/admin-center/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/business-app/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/dev-data/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/development-center/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/hub-station/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/security/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/smart-data-engine/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/user-interfaces/src" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/workflow/src/" web="/" />
+            <mapping deploy="platform" local="$PROJECT_DIR$/transformation/src" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
 </project>
