@@ -1,0 +1,56 @@
+.workflow-parent {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+
+  /deep/ {
+    .workflow-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      background-color: var(--white);
+
+      .workflow-splitter {
+        height: 100%;
+        width: 100%;
+      }
+
+      .wfl-graph {
+        flex: 1;
+        background-color: var(--white);
+
+        /deep/ {
+          svg {
+            width: 100% !important;
+            height: 100% !important;
+          }
+        }
+      }
+
+      .wfl-content__empty {
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ffffff;
+        border-radius: 0.25rem;
+        color: #848484;
+        min-height: 0;
+        overflow: hidden;
+
+        .wfl-content__empty-icon {
+          flex: 1;
+          font-size: 20rem;
+        }
+
+        .wfl-content__empty-text {
+          flex: 1;
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+}

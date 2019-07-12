@@ -4,6 +4,7 @@ const accounts = require("./accountManager");
 const i18n = require("./i18nManager");
 const parameters = require("./parametersManager");
 const mail = require("./mailManager");
+const workflow = require("./workflowManager");
 const { lib } = require("@anakeen/webpack-conf");
 
 module.exports = () => {
@@ -28,6 +29,9 @@ module.exports = () => {
   if (process.env.element === "MAIL") {
     return lib({ ...mail, ...modeDev });
   }
+  if (process.env.element === "WORKFLOW") {
+    return lib({ ...workflow, ...modeDev });
+  }
   return [
     lib(tokens),
     lib({ ...tokens, ...{ mode: "dev" } }),
@@ -40,6 +44,8 @@ module.exports = () => {
     lib(i18n),
     lib({ ...i18n, ...{ mode: "dev" } }),
     lib(mail),
-    lib({ ...mail, ...{ mode: "dev" } })
+    lib({ ...mail, ...{ mode: "dev" } }),
+    lib(workflow),
+    lib({ ...workflow, ...{ mode: "dev"} })
   ];
 };
