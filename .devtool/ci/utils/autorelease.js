@@ -7,11 +7,12 @@ const util = require("util");
 
 const sourcePath = process.argv[2];
 let versionAutorelease = process.argv[3] || "COMPUTE";
+const versionFile = process.argv[4] || "./package.json";
 
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 const readPackage = async () => {
-  const packageJson = await readFile(path.join(sourcePath, "./package.json"), {
+  const packageJson = await readFile(path.join(sourcePath, versionFile), {
     encoding: "utf8"
   });
   return JSON.parse(packageJson);
@@ -27,5 +28,5 @@ readPackage().then(async content => {
   }
   console.log("BUMP VERSION");
   content.version = versionAutorelease;
-  await writeFile(path.join(sourcePath, "./package.json"), JSON.stringify(content));
+  await writeFile(path.join(sourcePath, versionFile), JSON.stringify(content));
 });
