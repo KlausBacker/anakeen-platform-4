@@ -478,6 +478,52 @@ migration-tools-integration-build:
 
 #endregion build
 
+#buildControl
+control-build:
+  <<: *pull-cache
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: control
+  script:
+    - export ANK_CI_APP_VERSION=$(jq .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/version.json)
+    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME} -C control app
+    - tar -C control -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/control-${ANK_CI_APP_VERSION}.tar.gz ./src
+  artifacts:
+    paths:
+      - build/${PACKAGE_NAME}
+      - ${PACKAGE_PATH}/node_modules
+    expire_in: 1 day
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - control/**/*
+
+control-integration-build:
+  <<: *pull-cache
+  stage: build
+  tags:
+    - a4ppm
+  variables:
+    PACKAGE_PATH: control
+  script:
+    - export ANK_CI_APP_VERSION=$(jq .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/version.json)
+    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME} -C control app-autorelease
+    - tar -C control -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/control-${ANK_CI_APP_VERSION}.tar.gz ./src
+  artifacts:
+    paths:
+      - build/${PACKAGE_NAME}
+      - ${PACKAGE_PATH}/node_modules
+    expire_in: 1 day
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - control/**/*
+#endBuildControl
+
 #region publishNpm
 .npm-publish-package:
   <<: *pull-cache
@@ -841,3 +887,51 @@ transformation-integration-register:
       - transformation/**/*
 
 #endregion registry
+
+#region registryControl
+.registry-control:
+  <<: *pull-cache
+  stage: registry
+  tags:
+    - a4ppm
+  script:
+    - export ANK_CI_APP_VERSION=$(jq .version ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/version.json)
+    - >-
+      curl -f
+      --header "X-Http-Method-Override: PUT"
+      -F name=${ANK_CI_APP_NAME}
+      -F version=${ANK_CI_APP_VERSION}
+      -F metadata="{
+        \"git-sha\": \"${CI_COMMIT_SHA}\",
+        \"git-ref\": \"${CI_COMMIT_REF}\",
+        \"version\": \"${ANK_CI_APP_VERSION}\",
+        \"release\": \"\",
+        \"date\": \"$(date '+%Y-%m-%d %H-%M-%S')\",
+        \"author\": \"${GITLAB_USER_NAME}\"
+      }"
+      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.app
+      -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
+      --request POST
+      "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
+
+control-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "control"
+  only:
+    refs:
+      - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - control/**/*
+
+control-integration-register:
+  extends: .registry
+  variables:
+    ANK_CI_APP_NAME: "control"
+  only:
+    refs:
+      - master@Anakeen/Platform-4/anakeen-platform-4
+    changes:
+      - control/**/*
+
+#endregion registryControl

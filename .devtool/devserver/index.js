@@ -6,7 +6,7 @@ const app = express();
 const proxy = require("express-http-proxy");
 const config = require("./config.perso.js");
 const merge = require("webpack-merge");
-const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+//const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
 
 config.getConfig().forEach(currentConfig => {
   if (currentConfig.mode !== "development") {
@@ -23,7 +23,7 @@ config.getConfig().forEach(currentConfig => {
     currentConfig.devtool = config.devtool;
   }
   //Add HMR entry
-  currentConfig.entry = Object.keys(currentConfig.entry).reduce(
+  /*currentConfig.entry = Object.keys(currentConfig.entry).reduce(
     (acc, currentEntry) => {
       const entry = currentConfig.entry[currentEntry];
       entry.push(hotMiddlewareScript);
@@ -31,11 +31,11 @@ config.getConfig().forEach(currentConfig => {
       return acc;
     },
     {}
-  );
+  );*/
   //Add HMR plugin
-  currentConfig.plugins = currentConfig.plugins || [];
+  /*currentConfig.plugins = currentConfig.plugins || [];
   currentConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-  currentConfig.plugins.push(new webpack.NoEmitOnErrorsPlugin());
+  currentConfig.plugins.push(new webpack.NoEmitOnErrorsPlugin());*/
 
   const compiler = webpack(currentConfig);
 
@@ -44,8 +44,8 @@ config.getConfig().forEach(currentConfig => {
   });
   app.use(instance);
 
-  const wphmw = webpackHotMiddleware(compiler);
-  app.use(wphmw);
+  //const wphmw = webpackHotMiddleware(compiler);
+  //app.use(wphmw);
 });
 
 app.use(
