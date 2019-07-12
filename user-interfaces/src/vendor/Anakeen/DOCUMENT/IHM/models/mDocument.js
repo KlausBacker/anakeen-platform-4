@@ -1567,29 +1567,32 @@ define([
         this._customClientData
       );
 
-      if (beforeCloseReturn.prevent === false) {
-        if (options.force === true) {
-          changeDocument();
-        } else {
-          this.trigger(
-            "displayCloseDocument",
-            changeDocument,
-            function mDocumentFetchUserCancel(error) {
-              //Reinit properties
-              currentModel.set(serverProperties);
-              //Indicate success to the promise object
-              globalCallback.error(error);
-            }
-          );
+      const beforeClosePromise = this._getBeforeEventPromise(
+        beforeCloseReturn,
+        () => {
+          if (options.force === true) {
+            changeDocument();
+          } else {
+            this.trigger(
+              "displayCloseDocument",
+              changeDocument,
+              function mDocumentFetchUserCancel(error) {
+                //Reinit properties
+                currentModel.set(serverProperties);
+                //Indicate success to the promise object
+                globalCallback.error(error);
+              }
+            );
+          }
+        },
+        () => {
+          //Reinit properties
+          currentModel.set(serverProperties);
+          //Indicate success to the promise object
+          globalCallback.error({ eventPrevented: true });
         }
-      } else {
-        //Reinit properties
-        currentModel.set(serverProperties);
-        //Indicate success to the promise object
-        globalCallback.error({ eventPrevented: true });
-      }
-
-      return globalCallback.promise;
+      );
+      return beforeClosePromise.finally(() => globalCallback.promise);
     },
 
     saveDocument: function mDocumentSaveDocument(attributes, options) {
@@ -1606,46 +1609,50 @@ define([
       }
       this.trigger("beforeSave", beforeSaveEvent, this._customClientData);
 
-      if (beforeSaveEvent.prevent !== false) {
-        globalCallback.error({ eventPrevented: true });
-      } else {
-        saveCallback.promise.then(
-          function mDocument_saveDone() {
-            currentModel._loadDocument(currentModel).then(
-              function mDocument_loadDocumentDone() {
-                globalCallback.success();
-              },
-              function mDocument_loadDocumentFail() {
-                globalCallback.error.apply(currentModel, arguments);
-              }
-            );
-          },
-          function mDocument_saveFail() {
-            globalCallback.error.apply(currentModel, arguments);
-          }
-        );
-
-        if (currentModel.hasUploadingFile()) {
-          this.trigger("displayLoading", {
-            isSaving: true,
-            text: i18n.___("Recording files in progress", "ddui")
-          });
-          currentModel.trigger("showMessage", {
-            title: i18n.___("Waiting uploads in progress", "ddui"),
-            type: "info"
-          });
-          currentModel.once(
-            "uploadFileFinished",
-            function mDocumentsetValuesListenUploadUntilTheEnd(/*event*/) {
-              currentModel.trigger("displayLoading", { isSaving: true });
-              currentModel.save(attributes, saveCallback);
+      const beforeSavePromise = this._getBeforeEventPromise(
+        beforeSaveEvent,
+        () => {
+          saveCallback.promise.then(
+            function mDocument_saveDone() {
+              currentModel._loadDocument(currentModel).then(
+                function mDocument_loadDocumentDone() {
+                  globalCallback.success();
+                },
+                function mDocument_loadDocumentFail() {
+                  globalCallback.error.apply(currentModel, arguments);
+                }
+              );
+            },
+            function mDocument_saveFail() {
+              globalCallback.error.apply(currentModel, arguments);
             }
           );
-        } else {
-          this.trigger("displayLoading", { isSaving: true });
-          currentModel.save(attributes, saveCallback);
+
+          if (currentModel.hasUploadingFile()) {
+            this.trigger("displayLoading", {
+              isSaving: true,
+              text: i18n.___("Recording files in progress", "ddui")
+            });
+            currentModel.trigger("showMessage", {
+              title: i18n.___("Waiting uploads in progress", "ddui"),
+              type: "info"
+            });
+            currentModel.once(
+              "uploadFileFinished",
+              function mDocumentsetValuesListenUploadUntilTheEnd(/*event*/) {
+                currentModel.trigger("displayLoading", { isSaving: true });
+                currentModel.save(attributes, saveCallback);
+              }
+            );
+          } else {
+            this.trigger("displayLoading", { isSaving: true });
+            currentModel.save(attributes, saveCallback);
+          }
+        },
+        () => {
+          globalCallback.error({ eventPrevented: true });
         }
-      }
+      );
 
       globalCallback.promise.then(
         function onSaveSuccess(values) {
@@ -1678,7 +1685,7 @@ define([
         }
       );
 
-      return globalCallback.promise;
+      return beforeSavePromise.finally(() => globalCallback.promise);
     },
 
     deleteDocument: function mDocumentDelete(options) {
@@ -1842,6 +1849,47 @@ define([
       return globalCallback.promise;
     },
 
+    /**
+     *
+     */
+    _getBeforeEventPromise: function mDocumentBeforeEventPromise(
+      event,
+      onBeforeContinue,
+      onBeforePrevent
+    ) {
+      let beforePromise = Promise.resolve();
+      // Promise based prevent event
+      if (
+        event &&
+        event.promise &&
+        (event.promise instanceof Promise ||
+          typeof event.promise.then === "function")
+      ) {
+        beforePromise = event.promise
+          .then(() => {
+            if (typeof onBeforeContinue === "function") {
+              onBeforeContinue();
+            }
+          })
+          .catch(() => {
+            if (typeof onBeforePrevent === "function") {
+              onBeforePrevent();
+            }
+          });
+      } else {
+        // Traditional event prevent
+        if (event.prevent === false) {
+          if (typeof onBeforeContinue === "function") {
+            onBeforeContinue();
+          }
+        } else {
+          if (typeof onBeforePrevent === "function") {
+            onBeforePrevent();
+          }
+        }
+      }
+      return beforePromise;
+    },
     /**
      * Get complementary data : family structure
      */
