@@ -909,7 +909,7 @@ transformation-integration-register:
         \"date\": \"$(date '+%Y-%m-%d %H-%M-%S')\",
         \"author\": \"${GITLAB_USER_NAME}\"
       }"
-      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.app
+      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.zip
       -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
       --request POST
       "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
