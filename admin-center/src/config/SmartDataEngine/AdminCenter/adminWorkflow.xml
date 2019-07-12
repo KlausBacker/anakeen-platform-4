@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sde:config xmlns:sde="https://platform.anakeen.com/4/schemas/sde/1.0">
+    <sde:routes namespace="AdminCenter">
+        <sde:route name="GetWorkflowGraph">
+            <sde:callable>Anakeen\Routes\Admin\Workflow\WorkflowGraph</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/workflows/image/{workflow:[a-zA-Z0-9_]+}[.{extension:png|svg|dot}]</sde:pattern>
+            <sde:description>Get graph</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminWorkflow</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetWorkflowList">
+            <sde:callable>Anakeen\Routes\Admin\Workflow\Workflow</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/workflow/list/</sde:pattern>
+            <sde:description>Get workflow list</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminWorkflow</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+        <sde:route name="GetWorkflowData">
+            <sde:callable>Anakeen\Routes\Admin\Workflow\WorkflowData</sde:callable>
+            <sde:method>GET</sde:method>
+            <sde:pattern>/api/v2/admin/workflow/data/{workflow}</sde:pattern>
+            <sde:description>Get workflow configuration</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminWorkflow</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
+    </sde:routes>
+</sde:config>

@@ -36,6 +36,10 @@
             <accounts:displayName>I18n Manager</accounts:displayName>
             <accounts:structure name="AC_I18NMANAGER"/>
         </accounts:role>
+        <accounts:role name="workflow_manager_role">
+            <accounts:displayName>Workflow Manager</accounts:displayName>
+            <accounts:structure name="AC_WORKFLOWMANAGER"/>
+        </accounts:role>
     </accounts:roles>
     <accounts:groups>
 
