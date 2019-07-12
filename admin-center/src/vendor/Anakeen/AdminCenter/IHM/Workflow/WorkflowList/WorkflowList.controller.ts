@@ -9,11 +9,13 @@ export default class WorkflowListController extends Vue {
   @Prop({
     default: true,
     type: [Boolean, Object]
-  }) public filter;
+  })
+  public filter;
   @Prop({
     default: "",
     type: String
-  }) public selected: string = "";
+  })
+  public selected: string = "";
   public listModel: object = {
     id: "id"
   };

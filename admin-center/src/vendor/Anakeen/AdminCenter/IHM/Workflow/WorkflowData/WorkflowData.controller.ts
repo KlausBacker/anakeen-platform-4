@@ -12,18 +12,20 @@ Vue.use(DataSourceInstaller);
 @Component
 export default class WorkflowDataController extends Vue {
   public tabData = [];
-  @Prop({ type: String, default: ""}) public wflName;
+  @Prop({ type: String, default: "" }) public wflName;
 
   public getWfl(options) {
     this.$http
       .get(`/api/v2/admin/workflow/data/${this.wflName}`, {
         params: options.data,
         paramsSerializer: kendo.jQuery.param
-    }).then(response => {
-      options.success(response);
-    }).catch(response => {
-      options.error(response);
-    });
+      })
+      .then(response => {
+        options.success(response);
+      })
+      .catch(response => {
+        options.error(response);
+      });
     return [];
   }
 
@@ -44,7 +46,7 @@ export default class WorkflowDataController extends Vue {
   }
   public displayData(colId) {
     return dataItem => {
-      switch(colId) {
+      switch (colId) {
         case "type":
           return `<ul><li><b>Id:&nbsp</b>${dataItem.id}</li><li><b>Type:&nbsp</b>${dataItem.type}</li></ul>`;
           break;
@@ -58,6 +60,6 @@ export default class WorkflowDataController extends Vue {
         default:
           break;
       }
-    }
+    };
   }
 }

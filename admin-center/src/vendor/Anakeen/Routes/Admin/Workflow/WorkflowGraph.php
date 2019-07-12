@@ -1,5 +1,6 @@
 <?php
 namespace Anakeen\Routes\Admin\Workflow;
+
 use Anakeen\Core\ContextManager;
 use Anakeen\SmartElementManager;
 use Anakeen\Router\ApiV2Response;
@@ -99,8 +100,12 @@ class WorkflowGraph
     {
         $tmpFile = sprintf("%s/%s.dot", ContextManager::getTmpDir(), uniqid("wfl"));
         file_put_contents($tmpFile, $dot);
-        $cmd = sprintf("dot -T%s -o%s %s 2>&1", escapeshellarg($format), escapeshellarg($outfileName),
-            escapeshellarg($tmpFile));
+        $cmd = sprintf(
+            "dot -T%s -o%s %s 2>&1",
+            escapeshellarg($format),
+            escapeshellarg($outfileName),
+            escapeshellarg($tmpFile)
+        );
         exec($cmd, $out, $ret);
 
         unlink($tmpFile);

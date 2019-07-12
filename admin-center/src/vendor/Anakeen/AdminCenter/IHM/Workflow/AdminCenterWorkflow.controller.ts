@@ -19,7 +19,6 @@ declare var kendo;
   }
 })
 export default class AdminCenterWorkflowController extends Vue {
-
   public wflList;
   public wflData = {};
   public wflGraph: string = "";
@@ -89,5 +88,4 @@ export default class AdminCenterWorkflowController extends Vue {
   public onListReady(data) {
     this.wflList = data;
   }
-
 }
