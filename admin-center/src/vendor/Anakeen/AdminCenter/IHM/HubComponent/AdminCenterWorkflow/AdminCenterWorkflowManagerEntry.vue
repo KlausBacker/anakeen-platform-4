@@ -1,10 +1,10 @@
 <template>
     <div>
         <nav v-if="isDockCollapsed">
-            <i class="material-icons hub-icon">storage</i>
+            <i class="material-icons hub-icon">call_split</i>
         </nav>
         <nav v-else-if="isDockExpanded">
-            <i class="material-icons hub-icon">storage</i> <span> Workflow Manager</span>
+            <i class="material-icons hub-icon">call_split</i> <span> Workflow Manager</span>
         </nav>
         <div v-else-if="isHubContent" class="workflow-manager">
             <admin-center-workflow-manager></admin-center-workflow-manager>
