@@ -25,9 +25,11 @@ export default class ControllerDispatcher extends AnakeenController.BusEvents
 
   public initController(dom: DOMReference, viewData: ViewData, options?) {
     const eventsHandlerPropagation =  {};
+    const _dispatcher = this;
     EVENTS_LIST.forEach(eventType => {
-      eventsHandlerPropagation[eventType] = (...args) => {
-        this.emit(eventType,  controller, ...args);
+      eventsHandlerPropagation[eventType] = function(...args) {
+        // this is the controller instance
+        _dispatcher.emit(eventType,  this, ...args);
       }
     });
     const controller = new SmartElementController(dom, viewData, options, eventsHandlerPropagation);

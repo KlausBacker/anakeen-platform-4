@@ -125,7 +125,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     // Bind initial events
     if (events) {
       Object.keys(events).forEach(eventType => {
-        this.addEventListener(eventType, events[eventType]);
+        this.addEventListener(eventType, events[eventType].bind(this));
       })
     }
     this._initializeSmartElement({}, this._options.customClientData);
