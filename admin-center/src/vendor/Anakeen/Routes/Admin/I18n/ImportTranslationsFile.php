@@ -29,10 +29,17 @@ class ImportTranslationsFile
         $this->data = file_get_contents($path);
         exec("msgfmt --statistics -c -v -o /dev/null ".$path, $output, $err);
         if (!$err) {
-            $this->customPoFile = sprintf("%s/locale/%s/LC_MESSAGES/custom-catalog.po",
-                ContextManager::getRootDirectory(), $this->lang);
-            $this->filePath = sprintf("%s/locale/%s/LC_MESSAGES/src/%s", ContextManager::getRootDirectory(),
-                $this->lang, self::OVERRIDE_FILE);
+            $this->customPoFile = sprintf(
+                "%s/locale/%s/LC_MESSAGES/custom-catalog.po",
+                ContextManager::getRootDirectory(),
+                $this->lang
+            );
+            $this->filePath = sprintf(
+                "%s/locale/%s/LC_MESSAGES/src/%s",
+                ContextManager::getRootDirectory(),
+                $this->lang,
+                self::OVERRIDE_FILE
+            );
             $custom = file_put_contents($this->customPoFile, $this->data);
             $override = file_put_contents($this->filePath, $this->data);
             $this->result = $custom && $override;
