@@ -30,9 +30,15 @@ export default class I18nManagerController extends Vue {
   private translationLocale: string = "fr";
   private translationFilterableOptions: kendo.data.DataSourceFilter = {
     cell: {
-      minLength: 3,
       operator: "contains",
-      showOperators: false
+      showOperators: false,
+      template: e => {
+        e.element.kendoAutoComplete({
+          noDataTemplate: '',
+          serverFiltering: false,
+          valuePrimitive: true
+        });
+      }
     }
   };
   private translationGridData: kendo.data.DataSource = new kendo.data.DataSource(
