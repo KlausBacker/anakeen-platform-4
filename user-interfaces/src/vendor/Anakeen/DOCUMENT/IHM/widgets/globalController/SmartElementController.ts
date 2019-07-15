@@ -89,6 +89,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     revision: -1,
     viewId: "!defaultConsultation"
   };
+  protected _requestData: ViewData;
   protected _options: IControllerOptions = {};
   protected _constraintList = {};
   protected _activatedConstraint: any = {};
@@ -109,6 +110,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       this._internalViewData.initid = viewData.initid;
       this._internalViewData.viewId = viewData.viewId;
       this._internalViewData.revision = viewData.revision;
+      this._requestData = Object.assign({}, this._internalViewData);
     }
     // @ts-ignore
     this._element = $(dom);
@@ -183,6 +185,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
 
     _.each(_.pick(values, "initid", "revision", "viewId"), (value, key) => {
       this._internalViewData[key] = value;
+      this._requestData[key] = value;
     });
 
     if (!this._model) {
@@ -2590,7 +2593,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
   }
 
   private _getModelUID() {
-    const model = this._getModelValue();
+    const model = this._requestData;
     return `${model.initid}|${model.viewId}`;
   }
 
