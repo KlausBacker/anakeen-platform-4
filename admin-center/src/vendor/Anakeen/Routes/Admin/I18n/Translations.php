@@ -28,21 +28,36 @@ class Translations
     const PAGESIZE = 50;
     protected $take = self::PAGESIZE;
     protected $skip = 0;
+    protected $sort;
+    protected $direction;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
         $data["data"] = $this->doRequest();
+        $data["requestParameters"]["sort"] = $this->sort;
         $data["requestParameters"]["take"] = $this->take;
         $data["requestParameters"]["skip"] = $this->skip;
         $data["requestParameters"]["total"] = count($data["data"]);
+        if ($this->sort) {
+            if ($this->sort["dir"] === "asc") {
+                $this->direction = SORT_ASC;
+            } else {
+                $this->direction = SORT_DESC;
+            }
+            array_multisort(array_column($data["data"], $this->sort["field"]), $this->direction, $data["data"]);
+        }
         $data["data"] = array_slice($data["data"], $this->skip, $this->take);
+
         return ApiV2Response::withData($response, $data);
     }
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
         $this->lang = strtolower(substr($args["lang"], 0, 2));
+        if ($request->getQueryParam("sort")) {
+            $this->sort = $request->getQueryParam("sort")[0];
+        }
         if ($request->getQueryParam("filter") && isset($request->getQueryParam("filter")["filters"])) {
             $this->filters = $request->getQueryParam("filter")["filters"];
         }
@@ -89,7 +104,17 @@ class Translations
         $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($customPoFile);
         $poParser = new \Sepia\PoParser\Parser($fileHandler);
         $customCatalog = $poParser->parse();
-
+        foreach ($data as &$datum) {
+            $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
+            if ($customEntry) {
+                $datum["override"] = $customEntry->getMsgStr();
+                if (!empty($datum["defaultstr"])) {
+                    $datum["msgstr"] = $datum["defaultstr"];
+                }
+            } else {
+                $datum["override"] = null;
+            }
+        }
         foreach ($data as &$datum) {
             $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
             if ($customEntry) {
@@ -100,7 +125,12 @@ class Translations
                     $datum["override"] = [$val1,$val2];
                 } else {
                     $datum["override"] = $customEntry->getMsgStr();
+                    if (!empty($datum["defaultstr"])) {
+                        $datum["msgstr"] = $datum["defaultstr"];
+                    }
                 }
+            } else {
+                $datum["override"] = null;
             }
         }
     }

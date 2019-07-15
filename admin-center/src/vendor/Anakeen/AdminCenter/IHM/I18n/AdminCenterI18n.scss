@@ -93,9 +93,18 @@
         .overriden-translation-input:focus::-webkit-input-placeholder {
           color: transparent;
         }
+        .override-plural-value-exist, .override-singular-value-exist {
+          border: 1px solid #ced4da;
+          background-color: transparent;
+          padding: 0.5rem 1rem;
 
+          .fa-edit {
+            color: #157efb;
+          }
+        }
         .confirm-override-translation-singular, .confirm-override-translation-plural {
           border: 1px solid #ced4da;
+          background-color: transparent;
           padding-left: 1rem;
           padding-right: 1rem;
           .fa-check {
@@ -103,16 +112,19 @@
           }
         }
         .confirm-override-translation-singular:disabled, .confirm-override-translation-plural:disabled {
+          background-color: transparent;
           .fa-check {
             color: #d0d0d0;
           }
         }
         .cancel-override-translation-singular, .cancel-override-translation-plural {
           border: 1px solid #ced4da;
+          background-color: transparent;
           padding-left: 1rem;
           padding-right: 1rem;
         }
         .cancel-override-translation-singular:disabled, .cancel-override-translation-plural:disabled {
+          background-color: transparent;
           .fa-times {
             color: #d0d0d0;
           }
