@@ -104,7 +104,17 @@ class Translations
         $fileHandler = new \Sepia\PoParser\SourceHandler\FileSystem($customPoFile);
         $poParser = new \Sepia\PoParser\Parser($fileHandler);
         $customCatalog = $poParser->parse();
-
+        foreach ($data as &$datum) {
+            $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
+            if ($customEntry) {
+                $datum["override"] = $customEntry->getMsgStr();
+                if (!empty($datum["defaultstr"])) {
+                    $datum["msgstr"] = $datum["defaultstr"];
+                }
+            } else {
+                $datum["override"] = null;
+            }
+        }
         foreach ($data as &$datum) {
             $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
             if ($customEntry) {
@@ -115,7 +125,12 @@ class Translations
                     $datum["override"] = [$val1,$val2];
                 } else {
                     $datum["override"] = $customEntry->getMsgStr();
+                    if (!empty($datum["defaultstr"])) {
+                        $datum["msgstr"] = $datum["defaultstr"];
+                    }
                 }
+            } else {
+                $datum["override"] = null;
             }
         }
     }
