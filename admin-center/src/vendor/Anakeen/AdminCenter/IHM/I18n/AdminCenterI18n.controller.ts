@@ -34,7 +34,7 @@ export default class I18nManagerController extends Vue {
       showOperators: false,
       template: e => {
         e.element.kendoAutoComplete({
-          noDataTemplate: '',
+          noDataTemplate: "",
           serverFiltering: false,
           valuePrimitive: true
         });
@@ -210,7 +210,10 @@ export default class I18nManagerController extends Vue {
                 return this.singularInput + this.pluralInput;
               }
             } else {
-              if (rowData.override && !I18nManagerController.isEmptyOrSpaces(rowData.override)) {
+              if (
+                rowData.override &&
+                !I18nManagerController.isEmptyOrSpaces(rowData.override)
+              ) {
                 return `<div class="input-group"><span>${rowData.override}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`;
               } else {
                 return this.singularInput;
@@ -370,11 +373,11 @@ export default class I18nManagerController extends Vue {
           $(confirmEvent.event.target.closest("tr[role=row]")).find("input")
             .length > 1
             ? $(confirmEvent.event.target.closest("tr[role=row]")).find(
-            "input"
-            )[1].value
+                "input"
+              )[1].value
             : $(confirmEvent.event.target.closest("tr[role=row]")).find(
-            "input"
-            )[0].value;
+                "input"
+              )[0].value;
         const newVal = JSON.stringify({
           msgstr: inputVal,
           plural: 1,
@@ -436,7 +439,9 @@ export default class I18nManagerController extends Vue {
   }
 
   private setEventInput() {
-    const input = $(".overriden-translation-input-singular, .overriden-translation-input-plural");
+    const input = $(
+      ".overriden-translation-input-singular, .overriden-translation-input-plural"
+    );
     input.on("keypress", e => {
       if (e.which === 13) {
         $(".confirm-override-translation-singular").trigger("click");
@@ -460,9 +465,7 @@ export default class I18nManagerController extends Vue {
     const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
     const url = `/api/v2/admin/i18n/${encodeURIComponent(
       this.translationLocale
-    )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
-      rowData.msgid
-    )}`;
+    )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(rowData.msgid)}`;
     const jsonHeader = {
       headers: {
         "Content-type": "application/json"
@@ -475,15 +478,13 @@ export default class I18nManagerController extends Vue {
         this.$emit("EditTranslationFail");
       }
       kendo.ui.progress($("body"), false);
-      if (
-        !I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)
-      ) {
+      if (!I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)) {
         $(
           event.sender.element[0].closest("div[class='input-group']")
         ).replaceWith(
           `<div class="input-group"><span>${
             JSON.parse(newVal).msgstr
-            }</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
+          }</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
         );
         this.setEventSingularSpan();
       }
@@ -493,9 +494,7 @@ export default class I18nManagerController extends Vue {
     const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
     const url = `/api/v2/admin/i18n/${encodeURIComponent(
       this.translationLocale
-    )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(
-      rowData.msgid
-    )}`;
+    )}/${encodeURIComponent(msgctxtData)}/${encodeURIComponent(rowData.msgid)}`;
     const jsonHeader = {
       headers: {
         "Content-type": "application/json"
@@ -508,15 +507,13 @@ export default class I18nManagerController extends Vue {
         this.$emit("EditTranslationFail");
       }
       kendo.ui.progress($("body"), false);
-      if (
-        !I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)
-      ) {
+      if (!I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)) {
         $(
           event.sender.element[0].closest("div[class='input-group']")
         ).replaceWith(
           `<div class="input-group"><span>${
             JSON.parse(newVal).msgstr
-            }</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
+          }</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
         );
         if ($(event.sender.element[0]).prev("hr")) {
           $(".override-plural-value-exist").prepend("<hr>");
