@@ -108,11 +108,7 @@ export default class I18nManagerController extends Vue {
 
   public mounted() {
     window.addEventListener("offline", e => {
-      kendo.ui.progress($("body"), true);
       this.$emit("i18nOffline", e.type);
-    });
-    window.addEventListener("online", () => {
-      kendo.ui.progress($("body"), false);
     });
     $(this.$refs.i18nGrid).kendoGrid({
       columns: [
