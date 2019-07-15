@@ -44,6 +44,7 @@ export default class I18nManagerController extends Vue {
       },
       serverFiltering: true,
       serverPaging: true,
+      serverSorting: true,
       transport: {
         read: options => {
           this.$http
@@ -68,6 +69,7 @@ export default class I18nManagerController extends Vue {
       },
       serverFiltering: true,
       serverPaging: true,
+      serverSorting: true,
       transport: {
         read: options => {
           this.$http
