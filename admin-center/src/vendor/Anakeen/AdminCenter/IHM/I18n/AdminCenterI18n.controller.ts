@@ -166,24 +166,17 @@ export default class I18nManagerController extends Vue {
                   !I18nManagerController.isEmptyOrSpaces(rowData.override[1])
                 ) {
                   if (rowData.override[0] && rowData.override[1]) {
-                    return `<span class='override-singular-value-exist'>${
-                      rowData.override[0]
-                      }</span><hr>
-                          <span class='override-plural-value-exist'>${
-                      rowData.override[1]
-                      }</span>`;
+                    return `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div><hr>
+                          <div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`;
                   } else if (rowData.override[0] && !rowData.override[1]) {
                     return (
-                      `<span class='override-singular-value-exist'>${
-                        rowData.override[0]
-                        }</span>` + this.pluralInput
+                      `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>` +
+                      this.pluralInput
                     );
                   } else if (rowData.override[1] && !rowData.override[0]) {
                     return (
                       this.pluralInput +
-                      `<span class='override-plural-value-exist'>${
-                        rowData.override[1]
-                        }</span>`
+                      `<div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
                     );
                   } else {
                     return this.singularInput + this.pluralInput;
@@ -201,24 +194,16 @@ export default class I18nManagerController extends Vue {
                     return (
                       this.singularInput +
                       `<hr>
-                      <span class='override-plural-value-exist'>${
-                        rowData.override[1]
-                        }</span>`
+                      <div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
                     );
                   } else if (!val0 && val1) {
                     return (
-                      `
-                      <span class='override-singular-value-exist'>${
-                        rowData.override[0]
-                        }</span><hr>` + this.pluralInput
+                      `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div><hr>` +
+                      this.pluralInput
                     );
                   } else {
-                    return `<span class='override-singular-value-exist'>${
-                      rowData.override[0]
-                      }</span><hr>
-                          <span class='override-plural-value-exist'>${
-                      rowData.override[1]
-                      }</span>`;
+                    return `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div><hr>
+                          <div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`;
                   }
                 }
               } else {
@@ -226,9 +211,7 @@ export default class I18nManagerController extends Vue {
               }
             } else {
               if (rowData.override) {
-                return `<span class='override-singular-value-exist'>${
-                  rowData.override
-                  }</span>`;
+                return `<div class="input-group"><span>${rowData.override}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`;
               } else {
                 return this.singularInput;
               }
@@ -311,12 +294,16 @@ export default class I18nManagerController extends Vue {
 
   private initInput(target, type) {
     if (type === "singular") {
-      $(target).replaceWith(this.singularInput);
+      $(target)
+        .closest("div[class='input-group']")
+        .replaceWith(this.singularInput);
       this.setEventSingularCancel();
       this.setEventSingularConfirm();
       this.setEventInput();
     } else {
-      $(target).replaceWith(this.pluralInput);
+      $(target)
+        .closest("div[class='input-group']")
+        .replaceWith(this.pluralInput);
       this.setEventPluralCancel();
       this.setEventPluralConfirm();
       this.setEventInput();
@@ -324,14 +311,19 @@ export default class I18nManagerController extends Vue {
   }
 
   private setEventPluralSpan() {
-    $(".override-plural-value-exist").on("click", e => {
-      this.initInput(e.target, "plural");
+    $(".override-plural-value-exist").kendoButton({
+      click: e => {
+        console.log(e);
+        this.initInput(e.event.target, "plural");
+      }
     });
   }
 
   private setEventSingularSpan() {
-    $(".override-singular-value-exist").on("click", e => {
-      this.initInput(e.target, "singular");
+    $(".override-singular-value-exist").kendoButton({
+      click: e => {
+        this.initInput(e.event.target, "singular");
+      }
     });
   }
 
@@ -388,9 +380,9 @@ export default class I18nManagerController extends Vue {
             $(
               confirmEvent.sender.element[0].closest("div[class='input-group']")
             ).replaceWith(
-              `<span class='override-singular-value-exist'>${
+              `<div class="input-group"><span>${
                 JSON.parse(newVal).msgstr
-                }</span>`
+              }</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
             );
             this.setEventSingularSpan();
           }
@@ -412,11 +404,11 @@ export default class I18nManagerController extends Vue {
           $(confirmEvent.event.target.closest("tr[role=row]")).find("input")
             .length > 1
             ? $(confirmEvent.event.target.closest("tr[role=row]")).find(
-            "input"
-            )[1].value
+                "input"
+              )[1].value
             : $(confirmEvent.event.target.closest("tr[role=row]")).find(
-            "input"
-            )[0].value;
+                "input"
+              )[0].value;
         const newVal = JSON.stringify({
           msgstr: inputVal,
           plural: 1,
@@ -452,9 +444,9 @@ export default class I18nManagerController extends Vue {
             $(
               confirmEvent.sender.element[0].closest("div[class='input-group']")
             ).replaceWith(
-              `<span class='override-plural-value-exist'>${
+              `<div class="input-group"><span>${
                 JSON.parse(newVal).msgstr
-                }</span>`
+              }</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
             );
             if ($(confirmEvent.sender.element[0]).prev("hr")) {
               $(".override-plural-value-exist").prepend("<hr>");
@@ -499,9 +491,18 @@ export default class I18nManagerController extends Vue {
   }
 
   private setEventInput() {
-    $(
-      ".overriden-translation-input-singular, .overriden-translation-input-plural"
-    ).on("input", event => {
+    const input = $(".overriden-translation-input-singular, .overriden-translation-input-plural");
+    input.on("keypress", e => {
+      if (e.which === 13) {
+        $(".confirm-override-translation-singular").trigger("click");
+      }
+    });
+    input.on("keypress", e => {
+      if (e.which === 13) {
+        $(".confirm-override-translation-plural").trigger("click");
+      }
+    });
+    input.on("input", event => {
       const cancelBtn = $(event.target.nextElementSibling.children[1]);
       const confirmBtn = $(event.target.nextElementSibling.children[0]);
       confirmBtn.data("kendoButton").enable(true);
