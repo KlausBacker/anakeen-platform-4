@@ -1,12 +1,13 @@
-export module AnakeenController {
+// tslint:disable-next-line:no-namespace
+export namespace AnakeenController {
   export namespace Types {
     export type DOMReference = Element | HTMLElement | JQuery | JQuery.Selector;
 
-    export type ViewData = {
+    export interface ViewData {
       initid: String | Number;
       viewId: String;
       revision: Number;
-    };
+    }
 
     export type ControllerOptions = ViewData & {
       eventPrefix: string;
@@ -33,19 +34,34 @@ export module AnakeenController {
       ...args: ListenableEventCallableArgs
     ) => void;
 
-    export type ListenableEventOptions = {
+    export interface ListenableEventOptions {
       eventCallback: ListenableEventCallable;
       [key: string]: any
-    };
+    }
 
     export type ListenableEvent = ListenableEventOptions;
 
-    export type ListenableEvents = {
-      [key: string]: Array<ListenableEvent>;
-    };
+    export interface ListenableEvents {
+      [key: string]: ListenableEvent[];
+    }
 
     export class Listenable {
-      private _events: ListenableEvents;
+
+      private static _getEventCallback(
+        eventCb: ListenableEventCallable | ListenableEvent
+      ): ListenableEvent {
+        if (eventCb) {
+          if (typeof eventCb === "function") {
+            return {
+              eventCallback: eventCb
+            };
+          } else if (typeof eventCb === "object" && eventCb.eventCallback) {
+            return eventCb;
+          }
+        }
+        return null;
+      }
+      protected _events: ListenableEvents;
 
       constructor() {
         this._events = {};
@@ -77,7 +93,7 @@ export module AnakeenController {
         this.on(eventName, wrapperCallback);
       }
 
-      public off(eventName, callback?: ListenableEventCallable): Array<ListenableEvent> {
+      public off(eventName, callback?: ListenableEventCallable): ListenableEvent[] {
         if (!this._events[eventName]) {
           return;
         }
@@ -120,21 +136,6 @@ export module AnakeenController {
         this._events[eventName].forEach(cb => {
           cb.eventCallback(...args);
         });
-      }
-
-      private static _getEventCallback(
-        eventCb: ListenableEventCallable | ListenableEvent
-      ): ListenableEvent {
-        if (eventCb) {
-          if (typeof eventCb === "function") {
-            return {
-              eventCallback: eventCb
-            };
-          } else if (typeof eventCb === "object" && eventCb.eventCallback) {
-            return eventCb;
-          }
-        }
-        return null;
       }
     }
   }
@@ -180,7 +181,9 @@ export module AnakeenController {
       "attributeCreateDialogDocumentBeforeSetTargetValue",
       "attributeCreateDialogDocumentReady",
       "attributeCreateDialogDocumentBeforeClose",
-      "attributeCreateDialogDocumentBeforeDestroy"
+      "attributeCreateDialogDocumentBeforeDestroy",
+      "renderCss",
+      "injectCurrentSmartElementJS"
     ];
 
     export interface ISmartElementAPI {

@@ -2,8 +2,6 @@ import "./testRender.scss";
 
 export default function(scopedController) {
   scopedController.addEventListener("ready", event => {
-    console.log(scopedController);
-    console.log("Youhouhouy !!!!!!!!");
     const docid = scopedController.getValue("tst_docname").value;
     const viewId =
       scopedController.getValue("tst_docviewid").value ||
@@ -33,8 +31,4 @@ export default function(scopedController) {
       }
     }
   );
-
-  scopedController.addEventListener("beforeSave", (...args) => {
-    console.log(...args);
-  })
 }

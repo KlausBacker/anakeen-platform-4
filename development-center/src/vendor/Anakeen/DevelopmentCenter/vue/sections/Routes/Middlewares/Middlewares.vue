@@ -105,7 +105,6 @@ export default {
         }
         if (filters.length) {
           this.$refs.middlewaresList.filter({ filters, logic: "and" });
-          debugger;
           filters.forEach(f => {
             if (f.field === "name") {
               this.url = `/api/v2/devel/routes/middlewares/${f.value}`;

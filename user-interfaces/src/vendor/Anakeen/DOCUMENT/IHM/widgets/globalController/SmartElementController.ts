@@ -1,4 +1,5 @@
-import { AnakeenController } from "./types/ControllerTypes";
+/* tslint:disable:variable-name */
+import * as Backbone from "backbone";
 import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
 import ViewData = AnakeenController.Types.ViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
@@ -7,36 +8,35 @@ import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCall
 import ListenableEventOptions = AnakeenController.BusEvents.ListenableEventOptions;
 import * as $ from "jquery";
 import * as _ from "underscore";
-import * as Backbone from "backbone";
-import Router = require("../../routers/router.js");
-import Model = require("../../models/mDocument");
 import AttributeInterface = require("../../controllerObjects/attributeInterface");
 import MenuInterface = require("../../controllerObjects/menuInterface");
 import TransitionInterface = require("../../controllerObjects/transitionInterface");
-import View = require("../../views/document/vDocument");
-import TransitionModel = require("../../models/mTransition");
-import TransitionView = require("../../views/workflow/vTransition");
-import MenuModel = require("../../models/mMenu");
 import i18n = require("../../i18n/documentCatalog");
+import Model = require("../../models/mDocument");
+import MenuModel = require("../../models/mMenu");
+import TransitionModel = require("../../models/mTransition");
+import Router = require("../../routers/router.js");
+import View = require("../../views/document/vDocument");
+import TransitionView = require("../../views/workflow/vTransition");
 import "../../widgets/widget";
 import "../../widgets/window/wConfirm";
 import "../../widgets/window/wLoading";
 import "../../widgets/window/wNotification";
-import Listenable = AnakeenController.BusEvents.Listenable;
+import { AnakeenController } from "./types/ControllerTypes";
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
 
-type ControllerOptions = {
+interface IControllerOptions {
   router?: boolean | { noRouter: boolean };
   customClientData?: any;
   loading?: boolean;
   notification?: boolean;
-};
+}
 
-const DEFAULT_OPTIONS: ControllerOptions = {
-  router: false,
+const DEFAULT_OPTIONS: IControllerOptions = {
   customClientData: {},
   loading: true,
-  notification: true
+  notification: true,
+  router: false
 };
 
 class ErrorModelNonInitialized extends Error {
@@ -44,7 +44,7 @@ class ErrorModelNonInitialized extends Error {
     super();
     this.message =
       message ||
-      "The model is not initialized, use fetchDocument to initialise it.";
+      "The model is not initialized, use fetchSmartElement to initialise it.";
     this.name = "ErrorModelNonInitialized";
     this.stack = new Error().stack;
   }
@@ -66,41 +66,42 @@ interface ISmartElementModel extends Backbone.Model {
   injectCSS(cssToInject: string[]): Promise<any>;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export default class SmartElementController extends AnakeenController.BusEvents
   .Listenable {
   private static CONSTRAINT_PREFIX = "constraint::";
   private static EVENT_PREFIX = "hook::";
 
-  public uid: string = null;
-  protected _eventHistory: { [key: string]: ListenableEvents } = {};
-  protected _element: JQuery<DOMReference> = null;
-  protected _smartElement: JQuery<DOMReference> = null;
-  protected _view: Backbone.View = null;
+  public uid: string;
+  protected _registeredListeners: { [key: string]: ListenableEvents } = {};
+  protected _element: JQuery<DOMReference>;
+  protected _smartElement: JQuery<DOMReference>;
+  protected _view: Backbone.View;
   protected _model: ISmartElementModel;
-  protected _router: Backbone.Router = null;
+  protected _router: Backbone.Router;
   protected _initialized: { model: boolean; view: boolean } = {
     model: false,
     view: false
   };
   protected _customClientData: {} = {};
   protected _internalViewData: ViewData = {
-    initid: null,
-    revision: undefined,
-    viewId: undefined
+    initid: 0,
+    revision: -1,
+    viewId: "!defaultConsultation"
   };
-  protected _options: ControllerOptions = {};
+  protected _requestData: ViewData;
+  protected _options: IControllerOptions = {};
   protected _constraintList = {};
-  protected _eventListener = {};
   protected _activatedConstraint: any = {};
   protected _activatedEventListener: any = {};
-  protected _activatedListeners: Listenable = null;
-  protected $loading: JQuery & { dcpLoading(...args): JQuery } = null;
-  protected $notification: JQuery & { dcpNotification(...args): JQuery } = null;
+  protected $loading: JQuery & { dcpLoading(...args): JQuery };
+  protected $notification: JQuery & { dcpNotification(...args): JQuery };
 
   constructor(
     dom: DOMReference,
     viewData: ViewData,
-    options?: ControllerOptions
+    options?: IControllerOptions,
+    events?
   ) {
     super();
     this.uid = _.uniqueId("smart-element-controller-");
@@ -109,6 +110,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       this._internalViewData.initid = viewData.initid;
       this._internalViewData.viewId = viewData.viewId;
       this._internalViewData.revision = viewData.revision;
+      this._requestData = Object.assign({}, this._internalViewData);
     }
     // @ts-ignore
     this._element = $(dom);
@@ -119,7 +121,1043 @@ export default class SmartElementController extends AnakeenController.BusEvents
     if (!this._internalViewData.initid) {
       return;
     }
+
+    // Bind initial events
+    if (events) {
+      Object.keys(events).forEach(eventType => {
+        this.addEventListener(eventType, events[eventType].bind(this));
+      })
+    }
     this._initializeSmartElement({}, this._options.customClientData);
+  }
+
+  /***************************************************************************************************************
+   * External function
+   **************************************************************************************************************/
+  /**
+   * Reinit the current document (close it and re-open it) : keep the same view, revision, etc...
+   *
+   * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
+   * @param options object {"success": fct, "error", fct}
+   */
+  public reinitSmartElement(values, options?) {
+    const properties = this.getProperties();
+    this.checkInitialisedModel();
+    values = values || {};
+
+    // Reinit model with server values
+    _.defaults(values, {
+      initid: properties.initid,
+      revision: properties.revision,
+      viewId: properties.viewId
+    });
+
+    return this.fetchSmartElement(values, options);
+  }
+
+  /**
+   * Fetch a new document
+   * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
+   * @param options object {"success": fct, "error", fct}
+   */
+  public fetchSmartElement(values, options) {
+    let documentPromise;
+    values = _.isUndefined(values) ? {} : values;
+    options = options || {};
+    if (!_.isObject(values)) {
+      throw new Error(
+        'Fetch argument must be an object {"initid":, "revision": , "viewId": }'
+      );
+    }
+
+    if (!values.initid) {
+      throw new Error("initid argument is mandatory");
+    }
+
+    if (!isNaN(values.initid)) {
+      // Convert to numeric initid is possible
+      values.initid = parseInt(values.initid, 10);
+    }
+
+    // Use default values when fetch another document
+    _.defaults(values, { revision: -1, viewId: "!defaultConsultation" });
+    _.defaults(options, { force: false });
+
+    _.each(_.pick(values, "initid", "revision", "viewId"), (value, key) => {
+      this._internalViewData[key] = value;
+      this._requestData[key] = value;
+    });
+
+    if (!this._model) {
+      documentPromise = this._initializeSmartElement(
+        options,
+        values.customClientData
+      );
+    } else {
+      if (values.customClientData) {
+        this._model._customClientData = values.customClientData;
+      }
+      documentPromise = this._model.fetchDocument(
+        this._getModelValue(),
+        options
+      );
+    }
+    return this._registerOutputPromise(documentPromise, options);
+  }
+
+  /**
+   * Save the current document
+   * Reload the interface in the same mode
+   * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
+   *
+   */
+  public saveSmartElement(options) {
+    let documentPromise;
+    options = options || {};
+    this.checkInitialisedModel();
+    if (options.customClientData) {
+      this._model._customClientData = options.customClientData;
+    }
+    documentPromise = this._model.saveDocument();
+    return this._registerOutputPromise(documentPromise, options);
+  }
+
+  /**
+   * Change the workflow state of the document
+   *
+   * @param parameters
+   * @param reinitOptions
+   * @param options
+   */
+  public changeStateSmartElement(parameters, reinitOptions, options) {
+    let documentPromise;
+    this.checkInitialisedModel();
+    if (!_.isObject(parameters)) {
+      throw new Error(
+        'changeStateDocument first argument must be an object {"nextState":, "transition": , "values":, "unattended":, "" }'
+      );
+    }
+    if (
+      !_.isString(parameters.nextState) ||
+      !_.isString(parameters.transition)
+    ) {
+      throw new Error("nextState and transition arguments are mandatory");
+    }
+    documentPromise = this._initAndDisplayTransition(
+      parameters.nextState,
+      parameters.transition,
+      parameters.values || null,
+      parameters.unattended || false,
+      parameters.transitionElementsCallBack || false,
+      reinitOptions
+    );
+    return this._registerOutputPromise(documentPromise, options);
+  }
+
+  /**
+   * Delete the current document
+   * Reload the interface in the same mode
+   * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
+   */
+  public deleteSmartElement(options) {
+    let documentPromise;
+    options = options || {};
+    this.checkInitialisedModel();
+    if (options.customClientData) {
+      this._model._customClientData = options.customClientData;
+    }
+    documentPromise = this._model.deleteDocument();
+    return this._registerOutputPromise(documentPromise, options);
+  }
+
+  /**
+   * Restore the current document
+   * Reload the interface in the same mode
+   * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
+   */
+  public restoreSmartElement(options) {
+    let documentPromise;
+    options = options || {};
+    this.checkInitialisedModel();
+    if (options.customClientData) {
+      this._model._customClientData = options.customClientData;
+    }
+    documentPromise = this._model.restoreDocument();
+    return this._registerOutputPromise(documentPromise, options);
+  }
+
+  /**
+   * Get a property value
+   *
+   * @param property
+   * @returns {*}
+   */
+  public getProperty(property) {
+    this.checkInitialisedModel();
+    if (property === "isModified") {
+      return this._model.isModified();
+    }
+    return this._model.getServerProperties()[property];
+  }
+
+  /**
+   * Get all the properties
+   * @returns {*}
+   */
+  public getProperties() {
+    let properties;
+    let ready = true;
+    try {
+      this.checkInitialisedModel();
+    } catch (e) {
+      ready = false;
+      properties = {
+        notLoaded: true
+      };
+    }
+    if (ready) {
+      properties = this._model.getServerProperties();
+      properties.isModified = this._model.isModified();
+      properties.url = this._model.url() + ".html";
+    }
+
+    return properties;
+  }
+
+  /**
+   * Check if an attribute exist
+   *
+   * @param attributeId
+   * @return {boolean}
+   */
+  public hasAttribute(attributeId) {
+    this.checkInitialisedModel();
+    const attribute = this._model.get("attributes").get(attributeId);
+    return !!attribute;
+  }
+
+  /**
+   * Get the attribute interface object
+   * Return null if attribute not found
+   * @param attributeId
+   * @returns AttributeInterface|null
+   */
+  public getAttribute(attributeId) {
+    this.checkInitialisedModel();
+    const attributeModel = this._getAttributeModel(attributeId);
+    if (!attributeModel) {
+      return null;
+    }
+    return new AttributeInterface(this._getAttributeModel(attributeId));
+  }
+
+  /**
+   * Get all the attributes of the current document
+   *
+   * @returns [AttributeInterface]
+   */
+  public getAttributes() {
+    this.checkInitialisedModel();
+    return this._model.get("attributes").map(currentAttribute => {
+      return new AttributeInterface(currentAttribute);
+    });
+  }
+
+  /**
+   * Check if a menu exist
+   *
+   * @param menuId
+   * @return {boolean}
+   */
+  public hasMenu(menuId) {
+    this.checkInitialisedModel();
+    const menu = this._getMenuModel(menuId);
+    return !!menu;
+  }
+
+  /**
+   * Get the menu interface object
+   *
+   * @param menuId
+   * @returns MenuInterface
+   */
+  public getMenu(menuId) {
+    this.checkInitialisedModel();
+    const menu = this._getMenuModel(menuId);
+    if (!menu) {
+      return null;
+    }
+    return new MenuInterface(menu);
+  }
+
+  /**
+   * Get all the menu of the current document
+   *
+   * @returns [MenuInterface]
+   */
+  public getMenus() {
+    this.checkInitialisedModel();
+    return this._model.get("menus").map(currentMenu => {
+      return new MenuInterface(currentMenu);
+    });
+  }
+
+  /**
+   * Select a tab
+   *
+   * @param tabId
+   * @returns void
+   */
+  public selectTab(tabId) {
+    this.checkInitialisedModel();
+    const attributeModel = this._getAttributeModel(tabId);
+    if (!attributeModel) {
+      throw new Error('The attribute "' + tabId + '" cannot be found.');
+    }
+    if (attributeModel.get("type") !== "tab") {
+      throw new Error('The attribute "' + tabId + '" is not a tab.');
+    }
+
+    this._model.trigger("doSelectTab", tabId);
+  }
+
+  /**
+   * Draw tab content
+   *
+   * @param tabId
+   * @returns void
+   */
+  public drawTab(tabId) {
+    this.checkInitialisedModel();
+    const attributeModel = this._getAttributeModel(tabId);
+    if (!attributeModel) {
+      throw new Error('The attribute "' + tabId + '" cannot be found.');
+    }
+    if (attributeModel.get("type") !== "tab") {
+      throw new Error('The attribute "' + tabId + '" is not a tab.');
+    }
+
+    this._model.trigger("doDrawTab", tabId);
+  }
+
+  /**
+   * Get an attribute value
+   *
+   * @param attributeId
+   * @param type string (current|previous|initial|all) what kind of value (default : current)
+   * @returns {*}
+   */
+  public getValue(attributeId, type) {
+    let attribute;
+    this.checkInitialisedModel();
+    const attributeModel = this._getAttributeModel(attributeId);
+    if (!attributeModel) {
+      return null;
+    }
+    attribute = new AttributeInterface(attributeModel);
+    return _.clone(attribute.getValue(type));
+  }
+
+  /**
+   * Get all the values
+   *
+   * @returns {*|{}}
+   */
+  public getValues() {
+    this.checkInitialisedModel();
+    return this._model.getValues();
+  }
+
+  /**
+   * Get customData from render view model
+   * @returns {*}
+   */
+  public getCustomServerData() {
+    this.checkInitialisedModel();
+    return this._model.get("customServerData");
+  }
+  /**
+   * Add customData from render view model
+   * @returns {*}
+   */
+  public addCustomClientData(documentCheck, value) {
+    this.checkInitialisedModel();
+    // First case no data, so documentCheck is data
+    if (_.isUndefined(value)) {
+      value = documentCheck;
+      documentCheck = {};
+    }
+    // Second case documentCheck is a function and data is object
+    if (_.isFunction(documentCheck) && _.isObject(value)) {
+      documentCheck = { documentCheck };
+    }
+    // Third case documentCheck is an object and data is object => check if documentCheck property exist
+    if (_.isObject(value) && _.isObject(documentCheck)) {
+      documentCheck = _.defaults(documentCheck, {
+        documentCheck: () => {
+          return true;
+        },
+        once: true
+      });
+    } else {
+      throw new Error("Constraint must be an value or a function and a value");
+    }
+    // Register the customClientData
+    _.each(value, (currentValue, currentKey) => {
+      this._customClientData[currentKey] = {
+        documentCheck: documentCheck.documentCheck,
+        once: documentCheck.once,
+        value: currentValue
+      };
+    });
+  }
+  /**
+   * Get customData from render view model
+   * @returns {*}
+   */
+  public setCustomClientData(documentCheck, value) {
+    console.error("this function (setCustomClientData) is deprecated");
+    return this.addCustomClientData(documentCheck, value);
+  }
+  /**
+   * Get customData from render view model
+   * @returns {*}
+   */
+  public getCustomClientData(deleteOnce) {
+    const values = {};
+    let $element;
+    let properties;
+    const newCustomData = {};
+    this.checkInitialisedModel();
+    properties = this.getProperties();
+    $element = $(this._element);
+    _.each(this._customClientData, (currentCustom: any, key) => {
+      if (currentCustom.documentCheck.call($element, properties)) {
+        values[key] = currentCustom.value;
+        if (deleteOnce === true && !currentCustom.once) {
+          newCustomData[key] = currentCustom;
+        }
+      } else {
+        if (deleteOnce === true) {
+          newCustomData[key] = currentCustom;
+        }
+      }
+    });
+    if (deleteOnce === true) {
+      this._customClientData = newCustomData;
+    }
+    return values;
+  }
+
+  /**
+   * Delete a custom data
+   * @returns {*}
+   */
+  public removeCustomClientData(key) {
+    if (this._customClientData[key]) {
+      delete this._customClientData[key];
+    }
+    return this;
+  }
+  /**
+   * Set a value
+   * Trigger a change event
+   *
+   * @param attributeId string attribute identifier
+   * @param value object { "value" : *, "displayValue" : *}
+   * @returns {*}
+   */
+  public setValue(attributeId, value) {
+    this.checkInitialisedModel();
+    const attributeModel = this._getAttributeModel(attributeId);
+    if (!attributeModel) {
+      throw new Error("Unable to find attribute " + attributeId);
+    }
+    const attributeInterface = new AttributeInterface(attributeModel);
+    let index;
+    let currentValueLength;
+    let i;
+
+    if (attributeModel.getParent().get("type") === "array") {
+      attributeInterface.setValue(value, true); // Just verify value conditions
+      if (!_.isArray(value)) {
+        index = value.index;
+      } else {
+        index = value.length - 1;
+      }
+      currentValueLength = attributeInterface.getValue().length;
+      attributeInterface.setValue(value);
+
+      // Pad values of complete array with default values
+      const arrayModel = attributeModel.getParent();
+      const modifiedColumns = {};
+      arrayModel.get("content").each(aModel => {
+        const aValue = _.clone(aModel.get("attributeValue"));
+        let defaultValue = aModel.get("defaultValue");
+
+        if (!defaultValue) {
+          defaultValue = aModel.hasMultipleOption()
+            ? []
+            : { value: null, displayValue: "" };
+        }
+
+        for (i = currentValueLength; i <= index; i++) {
+          if (_.isUndefined(aValue[i])) {
+            aValue[i] = defaultValue;
+            modifiedColumns[aModel.id] = { model: aModel, values: aValue };
+          }
+        }
+      });
+
+      _.each(modifiedColumns, (modData: any) => {
+        _.defer(() => {
+          modData.model.set("attributeValue", modData.values);
+        });
+      });
+
+      return;
+    }
+    return attributeInterface.setValue(value);
+  }
+
+  /**
+   * Add a row to an array
+   *
+   * @param attributeId string attribute array
+   * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
+   */
+  public appendArrayRow(attributeId, values) {
+    this.checkInitialisedModel();
+    const attribute = this._getAttributeModel(attributeId);
+
+    if (!attribute) {
+      throw new Error("Unable to find attribute " + attributeId);
+    }
+
+    if (attribute.get("type") !== "array") {
+      throw new Error(
+        "Attribute " + attributeId + " must be an attribute of type array"
+      );
+    }
+    if (!_.isObject(values)) {
+      throw new Error(
+        "Values must be an object where each properties is an attribute of the array for " +
+          attributeId
+      );
+    }
+    attribute.get("content").each(currentAttribute => {
+      let newValue = values[currentAttribute.id];
+      const currentValue = currentAttribute.getValue();
+      if (_.isUndefined(newValue)) {
+        // Set default value if no value defined
+        currentAttribute.createIndexedValue(
+          currentValue.length,
+          false,
+          _.isEmpty(values)
+        );
+      } else {
+        newValue = _.defaults(newValue, {
+          displayValue: newValue.value,
+          value: ""
+        });
+        currentAttribute.addValue(newValue);
+      }
+    });
+  }
+
+  /**
+   * Add a row before another row
+   *
+   * @param attributeId string attribute array
+   * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
+   * @param index int index of the row
+   */
+  public insertBeforeArrayRow(attributeId, values, index) {
+    this.checkInitialisedModel();
+    const attribute = this._getAttributeModel(attributeId);
+    let maxValue;
+    if (!attribute) {
+      throw new Error("Unable to find attribute " + attributeId);
+    }
+    if (attribute.get("type") !== "array") {
+      throw new Error(
+        "Attribute " + attributeId + " must be an attribute of type array"
+      );
+    }
+    if (!_.isObject(values)) {
+      throw new Error(
+        "Values must be an object where each properties is an attribute of the array for " +
+          attributeId
+      );
+    }
+    maxValue = this._getMaxIndex(attribute);
+    if (index < 0 || index > maxValue) {
+      throw new Error("Index must be between 0 and " + maxValue);
+    }
+    attribute.get("content").each(currentAttribute => {
+      let currentValue = values[currentAttribute.id];
+      if (!_.isUndefined(currentValue)) {
+        currentValue = _.defaults(currentValue, {
+          displayValue: currentValue.value,
+          value: ""
+        });
+      } else {
+        currentValue = currentAttribute.attributes.defaultValue;
+        if (!currentValue) {
+          currentValue = { value: "", displayValue: "" };
+        }
+      }
+      currentAttribute.addIndexedValue(currentValue, index);
+    });
+  }
+
+  /**
+   * Remove an array row
+   * @param attributeId string attribute array
+   * @param index int index of the row
+   */
+  public removeArrayRow(attributeId, index) {
+    this.checkInitialisedModel();
+    const attribute = this._getAttributeModel(attributeId);
+    let maxIndex;
+    if (!attribute) {
+      throw new Error("Unable to find attribute " + attributeId);
+    }
+    if (attribute.get("type") !== "array") {
+      throw Error(
+        "Attribute " + attributeId + " must be an attribute of type array"
+      );
+    }
+    maxIndex = this._getMaxIndex(attribute) - 1;
+    if (index < 0 || index > maxIndex) {
+      throw Error(
+        "Index must be between 0 and " + maxIndex + " for " + attributeId
+      );
+    }
+    attribute.get("content").each(currentAttribute => {
+      currentAttribute.removeIndexValue(index);
+    });
+    attribute.removeIndexedLine(index);
+  }
+
+  /**
+   * Add a constraint to the widget
+   *
+   * @param options object { "name" : string, "documentCheck": function}
+   * @param callback function callback called when the event is triggered
+   * @returns {*}
+   */
+  public addConstraint(options, callback) {
+    let currentConstraint;
+    const currentWidget = this;
+    let uniqueName;
+    if (_.isUndefined(callback) && _.isFunction(options)) {
+      callback = options;
+      options = {};
+    }
+    if (_.isObject(options) && _.isUndefined(callback)) {
+      if (!options.name) {
+        throw new Error(
+          "When a constraint is initiated with a single object, this object needs to have the name property " +
+            JSON.stringify(options)
+        );
+      }
+    } else {
+      _.defaults(options, {
+        attributeCheck: () => true,
+        constraintCheck: callback,
+        documentCheck: () => true,
+        externalConstraint: false,
+        name: _.uniqueId("constraint"),
+        once: false
+      });
+    }
+    currentConstraint = options;
+    if (!_.isFunction(currentConstraint.constraintCheck)) {
+      throw new Error("An event need a callback");
+    }
+    // If constraint is once : wrap it an callback that execute callback and delete it
+    if (currentConstraint.once === true) {
+      currentConstraint.eventCallback = _.wrap(
+        currentConstraint.constraintCheck,
+        function documentController_onceWrapper(innerCallback) {
+          try {
+            // @ts-ignore
+            innerCallback.apply(this, _.rest(arguments));
+          } catch (e) {
+            console.error(e);
+          }
+          currentWidget.removeConstraint(
+            currentConstraint.name,
+            currentConstraint.externalConstraint
+          );
+        }
+      );
+    }
+    uniqueName =
+      (currentConstraint.externalConstraint ? "external_" : "internal_") +
+      currentConstraint.name;
+    this._constraintList[uniqueName] = currentConstraint;
+    this._initActivatedConstraint();
+    return currentConstraint.name;
+  }
+
+  /**
+   * List the constraint of the widget
+   *
+   * @returns {*}
+   */
+  public listConstraints() {
+    return this._constraintList;
+  }
+
+  /**
+   * Remove a constraint of the widget
+   *
+   * @param constraintName
+   * @param allKind
+   * @returns {*}
+   */
+  public removeConstraint(constraintName, allKind) {
+    const removed = [];
+    let newConstraintList;
+    let constraintList;
+    const testRegExp = new RegExp("\\" + constraintName + "$");
+    // jscs:disable disallowImplicitTypeConversion
+    allKind = !!allKind;
+    // jscs:enable disallowImplicitTypeConversion
+    newConstraintList = _.filter(
+      this.listConstraints(),
+      (currentConstraint: any) => {
+        if (
+          (allKind || !currentConstraint.externalConstraint) &&
+          (currentConstraint.name === constraintName ||
+            testRegExp.test(currentConstraint.name))
+        ) {
+          removed.push(currentConstraint);
+          return false;
+        }
+        return true;
+      }
+    );
+    constraintList = {};
+    _.each(newConstraintList, (currentConstraint: any) => {
+      const uniqueName =
+        (currentConstraint.externalConstraint ? "external_" : "internal_") +
+        currentConstraint.name;
+      constraintList[uniqueName] = currentConstraint;
+    });
+    this._constraintList = constraintList;
+    this._initActivatedConstraint();
+    return removed;
+  }
+
+  /**
+   * Add an event to the widget
+   *
+   * @param eventType string kind of event
+   * @param options object { "name" : string, "documentCheck": function}
+   * @param callback function callback called when the event is triggered
+   * @returns {*|Window.options.name}
+   */
+  public addEventListener(
+    eventType: string | ListenableEvent,
+    options?: object | ListenableEventCallable,
+    callback?: ListenableEventCallable
+  ) {
+    let currentEvent;
+    let eventCallback = callback;
+    let eventOptions = options;
+    // options is not mandatory and the callback can be the second parameters
+    if (_.isUndefined(eventCallback) && _.isFunction(eventOptions)) {
+      eventCallback = eventOptions;
+      eventOptions = {};
+    }
+
+    // the first parameters can be the final object (chain removeEvent and addEvent)
+    if (
+      _.isObject(eventType) &&
+      _.isUndefined(eventOptions) &&
+      _.isUndefined(eventCallback)
+    ) {
+      currentEvent = eventType;
+      if (!currentEvent.name) {
+        throw new Error(
+          "When an event is initiated with a single object, this object needs to have the name property " +
+            JSON.stringify(currentEvent)
+        );
+      }
+    } else {
+      currentEvent = _.defaults(eventOptions, {
+        eventCallback,
+        eventType,
+        externalEvent: false,
+        name: _.uniqueId("event_" + eventType),
+        once: false
+      });
+    }
+    // the eventType must be one the list
+    this.checkEventName(currentEvent.eventType);
+    // callback is mandatory and must be a function
+    if (!_.isFunction(currentEvent.eventCallback)) {
+      throw new Error("An event needs a callback that is a function");
+    }
+    this._addAndInitNewEvents(currentEvent);
+    // return the name of the event
+    return currentEvent.name;
+  }
+
+  /**
+   * List of the events of the current widget
+   *
+   * @returns {*}
+   */
+  public listEventListeners() {
+    return this._events;
+  }
+
+  /**
+   * Remove an event of the current widget
+   *
+   * @param eventName string can be an event name or a namespace
+   * @param allKind remove internal/external events
+   * @returns {*}
+   */
+  public removeEventListener(eventName, allKind) {
+    let removed = [];
+    const testRegExp = new RegExp("\\" + eventName + "$");
+    allKind = !!allKind;
+    Object.keys(this.getEventsList()).forEach(eventType => {
+      removed = removed.concat(
+        this.getEventsList()[eventType].filter(currentEvent => {
+          return (
+            (allKind || !currentEvent.externalEvent) &&
+            (currentEvent.name === eventName ||
+              testRegExp.test(currentEvent.name))
+          );
+        })
+      );
+    });
+    removed.forEach(event => {
+      this.off(event.eventType, event.eventCallback);
+    });
+    this._initActivatedListeners({ launchReady: false });
+    return removed;
+  }
+
+  /**
+   * Trigger an event
+   *
+   * @param eventName
+   */
+  public triggerEvent(eventName) {
+    const args = _.toArray(arguments);
+    this.checkInitialisedModel();
+    this.checkEventName(eventName);
+
+    args.splice(1, 0, null); // Add null originalEvent
+    // @ts-ignore
+    return this._triggerControllerEvent.apply(this, args);
+  }
+
+  /**
+   * Hide a visible attribute
+   *
+   * @param attributeId
+   */
+  public hideAttribute(attributeId) {
+    this.checkInitialisedView();
+    const attributeModel = this._getAttributeModel(attributeId);
+    if (!attributeModel) {
+      console.error("Unable find and hide the attribute " + attributeId);
+      return;
+    }
+    attributeModel.trigger("hide");
+  }
+  /**
+   * show a visible attribute (previously hidden)
+   *
+   * @param attributeId
+   */
+  public showAttribute(attributeId) {
+    this.checkInitialisedView();
+    const attributeModel = this._getAttributeModel(attributeId);
+    if (!attributeModel) {
+      console.error("Unable find and show the attribute " + attributeId);
+      return;
+    }
+    attributeModel.trigger("show");
+  }
+
+  /**
+   * Display a message to the user
+   *
+   * @param message
+   */
+  public showMessage(message) {
+    this.checkInitialisedView();
+    if (_.isString(message)) {
+      message = {
+        message,
+        type: "info"
+      };
+    }
+    if (_.isObject(message)) {
+      message = _.defaults(message, {
+        type: "info"
+      });
+    }
+    this.$notification.dcpNotification("show", message.type, message);
+  }
+
+  /**
+   * Display loading bar
+   *
+   * @param message
+   * @param px
+   */
+  public maskDocument(message, px) {
+    this.$loading.dcpLoading("show");
+    if (message) {
+      this.$loading.dcpLoading("setTitle", message);
+    }
+    if (px) {
+      this.$loading.dcpLoading("setPercent", px);
+    }
+  }
+
+  /**
+   * Hide loading bar
+   */
+  public unmaskDocument(force) {
+    this.$loading.dcpLoading("hide", force);
+  }
+
+  /**
+   * Add an error message to an attribute
+   *
+   * @param attributeId
+   * @param message
+   * @param index
+   */
+  public setAttributeErrorMessage(attributeId, message, index) {
+    this.checkInitialisedView();
+    const attributeModel = this._getAttributeModel(attributeId);
+    if (!attributeModel) {
+      console.error("Unable find and show the attribute " + attributeId);
+      return;
+    }
+    attributeModel.setErrorMessage(message, index);
+  }
+
+  /**
+   * Clean the error message of an attribute
+   *
+   * @param attributeId
+   * @param index
+   */
+  public cleanAttributeErrorMessage(attributeId, index) {
+    this.checkInitialisedView();
+    const attributeModel = this._getAttributeModel(attributeId);
+    if (!attributeModel) {
+      console.error("Unable find and show the attribute " + attributeId);
+      return;
+    }
+    attributeModel.setErrorMessage(null, index);
+  }
+
+  public injectCSS(cssToInject) {
+    this.checkInitialisedView();
+    if (!_.isArray(cssToInject) && !_.isString(cssToInject)) {
+      throw new Error("The css to inject must be an array string or a string");
+    }
+    if (_.isString(cssToInject)) {
+      cssToInject = [cssToInject];
+    }
+
+    this._model.injectCSS(cssToInject);
+  }
+
+  public injectJS(jsToInject) {
+    this.checkInitialisedView();
+    if (!_.isArray(jsToInject) && !_.isString(jsToInject)) {
+      throw new Error("The js to inject must be an array string or a string");
+    }
+    if (_.isString(jsToInject)) {
+      jsToInject = [jsToInject];
+    }
+
+    return this._model.injectJS(jsToInject);
+  }
+  /**
+   * tryToDestroy the widget
+   *
+   * @return Promise
+   */
+  public tryToDestroy() {
+    return new Promise((resolve, reject) => {
+      const event = { prevent: false };
+      if (!this._model) {
+        resolve();
+        return;
+      }
+      if (
+        this._model &&
+        this._model.isModified() &&
+        !window.confirm(
+          this._model.get("properties").get("title") +
+            "\n" +
+            i18n.___(
+              "The form has been modified without saving, do you want to close it ?",
+              "ddui"
+            )
+        )
+      ) {
+        reject("Unable to destroy because user refuses it");
+        return;
+      }
+      // event.prevent = !this._triggerControllerEvent(
+      //   "beforeClose",
+      //   null,
+      //   this._model.getServerProperties()
+      // );
+      // if (event.prevent) {
+      //   reject("Unable to destroy because before close refuses it");
+      //   return;
+      // }
+      // resolve();
+      this._triggerControllerEvent(
+        "beforeClose",
+        null,
+        this._model.getModelProperties()
+      )
+        .then(() => {
+          resolve();
+        })
+        .catch(err => {
+          reject("Unable to destroy because before close refuses it : " + err);
+        });
+    });
+  }
+
+  public emit(eventName, ...args) {
+    if (!this._events[eventName]) {
+      return Promise.resolve();
+    }
+    return Promise.all(
+      this._events[eventName].map(cb => {
+        const callbackReturn: any = cb.eventCallback(...args);
+        if (
+          callbackReturn &&
+          callbackReturn instanceof Promise &&
+          eventName.indexOf("before") === 0
+        ) {
+          return callbackReturn;
+        } else {
+          return Promise.resolve(callbackReturn);
+        }
+      })
+    );
   }
 
   private _reinitListeners() {
@@ -152,7 +1190,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     }
 
     if (this._options.router !== false) {
-      this._initRouter({ useHistory: !this._options.router });
+      this._initRouter({ useHistory: true });
     }
 
     return resultPromise;
@@ -193,7 +1231,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
   private _initModel(initialValue) {
     let model;
 
-    //Don't reinit the model
+    // Don't reinit the model
     if (!this._model) {
       model = new Model(initialValue);
       this._model = model;
@@ -221,12 +1259,12 @@ export default class SmartElementController extends AnakeenController.BusEvents
    */
   private _initView() {
     let seView;
-    ///Don't reinit view
+    /// Don't reinit view
     if (!this._view) {
       this._initDom();
       seView = new View({
-        model: this._model,
-        el: this._smartElement[0]
+        el: this._smartElement[0],
+        model: this._model
       });
       this._view = seView;
       this._initViewEvents();
@@ -299,11 +1337,10 @@ export default class SmartElementController extends AnakeenController.BusEvents
       this._internalViewData.viewId = this._model.get("viewId");
       this._internalViewData.revision = this._model.get("revision");
       this._element.data("document", this._getModelValue());
-      this._initActivatedConstraint();
-      this._initActivatedEventListeners({ launchReady: false });
+      this._initActivatedListeners({ launchReady: false });
     });
     this._model.listenTo(this._model, "beforeRender", event => {
-      event.prevent = !this._triggerControllerEvent(
+      event.promise = this._triggerControllerEvent(
         "beforeRender",
         event,
         this.getProperties(),
@@ -315,7 +1352,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       "beforeClose",
       (event, nextDocument, customClientData) => {
         if (this._initialized.view) {
-          event.prevent = !this._triggerControllerEvent(
+          event.promise = this._triggerControllerEvent(
             "beforeClose",
             event,
             this.getProperties(),
@@ -341,7 +1378,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       try {
         this._model._customClientData = this.getCustomClientData(false);
       } catch (e) {
-        //no test here
+        // no test here
       }
     });
     this._model.listenTo(
@@ -356,7 +1393,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
             this._model._customRequestData = data;
           }
         };
-        event.prevent = !this._triggerControllerEvent(
+        event.promise = this._triggerControllerEvent(
           "beforeSave",
           event,
           this.getProperties(),
@@ -847,18 +1884,18 @@ export default class SmartElementController extends AnakeenController.BusEvents
       this._model,
       "beforeParse",
       _.bind(() => {
-        //Suppress customClientData after a sucessful transaction
+        // Suppress customClientData after a sucessful transaction
         try {
           this.getCustomClientData(true);
         } catch (e) {
-          //no test here
+          // no test here
         }
       }, this)
     );
 
     this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
       event.controller = this;
-      this.emit("injectCurrentSmartElementJS", event);
+      this._triggerControllerEvent("injectCurrentSmartElementJS",null, this.getProperties(), event);
     });
   }
 
@@ -929,9 +1966,8 @@ export default class SmartElementController extends AnakeenController.BusEvents
       this._initView();
       this._model.fetchDocument();
     });
-
     this._view.on("renderCss", css => {
-      this.emit("renderCss", css);
+      this._triggerControllerEvent("renderCss", null, this.getProperties, css);
     });
   }
 
@@ -948,7 +1984,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       if (window.history && history.pushState) {
         Backbone.history.start({ pushState: true });
       } else {
-        //For browser without API history
+        // For browser without API history
         Backbone.history.start();
       }
     } catch (e) {
@@ -996,19 +2032,19 @@ export default class SmartElementController extends AnakeenController.BusEvents
         return this;
       }
 
-      //Init transition model
+      // Init transition model
       transitionElements.model = new TransitionModel({
         documentId: this._model.id,
         documentModel: this._model,
         state: nextState,
-        transition: transition
+        transition
       });
 
-      //Init transition view
+      // Init transition view
       if (withoutInterface !== true) {
         transitionElements.view = new TransitionView({
-          model: transitionElements.model,
-          el: $target
+          el: $target,
+          model: transitionElements.model
         });
       }
 
@@ -1020,7 +2056,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       );
 
       if (transitionElements.view) {
-        //Propagate afterDisplayChange on renderDone
+        // Propagate afterDisplayChange on renderDone
         transitionElements.view.once("renderTransitionWindowDone", () => {
           this._triggerControllerEvent(
             "afterDisplayTransition",
@@ -1031,7 +2067,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
         });
       }
 
-      //Propagate the beforeTransition
+      // Propagate the beforeTransition
       transitionElements.model.listenTo(
         transitionElements.model,
         "beforeChangeState",
@@ -1045,7 +2081,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
         }
       );
 
-      //Propagate the beforeTransitionClose
+      // Propagate the beforeTransitionClose
       transitionElements.model.listenTo(
         transitionElements.model,
         "beforeChangeStateClose",
@@ -1088,7 +2124,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
             });
           }
 
-          //delete the pop up when the render of the pop up is done
+          // delete the pop up when the render of the pop up is done
           this._triggerControllerEvent(
             "successTransition",
             null,
@@ -1101,7 +2137,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
             reinitOptions.revision = -1;
           }
 
-          //Reinit the main model with last revision
+          // Reinit the main model with last revision
           this.reinitSmartElement(reinitOptions).then(
             () => {
               resolve({ documentProperties: documentServerProperties });
@@ -1123,6 +2159,16 @@ export default class SmartElementController extends AnakeenController.BusEvents
       );
 
       transitionElements.model.fetch({
+        error: (theModel, response, options) => {
+          const errorTxt: { title: string; message?: string } = {
+            title: "Transition Error"
+          };
+          if (options && options.errorThrown) {
+            errorTxt.message = options.errorThrown;
+          }
+          this.$notification.dcpNotification("showError", errorTxt);
+          transitionElements.model.trigger("showError", errorTxt);
+        },
         success: () => {
           if (withoutInterface === true) {
             transitionElements.model
@@ -1135,7 +2181,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
                   try {
                     transitionElementsCallBack(transitionElements);
                   } catch (e) {
-                    //nothing to do;
+                    // nothing to do;
                   }
                 }
               })
@@ -1143,14 +2189,14 @@ export default class SmartElementController extends AnakeenController.BusEvents
                 transitionElements.model.save(
                   {},
                   {
-                    success: () => {
-                      transitionElements.model.trigger("success");
-                      resolve({
+                    error: () => {
+                      reject({
                         documentProperties: documentServerProperties
                       });
                     },
-                    error: () => {
-                      reject({
+                    success: () => {
+                      transitionElements.model.trigger("success");
+                      resolve({
                         documentProperties: documentServerProperties
                       });
                     }
@@ -1171,7 +2217,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
                   try {
                     transitionElementsCallBack(transitionElements);
                   } catch (e) {
-                    //nothing to do;
+                    // nothing to do;
                   }
                 }
               })
@@ -1182,16 +2228,6 @@ export default class SmartElementController extends AnakeenController.BusEvents
                 reject({ documentProperties: documentServerProperties });
               });
           }
-        },
-        error: (theModel, response, options) => {
-          const errorTxt: { title: string; message?: string } = {
-            title: "Transition Error"
-          };
-          if (options && options.errorThrown) {
-            errorTxt.message = options.errorThrown;
-          }
-          this.$notification.dcpNotification("showError", errorTxt);
-          transitionElements.model.trigger("showError", errorTxt);
         }
       });
     });
@@ -1249,8 +2285,8 @@ export default class SmartElementController extends AnakeenController.BusEvents
       .chain()
       .map(currentAttribute => {
         return {
-          view: currentAttribute.haveView(),
-          id: currentAttribute.id
+          id: currentAttribute.id,
+          view: currentAttribute.haveView()
         };
       })
       .filter(currentAttribut => {
@@ -1297,113 +2333,6 @@ export default class SmartElementController extends AnakeenController.BusEvents
   }
 
   /**
-   * Activate events on the current document
-   * Used on the fetch of a new document
-   */
-  private _initActivatedEventListeners(options) {
-    const currentDocumentProperties = this.getProperties();
-    options = options || {};
-    this._activatedEventListener = {};
-    _.each(this.listEventListeners(), (currentEvent: any) => {
-      if (!_.isFunction(currentEvent.documentCheck)) {
-        this._activatedEventListener[currentEvent.name] = currentEvent;
-        return;
-      }
-      if (
-        currentEvent.documentCheck.call(
-          $(this._element),
-          currentDocumentProperties
-        )
-      ) {
-        this._activatedEventListener[currentEvent.name] = currentEvent;
-      }
-    });
-    //Trigger new added ready event
-    if (this._initialized.view && options.launchReady) {
-      this._triggerControllerEvent("ready", null, currentDocumentProperties);
-      _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
-        const objectAttribute = this.getAttribute(currentAttribute.id);
-        this._triggerAttributeControllerEvent(
-          "attributeReady",
-          null,
-          currentAttribute,
-          currentDocumentProperties,
-          objectAttribute,
-          currentAttribute.view.elements
-        );
-      });
-    }
-  }
-
-  /**
-   * Add new event and autotrigger already done event for ready
-   *
-   * @param newEvent
-   */
-  // private _addAndInitNewEvents(newEvent) {
-  //   let currentDocumentProperties;
-  //   let event;
-  //   let uniqueName;
-  //   const $element = $(this._element);
-  //   uniqueName =
-  //     (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
-  //   this._eventListener[uniqueName] = newEvent;
-  //   if (!this._initialized.model) {
-  //     //early event model is not ready (no trigger, or current register possible)
-  //     return this;
-  //   }
-  //   currentDocumentProperties = this.getProperties();
-  //   // Check if the event is for the current document
-  //   if (
-  //     !_.isFunction(newEvent.check) ||
-  //     newEvent.check.call($element, currentDocumentProperties)
-  //   ) {
-  //     this._activatedEventListener[newEvent.name] = newEvent;
-  //     // Check if we need to manually trigger this callback (late registered : only for ready events)
-  //     if (this._initialized.view) {
-  //       if (newEvent.eventType === "ready") {
-  //         event = $.Event(newEvent.eventType);
-  //         event.target = this._element;
-  //         try {
-  //           // add element as function context
-  //           newEvent.eventCallback.call(
-  //             $element,
-  //             event,
-  //             currentDocumentProperties
-  //           );
-  //         } catch (e) {
-  //           console.error(e);
-  //         }
-  //       }
-  //       if (newEvent.eventType === "attributeReady") {
-  //         event = $.Event(newEvent.eventType);
-  //         event.target = this._element;
-  //         _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
-  //           const objectAttribute = this.getAttribute(currentAttribute.id);
-  //           if (
-  //             !_.isFunction(newEvent.attributeCheck) ||
-  //             newEvent.attributeCheck.apply($element, [objectAttribute])
-  //           ) {
-  //             try {
-  //               // add element as function context
-  //               newEvent.eventCallback.call(
-  //                 $element,
-  //                 event,
-  //                 currentDocumentProperties,
-  //                 objectAttribute,
-  //                 currentAttribute.view.elements
-  //               );
-  //             } catch (e) {
-  //               console.error(e);
-  //             }
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
-
-  /**
    * Trigger attribute event
    *
    * Similar at trigger document event with a constraint on attribute
@@ -1432,7 +2361,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
       .filter((currentEvent: any) => {
         // Check by eventType (only call callback with good eventType)
         if (currentEvent.eventType === eventName) {
-          //Check with attributeCheck if the function exist
+          // Check with attributeCheck if the function exist
           if (!_.isFunction(currentEvent.attributeCheck)) {
             return true;
           }
@@ -1483,8 +2412,9 @@ export default class SmartElementController extends AnakeenController.BusEvents
     // internal event trigger
     const callbackArgs = [event, ...args];
 
+    let eventPromise = Promise.resolve();
     try {
-      this.emit(eventName, ...callbackArgs);
+      eventPromise = this.emit(eventName, ...callbackArgs) as Promise<void>;
     } catch (e) {
       // @ts-ignore
       if (window.dcp.logger) {
@@ -1496,50 +2426,9 @@ export default class SmartElementController extends AnakeenController.BusEvents
     }
     // @ts-ignore
     this._triggerExternalEvent.call(this, ...arguments);
-    return !event.isDefaultPrevented();
+    return eventPromise;
+    // return !event.isDefaultPrevented();
   }
-
-  /**
-   * Trigger a controller event
-   * That kind of event are only for this widget
-   *
-   * @param eventName
-   * @param originalEvent
-   * @param args
-   * @returns {boolean}
-   */
-  // private _triggerControllerEvent(eventName, originalEvent, ...args: any[]) {
-  //   const event: JQuery.Event & {
-  //     target: JQuery<DOMReference>;
-  //     originalEvent?: JQuery.Event;
-  //   } = $.Event(eventName);
-  //   event.target = this._element;
-  //   if (originalEvent && originalEvent.preventDefault) {
-  //     event.originalEvent = originalEvent;
-  //   }
-  //   // internal event trigger
-  //   const callbackArgs = [event, ...args];
-  //   _.chain(this._activatedEventListener)
-  //     .filter((currentEvent: any) => {
-  //       return currentEvent.eventType === eventName;
-  //     })
-  //     .each((currentEvent: any) => {
-  //       try {
-  //         currentEvent.eventCallback.apply($(this._element), callbackArgs);
-  //       } catch (e) {
-  //         // @ts-ignore
-  //         if (window.dcp.logger) {
-  //           // @ts-ignore
-  //           window.dcp.logger(e);
-  //         } else {
-  //           console.error(e);
-  //         }
-  //       }
-  //     });
-  //   // @ts-ignore
-  //   this._triggerExternalEvent.call(this, ...arguments);
-  //   return !event.isDefaultPrevented();
-  // }
 
   /**
    * Trigger event as jQuery standard events (all events are prefixed by document)
@@ -1549,7 +2438,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
    */
   private _triggerExternalEvent(type, ...args) {
     const event = $.Event(type);
-    //prepare argument for widget event trigger (we want type, event, data)
+    // prepare argument for widget event trigger (we want type, event, data)
     // add the eventObject
     args.unshift(event);
     // add the type
@@ -1558,7 +2447,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     args[2] = args.slice(2);
     // suppress other arguments (since they have been concatened)
     args = args.slice(0, 3);
-    //trigger external event
+    // trigger external event
     // TODO Trigger external event
     // this._trigger.apply(this, args);
   }
@@ -1595,7 +2484,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
   private checkInitialisedView() {
     if (!this._initialized.view) {
       throw new ErrorModelNonInitialized(
-        "The view is not initialized, use fetchDocument to initialise it."
+        "The view is not initialized, use fetchSmartElement to initialise it."
       );
     }
   }
@@ -1639,8 +2528,8 @@ export default class SmartElementController extends AnakeenController.BusEvents
           }
           resolve({
             element: $(this._element),
-            previousDocument: values.documentProperties || {},
-            nextDocument: this.getProperties()
+            nextDocument: this.getProperties(),
+            previousDocument: values.documentProperties || {}
           });
         },
         values => {
@@ -1657,7 +2546,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
                 errorMessage = errorArguments[1].responseJSON.messages[0];
               }
             } catch (e) {
-              //no error here
+              // no error here
             }
             if (
               errorArguments &&
@@ -1694,800 +2583,39 @@ export default class SmartElementController extends AnakeenController.BusEvents
           }
           reject({
             element: $(this._element),
-            previousDocument: values.documentProperties || {},
+            errorMessage,
             nextDocument: null,
-            errorMessage: errorMessage
+            previousDocument: values.documentProperties || {}
           });
         }
       );
     });
   }
 
-  /***************************************************************************************************************
-   * External function
-   **************************************************************************************************************/
-  /**
-   * Reinit the current document (close it and re-open it) : keep the same view, revision, etc...
-   *
-   * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
-   * @param options object {"success": fct, "error", fct}
-   */
-  public reinitSmartElement(values, options?) {
-    const properties = this.getProperties();
-    this.checkInitialisedModel();
-    values = values || {};
-
-    //Reinit model with server values
-    _.defaults(values, {
-      revision: properties.revision,
-      viewId: properties.viewId,
-      initid: properties.initid
-    });
-
-    return this.fetchSmartElement(values, options);
+  private _getModelUID() {
+    const model = this._requestData;
+    return `${model.initid}|${model.viewId}`;
   }
 
-  /**
-   * Fetch a new document
-   * @param values object {"initid" : int, "revision" : int, "viewId" : string, "customClientData" : mixed}
-   * @param options object {"success": fct, "error", fct}
-   */
-  public fetchSmartElement(values, options) {
-    let documentPromise;
-    values = _.isUndefined(values) ? {} : values;
-    options = options || {};
-
-    if (!_.isObject(values)) {
-      throw new Error(
-        'Fetch argument must be an object {"initid":, "revision": , "viewId": }'
-      );
-    }
-
-    if (!values.initid) {
-      throw new Error("initid argument is mandatory");
-    }
-
-    if (!isNaN(values.initid)) {
-      // Convert to numeric initid is possible
-      values.initid = parseInt(values.initid);
-    }
-
-    // Use default values when fetch another document
-    _.defaults(values, { revision: -1, viewId: "!defaultConsultation" });
-    _.defaults(options, { force: false });
-
-    _.each(_.pick(values, "initid", "revision", "viewId"), (value, key) => {
-      this._internalViewData[key] = value;
-    });
-
-    if (!this._model) {
-      documentPromise = this._initializeSmartElement(
-        options,
-        values.customClientData
-      );
-    } else {
-      if (values.customClientData) {
-        this._model._customClientData = values.customClientData;
-      }
-      documentPromise = this._model.fetchDocument(
-        this._getModelValue(),
-        options
-      );
-    }
-    return this._registerOutputPromise(documentPromise, options);
-  }
-
-  /**
-   * Save the current document
-   * Reload the interface in the same mode
-   * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
-   *
-   */
-  public saveSmartElement(options) {
-    let documentPromise;
-    options = options || {};
-    this.checkInitialisedModel();
-    if (options.customClientData) {
-      this._model._customClientData = options.customClientData;
-    }
-    documentPromise = this._model.saveDocument();
-    return this._registerOutputPromise(documentPromise, options);
-  }
-
-  /**
-   * Change the workflow state of the document
-   *
-   * @param parameters
-   * @param reinitOptions
-   * @param options
-   */
-  public changeStateSmartElement(parameters, reinitOptions, options) {
-    let documentPromise;
-    this.checkInitialisedModel();
-    if (!_.isObject(parameters)) {
-      throw new Error(
-        'changeStateDocument first argument must be an object {"nextState":, "transition": , "values":, "unattended":, "" }'
-      );
-    }
-    if (
-      !_.isString(parameters.nextState) ||
-      !_.isString(parameters.transition)
-    ) {
-      throw new Error("nextState and transition arguments are mandatory");
-    }
-    documentPromise = this._initAndDisplayTransition(
-      parameters.nextState,
-      parameters.transition,
-      parameters.values || null,
-      parameters.unattended || false,
-      parameters.transitionElementsCallBack || false,
-      reinitOptions
-    );
-    return this._registerOutputPromise(documentPromise, options);
-  }
-
-  /**
-   * Delete the current document
-   * Reload the interface in the same mode
-   * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
-   */
-  public deleteSmartElement(options) {
-    let documentPromise;
-    options = options || {};
-    this.checkInitialisedModel();
-    if (options.customClientData) {
-      this._model._customClientData = options.customClientData;
-    }
-    documentPromise = this._model.deleteDocument();
-    return this._registerOutputPromise(documentPromise, options);
-  }
-
-  /**
-   * Restore the current document
-   * Reload the interface in the same mode
-   * @param options object {"success": fct, "error", fct, "customClientData" : mixed}
-   */
-  public restoreSmartElement(options) {
-    let documentPromise;
-    options = options || {};
-    this.checkInitialisedModel();
-    if (options.customClientData) {
-      this._model._customClientData = options.customClientData;
-    }
-    documentPromise = this._model.restoreDocument();
-    return this._registerOutputPromise(documentPromise, options);
-  }
-
-  /**
-   * Get a property value
-   *
-   * @param property
-   * @returns {*}
-   */
-  public getProperty(property) {
-    this.checkInitialisedModel();
-    if (property === "isModified") {
-      return this._model.isModified();
-    }
-    return this._model.getServerProperties()[property];
-  }
-
-  /**
-   * Get all the properties
-   * @returns {*}
-   */
-  public getProperties() {
-    let properties;
-    let ready = true;
-    try {
-      this.checkInitialisedModel();
-    } catch (e) {
-      ready = false;
-      properties = {
-        notLoaded: true
-      };
-    }
-    if (ready) {
-      properties = this._model.getServerProperties();
-      properties.isModified = this._model.isModified();
-      properties.url = this._model.url() + ".html";
-    }
-
-    return properties;
-  }
-
-  /**
-   * Check if an attribute exist
-   *
-   * @param attributeId
-   * @return {boolean}
-   */
-  public hasAttribute(attributeId) {
-    this.checkInitialisedModel();
-    const attribute = this._model.get("attributes").get(attributeId);
-    return !!attribute;
-  }
-
-  /**
-   * Get the attribute interface object
-   * Return null if attribute not found
-   * @param attributeId
-   * @returns AttributeInterface|null
-   */
-  public getAttribute(attributeId) {
-    this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(attributeId);
-    if (!attributeModel) {
-      return null;
-    }
-    return new AttributeInterface(this._getAttributeModel(attributeId));
-  }
-
-  /**
-   * Get all the attributes of the current document
-   *
-   * @returns [AttributeInterface]
-   */
-  public getAttributes() {
-    this.checkInitialisedModel();
-    return this._model.get("attributes").map(currentAttribute => {
-      return new AttributeInterface(currentAttribute);
-    });
-  }
-
-  /**
-   * Check if a menu exist
-   *
-   * @param menuId
-   * @return {boolean}
-   */
-  public hasMenu(menuId) {
-    this.checkInitialisedModel();
-    const menu = this._getMenuModel(menuId);
-    return !!menu;
-  }
-
-  /**
-   * Get the menu interface object
-   *
-   * @param menuId
-   * @returns MenuInterface
-   */
-  public getMenu(menuId) {
-    this.checkInitialisedModel();
-    const menu = this._getMenuModel(menuId);
-    if (!menu) {
-      return null;
-    }
-    return new MenuInterface(menu);
-  }
-
-  /**
-   * Get all the menu of the current document
-   *
-   * @returns [MenuInterface]
-   */
-  public getMenus() {
-    this.checkInitialisedModel();
-    return this._model.get("menus").map(currentMenu => {
-      return new MenuInterface(currentMenu);
-    });
-  }
-
-  /**
-   * Select a tab
-   *
-   * @param tabId
-   * @returns void
-   */
-  public selectTab(tabId) {
-    this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(tabId);
-    if (!attributeModel) {
-      throw new Error('The attribute "' + tabId + '" cannot be found.');
-    }
-    if (attributeModel.get("type") !== "tab") {
-      throw new Error('The attribute "' + tabId + '" is not a tab.');
-    }
-
-    this._model.trigger("doSelectTab", tabId);
-  }
-
-  /**
-   * Draw tab content
-   *
-   * @param tabId
-   * @returns void
-   */
-  public drawTab(tabId) {
-    this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(tabId);
-    if (!attributeModel) {
-      throw new Error('The attribute "' + tabId + '" cannot be found.');
-    }
-    if (attributeModel.get("type") !== "tab") {
-      throw new Error('The attribute "' + tabId + '" is not a tab.');
-    }
-
-    this._model.trigger("doDrawTab", tabId);
-  }
-
-  /**
-   * Get an attribute value
-   *
-   * @param attributeId
-   * @param type string (current|previous|initial|all) what kind of value (default : current)
-   * @returns {*}
-   */
-  public getValue(attributeId, type) {
-    let attribute;
-    this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(attributeId);
-    if (!attributeModel) {
-      return null;
-    }
-    attribute = new AttributeInterface(attributeModel);
-    return _.clone(attribute.getValue(type));
-  }
-
-  /**
-   * Get all the values
-   *
-   * @returns {*|{}}
-   */
-  public getValues() {
-    this.checkInitialisedModel();
-    return this._model.getValues();
-  }
-
-  /**
-   * Get customData from render view model
-   * @returns {*}
-   */
-  public getCustomServerData() {
-    this.checkInitialisedModel();
-    return this._model.get("customServerData");
-  }
-  /**
-   * Add customData from render view model
-   * @returns {*}
-   */
-  public addCustomClientData(documentCheck, value) {
-    this.checkInitialisedModel();
-    //First case no data, so documentCheck is data
-    if (_.isUndefined(value)) {
-      value = documentCheck;
-      documentCheck = {};
-    }
-    //Second case documentCheck is a function and data is object
-    if (_.isFunction(documentCheck) && _.isObject(value)) {
-      documentCheck = { documentCheck: documentCheck };
-    }
-    //Third case documentCheck is an object and data is object => check if documentCheck property exist
-    if (_.isObject(value) && _.isObject(documentCheck)) {
-      documentCheck = _.defaults(documentCheck, {
-        documentCheck: () => {
-          return true;
-        },
-        once: true
-      });
-    } else {
-      throw new Error("Constraint must be an value or a function and a value");
-    }
-    //Register the customClientData
-    _.each(value, (currentValue, currentKey) => {
-      this._customClientData[currentKey] = {
-        value: currentValue,
-        documentCheck: documentCheck.documentCheck,
-        once: documentCheck.once
-      };
-    });
-  }
-  /**
-   * Get customData from render view model
-   * @returns {*}
-   */
-  public setCustomClientData(documentCheck, value) {
-    console.error("this function (setCustomClientData) is deprecated");
-    return this.addCustomClientData(documentCheck, value);
-  }
-  /**
-   * Get customData from render view model
-   * @returns {*}
-   */
-  public getCustomClientData(deleteOnce) {
-    const values = {};
-    let $element;
-    let properties;
-    const newCustomData = {};
-    this.checkInitialisedModel();
-    properties = this.getProperties();
-    $element = $(this._element);
-    _.each(this._customClientData, (currentCustom: any, key) => {
-      if (currentCustom.documentCheck.call($element, properties)) {
-        values[key] = currentCustom.value;
-        if (deleteOnce === true && !currentCustom.once) {
-          newCustomData[key] = currentCustom;
-        }
-      } else {
-        if (deleteOnce === true) {
-          newCustomData[key] = currentCustom;
-        }
-      }
-    });
-    if (deleteOnce === true) {
-      this._customClientData = newCustomData;
-    }
-    return values;
-  }
-
-  /**
-   * Delete a custom data
-   * @returns {*}
-   */
-  public removeCustomClientData(key) {
-    if (this._customClientData[key]) {
-      delete this._customClientData[key];
-    }
-    return this;
-  }
-  /**
-   * Set a value
-   * Trigger a change event
-   *
-   * @param attributeId string attribute identifier
-   * @param value object { "value" : *, "displayValue" : *}
-   * @returns {*}
-   */
-  public setValue(attributeId, value) {
-    this.checkInitialisedModel();
-    const attributeModel = this._getAttributeModel(attributeId);
-    if (!attributeModel) {
-      throw new Error("Unable to find attribute " + attributeId);
-    }
-    const attributeInterface = new AttributeInterface(attributeModel);
-    let index;
-    let currentValueLength;
-    let i;
-
-    if (attributeModel.getParent().get("type") === "array") {
-      attributeInterface.setValue(value, true); // Just verify value conditions
-      if (!_.isArray(value)) {
-        index = value.index;
-      } else {
-        index = value.length - 1;
-      }
-      currentValueLength = attributeInterface.getValue().length;
-      attributeInterface.setValue(value);
-
-      // Pad values of complete array with default values
-      const arrayModel = attributeModel.getParent();
-      const modifiedColumns = {};
-      arrayModel.get("content").each(aModel => {
-        const aValue = _.clone(aModel.get("attributeValue"));
-        let defaultValue = aModel.get("defaultValue");
-
-        if (!defaultValue) {
-          defaultValue = aModel.hasMultipleOption()
-            ? []
-            : { value: null, displayValue: "" };
-        }
-
-        for (i = currentValueLength; i <= index; i++) {
-          if (_.isUndefined(aValue[i])) {
-            aValue[i] = defaultValue;
-            modifiedColumns[aModel.id] = { model: aModel, values: aValue };
-          }
-        }
-      });
-
-      _.each(modifiedColumns, (modData: any) => {
-        _.defer(() => {
-          modData.model.set("attributeValue", modData.values);
-        });
-      });
-
-      return;
-    }
-    return attributeInterface.setValue(value);
-  }
-
-  /**
-   * Add a row to an array
-   *
-   * @param attributeId string attribute array
-   * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
-   */
-  public appendArrayRow(attributeId, values) {
-    this.checkInitialisedModel();
-    const attribute = this._getAttributeModel(attributeId);
-
-    if (!attribute) {
-      throw new Error("Unable to find attribute " + attributeId);
-    }
-
-    if (attribute.get("type") !== "array") {
-      throw new Error(
-        "Attribute " + attributeId + " must be an attribute of type array"
-      );
-    }
-    if (!_.isObject(values)) {
-      throw new Error(
-        "Values must be an object where each properties is an attribute of the array for " +
-          attributeId
-      );
-    }
-    attribute.get("content").each(currentAttribute => {
-      let newValue = values[currentAttribute.id];
-      const currentValue = currentAttribute.getValue();
-      if (_.isUndefined(newValue)) {
-        // Set default value if no value defined
-        currentAttribute.createIndexedValue(
-          currentValue.length,
-          false,
-          _.isEmpty(values)
-        );
-      } else {
-        newValue = _.defaults(newValue, {
-          value: "",
-          displayValue: newValue.value
-        });
-        currentAttribute.addValue(newValue);
-      }
-    });
-  }
-
-  /**
-   * Add a row before another row
-   *
-   * @param attributeId string attribute array
-   * @param values object { "attributeId" : { "value" : *, "displayValue" : * }, ...}
-   * @param index int index of the row
-   */
-  public insertBeforeArrayRow(attributeId, values, index) {
-    this.checkInitialisedModel();
-    const attribute = this._getAttributeModel(attributeId);
-    let maxValue;
-    if (!attribute) {
-      throw new Error("Unable to find attribute " + attributeId);
-    }
-    if (attribute.get("type") !== "array") {
-      throw new Error(
-        "Attribute " + attributeId + " must be an attribute of type array"
-      );
-    }
-    if (!_.isObject(values)) {
-      throw new Error(
-        "Values must be an object where each properties is an attribute of the array for " +
-          attributeId
-      );
-    }
-    maxValue = this._getMaxIndex(attribute);
-    if (index < 0 || index > maxValue) {
-      throw new Error("Index must be between 0 and " + maxValue);
-    }
-    attribute.get("content").each(currentAttribute => {
-      let currentValue = values[currentAttribute.id];
-      if (!_.isUndefined(currentValue)) {
-        currentValue = _.defaults(currentValue, {
-          value: "",
-          displayValue: currentValue.value
-        });
-      } else {
-        currentValue = currentAttribute.attributes.defaultValue;
-        if (!currentValue) {
-          currentValue = { value: "", displayValue: "" };
-        }
-      }
-      currentAttribute.addIndexedValue(currentValue, index);
-    });
-  }
-
-  /**
-   * Remove an array row
-   * @param attributeId string attribute array
-   * @param index int index of the row
-   */
-  public removeArrayRow(attributeId, index) {
-    this.checkInitialisedModel();
-    const attribute = this._getAttributeModel(attributeId);
-    let maxIndex;
-    if (!attribute) {
-      throw new Error("Unable to find attribute " + attributeId);
-    }
-    if (attribute.get("type") !== "array") {
-      throw Error(
-        "Attribute " + attributeId + " must be an attribute of type array"
-      );
-    }
-    maxIndex = this._getMaxIndex(attribute) - 1;
-    if (index < 0 || index > maxIndex) {
-      throw Error(
-        "Index must be between 0 and " + maxIndex + " for " + attributeId
-      );
-    }
-    attribute.get("content").each(currentAttribute => {
-      currentAttribute.removeIndexValue(index);
-    });
-    attribute.removeIndexedLine(index);
-  }
-
-  /**
-   * Add a constraint to the widget
-   *
-   * @param options object { "name" : string, "documentCheck": function}
-   * @param callback function callback called when the event is triggered
-   * @returns {*}
-   */
-  public addConstraint(options, callback) {
-    let currentConstraint;
-    const currentWidget = this;
-    let uniqueName;
-    if (_.isUndefined(callback) && _.isFunction(options)) {
-      callback = options;
-      options = {};
-    }
-    if (_.isObject(options) && _.isUndefined(callback)) {
-      if (!options.name) {
-        throw new Error(
-          "When a constraint is initiated with a single object, this object needs to have the name property " +
-            JSON.stringify(options)
-        );
-      }
-    } else {
-      _.defaults(options, {
-        documentCheck: () => true,
-        attributeCheck: () => true,
-        constraintCheck: callback,
-        name: _.uniqueId("constraint"),
-        externalConstraint: false,
-        once: false
-      });
-    }
-    currentConstraint = options;
-    if (!_.isFunction(currentConstraint.constraintCheck)) {
-      throw new Error("An event need a callback");
-    }
-    //If constraint is once : wrap it an callback that execute callback and delete it
-    if (currentConstraint.once === true) {
-      currentConstraint.eventCallback = _.wrap(
-        currentConstraint.constraintCheck,
-        function documentController_onceWrapper(callback) {
-          try {
-            // @ts-ignore
-            callback.apply(this, _.rest(arguments));
-          } catch (e) {
-            console.error(e);
-          }
-          currentWidget.removeConstraint(
-            currentConstraint.name,
-            currentConstraint.externalConstraint
-          );
-        }
-      );
-    }
-    uniqueName =
-      (currentConstraint.externalConstraint ? "external_" : "internal_") +
-      currentConstraint.name;
-    this._constraintList[uniqueName] = currentConstraint;
-    this._initActivatedConstraint();
-    return currentConstraint.name;
-  }
-
-  /**
-   * List the constraint of the widget
-   *
-   * @returns {*}
-   */
-  public listConstraints() {
-    return this._constraintList;
-  }
-
-  /**
-   * Remove a constraint of the widget
-   *
-   * @param constraintName
-   * @param allKind
-   * @returns {*}
-   */
-  public removeConstraint(constraintName, allKind) {
-    const removed = [];
-    let newConstraintList;
-    let constraintList;
-    const testRegExp = new RegExp("\\" + constraintName + "$");
-    // jscs:disable disallowImplicitTypeConversion
-    allKind = !!allKind;
-    // jscs:enable disallowImplicitTypeConversion
-    newConstraintList = _.filter(
-      this.listConstraints(),
-      (currentConstraint: any) => {
-        if (
-          (allKind || !currentConstraint.externalConstraint) &&
-          (currentConstraint.name === constraintName ||
-            testRegExp.test(currentConstraint.name))
-        ) {
-          removed.push(currentConstraint);
-          return false;
-        }
-        return true;
-      }
-    );
-    constraintList = {};
-    _.each(newConstraintList, (currentConstraint: any) => {
-      const uniqueName =
-        (currentConstraint.externalConstraint ? "external_" : "internal_") +
-        currentConstraint.name;
-      constraintList[uniqueName] = currentConstraint;
-    });
-    this._constraintList = constraintList;
-    this._initActivatedConstraint();
-    return removed;
-  }
-
-  /**
-   * Add an event to the widget
-   *
-   * @param eventType string kind of event
-   * @param options object { "name" : string, "documentCheck": function}
-   * @param callback function callback called when the event is triggered
-   * @returns {*|Window.options.name}
-   */
-  public addEventListener(
-    eventType: string | ListenableEvent,
-    options?: object | ListenableEventCallable,
-    callback?: ListenableEventCallable
-  ) {
-    let currentEvent;
-    let eventCallback = callback;
-    let eventOptions = options;
-    //options is not mandatory and the callback can be the second parameters
-    if (_.isUndefined(eventCallback) && _.isFunction(eventOptions)) {
-      eventCallback = eventOptions;
-      eventOptions = {};
-    }
-
-    // the first parameters can be the final object (chain removeEvent and addEvent)
-    if (
-      _.isObject(eventType) &&
-      _.isUndefined(eventOptions) &&
-      _.isUndefined(eventCallback)
-    ) {
-      currentEvent = eventType;
-      if (!currentEvent.name) {
-        throw new Error(
-          "When an event is initiated with a single object, this object needs to have the name property " +
-            JSON.stringify(currentEvent)
-        );
-      }
-    } else {
-      currentEvent = _.defaults(eventOptions, {
-        name: _.uniqueId("event_" + eventType),
-        eventType,
-        eventCallback,
-        externalEvent: false,
-        once: false
-      });
-    }
-    // the eventType must be one the list
-    this.checkEventName(currentEvent.eventType);
-    // callback is mandatory and must be a function
-    if (!_.isFunction(currentEvent.eventCallback)) {
-      throw new Error("An event needs a callback that is a function");
-    }
-    this._addAndInitNewEvents(currentEvent);
-    // return the name of the event
-    return currentEvent.name;
+  private _registerListener(event) {
+    this._registeredListeners[this._getModelUID()] =
+      this._registeredListeners[this._getModelUID()] || {};
+    this._registeredListeners[this._getModelUID()][event.eventType] =
+      this._registeredListeners[this._getModelUID()][event.eventType] || [];
+    this._registeredListeners[this._getModelUID()][event.eventType].push(event);
   }
 
   private _addAndInitNewEvents(newEvent: ListenableEventOptions) {
     const $element = $(this._element);
     // let uniqueName = (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
     const currentElementProperties = this.getProperties();
+    this._registerListener(newEvent);
 
-    // if (!this._initialized.model) {
-    //   //early event model is not ready (no trigger, or current register possible)
-    //   return this;
-    // }
+    if (!this._initialized.model) {
+      // early event model is not ready (no trigger, or current register possible)
+      return this;
+    }
+
     // Check if the event is for the current document
     if (
       !_.isFunction(newEvent.check) ||
@@ -2543,354 +2671,49 @@ export default class SmartElementController extends AnakeenController.BusEvents
     }
   }
 
-  // private _addAndInitNewEvents(newEvent) {
-  //   let currentDocumentProperties;
-  //   let event;
-  //   let uniqueName;
-  //   const $element = $(this._element);
-  //   uniqueName =
-  //     (newEvent.externalEvent ? "external_" : "internal_") + newEvent.name;
-  //   this._eventListener[uniqueName] = newEvent;
-  //   if (!this._initialized.model) {
-  //     //early event model is not ready (no trigger, or current register possible)
-  //     return this;
-  //   }
-  //   currentDocumentProperties = this.getProperties();
-  //   // Check if the event is for the current document
-  //   if (
-  //     !_.isFunction(newEvent.check) ||
-  //     newEvent.check.call($element, currentDocumentProperties)
-  //   ) {
-  //     this._activatedEventListener[newEvent.name] = newEvent;
-  //     // Check if we need to manually trigger this callback (late registered : only for ready events)
-  //     if (this._initialized.view) {
-  //       if (newEvent.eventType === "ready") {
-  //         event = $.Event(newEvent.eventType);
-  //         event.target = this._element;
-  //         try {
-  //           // add element as function context
-  //           newEvent.eventCallback.call(
-  //             $element,
-  //             event,
-  //             currentDocumentProperties
-  //           );
-  //         } catch (e) {
-  //           console.error(e);
-  //         }
-  //       }
-  //       if (newEvent.eventType === "attributeReady") {
-  //         event = $.Event(newEvent.eventType);
-  //         event.target = this._element;
-  //         _.each(this._getRenderedAttributes(), (currentAttribute: any) => {
-  //           const objectAttribute = this.getAttribute(currentAttribute.id);
-  //           if (
-  //             !_.isFunction(newEvent.attributeCheck) ||
-  //             newEvent.attributeCheck.apply($element, [objectAttribute])
-  //           ) {
-  //             try {
-  //               // add element as function context
-  //               newEvent.eventCallback.call(
-  //                 $element,
-  //                 event,
-  //                 currentDocumentProperties,
-  //                 objectAttribute,
-  //                 currentAttribute.view.elements
-  //               );
-  //             } catch (e) {
-  //               console.error(e);
-  //             }
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-  // }
-
-  /**
-   * Add an event to the widget
-   *
-   * @param eventType string kind of event
-   * @param options object { "name" : string, "documentCheck": function}
-   * @param callback function callback called when the event is triggered
-   * @returns {*|Window.options.name}
-   */
-  // public addEventListener(eventType, options, callback) {
-  //   let currentEvent;
-  //   //options is not mandatory and the callback can be the second parameters
-  //   if (_.isUndefined(callback) && _.isFunction(options)) {
-  //     callback = options;
-  //     options = {};
-  //   }
-  //   // the first parameters can be the final object (chain removeEvent and addEvent)
-  //   if (
-  //     _.isObject(eventType) &&
-  //     _.isUndefined(options) &&
-  //     _.isUndefined(callback)
-  //   ) {
-  //     currentEvent = eventType;
-  //     if (!currentEvent.name) {
-  //       throw new Error(
-  //         "When an event is initiated with a single object, this object needs to have the name property " +
-  //           JSON.stringify(currentEvent)
-  //       );
-  //     }
-  //   } else {
-  //     currentEvent = _.defaults(options, {
-  //       name: _.uniqueId("event_" + eventType),
-  //       eventType: eventType,
-  //       eventCallback: callback,
-  //       externalEvent: false,
-  //       once: false
-  //     });
-  //   }
-  //   // the eventType must be one the list
-  //   this.checkEventName(currentEvent.eventType);
-  //   // callback is mandatory and must be a function
-  //   if (!_.isFunction(currentEvent.eventCallback)) {
-  //     throw new Error("An event needs a callback that is a function");
-  //   }
-  //   //If event is once : wrap it an callback that execute event and delete it
-  //   if (currentEvent.once === true) {
-  //     currentEvent.eventCallback = _.wrap(
-  //       currentEvent.eventCallback,
-  //       callback => {
-  //         this.removeEventListener(
-  //           currentEvent.name,
-  //           currentEvent.externalEvent
-  //         );
-  //         try {
-  //           // @ts-ignore
-  //           callback.apply(this, _.rest(arguments));
-  //         } catch (e) {
-  //           console.error(e);
-  //         }
-  //       }
-  //     );
-  //   }
-  //   this._addAndInitNewEvents(currentEvent);
-  //   // return the name of the event
-  //   return currentEvent.name;
-  // }
-
-  /**
-   * List of the events of the current widget
-   *
-   * @returns {*}
-   */
-  public listEventListeners() {
-    return this._eventListener;
-  }
-
-  /**
-   * Remove an event of the current widget
-   *
-   * @param eventName string can be an event name or a namespace
-   * @param allKind remove internal/external events
-   * @returns {*}
-   */
-  public removeEventListener(eventName, allKind) {
-    let removed = [];
-    const testRegExp = new RegExp("\\" + eventName + "$");
-    allKind = !!allKind;
-    Object.keys(this.getEventsList()).forEach(eventType => {
-      removed = removed.concat(
-        this.getEventsList()[eventType].filter(currentEvent => {
-          return (
-            (allKind || !currentEvent.externalEvent) &&
-            (currentEvent.name === eventName ||
-              testRegExp.test(currentEvent.name))
-          );
-        })
-      );
-    });
-    removed.forEach(event => {
-      this.off(event.eventType, event.eventCallback);
-    });
-    this._initActivatedEventListeners({ launchReady: false });
-    return removed;
-  }
-
-  /**
-   * Trigger an event
-   *
-   * @param eventName
-   */
-  public triggerEvent(eventName) {
-    const args = _.toArray(arguments);
-    this.checkInitialisedModel();
-    this.checkEventName(eventName);
-
-    args.splice(1, 0, null); // Add null originalEvent
-    // @ts-ignore
-    return this._triggerControllerEvent.apply(this, args);
-  }
-
-  /**
-   * Hide a visible attribute
-   *
-   * @param attributeId
-   */
-  public hideAttribute(attributeId) {
-    this.checkInitialisedView();
-    const attributeModel = this._getAttributeModel(attributeId);
-    if (!attributeModel) {
-      console.error("Unable find and hide the attribute " + attributeId);
-      return;
-    }
-    attributeModel.trigger("hide");
-  }
-  /**
-   * show a visible attribute (previously hidden)
-   *
-   * @param attributeId
-   */
-  public showAttribute(attributeId) {
-    this.checkInitialisedView();
-    var attributeModel = this._getAttributeModel(attributeId);
-    if (!attributeModel) {
-      console.error("Unable find and show the attribute " + attributeId);
-      return;
-    }
-    attributeModel.trigger("show");
-  }
-
-  /**
-   * Display a message to the user
-   *
-   * @param message
-   */
-  public showMessage(message) {
-    this.checkInitialisedView();
-    if (_.isString(message)) {
-      message = {
-        type: "info",
-        message: message
-      };
-    }
-    if (_.isObject(message)) {
-      message = _.defaults(message, {
-        type: "info"
+  private _initActivatedListeners(options) {
+    const currentProperties = this.getProperties();
+    const initOptions = options || {};
+    this._events = {};
+    // Get only the events for the current model
+    const modelListeners = this._registeredListeners[this._getModelUID()];
+    _.each(modelListeners, currentEvents => {
+      // Listen only checked events
+      currentEvents.forEach(currentEvent => {
+        if (!_.isFunction(currentEvent.check)) {
+          if (currentEvent.once) {
+            this.once(currentEvent.eventType, currentEvent);
+          } else {
+            this.on(currentEvent.eventType, currentEvent);
+          }
+        } else if (
+          currentEvent.check.call($(this._element), currentProperties)
+        ) {
+          if (currentEvent.once) {
+            this.once(currentEvent.eventType, currentEvent);
+          } else {
+            this.on(currentEvent.eventType, currentEvent);
+          }
+        }
       });
-    }
-    this.$notification.dcpNotification("show", message.type, message);
-  }
-
-  /**
-   * Display loading bar
-   *
-   * @param message
-   * @param px
-   */
-  public maskDocument(message, px) {
-    this.$loading.dcpLoading("show");
-    if (message) {
-      this.$loading.dcpLoading("setTitle", message);
-    }
-    if (px) {
-      this.$loading.dcpLoading("setPercent", px);
-    }
-  }
-
-  /**
-   * Hide loading bar
-   */
-  public unmaskDocument(force) {
-    this.$loading.dcpLoading("hide", force);
-  }
-
-  /**
-   * Add an error message to an attribute
-   *
-   * @param attributeId
-   * @param message
-   * @param index
-   */
-  public setAttributeErrorMessage(attributeId, message, index) {
-    this.checkInitialisedView();
-    const attributeModel = this._getAttributeModel(attributeId);
-    if (!attributeModel) {
-      console.error("Unable find and show the attribute " + attributeId);
-      return;
-    }
-    attributeModel.setErrorMessage(message, index);
-  }
-
-  /**
-   * Clean the error message of an attribute
-   *
-   * @param attributeId
-   * @param index
-   */
-  public cleanAttributeErrorMessage(attributeId, index) {
-    this.checkInitialisedView();
-    const attributeModel = this._getAttributeModel(attributeId);
-    if (!attributeModel) {
-      console.error("Unable find and show the attribute " + attributeId);
-      return;
-    }
-    attributeModel.setErrorMessage(null, index);
-  }
-
-  public injectCSS(cssToInject) {
-    this.checkInitialisedView();
-    if (!_.isArray(cssToInject) && !_.isString(cssToInject)) {
-      throw new Error("The css to inject must be an array string or a string");
-    }
-    if (_.isString(cssToInject)) {
-      cssToInject = [cssToInject];
-    }
-
-    this._model.injectCSS(cssToInject);
-  }
-
-  public injectJS(jsToInject) {
-    this.checkInitialisedView();
-    if (!_.isArray(jsToInject) && !_.isString(jsToInject)) {
-      throw new Error("The js to inject must be an array string or a string");
-    }
-    if (_.isString(jsToInject)) {
-      jsToInject = [jsToInject];
-    }
-
-    return this._model.injectJS(jsToInject);
-  }
-  /**
-   * tryToDestroy the widget
-   *
-   * @return Promise
-   */
-  public tryToDestroy() {
-    return new Promise((resolve, reject) => {
-      const event = { prevent: false };
-      if (!this._model) {
-        resolve();
-        return;
-      }
-      if (
-        this._model &&
-        this._model.isModified() &&
-        !window.confirm(
-          this._model.get("properties").get("title") +
-            "\n" +
-            i18n.___(
-              "The form has been modified without saving, do you want to close it ?",
-              "ddui"
-            )
-        )
-      ) {
-        reject("Unable to destroy because user refuses it");
-        return;
-      }
-      event.prevent = !this._triggerControllerEvent(
-        "beforeClose",
-        null,
-        this._model.getServerProperties()
-      );
-      if (event.prevent) {
-        reject("Unable to destroy because before close refuses it");
-        return;
-      }
-      resolve();
     });
+    // Trigger new added ready event
+    if (this._initialized.view && initOptions.launchReady) {
+      this._triggerControllerEvent("ready", null, currentProperties);
+      _.each(
+        this._getRenderedAttributes(),
+        (currentAttribute: AttributeInterface) => {
+          const objectAttribute = this.getAttribute(currentAttribute.id);
+          this._triggerAttributeControllerEvent(
+            "attributeReady",
+            null,
+            currentAttribute,
+            currentProperties,
+            objectAttribute,
+            currentAttribute.view.elements
+          );
+        }
+      );
+    }
   }
 }
