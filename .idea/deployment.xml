@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" serverName="docker" autoUploadExternalChanges="true">
     <serverData>
       <paths name="docker">
         <serverdata>

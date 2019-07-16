@@ -54,19 +54,19 @@ $(VOLUMES_PRIVATE_DIR):
 
 .PHONY: log-php-error
 log-php-error: ## Shows php error log from php container
-	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>&1 >/dev/null | grep --line-buffered '^\[httpd\]' | sed -ur 's/\\n/\n/g'
+	docker logs -f --since 10m $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>&1 >/dev/null | grep --line-buffered '^\[httpd\]' | sed -ur 's/\\n/\n/g'
 
 .PHONY: log-php-access
 log-php-access: ## Shows php access log from php container
-	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>/dev/null | grep --line-buffered '^\[httpd\]' | sed -ur 's/\\n/\n/g'
+	docker logs -f --since 10m $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>/dev/null | grep --line-buffered '^\[httpd\]' | sed -ur 's/\\n/\n/g'
 
 .PHONY: log-php-other
 log-php-other: ## Shows output from cron manager
-	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>&1 | grep -v --line-buffered '^\[httpd\]' | sed -ur 's/\\n/\n/g'
+	docker logs -f --since 10m $$($(DOCKER_COMPOSE_CMD) ps -q php) 2>&1 | grep -v --line-buffered '^\[httpd\]' | sed -ur 's/\\n/\n/g'
 
 .PHONY: log-postgresql
 log-postgresql: ## Shows error from postgres container
-	docker logs -f $$($(DOCKER_COMPOSE_CMD) ps -q postgres)
+	docker logs -f --since 10m $$($(DOCKER_COMPOSE_CMD) ps -q postgres)
 
 .PHONY: docker-prompt-root
 docker-prompt-root: ## open bash prompt in php container
