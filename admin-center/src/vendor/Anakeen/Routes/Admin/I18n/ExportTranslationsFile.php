@@ -7,9 +7,6 @@ use Anakeen\Router\ApiV2Response;
 use Anakeen\Exception;
 use Sepia\PoParser\Catalog\Entry;
 
-/** @noinspection PhpIncludeInspection */
-require_once "vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php";
-
 /**
  * Get All Enumerate Items
  *
@@ -24,7 +21,12 @@ class ExportTranslationsFile extends Translations
         $this->initParameters($request, $args);
         $this->date = date("Y-m-d H:i:s");
         $filePath = $this->doRequest();
-        $fileName = sprintf("Custom Translations %s %s %s.po", $this->lang, ContextManager::getParameterValue("Core", "CORE_CLIENT"), $this->date);
+        $fileName = sprintf(
+            "Custom Translations %s %s %s.po",
+            $this->lang,
+            ContextManager::getParameterValue("Core", "CORE_CLIENT"),
+            $this->date
+        );
         return ApiV2Response::withFile($response, $filePath, $fileName, false, "text/plain");
     }
 
@@ -71,8 +73,11 @@ class ExportTranslationsFile extends Translations
 
     protected function initCatalog(&$data)
     {
-
-        $originPoFile = sprintf("%s/locale/%s/LC_MESSAGES/custom-catalog.po", ContextManager::getRootDirectory(), $this->lang);
+        $originPoFile = sprintf(
+            "%s/locale/%s/LC_MESSAGES/custom-catalog.po",
+            ContextManager::getRootDirectory(),
+            $this->lang
+        );
         if (!file_exists($originPoFile)) {
             throw new Exception("Fail retrieve origin locale results");
         }
@@ -100,7 +105,10 @@ class ExportTranslationsFile extends Translations
         $headData = array_filter($headData, function ($a) {
             return stripos($a, "PO-Revision-Date") === false && stripos($a, "Project-Id-Version") === false;
         });
-        array_unshift($headData, sprintf("Project-Id-Version: %s", ContextManager::getParameterValue("Core", "CORE_CLIENT")));
+        array_unshift(
+            $headData,
+            sprintf("Project-Id-Version: %s", ContextManager::getParameterValue("Core", "CORE_CLIENT"))
+        );
         $headData[] = sprintf("PO-Revision-Date: Override for %s", $this->date);
 
         $headEntry->setHeaders($headData);

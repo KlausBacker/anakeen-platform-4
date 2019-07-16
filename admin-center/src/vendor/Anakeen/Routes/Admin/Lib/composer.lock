@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "sepia/po-parser",
-            "version": "5.1.5",
+            "version": "5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/raulferras/PHP-po-parser.git",
-                "reference": "77ae4057618162fd1cd7c2d2a7c0fab6c9782777"
+                "reference": "cfc767f86eda43b774fd7def3e618d3974f91197"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/raulferras/PHP-po-parser/zipball/77ae4057618162fd1cd7c2d2a7c0fab6c9782777",
-                "reference": "77ae4057618162fd1cd7c2d2a7c0fab6c9782777",
+                "url": "https://api.github.com/repos/raulferras/PHP-po-parser/zipball/cfc767f86eda43b774fd7def3e618d3974f91197",
+                "reference": "cfc767f86eda43b774fd7def3e618d3974f91197",
                 "shasum": ""
             },
             "require": {
@@ -55,20 +55,20 @@
                 "i18n",
                 "po"
             ],
-            "time": "2018-04-17T07:29:16+00:00"
+            "time": "2019-06-03T09:08:08+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.10.0",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494"
+                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/c79c051f5b3a46be09205c73b80b346e4153e494",
-                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fe5e94c604826c35a32fa832f35bd036b6799609",
+                "reference": "fe5e94c604826c35a32fa832f35bd036b6799609",
                 "shasum": ""
             },
             "require": {
@@ -80,7 +80,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.11-dev"
                 }
             },
             "autoload": {
@@ -114,7 +114,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-09-21T13:07:52+00:00"
+            "time": "2019-02-06T07:57:58+00:00"
         }
     ],
     "packages-dev": [],
