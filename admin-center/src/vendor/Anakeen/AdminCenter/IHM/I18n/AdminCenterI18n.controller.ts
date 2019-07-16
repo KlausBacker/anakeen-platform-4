@@ -310,7 +310,6 @@ export default class I18nManagerController extends Vue {
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
         const textarea = $(confirmEvent.event.target.closest("tr[role=row]")).find("textarea");
-        console.log(textarea[1].value);
         const newVal = JSON.stringify({
           msgstr: textarea[1].value,
           plural: 1,
