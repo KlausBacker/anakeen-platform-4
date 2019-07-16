@@ -1,14 +1,13 @@
 <template>
   <hub-element-layout>
-    <nav v-if="isDockCollapsed">
-      <i class="material-icons hub-icon">group</i>
+    <nav>
+      <i class="material-icons hub-icon">group</i> <span v-if="!isDockCollapsed">Accounts</span>
     </nav>
-    <nav v-else>
-      <i class="material-icons hub-icon">group</i> <span>Accounts</span>
-    </nav>
-    <div slot="hubContent" class="account-station">
-      <admin-center-account></admin-center-account>
-    </div>
+    <template v-slot:hubContent>
+      <div class="account-station">
+        <admin-center-account></admin-center-account>
+      </div>
+    </template>
   </hub-element-layout>
 </template>
 <script>
@@ -25,12 +24,9 @@ export default {
         });
       })
   },
-  updated() {
-    console.log("updated");
-  },
-  watch: {
-    isDockCollapsed(value) {
-      console.log("collapsed", value);
+  data() {
+    return {
+      counter: 0
     }
   }
 };

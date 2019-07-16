@@ -13,7 +13,7 @@ Vue.use(VueSetupPlugin);
 export default class HubElementMixin extends Vue {
   @Prop() public entryOptions!: IHubStationEntryOptions;
   // @Prop() public displayType!: HubElementDisplayTypes;
-  @Prop() public isDockCollapsed!: boolean;
+  @Prop({ required: true, type: Boolean, default: true}) public isDockCollapsed!: boolean;
   @Prop() public parentPath!: string;
 
   public resolveHubSubPath(subPath) {

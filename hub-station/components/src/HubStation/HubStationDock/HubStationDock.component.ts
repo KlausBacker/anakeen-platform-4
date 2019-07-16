@@ -31,9 +31,7 @@ export default class HubStationDock extends Vue {
     return InnerDockPosition;
   }
   get dockState() {
-    return this.dockIsCollapsed
-      ? HubElementDisplayTypes.COLLAPSED
-      : HubElementDisplayTypes.EXPANDED;
+    return true;
   }
   // noinspection JSMethodCanBeStatic
   get HubElementDisplayTypes(): any {
@@ -162,11 +160,11 @@ export default class HubStationDock extends Vue {
       }
     };
     const currentComponent = this.$refs[ref][index];
-    console.log(currentComponent);
     if (currentComponent) {
       const layout = walk(this.$refs[ref][index], v => v.$options.name === "HubElementLayout");
       if (layout && layout.$slots && layout.$slots.hubContent) {
-        const data = Object.assign({}, entry, { hubContentVNodes: layout.$slots.hubContent });
+        const data = Object.assign({}, entry, { hubContentLayout: layout });
+        // @ts-ignore
         this.rootHubStation.panes.push(data);
       }
     }
