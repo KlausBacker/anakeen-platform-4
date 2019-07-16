@@ -4,7 +4,25 @@ const Configuration = {
     "scope-enum": [
       2,
       "always",
-      ["control", "config", "internal", "route", "i18n", "script", "component", "cli"]
+      [
+        "admin",
+        "cli",
+        "business-app",
+        "control",
+        "dev-data",
+        "dev-center",
+        "hub",
+        "internal",
+        "validation",
+        "security",
+        "sde",
+        "theme",
+        "te",
+        "ui",
+        "workflow",
+        "tools",
+        "i18n"
+      ]
     ]
   }
 };
