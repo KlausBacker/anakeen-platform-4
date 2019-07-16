@@ -67,7 +67,7 @@ class ImageAsset
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
-        $this->size = $args["size"];
+        $this->size = $args["size"] ?? null;
         if (strpos($args["image"], '..') !== false) {
             throw new Exception("ROUTES0115", $this->imageFileName);
         }
