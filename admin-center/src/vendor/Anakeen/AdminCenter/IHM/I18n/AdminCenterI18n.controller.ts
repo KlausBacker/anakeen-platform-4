@@ -375,6 +375,18 @@ export default class I18nManagerController extends Vue {
     const input = $(
       ".overriden-translation-input-singular, .overriden-translation-input-plural"
     );
+    input.on("keypress", e => {
+      if (e.which === 13) {
+        const val = input.val();
+        // @ts-ignore
+        val.replace('<br />', '\n');
+      }
+    });
+    input.on("keypress", e => {
+      if (e.which === 13) {
+        $(".confirm-override-translation-plural").trigger("click");
+      }
+    });
     input.on("input", event => {
       const cancelBtn = $(event.target.nextElementSibling.children[1]);
       const confirmBtn = $(event.target.nextElementSibling.children[0]);
