@@ -187,7 +187,7 @@ export default class I18nManagerController extends Vue {
                 return this.singularInput + this.pluralInput;
               }
             } else {
-                return `<div class="input-group">
+              return `<div class="input-group">
                   <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale'>${I18nManagerController.isEmptyOrSpaces(
                     rowData.override
                   )}</textarea>
@@ -279,19 +279,19 @@ export default class I18nManagerController extends Vue {
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
         let newVal;
+        const textareaVal = $(
+          confirmEvent.event.target.closest("tr[role=row]")
+        ).find("textarea")[0].value;
+        console.log(textareaVal);
         if (rowData.pluralid) {
           newVal = JSON.stringify({
-            msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
-              "textarea"
-            )[0].value,
+            msgstr: textareaVal,
             plural: 0,
             pluralid: rowData.pluralid
           });
         } else {
           newVal = JSON.stringify({
-            msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
-              "textarea"
-            )[0].value
+            msgstr: textareaVal
           });
         }
         this.setSingularTranslation(newVal, rowData);
@@ -309,7 +309,9 @@ export default class I18nManagerController extends Vue {
         const rowData: any = $(this.$refs.i18nGrid)
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
-        const textarea = $(confirmEvent.event.target.closest("tr[role=row]")).find("textarea");
+        const textarea = $(
+          confirmEvent.event.target.closest("tr[role=row]")
+        ).find("textarea");
         const newVal = JSON.stringify({
           msgstr: textarea[1].value,
           plural: 1,
@@ -378,7 +380,7 @@ export default class I18nManagerController extends Vue {
       if (e.which === 13) {
         const val = input.val();
         // @ts-ignore
-        val.replace('<br />', '\n');
+        val.replace("<br />", "\n");
       }
     });
     input.on("keypress", e => {
