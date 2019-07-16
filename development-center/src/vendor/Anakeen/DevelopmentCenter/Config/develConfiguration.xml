@@ -69,6 +69,23 @@
         </hge_jsassets>
         <hge_component_tag>ank-dev-refresh-data</hge_component_tag>
     </hubconfigurationgeneric>
+    <hubconfigurationgeneric name="DEVSEARCHENGINE">
+        <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
+        <hub_title>SEARCHENGINE</hub_title>
+        <hub_order>1</hub_order>
+        <hub_docker_position>TOP_RIGHT</hub_docker_position>
+        <hub_vue_router_entry>searchEngine</hub_vue_router_entry>
+        <hub_activated>FALSE</hub_activated>
+        <hub_selectable>TRUE</hub_selectable>
+        <hub_expandable>FALSE</hub_expandable>
+        <hge_jsassets>
+            <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+            <hge_jsasset>
+                Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("DevCenter", "search-engine")
+            </hge_jsasset>
+        </hge_jsassets>
+        <hge_component_tag>ank-dev-search</hge_component_tag>
+    </hubconfigurationgeneric>
     <hubconfigurationgeneric name="DEVSMARTSTRUCTURES">
         <hub_station_id name="DEVELCENTER">Development Center</hub_station_id>
         <hub_title>SMARTSTRUCTURES</hub_title>

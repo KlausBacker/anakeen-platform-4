@@ -1,0 +1,35 @@
+.search-engine-component {
+  display: flex;
+  flex-direction: column;
+
+  .dev-center-search-engine {
+    .dev-center-search-engine-widget {
+      position: relative;
+    }
+
+    .dropdown-header > span {
+      display: inline-block;
+      padding: 10px;
+    }
+
+    .k-item > span {
+      display: inline-block;
+    }
+
+    .hub-dock-entry-component.entry-selected {
+      border-left-color: transparent;
+      background: none !important;
+    }
+  }
+
+  .dev-center-search-engine-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+}
+
+[data-entry-route='/searchEngine/'] {
+  padding-left: 0 !important;
+}
+
