@@ -11,17 +11,21 @@ declare var kendo;
 @Component
 export default class I18nManagerController extends Vue {
   private static isEmptyOrSpaces(str) {
-    return str === null || str.match(/^\s*$/) !== null;
+    if (str === null || str.match(/^\s*$/) !== null) {
+      return " ";
+    } else {
+      return str;
+    }
   }
   private singularInput: string = `<div class="input-group">
-                <input type='text' placeholder="modifier la traduction" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>
+                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'></textarea>
                 <div class="input-group-append">
                     <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
                     <button class='cancel-override-translation-singular btn btn-outline-secondary'><i class='fa fa-times'></i></button>
                 </div>
             </div>`;
   private pluralInput: string = `<div class="input-group">
-                <input type='text' placeholder="modifier la traduction pluriel" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>
+                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'></textarea>
                 <div class="input-group-append">
                     <button class='confirm-override-translation-plural btn btn-outline-secondary'disabled><i class='fa fa-check'></i></button>
                     <button class='cancel-override-translation-plural btn btn-outline-secondary'><i class='fa fa-times'></i></button>
@@ -161,71 +165,43 @@ export default class I18nManagerController extends Vue {
           template: rowData => {
             if (rowData.pluralid) {
               if (rowData.override) {
-                if (
-                  !I18nManagerController.isEmptyOrSpaces(rowData.override[0]) &&
-                  !I18nManagerController.isEmptyOrSpaces(rowData.override[1])
-                ) {
-                  if (rowData.override[0] && rowData.override[1]) {
-                    return `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div><hr>
-                          <div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`;
-                  } else if (rowData.override[0] && !rowData.override[1]) {
-                    return (
-                      `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>` +
-                      this.pluralInput
-                    );
-                  } else if (rowData.override[1] && !rowData.override[0]) {
-                    return (
-                      this.pluralInput +
-                      `<div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
-                    );
-                  } else {
-                    return this.singularInput + this.pluralInput;
-                  }
-                } else {
-                  const val0 = I18nManagerController.isEmptyOrSpaces(
-                    rowData.override[0]
-                  );
-                  const val1 = I18nManagerController.isEmptyOrSpaces(
-                    rowData.override[1]
-                  );
-                  if (val0 && val1) {
-                    return this.singularInput + this.pluralInput;
-                  } else if (val0 && !val1) {
-                    return (
-                      this.singularInput +
-                      `<hr>
-                      <div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
-                    );
-                  } else if (!val0 && val1) {
-                    return (
-                      `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div><hr>` +
-                      this.pluralInput
-                    );
-                  } else {
-                    return `<div class="input-group"><span>${rowData.override[0]}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div><hr>
-                          <div class="input-group"><span>${rowData.override[1]}</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`;
-                  }
-                }
+                return `<div class="input-group">
+                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>${I18nManagerController.isEmptyOrSpaces(
+                  rowData.override[0]
+                )}</textarea>
+                <div class="input-group-append">
+                    <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation-singular btn btn-outline-secondary'><i class='fa fa-times'></i></button>
+                </div>
+            </div>
+            <div class="input-group">
+                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>${I18nManagerController.isEmptyOrSpaces(
+                  rowData.override[1]
+                )}</textarea>
+                <div class="input-group-append">
+                    <button class='confirm-override-translation-plural btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
+                    <button class='cancel-override-translation-plural btn btn-outline-secondary'><i class='fa fa-times'></i></button>
+                </div>
+            </div>`;
               } else {
                 return this.singularInput + this.pluralInput;
               }
             } else {
-              if (
-                rowData.override &&
-                !I18nManagerController.isEmptyOrSpaces(rowData.override)
-              ) {
-                return `<div class="input-group"><span>${rowData.override}</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`;
-              } else {
-                return this.singularInput;
-              }
+                return `<div class="input-group">
+                  <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale'>${I18nManagerController.isEmptyOrSpaces(
+                    rowData.override
+                  )}</textarea>
+                  <div class="input-group-append">
+                      <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
+                      <button class='cancel-override-translation-singular btn btn-outline-secondary'><i class='fa fa-times'></i></button>
+                  </div>
+                </div>`;
             }
           },
           title: "Overriden translation"
         }
       ],
-      dataBound: e => {
-        this.setEventSingularSpan();
-        this.setEventPluralSpan();
+      dataBound: () => {
         this.setEventInput();
         this.setEventSingularConfirm();
         this.setEventPluralConfirm();
@@ -295,41 +271,6 @@ export default class I18nManagerController extends Vue {
     );
   }
 
-  private initInput(target, type) {
-    if (type === "singular") {
-      $(target)
-        .closest("div[class='input-group']")
-        .replaceWith(this.singularInput);
-      this.setEventSingularCancel();
-      this.setEventSingularConfirm();
-      this.setEventInput();
-    } else {
-      $(target)
-        .closest("div[class='input-group']")
-        .replaceWith(this.pluralInput);
-      this.setEventPluralCancel();
-      this.setEventPluralConfirm();
-      this.setEventInput();
-    }
-  }
-
-  private setEventPluralSpan() {
-    $(".override-plural-value-exist").kendoButton({
-      click: e => {
-        console.log(e);
-        this.initInput(e.event.target, "plural");
-      }
-    });
-  }
-
-  private setEventSingularSpan() {
-    $(".override-singular-value-exist").kendoButton({
-      click: e => {
-        this.initInput(e.event.target, "singular");
-      }
-    });
-  }
-
   private setEventSingularConfirm() {
     $(".confirm-override-translation-singular").kendoButton({
       click: confirmEvent => {
@@ -341,7 +282,7 @@ export default class I18nManagerController extends Vue {
         if (rowData.pluralid) {
           newVal = JSON.stringify({
             msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
-              "input"
+              "textarea"
             )[0].value,
             plural: 0,
             pluralid: rowData.pluralid
@@ -349,11 +290,11 @@ export default class I18nManagerController extends Vue {
         } else {
           newVal = JSON.stringify({
             msgstr: $(confirmEvent.event.target.closest("tr[role=row]")).find(
-              "input"
+              "textarea"
             )[0].value
           });
         }
-        this.setSingularTranslation(confirmEvent, newVal, rowData);
+        this.setSingularTranslation(newVal, rowData);
         $(confirmEvent.sender.element[0])
           .data("kendoButton")
           .enable(false);
@@ -368,22 +309,14 @@ export default class I18nManagerController extends Vue {
         const rowData: any = $(this.$refs.i18nGrid)
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
-
-        const inputVal =
-          $(confirmEvent.event.target.closest("tr[role=row]")).find("input")
-            .length > 1
-            ? $(confirmEvent.event.target.closest("tr[role=row]")).find(
-                "input"
-              )[1].value
-            : $(confirmEvent.event.target.closest("tr[role=row]")).find(
-                "input"
-              )[0].value;
+        const textarea = $(confirmEvent.event.target.closest("tr[role=row]")).find("textarea");
+        console.log(textarea[1].value);
         const newVal = JSON.stringify({
-          msgstr: inputVal,
+          msgstr: textarea[1].value,
           plural: 1,
           pluralid: rowData.pluralid
         });
-        this.setPluralTranslation(confirmEvent, newVal, rowData);
+        this.setPluralTranslation(newVal, rowData);
         $(confirmEvent.sender.element[0])
           .data("kendoButton")
           .enable(false);
@@ -410,7 +343,7 @@ export default class I18nManagerController extends Vue {
             msgstr: " "
           });
         }
-        this.setSingularTranslation(cancelEvent, newVal, rowData);
+        this.setSingularTranslation(newVal, rowData);
         $(cancelEvent.sender.element[0].previousElementSibling)
           .data("kendoButton")
           .enable(false);
@@ -430,7 +363,7 @@ export default class I18nManagerController extends Vue {
           plural: 1,
           pluralid: rowData.pluralid
         });
-        this.setPluralTranslation(cancelEvent, newVal, rowData);
+        this.setPluralTranslation(newVal, rowData);
         $(cancelEvent.sender.element[0].previousElementSibling)
           .data("kendoButton")
           .enable(false);
@@ -442,16 +375,6 @@ export default class I18nManagerController extends Vue {
     const input = $(
       ".overriden-translation-input-singular, .overriden-translation-input-plural"
     );
-    input.on("keypress", e => {
-      if (e.which === 13) {
-        $(".confirm-override-translation-singular").trigger("click");
-      }
-    });
-    input.on("keypress", e => {
-      if (e.which === 13) {
-        $(".confirm-override-translation-plural").trigger("click");
-      }
-    });
     input.on("input", event => {
       const cancelBtn = $(event.target.nextElementSibling.children[1]);
       const confirmBtn = $(event.target.nextElementSibling.children[0]);
@@ -460,7 +383,7 @@ export default class I18nManagerController extends Vue {
     });
   }
 
-  private setSingularTranslation(event, newVal, rowData) {
+  private setSingularTranslation(newVal, rowData) {
     kendo.ui.progress($("body"), true);
     const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
     const url = `/api/v2/admin/i18n/${encodeURIComponent(
@@ -478,19 +401,9 @@ export default class I18nManagerController extends Vue {
         this.$emit("EditTranslationFail");
       }
       kendo.ui.progress($("body"), false);
-      if (!I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)) {
-        $(
-          event.sender.element[0].closest("div[class='input-group']")
-        ).replaceWith(
-          `<div class="input-group"><span>${
-            JSON.parse(newVal).msgstr
-          }</span><button class="override-singular-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
-        );
-        this.setEventSingularSpan();
-      }
     });
   }
-  private setPluralTranslation(event, newVal, rowData) {
+  private setPluralTranslation(newVal, rowData) {
     const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
     const url = `/api/v2/admin/i18n/${encodeURIComponent(
       this.translationLocale
@@ -507,19 +420,6 @@ export default class I18nManagerController extends Vue {
         this.$emit("EditTranslationFail");
       }
       kendo.ui.progress($("body"), false);
-      if (!I18nManagerController.isEmptyOrSpaces(JSON.parse(newVal).msgstr)) {
-        $(
-          event.sender.element[0].closest("div[class='input-group']")
-        ).replaceWith(
-          `<div class="input-group"><span>${
-            JSON.parse(newVal).msgstr
-          }</span><button class="override-plural-value-exist btn btn-outline-secondary"><i class='fa fa-edit'></i></button></div>`
-        );
-        if ($(event.sender.element[0]).prev("hr")) {
-          $(".override-plural-value-exist").prepend("<hr>");
-        }
-        this.setEventPluralSpan();
-      }
     });
   }
 }
