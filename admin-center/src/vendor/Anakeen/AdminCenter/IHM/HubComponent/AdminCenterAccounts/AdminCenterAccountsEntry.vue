@@ -1,18 +1,17 @@
 <template>
-  <div>
+  <hub-element-layout>
     <nav v-if="isDockCollapsed">
       <i class="material-icons hub-icon">group</i>
     </nav>
-    <nav v-else-if="isDockExpanded">
+    <nav v-else>
       <i class="material-icons hub-icon">group</i> <span>Accounts</span>
     </nav>
-    <div v-else-if="isHubContent" class="account-station">
+    <div slot="hubContent" class="account-station">
       <admin-center-account></admin-center-account>
     </div>
-  </div>
+  </hub-element-layout>
 </template>
 <script>
-import Vue from "vue";
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
 
 export default {
@@ -25,6 +24,14 @@ export default {
           resolve(Component.default);
         });
       })
+  },
+  updated() {
+    console.log("updated");
+  },
+  watch: {
+    isDockCollapsed(value) {
+      console.log("collapsed", value);
+    }
   }
 };
 </script>

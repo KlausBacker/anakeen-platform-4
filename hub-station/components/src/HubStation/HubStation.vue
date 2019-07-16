@@ -31,7 +31,7 @@
       </aside>
       <section class="hub-station-content">
         <div
-          v-for="(entry, index) in routeEntries"
+          v-for="(entry, index) in panes"
           v-if="alreadyVisited[entry.entryOptions.route]"
           :class="{
             'hub-station-route-content': true,
@@ -39,13 +39,15 @@
           }"
           :data-route="entry.entryOptions.route"
         >
-          <component
-            class="hub-station-component-route-wrapper"
-            :is="entry.component.name"
-            v-bind="entry.component.props"
-            :entryOptions="entry.entryOptions"
-            :displayType="HubElementDisplayTypes.CONTENT"
-          ></component>
+          <vnodes :vnodes="entry.hubContentVNodes"></vnodes>
+<!--          <component-->
+<!--            class="hub-station-component-route-wrapper"-->
+<!--            :is="entry.hubContentFunction"-->
+<!--            v-bind="entry.component.props"-->
+<!--            :entryOptions="entry.entryOptions"-->
+<!--            ref="hubElementsContent"-->
+<!--            @hook:mounted="onHubElementContentMounted(index)"-->
+<!--          ></component>-->
         </div>
       </section>
       <aside v-if="isRightEnabled" class="hub-station-aside hub-station-right">

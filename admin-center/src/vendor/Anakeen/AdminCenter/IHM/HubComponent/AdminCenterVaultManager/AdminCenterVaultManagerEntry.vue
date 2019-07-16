@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <hub-element-layout>
     <nav v-if="isDockCollapsed">
       <i class="material-icons hub-icon">storage</i>
     </nav>
-    <nav v-else-if="isDockExpanded">
+    <nav v-else="isDockExpanded">
       <i class="material-icons hub-icon">storage</i> <span> Vault Manager</span>
     </nav>
-    <div v-else-if="isHubContent" class="vault-manager">
+    <div slot="hubContent" class="vault-manager">
       <admin-center-vault v-model="selectedVault"></admin-center-vault>
     </div>
-  </div>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";

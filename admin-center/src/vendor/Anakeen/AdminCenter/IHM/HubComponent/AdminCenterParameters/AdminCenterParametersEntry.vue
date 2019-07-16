@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <hub-element-layout>
     <nav v-if="isDockCollapsed">
       <i class="material-icons hub-icon">settings</i>
     </nav>
-    <nav v-else-if="isDockExpanded">
+    <nav v-else>
       <i class="material-icons hub-icon">settings</i><span> Parameters</span>
     </nav>
-    <div v-else-if="isHubContent" class="parameters-parent">
+    <div slot="hubContent" class="parameters-parent">
       <admin-center-parameters></admin-center-parameters>
     </div>
-  </div>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";

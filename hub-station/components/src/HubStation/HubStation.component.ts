@@ -1,6 +1,6 @@
 import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
 // Vue class based component export
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
 import VueSetupPlugin from "../utils/VueSetupPlugin";
 import Router from "./HubRouter";
@@ -14,6 +14,7 @@ import {
   IHubStationDockConfigs,
   IHubStationPropConfig
 } from "./HubStationsTypes";
+import { VNode } from "vue/types/vnode";
 
 const urlJoin = require("url-join");
 
@@ -21,10 +22,20 @@ Vue.use(VueAxiosPlugin);
 
 @Component({
   components: {
-    "hub-station-dock": HubStationDock
+    "hub-station-dock": HubStationDock,
+    vnodes: {
+      functional: true,
+      render: (h, ctx) => {
+        const vnodes: VNode[] = ctx.props.vnodes;
+        return vnodes;
+      }
+    },
   }
 })
 export default class HubStation extends Vue {
+
+  @Provide("rootHubStation") public rootHubStation = this;
+
   // region computed
   get isHeaderEnabled() {
     return this.configData.top.length;
@@ -125,6 +136,8 @@ export default class HubStation extends Vue {
   // endregion props
 
   public activeRoute: string = "/";
+
+  public panes = [];
 
   protected defaultRoute: { priority: number | null; route: string } = {
     priority: null,

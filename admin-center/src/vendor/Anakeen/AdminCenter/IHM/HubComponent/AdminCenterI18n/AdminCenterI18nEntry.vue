@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <hub-element-layout>
     <nav v-if="isDockCollapsed">
       <i class="fa fa-globe i18n-globe" aria-hidden="true"></i>
     </nav>
-    <nav v-else-if="isDockExpanded">
+    <nav v-else>
       <i class="fa fa-globe i18n-globe" aria-hidden="true"></i> <span>&nbspI18n</span>
     </nav>
-    <div v-else-if="isHubContent" class="i18n-station">
+    <div slot="hubContent" class="i18n-station">
       <admin-center-i18n
               @changeLocaleWrongArgument="handleLocaleWrongArgumentError" @i18nOffline="handleLocaleNetworkError"
       ></admin-center-i18n>
     </div>
-  </div>
+  </hub-element-layout>
 </template>
 <script>
   import Vue from "vue";

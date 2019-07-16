@@ -1,15 +1,15 @@
 <template>
-    <div>
+    <hub-element-layout>
         <nav v-if="isDockCollapsed">
             <i class="material-icons hub-icon">call_split</i>
         </nav>
-        <nav v-else-if="isDockExpanded">
+        <nav v-else>
             <i class="material-icons hub-icon">call_split</i> <span> Workflow Manager</span>
         </nav>
-        <div v-else-if="isHubContent" class="workflow-manager">
+        <div slot="hubContent" class="workflow-manager">
             <admin-center-workflow-manager></admin-center-workflow-manager>
         </div>
-    </div>
+    </hub-element-layout>
 </template>
 <script>
   import HubElement from "@anakeen/hub-components/components/lib/HubElement";

@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <hub-element-layout>
     <nav v-if="isDockCollapsed">
       <i class="material-icons hub-icon">fingerprint</i>
     </nav>
-    <nav v-else-if="isDockExpanded">
+    <nav v-else>
       <i class="material-icons hub-icon">fingerprint</i>
       <span> Authentication Tokens</span>
     </nav>
-    <div v-else-if="isHubContent" class="token-station">
+    <div slot="hubContent" class="token-station">
       <admin-center-authentication-tokens v-model="selectedToken" />
     </div>
-  </div>
+  </hub-element-layout>
 </template>
 <script>
 // import AdminCenterAuthentTokens from "../../AuthenticationTokens/AuthenticationTokens";
