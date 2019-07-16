@@ -14,7 +14,7 @@ use Anakeen\SmartStructures\Wdoc\WDocHooks;
 use Sepia\PoParser\Catalog\Entry;
 
 /** @noinspection PhpIncludeInspection */
-require_once "vendor/Anakeen/Routes/Devel/Lib/vendor/autoload.php";
+require_once "vendor/Anakeen/Routes/Admin/Lib/vendor/autoload.php";
 
 /**
  * Get All Enumerate Items
