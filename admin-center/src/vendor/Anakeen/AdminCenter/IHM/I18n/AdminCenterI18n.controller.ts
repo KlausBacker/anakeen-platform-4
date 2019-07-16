@@ -159,7 +159,7 @@ export default class I18nManagerController extends Vue {
           title: "Server translation"
         },
         {
-          field: "overridentranslation",
+          field: "overrride",
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           template: rowData => {
