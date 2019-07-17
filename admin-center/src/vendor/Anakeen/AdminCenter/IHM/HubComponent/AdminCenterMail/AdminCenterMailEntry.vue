@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed">
+  <hub-element-layout>
+    <nav>
       <i class="fa fa-envelope mail-icon" aria-hidden="true"></i>
+      <span v-if="!isDockCollapsed">Mail Templates</span>
     </nav>
-    <nav v-else-if="isDockExpanded">
-      <i class="fa fa-envelope mail-icon" aria-hidden="true"></i> <span>Mail Templates</span>
-    </nav>
-    <div v-else-if="isHubContent" class="mail-station">
-      <admin-center-mail></admin-center-mail>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="mail-station">
+        <admin-center-mail></admin-center-mail>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import Vue from "vue";

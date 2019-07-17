@@ -1,32 +1,27 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed">
+  <hub-element-layout>
+    <nav>
       <i class="material-icons hub-icon">settings</i>
+      <span v-if="!isDockCollapsed"> Parameters</span>
     </nav>
-    <nav v-else-if="isDockExpanded">
-      <i class="material-icons hub-icon">settings</i><span> Parameters</span>
-    </nav>
-    <div v-else-if="isHubContent" class="parameters-parent">
-      <admin-center-parameters></admin-center-parameters>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="parameters-parent">
+        <admin-center-parameters></admin-center-parameters>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
-import Vue from "vue";
 
 export default {
   name: "ank-admin-parameter",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
-
-  created() {
-    if (this.isHubContent) {
-      Vue.component("admin-center-parameters", resolve => {
-        import("../../Parameters/AdminCenterParameters.vue").then(Component => {
-          resolve(Component.default);
-        });
-      });
-    }
+  components: {
+    "admin-center-parameters": resolve =>
+      import("../../Parameters/AdminCenterParameters.vue").then(Component => {
+        resolve(Component.default);
+      })
   }
 };
 </script>

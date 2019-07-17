@@ -4,26 +4,16 @@ import Navigo from "navigo";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { IHubStationEntryOptions } from "../../HubStation/HubStationsTypes";
 import VueSetupPlugin from "../../utils/VueSetupPlugin";
-import { HubElementDisplayTypes } from "../HubElementTypes";
+// import { HubElementDisplayTypes } from "../HubElementTypes";
 
 Vue.use(VueSetupPlugin);
 
 // You can declare a mixin as the same style as components.
 @Component
 export default class HubElementMixin extends Vue {
-  get isDockCollapsed() {
-    return this.displayType === HubElementDisplayTypes.COLLAPSED;
-  }
-
-  get isDockExpanded() {
-    return this.displayType === HubElementDisplayTypes.EXPANDED;
-  }
-
-  get isHubContent() {
-    return this.displayType === HubElementDisplayTypes.CONTENT;
-  }
   @Prop() public entryOptions!: IHubStationEntryOptions;
-  @Prop() public displayType!: HubElementDisplayTypes;
+  // @Prop() public displayType!: HubElementDisplayTypes;
+  @Prop({ required: true, type: Boolean, default: true}) public isDockCollapsed!: boolean;
   @Prop() public parentPath!: string;
 
   public resolveHubSubPath(subPath) {

@@ -1,6 +1,6 @@
 import VueAxiosPlugin from "@anakeen/internal-components/lib/AxiosPlugin";
 // Vue class based component export
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import { HubElementDisplayTypes } from "../HubElement/HubElementTypes";
 import VueSetupPlugin from "../utils/VueSetupPlugin";
 import Router from "./HubRouter";
@@ -105,6 +105,8 @@ export default class HubStation extends Vue {
     };
   }
 
+  @Provide("rootHubStation") public rootHubStation = this;
+
   public configData: IHubStationDockConfigs = {
     bottom: [],
     left: [],
@@ -125,6 +127,8 @@ export default class HubStation extends Vue {
   // endregion props
 
   public activeRoute: string = "/";
+
+  public panes: IHubStationPropConfig[] = [];
 
   protected defaultRoute: { priority: number | null; route: string } = {
     priority: null,
@@ -170,6 +174,172 @@ export default class HubStation extends Vue {
     if (this.withDefaultRouter) {
       this.initRouterConfig(this.configData);
     }
+  }
+
+  public render(createElement) {
+    const sections: any = [];
+    const centerSections: any = [];
+    if (this.isHeaderEnabled) {
+      sections.push(
+        createElement(
+          "header",
+          {
+            class: {
+              "hub-station-bar": true,
+              "hub-station-bar--header": true
+            }
+          },
+          [
+            createElement("hub-station-dock", {
+              on: {
+                hubElementSelected: this.onHubElementSelected
+              },
+              props: {
+                activeRoute: this.activeRoute,
+                dockContent: this.configData.top,
+                position: DockPosition.TOP,
+                rootUrl: this.rootUrl
+              },
+              ref: "dockTop"
+            })
+          ]
+        )
+      );
+    }
+    if (this.isLeftEnabled) {
+      centerSections.push(
+        createElement(
+          "aside",
+          {
+            class: {
+              "hub-station-aside": true,
+              "hub-station-left": true
+            }
+          },
+          [
+            createElement("hub-station-dock", {
+              on: {
+                hubElementSelected: this.onHubElementSelected
+              },
+              props: {
+                activeRoute: this.activeRoute,
+                dockContent: this.configData.left,
+                position: DockPosition.LEFT,
+                rootUrl: this.rootUrl
+              },
+              ref: "dockLeft"
+            })
+          ]
+        )
+      );
+    }
+    // @ts-ignore
+    const routesPanels = this._l(
+      this.panes.filter(pane => this.alreadyVisited[pane.entryOptions.route]),
+      pane => {
+        return createElement(
+          "div",
+          {
+            attrs: {
+              "data-route": pane.entryOptions.route
+            },
+            class: {
+              "hub-station-route-content": true,
+              "route-active": pane.entryOptions.route === this.activeRoute
+            },
+            key: pane.entryOptions.route
+          },
+          pane.hubContentLayout.$slots.hubContent
+        );
+      }
+    );
+    centerSections.push(
+      createElement(
+        "section",
+        {
+          class: {
+            "hub-station-content": true
+          }
+        },
+        routesPanels
+      )
+    );
+    if (this.isRightEnabled) {
+      centerSections.push(
+        createElement(
+          "aside",
+          {
+            class: {
+              "hub-station-aside": true,
+              "hub-station-right": true
+            }
+          },
+          [
+            createElement("hub-station-dock", {
+              on: {
+                hubElementSelected: this.onHubElementSelected
+              },
+              props: {
+                activeRoute: this.activeRoute,
+                dockContent: this.configData.right,
+                position: DockPosition.RIGHT,
+                rootUrl: this.rootUrl
+              },
+              ref: "dockRight"
+            })
+          ]
+        )
+      );
+    }
+    sections.push(
+      createElement(
+        "section",
+        {
+          class: {
+            "hub-station-center-area": true
+          }
+        },
+        centerSections
+      )
+    );
+    if (this.isFooterEnabled) {
+      sections.push(
+        createElement(
+          "footer",
+          {
+            class: {
+              "hub-station-bar": true,
+              "hub-station-bar--footer": true
+            }
+          },
+          [
+            createElement("hub-station-dock", {
+              on: {
+                hubElementSelected: this.onHubElementSelected
+              },
+              props: {
+                activeRoute: this.activeRoute,
+                dockContent: this.configData.bottom,
+                position: DockPosition.BOTTOM,
+                rootUrl: this.rootUrl
+              },
+              ref: "dockBottom"
+            })
+          ]
+        )
+      );
+    }
+    return createElement(
+      "div",
+      {
+        class: {
+          "hub-station-component": true,
+          [`hub-instance-${this.config.instanceName}`]: !!this.config
+            .instanceName
+        }
+      },
+      sections
+    );
   }
 
   // region watch

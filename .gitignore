@@ -3,6 +3,7 @@ node_modules
 /user-interfaces/src/public/Images/Helppage/flags/fr.png
 /user-interfaces/src/public/Images/Helppage/flags/us.png
 /.idea/workspace.xml
+/.idea/compiler.xml
 /build/
 /Makefile.local
 /.devtool/ci/check/checkPHP/vendor/

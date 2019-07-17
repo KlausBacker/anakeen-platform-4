@@ -2,7 +2,7 @@
 
 import AnkIdentity from "@anakeen/user-interfaces/components/lib/AnkIdentity";
 import AnkLogout from "@anakeen/user-interfaces/components/lib/AnkLogout";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Inject, Prop, Vue } from "vue-property-decorator";
 import HubDock from "../../HubDock/HubDock.vue";
 import HubDockEntry from "../../HubDock/HubDockEntry/HubDockEntry.vue";
 import { HubElementDisplayTypes } from "../../HubElement/HubElementTypes";
@@ -26,13 +26,12 @@ const urlJoin = require("url-join");
   name: "hub-station-dock"
 })
 export default class HubStationDock extends Vue {
+
   get InnerDockPosition() {
     return InnerDockPosition;
   }
   get dockState() {
-    return this.dockIsCollapsed
-      ? HubElementDisplayTypes.COLLAPSED
-      : HubElementDisplayTypes.EXPANDED;
+    return true;
   }
   // noinspection JSMethodCanBeStatic
   get HubElementDisplayTypes(): any {
@@ -54,6 +53,8 @@ export default class HubStationDock extends Vue {
   protected static normalizeUrl(...url) {
     return urlJoin("/", ...url, "/");
   }
+
+  @Inject("rootHubStation") public readonly rootHubStation!: Vue;
   public $refs!: {
     innerDock: HubDock | any;
   };
@@ -67,7 +68,7 @@ export default class HubStationDock extends Vue {
   @Prop({ default: "", type: String }) public activeRoute!: string;
   // endregion props
 
-  protected dockIsCollapsed: boolean = true;
+  public dockIsCollapsed: boolean = true;
 
   public mounted() {
     this.dockIsCollapsed = this.$refs.innerDock.collapsed;
@@ -143,6 +144,30 @@ export default class HubStationDock extends Vue {
       return HubStationDock.normalizeUrl(entry.entryOptions.route);
     }
     return "";
+  }
+
+  protected onComponentMounted(entry, ref, index) {
+    const walk = (vueInstance, cbFilter) => {
+      if (cbFilter(vueInstance)) {
+        return vueInstance;
+      } else {
+        let i = 0;
+        let result = null;
+        while (!result && i < vueInstance.$children.length) {
+          result = walk(vueInstance.$children[i++], cbFilter);
+        }
+        return result;
+      }
+    };
+    const currentComponent = this.$refs[ref][index];
+    if (currentComponent) {
+      const layout = walk(this.$refs[ref][index], v => v.$options.name === "HubElementLayout");
+      if (layout && layout.$slots && layout.$slots.hubContent) {
+        const data = Object.assign({}, entry, { hubContentLayout: layout });
+        // @ts-ignore
+        this.rootHubStation.panes.push(data);
+      }
+    }
   }
   // endregion methods
 }

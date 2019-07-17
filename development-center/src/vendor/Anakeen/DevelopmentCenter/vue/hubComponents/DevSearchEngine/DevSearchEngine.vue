@@ -1,9 +1,6 @@
 <template>
-  <div class="search-engine-component">
-    <div
-      v-if="isDockCollapsed || isDockExpanded"
-      class="dev-center-search-engine"
-    >
+  <hub-element-layout class="search-engine-component">
+    <div class="dev-center-search-engine">
       <div class="dev-center-search-engine-widget">
         <button
           class="dev-center-search-button k-button k-button-icontext k-primary"
@@ -15,10 +12,12 @@
         </button>
       </div>
     </div>
-    <div v-else-if="isHubContent" class="dev-center-search-engine-main">
-      <dev-search-engine-panel v-model="filters" ></dev-search-engine-panel>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-center-search-engine-main">
+        <dev-search-engine-panel v-model="filters"></dev-search-engine-panel>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script src="./devSearchEngine.controller.js"></script>
 <style src="./devSearchEngine.scss"></style>

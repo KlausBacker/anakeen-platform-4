@@ -1,15 +1,17 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed || isDockExpanded">
+  <hub-element-layout>
+    <nav>
       <span>Smart Elements</span>
     </nav>
-    <div v-else-if="isHubContent" class="dev-smart-elements">
-      <dev-smart-elements
-        @navigate="onNavigate"
-        :smartElement="element"
-      ></dev-smart-elements>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-smart-elements">
+        <dev-smart-elements
+          @navigate="onNavigate"
+          :smartElement="element"
+        ></dev-smart-elements>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -29,10 +31,8 @@ export default {
       })
   },
   beforeCreate() {
-    if (this.$options.propsData.displayType === "COLLAPSED") {
-      this.$parent.$parent.collapsable = false;
-      this.$parent.$parent.collapsed = false;
-    }
+    this.$parent.$parent.collapsable = false;
+    this.$parent.$parent.collapsed = false;
   },
   computed: {
     element() {
@@ -40,72 +40,68 @@ export default {
     }
   },
   created() {
-    if (this.isHubContent) {
-      setupVue(this);
-      if (this.$store) {
-        this.$store.registerModule(["smartElements"], elementsStore);
-      }
-      const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+))?)?`;
-      this.getRouter()
-        .on(new RegExp(pattern), (...params) => {
-          const elementId = params[0];
-          const elementSection = params[1];
-          if (elementId && elementSection) {
-            let merge = {};
-            let filterValue = null;
-            switch (elementSection) {
-              case "view":
-                merge.props = {
-                  initid: elementId,
-                  viewId: "!defaultConsultation"
-                };
-                break;
-              case "element":
-                filterValue = window.location.search.match(
-                  /formatType=(xml|json)/
-                );
-                if (filterValue && filterValue.length > 1) {
-                  merge.props = {
-                    elementId,
-                    formatType: filterValue[1]
-                  };
-                }
-                merge.component = "element-raw";
-                break;
-              case "properties":
-                merge.props = {
-                  elementId: elementId
-                };
-                break;
-              case "security":
-                filterValue = window.location.search.match(
-                  /profileId=([\w_]+)/
-                );
-                if (filterValue && filterValue.length > 1) {
-                  merge.props = {
-                    profileId: filterValue[1],
-                    detachable: true
-                  };
-                }
-                break;
-            }
-            this.$store.commit(
-              "smartElements/SET_ELEMENT",
-              Object.assign(
-                {},
-                {
-                  url: `${elementId}/${elementSection}`,
-                  component: `element-${elementSection}`,
-                  name: elementId,
-                  label: elementId
-                },
-                merge
-              )
-            );
-          }
-        })
-        .resolve();
+    setupVue(this);
+    if (this.$store) {
+      this.$store.registerModule(["smartElements"], elementsStore);
     }
+    const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+))?)?`;
+    this.getRouter()
+      .on(new RegExp(pattern), (...params) => {
+        const elementId = params[0];
+        const elementSection = params[1];
+        if (elementId && elementSection) {
+          let merge = {};
+          let filterValue = null;
+          switch (elementSection) {
+            case "view":
+              merge.props = {
+                initid: elementId,
+                viewId: "!defaultConsultation"
+              };
+              break;
+            case "element":
+              filterValue = window.location.search.match(
+                /formatType=(xml|json)/
+              );
+              if (filterValue && filterValue.length > 1) {
+                merge.props = {
+                  elementId,
+                  formatType: filterValue[1]
+                };
+              }
+              merge.component = "element-raw";
+              break;
+            case "properties":
+              merge.props = {
+                elementId: elementId
+              };
+              break;
+            case "security":
+              filterValue = window.location.search.match(/profileId=([\w_]+)/);
+              if (filterValue && filterValue.length > 1) {
+                merge.props = {
+                  profileId: filterValue[1],
+                  detachable: true
+                };
+              }
+              break;
+          }
+          this.$store.commit(
+            "smartElements/SET_ELEMENT",
+            Object.assign(
+              {},
+              {
+                url: `${elementId}/${elementSection}`,
+                component: `element-${elementSection}`,
+                name: elementId,
+                label: elementId
+              },
+              merge
+            )
+          );
+        }
+      })
+      .resolve();
   },
   methods: {
     onNavigate(route) {

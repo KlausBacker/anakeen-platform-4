@@ -11,10 +11,12 @@
         @dockEntrySelected="onEntrySelected($event, entry)"
       >
         <component
+          ref="headerComponents"
+          @hook:mounted="onComponentMounted(entry, 'headerComponents', index)"
           :is="entry.component.name"
           v-bind="entry.component.props"
           :entryOptions="entry.entryOptions"
-          :displayType="dockState"
+          :isDockCollapsed="dockIsCollapsed"
         ></component>
       </hub-dock-entry>
     </template>
@@ -28,10 +30,12 @@
       @dockEntrySelected="onEntrySelected($event, entry)"
     >
       <component
+        ref="centerComponents"
+        @hook:mounted="onComponentMounted(entry, 'centerComponents', index)"
         :is="entry.component.name"
         v-bind="entry.component.props"
         :entryOptions="entry.entryOptions"
-        :displayType="dockState"
+        :isDockCollapsed="dockIsCollapsed"
       ></component>
     </hub-dock-entry>
     <template slot="footer">
@@ -45,10 +49,12 @@
         @dockEntrySelected="onEntrySelected($event, entry)"
       >
         <component
+          ref="footerComponents"
+          @hook:mounted="onComponentMounted(entry, 'footerComponents', index)"
           :is="entry.component.name"
           v-bind="entry.component.props"
           :entryOptions="entry.entryOptions"
-          :displayType="dockState"
+          :isDockCollapsed="dockIsCollapsed"
         ></component>
       </hub-dock-entry>
     </template>

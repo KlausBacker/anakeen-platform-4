@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed">
+  <hub-element-layout>
+    <nav>
       <i class="material-icons hub-icon">storage</i>
+      <span v-if="!isDockCollapsed"> Vault Manager</span>
     </nav>
-    <nav v-else-if="isDockExpanded">
-      <i class="material-icons hub-icon">storage</i> <span> Vault Manager</span>
-    </nav>
-    <div v-else-if="isHubContent" class="vault-manager">
-      <admin-center-vault v-model="selectedVault"></admin-center-vault>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="vault-manager">
+        <admin-center-vault v-model="selectedVault"></admin-center-vault>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -27,16 +27,12 @@ export default {
   },
   watch: {
     selectedVault(newValue) {
-      if (this.isHubContent) {
-        this.navigate(this.routeUrl() + "/" + newValue);
-      }
+      this.navigate(this.routeUrl() + "/" + newValue);
     }
   },
 
   created() {
-    if (this.isHubContent) {
-      this.subRouting();
-    }
+    this.subRouting();
   },
   data() {
     return {

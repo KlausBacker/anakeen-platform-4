@@ -1,16 +1,15 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed">
-      <i class="material-icons hub-icon">fingerprint</i>
+  <hub-element-layout>
+    <nav>
+      <i class="material-icons hub-icon">fingerprint</i
+      ><span v-if="!isDockCollapsed"> Authentication Tokens</span>
     </nav>
-    <nav v-else-if="isDockExpanded">
-      <i class="material-icons hub-icon">fingerprint</i>
-      <span> Authentication Tokens</span>
-    </nav>
-    <div v-else-if="isHubContent" class="token-station">
-      <admin-center-authentication-tokens v-model="selectedToken" />
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="token-station">
+        <admin-center-authentication-tokens v-model="selectedToken" />
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 // import AdminCenterAuthentTokens from "../../AuthenticationTokens/AuthenticationTokens";
@@ -20,26 +19,22 @@ import Vue from "vue";
 export default {
   name: "ank-hub-authentication-tokens",
   extends: HubElement, // ou mixins: [ HubElementMixins ],
-
+  components: {
+    "admin-center-authentication-tokens": resolve => {
+      import("../../AuthenticationTokens/AuthenticationTokens").then(
+        Component => {
+          resolve(Component.default);
+        }
+      );
+    }
+  },
   watch: {
     selectedToken(newValue) {
-      if (this.isHubContent) {
-        this.navigate(this.routeUrl() + "/" + newValue);
-      }
+      this.navigate(this.routeUrl() + "/" + newValue);
     }
   },
   created() {
-    if (this.isHubContent) {
-      Vue.component("admin-center-authentication-tokens", resolve => {
-        import("../../AuthenticationTokens/AuthenticationTokens").then(
-          Component => {
-            resolve(Component.default);
-
-            this.subRouting();
-          }
-        );
-      });
-    }
+    this.subRouting();
   },
   data() {
     return {

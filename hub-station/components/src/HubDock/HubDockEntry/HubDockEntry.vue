@@ -3,7 +3,9 @@
     :class="{
       'hub-dock-entry-component': true,
       'entry-selected': entrySelected,
-      'entry-selectable': selectable
+      'entry-selectable': selectable,
+      'is-collapsed': isCollapsed,
+      'is-expanded': !isCollapsed
     }"
     :style="entryStyle"
     :data-entry-name="name"

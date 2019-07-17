@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed || isDockExpanded">
+  <hub-element-layout>
+    <nav>
       <span>Hub</span>
     </nav>
-    <div v-else-if="isHubContent" class="dev-hub-instanciation">
-      <dev-hub-instanciation></dev-hub-instanciation>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-hub-instanciation">
+        <dev-hub-instanciation></dev-hub-instanciation>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -18,24 +20,20 @@ export default {
   components: {
     "dev-hub-instanciation": () =>
       new Promise(resolve => {
-        import("../../sections/Hub/HubAdminInstanciation/HubAdminInstanciation.vue").then(
-          Component => {
-            resolve(Component.default);
-          }
-        );
+        import(
+          "../../sections/Hub/HubAdminInstanciation/HubAdminInstanciation.vue"
+        ).then(Component => {
+          resolve(Component.default);
+        });
       })
   },
   beforeCreate() {
-    if (this.$options.propsData.displayType === "COLLAPSED") {
-      this.$parent.$parent.collapsable = false;
-      this.$parent.$parent.collapsed = false;
-    }
+    this.$parent.$parent.collapsable = false;
+    this.$parent.$parent.collapsed = false;
   },
   created() {
-    if (this.isHubContent) {
-      setupVue(this);
-    }
-  },
+    setupVue(this);
+  }
 };
 </script>
 <style>

@@ -14,9 +14,7 @@ export default {
       })
   },
   created() {
-    if (this.isHubContent) {
-      this.subRouting();
-    }
+    this.subRouting();
   },
   data() {
     return {
@@ -96,9 +94,7 @@ export default {
     }
   },
   mounted() {
-    if (this.isDockCollapsed || this.isDockExpanded) {
-      setupVue(this);
-    }
+    setupVue(this);
   },
   watch: {
     filters: {

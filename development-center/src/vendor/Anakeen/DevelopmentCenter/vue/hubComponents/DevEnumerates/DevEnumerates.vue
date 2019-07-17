@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed || isDockExpanded">
+  <hub-element-layout>
+    <nav>
       <span>Enumerates</span>
     </nav>
-    <div v-else-if="isHubContent" class="dev-enumerates">
-      <dev-enumerates
-        @filter="onFilter"
-        :name="name"
-        :localeKey="key"
-        :label="label"
-        :parentkey="parentkey"
-        :disabled="disabled"
-      ></dev-enumerates>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-enumerates">
+        <dev-enumerates
+          @filter="onFilter"
+          :name="name"
+          :localeKey="key"
+          :label="label"
+          :parentkey="parentkey"
+          :disabled="disabled"
+        ></dev-enumerates>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -32,10 +34,8 @@ export default {
       })
   },
   beforeCreate() {
-    if (this.$options.propsData.displayType === "COLLAPSED") {
-      this.$parent.$parent.collapsable = false;
-      this.$parent.$parent.collapsed = false;
-    }
+    this.$parent.$parent.collapsable = false;
+    this.$parent.$parent.collapsed = false;
   },
   computed: {
     name() {
@@ -55,29 +55,27 @@ export default {
     }
   },
   created() {
-    if (this.isHubContent) {
-      setupVue(this);
-      if (this.$store) {
-        this.$store.registerModule(["enumerates"], enumStore);
-      }
-      const pattern = `/${this.entryOptions.route}`;
-      this.getRouter()
-        .on(new RegExp(pattern), (...params) => {
-          const queries = window.location.search.replace(/^\?/, "").split("&");
-          const filters = queries.reduce((acc, curr) => {
-            const entry = curr.split("=");
-            acc[entry[0]] = entry[1];
-            return acc;
-          }, {});
-          ["name", "key", "label", "parentkey", "disabled"].forEach(key => {
-            this.$store.commit(
-              `enumerates/SET_${key.toUpperCase()}`,
-              filters[key] || ""
-            );
-          });
-        })
-        .resolve();
+    setupVue(this);
+    if (this.$store) {
+      this.$store.registerModule(["enumerates"], enumStore);
     }
+    const pattern = `/${this.entryOptions.route}`;
+    this.getRouter()
+      .on(new RegExp(pattern), (...params) => {
+        const queries = window.location.search.replace(/^\?/, "").split("&");
+        const filters = queries.reduce((acc, curr) => {
+          const entry = curr.split("=");
+          acc[entry[0]] = entry[1];
+          return acc;
+        }, {});
+        ["name", "key", "label", "parentkey", "disabled"].forEach(key => {
+          this.$store.commit(
+            `enumerates/SET_${key.toUpperCase()}`,
+            filters[key] || ""
+          );
+        });
+      })
+      .resolve();
   },
   methods: {
     onFilter(filter) {
