@@ -44,6 +44,9 @@
             </div>
         </div>
         <div v-if="profileTreeReady" ref="profileTreeList"></div>
+        <div v-if="showError" class="profile-error-content">
+            <p class="profile-error-message">{{errorToDisplay}}</p>
+        </div>
     </div>
 </template>
 

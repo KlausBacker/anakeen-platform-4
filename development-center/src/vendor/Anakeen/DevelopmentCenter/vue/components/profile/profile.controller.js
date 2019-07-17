@@ -48,6 +48,8 @@ export default {
     labelRotation: 300,
     columnWidth: "3rem",
     profileTreeReady: false,
+    showError: false,
+    errorToDisplay: "",
     showLabels: false
   }),
   devCenterRefreshData() {
@@ -198,29 +200,34 @@ export default {
         this.dataSource.read();
       },
       fetchTreeConfig: () => {
-        this.$http
-          .get(
-            `/api/v2/devel/security/profile/${this.profileId}/accesses/?acls=only`
-          )
-          .then(content => {
-            if (!content.data.success) {
-              return this.$emit("error", content.data.messages.join(" "));
-            }
-            const data = content.data.data;
-            this.title = data.properties.title;
-            this.name = data.properties.name;
-            this.id = data.properties.id;
-            this.refProfile = data.properties.reference;
-            this.profileTreeReady = true;
+        if (parseInt(this.profileId)) {
+          this.$http
+            .get(
+              `/api/v2/devel/security/profile/${this.profileId}/accesses/?acls=only`
+            )
+            .then(content => {
+              if (!content.data.success) {
+                return this.$emit("error", content.data.messages.join(" "));
+              }
+              const data = content.data.data;
+              this.title = data.properties.title;
+              this.name = data.properties.name;
+              this.id = data.properties.id;
+              this.refProfile = data.properties.reference;
+              this.profileTreeReady = true;
 
-            this.$nextTick(() => {
-              this.privateScope.initTreeView(data);
+              this.$nextTick(() => {
+                this.privateScope.initTreeView(data);
+              });
+            })
+            .catch(err => {
+              console.error(err);
+              this.$emit("error", err);
             });
-          })
-          .catch(err => {
-            console.error(err);
-            this.$emit("error", err);
-          });
+        } else {
+          this.errorToDisplay = "There is no profile";
+          this.showError = true;
+        }
       },
       initTreeView: data => {
         const lineRender = (column, callback) => {
