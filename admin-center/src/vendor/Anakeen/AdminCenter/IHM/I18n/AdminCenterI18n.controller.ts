@@ -282,7 +282,7 @@ export default class I18nManagerController extends Vue {
         let textareaVal = $(
           confirmEvent.event.target.closest("tr[role=row]")
         ).find("textarea")[0].value;
-        textareaVal = textareaVal.replace(new RegExp("\n", "g"),"\\n");
+        textareaVal = textareaVal.replace(new RegExp("\n", "g"), "\\n");
         if (rowData.pluralid) {
           newVal = JSON.stringify({
             msgstr: textareaVal,
