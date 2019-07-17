@@ -1,15 +1,17 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed || isDockExpanded">
+  <hub-element-layout>
+    <nav>
       <span>Routes</span>
     </nav>
-    <div v-else-if="isHubContent" class="dev-routes">
-      <dev-routes
-        @navigate="onNavigate"
-        :routeSection="routeSection"
-      ></dev-routes>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-routes">
+        <dev-routes
+          @navigate="onNavigate"
+          :routeSection="routeSection"
+        ></dev-routes>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -32,25 +34,21 @@ export default {
     }
   },
   beforeCreate() {
-    if (this.$options.propsData.displayType === "COLLAPSED") {
-      this.$parent.$parent.collapsable = false;
-      this.$parent.$parent.collapsed = false;
-    }
+    this.$parent.$parent.collapsable = false;
+    this.$parent.$parent.collapsed = false;
   },
   created() {
-    if (this.isHubContent) {
-      setupVue(this);
-      if (this.$store) {
-        this.$store.registerModule(["routes"], routeStore);
-      }
-      const pattern = `/${this.entryOptions.route}(?:/(\\w+))?`;
-      this.getRouter()
-        .on(new RegExp(pattern), (...params) => {
-          const routeSection = params[0];
-          this.$store.commit("routes/SET_ROUTE_SECTION", routeSection);
-        })
-        .resolve();
+    setupVue(this);
+    if (this.$store) {
+      this.$store.registerModule(["routes"], routeStore);
     }
+    const pattern = `/${this.entryOptions.route}(?:/(\\w+))?`;
+    this.getRouter()
+      .on(new RegExp(pattern), (...params) => {
+        const routeSection = params[0];
+        this.$store.commit("routes/SET_ROUTE_SECTION", routeSection);
+      })
+      .resolve();
   },
   methods: {
     onNavigate(route, filter) {

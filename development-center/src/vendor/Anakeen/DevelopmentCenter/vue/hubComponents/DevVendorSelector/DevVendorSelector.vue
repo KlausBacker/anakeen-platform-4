@@ -1,5 +1,5 @@
 <template>
-    <div class="header-breadcrumb" v-if="isDockCollapsed || isDockExpanded">
+    <div class="header-breadcrumb">
             <span v-for="(routeItem, index) in routesSections" :key="index">
                 <span :class="{ 'header-breadcrumb-root-item': index === 0, 'header-breacrumb-item': true }">
                     {{getRouteLabel(routeItem)}}

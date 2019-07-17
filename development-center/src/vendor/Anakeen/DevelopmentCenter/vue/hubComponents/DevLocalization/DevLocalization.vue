@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed || isDockExpanded">
+  <hub-element-layout>
+    <nav>
       <span>Localization</span>
     </nav>
-    <div v-else-if="isHubContent" class="dev-localization">
-      <dev-localization
-        @filter="onFilter"
-        :context="context"
-        :msgid="msgid"
-        :fr="fr"
-        :en="en"
-        :files="files"
-      ></dev-localization>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-localization">
+        <dev-localization
+          @filter="onFilter"
+          :context="context"
+          :msgid="msgid"
+          :fr="fr"
+          :en="en"
+          :files="files"
+        ></dev-localization>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -25,18 +27,16 @@ export default {
   components: {
     "dev-localization": () =>
       new Promise(resolve => {
-        import("../../sections/Localization/Localization/Localization.vue").then(
-          Component => {
-            resolve(Component.default);
-          }
-        );
+        import(
+          "../../sections/Localization/Localization/Localization.vue"
+        ).then(Component => {
+          resolve(Component.default);
+        });
       })
   },
   beforeCreate() {
-    if (this.$options.propsData.displayType === "COLLAPSED") {
-      this.$parent.$parent.collapsable = false;
-      this.$parent.$parent.collapsed = false;
-    }
+    this.$parent.$parent.collapsable = false;
+    this.$parent.$parent.collapsed = false;
   },
   computed: {
     context() {
@@ -56,29 +56,27 @@ export default {
     }
   },
   created() {
-    if (this.isHubContent) {
-      setupVue(this);
-      if (this.$store) {
-        this.$store.registerModule(["localization"], localizationStore);
-      }
-      const pattern = `/${this.entryOptions.route}`;
-      this.getRouter()
-        .on(new RegExp(pattern), (...params) => {
-          const queries = window.location.search.replace(/^\?/, "").split("&");
-          const filters = queries.reduce((acc, curr) => {
-            const entry = curr.split("=");
-            acc[entry[0]] = entry[1];
-            return acc;
-          }, {});
-          ["context", "msgid", "en", "fr", "files"].forEach(key => {
-            this.$store.commit(
-              `localization/SET_${key.toUpperCase()}`,
-              filters[key] || ""
-            );
-          });
-        })
-        .resolve();
+    setupVue(this);
+    if (this.$store) {
+      this.$store.registerModule(["localization"], localizationStore);
     }
+    const pattern = `/${this.entryOptions.route}`;
+    this.getRouter()
+      .on(new RegExp(pattern), (...params) => {
+        const queries = window.location.search.replace(/^\?/, "").split("&");
+        const filters = queries.reduce((acc, curr) => {
+          const entry = curr.split("=");
+          acc[entry[0]] = entry[1];
+          return acc;
+        }, {});
+        ["context", "msgid", "en", "fr", "files"].forEach(key => {
+          this.$store.commit(
+            `localization/SET_${key.toUpperCase()}`,
+            filters[key] || ""
+          );
+        });
+      })
+      .resolve();
   },
   methods: {
     onFilter(filter) {

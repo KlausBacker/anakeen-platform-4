@@ -1,18 +1,20 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed || isDockExpanded">
+  <hub-element-layout>
+    <nav>
       <span>User Interface</span>
     </nav>
-    <div v-else-if="isHubContent" class="dev-user-interface">
-      <dev-user-interface
-        @navigate="onNavigate"
-        :ssName="ssName"
-        :uiSection="uiSection"
-        :mask="mask"
-        :control="control"
-      ></dev-user-interface>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-user-interface">
+        <dev-user-interface
+          @navigate="onNavigate"
+          :ssName="ssName"
+          :uiSection="uiSection"
+          :mask="mask"
+          :control="control"
+        ></dev-user-interface>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -30,10 +32,8 @@ export default {
       })
   },
   beforeCreate() {
-    if (this.$options.propsData.displayType === "COLLAPSED") {
-      this.$parent.$parent.collapsable = false;
-      this.$parent.$parent.collapsed = false;
-    }
+    this.$parent.$parent.collapsable = false;
+    this.$parent.$parent.collapsed = false;
   },
   computed: {
     ssName() {
@@ -50,49 +50,44 @@ export default {
     }
   },
   created() {
-    if (this.isHubContent) {
-      setupVue(this);
-      if (this.$store) {
-        this.$store.registerModule(["userInterface"], uiStore);
-      }
-      const pattern = `/${
-        this.entryOptions.route
-      }(?:/(\\w+)(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?)?`;
-      this.getRouter()
-        .on(new RegExp(pattern), (...params) => {
-          const ssName = params[0];
-          const uiSection = params[1];
-          this.$store.dispatch("userInterface/setStructureName", ssName);
-          this.$store.dispatch("userInterface/setUiSection", uiSection);
-          switch (uiSection) {
-            case "control":
-
-              const controlView = params[2];
-              const controlId = params[3];
-              if (controlView && controlId) {
-                this.$store.commit("userInterface/SET_CONTROL", {
-                  url: `/${controlView}/${controlId}`,
-                  component: `${controlView}-view`,
-                  props: {
-                    initid: controlId,
-                    profileId: controlId,
-                    detachable: true,
-                    onlyExtendedAcls: true
-                  },
-                  name: controlId,
-                  label: controlId
-                });
-              }
-              break;
-            case "masks":
-              if (params[2]) {
-                this.$store.dispatch("userInterface/setMask", params[2]);
-              }
-              break;
-          }
-        })
-        .resolve();
+    setupVue(this);
+    if (this.$store) {
+      this.$store.registerModule(["userInterface"], uiStore);
     }
+    const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?)?`;
+    this.getRouter()
+      .on(new RegExp(pattern), (...params) => {
+        const ssName = params[0];
+        const uiSection = params[1];
+        this.$store.dispatch("userInterface/setStructureName", ssName);
+        this.$store.dispatch("userInterface/setUiSection", uiSection);
+        switch (uiSection) {
+          case "control":
+            const controlView = params[2];
+            const controlId = params[3];
+            if (controlView && controlId) {
+              this.$store.commit("userInterface/SET_CONTROL", {
+                url: `/${controlView}/${controlId}`,
+                component: `${controlView}-view`,
+                props: {
+                  initid: controlId,
+                  profileId: controlId,
+                  detachable: true,
+                  onlyExtendedAcls: true
+                },
+                name: controlId,
+                label: controlId
+              });
+            }
+            break;
+          case "masks":
+            if (params[2]) {
+              this.$store.dispatch("userInterface/setMask", params[2]);
+            }
+            break;
+        }
+      })
+      .resolve();
   },
   methods: {
     onNavigate(route) {

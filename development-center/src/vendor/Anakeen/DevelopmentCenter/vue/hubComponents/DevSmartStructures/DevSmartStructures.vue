@@ -1,17 +1,19 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed || isDockExpanded">
+  <hub-element-layout>
+    <nav>
       <span>Smart Structures</span>
     </nav>
-    <div v-else-if="isHubContent" class="dev-smart-structures">
-      <dev-smart-structures
-              @navigate="onNavigate"
-              :ssName="ssName"
-              :ssType="ssType"
-              :ssDetails="ssDetails"
-      ></dev-smart-structures>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="dev-smart-structures">
+        <dev-smart-structures
+          @navigate="onNavigate"
+          :ssName="ssName"
+          :ssType="ssType"
+          :ssDetails="ssDetails"
+        ></dev-smart-structures>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 <script>
 import HubElement from "@anakeen/hub-components/components/lib/HubElement";
@@ -31,10 +33,8 @@ export default {
       })
   },
   beforeCreate() {
-    if (this.$options.propsData.displayType === "COLLAPSED") {
-      this.$parent.$parent.collapsable = false;
-      this.$parent.$parent.collapsed = false;
-    }
+    this.$parent.$parent.collapsable = false;
+    this.$parent.$parent.collapsed = false;
   },
   computed: {
     ssName() {
@@ -45,28 +45,33 @@ export default {
     },
     ssDetails() {
       return this.$store.getters["smartStructures/ssDetails"];
-    },
+    }
   },
   created() {
-    if (this.isHubContent) {
-      setupVue(this);
-      if (this.$store) {
-        this.$store.registerModule(["smartStructures"], structureStore);
-      }
-      const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?`;
-      this.getRouter().on(new RegExp(pattern), (...params) => {
-       const ssName = params[0];
-       const ssType = params[1];
-       const ssDetails = params[2];
-       this.$store.dispatch("smartStructures/setStructureName", ssName);
-       this.$store.dispatch("smartStructures/setStructureType", ssType);
-       this.$store.dispatch("smartStructures/setStructureDetails", ssDetails);
-      }).resolve();
+    setupVue(this);
+    if (this.$store) {
+      this.$store.registerModule(["smartStructures"], structureStore);
     }
+    const pattern = `/${this.entryOptions.route}(?:/(\\w+)(?:/(\\w+)(?:/(\\w+))?)?)?`;
+    this.getRouter()
+      .on(new RegExp(pattern), (...params) => {
+        const ssName = params[0];
+        const ssType = params[1];
+        const ssDetails = params[2];
+        this.$store.dispatch("smartStructures/setStructureName", ssName);
+        this.$store.dispatch("smartStructures/setStructureType", ssType);
+        this.$store.dispatch("smartStructures/setStructureDetails", ssDetails);
+      })
+      .resolve();
   },
   methods: {
     onNavigate(route) {
-      const routeUrl = `/devel/${this.entryOptions.route}/`+route.map(r => r.url).join("/").replace(/\/\//g, '/');
+      const routeUrl =
+        `/devel/${this.entryOptions.route}/` +
+        route
+          .map(r => r.url)
+          .join("/")
+          .replace(/\/\//g, "/");
       this.navigate(routeUrl);
     }
   }

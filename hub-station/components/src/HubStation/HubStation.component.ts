@@ -195,6 +195,7 @@ export default class HubStation extends Vue {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                activeRoute: this.activeRoute,
                 dockContent: this.configData.top,
                 position: DockPosition.TOP,
                 rootUrl: this.rootUrl
@@ -221,6 +222,7 @@ export default class HubStation extends Vue {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                activeRoute: this.activeRoute,
                 dockContent: this.configData.left,
                 position: DockPosition.LEFT,
                 rootUrl: this.rootUrl
@@ -278,6 +280,7 @@ export default class HubStation extends Vue {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                activeRoute: this.activeRoute,
                 dockContent: this.configData.right,
                 position: DockPosition.RIGHT,
                 rootUrl: this.rootUrl
@@ -315,6 +318,7 @@ export default class HubStation extends Vue {
                 hubElementSelected: this.onHubElementSelected
               },
               props: {
+                activeRoute: this.activeRoute,
                 dockContent: this.configData.bottom,
                 position: DockPosition.BOTTOM,
                 rootUrl: this.rootUrl
