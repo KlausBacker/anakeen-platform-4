@@ -1,14 +1,14 @@
 <template>
   <hub-element-layout>
-    <nav v-if="isDockCollapsed">
+    <nav>
       <i class="fa fa-envelope mail-icon" aria-hidden="true"></i>
+      <span v-if="!isDockCollapsed">Mail Templates</span>
     </nav>
-    <nav v-else>
-      <i class="fa fa-envelope mail-icon" aria-hidden="true"></i> <span>Mail Templates</span>
-    </nav>
-    <div slot="hubContent" class="mail-station">
-      <admin-center-mail></admin-center-mail>
-    </div>
+    <template v-slot:hubContent>
+      <div class="mail-station">
+        <admin-center-mail></admin-center-mail>
+      </div>
+    </template>
   </hub-element-layout>
 </template>
 <script>

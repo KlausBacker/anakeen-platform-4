@@ -1,14 +1,14 @@
 <template>
   <hub-element-layout>
-    <nav v-if="isDockCollapsed">
+    <nav>
       <i class="material-icons hub-icon">storage</i>
+      <span v-if="!isDockCollapsed"> Vault Manager</span>
     </nav>
-    <nav v-else="isDockExpanded">
-      <i class="material-icons hub-icon">storage</i> <span> Vault Manager</span>
-    </nav>
-    <div slot="hubContent" class="vault-manager">
-      <admin-center-vault v-model="selectedVault"></admin-center-vault>
-    </div>
+    <template v-slot:hubContent>
+      <div class="vault-manager">
+        <admin-center-vault v-model="selectedVault"></admin-center-vault>
+      </div>
+    </template>
   </hub-element-layout>
 </template>
 <script>
@@ -27,16 +27,12 @@ export default {
   },
   watch: {
     selectedVault(newValue) {
-      if (this.isHubContent) {
-        this.navigate(this.routeUrl() + "/" + newValue);
-      }
+      this.navigate(this.routeUrl() + "/" + newValue);
     }
   },
 
   created() {
-    if (this.isHubContent) {
-      this.subRouting();
-    }
+    this.subRouting();
   },
   data() {
     return {

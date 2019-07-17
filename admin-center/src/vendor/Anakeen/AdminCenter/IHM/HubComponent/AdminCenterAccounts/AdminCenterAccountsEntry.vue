@@ -1,7 +1,8 @@
 <template>
   <hub-element-layout>
     <nav>
-      <i class="material-icons hub-icon">group</i> <span v-if="!isDockCollapsed">Accounts</span>
+      <i class="material-icons hub-icon">group</i>
+      <span v-if="!isDockCollapsed">Accounts</span>
     </nav>
     <template v-slot:hubContent>
       <div class="account-station">
@@ -27,7 +28,7 @@ export default {
   data() {
     return {
       counter: 0
-    }
+    };
   }
 };
 </script>
