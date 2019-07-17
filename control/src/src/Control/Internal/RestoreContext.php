@@ -17,11 +17,10 @@ class RestoreContext
 
     public function restore()
     {
-
         JobLog::setStatus("restoring", "", ModuleJob::RUNNING_STATUS);
 
-        $this->restoreDatacase();
         $this->updateContext();
+        $this->restoreDatacase();
         $this->reconfigureModules();
 
         JobLog::setStatus("restoring", "", ModuleJob::RUNNING_STATUS);
@@ -30,16 +29,16 @@ class RestoreContext
     public function updateContext()
     {
         $wiff = \WIFF::getInstance();
-        $context = Context::getContext();
+        $context = Context::getContext(false);
         // Modify context's parameters
-        $context->setParamByName('core_db', $this->pgService);
-        $context->setParamByName('vault_root', $this->vaultsPath);
 
         $platformRoot = realpath(sprintf("%s/../platform", $wiff->root));
         $context->setAttribute('root', $platformRoot);
         $context->root = $platformRoot;
 
-
+        $context->setParamByName('core_db', $this->pgService);
+        $context->setParamByName('vault_root', $this->vaultsPath);
+var_dump($context->root);
     }
 
     public function restoreDatacase()
@@ -51,7 +50,7 @@ class RestoreContext
         $fileList = sprintf("/tmp/%s", uniqid("pgr"));
 
         $cmd = sprintf(
-            "pg_restore %s -l | grep -v 'COMMENT - EXTENSION' > %s && pg_restore %s --use-list %s %s  | PGSERVICE=\"%s\" psql -q -v ON_ERROR_STOP=1  2>&1",
+            "pg_restore %s -l | grep -v 'COMMENT - EXTENSION' > %s && pg_restore %s --no-owner --use-list %s %s  | PGSERVICE=\"%s\" psql -q -v ON_ERROR_STOP=1  2>&1",
             escapeshellarg($dbFDump),
             escapeshellarg($fileList),
             $this->cleanDatabase ? "-c" : "",

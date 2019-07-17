@@ -839,15 +839,14 @@ EOF;
      */
     /**
      * Get Context list
-     * @param bool $withInProgress Include contexts being restored as ContextProperties objects instead of
      * full-blown Context objects (default: bool(false))
      * @return Context[] array of object Context or bool(false) on error
      */
-    public function getContextList($withInProgress = false)
+    public function getContextList( $verifyContextList=true)
     {
         require_once (__DIR__.'/Class.Repository.php');
         require_once (__DIR__.'/Class.Context.php');
-        
+
         $contextList = array();
         
         $xml = $this->loadContextsDOMDocument();
@@ -860,26 +859,23 @@ EOF;
         $contexts = $xpath->query("/contexts/context");
         
         if ($contexts->length > 0) {
-            
             foreach ($contexts as $context) {
                 /**
                  * @var DOMElement $context
                  */
                 $repoList = array();
-                
                 $repositories = $context->getElementsByTagName('access');
-                
                 foreach ($repositories as $repository) {
                     $repoList[] = new Repository($repository);
                 }
                 
                 $contextClass = new Context($context->getAttribute('name') , $context->getElementsByTagName('description')->item(0)->nodeValue, $context->getAttribute('root') , $repoList, $context->getAttribute('url') , $context->getAttribute('register'));
                 $contextClass->isValid();
-                
-                if (!$contextClass->isWritable()) {
-                    $this->errorMessage = sprintf("Apache user does not have write rights for context '%s'.", $contextClass->name);
+                if ($verifyContextList && !$contextClass->isWritable()) {
+                    $this->errorMessage = sprintf("Apache users does not have write rights for context '%s'.", $contextClass->name);
                     return false;
                 }
+
                 
                 $contextList[] = $contextClass;
             }
@@ -903,24 +899,7 @@ EOF;
                 return false;
             }
         }
-        
-        if ($withInProgress) {
-            if ($handle = opendir($this->archived_tmp_dir)) {
-                while (false !== ($file = readdir($handle))) {
-                    if (!preg_match('/^.+\.ctx$/', $file)) {
-                        continue;
-                    }
-                    $absFile = $this->archived_tmp_dir . DIRECTORY_SEPARATOR . $file;
-                    if (($name = self::readFirstLine($absFile)) !== false) {
-                        $contextClass = new ContextProperties();
-                        $contextClass->name = rtrim($name, "\n");
-                        $contextClass->inProgress = true;
-                        $contextClass->description = sprintf("Restoration in progress (started on %s)", date("Y-m-d H:i:s", filectime($absFile)));
-                        $contextList[] = $contextClass;
-                    }
-                }
-            }
-        }
+
         
         return $contextList;
     }
@@ -939,11 +918,11 @@ EOF;
 
     /**
      * Get Context by name
-     * @return Context Context or boolean false
      * @param string $name context name
-     * @param bool $opt (default false)
+     * @param bool $verifyWriteAccess (default false)
+     *@return Context|false Context or boolean false
      */
-    public function getContext($name, $opt = false)
+    public function getContext($name, $verifyWriteAccess = true)
     {
         require_once (__DIR__.'/Class.Repository.php');
         require_once (__DIR__.'/Class.Context.php');
@@ -975,7 +954,7 @@ EOF;
             $this->errorMessage = null;
             $context = new Context($contextNode->getAttribute('name') , $contextNode->getElementsByTagName('description')->item(0)->nodeValue, $contextNode->getAttribute('root') , $repoList, $contextNode->getAttribute('url') , $contextNode->getAttribute('register'));
             
-            if (!$context->isWritable() && $opt == false) {
+            if (!$context->isWritable() && $verifyWriteAccess === true) {
                 $this->errorMessage = sprintf("Context '%s' configuration is not writable.", $context->name);
                 return false;
             }

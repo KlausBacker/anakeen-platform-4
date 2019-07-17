@@ -135,11 +135,13 @@ class System
                 }
             }
             $this->verbose(2, sprintf("Linking '%s' to '%s'.\n", $relTarget, $absLink));
-            if (symlink($relTarget, $absLink) === false) {
-                closedir($dh);
-                throw new Exception(sprintf("Error symlinking '%s' to '%s'.", $relTarget, $absLink));
+            if (! file_exists($absLink)) {
+                if (symlink($relTarget, $absLink) === false) {
+                    closedir($dh);
+                    throw new Exception(sprintf("Error symlinking '%s' to '%s'.", $relTarget, $absLink));
+                }
+                $linked[$absLink][] = $relTarget;
             }
-            $linked[$absLink][] = $relTarget;
         }
         closedir($dh);
     }

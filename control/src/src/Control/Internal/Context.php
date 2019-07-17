@@ -18,25 +18,23 @@ class Context
         return file_exists($contentsFile);
     }
 
-    public static function getContext()
+    public static function getContext($verifyContextAccess=true)
     {
         if (!self::isInitialized()) {
             throw new \Exception(sprintf("Context not initialized yet"));
         }
-
         if (!self::$context) {
 
             $wiff = \WIFF::getInstance();
 
-            $contextList = $wiff->getContextList();
+            $contextList = $wiff->getContextList( $verifyContextAccess);
             if ($contextList === false) {
                 throw new \Exception(sprintf("Error getting contexts list: %s\n", $wiff->errorMessage));
-
             }
             self::$contextName = $contextList[0]->name;
-            self::$context = $wiff->getContext(self::$contextName);
+            self::$context = $wiff->getContext(self::$contextName, $verifyContextAccess);
             if (!self::$context) {
-                throw new \Exception(sprintf("Context \"%s\" not exists", self::$contextName));
+                throw new \Exception(sprintf("Context \"%s\" not exists: %s", self::$contextName, $wiff->errorMessage));
             }
         }
         return self::$context;

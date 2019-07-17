@@ -70,9 +70,12 @@ class CliRestore extends CliCommand
 
         if (!$input->getOption("dry-run")) {
             ModuleManager::runJobInBackground();
+            $output->writeln("<info>Restore in progress</info>");
+        } else {
+            $output->writeln("<info>Restore job is recorded</info>");
         }
 
-        $output->writeln("<info>Restore in progress</info>");
+
 
     }
 
