@@ -108,17 +108,6 @@ class Translations
             $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
             if ($customEntry) {
                 $datum["override"] = $customEntry->getMsgStr();
-                if (!empty($datum["defaultstr"])) {
-                    $datum["msgstr"] = $datum["defaultstr"];
-                }
-            } else {
-                $datum["override"] = null;
-            }
-        }
-        foreach ($data as &$datum) {
-            $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
-            if ($customEntry) {
-                $datum["override"] = $customEntry->getMsgStr();
                 if ($customEntry->getMsgIdPlural()) {
                     $val1 = $customEntry->getMsgStrPlurals()[0] ?? "";
                     $val2 = $customEntry->getMsgStrPlurals()[1] ?? "";
