@@ -279,10 +279,10 @@ export default class I18nManagerController extends Vue {
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
         let newVal;
-        const textareaVal = $(
+        let textareaVal = $(
           confirmEvent.event.target.closest("tr[role=row]")
         ).find("textarea")[0].value;
-        console.log(textareaVal);
+        textareaVal = textareaVal.replace(new RegExp("\n", "g"),"\\n");
         if (rowData.pluralid) {
           newVal = JSON.stringify({
             msgstr: textareaVal,
@@ -313,7 +313,7 @@ export default class I18nManagerController extends Vue {
           confirmEvent.event.target.closest("tr[role=row]")
         ).find("textarea");
         const newVal = JSON.stringify({
-          msgstr: textarea[1].value,
+          msgstr: textarea[1].value.replace(new RegExp("\n", "g"), "\\n"),
           plural: 1,
           pluralid: rowData.pluralid
         });
