@@ -278,28 +278,34 @@ class ModuleJob
 
     protected static function dotheJob()
     {
-
         JobLog::setStatus("", "", ModuleJob::RUNNING_STATUS);
         $moduleName = self::$jobData["moduleArg"] ?? "";
         $moduleFileName = self::$jobData["file"] ?? "";
-        if ($moduleFileName) {
-            $module = new ModuleManager("");
-            $module->setFile($moduleFileName);
-        } elseif ($moduleName) {
-            $module = new ModuleManager($moduleName);
-        } else {
-            $module = new ModuleManager("");
-        }
         $action = self::$jobData["action"];
+        $module=null;
+        if ($action !== "restore") {
+            if ($moduleFileName) {
+                $module = new ModuleManager("");
+                $module->setFile($moduleFileName);
+            } elseif ($moduleName) {
+                $module = new ModuleManager($moduleName);
+            } else {
+                $module = new ModuleManager("");
+            }
+        }
+        $jobStatus=true;
         switch ($action) {
             case "install":
                 $module->prepareInstall(true);
+                $jobStatus = self::installDependencies($module);
                 break;
             case "upgrade":
                 $module->prepareUpgrade(true);
+                $jobStatus = self::installDependencies($module);
                 break;
             case "remove":
                 $module->prepareRemove();
+                $jobStatus = self::removeModule($module);
                 break;
             case "archive":
                 $archive = new ArchiveContext();
@@ -317,11 +323,6 @@ class ModuleJob
                 break;
         }
 
-        if ($action === "remove") {
-            $jobStatus = self::removeModule($module);
-        } else {
-            $jobStatus = self::installDependencies($module);
-        }
         if ($jobStatus) {
             JobLog::setStatus("", "", ModuleJob::DONE_STATUS);
             // Job succeeded

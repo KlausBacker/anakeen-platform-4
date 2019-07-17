@@ -15,10 +15,7 @@ fi
 
 client_name=`"$WIFF_ROOT"/anakeen-control get --module client_name`
 vault_save=`"$WIFF_ROOT"/anakeen-control get --module vault_save`
- 
-remove_profiles=`"$WIFF_ROOT"/anakeen-control get --module remove_profiles`
-user_login=`"$WIFF_ROOT"/anakeen-control get --module user_login`
-user_password=`"$WIFF_ROOT"/anakeen-control get --module user_password`
+
 
 . "$INSTALLDIR/programs/libutil.sh"
 

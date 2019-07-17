@@ -7,6 +7,7 @@ services:
       args:
         ANK_RUN_UID: ${COMPOSE_UID}
         ANK_RUN_GID: ${COMPOSE_GID}
+        ANK_CONTROL_URL: ""
     sysctls:
       # Allows mapping of port 80 form unprivileged user COMPOSE_UID
       net.ipv4.ip_unprivileged_port_start: 0
@@ -15,6 +16,8 @@ services:
       - "./Volumes/_private/php/var/spool/cron/crontabs/:/var/spool/cron/crontabs"
       - "./Volumes/_private/php/tmp/share/:/tmp/share/"
       - "./Volumes/php/usr/local/etc/php/conf.d/10-base.ini:/usr/local/etc/php/conf.d/10-base.ini"
+      - "./Volumes/_private/php/var/www/html/control/src:/var/www/html/control/src"
+      - "./Volumes/_private/php/var/www/html/control/include:/var/www/html/control/include"
       - "./Volumes/_private/php/var/www/html/control/conf/:/var/www/html/control/conf/"
       - "./Volumes/_private/php/var/www/html/control/var/:/var/www/html/control/var/"
       - "../../../build/:/var/www/html/localRepo"

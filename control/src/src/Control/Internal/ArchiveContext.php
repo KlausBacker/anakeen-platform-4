@@ -263,7 +263,7 @@ class ArchiveContext
         }
 
 
-        $script = sprintf("cd %s;zip -r -q %s %s %s", escapeshellarg(dirname($realContextRootPath)), escapeshellarg($this->outputFile),
+        $script = sprintf("cd %s;zip --symlink -r -q %s %s %s", escapeshellarg(dirname($realContextRootPath)), escapeshellarg($this->outputFile),
             escapeshellarg(basename($realContextRootPath)),
             $tarExcludeOpts);
         try {
@@ -276,7 +276,7 @@ class ArchiveContext
         }
 
         if ($wiff->verifyGzipIntegrity($this->outputFile, $err) === false) {
-            $this->errorMessage = sprintf("Corrupted gzip archive '%s': %s", $this->outputFile, $err);
+            $this->errorMessage = sprintf("Corrupted zip archive '%s': %s", $this->outputFile, $err);
             $this->zip->close();
             $this->exitArchiveError(self::PHASE_PLATFORM);
             return false;
