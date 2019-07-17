@@ -12,6 +12,7 @@ Vue.use(DataSourceInstaller);
 @Component
 export default class WorkflowDataController extends Vue {
   public tabData = [];
+  public language: string = (navigator.language === 'fr-FR') ? 'fr' : 'en';
   @Prop({ type: String, default: "" }) public wflName;
 
   public getWfl(options) {
@@ -51,7 +52,7 @@ export default class WorkflowDataController extends Vue {
           break;
         case "info":
           if (dataItem.type === "steps") {
-            return `<ul><li><b>Label:&nbsp</b>${dataItem.label}</li><li><b>Timer:&nbsp</b>${dataItem.timer}</li><li><b>Mail template:&nbsp</b>${dataItem.mailtemplates}</li><li><b>Color:&nbsp</b></li>`;
+            return `<ul><li><b>Label:&nbsp</b><a href="/admin/i18n/en?msgstr=${dataItem.label}">${dataItem.label}</a></li><li><b>Timer:&nbsp</b>${dataItem.timer}</li><li><b>Mail template:&nbsp</b>${dataItem.mailtemplates}</li><li><b>Color:&nbsp</b></li>`;
           } else {
             return `<ul><li><b>Label:&nbsp</b>${dataItem.label}</li><li><b>Timer:&nbsp</b>${dataItem.volatileTimers}</li><li><b>Mail template:&nbsp</b>${dataItem.mailtemplates}</li>`;
           }
