@@ -95,6 +95,13 @@
     }
   }
 
+ .profile-error-content{
+   position: relative;
+   top: 40%;
+   left: 50%;
+   transform: translateY(-50%);
+ }
+
   .container-fluid {
     padding-right: 0;
     padding-left: 0;
