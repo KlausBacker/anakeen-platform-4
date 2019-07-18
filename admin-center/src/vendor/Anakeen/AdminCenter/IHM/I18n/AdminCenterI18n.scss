@@ -37,7 +37,14 @@
       display: flex;
       flex: 1;
 
+
       /deep/ {
+        .k-button-group {
+          .k-image {
+            height: 100%;
+          }
+        }
+
         .k-toggle-button {
           background-color: transparent;
           border: none;
