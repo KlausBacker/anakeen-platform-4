@@ -32,7 +32,7 @@
           <ank-se-grid-actions>
             <ank-se-grid-action
               action="consultMailTemplate"
-              title="view"
+              title="Display"
             ></ank-se-grid-action>
           </ank-se-grid-actions>
         </ank-se-grid>
