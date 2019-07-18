@@ -120,7 +120,7 @@ export default class GlobalController extends AnakeenController.BusEvents
    */
   public addSmartElement(
     dom: DOMReference,
-    viewData?: AnakeenController.Types.ViewData,
+    viewData?: AnakeenController.Types.IViewData,
     options?
   ): ControllerUID {
     viewData = viewData || {

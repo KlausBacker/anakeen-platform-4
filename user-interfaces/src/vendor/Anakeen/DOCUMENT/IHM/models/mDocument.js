@@ -1592,7 +1592,7 @@ define([
           globalCallback.error({ eventPrevented: true });
         }
       );
-      return beforeClosePromise.finally(() => globalCallback.promise);
+      return beforeClosePromise.then(() => globalCallback.promise);
     },
 
     saveDocument: function mDocumentSaveDocument(attributes, options) {

@@ -26,7 +26,6 @@ const urlJoin = require("url-join");
   name: "hub-station-dock"
 })
 export default class HubStationDock extends Vue {
-
   get InnerDockPosition() {
     return InnerDockPosition;
   }
@@ -161,9 +160,19 @@ export default class HubStationDock extends Vue {
     };
     const currentComponent = this.$refs[ref][index];
     if (currentComponent) {
-      const layout = walk(this.$refs[ref][index], v => v.$options.name === "HubElementLayout");
+      const layout = walk(
+        this.$refs[ref][index],
+        v => v.$options.name === "HubElementLayout"
+      );
       if (layout && layout.$slots && layout.$slots.hubContent) {
-        const data = Object.assign({}, entry, { hubContentLayout: layout });
+        const data = Object.assign({}, entry, {
+          hubContentLayout: layout
+        });
+        data.entryOptions = data.entryOptions || {};
+        data.entryOptions.completeRoute = urlJoin(
+          this.rootUrl,
+          entry.entryOptions.route
+        );
         // @ts-ignore
         this.rootHubStation.panes.push(data);
       }

@@ -13,11 +13,10 @@
             <mapping deploy="platform" local="$PROJECT_DIR$/security/src" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/smart-data-engine/src" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/user-interfaces/src" web="/" />
-            <mapping deploy="platform" local="$PROJECT_DIR$/user-interfaces/Tests/src" web="/"/>
+            <mapping deploy="platform" local="$PROJECT_DIR$/user-interfaces/Tests/src" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/workflow/src/" web="/" />
             <mapping deploy="platform" local="$PROJECT_DIR$/transformation/src" web="/" />
-            <mapping deploy="control/src" local="$PROJECT_DIR$/control/src/src" web="/" />
-            <mapping deploy="control/include" local="$PROJECT_DIR$/control/src/include" web="/" />
+            <mapping deploy="control" local="$PROJECT_DIR$/control/src" web="/" />
           </mappings>
         </serverdata>
       </paths>
