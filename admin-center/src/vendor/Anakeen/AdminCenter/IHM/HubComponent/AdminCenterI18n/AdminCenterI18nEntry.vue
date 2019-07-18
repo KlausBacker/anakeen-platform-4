@@ -9,7 +9,7 @@
         <admin-center-i18n
           @changeLocaleWrongArgument="handleLocaleWrongArgumentError"
           @i18nOffline="handleLocaleNetworkError"
-        :msgStrValue="msgStrValue"></admin-center-i18n>
+        :msgStrValue="msgStrValue" :msgIdValue="msgIdValue" :lang="lang"></admin-center-i18n>
       </div>
     </template>
   </hub-element-layout>
@@ -34,15 +34,19 @@ import HubElement from "@anakeen/hub-components/components/lib/HubElement";
     data() {
       return {
         msgStrValue: "",
+        msgIdValue: "",
+        lang: "",
         routeUrl: () => {
-          return this.entryOptions.completeRoute;
+          return `admin/i18n/`;
         },
         subRouting: () => {
           const url = (this.routeUrl() + "/:lang").replace(/\/\/+/g, "/");
 
-          this.registerRoute(url, () => {
-            this.msgStrValue = window.location.search.split("=")[1];
-            console.log(this.msgStrValue);
+          this.registerRoute(url, parameters => {
+            this.lang = parameters.lang;
+            const filters = window.location.search.split("&");
+            this.msgStrValue = filters[0].split("=")[1];
+            this.msgIdValue = filters[1].split("=")[1];
           }).resolve(window.location.pathname);
         }
       };
