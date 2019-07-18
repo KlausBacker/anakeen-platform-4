@@ -3,7 +3,7 @@ import * as $ from "jquery";
 import SmartElementController from "./SmartElementController";
 import { AnakeenController } from "./types/ControllerTypes";
 import DOMReference = AnakeenController.Types.DOMReference;
-import ViewData = AnakeenController.Types.ViewData;
+import ViewData = AnakeenController.Types.IViewData;
 import ControllerUniqueID = AnakeenController.Types.ControllerUID;
 import EVENTS_LIST = AnakeenController.SmartElement.EVENTS_LIST;
 

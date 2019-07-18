@@ -3,13 +3,13 @@ export namespace AnakeenController {
   export namespace Types {
     export type DOMReference = Element | HTMLElement | JQuery | JQuery.Selector;
 
-    export interface ViewData {
-      initid: String | Number;
-      viewId: String;
-      revision: Number;
+    export interface IViewData {
+      initid: string | number;
+      viewId: string;
+      revision: number;
     }
 
-    export type ControllerOptions = ViewData & {
+    export type ControllerOptions = IViewData & {
       eventPrefix: string;
       router: { noRouter: boolean } | false;
       constraintList: any;
@@ -21,7 +21,7 @@ export namespace AnakeenController {
       customClientData: {};
     };
 
-    export type SmartElementProperties = ViewData & {
+    export type SmartElementProperties = IViewData & {
       renderMode: "create" | "edit" | "view";
     };
 

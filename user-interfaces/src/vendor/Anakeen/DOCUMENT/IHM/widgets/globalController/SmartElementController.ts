@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import * as Backbone from "backbone";
 import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
-import ViewData = AnakeenController.Types.ViewData;
+import ViewData = AnakeenController.Types.IViewData;
 import DOMReference = AnakeenController.Types.DOMReference;
 import ListenableEvents = AnakeenController.BusEvents.ListenableEvents;
 import ListenableEventCallable = AnakeenController.BusEvents.ListenableEventCallable;
@@ -110,7 +110,14 @@ export default class SmartElementController extends AnakeenController.BusEvents
       this._internalViewData.initid = viewData.initid;
       this._internalViewData.viewId = viewData.viewId;
       this._internalViewData.revision = viewData.revision;
-      this._requestData = Object.assign({}, this._internalViewData);
+      this._requestData = _.defaults(
+        Object.assign({}, this._internalViewData),
+        {
+          initid: 0,
+          revision: -1,
+          viewId: "!defaultConsultation"
+        }
+      );
     }
     // @ts-ignore
     this._element = $(dom);
@@ -126,7 +133,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
     if (events) {
       Object.keys(events).forEach(eventType => {
         this.addEventListener(eventType, events[eventType].bind(this));
-      })
+      });
     }
     this._initializeSmartElement({}, this._options.customClientData);
   }
@@ -1895,7 +1902,12 @@ export default class SmartElementController extends AnakeenController.BusEvents
 
     this._model.listenTo(this._model, "injectCurrentSmartElementJS", event => {
       event.controller = this;
-      this._triggerControllerEvent("injectCurrentSmartElementJS",null, this.getProperties(), event);
+      this._triggerControllerEvent(
+        "injectCurrentSmartElementJS",
+        null,
+        this.getProperties(),
+        event
+      );
     });
   }
 
@@ -2526,6 +2538,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
               }
             }
           }
+          console.log(values);
           resolve({
             element: $(this._element),
             nextDocument: this.getProperties(),

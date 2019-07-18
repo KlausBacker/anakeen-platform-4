@@ -1,58 +1,25 @@
 /**
  * Anakeen Smart Element component object
  */
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import VueSetup from "../setup.js";
-import { Component, Prop, Watch, Vue } from "vue-property-decorator";
 import { SmartElementEvents } from "./SmartElementEvents";
 
-type SmartElementValue = {
+interface ISmartElementValue {
   initid?: number | string;
   viewId?: string;
   revision?: number;
   customClientData?: object;
   noRouter?: boolean;
-};
+}
 
 Vue.use(VueSetup);
 @Component({
   name: "ank-smart-element"
 })
 export default class AnkSmartElement extends Vue {
-  @Prop({
-    type: Object,
-    default: () => ({
-      initid: 0,
-      viewId: "!defaultConsultation",
-      revision: -1,
-      customClientData: null
-    }),
-    validator: value => {
-      if (value.initid === undefined) {
-        console.error("value property must contain a initid key");
-        return false;
-      }
-      return true;
-    }
-  })
-  public value!: SmartElementValue;
-
-  @Prop({ type: Boolean, default: false }) public browserHistory!: boolean;
-  @Prop({ type: [String, Number], default: "0" }) public initid!:
-    | string
-    | number;
-  @Prop({ type: Object, default: null }) public customClientData!: object;
-  @Prop({ type: String, default: "!defaultConsultation" })
-  public viewId!: string;
-  @Prop({ type: Number, default: -1 }) public revision!: number;
-
-  public smartElementWidget: any = {
-    fetchSmartElement(fetchValue, options?) {
-      return Promise.resolve();
-    }
-  };
-
   get initialData() {
-    const data: SmartElementValue = {
+    const data: ISmartElementValue = {
       noRouter: !this.browserHistory
     };
 
@@ -64,28 +31,37 @@ export default class AnkSmartElement extends Vue {
     data.viewId = this.value.viewId || this.viewId;
     return data;
   }
-
-  public mounted() {
-    if (
-      window.ank &&
-      window.ank.smartElement &&
-      window.ank.smartElement.globalController
-    ) {
-      // @ts-ignore
-      const scopeId = window.ank.smartElement.globalController.addSmartElement(this.$refs.ankSEWrapper, this.initialData);
-      this.smartElementWidget = window.ank.smartElement.globalController.scope(scopeId);
-      this.$emit("documentLoaded");
-      this.listenAttributes();
+  @Prop({
+    default: () => ({
+      customClientData: null,
+      initid: 0,
+      revision: -1,
+      viewId: "!defaultConsultation"
+    }),
+    type: Object,
+    validator: value => {
+      if (value.initid === undefined) {
+        console.error("value property must contain a initid key");
+        return false;
+      }
+      return true;
     }
-  }
+  })
+  public value!: ISmartElementValue;
+
+  @Prop({ type: Boolean, default: false }) public browserHistory!: boolean;
+  @Prop({ type: [String, Number], default: 0 }) public initid!: string | number;
+  @Prop({ type: Object, default: null }) public customClientData!: object;
+  @Prop({ type: String, default: "!defaultConsultation" })
+  public viewId!: string;
+  @Prop({ type: Number, default: -1 }) public revision!: number;
+
+  public smartElementWidget: any = null;
 
   public updated() {
+    this._initController(this.initialData);
     if (this.isLoaded()) {
       this.fetchSmartElement(this.initialData);
-    } else {
-      this.$once("documentLoaded", () => {
-        this.fetchSmartElement(this.initialData);
-      });
     }
   }
 
@@ -93,15 +69,15 @@ export default class AnkSmartElement extends Vue {
    * True when internal widget is loaded
    * @returns {boolean}
    */
-  isLoaded() {
-    return this.smartElementWidget !== undefined;
+  public isLoaded() {
+    return this.smartElementWidget !== null;
   }
 
   /**
    * Rebind all declared binding to internal widget
    * @returns void
    */
-  listenAttributes() {
+  public listenAttributes() {
     const eventNames = SmartElementEvents;
     // @ts-ignore
     const localListener = this.$options._parentListeners || {};
@@ -153,7 +129,7 @@ export default class AnkSmartElement extends Vue {
     );
   }
 
-  addEventListener(eventType, options, callback) {
+  public addEventListener(eventType, options, callback) {
     return this.smartElementWidget.addEventListener(
       eventType,
       options,
@@ -161,7 +137,8 @@ export default class AnkSmartElement extends Vue {
     );
   }
 
-  fetchSmartElement(value, options?) {
+  public fetchSmartElement(value, options?) {
+    this._initController(value);
     return this.smartElementWidget
       .fetchSmartElement(value, options)
       .catch(error => {
@@ -185,39 +162,39 @@ export default class AnkSmartElement extends Vue {
       });
   }
 
-  saveSmartElement(options) {
+  public saveSmartElement(options) {
     return this.smartElementWidget.saveSmartElement(options);
   }
 
-  showMessage(message) {
+  public showMessage(message) {
     return this.smartElementWidget.showMessage(message);
   }
 
-  getAttributes() {
+  public getAttributes() {
     return this.smartElementWidget.getAttributes();
   }
 
-  getAttribute(attributeId) {
+  public getAttribute(attributeId) {
     return this.smartElementWidget.getAttribute(attributeId);
   }
 
-  setValue(attributeId, newValue) {
+  public setValue(attributeId, newValue) {
     if (typeof newValue === "string") {
       /* eslint-disable no-param-reassign */
       newValue = {
-        value: newValue,
-        displayValue: newValue
+        displayValue: newValue,
+        value: newValue
       };
     }
 
     return this.smartElementWidget.setValue(attributeId, newValue);
   }
 
-  reinitSmartElement(values, options) {
+  public reinitSmartElement(values, options) {
     return this.smartElementWidget.reinitSmartElement(values, options);
   }
 
-  changeStateSmartElement(parameters, reinitOptions, options) {
+  public changeStateSmartElement(parameters, reinitOptions, options) {
     return this.smartElementWidget.changeStateSmartElement(
       parameters,
       reinitOptions,
@@ -225,71 +202,71 @@ export default class AnkSmartElement extends Vue {
     );
   }
 
-  deleteSmartElement(options) {
+  public deleteSmartElement(options) {
     return this.smartElementWidget.deleteSmartElement(options);
   }
 
-  restoreSmartElement(options) {
+  public restoreSmartElement(options) {
     return this.smartElementWidget.restoreSmartElement(options);
   }
 
-  getProperty(property) {
+  public getProperty(property) {
     return this.smartElementWidget.getProperty(property);
   }
 
-  getProperties() {
+  public getProperties() {
     return this.smartElementWidget.getProperties();
   }
 
-  hasAttribute(attributeId) {
+  public hasAttribute(attributeId) {
     return this.smartElementWidget.hasAttribute(attributeId);
   }
 
-  hasMenu(menuId) {
+  public hasMenu(menuId) {
     return this.smartElementWidget.hasMenu(menuId);
   }
 
-  getMenu(menuId) {
+  public getMenu(menuId) {
     return this.smartElementWidget.getMenu(menuId);
   }
 
-  getMenus() {
+  public getMenus() {
     return this.smartElementWidget.getMenus();
   }
 
-  getValue(attributeId, type) {
+  public getValue(attributeId, type) {
     return this.smartElementWidget.getValue(attributeId, type);
   }
 
-  getValues() {
+  public getValues() {
     return this.smartElementWidget.getValues();
   }
 
-  getCustomServerData() {
+  public getCustomServerData() {
     return this.smartElementWidget.getCustomServerData();
   }
 
-  isModified() {
+  public isModified() {
     return this.smartElementWidget.getProperty("isModified");
   }
 
-  addCustomClientData(documentCheck, value) {
+  public addCustomClientData(documentCheck, value) {
     return this.smartElementWidget.addCustomClientData(documentCheck, value);
   }
 
-  getCustomClientData(deleteOnce) {
+  public getCustomClientData(deleteOnce) {
     return this.smartElementWidget.getCustomClientData(deleteOnce);
   }
 
-  removeCustomClientData(key) {
+  public removeCustomClientData(key) {
     return this.smartElementWidget.removeCustomClientData(key);
   }
 
-  appendArrayRow(attributeId, values) {
+  public appendArrayRow(attributeId, values) {
     return this.smartElementWidget.appendArrayRow(attributeId, values);
   }
 
-  insertBeforeArrayRow(attributeId, values, index) {
+  public insertBeforeArrayRow(attributeId, values, index) {
     return this.smartElementWidget.insertBeforeArrayRow(
       attributeId,
       values,
@@ -297,59 +274,80 @@ export default class AnkSmartElement extends Vue {
     );
   }
 
-  removeArrayRow(attributeId, index) {
+  public removeArrayRow(attributeId, index) {
     return this.smartElementWidget.removeArrayRow(attributeId, index);
   }
 
-  addConstraint(options, callback) {
+  public addConstraint(options, callback) {
     return this.smartElementWidget.addConstraint(options, callback);
   }
 
-  listConstraints() {
+  public listConstraints() {
     return this.smartElementWidget.listConstraints();
   }
 
-  removeConstraint(constraintName, allKind) {
+  public removeConstraint(constraintName, allKind) {
     return this.smartElementWidget.removeConstraint(constraintName, allKind);
   }
 
-  listEventListeners() {
+  public listEventListeners() {
     return this.smartElementWidget.listEventListeners();
   }
 
-  removeEventListener(eventName, allKind) {
+  public removeEventListener(eventName, allKind) {
     return this.smartElementWidget.removeEventListener(eventName, allKind);
   }
 
-  triggerEvent(eventName, ...parameters) {
+  public triggerEvent(eventName, ...parameters) {
     return this.smartElementWidget.triggerEvent(eventName, ...parameters);
   }
 
-  hideAttribute(attributeId) {
+  public hideAttribute(attributeId) {
     return this.smartElementWidget.hideAttribute(attributeId);
   }
 
-  showAttribute(attributeId) {
+  public showAttribute(attributeId) {
     return this.smartElementWidget.showAttribute(attributeId);
   }
 
-  maskSmartElement(message, px) {
+  public maskSmartElement(message, px) {
     return this.smartElementWidget.maskSmartElement(message, px);
   }
 
-  unmaskSmartElement(force) {
+  public unmaskSmartElement(force) {
     return this.smartElementWidget.unmaskSmartElement(force);
   }
 
-  tryToDestroy() {
+  public tryToDestroy() {
     return this.smartElementWidget.tryToDestroy();
   }
 
-  injectJS(jsToInject) {
+  public injectJS(jsToInject) {
     return this.smartElementWidget.injectJS(jsToInject);
   }
 
-  injectCSS(cssToInject) {
+  public injectCSS(cssToInject) {
     return this.smartElementWidget.injectCSS(cssToInject);
+  }
+
+  protected _initController(viewData) {
+    if (!this.isLoaded() && viewData && viewData.initid !== 0) {
+      if (
+        window.ank &&
+        window.ank.smartElement &&
+        window.ank.smartElement.globalController
+      ) {
+        const scopeId = window.ank.smartElement.globalController.addSmartElement(
+          // @ts-ignore
+          this.$refs.ankSEWrapper,
+          viewData
+        );
+        this.smartElementWidget = window.ank.smartElement.globalController.scope(
+          scopeId
+        );
+        this.$emit("documentLoaded");
+        this.listenAttributes();
+      }
+    }
   }
 }
