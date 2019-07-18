@@ -263,7 +263,8 @@ export default class I18nManagerController extends Vue {
             .dataSource.read();
         })
         .finally(() => {
-          $importBtn.val(""); kendo.ui.progress($("body"), false);
+          $importBtn.val("");
+          kendo.ui.progress($("body"), false);
         });
     });
   }
@@ -343,7 +344,7 @@ export default class I18nManagerController extends Vue {
           plural: 1,
           pluralid: rowData.pluralid
         };
-        this.setSingularTranslation(newVal,rowData );
+        this.setSingularTranslation(newVal, rowData);
       }
     });
   }
