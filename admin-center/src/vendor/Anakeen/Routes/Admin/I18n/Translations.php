@@ -106,7 +106,14 @@ class Translations
         $customCatalog = $poParser->parse();
         foreach ($data as &$datum) {
             $customEntry = $customCatalog->getEntry($datum["msgid"], $datum["msgctxt"]);
+            $datum["override"] = null;
             if ($customEntry) {
+                if ($customEntry->isFuzzy()) {
+                    continue;
+                }
+                if ($customEntry->isObsolete()) {
+                    continue;
+                }
                 $datum["override"] = $customEntry->getMsgStr();
                 if ($customEntry->getMsgIdPlural()) {
                     $val1 = $customEntry->getMsgStrPlurals()[0] ?? "";
@@ -118,8 +125,6 @@ class Translations
                         $datum["msgstr"] = $datum["defaultstr"];
                     }
                 }
-            } else {
-                $datum["override"] = null;
             }
         }
     }
@@ -273,6 +278,12 @@ class Translations
         $entries = $originalCatalog->getEntries();
         $i = 0;
         foreach ($entries as $entry) {
+            if ($entry->isFuzzy()) {
+                //continue;
+            }
+            if ($entry->isObsolete()) {
+                //continue;
+            }
             $key = sprintf("%s-%s", $entry->getMsgCtxt(), $entry->getMsgId());
             if (empty($this->filters) || $this->filterContainsTranslations($entry, $this->filters)) {
                 if (!isset($data[$key])) {

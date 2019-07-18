@@ -10,7 +10,7 @@ class Stdio implements IStdio
      */
     public function wstartStdout($msg)
     {
-        fputs(STDOUT, $msg);
+        file_put_contents("php://stdout", $msg);
     }
     /**
      * Wstart's stderr I/O interface
@@ -21,6 +21,6 @@ class Stdio implements IStdio
         if (mb_substr($msg, -1) != "\n") {
             $msg.= "\n";
         }
-        fputs(STDERR, $msg);
+        file_put_contents("php://stderr", $msg);
     }
 }

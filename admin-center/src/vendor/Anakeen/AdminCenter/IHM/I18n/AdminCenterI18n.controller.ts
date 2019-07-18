@@ -8,29 +8,17 @@ import { Component, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 declare var kendo;
+// noinspection JSUnusedGlobalSymbols
 @Component
 export default class I18nManagerController extends Vue {
-  private static isEmptyOrSpaces(str) {
+  private static formatForTextarea(str) {
     if (str === null || str.match(/^\s*$/) !== null) {
-      return " ";
+      return "";
     } else {
-      return str;
+      return str.replace(/\\n/g, "\n");
     }
   }
-  private singularInput: string = `<div class="input-group">
-                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'></textarea>
-                <div class="input-group-append">
-                    <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation-singular btn btn-outline-secondary'><i class='fa fa-times'></i></button>
-                </div>
-            </div>`;
-  private pluralInput: string = `<div class="input-group">
-                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'></textarea>
-                <div class="input-group-append">
-                    <button class='confirm-override-translation-plural btn btn-outline-secondary'disabled><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation-plural btn btn-outline-secondary'><i class='fa fa-times'></i></button>
-                </div>
-            </div>`;
+
   private translationLocale: string = "fr";
   private translationFilterableOptions: kendo.data.DataSourceFilter = {
     cell: {
@@ -137,6 +125,12 @@ export default class I18nManagerController extends Vue {
           field: "msgid",
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
+          template: rowData => {
+            return this.escapeHtml(rowData.msgid).replace(
+              /\\n/g,
+              "&para;<br/>"
+            );
+          },
           title: "ID"
         },
         {
@@ -144,17 +138,18 @@ export default class I18nManagerController extends Vue {
           filterable: this.translationFilterableOptions,
           minResizableWidth: 25,
           template: rowData => {
+            let str;
             if (rowData.plurals) {
-              let cellData = "";
+              str = "";
               // tslint:disable-next-line:prefer-for-of
               for (let i = 0; i < rowData.plurals.length - 1; i++) {
-                cellData += rowData.plurals[i] + "<hr>";
+                str += this.escapeHtml(rowData.plurals[i]) + "<hr>";
               }
-              cellData += rowData.plurals[rowData.plurals.length - 1];
-              return cellData;
+              str += rowData.plurals[rowData.plurals.length - 1];
             } else {
-              return rowData.msgstr;
+              str = this.escapeHtml(rowData.msgstr);
             }
+            return str.replace(/\\n/g, "&para;<br/>");
           },
           title: "Server translation"
         },
@@ -164,18 +159,21 @@ export default class I18nManagerController extends Vue {
           minResizableWidth: 25,
           template: rowData => {
             if (rowData.pluralid) {
-              if (rowData.override) {
-                return `<div class="input-group">
-                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>${I18nManagerController.isEmptyOrSpaces(
+              if (!rowData.override) {
+                rowData.override = ["", ""];
+              }
+
+              return `<div class="input-group">
+                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale' aria-label='Small'>${I18nManagerController.formatForTextarea(
                   rowData.override[0]
                 )}</textarea>
                 <div class="input-group-append">
-                    <button class='confirm-override-translation-singular btn btn-outline-secondary' disabled><i class='fa fa-check'></i></button>
-                    <button class='cancel-override-translation-singular btn btn-outline-secondary'><i class='fa fa-times'></i></button>
+                    
                 </div>
             </div>
+            <hr/>
             <div class="input-group">
-                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>${I18nManagerController.isEmptyOrSpaces(
+                <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-plural filter-locale' aria-label='Small'>${I18nManagerController.formatForTextarea(
                   rowData.override[1]
                 )}</textarea>
                 <div class="input-group-append">
@@ -183,12 +181,9 @@ export default class I18nManagerController extends Vue {
                     <button class='cancel-override-translation-plural btn btn-outline-secondary'><i class='fa fa-times'></i></button>
                 </div>
             </div>`;
-              } else {
-                return this.singularInput + this.pluralInput;
-              }
             } else {
               return `<div class="input-group">
-                  <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale'>${I18nManagerController.isEmptyOrSpaces(
+                  <textarea rows="1" cols="50" wrap="hard" class='form-control overriden-translation-input-singular filter-locale'>${I18nManagerController.formatForTextarea(
                     rowData.override
                   )}</textarea>
                   <div class="input-group-append">
@@ -223,7 +218,11 @@ export default class I18nManagerController extends Vue {
       sortable: true
     });
   }
-
+  public escapeHtml(s) {
+    return $("<div/>")
+      .text(s)
+      .html();
+  }
   public changeLocale(e) {
     if (e.id === "i18n-locale-button-fr") {
       this.translationLocale = "fr";
@@ -238,10 +237,12 @@ export default class I18nManagerController extends Vue {
   }
 
   public importLocaleFile() {
-    const importBtn = $(".import-locale-file");
-    importBtn.trigger("click");
-    importBtn.on("change", () => {
+    const $importBtn = $(".import-locale-file");
+    $importBtn.trigger("click");
+    $importBtn.one("change", () => {
       const formData = new FormData();
+
+      kendo.ui.progress($("body"), true);
       formData.append(
         "file",
         (this.$refs.importFile as HTMLInputElement).files[0]
@@ -260,6 +261,9 @@ export default class I18nManagerController extends Vue {
           $(this.$refs.i18nGrid)
             .data("kendoGrid")
             .dataSource.read();
+        })
+        .finally(() => {
+          $importBtn.val(""); kendo.ui.progress($("body"), false);
         });
     });
   }
@@ -279,20 +283,19 @@ export default class I18nManagerController extends Vue {
           .data("kendoGrid")
           .dataItem($(confirmEvent.event.target).closest("tr[role=row]"));
         let newVal;
-        let textareaVal = $(
+        const textareaVal = $(
           confirmEvent.event.target.closest("tr[role=row]")
         ).find("textarea")[0].value;
-        textareaVal = textareaVal.replace(new RegExp("\n", "g"), "\\n");
         if (rowData.pluralid) {
-          newVal = JSON.stringify({
+          newVal = {
             msgstr: textareaVal,
             plural: 0,
             pluralid: rowData.pluralid
-          });
+          };
         } else {
-          newVal = JSON.stringify({
+          newVal = {
             msgstr: textareaVal
-          });
+          };
         }
         this.setSingularTranslation(newVal, rowData);
         $(confirmEvent.sender.element[0])
@@ -313,9 +316,10 @@ export default class I18nManagerController extends Vue {
           confirmEvent.event.target.closest("tr[role=row]")
         ).find("textarea");
         const newVal = JSON.stringify({
-          msgstr: textarea[1].value.replace(new RegExp("\n", "g"), "\\n"),
+          msgstr: [textarea[0].value, textarea[1].value],
           plural: 1,
-          pluralid: rowData.pluralid
+          pluralid: rowData.pluralid,
+          plurals: rowData.plurals
         });
         this.setPluralTranslation(newVal, rowData);
         $(confirmEvent.sender.element[0])
@@ -328,26 +332,18 @@ export default class I18nManagerController extends Vue {
   private setEventSingularCancel() {
     $(".cancel-override-translation-singular").kendoButton({
       click: cancelEvent => {
-        kendo.ui.progress($("body"), true);
+        const $td = $(cancelEvent.event.target).closest("td");
+
+        $td.find("textarea").val("");
         const rowData: any = $(this.$refs.i18nGrid)
           .data("kendoGrid")
           .dataItem($(cancelEvent.event.target).closest("tr[role=row]"));
-        let newVal;
-        if (rowData.pluralid) {
-          newVal = JSON.stringify({
-            msgstr: " ",
-            plural: 0,
-            pluralid: rowData.pluralid
-          });
-        } else {
-          newVal = JSON.stringify({
-            msgstr: " "
-          });
-        }
-        this.setSingularTranslation(newVal, rowData);
-        $(cancelEvent.sender.element[0].previousElementSibling)
-          .data("kendoButton")
-          .enable(false);
+        const newVal = {
+          msgstr: "",
+          plural: 1,
+          pluralid: rowData.pluralid
+        };
+        this.setSingularTranslation(newVal,rowData );
       }
     });
   }
@@ -359,11 +355,11 @@ export default class I18nManagerController extends Vue {
         const rowData: any = $(this.$refs.i18nGrid)
           .data("kendoGrid")
           .dataItem($(cancelEvent.event.target).closest("tr[role=row]"));
-        const newVal = JSON.stringify({
-          msgstr: " ",
+        const newVal = {
+          msgstr: "",
           plural: 1,
           pluralid: rowData.pluralid
-        });
+        };
         this.setPluralTranslation(newVal, rowData);
         $(cancelEvent.sender.element[0].previousElementSibling)
           .data("kendoButton")
@@ -376,23 +372,16 @@ export default class I18nManagerController extends Vue {
     const input = $(
       ".overriden-translation-input-singular, .overriden-translation-input-plural"
     );
-    input.on("keypress", e => {
-      if (e.which === 13) {
-        const val = input.val();
-        // @ts-ignore
-        val.replace("<br />", "\n");
-      }
-    });
-    input.on("keypress", e => {
-      if (e.which === 13) {
-        $(".confirm-override-translation-plural").trigger("click");
-      }
-    });
+
     input.on("input", event => {
       const cancelBtn = $(event.target.nextElementSibling.children[1]);
       const confirmBtn = $(event.target.nextElementSibling.children[0]);
-      confirmBtn.data("kendoButton").enable(true);
-      cancelBtn.data("kendoButton").enable(true);
+      if (confirmBtn.length > 0) {
+        confirmBtn.data("kendoButton").enable(true);
+      }
+      if (confirmBtn.length > 0) {
+        cancelBtn.data("kendoButton").enable(true);
+      }
     });
   }
 
@@ -407,14 +396,16 @@ export default class I18nManagerController extends Vue {
         "Content-type": "application/json"
       }
     };
-    this.$http.put(url, newVal, jsonHeader).then(response => {
-      if (response.status === 200) {
+    this.$http
+      .put(url, JSON.stringify(newVal), jsonHeader)
+      .then(() => {
         this.$emit("EditTranslationSuccess");
-      } else {
+        kendo.ui.progress($("body"), false);
+      })
+      .catch(() => {
         this.$emit("EditTranslationFail");
-      }
-      kendo.ui.progress($("body"), false);
-    });
+        kendo.ui.progress($("body"), false);
+      });
   }
   private setPluralTranslation(newVal, rowData) {
     const msgctxtData = rowData.msgctxt !== null ? rowData.msgctxt : "";
@@ -426,13 +417,16 @@ export default class I18nManagerController extends Vue {
         "Content-type": "application/json"
       }
     };
-    this.$http.put(url, newVal, jsonHeader).then(response => {
-      if (response.status === 200) {
+    this.$http
+      .put(url, JSON.stringify(newVal), jsonHeader)
+      .then(() => {
         this.$emit("EditTranslationSuccess");
-      } else {
+
+        kendo.ui.progress($("body"), false);
+      })
+      .catch(() => {
         this.$emit("EditTranslationFail");
-      }
-      kendo.ui.progress($("body"), false);
-    });
+        kendo.ui.progress($("body"), false);
+      });
   }
 }

@@ -23,9 +23,10 @@ class Exception extends \Exception implements \JsonSerializable
      * Redefined exception : message text is mandatory now
      *
      * @param string $message error message or code error
-     * @param int    $argCode
+     * @param int $argCode
+     * @param \Throwable|null $previous
      */
-    public function __construct($message, $argCode = 0)
+    public function __construct($message, $argCode = 0, \Throwable $previous = null)
     {
         $code = $message;
         if ($code && (preg_match('/^([A-Z]+)([0-9]+)$/u', $code, $reg))) {
@@ -49,7 +50,7 @@ class Exception extends \Exception implements \JsonSerializable
             $intcode = 0;
         }
 
-        parent::__construct($message, $intcode);
+        parent::__construct($message, $intcode, $previous);
     }
 
     /**
@@ -154,7 +155,7 @@ class Exception extends \Exception implements \JsonSerializable
 
     /**
      *
-     * @param int    $httpStatus
+     * @param int $httpStatus
      * @param string $httpMessage
      */
     public function setHttpStatus($httpStatus, $httpMessage = "")
