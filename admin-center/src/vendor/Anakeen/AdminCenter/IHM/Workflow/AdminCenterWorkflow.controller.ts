@@ -58,7 +58,9 @@ export default class AdminCenterWorkflowController extends Vue {
       this.$refs.wflSplitter.enableEmptyContent();
     }
   }
-
+  public reloadGraph() {
+    this.displayGraph();
+  }
   public getGraphUrl() {
     return `/api/v2/admin/workflows/image/${this.wflName}.svg?orientation=${this.wflOrient}&useLabel=${this.wflUseLabel}`;
   }
