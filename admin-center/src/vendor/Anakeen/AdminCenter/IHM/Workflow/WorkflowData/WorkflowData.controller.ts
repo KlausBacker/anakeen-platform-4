@@ -29,6 +29,34 @@ export default class WorkflowDataController extends Vue {
           (this.language = response.data.locale === "fr_FR.UTF-8" ? "fr" : "en")
       );
   }
+  public gridDataBound() {
+    $(".wfl-step__color").kendoColorPicker({
+      buttons: true,
+      change: e => {
+        const rowData: any = $(".wfl-grid-content")
+          .data("kendoGrid")
+          .dataItem($(e.sender.element).closest("tr[role=row]"));
+        const jsonHeader = {
+          headers: {
+            "Content-type": "application/json"
+          }
+        };
+        this.$http
+          .put(
+            `/api/v2/admin/workflow/data/${this.wflName}/${rowData.id}`,
+            { color: e.value },
+            jsonHeader
+          )
+          .then(response => {
+            if (response.status === 200) {
+              this.$emit("EditStepColorSuccess");
+            } else {
+              this.$emit("EditStepColorFail");
+            }
+          });
+      }
+    });
+  }
   public getWfl(options) {
     this.$http
       .get(`/api/v2/admin/workflow/data/${this.wflName}`, {
