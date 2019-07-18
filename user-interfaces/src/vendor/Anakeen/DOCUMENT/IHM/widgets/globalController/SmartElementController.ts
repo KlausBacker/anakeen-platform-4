@@ -2538,7 +2538,6 @@ export default class SmartElementController extends AnakeenController.BusEvents
               }
             }
           }
-          console.log(values);
           resolve({
             element: $(this._element),
             nextDocument: this.getProperties(),
