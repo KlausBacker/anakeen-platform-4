@@ -71,6 +71,7 @@ $notice-color: #E4E4E4;
       .notification-message {
         word-break: break-word;
         font-size: 1.2rem;
+        white-space: pre-wrap;
       }
     }
   }
