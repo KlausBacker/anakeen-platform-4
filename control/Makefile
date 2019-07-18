@@ -1,8 +1,9 @@
 APP_OUTPUT_PATH=../build/control/
+VERSION=$(shell node ./getVersion.js)
 
 tmp:
 	mkdir tmp
-	cd ./tmp && ln -s ../src control
+	cd ./tmp && ln -s ../src control && cd -
 
 
 app: tmp
@@ -10,10 +11,10 @@ app: tmp
 	yarn install --frozen-lockfile
 	yarn run build
 	mkdir -p ${APP_OUTPUT_PATH}
-	cd ./tmp && zip -q -r ../anakeen-control-$(shell node ./getVersion.js).zip ./*
+	cd ./tmp && zip -q -r ../anakeen-control-${VERSION}.zip ./*
 	rm -r ./tmp
-	mv ./anakeen-control-$(shell node ./getVersion.js).zip ${APP_OUTPUT_PATH}
-	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-$(shell node ./getVersion.js).zip ./anakeen-control-latest.zip
+	mv ./anakeen-control-${VERSION}.zip ${APP_OUTPUT_PATH}
+	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-${VERSION}.zip ./anakeen-control-latest.zip
 	cp ./src/version.json ${APP_OUTPUT_PATH}
 
 app-autorelease: tmp
@@ -22,10 +23,10 @@ app-autorelease: tmp
 	yarn run build
 	node ../.devtool/ci/utils/autorelease.js . "COMPUTE" "./src/version.json"
 	mkdir -p ${APP_OUTPUT_PATH}
-	cd ./tmp && zip -q -r ../anakeen-control-$(shell node ./getVersion.js).zip ./*
+	cd ./tmp && zip -q -r ../anakeen-control-${VERSION}.zip ./*
 	rm -r ./tmp
-	mv ./anakeen-control-$(shell node ./getVersion.js).zip ${APP_OUTPUT_PATH}
-	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-$(shell node ./getVersion.js).zip ./anakeen-control-latest.zip
+	mv ./anakeen-control-${VERSION}.zip ${APP_OUTPUT_PATH}
+	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-${VERSION}.zip ./anakeen-control-latest.zip
 	cp ./src/version.json ${APP_OUTPUT_PATH}
 
 app-test: app
