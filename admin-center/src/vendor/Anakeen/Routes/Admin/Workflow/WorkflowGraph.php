@@ -15,7 +15,7 @@ class WorkflowGraph
     protected $inline = 1;
     protected $type = "simple";  //"complet","activity","justactivity","simple","cluster"
     protected $ratio = "auto"; // "auto", "fill", "compress", "expand"
-    protected $orient = "LR"; //"LR","TB","BT","RL"
+    protected $orient = "TB"; //"LR","TB","BT","RL"
     protected $isize = 50;
     protected $useLabel = true;
 
@@ -46,7 +46,7 @@ class WorkflowGraph
             $this->inline = ($inlineQuery === "yes" || $inlineQuery === "true" || $inlineQuery === "1");
         }
 
-        $this->orient = $request->getQueryParam("orientation", "LR");
+        $this->orient = $request->getQueryParam("orientation", "TB");
         $this->useLabel = $request->getQueryParam("useLabel", "state");
     }
 
