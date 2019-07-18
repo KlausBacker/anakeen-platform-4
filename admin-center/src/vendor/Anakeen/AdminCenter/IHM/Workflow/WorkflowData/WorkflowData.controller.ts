@@ -39,7 +39,6 @@ export default class WorkflowDataController extends Vue {
         item.type = "transitions";
         this.tabData.push(item);
       });
-      console.log("lol", this.tabData);
       return this.tabData;
     }
     return [];
