@@ -4,7 +4,7 @@ import "@progress/kendo-ui/js/kendo.filtercell";
 import "@progress/kendo-ui/js/kendo.grid.js";
 import "@progress/kendo-ui/js/kendo.toolbar.js";
 import Vue from "vue";
-import { Component, Watch } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
 Vue.use(ButtonsInstaller);
 declare var kendo;
@@ -18,6 +18,9 @@ export default class I18nManagerController extends Vue {
       return str.replace(/\\n/g, "\n");
     }
   }
+  @Prop({ type: String, default: "" }) public msgStrValue: string;
+  @Prop({ type: String, default: "" }) public msgIdValue: string;
+  @Prop({ type: String, default: "" }) public lang: string;
 
   private translationLocale: string = "fr";
   private translationFilterableOptions: kendo.data.DataSourceFilter = {
@@ -59,6 +62,8 @@ export default class I18nManagerController extends Vue {
 
   @Watch("translationLocale")
   public watchTranslationLocale(value) {
+    const tb = $(".i18n-toolbar-locale").data("kendoToolBar");
+    tb.toggle("#i18n-locale-button-" + value, true);
     this.translationGridData = new kendo.data.DataSource({
       pageSize: 50,
       schema: {
@@ -217,6 +222,26 @@ export default class I18nManagerController extends Vue {
       resizable: true,
       sortable: true
     });
+    if (this.msgStrValue && this.msgIdValue && this.lang) {
+      this.translationLocale = this.lang;
+      this.$nextTick(() => {
+        $(this.$refs.i18nGrid)
+          .data("kendoGrid")
+          .dataSource.filter([
+            {
+              field: "msgstr",
+              operator: "equals",
+              value: decodeURI(this.msgStrValue)
+            },
+            {
+              field: "msgid",
+              operator: "equals",
+              value: decodeURI(this.msgIdValue)
+            },
+            { field: "section", operator: "contains", value: "Workflow" }
+          ]);
+      });
+    }
   }
   public escapeHtml(s) {
     return $("<div/>")
@@ -263,7 +288,8 @@ export default class I18nManagerController extends Vue {
             .dataSource.read();
         })
         .finally(() => {
-          $importBtn.val(""); kendo.ui.progress($("body"), false);
+          $importBtn.val("");
+          kendo.ui.progress($("body"), false);
         });
     });
   }
@@ -343,7 +369,7 @@ export default class I18nManagerController extends Vue {
           plural: 1,
           pluralid: rowData.pluralid
         };
-        this.setSingularTranslation(newVal,rowData );
+        this.setSingularTranslation(newVal, rowData);
       }
     });
   }
