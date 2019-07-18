@@ -486,6 +486,7 @@ control-build:
     - a4ppm
   variables:
     PACKAGE_PATH: control
+    PACKAGE_NAME: control
   script:
     - export ANK_CI_APP_VERSION=$(jq .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/version.json)
     - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME} -C control app
@@ -508,6 +509,7 @@ control-integration-build:
     - a4ppm
   variables:
     PACKAGE_PATH: control
+    PACKAGE_NAME: control
   script:
     - export ANK_CI_APP_VERSION=$(jq .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/version.json)
     - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME} -C control app-autorelease
