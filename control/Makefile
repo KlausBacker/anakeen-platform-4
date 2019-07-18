@@ -22,6 +22,7 @@ app-autorelease: tmp
 	yarn install --frozen-lockfile
 	yarn run build
 	node ../.devtool/ci/utils/autorelease.js . "COMPUTE" "./src/version.json"
+	VERSION=$(shell node ./getVersion.js)
 	mkdir -p ${APP_OUTPUT_PATH}
 	cd ./tmp && zip -q -r ../anakeen-control-${VERSION}.zip ./*
 	rm -r ./tmp
