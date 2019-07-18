@@ -192,6 +192,9 @@ class WIFF extends WiffCommon
      */
     public function getUpdateBaseURL()
     {
+        if (!$this->update_host) {
+            return false;
+        }
         $url = $this->update_host . $this->update_url;
         $pUrl = parse_url($url);
         if ($pUrl === false) {

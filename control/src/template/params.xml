@@ -6,9 +6,9 @@
   </repositories>
 
   <parameters>
-    <param name="ac-update-host" value="http://eec-integration.corp.anakeen.com" />
-    <param name="ac-update-path" value="/anakeen/repo/4.0/control/" />
-    <param name="ac-update-file" value="anakeen-control-current.tar.gz" />
+    <param name="ac-update-host" value="" />
+    <param name="ac-update-path" value="" />
+    <param name="ac-update-file" value="" />
     <param name="ac-update-login" value="" />
     <param name="ac-update-password" value="" />
     <param name="use-proxy" value="no" />
