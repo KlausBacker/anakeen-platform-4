@@ -163,6 +163,9 @@ hub-station-buildJS:
  stage: build
  tags:
   - a4ppm
+ variables:
+   PACKAGE_PATH: control
+   PACKAGE_NAME: anakeen-control
  script:
    - rm -rf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}
    - mkdir -p ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}
@@ -172,7 +175,7 @@ hub-station-buildJS:
    - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./src ./stubs
  artifacts:
    paths:
-     - build/${PACKAGE_NAME}
+     - build/${PACKAGE_PATH}
      - ${PACKAGE_PATH}/node_modules
    expire_in: 1 day
 
@@ -493,7 +496,7 @@ control-build:
     - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./src
   artifacts:
     paths:
-      - build/${PACKAGE_NAME}
+      - build/${PACKAGE_PATH}
       - ${PACKAGE_PATH}/node_modules
     expire_in: 1 day
   only:
@@ -516,7 +519,7 @@ control-integration-build:
     - tar -C ${PACKAGE_PATH} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./src
   artifacts:
     paths:
-      - build/${PACKAGE_NAME}
+      - build/${PACKAGE_PATH}
       - ${PACKAGE_PATH}/node_modules
     expire_in: 1 day
   only:
