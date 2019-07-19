@@ -3,6 +3,7 @@ PACKAGE_VERSION=$(shell node -p -e "require('./package.json').version")
 AUTO_VERSION=""
 
 tmp:
+	echo '{}' > "./src/version.json"
 	mkdir tmp
 	cd ./tmp && ln -s ../src control && cd -
 
@@ -20,12 +21,15 @@ app: tmp
 	cd ${APP_OUTPUT_PATH} && ln -sf ./anakeen-control-${VERSION}.zip ./anakeen-control-latest.zip
 	cp ./src/version.json ${APP_OUTPUT_PATH}
 
-app-autorelease: tmp
+compute-version:
+	node ../.devtool/ci/utils/autorelease.js . "${PACKAGE_VERSION}" "./src/version.json"
+	node ../.devtool/ci/utils/autorelease.js . "COMPUTE" "./src/version.json"
+
+
+app-autorelease: tmp compute-version
 	composer --working-dir=./src install
 	yarn install --frozen-lockfile
 	yarn run build
-	node ../.devtool/ci/utils/autorelease.js . "${PACKAGE_VERSION}" "./src/version.json"
-	node ../.devtool/ci/utils/autorelease.js . "COMPUTE" "./src/version.json"
 	$(eval AUTO_VERSION := $(shell node ./getVersion.js))
 	mkdir -p ${APP_OUTPUT_PATH}
 	cd ./tmp && zip -q -r ../anakeen-control-$(AUTO_VERSION).zip ./*
