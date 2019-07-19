@@ -11,23 +11,30 @@ class Context
     public static $contextName;
     private static $context;
 
+    protected static function getContextConfFilePath()
+    {
+        return sprintf("%s/%s", getenv("WIFF_ROOT"), \WIFF::contexts_filepath);
+    }
 
     public static function isInitialized()
     {
-        $contentsFile = sprintf("%s/%s", getenv("WIFF_ROOT"), \WIFF::contexts_filepath);
-        return file_exists($contentsFile);
+        return file_exists(self::getContextConfFilePath());
     }
 
-    public static function getContext($verifyContextAccess=true)
+    public static function getContext($verifyContextAccess = true)
     {
         if (!self::isInitialized()) {
-            throw new \Exception(sprintf("Context not initialized yet"));
+            throw new \Exception(
+                sprintf(
+                    "Context not initialized yet : file \"%s\" not found.",
+                    self::getContextConfFilePath()
+                )
+            );
         }
         if (!self::$context) {
-
             $wiff = \WIFF::getInstance();
 
-            $contextList = $wiff->getContextList( $verifyContextAccess);
+            $contextList = $wiff->getContextList($verifyContextAccess);
             if ($contextList === false) {
                 throw new \Exception(sprintf("Error getting contexts list: %s\n", $wiff->errorMessage));
             }
@@ -115,9 +122,9 @@ class Context
     {
         if (Context::isInitialized()) {
             $wiff = \WIFF::getInstance();
-            $confFile=$wiff->contexts_filepath;
+            $confFile = $wiff->contexts_filepath;
             if (is_file($confFile)) {
-                rename($confFile, $confFile.".bak");
+                rename($confFile, $confFile . ".bak");
             }
         }
     }
@@ -219,8 +226,6 @@ class Context
         if (!$wiff->deleteRepo($name)) {
             throw new RuntimeException($wiff->errorMessage);
         }
-
-
     }
 
     public static function getAvailableVersion()
