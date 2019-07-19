@@ -7,16 +7,15 @@ use Control\Internal\ModuleJob;
 use Control\Internal\ModuleManager;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 class CliArchive extends CliCommand
 {
     // the name of the command (the part after "bin/console")
     protected static $defaultName = 'archive';
-
 
     protected function configure()
     {
@@ -24,8 +23,8 @@ class CliArchive extends CliCommand
         $this
             // the short description shown while running "php bin/console list"
             ->setDescription('Archive Anakeen Platform.')
-            ->addOption('file', null, InputOption::VALUE_REQUIRED, 'Output file (.zip file)')
-            ->addOption('with-vault', null, InputOption::VALUE_NONE, 'Save vault files also')
+            ->addArgument('file', InputArgument::REQUIRED, 'Output file (.zip file)')
+            ->addOption('without-vault', null, InputOption::VALUE_NONE, 'No save vault')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Not launch job')
             // the full command description shown when running the command with
             // the "--help" option
@@ -39,9 +38,9 @@ class CliArchive extends CliCommand
             throw new RuntimeException(sprintf("Job is already in progress. Wait or kill it"));
         }
 
-        $outputFile = $input->getOption("file");
+        $outputFile = $input->getArgument("file");
         if (!$outputFile) {
-            throw new InvalidOptionException("Option \"file\" is mandatory");
+            throw new InvalidOptionException("Argument \"file\" is mandatory");
         }
         if (file_exists($outputFile) && !is_writable($outputFile)) {
             throw new InvalidOptionException("Output file is not writable");
@@ -65,23 +64,25 @@ class CliArchive extends CliCommand
         ModuleJob::recordJobTask([
             "status" => ModuleJob::TODO_STATUS,
             "action" => "archive",
-            "output" => $input->getOption("file"),
-            "with-vault" => $input->getOption("with-vault"),
+            "output" => $input->getArgument("file"),
+            "with-vault" => !$input->getOption("without-vault"),
             "tasks" => [$tasks],
         ]);
         if (!$input->getOption("dry-run")) {
             ModuleManager::runJobInBackground();
 
             $output->writeln("<info>Job is processing</info>");
-            $output->writeln(sprintf("<comment>Archive file will be saved to \"%s\"</comment>", $input->getOption("file")));
-            if ($input->getOption("with-vault")) {
-                $output->writeln("<comment>Vaults will be saved too.</comment>");
-            } else {
-                $output->writeln("<warning>Vaults are not saved.</warning>");
+            $output->writeln(
+                sprintf(
+                    "<comment>Archive file will be saved to \"%s\"</comment>",
+                    $input->getArgument("file")
+                )
+            );
+            if ($input->getOption("without-vault")) {
+                $output->writeln("<comment>Vaults are not saved.</comment>");
             }
-
         }
-
     }
+
 
 }
