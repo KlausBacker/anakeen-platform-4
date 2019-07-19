@@ -897,7 +897,7 @@ transformation-integration-register:
   tags:
     - a4ppm
   script:
-    - export ANK_CI_APP_VERSION=$(jq .version ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/version.json)
+    - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/version.json)
     - >-
       curl -f
       --header "X-Http-Method-Override: PUT"
