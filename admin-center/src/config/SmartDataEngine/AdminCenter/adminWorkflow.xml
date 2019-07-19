@@ -31,5 +31,15 @@
                 <sde:access ns="AdminCenter">AdminWorkflow</sde:access>
             </sde:requiredAccess>
         </sde:route>
+        <sde:route name="ChangeStepColor">
+            <sde:callable>Anakeen\Routes\Admin\Workflow\StepColor</sde:callable>
+            <sde:method>PUT</sde:method>
+            <sde:pattern>/api/v2/admin/workflow/data/{workflow}/{step}</sde:pattern>
+            <sde:description>Set step color</sde:description>
+            <sde:requiredAccess operator="or">
+                <sde:access ns="AdminCenter">Admin</sde:access>
+                <sde:access ns="AdminCenter">AdminWorkflow</sde:access>
+            </sde:requiredAccess>
+        </sde:route>
     </sde:routes>
 </sde:config>

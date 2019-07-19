@@ -22,7 +22,7 @@ export default class AdminCenterWorkflowController extends Vue {
   public wflList;
   public wflData = {};
   public wflGraph: string = "";
-  public wflOrient: string = "LR";
+  public wflOrient: string = "TB";
   public wflUseLabel: string = "activity";
   public wflName: string = "";
   public isEmpty: boolean = true;
@@ -58,9 +58,11 @@ export default class AdminCenterWorkflowController extends Vue {
       this.$refs.wflSplitter.enableEmptyContent();
     }
   }
-
+  public reloadGraph() {
+    this.displayGraph();
+  }
   public getGraphUrl() {
-    return `/api/v2/devel/ui/workflows/image/${this.wflName}.svg?orientation=${this.wflOrient}&useLabel=${this.wflUseLabel}`;
+    return `/api/v2/admin/workflows/image/${this.wflName}.svg?orientation=${this.wflOrient}&useLabel=${this.wflUseLabel}`;
   }
 
   public displayGraph() {
@@ -74,7 +76,7 @@ export default class AdminCenterWorkflowController extends Vue {
     this.wflName = item.id;
     this.selectedWfl = this.wflName;
     this.$http
-      .get(`/api/v2/devel/smart/workflows/${this.wflName}`)
+      .get(`/api/v2/admin/workflow/data/${this.wflName}`)
       .then(response => {
         this.wflData = response.data.data.properties;
       });

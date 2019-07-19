@@ -25,7 +25,7 @@
           <div class="wfl-graph" v-html="wflGraph"></div>
         </template>
         <template slot="right">
-          <wfl-data :wflName="wflName"></wfl-data>
+          <wfl-data :wflName="wflName" @EditStepColorSuccess="reloadGraph"></wfl-data>
         </template>
       </ank-splitter>
     </div>

@@ -2,12 +2,15 @@
   display: flex;
   flex-direction: row;
   flex: 1;
+  height: 100%;
+  width: 100%;
   min-height: 0;
+  overflow: hidden;
 
   /deep/ {
     .workflow-content {
+      display: flex !important;
       flex: 1;
-      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -15,14 +18,16 @@
       background-color: var(--white);
 
       .workflow-splitter {
-        height: 100%;
-        width: 100%;
+        height: 100% !important;
+        width: 100% !important;
       }
 
       .wfl-graph {
         flex: 1;
+        height: 100% !important;
+        min-height: 0;
         background-color: var(--white);
-
+        border: 1px inset #ced4da;
         /deep/ {
           svg {
             width: 100% !important;

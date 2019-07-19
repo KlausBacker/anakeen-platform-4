@@ -44,6 +44,7 @@ $workflow-list-border-color: rgb(210, 210, 210);
       .workflow-tabs-list-nav {
         background: white;
         border: 1px solid #d0d0d0;
+        flex-direction: column;
         display: flex;
         overflow-y: scroll;
         height: 100%;
