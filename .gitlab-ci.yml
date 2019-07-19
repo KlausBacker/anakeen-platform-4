@@ -512,7 +512,7 @@ control-integration-build:
     PACKAGE_NAME: control
   script:
     - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME} -C control app-autorelease
-    - export ANK_CI_APP_VERSION=$(jq .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/version.json)
+    - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/version.json)
     - tar -C control -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/control-${ANK_CI_APP_VERSION}.tar.gz ./src
   artifacts:
     paths:
