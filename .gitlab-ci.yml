@@ -900,7 +900,7 @@ transformation-integration-register:
   tags:
     - a4ppm
   script:
-    - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/version.json)
+    - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/version.json)
     - >-
       curl -f
       --header "X-Http-Method-Override: PUT"
@@ -914,15 +914,16 @@ transformation-integration-register:
         \"date\": \"$(date '+%Y-%m-%d %H-%M-%S')\",
         \"author\": \"${GITLAB_USER_NAME}\"
       }"
-      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.zip
-      -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_NAME}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
+      -F app=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.zip
+      -F src=@${ANK_CI_ARTEFACTS_PATH}/${ANK_CI_APP_PATH}/${ANK_CI_APP_NAME}-${ANK_CI_APP_VERSION}.tar.gz
       --request POST
       "${ANK_CI_A4PPM}/${ANK_CI_BUCKET}"
 
 control-register:
   extends: .registry-control
   variables:
-    ANK_CI_APP_NAME: "control"
+    ANK_CI_APP_PATH: "control"
+    ANK_CI_APP_NAME: "anakeen-control"
   only:
     refs:
       - /^\d+\.\d+-stable$/@Anakeen/Platform-4/anakeen-platform-4
@@ -932,7 +933,8 @@ control-register:
 control-integration-register:
   extends: .registry-control
   variables:
-    ANK_CI_APP_NAME: "control"
+    ANK_CI_APP_PATH: "control"
+    ANK_CI_APP_NAME: "anakeen-control"
   only:
     refs:
       - master@Anakeen/Platform-4/anakeen-platform-4
