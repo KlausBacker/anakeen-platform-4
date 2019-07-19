@@ -8,7 +8,7 @@ tmp:
 install:
 	composer --working-dir=./src install
 	yarn install --frozen-lockfile
-	# generate version.json also
+	# generate version.json also.
 	yarn run build
 
 app: tmp install
