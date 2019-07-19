@@ -511,7 +511,7 @@ control-integration-build:
     PACKAGE_PATH: control
     PACKAGE_NAME: anakeen-control
   script:
-    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME} -C ${PACKAGE_NAME} app-autorelease
+    - make APP_OUTPUT_PATH=${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH} -C ${PACKAGE_NAME} app-autorelease
     - export ANK_CI_APP_VERSION=$(jq -r .version ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_PATH}/version.json)
     - tar -C ${PACKAGE_NAME} -czf ${ANK_CI_ARTEFACTS_PATH}/${PACKAGE_NAME}/${PACKAGE_NAME}-${ANK_CI_APP_VERSION}.tar.gz ./src
   artifacts:
