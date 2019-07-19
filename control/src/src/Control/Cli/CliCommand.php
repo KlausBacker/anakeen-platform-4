@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CliCommand extends Command
 {
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->getFormatter()->setStyle('question', new OutputFormatterStyle('cyan', null, []));
@@ -18,5 +17,4 @@ class CliCommand extends Command
         $output->getFormatter()->setStyle('failed', new OutputFormatterStyle('red', null, ['blink']));
         $output->getFormatter()->setStyle('wait', new OutputFormatterStyle('yellow', null, ['blink']));
     }
-
 }

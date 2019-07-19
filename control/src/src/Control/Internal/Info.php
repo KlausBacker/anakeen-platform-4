@@ -11,6 +11,10 @@ class Info
         $data["userStatistics"]=Platform::getUserStats();
         return $data;
     }
+    /**
+     * @return \Module[]
+     * @throws \Exception
+     */
     public static function getInstalledModuleList() {
         $modules=Context::getContext()->getInstalledModuleList(true);
 
@@ -19,6 +23,11 @@ class Info
           });
         return $modules;
     }
+
+    /**
+     * @return \Module[]
+     * @throws \Exception
+     */
     public static function getAllModuleList() {
         $modules=Context::getContext()->getInstalledModuleList(true);
 

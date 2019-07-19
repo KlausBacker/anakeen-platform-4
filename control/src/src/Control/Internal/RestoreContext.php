@@ -31,14 +31,13 @@ class RestoreContext
         $wiff = \WIFF::getInstance();
         $context = Context::getContext(false);
         // Modify context's parameters
-
         $platformRoot = realpath(sprintf("%s/../platform", $wiff->root));
         $context->setAttribute('root', $platformRoot);
         $context->root = $platformRoot;
 
         $context->setParamByName('core_db', $this->pgService);
         $context->setParamByName('vault_root', $this->vaultsPath);
-var_dump($context->root);
+        $wiff->createHtaccessFile();
     }
 
     public function restoreDatacase()
