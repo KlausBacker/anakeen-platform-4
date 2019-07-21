@@ -107,9 +107,11 @@ export default class WorkflowDataController extends Vue {
               dataItem.color
             }"/></li>`;
           } else {
-            return `<ul><li><b>Label:&nbsp</b>${
+            return `<ul><li><b>Label:&nbsp</b><a href="/admin/i18n/${
+              this.language
+              }?msgstr=${dataItem.label}&msgid=${dataItem.id}">${
               dataItem.label
-            }</li><li><b>Persistent timer:&nbsp</b>${this.displayMultiple(
+              }</a></li><li><b>Persistent timer:&nbsp</b>${this.displayMultiple(
               dataItem.persistentTimers,
               "timer"
             )}</li><li><b>Unattach timer:&nbsp</b>${this.displayMultiple(
