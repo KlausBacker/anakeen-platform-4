@@ -73,7 +73,6 @@ export default class WorkflowDataController extends Vue {
   }
   public parseWflData(response) {
     this.tabData = [];
-    console.log(response.data.data);
     if (response && response.data && response.data.data) {
       response.data.data.steps.forEach(item => {
         item.type = "steps";
@@ -110,8 +109,14 @@ export default class WorkflowDataController extends Vue {
           } else {
             return `<ul><li><b>Label:&nbsp</b>${
               dataItem.label
-            }</li><li><b>Timer:&nbsp</b>${this.displayMultiple(
+            }</li><li><b>Persistent timer:&nbsp</b>${this.displayMultiple(
               dataItem.persistentTimers,
+              "timer"
+            )}</li><li><b>Unattach timer:&nbsp</b>${this.displayMultiple(
+              dataItem.unAttachTimers,
+              "timer"
+            )}</li><li><b>Volatile timer:&nbsp</b>${this.displayMultiple(
+              dataItem.volatileTimers,
               "timer"
             )}</li><li><b>Mail template:&nbsp</b>${this.displayMultiple(
               dataItem.mailtemplates,
