@@ -1,6 +1,6 @@
 import { DataSourceInstaller } from "@progress/kendo-datasource-vue-wrapper";
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
 Vue.use(DataSourceInstaller);
 declare var kendo;
@@ -24,7 +24,12 @@ export default class WorkflowListController extends Vue {
   public clearFilter() {
     this.listFilter = "";
   }
-
+  @Watch("listFilter")
+  public watchListFilter(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      this.filterList(newValue);
+    }
+  }
   public onListItemClicked(tab) {
     this.$emit("workflow-clicked", tab);
   }
@@ -60,7 +65,10 @@ export default class WorkflowListController extends Vue {
   public readData(options) {
     kendo.ui.progress($(this.$refs.ssWflList), true);
     this.$http
-      .get(`/api/v2/admin/workflow/list/`)
+      .get(`/api/v2/admin/workflow/list/`, {
+        params: options.data,
+        paramsSerializer: kendo.jQuery.param
+      })
       .then(response => {
         kendo.ui.progress($(this.$refs.ssWflList), false);
         options.success(response);
@@ -92,5 +100,30 @@ export default class WorkflowListController extends Vue {
     // @ts-ignore
     this.dataSource = this.$refs.wflDataSource.kendoWidget();
     this.dataSource.read();
+  }
+
+  public filterList(filterValue) {
+    if (this.dataSource) {
+      let filterObject = {
+        filters: [
+          {
+            field: "name",
+            operator: "contains",
+            value: filterValue
+          }
+        ],
+        logic: "or"
+      };
+      if (this.hasFilter && typeof this.filter === "object") {
+        if (typeof this.filter.doFilter === "function") {
+          filterObject = this.filter.doFilter.call(
+            null,
+            filterValue,
+            filterObject
+          );
+        }
+      }
+      this.dataSource.filter(filterObject);
+    }
   }
 }

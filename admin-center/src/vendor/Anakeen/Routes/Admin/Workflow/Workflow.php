@@ -9,31 +9,29 @@ use Anakeen\Search\SearchElements;
 
 class Workflow
 {
-    protected $target = "all";
+    protected $filters;
 
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
-        return ApiV2Response::withData($response, $this->doRequest());
+        $data = $this->doRequest();
+        $result = [];
+        if (!empty($this->filters[0]["value"])) {
+            foreach ($data as $datum) {
+                if (strpos(strtolower($datum["title"]), strtolower($this->filters[0]["value"])) !== false) {
+                    array_push($result, $datum);
+                }
+            }
+        } else {
+            $result = $data;
+        }
+        return ApiV2Response::withData($response, $result);
     }
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
-//        $this->target = $args["target"];
-        $this->filters = $request->getParam("filter", []);
-    }
-
-    protected function filterRequest(\Anakeen\Search\Internal\SearchSmartData $searchDoc)
-    {
-        if (!empty($this->filters)) {
-            if (!empty($this->filters["logic"]) && !empty($this->filters["filters"])) {
-                $filters = $this->filters["filters"];
-                $logic = sprintf(" %s ", strtoupper($this->filters["logic"]));
-                $filterSql = implode($logic, array_map(function ($filter) {
-                    return sprintf("%s ~* '%s'", pg_escape_string($filter["field"]), pg_escape_string($filter["value"]));
-                }, $filters));
-                $searchDoc->addFilter($filterSql);
-            }
+        if ($request->getQueryParam("filter") && isset($request->getQueryParam("filter")["filters"])) {
+            $this->filters = $request->getQueryParam("filter")["filters"];
         }
     }
 

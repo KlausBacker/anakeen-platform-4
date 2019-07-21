@@ -71,17 +71,15 @@ export default class WorkflowDataController extends Vue {
       });
     return [];
   }
-  public parseWflTotal(response) {
-    return response.data.data.requestParameters.total;
-  }
   public parseWflData(response) {
     this.tabData = [];
-    if (response && response.data && response.data.data &&response.data.data.data) {
-      response.data.data.data.steps.forEach(item => {
+    console.log(response.data.data);
+    if (response && response.data && response.data.data) {
+      response.data.data.steps.forEach(item => {
         item.type = "steps";
         this.tabData.push(item);
       });
-      response.data.data.data.transitions.forEach(item => {
+      response.data.data.transitions.forEach(item => {
         item.type = "transitions";
         this.tabData.push(item);
       });
