@@ -1,29 +1,28 @@
 <template>
-  <div>
-    <nav v-if="isDockCollapsed">
+  <hub-element-layout>
+    <nav>
       <span class="hub-icon" v-html="iconTemplate"></span>
+      <span v-if="!isDockCollapsed" class="hub-label">{{ hubLabel }}</span>
     </nav>
-    <nav v-else-if="isDockExpanded" class="business-app-label-expanded">
-      <span class="hub-icon" v-html="iconTemplate"></span>
-      <span class="hub-label">{{ hubLabel }}</span>
-    </nav>
-    <div v-else-if="isHubContent" class="business-app-entry">
-      <business-app
-        :collections="collections"
-        :welcomeTab="welcomeTab"
-        :selectedElement="selectedElement"
-        @selectedElement="onElementOpened"
-        :collection="selectedCollection"
-        @selectedCollection="onCollectionChanged"
-        :page="selectedPage"
-        @pageChanged="onPageChanged"
-        :filter="currentFilter"
-        @filterChanged="onFilterChanged"
-        @displayMessage="onDisplayMessage"
-        @displayError="onDisplayError"
-      ></business-app>
-    </div>
-  </div>
+    <template v-slot:hubContent>
+      <div class="business-app-entry">
+        <business-app
+          :collections="collections"
+          :welcomeTab="welcomeTab"
+          :selectedElement="selectedElement"
+          @selectedElement="onElementOpened"
+          :collection="selectedCollection"
+          @selectedCollection="onCollectionChanged"
+          :page="selectedPage"
+          @pageChanged="onPageChanged"
+          :filter="currentFilter"
+          @filterChanged="onFilterChanged"
+          @displayMessage="onDisplayMessage"
+          @displayError="onDisplayError"
+        ></business-app>
+      </div>
+    </template>
+  </hub-element-layout>
 </template>
 
 <script lang="ts">
@@ -97,9 +96,7 @@ export default class HubBusinessApp extends Vue {
     this.currentFilter = filterValue;
   }
   public created() {
-    if (this["isHubContent"]) {
-      this.subRouting();
-    }
+    this.subRouting();
   }
 
   public get routeUrl() {
