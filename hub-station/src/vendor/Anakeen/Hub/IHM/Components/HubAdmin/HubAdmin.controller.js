@@ -258,21 +258,11 @@ export default {
 
     openConfig(eid) {
       if (this.$refs.smartConfig) {
-        if (this.$refs.smartConfig.isLoaded()) {
-          this.$refs.smartConfig.fetchSmartElement({
-            initid: eid,
-            viewId: "!defaultConsultation"
-          });
-          this.$refs.hubGrid.privateScope.initGrid();
-        } else {
-          this.$refs.smartConfig.$once("documentLoaded", () => {
-            this.$refs.smartConfig.fetchSmartElement({
-              initid: eid,
-              viewId: "!defaultConsultation"
-            });
-            this.$refs.hubGrid.privateScope.initGrid();
-          });
-        }
+        this.$refs.smartConfig.fetchSmartElement({
+          initid: eid,
+          viewId: "!defaultConsultation"
+        });
+        this.$refs.hubGrid.privateScope.initGrid();
       }
     },
 

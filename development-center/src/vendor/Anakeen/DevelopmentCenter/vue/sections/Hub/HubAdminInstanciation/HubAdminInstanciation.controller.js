@@ -87,6 +87,10 @@ export default {
       this.$refs.hubInstanciationSplitter.disableEmptyContent();
 
       this.$nextTick(() => {
+        this.$refs.instanceConfig.fetchSmartElement({
+          initid: initid,
+          viewId: viewId
+        });
         if (this.$refs.instanceConfig.isLoaded()) {
           this.$refs.instanceConfig.addEventListener("afterSave", (e, doc) => {
             if (this.$refs.hubInstanciationList) {
@@ -109,10 +113,6 @@ export default {
                 }
               }
             }
-          });
-          this.$refs.instanceConfig.fetchSmartElement({
-            initid: initid,
-            viewId: viewId
           });
         } else {
           this.$refs.instanceConfig.$once("documentLoaded", () => {

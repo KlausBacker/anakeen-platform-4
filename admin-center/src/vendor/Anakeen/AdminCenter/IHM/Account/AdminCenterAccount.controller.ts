@@ -18,7 +18,6 @@ Vue.use(DropdownsInstaller);
 Vue.use(DataSourceInstaller);
 declare var $;
 declare var kendo;
-
 @Component({
   components: {
     AnkSmartElement,
@@ -290,21 +289,11 @@ export default class AdminCenterAccountController extends Vue {
       if (userId) {
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
-          if (openDoc.isLoaded()) {
-            openDoc.fetchSmartElement({
-              initid: userId,
-              viewId: "!defaultConsultation"
-            });
-            this.refreshData(openDoc);
-          } else {
-            openDoc.$once("documentLoaded", () => {
-              openDoc.fetchSmartElement({
-                initid: userId,
-                viewId: "!defaultConsultation"
-              });
-              this.refreshData(openDoc);
-            });
-          }
+          openDoc.fetchSmartElement({
+            initid: userId,
+            viewId: "!defaultConsultation"
+          });
+          this.refreshData(openDoc);
         }
       }
     });
@@ -452,21 +441,11 @@ export default class AdminCenterAccountController extends Vue {
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
       if (openDoc) {
-        if (openDoc.isLoaded()) {
-          openDoc.fetchSmartElement({
-            initid: this.groupId,
-            viewId: "!defaultConsultation"
-          });
-          this.refreshData(openDoc);
-        } else {
-          openDoc.$once("documentLoaded", () => {
-            openDoc.fetchSmartElement({
-              initid: this.groupId,
-              viewId: "!defaultConsultation"
-            });
-            this.refreshData(openDoc);
-          });
-        }
+        openDoc.fetchSmartElement({
+          initid: this.groupId,
+          viewId: "!defaultConsultation"
+        });
+        this.refreshData(openDoc);
       }
     });
   }
@@ -476,25 +455,12 @@ export default class AdminCenterAccountController extends Vue {
       this.$nextTick(() => {
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
-          if (openDoc.isLoaded()) {
-            this.refreshData(openDoc);
-            openDoc.fetchSmartElement({
-              customClientData: { defaultGroup: this.selectedGroupDocumentId },
-              initid: e.dataItem.id,
-              viewId: "!defaultCreation"
-            });
-          } else {
-            openDoc.$once("documentLoaded", () => {
-              this.refreshData(openDoc);
-              openDoc.fetchSmartElement({
-                customClientData: {
-                  defaultGroup: this.selectedGroupDocumentId
-                },
-                initid: e.dataItem.id,
-                viewId: "!defaultCreation"
-              });
-            });
-          }
+          this.refreshData(openDoc);
+          openDoc.fetchSmartElement({
+            customClientData: { defaultGroup: this.selectedGroupDocumentId },
+            initid: e.dataItem.id,
+            viewId: "!defaultCreation"
+          });
         }
       });
     }
@@ -508,25 +474,12 @@ export default class AdminCenterAccountController extends Vue {
       this.$nextTick(() => {
         const openDoc = this.$refs.openDoc;
         if (openDoc) {
-          if (openDoc.isLoaded()) {
-            this.refreshData(openDoc);
-            openDoc.fetchSmartElement({
-              customClientData: { defaultGroup: this.selectedGroupDocumentId },
-              initid: e.dataItem.id,
-              viewId: "!defaultCreation"
-            });
-          } else {
-            openDoc.$once("documentLoaded", () => {
-              this.refreshData(openDoc);
-              openDoc.fetchSmartElement({
-                customClientData: {
-                  defaultGroup: this.selectedGroupDocumentId
-                },
-                initid: e.dataItem.id,
-                viewId: "!defaultCreation"
-              });
-            });
-          }
+          this.refreshData(openDoc);
+          openDoc.fetchSmartElement({
+            customClientData: { defaultGroup: this.selectedGroupDocumentId },
+            initid: e.dataItem.id,
+            viewId: "!defaultCreation"
+          });
         }
       });
     }
@@ -538,20 +491,10 @@ export default class AdminCenterAccountController extends Vue {
     this.$nextTick(() => {
       const openDoc = this.$refs.openDoc;
       if (openDoc) {
-        if (openDoc.isLoaded()) {
-          openDoc.fetchSmartElement({
-            initid: this.groupId,
-            viewId: "changeGroup"
-          });
-        } else {
-          openDoc.$once("documentLoaded", () => {
-            openDoc.fetchSmartElement({
-              initid: this.groupId,
-              viewId: "changeGroup"
-            });
-            this.refreshData(openDoc);
-          });
-        }
+        openDoc.fetchSmartElement({
+          initid: this.groupId,
+          viewId: "changeGroup"
+        });
       }
     });
   }
