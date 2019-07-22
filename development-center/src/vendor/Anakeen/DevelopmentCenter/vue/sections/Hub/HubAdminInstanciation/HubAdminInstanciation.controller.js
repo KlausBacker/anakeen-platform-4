@@ -142,13 +142,7 @@ export default {
         case "create":
           this.$refs.hubInstanciationSplitter.disableEmptyContent();
           this.$nextTick(() => {
-            if (this.$refs.instanceConfig.isLoaded()) {
-              this.createHubStation();
-            } else {
-              this.$refs.instanceConfig.$once("documentLoaded", () => {
-                this.createHubStation();
-              });
-            }
+            this.createHubStation();
           });
           break;
         default:
