@@ -25,7 +25,7 @@ export default class LogoutComponent extends Vue {
       );
     }
 
-    this.$el.parentNode.dispatchEvent(event);
+    this.$emit("beforeLogout", event);
     if (event.defaultPrevented) {
       this.$emit("logoutCanceled");
     } else {
