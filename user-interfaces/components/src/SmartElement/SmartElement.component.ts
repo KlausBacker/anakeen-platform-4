@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 /**
  * Anakeen Smart Element component object
  */
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import SmartElementController from "../../../src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/SmartElementController";
 import VueSetup from "../setup.js";
 import { SmartElementEvents } from "./SmartElementEvents";
 
@@ -56,7 +58,11 @@ export default class AnkSmartElement extends Vue {
   public viewId!: string;
   @Prop({ type: Number, default: -1 }) public revision!: number;
 
-  public smartElementWidget: any = null;
+  public smartElementWidget: SmartElementController = null;
+
+  public mounted() {
+    this._initController(this.initialData);
+  }
 
   public updated() {
     this._initController(this.initialData);
@@ -344,7 +350,7 @@ export default class AnkSmartElement extends Vue {
         );
         this.smartElementWidget = window.ank.smartElement.globalController.scope(
           scopeId
-        );
+        ) as SmartElementController;
         this.$emit("documentLoaded");
         this.listenAttributes();
       }

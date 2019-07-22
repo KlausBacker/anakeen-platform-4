@@ -474,12 +474,12 @@ export namespace AnakeenController {
        * @param message
        * @param px
        */
-      maskDocument(message, px);
+      maskSmartElement(message, px);
 
       /**
        * Hide loading bar
        */
-      unmaskDocument(force);
+      unmaskSmartElement(force);
 
       /**
        * Add an error message to an attribute
