@@ -5,6 +5,7 @@
       :transport-read="readData"
       :schema-data="parseData"
       :schema-model="listModel"
+      :server-filtering="true"
     ></kendo-datasource>
     <div class="workflow-tabs">
       <div class="workflow-tabs-list" ref="ssWflList">

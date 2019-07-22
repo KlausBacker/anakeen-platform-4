@@ -71,17 +71,14 @@ export default class WorkflowDataController extends Vue {
       });
     return [];
   }
-  public parseWflTotal(response) {
-    return response.data.data.requestParameters.total;
-  }
   public parseWflData(response) {
     this.tabData = [];
-    if (response && response.data && response.data.data &&response.data.data.data) {
-      response.data.data.data.steps.forEach(item => {
+    if (response && response.data && response.data.data) {
+      response.data.data.steps.forEach(item => {
         item.type = "steps";
         this.tabData.push(item);
       });
-      response.data.data.data.transitions.forEach(item => {
+      response.data.data.transitions.forEach(item => {
         item.type = "transitions";
         this.tabData.push(item);
       });
@@ -110,10 +107,18 @@ export default class WorkflowDataController extends Vue {
               dataItem.color
             }"/></li>`;
           } else {
-            return `<ul><li><b>Label:&nbsp</b>${
+            return `<ul><li><b>Label:&nbsp</b><a href="/admin/i18n/${
+              this.language
+              }?msgstr=${dataItem.label}&msgid=${dataItem.id}">${
               dataItem.label
-            }</li><li><b>Timer:&nbsp</b>${this.displayMultiple(
+              }</a></li><li><b>Persistent timer:&nbsp</b>${this.displayMultiple(
               dataItem.persistentTimers,
+              "timer"
+            )}</li><li><b>Unattach timer:&nbsp</b>${this.displayMultiple(
+              dataItem.unAttachTimers,
+              "timer"
+            )}</li><li><b>Volatile timer:&nbsp</b>${this.displayMultiple(
+              dataItem.volatileTimers,
               "timer"
             )}</li><li><b>Mail template:&nbsp</b>${this.displayMultiple(
               dataItem.mailtemplates,

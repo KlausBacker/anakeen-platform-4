@@ -20,6 +20,7 @@ class WorkflowData
     protected $workflow;
     protected $workflowId = 0;
     protected $type = "structures";
+    protected $filters;
 
     /**
      * Return right accesses for a profil element
@@ -33,14 +34,38 @@ class WorkflowData
     public function __invoke(\Slim\Http\request $request, \Slim\Http\response $response, $args)
     {
         $this->initParameters($request, $args);
-
         $data = $this->doRequest();
-        return ApiV2Response::withData($response, $data);
+        $result = [];
+        if (!empty($this->filters[0]["value"])) {
+            $resSteps = [];
+            $resTransitions = [];
+            foreach ($data["steps"] as $datum) {
+                $d = array_slice($datum, 0, 2);
+                if (strpos(strtolower($d["label"]), strtolower($this->filters[0]["value"])) !== false) {
+                    array_push($resSteps, $datum);
+                }
+                $result["steps"] = $resSteps;
+            }
+            foreach ($data["transitions"][0] as $d) {
+                $d = array_slice($datum, 0, 2);
+                if (strpos(strtolower($d["label"]), strtolower($this->filters[0]["value"])) !== false) {
+                    array_push($resTransitions, $datum);
+                }
+                $result["transitions"] = $resTransitions;
+            }
+            $result["properties"] = $data["properties"];
+        } else {
+            $result = $data;
+        }
+        return ApiV2Response::withData($response, $result);
     }
 
 
     protected function initParameters(\Slim\Http\request $request, $args)
     {
+        if ($request->getQueryParam("filter") && isset($request->getQueryParam("filter")["filters"])) {
+            $this->filters = $request->getQueryParam("filter")["filters"];
+        }
         $this->workflowId = $args["workflow"];
         $this->workflow = SmartElementManager::getDocument($this->workflowId);
         if (!$this->workflow) {

@@ -4,7 +4,6 @@
       ref="wflGrid"
       :transport-read="getWfl"
       :schema-data="parseWflData"
-      :schema-total="parseWflTotal"
       :server-filtering="true"
     >
     </kendo-datasource>
@@ -22,9 +21,7 @@
         :field="'type'"
         :title="'<b>Type</b>'"
         :template="displayData('type')"
-        :filterable-cell-operator="'contains'"
-        :filterable-cell-show-operators="false"
-        :filterable-cell-template="autoFilterCol"
+        :filterable="false"
       ></kendo-grid-column>
       <kendo-grid-column
         :field="'info'"
