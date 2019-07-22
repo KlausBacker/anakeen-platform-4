@@ -57,7 +57,8 @@ export default class IdentityComponent extends Vue {
         ]
       });
 
-      if ($emitAnkEvent("beforeUserLoaded", customEvent)) {
+      this.$emit("beforeUserLoaded", customEvent);
+      if (!customEvent.defaultPrevented) {
         this.login = customEvent.detail[0].login;
         this.initials = customEvent.detail[0].initials;
         this.firstName = customEvent.detail[0].firstName;
@@ -70,7 +71,7 @@ export default class IdentityComponent extends Vue {
             }
           ]
         });
-        $emitAnkEvent("afterUserLoaded", afterEvent);
+        this.$emit("afterUserLoaded", afterEvent);
       }
     });
   }
@@ -96,7 +97,7 @@ export default class IdentityComponent extends Vue {
       cancelable: true
     });
 
-    $emitAnkEvent("beforePasswordChange", customEvent);
+    this.$emit("beforePasswordChange", customEvent);
 
     if (!customEvent.defaultPrevented) {
       // Verify if password matches confirmation
@@ -106,7 +107,7 @@ export default class IdentityComponent extends Vue {
       ) {
         kendo.ui.progress(kendo.jQuery(this.$refs.passwordModifier), true);
         this.$http
-          .put("/src/identity/password", {
+          .put("/components/identity/password", {
             oldPassword: this.oldPassword,
             newPassword: this.newPassword
           })
@@ -122,7 +123,7 @@ export default class IdentityComponent extends Vue {
                 }
               ]
             });
-            $emitAnkEvent("afterPasswordChange", afterEvent);
+            this.$emit("afterPasswordChange", afterEvent);
 
             // Remove loader + close dialog
             kendo.ui.progress(kendo.jQuery(this.$refs.passwordModifier), false);
@@ -153,14 +154,14 @@ export default class IdentityComponent extends Vue {
       ]
     });
 
-    $emitAnkEvent("beforeMailAddressChange", customEvent);
+    this.$emit("beforeMailAddressChange", customEvent);
 
     if (!customEvent.defaultPrevented) {
       // Verify if the input is an email ( [string]@[string].[string] )
       if (this.newEmail.match(/\S+@\S+\.\S+/)) {
         kendo.ui.progress($(this.$refs.emailModifier), true);
         this.$http
-          .put("/src/identity/email", {
+          .put("/components/identity/email", {
             email: customEvent.detail[0].newEmail,
             password: this.oldPassword
           })
@@ -178,7 +179,7 @@ export default class IdentityComponent extends Vue {
               }
             );
 
-            $emitAnkEvent("afterMailAddressChange", customEvent);
+            this.$emit("afterMailAddressChange", customEvent);
 
             // Remove loader and close dialog
             kendo.ui.progress(kendo.jQuery(this.$refs.emailModifier), false);
