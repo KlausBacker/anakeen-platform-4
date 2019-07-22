@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* tslint:disable:variable-name */
 import * as Backbone from "backbone";
 import SmartElementProperties = AnakeenController.Types.SmartElementProperties;
@@ -24,6 +25,7 @@ import "../../widgets/window/wLoading";
 import "../../widgets/window/wNotification";
 import { AnakeenController } from "./types/ControllerTypes";
 import ListenableEvent = AnakeenController.BusEvents.ListenableEvent;
+import ISmartElementAPI = AnakeenController.SmartElement.ISmartElementAPI;
 
 interface IControllerOptions {
   router?: boolean | { noRouter: boolean };
@@ -68,7 +70,7 @@ interface ISmartElementModel extends Backbone.Model {
 
 // tslint:disable-next-line:max-classes-per-file
 export default class SmartElementController extends AnakeenController.BusEvents
-  .Listenable {
+  .Listenable implements ISmartElementAPI {
   private static CONSTRAINT_PREFIX = "constraint::";
   private static EVENT_PREFIX = "hook::";
 
@@ -956,15 +958,12 @@ export default class SmartElementController extends AnakeenController.BusEvents
    * Trigger an event
    *
    * @param eventName
+   * @param args
    */
-  public triggerEvent(eventName) {
-    const args = _.toArray(arguments);
+  public triggerEvent(eventName, ...args) {
     this.checkInitialisedModel();
     this.checkEventName(eventName);
-
-    args.splice(1, 0, null); // Add null originalEvent
-    // @ts-ignore
-    return this._triggerControllerEvent.apply(this, args);
+    return this._triggerControllerEvent(eventName, null, ...args);
   }
 
   /**
@@ -1023,7 +1022,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
    * @param message
    * @param px
    */
-  public maskDocument(message, px) {
+  public maskSmartElement(message, px) {
     this.$loading.dcpLoading("show");
     if (message) {
       this.$loading.dcpLoading("setTitle", message);
@@ -1036,7 +1035,7 @@ export default class SmartElementController extends AnakeenController.BusEvents
   /**
    * Hide loading bar
    */
-  public unmaskDocument(force) {
+  public unmaskSmartElement(force) {
     this.$loading.dcpLoading("hide", force);
   }
 
