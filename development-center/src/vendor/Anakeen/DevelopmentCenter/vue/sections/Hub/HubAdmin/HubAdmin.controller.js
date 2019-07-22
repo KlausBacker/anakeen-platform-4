@@ -123,13 +123,7 @@ export default {
       this.collection = e.dataItem.value;
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
-        if (this.$refs.smartConfig.isLoaded()) {
-          this.createConfig(this.collection);
-        } else {
-          this.$refs.smartConfig.$once("documentLoaded", () => {
-            this.createConfig(this.collection);
-          });
-        }
+        this.createConfig(this.collection);
       });
     },
     addClassOnSelectorContainer(e) {
@@ -244,15 +238,8 @@ export default {
 
       this.$refs.hubAdminSplitter.disableEmptyContent();
       this.$nextTick(() => {
-        if (this.$refs.smartConfig && this.$refs.smartConfig.isLoaded()) {
-          this.listenSmartElement();
-          this.openConfig(seid);
-        } else {
-          this.$refs.smartConfig.$once("documentLoaded", () => {
-            this.listenSmartElement();
-            this.openConfig(seid);
-          });
-        }
+        this.openConfig(seid);
+        this.listenSmartElement();
       });
     },
 
