@@ -47,7 +47,7 @@ $dispatcher = new EventDispatcher();
 $dispatcher->addListener(ConsoleEvents::COMMAND, function (ConsoleCommandEvent $event) {
     // gets the command to be executed
     $command = $event->getCommand();
-    if ($command->getName() !== "log") {
+    if ($command->getName() !== "log" && $command->getName() !== "_completion") {
         /** @var \Symfony\Component\Console\Input\InputInterface $input */
         $input = $event->getInput();
 
