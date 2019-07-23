@@ -28,4 +28,9 @@ Ensuite quelques commandes :
 `make run-sql` : Lance la commande "psql" sur la base de donnée  
 `make control-bash` : Lance un bash en tant "www-data" sur le docker PHP 
 
+Pour mettre en place pimp-my-log
+
+1. Lancer `make -C .devtools/docker install-pimp-my-log`
+2. Décommenter le contenu du fichier [001-anakeen-logs.conf](.devtool/docker/Docker/Volumes/php/etc/apache2/sites-enabled/custom-vhost/001-anakeen-logs.conf)
+3. `make start-env`
 
