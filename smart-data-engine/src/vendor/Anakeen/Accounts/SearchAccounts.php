@@ -353,7 +353,12 @@ class SearchAccounts
     {
         $groupRoleFilter = $this->getgroupRoleFilter();
 
-        $u = \Anakeen\Core\ContextManager::getCurrentUser();
+        if ($this->viewControl) {
+            $u = \Anakeen\Core\ContextManager::getCurrentUser();
+        } else {
+            $u=null;
+        }
+
         if ($this->viewControl && $u->id != 1) {
             $viewVector = \Anakeen\Search\Internal\SearchSmartData::getUserViewVector($u->id);
             if ($this->familyFilter) {
