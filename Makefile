@@ -1,3 +1,4 @@
+.DEFAULT_GOAL := help
 #MAKEFILE dir
 MK_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -25,49 +26,59 @@ $(BUILDDIRS):
 	$(MAKE) APP_OUTPUT_PATH=$(MK_DIR)/build/$(subst app-,,$@) -C $(subst app-,,$@) $(MAKECMDGOALS)
 	node ./.devtool/script/generateLocalRepo.js
 
-lint-JS:
+lint-JS: ## Check js files
 	$(NPX_BIN) eslint ./ --cache
 
-beautify-JS:
+beautify-JS: ## Lint js files
 	$(NPX_BIN) eslint ./ --cache --fix
 
-lint-po:
+lint-po: ## Lint po
 	./.devtool/ci/check/checkPo.sh
 
-start-env:
+start-env: ## Start docker environment
 	make -C ./.devtool/docker start-env
 
-stop-env:
+stop-env: ## Stop docker environment
 	make -C ./.devtool/docker stop-env
 
-clean-env:
+clean-env: ## Clean docker environment
 	make -C ./.devtool/docker clean-env
 
-clean-env-full:
+reboot-env: ## Reboot docker environment (stop + start + set params)
+	make -C ./.devtool/docker reboot-env
+
+reset-env: ## Reset docker environment
+	make -C ./.devtool/docker reset-env
+
+clean-env-full: ## Clean docker environment and remove images
 	make -C ./.devtool/docker clean-env-full
 
-update-all: app-autorelease
+update-all: app-autorelease ## Update all modules
 	docker exec monorepo_php_1 /var/www/html/control/anakeen-control update -n
 
-init-docker: start-env
+init-docker: start-env ## Init docker environment
 	make -C ./.devtool/docker init
 	make -C ./.devtool/docker register-local-repo
 	make -C ./.devtool/docker install
 
-control-status:
+control-status: ## Get controll status
 	watch docker exec monorepo_php_1 /var/www/html/control/anakeen-control status
 
-control-bash:
+control-bash: ## Run www-data bash
 	make -C ./.devtool/docker docker-prompt-platform
 
-run-bash:
+run-bash: ## Run bash in php container
 	make -C ./.devtool/docker docker-prompt-root
 
-run-sql:
+run-sql: ## Run psql in postgres container
 	make -C ./.devtool/docker docker-prompt-psql
 
 
-run-dev-server:
+run-dev-server: ## Run webpack development server
 	$(NODE_BIN) .devtool/devserver/index.js
 
-.PHONY: $(TOPTARGETS) $(SUBDIRS) $(BUILDDIRS) $(BUILDTARGETS) lint-JS beautify-JS lint-po start-env stop-env clean-env clean-env-full update-all init-docker control-status run-dev-server
+.PHONY: $(TOPTARGETS) $(SUBDIRS) $(BUILDDIRS) $(BUILDTARGETS) help lint-JS beautify-JS lint-po start-env stop-env clean-env reset-env reboot-env clean-env-full update-all init-docker control-status run-dev-server
+
+help: HELP_WIDTH = 25
+help: ## Show this help message
+	@grep -h -E -e '^[a-zA-Z_%-]+:.*?## .*$$' -e '^##: ##' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-$(HELP_WIDTH)s\033[0m %s\n", $$1, $$2}'

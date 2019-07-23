@@ -22,6 +22,7 @@ services:
       - "../../../build/:/var/www/html/localRepo"
     links:
       - "postgres:postgres"
+      - "mailcatcher:mailcatcher"
     ports:
       - "${CUSTOM_HTTP_PORT-8080}:80"
       - "${CUSTOM_HTTPS_PORT-4430}:443"
@@ -40,12 +41,20 @@ services:
     networks:
       - internal
 
+  mailcatcher:
+    image: sj26/mailcatcher
+    networks:
+      - internal
+    ports:
+      - "${CUSTOM_MAILCATCHER_PORT-10800}:1080"
+
   wait-for-it:
     build:
       context: ./Images/wait-for-it/
     networks:
       - internal
     links:
+      - "mailcatcher:mailcatcher"
       - "postgres:postgres"
       - "php:php"
 
