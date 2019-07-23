@@ -97,6 +97,12 @@ docker-prompt-postgresql: ## open bash prompt in postgres container
 docker-prompt-psql: ## open psql prompt in platform db
 	$(DOCKER_COMPOSE_CMD) exec postgres bash -c 'psql -U $$ANK_PG_USER -d $$ANK_PG_BASE'
 
+.PHONY: install-pimp-my-log
+install-pimp-my-log: stop-env
+	mkdir -p ${VOLUMES_PRIVATE_DIR}/php/var/www/html/logs/pimp-my-log
+	cd ${VOLUMES_PRIVATE_DIR}/php/var/www/html/logs/pimp-my-log && ${COMPOSER_BIN} require "potsky/pimp-my-log"
+
+.PHONY: mailcatcher-set-params
 mailcatcher-set-params:
 	${DOCKER_COMPOSE_CMD} exec php ${DOCKER_INTERNAL_CONTROL_DIR_PATH}/anakeen-control run \
     		"./ank.php --script=setParameter --param=Core::SMTP_FROM --value='${SMTP_FROM}'"

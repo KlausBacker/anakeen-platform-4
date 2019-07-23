@@ -16,10 +16,13 @@ services:
       - "./Volumes/_private/php/var/spool/cron/crontabs/:/var/spool/cron/crontabs"
       - "./Volumes/_private/php/tmp/share/:/tmp/share/"
       - "./Volumes/php/usr/local/etc/php/conf.d/10-base.ini:/usr/local/etc/php/conf.d/10-base.ini"
+      - "./Volumes/php/etc/apache2/sites-enabled/custom-vhost:/etc/apache2/sites-enabled/custom-vhost"
       - "./Volumes/_private/php/var/www/html/control/:/var/www/html/control/"
       - "./Volumes/_private/php/var/www/html/control/conf:/var/www/html/control/conf"
       - "./Volumes/_private/php/var/www/html/vaults/:/var/www/html/vaults/"
       - "../../../build/:/var/www/html/localRepo"
+      - "./Volumes/_private/php/var/www/html/logs/pimp-my-log/vendor/potsky/pimp-my-log/:/var/www/html/logs/pimp-my-log/vendor/potsky/pimp-my-log/"
+      - "./Volumes/php/var/www/html/logs/config.user.php:/var/www/html/logs/pimp-my-log/vendor/potsky/pimp-my-log/config.user.php"
     links:
       - "postgres:postgres"
       - "mailcatcher:mailcatcher"

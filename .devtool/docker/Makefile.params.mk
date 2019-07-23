@@ -31,6 +31,7 @@ VOLUMES_PRIVATE +=
 DOCKER_BIN = docker
 DOCKER_COMPOSE_BIN = docker-compose
 DOCKER_COMPOSE_CMD = $(COMPOSE_ENV) $(DOCKER_COMPOSE_BIN) -p $(PROJECT_NAME) -f "$(DOCKER_DIR)/docker-compose.yml"
+COMPOSER_BIN = composer
 
 ###############################################################################
 ## Various
