@@ -15,6 +15,7 @@
   "include": [
     "./components/src/**/*.vue",
     "./components/src/**/*.ts",
+    "./Tests/src/**/*.ts",
     "./src/vendor/Anakeen/DOCUMENT/IHM/widgets/globalController/**/*.ts"
   ],
   "files": [

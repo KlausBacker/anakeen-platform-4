@@ -38,6 +38,23 @@
       </hub_security_frame>
     </hub_security>
   </hubinstanciation>
+  <hubconfigurationgeneric name="HGEA_TESTSMARTFORM">
+    <hub_station_id name="UI_TEST">Smart Form</hub_station_id>
+    <hub_title>Test Smart Form</hub_title>
+    <hub_order>1</hub_order>
+    <hub_docker_position>LEFT_TOP</hub_docker_position>
+    <hub_vue_router_entry>testsmartform</hub_vue_router_entry>
+    <hub_activated>TRUE</hub_activated>
+    <hub_selectable>TRUE</hub_selectable>
+    <hub_expandable>TRUE</hub_expandable>
+    <hge_jsassets>
+      <hge_jsasset_type>MANIFEST</hge_jsasset_type>
+      <hge_jsasset>
+        Anakeen\Hub\SmartStructures\HubConfigurationGeneric\HubAssetPath::getJSPath("testSmartForm", "test-smart-form")
+      </hge_jsasset>
+    </hge_jsassets>
+    <hge_component_tag>ank-test-smart-form</hge_component_tag>
+  </hubconfigurationgeneric>
   <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="report.xsd" name="HUBEXT_2108" title="Tests de rendu de Smart Element" revision="0" modification-date="2019-04-25 14:12:15.959953" version="" state="">
     <fr_basic>
       <ba_title>Tests de rendu de Smart Element</ba_title>

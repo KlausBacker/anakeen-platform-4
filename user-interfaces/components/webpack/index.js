@@ -15,7 +15,8 @@ const ENTRIES_PATH = {
   AnkIdentity: path.resolve(BASE_PATH, "src/Identity/Identity.vue"),
   AnkAuthent: path.resolve(BASE_PATH, "src/Authent/Authent.vue"),
   AnkSEGrid: path.resolve(BASE_PATH, "src/Grid/Grid.vue"),
-  AnkSmartElement: path.resolve(BASE_PATH, "src/SmartElement/SmartElement.vue")
+  AnkSmartElement: path.resolve(BASE_PATH, "src/SmartElement/SmartElement.vue"),
+  AnkSmartForm: path.resolve(BASE_PATH, "src/SmartForm/SmartForm.vue")
 };
 
 const config = {
