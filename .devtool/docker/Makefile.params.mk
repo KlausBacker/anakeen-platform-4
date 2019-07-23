@@ -41,9 +41,16 @@ COMPOSE_GID = $$(id -g)
 COMPOSE_ENV = COMPOSE_UID=$(COMPOSE_UID) COMPOSE_GID=$(COMPOSE_GID)
 DOCKER_COMPOSE_UP_OPTIONS =
 DOCKER_COMPOSE_DOWN_OPTIONS =
-COMPOSE_SERVICES = php postgres
+COMPOSE_SERVICES = php postgres mailcatcher
 WAIT_FOR_IT_TIMEOUT = 15
 
+################################
+## MAILCATCHER
+################################
+SMTP_HOST=mailcatcher
+SMTP_PORT=1025
+SMTP_FROM=noreply@example.net
+CORE_URLINDEX=http://localhost:8080/
 
 init:
 	$(DOCKER_COMPOSE_CMD) exec php unzip -oq /var/www/html/localRepo/control/anakeen-control-latest.zip -d /var/www/html/

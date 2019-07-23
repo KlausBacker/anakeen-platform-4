@@ -31,6 +31,19 @@ clean-env: ## Remove data
 clean-env-full: DOCKER_COMPOSE_DOWN_OPTIONS += --rmi local ## Remove data and docker compose images
 clean-env-full: clean-env
 
+.PHONY: reboot-env
+reboot-env: ## Reinitialize environment
+	${MAKE} stop-env
+	${MAKE} start-env
+	${MAKE} mailcatcher-set-params
+
+.PHONY: reset-env
+reset-env: ## Reinitialize environment
+	${MAKE} clean-env
+	${MAKE} start-env
+	${MAKE} mailcatcher-set-params
+	${MAKE} stop-env
+
 ########################################################################################################################
 ##
 ## SNAPSHOTS
@@ -83,6 +96,20 @@ docker-prompt-postgresql: ## open bash prompt in postgres container
 .PHONY: docker-prompt-psql
 docker-prompt-psql: ## open psql prompt in platform db
 	$(DOCKER_COMPOSE_CMD) exec postgres bash -c 'psql -U $$ANK_PG_USER -d $$ANK_PG_BASE'
+
+mailcatcher-set-params:
+	${DOCKER_COMPOSE_CMD} exec php ${DOCKER_INTERNAL_CONTROL_DIR_PATH}/anakeen-control run \
+    		"./ank.php --script=setParameter --param=Core::SMTP_FROM --value='${SMTP_FROM}'"
+	@echo "\n"
+	${DOCKER_COMPOSE_CMD} exec php ${DOCKER_INTERNAL_CONTROL_DIR_PATH}/anakeen-control run \
+		"./ank.php --script=setParameter --param=Core::SMTP_HOST --value='${SMTP_HOST}'"
+	@echo "\n"
+	${DOCKER_COMPOSE_CMD} exec php ${DOCKER_INTERNAL_CONTROL_DIR_PATH}/anakeen-control run \
+		"./ank.php --script=setParameter --param=Core::SMTP_PORT --value='${SMTP_PORT}'"
+	@echo "\n"
+	${DOCKER_COMPOSE_CMD} exec php ${DOCKER_INTERNAL_CONTROL_DIR_PATH}/anakeen-control run \
+    		"./ank.php --script=setParameter --param=Core::CORE_URLINDEX --value='${CORE_URLINDEX}'"
+	@echo "\n"
 
 ###############################################################################
 ## Utils

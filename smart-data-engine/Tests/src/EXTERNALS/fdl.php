@@ -522,5 +522,3 @@ function lfamilyvalues($dbaccess, $famid, $name = "")
     }
     return $tr;
 }
-
-

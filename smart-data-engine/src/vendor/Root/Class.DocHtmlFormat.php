@@ -775,8 +775,12 @@ class DocHtmlFormat
             }
             $isLatest = $this->oattr->getOption("docrev", "latest") == "latest";
             if ($multiple) {
-                $avalue = str_replace("\n", "<BR>", $avalue);
-                $tval = explode("<BR>", $avalue);
+                if (! is_array($avalue)) {
+                    $avalue = str_replace("\n", "<BR>", $avalue);
+                    $tval = explode("<BR>", $avalue);
+                } else {
+                    $tval = $avalue;
+                }
                 $thval = array();
                 foreach ($tval as $kv => $vv) {
                     if (trim($vv) == "") {
