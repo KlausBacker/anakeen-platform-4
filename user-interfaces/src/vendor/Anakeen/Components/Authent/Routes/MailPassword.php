@@ -76,7 +76,7 @@ class MailPassword
             $context = array(
                 [
                     "methods" => ["PUT"],
-                    "pattern" => "/api/v2/authent/password/"
+                    "pattern" => "/api/v2/authent/password/".urlencode($login)
                 ]
             );
             $expire = 3600 * 24; // One day
